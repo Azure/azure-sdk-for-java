@@ -7,10 +7,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Defines values for DiskSkuTypes.
- */
-//TODO: Naming: this should really be DiskSkuType
+/** Defines values for DiskSkuTypes. */
+// TODO: Naming: this should really be DiskSkuType
 public final class DiskSkuTypes {
     // This needs to be at the beginning for the initialization to happen correctly
     private static final Map<String, DiskSkuTypes> VALUES_BY_NAME = new HashMap<>();
@@ -30,9 +28,7 @@ public final class DiskSkuTypes {
     /** The actual serialized value for a DiskSkuTypes instance. */
     private DiskStorageAccountTypes value;
 
-    /**
-     * @return predefined disk SKU types
-     */
+    /** @return predefined disk SKU types */
     public static DiskSkuTypes[] values() {
         Collection<DiskSkuTypes> valuesCollection = VALUES_BY_NAME.values();
         return valuesCollection.toArray(new DiskSkuTypes[valuesCollection.size()]);
@@ -40,6 +36,7 @@ public final class DiskSkuTypes {
 
     /**
      * Creates a custom value for DiskSkuTypes.
+     *
      * @param value the custom value
      */
     public DiskSkuTypes(DiskStorageAccountTypes value) {
@@ -82,9 +79,7 @@ public final class DiskSkuTypes {
         return fromStorageAccountType(diskSku.name());
     }
 
-    /**
-     * @return the account type associated with the SKU.
-     */
+    /** @return the account type associated with the SKU. */
     public DiskStorageAccountTypes accountType() {
         return this.value;
     }
@@ -100,7 +95,7 @@ public final class DiskSkuTypes {
             return false;
         } else if (obj == this) {
             return true;
-        } else  if (value == null) {
+        } else if (value == null) {
             return ((DiskSkuTypes) obj).value == null;
         } else {
             return value.equals(((DiskSkuTypes) obj).value);

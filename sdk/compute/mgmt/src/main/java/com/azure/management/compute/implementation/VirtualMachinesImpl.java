@@ -2,10 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.management.compute.implementation;
 
-import com.azure.management.compute.models.VirtualMachineInner;
-import com.azure.management.compute.models.VirtualMachinesInner;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.azure.management.compute.HardwareProfile;
 import com.azure.management.compute.NetworkProfile;
 import com.azure.management.compute.OSDisk;
@@ -18,36 +14,34 @@ import com.azure.management.compute.VirtualMachine;
 import com.azure.management.compute.VirtualMachineCaptureParameters;
 import com.azure.management.compute.VirtualMachineSizes;
 import com.azure.management.compute.VirtualMachines;
+import com.azure.management.compute.models.VirtualMachineInner;
+import com.azure.management.compute.models.VirtualMachinesInner;
 import com.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.azure.management.network.implementation.NetworkManager;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.azure.management.storage.implementation.StorageManager;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
+import java.util.List;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
-import java.util.List;
-
-/**
- * The implementation for VirtualMachines.
- */
+/** The implementation for VirtualMachines. */
 class VirtualMachinesImpl
-        extends TopLevelModifiableResourcesImpl<
-        VirtualMachine,
-        VirtualMachineImpl,
-        VirtualMachineInner,
-        VirtualMachinesInner,
-        ComputeManager>
-        implements VirtualMachines {
+    extends TopLevelModifiableResourcesImpl<
+        VirtualMachine, VirtualMachineImpl, VirtualMachineInner, VirtualMachinesInner, ComputeManager>
+    implements VirtualMachines {
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
     private final GraphRbacManager rbacManager;
     private final VirtualMachineSizesImpl vmSizes;
 
-    VirtualMachinesImpl(ComputeManager computeManager,
-                        StorageManager storageManager,
-                        NetworkManager networkManager,
-                        GraphRbacManager rbacManager) {
+    VirtualMachinesImpl(
+        ComputeManager computeManager,
+        StorageManager storageManager,
+        NetworkManager networkManager,
+        GraphRbacManager rbacManager) {
         super(computeManager.inner().virtualMachines(), computeManager);
         this.storageManager = storageManager;
         this.networkManager = networkManager;
@@ -123,21 +117,22 @@ class VirtualMachinesImpl
     }
 
     @Override
-    public String capture(String groupName, String name,
-                          String containerName,
-                          String vhdPrefix,
-                          boolean overwriteVhd) {
+    public String capture(String groupName, String name, String containerName, String vhdPrefix, boolean overwriteVhd) {
         return this.captureAsync(groupName, name, containerName, vhdPrefix, overwriteVhd).block();
     }
 
     @Override
-    public Mono<String> captureAsync(String groupName, String name, String containerName, String vhdPrefix, boolean overwriteVhd) {
+    public Mono<String> captureAsync(
+        String groupName, String name, String containerName, String vhdPrefix, boolean overwriteVhd) {
         VirtualMachineCaptureParameters parameters = new VirtualMachineCaptureParameters();
         parameters.withDestinationContainerName(containerName);
         parameters.withOverwriteVhds(overwriteVhd);
         parameters.withVhdPrefix(vhdPrefix);
-        return this.inner().captureAsync(groupName, name, parameters)
-                .map(captureResultInner -> {
+        return this
+            .inner()
+            .captureAsync(groupName, name, parameters)
+            .map(
+                captureResultInner -> {
                     try {
                         ObjectMapper mapper = new ObjectMapper();
                         return mapper.writeValueAsString(captureResultInner);
@@ -154,16 +149,18 @@ class VirtualMachinesImpl
 
     @Override
     public Mono<Void> migrateToManagedAsync(String groupName, String name) {
-       return this.inner().convertToManagedDisksAsync(groupName, name);
+        return this.inner().convertToManagedDisksAsync(groupName, name);
     }
 
     @Override
-    public RunCommandResult runPowerShellScript(String groupName, String name, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters) {
+    public RunCommandResult runPowerShellScript(
+        String groupName, String name, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters) {
         return this.runPowerShellScriptAsync(groupName, name, scriptLines, scriptParameters).block();
     }
 
     @Override
-    public Mono<RunCommandResult> runPowerShellScriptAsync(String groupName, String name, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters) {
+    public Mono<RunCommandResult> runPowerShellScriptAsync(
+        String groupName, String name, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters) {
         RunCommandInput inputCommand = new RunCommandInput();
         inputCommand.withCommandId("RunPowerShellScript");
         inputCommand.withScript(scriptLines);
@@ -172,12 +169,14 @@ class VirtualMachinesImpl
     }
 
     @Override
-    public RunCommandResult runShellScript(String groupName, String name, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters) {
+    public RunCommandResult runShellScript(
+        String groupName, String name, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters) {
         return this.runShellScriptAsync(groupName, name, scriptLines, scriptParameters).block();
     }
 
     @Override
-    public Mono<RunCommandResult> runShellScriptAsync(String groupName, String name, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters) {
+    public Mono<RunCommandResult> runShellScriptAsync(
+        String groupName, String name, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters) {
         RunCommandInput inputCommand = new RunCommandInput();
         inputCommand.withCommandId("RunShellScript");
         inputCommand.withScript(scriptLines);
@@ -192,8 +191,7 @@ class VirtualMachinesImpl
 
     @Override
     public Mono<RunCommandResult> runCommandAsync(String groupName, String name, RunCommandInput inputCommand) {
-        return this.inner().runCommandAsync(groupName, name, inputCommand)
-                .map(RunCommandResultImpl::new);
+        return this.inner().runCommandAsync(groupName, name, inputCommand).map(RunCommandResultImpl::new);
     }
 
     // Getters
@@ -202,25 +200,17 @@ class VirtualMachinesImpl
         return this.vmSizes;
     }
 
-
     // Helper methods
 
     @Override
     protected VirtualMachineImpl wrapModel(String name) {
         VirtualMachineInner inner = new VirtualMachineInner();
-        inner.withStorageProfile(new StorageProfile()
-                .withOsDisk(new OSDisk())
-                .withDataDisks(new ArrayList<>()));
+        inner.withStorageProfile(new StorageProfile().withOsDisk(new OSDisk()).withDataDisks(new ArrayList<>()));
         inner.withOsProfile(new OSProfile());
         inner.withHardwareProfile(new HardwareProfile());
-        inner.withNetworkProfile(new NetworkProfile()
-                .withNetworkInterfaces(new ArrayList<>()));
-        return new VirtualMachineImpl(name,
-                inner,
-                this.manager(),
-                this.storageManager,
-                this.networkManager,
-                this.rbacManager);
+        inner.withNetworkProfile(new NetworkProfile().withNetworkInterfaces(new ArrayList<>()));
+        return new VirtualMachineImpl(
+            name, inner, this.manager(), this.storageManager, this.networkManager, this.rbacManager);
     }
 
     @Override
@@ -228,11 +218,12 @@ class VirtualMachinesImpl
         if (virtualMachineInner == null) {
             return null;
         }
-        return new VirtualMachineImpl(virtualMachineInner.getName(),
-                virtualMachineInner,
-                this.manager(),
-                this.storageManager,
-                this.networkManager,
-                this.rbacManager);
+        return new VirtualMachineImpl(
+            virtualMachineInner.getName(),
+            virtualMachineInner,
+            this.manager(),
+            this.storageManager,
+            this.networkManager,
+            this.rbacManager);
     }
 }

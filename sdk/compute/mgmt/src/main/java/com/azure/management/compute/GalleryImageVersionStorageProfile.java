@@ -11,9 +11,7 @@ import java.util.List;
 /** The GalleryImageVersionStorageProfile model. */
 @Immutable
 public final class GalleryImageVersionStorageProfile {
-    /**
-     * The source property.
-     */
+    /** The source property. */
     @JsonProperty(value = "source")
     private GalleryArtifactVersionSource source;
 

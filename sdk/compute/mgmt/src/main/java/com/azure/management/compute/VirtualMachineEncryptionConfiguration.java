@@ -4,7 +4,6 @@
 package com.azure.management.compute;
 
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
-
 import java.util.Objects;
 
 /**
@@ -29,12 +28,21 @@ public abstract class VirtualMachineEncryptionConfiguration<T extends VirtualMac
      * @param aadClientId AAD application client ID to access the KeyVault
      * @param aadSecret AAD application client secret to access the KeyVault
      */
-    protected VirtualMachineEncryptionConfiguration(String keyVaultId,
-                                                    String aadClientId,
-                                                    String aadSecret) {
-        this.keyVaultId = Objects.requireNonNull(keyVaultId, "KeyVaultId parameter holding resource id of the KeyVault to store disk encryption key is required.");
-        this.aadClientId = Objects.requireNonNull(aadClientId, "aadClientId parameter holding AAD client id to access the KeyVault is required.");
-        this.aadSecret = Objects.requireNonNull(aadSecret, "aadSecret parameter holding AAD secret to access the KeyVault is required.");
+    protected VirtualMachineEncryptionConfiguration(String keyVaultId, String aadClientId, String aadSecret) {
+        this.keyVaultId =
+            Objects
+                .requireNonNull(
+                    keyVaultId,
+                    "KeyVaultId parameter holding resource id of the KeyVault to store disk encryption key is"
+                        + " required.");
+        this.aadClientId =
+            Objects
+                .requireNonNull(
+                    aadClientId, "aadClientId parameter holding AAD client id to access the KeyVault is required.");
+        this.aadSecret =
+            Objects
+                .requireNonNull(
+                    aadSecret, "aadSecret parameter holding AAD secret to access the KeyVault is required.");
     }
 
     /**
@@ -43,34 +51,29 @@ public abstract class VirtualMachineEncryptionConfiguration<T extends VirtualMac
      * @param keyVaultId resource ID of the KeyVault to store the disk encryption key
      */
     protected VirtualMachineEncryptionConfiguration(String keyVaultId) {
-        Objects.requireNonNull(keyVaultId, "KeyVaultId parameter holding resource id of the keyVault to store disk encryption key is required.");
+        Objects
+            .requireNonNull(
+                keyVaultId,
+                "KeyVaultId parameter holding resource id of the keyVault to store disk encryption key is required.");
         this.keyVaultId = keyVaultId;
         this.aadClientId = null;
         this.aadSecret = null;
     }
 
-    /**
-     * @return the operating system type
-     */
+    /** @return the operating system type */
     public abstract OperatingSystemTypes osType();
 
-    /**
-     * @return the AAD application client ID to access the key vault
-     */
+    /** @return the AAD application client ID to access the key vault */
     public String aadClientId() {
         return this.aadClientId;
     }
 
-    /**
-     * @return the AAD application client secret to access the key vault
-     */
+    /** @return the AAD application client secret to access the key vault */
     public String aadSecret() {
         return this.aadSecret;
     }
 
-    /**
-     * @return type of the volume to perform encryption operation
-     */
+    /** @return type of the volume to perform encryption operation */
     public DiskVolumeType volumeType() {
         if (this.volumeType != null) {
             return this.volumeType;
@@ -78,45 +81,33 @@ public abstract class VirtualMachineEncryptionConfiguration<T extends VirtualMac
         return DiskVolumeType.ALL;
     }
 
-    /**
-     * @return resource ID of the key vault to store the disk encryption key
-     */
+    /** @return resource ID of the key vault to store the disk encryption key */
     public String keyVaultId() {
         return this.keyVaultId;
     }
 
-    /**
-     * @return URL to the key vault to store the disk encryption key
-     */
+    /** @return URL to the key vault to store the disk encryption key */
     public String keyVaultUrl() {
         String keyVaultName = ResourceUtils.nameFromResourceId(this.keyVaultId);
         return String.format("https://%s.vault.azure.net/", keyVaultName.toLowerCase());
     }
 
-    /**
-     * @return resource ID of the Key Vault holding key encryption key (KEK)
-     */
+    /** @return resource ID of the Key Vault holding key encryption key (KEK) */
     public String keyEncryptionKeyVaultId() {
         return this.keyEncryptionKeyVaultId;
     }
 
-    /**
-     * @return key vault URL to the key (KEK) to protect (encrypt) the disk-encryption key
-     */
+    /** @return key vault URL to the key (KEK) to protect (encrypt) the disk-encryption key */
     public String keyEncryptionKeyURL() {
         return this.keyEncryptionKeyURL;
     }
 
-    /**
-     * @return the algorithm used to encrypt the disk-encryption key
-     */
+    /** @return the algorithm used to encrypt the disk-encryption key */
     public String volumeEncryptionKeyEncryptAlgorithm() {
         return this.encryptionAlgorithm;
     }
 
-    /**
-     * @return the pass phrase to encrypt Linux OS and data disks
-     */
+    /** @return the pass phrase to encrypt Linux OS and data disks */
     public String linuxPassPhrase() {
         return this.passPhrase;
     }

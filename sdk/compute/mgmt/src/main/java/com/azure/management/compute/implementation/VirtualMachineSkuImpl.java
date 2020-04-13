@@ -10,11 +10,8 @@ import com.azure.management.compute.VirtualMachineSku;
 import com.azure.management.compute.models.VirtualMachineImagesInner;
 import com.azure.management.resources.fluentcore.arm.Region;
 
-/**
- * The implementation for {@link Sku}.
- */
-class VirtualMachineSkuImpl
-        implements VirtualMachineSku {
+/** The implementation for {@link Sku}. */
+class VirtualMachineSkuImpl implements VirtualMachineSku {
     private final VirtualMachineOffer offer;
     private final String skuName;
     private final VirtualMachineImagesInSku imagesInSku;

@@ -13,7 +13,6 @@ import com.azure.management.graphrbac.implementation.RoleAssignmentHelper;
 import com.azure.management.msi.Identity;
 import com.azure.management.resources.fluentcore.dag.TaskGroup;
 import com.azure.management.resources.fluentcore.model.Creatable;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,9 +22,8 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Utility class to set Managed Service Identity (MSI) property on a virtual machine scale set,
- * install or update MSI extension and create role assignments for the service principal (LMSI)
- * associated with the virtual machine scale set.
+ * Utility class to set Managed Service Identity (MSI) property on a virtual machine scale set, install or update MSI
+ * extension and create role assignments for the service principal (LMSI) associated with the virtual machine scale set.
  */
 class VirtualMachineScaleSetMsiHandler extends RoleAssignmentHelper {
     private final VirtualMachineScaleSetImpl scaleSet;
@@ -46,8 +44,8 @@ class VirtualMachineScaleSetMsiHandler extends RoleAssignmentHelper {
     }
 
     /**
-     * Specifies that Local Managed Service Identity needs to be enabled in the virtual machine scale set.
-     * If MSI extension is not already installed then it will be installed with access token port as 50342.
+     * Specifies that Local Managed Service Identity needs to be enabled in the virtual machine scale set. If MSI
+     * extension is not already installed then it will be installed with access token port as 50342.
      *
      * @return VirtualMachineScaleSetMsiHandler
      */
@@ -63,9 +61,9 @@ class VirtualMachineScaleSetMsiHandler extends RoleAssignmentHelper {
      */
     VirtualMachineScaleSetMsiHandler withoutLocalManagedServiceIdentity() {
         if (this.scaleSet.inner().identity() == null
-                || this.scaleSet.inner().identity().type() == null
-                || this.scaleSet.inner().identity().type().equals(ResourceIdentityType.NONE)
-                || this.scaleSet.inner().identity().type().equals(ResourceIdentityType.USER_ASSIGNED)) {
+            || this.scaleSet.inner().identity().type() == null
+            || this.scaleSet.inner().identity().type().equals(ResourceIdentityType.NONE)
+            || this.scaleSet.inner().identity().type().equals(ResourceIdentityType.USER_ASSIGNED)) {
             return this;
         } else if (this.scaleSet.inner().identity().type().equals(ResourceIdentityType.SYSTEM_ASSIGNED)) {
             this.scaleSet.inner().identity().withType(ResourceIdentityType.NONE);
@@ -76,11 +74,10 @@ class VirtualMachineScaleSetMsiHandler extends RoleAssignmentHelper {
     }
 
     /**
-     * Specifies that given identity should be set as one of the External Managed Service Identity
-     * of the virtual machine scale set.
+     * Specifies that given identity should be set as one of the External Managed Service Identity of the virtual
+     * machine scale set.
      *
-     * @param creatableIdentity yet-to-be-created identity to be associated with the virtual machine
-     *                          scale set
+     * @param creatableIdentity yet-to-be-created identity to be associated with the virtual machine scale set
      * @return VirtualMachineScaleSetMsiHandler
      */
     VirtualMachineScaleSetMsiHandler withNewExternalManagedServiceIdentity(Creatable<Identity> creatableIdentity) {
@@ -95,8 +92,8 @@ class VirtualMachineScaleSetMsiHandler extends RoleAssignmentHelper {
     }
 
     /**
-     * Specifies that given identity should be set as one of the External Managed Service Identity
-     * of the virtual machine scale set.
+     * Specifies that given identity should be set as one of the External Managed Service Identity of the virtual
+     * machine scale set.
      *
      * @param identity an identity to associate
      * @return VirtualMachineScaleSetMsiHandler
@@ -108,8 +105,8 @@ class VirtualMachineScaleSetMsiHandler extends RoleAssignmentHelper {
     }
 
     /**
-     * Specifies that given identity should be removed from the list of External Managed Service Identity
-     * associated with the virtual machine machine scale set.
+     * Specifies that given identity should be removed from the list of External Managed Service Identity associated
+     * with the virtual machine machine scale set.
      *
      * @param identityId resource id of the identity
      * @return VirtualMachineScaleSetMsiHandler
@@ -119,9 +116,7 @@ class VirtualMachineScaleSetMsiHandler extends RoleAssignmentHelper {
         return this;
     }
 
-    /**
-     * Update the VMSS payload model using the created External Managed Service Identities.
-     */
+    /** Update the VMSS payload model using the created External Managed Service Identities. */
     void processCreatedExternalIdentities() {
         for (String key : this.creatableIdentityKeys) {
             Identity identity = (Identity) this.scaleSet.taskGroup().taskResult(key);
@@ -170,9 +165,7 @@ class VirtualMachineScaleSetMsiHandler extends RoleAssignmentHelper {
         }
     }
 
-    /**
-     * Clear VirtualMachineScaleSetMsiHandler post-run specific internal state.
-     */
+    /** Clear VirtualMachineScaleSetMsiHandler post-run specific internal state. */
     void clear() {
         this.userAssignedIdentities = new HashMap<>();
     }
@@ -205,17 +198,21 @@ class VirtualMachineScaleSetMsiHandler extends RoleAssignmentHelper {
                     }
                 }
                 Set<String> removeIds = new HashSet<>();
-                for (Map.Entry<String, VirtualMachineScaleSetIdentityUserAssignedIdentities> entrySet : this.userAssignedIdentities.entrySet()) {
+                for (Map.Entry<String, VirtualMachineScaleSetIdentityUserAssignedIdentities> entrySet
+                    : this.userAssignedIdentities.entrySet()) {
                     if (entrySet.getValue() == null) {
                         removeIds.add(entrySet.getKey().toLowerCase());
                     }
                 }
                 // If so check user want to remove all the identities
-                boolean removeAllCurrentIds = currentIds.size() == removeIds.size() && currentIds.containsAll(removeIds);
+                boolean removeAllCurrentIds =
+                    currentIds.size() == removeIds.size() && currentIds.containsAll(removeIds);
                 if (removeAllCurrentIds) {
-                    // If so adjust  the identity type [Setting type to SYSTEM_ASSIGNED orNONE will remove all the identities]
+                    // If so adjust  the identity type [Setting type to SYSTEM_ASSIGNED orNONE will remove all the
+                    // identities]
                     if (currentIdentity == null || currentIdentity.type() == null) {
-                        vmssUpdate.withIdentity(new VirtualMachineScaleSetIdentity().withType(ResourceIdentityType.NONE));
+                        vmssUpdate
+                            .withIdentity(new VirtualMachineScaleSetIdentity().withType(ResourceIdentityType.NONE));
                     } else if (currentIdentity.type().equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)) {
                         vmssUpdate.withIdentity(currentIdentity);
                         vmssUpdate.identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED);
@@ -228,12 +225,11 @@ class VirtualMachineScaleSetMsiHandler extends RoleAssignmentHelper {
                     return true;
                 } else {
                     // Check user is asking to remove identities though there is no identities currently associated
-                    if (currentIds.size() == 0
-                            && removeIds.size() != 0
-                            && currentIdentity == null) {
+                    if (currentIds.size() == 0 && removeIds.size() != 0 && currentIdentity == null) {
                         // If so we are in a invalid state but we want to send user input to service and let service
                         // handle it (ignore or error).
-                        vmssUpdate.withIdentity(new VirtualMachineScaleSetIdentity().withType(ResourceIdentityType.NONE));
+                        vmssUpdate
+                            .withIdentity(new VirtualMachineScaleSetIdentity().withType(ResourceIdentityType.NONE));
                         vmssUpdate.identity().withUserAssignedIdentities(null);
                         return true;
                     }
@@ -250,7 +246,7 @@ class VirtualMachineScaleSetMsiHandler extends RoleAssignmentHelper {
      */
     private void initVMSSIdentity(ResourceIdentityType identityType) {
         if (!identityType.equals(ResourceIdentityType.USER_ASSIGNED)
-                && !identityType.equals(ResourceIdentityType.SYSTEM_ASSIGNED)) {
+            && !identityType.equals(ResourceIdentityType.SYSTEM_ASSIGNED)) {
             throw new IllegalArgumentException("Invalid argument: " + identityType);
         }
 
@@ -259,8 +255,8 @@ class VirtualMachineScaleSetMsiHandler extends RoleAssignmentHelper {
             scaleSetInner.withIdentity(new VirtualMachineScaleSetIdentity());
         }
         if (scaleSetInner.identity().type() == null
-                || scaleSetInner.identity().type().equals(ResourceIdentityType.NONE)
-                || scaleSetInner.identity().type().equals(identityType)) {
+            || scaleSetInner.identity().type().equals(ResourceIdentityType.NONE)
+            || scaleSetInner.identity().type().equals(identityType)) {
             scaleSetInner.identity().withType(identityType);
         } else {
             scaleSetInner.identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED);

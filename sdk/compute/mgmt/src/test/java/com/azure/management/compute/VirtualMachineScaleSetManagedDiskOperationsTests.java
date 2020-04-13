@@ -5,16 +5,15 @@ package com.azure.management.compute;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.RestClient;
-import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.network.LoadBalancer;
 import com.azure.management.network.Network;
 import com.azure.management.resources.ResourceGroup;
+import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
+import java.util.Iterator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.util.Iterator;
 
 public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeManagementTest {
     private String RG_NAME = "";
@@ -25,6 +24,7 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
         RG_NAME = generateRandomResourceName("javacsmrg", 15);
         super.initializeClients(restClient, defaultSubscription, domain);
     }
+
     @Override
     protected void cleanUpResources() {
         resourceManager.resourceGroups().deleteByName(RG_NAME);
@@ -34,12 +34,11 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
     public void canCreateUpdateVirtualMachineScaleSetFromPIRWithManagedDisk() throws Exception {
         final String vmssName = generateRandomResourceName("vmss", 10);
 
-        ResourceGroup resourceGroup = this.resourceManager.resourceGroups()
-                .define(RG_NAME)
-                .withRegion(region)
-                .create();
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(RG_NAME).withRegion(region).create();
 
-        Network network = this.networkManager
+        Network network =
+            this
+                .networkManager
                 .networks()
                 .define(generateRandomResourceName("vmssvnet", 15))
                 .withRegion(region)
@@ -49,7 +48,10 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
                 .create();
 
         LoadBalancer publicLoadBalancer = createHttpLoadBalancers(region, resourceGroup, "1");
-        VirtualMachineScaleSet vmScaleSet = this.computeManager.virtualMachineScaleSets()
+        VirtualMachineScaleSet vmScaleSet =
+            this
+                .computeManager
+                .virtualMachineScaleSets()
                 .define(vmssName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
@@ -80,10 +82,7 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
             Assertions.assertNotNull(vm.dataDisks());
             Assertions.assertEquals(vm.dataDisks().size(), 3);
         }
-        vmScaleSet.update()
-                .withoutDataDisk(0)
-                .withNewDataDisk(50)
-                .apply();
+        vmScaleSet.update().withoutDataDisk(0).withNewDataDisk(50).apply();
 
         virtualMachineScaleSetVMs = vmScaleSet.virtualMachines();
         virtualMachines = virtualMachineScaleSetVMs.list();
@@ -95,7 +94,10 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
 
         // test attach/detach data disk to single instance
         final String diskName = generateRandomResourceName("disk", 10);
-        Disk disk0 = this.computeManager.disks()
+        Disk disk0 =
+            this
+                .computeManager
+                .disks()
                 .define(diskName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
@@ -111,8 +113,7 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
         // cannot detach non-exist disk
         Exception expectedException = null;
         try {
-            vm0.update()
-                    .withoutDataDisk(newDiskLun);
+            vm0.update().withoutDataDisk(newDiskLun);
         } catch (IllegalStateException e) {
             expectedException = e;
         }
@@ -120,8 +121,7 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
         // cannot detach disk from VMSS model
         expectedException = null;
         try {
-            vm0.update()
-                    .withoutDataDisk(existDiskLun);
+            vm0.update().withoutDataDisk(existDiskLun);
         } catch (IllegalStateException e) {
             expectedException = e;
         }
@@ -129,8 +129,7 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
         // cannot attach disk with same lun
         expectedException = null;
         try {
-            vm0.update()
-                    .withExistingDataDisk(disk0, existDiskLun, CachingTypes.NONE);
+            vm0.update().withExistingDataDisk(disk0, existDiskLun, CachingTypes.NONE);
         } catch (IllegalStateException e) {
             expectedException = e;
         }
@@ -138,9 +137,10 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
         // cannot attach disk with same lun
         expectedException = null;
         try {
-            vm0.update()
-                    .withExistingDataDisk(disk0, newDiskLun, CachingTypes.NONE)
-                    .withExistingDataDisk(disk0, newDiskLun, CachingTypes.NONE);
+            vm0
+                .update()
+                .withExistingDataDisk(disk0, newDiskLun, CachingTypes.NONE)
+                .withExistingDataDisk(disk0, newDiskLun, CachingTypes.NONE);
         } catch (IllegalStateException e) {
             expectedException = e;
         }
@@ -148,27 +148,21 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
 
         // attach disk
         final int vmssModelDiskCount = vm0.dataDisks().size();
-        vm0.update()
-                .withExistingDataDisk(disk0, newDiskLun, CachingTypes.READ_WRITE)
-                .apply();
+        vm0.update().withExistingDataDisk(disk0, newDiskLun, CachingTypes.READ_WRITE).apply();
         Assertions.assertEquals(vmssModelDiskCount + 1, vm0.dataDisks().size());
 
         // cannot attach disk that already attached
         disk0.refresh();
         expectedException = null;
         try {
-            vm1.update()
-                    .withExistingDataDisk(disk0, newDiskLun, CachingTypes.NONE)
-                    .apply();
+            vm1.update().withExistingDataDisk(disk0, newDiskLun, CachingTypes.NONE).apply();
         } catch (IllegalStateException e) {
             expectedException = e;
         }
         Assertions.assertNotNull(expectedException);
 
         // detach disk
-        vm0.update()
-                .withoutDataDisk(newDiskLun)
-                .apply();
+        vm0.update().withoutDataDisk(newDiskLun).apply();
         Assertions.assertEquals(vmssModelDiskCount, vm0.dataDisks().size());
     }
 
@@ -180,12 +174,13 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
         final String customImageName = generateRandomResourceName("img", 10);
         final String vmssName = generateRandomResourceName("vmss", 10);
 
-        ResourceGroup resourceGroup = this.resourceManager.resourceGroups()
-                .define(RG_NAME)
-                .withRegion(region)
-                .create();
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(RG_NAME).withRegion(region).create();
 
-        VirtualMachine vm = this.computeManager.virtualMachines().define(generateRandomResourceName("vm", 10))
+        VirtualMachine vm =
+            this
+                .computeManager
+                .virtualMachines()
+                .define(generateRandomResourceName("vm", 10))
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withNewPrimaryNetwork("10.0.0.0/28")
@@ -196,13 +191,13 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
                 .withRootPassword(password)
                 .withUnmanagedDisks()
                 .defineUnmanagedDataDisk("disk-1")
-                    .withNewVhd(100)
-                    .withLun(1)
-                    .attach()
+                .withNewVhd(100)
+                .withLun(1)
+                .attach()
                 .defineUnmanagedDataDisk("disk-2")
-                    .withNewVhd(50)
-                    .withLun(2)
-                    .attach()
+                .withNewVhd(50)
+                .withLun(2)
+                .attach()
                 .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                 .create();
 
@@ -216,7 +211,10 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
         vm.deallocate();
         vm.generalize();
 
-        VirtualMachineCustomImage virtualMachineCustomImage = this.computeManager.virtualMachineCustomImages()
+        VirtualMachineCustomImage virtualMachineCustomImage =
+            this
+                .computeManager
+                .virtualMachineCustomImages()
                 .define(customImageName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
@@ -225,7 +223,9 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
 
         Assertions.assertNotNull(virtualMachineCustomImage);
 
-        Network network = this.networkManager
+        Network network =
+            this
+                .networkManager
                 .networks()
                 .define(generateRandomResourceName("vmssvnet", 15))
                 .withRegion(region)
@@ -235,7 +235,10 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
                 .create();
 
         LoadBalancer publicLoadBalancer = createHttpLoadBalancers(region, resourceGroup, "1");
-        VirtualMachineScaleSet vmScaleSet = this.computeManager.virtualMachineScaleSets()
+        VirtualMachineScaleSet vmScaleSet =
+            this
+                .computeManager
+                .virtualMachineScaleSets()
                 .define(vmssName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
@@ -270,47 +273,47 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
 
         vmScaleSet.deallocate();
 
-// Updating and adding disk as part of VMSS Update seems consistency failing, CRP is aware of
-// this, hence until it is fixed comment-out the test
-//
-//        {
-//            "startTime": "2017-01-25T06:10:55.2243509+00:00",
-//                "endTime": "2017-01-25T06:11:07.8649525+00:00",
-//                "status": "Failed",
-//                "error": {
-//            "code": "InternalExecutionError",
-//                    "message": "An internal execution error occurred."
-//        },
-//            "name": "6786df83-ed3f-4d7a-bf58-d295b96fef46"
-//        }
-//
-//        vmScaleSet.update()
-//                .withDataDiskUpdated(1, 200) // update not supported
-//                .withNewDataDisk(100)
-//                .apply();
-//
-//        vmScaleSet.start();
-//
-//        virtualMachineScaleSetVMs = vmScaleSet.virtualMachines();
-//        virtualMachines = virtualMachineScaleSetVMs.list();
-//        for (VirtualMachineScaleSetVM vm1 : virtualMachines) {
-//            Assertions.assertTrue(vm1.isOSBasedOnCustomImage());
-//            Assertions.assertFalse(vm1.isOSBasedOnPlatformImage());
-//            Assertions.assertFalse(vm1.isOSBasedOnStoredImage());
-//            Assertions.assertTrue(vm1.isManagedDiskEnabled());
-//            Assertions.assertNotNull(vm1.unmanagedDataDisks());
-//            Assertions.assertEquals(vm1.unmanagedDataDisks().size(), 0);
-//            Assertions.assertNotNull(vm1.dataDisks());
-//            Assertions.assertEquals(vm1.dataDisks().size(), 3);
-//            Assertions.assertTrue(vm1.dataDisks().containsKey(1));
-//            VirtualMachineDataDisk disk = vm1.dataDisks().get(1);
-//            Assertions.assertEquals(disk.size(), 200);
-//            Assertions.assertTrue(vm1.dataDisks().containsKey(2));
-//            disk = vm1.dataDisks().get(2);
-//            Assertions.assertEquals(disk.size(), 50);
-//            Assertions.assertTrue(vm1.dataDisks().containsKey(0));
-//            disk = vm1.dataDisks().get(0);
-//            Assertions.assertEquals(disk.size(), 100);
-//        }
+        // Updating and adding disk as part of VMSS Update seems consistency failing, CRP is aware of
+        // this, hence until it is fixed comment-out the test
+        //
+        //        {
+        //            "startTime": "2017-01-25T06:10:55.2243509+00:00",
+        //                "endTime": "2017-01-25T06:11:07.8649525+00:00",
+        //                "status": "Failed",
+        //                "error": {
+        //            "code": "InternalExecutionError",
+        //                    "message": "An internal execution error occurred."
+        //        },
+        //            "name": "6786df83-ed3f-4d7a-bf58-d295b96fef46"
+        //        }
+        //
+        //        vmScaleSet.update()
+        //                .withDataDiskUpdated(1, 200) // update not supported
+        //                .withNewDataDisk(100)
+        //                .apply();
+        //
+        //        vmScaleSet.start();
+        //
+        //        virtualMachineScaleSetVMs = vmScaleSet.virtualMachines();
+        //        virtualMachines = virtualMachineScaleSetVMs.list();
+        //        for (VirtualMachineScaleSetVM vm1 : virtualMachines) {
+        //            Assertions.assertTrue(vm1.isOSBasedOnCustomImage());
+        //            Assertions.assertFalse(vm1.isOSBasedOnPlatformImage());
+        //            Assertions.assertFalse(vm1.isOSBasedOnStoredImage());
+        //            Assertions.assertTrue(vm1.isManagedDiskEnabled());
+        //            Assertions.assertNotNull(vm1.unmanagedDataDisks());
+        //            Assertions.assertEquals(vm1.unmanagedDataDisks().size(), 0);
+        //            Assertions.assertNotNull(vm1.dataDisks());
+        //            Assertions.assertEquals(vm1.dataDisks().size(), 3);
+        //            Assertions.assertTrue(vm1.dataDisks().containsKey(1));
+        //            VirtualMachineDataDisk disk = vm1.dataDisks().get(1);
+        //            Assertions.assertEquals(disk.size(), 200);
+        //            Assertions.assertTrue(vm1.dataDisks().containsKey(2));
+        //            disk = vm1.dataDisks().get(2);
+        //            Assertions.assertEquals(disk.size(), 50);
+        //            Assertions.assertTrue(vm1.dataDisks().containsKey(0));
+        //            disk = vm1.dataDisks().get(0);
+        //            Assertions.assertEquals(disk.size(), 100);
+        //        }
     }
 }

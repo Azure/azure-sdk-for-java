@@ -12,22 +12,19 @@ import expect4j.Expect4j;
 import expect4j.ExpectState;
 import expect4j.matches.Match;
 import expect4j.matches.RegExpMatch;
-import org.apache.oro.text.regex.MalformedPatternException;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import org.apache.oro.text.regex.MalformedPatternException;
 
-/**
- * Utility class to run commands on Linux VM via SSH.
- */
+/** Utility class to run commands on Linux VM via SSH. */
 public class SshShell {
     private final Session session;
     private final ChannelShell channel;
     private final Expect4j expect;
     private final StringBuilder shellBuffer = new StringBuilder();
-    private List<Match> linuxPromptMatches =  new ArrayList<>();
+    private List<Match> linuxPromptMatches = new ArrayList<>();
 
     /**
      * Creates SSHShell.
@@ -40,10 +37,9 @@ public class SshShell {
      * @throws JSchException
      * @throws IOException
      */
-    private SshShell(String host, int port, String userName, String password)
-            throws JSchException, IOException {
+    private SshShell(String host, int port, String userName, String password) throws JSchException, IOException {
         Closure expectClosure = getExpectClosure();
-        for (String linuxPromptPattern : new String[]{"\\>","#", "~#", "~\\$"}) {
+        for (String linuxPromptPattern : new String[] {"\\>", "#", "~#", "~\\$"}) {
             try {
                 Match match = new RegExpMatch(linuxPromptPattern, expectClosure);
                 linuxPromptMatches.add(match);
@@ -54,7 +50,7 @@ public class SshShell {
         JSch jsch = new JSch();
         this.session = jsch.getSession(userName, host, port);
         session.setPassword(password);
-        Hashtable<String,String> config = new Hashtable<>();
+        Hashtable<String, String> config = new Hashtable<>();
         config.put("StrictHostKeyChecking", "no");
         session.setConfig(config);
         session.connect(60000);
@@ -75,7 +71,7 @@ public class SshShell {
      * @throws IOException
      */
     public static SshShell open(String host, int port, String userName, String password)
-            throws JSchException, IOException {
+        throws JSchException, IOException {
         return new SshShell(host, port, userName, password);
     }
 
@@ -102,9 +98,7 @@ public class SshShell {
         return output;
     }
 
-    /**
-     * Closes shell.
-     */
+    /** Closes shell. */
     public void close() {
         if (expect != null) {
             expect.close();

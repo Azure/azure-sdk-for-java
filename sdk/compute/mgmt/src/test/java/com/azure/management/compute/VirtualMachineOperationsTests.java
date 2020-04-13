@@ -20,9 +20,6 @@ import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.CreatedResources;
 import com.azure.management.storage.SkuName;
 import com.azure.management.storage.StorageAccount;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -30,6 +27,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class VirtualMachineOperationsTests extends ComputeManagementTest {
     private String RG_NAME = "";
@@ -58,10 +57,14 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
     @Test
     public void canCreateVirtualMachineWithNetworking() throws Exception {
-        NetworkSecurityGroup nsg = this.networkManager.networkSecurityGroups().define("nsg")
-            .withRegion(REGION)
-            .withNewResourceGroup(RG_NAME)
-            .defineRule("rule1")
+        NetworkSecurityGroup nsg =
+            this
+                .networkManager
+                .networkSecurityGroups()
+                .define("nsg")
+                .withRegion(REGION)
+                .withNewResourceGroup(RG_NAME)
+                .defineRule("rule1")
                 .allowInbound()
                 .fromAnyAddress()
                 .fromPort(80)
@@ -69,20 +72,26 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .toPort(80)
                 .withProtocol(SecurityRuleProtocol.TCP)
                 .attach()
-            .create();
+                .create();
 
-        Creatable<Network> networkDefinition = this.networkManager.networks().define("network1")
-            .withRegion(REGION)
-            .withNewResourceGroup(RG_NAME)
-            .withAddressSpace("10.0.0.0/28")
-            .defineSubnet("subnet1")
+        Creatable<Network> networkDefinition =
+            this
+                .networkManager
+                .networks()
+                .define("network1")
+                .withRegion(REGION)
+                .withNewResourceGroup(RG_NAME)
+                .withAddressSpace("10.0.0.0/28")
+                .defineSubnet("subnet1")
                 .withAddressPrefix("10.0.0.0/29")
                 .withExistingNetworkSecurityGroup(nsg)
                 .attach();
 
         // Create
-        VirtualMachine vm = computeManager.virtualMachines()
-            .define(VMNAME)
+        VirtualMachine vm =
+            computeManager
+                .virtualMachines()
+                .define(VMNAME)
                 .withRegion(REGION)
                 .withNewResourceGroup(RG_NAME)
                 .withNewPrimaryNetwork(networkDefinition)
@@ -91,7 +100,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
                 .withRootPassword("abc!@#F0orL")
-            .create();
+                .create();
 
         NetworkInterface primaryNic = vm.getPrimaryNetworkInterface();
         Assertions.assertNotNull(primaryNic);
@@ -117,21 +126,22 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     @Test
     public void canCreateVirtualMachine() throws Exception {
         // Create
-        computeManager.virtualMachines()
+        computeManager
+            .virtualMachines()
             .define(VMNAME)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
-                .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIPAddressDynamic()
-                .withoutPrimaryPublicIPAddress()
-                .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_DATACENTER)
-                .withAdminUsername("Foo12")
-                .withAdminPassword("abc!@#F0orL")
-                .withUnmanagedDisks()
-                .withSize(VirtualMachineSizeTypes.STANDARD_D3)
-                .withOSDiskCaching(CachingTypes.READ_WRITE)
-                .withOSDiskName("javatest")
-                .withLicenseType("Windows_Server")
+            .withRegion(REGION)
+            .withNewResourceGroup(RG_NAME)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_DATACENTER)
+            .withAdminUsername("Foo12")
+            .withAdminPassword("abc!@#F0orL")
+            .withUnmanagedDisks()
+            .withSize(VirtualMachineSizeTypes.STANDARD_D3)
+            .withOSDiskCaching(CachingTypes.READ_WRITE)
+            .withOSDiskName("javatest")
+            .withLicenseType("Windows_Server")
             .create();
 
         VirtualMachine foundVM = null;
@@ -164,24 +174,25 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     @Test
     public void canCreateUpdatePriorityAndPrice() throws Exception {
         // Create
-        computeManager.virtualMachines()
-                .define(VMNAME)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
-                .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIPAddressDynamic()
-                .withoutPrimaryPublicIPAddress()
-                .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_DATACENTER)
-                .withAdminUsername("Foo12")
-                .withAdminPassword("abc!@#F0orL")
-                .withUnmanagedDisks()
-                .withSize(VirtualMachineSizeTypes.STANDARD_A2)
-                .withOSDiskCaching(CachingTypes.READ_WRITE)
-                .withOSDiskName("javatest")
-                .withLowPriority(VirtualMachineEvictionPolicyTypes.DEALLOCATE)
-                .withMaxPrice(1000.0)
-                .withLicenseType("Windows_Server")
-                .create();
+        computeManager
+            .virtualMachines()
+            .define(VMNAME)
+            .withRegion(REGION)
+            .withNewResourceGroup(RG_NAME)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_DATACENTER)
+            .withAdminUsername("Foo12")
+            .withAdminPassword("abc!@#F0orL")
+            .withUnmanagedDisks()
+            .withSize(VirtualMachineSizeTypes.STANDARD_A2)
+            .withOSDiskCaching(CachingTypes.READ_WRITE)
+            .withOSDiskName("javatest")
+            .withLowPriority(VirtualMachineEvictionPolicyTypes.DEALLOCATE)
+            .withMaxPrice(1000.0)
+            .withLicenseType("Windows_Server")
+            .create();
 
         VirtualMachine foundVM = null;
         PagedIterable<VirtualMachine> vms = computeManager.virtualMachines().listByResourceGroup(RG_NAME);
@@ -203,42 +214,34 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
         // change max price
         try {
-            foundVM.update()
-                    .withMaxPrice(1500.0)
-                    .apply();
+            foundVM.update().withMaxPrice(1500.0).apply();
             // not run to assert
             Assertions.assertEquals((Double) 1500.0, foundVM.billingProfile().maxPrice());
             Assertions.fail();
-        } catch (CloudException e) {} // cannot change max price when vm is running
+        } catch (CloudException e) {
+        } // cannot change max price when vm is running
 
         foundVM.deallocate();
-        foundVM.update()
-                .withMaxPrice(2000.0)
-                .apply();
+        foundVM.update().withMaxPrice(2000.0).apply();
         foundVM.start();
 
         Assertions.assertEquals((Double) 2000.0, foundVM.billingProfile().maxPrice());
 
         // change priority types
-        foundVM = foundVM.update()
-                .withPriority(VirtualMachinePriorityTypes.SPOT)
-                .apply();
+        foundVM = foundVM.update().withPriority(VirtualMachinePriorityTypes.SPOT).apply();
 
         Assertions.assertEquals(VirtualMachinePriorityTypes.SPOT, foundVM.priority());
 
-        foundVM = foundVM.update()
-                .withPriority(VirtualMachinePriorityTypes.LOW)
-                .apply();
+        foundVM = foundVM.update().withPriority(VirtualMachinePriorityTypes.LOW).apply();
 
         Assertions.assertEquals(VirtualMachinePriorityTypes.LOW, foundVM.priority());
         try {
-            foundVM.update()
-                    .withPriority(VirtualMachinePriorityTypes.REGULAR)
-                    .apply();
+            foundVM.update().withPriority(VirtualMachinePriorityTypes.REGULAR).apply();
             // not run to assert
             Assertions.assertEquals(VirtualMachinePriorityTypes.REGULAR, foundVM.priority());
             Assertions.fail();
-        } catch (CloudException e) {} // cannot change priority from low to regular
+        } catch (CloudException e) {
+        } // cannot change priority from low to regular
 
         // Delete VM
         computeManager.virtualMachines().deleteById(foundVM.id());
@@ -246,7 +249,9 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
     @Test
     public void cannotUpdateProximityPlacementGroupForVirtualMachine() throws Exception {
-        AvailabilitySet setCreated = computeManager.availabilitySets()
+        AvailabilitySet setCreated =
+            computeManager
+                .availabilitySets()
                 .define(AVAILABILITYSETNAME)
                 .withRegion(REGIONPROXPLACEMENTGROUP)
                 .withNewResourceGroup(RG_NAME)
@@ -258,11 +263,14 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertEquals(PROXGROUPTYPE, setCreated.proximityPlacementGroup().proximityPlacementGroupType());
         Assertions.assertNotNull(setCreated.proximityPlacementGroup().availabilitySetIds());
         Assertions.assertFalse(setCreated.proximityPlacementGroup().availabilitySetIds().isEmpty());
-        Assertions.assertTrue(setCreated.id().equalsIgnoreCase(setCreated.proximityPlacementGroup().availabilitySetIds().get(0)));
+        Assertions
+            .assertTrue(
+                setCreated.id().equalsIgnoreCase(setCreated.proximityPlacementGroup().availabilitySetIds().get(0)));
         Assertions.assertEquals(setCreated.regionName(), setCreated.proximityPlacementGroup().location());
 
-
-        AvailabilitySet setCreated2 = computeManager.availabilitySets()
+        AvailabilitySet setCreated2 =
+            computeManager
+                .availabilitySets()
                 .define(AVAILABILITYSETNAME2)
                 .withRegion(REGIONPROXPLACEMENTGROUP2)
                 .withNewResourceGroup(RG_NAME2)
@@ -274,27 +282,30 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertEquals(PROXGROUPTYPE, setCreated2.proximityPlacementGroup().proximityPlacementGroupType());
         Assertions.assertNotNull(setCreated2.proximityPlacementGroup().availabilitySetIds());
         Assertions.assertFalse(setCreated2.proximityPlacementGroup().availabilitySetIds().isEmpty());
-        Assertions.assertTrue(setCreated2.id().equalsIgnoreCase(setCreated2.proximityPlacementGroup().availabilitySetIds().get(0)));
+        Assertions
+            .assertTrue(
+                setCreated2.id().equalsIgnoreCase(setCreated2.proximityPlacementGroup().availabilitySetIds().get(0)));
         Assertions.assertEquals(setCreated2.regionName(), setCreated2.proximityPlacementGroup().location());
 
         // Create
-        computeManager.virtualMachines()
-                .define(VMNAME)
-                .withRegion(REGIONPROXPLACEMENTGROUP)
-                .withExistingResourceGroup(RG_NAME)
-                .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIPAddressDynamic()
-                .withoutPrimaryPublicIPAddress()
-                .withProximityPlacementGroup(setCreated.proximityPlacementGroup().id())
-                .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_DATACENTER)
-                .withAdminUsername("Foo12")
-                .withAdminPassword("abc!@#F0orL")
-                .withUnmanagedDisks()
-                .withSize(VirtualMachineSizeTypes.STANDARD_DS3_V2)
-                .withOSDiskCaching(CachingTypes.READ_WRITE)
-                .withOSDiskName("javatest")
-                .withLicenseType("Windows_Server")
-                .create();
+        computeManager
+            .virtualMachines()
+            .define(VMNAME)
+            .withRegion(REGIONPROXPLACEMENTGROUP)
+            .withExistingResourceGroup(RG_NAME)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withProximityPlacementGroup(setCreated.proximityPlacementGroup().id())
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_DATACENTER)
+            .withAdminUsername("Foo12")
+            .withAdminPassword("abc!@#F0orL")
+            .withUnmanagedDisks()
+            .withSize(VirtualMachineSizeTypes.STANDARD_DS3_V2)
+            .withOSDiskCaching(CachingTypes.READ_WRITE)
+            .withOSDiskName("javatest")
+            .withLicenseType("Windows_Server")
+            .create();
 
         VirtualMachine foundVM = null;
         PagedIterable<VirtualMachine> vms = computeManager.virtualMachines().listByResourceGroup(RG_NAME);
@@ -323,18 +334,26 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertEquals(PROXGROUPTYPE, foundVM.proximityPlacementGroup().proximityPlacementGroupType());
         Assertions.assertNotNull(foundVM.proximityPlacementGroup().availabilitySetIds());
         Assertions.assertFalse(foundVM.proximityPlacementGroup().availabilitySetIds().isEmpty());
-        Assertions.assertTrue(setCreated.id().equalsIgnoreCase(foundVM.proximityPlacementGroup().availabilitySetIds().get(0)));
+        Assertions
+            .assertTrue(
+                setCreated.id().equalsIgnoreCase(foundVM.proximityPlacementGroup().availabilitySetIds().get(0)));
         Assertions.assertNotNull(foundVM.proximityPlacementGroup().virtualMachineIds());
         Assertions.assertFalse(foundVM.proximityPlacementGroup().virtualMachineIds().isEmpty());
-        Assertions.assertTrue(foundVM.id().equalsIgnoreCase(setCreated.proximityPlacementGroup().virtualMachineIds().get(0)));
+        Assertions
+            .assertTrue(foundVM.id().equalsIgnoreCase(setCreated.proximityPlacementGroup().virtualMachineIds().get(0)));
 
         try {
-            //Update Vm to remove it from proximity placement group
-            VirtualMachine updatedVm = foundVM.update()
-                    .withProximityPlacementGroup(setCreated2.proximityPlacementGroup().id())
-                    .apply();
+            // Update Vm to remove it from proximity placement group
+            VirtualMachine updatedVm =
+                foundVM.update().withProximityPlacementGroup(setCreated2.proximityPlacementGroup().id()).apply();
         } catch (CloudException clEx) {
-            Assertions.assertTrue(clEx.getMessage().contains("Updating proximity placement group of VM javavm is not allowed while the VM is running. Please stop/deallocate the VM and retry the operation."));
+            Assertions
+                .assertTrue(
+                    clEx
+                        .getMessage()
+                        .contains(
+                            "Updating proximity placement group of VM javavm is not allowed while the VM is running."
+                                + " Please stop/deallocate the VM and retry the operation."));
         }
 
         // Delete VM
@@ -344,7 +363,9 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
     @Test
     public void canCreateVirtualMachinesAndAvailabilitySetInSameProximityPlacementGroup() throws Exception {
-        AvailabilitySet setCreated = computeManager.availabilitySets()
+        AvailabilitySet setCreated =
+            computeManager
+                .availabilitySets()
                 .define(AVAILABILITYSETNAME)
                 .withRegion(REGIONPROXPLACEMENTGROUP)
                 .withNewResourceGroup(RG_NAME)
@@ -356,27 +377,30 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertEquals(PROXGROUPTYPE, setCreated.proximityPlacementGroup().proximityPlacementGroupType());
         Assertions.assertNotNull(setCreated.proximityPlacementGroup().availabilitySetIds());
         Assertions.assertFalse(setCreated.proximityPlacementGroup().availabilitySetIds().isEmpty());
-        Assertions.assertTrue(setCreated.id().equalsIgnoreCase(setCreated.proximityPlacementGroup().availabilitySetIds().get(0)));
+        Assertions
+            .assertTrue(
+                setCreated.id().equalsIgnoreCase(setCreated.proximityPlacementGroup().availabilitySetIds().get(0)));
         Assertions.assertEquals(setCreated.regionName(), setCreated.proximityPlacementGroup().location());
 
         // Create
-        computeManager.virtualMachines()
-                .define(VMNAME)
-                .withRegion(REGIONPROXPLACEMENTGROUP)
-                .withExistingResourceGroup(RG_NAME)
-                .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIPAddressDynamic()
-                .withoutPrimaryPublicIPAddress()
-                .withProximityPlacementGroup(setCreated.proximityPlacementGroup().id())
-                .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_DATACENTER)
-                .withAdminUsername("Foo12")
-                .withAdminPassword("abc!@#F0orL")
-                .withUnmanagedDisks()
-                .withSize(VirtualMachineSizeTypes.STANDARD_DS3_V2)
-                .withOSDiskCaching(CachingTypes.READ_WRITE)
-                .withOSDiskName("javatest")
-                .withLicenseType("Windows_Server")
-                .create();
+        computeManager
+            .virtualMachines()
+            .define(VMNAME)
+            .withRegion(REGIONPROXPLACEMENTGROUP)
+            .withExistingResourceGroup(RG_NAME)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withProximityPlacementGroup(setCreated.proximityPlacementGroup().id())
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_DATACENTER)
+            .withAdminUsername("Foo12")
+            .withAdminPassword("abc!@#F0orL")
+            .withUnmanagedDisks()
+            .withSize(VirtualMachineSizeTypes.STANDARD_DS3_V2)
+            .withOSDiskCaching(CachingTypes.READ_WRITE)
+            .withOSDiskName("javatest")
+            .withLicenseType("Windows_Server")
+            .create();
 
         VirtualMachine foundVM = null;
         PagedIterable<VirtualMachine> vms = computeManager.virtualMachines().listByResourceGroup(RG_NAME);
@@ -405,24 +429,27 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertEquals(PROXGROUPTYPE, foundVM.proximityPlacementGroup().proximityPlacementGroupType());
         Assertions.assertNotNull(foundVM.proximityPlacementGroup().availabilitySetIds());
         Assertions.assertFalse(foundVM.proximityPlacementGroup().availabilitySetIds().isEmpty());
-        Assertions.assertTrue(setCreated.id().equalsIgnoreCase(foundVM.proximityPlacementGroup().availabilitySetIds().get(0)));
+        Assertions
+            .assertTrue(
+                setCreated.id().equalsIgnoreCase(foundVM.proximityPlacementGroup().availabilitySetIds().get(0)));
         Assertions.assertNotNull(foundVM.proximityPlacementGroup().virtualMachineIds());
         Assertions.assertFalse(foundVM.proximityPlacementGroup().virtualMachineIds().isEmpty());
-        Assertions.assertTrue(foundVM.id().equalsIgnoreCase(setCreated.proximityPlacementGroup().virtualMachineIds().get(0)));
+        Assertions
+            .assertTrue(foundVM.id().equalsIgnoreCase(setCreated.proximityPlacementGroup().virtualMachineIds().get(0)));
 
-        //Update Vm to remove it from proximity placement group
-        VirtualMachine updatedVm = foundVM.update()
-                .withoutProximityPlacementGroup()
-                .apply();
+        // Update Vm to remove it from proximity placement group
+        VirtualMachine updatedVm = foundVM.update().withoutProximityPlacementGroup().apply();
 
         Assertions.assertNotNull(updatedVm.proximityPlacementGroup());
         Assertions.assertEquals(PROXGROUPTYPE, updatedVm.proximityPlacementGroup().proximityPlacementGroupType());
         Assertions.assertNotNull(updatedVm.proximityPlacementGroup().availabilitySetIds());
         Assertions.assertFalse(updatedVm.proximityPlacementGroup().availabilitySetIds().isEmpty());
-        Assertions.assertTrue(setCreated.id().equalsIgnoreCase(updatedVm.proximityPlacementGroup().availabilitySetIds().get(0)));
+        Assertions
+            .assertTrue(
+                setCreated.id().equalsIgnoreCase(updatedVm.proximityPlacementGroup().availabilitySetIds().get(0)));
 
-        //TODO: this does not work... can not remove cvm from the placement group
-        //Assertions.assertNull(foundVM.proximityPlacementGroup().virtualMachineIds());
+        // TODO: this does not work... can not remove cvm from the placement group
+        // Assertions.assertNull(foundVM.proximityPlacementGroup().virtualMachineIds());
 
         // Delete VM
         computeManager.virtualMachines().deleteById(foundVM.id());
@@ -436,16 +463,14 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         String networkNamePrefix = generateRandomResourceName("vnet-", 15);
         int count = 5;
 
-        CreatablesInfo creatablesInfo = prepareCreatableVirtualMachines(REGION,
-                vmNamePrefix,
-                networkNamePrefix,
-                publicIpNamePrefix,
-                count);
+        CreatablesInfo creatablesInfo =
+            prepareCreatableVirtualMachines(REGION, vmNamePrefix, networkNamePrefix, publicIpNamePrefix, count);
         List<Creatable<VirtualMachine>> virtualMachineCreatables = creatablesInfo.virtualMachineCreatables;
         List<String> networkCreatableKeys = creatablesInfo.networkCreatableKeys;
         List<String> publicIpCreatableKeys = creatablesInfo.publicIpCreatableKeys;
 
-        CreatedResources<VirtualMachine> createdVirtualMachines = computeManager.virtualMachines().create(virtualMachineCreatables);
+        CreatedResources<VirtualMachine> createdVirtualMachines =
+            computeManager.virtualMachines().create(virtualMachineCreatables);
         Assertions.assertTrue(createdVirtualMachines.size() == count);
 
         Set<String> virtualMachineNames = new HashSet<>();
@@ -472,7 +497,8 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             publicIPAddressNames.add(String.format("%s-%d", publicIpNamePrefix, i));
         }
         for (String publicIpCreatableKey : publicIpCreatableKeys) {
-            PublicIPAddress createdPublicIPAddress = (PublicIPAddress) createdVirtualMachines.createdRelatedResource(publicIpCreatableKey);
+            PublicIPAddress createdPublicIPAddress =
+                (PublicIPAddress) createdVirtualMachines.createdRelatedResource(publicIpCreatableKey);
             Assertions.assertNotNull(createdPublicIPAddress);
             Assertions.assertTrue(publicIPAddressNames.contains(createdPublicIPAddress.name()));
         }
@@ -500,15 +526,15 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             publicIPAddressNames.add(String.format("%s-%d", publicIpNamePrefix, i));
         }
 
-        final CreatablesInfo creatablesInfo = prepareCreatableVirtualMachines(REGION,
-                vmNamePrefix,
-                networkNamePrefix,
-                publicIpNamePrefix,
-                count);
+        final CreatablesInfo creatablesInfo =
+            prepareCreatableVirtualMachines(REGION, vmNamePrefix, networkNamePrefix, publicIpNamePrefix, count);
         final AtomicInteger resourceCount = new AtomicInteger(0);
         List<Creatable<VirtualMachine>> virtualMachineCreatables = creatablesInfo.virtualMachineCreatables;
-        computeManager.virtualMachines().createAsync(virtualMachineCreatables)
-                .map(createdResource -> {
+        computeManager
+            .virtualMachines()
+            .createAsync(virtualMachineCreatables)
+            .map(
+                createdResource -> {
                     if (createdResource instanceof Resource) {
                         Resource resource = (Resource) createdResource;
                         System.out.println("Created: " + resource.id());
@@ -529,7 +555,8 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                     resourceCount.incrementAndGet();
                     return createdResource;
                 })
-                .collectList().block();
+            .collectList()
+            .block();
         // 1 resource group, 1 storage, 5 network, 5 publicIp, 5 nic, 5 virtual machines
         // Additional one for CreatableUpdatableResourceRoot.
         // TODO - ans - We should not emit CreatableUpdatableResourceRoot.
@@ -541,7 +568,10 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         final String storageName = sdkContext.randomResourceName("st", 14);
         // Create a premium storage account for virtual machine data disk
         //
-        StorageAccount storageAccount = storageManager.storageAccounts().define(storageName)
+        StorageAccount storageAccount =
+            storageManager
+                .storageAccounts()
+                .define(storageName)
                 .withRegion(REGION)
                 .withNewResourceGroup(RG_NAME)
                 .withSku(SkuName.PREMIUM_LRS)
@@ -550,7 +580,9 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         // Creates a virtual machine with an unmanaged data disk that gets stored in the above
         // premium storage account
         //
-        VirtualMachine virtualMachine = computeManager.virtualMachines()
+        VirtualMachine virtualMachine =
+            computeManager
+                .virtualMachines()
                 .define(VMNAME)
                 .withRegion(REGION)
                 .withExistingResourceGroup(RG_NAME)
@@ -562,15 +594,15 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withRootPassword("abc!@#F0orL")
                 .withUnmanagedDisks()
                 .defineUnmanagedDataDisk("disk1")
-                    .withNewVhd(100)
-                    .withLun(2)
-                    .storeAt(storageAccount.name(), "diskvhds", "datadisk1vhd.vhd")
-                    .attach()
+                .withNewVhd(100)
+                .withLun(2)
+                .storeAt(storageAccount.name(), "diskvhds", "datadisk1vhd.vhd")
+                .attach()
                 .defineUnmanagedDataDisk("disk2")
-                    .withNewVhd(100)
-                    .withLun(3)
-                    .storeAt(storageAccount.name(), "diskvhds", "datadisk2vhd.vhd")
-                    .attach()
+                .withNewVhd(100)
+                .withLun(3)
+                .storeAt(storageAccount.name(), "diskvhds", "datadisk2vhd.vhd")
+                .attach()
                 .withSize(VirtualMachineSizeTypes.STANDARD_DS2_V2)
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();
@@ -594,7 +626,9 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         // Creates another virtual machine by attaching existing unmanaged data disk detached from the
         // above virtual machine.
         //
-        virtualMachine = computeManager.virtualMachines()
+        virtualMachine =
+            computeManager
+                .virtualMachines()
                 .define(VMNAME)
                 .withRegion(REGION)
                 .withExistingResourceGroup(RG_NAME)
@@ -617,7 +651,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertNotNull(unmanagedDataDisks);
         Assertions.assertEquals(1, unmanagedDataDisks.size());
         firstUnmanagedDataDisk = null;
-        for(VirtualMachineUnmanagedDataDisk unmanagedDisk : unmanagedDataDisks.values()) {
+        for (VirtualMachineUnmanagedDataDisk unmanagedDisk : unmanagedDataDisks.values()) {
             firstUnmanagedDataDisk = unmanagedDisk;
             break;
         }
@@ -625,9 +659,10 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertTrue(firstUnmanagedDataDisk.vhdUri().equalsIgnoreCase(createdVhdUri1));
         // Update the VM by attaching another existing data disk
         //
-        virtualMachine.update()
-                .withExistingUnmanagedDataDisk(storageAccount.name(), "diskvhds", "datadisk2vhd.vhd")
-                .apply();
+        virtualMachine
+            .update()
+            .withExistingUnmanagedDataDisk(storageAccount.name(), "diskvhds", "datadisk2vhd.vhd")
+            .apply();
         // Gets the vm
         //
         virtualMachine = computeManager.virtualMachines().getById(virtualMachine.id());
@@ -638,11 +673,12 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertEquals(2, unmanagedDataDisks.size());
     }
 
-
     @Test
     public void canUpdateTagsOnVM() {
-        //Create
-        VirtualMachine virtualMachine = computeManager.virtualMachines()
+        // Create
+        VirtualMachine virtualMachine =
+            computeManager
+                .virtualMachines()
                 .define(VMNAME)
                 .withRegion(REGION)
                 .withNewResourceGroup(RG_NAME)
@@ -655,24 +691,23 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                 .create();
 
-        //checking to see if withTag correctly update
+        // checking to see if withTag correctly update
         virtualMachine.update().withTag("test", "testValue").apply();
         Assertions.assertEquals("testValue", virtualMachine.inner().getTags().get("test"));
 
-        //checking to see if withTags correctly updates
+        // checking to see if withTags correctly updates
         Map<String, String> testTags = new HashMap<String, String>();
         testTags.put("testTag", "testValue");
         virtualMachine.update().withTags(testTags).apply();
         Assertions.assertEquals(testTags, virtualMachine.inner().getTags());
-
     }
-
-
 
     @Test
     public void canRunScriptOnVM() {
         // Create
-        VirtualMachine virtualMachine = computeManager.virtualMachines()
+        VirtualMachine virtualMachine =
+            computeManager
+                .virtualMachines()
                 .define(VMNAME)
                 .withRegion(REGION)
                 .withNewResourceGroup(RG_NAME)
@@ -688,23 +723,22 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         installGit.add("sudo apt-get update");
         installGit.add("sudo apt-get install -y git");
 
-        RunCommandResult runResult = virtualMachine.runShellScript(installGit, new ArrayList<RunCommandInputParameter>());
+        RunCommandResult runResult =
+            virtualMachine.runShellScript(installGit, new ArrayList<RunCommandInputParameter>());
         Assertions.assertNotNull(runResult);
         Assertions.assertNotNull(runResult.value());
         Assertions.assertTrue(runResult.value().size() > 0);
     }
 
-    private CreatablesInfo prepareCreatableVirtualMachines(Region region,
-                                                           String vmNamePrefix,
-                                                           String networkNamePrefix,
-                                                           String publicIpNamePrefix,
-                                                           int vmCount) {
+    private CreatablesInfo prepareCreatableVirtualMachines(
+        Region region, String vmNamePrefix, String networkNamePrefix, String publicIpNamePrefix, int vmCount) {
 
-        Creatable<ResourceGroup> resourceGroupCreatable = resourceManager.resourceGroups()
-                .define(RG_NAME)
-                .withRegion(region);
+        Creatable<ResourceGroup> resourceGroupCreatable =
+            resourceManager.resourceGroups().define(RG_NAME).withRegion(region);
 
-        Creatable<StorageAccount> storageAccountCreatable = storageManager.storageAccounts()
+        Creatable<StorageAccount> storageAccountCreatable =
+            storageManager
+                .storageAccounts()
                 .define(generateRandomResourceName("stg", 20))
                 .withRegion(region)
                 .withNewResourceGroup(resourceGroupCreatable);
@@ -713,21 +747,26 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         List<String> publicIpCreatableKeys = new ArrayList<>();
         List<Creatable<VirtualMachine>> virtualMachineCreatables = new ArrayList<>();
         for (int i = 0; i < vmCount; i++) {
-            Creatable<Network> networkCreatable = networkManager.networks()
+            Creatable<Network> networkCreatable =
+                networkManager
+                    .networks()
                     .define(String.format("%s-%d", networkNamePrefix, i))
                     .withRegion(region)
                     .withNewResourceGroup(resourceGroupCreatable)
                     .withAddressSpace("10.0.0.0/28");
             networkCreatableKeys.add(networkCreatable.key());
 
-            Creatable<PublicIPAddress> publicIPAddressCreatable = networkManager.publicIPAddresses()
+            Creatable<PublicIPAddress> publicIPAddressCreatable =
+                networkManager
+                    .publicIPAddresses()
                     .define(String.format("%s-%d", publicIpNamePrefix, i))
                     .withRegion(region)
                     .withNewResourceGroup(resourceGroupCreatable);
             publicIpCreatableKeys.add(publicIPAddressCreatable.key());
 
-
-            Creatable<VirtualMachine> virtualMachineCreatable = computeManager.virtualMachines()
+            Creatable<VirtualMachine> virtualMachineCreatable =
+                computeManager
+                    .virtualMachines()
                     .define(String.format("%s-%d", vmNamePrefix, i))
                     .withRegion(region)
                     .withNewResourceGroup(resourceGroupCreatable)
@@ -754,4 +793,4 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         List<String> networkCreatableKeys;
         List<String> publicIpCreatableKeys;
     }
- }
+}

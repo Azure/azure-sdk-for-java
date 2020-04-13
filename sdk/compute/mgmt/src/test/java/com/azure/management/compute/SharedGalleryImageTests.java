@@ -25,14 +25,18 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
 
     @Override
     protected void cleanUpResources() {
-       resourceManager.resourceGroups().deleteByName(RG_NAME);
+        resourceManager.resourceGroups().deleteByName(RG_NAME);
     }
 
     @Test
     public void canCreateUpdateListGetDeleteGallery() {
         // Create a gallery
         //
-        Gallery javaGallery = this.computeManager.galleries().define("JavaImageGallery")
+        Gallery javaGallery =
+            this
+                .computeManager
+                .galleries()
+                .define("JavaImageGallery")
                 .withRegion(REGION)
                 .withNewResourceGroup(RG_NAME)
                 // Optionals - Start
@@ -47,10 +51,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
         //
         // Update the gallery
         //
-        javaGallery.update()
-                .withDescription("updated java's image gallery")
-                .withTag("jdk", "openjdk")
-                .apply();
+        javaGallery.update().withDescription("updated java's image gallery").withTag("jdk", "openjdk").apply();
 
         Assertions.assertEquals("updated java's image gallery", javaGallery.description());
         Assertions.assertNotNull(javaGallery.tags());
@@ -73,7 +74,11 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
 
         // Create a gallery
         //
-        Gallery javaGallery = this.computeManager.galleries().define(galleryName)
+        Gallery javaGallery =
+            this
+                .computeManager
+                .galleries()
+                .define(galleryName)
                 .withRegion(Region.US_WEST_CENTRAL)
                 .withNewResourceGroup(RG_NAME)
                 .withDescription("java's image gallery")
@@ -81,7 +86,11 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
         //
         // Create an image in the gallery
         //
-        GalleryImage galleryImage = this.computeManager.galleryImages().define(galleryImageName)
+        GalleryImage galleryImage =
+            this
+                .computeManager
+                .galleryImages()
+                .define(galleryImageName)
                 .withExistingGallery(javaGallery)
                 .withLocation(REGION)
                 .withIdentifier("JavaSDKTeam", "JDK", "Jdk-9")
@@ -114,11 +123,12 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
         //
         // Update an image in the gallery
         //
-        galleryImage.update()
-                .withoutUnsupportedDiskType(DiskSkuTypes.PREMIUM_LRS)
-                .withRecommendedMinimumCPUsCountForVirtualMachine(15)
-                .withRecommendedMemoryForVirtualMachine(2200, 3200)
-                .apply();
+        galleryImage
+            .update()
+            .withoutUnsupportedDiskType(DiskSkuTypes.PREMIUM_LRS)
+            .withRecommendedMinimumCPUsCountForVirtualMachine(15)
+            .withRecommendedMemoryForVirtualMachine(2200, 3200)
+            .apply();
 
         Assertions.assertEquals(1, galleryImage.unsupportedDiskTypes().size());
         Assertions.assertNotNull(galleryImage.recommendedVirtualMachineConfiguration());
@@ -152,7 +162,9 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
     }
 
     @Test
-    @Disabled("Service consistently fail with error 'Replication job not completed at region:XXXXX', reported to service team, ")
+    @Disabled(
+        "Service consistently fail with error 'Replication job not completed at region:XXXXX', reported to service"
+            + " team, ")
     public void canCreateUpdateGetDeleteGalleryImageVersion() {
         //
         // Create {
@@ -164,11 +176,15 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
         //    "message": "Replication job not completed at region: westcentralus"
         //  },
         //  "name": "971500cb-f79e-4303-9f6a-df90010a7cc1"
-        //}a gallery
+        // }a gallery
         //
         final String galleryName = generateRandomResourceName("jsim", 15); // "jsim94f154754";
 
-        Gallery gallery = this.computeManager.galleries().define(galleryName)
+        Gallery gallery =
+            this
+                .computeManager
+                .galleries()
+                .define(galleryName)
                 .withRegion(Region.US_WEST_CENTRAL)
                 .withNewResourceGroup(RG_NAME)
                 .withDescription("java's image gallery")
@@ -178,7 +194,11 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
         //
         final String galleryImageName = "SampleImages";
 
-        GalleryImage galleryImage = this.computeManager.galleryImages().define(galleryImageName)
+        GalleryImage galleryImage =
+            this
+                .computeManager
+                .galleryImages()
+                .define(galleryImageName)
                 .withExistingGallery(gallery)
                 .withLocation(REGION)
                 .withIdentifier("JavaSDKTeam", "JDK", "Jdk-9")
@@ -188,14 +208,19 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
         // Create a custom image to base the version on
         //
         VirtualMachineCustomImage customImage = prepareCustomImage(RG_NAME, REGION, computeManager);
-        // String customImageId = "/subscriptions/0b1f6471-1bf0-4dda-aec3-cb9272f09590/resourceGroups/javacsmrg91482/providers/Microsoft.Compute/images/img96429090dee3";
+        // String customImageId =
+        // "/subscriptions/0b1f6471-1bf0-4dda-aec3-cb9272f09590/resourceGroups/javacsmrg91482/providers/Microsoft.Compute/images/img96429090dee3";
         //
         // Create a image version based on the custom image
         //
 
         final String versionName = "0.0.4";
 
-        GalleryImageVersion imageVersion = this.computeManager.galleryImageVersions().define(versionName)
+        GalleryImageVersion imageVersion =
+            this
+                .computeManager
+                .galleryImageVersions()
+                .define(versionName)
                 .withExistingImage(RG_NAME, gallery.name(), galleryImage.name())
                 .withLocation(REGION.toString())
                 .withSourceCustomImage(customImage)
@@ -210,7 +235,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
         Assertions.assertEquals(2, imageVersion.availableRegions().size());
         boolean found = false;
         String expectedRegion = "westus2";
-        for(TargetRegion targetRegion: imageVersion.availableRegions()) {
+        for (TargetRegion targetRegion : imageVersion.availableRegions()) {
             if (targetRegion.name().replaceAll("\\s", "").equalsIgnoreCase(expectedRegion)) {
                 found = true;
                 break;
@@ -222,9 +247,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
         //
         // Update image version
         //
-        imageVersion.update()
-                .withoutRegionAvailability(Region.US_WEST2)
-                .apply();
+        imageVersion.update().withoutRegionAvailability(Region.US_WEST2).apply();
 
         Assertions.assertNotNull(imageVersion.availableRegions());
         Assertions.assertEquals(1, imageVersion.availableRegions().size());
@@ -241,19 +264,21 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
         //
         // Delete the image version
         //
-        this.computeManager.galleryImageVersions().deleteByGalleryImage(RG_NAME, galleryName, galleryImageName, versionName);
+        this
+            .computeManager
+            .galleryImageVersions()
+            .deleteByGalleryImage(RG_NAME, galleryName, galleryImageName, versionName);
     }
 
     private VirtualMachineCustomImage prepareCustomImage(String rgName, Region region, ComputeManager computeManager) {
-        VirtualMachine linuxVM = prepareGeneralizedVmWith2EmptyDataDisks(rgName,
-                generateRandomResourceName("muldvm", 15),
-                region,
-                computeManager);
+        VirtualMachine linuxVM =
+            prepareGeneralizedVmWith2EmptyDataDisks(
+                rgName, generateRandomResourceName("muldvm", 15), region, computeManager);
 
         final String vhdBasedImageName = generateRandomResourceName("img", 20);
         //
-        VirtualMachineCustomImage.DefinitionStages.WithCreateAndDataDiskImageOSDiskSettings
-                creatableDisk = computeManager
+        VirtualMachineCustomImage.DefinitionStages.WithCreateAndDataDiskImageOSDiskSettings creatableDisk =
+            computeManager
                 .virtualMachineCustomImages()
                 .define(vhdBasedImageName)
                 .withRegion(region)
@@ -261,28 +286,29 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .withLinuxFromVhd(linuxVM.osUnmanagedDiskVhdUri(), OperatingSystemStateTypes.GENERALIZED)
                 .withOSDiskCaching(linuxVM.osDiskCachingType());
         for (VirtualMachineUnmanagedDataDisk disk : linuxVM.unmanagedDataDisks().values()) {
-            creatableDisk.defineDataDiskImage()
-                    .withLun(disk.lun())
-                    .fromVhd(disk.vhdUri())
-                    .withDiskCaching(disk.cachingType())
-                    .withDiskSizeInGB(disk.size() + 10) // Resize each data disk image by +10GB
-                    .attach();
+            creatableDisk
+                .defineDataDiskImage()
+                .withLun(disk.lun())
+                .fromVhd(disk.vhdUri())
+                .withDiskCaching(disk.cachingType())
+                .withDiskSizeInGB(disk.size() + 10) // Resize each data disk image by +10GB
+                .attach();
         }
         //
         VirtualMachineCustomImage customImage = creatableDisk.create();
         return customImage;
     }
 
-    private VirtualMachine prepareGeneralizedVmWith2EmptyDataDisks(String rgName,
-                                                                   String vmName,
-                                                                   Region region,
-                                                                   ComputeManager computeManager) {
+    private VirtualMachine prepareGeneralizedVmWith2EmptyDataDisks(
+        String rgName, String vmName, Region region, ComputeManager computeManager) {
         final String uname = "javauser";
         final String password = "12NewPA$$w0rd!";
         final KnownLinuxVirtualMachineImage linuxImage = KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS;
         final String publicIpDnsLabel = generateRandomResourceName("pip", 20);
 
-        VirtualMachine virtualMachine = computeManager.virtualMachines()
+        VirtualMachine virtualMachine =
+            computeManager
+                .virtualMachines()
                 .define(vmName)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
@@ -294,13 +320,13 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .withRootPassword(password)
                 .withUnmanagedDisks()
                 .defineUnmanagedDataDisk("disk-1")
-                    .withNewVhd(30)
-                    .withCaching(CachingTypes.READ_WRITE)
-                    .attach()
+                .withNewVhd(30)
+                .withCaching(CachingTypes.READ_WRITE)
+                .attach()
                 .defineUnmanagedDataDisk("disk-2")
-                    .withNewVhd(60)
-                    .withCaching(CachingTypes.READ_ONLY)
-                    .attach()
+                .withNewVhd(60)
+                .withCaching(CachingTypes.READ_ONLY)
+                .attach()
                 .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
                 .withNewStorageAccount(generateRandomResourceName("stg", 17))
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
@@ -311,5 +337,4 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
         virtualMachine.generalize();
         return virtualMachine;
     }
-
 }
