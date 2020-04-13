@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ServerVersionCapability model.
- */
+/** The ServerVersionCapability model. */
 @Fluent
 public final class ServerVersionCapability {
     /*
@@ -45,7 +43,7 @@ public final class ServerVersionCapability {
 
     /**
      * Get the name property: The server version name.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -53,9 +51,8 @@ public final class ServerVersionCapability {
     }
 
     /**
-     * Get the supportedEditions property: The list of supported database
-     * editions.
-     * 
+     * Get the supportedEditions property: The list of supported database editions.
+     *
      * @return the supportedEditions value.
      */
     public List<EditionCapability> supportedEditions() {
@@ -63,9 +60,8 @@ public final class ServerVersionCapability {
     }
 
     /**
-     * Get the supportedElasticPoolEditions property: The list of supported
-     * elastic pool editions.
-     * 
+     * Get the supportedElasticPoolEditions property: The list of supported elastic pool editions.
+     *
      * @return the supportedElasticPoolEditions value.
      */
     public List<ElasticPoolEditionCapability> supportedElasticPoolEditions() {
@@ -74,7 +70,7 @@ public final class ServerVersionCapability {
 
     /**
      * Get the status property: The status of the capability.
-     * 
+     *
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -82,9 +78,8 @@ public final class ServerVersionCapability {
     }
 
     /**
-     * Get the reason property: The reason for the capability not being
-     * available.
-     * 
+     * Get the reason property: The reason for the capability not being available.
+     *
      * @return the reason value.
      */
     public String reason() {
@@ -92,9 +87,8 @@ public final class ServerVersionCapability {
     }
 
     /**
-     * Set the reason property: The reason for the capability not being
-     * available.
-     * 
+     * Set the reason property: The reason for the capability not being available.
+     *
      * @param reason the reason value to set.
      * @return the ServerVersionCapability object itself.
      */

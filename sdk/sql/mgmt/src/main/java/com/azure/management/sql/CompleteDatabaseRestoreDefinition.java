@@ -7,9 +7,7 @@ package com.azure.management.sql;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The CompleteDatabaseRestoreDefinition model.
- */
+/** The CompleteDatabaseRestoreDefinition model. */
 @Fluent
 public final class CompleteDatabaseRestoreDefinition {
     /*
@@ -20,7 +18,7 @@ public final class CompleteDatabaseRestoreDefinition {
 
     /**
      * Get the lastBackupName property: The last backup name to apply.
-     * 
+     *
      * @return the lastBackupName value.
      */
     public String lastBackupName() {
@@ -29,7 +27,7 @@ public final class CompleteDatabaseRestoreDefinition {
 
     /**
      * Set the lastBackupName property: The last backup name to apply.
-     * 
+     *
      * @param lastBackupName the lastBackupName value to set.
      * @return the CompleteDatabaseRestoreDefinition object itself.
      */

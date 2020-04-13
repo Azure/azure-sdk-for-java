@@ -12,17 +12,10 @@ import com.azure.management.containerservice.OrchestratorServiceBase;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
-/**
- * The implementation for KubernetesClusterAgentPool and its create and update interfaces.
- */
+/** The implementation for KubernetesClusterAgentPool and its create and update interfaces. */
 public class KubernetesClusterAgentPoolImpl
-    extends
-        ChildResourceImpl<ManagedClusterAgentPoolProfile,
-                    KubernetesClusterImpl,
-                OrchestratorServiceBase>
-    implements
-        KubernetesClusterAgentPool,
-        KubernetesClusterAgentPool.Definition {
+    extends ChildResourceImpl<ManagedClusterAgentPoolProfile, KubernetesClusterImpl, OrchestratorServiceBase>
+    implements KubernetesClusterAgentPool, KubernetesClusterAgentPool.Definition {
 
     private String subnetName;
 

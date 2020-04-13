@@ -4,6 +4,8 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
@@ -26,6 +28,7 @@ import java.security.NoSuchAlgorithmException;
 
 class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
     private KeyPair keyPair;
+    private final ClientLogger logger = new ClientLogger(RsaKeyCryptographyClient.class);
 
     /*
      * Creates a RsaKeyCryptographyClient that uses {@code serviceClient) to service requests
@@ -132,16 +135,23 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     @Override
     Mono<SignResult> signAsync(SignatureAlgorithm algorithm, byte[] digest, Context context, JsonWebKey key) {
-
-        return serviceClient.sign(algorithm, digest, context);
+        if (serviceCryptoAvailable()) {
+            return serviceClient.sign(algorithm, digest, context);
+        } else {
+            return FluxUtil.monoError(logger, new UnsupportedOperationException("Sign operation on Local RSA key"
+                                                                    + " is not supported currently."));
+        }
     }
 
     @Override
     Mono<VerifyResult> verifyAsync(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, Context context,
                                    JsonWebKey key) {
-
-        return serviceClient.verify(algorithm, digest, signature, context);
-        // do a service call for now.
+        if (serviceCryptoAvailable()) {
+            return serviceClient.verify(algorithm, digest, signature, context);
+        } else {
+            return FluxUtil.monoError(logger, new UnsupportedOperationException("Verify operation on Local RSA key is not"
+                                                                    + " supported currently."));
+        }
     }
 
     @Override

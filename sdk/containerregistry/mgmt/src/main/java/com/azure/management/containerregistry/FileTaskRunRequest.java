@@ -10,9 +10,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/**
- * The FileTaskRunRequest model.
- */
+/** The FileTaskRunRequest model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("FileTaskRunRequest")
 @Fluent
@@ -71,9 +69,8 @@ public final class FileTaskRunRequest extends RunRequest {
     private Credentials credentials;
 
     /**
-     * Get the taskFilePath property: The template/definition file path
-     * relative to the source.
-     * 
+     * Get the taskFilePath property: The template/definition file path relative to the source.
+     *
      * @return the taskFilePath value.
      */
     public String taskFilePath() {
@@ -81,9 +78,8 @@ public final class FileTaskRunRequest extends RunRequest {
     }
 
     /**
-     * Set the taskFilePath property: The template/definition file path
-     * relative to the source.
-     * 
+     * Set the taskFilePath property: The template/definition file path relative to the source.
+     *
      * @param taskFilePath the taskFilePath value to set.
      * @return the FileTaskRunRequest object itself.
      */
@@ -93,9 +89,8 @@ public final class FileTaskRunRequest extends RunRequest {
     }
 
     /**
-     * Get the valuesFilePath property: The values/parameters file path
-     * relative to the source.
-     * 
+     * Get the valuesFilePath property: The values/parameters file path relative to the source.
+     *
      * @return the valuesFilePath value.
      */
     public String valuesFilePath() {
@@ -103,9 +98,8 @@ public final class FileTaskRunRequest extends RunRequest {
     }
 
     /**
-     * Set the valuesFilePath property: The values/parameters file path
-     * relative to the source.
-     * 
+     * Set the valuesFilePath property: The values/parameters file path relative to the source.
+     *
      * @param valuesFilePath the valuesFilePath value to set.
      * @return the FileTaskRunRequest object itself.
      */
@@ -115,9 +109,8 @@ public final class FileTaskRunRequest extends RunRequest {
     }
 
     /**
-     * Get the values property: The collection of overridable values that can
-     * be passed when running a task.
-     * 
+     * Get the values property: The collection of overridable values that can be passed when running a task.
+     *
      * @return the values value.
      */
     public List<SetValue> values() {
@@ -125,9 +118,8 @@ public final class FileTaskRunRequest extends RunRequest {
     }
 
     /**
-     * Set the values property: The collection of overridable values that can
-     * be passed when running a task.
-     * 
+     * Set the values property: The collection of overridable values that can be passed when running a task.
+     *
      * @param values the values value to set.
      * @return the FileTaskRunRequest object itself.
      */
@@ -138,7 +130,7 @@ public final class FileTaskRunRequest extends RunRequest {
 
     /**
      * Get the timeout property: Run timeout in seconds.
-     * 
+     *
      * @return the timeout value.
      */
     public Integer timeout() {
@@ -147,7 +139,7 @@ public final class FileTaskRunRequest extends RunRequest {
 
     /**
      * Set the timeout property: Run timeout in seconds.
-     * 
+     *
      * @param timeout the timeout value to set.
      * @return the FileTaskRunRequest object itself.
      */
@@ -157,9 +149,8 @@ public final class FileTaskRunRequest extends RunRequest {
     }
 
     /**
-     * Get the platform property: The platform properties against which the run
-     * has to happen.
-     * 
+     * Get the platform property: The platform properties against which the run has to happen.
+     *
      * @return the platform value.
      */
     public PlatformProperties platform() {
@@ -167,9 +158,8 @@ public final class FileTaskRunRequest extends RunRequest {
     }
 
     /**
-     * Set the platform property: The platform properties against which the run
-     * has to happen.
-     * 
+     * Set the platform property: The platform properties against which the run has to happen.
+     *
      * @param platform the platform value to set.
      * @return the FileTaskRunRequest object itself.
      */
@@ -179,9 +169,8 @@ public final class FileTaskRunRequest extends RunRequest {
     }
 
     /**
-     * Get the agentConfiguration property: The machine configuration of the
-     * run agent.
-     * 
+     * Get the agentConfiguration property: The machine configuration of the run agent.
+     *
      * @return the agentConfiguration value.
      */
     public AgentProperties agentConfiguration() {
@@ -189,9 +178,8 @@ public final class FileTaskRunRequest extends RunRequest {
     }
 
     /**
-     * Set the agentConfiguration property: The machine configuration of the
-     * run agent.
-     * 
+     * Set the agentConfiguration property: The machine configuration of the run agent.
+     *
      * @param agentConfiguration the agentConfiguration value to set.
      * @return the FileTaskRunRequest object itself.
      */
@@ -201,11 +189,10 @@ public final class FileTaskRunRequest extends RunRequest {
     }
 
     /**
-     * Get the sourceLocation property: The URL(absolute or relative) of the
-     * source context. It can be an URL to a tar or git repository.
-     * If it is relative URL, the relative path should be obtained from calling
+     * Get the sourceLocation property: The URL(absolute or relative) of the source context. It can be an URL to a tar
+     * or git repository. If it is relative URL, the relative path should be obtained from calling
      * listBuildSourceUploadUrl API.
-     * 
+     *
      * @return the sourceLocation value.
      */
     public String sourceLocation() {
@@ -213,11 +200,10 @@ public final class FileTaskRunRequest extends RunRequest {
     }
 
     /**
-     * Set the sourceLocation property: The URL(absolute or relative) of the
-     * source context. It can be an URL to a tar or git repository.
-     * If it is relative URL, the relative path should be obtained from calling
+     * Set the sourceLocation property: The URL(absolute or relative) of the source context. It can be an URL to a tar
+     * or git repository. If it is relative URL, the relative path should be obtained from calling
      * listBuildSourceUploadUrl API.
-     * 
+     *
      * @param sourceLocation the sourceLocation value to set.
      * @return the FileTaskRunRequest object itself.
      */
@@ -227,9 +213,9 @@ public final class FileTaskRunRequest extends RunRequest {
     }
 
     /**
-     * Get the credentials property: The properties that describes a set of
-     * credentials that will be used when this run is invoked.
-     * 
+     * Get the credentials property: The properties that describes a set of credentials that will be used when this run
+     * is invoked.
+     *
      * @return the credentials value.
      */
     public Credentials credentials() {
@@ -237,9 +223,9 @@ public final class FileTaskRunRequest extends RunRequest {
     }
 
     /**
-     * Set the credentials property: The properties that describes a set of
-     * credentials that will be used when this run is invoked.
-     * 
+     * Set the credentials property: The properties that describes a set of credentials that will be used when this run
+     * is invoked.
+     *
      * @param credentials the credentials value to set.
      * @return the FileTaskRunRequest object itself.
      */

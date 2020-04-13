@@ -58,7 +58,6 @@ class KuduClient {
         this.host = "https://" + host;
         RestClient client = webAppBase.manager().restClient().newBuilder()
                 .withBaseUrl(this.host)
-                .withHttpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .withPolicy(new KuduAuthenticationPolicy(webAppBase))
                 // TODO (weidxu) support timeout
 //                .withConnectionTimeout(3, TimeUnit.MINUTES)

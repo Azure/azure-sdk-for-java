@@ -477,6 +477,7 @@ public final class ServiceBusClientBuilder {
         private String queueName;
         private String subscriptionName;
         private String topicName;
+        private String sessionId;
         private ReceiveMode receiveMode = ReceiveMode.PEEK_LOCK;
 
         private ServiceBusReceiverClientBuilder() {
@@ -549,6 +550,18 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
+         * Sets the session id.
+         *
+         * @param sessionId session id.
+         *
+         * @return The modified {@link ServiceBusReceiverClientBuilder} object.
+         */
+        public ServiceBusReceiverClientBuilder sessionId(String sessionId) {
+            this.sessionId = sessionId;
+            return this;
+        }
+
+        /**
          * Creates an <b>asynchronous</b> Service Bus receiver responsible for reading {@link ServiceBusMessage
          * messages} from a specific queue or topic.
          *
@@ -590,11 +603,12 @@ public final class ServiceBusClientBuilder {
 
             final MessageLockContainer messageLockContainer = new MessageLockContainer();
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
-            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount);
+            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
+                sessionId);
 
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
-                entityType, false, receiverOptions, connectionProcessor, tracerProvider,
-                messageSerializer, messageLockContainer, ServiceBusClientBuilder.this::onClientClose);
+                entityType, receiverOptions, connectionProcessor,
+                tracerProvider, messageSerializer, messageLockContainer, ServiceBusClientBuilder.this::onClientClose);
         }
 
         /**

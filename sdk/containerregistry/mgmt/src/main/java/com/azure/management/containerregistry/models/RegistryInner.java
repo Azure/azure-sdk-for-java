@@ -15,9 +15,7 @@ import com.azure.management.containerregistry.StorageAccountProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The Registry model.
- */
+/** The Registry model. */
 @JsonFlatten
 @Fluent
 public class RegistryInner extends Resource {
@@ -74,7 +72,7 @@ public class RegistryInner extends Resource {
 
     /**
      * Get the sku property: The SKU of the container registry.
-     * 
+     *
      * @return the sku value.
      */
     public Sku sku() {
@@ -83,7 +81,7 @@ public class RegistryInner extends Resource {
 
     /**
      * Set the sku property: The SKU of the container registry.
-     * 
+     *
      * @param sku the sku value to set.
      * @return the RegistryInner object itself.
      */
@@ -93,9 +91,8 @@ public class RegistryInner extends Resource {
     }
 
     /**
-     * Get the loginServer property: The URL that can be used to log into the
-     * container registry.
-     * 
+     * Get the loginServer property: The URL that can be used to log into the container registry.
+     *
      * @return the loginServer value.
      */
     public String loginServer() {
@@ -103,9 +100,8 @@ public class RegistryInner extends Resource {
     }
 
     /**
-     * Get the creationDate property: The creation date of the container
-     * registry in ISO8601 format.
-     * 
+     * Get the creationDate property: The creation date of the container registry in ISO8601 format.
+     *
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -113,9 +109,9 @@ public class RegistryInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the
-     * container registry at the time the operation was called.
-     * 
+     * Get the provisioningState property: The provisioning state of the container registry at the time the operation
+     * was called.
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -123,9 +119,8 @@ public class RegistryInner extends Resource {
     }
 
     /**
-     * Get the status property: The status of the container registry at the
-     * time the operation was called.
-     * 
+     * Get the status property: The status of the container registry at the time the operation was called.
+     *
      * @return the status value.
      */
     public Status status() {
@@ -133,9 +128,8 @@ public class RegistryInner extends Resource {
     }
 
     /**
-     * Get the adminUserEnabled property: The value that indicates whether the
-     * admin user is enabled.
-     * 
+     * Get the adminUserEnabled property: The value that indicates whether the admin user is enabled.
+     *
      * @return the adminUserEnabled value.
      */
     public Boolean adminUserEnabled() {
@@ -143,9 +137,8 @@ public class RegistryInner extends Resource {
     }
 
     /**
-     * Set the adminUserEnabled property: The value that indicates whether the
-     * admin user is enabled.
-     * 
+     * Set the adminUserEnabled property: The value that indicates whether the admin user is enabled.
+     *
      * @param adminUserEnabled the adminUserEnabled value to set.
      * @return the RegistryInner object itself.
      */
@@ -155,9 +148,9 @@ public class RegistryInner extends Resource {
     }
 
     /**
-     * Get the storageAccount property: The properties of the storage account
-     * for the container registry. Only applicable to Classic SKU.
-     * 
+     * Get the storageAccount property: The properties of the storage account for the container registry. Only
+     * applicable to Classic SKU.
+     *
      * @return the storageAccount value.
      */
     public StorageAccountProperties storageAccount() {
@@ -165,9 +158,9 @@ public class RegistryInner extends Resource {
     }
 
     /**
-     * Set the storageAccount property: The properties of the storage account
-     * for the container registry. Only applicable to Classic SKU.
-     * 
+     * Set the storageAccount property: The properties of the storage account for the container registry. Only
+     * applicable to Classic SKU.
+     *
      * @param storageAccount the storageAccount value to set.
      * @return the RegistryInner object itself.
      */
@@ -177,9 +170,8 @@ public class RegistryInner extends Resource {
     }
 
     /**
-     * Get the networkRuleSet property: The network rule set for a container
-     * registry.
-     * 
+     * Get the networkRuleSet property: The network rule set for a container registry.
+     *
      * @return the networkRuleSet value.
      */
     public NetworkRuleSet networkRuleSet() {
@@ -187,9 +179,8 @@ public class RegistryInner extends Resource {
     }
 
     /**
-     * Set the networkRuleSet property: The network rule set for a container
-     * registry.
-     * 
+     * Set the networkRuleSet property: The network rule set for a container registry.
+     *
      * @param networkRuleSet the networkRuleSet value to set.
      * @return the RegistryInner object itself.
      */

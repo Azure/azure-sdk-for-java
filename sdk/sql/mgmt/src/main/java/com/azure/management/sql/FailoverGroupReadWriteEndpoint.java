@@ -7,9 +7,7 @@ package com.azure.management.sql;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The FailoverGroupReadWriteEndpoint model.
- */
+/** The FailoverGroupReadWriteEndpoint model. */
 @Fluent
 public final class FailoverGroupReadWriteEndpoint {
     /*
@@ -29,10 +27,9 @@ public final class FailoverGroupReadWriteEndpoint {
     private Integer failoverWithDataLossGracePeriodMinutes;
 
     /**
-     * Get the failoverPolicy property: Failover policy of the read-write
-     * endpoint for the failover group. If failoverPolicy is Automatic then
-     * failoverWithDataLossGracePeriodMinutes is required.
-     * 
+     * Get the failoverPolicy property: Failover policy of the read-write endpoint for the failover group. If
+     * failoverPolicy is Automatic then failoverWithDataLossGracePeriodMinutes is required.
+     *
      * @return the failoverPolicy value.
      */
     public ReadWriteEndpointFailoverPolicy failoverPolicy() {
@@ -40,10 +37,9 @@ public final class FailoverGroupReadWriteEndpoint {
     }
 
     /**
-     * Set the failoverPolicy property: Failover policy of the read-write
-     * endpoint for the failover group. If failoverPolicy is Automatic then
-     * failoverWithDataLossGracePeriodMinutes is required.
-     * 
+     * Set the failoverPolicy property: Failover policy of the read-write endpoint for the failover group. If
+     * failoverPolicy is Automatic then failoverWithDataLossGracePeriodMinutes is required.
+     *
      * @param failoverPolicy the failoverPolicy value to set.
      * @return the FailoverGroupReadWriteEndpoint object itself.
      */
@@ -53,11 +49,10 @@ public final class FailoverGroupReadWriteEndpoint {
     }
 
     /**
-     * Get the failoverWithDataLossGracePeriodMinutes property: Grace period
-     * before failover with data loss is attempted for the read-write endpoint.
-     * If failoverPolicy is Automatic then
-     * failoverWithDataLossGracePeriodMinutes is required.
-     * 
+     * Get the failoverWithDataLossGracePeriodMinutes property: Grace period before failover with data loss is attempted
+     * for the read-write endpoint. If failoverPolicy is Automatic then failoverWithDataLossGracePeriodMinutes is
+     * required.
+     *
      * @return the failoverWithDataLossGracePeriodMinutes value.
      */
     public Integer failoverWithDataLossGracePeriodMinutes() {
@@ -65,16 +60,15 @@ public final class FailoverGroupReadWriteEndpoint {
     }
 
     /**
-     * Set the failoverWithDataLossGracePeriodMinutes property: Grace period
-     * before failover with data loss is attempted for the read-write endpoint.
-     * If failoverPolicy is Automatic then
-     * failoverWithDataLossGracePeriodMinutes is required.
-     * 
-     * @param failoverWithDataLossGracePeriodMinutes the
-     * failoverWithDataLossGracePeriodMinutes value to set.
+     * Set the failoverWithDataLossGracePeriodMinutes property: Grace period before failover with data loss is attempted
+     * for the read-write endpoint. If failoverPolicy is Automatic then failoverWithDataLossGracePeriodMinutes is
+     * required.
+     *
+     * @param failoverWithDataLossGracePeriodMinutes the failoverWithDataLossGracePeriodMinutes value to set.
      * @return the FailoverGroupReadWriteEndpoint object itself.
      */
-    public FailoverGroupReadWriteEndpoint withFailoverWithDataLossGracePeriodMinutes(Integer failoverWithDataLossGracePeriodMinutes) {
+    public FailoverGroupReadWriteEndpoint withFailoverWithDataLossGracePeriodMinutes(
+        Integer failoverWithDataLossGracePeriodMinutes) {
         this.failoverWithDataLossGracePeriodMinutes = failoverWithDataLossGracePeriodMinutes;
         return this;
     }

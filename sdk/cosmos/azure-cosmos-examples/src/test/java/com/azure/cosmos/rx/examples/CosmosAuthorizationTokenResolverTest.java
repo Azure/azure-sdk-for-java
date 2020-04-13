@@ -15,7 +15,7 @@ import com.azure.cosmos.DocumentClientTest;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.models.Permission;
+import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.models.PermissionMode;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceResponse;

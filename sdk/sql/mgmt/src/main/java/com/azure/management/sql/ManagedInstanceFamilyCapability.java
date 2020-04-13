@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ManagedInstanceFamilyCapability model.
- */
+/** The ManagedInstanceFamilyCapability model. */
 @Fluent
 public final class ManagedInstanceFamilyCapability {
     /*
@@ -51,7 +49,7 @@ public final class ManagedInstanceFamilyCapability {
 
     /**
      * Get the name property: Family name.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -60,7 +58,7 @@ public final class ManagedInstanceFamilyCapability {
 
     /**
      * Get the sku property: SKU name.
-     * 
+     *
      * @return the sku value.
      */
     public String sku() {
@@ -69,7 +67,7 @@ public final class ManagedInstanceFamilyCapability {
 
     /**
      * Get the supportedLicenseTypes property: List of supported license types.
-     * 
+     *
      * @return the supportedLicenseTypes value.
      */
     public List<LicenseTypeCapability> supportedLicenseTypes() {
@@ -77,9 +75,8 @@ public final class ManagedInstanceFamilyCapability {
     }
 
     /**
-     * Get the supportedVcoresValues property: List of supported virtual cores
-     * values.
-     * 
+     * Get the supportedVcoresValues property: List of supported virtual cores values.
+     *
      * @return the supportedVcoresValues value.
      */
     public List<ManagedInstanceVcoresCapability> supportedVcoresValues() {
@@ -88,7 +85,7 @@ public final class ManagedInstanceFamilyCapability {
 
     /**
      * Get the status property: The status of the capability.
-     * 
+     *
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -96,9 +93,8 @@ public final class ManagedInstanceFamilyCapability {
     }
 
     /**
-     * Get the reason property: The reason for the capability not being
-     * available.
-     * 
+     * Get the reason property: The reason for the capability not being available.
+     *
      * @return the reason value.
      */
     public String reason() {
@@ -106,9 +102,8 @@ public final class ManagedInstanceFamilyCapability {
     }
 
     /**
-     * Set the reason property: The reason for the capability not being
-     * available.
-     * 
+     * Set the reason property: The reason for the capability not being available.
+     *
      * @param reason the reason value to set.
      * @return the ManagedInstanceFamilyCapability object itself.
      */

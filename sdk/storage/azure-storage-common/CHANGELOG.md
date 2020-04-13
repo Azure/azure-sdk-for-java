@@ -1,5 +1,8 @@
 # Release History
 
+## 12.7.0-beta.1 (Unreleased)
+
+
 ## 12.6.0 (2020-04-06)
 - Added a constant for the directory metadata marker. 
 - Fixed bug where x-ms headers were not being word-sorted. 

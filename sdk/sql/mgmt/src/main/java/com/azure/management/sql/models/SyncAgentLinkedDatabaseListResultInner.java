@@ -8,9 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The SyncAgentLinkedDatabaseListResult model.
- */
+/** The SyncAgentLinkedDatabaseListResult model. */
 @Immutable
 public final class SyncAgentLinkedDatabaseListResultInner {
     /*
@@ -27,7 +25,7 @@ public final class SyncAgentLinkedDatabaseListResultInner {
 
     /**
      * Get the value property: Array of results.
-     * 
+     *
      * @return the value value.
      */
     public List<SyncAgentLinkedDatabaseInner> value() {
@@ -36,7 +34,7 @@ public final class SyncAgentLinkedDatabaseListResultInner {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {

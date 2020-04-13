@@ -8,23 +8,17 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for NetworkRuleBypassOptions.
- */
+/** Defines values for NetworkRuleBypassOptions. */
 public final class NetworkRuleBypassOptions extends ExpandableStringEnum<NetworkRuleBypassOptions> {
-    /**
-     * Static value AzureServices for NetworkRuleBypassOptions.
-     */
+    /** Static value AzureServices for NetworkRuleBypassOptions. */
     public static final NetworkRuleBypassOptions AZURE_SERVICES = fromString("AzureServices");
 
-    /**
-     * Static value None for NetworkRuleBypassOptions.
-     */
+    /** Static value None for NetworkRuleBypassOptions. */
     public static final NetworkRuleBypassOptions NONE = fromString("None");
 
     /**
      * Creates or finds a NetworkRuleBypassOptions from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding NetworkRuleBypassOptions.
      */
@@ -33,9 +27,7 @@ public final class NetworkRuleBypassOptions extends ExpandableStringEnum<Network
         return fromString(name, NetworkRuleBypassOptions.class);
     }
 
-    /**
-     * @return known NetworkRuleBypassOptions values.
-     */
+    /** @return known NetworkRuleBypassOptions values. */
     public static Collection<NetworkRuleBypassOptions> values() {
         return values(NetworkRuleBypassOptions.class);
     }

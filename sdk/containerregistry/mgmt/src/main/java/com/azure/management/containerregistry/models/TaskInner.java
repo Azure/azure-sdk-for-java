@@ -17,9 +17,7 @@ import com.azure.management.containerregistry.TriggerProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The Task model.
- */
+/** The Task model. */
 @JsonFlatten
 @Fluent
 public class TaskInner extends Resource {
@@ -80,7 +78,7 @@ public class TaskInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the task.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -89,7 +87,7 @@ public class TaskInner extends Resource {
 
     /**
      * Get the creationDate property: The creation date of task.
-     * 
+     *
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -98,7 +96,7 @@ public class TaskInner extends Resource {
 
     /**
      * Get the status property: The current status of task.
-     * 
+     *
      * @return the status value.
      */
     public TaskStatus status() {
@@ -107,7 +105,7 @@ public class TaskInner extends Resource {
 
     /**
      * Set the status property: The current status of task.
-     * 
+     *
      * @param status the status value to set.
      * @return the TaskInner object itself.
      */
@@ -117,9 +115,8 @@ public class TaskInner extends Resource {
     }
 
     /**
-     * Get the platform property: The platform properties against which the run
-     * has to happen.
-     * 
+     * Get the platform property: The platform properties against which the run has to happen.
+     *
      * @return the platform value.
      */
     public PlatformProperties platform() {
@@ -127,9 +124,8 @@ public class TaskInner extends Resource {
     }
 
     /**
-     * Set the platform property: The platform properties against which the run
-     * has to happen.
-     * 
+     * Set the platform property: The platform properties against which the run has to happen.
+     *
      * @param platform the platform value to set.
      * @return the TaskInner object itself.
      */
@@ -139,9 +135,8 @@ public class TaskInner extends Resource {
     }
 
     /**
-     * Get the agentConfiguration property: The machine configuration of the
-     * run agent.
-     * 
+     * Get the agentConfiguration property: The machine configuration of the run agent.
+     *
      * @return the agentConfiguration value.
      */
     public AgentProperties agentConfiguration() {
@@ -149,9 +144,8 @@ public class TaskInner extends Resource {
     }
 
     /**
-     * Set the agentConfiguration property: The machine configuration of the
-     * run agent.
-     * 
+     * Set the agentConfiguration property: The machine configuration of the run agent.
+     *
      * @param agentConfiguration the agentConfiguration value to set.
      * @return the TaskInner object itself.
      */
@@ -162,7 +156,7 @@ public class TaskInner extends Resource {
 
     /**
      * Get the timeout property: Run timeout in seconds.
-     * 
+     *
      * @return the timeout value.
      */
     public Integer timeout() {
@@ -171,7 +165,7 @@ public class TaskInner extends Resource {
 
     /**
      * Set the timeout property: Run timeout in seconds.
-     * 
+     *
      * @param timeout the timeout value to set.
      * @return the TaskInner object itself.
      */
@@ -182,7 +176,7 @@ public class TaskInner extends Resource {
 
     /**
      * Get the step property: The properties of a task step.
-     * 
+     *
      * @return the step value.
      */
     public TaskStepProperties step() {
@@ -191,7 +185,7 @@ public class TaskInner extends Resource {
 
     /**
      * Set the step property: The properties of a task step.
-     * 
+     *
      * @param step the step value to set.
      * @return the TaskInner object itself.
      */
@@ -201,9 +195,8 @@ public class TaskInner extends Resource {
     }
 
     /**
-     * Get the trigger property: The properties that describe all triggers for
-     * the task.
-     * 
+     * Get the trigger property: The properties that describe all triggers for the task.
+     *
      * @return the trigger value.
      */
     public TriggerProperties trigger() {
@@ -211,9 +204,8 @@ public class TaskInner extends Resource {
     }
 
     /**
-     * Set the trigger property: The properties that describe all triggers for
-     * the task.
-     * 
+     * Set the trigger property: The properties that describe all triggers for the task.
+     *
      * @param trigger the trigger value to set.
      * @return the TaskInner object itself.
      */
@@ -223,9 +215,9 @@ public class TaskInner extends Resource {
     }
 
     /**
-     * Get the credentials property: The properties that describes a set of
-     * credentials that will be used when this run is invoked.
-     * 
+     * Get the credentials property: The properties that describes a set of credentials that will be used when this run
+     * is invoked.
+     *
      * @return the credentials value.
      */
     public Credentials credentials() {
@@ -233,9 +225,9 @@ public class TaskInner extends Resource {
     }
 
     /**
-     * Set the credentials property: The properties that describes a set of
-     * credentials that will be used when this run is invoked.
-     * 
+     * Set the credentials property: The properties that describes a set of credentials that will be used when this run
+     * is invoked.
+     *
      * @param credentials the credentials value to set.
      * @return the TaskInner object itself.
      */

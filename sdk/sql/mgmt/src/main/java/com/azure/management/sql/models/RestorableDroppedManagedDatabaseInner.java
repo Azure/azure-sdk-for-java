@@ -10,9 +10,7 @@ import com.azure.core.management.Resource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The RestorableDroppedManagedDatabase model.
- */
+/** The RestorableDroppedManagedDatabase model. */
 @JsonFlatten
 @Immutable
 public class RestorableDroppedManagedDatabaseInner extends Resource {
@@ -42,7 +40,7 @@ public class RestorableDroppedManagedDatabaseInner extends Resource {
 
     /**
      * Get the databaseName property: The name of the database.
-     * 
+     *
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -50,9 +48,8 @@ public class RestorableDroppedManagedDatabaseInner extends Resource {
     }
 
     /**
-     * Get the creationDate property: The creation date of the database
-     * (ISO8601 format).
-     * 
+     * Get the creationDate property: The creation date of the database (ISO8601 format).
+     *
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -60,9 +57,8 @@ public class RestorableDroppedManagedDatabaseInner extends Resource {
     }
 
     /**
-     * Get the deletionDate property: The deletion date of the database
-     * (ISO8601 format).
-     * 
+     * Get the deletionDate property: The deletion date of the database (ISO8601 format).
+     *
      * @return the deletionDate value.
      */
     public OffsetDateTime deletionDate() {
@@ -70,9 +66,8 @@ public class RestorableDroppedManagedDatabaseInner extends Resource {
     }
 
     /**
-     * Get the earliestRestoreDate property: The earliest restore date of the
-     * database (ISO8601 format).
-     * 
+     * Get the earliestRestoreDate property: The earliest restore date of the database (ISO8601 format).
+     *
      * @return the earliestRestoreDate value.
      */
     public OffsetDateTime earliestRestoreDate() {

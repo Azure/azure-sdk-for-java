@@ -7,9 +7,7 @@ package com.azure.management.sql;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The CreateDatabaseRestorePointDefinition model.
- */
+/** The CreateDatabaseRestorePointDefinition model. */
 @Fluent
 public final class CreateDatabaseRestorePointDefinition {
     /*
@@ -20,7 +18,7 @@ public final class CreateDatabaseRestorePointDefinition {
 
     /**
      * Get the restorePointLabel property: The restore point label to apply.
-     * 
+     *
      * @return the restorePointLabel value.
      */
     public String restorePointLabel() {
@@ -29,7 +27,7 @@ public final class CreateDatabaseRestorePointDefinition {
 
     /**
      * Set the restorePointLabel property: The restore point label to apply.
-     * 
+     *
      * @param restorePointLabel the restorePointLabel value to set.
      * @return the CreateDatabaseRestorePointDefinition object itself.
      */

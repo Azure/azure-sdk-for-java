@@ -3071,7 +3071,7 @@ public final class Utils {
     protected static WebAppTestClient httpClient = RestProxy.create(
             WebAppTestClient.class,
             new HttpPipelineBuilder()
-                    .policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)), new RetryPolicy())
+                    .policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC)), new RetryPolicy())
                     .build());
 
     @Host("{$host}")

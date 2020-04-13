@@ -105,7 +105,7 @@ foreach ($Dir in $ServiceListData)
             } 
             else 
             {
-                if (($parent.IndexOf('pom.client.xml') -ne -1) -or ($parent.IndexOf('pom.data.xml') -ne -1))
+                if (($parent.IndexOf('azure-client-sdk-parent') -ne -1) -or ($parent.IndexOf('azure-data-sdk-parent') -ne -1))
                 {
                     $clientArr += $artifactId
                 } 

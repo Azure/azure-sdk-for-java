@@ -7,23 +7,15 @@ package com.azure.management.sql;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for DataMaskingRuleState.
- */
+/** Defines values for DataMaskingRuleState. */
 public enum DataMaskingRuleState {
-    /**
-     * Enum value Disabled.
-     */
+    /** Enum value Disabled. */
     DISABLED("Disabled"),
 
-    /**
-     * Enum value Enabled.
-     */
+    /** Enum value Enabled. */
     ENABLED("Enabled");
 
-    /**
-     * The actual serialized value for a DataMaskingRuleState instance.
-     */
+    /** The actual serialized value for a DataMaskingRuleState instance. */
     private final String value;
 
     DataMaskingRuleState(String value) {
@@ -32,7 +24,7 @@ public enum DataMaskingRuleState {
 
     /**
      * Parses a serialized value to a DataMaskingRuleState instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed DataMaskingRuleState object, or null if unable to parse.
      */

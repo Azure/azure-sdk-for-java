@@ -32,15 +32,16 @@ import static com.azure.core.amqp.ProxyOptions.PROXY_PASSWORD;
 import static com.azure.core.amqp.ProxyOptions.PROXY_USERNAME;
 
 public abstract class IntegrationTestBase extends TestBase {
-    protected static final Duration TIMEOUT = Duration.ofSeconds(50);
+    protected static final Duration TIMEOUT = Duration.ofSeconds(120);
     protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
     protected final ClientLogger logger;
 
     private static final String PROXY_AUTHENTICATION_TYPE = "PROXY_AUTHENTICATION_TYPE";
-    private static final String AZURE_SERVICEBUS_CONNECTION_STRING = "AZURE_SERVICEBUS_CONNECTION_STRING";
+    private static final String AZURE_SERVICEBUS_CONNECTION_STRING = "AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING";
 
     private static final String AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME = "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME";
     private static final String AZURE_SERVICEBUS_QUEUE_NAME = "AZURE_SERVICEBUS_QUEUE_NAME";
+    private static final String AZURE_SERVICEBUS_SESSION_QUEUE_NAME = "AZURE_SERVICEBUS_SESSION_QUEUE_NAME";
     private static final String AZURE_SERVICEBUS_TOPIC_NAME = "AZURE_SERVICEBUS_TOPIC_NAME";
     private static final String AZURE_SERVICEBUS_SUBSCRIPTION_NAME = "AZURE_SERVICEBUS_SUBSCRIPTION_NAME";
 
@@ -102,6 +103,10 @@ public abstract class IntegrationTestBase extends TestBase {
 
     public String getQueueName() {
         return System.getenv(AZURE_SERVICEBUS_QUEUE_NAME);
+    }
+
+    public String getSessionQueueName() {
+        return System.getenv(AZURE_SERVICEBUS_SESSION_QUEUE_NAME);
     }
 
     public String getTopicName() {

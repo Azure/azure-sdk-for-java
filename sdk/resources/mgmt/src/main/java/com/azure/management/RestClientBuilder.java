@@ -39,6 +39,7 @@ public final class RestClientBuilder {
     private URL baseUrl;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
+    private HttpLogDetailLevel httpLogDetailLevel;
     private Configuration configuration;
     private SerializerAdapter serializerAdapter;
     private final List<String> scopes;
@@ -50,7 +51,7 @@ public final class RestClientBuilder {
      */
     public RestClientBuilder() {
         retryPolicy = new RetryPolicy();
-        httpLogOptions = new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS);
+        httpLogOptions = new HttpLogOptions().setLogLevel(HttpLogDetailLevel.NONE);
         policies = new ArrayList<>();
         scopes = new ArrayList<>();
     }
@@ -61,6 +62,10 @@ public final class RestClientBuilder {
     public RestClient buildClient() {
         if (pipeline != null) {
             return new RestClient(baseUrl, pipeline, this);
+        }
+
+        if (httpLogDetailLevel != null) {
+            httpLogOptions.setLogLevel(httpLogDetailLevel);
         }
 
         // Closest to API goes first, closest to wire goes last.
@@ -128,7 +133,23 @@ public final class RestClientBuilder {
      * @return builder
      */
     public RestClientBuilder withHttpLogOptions(HttpLogOptions logOptions) {
+        Objects.requireNonNull(logOptions);
         httpLogOptions = logOptions;
+        return this;
+    }
+
+    /**
+     * Sets the logging detail level on the HTTP client.
+     *
+     * If set, this configure will override {@link HttpLogOptions#setLogLevel(HttpLogDetailLevel)} configure of
+     * {@link RestClientBuilder#withHttpLogOptions(HttpLogOptions)}.
+     *
+     * @param logLevel the log detail level.
+     * @return builder
+     */
+    public RestClientBuilder withLogLevel(HttpLogDetailLevel logLevel) {
+        Objects.requireNonNull(logLevel);
+        this.httpLogDetailLevel = logLevel;
         return this;
     }
 

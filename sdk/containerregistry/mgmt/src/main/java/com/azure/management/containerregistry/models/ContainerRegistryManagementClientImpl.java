@@ -12,18 +12,14 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.management.AzureServiceClient;
 
-/**
- * Initializes a new instance of the ContainerRegistryManagementClientImpl type.
- */
+/** Initializes a new instance of the ContainerRegistryManagementClientImpl type. */
 public final class ContainerRegistryManagementClientImpl extends AzureServiceClient {
-    /**
-     * The Microsoft Azure subscription ID.
-     */
+    /** The Microsoft Azure subscription ID. */
     private String subscriptionId;
 
     /**
      * Gets The Microsoft Azure subscription ID.
-     * 
+     *
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
@@ -32,7 +28,7 @@ public final class ContainerRegistryManagementClientImpl extends AzureServiceCli
 
     /**
      * Sets The Microsoft Azure subscription ID.
-     * 
+     *
      * @param subscriptionId the subscriptionId value.
      * @return the service client itself.
      */
@@ -41,14 +37,12 @@ public final class ContainerRegistryManagementClientImpl extends AzureServiceCli
         return this;
     }
 
-    /**
-     * server parameter.
-     */
+    /** server parameter. */
     private String host;
 
     /**
      * Gets server parameter.
-     * 
+     *
      * @return the host value.
      */
     public String getHost() {
@@ -57,7 +51,7 @@ public final class ContainerRegistryManagementClientImpl extends AzureServiceCli
 
     /**
      * Sets server parameter.
-     * 
+     *
      * @param host the host value.
      * @return the service client itself.
      */
@@ -66,114 +60,100 @@ public final class ContainerRegistryManagementClientImpl extends AzureServiceCli
         return this;
     }
 
-    /**
-     * The HTTP pipeline to send requests through.
-     */
-    private HttpPipeline httpPipeline;
+    /** The HTTP pipeline to send requests through. */
+    private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /**
-     * The RegistriesInner object to access its operations.
-     */
-    private RegistriesInner registries;
+    /** The RegistriesInner object to access its operations. */
+    private final RegistriesInner registries;
 
     /**
      * Gets the RegistriesInner object to access its operations.
-     * 
+     *
      * @return the RegistriesInner object.
      */
     public RegistriesInner registries() {
         return this.registries;
     }
 
-    /**
-     * The OperationsInner object to access its operations.
-     */
-    private OperationsInner operations;
+    /** The OperationsInner object to access its operations. */
+    private final OperationsInner operations;
 
     /**
      * Gets the OperationsInner object to access its operations.
-     * 
+     *
      * @return the OperationsInner object.
      */
     public OperationsInner operations() {
         return this.operations;
     }
 
-    /**
-     * The ReplicationsInner object to access its operations.
-     */
-    private ReplicationsInner replications;
+    /** The ReplicationsInner object to access its operations. */
+    private final ReplicationsInner replications;
 
     /**
      * Gets the ReplicationsInner object to access its operations.
-     * 
+     *
      * @return the ReplicationsInner object.
      */
     public ReplicationsInner replications() {
         return this.replications;
     }
 
-    /**
-     * The WebhooksInner object to access its operations.
-     */
-    private WebhooksInner webhooks;
+    /** The WebhooksInner object to access its operations. */
+    private final WebhooksInner webhooks;
 
     /**
      * Gets the WebhooksInner object to access its operations.
-     * 
+     *
      * @return the WebhooksInner object.
      */
     public WebhooksInner webhooks() {
         return this.webhooks;
     }
 
-    /**
-     * The RunsInner object to access its operations.
-     */
-    private RunsInner runs;
+    /** The RunsInner object to access its operations. */
+    private final RunsInner runs;
 
     /**
      * Gets the RunsInner object to access its operations.
-     * 
+     *
      * @return the RunsInner object.
      */
     public RunsInner runs() {
         return this.runs;
     }
 
-    /**
-     * The TasksInner object to access its operations.
-     */
-    private TasksInner tasks;
+    /** The TasksInner object to access its operations. */
+    private final TasksInner tasks;
 
     /**
      * Gets the TasksInner object to access its operations.
-     * 
+     *
      * @return the TasksInner object.
      */
     public TasksInner tasks() {
         return this.tasks;
     }
 
-    /**
-     * Initializes an instance of ContainerRegistryManagementClient client.
-     */
+    /** Initializes an instance of ContainerRegistryManagementClient client. */
     public ContainerRegistryManagementClientImpl() {
-        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(), AzureEnvironment.AZURE);
+        this(
+            new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
+            AzureEnvironment.AZURE);
     }
 
     /**
      * Initializes an instance of ContainerRegistryManagementClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
     public ContainerRegistryManagementClientImpl(HttpPipeline httpPipeline) {
@@ -182,7 +162,7 @@ public final class ContainerRegistryManagementClientImpl extends AzureServiceCli
 
     /**
      * Initializes an instance of ContainerRegistryManagementClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param environment The Azure environment.
      */

@@ -3,6 +3,7 @@
 
 package com.azure.management.resources.fluentcore.arm.implementation;
 
+import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.management.AzureEnvironment;
@@ -33,6 +34,12 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
     @Override
     public T withLogOptions(HttpLogOptions level) {
         this.restClientBuilder = this.restClientBuilder.withHttpLogOptions(level);
+        return (T) this;
+    }
+
+    @Override
+    public T withLogLevel(HttpLogDetailLevel logLevel) {
+        this.restClientBuilder = this.restClientBuilder.withLogLevel(logLevel);
         return (T) this;
     }
 
