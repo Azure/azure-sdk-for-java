@@ -106,7 +106,7 @@ public final class MSIManager extends Manager<MSIManager, ManagedServiceIdentity
                 .pipeline(restClient.getHttpPipeline())
                 .host(restClient.getBaseUrl().toString())
                 .subscriptionId(subscriptionId)
-                .build(),
+                .buildClient(),
                 sdkContext);
         rbacManager = GraphRbacManager.authenticate(restClient, Utils.getTenantIdFromRestClient(restClient), sdkContext);
     }

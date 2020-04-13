@@ -34,6 +34,15 @@ public class IdentityInner extends Resource {
     @JsonProperty(value = "properties.clientId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID clientId;
 
+    /*
+     * The ManagedServiceIdentity DataPlane URL that can be queried to obtain
+     * the identity credentials. If identity is user assigned, then the
+     * clientSecretUrl will not be present in the response, otherwise it will
+     * be present.
+     */
+    @JsonProperty(value = "properties.clientSecretUrl", access = JsonProperty.Access.WRITE_ONLY)
+    private String clientSecretUrl;
+
     /**
      * Get the tenantId property: The id of the tenant which the identity belongs to.
      *
@@ -60,5 +69,17 @@ public class IdentityInner extends Resource {
      */
     public UUID getClientId() {
         return this.clientId;
+    }
+
+    /**
+     * Get the clientSecretUrl property:  The ManagedServiceIdentity DataPlane
+     * URL that can be queried to obtain the identity credentials. If identity
+     * is user assigned, then the clientSecretUrl will not be present in the
+     * response, otherwise it will be present.
+     *
+     * @return the clientSecretUrl value.
+     */
+    public String getClientSecretUrl() {
+        return this.clientSecretUrl;
     }
 }
