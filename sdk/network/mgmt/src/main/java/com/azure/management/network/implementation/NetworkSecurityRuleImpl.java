@@ -152,7 +152,7 @@ class NetworkSecurityRuleImpl
 
     @Override
     public NetworkSecurityRuleImpl withAnyProtocol() {
-        return this.withProtocol(SecurityRuleProtocol.fromString("*"));
+        return this.withProtocol(SecurityRuleProtocol.STAR);
     }
 
     @Override
