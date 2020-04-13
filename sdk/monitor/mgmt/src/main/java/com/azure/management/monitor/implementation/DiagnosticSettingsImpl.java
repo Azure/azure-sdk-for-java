@@ -16,17 +16,14 @@ import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
 import com.azure.management.resources.fluentcore.utils.PagedConverter;
 import com.azure.management.resources.fluentcore.utils.ReactorMapper;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-/**
- *  Implementation for DiagnosticSettings.
- */
+/** Implementation for DiagnosticSettings. */
 class DiagnosticSettingsImpl
     extends CreatableResourcesImpl<DiagnosticSetting, DiagnosticSettingImpl, DiagnosticSettingsResourceInner>
     implements DiagnosticSettings {
@@ -72,7 +69,8 @@ class DiagnosticSettingsImpl
     @Override
     public List<DiagnosticSettingsCategory> listCategoriesByResource(String resourceId) {
         List<DiagnosticSettingsCategory> categories = new ArrayList<>();
-        DiagnosticSettingsCategoryResourceCollectionInner collection = this.manager().inner().diagnosticSettingsCategorys().list(resourceId);
+        DiagnosticSettingsCategoryResourceCollectionInner collection =
+            this.manager().inner().diagnosticSettingsCategorys().list(resourceId);
         if (collection != null) {
             for (DiagnosticSettingsCategoryResourceInner category : collection.value()) {
                 categories.add(new DiagnosticSettingsCategoryImpl(category));
@@ -83,20 +81,31 @@ class DiagnosticSettingsImpl
 
     @Override
     public PagedFlux<DiagnosticSettingsCategory> listCategoriesByResourceAsync(String resourceId) {
-        return PagedConverter.convertListToPagedFlux(this.manager.inner().diagnosticSettingsCategorys().listAsync(resourceId)
-                .map(DiagnosticSettingsCategoryResourceCollectionInner::value))
-                .mapPage(DiagnosticSettingsCategoryImpl::new);
+        return PagedConverter
+            .convertListToPagedFlux(
+                this
+                    .manager
+                    .inner()
+                    .diagnosticSettingsCategorys()
+                    .listAsync(resourceId)
+                    .map(DiagnosticSettingsCategoryResourceCollectionInner::value))
+            .mapPage(DiagnosticSettingsCategoryImpl::new);
     }
 
     @Override
     public DiagnosticSettingsCategory getCategory(String resourceId, String name) {
-        return new DiagnosticSettingsCategoryImpl(this.manager().inner().diagnosticSettingsCategorys().get(resourceId, name));
+        return new DiagnosticSettingsCategoryImpl(
+            this.manager().inner().diagnosticSettingsCategorys().get(resourceId, name));
     }
 
     @Override
     public Mono<DiagnosticSettingsCategory> getCategoryAsync(String resourceId, String name) {
-        return this.manager().inner().diagnosticSettingsCategorys().getAsync(resourceId, name)
-                .map(DiagnosticSettingsCategoryImpl::new);
+        return this
+            .manager()
+            .inner()
+            .diagnosticSettingsCategorys()
+            .getAsync(resourceId, name)
+            .map(DiagnosticSettingsCategoryImpl::new);
     }
 
     @Override
@@ -106,9 +115,15 @@ class DiagnosticSettingsImpl
 
     @Override
     public PagedFlux<DiagnosticSetting> listByResourceAsync(String resourceId) {
-        return PagedConverter.convertListToPagedFlux(this.manager().inner().diagnosticSettings().listAsync(resourceId)
-                .map(DiagnosticSettingsResourceCollectionInner::value))
-                .mapPage(inner -> new DiagnosticSettingImpl(inner.getName(), inner, this.manager()));
+        return PagedConverter
+            .convertListToPagedFlux(
+                this
+                    .manager()
+                    .inner()
+                    .diagnosticSettings()
+                    .listAsync(resourceId)
+                    .map(DiagnosticSettingsResourceCollectionInner::value))
+            .mapPage(inner -> new DiagnosticSettingImpl(inner.getName(), inner, this.manager()));
     }
 
     @Override
@@ -128,13 +143,16 @@ class DiagnosticSettingsImpl
 
     @Override
     public Mono<DiagnosticSetting> getAsync(String resourceId, String name) {
-        return this.manager().inner().diagnosticSettings().getAsync(resourceId, name)
-                .map(this::wrapModel);
+        return this.manager().inner().diagnosticSettings().getAsync(resourceId, name).map(this::wrapModel);
     }
 
     @Override
     public Mono<Void> deleteByIdAsync(String id) {
-        return this.manager().inner().diagnosticSettings().deleteAsync(getResourceIdFromSettingsId(id), getNameFromSettingsId(id));
+        return this
+            .manager()
+            .inner()
+            .diagnosticSettings()
+            .deleteAsync(getResourceIdFromSettingsId(id), getNameFromSettingsId(id));
     }
 
     @Override
@@ -179,8 +197,7 @@ class DiagnosticSettingsImpl
 
     @Override
     public Mono<DiagnosticSetting> getByIdAsync(String id) {
-        return this.inner().getAsync(getResourceIdFromSettingsId(id), getNameFromSettingsId(id))
-                .map(this::wrapModel);
+        return this.inner().getAsync(getResourceIdFromSettingsId(id), getNameFromSettingsId(id)).map(this::wrapModel);
     }
 
     private String getResourceIdFromSettingsId(String diagnosticSettingId) {
@@ -189,7 +206,10 @@ class DiagnosticSettingsImpl
         }
         int dsIdx = diagnosticSettingId.lastIndexOf(DiagnosticSettingImpl.DIAGNOSTIC_SETTINGS_URI);
         if (dsIdx == -1) {
-            throw new IllegalArgumentException("Parameter 'resourceId' does not represent a valid Diagnostic Settings resource Id [" + diagnosticSettingId + "].");
+            throw new IllegalArgumentException(
+                "Parameter 'resourceId' does not represent a valid Diagnostic Settings resource Id ["
+                    + diagnosticSettingId
+                    + "].");
         }
 
         return diagnosticSettingId.substring(0, dsIdx);
@@ -197,6 +217,7 @@ class DiagnosticSettingsImpl
 
     private String getNameFromSettingsId(String diagnosticSettingId) {
         String resourceId = getResourceIdFromSettingsId(diagnosticSettingId);
-        return diagnosticSettingId.substring(resourceId.length() + DiagnosticSettingImpl.DIAGNOSTIC_SETTINGS_URI.length());
+        return diagnosticSettingId
+            .substring(resourceId.length() + DiagnosticSettingImpl.DIAGNOSTIC_SETTINGS_URI.length());
     }
 }

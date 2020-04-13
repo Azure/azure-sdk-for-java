@@ -15,20 +15,15 @@ import com.azure.management.monitor.models.AutoscaleProfileInner;
 import com.azure.management.monitor.models.ScaleRuleInner;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 import java.time.OffsetDateTime;
-
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Implementation for AutoscaleProfile.
- */
-class AutoscaleProfileImpl
-        extends WrapperImpl<AutoscaleProfileInner>
-        implements
-        AutoscaleProfile,
-            AutoscaleProfile.Definition,
-            AutoscaleProfile.UpdateDefinition,
-            AutoscaleProfile.Update {
+/** Implementation for AutoscaleProfile. */
+class AutoscaleProfileImpl extends WrapperImpl<AutoscaleProfileInner>
+    implements AutoscaleProfile,
+        AutoscaleProfile.Definition,
+        AutoscaleProfile.UpdateDefinition,
+        AutoscaleProfile.Update {
     private final AutoscaleSettingImpl parent;
 
     AutoscaleProfileImpl(String name, AutoscaleProfileInner innerObject, AutoscaleSettingImpl parent) {
@@ -104,7 +99,8 @@ class AutoscaleProfileImpl
     }
 
     @Override
-    public AutoscaleProfileImpl withMetricBasedScale(int minimumInstanceCount, int maximumInstanceCount, int defaultInstanceCount) {
+    public AutoscaleProfileImpl withMetricBasedScale(
+        int minimumInstanceCount, int maximumInstanceCount, int defaultInstanceCount) {
         this.inner().capacity().withMinimum(Integer.toString(minimumInstanceCount));
         this.inner().capacity().withMaximum(Integer.toString(maximumInstanceCount));
         this.inner().capacity().withDefaultProperty(Integer.toString(defaultInstanceCount));
@@ -127,10 +123,7 @@ class AutoscaleProfileImpl
 
     @Override
     public AutoscaleProfileImpl withFixedDateSchedule(String timeZone, OffsetDateTime start, OffsetDateTime end) {
-        this.inner().withFixedDate(new TimeWindow()
-                                        .withTimeZone(timeZone)
-                                        .withStart(start)
-                                        .withEnd(end));
+        this.inner().withFixedDate(new TimeWindow().withTimeZone(timeZone).withStart(start).withEnd(end));
         if (this.inner().recurrence() != null) {
             this.inner().withRecurrence(null);
         }
@@ -139,21 +132,25 @@ class AutoscaleProfileImpl
 
     @Override
     public AutoscaleProfileImpl withRecurrentSchedule(String scheduleTimeZone, String startTime, DayOfWeek... weekday) {
-        if (startTime == null || startTime.isEmpty()
-                || startTime.length() != 5
-                || startTime.charAt(2) != ':'
-                || !Character.isDigit(startTime.charAt(0))
-                || !Character.isDigit(startTime.charAt(1))
-                || !Character.isDigit(startTime.charAt(3))
-                || !Character.isDigit(startTime.charAt(4))) {
-            throw new IllegalArgumentException("Start time should have format of 'hh:mm' where hh is in 24-hour clock (AM/PM times are not supported).");
+        if (startTime == null
+            || startTime.isEmpty()
+            || startTime.length() != 5
+            || startTime.charAt(2) != ':'
+            || !Character.isDigit(startTime.charAt(0))
+            || !Character.isDigit(startTime.charAt(1))
+            || !Character.isDigit(startTime.charAt(3))
+            || !Character.isDigit(startTime.charAt(4))) {
+            throw new IllegalArgumentException(
+                "Start time should have format of 'hh:mm' where hh is in 24-hour clock (AM/PM times are not"
+                    + " supported).");
         }
 
         int hh = Integer.parseInt(startTime.substring(0, 2));
         int mm = Integer.parseInt(startTime.substring(3));
-        if (hh > 23
-                || mm > 60) {
-            throw new IllegalArgumentException("Start time should have format of 'hh:mm' where hh is in 24-hour clock (AM/PM times are not supported).");
+        if (hh > 23 || mm > 60) {
+            throw new IllegalArgumentException(
+                "Start time should have format of 'hh:mm' where hh is in 24-hour clock (AM/PM times are not"
+                    + " supported).");
         }
 
         this.inner().withRecurrence(new Recurrence());
@@ -196,4 +193,3 @@ class AutoscaleProfileImpl
         return this;
     }
 }
-

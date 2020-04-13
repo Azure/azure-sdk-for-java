@@ -3,21 +3,18 @@
 
 package com.azure.management.monitor;
 
-
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
-/**
- * Defines values for EventDataPropertyName.
- */
+/** Defines values for EventDataPropertyName. */
 public final class EventDataPropertyName extends ExpandableStringEnum<EventDataPropertyName> {
     /** Static value "authorization" for EventDataPropertyName. */
     public static final EventDataPropertyName AUTHORIZATION = fromString("authorization");
 
     /** Static value "claims" for EventDataPropertyName. */
-    public static final EventDataPropertyName CLAIMS = fromString("claims");;
+    public static final EventDataPropertyName CLAIMS = fromString("claims");
+    ;
 
     /** Static value "correlationId" for EventDataPropertyName. */
     public static final EventDataPropertyName CORRELATIONID = fromString("correlationId");
@@ -72,6 +69,7 @@ public final class EventDataPropertyName extends ExpandableStringEnum<EventDataP
 
     /**
      * Creates or finds a EventDataPropertyName from its string representation.
+     *
      * @param name a name to look for
      * @return the corresponding WebhookAction
      */
@@ -80,9 +78,7 @@ public final class EventDataPropertyName extends ExpandableStringEnum<EventDataP
         return fromString(name, EventDataPropertyName.class);
     }
 
-    /**
-     * @return known WebhookAction values
-     */
+    /** @return known WebhookAction values */
     public static Collection<EventDataPropertyName> values() {
         return values(EventDataPropertyName.class);
     }

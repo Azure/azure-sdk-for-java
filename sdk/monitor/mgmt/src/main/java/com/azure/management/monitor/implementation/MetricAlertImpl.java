@@ -7,42 +7,33 @@ import com.azure.management.monitor.DynamicMetricCriteria;
 import com.azure.management.monitor.MetricAlert;
 import com.azure.management.monitor.MetricAlertAction;
 import com.azure.management.monitor.MetricAlertCondition;
+import com.azure.management.monitor.MetricAlertMultipleResourceMultipleMetricCriteria;
 import com.azure.management.monitor.MetricAlertSingleResourceMultipleMetricCriteria;
 import com.azure.management.monitor.MetricCriteria;
 import com.azure.management.monitor.MetricDynamicAlertCondition;
-import com.azure.management.monitor.MetricAlertMultipleResourceMultipleMetricCriteria;
 import com.azure.management.monitor.MultiMetricCriteria;
 import com.azure.management.monitor.models.MetricAlertResourceInner;
 import com.azure.management.resources.fluentcore.arm.models.HasId;
 import com.azure.management.resources.fluentcore.arm.models.Resource;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import reactor.core.publisher.Mono;
-
 import java.time.Duration;
 import java.time.OffsetDateTime;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for MetricAlert.
- */
+/** Implementation for MetricAlert. */
 class MetricAlertImpl
-        extends GroupableResourceImpl<
-        MetricAlert,
-            MetricAlertResourceInner,
-            MetricAlertImpl,
-            MonitorManager>
-        implements
-            MetricAlert,
-            MetricAlert.Definition,
-            MetricAlert.DefinitionMultipleResource,
-            MetricAlert.Update,
-            MetricAlert.UpdateStages.WithMetricUpdate {
+    extends GroupableResourceImpl<MetricAlert, MetricAlertResourceInner, MetricAlertImpl, MonitorManager>
+    implements MetricAlert,
+        MetricAlert.Definition,
+        MetricAlert.DefinitionMultipleResource,
+        MetricAlert.Update,
+        MetricAlert.UpdateStages.WithMetricUpdate {
 
     // 2019/09 at present service support 2 static criteria, or 1 dynamic criteria
     // static criteria
@@ -60,7 +51,8 @@ class MetricAlertImpl
             if (innerModel.criteria() instanceof MetricAlertSingleResourceMultipleMetricCriteria) {
                 multipleResource = false;
                 // single resource with multiple static criteria
-                MetricAlertSingleResourceMultipleMetricCriteria crits = (MetricAlertSingleResourceMultipleMetricCriteria) innerModel.criteria();
+                MetricAlertSingleResourceMultipleMetricCriteria crits =
+                    (MetricAlertSingleResourceMultipleMetricCriteria) innerModel.criteria();
                 List<MetricCriteria> criteria = crits.allOf();
                 if (criteria != null) {
                     for (MetricCriteria crit : criteria) {
@@ -70,14 +62,24 @@ class MetricAlertImpl
             } else if (innerModel.criteria() instanceof MetricAlertMultipleResourceMultipleMetricCriteria) {
                 multipleResource = true;
                 // multiple resource with either multiple static criteria, or (currently single) dynamic criteria
-                MetricAlertMultipleResourceMultipleMetricCriteria crits = (MetricAlertMultipleResourceMultipleMetricCriteria) innerModel.criteria();
+                MetricAlertMultipleResourceMultipleMetricCriteria crits =
+                    (MetricAlertMultipleResourceMultipleMetricCriteria) innerModel.criteria();
                 List<MultiMetricCriteria> criteria = crits.allOf();
                 if (criteria != null) {
                     for (MultiMetricCriteria crit : criteria) {
                         if (crit instanceof MetricCriteria) {
-                            this.conditions.put(crit.name(), new MetricAlertConditionImpl(crit.name(), (MetricCriteria) crit, this));
+                            this
+                                .conditions
+                                .put(
+                                    crit.name(),
+                                    new MetricAlertConditionImpl(crit.name(), (MetricCriteria) crit, this));
                         } else if (crit instanceof DynamicMetricCriteria) {
-                            this.dynamicConditions.put(crit.name(), new MetricDynamicAlertConditionImpl(crit.name(), (DynamicMetricCriteria) crit, this));
+                            this
+                                .dynamicConditions
+                                .put(
+                                    crit.name(),
+                                    new MetricDynamicAlertConditionImpl(
+                                        crit.name(), (DynamicMetricCriteria) crit, this));
                         }
                     }
                 }
@@ -96,14 +98,16 @@ class MetricAlertImpl
         this.inner().setLocation("global");
         if (!this.conditions.isEmpty()) {
             if (!multipleResource) {
-                MetricAlertSingleResourceMultipleMetricCriteria crit = new MetricAlertSingleResourceMultipleMetricCriteria();
+                MetricAlertSingleResourceMultipleMetricCriteria crit =
+                    new MetricAlertSingleResourceMultipleMetricCriteria();
                 crit.withAllOf(new ArrayList<>());
                 for (MetricAlertCondition mc : conditions.values()) {
                     crit.allOf().add(mc.inner());
                 }
                 this.inner().withCriteria(crit);
             } else {
-                MetricAlertMultipleResourceMultipleMetricCriteria crit = new MetricAlertMultipleResourceMultipleMetricCriteria();
+                MetricAlertMultipleResourceMultipleMetricCriteria crit =
+                    new MetricAlertMultipleResourceMultipleMetricCriteria();
                 crit.withAllOf(new ArrayList<>());
                 for (MetricAlertCondition mc : conditions.values()) {
                     crit.allOf().add(mc.inner());
@@ -111,15 +115,20 @@ class MetricAlertImpl
                 this.inner().withCriteria(crit);
             }
         } else if (!this.dynamicConditions.isEmpty()) {
-            MetricAlertMultipleResourceMultipleMetricCriteria crit = new MetricAlertMultipleResourceMultipleMetricCriteria();
+            MetricAlertMultipleResourceMultipleMetricCriteria crit =
+                new MetricAlertMultipleResourceMultipleMetricCriteria();
             crit.withAllOf(new ArrayList<>());
             for (MetricDynamicAlertCondition mc : dynamicConditions.values()) {
                 crit.allOf().add(mc.inner());
             }
             this.inner().withCriteria(crit);
         }
-        return this.manager().inner().metricAlerts().createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
-                .map(innerToFluentMap(this));
+        return this
+            .manager()
+            .inner()
+            .metricAlerts()
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+            .map(innerToFluentMap(this));
     }
 
     @Override
@@ -295,7 +304,8 @@ class MetricAlertImpl
         String regionName = resources.iterator().next().regionName();
         for (Resource resource : resources) {
             if (!type.equalsIgnoreCase(resource.type()) || !regionName.equalsIgnoreCase(resource.regionName())) {
-                throw new IllegalArgumentException("Target resource must be of the same resource type and in the same region");
+                throw new IllegalArgumentException(
+                    "Target resource must be of the same resource type and in the same region");
             }
 
             resourceIds.add(resource.id());
@@ -345,8 +355,7 @@ class MetricAlertImpl
 
     @Override
     public Collection<String> actionGroupIds() {
-        if (this.inner().actions() != null
-                && this.inner().actions() != null) {
+        if (this.inner().actions() != null && this.inner().actions() != null) {
             List<String> ids = new ArrayList<>();
             for (MetricAlertAction maag : this.inner().actions()) {
                 ids.add(maag.actionGroupId());
@@ -366,4 +375,3 @@ class MetricAlertImpl
         return Collections.unmodifiableMap(this.dynamicConditions);
     }
 }
-

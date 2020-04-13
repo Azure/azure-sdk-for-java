@@ -11,18 +11,17 @@ import com.fasterxml.jackson.databind.jsontype.TypeIdResolver;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.jsontype.impl.AsPropertyTypeSerializer;
 import com.fasterxml.jackson.databind.jsontype.impl.StdTypeResolverBuilder;
-
 import java.util.Collection;
 
-/**
- * Custom type deserializer to resolve "odata.type" serialization/deserialization issue.
- */
+/** Custom type deserializer to resolve "odata.type" serialization/deserialization issue. */
 class OdataTypeDiscriminatorTypeResolver extends StdTypeResolverBuilder {
     @Override
-    public TypeSerializer buildTypeSerializer(SerializationConfig config, JavaType baseType, Collection<NamedType> subtypes) {
-        //Copied this code from parent class, StdTypeResolverBuilder with same method name
+    public TypeSerializer buildTypeSerializer(
+        SerializationConfig config, JavaType baseType, Collection<NamedType> subtypes) {
+        // Copied this code from parent class, StdTypeResolverBuilder with same method name
         TypeIdResolver idRes = this.idResolver(config, baseType, this.subTypeValidator(config), subtypes, true, false);
-        // have to escape "." in the middle of the "odata.type" otherwise it will be serialized to "odata": { "type":"Value"} JSON
+        // have to escape "." in the middle of the "odata.type" otherwise it will be serialized to "odata": {
+        // "type":"Value"} JSON
         String escapedString = this._typeProperty.replace(".", "\\.");
         return new AsPropertyTypeSerializer(idRes, (BeanProperty) null, escapedString);
     }

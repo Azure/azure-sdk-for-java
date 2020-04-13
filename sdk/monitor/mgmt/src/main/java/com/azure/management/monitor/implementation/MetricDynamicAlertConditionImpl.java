@@ -12,27 +12,22 @@ import com.azure.management.monitor.MetricAlert;
 import com.azure.management.monitor.MetricAlertRuleTimeAggregation;
 import com.azure.management.monitor.MetricDynamicAlertCondition;
 import java.time.OffsetDateTime;
-
 import java.util.ArrayList;
 
 class MetricDynamicAlertConditionImpl
-        extends MetricAlertConditionBaseImpl<DynamicMetricCriteria, MetricDynamicAlertConditionImpl>
-        implements
-        MetricDynamicAlertCondition,
-
-            MetricDynamicAlertCondition.DefinitionStages,
-            MetricDynamicAlertCondition.DefinitionStages.Blank.MetricName<MetricAlert.DefinitionStages.WithCreate>,
-            MetricDynamicAlertCondition.DefinitionStages.WithCriteriaOperator<MetricAlert.DefinitionStages.WithCreate>,
-            MetricDynamicAlertCondition.DefinitionStages.WithFailingPeriods<MetricAlert.DefinitionStages.WithCreate>,
-            MetricDynamicAlertCondition.DefinitionStages.WithConditionAttach<MetricAlert.DefinitionStages.WithCreate>,
-
-            MetricDynamicAlertCondition.UpdateDefinitionStages,
-            MetricDynamicAlertCondition.UpdateDefinitionStages.Blank.MetricName<MetricAlert.Update>,
-            MetricDynamicAlertCondition.UpdateDefinitionStages.WithCriteriaOperator<MetricAlert.Update>,
-            MetricDynamicAlertCondition.UpdateDefinitionStages.WithFailingPeriods<MetricAlert.Update>,
-            MetricDynamicAlertCondition.UpdateDefinitionStages.WithConditionAttach<MetricAlert.Update>,
-
-            MetricDynamicAlertCondition.UpdateStages {
+    extends MetricAlertConditionBaseImpl<DynamicMetricCriteria, MetricDynamicAlertConditionImpl>
+    implements MetricDynamicAlertCondition,
+        MetricDynamicAlertCondition.DefinitionStages,
+        MetricDynamicAlertCondition.DefinitionStages.Blank.MetricName<MetricAlert.DefinitionStages.WithCreate>,
+        MetricDynamicAlertCondition.DefinitionStages.WithCriteriaOperator<MetricAlert.DefinitionStages.WithCreate>,
+        MetricDynamicAlertCondition.DefinitionStages.WithFailingPeriods<MetricAlert.DefinitionStages.WithCreate>,
+        MetricDynamicAlertCondition.DefinitionStages.WithConditionAttach<MetricAlert.DefinitionStages.WithCreate>,
+        MetricDynamicAlertCondition.UpdateDefinitionStages,
+        MetricDynamicAlertCondition.UpdateDefinitionStages.Blank.MetricName<MetricAlert.Update>,
+        MetricDynamicAlertCondition.UpdateDefinitionStages.WithCriteriaOperator<MetricAlert.Update>,
+        MetricDynamicAlertCondition.UpdateDefinitionStages.WithFailingPeriods<MetricAlert.Update>,
+        MetricDynamicAlertCondition.UpdateDefinitionStages.WithConditionAttach<MetricAlert.Update>,
+        MetricDynamicAlertCondition.UpdateStages {
 
     MetricDynamicAlertConditionImpl(String name, DynamicMetricCriteria innerObject, MetricAlertImpl parent) {
         super(name, innerObject, parent);
@@ -65,7 +60,10 @@ class MetricDynamicAlertConditionImpl
     }
 
     @Override
-    public MetricDynamicAlertConditionImpl withCondition(MetricAlertRuleTimeAggregation timeAggregation, DynamicThresholdOperator condition, DynamicThresholdSensitivity alertSensitivity) {
+    public MetricDynamicAlertConditionImpl withCondition(
+        MetricAlertRuleTimeAggregation timeAggregation,
+        DynamicThresholdOperator condition,
+        DynamicThresholdSensitivity alertSensitivity) {
         this.inner().withOperator(condition);
         this.inner().withTimeAggregation(AggregationType.fromString(timeAggregation.toString()));
         this.inner().withAlertSensitivity(alertSensitivity);
@@ -75,7 +73,8 @@ class MetricDynamicAlertConditionImpl
     @Override
     public MetricDynamicAlertConditionImpl withFailingPeriods(DynamicThresholdFailingPeriods failingPeriods) {
         if (failingPeriods.minFailingPeriodsToAlert() > failingPeriods.numberOfEvaluationPeriods()) {
-            throw new IllegalArgumentException("The number of evaluation periods should be greater than or equal to the number of failing periods");
+            throw new IllegalArgumentException(
+                "The number of evaluation periods should be greater than or equal to the number of failing periods");
         }
 
         this.inner().withFailingPeriods(failingPeriods);
