@@ -5464,7 +5464,7 @@ public final class WebAppsInner
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites"
                 + "/{name}/syncfunctiontriggers")
-        @ExpectedResponses({204})
+        @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
         Mono<Response<Void>> syncFunctionTriggers(
             @HostParam("$host") String host,

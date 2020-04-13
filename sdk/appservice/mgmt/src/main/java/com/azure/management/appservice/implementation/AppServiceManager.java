@@ -123,7 +123,7 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
                 .pipeline(restClient.getHttpPipeline())
                 .host(restClient.getBaseUrl().toString())
                 .subscriptionId(subscriptionId)
-                .build(),
+                .buildClient(),
             sdkContext);
         keyVaultManager = KeyVaultManager.authenticate(restClient, tenantId, subscriptionId, sdkContext);
         storageManager = StorageManager.authenticate(restClient, subscriptionId, sdkContext);

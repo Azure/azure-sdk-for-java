@@ -10,7 +10,7 @@ import java.util.Map;
 
 /** The ManagedServiceIdentity model. */
 @Fluent
-public final class ManagedServiceIdentity {
+public class ManagedServiceIdentity {
     /*
      * Type of managed service identity.
      */
