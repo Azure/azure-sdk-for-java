@@ -187,10 +187,18 @@ public class ManagementChannel implements ServiceBusManagementNode {
     public Mono<Instant> renewMessageLock(UUID lockToken) {
         return isAuthorized(ManagementConstants.OPERATION_PEEK).then(createRequestResponse.flatMap(channel -> {
 
-            Message requestMessage = createManagementMessage(ManagementConstants.OPERATION_RENEW_LOCK,
+            final Message requestMessage = createManagementMessage(ManagementConstants.OPERATION_RENEW_LOCK,
                 channel.getReceiveLinkName());
+            final Map<String, Object> requestBody = new HashMap<>();
 
-            requestMessage.setBody(new AmqpValue(Collections.singletonMap(ManagementConstants.LOCK_TOKENS_KEY, new UUID[]{lockToken})));
+            requestBody.put(ManagementConstants.LOCK_TOKENS_KEY, new UUID[]{lockToken});
+
+            if (isSessionEnabled) {
+                requestBody.put(ManagementConstants.SESSION_ID, sessionId);
+            }
+
+            requestMessage.setBody(new AmqpValue(requestBody));
+
             return channel.sendWithAck(requestMessage);
         }).map(responseMessage -> {
             int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
