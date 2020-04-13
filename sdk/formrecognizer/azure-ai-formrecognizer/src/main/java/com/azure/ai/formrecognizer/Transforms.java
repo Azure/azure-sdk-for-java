@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.implementation.models.DocumentResult;
+import com.azure.ai.formrecognizer.implementation.models.FieldValue;
 import com.azure.ai.formrecognizer.implementation.models.KeyValuePair;
 import com.azure.ai.formrecognizer.implementation.models.PageResult;
 import com.azure.ai.formrecognizer.implementation.models.ReadResult;
@@ -367,7 +368,7 @@ final class Transforms {
             }
             FieldText labelText = new FieldText(key, null, fieldValue.getPage(), null);
             FieldText valueText = new FieldText(fieldValue.getText(), null, pageNumber, formContentList);
-            extractedFieldMap.put(key, setFormField(labelText, key, fieldValue, valueText, pageNumber));
+            extractedFieldMap.put(key, setFormField(labelText, key, fieldValue, valueText, pageNumber, readResults));
         });
         return extractedFieldMap;
     }
@@ -376,15 +377,16 @@ final class Transforms {
      * Helper method that converts the incoming service field value to one of the strongly typed SDK level
      * {@link FormField} with reference elements set when {@code includeTextDetails} is set to true.
      *
-     * @param fieldValue The named field values returned by the service.
-     * @param key The name of the field.
      * @param labelText The label text of the field.
-     * @param pageNumber The 1-based page number.
+     * @param key The name of the field.
+     * @param fieldValue The named field values returned by the service.
      * @param valueText The value text of the field.
+     * @param pageNumber The 1-based page number.
+     * @param readResults The text extraction result returned by the service.
      *
      * @return The strongly typed {@link FormField} for the field input.
      */
-    private static FormField<?> setFormField(FieldText labelText, String key, com.azure.ai.formrecognizer.implementation.models.FieldValue fieldValue, FieldText valueText, Integer pageNumber) {
+    private static FormField<?> setFormField(FieldText labelText, String key, FieldValue fieldValue, FieldText valueText, Integer pageNumber, List<ReadResult> readResults) {
         FormField<?> value;
         switch (fieldValue.getType()) {
             case PHONE_NUMBER:
@@ -413,11 +415,11 @@ final class Transforms {
                 break;
             case ARRAY:
                 value = new FormField<List<FormField<?>>>(null, null, key,
-                    toFormFieldArray(fieldValue.getValueArray()), null, pageNumber);
+                    toFormFieldArray(fieldValue.getValueArray(), readResults), null, pageNumber);
                 break;
             case OBJECT:
                 value = new FormField<Map<String, FormField<?>>>(fieldValue.getConfidence(), labelText,
-                    key, toFormFieldObject(fieldValue.getValueObject()), valueText, pageNumber);
+                    key, toFormFieldObject(fieldValue.getValueObject(), pageNumber, readResults), valueText, pageNumber);
                 break;
             default:
                 throw LOGGER.logExceptionAsError(new RuntimeException("FieldValue Type not supported"));
@@ -430,15 +432,20 @@ final class Transforms {
      * to a SDK level map of {@link FormField}.
      *
      * @param valueObject The array of field values returned by the service in
-     * {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueObject()} .
+     * {@link FieldValue#getValueObject()} .
      *
      * @return The Map of {@link FormField}.
      */
-    private static Map<String, FormField<?>> toFormFieldObject(Map<String, com.azure.ai.formrecognizer.implementation.models.FieldValue> valueObject) {
+    private static Map<String, FormField<?>> toFormFieldObject(Map<String, FieldValue> valueObject, Integer pageNumber, List<ReadResult> readResults) {
         Map<String, FormField<?>> fieldValueObjectMap = new TreeMap<>();
         valueObject.forEach((key, fieldValue) -> {
+            IterableStream<FormContent> formValueContentList = null;
+            if (!CoreUtils.isNullOrEmpty(fieldValue.getElements())) {
+                formValueContentList = setReferenceElements(fieldValue.getElements(), readResults, pageNumber);
+            }
             fieldValueObjectMap.put(key, setFormField(null, key, fieldValue, new FieldText(fieldValue.getText(),
-                toBoundingBox(fieldValue.getBoundingBox()), fieldValue.getPage(), null), fieldValue.getPage()));
+                    toBoundingBox(fieldValue.getBoundingBox()), fieldValue.getPage(), formValueContentList),
+                fieldValue.getPage(), readResults));
         });
         return fieldValueObjectMap;
     }
@@ -454,13 +461,19 @@ final class Transforms {
      * to a SDK level List of {@link FormField}.
      *
      * @param valueArray The array of field values returned by the service in
-     * {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueArray()}.
+     * {@link FieldValue#getValueArray()}.
+     * @param readResults The text extraction result returned by the service.
      *
      * @return The List of {@link FormField}.
      */
+<<<<<<< HEAD
     private static List<FormField<?>> toFormFieldArray(List<com.azure.ai.formrecognizer.implementation.models.FieldValue> valueArray) {
         return valueArray.stream().map(fieldValue -> setFormField(null, null, fieldValue, null, fieldValue.getPage())).collect(Collectors.toList());
 >>>>>>> 6db06c5bbf... Remove generic fieldvalue instead use generic FormField
+=======
+    private static List<FormField<?>> toFormFieldArray(List<FieldValue> valueArray, List<ReadResult> readResults) {
+        return valueArray.stream().map(fieldValue -> setFormField(null, null, fieldValue, null, fieldValue.getPage(), readResults)).collect(Collectors.toList());
+>>>>>>> 5f22d8e381... update sync tests
     }
 
     /**

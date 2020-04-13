@@ -10,7 +10,7 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 
 /**
- * The CustomFormModelInfo model.
+ * The ModelInfo model.
  */
 @Fluent
 public final class ModelInfo {
@@ -51,7 +51,7 @@ public final class ModelInfo {
      * Set the modelId property: Model identifier.
      *
      * @param modelId the modelId value to set.
-     * @return the CustomFormModelInfo object itself.
+     * @return the ModelInfo object itself.
      */
     public ModelInfo setModelId(UUID modelId) {
         this.modelId = modelId;
@@ -71,7 +71,7 @@ public final class ModelInfo {
      * Set the status property: Status of the model.
      *
      * @param status the status value to set.
-     * @return the CustomFormModelInfo object itself.
+     * @return the ModelInfo object itself.
      */
     public ModelInfo setStatus(ModelStatus status) {
         this.status = status;
@@ -93,7 +93,7 @@ public final class ModelInfo {
      * created.
      *
      * @param createdDateTime the createdDateTime value to set.
-     * @return the CustomFormModelInfo object itself.
+     * @return the ModelInfo object itself.
      */
     public ModelInfo setCreatedDateTime(OffsetDateTime createdDateTime) {
         this.createdDateTime = createdDateTime;
@@ -115,10 +115,11 @@ public final class ModelInfo {
      * status was last updated.
      *
      * @param lastUpdatedDateTime the lastUpdatedDateTime value to set.
-     * @return the CustomFormModelInfo object itself.
+     * @return the ModelInfo object itself.
      */
     public ModelInfo setLastUpdatedDateTime(OffsetDateTime lastUpdatedDateTime) {
         this.lastUpdatedDateTime = lastUpdatedDateTime;
         return this;
     }
 }
+

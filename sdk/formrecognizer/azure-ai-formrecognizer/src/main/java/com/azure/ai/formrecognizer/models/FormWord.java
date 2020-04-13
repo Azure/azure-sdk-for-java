@@ -9,7 +9,7 @@ import com.azure.core.annotation.Immutable;
  * The FormTable model.
  */
 @Immutable
-public class FormWord extends FormContent {
+public final class FormWord extends FormContent {
     /*
      * The confidence value of the recognized word.
      */
@@ -24,7 +24,7 @@ public class FormWord extends FormContent {
      * @param confidence the confidence.
      */
     public FormWord(String text, BoundingBox boundingBox, Integer pageNumber, final Float confidence) {
-        super(text, boundingBox, pageNumber);
+        super(text, boundingBox, pageNumber, TextContentType.WORD);
         this.confidence = confidence;
     }
 
@@ -35,6 +35,14 @@ public class FormWord extends FormContent {
      */
     public Float getConfidence() {
         return this.confidence;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TextContentType getTextContentType() {
+        return super.getTextContentType();
     }
 
     /**

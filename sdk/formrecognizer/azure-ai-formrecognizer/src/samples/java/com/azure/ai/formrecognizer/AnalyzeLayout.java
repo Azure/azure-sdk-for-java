@@ -34,13 +34,11 @@ public class AnalyzeLayout {
     public static void main(String[] args) throws IOException {
         // Instantiate a client that will be used to call the service.
         FormRecognizerClient client = new FormRecognizerClientBuilder()
-            .apiKey(new AzureKeyCredential("48c9ec5b1c444c899770946defc486c4"))
-            .endpoint("https://javaformrecognizertestresource.cognitiveservices.azure.com/")
+            .apiKey(new AzureKeyCredential("{api_key}"))
+            .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
-        // String layoutUrl = "/C:/Users/savaity/Downloads/layout1.jpg";
-
-        File layoutUrl = new File("/C:/Users/savaity/Downloads/layout1.jpg");
+        File layoutUrl = new File("{local_file_path}");
         byte[] fileContent = Files.readAllBytes(layoutUrl.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 

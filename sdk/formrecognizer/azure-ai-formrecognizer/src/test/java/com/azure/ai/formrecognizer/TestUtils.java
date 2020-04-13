@@ -15,6 +15,7 @@ import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.ai.formrecognizer.models.TrainingDocumentInfo;
 import com.azure.ai.formrecognizer.models.TrainingStatus;
+import com.azure.ai.formrecognizer.models.USReceipt;
 import com.azure.core.implementation.serializer.jsonwrapper.api.JsonApi;
 import com.azure.core.util.IterableStream;
 import reactor.core.publisher.Flux;
@@ -47,7 +48,7 @@ final class TestUtils {
     static final String SUPERVISED_MODEL_ID = "a0a3998a-b3c0-4075-aa6b-c4c4affe66b7";
     static final String INVALID_MODEL_ID = "a0a3998a-4c4affe66b7";
     static final String INVALID_STATUS_MODEL_ID = "22138c4e-c4b0-4901-a0e1-6c5beb73fc1d";
-    static final String INVALID_MODEL_STATUS_ERROR = "Invalid status Model Id.";
+    static final String INVALID_STATUS_ERROR = "Invalid status Model Id.";
     // TODO (savaity): Do not hardcode, generate SAS URL
     static final String VALID_SUPERVISED_SAS_URL = "";
     static final String VALID_UNSUPERVISED_SAS_URL = "";
@@ -80,9 +81,18 @@ final class TestUtils {
         return getRawExpectedReceipt(includeTextDetails);
     }
 
+    static USReceipt getExpectedUSReceipt() {
+        USReceipt usReceipt = null;
+        for (RecognizedReceipt recognizedReceipt : getRawExpectedReceipt(true)) {
+            usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
+        }
+        return usReceipt;
+    }
+
     static IterableStream<RecognizedForm> getExpectedRecognizedForms(boolean includeTextDetails) {
         return new IterableStream<RecognizedForm>(getRawExpectedForms(includeTextDetails));
     }
+
     static List<TrainingDocumentInfo> getTrainingDocuments() {
         TrainingDocumentInfo trainingDocumentInfo1 = new TrainingDocumentInfo("Invoice_1.pdf", TrainingStatus.SUCCEEDED, 1, Collections.emptyList());
         TrainingDocumentInfo trainingDocumentInfo2 = new TrainingDocumentInfo("Invoice_2.pdf", TrainingStatus.SUCCEEDED, 1, Collections.emptyList());
@@ -133,7 +143,6 @@ final class TestUtils {
     }
 
     static AccountProperties getExpectedAccountProperties() {
-        // TODO: wouldn't the count keep changing?
         return new AccountProperties(14, 5000);
     }
 

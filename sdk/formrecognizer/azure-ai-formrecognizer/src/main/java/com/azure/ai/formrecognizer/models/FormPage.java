@@ -11,7 +11,7 @@ import java.util.List;
  * The FormPage model.
  */
 @Immutable
-public class FormPage {
+public final class FormPage {
 
     /*
      * The height of the image/PDF in pixels/inches, respectively.

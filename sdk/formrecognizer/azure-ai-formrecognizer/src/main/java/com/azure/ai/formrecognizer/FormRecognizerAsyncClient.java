@@ -66,29 +66,6 @@ public final class FormRecognizerAsyncClient {
         this.serviceVersion = serviceVersion;
     }
 
-    private static Mono<PollResponse<OperationResult>> processAnalyzeModelResponse(
-        SimpleResponse<AnalyzeOperationResult> analyzeOperationResultSimpleResponse,
-        PollResponse<OperationResult> operationResultPollResponse) {
-        LongRunningOperationStatus status;
-        switch (analyzeOperationResultSimpleResponse.getValue().getStatus()) {
-            case NOT_STARTED:
-            case RUNNING:
-                status = LongRunningOperationStatus.IN_PROGRESS;
-                break;
-            case SUCCEEDED:
-                status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-                break;
-            case FAILED:
-                status = LongRunningOperationStatus.FAILED;
-                break;
-            default:
-                status = LongRunningOperationStatus.fromString(
-                    analyzeOperationResultSimpleResponse.getValue().getStatus().toString(), true);
-                break;
-        }
-        return Mono.just(new PollResponse<>(status, operationResultPollResponse.getValue()));
-    }
-
     /**
      * Creates a new {@link FormTrainingAsyncClient} object. The new {@code FormTrainingAsyncClient}
      * uses the same request policy pipeline as the {@code FormRecognizerAsyncClient}.
@@ -675,7 +652,7 @@ public final class FormRecognizerAsyncClient {
         return (pollingContext) -> {
             final UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
             return service.getAnalyzeLayoutResultWithResponseAsync(resultUid)
-                .map(modelSimpleResponse -> 
+                .map(modelSimpleResponse ->
                     new IterableStream<>(
                         toRecognizedLayout(modelSimpleResponse.getValue().getAnalyzeResult())));
         };
@@ -742,5 +719,28 @@ public final class FormRecognizerAsyncClient {
                 return monoError(logger, ex);
             }
         };
+    }
+
+    private static Mono<PollResponse<OperationResult>> processAnalyzeModelResponse(
+        SimpleResponse<AnalyzeOperationResult> analyzeOperationResultSimpleResponse,
+        PollResponse<OperationResult> operationResultPollResponse) {
+        LongRunningOperationStatus status;
+        switch (analyzeOperationResultSimpleResponse.getValue().getStatus()) {
+            case NOT_STARTED:
+            case RUNNING:
+                status = LongRunningOperationStatus.IN_PROGRESS;
+                break;
+            case SUCCEEDED:
+                status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+                break;
+            case FAILED:
+                status = LongRunningOperationStatus.FAILED;
+                break;
+            default:
+                status = LongRunningOperationStatus.fromString(
+                    analyzeOperationResultSimpleResponse.getValue().getStatus().toString(), true);
+                break;
+        }
+        return Mono.just(new PollResponse<>(status, operationResultPollResponse.getValue()));
     }
 }

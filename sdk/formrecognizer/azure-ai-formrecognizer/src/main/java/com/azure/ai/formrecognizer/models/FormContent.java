@@ -26,17 +26,25 @@ public abstract class FormContent {
      */
     private final BoundingBox boundingBox;
 
+    /*
+     * Form text content type.
+     */
+    private final TextContentType textContentType;
+
     /**
      * Creates raw OCR item.
      *
      * @param text The text content of ExtractedField.
      * @param boundingBox The BoundingBox of ExtractedField.
      * @param pageNumber the 1 based page number.
+     * @param textContentType The type of text content.
      */
-    FormContent(final String text, final BoundingBox boundingBox, final Integer pageNumber) {
+    FormContent(final String text, final BoundingBox boundingBox, 
+        final Integer pageNumber, final TextContentType textContentType) {
         this.boundingBox = boundingBox;
         this.text = text;
         this.pageNumber = pageNumber;
+        this.textContentType = textContentType;
     }
 
     /**
@@ -64,5 +72,14 @@ public abstract class FormContent {
      */
     public Integer getPageNumber() {
         return this.pageNumber;
+    }
+
+    /**
+     * Get the TextContent type of the FormContent.
+     *
+     * @return The TextContent type of the FormContent.
+     */
+    public TextContentType getTextContentType() {
+        return this.textContentType;
     }
 }

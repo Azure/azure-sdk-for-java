@@ -9,7 +9,7 @@ import com.azure.core.annotation.Immutable;
  * The CustomFormModelField model.
  */
 @Immutable
-public class CustomFormModelField {
+public final class CustomFormModelField {
 
     /*
      * Training field label.

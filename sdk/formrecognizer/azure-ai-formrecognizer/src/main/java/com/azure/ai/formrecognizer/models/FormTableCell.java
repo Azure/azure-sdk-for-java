@@ -11,7 +11,7 @@ import java.util.List;
  * The FormTableCell model.
  */
 @Immutable
-public class FormTableCell extends FormContent {
+public final class FormTableCell extends FormContent {
 
     /*
      * Row index of the cell.
@@ -73,7 +73,7 @@ public class FormTableCell extends FormContent {
         final Integer columnSpan, final String text, final BoundingBox boundingBox,
         final float confidence, final List<FormContent> elements, final boolean isHeader,
         final boolean isFooter, final int pageNumber) {
-        super(text, boundingBox, pageNumber);
+        super(text, boundingBox, pageNumber, null);
         this.rowIndex = rowIndex;
         this.columnIndex = columnIndex;
         this.rowSpan = rowSpan;

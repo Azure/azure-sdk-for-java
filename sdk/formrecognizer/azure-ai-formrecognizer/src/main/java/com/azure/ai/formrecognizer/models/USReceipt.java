@@ -12,7 +12,7 @@ import java.util.List;
  * The USReceipt model.
  */
 @Immutable
-public class USReceipt extends RecognizedReceipt {
+public final class USReceipt extends RecognizedReceipt {
 
     /**
      * List of recognized field items.
@@ -80,7 +80,7 @@ public class USReceipt extends RecognizedReceipt {
      * @param merchantAddress Recognized field merchant address.
      * @param merchantPhoneNumber Recognized field merchant phone number.
      * @param subtotal Recognized field subtotal.
-     * @param tax Recognized field tac.
+     * @param tax Recognized field tax.
      * @param tip Recognized field tip.
      * @param total Recognized field total.
      * @param transactionDate Recognized field transaction date.

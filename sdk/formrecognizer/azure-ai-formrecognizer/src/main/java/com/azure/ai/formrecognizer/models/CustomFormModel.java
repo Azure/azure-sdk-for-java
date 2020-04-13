@@ -13,7 +13,7 @@ import java.util.List;
  * The CustomFormModel
  */
 @Immutable
-public class CustomFormModel {
+public final class CustomFormModel {
 
     /*
      * List of errors returned during the training operation.
