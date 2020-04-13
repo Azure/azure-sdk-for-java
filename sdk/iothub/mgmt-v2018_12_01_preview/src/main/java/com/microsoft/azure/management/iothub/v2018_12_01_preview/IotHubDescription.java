@@ -17,13 +17,13 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.iothub.v2018_12_01_preview.implementation.IoTHubManager;
+import com.microsoft.azure.management.iothub.v2018_12_01_preview.implementation.DevicesManager;
 import com.microsoft.azure.management.iothub.v2018_12_01_preview.implementation.IotHubDescriptionInner;
 
 /**
  * Type representing IotHubDescription.
  */
-public interface IotHubDescription extends HasInner<IotHubDescriptionInner>, Resource, GroupableResourceCore<IoTHubManager, IotHubDescriptionInner>, HasResourceGroup, Refreshable<IotHubDescription>, Updatable<IotHubDescription.Update>, HasManager<IoTHubManager> {
+public interface IotHubDescription extends HasInner<IotHubDescriptionInner>, Resource, GroupableResourceCore<DevicesManager, IotHubDescriptionInner>, HasResourceGroup, Refreshable<IotHubDescription>, Updatable<IotHubDescription.Update>, HasManager<DevicesManager> {
     /**
      * @return the etag value.
      */
