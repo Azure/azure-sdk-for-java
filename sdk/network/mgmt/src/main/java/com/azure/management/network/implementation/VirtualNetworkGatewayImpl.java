@@ -174,7 +174,6 @@ class VirtualNetworkGatewayImpl
 
     @Override
     public Mono<Void> resetAsync() {
-        // TODO(not known): gatewayVip - parameter
         return this
             .manager()
             .inner()

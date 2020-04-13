@@ -79,7 +79,6 @@ class LoadBalancerImpl
 
     @Override
     protected Mono<LoadBalancerInner> getInnerAsync() {
-        // TODO(not known): Extra parameter
         return this
             .manager()
             .inner()

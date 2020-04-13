@@ -52,7 +52,6 @@ class RouteFilterImpl
 
     @Override
     protected Mono<RouteFilterInner> getInnerAsync() {
-        // TODO(not known): parameter - expand
         return this
             .manager()
             .inner()

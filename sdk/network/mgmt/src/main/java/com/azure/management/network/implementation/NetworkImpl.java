@@ -69,7 +69,6 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
 
     @Override
     protected Mono<VirtualNetworkInner> getInnerAsync() {
-        // TODO(not known): parameter - expand
         return this
             .manager()
             .inner()

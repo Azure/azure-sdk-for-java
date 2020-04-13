@@ -62,7 +62,6 @@ class RouteTableImpl
 
     @Override
     protected Mono<RouteTableInner> getInnerAsync() {
-        // TODO(not known): parameter - expand
         return this
             .manager()
             .inner()

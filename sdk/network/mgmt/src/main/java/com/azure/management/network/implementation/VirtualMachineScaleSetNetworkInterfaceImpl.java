@@ -33,7 +33,7 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
     private final String resourceGroupName;
 
     private final ClientLogger logger = new ClientLogger(getClass());
-    
+
     VirtualMachineScaleSetNetworkInterfaceImpl(
         String name,
         String scaleSetName,
@@ -176,7 +176,6 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
 
     @Override
     protected Mono<NetworkInterfaceInner> getInnerAsync() {
-        // TODO(not known): parameter - expand
         return this
             .manager()
             .inner()

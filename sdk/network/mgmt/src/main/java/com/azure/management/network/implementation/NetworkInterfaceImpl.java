@@ -69,7 +69,6 @@ class NetworkInterfaceImpl
 
     @Override
     protected Mono<NetworkInterfaceInner> getInnerAsync() {
-        // TODO(not known): 3rd parameter
         return this
             .manager()
             .inner()
