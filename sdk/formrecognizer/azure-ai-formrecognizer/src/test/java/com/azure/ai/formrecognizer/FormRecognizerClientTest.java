@@ -3,17 +3,17 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.FormPage;
-import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.ai.formrecognizer.models.FormContentType;
+import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Test;
 
 import static com.azure.ai.formrecognizer.TestUtils.FILE_LENGTH;
-import static com.azure.ai.formrecognizer.TestUtils.INVALID_STATUS_ERROR;
+import static com.azure.ai.formrecognizer.TestUtils.INVALID_SOURCE_URL_ERROR;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_URL;
 import static com.azure.ai.formrecognizer.TestUtils.VALID_MODEL_ID;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedFormPages;
@@ -97,10 +97,10 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
     @Test
     void extractCustomFormInValidSourceUrl() {
-        IllegalArgumentException illegalArgumentException = assertThrows(
-            IllegalArgumentException.class,
+        HttpResponseException httpResponseException = assertThrows(
+            HttpResponseException.class,
             () -> client.beginExtractCustomFormsFromUrl(INVALID_URL, VALID_MODEL_ID).getFinalResult());
 
-        assertEquals(illegalArgumentException.getMessage(), (INVALID_STATUS_ERROR));
+        assertEquals(httpResponseException.getMessage(), (INVALID_SOURCE_URL_ERROR));
     }
 }

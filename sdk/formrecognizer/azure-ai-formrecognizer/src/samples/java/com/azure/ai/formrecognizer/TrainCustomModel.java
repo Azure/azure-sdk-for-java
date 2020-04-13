@@ -29,7 +29,7 @@ public class TrainCustomModel {
             .buildAsyncClient().getFormTrainingAsyncClient();
 
         // Train custom model
-        String trainingSetSource = "https://training-SAS-URL";
+        String trainingSetSource = "{training-set-SAS-URL}";
         PollerFlux<OperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingSetSource, true);
 
         CustomFormModel customFormModel = trainingPoller
@@ -39,9 +39,8 @@ public class TrainCustomModel {
                     // training completed successfully, retrieving final result.
                     return trainingOperationResponse.getFinalResult();
                 } else {
-                    System.out.println("Polling completed unsuccessfully with status:"
-                        + trainingOperationResponse.getStatus());
-                    return Mono.empty();
+                    return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
+                        + trainingOperationResponse.getStatus()));
                 }
             }).block();
 

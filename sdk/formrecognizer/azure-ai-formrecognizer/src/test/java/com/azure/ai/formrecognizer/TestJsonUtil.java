@@ -11,43 +11,37 @@ import com.azure.ai.formrecognizer.models.FormTable;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.core.util.IterableStream;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.TimeZone;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static com.azure.ai.formrecognizer.Transforms.toReceipt;
 import static com.azure.ai.formrecognizer.Transforms.toRecognizedForm;
-import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
 
 /**
  * Contains helper methods for generating test data for test methods.
  */
 final class TestJsonUtil {
 
-    public static ObjectMapper getObjectMapper() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(FAIL_ON_UNKNOWN_PROPERTIES, false);
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        df.setTimeZone(TimeZone.getDefault());
-        objectMapper.setDateFormat(df);
+    private TestJsonUtil() {
+    }
 
-        objectMapper.registerModule(new JavaTimeModule());
-        return objectMapper;
+    public static SerializerAdapter getSerializerAdapter() {
+        return JacksonAdapter.createDefaultSerializerAdapter();
     }
 
     static AnalyzeOperationResult getRawResponse(String filePath) {
         String content;
         try {
             content = new String(Files.readAllBytes(Paths.get(filePath)));
-            return getObjectMapper().readValue(content, AnalyzeOperationResult.class);
+            return getSerializerAdapter().deserialize(content, AnalyzeOperationResult.class, SerializerEncoding.JSON);
         } catch (IOException e) {
             e.printStackTrace();
         }

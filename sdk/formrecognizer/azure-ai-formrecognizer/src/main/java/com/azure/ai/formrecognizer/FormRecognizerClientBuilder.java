@@ -60,12 +60,11 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {FormRecognizerAsyncClient.class, FormRecognizerClient.class})
 public final class FormRecognizerClientBuilder {
 
+    static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
     private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
     private static final String CONTENT_TYPE_HEADER_VALUE = ContentType.APPLICATION_JSON;
     private static final String ACCEPT_HEADER = "Accept";
     private static final String FORM_RECOGNIZER_PROPERTIES = "azure-ai-formrecognizer.properties";
-    static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
-
     private static final String NAME = "name";
     private static final String VERSION = "version";
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
@@ -148,8 +147,9 @@ public final class FormRecognizerClientBuilder {
 
         HttpPipeline pipeline = httpPipeline;
         // Create a default Pipeline if it is not given
-        pipeline = getDefaultHttpPipeline(buildConfiguration, pipeline);
-
+        if (pipeline == null) {
+            pipeline = getDefaultHttpPipeline(buildConfiguration);
+        }
         final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
             .endpoint(endpoint)
             .pipeline(pipeline)
@@ -158,44 +158,42 @@ public final class FormRecognizerClientBuilder {
         return new FormRecognizerAsyncClient(formRecognizerAPI, serviceVersion);
     }
 
-    private HttpPipeline getDefaultHttpPipeline(Configuration buildConfiguration, HttpPipeline pipeline) {
-        if (pipeline == null) {
-            // Closest to API goes first, closest to wire goes last.
-            final List<HttpPipelinePolicy> policies = new ArrayList<>();
+    private HttpPipeline getDefaultHttpPipeline(Configuration buildConfiguration) {
+        // Closest to API goes first, closest to wire goes last.
+        final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-            policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
-                buildConfiguration));
-            policies.add(new RequestIdPolicy());
-            policies.add(new AddHeadersPolicy(headers));
+        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
+            buildConfiguration));
+        policies.add(new RequestIdPolicy());
+        policies.add(new AddHeadersPolicy(headers));
 
-            HttpPolicyProviders.addBeforeRetryPolicies(policies);
-            policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
-            policies.add(new AddDatePolicy());
-            // Authentications
-            if (credential != null) {
-                policies.add(new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, credential));
-            } else {
-                // Throw exception that credential and tokenCredential cannot be null
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Missing credential information while building a client."));
-            }
-            policies.addAll(this.policies);
-            HttpPolicyProviders.addAfterRetryPolicies(policies);
-
-            policies.add(new HttpLoggingPolicy(httpLogOptions));
-
-            pipeline = new HttpPipelineBuilder()
-                .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                .httpClient(httpClient)
-                .build();
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
+        policies.add(new AddDatePolicy());
+        // Authentications
+        if (credential != null) {
+            policies.add(new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, credential));
+        } else {
+            // Throw exception that credential and tokenCredential cannot be null
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing credential information while building a client."));
         }
-        return pipeline;
+        policies.addAll(this.policies);
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
+
+        policies.add(new HttpLoggingPolicy(httpLogOptions));
+
+        return new HttpPipelineBuilder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .build();
     }
 
     /**
      * Sets the service endpoint for the Azure Form Recognizer instance.
      *
      * @param endpoint The URL of the Azure Form Recognizer instance service requests to and receive responses from.
+     *
      * @return The updated FormRecognizerClientBuilder object.
      * @throws NullPointerException if {@code endpoint} is null
      * @throws IllegalArgumentException if {@code endpoint} cannot be parsed into a valid URL.
@@ -263,6 +261,7 @@ public final class FormRecognizerClientBuilder {
      * Sets the HTTP client to use for sending and receiving requests to and from the service.
      *
      * @param client The HTTP client to use for requests.
+     *
      * @return The updated FormRecognizerClientBuilder object.
      */
     public FormRecognizerClientBuilder httpClient(HttpClient client) {

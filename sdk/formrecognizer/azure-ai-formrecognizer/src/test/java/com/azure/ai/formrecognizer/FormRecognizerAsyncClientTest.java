@@ -18,7 +18,7 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 
 import static com.azure.ai.formrecognizer.TestUtils.FILE_LENGTH;
-import static com.azure.ai.formrecognizer.TestUtils.INVALID_STATUS_ERROR;
+import static com.azure.ai.formrecognizer.TestUtils.INVALID_SOURCE_URL_ERROR;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_URL;
 import static com.azure.ai.formrecognizer.TestUtils.VALID_MODEL_ID;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedFormPages;
@@ -144,10 +144,10 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
 
     @Test
     void extractCustomFormInValidSourceUrl() {
-        IllegalArgumentException illegalArgumentException = assertThrows(
-            IllegalArgumentException.class,
+        HttpResponseException httpResponseException = assertThrows(
+            HttpResponseException.class,
             () -> client.beginRecognizeCustomFormsFromUrl(INVALID_URL, VALID_MODEL_ID).getSyncPoller().getFinalResult());
 
-        assertEquals(illegalArgumentException.getMessage(), (INVALID_STATUS_ERROR));
+        assertEquals(httpResponseException.getMessage(), (INVALID_SOURCE_URL_ERROR));
     }
 }

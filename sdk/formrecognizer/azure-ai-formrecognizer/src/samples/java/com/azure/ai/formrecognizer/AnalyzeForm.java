@@ -11,7 +11,6 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.util.Optional;
 
 /*
@@ -24,7 +23,6 @@ public class AnalyzeForm {
      *
      * @param args Unused arguments to the program.
      *
-     * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
@@ -33,8 +31,8 @@ public class AnalyzeForm {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
-        String analyzeFilePath = "{analyze_file_path}";
-        String modelId = "{model_Id}";
+        String analyzeFilePath = "{file_source_url}";
+        String modelId = "{model_id}";
         PollerFlux<OperationResult, IterableStream<RecognizedForm>> trainingPoller = client.beginRecognizeCustomFormsFromUrl(analyzeFilePath, modelId);
 
         IterableStream<RecognizedForm> recognizedForms = trainingPoller
@@ -44,9 +42,8 @@ public class AnalyzeForm {
                     // training completed successfully, retrieving final result.
                     return trainingOperationResponse.getFinalResult();
                 } else {
-                    System.out.println("Polling completed unsuccessfully with status:"
-                        + trainingOperationResponse.getStatus());
-                    return Mono.empty();
+                    return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
+                        + trainingOperationResponse.getStatus()));
                 }
             }).block();
 

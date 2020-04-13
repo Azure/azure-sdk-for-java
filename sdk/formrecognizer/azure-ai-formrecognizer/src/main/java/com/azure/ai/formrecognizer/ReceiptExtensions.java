@@ -26,6 +26,9 @@ import static com.azure.ai.formrecognizer.models.ReceiptItemType.TOTAL_PRICE;
 @SuppressWarnings("unchecked")
 public final class ReceiptExtensions {
 
+    private ReceiptExtensions() {
+    }
+
     /**
      * Static method to convert an incoming receipt to a {@link USReceipt type}.
      *
@@ -105,14 +108,13 @@ public final class ReceiptExtensions {
     private static List<USReceiptItem> toReceiptItems(FormField<?> fieldValueItems) {
         List<FormField<?>> fieldValueArray = (List<FormField<?>>) fieldValueItems.getFieldValue();
         List<USReceiptItem> receiptItemList = new ArrayList<>();
-        FormField<String> name = null;
-        FormField<Float> quantity = null;
-        FormField<Float> price = null;
-        FormField<Float> totalPrice = null;
-        USReceiptItem receiptItem = null;
 
         for (FormField<?> eachFieldValue : fieldValueArray) {
             Map<String, FormField<?>> objectValue = ((Map<String, FormField<?>>) (eachFieldValue.getFieldValue()));
+            FormField<String> name = null;
+            FormField<Float> quantity = null;
+            FormField<Float> price = null;
+            FormField<Float> totalPrice = null;
             for (Map.Entry<String, FormField<?>> entry : objectValue.entrySet()) {
                 String key = entry.getKey();
                 if (QUANTITY.toString().equals(key)) {
@@ -124,9 +126,8 @@ public final class ReceiptExtensions {
                 } else if (TOTAL_PRICE.toString().equals(key)) {
                     totalPrice = (FormField<Float>) entry.getValue();
                 }
-                receiptItem = new USReceiptItem(name, quantity, price, totalPrice);
             }
-            receiptItemList.add(receiptItem);
+            receiptItemList.add(new USReceiptItem(name, quantity, price, totalPrice));
         }
         return receiptItemList;
     }

@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.implementation.models.ErrorInformation;
 import com.azure.ai.formrecognizer.implementation.models.Model;
+import com.azure.ai.formrecognizer.implementation.models.ModelInfo;
 import com.azure.ai.formrecognizer.implementation.models.ModelStatus;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelField;
@@ -13,6 +14,7 @@ import com.azure.ai.formrecognizer.models.FormRecognizerError;
 import com.azure.ai.formrecognizer.models.ModelTrainingStatus;
 import com.azure.ai.formrecognizer.models.TrainingDocumentInfo;
 import com.azure.ai.formrecognizer.models.TrainingStatus;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -26,6 +28,7 @@ import java.util.stream.Collectors;
  * Helper class to convert service level custom form related models to SDK exposed models.
  */
 final class CustomModelTransforms {
+    public static final float DEFAULT_CONFIDENCE_VALUE = 1.0f;
     private static final ClientLogger LOGGER = new ClientLogger(CustomModelTransforms.class);
 
     private CustomModelTransforms() {
@@ -39,27 +42,20 @@ final class CustomModelTransforms {
      * @return The {@link CustomFormModel}.
      */
     static CustomFormModel toCustomFormModel(Model modelResponse) {
-        com.azure.ai.formrecognizer.implementation.models.ModelInfo modelInfo = modelResponse.getModelInfo();
+        ModelInfo modelInfo = modelResponse.getModelInfo();
         if (modelInfo.getStatus() == ModelStatus.INVALID) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Invalid status Model Id."));
-        }
-
-        List<FormRecognizerError> trainResultErrors = new ArrayList<>();
-        if (modelResponse.getTrainResult().getErrors() != null) {
-            trainResultErrors = setTrainingErrors(modelResponse.getTrainResult().getErrors());
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Model Id provided returned with status: " + modelInfo.getStatus()));
         }
 
         List<TrainingDocumentInfo> trainingDocumentInfoList =
-            modelResponse.getTrainResult().getTrainingDocuments().stream().map(trainingDocumentItem -> {
-                List<FormRecognizerError> documentErrors = new ArrayList<>();
-                if (trainingDocumentItem.getErrors() != null) {
-                    documentErrors = setTrainingErrors(trainingDocumentItem.getErrors());
-                }
-                return new TrainingDocumentInfo(trainingDocumentItem.getDocumentName(),
+            modelResponse.getTrainResult().getTrainingDocuments().stream()
+                .map(trainingDocumentItem -> new TrainingDocumentInfo(
+                    trainingDocumentItem.getDocumentName(),
                     TrainingStatus.fromString(trainingDocumentItem.getStatus().toString()),
                     trainingDocumentItem.getPages(),
-                    documentErrors);
-            }).collect(Collectors.toList());
+                    setTrainingErrors(trainingDocumentItem.getErrors())))
+                .collect(Collectors.toList());
 
         List<CustomFormSubModel> subModelList = new ArrayList<>();
         String formType = "form-";
@@ -72,9 +68,10 @@ final class CustomModelTransforms {
                     String fieldLabel = "field-" + i;
                     fieldMap.put(fieldLabel, new CustomFormModelField(fieldLabel, eachField, null));
                 }
-                CustomFormSubModel customFormSubModel = new CustomFormSubModel(null, fieldMap,
-                    formType + clusterKey);
-                subModelList.add(customFormSubModel);
+                subModelList.add(new CustomFormSubModel(
+                    DEFAULT_CONFIDENCE_VALUE,
+                    fieldMap,
+                    formType + clusterKey));
             });
         } else if (modelResponse.getTrainResult().getFields() != null) {
             // labeled model
@@ -83,15 +80,20 @@ final class CustomModelTransforms {
                 .forEach(formFieldsReport -> fieldMap.put(formFieldsReport.getFieldName(),
                     new CustomFormModelField(null, formFieldsReport.getFieldName(),
                         formFieldsReport.getAccuracy())));
-            subModelList.add(new CustomFormSubModel(modelResponse.getTrainResult().getAverageModelAccuracy(),
-                fieldMap, formType + modelInfo.getModelId()));
+            subModelList.add(new CustomFormSubModel(
+                modelResponse.getTrainResult().getAverageModelAccuracy(),
+                fieldMap,
+                formType + modelInfo.getModelId()));
         }
 
-        return new CustomFormModel(modelInfo.getModelId().toString(),
+        return new CustomFormModel(
+            modelInfo.getModelId().toString(),
             ModelTrainingStatus.fromString(modelInfo.getStatus().toString()),
-            modelInfo.getCreatedDateTime(), modelInfo.getLastUpdatedDateTime(),
+            modelInfo.getCreatedDateTime(),
+            modelInfo.getLastUpdatedDateTime(),
             new IterableStream<>(subModelList),
-            trainResultErrors, trainingDocumentInfoList);
+            setTrainingErrors(modelResponse.getTrainResult().getErrors()),
+            trainingDocumentInfoList);
     }
 
     /**
@@ -102,8 +104,13 @@ final class CustomModelTransforms {
      * @return The list of {@link FormRecognizerError}
      */
     private static List<FormRecognizerError> setTrainingErrors(List<ErrorInformation> trainingErrorList) {
-        return trainingErrorList.stream().map(errorInformation -> new FormRecognizerError(errorInformation.getCode(),
-            errorInformation.getMessage())).collect(Collectors.toList());
+        if (CoreUtils.isNullOrEmpty(trainingErrorList)) {
+            return null;
+        } else {
+            return trainingErrorList.stream().map(errorInformation ->
+                new FormRecognizerError(errorInformation.getCode(),
+                    errorInformation.getMessage())).collect(Collectors.toList());
+        }
     }
 }
 

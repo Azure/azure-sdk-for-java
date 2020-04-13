@@ -17,7 +17,6 @@ import java.nio.ByteBuffer;
  */
 public final class Utility {
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
-
     private Utility() {
     }
 

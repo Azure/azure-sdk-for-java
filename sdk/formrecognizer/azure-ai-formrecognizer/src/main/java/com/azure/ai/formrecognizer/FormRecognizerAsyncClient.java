@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
+import com.azure.ai.formrecognizer.implementation.models.ErrorInformation;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.implementation.models.SourcePath;
 import com.azure.ai.formrecognizer.models.FormContentType;
@@ -21,6 +22,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -32,6 +34,7 @@ import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 import java.time.Duration;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Function;
@@ -68,6 +71,8 @@ public final class FormRecognizerAsyncClient {
         this.service = service;
         this.serviceVersion = serviceVersion;
     }
+
+
 
     /**
      * Creates a new {@link FormTrainingAsyncClient} object. The new {@code FormTrainingAsyncClient}
@@ -474,8 +479,11 @@ public final class FormRecognizerAsyncClient {
         return (pollingContext) -> {
             final UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
             return service.getAnalyzeReceiptResultWithResponseAsync(resultUid)
-                .map(modelSimpleResponse -> toReceipt(modelSimpleResponse.getValue().getAnalyzeResult(),
-                    includeTextDetails));
+                .map(modelSimpleResponse -> {
+                    throwIfAnalyzeStatusInvalid(modelSimpleResponse);
+                    return toReceipt(modelSimpleResponse.getValue().getAnalyzeResult(),
+                        includeTextDetails);
+                });
         };
     }
 
@@ -528,9 +536,11 @@ public final class FormRecognizerAsyncClient {
         return (pollingContext) -> {
             final UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
             return service.getAnalyzeLayoutResultWithResponseAsync(resultUid)
-                .map(modelSimpleResponse ->
-                    new IterableStream<>(
-                        toRecognizedLayout(modelSimpleResponse.getValue().getAnalyzeResult())));
+                .map(modelSimpleResponse -> {
+                    throwIfAnalyzeStatusInvalid(modelSimpleResponse);
+                    return new IterableStream<>(
+                        toRecognizedLayout(modelSimpleResponse.getValue().getAnalyzeResult()));
+                });
         };
     }
 
@@ -541,13 +551,28 @@ public final class FormRecognizerAsyncClient {
             UUID modelUid = UUID.fromString(modelId);
             return service.getAnalyzeFormResultWithResponseAsync(modelUid, resultUid)
                 .map(modelSimpleResponse -> {
-                    if (modelSimpleResponse.getValue().getStatus().equals(OperationStatus.FAILED)) {
-                        throw logger.logExceptionAsError(new IllegalArgumentException("Invalid status Model Id."));
-                    }
+                    throwIfAnalyzeStatusInvalid(modelSimpleResponse);
                     return new IterableStream<>(toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
                         includeTextDetails));
                 });
         };
+    }
+
+    /**
+     * Helper method that throws a {@link HttpResponseException} if {@link AnalyzeOperationResult#getStatus()} is
+     * {@link OperationStatus#FAILED}.
+     *
+     * @param modelSimpleResponse The response returned from the service.
+     */
+    private void throwIfAnalyzeStatusInvalid(SimpleResponse<AnalyzeOperationResult> modelSimpleResponse) {
+        if (modelSimpleResponse.getValue().getStatus().equals(OperationStatus.FAILED)) {
+            List<ErrorInformation> errorInformationList =
+                modelSimpleResponse.getValue().getAnalyzeResult().getErrors();
+            if (!CoreUtils.isNullOrEmpty(errorInformationList)) {
+                throw logger.logExceptionAsError(
+                    new HttpResponseException(errorInformationList.get(0).getMessage(), null));
+            }
+        }
     }
 
     private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
