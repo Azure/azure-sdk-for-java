@@ -5,37 +5,37 @@ parameters:
   EnvVars: {}
   MaxParallel: 0
   Matrix:
-    Linux - Java 8:
+    Linux - Java 8 (AzureCloud):
       OSName: 'Linux'
       OSVmImage: 'ubuntu-16.04'
       JavaVersion: '1.8'
       DisplayName: 'Linux - Java 8'
       CloudType: AzureCloud
-    macOS - Java 8:
+    macOS - Java 8 (AzureCloud):
       OSName: 'macOS'
       OSVmImage: 'macOS-10.15'
       JavaVersion: '1.8'
       DisplayName: 'macOS - Java 8'
       CloudType: AzureCloud
-    Windows - Java 8:
+    Windows - Java 8 (AzureCloud):
       OSName: 'Windows'
       OSVmImage: 'windows-2019'
       JavaVersion: '1.8'
       DisplayName: 'Windows - Java 8'
       CloudType: AzureCloud
-    Linux - Java 11:
+    Linux - Java 11 (AzureCloud):
       OSName: 'Linux'
       OSVmImage: 'ubuntu-16.04'
       JavaVersion: '1.11'
       DisplayName: 'Linux - Java 11'
       CloudType: AzureCloud
-    macOS - Java 11:
+    macOS - Java 11 (AzureCloud):
       OSName: 'macOS'
       OSVmImage: 'macOS-10.15'
       JavaVersion: '1.11'
       DisplayName: 'macOS - Java 11'
       CloudType: AzureCloud
-    Windows - Java 11:
+    Windows - Java 11 (AzureCloud):
       OSName: 'Windows'
       OSVmImage: 'windows-2019'
       JavaVersion: '1.11'
