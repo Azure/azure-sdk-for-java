@@ -3,7 +3,7 @@
 
 package com.microsoft.azure.spring.autoconfigure.mediaservices;
 
-import com.microsoft.azure.spring.telemetry.TelemetrySender;
+import com.microsoft.azure.telemetry.TelemetrySender;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.services.media.MediaConfiguration;
 import com.microsoft.windowsazure.services.media.MediaContract;
@@ -32,8 +32,8 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.microsoft.azure.spring.telemetry.TelemetryData.SERVICE_NAME;
-import static com.microsoft.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName;
+import static com.microsoft.azure.telemetry.TelemetryData.SERVICE_NAME;
+import static com.microsoft.azure.telemetry.TelemetryData.getClassPackageSimpleName;
 import static com.microsoft.windowsazure.Configuration.PROPERTY_CONNECT_TIMEOUT;
 import static com.microsoft.windowsazure.Configuration.PROPERTY_HTTP_PROXY_HOST;
 import static com.microsoft.windowsazure.Configuration.PROPERTY_HTTP_PROXY_PORT;

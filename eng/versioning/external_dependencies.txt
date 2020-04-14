@@ -8,7 +8,6 @@ com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.10.1
 com.fasterxml.uuid:java-uuid-generator;3.2.0
 com.github.spotbugs:spotbugs;4.0.0-beta3
 com.github.spotbugs:spotbugs-maven-plugin;3.1.12.2
-com.google.code.findbugs:annotations;2.0.1
 com.google.code.gson:gson;2.8.5
 com.google.guava:guava;24.1.1-jre
 com.microsoft.azure:azure-annotations;1.7.0
@@ -23,10 +22,10 @@ com.microsoft.azure:azure-storage-blob;10.5.0
 com.microsoft.azure:client-runtime;1.6.15
 com.microsoft.azure:qpid-proton-j-extensions;1.2.2
 com.microsoft.azure:spotbugs-maven-plugin;1.2.1
-com.microsoft.azure:spring-data-cosmosdb;2.2.3
+com.microsoft.azure:spring-data-cosmosdb;2.2.3.FIX1
 com.microsoft.rest:client-runtime;1.6.15
 com.microsoft.rest.v2:client-runtime;2.1.1
-com.microsoft.spring.data.gremlin:spring-data-gremlin;2.2.2
+com.microsoft.spring.data.gremlin:spring-data-gremlin;2.2.3
 com.microsoft.sqlserver:mssql-jdbc;7.4.1.jre8
 com.squareup.okhttp3:okhttp;4.2.2
 commons-codec:commons-codec;1.13

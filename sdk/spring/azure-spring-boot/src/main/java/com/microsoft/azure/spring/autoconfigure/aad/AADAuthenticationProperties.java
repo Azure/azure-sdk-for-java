@@ -14,6 +14,7 @@ import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 @Validated
 @ConfigurationProperties("azure.activedirectory")
@@ -22,6 +23,8 @@ public class AADAuthenticationProperties {
     private static final Logger LOGGER = LoggerFactory.getLogger(AADAuthenticationProperties.class);
 
     private static final String DEFAULT_SERVICE_ENVIRONMENT = "global";
+
+    private static final long DEFAULT_JWKSETCACHE_LIFESPAN = TimeUnit.MINUTES.toMillis(5);
 
     /**
      * Default UserGroup configuration.
@@ -68,6 +71,11 @@ public class AADAuthenticationProperties {
      * Size limit in Bytes of the JWKSet Remote URL call.
      */
     private int jwtSizeLimit = RemoteJWKSet.DEFAULT_HTTP_SIZE_LIMIT; /* bytes */
+
+    /**
+     * The lifespan of the cached JWK set before it expires, default is 5 minutes.
+     */
+    private long jwkSetCacheLifespan = DEFAULT_JWKSETCACHE_LIFESPAN;
 
     /**
      * Azure Tenant ID.
@@ -269,6 +277,14 @@ public class AADAuthenticationProperties {
         this.jwtSizeLimit = jwtSizeLimit;
     }
 
+    public long getJwkSetCacheLifespan() {
+        return jwkSetCacheLifespan;
+    }
+
+    public void setJwkSetCacheLifespan(long jwkSetCacheLifespan) {
+        this.jwkSetCacheLifespan = jwkSetCacheLifespan;
+    }
+
     public String getTenantId() {
         return tenantId;
     }
@@ -291,51 +307,5 @@ public class AADAuthenticationProperties {
 
     public void setSessionStateless(Boolean sessionStateless) {
         this.sessionStateless = sessionStateless;
-    }
-
-    @Override
-    public String toString() {
-        return "AADAuthenticationProperties{"
-            +  "userGroup=" + userGroup
-            +  ", environment='" + environment + '\''
-            +  ", clientId='" + clientId + '\''
-            +  ", clientSecret='" + clientSecret + '\''
-            +  ", activeDirectoryGroups=" + activeDirectoryGroups
-            +  ", appIdUri='" + appIdUri + '\''
-            +  ", jwtConnectTimeout=" + jwtConnectTimeout
-            +  ", jwtReadTimeout=" + jwtReadTimeout
-            +  ", jwtSizeLimit=" + jwtSizeLimit
-            +  ", tenantId='" + tenantId + '\''
-            +  ", allowTelemetry=" + allowTelemetry
-            +  ", sessionStateless=" + sessionStateless
-            +  '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        AADAuthenticationProperties that = (AADAuthenticationProperties) o;
-        return jwtConnectTimeout == that.jwtConnectTimeout
-            && jwtReadTimeout == that.jwtReadTimeout
-            && jwtSizeLimit == that.jwtSizeLimit
-            && allowTelemetry == that.allowTelemetry
-            && Objects.equals(userGroup, that.userGroup)
-            && Objects.equals(environment, that.environment)
-            && Objects.equals(clientId, that.clientId)
-            && Objects.equals(clientSecret, that.clientSecret)
-            && Objects.equals(activeDirectoryGroups, that.activeDirectoryGroups)
-            && Objects.equals(appIdUri, that.appIdUri)
-            && Objects.equals(tenantId, that.tenantId)
-            && Objects.equals(sessionStateless, that.sessionStateless);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(userGroup, environment, clientId, clientSecret, activeDirectoryGroups, appIdUri, jwtConnectTimeout, jwtReadTimeout, jwtSizeLimit, tenantId, allowTelemetry, sessionStateless);
     }
 }

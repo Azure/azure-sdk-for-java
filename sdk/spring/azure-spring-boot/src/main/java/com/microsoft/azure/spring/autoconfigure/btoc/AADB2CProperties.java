@@ -32,10 +32,6 @@ public class AADB2CProperties {
 
     public static final String PREFIX = "azure.activedirectory.b2c";
 
-    AADB2CProperties() {
-
-    }
-
     /**
      * The name of the b2c tenant.
      */
@@ -200,6 +196,4 @@ public class AADB2CProperties {
     public void setAllowTelemetry(boolean allowTelemetry) {
         this.allowTelemetry = allowTelemetry;
     }
-
-
 }

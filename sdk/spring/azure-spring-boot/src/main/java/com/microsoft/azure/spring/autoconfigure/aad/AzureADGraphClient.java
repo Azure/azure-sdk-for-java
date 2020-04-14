@@ -25,6 +25,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -42,7 +43,6 @@ import java.util.stream.StreamSupport;
 public class AzureADGraphClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureADGraphClient.class);
-
     private static final SimpleGrantedAuthority DEFAULT_AUTHORITY = new SimpleGrantedAuthority("ROLE_USER");
     private static final String DEFAULT_ROLE_PREFIX = "ROLE_";
     private static final String MICROSOFT_GRAPH_SCOPE = "https://graph.microsoft.com/user.read";
@@ -77,8 +77,7 @@ public class AzureADGraphClient {
 
         if (this.aadMicrosoftGraphApiBool) {
             conn.setRequestMethod(HttpMethod.GET.toString());
-            conn.setRequestProperty(HttpHeaders.AUTHORIZATION,
-                                    String.format("Bearer %s", accessToken));
+            conn.setRequestProperty(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", accessToken));
             conn.setRequestProperty(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
             conn.setRequestProperty(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE);
         } else {
@@ -102,7 +101,7 @@ public class AzureADGraphClient {
         try (BufferedReader reader = new BufferedReader(
                 new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8))) {
             final StringBuilder stringBuffer = new StringBuilder();
-            String line = "";
+            String line;
             while ((line = reader.readLine()) != null) {
                 stringBuffer.append(line);
             }
@@ -123,13 +122,13 @@ public class AzureADGraphClient {
 
         if (valuesNode != null) {
             lUserGroups
-                    .addAll(StreamSupport.stream(valuesNode.spliterator(), false).filter(this::isMatchingUserGroupKey)
-                            .map(node -> {
-                                final String objectID = node.
-                                        get(aadAuthenticationProperties.getUserGroup().getObjectIDKey()).asText();
-                                final String displayName = node.get("displayName").asText();
-                                return new UserGroup(objectID, displayName);
-                            }).collect(Collectors.toList()));
+                .addAll(StreamSupport.stream(valuesNode.spliterator(), false).filter(this::isMatchingUserGroupKey)
+                    .map(node -> {
+                        final String objectID = node.
+                            get(aadAuthenticationProperties.getUserGroup().getObjectIDKey()).asText();
+                        final String displayName = node.get("displayName").asText();
+                        return new UserGroup(objectID, displayName);
+                    }).collect(Collectors.toList()));
 
         }
 
@@ -140,12 +139,12 @@ public class AzureADGraphClient {
      * Checks that the JSON Node is a valid User Group to extract User Groups from
      *
      * @param node - json node to look for a key/value to equate against the
-     * {@link AADAuthenticationProperties.UserGroupProperties}
+     *             {@link AADAuthenticationProperties.UserGroupProperties}
      * @return true if the json node contains the correct key, and expected value to identify a user group.
      */
     private boolean isMatchingUserGroupKey(final JsonNode node) {
         return node.get(aadAuthenticationProperties.getUserGroup().getKey()).asText()
-                .equals(aadAuthenticationProperties.getUserGroup().getValue());
+            .equals(aadAuthenticationProperties.getUserGroup().getValue());
     }
 
     public Set<GrantedAuthority> getGrantedAuthorities(String graphApiToken) throws IOException {
@@ -161,13 +160,13 @@ public class AzureADGraphClient {
      * Converts UserGroup list to Set of GrantedAuthorities
      *
      * @param groups user groups
-     * @return granted authority
+     * @return granted authorities
      */
     public Set<GrantedAuthority> convertGroupsToGrantedAuthorities(final List<UserGroup> groups) {
         // Map the authority information to one or more GrantedAuthority's and add it to mappedAuthorities
         final Set<GrantedAuthority> mappedAuthorities = groups.stream().filter(this::isValidUserGroupToGrantAuthority)
-                .map(userGroup -> new SimpleGrantedAuthority(DEFAULT_ROLE_PREFIX + userGroup.getDisplayName()))
-                .collect(Collectors.toCollection(LinkedHashSet::new));
+            .map(userGroup -> new SimpleGrantedAuthority(DEFAULT_ROLE_PREFIX + userGroup.getDisplayName()))
+            .collect(Collectors.toCollection(LinkedHashSet::new));
         if (mappedAuthorities.isEmpty()) {
             mappedAuthorities.add(DEFAULT_AUTHORITY);
         }
@@ -187,11 +186,11 @@ public class AzureADGraphClient {
      */
     private boolean isValidUserGroupToGrantAuthority(final UserGroup group) {
         return aadAuthenticationProperties.getUserGroup().getAllowedGroups().contains(group.getDisplayName())
-                || aadAuthenticationProperties.getActiveDirectoryGroups().contains(group.getDisplayName());
+            || aadAuthenticationProperties.getActiveDirectoryGroups().contains(group.getDisplayName());
     }
 
     public IAuthenticationResult acquireTokenForGraphApi(String idToken, String tenantId)
-        throws ServiceUnavailableException, ExecutionException, InterruptedException {
+        throws ServiceUnavailableException {
         final IClientCredential clientCredential = ClientCredentialFactory.createFromSecret(clientSecret);
         final UserAssertion assertion = new UserAssertion(idToken);
 
@@ -200,19 +199,21 @@ public class AzureADGraphClient {
         try {
             service = Executors.newFixedThreadPool(1);
 
-            final ConfidentialClientApplication application = ConfidentialClientApplication.builder(clientId,
-                    clientCredential).build();
+            final ConfidentialClientApplication application = ConfidentialClientApplication
+                .builder(clientId, clientCredential)
+                .authority(serviceEndpoints.getAadSigninUri() + tenantId + "/")
+                .build();
 
             final Set<String> scopes = new HashSet<>();
             scopes.add(aadMicrosoftGraphApiBool ? MICROSOFT_GRAPH_SCOPE : AAD_GRAPH_API_SCOPE);
 
             final OnBehalfOfParameters onBehalfOfParameters = OnBehalfOfParameters
-                    .builder(scopes, assertion)
-                    .build();
+                .builder(scopes, assertion)
+                .build();
 
             final CompletableFuture<IAuthenticationResult> future = application.acquireToken(onBehalfOfParameters);
             result = future.get();
-        } catch (ExecutionException | InterruptedException e) {
+        } catch (ExecutionException | InterruptedException | MalformedURLException e) {
             // handle conditional access policy
             final Throwable cause = e.getCause();
             if (cause instanceof MsalServiceException) {
@@ -222,7 +223,6 @@ public class AzureADGraphClient {
                 }
             }
             LOGGER.error("acquire on behalf of token for graph api error", e);
-            throw e;
         } finally {
             if (service != null) {
                 service.shutdown();

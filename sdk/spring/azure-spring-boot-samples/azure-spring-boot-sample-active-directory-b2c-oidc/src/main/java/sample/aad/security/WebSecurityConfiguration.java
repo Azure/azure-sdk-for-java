@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package sample.aad.security;
 
 import com.microsoft.azure.spring.autoconfigure.btoc.AADB2COidcLoginConfigurer;
@@ -21,12 +18,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .anyRequest()
-                .authenticated()
-                .and()
-                .apply(configurer)
-        ;
+        http.authorizeRequests()
+            .anyRequest()
+            .authenticated()
+            .and()
+            .apply(configurer);
     }
 }

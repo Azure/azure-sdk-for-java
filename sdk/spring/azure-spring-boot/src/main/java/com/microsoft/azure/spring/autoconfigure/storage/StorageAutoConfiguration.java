@@ -3,13 +3,13 @@
 
 package com.microsoft.azure.spring.autoconfigure.storage;
 
-import com.microsoft.azure.spring.telemetry.TelemetrySender;
 import com.microsoft.azure.storage.blob.ContainerURL;
 import com.microsoft.azure.storage.blob.PipelineOptions;
 import com.microsoft.azure.storage.blob.ServiceURL;
 import com.microsoft.azure.storage.blob.SharedKeyCredentials;
 import com.microsoft.azure.storage.blob.StorageURL;
 import com.microsoft.azure.storage.blob.TelemetryOptions;
+import com.microsoft.azure.telemetry.TelemetrySender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +28,9 @@ import java.security.InvalidKeyException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.microsoft.azure.spring.telemetry.TelemetryData.HASHED_ACCOUNT_NAME;
-import static com.microsoft.azure.spring.telemetry.TelemetryData.SERVICE_NAME;
-import static com.microsoft.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName;
+import static com.microsoft.azure.telemetry.TelemetryData.HASHED_ACCOUNT_NAME;
+import static com.microsoft.azure.telemetry.TelemetryData.SERVICE_NAME;
+import static com.microsoft.azure.telemetry.TelemetryData.getClassPackageSimpleName;
 import static org.apache.commons.codec.digest.DigestUtils.sha256Hex;
 
 @Configuration
@@ -52,23 +52,28 @@ public class StorageAutoConfiguration {
 
     /**
      * @param options PipelineOptions bean, not required.
-     * @return service URL
-     * @throws InvalidKeyException invalid key
-     * @throws MalformedURLException URL is malformed
+     * @throws MalformedURLException Thrown when the URL is malformed.
+     * @throws  InvalidKeyException Thrown when the accountKey is ill-formatted.
+     * @return Service URL
      */
     @Bean
-    public ServiceURL createServiceUrl(@Autowired(required = false) PipelineOptions options) throws InvalidKeyException,
-            MalformedURLException {
+    public ServiceURL createServiceUrl(@Autowired(required = false) PipelineOptions options) throws
+        MalformedURLException, InvalidKeyException {
         LOG.debug("Creating ServiceURL bean...");
         final SharedKeyCredentials credentials = new SharedKeyCredentials(properties.getAccountName(),
                 properties.getAccountKey());
         final URL blobUrl = getURL();
         final PipelineOptions pipelineOptions = buildOptions(options);
+        final ServiceURL serviceURL = new ServiceURL(blobUrl, StorageURL.createPipeline(credentials, pipelineOptions));
 
-        return new ServiceURL(blobUrl, StorageURL.createPipeline(credentials, pipelineOptions));
+        return serviceURL;
     }
 
     private URL getURL() throws MalformedURLException {
+        if (properties.isUseEmulator()) {
+            LOG.debug("Using emulator address instead..");
+            return new URL(String.format("%s/%s", properties.getEmulatorBlobHost(), properties.getAccountName()));
+        }
         if (properties.isEnableHttps()) {
             return new URL(String.format(BLOB_HTTPS_URL, properties.getAccountName()));
         }

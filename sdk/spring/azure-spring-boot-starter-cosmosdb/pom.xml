@@ -11,13 +11,13 @@
       <relativePath>../../../pom.client.xml</relativePath>
     </parent>
 
-    <groupId>com.azure</groupId>
+    <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-spring-boot-starter-cosmosdb</artifactId>
-    <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-boot-starter-cosmosdb;current} -->
+    <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot-starter-cosmosdb;current} -->
 
     <name>Azure Cosmos DB Spring Boot Starter</name>
     <description>Spring Boot Starter for Azure Document DB service</description>
-    <url>https://github.com/Microsoft/azure-spring-boot</url>
+    <url>https://github.com/Azure/azure-sdk-for-java</url>
 
     <dependencies>
         <dependency>
@@ -31,14 +31,14 @@
             <version>2.2.0.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
         </dependency>
         <dependency>
-            <groupId>com.azure</groupId>
+            <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-spring-boot</artifactId>
-            <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-boot;current} -->
+            <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot;current} -->
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>spring-data-cosmosdb</artifactId>
-            <version>2.2.3</version> <!-- {x-version-update;com.microsoft.azure:spring-data-cosmosdb;external_dependency} -->
+            <version>2.2.3.FIX1</version> <!-- {x-version-update;com.microsoft.azure:spring-data-cosmosdb;external_dependency} -->
         </dependency>
     </dependencies>
 

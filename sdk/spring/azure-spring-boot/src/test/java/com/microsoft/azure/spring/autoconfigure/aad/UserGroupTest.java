@@ -10,23 +10,23 @@ public class UserGroupTest {
 
     @Test
     public void getDisplayName() {
-        Assert.assertTrue(GROUP_1.getDisplayName().equals("test"));
+        Assert.assertEquals("test", GROUP_1.getDisplayName());
     }
 
     @Test
     public void getObjectID() {
-        Assert.assertTrue(GROUP_1.getObjectID().equals("12345"));
+        Assert.assertEquals("12345", GROUP_1.getObjectID());
     }
 
     @Test
     public void equals() {
         final UserGroup group2 = new UserGroup("12345", "test");
-        Assert.assertTrue(GROUP_1.equals(group2));
+        Assert.assertEquals(GROUP_1, group2);
     }
 
     @Test
     public void hashCodeTest() {
         final UserGroup group2 = new UserGroup("12345", "test");
-        Assert.assertTrue(GROUP_1.hashCode() == group2.hashCode());
+        Assert.assertEquals(GROUP_1.hashCode(), group2.hashCode());
     }
 }

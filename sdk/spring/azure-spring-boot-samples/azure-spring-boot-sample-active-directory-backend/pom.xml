@@ -15,7 +15,7 @@
 
     <name>Azure AD Spring Security 5 OAuth2 Integration Spring Boot Sample</name>
     <description>Azure AD Spring Security 5 OAuth2 Integration Spring Boot Sample</description>
-    <url>https://github.com/Microsoft/azure-spring-boot</url>
+    <url>https://github.com/Azure/azure-sdk-for-java</url>
 
     <dependencies>
         <dependency>

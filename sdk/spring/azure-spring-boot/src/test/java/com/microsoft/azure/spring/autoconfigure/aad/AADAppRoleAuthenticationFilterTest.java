@@ -2,37 +2,6 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.autoconfigure.aad;
 
-import com.nimbusds.jose.JOSEException;
-import com.nimbusds.jose.JWSAlgorithm;
-import com.nimbusds.jose.JWSHeader.Builder;
-import com.nimbusds.jose.JWSObject;
-import com.nimbusds.jose.Payload;
-import com.nimbusds.jose.proc.BadJOSEException;
-import com.nimbusds.jwt.JWTClaimsSet;
-import com.nimbusds.jwt.proc.BadJWTException;
-import net.minidev.json.JSONArray;
-import org.assertj.core.api.Assertions;
-import org.hamcrest.CoreMatchers;
-import org.junit.Test;
-import org.springframework.http.HttpHeaders;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.text.ParseException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -42,6 +11,36 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jose.JWSAlgorithm;
+import com.nimbusds.jose.JWSHeader.Builder;
+import com.nimbusds.jose.JWSObject;
+import com.nimbusds.jose.Payload;
+import com.nimbusds.jose.proc.BadJOSEException;
+import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jwt.proc.BadJWTException;
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import net.minidev.json.JSONArray;
+import org.assertj.core.api.Assertions;
+import org.hamcrest.CoreMatchers;
+import org.junit.Test;
+import org.springframework.http.HttpHeaders;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 public class AADAppRoleAuthenticationFilterTest {
 
@@ -76,7 +75,6 @@ public class AADAppRoleAuthenticationFilterTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void testDoFilterGoodCase()
         throws ParseException, JOSEException, BadJOSEException, ServletException, IOException {
         final UserPrincipal dummyPrincipal = createUserPrincipal(Arrays.asList("user", "admin"));
@@ -87,6 +85,7 @@ public class AADAppRoleAuthenticationFilterTest {
         // Check in subsequent filter that authentication is available!
         final FilterChain filterChain = new FilterChain() {
             @Override
+            @SuppressWarnings("unchecked")
             public void doFilter(ServletRequest request, ServletResponse response)
                 throws IOException, ServletException {
                 final SecurityContext context = SecurityContextHolder.getContext();
@@ -117,7 +116,6 @@ public class AADAppRoleAuthenticationFilterTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void testDoFilterAddsDefaultRole()
         throws ParseException, JOSEException, BadJOSEException, ServletException, IOException {
 
@@ -129,6 +127,7 @@ public class AADAppRoleAuthenticationFilterTest {
         // Check in subsequent filter that authentication is available and default roles are filled.
         final FilterChain filterChain = new FilterChain() {
             @Override
+            @SuppressWarnings("unchecked")
             public void doFilter(ServletRequest request, ServletResponse response)
                 throws IOException, ServletException {
                 final SecurityContext context = SecurityContextHolder.getContext();

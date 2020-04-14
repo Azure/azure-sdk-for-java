@@ -44,8 +44,7 @@ public class ServiceBusProperties {
     private ReceiveMode subscriptionReceiveMode;
 
     /**
-     * Allow telemetry or not
-     *
+     * allow telemery or not
      */
     private boolean allowTelemetry = true;
 

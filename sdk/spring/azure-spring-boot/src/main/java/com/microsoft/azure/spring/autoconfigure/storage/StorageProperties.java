@@ -16,6 +16,10 @@ public class StorageProperties {
     @NotEmpty
     private String accountKey;
 
+    private boolean useEmulator = false;
+
+    private String emulatorBlobHost;
+
     private String containerName;
 
     private boolean allowTelemetry = true;
@@ -36,6 +40,22 @@ public class StorageProperties {
 
     public void setAccountKey(String accountKey) {
         this.accountKey = accountKey;
+    }
+
+    public boolean isUseEmulator() {
+        return useEmulator;
+    }
+
+    public void setUseEmulator(boolean useEmulator) {
+        this.useEmulator = useEmulator;
+    }
+
+    public String getEmulatorBlobHost() {
+        return emulatorBlobHost;
+    }
+
+    public void setEmulatorBlobHost(String emulatorBlobHost) {
+        this.emulatorBlobHost = emulatorBlobHost;
     }
 
     public String getContainerName() {
