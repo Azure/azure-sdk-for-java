@@ -6,15 +6,15 @@ package com.azure.identity.perf;
 import com.azure.identity.SharedTokenCacheCredential;
 import com.azure.identity.SharedTokenCacheCredentialBuilder;
 import com.azure.identity.perf.core.ServiceTest;
-import com.azure.perf.test.core.SizeOptions;
+import com.azure.perf.test.core.PerfStressOptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 
-public class WriteCache extends ServiceTest<SizeOptions> {
+public class WriteCache extends ServiceTest<PerfStressOptions> {
     private final SharedTokenCacheCredential credential;
 
-    public WriteCache(SizeOptions options) {
+    public WriteCache(PerfStressOptions options) {
         super(options);
         credential = new SharedTokenCacheCredentialBuilder()
                 .clientId(CLI_CLIENT_ID)
