@@ -126,6 +126,7 @@ stages:
                           ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
                           Target: MavenCentral
                           BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
+                          JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
                       # After publishing to Maven, publish to the azure-sdk-for-java feed. The reason for
                       # this is that the azure-sdk-for-java feed will have the package available immediately
                       # whereas Maven can take several hours for the package to become available.
@@ -217,6 +218,7 @@ stages:
     dependsOn: Signing
     jobs:
     - job: PublishPackages
+    condition: or(eq(variables['SetDevVersion'], 'true'), and(eq(variables['Build.Reason'],'Schedule'), eq(variables['System.TeamProject'], 'internal')))
       displayName: Publish package to daily feed
       pool:
         vmImage: windows-2019
