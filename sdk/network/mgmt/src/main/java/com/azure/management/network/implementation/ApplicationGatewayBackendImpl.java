@@ -9,7 +9,6 @@ import com.azure.management.network.ApplicationGatewayBackendAddressPool;
 import com.azure.management.network.models.NetworkInterfaceIPConfigurationInner;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -17,13 +16,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-/**
- * Implementation for ApplicationGatewayBackend.
- */
+/** Implementation for ApplicationGatewayBackend. */
 class ApplicationGatewayBackendImpl
-        extends ChildResourceImpl<ApplicationGatewayBackendAddressPool, ApplicationGatewayImpl, ApplicationGateway>
-        implements
-        ApplicationGatewayBackend,
+    extends ChildResourceImpl<ApplicationGatewayBackendAddressPool, ApplicationGatewayImpl, ApplicationGateway>
+    implements ApplicationGatewayBackend,
         ApplicationGatewayBackend.Definition<ApplicationGateway.DefinitionStages.WithCreate>,
         ApplicationGatewayBackend.UpdateDefinition<ApplicationGateway.Update>,
         ApplicationGatewayBackend.Update {
@@ -93,8 +89,7 @@ class ApplicationGatewayBackendImpl
             return this;
         }
 
-        ApplicationGatewayBackendAddress address = new ApplicationGatewayBackendAddress()
-                .withIpAddress(ipAddress);
+        ApplicationGatewayBackendAddress address = new ApplicationGatewayBackendAddress().withIpAddress(ipAddress);
         List<ApplicationGatewayBackendAddress> addresses = ensureAddresses();
         for (ApplicationGatewayBackendAddress a : addresses) {
             if (ipAddress.equalsIgnoreCase(a.ipAddress())) {
@@ -110,8 +105,7 @@ class ApplicationGatewayBackendImpl
         if (fqdn == null) {
             return this;
         }
-        ApplicationGatewayBackendAddress address = new ApplicationGatewayBackendAddress()
-                .withFqdn(fqdn);
+        ApplicationGatewayBackendAddress address = new ApplicationGatewayBackendAddress().withFqdn(fqdn);
         ensureAddresses().add(address);
         return this;
     }

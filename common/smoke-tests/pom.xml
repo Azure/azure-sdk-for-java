@@ -93,14 +93,11 @@
       <version>1.2.0</version>
     </dependency>
 
-    <!--
-    Cosmos is disabled until we are shipping from master
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.0.0-preview.2</version>
+      <version>4.0.1-beta.1</version>
     </dependency>
-    -->
 
     <dependency>
       <groupId>com.azure</groupId>

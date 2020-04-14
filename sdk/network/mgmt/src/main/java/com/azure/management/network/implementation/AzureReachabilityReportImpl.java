@@ -9,19 +9,15 @@ import com.azure.management.network.AzureReachabilityReportParameters;
 import com.azure.management.network.NetworkWatcher;
 import com.azure.management.network.models.AzureReachabilityReportInner;
 import com.azure.management.resources.fluentcore.model.implementation.ExecutableImpl;
-import reactor.core.publisher.Mono;
-
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import reactor.core.publisher.Mono;
 
-/**
- * The implementation of AzureReachabilityReport.
- */
+/** The implementation of AzureReachabilityReport. */
 class AzureReachabilityReportImpl extends ExecutableImpl<AzureReachabilityReport>
-        implements AzureReachabilityReport,
-        AzureReachabilityReport.Definition {
+    implements AzureReachabilityReport, AzureReachabilityReport.Definition {
     private final NetworkWatcherImpl parent;
     private AzureReachabilityReportParameters parameters = new AzureReachabilityReportParameters();
     private AzureReachabilityReportInner inner;
@@ -62,9 +58,14 @@ class AzureReachabilityReportImpl extends ExecutableImpl<AzureReachabilityReport
 
     @Override
     public Mono<AzureReachabilityReport> executeWorkAsync() {
-        return this.parent().manager().inner().networkWatchers()
-                .getAzureReachabilityReportAsync(parent().resourceGroupName(), parent().name(), parameters)
-                .map(azureReachabilityReportListInner -> {
+        return this
+            .parent()
+            .manager()
+            .inner()
+            .networkWatchers()
+            .getAzureReachabilityReportAsync(parent().resourceGroupName(), parent().name(), parameters)
+            .map(
+                azureReachabilityReportListInner -> {
                     AzureReachabilityReportImpl.this.inner = azureReachabilityReportListInner;
                     return AzureReachabilityReportImpl.this;
                 });
@@ -84,7 +85,9 @@ class AzureReachabilityReportImpl extends ExecutableImpl<AzureReachabilityReport
 
     @Override
     public AzureReachabilityReportImpl withProviderLocation(String country, String state, String city) {
-        parameters.withProviderLocation(new AzureReachabilityReportLocation().withCountry(country).withState(state).withCity(city));
+        parameters
+            .withProviderLocation(
+                new AzureReachabilityReportLocation().withCountry(country).withState(state).withCity(city));
         return this;
     }
 

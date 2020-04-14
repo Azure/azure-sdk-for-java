@@ -7,9 +7,7 @@ package com.azure.management.monitor;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The MetricNamespaceName model.
- */
+/** The MetricNamespaceName model. */
 @Fluent
 public final class MetricNamespaceName {
     /*
@@ -20,7 +18,7 @@ public final class MetricNamespaceName {
 
     /**
      * Get the metricNamespaceName property: The metric namespace name.
-     * 
+     *
      * @return the metricNamespaceName value.
      */
     public String metricNamespaceName() {
@@ -29,7 +27,7 @@ public final class MetricNamespaceName {
 
     /**
      * Set the metricNamespaceName property: The metric namespace name.
-     * 
+     *
      * @param metricNamespaceName the metricNamespaceName value to set.
      * @return the MetricNamespaceName object itself.
      */

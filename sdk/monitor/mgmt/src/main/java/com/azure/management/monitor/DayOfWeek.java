@@ -6,9 +6,7 @@ package com.azure.management.monitor;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for DayOfWeek.
- */
+/** Defines values for DayOfWeek. */
 public enum DayOfWeek {
     /** Enum value Monday. */
     MONDAY("Monday"),

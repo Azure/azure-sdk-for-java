@@ -2,60 +2,40 @@
 // Licensed under the MIT License.
 package com.azure.management.network;
 
-
-
 import com.azure.core.annotation.Fluent;
 import com.azure.management.network.models.AzureReachabilityReportInner;
 import com.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.azure.management.resources.fluentcore.model.Executable;
 import com.azure.management.resources.fluentcore.model.HasInner;
-
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/**
- * An immutable client-side representation of Azure reachability report details.
- */
+/** An immutable client-side representation of Azure reachability report details. */
 @Fluent
-public interface AzureReachabilityReport extends Executable<AzureReachabilityReport>,
-        HasInner<AzureReachabilityReportInner>,
-        HasParent<NetworkWatcher> {
-    /**
-     * @return the aggregation level of Azure reachability report. Can be Country,
-     * State or City.
-     */
+public interface AzureReachabilityReport
+    extends Executable<AzureReachabilityReport>, HasInner<AzureReachabilityReportInner>, HasParent<NetworkWatcher> {
+    /** @return the aggregation level of Azure reachability report. Can be Country, State or City. */
     String aggregationLevel();
 
-    /**
-     * @return the providerLocation property
-     */
+    /** @return the providerLocation property */
     AzureReachabilityReportLocation providerLocation();
 
-    /**
-     * @return list of Azure reachability report items.
-     */
+    /** @return list of Azure reachability report items. */
     List<AzureReachabilityReportItem> reachabilityReport();
-    /**
-     * @return parameters used to query available internet providers
-     */
+    /** @return parameters used to query available internet providers */
     AzureReachabilityReportParameters azureReachabilityReportParameters();
 
-    /**
-     * The entirety of Azure reachability report parameters definition.
-     */
-    interface Definition extends DefinitionStages.WithProviderLocation,
+    /** The entirety of Azure reachability report parameters definition. */
+    interface Definition
+        extends DefinitionStages.WithProviderLocation,
             DefinitionStages.WithStartTime,
             DefinitionStages.WithEndTime,
             DefinitionStages.WithExecute {
     }
 
-    /**
-     * Grouping of Azure reachability report definition stages.
-     */
+    /** Grouping of Azure reachability report definition stages. */
     interface DefinitionStages {
-        /**
-         * The first stage of Azure reachability report parameters definition.
-         */
+        /** The first stage of Azure reachability report parameters definition. */
         interface WithProviderLocation {
             /**
              * @param country the name of the country
@@ -77,9 +57,7 @@ public interface AzureReachabilityReport extends Executable<AzureReachabilityRep
             WithStartTime withProviderLocation(String country, String state, String city);
         }
 
-        /**
-         * Sets the start time for the Azure reachability report.
-         */
+        /** Sets the start time for the Azure reachability report. */
         interface WithStartTime {
             /**
              * @param startTime the start time for the Azure reachability report
@@ -88,9 +66,7 @@ public interface AzureReachabilityReport extends Executable<AzureReachabilityRep
             WithEndTime withStartTime(OffsetDateTime startTime);
         }
 
-        /**
-         * Sets the end time for the Azure reachability report.
-         */
+        /** Sets the end time for the Azure reachability report. */
         interface WithEndTime {
             /**
              * @param endTime the start time for the Azure reachability report
@@ -100,18 +76,16 @@ public interface AzureReachabilityReport extends Executable<AzureReachabilityRep
         }
 
         /**
-         * Sets Azure regions to scope the query to.
-         * Note: if none or multiple Azure regions specified, only one provider should be set.
-         * If none or multiple providers specified, only one Azure region should be set.
+         * Sets Azure regions to scope the query to. Note: if none or multiple Azure regions specified, only one
+         * provider should be set. If none or multiple providers specified, only one Azure region should be set.
          */
         interface WithAzureLocations {
             WithExecute withAzureLocations(String... azureLocations);
         }
 
         /**
-         * Sets the list of Internet service providers.
-         * Note: if none or multiple Azure regions specified, only one provider should be set.
-         * If none or multiple providers specified, only one Azure region should be set.
+         * Sets the list of Internet service providers. Note: if none or multiple Azure regions specified, only one
+         * provider should be set. If none or multiple providers specified, only one Azure region should be set.
          */
         interface WithProviders {
             /**
@@ -122,11 +96,11 @@ public interface AzureReachabilityReport extends Executable<AzureReachabilityRep
         }
 
         /**
-         * The stage of the definition which contains all the minimum required inputs for execution, but also allows
-         * for any other optional settings to be specified.
+         * The stage of the definition which contains all the minimum required inputs for execution, but also allows for
+         * any other optional settings to be specified.
          */
-        interface WithExecute extends
-                Executable<AzureReachabilityReport>,
+        interface WithExecute
+            extends Executable<AzureReachabilityReport>,
                 DefinitionStages.WithAzureLocations,
                 DefinitionStages.WithProviders {
         }

@@ -7,42 +7,44 @@ import com.azure.core.http.rest.Response;
 import com.azure.management.RestClient;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
+import java.io.ByteArrayInputStream;
+import java.util.zip.ZipInputStream;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayInputStream;
-import java.util.zip.ZipInputStream;
-
 public class LinuxWebAppsTests extends AppServiceTest {
-    private String RG_NAME_1 = "";
-    private String RG_NAME_2 = "";
-    private String WEBAPP_NAME_1 = "";
-    private String WEBAPP_NAME_2 = "";
+    private String rgName1 = "";
+    private String rgName2 = "";
+    private String webappName1 = "";
+    private String webappName2 = "";
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        WEBAPP_NAME_1 = generateRandomResourceName("java-webapp-", 20);
-        WEBAPP_NAME_2 = generateRandomResourceName("java-webapp-", 20);
-        RG_NAME_1 = generateRandomResourceName("javacsmrg", 20);
-        RG_NAME_2 = generateRandomResourceName("javacsmrg", 20);
+        webappName1 = generateRandomResourceName("java-webapp-", 20);
+        webappName2 = generateRandomResourceName("java-webapp-", 20);
+        rgName1 = generateRandomResourceName("javacsmrg", 20);
+        rgName2 = generateRandomResourceName("javacsmrg", 20);
 
         super.initializeClients(restClient, defaultSubscription, domain);
     }
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().beginDeleteByName(RG_NAME_2);
-        resourceManager.resourceGroups().beginDeleteByName(RG_NAME_1);
+        resourceManager.resourceGroups().beginDeleteByName(rgName2);
+        resourceManager.resourceGroups().beginDeleteByName(rgName1);
     }
 
     @Test
-//    @Ignore("Pending ICM 39157077 & https://github.com/Azure-App-Service/kudu/issues/30")
+    //    @Ignore("Pending ICM 39157077 & https://github.com/Azure-App-Service/kudu/issues/30")
     public void canCRUDLinuxWebApp() throws Exception {
         // Create with new app service plan
-        WebApp webApp1 = appServiceManager.webApps().define(WEBAPP_NAME_1)
+        WebApp webApp1 =
+            appServiceManager
+                .webApps()
+                .define(webappName1)
                 .withRegion(Region.US_WEST)
-                .withNewResourceGroup(RG_NAME_1)
+                .withNewResourceGroup(rgName1)
                 .withNewLinuxPlan(PricingTier.BASIC_B1)
                 .withPublicDockerHubImage("wordpress")
                 .create();
@@ -56,9 +58,12 @@ public class LinuxWebAppsTests extends AppServiceTest {
         Assertions.assertEquals(OperatingSystem.LINUX, webApp1.operatingSystem());
 
         // Create in a new group with existing app service plan
-        WebApp webApp2 = appServiceManager.webApps().define(WEBAPP_NAME_2)
+        WebApp webApp2 =
+            appServiceManager
+                .webApps()
+                .define(webappName2)
                 .withExistingLinuxPlan(plan1)
-                .withNewResourceGroup(RG_NAME_2)
+                .withNewResourceGroup(rgName2)
                 .withPublicDockerHubImage("tomcat")
                 .withContainerLoggingEnabled()
                 .create();
@@ -67,7 +72,7 @@ public class LinuxWebAppsTests extends AppServiceTest {
         Assertions.assertEquals(OperatingSystem.LINUX, webApp2.operatingSystem());
 
         // Get
-        WebApp webApp = appServiceManager.webApps().getByResourceGroup(RG_NAME_1, webApp1.name());
+        WebApp webApp = appServiceManager.webApps().getByResourceGroup(rgName1, webApp1.name());
         Assertions.assertEquals(OperatingSystem.LINUX, webApp.operatingSystem());
         webApp = appServiceManager.webApps().getById(webApp2.id());
         Assertions.assertEquals(OperatingSystem.LINUX, webApp.operatingSystem());
@@ -88,21 +93,21 @@ public class LinuxWebAppsTests extends AppServiceTest {
         }
 
         // Update
-        webApp = webApp1.update()
-                .withNewAppServicePlan(PricingTier.STANDARD_S2)
-                .apply();
+        webApp = webApp1.update().withNewAppServicePlan(PricingTier.STANDARD_S2).apply();
         AppServicePlan plan2 = appServiceManager.appServicePlans().getById(webApp1.appServicePlanId());
         Assertions.assertNotNull(plan2);
         Assertions.assertEquals(Region.US_WEST, plan2.region());
         Assertions.assertEquals(PricingTier.STANDARD_S2, plan2.pricingTier());
         Assertions.assertEquals(OperatingSystem.LINUX, plan2.operatingSystem());
 
-        webApp = webApp1.update()
+        webApp =
+            webApp1
+                .update()
                 .withBuiltInImage(RuntimeStack.NODEJS_6_6)
                 .defineSourceControl()
-                    .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test.git")
-                    .withBranch("master")
-                    .attach()
+                .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test.git")
+                .withBranch("master")
+                .attach()
                 .apply();
         Assertions.assertNotNull(webApp);
         if (!isPlaybackMode()) {
@@ -115,20 +120,21 @@ public class LinuxWebAppsTests extends AppServiceTest {
             Assertions.assertTrue(body.contains("Hello world from linux 4"));
         }
 
-         //update to a java 11 image
-         webApp = webApp1.update()
-                    .withBuiltInImage(RuntimeStack.TOMCAT_9_0_JAVA11)
-                    .apply();
-         Assertions.assertNotNull(webApp);
+        // update to a java 11 image
+        webApp = webApp1.update().withBuiltInImage(RuntimeStack.TOMCAT_9_0_JAVA11).apply();
+        Assertions.assertNotNull(webApp);
     }
 
     @Test
-//    @Ignore("Pending ICM 39157077 & https://github.com/Azure-App-Service/kudu/issues/30")
+    //    @Ignore("Pending ICM 39157077 & https://github.com/Azure-App-Service/kudu/issues/30")
     public void canCRUDLinuxJava11WebApp() throws Exception {
         // Create with new app service plan
-        WebApp webApp1 = appServiceManager.webApps().define(WEBAPP_NAME_1)
+        WebApp webApp1 =
+            appServiceManager
+                .webApps()
+                .define(webappName1)
                 .withRegion(Region.US_WEST)
-                .withNewResourceGroup(RG_NAME_1)
+                .withNewResourceGroup(rgName1)
                 .withNewLinuxPlan(PricingTier.BASIC_B1)
                 .withBuiltInImage(RuntimeStack.TOMCAT_9_0_JAVA11)
                 .create();
@@ -141,9 +147,12 @@ public class LinuxWebAppsTests extends AppServiceTest {
         Assertions.assertEquals(OperatingSystem.LINUX, plan1.operatingSystem());
         Assertions.assertEquals(OperatingSystem.LINUX, webApp1.operatingSystem());
 
-        WebApp webApp2 = appServiceManager.webApps().define(WEBAPP_NAME_2)
+        WebApp webApp2 =
+            appServiceManager
+                .webApps()
+                .define(webappName2)
                 .withRegion(Region.US_WEST)
-                .withNewResourceGroup(RG_NAME_2)
+                .withNewResourceGroup(rgName2)
                 .withNewLinuxPlan(PricingTier.BASIC_B2)
                 .withBuiltInImage(RuntimeStack.TOMCAT_8_5_JAVA11)
                 .create();
@@ -156,7 +165,9 @@ public class LinuxWebAppsTests extends AppServiceTest {
         Assertions.assertEquals(OperatingSystem.LINUX, plan1.operatingSystem());
         Assertions.assertEquals(OperatingSystem.LINUX, webApp2.operatingSystem());
 
-        WebApp webApp = webApp1.update()
+        WebApp webApp =
+            webApp1
+                .update()
                 .withBuiltInImage(RuntimeStack.NODEJS_6_6)
                 .defineSourceControl()
                 .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test.git")

@@ -17,13 +17,10 @@ import com.azure.management.resources.fluentcore.collection.SupportsDeletingById
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-
-/**
- * Entry point to load balancer management API in Azure.
- */
+/** Entry point to load balancer management API in Azure. */
 @Fluent()
-public interface LoadBalancers extends
-        SupportsCreating<LoadBalancer.DefinitionStages.Blank>,
+public interface LoadBalancers
+    extends SupportsCreating<LoadBalancer.DefinitionStages.Blank>,
         SupportsListing<LoadBalancer>,
         SupportsListingByResourceGroup<LoadBalancer>,
         SupportsGettingByResourceGroup<LoadBalancer>,

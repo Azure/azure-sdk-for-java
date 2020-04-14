@@ -16,16 +16,13 @@ import com.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
+import java.util.Set;
 import reactor.core.publisher.Mono;
 
-import java.util.Set;
-
-/**
- *  Entry point to managed Kubernetes service management API.
- */
+/** Entry point to managed Kubernetes service management API. */
 @Fluent()
-public interface KubernetesClusters extends
-        HasManager<ContainerServiceManager>,
+public interface KubernetesClusters
+    extends HasManager<ContainerServiceManager>,
         HasInner<ManagedClustersInner>,
         SupportsCreating<KubernetesCluster.DefinitionStages.Blank>,
         SupportsBatchCreation<KubernetesCluster>,
@@ -48,7 +45,8 @@ public interface KubernetesClusters extends
      * Returns the list of available Kubernetes versions available for the given Azure region.
      *
      * @param region the Azure region to query into
-     * @return a future representation of a set of Kubernetes versions which can be used when creating a service in this region
+     * @return a future representation of a set of Kubernetes versions which can be used when creating a service in this
+     *     region
      */
     Mono<Set<String>> listKubernetesVersionsAsync(Region region);
 

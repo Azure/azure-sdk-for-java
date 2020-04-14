@@ -39,6 +39,7 @@ import reactor.core.scheduler.Schedulers;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ServiceLoader;
@@ -366,7 +367,7 @@ public final class ServiceBusClientBuilder {
                     topicName, connectionStringEntityName)));
             }
 
-            entityType = MessagingEntityType.TOPIC;
+            entityType = MessagingEntityType.SUBSCRIPTION;
         } else {
             // It is a connection string entity path.
             entityType = MessagingEntityType.UNKNOWN;
@@ -432,7 +433,7 @@ public final class ServiceBusClientBuilder {
                 case QUEUE:
                     entityName = queueName;
                     break;
-                case TOPIC:
+                case SUBSCRIPTION:
                     entityName = topicName;
                     break;
                 case UNKNOWN:
@@ -472,11 +473,13 @@ public final class ServiceBusClientBuilder {
         // Using 0 pre-fetch count for both receive modes, to avoid message lock lost exceptions in application
         // receiving messages at a slow rate. Applications can set it to a higher value if they need better performance.
         private static final int DEFAULT_PREFETCH_COUNT = 1;
+        private static final String SUBSCRIPTION_ENTITY_PATH_FORMAT = "%s/subscriptions/%s";
 
         private int prefetchCount = DEFAULT_PREFETCH_COUNT;
         private String queueName;
         private String subscriptionName;
         private String topicName;
+        private String sessionId;
         private ReceiveMode receiveMode = ReceiveMode.PEEK_LOCK;
 
         private ServiceBusReceiverClientBuilder() {
@@ -549,6 +552,18 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
+         * Sets the session id.
+         *
+         * @param sessionId session id.
+         *
+         * @return The modified {@link ServiceBusReceiverClientBuilder} object.
+         */
+        public ServiceBusReceiverClientBuilder sessionId(String sessionId) {
+            this.sessionId = sessionId;
+            return this;
+        }
+
+        /**
          * Creates an <b>asynchronous</b> Service Bus receiver responsible for reading {@link ServiceBusMessage
          * messages} from a specific queue or topic.
          *
@@ -570,13 +585,15 @@ public final class ServiceBusClientBuilder {
                 case QUEUE:
                     entityPath = queueName;
                     break;
-                case TOPIC:
+                case SUBSCRIPTION:
                     if (isNullOrEmpty(subscriptionName)) {
                         throw logger.logExceptionAsError(new IllegalStateException(String.format(
                             "topicName (%s) must have a subscriptionName associated with it.", topicName)));
                     }
 
-                    entityPath = topicName;
+                    entityPath = String.format(Locale.ROOT,
+                        SUBSCRIPTION_ENTITY_PATH_FORMAT, topicName, subscriptionName);
+
                     break;
                 default:
                     throw logger.logExceptionAsError(
@@ -590,11 +607,12 @@ public final class ServiceBusClientBuilder {
 
             final MessageLockContainer messageLockContainer = new MessageLockContainer();
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
-            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount);
+            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
+                sessionId);
 
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
-                entityType, false, receiverOptions, connectionProcessor, tracerProvider,
-                messageSerializer, messageLockContainer, ServiceBusClientBuilder.this::onClientClose);
+                entityType, receiverOptions, connectionProcessor,
+                tracerProvider, messageSerializer, messageLockContainer, ServiceBusClientBuilder.this::onClientClose);
         }
 
         /**

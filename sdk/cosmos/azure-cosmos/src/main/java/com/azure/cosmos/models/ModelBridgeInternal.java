@@ -20,6 +20,7 @@ import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.ReplicationPolicy;
 import com.azure.cosmos.implementation.RequestOptions;
@@ -99,6 +100,10 @@ public final class ModelBridgeInternal {
 
     public static CosmosStoredProcedureProperties createCosmosStoredProcedureProperties(String jsonString) {
         return new CosmosStoredProcedureProperties(jsonString);
+    }
+
+    public static CosmosPermissionProperties createCosmosPermissionProperties(String jsonString) {
+        return new CosmosPermissionProperties(jsonString);
     }
 
     public static CosmosAsyncTriggerResponse createCosmosAsyncTriggerResponse(ResourceResponse<Trigger> response,

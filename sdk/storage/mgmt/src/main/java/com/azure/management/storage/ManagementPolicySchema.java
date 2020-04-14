@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ManagementPolicySchema model.
- */
+/** The ManagementPolicySchema model. */
 @Fluent
 public final class ManagementPolicySchema {
     /*
@@ -21,10 +19,9 @@ public final class ManagementPolicySchema {
     private List<ManagementPolicyRule> rules;
 
     /**
-     * Get the rules property: The Storage Account ManagementPolicies Rules.
-     * See more details in:
+     * Get the rules property: The Storage Account ManagementPolicies Rules. See more details in:
      * https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
-     * 
+     *
      * @return the rules value.
      */
     public List<ManagementPolicyRule> rules() {
@@ -32,10 +29,9 @@ public final class ManagementPolicySchema {
     }
 
     /**
-     * Set the rules property: The Storage Account ManagementPolicies Rules.
-     * See more details in:
+     * Set the rules property: The Storage Account ManagementPolicies Rules. See more details in:
      * https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
-     * 
+     *
      * @param rules the rules value to set.
      * @return the ManagementPolicySchema object itself.
      */

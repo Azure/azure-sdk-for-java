@@ -17,7 +17,9 @@ public class TestVirtualMachineInAvailabilitySet extends TestTemplate<VirtualMac
         final String newRgName = virtualMachines.manager().getSdkContext().randomResourceName("rgVmInAvail", 10);
         final String newAvailSetName = virtualMachines.manager().getSdkContext().randomResourceName("avai", 10);
 
-        VirtualMachine vm = virtualMachines.define(vmName)
+        VirtualMachine vm =
+            virtualMachines
+                .define(vmName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(newRgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")

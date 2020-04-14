@@ -12,21 +12,13 @@ import com.azure.management.appservice.models.SiteLogsConfigInner;
 import com.azure.management.appservice.models.WebAppsInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.azure.management.resources.fluentcore.utils.PagedConverter;
+import java.util.Arrays;
 import reactor.core.publisher.Mono;
 
-import java.util.Arrays;
-
-/**
- * The implementation for WebApps.
- */
+/** The implementation for WebApps. */
 class WebAppsImpl
-        extends TopLevelModifiableResourcesImpl<
-                    WebApp,
-                    WebAppImpl,
-                    SiteInner,
-                    WebAppsInner,
-                    AppServiceManager>
-        implements WebApps {
+    extends TopLevelModifiableResourcesImpl<WebApp, WebAppImpl, SiteInner, WebAppsInner, AppServiceManager>
+    implements WebApps {
 
     WebAppsImpl(final AppServiceManager manager) {
         super(manager.inner().webApps(), manager);
@@ -35,10 +27,17 @@ class WebAppsImpl
     @Override
     public Mono<WebApp> getByResourceGroupAsync(final String groupName, final String name) {
         final WebAppsImpl self = this;
-        return this.inner().getByResourceGroupAsync(groupName, name).flatMap(siteInner -> Mono.zip(
-                self.inner().getConfigurationAsync(groupName, name),
-                self.inner().getDiagnosticLogsConfigurationAsync(groupName, name),
-                (SiteConfigResourceInner siteConfigResourceInner, SiteLogsConfigInner logsConfigInner) -> wrapModel(siteInner, siteConfigResourceInner, logsConfigInner)));
+        return this
+            .inner()
+            .getByResourceGroupAsync(groupName, name)
+            .flatMap(
+                siteInner ->
+                    Mono
+                        .zip(
+                            self.inner().getConfigurationAsync(groupName, name),
+                            self.inner().getDiagnosticLogsConfigurationAsync(groupName, name),
+                            (SiteConfigResourceInner siteConfigResourceInner, SiteLogsConfigInner logsConfigInner) ->
+                                wrapModel(siteInner, siteConfigResourceInner, logsConfigInner)));
     }
 
     @Override
@@ -60,16 +59,24 @@ class WebAppsImpl
 
     @Override
     protected PagedFlux<WebApp> wrapPageAsync(PagedFlux<SiteInner> innerPage) {
-        return PagedConverter.flatMapPage(innerPage, siteInner -> {
-            if (siteInner.kind() == null || Arrays.asList(siteInner.kind().split(",")).contains("app")) {
-                return Mono.zip(
-                        this.inner().getConfigurationAsync(siteInner.resourceGroup(), siteInner.getName()),
-                        this.inner().getDiagnosticLogsConfigurationAsync(siteInner.resourceGroup(), siteInner.getName()),
-                        (siteConfigResourceInner, logsConfigInner) -> this.wrapModel(siteInner, siteConfigResourceInner, logsConfigInner));
-            } else {
-                return Mono.empty();
-            }
-        });
+        return PagedConverter
+            .flatMapPage(
+                innerPage,
+                siteInner -> {
+                    if (siteInner.kind() == null || Arrays.asList(siteInner.kind().split(",")).contains("app")) {
+                        return Mono
+                            .zip(
+                                this.inner().getConfigurationAsync(siteInner.resourceGroup(), siteInner.getName()),
+                                this
+                                    .inner()
+                                    .getDiagnosticLogsConfigurationAsync(
+                                        siteInner.resourceGroup(), siteInner.getName()),
+                                (siteConfigResourceInner, logsConfigInner) ->
+                                    this.wrapModel(siteInner, siteConfigResourceInner, logsConfigInner));
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     @Override

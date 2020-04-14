@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.Permission;
 import com.azure.cosmos.implementation.directconnectivity.Address;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.BridgeInternal;

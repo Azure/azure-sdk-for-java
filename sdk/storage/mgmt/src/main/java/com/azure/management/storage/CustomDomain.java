@@ -7,9 +7,7 @@ package com.azure.management.storage;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The CustomDomain model.
- */
+/** The CustomDomain model. */
 @Fluent
 public final class CustomDomain {
     /*
@@ -27,9 +25,9 @@ public final class CustomDomain {
     private Boolean useSubDomainName;
 
     /**
-     * Get the name property: Gets or sets the custom domain name assigned to
-     * the storage account. Name is the CNAME source.
-     * 
+     * Get the name property: Gets or sets the custom domain name assigned to the storage account. Name is the CNAME
+     * source.
+     *
      * @return the name value.
      */
     public String name() {
@@ -37,9 +35,9 @@ public final class CustomDomain {
     }
 
     /**
-     * Set the name property: Gets or sets the custom domain name assigned to
-     * the storage account. Name is the CNAME source.
-     * 
+     * Set the name property: Gets or sets the custom domain name assigned to the storage account. Name is the CNAME
+     * source.
+     *
      * @param name the name value to set.
      * @return the CustomDomain object itself.
      */
@@ -49,10 +47,9 @@ public final class CustomDomain {
     }
 
     /**
-     * Get the useSubDomainName property: Indicates whether indirect CName
-     * validation is enabled. Default value is false. This should only be set
-     * on updates.
-     * 
+     * Get the useSubDomainName property: Indicates whether indirect CName validation is enabled. Default value is
+     * false. This should only be set on updates.
+     *
      * @return the useSubDomainName value.
      */
     public Boolean useSubDomainName() {
@@ -60,10 +57,9 @@ public final class CustomDomain {
     }
 
     /**
-     * Set the useSubDomainName property: Indicates whether indirect CName
-     * validation is enabled. Default value is false. This should only be set
-     * on updates.
-     * 
+     * Set the useSubDomainName property: Indicates whether indirect CName validation is enabled. Default value is
+     * false. This should only be set on updates.
+     *
      * @param useSubDomainName the useSubDomainName value to set.
      * @return the CustomDomain object itself.
      */

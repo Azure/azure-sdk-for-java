@@ -21,19 +21,14 @@ public class NetworkManagementTest extends TestBase {
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
         rgName = generateRandomResourceName("javanwmrg", 15);
 
-        resourceManager = ResourceManager
-                .authenticate(restClient)
-                .withSdkContext(sdkContext)
-                .withSubscription(defaultSubscription);
+        resourceManager =
+            ResourceManager.authenticate(restClient).withSdkContext(sdkContext).withSubscription(defaultSubscription);
 
-        networkManager = NetworkManager
-                .authenticate(restClient, defaultSubscription, sdkContext);
+        networkManager = NetworkManager.authenticate(restClient, defaultSubscription, sdkContext);
 
-        keyVaultManager = KeyVaultManager
-                .authenticate(restClient, domain, defaultSubscription, sdkContext);
+        keyVaultManager = KeyVaultManager.authenticate(restClient, domain, defaultSubscription, sdkContext);
 
-        msiManager = MSIManager
-                .authenticate(restClient, defaultSubscription, sdkContext);
+        msiManager = MSIManager.authenticate(restClient, defaultSubscription, sdkContext);
     }
 
     @Override

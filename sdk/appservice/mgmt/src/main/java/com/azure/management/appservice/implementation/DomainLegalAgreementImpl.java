@@ -7,13 +7,8 @@ import com.azure.management.appservice.DomainLegalAgreement;
 import com.azure.management.appservice.models.TldLegalAgreementInner;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 
-/**
- * Implementation for {@link DomainLegalAgreement}.
- */
-final class DomainLegalAgreementImpl extends
-        WrapperImpl<TldLegalAgreementInner>
-        implements
-        DomainLegalAgreement {
+/** Implementation for {@link DomainLegalAgreement}. */
+final class DomainLegalAgreementImpl extends WrapperImpl<TldLegalAgreementInner> implements DomainLegalAgreement {
 
     DomainLegalAgreementImpl(TldLegalAgreementInner innerModel) {
         super(innerModel);

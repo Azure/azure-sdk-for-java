@@ -2,10 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.management.network.implementation;
 
-import com.azure.management.network.models.ConnectivityInformationInner;
-import com.azure.management.network.models.HasNetworkInterfaces;
-import com.azure.management.resources.fluentcore.model.implementation.ExecutableImpl;
-import com.azure.management.resources.fluentcore.utils.Utils;
 import com.azure.management.network.ConnectionStatus;
 import com.azure.management.network.ConnectivityCheck;
 import com.azure.management.network.ConnectivityDestination;
@@ -13,15 +9,16 @@ import com.azure.management.network.ConnectivityHop;
 import com.azure.management.network.ConnectivityParameters;
 import com.azure.management.network.ConnectivitySource;
 import com.azure.management.network.Protocol;
+import com.azure.management.network.models.ConnectivityInformationInner;
+import com.azure.management.network.models.HasNetworkInterfaces;
+import com.azure.management.resources.fluentcore.model.implementation.ExecutableImpl;
+import com.azure.management.resources.fluentcore.utils.Utils;
+import java.util.List;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-
-/**
- * Implementation of ConnectivityCheck.
- */
+/** Implementation of ConnectivityCheck. */
 public class ConnectivityCheckImpl extends ExecutableImpl<ConnectivityCheck>
-        implements ConnectivityCheck, ConnectivityCheck.Definition {
+    implements ConnectivityCheck, ConnectivityCheck.Definition {
 
     private final NetworkWatcherImpl parent;
     private ConnectivityParameters parameters = new ConnectivityParameters();
@@ -129,9 +126,14 @@ public class ConnectivityCheckImpl extends ExecutableImpl<ConnectivityCheck>
 
     @Override
     public Mono<ConnectivityCheck> executeWorkAsync() {
-        return this.parent().manager().inner().networkWatchers()
-                .checkConnectivityAsync(parent.resourceGroupName(), parent.name(), parameters)
-                .map(connectivityInformation -> {
+        return this
+            .parent()
+            .manager()
+            .inner()
+            .networkWatchers()
+            .checkConnectivityAsync(parent.resourceGroupName(), parent.name(), parameters)
+            .map(
+                connectivityInformation -> {
                     ConnectivityCheckImpl.this.result = connectivityInformation;
                     return ConnectivityCheckImpl.this;
                 });

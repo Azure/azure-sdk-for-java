@@ -2,21 +2,21 @@
 Copyright (c) Microsoft Corporation. All rights reserved.
 Licensed under the MIT License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-client-sdk-parent</artifactId>
     <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
-    <relativePath>../../../pom.client.xml</relativePath>
+    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
   </parent>
 
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos-encryption</artifactId>
-  <version>4.0.1-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos-encryption;current} -->
-  <name>Microsoft Azure SDK for SQL API of Azure Cosmos DB Service - encryption lib</name>
-  <description>This package contains encryption lib for Microsoft Azure SDK for SQL API of Azure Cosmos DB Service</description>
+  <version>4.0.1-beta.2</version> <!-- {x-version-update;com.azure:azure-cosmos-encryption;current} -->
+  <name>Microsoft Azure SDK for SQL API of Azure Cosmos DB Service</name>
+  <description>This Package contains Microsoft Azure Cosmos SDK (with Reactive Extension Reactor support) for Azure Cosmos DB SQL API</description>
+  <packaging>jar</packaging>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>
@@ -27,13 +27,15 @@ Licensed under the MIT License.
   </distributionManagement>
 
   <scm>
-    <url>https://github.com/Azure/azure-sdk-for-java</url>
+    <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
+    <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
+    <tag>HEAD</tag>
   </scm>
 
   <!-- CosmosSkip - Needed temporary values to 10% not fail. -->
   <properties>
-    <jacoco.min.linecoverage>0.01</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.01</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
   </properties>
 
   <dependencies>
@@ -44,38 +46,37 @@ Licensed under the MIT License.
       <version>4.0.1-beta.2</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
 
+    <!-- Added this provided dependency to include necessary annotations used by "reactor-core".
+         Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
+         which is used in @Nullable annotation in reactor core classes.
+
+         Similar provided dependency exits for "azure-core" as well.
+    -->
     <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-api</artifactId>
-      <version>2.11.1</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-api;external_dependency} -->
-      <scope>test</scope>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>jsr305</artifactId>
+      <version>3.0.2</version> <!-- {x-version-update;com.google.code.findbugs:jsr305;external_dependency} -->
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <version>1.10.19</version> <!-- {x-version-update;cosmos_org.mockito:mockito-core;external_dependency} -->
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-collections4</artifactId>
       <scope>test</scope>
+      <version>4.2</version> <!-- {x-version-update;org.apache.commons:commons-collections4;external_dependency} -->
     </dependency>
 
     <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-core</artifactId>
-      <version>2.11.1</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-core;external_dependency} -->
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-text</artifactId>
       <scope>test</scope>
+      <version>1.6</version> <!-- {x-version-update;org.apache.commons:commons-text;external_dependency} -->
     </dependency>
 
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>1.7.28</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-slf4j-impl</artifactId>
-      <version>2.13.0</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>6.14.3</version> <!-- {x-version-update;org.testng:testng;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -87,9 +88,23 @@ Licensed under the MIT License.
     </dependency>
 
     <dependency>
-      <groupId>org.testng</groupId>
-      <artifactId>testng</artifactId>
-      <version>6.14.3</version> <!-- {x-version-update;org.testng:testng;external_dependency} -->
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-slf4j-impl</artifactId>
+      <version>2.13.0</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>2.11.1</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-api;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>2.11.1</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -100,12 +115,10 @@ Licensed under the MIT License.
       <scope>test</scope>
     </dependency>
 
-
-    <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
     <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
-      <version>3.10</version>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-test</artifactId>
+      <version>3.3.3.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -113,6 +126,13 @@ Licensed under the MIT License.
       <groupId>io.reactivex.rxjava2</groupId>
       <artifactId>rxjava</artifactId>
       <version>2.2.4</version> <!-- {x-version-update;io.reactivex.rxjava2:rxjava;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>1.10.19</version> <!-- {x-version-update;cosmos_org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -128,6 +148,16 @@ Licensed under the MIT License.
 
   <build>
     <plugins>
+      <!-- CosmosSkip - This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
+      <!-- This can only be enabled once we release GA, as it needs a stable version to check for breaking changes. -->
+      <plugin>
+        <groupId>org.revapi</groupId>
+        <artifactId>revapi-maven-plugin</artifactId>
+        <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -147,48 +177,57 @@ Licensed under the MIT License.
         </configuration>
       </plugin>
 
-      <!-- CosmosSkip - Needed temporary false values to not fail. -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
-        <configuration>
-          <failsOnError>false</failsOnError>
-          <failOnViolation>false</failOnViolation>
-        </configuration>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>default-cli</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <bannedDependencies>
+                  <searchTransitive>false</searchTransitive>
+                  <excludes>
+                    <!-- We exclude everything that is runtime-time, compile-time, or provided scoped (i.e. we allow
+                    dependencies when they are used for test scope or otherwise) -->
+                    <exclude>*:*:*:*:runtime</exclude>
+                    <exclude>*:*:*:*:compile</exclude>
+                    <exclude>*:*:*:*:provided</exclude>
+                  </excludes>
+                  <includes>
+                    <include>com.azure:*</include>
+                    <include>org.slf4j:slf4j-api</include>
+                    <include>io.projectreactor:reactor-core</include>
+
+                    <include>com.fasterxml.jackson.core:jackson-core</include>
+                    <include>com.fasterxml.jackson.core:jackson-annotations</include>
+                    <include>com.fasterxml.jackson.core:jackson-databind</include>
+                    <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310</include>
+                    <include>com.fasterxml.jackson.module:jackson-module-afterburner</include>
+
+                    <include>io.micrometer:micrometer-core</include>
+                    <include>io.dropwizard.metrics:metrics-core</include>
+                    <include>com.fasterxml.uuid:java-uuid-generator</include>
+                    <include>io.projectreactor.netty</include>
+                    <include>io.netty:netty-codec-http</include>
+                    <include>io.netty:netty-codec-http2</include>
+                    <include>io.netty:netty-handler</include>
+                    <include>io.netty:netty-handler-proxy</include>
+                    <include>io.netty:netty-transport-native-epoll</include>
+
+                    <include>com.google.code.findbugs:jsr305</include>
+                  </includes>
+                </bannedDependencies>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
 
-      <!-- CosmosSkip - Needed temporary false values to not fail. -->
-      <plugin>
-        <groupId>com.github.spotbugs</groupId>
-        <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>3.1.12.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
-        <configuration>
-          <failOnError>false</failOnError>
-        </configuration>
-      </plugin>
-
-      <!--  CosmosSkip - Needed temporary to not fail on warning on compilation -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-          <failOnWarning>false</failOnWarning>
-        </configuration>
-      </plugin>
-
-      <!-- CosmosSkip - This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
-      <plugin>
-        <groupId>org.revapi</groupId>
-        <artifactId>revapi-maven-plugin</artifactId>
-        <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
   <profiles>

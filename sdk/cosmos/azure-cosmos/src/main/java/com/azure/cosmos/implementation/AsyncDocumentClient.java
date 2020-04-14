@@ -10,7 +10,6 @@ import com.azure.cosmos.implementation.encryption.api.DataEncryptionKeyProvider;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.Permission;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;

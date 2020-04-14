@@ -9,40 +9,43 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class DiagnosticLogsTests extends AppServiceTest {
-    private String RG_NAME_1 = "";
-    private String WEBAPP_NAME_1 = "";
+    private String rgName1 = "";
+    private String webappName1 = "";
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        WEBAPP_NAME_1 = generateRandomResourceName("java-webapp-", 20);
-        RG_NAME_1 = generateRandomResourceName("javacsmrg", 20);
+        webappName1 = generateRandomResourceName("java-webapp-", 20);
+        rgName1 = generateRandomResourceName("javacsmrg", 20);
 
         super.initializeClients(restClient, defaultSubscription, domain);
     }
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().beginDeleteByName(RG_NAME_1);
+        resourceManager.resourceGroups().beginDeleteByName(rgName1);
     }
 
     @Test
     public void canCRUDWebAppWithDiagnosticLogs() throws Exception {
         // Create with new app service plan
-        WebApp webApp1 = appServiceManager.webApps().define(WEBAPP_NAME_1)
+        WebApp webApp1 =
+            appServiceManager
+                .webApps()
+                .define(webappName1)
                 .withRegion(Region.US_WEST)
-                .withNewResourceGroup(RG_NAME_1)
+                .withNewResourceGroup(rgName1)
                 .withNewWindowsPlan(PricingTier.BASIC_B1)
                 .defineDiagnosticLogsConfiguration()
-                    .withApplicationLogging()
-                    .withLogLevel(LogLevel.INFORMATION)
-                    .withApplicationLogsStoredOnFileSystem()
-                    .attach()
+                .withApplicationLogging()
+                .withLogLevel(LogLevel.INFORMATION)
+                .withApplicationLogsStoredOnFileSystem()
+                .attach()
                 .defineDiagnosticLogsConfiguration()
-                    .withWebServerLogging()
-                    .withWebServerLogsStoredOnFileSystem()
-                    .withWebServerFileSystemQuotaInMB(50)
-                    .withUnlimitedLogRetentionDays()
-                    .attach()
+                .withWebServerLogging()
+                .withWebServerLogsStoredOnFileSystem()
+                .withWebServerFileSystemQuotaInMB(50)
+                .withUnlimitedLogRetentionDays()
+                .attach()
                 .create();
         Assertions.assertNotNull(webApp1);
         Assertions.assertEquals(Region.US_WEST, webApp1.region());
@@ -52,7 +55,8 @@ public class DiagnosticLogsTests extends AppServiceTest {
         Assertions.assertEquals(PricingTier.BASIC_B1, plan1.pricingTier());
 
         Assertions.assertNotNull(webApp1.diagnosticLogsConfig());
-        Assertions.assertEquals(LogLevel.INFORMATION, webApp1.diagnosticLogsConfig().applicationLoggingFileSystemLogLevel());
+        Assertions
+            .assertEquals(LogLevel.INFORMATION, webApp1.diagnosticLogsConfig().applicationLoggingFileSystemLogLevel());
         Assertions.assertEquals(LogLevel.OFF, webApp1.diagnosticLogsConfig().applicationLoggingStorageBlobLogLevel());
         Assertions.assertNull(webApp1.diagnosticLogsConfig().applicationLoggingStorageBlobContainer());
         Assertions.assertEquals(0, webApp1.diagnosticLogsConfig().applicationLoggingStorageBlobRetentionDays());
@@ -65,18 +69,19 @@ public class DiagnosticLogsTests extends AppServiceTest {
         Assertions.assertFalse(webApp1.diagnosticLogsConfig().failedRequestsTracing());
 
         // Update
-        webApp1.update()
-                .updateDiagnosticLogsConfiguration()
-                    .withoutApplicationLogging()
-                    .parent()
-                .updateDiagnosticLogsConfiguration()
-                    .withWebServerLogging()
-                    .withWebServerLogsStoredOnFileSystem()
-                    .withWebServerFileSystemQuotaInMB(80)
-                    .withLogRetentionDays(3)
-                    .withDetailedErrorMessages(true)
-                    .parent()
-                .apply();
+        webApp1
+            .update()
+            .updateDiagnosticLogsConfiguration()
+            .withoutApplicationLogging()
+            .parent()
+            .updateDiagnosticLogsConfiguration()
+            .withWebServerLogging()
+            .withWebServerLogsStoredOnFileSystem()
+            .withWebServerFileSystemQuotaInMB(80)
+            .withLogRetentionDays(3)
+            .withDetailedErrorMessages(true)
+            .parent()
+            .apply();
 
         Assertions.assertNotNull(webApp1.diagnosticLogsConfig());
         Assertions.assertEquals(LogLevel.OFF, webApp1.diagnosticLogsConfig().applicationLoggingFileSystemLogLevel());

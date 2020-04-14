@@ -13,43 +13,31 @@ import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.Refreshable;
 import com.azure.management.resources.fluentcore.model.Updatable;
 
-/**
- * An immutable client-side representation of an Azure Function App deployment slot.
- */
+/** An immutable client-side representation of an Azure Function App deployment slot. */
 @Fluent
-public interface FunctionDeploymentSlot extends
-    IndependentChildResource<AppServiceManager, SiteInner>,
-    WebAppBase,
-    Refreshable<FunctionDeploymentSlot>,
-    Updatable<FunctionDeploymentSlot.Update>,
-    HasParent<FunctionApp> {
+public interface FunctionDeploymentSlot
+    extends IndependentChildResource<AppServiceManager, SiteInner>,
+        WebAppBase,
+        Refreshable<FunctionDeploymentSlot>,
+        Updatable<FunctionDeploymentSlot.Update>,
+        HasParent<FunctionApp> {
 
     /**************************************************************
      * Fluent interfaces to provision a function deployment slot
      **************************************************************/
 
-    /**
-     * Container interface for all the definitions that need to be implemented.
-     */
-    interface Definition extends
-            DefinitionStages.Blank,
-            DefinitionStages.WithConfiguration,
-            DefinitionStages.WithCreate {
+    /** Container interface for all the definitions that need to be implemented. */
+    interface Definition
+        extends DefinitionStages.Blank, DefinitionStages.WithConfiguration, DefinitionStages.WithCreate {
     }
 
-    /**
-     * Grouping of all the function deployment slot definition stages.
-     */
+    /** Grouping of all the function deployment slot definition stages. */
     interface DefinitionStages {
-        /**
-         * The first stage of the function deployment slot definition.
-         */
+        /** The first stage of the function deployment slot definition. */
         interface Blank extends WithConfiguration {
         }
 
-        /**
-         * A function deployment slot definition allowing the configuration to clone from to be specified.
-         */
+        /** A function deployment slot definition allowing the configuration to clone from to be specified. */
         interface WithConfiguration {
             /**
              * Creates the function deployment slot with brand new site configurations.
@@ -74,7 +62,7 @@ public interface FunctionDeploymentSlot extends
             WithCreate withConfigurationFromFunctionApp(FunctionApp app);
 
             /**
-             * Copies the site configurations from a givenfunction  deployment slot.
+             * Copies the site configurations from a givenfunction deployment slot.
              *
              * @param deploymentSlot the function deployment slot to copy the configurations from
              * @return the next stage of the definition
@@ -83,21 +71,15 @@ public interface FunctionDeploymentSlot extends
         }
 
         /**
-         * A site definition with sufficient inputs to create a new web app /
-         * deployments slot in the cloud, but exposing additional optional
-         * inputs to specify.
+         * A site definition with sufficient inputs to create a new web app / deployments slot in the cloud, but
+         * exposing additional optional inputs to specify.
          */
-        interface WithCreate extends
-                Creatable<FunctionDeploymentSlot>,
-                WebAppBase.DefinitionStages.WithCreate<FunctionDeploymentSlot> {
+        interface WithCreate
+            extends Creatable<FunctionDeploymentSlot>, WebAppBase.DefinitionStages.WithCreate<FunctionDeploymentSlot> {
         }
     }
 
-    /**
-     * The template for a web app update operation, containing all the settings that can be modified.
-     */
-    interface Update extends
-            Appliable<FunctionDeploymentSlot>,
-            WebAppBase.Update<FunctionDeploymentSlot> {
+    /** The template for a web app update operation, containing all the settings that can be modified. */
+    interface Update extends Appliable<FunctionDeploymentSlot>, WebAppBase.Update<FunctionDeploymentSlot> {
     }
 }

@@ -16,33 +16,33 @@ import com.azure.management.appservice.models.SiteLogsConfigInner;
 import com.azure.management.appservice.models.StringDictionaryInner;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.Indexable;
-import reactor.core.publisher.Mono;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import reactor.core.publisher.Mono;
 
-/**
- * The implementation for WebApp.
- */
-class WebAppImpl
-        extends AppServiceBaseImpl<WebApp, WebAppImpl, WebApp.DefinitionStages.WithCreate, WebApp.Update>
-        implements
-            WebApp,
-            WebApp.Definition,
-            WebApp.DefinitionStages.ExistingWindowsPlanWithGroup,
-            WebApp.DefinitionStages.ExistingLinuxPlanWithGroup,
-            WebApp.DefinitionStages.WithWindowsRuntimeStack,
-            WebApp.Update,
-            WebApp.UpdateStages.WithCredentials,
-            WebApp.UpdateStages.WithStartUpCommand {
+/** The implementation for WebApp. */
+class WebAppImpl extends AppServiceBaseImpl<WebApp, WebAppImpl, WebApp.DefinitionStages.WithCreate, WebApp.Update>
+    implements WebApp,
+        WebApp.Definition,
+        WebApp.DefinitionStages.ExistingWindowsPlanWithGroup,
+        WebApp.DefinitionStages.ExistingLinuxPlanWithGroup,
+        WebApp.DefinitionStages.WithWindowsRuntimeStack,
+        WebApp.Update,
+        WebApp.UpdateStages.WithCredentials,
+        WebApp.UpdateStages.WithStartUpCommand {
 
     private DeploymentSlots deploymentSlots;
     private WebAppRuntimeStack runtimeStackOnWindowsOSToUpdate;
 
-    WebAppImpl(String name, SiteInner innerObject, SiteConfigResourceInner siteConfig, SiteLogsConfigInner logConfig, AppServiceManager manager) {
+    WebAppImpl(
+        String name,
+        SiteInner innerObject,
+        SiteConfigResourceInner siteConfig,
+        SiteLogsConfigInner logConfig,
+        AppServiceManager manager) {
         super(name, innerObject, siteConfig, logConfig, manager);
     }
 
@@ -50,7 +50,7 @@ class WebAppImpl
     public WebAppImpl update() {
         runtimeStackOnWindowsOSToUpdate = null;
         return super.update();
-    };
+    }
 
     @Override
     public DeploymentSlots deploymentSlots() {
@@ -192,6 +192,7 @@ class WebAppImpl
     public void warDeploy(File warFile, String appName) {
         warDeployAsync(warFile, appName).block();
     }
+
     @Override
     public void warDeploy(InputStream warFile, String appName) {
         warDeployAsync(warFile, appName).block();
@@ -218,9 +219,7 @@ class WebAppImpl
 
     @Override
     public Mono<Void> zipDeployAsync(InputStream zipFile) {
-        return kuduClient.zipDeployAsync(zipFile)
-                .then(WebAppImpl.this.stopAsync())
-                .then(WebAppImpl.this.startAsync());
+        return kuduClient.zipDeployAsync(zipFile).then(WebAppImpl.this.stopAsync()).then(WebAppImpl.this.startAsync());
     }
 
     @Override
@@ -232,23 +231,30 @@ class WebAppImpl
     Mono<Indexable> submitMetadata() {
         Mono<Indexable> observable = super.submitMetadata();
         if (runtimeStackOnWindowsOSToUpdate != null) {
-            observable = observable
+            observable =
+                observable
                     // list metadata
                     .then(listMetadata())
                     // merge with change, then update
                     .switchIfEmpty(Mono.just(new StringDictionaryInner()))
-                    .flatMap(stringDictionaryInner -> {
-                        if (stringDictionaryInner.properties() == null) {
-                            stringDictionaryInner.withProperties(new HashMap<String, String>());
-                        }
-                        stringDictionaryInner.properties().put("CURRENT_STACK", runtimeStackOnWindowsOSToUpdate.runtime());
-                        return updateMetadata(stringDictionaryInner);
-                    })
+                    .flatMap(
+                        stringDictionaryInner -> {
+                            if (stringDictionaryInner.properties() == null) {
+                                stringDictionaryInner.withProperties(new HashMap<String, String>());
+                            }
+                            stringDictionaryInner
+                                .properties()
+                                .put("CURRENT_STACK", runtimeStackOnWindowsOSToUpdate.runtime());
+                            return updateMetadata(stringDictionaryInner);
+                        })
                     // clean up
-                    .then(Mono.fromCallable(() -> {
-                        runtimeStackOnWindowsOSToUpdate = null;
-                        return WebAppImpl.this;
-                    }));
+                    .then(
+                        Mono
+                            .fromCallable(
+                                () -> {
+                                    runtimeStackOnWindowsOSToUpdate = null;
+                                    return WebAppImpl.this;
+                                }));
         }
         return observable;
     }

@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * The MetricAlertAction model.
- */
+/** The MetricAlertAction model. */
 @Fluent
 public final class MetricAlertAction {
     /*
@@ -27,7 +25,7 @@ public final class MetricAlertAction {
 
     /**
      * Get the actionGroupId property: the id of the action group to use.
-     * 
+     *
      * @return the actionGroupId value.
      */
     public String actionGroupId() {
@@ -36,7 +34,7 @@ public final class MetricAlertAction {
 
     /**
      * Set the actionGroupId property: the id of the action group to use.
-     * 
+     *
      * @param actionGroupId the actionGroupId value to set.
      * @return the MetricAlertAction object itself.
      */
@@ -47,7 +45,7 @@ public final class MetricAlertAction {
 
     /**
      * Get the webHookProperties property: The properties of a webhook object.
-     * 
+     *
      * @return the webHookProperties value.
      */
     public Map<String, String> webHookProperties() {
@@ -56,7 +54,7 @@ public final class MetricAlertAction {
 
     /**
      * Set the webHookProperties property: The properties of a webhook object.
-     * 
+     *
      * @param webHookProperties the webHookProperties value to set.
      * @return the MetricAlertAction object itself.
      */

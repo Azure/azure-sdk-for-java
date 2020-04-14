@@ -24,7 +24,7 @@ class SchoolsImpl {
     private IndependentTeachersImpl independentTeachers;
     private IndependentStudentsImpl independentStudents;
 
-    public SchoolsImpl() {
+    SchoolsImpl() {
         this.independentTeachers = new IndependentTeachersImpl();
         this.independentStudents = new IndependentStudentsImpl();
     }
@@ -53,12 +53,12 @@ class SchoolsImpl {
         private final String name;
         private final String key;
         private boolean isInvoked;
-        public InlineTeachersImpl inlineTeachers;
-        public IndependentTeachersImpl independentTeachers;
-        public InlineStudentsImpl inlineStudents;
-        public IndependentStudentsImpl independentStudents;
+        private InlineTeachersImpl inlineTeachers;
+        private IndependentTeachersImpl independentTeachers;
+        private InlineStudentsImpl inlineStudents;
+        private IndependentStudentsImpl independentStudents;
 
-        public SchoolImpl(String name) {
+        SchoolImpl(String name) {
             this.name = name;
             this.key = name;
             this.taskGroup = new TaskGroup(this.key, this);
@@ -300,7 +300,7 @@ class SchoolsImpl {
             if (teacherImpl == null) {
                 throw new IllegalStateException("Casting Indexable to teacherImpl failed");
             }
-            if (teacherImpl.isInvoked() == false) {
+            if (!teacherImpl.isInvoked()) {
                 throw new IllegalStateException("teacherImpl.isInvoked() should be true");
             }
 

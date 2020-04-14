@@ -7,36 +7,34 @@ import com.azure.management.network.models.ApplicationSecurityGroupInner;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import reactor.core.publisher.Mono;
 
-/**
- * Implementation for ApplicationSecurityGroup and its create and update interfaces.
- */
+/** Implementation for ApplicationSecurityGroup and its create and update interfaces. */
 class ApplicationSecurityGroupImpl
-        extends GroupableResourceImpl<
-        ApplicationSecurityGroup,
-        ApplicationSecurityGroupInner,
-        ApplicationSecurityGroupImpl,
-        NetworkManager>
-        implements
-        ApplicationSecurityGroup,
-        ApplicationSecurityGroup.Definition,
-        ApplicationSecurityGroup.Update {
+    extends GroupableResourceImpl<
+        ApplicationSecurityGroup, ApplicationSecurityGroupInner, ApplicationSecurityGroupImpl, NetworkManager>
+    implements ApplicationSecurityGroup, ApplicationSecurityGroup.Definition, ApplicationSecurityGroup.Update {
 
     ApplicationSecurityGroupImpl(
-            final String name,
-            final ApplicationSecurityGroupInner innerModel,
-            final NetworkManager networkManager) {
+        final String name, final ApplicationSecurityGroupInner innerModel, final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
     }
 
     @Override
     protected Mono<ApplicationSecurityGroupInner> getInnerAsync() {
-        return this.manager().inner().applicationSecurityGroups().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this
+            .manager()
+            .inner()
+            .applicationSecurityGroups()
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
     public Mono<ApplicationSecurityGroup> createResourceAsync() {
-        return this.manager().inner().applicationSecurityGroups().createOrUpdateAsync(resourceGroupName(), name(), inner())
-                .map(innerToFluentMap(this));
+        return this
+            .manager()
+            .inner()
+            .applicationSecurityGroups()
+            .createOrUpdateAsync(resourceGroupName(), name(), inner())
+            .map(innerToFluentMap(this));
     }
 
     @Override
