@@ -20,7 +20,7 @@ import java.time.Duration;
 /**
  * Sample for extracting receipt information using input stream.
  */
-public class ExtractPrebuiltReceiptSync {
+public class ExtractPrebuiltReceipt {
 
     /**
      * Sample for extracting receipt information using input stream.
@@ -30,13 +30,12 @@ public class ExtractPrebuiltReceiptSync {
      */
     public static void main(final String[] args) throws IOException {
         // Instantiate a client that will be used to call the service.
-
         FormRecognizerClient client = new FormRecognizerClientBuilder()
             .apiKey(new AzureKeyCredential("{api_key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
-        File sourceFile = new File("///contoso-allinone.jpg");
+        File sourceFile = new File("azure-ai-formrecognizer/src/test/resources/sample-files/contoso-allinone.jpg");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 

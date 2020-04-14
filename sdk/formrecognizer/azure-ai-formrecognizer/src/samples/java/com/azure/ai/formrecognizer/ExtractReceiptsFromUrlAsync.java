@@ -13,9 +13,9 @@ import reactor.core.publisher.Mono;
 /**
  * Sample for extracting receipt information using file source URL.
  */
-public class ExtractPrebuiltReceiptAsync {
+public class ExtractReceiptsFromUrlAsync {
     /**
-     * Sample for extracting receipt information using input stream.
+     * Sample for extracting receipt information using file source URL.
      *
      * @param args Unused. Arguments to the program.
      */
@@ -38,8 +38,7 @@ public class ExtractPrebuiltReceiptAsync {
                     // training completed successfully, retrieving final result.
                     return trainingOperationResponse.getFinalResult();
                 } else {
-                    System.out.println("polling completed unsuccessfully with status:"
-                        + trainingOperationResponse.getStatus());
+                    System.out.printf("polling completed unsuccessfully with status: %s.", trainingOperationResponse.getStatus());
                     return Mono.empty();
                 }
             }).block();

@@ -79,6 +79,13 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     @Test
     abstract void extractReceiptDataTextDetails();
 
+    // Training model management
+    @Test
+    abstract void listModels();
+
+    @Test
+    abstract void listModelsWithContext();
+
     void receiptSourceUrlRunner(Consumer<String> testRunner) {
         testRunner.accept(TestUtils.RECEIPT_URL);
     }
@@ -218,7 +225,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
      * Create a client builder with endpoint and API key credential.
      *
      * @param endpoint the given endpoint
-     * @param credential the given {@link FormRecognizerApiKeyCredential} credential
+     * @param credential the given {@link AzureKeyCredential} credential
      *
      * @return {@link FormRecognizerClientBuilder}
      */
