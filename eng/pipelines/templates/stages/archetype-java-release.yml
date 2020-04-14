@@ -136,6 +136,7 @@ stages:
                           ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
                           Target: JavaDevFeed
                           BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
+                          JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
 
           - ${{if ne(artifact.options.skipPublishDocs, 'true')}}:
             - deployment: PublishDocs
@@ -222,6 +223,8 @@ stages:
       variables:
         skipComponentGovernanceDetection: true
       steps:
+      - checkout: self
+        path: azure-sdk-for-java
       - checkout: azure-sdk-build-tools
         path: azure-sdk-build-tools
 
@@ -239,3 +242,4 @@ stages:
             ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
             Target: JavaDevFeed
             BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
+            JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
