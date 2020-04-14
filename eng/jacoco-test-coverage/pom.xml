@@ -67,20 +67,30 @@
       <version>1.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
     </dependency>
     <dependency>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-core-http-okhttp</artifactId>
-        <version>1.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;current} -->
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-okhttp</artifactId>
+      <version>1.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;current} -->
     </dependency>
-<!--    <dependency>-->
-<!--      <groupId>com.azure</groupId>-->
-<!--      <artifactId>azure-core-management</artifactId>-->
-<!--      <version>1.0.0-beta.8</version> &lt;!&ndash; {x-version-update;com.azure:azure-core-management;current} &ndash;&gt;-->
-<!--    </dependency>-->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-serializer-avro-apache</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-apache;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-serializer-avro-jackson</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-jackson;current} -->
+    </dependency>
+    <!--    <dependency>-->
+    <!--      <groupId>com.azure</groupId>-->
+    <!--      <artifactId>azure-core-management</artifactId>-->
+    <!--      <version>1.0.0-beta.8</version> &lt;!&ndash; {x-version-update;com.azure:azure-core-management;current} &ndash;&gt;-->
+    <!--    </dependency>-->
     <!-- Not required for jacoco test coverage report -->
     <!-- <dependency> -->
-      <!-- <groupId>com.azure</groupId> -->
-      <!-- <artifactId>azure-core-test</artifactId> -->
-      <!-- <version>1.3.0-beta.1</version> --> <!-- {x-version-update;com.azure:azure-core-test;current} -->
+    <!-- <groupId>com.azure</groupId> -->
+    <!-- <artifactId>azure-core-test</artifactId> -->
+    <!-- <version>1.3.0-beta.1</version> --> <!-- {x-version-update;com.azure:azure-core-test;current} -->
     <!-- </dependency> -->
     <dependency>
       <groupId>com.azure</groupId>
@@ -148,11 +158,11 @@
       <version>12.7.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
     </dependency>
     <!-- Uncomment this when blob-nio is added to sdk/storage/pom.service.xml -->
-<!--    <dependency>-->
-<!--      <groupId>com.azure</groupId>-->
-<!--      <artifactId>azure-storage-blob-nio</artifactId>-->
-<!--      <version>12.0.0-beta.1</version> &lt;!&ndash; {x-version-update;com.azure:azure-storage-blob-nio;current} &ndash;&gt;-->
-<!--    </dependency>-->
+    <!--    <dependency>-->
+    <!--      <groupId>com.azure</groupId>-->
+    <!--      <artifactId>azure-storage-blob-nio</artifactId>-->
+    <!--      <version>12.0.0-beta.1</version> &lt;!&ndash; {x-version-update;com.azure:azure-storage-blob-nio;current} &ndash;&gt;-->
+    <!--    </dependency>-->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-file-share</artifactId>

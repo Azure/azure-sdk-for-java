@@ -54,6 +54,12 @@ stages:
         - name: azure-core-http-jdk-httpclient
           groupId: com.azure
           safeName: azurecorehttpjdkhttpclient
+        - name: azure-core-serializer-avro-apache
+          groupId: com.azure
+          safeName: azurecoreserializeravroapache
+        - name: azure-core-serializer-avro-jackson
+          groupId: com.azure
+          safeName: azurecoreserializeravrojackson
         - name: azure-core-test
           groupId: com.azure
           safeName: azurecoretest
