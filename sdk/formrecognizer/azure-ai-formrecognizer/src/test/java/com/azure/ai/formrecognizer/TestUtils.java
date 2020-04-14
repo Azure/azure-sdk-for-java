@@ -34,7 +34,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.ai.formrecognizer.CustomModelTransforms.DEFAULT_CONFIDENCE_VALUE;
 import static com.azure.ai.formrecognizer.TestJsonUtil.getPagedLines;
 import static com.azure.ai.formrecognizer.TestJsonUtil.getPagedTables;
 import static com.azure.ai.formrecognizer.TestJsonUtil.getRawExpectedForms;

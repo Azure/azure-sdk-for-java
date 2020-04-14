@@ -430,53 +430,6 @@ public final class FormRecognizerAsyncClient {
             fetchExtractReceiptResult(includeTextDetails));
     }
 
-    /**
-     * Recognizes and extracts receipt data using optical character recognition (OCR) and a prebuilt receipt
-     * trained model.
-     * <p>The service does not support cancellation of the long running operation and returns with an
-     * error message indicating absence of cancellation support.</p>
-     *
-     * @param data The data of the document to be extract receipt information from.
-     * @param length The exact length of the data. Size of the file must be less than 50 MB.
-     * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
-     *
-     * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
-     * been cancelled.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<OperationResult, IterableStream<RecognizedReceipt>> beginRecognizeReceipts(
-        Flux<ByteBuffer> data, long length, FormContentType formContentType) {
-        return beginRecognizeReceipts(data, length, formContentType, false, null);
-    }
-
-    /**
-     * Recognizes and extracts receipt data from documents using optical character recognition (OCR)
-     * and a prebuilt receipt trained model.
-     * <p>The service does not support cancellation of the long running operation and returns with an
-     * error message indicating absence of cancellation support.</p>
-     *
-     * @param data The data of the document to be extract receipt information from.
-     * @param length The exact length of the data. Size of the file must be less than 50 MB.
-     * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
-     * @param includeTextDetails Include text lines and element references in the result.
-     * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
-     * 5 seconds is used.
-     *
-     * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
-     * been cancelled.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<OperationResult, IterableStream<RecognizedReceipt>> beginRecognizeReceipts(
-        Flux<ByteBuffer> data, long length, FormContentType formContentType, boolean includeTextDetails,
-        Duration pollInterval) {
-        final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
-        return new PollerFlux<OperationResult, IterableStream<RecognizedReceipt>>(interval,
-            receiptStreamActivationOperation(data, length, formContentType, includeTextDetails),
-            extractReceiptPollOperation(),
-            (activationResponse, context) -> monoError(logger,
-                new RuntimeException("Cancellation is not supported")),
-            fetchExtractReceiptResult(includeTextDetails));
-    }
 
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> receiptAnalyzeActivationOperation(
@@ -666,7 +619,7 @@ public final class FormRecognizerAsyncClient {
         return (pollingContext) -> {
             try {
                 return service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId),
-                    includeTextDetails, ContentType.fromString(formContentType.toString()), data, length)
+                     ContentType.fromString(formContentType.toString()), data, length, includeTextDetails)
                     .map(response ->
                         new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation())));
             } catch (RuntimeException ex) {

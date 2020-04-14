@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
+import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -116,6 +117,28 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
     void deleteModelValidModelIdWithResponse() {
         // TODO: after List models API is merged.
         // list models select first and delete model Id check success response.s
+    }
+
+    /**
+     * Test for listing all models information.
+     */
+    @Test
+    void listModels() {
+        for (CustomFormModelInfo modelInfo : client.listModels()) {
+            assertTrue(modelInfo.getModelId() != null && modelInfo.getCreatedOn() != null
+                && modelInfo.getLastUpdatedOn() != null && modelInfo.getStatus() != null);
+        }
+    }
+
+    /**
+     * Test for listing all models information with {@link Context}.
+     */
+    @Test
+    void listModelsWithContext() {
+        for (CustomFormModelInfo modelInfo : client.listModels(Context.NONE)) {
+            assertTrue(modelInfo.getModelId() != null && modelInfo.getCreatedOn() != null
+                && modelInfo.getLastUpdatedOn() != null && modelInfo.getStatus() != null);
+        }
     }
 
     /**

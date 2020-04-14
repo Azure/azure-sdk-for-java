@@ -9,6 +9,7 @@ import com.azure.ai.formrecognizer.implementation.models.ModelInfo;
 import com.azure.ai.formrecognizer.implementation.models.ModelStatus;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelField;
+import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.models.CustomFormSubModel;
 import com.azure.ai.formrecognizer.models.FormRecognizerError;
 import com.azure.ai.formrecognizer.models.ModelTrainingStatus;
@@ -23,6 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
+
+import static com.azure.ai.formrecognizer.Transforms.forEachWithIndex;
 
 /**
  * Helper class to convert service level custom form related models to SDK exposed models.
@@ -48,14 +51,22 @@ final class CustomModelTransforms {
                     modelInfo.getModelId(), modelInfo.getStatus())));
         }
 
-        List<TrainingDocumentInfo> trainingDocumentInfoList =
-            modelResponse.getTrainResult().getTrainingDocuments().stream()
-                .map(trainingDocumentItem -> new TrainingDocumentInfo(
-                    trainingDocumentItem.getDocumentName(),
-                    TrainingStatus.fromString(trainingDocumentItem.getStatus().toString()),
-                    trainingDocumentItem.getPages(),
-                    new IterableStream<FormRecognizerError>(transformTrainingErrors(trainingDocumentItem.getErrors()))))
-                .collect(Collectors.toList());
+        IterableStream<TrainingDocumentInfo> trainingDocumentInfoList = null;
+        IterableStream<FormRecognizerError> modelErrors = null;
+
+        if (modelResponse.getTrainResult() != null) {
+            trainingDocumentInfoList =
+                new IterableStream<>(
+                    modelResponse.getTrainResult().getTrainingDocuments().stream()
+                        .map(trainingDocumentItem -> new TrainingDocumentInfo(
+                            trainingDocumentItem.getDocumentName(),
+                            TrainingStatus.fromString(trainingDocumentItem.getStatus().toString()),
+                            trainingDocumentItem.getPages(),
+                            transformTrainingErrors(trainingDocumentItem.getErrors())))
+                        .collect(Collectors.toList())
+                );
+            modelErrors = transformTrainingErrors(modelResponse.getTrainResult().getErrors());
+        }
 
         List<CustomFormSubModel> subModelList = new ArrayList<>();
         String formType = "form-";
@@ -63,17 +74,16 @@ final class CustomModelTransforms {
         if (modelResponse.getKeys() != null) {
             Map<String, CustomFormModelField> fieldMap = new TreeMap<>();
             modelResponse.getKeys().getClusters().forEach((clusterKey, clusterFields) -> {
-                for (int i = 0, clusterFieldsSize = clusterFields.size(); i < clusterFieldsSize; i++) {
-                    String eachField = clusterFields.get(i);
-                    String fieldLabel = "field-" + i;
-                    fieldMap.put(fieldLabel, new CustomFormModelField(fieldLabel, eachField, null));
-                }
+                forEachWithIndex(clusterFields, (index, eachField) -> {
+                    String fieldName = "field-" + index;
+                    fieldMap.put(fieldName, new CustomFormModelField(eachField, fieldName, null));
+                });
                 subModelList.add(new CustomFormSubModel(
                     null,
                     fieldMap,
                     formType + clusterKey));
             });
-        } else if (modelResponse.getTrainResult().getFields() != null) {
+        } else if (modelResponse.getTrainResult() != null && modelResponse.getTrainResult().getFields() != null) {
             // labeled model
             Map<String, CustomFormModelField> fieldMap = new TreeMap<>();
             modelResponse.getTrainResult().getFields()
@@ -92,9 +102,8 @@ final class CustomModelTransforms {
             modelInfo.getCreatedDateTime(),
             modelInfo.getLastUpdatedDateTime(),
             new IterableStream<>(subModelList),
-            new IterableStream<FormRecognizerError>(
-                transformTrainingErrors(modelResponse.getTrainResult().getErrors())),
-            new IterableStream<TrainingDocumentInfo>(trainingDocumentInfoList));
+            modelErrors,
+            trainingDocumentInfoList);
     }
 
     /**
@@ -104,13 +113,52 @@ final class CustomModelTransforms {
      *
      * @return The list of {@link FormRecognizerError}
      */
-    private static List<FormRecognizerError> transformTrainingErrors(List<ErrorInformation> trainingErrorList) {
+    private static IterableStream<FormRecognizerError> transformTrainingErrors(
+        List<ErrorInformation> trainingErrorList) {
         if (CoreUtils.isNullOrEmpty(trainingErrorList)) {
-            return new ArrayList<>();
+            return null;
         } else {
-            return trainingErrorList.stream().map(errorInformation ->
-                new FormRecognizerError(errorInformation.getCode(),
-                    errorInformation.getMessage())).collect(Collectors.toList());
+            return new IterableStream<>(trainingErrorList.stream()
+                .map(errorInformation -> new FormRecognizerError(errorInformation.getCode(),
+                    errorInformation.getMessage()))
+                .collect(Collectors.toList()));
+        }
+    }
+
+    /**
+     * Transform a list of {@link ModelInfo} to a list of {@link CustomFormModelInfo}.
+     *
+     * @param list A list of {@link ModelInfo}.
+     * @return A list of {@link CustomFormModelInfo}.
+     */
+    static List<CustomFormModelInfo> toCustomFormModelInfo(List<ModelInfo> list) {
+        CollectionTransformer<ModelInfo, CustomFormModelInfo> transformer =
+            new CollectionTransformer<ModelInfo, CustomFormModelInfo>() {
+                @Override
+                CustomFormModelInfo transform(ModelInfo modelInfo) {
+                    return new CustomFormModelInfo(modelInfo.getModelId().toString(),
+                        ModelTrainingStatus.fromString(modelInfo.getStatus().toString()),
+                        modelInfo.getCreatedDateTime(), modelInfo.getLastUpdatedDateTime());
+                }
+            };
+        return transformer.transform(list);
+    }
+
+    /**
+     * A generic transformation class for collection that transform from type {@code E} to type {@code F}.
+     *
+     * @param <E> Transform type E to another type.
+     * @param <F> Transform to type F from another type.
+     */
+    abstract static class CollectionTransformer<E, F> {
+        abstract F transform(E e);
+
+        List<F> transform(List<E> list) {
+            List<F> newList = new ArrayList<>();
+            for (E e : list) {
+                newList.add(transform(e));
+            }
+            return newList;
         }
     }
 }
