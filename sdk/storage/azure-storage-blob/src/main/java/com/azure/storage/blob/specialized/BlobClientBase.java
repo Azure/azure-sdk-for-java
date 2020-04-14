@@ -785,20 +785,75 @@ public class BlobClientBase {
         return blockWithOptionalTimeout(response, timeout);
     }
 
+    /**
+     * Returns the blob's tags.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.getPropertiesWithResponse#BlobRequestConditions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="GET DOCS LINK">Azure Docs</a></p>
+     *
+     * @return The blob's tags.
+     */
     public Map<String, String> getTags() {
         return this.getTagsWithResponse(null, Context.NONE).getValue();
     }
 
+    /**
+     * Returns the blob's tags.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.getPropertiesWithResponse#BlobRequestConditions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="GET DOCS LINK">Azure Docs</a></p>
+     *
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return The blob's tags.
+     */
     public Response<Map<String, String>> getTagsWithResponse(Duration timeout, Context context) {
         Mono<Response<Map<String, String>>> response = client.getTagsWithResponse(context);
 
         return blockWithOptionalTimeout(response, timeout);
     }
 
+    /**
+     * Sets user defined tags. The specified tags in this method will replace existing tags. If old values
+     * must be preserved, they must be downloaded and included in the call to this method.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setMetadataWithResponse#Map-BlobRequestConditions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="ADD DOCS LINK">Azure Docs</a></p>
+     *
+     * @param tags Tags to associate with the blob.
+     */
     public void setTags(Map<String, String> tags) {
         this.setTagsWithResponse(tags, null, Context.NONE);
     }
 
+    /**
+     * Sets user defined tags. The specified tags in this method will replace existing tags. If old values
+     * must be preserved, they must be downloaded and included in the call to this method.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setMetadataWithResponse#Map-BlobRequestConditions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="ADD DOCS LINK">Azure Docs</a></p>
+     *
+     * @param tags Tags to associate with the blob.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers.
+     */
     public Response<Void> setTagsWithResponse(Map<String, String> tags, Duration timeout, Context context) {
         Mono<Response<Void>> response = client.setTagsWithResponse(tags, context);
 

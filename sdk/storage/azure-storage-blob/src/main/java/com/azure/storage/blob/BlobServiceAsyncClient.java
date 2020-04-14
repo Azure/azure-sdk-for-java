@@ -7,6 +7,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -332,13 +333,37 @@ public final class BlobServiceAsyncClient {
                 null, Context.NONE), timeout);
     }
 
+
+    /**
+     * Returns a reactive Publisher emitting the blobs in this account whose tags match the query expression. For more
+     * information, including information on the query syntax, see the <a href="DOC LINK NEEDED">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.listBlobContainers#ListBlobContainersOptions-Duration}
+     *
+     * @param query Filters the results to return only blobs whose tags match the specified expression.
+     * @return A reactive response emitting the list of blobs.
+     */
     public PagedFlux<FilterBlobItem> filterBlobs(String query) {
         return this.filterBlobs(query, null, null);
     }
 
-    public PagedFlux<FilterBlobItem> filterBlobs(String query, Integer maxResults) {
+    /**
+     * Returns a reactive Publisher emitting the blobs in this account whose tags match the query expression. For more
+     * information, including information on the query syntax, see the <a href="DOC LINK NEEDED">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.listBlobContainers#ListBlobContainersOptions-Duration}
+     *
+     * @param query Filters the results to return only blobs whose tags match the specified expression.
+     * @param maxResultsPerPage The maximum number of results to return in a given page.
+     * @return A reactive response emitting the list of blobs.
+     */
+    public PagedFlux<FilterBlobItem> filterBlobs(String query, Integer maxResultsPerPage) {
         try {
-            return filterBlobs(query, maxResults, null);
+            return filterBlobs(query, maxResultsPerPage, null);
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }

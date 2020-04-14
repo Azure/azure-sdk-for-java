@@ -194,12 +194,38 @@ public final class BlobServiceClient {
         return new PagedIterable<>(blobServiceAsyncClient.listBlobContainersWithOptionalTimeout(options, timeout));
     }
 
+    /**
+     * Returns a lazy loaded list of blobs in this account whose tags match the query expression. The returned
+     * {@link PagedIterable} can be consumed while new items are automatically retrieved as needed. For more
+     * information, including information on the query syntax, see the <a href="DOC LINK NEEDED">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.listBlobContainers#ListBlobContainersOptions-Duration}
+     *
+     * @param query Filters the results to return only blobs whose tags match the specified expression.
+     * @return The list of blobs.
+     */
     public PagedIterable<FilterBlobItem> filterBlobs(String query) {
         return this.filterBlobs(query, null, null);
     }
 
-    public PagedIterable<FilterBlobItem> filterBlobs(String query, Integer maxResults, Duration timeout) {
-        return new PagedIterable<>(blobServiceAsyncClient.filterBlobs(query, maxResults, timeout));
+    /**
+     * Returns a lazy loaded list of blobs in this account whose tags match the query expression. The returned
+     * {@link PagedIterable} can be consumed while new items are automatically retrieved as needed. For more
+     * information, including information on the query syntax, see the <a href="DOC LINK NEEDED">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.listBlobContainers#ListBlobContainersOptions-Duration}
+     *
+     * @param query Filters the results to return only blobs whose tags match the specified expression.
+     * @param maxResultsPerPage The maximum number of results to return in a given page.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @return The list of blobs.
+     */
+    public PagedIterable<FilterBlobItem> filterBlobs(String query, Integer maxResultsPerPage, Duration timeout) {
+        return new PagedIterable<>(blobServiceAsyncClient.filterBlobs(query, maxResultsPerPage, timeout));
     }
 
     /**

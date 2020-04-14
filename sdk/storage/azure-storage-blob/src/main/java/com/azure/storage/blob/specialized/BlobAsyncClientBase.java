@@ -1359,10 +1359,34 @@ public class BlobAsyncClientBase {
             .map(response -> new SimpleResponse<>(response, null));
     }
 
+    /**
+     * Returns the blob's tags.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.getPropertiesWithResponse#BlobRequestConditions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="GET DOCS LINK">Azure Docs</a></p>
+     *
+     * @return A reactive response containing the blob's tags.
+     */
     public Mono<Map<String, String>> getTags() {
         return this.getTagsWithResponse().map(Response::getValue);
     }
 
+    /**
+     * Returns the blob's tags.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.getPropertiesWithResponse#BlobRequestConditions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="GET DOCS LINK">Azure Docs</a></p>
+     *
+     * @return A reactive response containing the blob's tags.
+     */
     public Mono<Response<Map<String, String>>> getTagsWithResponse() {
         try {
             return withContext(this::getTagsWithResponse);
@@ -1383,10 +1407,38 @@ public class BlobAsyncClientBase {
             });
     }
 
+    /**
+     * Sets user defined tags. The specified tags in this method will replace existing tags. If old values must be
+     * preserved, they must be downloaded and included in the call to this method.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setMetadataWithResponse#Map-BlobRequestConditions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="ADD DOCS LINK">Azure Docs</a></p>
+     *
+     * @param tags Tags to associate with the blob.
+     * @return A reactive response signaling completion.
+     */
     public Mono<Void> setTags(Map<String, String> tags) {
         return this.setTagsWithResponse(tags).flatMap(FluxUtil::toMono);
     }
 
+    /**
+     * Sets user defined tags. The specified tags in this method will replace existing tags. If old values must be
+     * preserved, they must be downloaded and included in the call to this method.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setMetadataWithResponse#Map-BlobRequestConditions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="ADD DOCS LINK">Azure Docs</a></p>
+     *
+     * @param tags Tags to associate with the blob.
+     * @return A reactive response signaling completion.
+     */
     public Mono<Response<Void>> setTagsWithResponse(Map<String, String> tags) {
         try {
             return withContext(context -> setTagsWithResponse(tags, context));
