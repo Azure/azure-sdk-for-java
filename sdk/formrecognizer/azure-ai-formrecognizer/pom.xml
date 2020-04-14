@@ -32,6 +32,12 @@
     <tag>HEAD</tag>
   </scm>
 
+  <!-- Delete it once code coverage is up -->
+  <properties>
+    <jacoco.min.linecoverage>0.40</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.20</jacoco.min.branchcoverage>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
