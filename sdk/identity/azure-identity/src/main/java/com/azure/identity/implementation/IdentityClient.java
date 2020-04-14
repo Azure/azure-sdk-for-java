@@ -186,7 +186,7 @@ public class IdentityClient {
         }
 
         command.append(scopes);
-    
+
         AccessToken token = null;
         BufferedReader reader = null;
         try {
@@ -524,7 +524,7 @@ public class IdentityClient {
         // find if the Public Client app with the requested username exists
         return Mono.fromFuture(() -> getPublicClientApplication().getAccounts())
                 .onErrorResume(t -> Mono.error(new ClientAuthenticationException(
-                        "Cannot get accounts from token cache. Error: " + t.getMessage(), null)))
+                        "Cannot get accounts from token cache. Error: " + t.getMessage(), null, t)))
                 .flatMap(set -> {
                     IAccount requestedAccount;
                     Map<String, IAccount> accounts = new HashMap<>(); // home account id -> account
