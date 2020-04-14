@@ -39,8 +39,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static com.azure.ai.formrecognizer.CustomModelTransforms.DEFAULT_CONFIDENCE_VALUE;
-
 /**
  * Helper class to convert service level models to SDK exposed models.
  */
@@ -48,6 +46,7 @@ final class Transforms {
     private static final ClientLogger LOGGER = new ClientLogger(Transforms.class);
     // Pattern match to find all non-digits in the provided string.
     private static final Pattern NON_DIGIT_PATTERN = Pattern.compile("[^0-9]+");
+    private static final float DEFAULT_CONFIDENCE_VALUE = 1.0f;
 
     private Transforms() {
     }
@@ -83,7 +82,6 @@ final class Transforms {
 
                 formType.set(documentResultItem.getDocType());
                 extractedFieldMap = getLabeledFieldMap(documentResultItem, readResults, includeTextDetails);
-
             }
             extractedFormList.add(new RecognizedForm(
                 extractedFieldMap,
@@ -103,12 +101,13 @@ final class Transforms {
                     }
                     extractedFieldMap = getUnlabeledFieldMap(includeTextDetails, readResults, pageResultItem,
                         pageNumber);
+
+                    extractedFormList.add(new RecognizedForm(
+                        extractedFieldMap,
+                        formType.get(),
+                        new PageRange(pageNumber, pageNumber),
+                        new IterableStream<>(Collections.singletonList(formPages.get(pageNumber - 1)))));
                 }
-                extractedFormList.add(new RecognizedForm(
-                    extractedFieldMap,
-                    formType.get(),
-                    new PageRange(pageNumber, pageNumber),
-                    new IterableStream<>(Collections.singletonList(formPages.get(pageNumber - 1)))));
             }
         }
         return extractedFormList;
@@ -144,7 +143,7 @@ final class Transforms {
 
         for (int i = 0; i < readResults.size(); i++) {
             ReadResult readResultItem = readResults.get(i);
-            List<FormTable> perPageTableList = null;
+            List<FormTable> perPageTableList = new ArrayList<>();
 
             if (!CoreUtils.isNullOrEmpty(pageResults)) {
                 PageResult pageResultItem = pageResults.get(i);
@@ -152,7 +151,7 @@ final class Transforms {
             }
 
             // add form lines
-            List<FormLine> perPageFormLineList = null;
+            List<FormLine> perPageFormLineList = new ArrayList<>();
             if (!CoreUtils.isNullOrEmpty(readResultItem.getLines())) {
                 perPageFormLineList = getReadResultFormLines(readResultItem);
             }
@@ -310,8 +309,8 @@ final class Transforms {
             readResultItem.getAngle(),
             DimensionUnit.fromString(readResultItem.getUnit().toString()),
             readResultItem.getWidth(),
-            perPageLineList,
-            perPageTableList
+            new IterableStream<FormLine>(perPageLineList),
+            new IterableStream<FormTable>(perPageTableList)
         );
     }
 
@@ -443,7 +442,7 @@ final class Transforms {
      * @return A {@link BoundingBox}.
      */
     private static BoundingBox toBoundingBox(List<Float> serviceBoundingBox) {
-        if (CoreUtils.isNullOrEmpty(serviceBoundingBox) && (serviceBoundingBox.size() < 8 || (serviceBoundingBox.size() % 2 != 0))) {
+        if (CoreUtils.isNullOrEmpty(serviceBoundingBox) ||  (serviceBoundingBox.size() % 2) != 0) {
             return null;
         }
         List<Point> pointList = new ArrayList<>();

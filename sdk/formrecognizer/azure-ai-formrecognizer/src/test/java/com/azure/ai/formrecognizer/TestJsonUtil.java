@@ -67,8 +67,13 @@ final class TestJsonUtil {
         return toReceipt(getRawResponse(filePath).getAnalyzeResult(), includeTextDetails);
     }
 
-    static List<RecognizedForm> getRawExpectedForms(boolean includeTextDetails) {
-        String filePath = "src/test/resources/sample-files/receiptContent.json";
-        return toRecognizedForm(getRawResponse(filePath).getAnalyzeResult(), includeTextDetails);
+    static List<RecognizedForm> getRawExpectedForms() {
+        String filePath = "src/test/resources/sample-files/customFormContent.json";
+        return toRecognizedForm(getRawResponse(filePath).getAnalyzeResult(), false);
+    }
+
+    static List<RecognizedForm> getRawExpectedLabeledForms() {
+        String filePath = "src/test/resources/sample-files/customFormLabeledContent.json";
+        return toRecognizedForm(getRawResponse(filePath).getAnalyzeResult(), true);
     }
 }

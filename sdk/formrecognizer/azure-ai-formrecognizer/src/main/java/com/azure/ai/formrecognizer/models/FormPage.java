@@ -4,8 +4,7 @@
 package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
-
-import java.util.List;
+import com.azure.core.util.IterableStream;
 
 /**
  * The FormPage model.
@@ -21,12 +20,12 @@ public final class FormPage {
     /*
      * When includeTextDetails is set to true, a list of recognized text lines.
      */
-    private final List<FormLine> lines;
+    private final IterableStream<FormLine> lines;
 
     /*
      * List of data tables extracted from the page.
      */
-    private final List<FormTable> tables;
+    private final IterableStream<FormTable> tables;
 
     /*
      * The general orientation of the text in clockwise direction, measured in
@@ -47,7 +46,7 @@ public final class FormPage {
 
     /**
      * Constructs a FormPage object.
-     *  @param height The height of the image/PDF in pixels/inches, respectively.
+     * @param height The height of the image/PDF in pixels/inches, respectively.
      * @param textAngle The general orientation of the text in clockwise direction.
      * @param unit The unit used by the width, height and boundingBox properties.
      * @param width The width of the image/PDF in pixels/inches, respectively.
@@ -55,7 +54,7 @@ public final class FormPage {
      * @param tables List of data tables extracted from the page.
      */
     public FormPage(final float height, final float textAngle, final DimensionUnit unit,
-        final float width, final List<FormLine> lines, final List<FormTable> tables) {
+        final float width, final IterableStream<FormLine> lines, final IterableStream<FormTable> tables) {
         this.height = height;
         this.lines = lines;
         this.tables = tables;
@@ -81,7 +80,7 @@ public final class FormPage {
      *
      * @return the lines value.
      */
-    public List<FormLine> getLines() {
+    public IterableStream<FormLine> getLines() {
         return this.lines;
     }
 
@@ -90,7 +89,7 @@ public final class FormPage {
      *
      * @return the tables value.
      */
-    public List<FormTable> getTables() {
+    public IterableStream<FormTable> getTables() {
         return this.tables;
     }
 

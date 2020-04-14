@@ -50,6 +50,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.formrecognizer.FormRecognizerClientBuilder.OCP_APIM_SUBSCRIPTION_KEY;
+import static com.azure.ai.formrecognizer.TestUtils.LABELED_MODEL_ID;
+import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_LOCAL_URL;
 import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_LOCAL_URL;
 import static com.azure.ai.formrecognizer.TestUtils.VALID_MODEL_ID;
 import static com.azure.ai.formrecognizer.TestUtils.getFileData;
@@ -113,7 +115,6 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         validateReceiptItems(expectedReceipt.getReceiptItems(), actualRecognizedReceipt.getReceiptItems(), includeTextDetails);
     }
 
-    // Extract receipt
     @Test
     abstract void extractReceiptSourceUrl();
 
@@ -134,6 +135,9 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
     @Test
     abstract void extractCustomFormValidSourceUrl();
+
+    @Test
+    abstract void extractCustomFormLabeledData();
 
     @Test
     abstract void extractCustomFormInValidSourceUrl();
@@ -159,11 +163,15 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     }
 
     void layoutValidSourceUrlRunner(Consumer<InputStream> testRunner) {
-        testRunner.accept(getFileData(TestUtils.LAYOUT_LOCAL_URL));
+        testRunner.accept(getFileData(LAYOUT_LOCAL_URL));
     }
 
     void customFormValidSourceUrlRunner(BiConsumer<InputStream, String> testRunner) {
         testRunner.accept(getFileData(TestUtils.FORM_LOCAL_URL), VALID_MODEL_ID);
+    }
+
+    void customFormLabeledDataRunner(BiConsumer<InputStream, String> testRunner) {
+        testRunner.accept(getFileData(TestUtils.FORM_LOCAL_URL), LABELED_MODEL_ID);
     }
 
     protected <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
@@ -237,11 +245,13 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         validateFormTable(expectedFormPage.getTables(), actualFormPage.getTables());
     }
 
-    private static void validateFormTable(List<FormTable> expectedFormTables, List<FormTable> actualFormTables) {
-        assertEquals(expectedFormTables.size(), actualFormTables.size());
-        for (int i = 0; i < actualFormTables.size(); i++) {
-            FormTable expectedTable = expectedFormTables.get(i);
-            FormTable actualTable = actualFormTables.get(i);
+    private static void validateFormTable(IterableStream<FormTable> expectedFormTables, IterableStream<FormTable> actualFormTables) {
+        List<FormTable> expectedFormTable = expectedFormTables.stream().collect(Collectors.toList());
+        List<FormTable> actualFormTable = actualFormTables.stream().collect(Collectors.toList());
+        assertEquals(expectedFormTable.size(), actualFormTable.size());
+        for (int i = 0; i < actualFormTable.size(); i++) {
+            FormTable expectedTable = expectedFormTable.get(i);
+            FormTable actualTable = actualFormTable.get(i);
             assertEquals(expectedTable.getColumnCount(), actualTable.getColumnCount());
             validateCells(expectedTable.getCells(), actualTable.getCells());
             assertEquals(expectedTable.getRowCount(), actualTable.getRowCount());
@@ -266,17 +276,18 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         }
     }
 
-    private static void validateFormLine(List<FormLine> expectedFormLines, List<FormLine> actualFormLines) {
-        assertEquals(expectedFormLines.size(), actualFormLines.size());
-        for (int i = 0; i < actualFormLines.size(); i++) {
-            FormLine expectedLine = expectedFormLines.get(i);
-            FormLine actualLine = actualFormLines.get(i);
+    private static void validateFormLine(IterableStream<FormLine> expectedFormLines, IterableStream<FormLine> actualFormLines) {
+        List<FormLine> expectedLineList = expectedFormLines.stream().collect(Collectors.toList());
+        List<FormLine> actualLineList = actualFormLines.stream().collect(Collectors.toList());
+        assertEquals(expectedLineList.size(), actualLineList.size());
+        for (int i = 0; i < actualLineList.size(); i++) {
+            FormLine expectedLine = expectedLineList.get(i);
+            FormLine actualLine = actualLineList.get(i);
             assertEquals(expectedLine.getText(), actualLine.getText());
             validateBoundingBox(expectedLine.getBoundingBox(), actualLine.getBoundingBox());
             assertEquals(expectedLine.getPageNumber(), actualLine.getPageNumber());
             validateFormWord(expectedLine.getFormWords(), actualLine.getFormWords());
         }
-
     }
 
     private static void validateFormWord(IterableStream<FormWord> expectedFormWords, IterableStream<FormWord> actualFormWords) {
