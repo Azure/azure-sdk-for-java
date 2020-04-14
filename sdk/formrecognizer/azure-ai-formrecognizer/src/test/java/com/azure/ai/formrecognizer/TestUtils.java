@@ -9,8 +9,10 @@ import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelField;
 import com.azure.ai.formrecognizer.models.CustomFormSubModel;
 import com.azure.ai.formrecognizer.models.DimensionUnit;
+import com.azure.ai.formrecognizer.models.FormLine;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormRecognizerError;
+import com.azure.ai.formrecognizer.models.FormTable;
 import com.azure.ai.formrecognizer.models.ModelTrainingStatus;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.RecognizedReceipt;
@@ -36,6 +38,7 @@ import static com.azure.ai.formrecognizer.CustomModelTransforms.DEFAULT_CONFIDEN
 import static com.azure.ai.formrecognizer.TestJsonUtil.getPagedLines;
 import static com.azure.ai.formrecognizer.TestJsonUtil.getPagedTables;
 import static com.azure.ai.formrecognizer.TestJsonUtil.getRawExpectedForms;
+import static com.azure.ai.formrecognizer.TestJsonUtil.getRawExpectedLabeledForms;
 import static com.azure.ai.formrecognizer.TestJsonUtil.getRawExpectedReceipt;
 
 /**
@@ -44,15 +47,15 @@ import static com.azure.ai.formrecognizer.TestJsonUtil.getRawExpectedReceipt;
 final class TestUtils {
 
     static final String VALID_MODEL_ID = "95537f1b-aac4-4da8-8292-f1b93ac4c8f8";
-    static final String SUPERVISED_MODEL_ID = "a0a3998a-b3c0-4075-aa6b-c4c4affe66b7";
+    static final String LABELED_MODEL_ID = "a0a3998a-b3c0-4075-aa6b-c4c4affe66b7";
     static final String INVALID_MODEL_ID = "a0a3998a-4c4affe66b7";
     static final String INVALID_STATUS_MODEL_ID = "22138c4e-c4b0-4901-a0e1-6c5beb73fc1d";
     static final String INVALID_STATUS_MODEL_ERROR = "Model Id " + INVALID_STATUS_MODEL_ID + " returned with status: invalid";
 
     static final String INVALID_SOURCE_URL_ERROR = "Download failed. Please check your input URL.";
     // TODO (savaity): Do not hardcode, generate SAS URL
-    static final String VALID_SUPERVISED_SAS_URL = "";
-    static final String VALID_UNSUPERVISED_SAS_URL = "";
+    static final String VALID_LABELED_DATA_SAS_URL = "";
+    static final String VALID_UNLABELED_DATA_SAS_URL = "";
     static final Object INVALID_MODEL_ID_ERROR = "Invalid UUID string: " + INVALID_MODEL_ID;
     static final Object NULL_SOURCE_URL_ERROR = "'fileSourceUrl' cannot be null.";
     static final String INVALID_URL = "htttttttps://localhost:8080";
@@ -60,7 +63,9 @@ final class TestUtils {
     static final String RECEIPT_LOCAL_URL = "src/test/resources/sample-files/contoso-allinone.jpg";
     static final String LAYOUT_LOCAL_URL = "src/test/resources/sample-files/layout1.jpg";
     static final String FORM_LOCAL_URL = "src/test/resources/sample-files/Invoice_6.pdf";
-    static final Long FILE_LENGTH = new File(RECEIPT_LOCAL_URL).length();
+    static final Long RECEIPT_FILE_LENGTH = new File(RECEIPT_LOCAL_URL).length();
+    static final Long LAYOUT_FILE_LENGTH = new File(LAYOUT_LOCAL_URL).length();
+    static final Long CUSTOM_FORM_FILE_LENGTH = new File(FORM_LOCAL_URL).length();
     static final String RECEIPT_URL = "https://raw.githubusercontent.com/Azure-Samples/"
         + "cognitive-services-REST-api-samples/master/curl/form-recognizer/contoso-allinone.jpg";
     static final String INVALID_RECEIPT_URL = "https://invalid.blob.core.windows.net/fr/contoso-allinone.jpg";
@@ -70,7 +75,7 @@ final class TestUtils {
 
     static IterableStream<FormPage> getExpectedFormPages() {
         FormPage formPage = new FormPage(3000, 1.2666f, DimensionUnit.PIXEL, 1688,
-            getPagedLines().get(0), getPagedTables().get(0));
+            new IterableStream<FormLine>(getPagedLines().get(0)), new IterableStream<FormTable>(getPagedTables().get(0)));
         return new IterableStream<>(Arrays.asList(formPage));
     }
 
@@ -86,8 +91,12 @@ final class TestUtils {
         return usReceipt;
     }
 
-    static IterableStream<RecognizedForm> getExpectedRecognizedForms(boolean includeTextDetails) {
-        return new IterableStream<RecognizedForm>(getRawExpectedForms(includeTextDetails));
+    static IterableStream<RecognizedForm> getExpectedRecognizedForms() {
+        return new IterableStream<RecognizedForm>(getRawExpectedForms());
+    }
+
+    static IterableStream<RecognizedForm> getExpectedRecognizedLabeledForms() {
+        return new IterableStream<RecognizedForm>(getRawExpectedLabeledForms());
     }
 
     static IterableStream<TrainingDocumentInfo> getTrainingDocuments() {
@@ -99,7 +108,7 @@ final class TestUtils {
         return new IterableStream<TrainingDocumentInfo>(Arrays.asList(trainingDocumentInfo1, trainingDocumentInfo2, trainingDocumentInfo3, trainingDocumentInfo4, trainingDocumentInfo5));
     }
 
-    static CustomFormModel getExpectedUnsupervisedModel() {
+    static CustomFormModel getExpectedUnlabeledModel() {
         Map<String, CustomFormModelField> fieldMap = new HashMap<String, CustomFormModelField>() {
             {
                 put("field-0", new CustomFormModelField("field-0", "Address", null));
@@ -113,7 +122,7 @@ final class TestUtils {
                 put("field-8", new CustomFormModelField("field-8", "VAT ID", null));
             }
         };
-        CustomFormSubModel customFormSubModel = new CustomFormSubModel(DEFAULT_CONFIDENCE_VALUE, fieldMap, "form-0");
+        CustomFormSubModel customFormSubModel = new CustomFormSubModel(null, fieldMap, "form-0");
         return new CustomFormModel(VALID_MODEL_ID, ModelTrainingStatus.READY,
             OffsetDateTime.parse("2020-04-09T21:30:28Z"),
             OffsetDateTime.parse("2020-04-09T18:24:56Z"),
@@ -121,7 +130,7 @@ final class TestUtils {
             new IterableStream<FormRecognizerError>(Collections.emptyList()), getTrainingDocuments());
     }
 
-    static CustomFormModel getExpectedSupervisedModel() {
+    static CustomFormModel getExpectedLabeledModel() {
         Map<String, CustomFormModelField> fieldMap = new HashMap<String, CustomFormModelField>() {
             {
                 put("InvoiceCharges", new CustomFormModelField(null, "InvoiceCharges", 1.0f));
@@ -131,8 +140,8 @@ final class TestUtils {
                 put("InvoiceVatId", new CustomFormModelField(null, "InvoiceVatId", 1.0f));
             }
         };
-        CustomFormSubModel customFormSubModel = new CustomFormSubModel(0.92f, fieldMap, "form-" + SUPERVISED_MODEL_ID);
-        return new CustomFormModel(SUPERVISED_MODEL_ID, ModelTrainingStatus.READY,
+        CustomFormSubModel customFormSubModel = new CustomFormSubModel(0.92f, fieldMap, "form-" + LABELED_MODEL_ID);
+        return new CustomFormModel(LABELED_MODEL_ID, ModelTrainingStatus.READY,
             OffsetDateTime.parse("2020-04-09T18:24:49Z"),
             OffsetDateTime.parse("2020-04-09T18:24:56Z"),
             new IterableStream<>(Collections.singletonList(customFormSubModel)),

@@ -78,14 +78,8 @@ final class Transforms {
                     pageRange = new PageRange(1, 1);
                 }
 
-                Map<String, FormField<?>> extractedFieldMap = getUnlabeledFieldMap(documentResultItem, readResults,
-                    includeTextDetails);
-                extractedFormList.add(new RecognizedForm(
-                    extractedFieldMap,
-                    documentResultItem.getDocType(),
-                    pageRange,
-                    new IterableStream<>(formPages.subList(pageRange.getStartPageNumber() - 1,
-                        pageRange.getEndPageNumber()))));
+                formType.set(documentResultItem.getDocType());
+                extractedFieldMap = getLabeledFieldMap(documentResultItem, readResults, includeTextDetails);
             }
         } else if (!CoreUtils.isNullOrEmpty(pageResults)) {
             // labeled
@@ -93,18 +87,20 @@ final class Transforms {
             for (PageResult pageResultItem : pageResults) {
                 StringBuffer formType = new StringBuffer("form-");
                 int pageNumber = pageResultItem.getPage();
-                Integer clusterId = pageResultItem.getClusterId();
-                if (clusterId != null) {
-                    formType.append(clusterId);
-                }
-                Map<String, FormField<?>> extractedFieldMap = getLabeledFieldMap(includeTextDetails, readResults,
-                    pageResultItem, pageNumber);
+                if (CoreUtils.isNullOrEmpty(documentResults)) {
+                    Integer clusterId = pageResultItem.getClusterId();
+                    if (clusterId != null) {
+                        formType.set(formType.get() + clusterId);
+                    }
+                    extractedFieldMap = getUnlabeledFieldMap(includeTextDetails, readResults, pageResultItem,
+                        pageNumber);
 
-                extractedFormList.add(new RecognizedForm(
-                    extractedFieldMap,
-                    formType.toString(),
-                    new PageRange(pageNumber, pageNumber),
-                    new IterableStream<>(Collections.singletonList(formPages.get(pageNumber - 1)))));
+                    extractedFormList.add(new RecognizedForm(
+                        extractedFieldMap,
+                        formType.get(),
+                        new PageRange(pageNumber, pageNumber),
+                        new IterableStream<>(Collections.singletonList(formPages.get(pageNumber - 1)))));
+                }
             }
         }
         return extractedFormList;
@@ -140,7 +136,8 @@ final class Transforms {
         List<FormPage> formPages = new ArrayList<>();
         boolean pageResultsIsNullOrEmpty = CoreUtils.isNullOrEmpty(pageResults);
 
-        forEachWithIndex(readResults, ((index, readResultItem) -> {
+        for (int i = 0; i < readResults.size(); i++) {
+            ReadResult readResultItem = readResults.get(i);
             List<FormTable> perPageTableList = new ArrayList<>();
 
             if (!pageResultsIsNullOrEmpty) {
@@ -150,7 +147,7 @@ final class Transforms {
 
             // add form lines
             List<FormLine> perPageFormLineList = new ArrayList<>();
-            if (includeTextDetails && !CoreUtils.isNullOrEmpty(readResultItem.getLines())) {
+            if (!CoreUtils.isNullOrEmpty(readResultItem.getLines())) {
                 perPageFormLineList = getReadResultFormLines(readResultItem);
             }
 
@@ -476,7 +473,7 @@ final class Transforms {
      * @return A {@link BoundingBox}.
      */
     private static BoundingBox toBoundingBox(List<Float> serviceBoundingBox) {
-        if (CoreUtils.isNullOrEmpty(serviceBoundingBox) || (serviceBoundingBox.size() % 2) != 0) {
+        if (CoreUtils.isNullOrEmpty(serviceBoundingBox) ||  (serviceBoundingBox.size() % 2) != 0) {
             return null;
         }
         List<Point> pointList = new ArrayList<>();

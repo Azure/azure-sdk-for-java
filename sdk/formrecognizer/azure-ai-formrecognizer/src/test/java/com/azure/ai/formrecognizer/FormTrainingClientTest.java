@@ -17,8 +17,8 @@ import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID_ERROR;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_STATUS_MODEL_ERROR;
 import static com.azure.ai.formrecognizer.TestUtils.NULL_SOURCE_URL_ERROR;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedAccountProperties;
-import static com.azure.ai.formrecognizer.TestUtils.getExpectedSupervisedModel;
-import static com.azure.ai.formrecognizer.TestUtils.getExpectedUnsupervisedModel;
+import static com.azure.ai.formrecognizer.TestUtils.getExpectedLabeledModel;
+import static com.azure.ai.formrecognizer.TestUtils.getExpectedUnlabeledModel;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -37,6 +37,9 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         client = formRecognizerClient.getFormTrainingClient();
     }
 
+    /**
+     * Verifies that an exception is thrown for invalid status model Id.
+     */
     @Test
     void getCustomModelInvalidStatusModel() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
@@ -44,17 +47,26 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         assertEquals(exception.getMessage(), INVALID_STATUS_MODEL_ERROR);
     }
 
+    /**
+     * Verifies that an exception is thrown for null model Id parameter.
+     */
     @Test
     void getCustomModelNullModelId() {
         assertThrows(NullPointerException.class, () -> client.getCustomModel(null));
     }
 
+    /**
+     * Verifies custom model info returned for a valid model Id.
+     */
     @Test
     void getCustomModelValidModelId() {
         getCustomModelValidModelIdRunner(validModelId ->
-            validateCustomModel(getExpectedUnsupervisedModel(), client.getCustomModel(validModelId)));
+            validateCustomModel(getExpectedUnlabeledModel(), client.getCustomModel(validModelId)));
     }
 
+    /**
+     * Verifies that an exception is thrown for invalid model Id.
+     */
     @Test
     void getCustomModelInvalidModelId() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
@@ -62,18 +74,27 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         assertTrue(exception.getMessage().equals(INVALID_MODEL_ID_ERROR));
     }
 
+    /**
+     * Verifies custom model info returned with response for a valid model Id.
+     */
     @Test
     void getCustomModelWithResponse() {
         getCustomModelWithResponseRunner(validModelId ->
-            validateCustomModel(getExpectedSupervisedModel(),
+            validateCustomModel(getExpectedLabeledModel(),
                 client.getCustomModelWithResponse(validModelId, Context.NONE).getValue()));
     }
 
+    /**
+     * Verifies account properties returned for a subscription account.
+     */
     @Test
     void validGetAccountProperties() {
         validateAccountProperties(getExpectedAccountProperties(), client.getAccountProperties());
     }
 
+    /**
+     * Verifies account properties returned with an Http Response for a subscription account.
+     */
     @Test
     void validGetAccountPropertiesWithResponse() {
         Response<AccountProperties> accountPropertiesResponse = client.getAccountPropertiesWithResponse(Context.NONE);
@@ -81,6 +102,9 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         validateAccountProperties(getExpectedAccountProperties(), accountPropertiesResponse.getValue());
     }
 
+    /**
+     * Verifies that an exception is thrown for invalid status model Id.
+     */
     @Test
     void deleteModelInvalidModelId() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
@@ -94,6 +118,9 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         // list models select first and delete model Id check success response.s
     }
 
+    /**
+     * Verifies that an exception is thrown for null source url input.
+     */
     @Test
     void beginTrainingNullInput() {
         Exception exception = assertThrows(NullPointerException.class, () ->
@@ -101,23 +128,29 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         assertTrue(exception.getMessage().equals(NULL_SOURCE_URL_ERROR));
     }
 
+    /**
+     * Verifies the result of the training operation for a valid labeled model Id and training set Url.
+     */
     @Test
-    void beginTrainingSupervisedResult() {
-        beginTrainingSupervisedResultRunner((storageSASUrl, useLabelFile) -> {
+    void beginTrainingLabeledResult() {
+        beginTrainingLabeledResultRunner((storageSASUrl, useLabelFile) -> {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
                 client.beginTraining(storageSASUrl, useLabelFile);
             syncPoller.waitForCompletion();
-            validateCustomModel(getExpectedSupervisedModel(), syncPoller.getFinalResult());
+            validateCustomModel(getExpectedLabeledModel(), syncPoller.getFinalResult());
         });
     }
 
+    /**
+     * Verifies the result of the training operation for a valid unlabeled model Id and training set Url.
+     */
     @Test
-    void beginTrainingUnsupervisedResult() {
-        beginTrainingUnsupervisedResultRunner((storageSASUrl, useLabelFile) -> {
+    void beginTrainingUnlabeledResult() {
+        beginTrainingUnlabeledResultRunner((storageSASUrl, useLabelFile) -> {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
                 client.beginTraining(storageSASUrl, useLabelFile);
             syncPoller.waitForCompletion();
-            validateCustomModel(getExpectedUnsupervisedModel(), syncPoller.getFinalResult());
+            validateCustomModel(getExpectedUnlabeledModel(), syncPoller.getFinalResult());
         });
     }
 }

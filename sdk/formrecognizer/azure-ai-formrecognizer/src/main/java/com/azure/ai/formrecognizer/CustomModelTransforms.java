@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
  * Helper class to convert service level custom form related models to SDK exposed models.
  */
 final class CustomModelTransforms {
-    public static final float DEFAULT_CONFIDENCE_VALUE = 1.0f;
     private static final ClientLogger LOGGER = new ClientLogger(CustomModelTransforms.class);
 
     private CustomModelTransforms() {
@@ -70,7 +69,7 @@ final class CustomModelTransforms {
                     fieldMap.put(fieldLabel, new CustomFormModelField(fieldLabel, eachField, null));
                 }
                 subModelList.add(new CustomFormSubModel(
-                    DEFAULT_CONFIDENCE_VALUE,
+                    null,
                     fieldMap,
                     formType + clusterKey));
             });

@@ -85,10 +85,10 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     abstract void beginTrainingNullInput();
 
     @Test
-    abstract void beginTrainingSupervisedResult();
+    abstract void beginTrainingLabeledResult();
 
     @Test
-    abstract void beginTrainingUnsupervisedResult();
+    abstract void beginTrainingUnlabeledResult();
 
     void getCustomModelInvalidStatusModelRunner(Consumer<String> testRunner) {
         testRunner.accept(TestUtils.INVALID_STATUS_MODEL_ID);
@@ -103,15 +103,15 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     }
 
     void getCustomModelWithResponseRunner(Consumer<String> testRunner) {
-        testRunner.accept(TestUtils.SUPERVISED_MODEL_ID);
+        testRunner.accept(TestUtils.LABELED_MODEL_ID);
     }
 
-    void beginTrainingSupervisedResultRunner(BiConsumer<String, Boolean> testRunner) {
-        testRunner.accept(TestUtils.VALID_SUPERVISED_SAS_URL, true);
+    void beginTrainingLabeledResultRunner(BiConsumer<String, Boolean> testRunner) {
+        testRunner.accept(TestUtils.VALID_LABELED_DATA_SAS_URL, true);
     }
 
-    void beginTrainingUnsupervisedResultRunner(BiConsumer<String, Boolean> testRunner) {
-        testRunner.accept(TestUtils.VALID_UNSUPERVISED_SAS_URL, false);
+    void beginTrainingUnlabeledResultRunner(BiConsumer<String, Boolean> testRunner) {
+        testRunner.accept(TestUtils.VALID_UNLABELED_DATA_SAS_URL, false);
     }
 
     <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
