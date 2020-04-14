@@ -1,7 +1,7 @@
 # Azure Key Vault Certificate client library for Java
-Azure Key Vault allows you to create and store certificates in the Key Vault. Azure Key Vault Certificate client Library supports certificates backed by Rsa keys and Ec keys. It allows you to securely manage, tightly control your certificates.
+Azure Key Vault allows you to securely manage and tightly control your certificates. Azure Key Vault Certificate client library supports certificates backed by RSA and EC keys.
 
- Multiple certificates, and multiple versions of the same certificate, can be kept in the Key Vault. Cryptographic keys in Key Vault backing the certificates are represented as [JSON Web Key [JWK]](https://tools.ietf.org/html/rfc7517) objects. This library offers operations to create, retrieve, update, delete, purge, backup, restore and list the certificates and its versions.
+ Multiple certificates, and multiple versions of the same certificate, can be kept in the Key Vault. Cryptographic keys in Key Vault backing the certificates are represented as [JSON Web Key [JWK]](https://tools.ietf.org/html/rfc7517) objects. This library offers operations to create, retrieve, update, delete, purge, backup, restore, and list the certificates and its versions.
 
 [Source code][source_code] | [API reference documentation][api_documentation] | [Product documentation][azkeyvault_docs] | [Samples][certificates_samples]
 
@@ -31,7 +31,7 @@ Maven dependency for Azure Key Client library. Add it to your project's pom file
     ```
 
 ### Authenticate the client
-In order to interact with the Key Vault service, you'll need to create an instance of the [CertificateClient](#create-certificate-client) class. You would need a **vault url** and **client secret credentials (client id, client secret, tenant id)** to instantiate a client object using the `DefaultAzureCredential` examples shown in this document.
+In order to interact with the Key Vault service, you'll need to create an instance of the [CertificateClient](#create-certificate-client) class. You need a **vault url** and **client secret credentials (client id, client secret, tenant id)** to instantiate a client object using the `DefaultAzureCredential` examples shown in this document.
 
 The `DefaultAzureCredential` way of authentication by providing client secret credentials is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].
 
@@ -58,7 +58,7 @@ Here is [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
     }
     ```
 
-* Use the above returned credentials information to set **AZURE_CLIENT_ID** (appId), **AZURE_CLIENT_SECRET** (password) and **AZURE_TENANT_ID** (tenantId) environment variables. The following example shows a way to do this in Bash:
+* Use the above returned credentials information to set **AZURE_CLIENT_ID** (appId), **AZURE_CLIENT_SECRET** (password), and **AZURE_TENANT_ID** (tenantId) environment variables. The following example shows a way to do this in Bash:
 
   ```Bash
     export AZURE_CLIENT_ID="generated-app-ID"
