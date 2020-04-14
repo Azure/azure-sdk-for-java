@@ -117,6 +117,21 @@ public final class ServiceBusClientBuilder {
     }
 
     /**
+     * Sets the configuration store that is used during construction of the service client.
+     *
+     * If not specified, the default configuration store is used to configure Service Bus clients. Use
+     * {@link Configuration#NONE} to bypass using configuration settings during construction.
+     *
+     * @param configuration The configuration store used to configure Service Bus clients.
+     *
+     * @return The updated {@link ServiceBusClientBuilder} object.
+     */
+    public ServiceBusClientBuilder configuration(Configuration configuration) {
+        this.configuration = configuration;
+        return this;
+    }
+
+    /**
      * Sets the credential for the Service Bus resource.
      *
      * @param fullyQualifiedNamespace for the Service Bus.
