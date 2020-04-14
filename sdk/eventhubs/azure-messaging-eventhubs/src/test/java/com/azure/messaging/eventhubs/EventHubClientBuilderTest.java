@@ -120,7 +120,9 @@ public class EventHubClientBuilderTest {
             Arguments.of("http://sub.example.com:8080", true),
             Arguments.of(":8080", false),
             Arguments.of("http://localhost", true),
-            Arguments.of("sub.example.com:8080", true)
+            Arguments.of("sub.example.com:8080", true),
+            Arguments.of("https://username:password@sub.example.com:8080", true),
+            Arguments.of("https://username:password@sub.example.com", true)
         );
 
     }

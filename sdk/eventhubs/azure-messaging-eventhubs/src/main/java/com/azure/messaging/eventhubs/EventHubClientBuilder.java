@@ -29,8 +29,6 @@ import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubSharedKeyCredential;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.regex.Pattern;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Scheduler;
@@ -629,33 +627,26 @@ public class EventHubClientBuilder {
             return ProxyOptions.SYSTEM_DEFAULTS;
         }
 
-        InetSocketAddress inetSocketAddress = getInetSocketAddress(proxyAddress);
-
-        final Proxy proxy = new Proxy(Proxy.Type.HTTP, inetSocketAddress);
-        final String username = configuration.get(ProxyOptions.PROXY_USERNAME);
-        final String password = configuration.get(ProxyOptions.PROXY_PASSWORD);
-
-        return new ProxyOptions(authentication, proxy, username, password);
+        return getProxyOptions(authentication, proxyAddress);
     }
 
-    private InetSocketAddress getInetSocketAddress(String proxyAddress) {
+    private ProxyOptions getProxyOptions(ProxyAuthenticationType authentication, String proxyAddress) {
         String host;
         int port;
         if (HOST_PORT_PATTERN.matcher(proxyAddress.trim()).find()) {
             final String[] hostPort = proxyAddress.split(":");
             host = hostPort[0];
             port = Integer.parseInt(hostPort[1]);
+            final Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
+            final String username = configuration.get(ProxyOptions.PROXY_USERNAME);
+            final String password = configuration.get(ProxyOptions.PROXY_PASSWORD);
+            return new ProxyOptions(authentication, proxy, username, password);
         } else {
-            try {
-                URL proxyUrl = new URL(proxyAddress);
-                host = proxyUrl.getHost();
-                port = (proxyUrl.getPort() == -1) ? proxyUrl.getDefaultPort() : proxyUrl.getPort();
-            } catch (MalformedURLException e) {
-                throw logger
-                    .logExceptionAsError(new IllegalArgumentException("HTTP_PROXY cannot be parsed into a proxy"));
-            }
+            com.azure.core.http.ProxyOptions coreProxyOptions = com.azure.core.http.ProxyOptions
+                .fromConfiguration(configuration);
+            return new ProxyOptions(authentication, new Proxy(coreProxyOptions.getType().toProxyType(),
+                coreProxyOptions.getAddress()),coreProxyOptions.getUsername(), coreProxyOptions.getPassword());
         }
-        return new InetSocketAddress(host, port);
     }
 
 }
