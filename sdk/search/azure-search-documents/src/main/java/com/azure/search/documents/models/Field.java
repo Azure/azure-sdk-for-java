@@ -7,6 +7,7 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -232,7 +233,7 @@ public final class Field {
      * also be changed on existing fields and enabling it does not cause an
      * increase in index storage requirements.
      */
-    @JsonProperty(value = "hidden")
+    @JsonIgnore
     private Boolean hidden;
 
     /**
@@ -325,7 +326,7 @@ public final class Field {
      *
      * @return the retrievable value.
      */
-    private Boolean isRetrievable()  {
+    private Boolean isRetrievable() {
         return this.retrievable;
     }
 
