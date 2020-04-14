@@ -3,14 +3,10 @@
 
 package com.azure.management.storage;
 
-
 import com.azure.core.util.ExpandableStringEnum;
-
 import java.util.Collection;
 
-/**
- * Azure storage account encryption key sources.
- */
+/** Azure storage account encryption key sources. */
 public class StorageAccountEncryptionKeySource extends ExpandableStringEnum<StorageAccountEncryptionKeySource> {
     /** Static value Microsoft.Storage for StorageAccountEncryptionKeySource. */
     public static final StorageAccountEncryptionKeySource MICROSOFT_STORAGE = fromString("Microsoft.Storage");
@@ -27,9 +23,7 @@ public class StorageAccountEncryptionKeySource extends ExpandableStringEnum<Stor
         return fromString(name, StorageAccountEncryptionKeySource.class);
     }
 
-    /**
-     * @return known storage account encryption sources.
-     */
+    /** @return known storage account encryption sources. */
     public static Collection<StorageAccountEncryptionKeySource> values() {
         return values(StorageAccountEncryptionKeySource.class);
     }

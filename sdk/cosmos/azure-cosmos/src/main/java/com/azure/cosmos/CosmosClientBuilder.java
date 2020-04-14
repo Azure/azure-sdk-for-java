@@ -6,8 +6,8 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.TracerProvider;
-import com.azure.cosmos.models.Permission;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.models.CosmosPermissionProperties;
 
 import java.util.List;
 import java.util.ServiceLoader;
@@ -36,7 +36,7 @@ public class CosmosClientBuilder {
     private String keyOrResourceToken;
     private ConnectionPolicy connectionPolicy;
     private ConsistencyLevel desiredConsistencyLevel;
-    private List<Permission> permissions;
+    private List<CosmosPermissionProperties> permissions;
     private CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
     private CosmosKeyCredential cosmosKeyCredential;
     private boolean sessionCapturingOverrideEnabled;
@@ -219,7 +219,7 @@ public class CosmosClientBuilder {
      *
      * @return the permission list
      */
-    List<Permission> getPermissions() {
+    List<CosmosPermissionProperties> getPermissions() {
         return permissions;
     }
 
@@ -230,7 +230,7 @@ public class CosmosClientBuilder {
      * @param permissions Permission list for authentication.
      * @return current Builder.
      */
-    public CosmosClientBuilder permissions(List<Permission> permissions) {
+    public CosmosClientBuilder permissions(List<CosmosPermissionProperties> permissions) {
         this.permissions = permissions;
         return this;
     }

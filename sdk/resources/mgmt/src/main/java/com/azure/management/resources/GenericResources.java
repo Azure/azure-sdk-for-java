@@ -106,7 +106,8 @@ public interface GenericResources extends
      * @param resources the list of IDs of the resources to move
      * @return a representation of the deferred computation of this call
      */
-    Mono<Void> moveResourcesAsync(String sourceResourceGroupName, ResourceGroup targetResourceGroup, List<String> resources);
+    Mono<Void> moveResourcesAsync(String sourceResourceGroupName,
+                                  ResourceGroup targetResourceGroup, List<String> resources);
 
     /**
      * Delete resource and all of its child resources.
@@ -118,7 +119,8 @@ public interface GenericResources extends
      * @param resourceName Resource identity.
      * @param apiVersion the String value
      */
-    void delete(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion);
+    void delete(String resourceGroupName, String resourceProviderNamespace,
+                String parentResourcePath, String resourceType, String resourceName, String apiVersion);
 
 
     /**
@@ -132,5 +134,6 @@ public interface GenericResources extends
      * @param apiVersion the String value
      * @return a representation of the deferred computation of this call
      */
-    Mono<Void> deleteAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion);
+    Mono<Void> deleteAsync(String resourceGroupName, String resourceProviderNamespace,
+                           String parentResourcePath, String resourceType, String resourceName, String apiVersion);
 }

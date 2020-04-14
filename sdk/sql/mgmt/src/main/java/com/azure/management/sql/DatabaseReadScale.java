@@ -8,23 +8,17 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for DatabaseReadScale.
- */
+/** Defines values for DatabaseReadScale. */
 public final class DatabaseReadScale extends ExpandableStringEnum<DatabaseReadScale> {
-    /**
-     * Static value Enabled for DatabaseReadScale.
-     */
+    /** Static value Enabled for DatabaseReadScale. */
     public static final DatabaseReadScale ENABLED = fromString("Enabled");
 
-    /**
-     * Static value Disabled for DatabaseReadScale.
-     */
+    /** Static value Disabled for DatabaseReadScale. */
     public static final DatabaseReadScale DISABLED = fromString("Disabled");
 
     /**
      * Creates or finds a DatabaseReadScale from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding DatabaseReadScale.
      */
@@ -33,9 +27,7 @@ public final class DatabaseReadScale extends ExpandableStringEnum<DatabaseReadSc
         return fromString(name, DatabaseReadScale.class);
     }
 
-    /**
-     * @return known DatabaseReadScale values.
-     */
+    /** @return known DatabaseReadScale values. */
     public static Collection<DatabaseReadScale> values() {
         return values(DatabaseReadScale.class);
     }

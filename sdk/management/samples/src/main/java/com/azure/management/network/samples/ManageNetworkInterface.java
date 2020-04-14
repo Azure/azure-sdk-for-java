@@ -4,7 +4,6 @@
 package com.azure.management.network.samples;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.Azure;
 import com.azure.management.compute.KnownWindowsVirtualMachineImage;
@@ -13,7 +12,6 @@ import com.azure.management.compute.VirtualMachineSizeTypes;
 import com.azure.management.network.Network;
 import com.azure.management.network.NetworkInterface;
 import com.azure.management.resources.fluentcore.arm.Region;
-import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.samples.Utils;
 
 import java.io.File;
@@ -44,7 +42,7 @@ public final class ManageNetworkInterface {
         final String publicIPAddressLeafDNS1 = azure.sdkContext().randomResourceName("pip1", 24);
         final String publicIPAddressLeafDNS2 = azure.sdkContext().randomResourceName("pip2", 24);
 
-        // TODO adjust the length of vm name from 8 to 24
+        // TODO: adjust the length of vm name from 8 to 24
         final String vmName = azure.sdkContext().randomResourceName("vm", 8);
         final String rgName = azure.sdkContext().randomResourceName("rgNEMI", 24);
         final String userName = "tirekicker";
@@ -219,7 +217,7 @@ public final class ManageNetworkInterface {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure.configure()
-                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+                    .withLogLevel(HttpLogDetailLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 

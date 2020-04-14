@@ -17,7 +17,8 @@ public abstract class Manager<T, InnerT> extends ManagerBase implements HasInner
 
     protected final InnerT innerManagementClient;
 
-    protected Manager(RestClient restClient, String subscriptionId, InnerT innerManagementClient, SdkContext sdkContext) {
+    protected Manager(RestClient restClient, String subscriptionId,
+                      InnerT innerManagementClient, SdkContext sdkContext) {
         super(restClient, subscriptionId, sdkContext);
         this.innerManagementClient = innerManagementClient;
     }

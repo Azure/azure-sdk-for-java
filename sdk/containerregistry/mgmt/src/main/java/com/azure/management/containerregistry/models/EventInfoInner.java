@@ -7,9 +7,7 @@ package com.azure.management.containerregistry.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The EventInfo model.
- */
+/** The EventInfo model. */
 @Fluent
 public class EventInfoInner {
     /*
@@ -20,7 +18,7 @@ public class EventInfoInner {
 
     /**
      * Get the id property: The event ID.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -29,7 +27,7 @@ public class EventInfoInner {
 
     /**
      * Set the id property: The event ID.
-     * 
+     *
      * @param id the id value to set.
      * @return the EventInfoInner object itself.
      */

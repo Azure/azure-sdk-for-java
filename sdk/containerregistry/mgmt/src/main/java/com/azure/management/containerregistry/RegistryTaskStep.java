@@ -4,21 +4,14 @@
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
-
 import java.util.List;
 
-/**
- * An immutable client-side representation of an Azure RegistryTaskStep registry task.
- */
+/** An immutable client-side representation of an Azure RegistryTaskStep registry task. */
 @Fluent()
 public interface RegistryTaskStep {
-    /**
-     * @return the base image dependencies of this RegistryTaskStep
-     */
+    /** @return the base image dependencies of this RegistryTaskStep */
     List<BaseImageDependency> baseImageDependencies();
 
-    /**
-     * @return the context path of this RegistryTaskStep
-     */
+    /** @return the context path of this RegistryTaskStep */
     String contextPath();
 }

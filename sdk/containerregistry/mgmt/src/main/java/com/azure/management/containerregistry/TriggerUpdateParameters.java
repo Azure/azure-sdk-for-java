@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The TriggerUpdateParameters model.
- */
+/** The TriggerUpdateParameters model. */
 @Fluent
 public final class TriggerUpdateParameters {
     /*
@@ -26,9 +24,8 @@ public final class TriggerUpdateParameters {
     private BaseImageTriggerUpdateParameters baseImageTrigger;
 
     /**
-     * Get the sourceTriggers property: The collection of triggers based on
-     * source code repository.
-     * 
+     * Get the sourceTriggers property: The collection of triggers based on source code repository.
+     *
      * @return the sourceTriggers value.
      */
     public List<SourceTriggerUpdateParameters> sourceTriggers() {
@@ -36,9 +33,8 @@ public final class TriggerUpdateParameters {
     }
 
     /**
-     * Set the sourceTriggers property: The collection of triggers based on
-     * source code repository.
-     * 
+     * Set the sourceTriggers property: The collection of triggers based on source code repository.
+     *
      * @param sourceTriggers the sourceTriggers value to set.
      * @return the TriggerUpdateParameters object itself.
      */
@@ -48,9 +44,8 @@ public final class TriggerUpdateParameters {
     }
 
     /**
-     * Get the baseImageTrigger property: The trigger based on base image
-     * dependencies.
-     * 
+     * Get the baseImageTrigger property: The trigger based on base image dependencies.
+     *
      * @return the baseImageTrigger value.
      */
     public BaseImageTriggerUpdateParameters baseImageTrigger() {
@@ -58,9 +53,8 @@ public final class TriggerUpdateParameters {
     }
 
     /**
-     * Set the baseImageTrigger property: The trigger based on base image
-     * dependencies.
-     * 
+     * Set the baseImageTrigger property: The trigger based on base image dependencies.
+     *
      * @param baseImageTrigger the baseImageTrigger value to set.
      * @return the TriggerUpdateParameters object itself.
      */

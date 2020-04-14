@@ -16,23 +16,18 @@ import com.azure.management.sql.SqlFailoverGroup;
 import com.azure.management.sql.SqlFailoverGroupOperations;
 import com.azure.management.sql.SqlServer;
 import com.azure.management.sql.models.FailoverGroupInner;
-import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for SqlFailoverGroup.
- */
+/** Implementation for SqlFailoverGroup. */
 public class SqlFailoverGroupImpl
-    extends
-        ExternalChildResourceImpl<SqlFailoverGroup, FailoverGroupInner, SqlServerImpl, SqlServer>
-    implements
-        SqlFailoverGroup,
+    extends ExternalChildResourceImpl<SqlFailoverGroup, FailoverGroupInner, SqlServerImpl, SqlServer>
+    implements SqlFailoverGroup,
         SqlFailoverGroup.Update,
         SqlFailoverGroupOperations.SqlFailoverGroupOperationsDefinition {
 
@@ -49,7 +44,8 @@ public class SqlFailoverGroupImpl
      * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses failover group operations
      */
-    SqlFailoverGroupImpl(String name, SqlServerImpl parent, FailoverGroupInner innerObject, SqlServerManager sqlServerManager) {
+    SqlFailoverGroupImpl(
+        String name, SqlServerImpl parent, FailoverGroupInner innerObject, SqlServerManager sqlServerManager) {
         super(name, parent, innerObject);
 
         Objects.requireNonNull(parent);
@@ -69,7 +65,13 @@ public class SqlFailoverGroupImpl
      * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses failover group operations
      */
-    SqlFailoverGroupImpl(String resourceGroupName, String sqlServerName, String sqlServerLocation, String name, FailoverGroupInner innerObject, SqlServerManager sqlServerManager) {
+    SqlFailoverGroupImpl(
+        String resourceGroupName,
+        String sqlServerName,
+        String sqlServerLocation,
+        String name,
+        FailoverGroupInner innerObject,
+        SqlServerManager sqlServerManager) {
         super(name, null, innerObject);
         Objects.requireNonNull(sqlServerManager);
         this.sqlServerManager = sqlServerManager;
@@ -127,7 +129,10 @@ public class SqlFailoverGroupImpl
 
     @Override
     public int readWriteEndpointDataLossGracePeriodMinutes() {
-        return this.inner().readWriteEndpoint() != null  && this.inner().readWriteEndpoint().failoverWithDataLossGracePeriodMinutes() != null ? this.inner().readWriteEndpoint().failoverWithDataLossGracePeriodMinutes() : 0;
+        return this.inner().readWriteEndpoint() != null
+                && this.inner().readWriteEndpoint().failoverWithDataLossGracePeriodMinutes() != null
+            ? this.inner().readWriteEndpoint().failoverWithDataLossGracePeriodMinutes()
+            : 0;
     }
 
     @Override
@@ -147,18 +152,20 @@ public class SqlFailoverGroupImpl
 
     @Override
     public List<PartnerInfo> partnerServers() {
-        return Collections.unmodifiableList(this.inner().partnerServers() != null ? this.inner().partnerServers() : new ArrayList<PartnerInfo>());
+        return Collections
+            .unmodifiableList(
+                this.inner().partnerServers() != null ? this.inner().partnerServers() : new ArrayList<PartnerInfo>());
     }
 
     @Override
     public List<String> databases() {
-        return Collections.unmodifiableList(this.inner().databases() != null ? this.inner().databases() : new ArrayList<String>());
+        return Collections
+            .unmodifiableList(this.inner().databases() != null ? this.inner().databases() : new ArrayList<String>());
     }
 
     @Override
     public void delete() {
-        this.sqlServerManager.inner().failoverGroups()
-            .delete(this.resourceGroupName, this.sqlServerName, this.name());
+        this.sqlServerManager.inner().failoverGroups().delete(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
     @Override
@@ -167,7 +174,8 @@ public class SqlFailoverGroupImpl
     }
 
     @Override
-    public SqlFailoverGroupImpl withExistingSqlServer(String resourceGroupName, String sqlServerName, String sqlServerLocation) {
+    public SqlFailoverGroupImpl withExistingSqlServer(
+        String resourceGroupName, String sqlServerName, String sqlServerLocation) {
         this.resourceGroupName = resourceGroupName;
         this.sqlServerName = sqlServerName;
         this.sqlServerLocation = sqlServerLocation;
@@ -192,12 +200,16 @@ public class SqlFailoverGroupImpl
     @Override
     public Mono<SqlFailoverGroup> createResourceAsync() {
         final SqlFailoverGroupImpl self = this;
-        return this.sqlServerManager.inner().failoverGroups()
+        return this
+            .sqlServerManager
+            .inner()
+            .failoverGroups()
             .createOrUpdateAsync(self.resourceGroupName, self.sqlServerName, self.name(), self.inner())
-            .map(failoverGroupInner -> {
-                self.setInner(failoverGroupInner);
-                return self;
-            });
+            .map(
+                failoverGroupInner -> {
+                    self.setInner(failoverGroupInner);
+                    return self;
+                });
     }
 
     @Override
@@ -207,13 +219,19 @@ public class SqlFailoverGroupImpl
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return this.sqlServerManager.inner().failoverGroups()
+        return this
+            .sqlServerManager
+            .inner()
+            .failoverGroups()
             .deleteAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
     @Override
     protected Mono<FailoverGroupInner> getInnerAsync() {
-        return this.sqlServerManager.inner().failoverGroups()
+        return this
+            .sqlServerManager
+            .inner()
+            .failoverGroups()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 

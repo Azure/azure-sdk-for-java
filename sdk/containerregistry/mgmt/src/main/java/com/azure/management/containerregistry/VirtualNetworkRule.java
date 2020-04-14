@@ -7,9 +7,7 @@ package com.azure.management.containerregistry;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The VirtualNetworkRule model.
- */
+/** The VirtualNetworkRule model. */
 @Fluent
 public final class VirtualNetworkRule {
     /*
@@ -27,7 +25,7 @@ public final class VirtualNetworkRule {
 
     /**
      * Get the action property: The action of virtual network rule.
-     * 
+     *
      * @return the action value.
      */
     public Action action() {
@@ -36,7 +34,7 @@ public final class VirtualNetworkRule {
 
     /**
      * Set the action property: The action of virtual network rule.
-     * 
+     *
      * @param action the action value to set.
      * @return the VirtualNetworkRule object itself.
      */
@@ -46,10 +44,9 @@ public final class VirtualNetworkRule {
     }
 
     /**
-     * Get the virtualNetworkResourceId property: Resource ID of a subnet, for
-     * example:
+     * Get the virtualNetworkResourceId property: Resource ID of a subnet, for example:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
-     * 
+     *
      * @return the virtualNetworkResourceId value.
      */
     public String virtualNetworkResourceId() {
@@ -57,12 +54,10 @@ public final class VirtualNetworkRule {
     }
 
     /**
-     * Set the virtualNetworkResourceId property: Resource ID of a subnet, for
-     * example:
+     * Set the virtualNetworkResourceId property: Resource ID of a subnet, for example:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
-     * 
-     * @param virtualNetworkResourceId the virtualNetworkResourceId value to
-     * set.
+     *
+     * @param virtualNetworkResourceId the virtualNetworkResourceId value to set.
      * @return the VirtualNetworkRule object itself.
      */
     public VirtualNetworkRule withVirtualNetworkResourceId(String virtualNetworkResourceId) {

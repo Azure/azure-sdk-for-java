@@ -14,25 +14,20 @@ import com.azure.management.network.models.PacketCaptureResultInner;
 import com.azure.management.network.models.PacketCapturesInner;
 import com.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
-import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.List;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for Packet Capture and its create and update interfaces.
- */
-public class PacketCaptureImpl extends
-        CreatableUpdatableImpl<PacketCapture, PacketCaptureResultInner, PacketCaptureImpl>
-        implements
-        PacketCapture,
-        PacketCapture.Definition {
+/** Implementation for Packet Capture and its create and update interfaces. */
+public class PacketCaptureImpl
+    extends CreatableUpdatableImpl<PacketCapture, PacketCaptureResultInner, PacketCaptureImpl>
+    implements PacketCapture, PacketCapture.Definition {
     private final PacketCapturesInner client;
     private final PacketCaptureInner createParameters;
     private final NetworkWatcher parent;
 
-    PacketCaptureImpl(String name, NetworkWatcherImpl parent, PacketCaptureResultInner innerObject,
-                      PacketCapturesInner client) {
+    PacketCaptureImpl(
+        String name, NetworkWatcherImpl parent, PacketCaptureResultInner innerObject, PacketCapturesInner client) {
         super(name, innerObject);
         this.client = client;
         this.parent = parent;
@@ -61,8 +56,10 @@ public class PacketCaptureImpl extends
 
     @Override
     public Mono<PacketCaptureStatus> getStatusAsync() {
-        return this.client.getStatusAsync(parent.resourceGroupName(), parent.name(), name())
-                .map(inner -> new PacketCaptureStatusImpl(inner));
+        return this
+            .client
+            .getStatusAsync(parent.resourceGroupName(), parent.name(), name())
+            .map(inner -> new PacketCaptureStatusImpl(inner));
     }
 
     @Override
@@ -134,8 +131,10 @@ public class PacketCaptureImpl extends
 
     @Override
     public Mono<PacketCapture> createResourceAsync() {
-        return this.client.createAsync(parent.resourceGroupName(), parent.name(), this.name(), createParameters)
-                .map(innerToFluentMap(this));
+        return this
+            .client
+            .createAsync(parent.resourceGroupName(), parent.name(), this.name(), createParameters)
+            .map(innerToFluentMap(this));
     }
 
     @Override

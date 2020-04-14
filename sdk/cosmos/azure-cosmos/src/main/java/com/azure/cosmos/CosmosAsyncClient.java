@@ -15,9 +15,10 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetrics;
 import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
+import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.Permission;
+import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
@@ -54,7 +55,7 @@ public final class CosmosAsyncClient implements Closeable {
     private final String keyOrResourceToken;
     private final ConnectionPolicy connectionPolicy;
     private final ConsistencyLevel desiredConsistencyLevel;
-    private final List<Permission> permissions;
+    private final List<CosmosPermissionProperties> permissions;
     private final CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
     private final CosmosKeyCredential cosmosKeyCredential;
     private final boolean sessionCapturingOverride;
@@ -140,7 +141,7 @@ public final class CosmosAsyncClient implements Closeable {
      *
      * @return the permission list
      */
-    List<Permission> getPermissions() {
+    List<CosmosPermissionProperties> getPermissions() {
         return permissions;
     }
 

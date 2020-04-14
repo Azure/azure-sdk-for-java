@@ -7,23 +7,15 @@ package com.azure.management.sql;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for TransparentDataEncryptionStatus.
- */
+/** Defines values for TransparentDataEncryptionStatus. */
 public enum TransparentDataEncryptionStatus {
-    /**
-     * Enum value Enabled.
-     */
+    /** Enum value Enabled. */
     ENABLED("Enabled"),
 
-    /**
-     * Enum value Disabled.
-     */
+    /** Enum value Disabled. */
     DISABLED("Disabled");
 
-    /**
-     * The actual serialized value for a TransparentDataEncryptionStatus instance.
-     */
+    /** The actual serialized value for a TransparentDataEncryptionStatus instance. */
     private final String value;
 
     TransparentDataEncryptionStatus(String value) {
@@ -32,7 +24,7 @@ public enum TransparentDataEncryptionStatus {
 
     /**
      * Parses a serialized value to a TransparentDataEncryptionStatus instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed TransparentDataEncryptionStatus object, or null if unable to parse.
      */

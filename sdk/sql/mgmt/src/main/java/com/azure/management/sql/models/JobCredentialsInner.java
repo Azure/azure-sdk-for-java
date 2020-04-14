@@ -26,107 +26,163 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * JobCredentials.
- */
+/** An instance of this class provides access to all the operations defined in JobCredentials. */
 public final class JobCredentialsInner {
-    /**
-     * The proxy service used to perform REST calls.
-     */
-    private JobCredentialsService service;
+    /** The proxy service used to perform REST calls. */
+    private final JobCredentialsService service;
 
-    /**
-     * The service client containing this operation class.
-     */
-    private SqlManagementClientImpl client;
+    /** The service client containing this operation class. */
+    private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of JobCredentialsInner.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     JobCredentialsInner(SqlManagementClientImpl client) {
-        this.service = RestProxy.create(JobCredentialsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy.create(JobCredentialsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * SqlManagementClientJobCredentials to be used by the proxy service to
+     * The interface defining all the services for SqlManagementClientJobCredentials to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientJobCredentials")
+    @ServiceInterface(name = "SqlManagementClientJ")
     private interface JobCredentialsService {
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/credentials")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
+                + "/{serverName}/jobAgents/{jobAgentName}/credentials")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<JobCredentialListResultInner>> listByAgent(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName, @PathParam("jobAgentName") String jobAgentName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<JobCredentialListResultInner>> listByAgent(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("jobAgentName") String jobAgentName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/credentials/{credentialName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
+                + "/{serverName}/jobAgents/{jobAgentName}/credentials/{credentialName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<JobCredentialInner>> get(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName, @PathParam("jobAgentName") String jobAgentName, @PathParam("credentialName") String credentialName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<JobCredentialInner>> get(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("jobAgentName") String jobAgentName,
+            @PathParam("credentialName") String credentialName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/credentials/{credentialName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
+                + "/{serverName}/jobAgents/{jobAgentName}/credentials/{credentialName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<JobCredentialInner>> createOrUpdate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName, @PathParam("jobAgentName") String jobAgentName, @PathParam("credentialName") String credentialName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") JobCredentialInner parameters);
+        Mono<SimpleResponse<JobCredentialInner>> createOrUpdate(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("jobAgentName") String jobAgentName,
+            @PathParam("credentialName") String credentialName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") JobCredentialInner parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/credentials/{credentialName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
+                + "/{serverName}/jobAgents/{jobAgentName}/credentials/{credentialName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> delete(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName, @PathParam("jobAgentName") String jobAgentName, @PathParam("credentialName") String credentialName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<Response<Void>> delete(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("jobAgentName") String jobAgentName,
+            @PathParam("credentialName") String credentialName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<JobCredentialListResultInner>> listByAgentNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<JobCredentialListResultInner>> listByAgentNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
      * Gets a list of jobs credentials.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param jobAgentName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of jobs credentials.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<JobCredentialInner>> listByAgentSinglePageAsync(String resourceGroupName, String serverName, String jobAgentName) {
+    public Mono<PagedResponse<JobCredentialInner>> listByAgentSinglePageAsync(
+        String resourceGroupName, String serverName, String jobAgentName) {
         final String apiVersion = "2017-03-01-preview";
-        return service.listByAgent(this.client.getHost(), resourceGroupName, serverName, jobAgentName, this.client.getSubscriptionId(), apiVersion)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByAgent(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            serverName,
+                            jobAgentName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .<PagedResponse<JobCredentialInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a list of jobs credentials.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param jobAgentName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of jobs credentials.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<JobCredentialInner> listByAgentAsync(String resourceGroupName, String serverName, String jobAgentName) {
+    public PagedFlux<JobCredentialInner> listByAgentAsync(
+        String resourceGroupName, String serverName, String jobAgentName) {
         return new PagedFlux<>(
             () -> listByAgentSinglePageAsync(resourceGroupName, serverName, jobAgentName),
             nextLink -> listByAgentNextSinglePageAsync(nextLink));
@@ -134,175 +190,257 @@ public final class JobCredentialsInner {
 
     /**
      * Gets a list of jobs credentials.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param jobAgentName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of jobs credentials.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobCredentialInner> listByAgent(String resourceGroupName, String serverName, String jobAgentName) {
+    public PagedIterable<JobCredentialInner> listByAgent(
+        String resourceGroupName, String serverName, String jobAgentName) {
         return new PagedIterable<>(listByAgentAsync(resourceGroupName, serverName, jobAgentName));
     }
 
     /**
      * Gets a jobs credential.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param jobAgentName 
-     * @param credentialName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param credentialName The name of the credential.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a jobs credential.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<JobCredentialInner>> getWithResponseAsync(String resourceGroupName, String serverName, String jobAgentName, String credentialName) {
+    public Mono<SimpleResponse<JobCredentialInner>> getWithResponseAsync(
+        String resourceGroupName, String serverName, String jobAgentName, String credentialName) {
         final String apiVersion = "2017-03-01-preview";
-        return service.get(this.client.getHost(), resourceGroupName, serverName, jobAgentName, credentialName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .get(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            serverName,
+                            jobAgentName,
+                            credentialName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a jobs credential.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param jobAgentName 
-     * @param credentialName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param credentialName The name of the credential.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a jobs credential.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JobCredentialInner> getAsync(String resourceGroupName, String serverName, String jobAgentName, String credentialName) {
+    public Mono<JobCredentialInner> getAsync(
+        String resourceGroupName, String serverName, String jobAgentName, String credentialName) {
         return getWithResponseAsync(resourceGroupName, serverName, jobAgentName, credentialName)
-            .flatMap((SimpleResponse<JobCredentialInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<JobCredentialInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets a jobs credential.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param jobAgentName 
-     * @param credentialName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param credentialName The name of the credential.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a jobs credential.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobCredentialInner get(String resourceGroupName, String serverName, String jobAgentName, String credentialName) {
+    public JobCredentialInner get(
+        String resourceGroupName, String serverName, String jobAgentName, String credentialName) {
         return getAsync(resourceGroupName, serverName, jobAgentName, credentialName).block();
     }
 
     /**
      * Creates or updates a job credential.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param jobAgentName 
-     * @param credentialName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param credentialName The name of the credential.
      * @param parameters A stored credential that can be used by a job to connect to target databases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a stored credential that can be used by a job to connect to target databases.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<JobCredentialInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName, String jobAgentName, String credentialName, JobCredentialInner parameters) {
+    public Mono<SimpleResponse<JobCredentialInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String serverName,
+        String jobAgentName,
+        String credentialName,
+        JobCredentialInner parameters) {
         final String apiVersion = "2017-03-01-preview";
-        return service.createOrUpdate(this.client.getHost(), resourceGroupName, serverName, jobAgentName, credentialName, this.client.getSubscriptionId(), apiVersion, parameters);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createOrUpdate(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            serverName,
+                            jobAgentName,
+                            credentialName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            parameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Creates or updates a job credential.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param jobAgentName 
-     * @param credentialName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param credentialName The name of the credential.
      * @param parameters A stored credential that can be used by a job to connect to target databases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a stored credential that can be used by a job to connect to target databases.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JobCredentialInner> createOrUpdateAsync(String resourceGroupName, String serverName, String jobAgentName, String credentialName, JobCredentialInner parameters) {
+    public Mono<JobCredentialInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String serverName,
+        String jobAgentName,
+        String credentialName,
+        JobCredentialInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, serverName, jobAgentName, credentialName, parameters)
-            .flatMap((SimpleResponse<JobCredentialInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<JobCredentialInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Creates or updates a job credential.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param jobAgentName 
-     * @param credentialName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param credentialName The name of the credential.
      * @param parameters A stored credential that can be used by a job to connect to target databases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a stored credential that can be used by a job to connect to target databases.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobCredentialInner createOrUpdate(String resourceGroupName, String serverName, String jobAgentName, String credentialName, JobCredentialInner parameters) {
+    public JobCredentialInner createOrUpdate(
+        String resourceGroupName,
+        String serverName,
+        String jobAgentName,
+        String credentialName,
+        JobCredentialInner parameters) {
         return createOrUpdateAsync(resourceGroupName, serverName, jobAgentName, credentialName, parameters).block();
     }
 
     /**
      * Deletes a job credential.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param jobAgentName 
-     * @param credentialName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param credentialName The name of the credential.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String serverName, String jobAgentName, String credentialName) {
+    public Mono<Response<Void>> deleteWithResponseAsync(
+        String resourceGroupName, String serverName, String jobAgentName, String credentialName) {
         final String apiVersion = "2017-03-01-preview";
-        return service.delete(this.client.getHost(), resourceGroupName, serverName, jobAgentName, credentialName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .delete(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            serverName,
+                            jobAgentName,
+                            credentialName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Deletes a job credential.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param jobAgentName 
-     * @param credentialName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param credentialName The name of the credential.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String serverName, String jobAgentName, String credentialName) {
+    public Mono<Void> deleteAsync(
+        String resourceGroupName, String serverName, String jobAgentName, String credentialName) {
         return deleteWithResponseAsync(resourceGroupName, serverName, jobAgentName, credentialName)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Deletes a job credential.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param jobAgentName 
-     * @param credentialName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param credentialName The name of the credential.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -314,21 +452,26 @@ public final class JobCredentialsInner {
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink null
+     *
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of job credentials.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<JobCredentialInner>> listByAgentNextSinglePageAsync(String nextLink) {
-        return service.listByAgentNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(context -> service.listByAgentNext(nextLink, context))
+            .<PagedResponse<JobCredentialInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 }

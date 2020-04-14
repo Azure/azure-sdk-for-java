@@ -12,36 +12,20 @@ import com.azure.management.resources.fluentcore.model.Refreshable;
 import com.azure.management.sql.models.ServerDnsAliasInner;
 import reactor.core.publisher.Mono;
 
-/**
- * An immutable client-side representation of an Azure SQL Server DNS alias.
- */
+/** An immutable client-side representation of an Azure SQL Server DNS alias. */
 @Fluent
 public interface SqlServerDnsAlias
-    extends
-        HasId,
-        HasInner<ServerDnsAliasInner>,
-        HasName,
-        HasResourceGroup,
-        Indexable,
-        Refreshable<SqlServerDnsAlias> {
-    /**
-     * @return name of the SQL Server to which this DNS alias belongs
-     */
+    extends HasId, HasInner<ServerDnsAliasInner>, HasName, HasResourceGroup, Indexable, Refreshable<SqlServerDnsAlias> {
+    /** @return name of the SQL Server to which this DNS alias belongs */
     String sqlServerName();
 
-    /**
-     * @return the fully qualified DNS record for alias
-     */
+    /** @return the fully qualified DNS record for alias */
     String azureDnsRecord();
 
-    /**
-     * @return the parent SQL server ID
-     */
+    /** @return the parent SQL server ID */
     String parentId();
 
-    /**
-     * Deletes the DNS alias.
-     */
+    /** Deletes the DNS alias. */
     void delete();
 
     /**
@@ -50,5 +34,4 @@ public interface SqlServerDnsAlias
      * @return a representation of the deferred computation of this call
      */
     Mono<Void> deleteAsync();
-
 }

@@ -9,9 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ServerCommunicationLink model.
- */
+/** The ServerCommunicationLink model. */
 @JsonFlatten
 @Fluent
 public class ServerCommunicationLinkInner extends ProxyResource {
@@ -42,7 +40,7 @@ public class ServerCommunicationLinkInner extends ProxyResource {
 
     /**
      * Get the location property: Communication link location.
-     * 
+     *
      * @return the location value.
      */
     public String location() {
@@ -50,9 +48,8 @@ public class ServerCommunicationLinkInner extends ProxyResource {
     }
 
     /**
-     * Get the kind property: Communication link kind.  This property is used
-     * for Azure Portal metadata.
-     * 
+     * Get the kind property: Communication link kind. This property is used for Azure Portal metadata.
+     *
      * @return the kind value.
      */
     public String kind() {
@@ -61,7 +58,7 @@ public class ServerCommunicationLinkInner extends ProxyResource {
 
     /**
      * Get the state property: The state.
-     * 
+     *
      * @return the state value.
      */
     public String state() {
@@ -70,7 +67,7 @@ public class ServerCommunicationLinkInner extends ProxyResource {
 
     /**
      * Get the partnerServer property: The name of the partner server.
-     * 
+     *
      * @return the partnerServer value.
      */
     public String partnerServer() {
@@ -79,7 +76,7 @@ public class ServerCommunicationLinkInner extends ProxyResource {
 
     /**
      * Set the partnerServer property: The name of the partner server.
-     * 
+     *
      * @param partnerServer the partnerServer value to set.
      * @return the ServerCommunicationLinkInner object itself.
      */

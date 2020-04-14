@@ -32,19 +32,20 @@ module com.azure.cosmos {
     exports com.azure.cosmos.models;
 
     // exporting some packages specifically for Jackson
-   // opens com.azure.cosmos to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.models to com.fasterxml.jackson.databind;
+    opens com.azure.cosmos to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation to com.fasterxml.jackson.databind, java.logging;
-    opens com.azure.cosmos.implementation.routing to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.caches to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.changefeed to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.changefeed.implementation to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.changefeed.exceptions to com.fasterxml.jackson.databind;
+    opens com.azure.cosmos.implementation.directconnectivity to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.http to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.query to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.query.aggregation to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.query.metrics to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.query.orderbyquery to com.fasterxml.jackson.databind;
+    opens com.azure.cosmos.implementation.routing to com.fasterxml.jackson.databind;
 
     uses com.azure.cosmos.implementation.guava25.base.PatternCompiler;
 }

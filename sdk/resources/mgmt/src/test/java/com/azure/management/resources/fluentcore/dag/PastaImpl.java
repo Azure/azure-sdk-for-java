@@ -24,11 +24,11 @@ class PastaImpl
     final Throwable errorToThrow;
     boolean prepareCalled = false;
 
-    public PastaImpl(String name, long eventDelayInMilliseconds) {
+    PastaImpl(String name, long eventDelayInMilliseconds) {
         this(name, eventDelayInMilliseconds, false);
     }
 
-    public PastaImpl(String name, long eventDelayInMilliseconds, boolean fault) {
+    PastaImpl(String name, long eventDelayInMilliseconds, boolean fault) {
         super(name, name, new PastaInner());
         this.eventDelayInMilliseconds = eventDelayInMilliseconds;
         if (fault) {

@@ -183,7 +183,8 @@ public final class DeploymentImpl extends
 
     @Override
     public Mono<DeploymentExportResult> exportTemplateAsync() {
-        return this.manager().inner().deployments().exportTemplateAsync(resourceGroupName(), name()).map(deploymentExportResultInner -> new DeploymentExportResultImpl(deploymentExportResultInner));
+        return this.manager().inner().deployments().exportTemplateAsync(resourceGroupName(), name())
+            .map(deploymentExportResultInner -> new DeploymentExportResultImpl(deploymentExportResultInner));
     }
 
     @Override
@@ -277,7 +278,8 @@ public final class DeploymentImpl extends
         if (this.inner().properties() == null) {
             this.inner().withProperties(new DeploymentPropertiesExtended());
         }
-        this.inner().properties().withParametersLink(new ParametersLink().withUri(uri).withContentVersion(contentVersion));
+        this.inner().properties().withParametersLink(
+            new ParametersLink().withUri(uri).withContentVersion(contentVersion));
         this.inner().properties().withParameters(null);
         return this;
     }
@@ -298,7 +300,8 @@ public final class DeploymentImpl extends
         if (this.creatableResourceGroup != null) {
             this.creatableResourceGroup.create();
         }
-        setInner(this.manager().inner().deployments().beginCreateOrUpdate(resourceGroupName(), name(), createRequestFromInner()));
+        setInner(this.manager().inner().deployments()
+            .beginCreateOrUpdate(resourceGroupName(), name(), createRequestFromInner()));
         return this;
     }
 
@@ -312,14 +315,16 @@ public final class DeploymentImpl extends
                         return Mono.just((Indexable) DeploymentImpl.this);
                     }
                 })
-                .flatMap(indexable -> manager().inner().deployments().beginCreateOrUpdateAsync(resourceGroupName(), name(), createRequestFromInner()))
+                .flatMap(indexable -> manager().inner().deployments()
+                    .beginCreateOrUpdateAsync(resourceGroupName(), name(), createRequestFromInner()))
                 .map(innerToFluentMap(this));
     }
 
     @Override
     public Mono<Deployment> createResourceAsync() {
-        return this.manager().inner().deployments().createOrUpdateAsync(resourceGroupName(), name(), createRequestFromInner())
-                .map(innerToFluentMap(this));
+        return this.manager().inner().deployments()
+            .createOrUpdateAsync(resourceGroupName(), name(), createRequestFromInner())
+            .map(innerToFluentMap(this));
     }
 
     @Override
@@ -469,7 +474,8 @@ public final class DeploymentImpl extends
         if (deploymentWhatIf.properties() == null) {
             deploymentWhatIf.withProperties(new DeploymentWhatIfProperties());
         }
-        deploymentWhatIf.properties().withTemplateLink(new TemplateLink().withUri(uri).withContentVersion(contentVersion));
+        deploymentWhatIf.properties().withTemplateLink(
+            new TemplateLink().withUri(uri).withContentVersion(contentVersion));
         return this;
     }
 
@@ -487,7 +493,8 @@ public final class DeploymentImpl extends
         if (deploymentWhatIf.properties() == null) {
             deploymentWhatIf.withProperties(new DeploymentWhatIfProperties());
         }
-        deploymentWhatIf.properties().withParametersLink(new ParametersLink().withUri(uri).withContentVersion(contentVersion));
+        deploymentWhatIf.properties().withParametersLink(
+            new ParametersLink().withUri(uri).withContentVersion(contentVersion));
         return this;
     }
 

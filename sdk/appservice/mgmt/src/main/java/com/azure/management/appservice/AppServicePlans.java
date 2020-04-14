@@ -16,12 +16,10 @@ import com.azure.management.resources.fluentcore.collection.SupportsDeletingById
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-/**
- * Entry point for App Service plan management API.
- */
+/** Entry point for App Service plan management API. */
 @Fluent
-public interface AppServicePlans extends
-        SupportsCreating<AppServicePlan.DefinitionStages.Blank>,
+public interface AppServicePlans
+    extends SupportsCreating<AppServicePlan.DefinitionStages.Blank>,
         SupportsDeletingById,
         SupportsListingByResourceGroup<AppServicePlan>,
         SupportsListing<AppServicePlan>,

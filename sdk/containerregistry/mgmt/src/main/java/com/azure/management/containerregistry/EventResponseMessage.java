@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * The EventResponseMessage model.
- */
+/** The EventResponseMessage model. */
 @Fluent
 public final class EventResponseMessage {
     /*
@@ -45,7 +43,7 @@ public final class EventResponseMessage {
 
     /**
      * Get the content property: The content of the event response message.
-     * 
+     *
      * @return the content value.
      */
     public String content() {
@@ -54,7 +52,7 @@ public final class EventResponseMessage {
 
     /**
      * Set the content property: The content of the event response message.
-     * 
+     *
      * @param content the content value to set.
      * @return the EventResponseMessage object itself.
      */
@@ -65,7 +63,7 @@ public final class EventResponseMessage {
 
     /**
      * Get the headers property: The headers of the event response message.
-     * 
+     *
      * @return the headers value.
      */
     public Map<String, String> headers() {
@@ -74,7 +72,7 @@ public final class EventResponseMessage {
 
     /**
      * Set the headers property: The headers of the event response message.
-     * 
+     *
      * @param headers the headers value to set.
      * @return the EventResponseMessage object itself.
      */
@@ -84,9 +82,8 @@ public final class EventResponseMessage {
     }
 
     /**
-     * Get the reasonPhrase property: The reason phrase of the event response
-     * message.
-     * 
+     * Get the reasonPhrase property: The reason phrase of the event response message.
+     *
      * @return the reasonPhrase value.
      */
     public String reasonPhrase() {
@@ -94,9 +91,8 @@ public final class EventResponseMessage {
     }
 
     /**
-     * Set the reasonPhrase property: The reason phrase of the event response
-     * message.
-     * 
+     * Set the reasonPhrase property: The reason phrase of the event response message.
+     *
      * @param reasonPhrase the reasonPhrase value to set.
      * @return the EventResponseMessage object itself.
      */
@@ -106,9 +102,8 @@ public final class EventResponseMessage {
     }
 
     /**
-     * Get the statusCode property: The status code of the event response
-     * message.
-     * 
+     * Get the statusCode property: The status code of the event response message.
+     *
      * @return the statusCode value.
      */
     public String statusCode() {
@@ -116,9 +111,8 @@ public final class EventResponseMessage {
     }
 
     /**
-     * Set the statusCode property: The status code of the event response
-     * message.
-     * 
+     * Set the statusCode property: The status code of the event response message.
+     *
      * @param statusCode the statusCode value to set.
      * @return the EventResponseMessage object itself.
      */
@@ -129,7 +123,7 @@ public final class EventResponseMessage {
 
     /**
      * Get the version property: The HTTP message version.
-     * 
+     *
      * @return the version value.
      */
     public String version() {
@@ -138,7 +132,7 @@ public final class EventResponseMessage {
 
     /**
      * Set the version property: The HTTP message version.
-     * 
+     *
      * @param version the version value to set.
      * @return the EventResponseMessage object itself.
      */

@@ -13,9 +13,7 @@ import com.azure.management.sql.SyncGroupState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The SyncGroup model.
- */
+/** The SyncGroup model. */
 @JsonFlatten
 @Fluent
 public class SyncGroupInner extends ProxyResource {
@@ -69,7 +67,7 @@ public class SyncGroupInner extends ProxyResource {
 
     /**
      * Get the interval property: Sync interval of the sync group.
-     * 
+     *
      * @return the interval value.
      */
     public Integer interval() {
@@ -78,7 +76,7 @@ public class SyncGroupInner extends ProxyResource {
 
     /**
      * Set the interval property: Sync interval of the sync group.
-     * 
+     *
      * @param interval the interval value to set.
      * @return the SyncGroupInner object itself.
      */
@@ -89,7 +87,7 @@ public class SyncGroupInner extends ProxyResource {
 
     /**
      * Get the lastSyncTime property: Last sync time of the sync group.
-     * 
+     *
      * @return the lastSyncTime value.
      */
     public OffsetDateTime lastSyncTime() {
@@ -97,9 +95,8 @@ public class SyncGroupInner extends ProxyResource {
     }
 
     /**
-     * Get the conflictResolutionPolicy property: Conflict resolution policy of
-     * the sync group.
-     * 
+     * Get the conflictResolutionPolicy property: Conflict resolution policy of the sync group.
+     *
      * @return the conflictResolutionPolicy value.
      */
     public SyncConflictResolutionPolicy conflictResolutionPolicy() {
@@ -107,11 +104,9 @@ public class SyncGroupInner extends ProxyResource {
     }
 
     /**
-     * Set the conflictResolutionPolicy property: Conflict resolution policy of
-     * the sync group.
-     * 
-     * @param conflictResolutionPolicy the conflictResolutionPolicy value to
-     * set.
+     * Set the conflictResolutionPolicy property: Conflict resolution policy of the sync group.
+     *
+     * @param conflictResolutionPolicy the conflictResolutionPolicy value to set.
      * @return the SyncGroupInner object itself.
      */
     public SyncGroupInner withConflictResolutionPolicy(SyncConflictResolutionPolicy conflictResolutionPolicy) {
@@ -120,9 +115,8 @@ public class SyncGroupInner extends ProxyResource {
     }
 
     /**
-     * Get the syncDatabaseId property: ARM resource id of the sync database in
-     * the sync group.
-     * 
+     * Get the syncDatabaseId property: ARM resource id of the sync database in the sync group.
+     *
      * @return the syncDatabaseId value.
      */
     public String syncDatabaseId() {
@@ -130,9 +124,8 @@ public class SyncGroupInner extends ProxyResource {
     }
 
     /**
-     * Set the syncDatabaseId property: ARM resource id of the sync database in
-     * the sync group.
-     * 
+     * Set the syncDatabaseId property: ARM resource id of the sync database in the sync group.
+     *
      * @param syncDatabaseId the syncDatabaseId value to set.
      * @return the SyncGroupInner object itself.
      */
@@ -142,9 +135,8 @@ public class SyncGroupInner extends ProxyResource {
     }
 
     /**
-     * Get the hubDatabaseUserName property: User name for the sync group hub
-     * database credential.
-     * 
+     * Get the hubDatabaseUserName property: User name for the sync group hub database credential.
+     *
      * @return the hubDatabaseUserName value.
      */
     public String hubDatabaseUserName() {
@@ -152,9 +144,8 @@ public class SyncGroupInner extends ProxyResource {
     }
 
     /**
-     * Set the hubDatabaseUserName property: User name for the sync group hub
-     * database credential.
-     * 
+     * Set the hubDatabaseUserName property: User name for the sync group hub database credential.
+     *
      * @param hubDatabaseUserName the hubDatabaseUserName value to set.
      * @return the SyncGroupInner object itself.
      */
@@ -164,9 +155,8 @@ public class SyncGroupInner extends ProxyResource {
     }
 
     /**
-     * Get the hubDatabasePassword property: Password for the sync group hub
-     * database credential.
-     * 
+     * Get the hubDatabasePassword property: Password for the sync group hub database credential.
+     *
      * @return the hubDatabasePassword value.
      */
     public String hubDatabasePassword() {
@@ -174,9 +164,8 @@ public class SyncGroupInner extends ProxyResource {
     }
 
     /**
-     * Set the hubDatabasePassword property: Password for the sync group hub
-     * database credential.
-     * 
+     * Set the hubDatabasePassword property: Password for the sync group hub database credential.
+     *
      * @param hubDatabasePassword the hubDatabasePassword value to set.
      * @return the SyncGroupInner object itself.
      */
@@ -187,7 +176,7 @@ public class SyncGroupInner extends ProxyResource {
 
     /**
      * Get the syncState property: Sync state of the sync group.
-     * 
+     *
      * @return the syncState value.
      */
     public SyncGroupState syncState() {
@@ -196,7 +185,7 @@ public class SyncGroupInner extends ProxyResource {
 
     /**
      * Get the schema property: Sync schema of the sync group.
-     * 
+     *
      * @return the schema value.
      */
     public SyncGroupSchema schema() {
@@ -205,7 +194,7 @@ public class SyncGroupInner extends ProxyResource {
 
     /**
      * Set the schema property: Sync schema of the sync group.
-     * 
+     *
      * @param schema the schema value to set.
      * @return the SyncGroupInner object itself.
      */

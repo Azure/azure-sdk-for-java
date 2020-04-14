@@ -8,23 +8,17 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for SourceRegistryLoginMode.
- */
+/** Defines values for SourceRegistryLoginMode. */
 public final class SourceRegistryLoginMode extends ExpandableStringEnum<SourceRegistryLoginMode> {
-    /**
-     * Static value None for SourceRegistryLoginMode.
-     */
+    /** Static value None for SourceRegistryLoginMode. */
     public static final SourceRegistryLoginMode NONE = fromString("None");
 
-    /**
-     * Static value Default for SourceRegistryLoginMode.
-     */
+    /** Static value Default for SourceRegistryLoginMode. */
     public static final SourceRegistryLoginMode DEFAULT = fromString("Default");
 
     /**
      * Creates or finds a SourceRegistryLoginMode from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding SourceRegistryLoginMode.
      */
@@ -33,9 +27,7 @@ public final class SourceRegistryLoginMode extends ExpandableStringEnum<SourceRe
         return fromString(name, SourceRegistryLoginMode.class);
     }
 
-    /**
-     * @return known SourceRegistryLoginMode values.
-     */
+    /** @return known SourceRegistryLoginMode values. */
     public static Collection<SourceRegistryLoginMode> values() {
         return values(SourceRegistryLoginMode.class);
     }

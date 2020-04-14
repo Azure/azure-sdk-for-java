@@ -7,9 +7,7 @@ package com.azure.management.containerregistry;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Request model.
- */
+/** The Request model. */
 @Fluent
 public final class Request {
     /*
@@ -47,7 +45,7 @@ public final class Request {
 
     /**
      * Get the id property: The ID of the request that initiated the event.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -56,7 +54,7 @@ public final class Request {
 
     /**
      * Set the id property: The ID of the request that initiated the event.
-     * 
+     *
      * @param id the id value to set.
      * @return the Request object itself.
      */
@@ -66,10 +64,9 @@ public final class Request {
     }
 
     /**
-     * Get the addr property: The IP or hostname and possibly port of the
-     * client connection that initiated the event. This is the RemoteAddr from
-     * the standard http request.
-     * 
+     * Get the addr property: The IP or hostname and possibly port of the client connection that initiated the event.
+     * This is the RemoteAddr from the standard http request.
+     *
      * @return the addr value.
      */
     public String addr() {
@@ -77,10 +74,9 @@ public final class Request {
     }
 
     /**
-     * Set the addr property: The IP or hostname and possibly port of the
-     * client connection that initiated the event. This is the RemoteAddr from
-     * the standard http request.
-     * 
+     * Set the addr property: The IP or hostname and possibly port of the client connection that initiated the event.
+     * This is the RemoteAddr from the standard http request.
+     *
      * @param addr the addr value to set.
      * @return the Request object itself.
      */
@@ -90,10 +86,9 @@ public final class Request {
     }
 
     /**
-     * Get the host property: The externally accessible hostname of the
-     * registry instance, as specified by the http host header on incoming
-     * requests.
-     * 
+     * Get the host property: The externally accessible hostname of the registry instance, as specified by the http host
+     * header on incoming requests.
+     *
      * @return the host value.
      */
     public String host() {
@@ -101,10 +96,9 @@ public final class Request {
     }
 
     /**
-     * Set the host property: The externally accessible hostname of the
-     * registry instance, as specified by the http host header on incoming
-     * requests.
-     * 
+     * Set the host property: The externally accessible hostname of the registry instance, as specified by the http host
+     * header on incoming requests.
+     *
      * @param host the host value to set.
      * @return the Request object itself.
      */
@@ -115,7 +109,7 @@ public final class Request {
 
     /**
      * Get the method property: The request method that generated the event.
-     * 
+     *
      * @return the method value.
      */
     public String method() {
@@ -124,7 +118,7 @@ public final class Request {
 
     /**
      * Set the method property: The request method that generated the event.
-     * 
+     *
      * @param method the method value to set.
      * @return the Request object itself.
      */
@@ -135,7 +129,7 @@ public final class Request {
 
     /**
      * Get the useragent property: The user agent header of the request.
-     * 
+     *
      * @return the useragent value.
      */
     public String useragent() {
@@ -144,7 +138,7 @@ public final class Request {
 
     /**
      * Set the useragent property: The user agent header of the request.
-     * 
+     *
      * @param useragent the useragent value to set.
      * @return the Request object itself.
      */

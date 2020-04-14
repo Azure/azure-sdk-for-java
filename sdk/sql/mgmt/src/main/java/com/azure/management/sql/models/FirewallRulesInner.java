@@ -26,147 +26,218 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * FirewallRules.
- */
+/** An instance of this class provides access to all the operations defined in FirewallRules. */
 public final class FirewallRulesInner {
-    /**
-     * The proxy service used to perform REST calls.
-     */
-    private FirewallRulesService service;
+    /** The proxy service used to perform REST calls. */
+    private final FirewallRulesService service;
 
-    /**
-     * The service client containing this operation class.
-     */
-    private SqlManagementClientImpl client;
+    /** The service client containing this operation class. */
+    private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of FirewallRulesInner.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     FirewallRulesInner(SqlManagementClientImpl client) {
-        this.service = RestProxy.create(FirewallRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy.create(FirewallRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * SqlManagementClientFirewallRules to be used by the proxy service to
+     * The interface defining all the services for SqlManagementClientFirewallRules to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientFirewallRules")
+    @ServiceInterface(name = "SqlManagementClientF")
     private interface FirewallRulesService {
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/firewallRules/{firewallRuleName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
+                + "/{serverName}/firewallRules/{firewallRuleName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<FirewallRuleInner>> createOrUpdate(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName, @PathParam("firewallRuleName") String firewallRuleName, @BodyParam("application/json") FirewallRuleInner parameters);
+        Mono<SimpleResponse<FirewallRuleInner>> createOrUpdate(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("firewallRuleName") String firewallRuleName,
+            @BodyParam("application/json") FirewallRuleInner parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/firewallRules/{firewallRuleName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
+                + "/{serverName}/firewallRules/{firewallRuleName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> delete(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName, @PathParam("firewallRuleName") String firewallRuleName);
+        Mono<Response<Void>> delete(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("firewallRuleName") String firewallRuleName,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/firewallRules/{firewallRuleName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
+                + "/{serverName}/firewallRules/{firewallRuleName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<FirewallRuleInner>> get(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName, @PathParam("firewallRuleName") String firewallRuleName);
+        Mono<SimpleResponse<FirewallRuleInner>> get(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("firewallRuleName") String firewallRuleName,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/firewallRules")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
+                + "/{serverName}/firewallRules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<FirewallRuleListResultInner>> listByServer(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName);
+        Mono<SimpleResponse<FirewallRuleListResultInner>> listByServer(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            Context context);
     }
 
     /**
      * Creates or updates a firewall rule.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param firewallRuleName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param firewallRuleName The name of the firewall rule.
      * @param parameters Represents a server firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a server firewall rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<FirewallRuleInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName, String firewallRuleName, FirewallRuleInner parameters) {
+    public Mono<SimpleResponse<FirewallRuleInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String serverName, String firewallRuleName, FirewallRuleInner parameters) {
         final String apiVersion = "2014-04-01";
-        return service.createOrUpdate(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, serverName, firewallRuleName, parameters);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createOrUpdate(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            serverName,
+                            firewallRuleName,
+                            parameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Creates or updates a firewall rule.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param firewallRuleName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param firewallRuleName The name of the firewall rule.
      * @param parameters Represents a server firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a server firewall rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FirewallRuleInner> createOrUpdateAsync(String resourceGroupName, String serverName, String firewallRuleName, FirewallRuleInner parameters) {
+    public Mono<FirewallRuleInner> createOrUpdateAsync(
+        String resourceGroupName, String serverName, String firewallRuleName, FirewallRuleInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, serverName, firewallRuleName, parameters)
-            .flatMap((SimpleResponse<FirewallRuleInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<FirewallRuleInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Creates or updates a firewall rule.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param firewallRuleName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param firewallRuleName The name of the firewall rule.
      * @param parameters Represents a server firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a server firewall rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FirewallRuleInner createOrUpdate(String resourceGroupName, String serverName, String firewallRuleName, FirewallRuleInner parameters) {
+    public FirewallRuleInner createOrUpdate(
+        String resourceGroupName, String serverName, String firewallRuleName, FirewallRuleInner parameters) {
         return createOrUpdateAsync(resourceGroupName, serverName, firewallRuleName, parameters).block();
     }
 
     /**
      * Deletes a firewall rule.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param firewallRuleName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param firewallRuleName The name of the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String serverName, String firewallRuleName) {
+    public Mono<Response<Void>> deleteWithResponseAsync(
+        String resourceGroupName, String serverName, String firewallRuleName) {
         final String apiVersion = "2014-04-01";
-        return service.delete(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, serverName, firewallRuleName);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .delete(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            serverName,
+                            firewallRuleName,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Deletes a firewall rule.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param firewallRuleName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param firewallRuleName The name of the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serverName, String firewallRuleName) {
@@ -176,10 +247,11 @@ public final class FirewallRulesInner {
 
     /**
      * Deletes a firewall rule.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param firewallRuleName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param firewallRuleName The name of the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -191,51 +263,71 @@ public final class FirewallRulesInner {
 
     /**
      * Gets a firewall rule.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param firewallRuleName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param firewallRuleName The name of the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a firewall rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<FirewallRuleInner>> getWithResponseAsync(String resourceGroupName, String serverName, String firewallRuleName) {
+    public Mono<SimpleResponse<FirewallRuleInner>> getWithResponseAsync(
+        String resourceGroupName, String serverName, String firewallRuleName) {
         final String apiVersion = "2014-04-01";
-        return service.get(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, serverName, firewallRuleName);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .get(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            serverName,
+                            firewallRuleName,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a firewall rule.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param firewallRuleName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param firewallRuleName The name of the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a firewall rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FirewallRuleInner> getAsync(String resourceGroupName, String serverName, String firewallRuleName) {
         return getWithResponseAsync(resourceGroupName, serverName, firewallRuleName)
-            .flatMap((SimpleResponse<FirewallRuleInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<FirewallRuleInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets a firewall rule.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param firewallRuleName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param firewallRuleName The name of the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a firewall rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FirewallRuleInner get(String resourceGroupName, String serverName, String firewallRuleName) {
@@ -244,49 +336,63 @@ public final class FirewallRulesInner {
 
     /**
      * Returns a list of firewall rules.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the response to a List Firewall Rules request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<FirewallRuleInner>> listByServerSinglePageAsync(String resourceGroupName, String serverName) {
+    public Mono<PagedResponse<FirewallRuleInner>> listByServerSinglePageAsync(
+        String resourceGroupName, String serverName) {
         final String apiVersion = "2014-04-01";
-        return service.listByServer(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, serverName)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                null,
-                null));
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByServer(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            serverName,
+                            context))
+            .<PagedResponse<FirewallRuleInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Returns a list of firewall rules.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the response to a List Firewall Rules request.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<FirewallRuleInner> listByServerAsync(String resourceGroupName, String serverName) {
-        return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName));
+        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName));
     }
 
     /**
      * Returns a list of firewall rules.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the response to a List Firewall Rules request.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FirewallRuleInner> listByServer(String resourceGroupName, String serverName) {

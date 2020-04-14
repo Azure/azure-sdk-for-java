@@ -449,14 +449,16 @@ public interface Deployment extends
          */
         interface WithWhatIfResultFormat {
             /**
-             * Specifies the result format with value of 'FULL_RESOURCE_PAYLOADS' in What-if settings of deployment properties.
+             * Specifies the result format with value of 'FULL_RESOURCE_PAYLOADS'
+             * in What-if settings of deployment properties.
              *
              * @return the next stage of the execution.
              */
             WithWhatIf withFullResourcePayloadsResultFormat();
 
             /**
-             * Specifies the result format with value of 'RESOURCE_ID_ONLY' in What-if settings of deployment properties.
+             * Specifies the result format with value of 'RESOURCE_ID_ONLY'
+             * in What-if settings of deployment properties.
              *
              * @return the next stage of the execution.
              */
@@ -535,7 +537,8 @@ public interface Deployment extends
             WhatIfOperationResult whatIf();
 
             /**
-             * Gets changes that will be made by the deployment if executed at the scope of the resource group asynchronously.
+             * Gets changes that will be made by the deployment
+             * if executed at the scope of the resource group asynchronously.
              *
              * @return the next stage of the execution.
              */
@@ -550,7 +553,8 @@ public interface Deployment extends
             WhatIfOperationResult whatIfAtSubscriptionScope();
 
             /**
-             * Gets changes that will be made by the deployment if executed at the scope of the subscription asynchronously.
+             * Gets changes that will be made by the deployment
+             * if executed at the scope of the subscription asynchronously.
              *
              * @return the next stage of the execution.
              */

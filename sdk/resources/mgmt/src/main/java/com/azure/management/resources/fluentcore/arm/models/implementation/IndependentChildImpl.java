@@ -26,7 +26,8 @@ public abstract class IndependentChildImpl<
         FluentModelT extends IndependentChild<ManagerT>,
         FluentParentModelT extends Resource & HasResourceGroup,
         InnerModelT,
-        FluentModelImplT extends IndependentChildImpl<FluentModelT, FluentParentModelT, InnerModelT, FluentModelImplT, ManagerT>,
+        FluentModelImplT extends IndependentChildImpl<FluentModelT, FluentParentModelT,
+                                                      InnerModelT, FluentModelImplT, ManagerT>,
         ManagerT>
         extends
         CreatableUpdatableImpl<FluentModelT, InnerModelT, FluentModelImplT>

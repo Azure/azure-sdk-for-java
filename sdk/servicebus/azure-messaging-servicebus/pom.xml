@@ -9,12 +9,12 @@
     <groupId>com.azure</groupId>
     <artifactId>azure-client-sdk-parent</artifactId>
     <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
-    <relativePath>../../../pom.client.xml</relativePath>
+    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
   </parent>
 
   <groupId>com.azure</groupId>
   <artifactId>azure-messaging-servicebus</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
+  <version>7.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
 
   <name>Microsoft Azure client library for Service Bus</name>
   <description>Libraries built on Microsoft Azure  Service Bus</description>
@@ -42,7 +42,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-amqp</artifactId>
-      <version>1.0.2</version> <!-- {x-version-update;com.azure:azure-core-amqp;dependency} -->
+      <version>1.1.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-core-amqp;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

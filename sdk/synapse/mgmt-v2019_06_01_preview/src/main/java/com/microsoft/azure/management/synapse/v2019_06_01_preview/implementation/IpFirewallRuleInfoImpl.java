@@ -61,7 +61,7 @@ class IpFirewallRuleInfoImpl extends CreatableUpdatableImpl<IpFirewallRuleInfo, 
     @Override
     protected Observable<IpFirewallRuleInfoInner> getInnerAsync() {
         IpFirewallRulesInner client = this.manager().inner().ipFirewallRules();
-        return null; // NOP getInnerAsync implementation as get is not supported
+        return client.getAsync(this.resourceGroupName, this.workspaceName, this.ruleName);
     }
 
     @Override

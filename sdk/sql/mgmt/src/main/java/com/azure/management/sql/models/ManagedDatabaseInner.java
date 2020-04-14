@@ -13,9 +13,7 @@ import com.azure.management.sql.ManagedDatabaseStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The ManagedDatabase model.
- */
+/** The ManagedDatabase model. */
 @JsonFlatten
 @Fluent
 public class ManagedDatabaseInner extends Resource {
@@ -128,7 +126,7 @@ public class ManagedDatabaseInner extends Resource {
 
     /**
      * Get the collation property: Collation of the managed database.
-     * 
+     *
      * @return the collation value.
      */
     public String collation() {
@@ -137,7 +135,7 @@ public class ManagedDatabaseInner extends Resource {
 
     /**
      * Set the collation property: Collation of the managed database.
-     * 
+     *
      * @param collation the collation value to set.
      * @return the ManagedDatabaseInner object itself.
      */
@@ -148,7 +146,7 @@ public class ManagedDatabaseInner extends Resource {
 
     /**
      * Get the status property: Status of the database.
-     * 
+     *
      * @return the status value.
      */
     public ManagedDatabaseStatus status() {
@@ -157,7 +155,7 @@ public class ManagedDatabaseInner extends Resource {
 
     /**
      * Get the creationDate property: Creation date of the database.
-     * 
+     *
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -165,9 +163,8 @@ public class ManagedDatabaseInner extends Resource {
     }
 
     /**
-     * Get the earliestRestorePoint property: Earliest restore point in time
-     * for point in time restore.
-     * 
+     * Get the earliestRestorePoint property: Earliest restore point in time for point in time restore.
+     *
      * @return the earliestRestorePoint value.
      */
     public OffsetDateTime earliestRestorePoint() {
@@ -175,11 +172,10 @@ public class ManagedDatabaseInner extends Resource {
     }
 
     /**
-     * Get the restorePointInTime property: Conditional. If createMode is
-     * PointInTimeRestore, this value is required. Specifies the point in time
-     * (ISO8601 format) of the source database that will be restored to create
-     * the new database.
-     * 
+     * Get the restorePointInTime property: Conditional. If createMode is PointInTimeRestore, this value is required.
+     * Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new
+     * database.
+     *
      * @return the restorePointInTime value.
      */
     public OffsetDateTime restorePointInTime() {
@@ -187,11 +183,10 @@ public class ManagedDatabaseInner extends Resource {
     }
 
     /**
-     * Set the restorePointInTime property: Conditional. If createMode is
-     * PointInTimeRestore, this value is required. Specifies the point in time
-     * (ISO8601 format) of the source database that will be restored to create
-     * the new database.
-     * 
+     * Set the restorePointInTime property: Conditional. If createMode is PointInTimeRestore, this value is required.
+     * Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new
+     * database.
+     *
      * @param restorePointInTime the restorePointInTime value to set.
      * @return the ManagedDatabaseInner object itself.
      */
@@ -202,7 +197,7 @@ public class ManagedDatabaseInner extends Resource {
 
     /**
      * Get the defaultSecondaryLocation property: Geo paired region.
-     * 
+     *
      * @return the defaultSecondaryLocation value.
      */
     public String defaultSecondaryLocation() {
@@ -211,7 +206,7 @@ public class ManagedDatabaseInner extends Resource {
 
     /**
      * Get the catalogCollation property: Collation of the metadata catalog.
-     * 
+     *
      * @return the catalogCollation value.
      */
     public CatalogCollationType catalogCollation() {
@@ -220,7 +215,7 @@ public class ManagedDatabaseInner extends Resource {
 
     /**
      * Set the catalogCollation property: Collation of the metadata catalog.
-     * 
+     *
      * @param catalogCollation the catalogCollation value to set.
      * @return the ManagedDatabaseInner object itself.
      */
@@ -230,16 +225,13 @@ public class ManagedDatabaseInner extends Resource {
     }
 
     /**
-     * Get the createMode property: Managed database create mode.
-     * PointInTimeRestore: Create a database by restoring a point in time
-     * backup of an existing database. SourceDatabaseName,
-     * SourceManagedInstanceName and PointInTime must be specified.
-     * RestoreExternalBackup: Create a database by restoring from external
-     * backup files. Collation, StorageContainerUri and
-     * StorageContainerSasToken must be specified. Recovery: Creates a database
-     * by restoring a geo-replicated backup. RecoverableDatabaseId must be
-     * specified as the recoverable database resource ID to restore.
-     * 
+     * Get the createMode property: Managed database create mode. PointInTimeRestore: Create a database by restoring a
+     * point in time backup of an existing database. SourceDatabaseName, SourceManagedInstanceName and PointInTime must
+     * be specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation,
+     * StorageContainerUri and StorageContainerSasToken must be specified. Recovery: Creates a database by restoring a
+     * geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to
+     * restore.
+     *
      * @return the createMode value.
      */
     public ManagedDatabaseCreateMode createMode() {
@@ -247,16 +239,13 @@ public class ManagedDatabaseInner extends Resource {
     }
 
     /**
-     * Set the createMode property: Managed database create mode.
-     * PointInTimeRestore: Create a database by restoring a point in time
-     * backup of an existing database. SourceDatabaseName,
-     * SourceManagedInstanceName and PointInTime must be specified.
-     * RestoreExternalBackup: Create a database by restoring from external
-     * backup files. Collation, StorageContainerUri and
-     * StorageContainerSasToken must be specified. Recovery: Creates a database
-     * by restoring a geo-replicated backup. RecoverableDatabaseId must be
-     * specified as the recoverable database resource ID to restore.
-     * 
+     * Set the createMode property: Managed database create mode. PointInTimeRestore: Create a database by restoring a
+     * point in time backup of an existing database. SourceDatabaseName, SourceManagedInstanceName and PointInTime must
+     * be specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation,
+     * StorageContainerUri and StorageContainerSasToken must be specified. Recovery: Creates a database by restoring a
+     * geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to
+     * restore.
+     *
      * @param createMode the createMode value to set.
      * @return the ManagedDatabaseInner object itself.
      */
@@ -266,10 +255,9 @@ public class ManagedDatabaseInner extends Resource {
     }
 
     /**
-     * Get the storageContainerUri property: Conditional. If createMode is
-     * RestoreExternalBackup, this value is required. Specifies the uri of the
-     * storage container where backups for this restore are stored.
-     * 
+     * Get the storageContainerUri property: Conditional. If createMode is RestoreExternalBackup, this value is
+     * required. Specifies the uri of the storage container where backups for this restore are stored.
+     *
      * @return the storageContainerUri value.
      */
     public String storageContainerUri() {
@@ -277,10 +265,9 @@ public class ManagedDatabaseInner extends Resource {
     }
 
     /**
-     * Set the storageContainerUri property: Conditional. If createMode is
-     * RestoreExternalBackup, this value is required. Specifies the uri of the
-     * storage container where backups for this restore are stored.
-     * 
+     * Set the storageContainerUri property: Conditional. If createMode is RestoreExternalBackup, this value is
+     * required. Specifies the uri of the storage container where backups for this restore are stored.
+     *
      * @param storageContainerUri the storageContainerUri value to set.
      * @return the ManagedDatabaseInner object itself.
      */
@@ -290,9 +277,9 @@ public class ManagedDatabaseInner extends Resource {
     }
 
     /**
-     * Get the sourceDatabaseId property: The resource identifier of the source
-     * database associated with create operation of this database.
-     * 
+     * Get the sourceDatabaseId property: The resource identifier of the source database associated with create
+     * operation of this database.
+     *
      * @return the sourceDatabaseId value.
      */
     public String sourceDatabaseId() {
@@ -300,9 +287,9 @@ public class ManagedDatabaseInner extends Resource {
     }
 
     /**
-     * Set the sourceDatabaseId property: The resource identifier of the source
-     * database associated with create operation of this database.
-     * 
+     * Set the sourceDatabaseId property: The resource identifier of the source database associated with create
+     * operation of this database.
+     *
      * @param sourceDatabaseId the sourceDatabaseId value to set.
      * @return the ManagedDatabaseInner object itself.
      */
@@ -312,9 +299,9 @@ public class ManagedDatabaseInner extends Resource {
     }
 
     /**
-     * Get the restorableDroppedDatabaseId property: The restorable dropped
-     * database resource id to restore when creating this database.
-     * 
+     * Get the restorableDroppedDatabaseId property: The restorable dropped database resource id to restore when
+     * creating this database.
+     *
      * @return the restorableDroppedDatabaseId value.
      */
     public String restorableDroppedDatabaseId() {
@@ -322,11 +309,10 @@ public class ManagedDatabaseInner extends Resource {
     }
 
     /**
-     * Set the restorableDroppedDatabaseId property: The restorable dropped
-     * database resource id to restore when creating this database.
-     * 
-     * @param restorableDroppedDatabaseId the restorableDroppedDatabaseId value
-     * to set.
+     * Set the restorableDroppedDatabaseId property: The restorable dropped database resource id to restore when
+     * creating this database.
+     *
+     * @param restorableDroppedDatabaseId the restorableDroppedDatabaseId value to set.
      * @return the ManagedDatabaseInner object itself.
      */
     public ManagedDatabaseInner withRestorableDroppedDatabaseId(String restorableDroppedDatabaseId) {
@@ -335,10 +321,9 @@ public class ManagedDatabaseInner extends Resource {
     }
 
     /**
-     * Get the storageContainerSasToken property: Conditional. If createMode is
-     * RestoreExternalBackup, this value is required. Specifies the storage
-     * container sas token.
-     * 
+     * Get the storageContainerSasToken property: Conditional. If createMode is RestoreExternalBackup, this value is
+     * required. Specifies the storage container sas token.
+     *
      * @return the storageContainerSasToken value.
      */
     public String storageContainerSasToken() {
@@ -346,12 +331,10 @@ public class ManagedDatabaseInner extends Resource {
     }
 
     /**
-     * Set the storageContainerSasToken property: Conditional. If createMode is
-     * RestoreExternalBackup, this value is required. Specifies the storage
-     * container sas token.
-     * 
-     * @param storageContainerSasToken the storageContainerSasToken value to
-     * set.
+     * Set the storageContainerSasToken property: Conditional. If createMode is RestoreExternalBackup, this value is
+     * required. Specifies the storage container sas token.
+     *
+     * @param storageContainerSasToken the storageContainerSasToken value to set.
      * @return the ManagedDatabaseInner object itself.
      */
     public ManagedDatabaseInner withStorageContainerSasToken(String storageContainerSasToken) {
@@ -360,9 +343,9 @@ public class ManagedDatabaseInner extends Resource {
     }
 
     /**
-     * Get the failoverGroupId property: Instance Failover Group resource
-     * identifier that this managed database belongs to.
-     * 
+     * Get the failoverGroupId property: Instance Failover Group resource identifier that this managed database belongs
+     * to.
+     *
      * @return the failoverGroupId value.
      */
     public String failoverGroupId() {
@@ -370,9 +353,9 @@ public class ManagedDatabaseInner extends Resource {
     }
 
     /**
-     * Get the recoverableDatabaseId property: The resource identifier of the
-     * recoverable database associated with create operation of this database.
-     * 
+     * Get the recoverableDatabaseId property: The resource identifier of the recoverable database associated with
+     * create operation of this database.
+     *
      * @return the recoverableDatabaseId value.
      */
     public String recoverableDatabaseId() {
@@ -380,9 +363,9 @@ public class ManagedDatabaseInner extends Resource {
     }
 
     /**
-     * Set the recoverableDatabaseId property: The resource identifier of the
-     * recoverable database associated with create operation of this database.
-     * 
+     * Set the recoverableDatabaseId property: The resource identifier of the recoverable database associated with
+     * create operation of this database.
+     *
      * @param recoverableDatabaseId the recoverableDatabaseId value to set.
      * @return the ManagedDatabaseInner object itself.
      */
@@ -392,9 +375,9 @@ public class ManagedDatabaseInner extends Resource {
     }
 
     /**
-     * Get the longTermRetentionBackupResourceId property: The name of the Long
-     * Term Retention backup to be used for restore of this managed database.
-     * 
+     * Get the longTermRetentionBackupResourceId property: The name of the Long Term Retention backup to be used for
+     * restore of this managed database.
+     *
      * @return the longTermRetentionBackupResourceId value.
      */
     public String longTermRetentionBackupResourceId() {
@@ -402,11 +385,10 @@ public class ManagedDatabaseInner extends Resource {
     }
 
     /**
-     * Set the longTermRetentionBackupResourceId property: The name of the Long
-     * Term Retention backup to be used for restore of this managed database.
-     * 
-     * @param longTermRetentionBackupResourceId the
-     * longTermRetentionBackupResourceId value to set.
+     * Set the longTermRetentionBackupResourceId property: The name of the Long Term Retention backup to be used for
+     * restore of this managed database.
+     *
+     * @param longTermRetentionBackupResourceId the longTermRetentionBackupResourceId value to set.
      * @return the ManagedDatabaseInner object itself.
      */
     public ManagedDatabaseInner withLongTermRetentionBackupResourceId(String longTermRetentionBackupResourceId) {

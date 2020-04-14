@@ -8,17 +8,12 @@ import com.azure.management.sql.CapabilityStatus;
 import com.azure.management.sql.RegionCapabilities;
 import com.azure.management.sql.ServerVersionCapability;
 import com.azure.management.sql.models.LocationCapabilitiesInner;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Implementation for RegionCapabilities.
- */
-public class RegionCapabilitiesImpl
-    extends WrapperImpl<LocationCapabilitiesInner>
-    implements RegionCapabilities {
+/** Implementation for RegionCapabilities. */
+public class RegionCapabilitiesImpl extends WrapperImpl<LocationCapabilitiesInner> implements RegionCapabilities {
 
     private Map<String, ServerVersionCapability> supportedCapabilitiesMap;
 

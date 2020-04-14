@@ -4,63 +4,89 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSenderClientBuilder;
+import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.CreateBatchOptions;
+import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
+import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
+/**
+ * Integration tests for {@link ServiceBusSenderAsyncClient} from queues or subscriptions.
+ */
 class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     private ServiceBusSenderAsyncClient sender;
+    private ServiceBusReceiverAsyncClient receiver;
+    private final AtomicInteger messagesPending = new AtomicInteger();
 
     ServiceBusSenderAsyncClientIntegrationTest() {
         super(new ClientLogger(ServiceBusSenderAsyncClientIntegrationTest.class));
     }
 
     @Override
-    protected void beforeTest() {
-        ServiceBusSenderClientBuilder builder = createBuilder().sender();
-
-        final String queueName = getQueueName();
-        if (queueName != null) {
-            logger.info("Using queueName: {}", queueName);
-            builder.queueName(queueName);
-        } else {
-            logger.info("Using entityPath from connection string.");
-        }
-
-        sender = builder.buildAsyncClient();
-    }
-
-    @Override
     protected void afterTest() {
         dispose(sender);
+
+        try {
+            receiver.receive(new ReceiveAsyncOptions().setEnableAutoComplete(false))
+                .take(messagesPending.get())
+                .map(message -> {
+                    logger.info("Message received: {}", message.getSequenceNumber());
+                    return message;
+                })
+                .timeout(Duration.ofSeconds(5), Mono.empty())
+                .blockLast();
+        } catch (Exception e) {
+            logger.warning("Error occurred when draining queue.", e);
+        } finally {
+            dispose(receiver);
+        }
+    }
+
+    static Stream<Arguments> receiverTypesProvider() {
+        return Stream.of(
+            Arguments.of(MessagingEntityType.QUEUE),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION)
+        );
     }
 
     /**
      * Verifies that we can send a message to a non-session queue.
      */
-    @Test
-    void nonSessionQueueSendMessage() {
+    @MethodSource("receiverTypesProvider")
+    @ParameterizedTest
+    void nonSessionQueueSendMessage(MessagingEntityType entityType) {
         // Arrange
+        setSenderAndReceiver(entityType, false);
+
         final String messageId = UUID.randomUUID().toString();
         final String contents = "Some-contents";
-        final ServiceBusMessage message = TestUtils.getServiceBusMessage(contents, messageId, 0);
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(contents, messageId);
 
         // Assert & Act
-        StepVerifier.create(sender.send(message))
+        StepVerifier.create(sender.send(message).doOnSuccess(aVoid -> messagesPending.incrementAndGet()))
             .verifyComplete();
     }
 
     /**
      * Verifies that we can send a {@link ServiceBusMessageBatch} to a non-session queue.
      */
-    @Test
-    void nonSessionMessageBatch() {
+    @MethodSource("receiverTypesProvider")
+    @ParameterizedTest
+    void nonSessionMessageBatch(MessagingEntityType entityType) {
         // Arrange
+        setSenderAndReceiver(entityType, false);
+
         final String messageId = UUID.randomUUID().toString();
         final CreateBatchOptions options = new CreateBatchOptions().setMaximumSizeInBytes(1024);
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(3, messageId);
@@ -72,7 +98,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
                     Assertions.assertTrue(batch.tryAdd(message));
                 }
 
-                return sender.send(batch);
+                return sender.send(batch).doOnSuccess(aVoid -> messagesPending.incrementAndGet());
             }))
             .verifyComplete();
     }
@@ -80,30 +106,59 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can send using credentials.
      */
-    @Test
-    void sendWithCredentials() {
+    @MethodSource("receiverTypesProvider")
+    @ParameterizedTest
+    void sendWithCredentials(MessagingEntityType entityType) {
         // Arrange
-        final ServiceBusSenderAsyncClient credentialSender = createBuilder(true)
-            .sender()
-            .queueName(getQueueName())
-            .buildAsyncClient();
+        setSenderAndReceiver(entityType, true);
+
         final String messageId = UUID.randomUUID().toString();
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(5, messageId);
 
         // Act & Assert
-        try {
-            StepVerifier.create(credentialSender.createBatch()
-                .flatMap(batch -> {
-                    messages.forEach(m -> {
-                        Assertions.assertTrue(batch.tryAdd(m));
-                    });
+        StepVerifier.create(sender.createBatch()
+            .flatMap(batch -> {
+                messages.forEach(m -> Assertions.assertTrue(batch.tryAdd(m)));
 
-                    return credentialSender.send(batch);
-                }))
-                .expectComplete()
-                .verify();
-        } finally {
-            credentialSender.close();
+                return sender.send(batch).doOnSuccess(aVoid -> messagesPending.incrementAndGet());
+            }))
+            .expectComplete()
+            .verify();
+    }
+
+    void setSenderAndReceiver(MessagingEntityType entityType, boolean useCredentials) {
+        switch (entityType) {
+            case QUEUE:
+                final String queueName = getQueueName();
+
+                Assertions.assertNotNull(queueName, "'queueName' cannot be null.");
+
+                sender = createBuilder(useCredentials).sender()
+                    .queueName(queueName)
+                    .buildAsyncClient();
+                receiver = createBuilder(useCredentials).receiver()
+                    .queueName(queueName)
+                    .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+                    .buildAsyncClient();
+                break;
+            case SUBSCRIPTION:
+                final String topicName = getTopicName();
+                final String subscriptionName = getSubscriptionName();
+
+                Assertions.assertNotNull(topicName, "'topicName' cannot be null.");
+                Assertions.assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
+
+                sender = createBuilder(useCredentials).sender()
+                    .topicName(topicName)
+                    .buildAsyncClient();
+                receiver = createBuilder(useCredentials).receiver()
+                    .topicName(topicName)
+                    .subscriptionName(subscriptionName)
+                    .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+                    .buildAsyncClient();
+                break;
+            default:
+                throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
         }
     }
 }

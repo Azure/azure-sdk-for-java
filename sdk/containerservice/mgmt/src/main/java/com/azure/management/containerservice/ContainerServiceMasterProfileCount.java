@@ -4,9 +4,7 @@ package com.azure.management.containerservice;
 
 import com.azure.core.annotation.Fluent;
 
-/**
- * The minimum valid number of master nodes.
- */
+/** The minimum valid number of master nodes. */
 @Fluent
 public enum ContainerServiceMasterProfileCount {
     /** Enum value Min. */
@@ -25,9 +23,7 @@ public enum ContainerServiceMasterProfileCount {
         this.count = count;
     }
 
-    /**
-     * @return the count.
-     */
+    /** @return the count. */
     public int count() {
         return this.count;
     }

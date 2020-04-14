@@ -11,9 +11,7 @@ import com.azure.management.sql.InstancePoolLicenseType;
 import com.azure.management.sql.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The InstancePool model.
- */
+/** The InstancePool model. */
 @JsonFlatten
 @Fluent
 public class InstancePoolInner extends Resource {
@@ -44,7 +42,7 @@ public class InstancePoolInner extends Resource {
 
     /**
      * Get the sku property: The name and tier of the SKU.
-     * 
+     *
      * @return the sku value.
      */
     public Sku sku() {
@@ -53,7 +51,7 @@ public class InstancePoolInner extends Resource {
 
     /**
      * Set the sku property: The name and tier of the SKU.
-     * 
+     *
      * @param sku the sku value to set.
      * @return the InstancePoolInner object itself.
      */
@@ -63,9 +61,8 @@ public class InstancePoolInner extends Resource {
     }
 
     /**
-     * Get the subnetId property: Resource ID of the subnet to place this
-     * instance pool in.
-     * 
+     * Get the subnetId property: Resource ID of the subnet to place this instance pool in.
+     *
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -73,9 +70,8 @@ public class InstancePoolInner extends Resource {
     }
 
     /**
-     * Set the subnetId property: Resource ID of the subnet to place this
-     * instance pool in.
-     * 
+     * Set the subnetId property: Resource ID of the subnet to place this instance pool in.
+     *
      * @param subnetId the subnetId value to set.
      * @return the InstancePoolInner object itself.
      */
@@ -85,9 +81,8 @@ public class InstancePoolInner extends Resource {
     }
 
     /**
-     * Get the vCores property: Count of vCores belonging to this instance
-     * pool.
-     * 
+     * Get the vCores property: Count of vCores belonging to this instance pool.
+     *
      * @return the vCores value.
      */
     public Integer vCores() {
@@ -95,9 +90,8 @@ public class InstancePoolInner extends Resource {
     }
 
     /**
-     * Set the vCores property: Count of vCores belonging to this instance
-     * pool.
-     * 
+     * Set the vCores property: Count of vCores belonging to this instance pool.
+     *
      * @param vCores the vCores value to set.
      * @return the InstancePoolInner object itself.
      */
@@ -107,10 +101,9 @@ public class InstancePoolInner extends Resource {
     }
 
     /**
-     * Get the licenseType property: The license type. Possible values are
-     * 'LicenseIncluded' (price for SQL license is included) and 'BasePrice'
-     * (without SQL license price).
-     * 
+     * Get the licenseType property: The license type. Possible values are 'LicenseIncluded' (price for SQL license is
+     * included) and 'BasePrice' (without SQL license price).
+     *
      * @return the licenseType value.
      */
     public InstancePoolLicenseType licenseType() {
@@ -118,10 +111,9 @@ public class InstancePoolInner extends Resource {
     }
 
     /**
-     * Set the licenseType property: The license type. Possible values are
-     * 'LicenseIncluded' (price for SQL license is included) and 'BasePrice'
-     * (without SQL license price).
-     * 
+     * Set the licenseType property: The license type. Possible values are 'LicenseIncluded' (price for SQL license is
+     * included) and 'BasePrice' (without SQL license price).
+     *
      * @param licenseType the licenseType value to set.
      * @return the InstancePoolInner object itself.
      */

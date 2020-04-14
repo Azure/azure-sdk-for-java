@@ -7,9 +7,7 @@ package com.azure.management.storage;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ChangeFeed model.
- */
+/** The ChangeFeed model. */
 @Fluent
 public final class ChangeFeed {
     /*
@@ -20,9 +18,8 @@ public final class ChangeFeed {
     private Boolean enabled;
 
     /**
-     * Get the enabled property: Indicates whether change feed event logging is
-     * enabled for the Blob service.
-     * 
+     * Get the enabled property: Indicates whether change feed event logging is enabled for the Blob service.
+     *
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -30,9 +27,8 @@ public final class ChangeFeed {
     }
 
     /**
-     * Set the enabled property: Indicates whether change feed event logging is
-     * enabled for the Blob service.
-     * 
+     * Set the enabled property: Indicates whether change feed event logging is enabled for the Blob service.
+     *
      * @param enabled the enabled value to set.
      * @return the ChangeFeed object itself.
      */

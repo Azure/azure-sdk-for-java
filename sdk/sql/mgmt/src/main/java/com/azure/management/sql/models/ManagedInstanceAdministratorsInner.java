@@ -26,121 +26,195 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * ManagedInstanceAdministrators.
- */
+/** An instance of this class provides access to all the operations defined in ManagedInstanceAdministrators. */
 public final class ManagedInstanceAdministratorsInner implements InnerSupportsDelete<Void> {
-    /**
-     * The proxy service used to perform REST calls.
-     */
-    private ManagedInstanceAdministratorsService service;
+    /** The proxy service used to perform REST calls. */
+    private final ManagedInstanceAdministratorsService service;
 
-    /**
-     * The service client containing this operation class.
-     */
-    private SqlManagementClientImpl client;
+    /** The service client containing this operation class. */
+    private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of ManagedInstanceAdministratorsInner.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     ManagedInstanceAdministratorsInner(SqlManagementClientImpl client) {
-        this.service = RestProxy.create(ManagedInstanceAdministratorsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy
+                .create(
+                    ManagedInstanceAdministratorsService.class,
+                    client.getHttpPipeline(),
+                    client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * SqlManagementClientManagedInstanceAdministrators to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for SqlManagementClientManagedInstanceAdministrators to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientManagedInstanceAdministrators")
+    @ServiceInterface(name = "SqlManagementClientM")
     private interface ManagedInstanceAdministratorsService {
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/administrators")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}/administrators")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ManagedInstanceAdministratorListResultInner>> listByInstance(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("managedInstanceName") String managedInstanceName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<ManagedInstanceAdministratorListResultInner>> listByInstance(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/administrators/{administratorName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}/administrators/{administratorName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ManagedInstanceAdministratorInner>> get(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("managedInstanceName") String managedInstanceName, @PathParam("administratorName") String administratorName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<ManagedInstanceAdministratorInner>> get(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("administratorName") String administratorName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/administrators/{administratorName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}/administrators/{administratorName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("managedInstanceName") String managedInstanceName, @PathParam("administratorName") String administratorName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ManagedInstanceAdministratorInner parameters);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("administratorName") String administratorName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ManagedInstanceAdministratorInner parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/administrators/{administratorName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}/administrators/{administratorName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("managedInstanceName") String managedInstanceName, @PathParam("administratorName") String administratorName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("administratorName") String administratorName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/administrators/{administratorName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}/administrators/{administratorName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ManagedInstanceAdministratorInner>> beginCreateOrUpdate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("managedInstanceName") String managedInstanceName, @PathParam("administratorName") String administratorName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ManagedInstanceAdministratorInner parameters);
+        Mono<SimpleResponse<ManagedInstanceAdministratorInner>> beginCreateOrUpdate(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("administratorName") String administratorName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ManagedInstanceAdministratorInner parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/administrators/{administratorName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}/administrators/{administratorName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> beginDelete(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("managedInstanceName") String managedInstanceName, @PathParam("administratorName") String administratorName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<Response<Void>> beginDelete(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("administratorName") String administratorName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ManagedInstanceAdministratorListResultInner>> listByInstanceNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<ManagedInstanceAdministratorListResultInner>> listByInstanceNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
      * Gets a list of managed instance administrators.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of managed instance administrators.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ManagedInstanceAdministratorInner>> listByInstanceSinglePageAsync(String resourceGroupName, String managedInstanceName) {
+    public Mono<PagedResponse<ManagedInstanceAdministratorInner>> listByInstanceSinglePageAsync(
+        String resourceGroupName, String managedInstanceName) {
         final String apiVersion = "2017-03-01-preview";
-        return service.listByInstance(this.client.getHost(), resourceGroupName, managedInstanceName, this.client.getSubscriptionId(), apiVersion)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByInstance(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .<PagedResponse<ManagedInstanceAdministratorInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a list of managed instance administrators.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of managed instance administrators.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ManagedInstanceAdministratorInner> listByInstanceAsync(String resourceGroupName, String managedInstanceName) {
+    public PagedFlux<ManagedInstanceAdministratorInner> listByInstanceAsync(
+        String resourceGroupName, String managedInstanceName) {
         return new PagedFlux<>(
             () -> listByInstanceSinglePageAsync(resourceGroupName, managedInstanceName),
             nextLink -> listByInstanceNextSinglePageAsync(nextLink));
@@ -148,63 +222,86 @@ public final class ManagedInstanceAdministratorsInner implements InnerSupportsDe
 
     /**
      * Gets a list of managed instance administrators.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of managed instance administrators.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagedInstanceAdministratorInner> listByInstance(String resourceGroupName, String managedInstanceName) {
+    public PagedIterable<ManagedInstanceAdministratorInner> listByInstance(
+        String resourceGroupName, String managedInstanceName) {
         return new PagedIterable<>(listByInstanceAsync(resourceGroupName, managedInstanceName));
     }
 
     /**
      * Gets a managed instance administrator.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed instance administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ManagedInstanceAdministratorInner>> getWithResponseAsync(String resourceGroupName, String managedInstanceName) {
+    public Mono<SimpleResponse<ManagedInstanceAdministratorInner>> getWithResponseAsync(
+        String resourceGroupName, String managedInstanceName) {
         final String administratorName = "ActiveDirectory";
         final String apiVersion = "2017-03-01-preview";
-        return service.get(this.client.getHost(), resourceGroupName, managedInstanceName, administratorName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .get(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            administratorName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a managed instance administrator.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed instance administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedInstanceAdministratorInner> getAsync(String resourceGroupName, String managedInstanceName) {
         return getWithResponseAsync(resourceGroupName, managedInstanceName)
-            .flatMap((SimpleResponse<ManagedInstanceAdministratorInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<ManagedInstanceAdministratorInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets a managed instance administrator.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed instance administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedInstanceAdministratorInner get(String resourceGroupName, String managedInstanceName) {
@@ -213,92 +310,141 @@ public final class ManagedInstanceAdministratorsInner implements InnerSupportsDe
 
     /**
      * Creates or updates a managed instance administrator.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @param parameters An Azure SQL managed instance administrator.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL managed instance administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String managedInstanceName, ManagedInstanceAdministratorInner parameters) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String managedInstanceName, ManagedInstanceAdministratorInner parameters) {
         final String administratorName = "ActiveDirectory";
         final String apiVersion = "2017-03-01-preview";
-        return service.createOrUpdate(this.client.getHost(), resourceGroupName, managedInstanceName, administratorName, this.client.getSubscriptionId(), apiVersion, parameters);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createOrUpdate(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            administratorName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            parameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Creates or updates a managed instance administrator.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @param parameters An Azure SQL managed instance administrator.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL managed instance administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedInstanceAdministratorInner> createOrUpdateAsync(String resourceGroupName, String managedInstanceName, ManagedInstanceAdministratorInner parameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName, parameters);
-        return this.client.<ManagedInstanceAdministratorInner, ManagedInstanceAdministratorInner>getLroResultAsync(mono, this.client.getHttpPipeline(), ManagedInstanceAdministratorInner.class, ManagedInstanceAdministratorInner.class)
+    public Mono<ManagedInstanceAdministratorInner> createOrUpdateAsync(
+        String resourceGroupName, String managedInstanceName, ManagedInstanceAdministratorInner parameters) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName, parameters);
+        return this
+            .client
+            .<ManagedInstanceAdministratorInner, ManagedInstanceAdministratorInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                ManagedInstanceAdministratorInner.class,
+                ManagedInstanceAdministratorInner.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Creates or updates a managed instance administrator.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @param parameters An Azure SQL managed instance administrator.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL managed instance administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedInstanceAdministratorInner createOrUpdate(String resourceGroupName, String managedInstanceName, ManagedInstanceAdministratorInner parameters) {
+    public ManagedInstanceAdministratorInner createOrUpdate(
+        String resourceGroupName, String managedInstanceName, ManagedInstanceAdministratorInner parameters) {
         return createOrUpdateAsync(resourceGroupName, managedInstanceName, parameters).block();
     }
 
     /**
      * Deletes a managed instance administrator.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String managedInstanceName) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String managedInstanceName) {
         final String administratorName = "ActiveDirectory";
         final String apiVersion = "2017-03-01-preview";
-        return service.delete(this.client.getHost(), resourceGroupName, managedInstanceName, administratorName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .delete(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            administratorName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Deletes a managed instance administrator.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String managedInstanceName) {
         Mono<SimpleResponse<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, managedInstanceName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return this
+            .client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Deletes a managed instance administrator.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -310,82 +456,121 @@ public final class ManagedInstanceAdministratorsInner implements InnerSupportsDe
 
     /**
      * Creates or updates a managed instance administrator.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @param parameters An Azure SQL managed instance administrator.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL managed instance administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ManagedInstanceAdministratorInner>> beginCreateOrUpdateWithResponseAsync(String resourceGroupName, String managedInstanceName, ManagedInstanceAdministratorInner parameters) {
+    public Mono<SimpleResponse<ManagedInstanceAdministratorInner>> beginCreateOrUpdateWithResponseAsync(
+        String resourceGroupName, String managedInstanceName, ManagedInstanceAdministratorInner parameters) {
         final String administratorName = "ActiveDirectory";
         final String apiVersion = "2017-03-01-preview";
-        return service.beginCreateOrUpdate(this.client.getHost(), resourceGroupName, managedInstanceName, administratorName, this.client.getSubscriptionId(), apiVersion, parameters);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginCreateOrUpdate(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            administratorName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            parameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Creates or updates a managed instance administrator.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @param parameters An Azure SQL managed instance administrator.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL managed instance administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedInstanceAdministratorInner> beginCreateOrUpdateAsync(String resourceGroupName, String managedInstanceName, ManagedInstanceAdministratorInner parameters) {
+    public Mono<ManagedInstanceAdministratorInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String managedInstanceName, ManagedInstanceAdministratorInner parameters) {
         return beginCreateOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName, parameters)
-            .flatMap((SimpleResponse<ManagedInstanceAdministratorInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<ManagedInstanceAdministratorInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Creates or updates a managed instance administrator.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @param parameters An Azure SQL managed instance administrator.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL managed instance administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedInstanceAdministratorInner beginCreateOrUpdate(String resourceGroupName, String managedInstanceName, ManagedInstanceAdministratorInner parameters) {
+    public ManagedInstanceAdministratorInner beginCreateOrUpdate(
+        String resourceGroupName, String managedInstanceName, ManagedInstanceAdministratorInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, parameters).block();
     }
 
     /**
      * Deletes a managed instance administrator.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteWithResponseAsync(String resourceGroupName, String managedInstanceName) {
         final String administratorName = "ActiveDirectory";
         final String apiVersion = "2017-03-01-preview";
-        return service.beginDelete(this.client.getHost(), resourceGroupName, managedInstanceName, administratorName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginDelete(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            administratorName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Deletes a managed instance administrator.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> beginDeleteAsync(String resourceGroupName, String managedInstanceName) {
@@ -395,9 +580,10 @@ public final class ManagedInstanceAdministratorsInner implements InnerSupportsDe
 
     /**
      * Deletes a managed instance administrator.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -409,21 +595,26 @@ public final class ManagedInstanceAdministratorsInner implements InnerSupportsDe
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink null
+     *
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of managed instance administrators.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ManagedInstanceAdministratorInner>> listByInstanceNextSinglePageAsync(String nextLink) {
-        return service.listByInstanceNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(context -> service.listByInstanceNext(nextLink, context))
+            .<PagedResponse<ManagedInstanceAdministratorInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 }

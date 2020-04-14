@@ -7,9 +7,7 @@ package com.azure.management.sql;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The AutoPauseDelayTimeRange model.
- */
+/** The AutoPauseDelayTimeRange model. */
 @Immutable
 public final class AutoPauseDelayTimeRange {
     /*
@@ -41,7 +39,7 @@ public final class AutoPauseDelayTimeRange {
      * Unit of time that delay is expressed in
      */
     @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
-    private String unit;
+    private PauseDelayTimeUnit unit;
 
     /*
      * Value that is used to not pause (infinite delay before pause)
@@ -50,15 +48,8 @@ public final class AutoPauseDelayTimeRange {
     private Integer doNotPauseValue;
 
     /**
-     * Creates an instance of AutoPauseDelayTimeRange class.
-     */
-    public AutoPauseDelayTimeRange() {
-        unit = "Minutes";
-    }
-
-    /**
      * Get the minValue property: Minimum value.
-     * 
+     *
      * @return the minValue value.
      */
     public Integer minValue() {
@@ -67,7 +58,7 @@ public final class AutoPauseDelayTimeRange {
 
     /**
      * Get the maxValue property: Maximum value.
-     * 
+     *
      * @return the maxValue value.
      */
     public Integer maxValue() {
@@ -75,9 +66,8 @@ public final class AutoPauseDelayTimeRange {
     }
 
     /**
-     * Get the stepSize property: Step value for discrete values between the
-     * minimum value and the maximum value.
-     * 
+     * Get the stepSize property: Step value for discrete values between the minimum value and the maximum value.
+     *
      * @return the stepSize value.
      */
     public Integer stepSize() {
@@ -86,7 +76,7 @@ public final class AutoPauseDelayTimeRange {
 
     /**
      * Get the defaultProperty property: Default value is no value is provided.
-     * 
+     *
      * @return the defaultProperty value.
      */
     public Integer defaultProperty() {
@@ -95,17 +85,16 @@ public final class AutoPauseDelayTimeRange {
 
     /**
      * Get the unit property: Unit of time that delay is expressed in.
-     * 
+     *
      * @return the unit value.
      */
-    public String unit() {
+    public PauseDelayTimeUnit unit() {
         return this.unit;
     }
 
     /**
-     * Get the doNotPauseValue property: Value that is used to not pause
-     * (infinite delay before pause).
-     * 
+     * Get the doNotPauseValue property: Value that is used to not pause (infinite delay before pause).
+     *
      * @return the doNotPauseValue value.
      */
     public Integer doNotPauseValue() {

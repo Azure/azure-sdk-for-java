@@ -10,20 +10,13 @@ import com.azure.management.network.models.SubnetInner;
 import com.azure.management.network.models.VirtualNetworkInner;
 import com.azure.management.network.models.VirtualNetworksInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
-
 import java.util.ArrayList;
 
-/**
- * Implementation for Networks.
- */
+/** Implementation for Networks. */
 class NetworksImpl
-        extends TopLevelModifiableResourcesImpl<
-        Network,
-        NetworkImpl,
-        VirtualNetworkInner,
-        VirtualNetworksInner,
-        NetworkManager>
-        implements Networks {
+    extends TopLevelModifiableResourcesImpl<
+        Network, NetworkImpl, VirtualNetworkInner, VirtualNetworksInner, NetworkManager>
+    implements Networks {
 
     NetworksImpl(final NetworkManager networkManager) {
         super(networkManager.inner().virtualNetworks(), networkManager);

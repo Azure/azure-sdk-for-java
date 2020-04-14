@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MSIIdentityManagementTests extends TestBase {
-    private String RG_NAME = "";
+    private String rgName = "";
     private Region region = Region.fromName("West Central US");
 
     private MSIManager msiManager;
@@ -37,16 +37,16 @@ public class MSIIdentityManagementTests extends TestBase {
 
     @Override
     protected void cleanUpResources() {
-        this.resourceManager.resourceGroups().deleteByName(RG_NAME);
+        this.resourceManager.resourceGroups().deleteByName(rgName);
     }
 
     @Test
     public void canCreateGetListDeleteIdentity() throws Exception {
-        RG_NAME = generateRandomResourceName("javaismrg", 15);
+        rgName = generateRandomResourceName("javaismrg", 15);
         String identityName = generateRandomResourceName("msi-id", 15);
 
         Creatable<ResourceGroup> creatableRG = resourceManager.resourceGroups()
-                .define(RG_NAME)
+                .define(rgName)
                 .withRegion(region);
 
         Identity identity = msiManager.identities()
@@ -58,7 +58,7 @@ public class MSIIdentityManagementTests extends TestBase {
         Assertions.assertNotNull(identity);
         Assertions.assertNotNull(identity.inner());
         Assertions.assertTrue(identityName.equalsIgnoreCase(identity.name()), String.format("%s == %s", identityName, identity.name()));
-        Assertions.assertTrue(RG_NAME.equalsIgnoreCase(identity.resourceGroupName()), String.format("%s == %s", RG_NAME, identity.resourceGroupName()));
+        Assertions.assertTrue(rgName.equalsIgnoreCase(identity.resourceGroupName()), String.format("%s == %s", rgName, identity.resourceGroupName()));
 
         Assertions.assertNotNull(identity.clientId());
         Assertions.assertNotNull(identity.principalId());
@@ -71,7 +71,7 @@ public class MSIIdentityManagementTests extends TestBase {
         Assertions.assertNotNull(identity.inner());
 
         PagedIterable<Identity> identities = msiManager.identities()
-                .listByResourceGroup(RG_NAME);
+                .listByResourceGroup(rgName);
 
         Assertions.assertNotNull(identities);
 
@@ -96,11 +96,11 @@ public class MSIIdentityManagementTests extends TestBase {
 
     @Test
     public void canAssignCurrentResourceGroupAccessRoleToIdentity() throws Exception {
-        RG_NAME = generateRandomResourceName("javaismrg", 15);
+        rgName = generateRandomResourceName("javaismrg", 15);
         String identityName = generateRandomResourceName("msi-id", 15);
 
         Creatable<ResourceGroup> creatableRG = resourceManager.resourceGroups()
-                .define(RG_NAME)
+                .define(rgName)
                 .withRegion(region);
 
         Identity identity = msiManager.identities()
@@ -148,7 +148,7 @@ public class MSIIdentityManagementTests extends TestBase {
 
     @Test
     public void canAssignRolesToIdentity() throws Exception {
-        RG_NAME = generateRandomResourceName("javaismrg", 15);
+        rgName = generateRandomResourceName("javaismrg", 15);
         String identityName = generateRandomResourceName("msi-id", 15);
 
         String anotherRgName = generateRandomResourceName("rg", 15);
@@ -159,7 +159,7 @@ public class MSIIdentityManagementTests extends TestBase {
                 .create();
 
         Creatable<ResourceGroup> creatableRG = resourceManager.resourceGroups()
-                .define(RG_NAME)
+                .define(rgName)
                 .withRegion(region);
 
         final List<Indexable> createdResosurces = new ArrayList<Indexable>();

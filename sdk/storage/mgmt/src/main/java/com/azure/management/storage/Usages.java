@@ -11,12 +11,7 @@ import com.azure.management.storage.implementation.StorageManager;
 import com.azure.management.storage.models.UsageInner;
 import com.azure.management.storage.models.UsagesInner;
 
-
-/**
- * Entry point for storage resource usage management API.
- */
+/** Entry point for storage resource usage management API. */
 @Fluent
-public interface Usages extends SupportsListing<UsageInner>,
-        HasInner<UsagesInner>,
-        HasManager<StorageManager> {
+public interface Usages extends SupportsListing<UsageInner>, HasInner<UsagesInner>, HasManager<StorageManager> {
 }

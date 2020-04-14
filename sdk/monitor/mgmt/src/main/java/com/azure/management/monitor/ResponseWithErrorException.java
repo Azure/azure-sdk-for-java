@@ -7,13 +7,11 @@ package com.azure.management.monitor;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 
-/**
- * Exception thrown for an invalid response with ResponseWithError information.
- */
+/** Exception thrown for an invalid response with ResponseWithError information. */
 public final class ResponseWithErrorException extends HttpResponseException {
     /**
      * Initializes a new instance of the ResponseWithErrorException class.
-     * 
+     *
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      */
@@ -23,7 +21,7 @@ public final class ResponseWithErrorException extends HttpResponseException {
 
     /**
      * Initializes a new instance of the ResponseWithErrorException class.
-     * 
+     *
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      * @param value the deserialized response value.

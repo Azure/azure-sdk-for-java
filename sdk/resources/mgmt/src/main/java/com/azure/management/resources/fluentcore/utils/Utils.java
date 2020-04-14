@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.AzureTokenCredential;
 import com.azure.management.RestClient;
 import com.azure.management.resources.fluentcore.arm.ResourceId;
@@ -211,7 +212,9 @@ public final class Utils {
                 }
             }
             if (environment == null) {
-                throw new IllegalArgumentException("Unknown resource manager endpoint " + baseUrl);
+                ClientLogger logger = new ClientLogger(Utils.class);
+                throw logger.logExceptionAsError(
+                    new IllegalArgumentException("Unknown resource manager endpoint " + baseUrl));
             }
         }
         return environment;

@@ -11,20 +11,18 @@ import com.azure.management.network.ExpressRoutePeeringType;
 import com.azure.management.network.models.ExpressRouteCrossConnectionPeeringInner;
 import com.azure.management.network.models.ExpressRouteCrossConnectionPeeringsInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.IndependentChildrenImpl;
-import com.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import reactor.core.publisher.Mono;
 
-/**
- * Represents Express Route Cross Connection Peerings collection associated with Network Watcher.
- */
-class ExpressRouteCrossConnectionPeeringsImpl extends IndependentChildrenImpl<
+/** Represents Express Route Cross Connection Peerings collection associated with Network Watcher. */
+class ExpressRouteCrossConnectionPeeringsImpl
+    extends IndependentChildrenImpl<
         ExpressRouteCrossConnectionPeering,
         ExpressRouteCrossConnectionPeeringImpl,
         ExpressRouteCrossConnectionPeeringInner,
         ExpressRouteCrossConnectionPeeringsInner,
         NetworkManager,
         ExpressRouteCrossConnection>
-        implements ExpressRouteCrossConnectionPeerings {
+    implements ExpressRouteCrossConnectionPeerings {
     private final ExpressRouteCrossConnectionImpl parent;
 
     /**
@@ -42,9 +40,7 @@ class ExpressRouteCrossConnectionPeeringsImpl extends IndependentChildrenImpl<
         return wrapList(inner().list(parent.resourceGroupName(), parent.name()));
     }
 
-    /**
-     * @return an observable emits packet captures in this collection
-     */
+    /** @return an observable emits packet captures in this collection */
     @Override
     public PagedFlux<ExpressRouteCrossConnectionPeering> listAsync() {
         return wrapPageAsync(inner().listAsync(parent.resourceGroupName(), parent.name()));
@@ -52,7 +48,8 @@ class ExpressRouteCrossConnectionPeeringsImpl extends IndependentChildrenImpl<
 
     @Override
     protected ExpressRouteCrossConnectionPeeringImpl wrapModel(String name) {
-        return new ExpressRouteCrossConnectionPeeringImpl(parent, new ExpressRouteCrossConnectionPeeringInner(), ExpressRoutePeeringType.fromString(name));
+        return new ExpressRouteCrossConnectionPeeringImpl(
+            parent, new ExpressRouteCrossConnectionPeeringInner(), ExpressRoutePeeringType.fromString(name));
     }
 
     protected ExpressRouteCrossConnectionPeeringImpl wrapModel(ExpressRouteCrossConnectionPeeringInner inner) {
@@ -61,18 +58,19 @@ class ExpressRouteCrossConnectionPeeringsImpl extends IndependentChildrenImpl<
 
     @Override
     public ExpressRouteCrossConnectionPeeringImpl defineAzurePrivatePeering() {
-        return new ExpressRouteCrossConnectionPeeringImpl(parent, new ExpressRouteCrossConnectionPeeringInner(), ExpressRoutePeeringType.AZURE_PRIVATE_PEERING);
+        return new ExpressRouteCrossConnectionPeeringImpl(
+            parent, new ExpressRouteCrossConnectionPeeringInner(), ExpressRoutePeeringType.AZURE_PRIVATE_PEERING);
     }
 
     @Override
     public ExpressRouteCrossConnectionPeeringImpl defineMicrosoftPeering() {
-        return new ExpressRouteCrossConnectionPeeringImpl(parent, new ExpressRouteCrossConnectionPeeringInner(), ExpressRoutePeeringType.MICROSOFT_PEERING);
+        return new ExpressRouteCrossConnectionPeeringImpl(
+            parent, new ExpressRouteCrossConnectionPeeringInner(), ExpressRoutePeeringType.MICROSOFT_PEERING);
     }
 
     @Override
     public Mono<ExpressRouteCrossConnectionPeering> getByNameAsync(String name) {
-        return inner().getAsync(parent.resourceGroupName(), parent.name(), name)
-                .map(inner -> wrapModel(inner));
+        return inner().getAsync(parent.resourceGroupName(), parent.name(), name).map(inner -> wrapModel(inner));
     }
 
     @Override
@@ -97,16 +95,20 @@ class ExpressRouteCrossConnectionPeeringsImpl extends IndependentChildrenImpl<
 
     @Override
     public Mono<Void> deleteByParentAsync(String groupName, String parentName, String name) {
-        return this.inner().deleteAsync(groupName, parentName, name)
-                .doOnSuccess(result -> {
+        return this
+            .inner()
+            .deleteAsync(groupName, parentName, name)
+            .doOnSuccess(
+                result -> {
                     parent.refresh();
-                }).then();
+                })
+            .then();
     }
 
     @Override
-    public Mono<ExpressRouteCrossConnectionPeering> getByParentAsync(String resourceGroup, String parentName, String name) {
-        return inner().getAsync(resourceGroup, parentName, name)
-                .map(inner -> wrapModel(inner));
+    public Mono<ExpressRouteCrossConnectionPeering> getByParentAsync(
+        String resourceGroup, String parentName, String name) {
+        return inner().getAsync(resourceGroup, parentName, name).map(inner -> wrapModel(inner));
     }
 
     @Override

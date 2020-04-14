@@ -27,7 +27,8 @@ public interface Providers extends
      * Unregisters provider from a subscription asynchronously.
      *
      * @param resourceProviderNamespace Namespace of the resource provider
-     * @return a representation of the deferred computation of this call returning the unregistered Provider if successful
+     * @return a representation of the deferred computation of this call
+     *         returning the unregistered Provider if successful
      */
     Mono<Provider> unregisterAsync(String resourceProviderNamespace);
 

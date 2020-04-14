@@ -7,9 +7,7 @@ package com.azure.management.sql;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The JobExecutionTarget model.
- */
+/** The JobExecutionTarget model. */
 @Immutable
 public final class JobExecutionTarget {
     /*
@@ -32,7 +30,7 @@ public final class JobExecutionTarget {
 
     /**
      * Get the type property: The type of the target.
-     * 
+     *
      * @return the type value.
      */
     public JobTargetType type() {
@@ -41,7 +39,7 @@ public final class JobExecutionTarget {
 
     /**
      * Get the serverName property: The server name.
-     * 
+     *
      * @return the serverName value.
      */
     public String serverName() {
@@ -50,7 +48,7 @@ public final class JobExecutionTarget {
 
     /**
      * Get the databaseName property: The database name.
-     * 
+     *
      * @return the databaseName value.
      */
     public String databaseName() {

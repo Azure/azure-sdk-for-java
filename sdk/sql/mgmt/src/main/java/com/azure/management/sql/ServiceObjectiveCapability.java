@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * The ServiceObjectiveCapability model.
- */
+/** The ServiceObjectiveCapability model. */
 @Fluent
 public final class ServiceObjectiveCapability {
     /*
@@ -94,7 +92,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Get the id property: The unique ID of the service objective.
-     * 
+     *
      * @return the id value.
      */
     public UUID getId() {
@@ -103,7 +101,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Get the name property: The service objective name.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -111,9 +109,8 @@ public final class ServiceObjectiveCapability {
     }
 
     /**
-     * Get the supportedMaxSizes property: The list of supported maximum
-     * database sizes.
-     * 
+     * Get the supportedMaxSizes property: The list of supported maximum database sizes.
+     *
      * @return the supportedMaxSizes value.
      */
     public List<MaxSizeRangeCapability> supportedMaxSizes() {
@@ -122,7 +119,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Get the performanceLevel property: The performance level.
-     * 
+     *
      * @return the performanceLevel value.
      */
     public PerformanceLevelCapability performanceLevel() {
@@ -131,7 +128,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Get the sku property: The sku.
-     * 
+     *
      * @return the sku value.
      */
     public Sku sku() {
@@ -140,7 +137,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Get the supportedLicenseTypes property: List of supported license types.
-     * 
+     *
      * @return the supportedLicenseTypes value.
      */
     public List<LicenseTypeCapability> supportedLicenseTypes() {
@@ -149,7 +146,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Get the includedMaxSize property: The included (free) max size.
-     * 
+     *
      * @return the includedMaxSize value.
      */
     public MaxSizeCapability includedMaxSize() {
@@ -157,9 +154,8 @@ public final class ServiceObjectiveCapability {
     }
 
     /**
-     * Get the zoneRedundant property: Whether or not zone redundancy is
-     * supported for the service objective.
-     * 
+     * Get the zoneRedundant property: Whether or not zone redundancy is supported for the service objective.
+     *
      * @return the zoneRedundant value.
      */
     public Boolean zoneRedundant() {
@@ -167,9 +163,8 @@ public final class ServiceObjectiveCapability {
     }
 
     /**
-     * Get the supportedAutoPauseDelay property: Supported time range for auto
-     * pause delay.
-     * 
+     * Get the supportedAutoPauseDelay property: Supported time range for auto pause delay.
+     *
      * @return the supportedAutoPauseDelay value.
      */
     public AutoPauseDelayTimeRange supportedAutoPauseDelay() {
@@ -177,9 +172,8 @@ public final class ServiceObjectiveCapability {
     }
 
     /**
-     * Get the supportedMinCapacities property: List of supported min
-     * capacities.
-     * 
+     * Get the supportedMinCapacities property: List of supported min capacities.
+     *
      * @return the supportedMinCapacities value.
      */
     public List<MinCapacityCapability> supportedMinCapacities() {
@@ -188,7 +182,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Get the computeModel property: The compute model.
-     * 
+     *
      * @return the computeModel value.
      */
     public String computeModel() {
@@ -197,7 +191,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Get the status property: The status of the capability.
-     * 
+     *
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -205,9 +199,8 @@ public final class ServiceObjectiveCapability {
     }
 
     /**
-     * Get the reason property: The reason for the capability not being
-     * available.
-     * 
+     * Get the reason property: The reason for the capability not being available.
+     *
      * @return the reason value.
      */
     public String reason() {
@@ -215,9 +208,8 @@ public final class ServiceObjectiveCapability {
     }
 
     /**
-     * Set the reason property: The reason for the capability not being
-     * available.
-     * 
+     * Set the reason property: The reason for the capability not being available.
+     *
      * @param reason the reason value to set.
      * @return the ServiceObjectiveCapability object itself.
      */

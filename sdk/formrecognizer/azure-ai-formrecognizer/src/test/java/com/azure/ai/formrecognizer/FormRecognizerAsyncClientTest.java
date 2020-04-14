@@ -7,6 +7,7 @@ import com.azure.ai.formrecognizer.models.ExtractedReceipt;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.AfterAll;
@@ -91,5 +92,29 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         receiptInvalidSourceUrlRunner((sourceUrl) -> {
             assertThrows(HttpResponseException.class, () -> client.beginExtractReceiptsFromUrl(sourceUrl).getSyncPoller());
         });
+    }
+
+    /**
+     * Test for listing all models information.
+     */
+    @Test
+    void listModels() {
+        StepVerifier.create(client.listModels())
+            .thenConsumeWhile(customFormModelInfo ->
+                customFormModelInfo.getModelId() != null && customFormModelInfo.getCreatedOn() != null
+                && customFormModelInfo.getLastUpdatedOn() != null && customFormModelInfo.getStatus() != null)
+            .verifyComplete();
+    }
+
+    /**
+     * Test for listing all models information with {@link Context}.
+     */
+    @Test
+    void listModelsWithContext() {
+        StepVerifier.create(client.listModels(Context.NONE))
+            .thenConsumeWhile(modelInfo ->
+                modelInfo.getModelId() != null && modelInfo.getCreatedOn() != null
+                    && modelInfo.getLastUpdatedOn() != null && modelInfo.getStatus() != null)
+            .verifyComplete();
     }
 }
