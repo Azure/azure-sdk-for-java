@@ -23,7 +23,7 @@ public class ServiceBusMultiSessionProcessorSample {
             .processError(serviceBusErrorContext -> myMessageProcessor.onError(serviceBusErrorContext))
             .receiveMode(ReceiveMode.PEEK_LOCK)
             .queueName("<<queue-name>>")
-            .buildMultiSessionProcessorClient();
+            .build();
 
         System.out.println("Starting message processor");
         multiSessionProcessorClient.start();

@@ -7,6 +7,10 @@ import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
 
+/***
+ *  This will support one named session or one next available session. If there is no available session, the publisher
+ *  will terminate with error.
+ */
 public class ServiceBusSessionReceiverClient extends ServiceBusReceiverClient{
     /**
      * Creates a synchronous receiver given its asynchronous counterpart.

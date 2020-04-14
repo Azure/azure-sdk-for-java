@@ -8,19 +8,25 @@ import java.util.Objects;
 public class ServiceBusErrorContext {
     private final Throwable throwable;
 
-    String fullyQualifiedNamespace;
+    private final String fullyQualifiedNamespace;
 
-    String entityPath;
+    private final String entityPath;
 
     /**
-     * Creates a new instance of ErServiceBusErrorContextrorContext.
+     * Creates a new instance of {@link ServiceBusErrorContext}.
      *
      * @param throwable The {@link Throwable error} that occurred.
-     * @throws NullPointerException if {@code throwable} is {@code null}.
+     * @param fullyQualifiedNamespace for the Service Bus.
+     * @param entityPath of the Service Bus resource.
+     *
+     * @throws NullPointerException if {@code throwable},{@code fullyQualifiedNamespace} or {@code entityPath}
+     * is {@code null}.
      */
-    public ServiceBusErrorContext(final Throwable throwable, final String fullyQualifiedNamespace,
+    ServiceBusErrorContext(final Throwable throwable, final String fullyQualifiedNamespace,
         final String entityPath) {
         this.throwable = Objects.requireNonNull(throwable, "'throwable' cannot be null");
+        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null");
+        this.entityPath = Objects.requireNonNull(entityPath, "'throwentityPathable' cannot be null");
     }
 
     public String getFullyQualifiedNamespace() {

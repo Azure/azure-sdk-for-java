@@ -484,7 +484,7 @@ public final class ServiceBusClientBuilder {
          * Return instance of {@link ServiceBusMultiSessionProcessorClientBuilder} to receive messages from multiple sessions.
          * @return {@link ServiceBusMultiSessionProcessorClient} instance.
          */
-        public ServiceBusMultiSessionProcessorClient buildMultiSessionProcessorClient() {
+        public ServiceBusMultiSessionProcessorClient build() {
             return new ServiceBusMultiSessionProcessorClient(receiveMode);
         }
 
@@ -539,13 +539,14 @@ public final class ServiceBusClientBuilder {
 
         /**
          * The function that is called for each message received by this {@link ServiceBusMultiSessionProcessorClient}.
-         * The input contains the {@link ServiceBusReceivedMessage} and {@lnk SessionManager}.
+         * The input contains the {@link ServiceBusReceivedMessage} and {@link SessionMessageManager}.
          *
          * @param processMessage The callback that's called when a message is received by this {@link ServiceBusMultiSessionProcessorClient}.
          * @return The updated {@link ServiceBusMultiSessionProcessorClientBuilder} instance.
-         * @throws NullPointerException if {@code processEvent} is {@code null}.
+         * @throws NullPointerException if {@code processMessage} is {@code null}.
          */
-        public ServiceBusMultiSessionProcessorClientBuilder processMessage(BiConsumer<ServiceBusReceivedMessage, SessionMessageManager> processMessage) {
+        public ServiceBusMultiSessionProcessorClientBuilder processMessage(BiConsumer<ServiceBusReceivedMessage,
+            SessionMessageManager> processMessage) {
             this.processMessage = Objects.requireNonNull(processMessage, "'processMessage' cannot be null");
             return this;
         }

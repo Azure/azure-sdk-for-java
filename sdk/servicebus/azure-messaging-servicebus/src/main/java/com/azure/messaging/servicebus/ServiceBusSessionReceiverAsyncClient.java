@@ -15,8 +15,8 @@ import java.nio.ByteBuffer;
 import java.time.Instant;
 
 /***
- *  This will support one named session of one next available session. If there is no available session, the publisher
- *  will terminate with error..
+ *  This will support one named session or one next available session. If there is no available session, the publisher
+ *  will terminate with error.
  */
 public class ServiceBusSessionReceiverAsyncClient extends ServiceBusReceiverAsyncClient {
     /**
