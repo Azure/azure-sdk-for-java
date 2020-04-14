@@ -17,16 +17,17 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-//import com.azure.cosmos.internal.changefeed.internal.Constants;
-
 /**
  * Document service lease.
  */
 @JsonSerialize(using = ServiceItemLease.ServiceItemLeaseJsonSerializer.class)
 public class ServiceItemLease implements Lease {
     private static final ZonedDateTime UNIX_START_TIME = ZonedDateTime.parse("1970-01-01T00:00:00.0Z[UTC]");
+    private static final String PROPERTY_NAME_LEASE_TOKEN = "LeaseToken";
+    private static final String PROPERTY_NAME_CONTINUATION_TOKEN = "ContinuationToken";
+    private static final String PROPERTY_NAME_TIMESTAMP = "timestamp";
+    private static final String PROPERTY_NAME_OWNER = "Owner";
 
-    // TODO: add JSON annotations and rename the item.
     private String id;
     private String _etag;
     private String LeaseToken;
@@ -182,12 +183,10 @@ public class ServiceItemLease implements Lease {
         return this;
     }
 
-//    @JsonIgnore
     public String getExplicitTimestamp() {
         return this.timestamp;
     }
 
-//    @JsonIgnore
     @Override
     public String getConcurrencyToken() {
         return this.getETag();
@@ -198,11 +197,11 @@ public class ServiceItemLease implements Lease {
             .withId(document.getId())
             .withETag(document.getETag())
             .withTs(ModelBridgeInternal.getStringFromJsonSerializable(document, Constants.Properties.LAST_MODIFIED))
-            .withOwner(ModelBridgeInternal.getStringFromJsonSerializable(document,"Owner"))
-            .withLeaseToken(ModelBridgeInternal.getStringFromJsonSerializable(document,"LeaseToken"))
-            .withContinuationToken(ModelBridgeInternal.getStringFromJsonSerializable(document,"ContinuationToken"));
+            .withOwner(ModelBridgeInternal.getStringFromJsonSerializable(document,PROPERTY_NAME_OWNER))
+            .withLeaseToken(ModelBridgeInternal.getStringFromJsonSerializable(document,PROPERTY_NAME_LEASE_TOKEN))
+            .withContinuationToken(ModelBridgeInternal.getStringFromJsonSerializable(document,PROPERTY_NAME_CONTINUATION_TOKEN));
 
-        String leaseTimestamp = ModelBridgeInternal.getStringFromJsonSerializable(document,"timestamp");
+        String leaseTimestamp = ModelBridgeInternal.getStringFromJsonSerializable(document,PROPERTY_NAME_TIMESTAMP);
         if (leaseTimestamp != null) {
             return lease.withTimestamp(ZonedDateTime.parse(leaseTimestamp));
         } else {
@@ -253,10 +252,10 @@ public class ServiceItemLease implements Lease {
                 writer.writeStartObject();
                 writer.writeStringField(Constants.Properties.ID, lease.getId());
                 writer.writeStringField(Constants.Properties.E_TAG, lease.getETag());
-                writer.writeStringField("LeaseToken", lease.getLeaseToken());
-                writer.writeStringField("ContinuationToken", lease.getContinuationToken());
-                writer.writeStringField("timestamp", lease.getTimestamp());
-                writer.writeStringField("Owner", lease.getOwner());
+                writer.writeStringField(PROPERTY_NAME_LEASE_TOKEN, lease.getLeaseToken());
+                writer.writeStringField(PROPERTY_NAME_CONTINUATION_TOKEN, lease.getContinuationToken());
+                writer.writeStringField(PROPERTY_NAME_TIMESTAMP, lease.getTimestamp());
+                writer.writeStringField(PROPERTY_NAME_OWNER, lease.getOwner());
                 writer.writeEndObject();
             } catch (IOException e) {
                 throw new IllegalStateException(e);

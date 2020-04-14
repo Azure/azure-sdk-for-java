@@ -5,6 +5,7 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
@@ -38,6 +39,7 @@ import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -261,7 +263,8 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                     createdLeaseCollection.queryItems(querySpec, feedOptions, CosmosItemProperties.class).byPage()
                         .flatMap(documentFeedResponse -> reactor.core.publisher.Flux.fromIterable(documentFeedResponse.getResults()))
                         .flatMap(doc -> {
-                            BridgeInternal.setProperty(doc, "Owner", "TEMP_OWNER");
+                            ServiceItemLease leaseDocument = ServiceItemLease.fromDocument(doc);
+                            leaseDocument.setOwner("TEMP_OWNER");
                             CosmosItemRequestOptions options = new CosmosItemRequestOptions();
                             return createdLeaseCollection.replaceItem(doc, doc.getId(), new PartitionKey(doc.getId()), options)
                                 .map(itemResponse -> BridgeInternal.getProperties(itemResponse));
@@ -422,6 +425,46 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
             log.error(e.getMessage());
         }
         receivedDocuments.clear();
+    }
+
+    @Test(groups = { "simple" }, timeOut = CHANGE_FEED_PROCESSOR_TIMEOUT)
+    public void testServiceItemLeaseSerialization() {
+        ZonedDateTime timeNow = ZonedDateTime.now();
+        String timeNowValue = timeNow.toString();
+
+        Lease lease1 = new ServiceItemLease()
+            .withId("id1")
+            .withLeaseToken("1")
+            .withETag("etag1")
+            .withOwner("Owner1")
+            .withContinuationToken("12")
+            .withTimestamp(timeNow)
+            .withTs("122311231");
+
+        Lease lease2 = new ServiceItemLease()
+            .withId("id2")
+            .withLeaseToken("2")
+            .withETag("etag2")
+            .withContinuationToken("22")
+            .withTimestamp(timeNow)
+            .withTs("122311232");
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            assertThat(mapper.writeValueAsString(lease1)).isEqualTo(
+                String.format("%s%s%s",
+                    "{\"id\":\"id1\",\"_etag\":\"etag1\",\"LeaseToken\":\"1\",\"ContinuationToken\":\"12\",\"timestamp\":\"",
+                    timeNowValue,
+                    "\",\"Owner\":\"Owner1\"}"));
+            assertThat(mapper.writeValueAsString(lease2)).isEqualTo(
+                String.format("%s%s%s",
+                    "{\"id\":\"id2\",\"_etag\":\"etag2\",\"LeaseToken\":\"2\",\"ContinuationToken\":\"22\",\"timestamp\":\"",
+                    timeNowValue,
+                    "\",\"Owner\":null}"));
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     private Consumer<List<JsonNode>> changeFeedProcessorHandler() {
