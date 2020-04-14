@@ -7,18 +7,18 @@
       "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 07 Apr 2020 23:40:54 GMT",
+      "date" : "Tue, 14 Apr 2020 18:32:40 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "transfer-encoding" : "chunked",
       "dataserviceid" : "https://sdktest2.westcentralus.batch.azure.com/jobs/job-1",
       "retry-after" : "0",
-      "request-id" : "4147edf4-11d9-4df8-838a-7f61c28dc6a3",
+      "request-id" : "b94226da-7fa3-4deb-be12-7ed5220c6f88",
       "StatusCode" : "201",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Tue, 07 Apr 2020 23:40:54 GMT",
+      "last-modified" : "Tue, 14 Apr 2020 18:32:40 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "a07b89ae-22d4-4913-9fb8-f210c62e3640",
-      "etag" : "0x8D7DB4D1D6A7388",
+      "client-request-id" : "437be04a-f514-4977-a97d-1376ebeb2936",
+      "etag" : "0x8D7E0A23688F92F",
       "location" : "https://sdktest2.westcentralus.batch.azure.com/jobs/job-1",
       "dataserviceversion" : "3.0",
       "Body" : ""
@@ -31,18 +31,18 @@
       "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 07 Apr 2020 23:40:57 GMT",
+      "date" : "Tue, 14 Apr 2020 18:32:40 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "transfer-encoding" : "chunked",
       "dataserviceid" : "https://sdktest2.westcentralus.batch.azure.com/jobs/BatchUser-Job-canReadFromTaskFile/tasks/mytask",
       "retry-after" : "0",
-      "request-id" : "ab2167c6-a9bb-47e5-add5-db7bb237ce3f",
+      "request-id" : "2c5048a6-3d65-4e7c-b612-5fc07e7f040c",
       "StatusCode" : "201",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Tue, 07 Apr 2020 23:40:57 GMT",
+      "last-modified" : "Tue, 14 Apr 2020 18:32:40 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "d7db8129-b54e-45cf-aeee-57cf9621bd8d",
-      "etag" : "0x8D7DB4D1F1B4E2A",
+      "client-request-id" : "423189d7-48ce-441a-9537-05ae5d907198",
+      "etag" : "0x8D7E0A2369B0DE7",
       "location" : "https://sdktest2.westcentralus.batch.azure.com/jobs/BatchUser-Job-canReadFromTaskFile/tasks/mytask",
       "dataserviceversion" : "3.0",
       "Body" : ""
@@ -55,14 +55,14 @@
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 07 Apr 2020 23:40:59 GMT",
+      "date" : "Tue, 14 Apr 2020 18:32:40 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "transfer-encoding" : "chunked",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "9e3be6f0-4615-444c-9b1b-c470670817ee",
+      "client-request-id" : "2d0fa7f9-32a2-44e0-b9be-8203dc772d5e",
       "content-type" : "application/json;odata=minimalmetadata",
       "retry-after" : "0",
-      "request-id" : "588b3f3e-f547-4150-9d5a-b8e1bc061f46",
+      "request-id" : "5841a9b3-16ed-41d5-b51b-102f82004e9d",
       "StatusCode" : "200",
       "dataserviceversion" : "3.0",
       "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest2.westcentralus.batch.azure.com/$metadata#tasks\",\"value\":[\r\n    {\r\n      \"id\":\"mytask\",\"state\":\"active\"\r\n    }\r\n  ]\r\n}",
@@ -76,14 +76,14 @@
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 07 Apr 2020 23:41:16 GMT",
+      "date" : "Tue, 14 Apr 2020 18:32:50 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "transfer-encoding" : "chunked",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "5e41374f-2900-4bfe-bbd7-313802922c95",
+      "client-request-id" : "6e91ddd9-1a94-4686-84ea-d3a9a08ab095",
       "content-type" : "application/json;odata=minimalmetadata",
       "retry-after" : "0",
-      "request-id" : "5a26dee8-e3f0-4fad-98e0-efabdf71bb74",
+      "request-id" : "fc802d96-6ad3-403a-a0c0-7644db0224e0",
       "StatusCode" : "200",
       "dataserviceversion" : "3.0",
       "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest2.westcentralus.batch.azure.com/$metadata#tasks\",\"value\":[\r\n    {\r\n      \"id\":\"mytask\",\"state\":\"completed\"\r\n    }\r\n  ]\r\n}",
@@ -97,17 +97,17 @@
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 07 Apr 2020 23:41:18 GMT",
+      "date" : "Tue, 14 Apr 2020 18:32:50 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "transfer-encoding" : "chunked",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "65571121-f7b1-4cb0-82c1-7c3b0ebfc608",
+      "client-request-id" : "994fcf8b-1afb-4725-b4c0-3b22213c4305",
       "content-type" : "application/json;odata=minimalmetadata",
       "retry-after" : "0",
-      "request-id" : "23dbc2c8-96a9-47eb-aebf-1ed164293e12",
+      "request-id" : "92307448-c52b-4b8b-aca9-7dc6f05565ab",
       "StatusCode" : "200",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest2.westcentralus.batch.azure.com/$metadata#files\",\"value\":[\r\n    {\r\n      \"name\":\"stderr.txt\",\"url\":\"https://sdktest2.westcentralus.batch.azure.com/jobs/BatchUser-Job-canReadFromTaskFile/tasks/mytask/files/stderr.txt\",\"isDirectory\":false,\"properties\":{\r\n        \"creationTime\":\"2020-04-07T23:41:00.328363Z\",\"lastModified\":\"2020-04-07T23:41:00.328363Z\",\"contentLength\":\"0\",\"contentType\":\"text/plain\"\r\n      }\r\n    },{\r\n      \"name\":\"stdout.txt\",\"url\":\"https://sdktest2.westcentralus.batch.azure.com/jobs/BatchUser-Job-canReadFromTaskFile/tasks/mytask/files/stdout.txt\",\"isDirectory\":false,\"properties\":{\r\n        \"creationTime\":\"2020-04-07T23:41:00.328363Z\",\"lastModified\":\"2020-04-07T23:41:00.580824Z\",\"contentLength\":\"7\",\"contentType\":\"text/plain\"\r\n      }\r\n    },{\r\n      \"name\":\"wd\",\"url\":\"https://sdktest2.westcentralus.batch.azure.com/jobs/BatchUser-Job-canReadFromTaskFile/tasks/mytask/files/wd\",\"isDirectory\":true\r\n    }\r\n  ]\r\n}",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest2.westcentralus.batch.azure.com/$metadata#files\",\"value\":[\r\n    {\r\n      \"name\":\"stdout.txt\",\"url\":\"https://sdktest2.westcentralus.batch.azure.com/jobs/BatchUser-Job-canReadFromTaskFile/tasks/mytask/files/stdout.txt\",\"isDirectory\":false,\"properties\":{\r\n        \"lastModified\":\"2020-04-14T18:32:41.125653Z\",\"contentLength\":\"6\",\"contentType\":\"text/plain\",\"fileMode\":\"0o100644\"\r\n      }\r\n    },{\r\n      \"name\":\"certs\",\"url\":\"https://sdktest2.westcentralus.batch.azure.com/jobs/BatchUser-Job-canReadFromTaskFile/tasks/mytask/files/certs\",\"isDirectory\":true\r\n    },{\r\n      \"name\":\"wd\",\"url\":\"https://sdktest2.westcentralus.batch.azure.com/jobs/BatchUser-Job-canReadFromTaskFile/tasks/mytask/files/wd\",\"isDirectory\":true\r\n    },{\r\n      \"name\":\"stderr.txt\",\"url\":\"https://sdktest2.westcentralus.batch.azure.com/jobs/BatchUser-Job-canReadFromTaskFile/tasks/mytask/files/stderr.txt\",\"isDirectory\":false,\"properties\":{\r\n        \"lastModified\":\"2020-04-14T18:32:41.105652Z\",\"contentLength\":\"0\",\"contentType\":\"text/plain\",\"fileMode\":\"0o100644\"\r\n      }\r\n    }\r\n  ]\r\n}",
       "strict-transport-security" : "max-age=31536000; includeSubDomains"
     }
   }, {
@@ -118,22 +118,22 @@
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 07 Apr 2020 23:41:22 GMT",
+      "date" : "Tue, 14 Apr 2020 18:32:50 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
+      "ocp-batch-file-mode" : "0o100644",
       "transfer-encoding" : "chunked",
       "ocp-batch-file-isdirectory" : "False",
       "ocp-batch-file-url" : "https%3A%2F%2Fsdktest2.westcentralus.batch.azure.com%2Fjobs%2FBatchUser-Job-canReadFromTaskFile%2Ftasks%2Fmytask%2Ffiles%2Fstdout.txt",
       "retry-after" : "0",
-      "request-id" : "0b4e113b-8c44-4d83-8b05-de3dac872449",
+      "request-id" : "58631802-118c-4a99-b09a-2b587b310f43",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Tue, 07 Apr 2020 23:41:00 GMT",
+      "last-modified" : "Tue, 14 Apr 2020 18:32:41 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "69a806d8-955c-426c-aff3-190a84b457be",
+      "client-request-id" : "26bc7143-cfbe-425b-94dd-81843b53f36b",
       "content-type" : "text/plain",
       "dataserviceversion" : "3.0",
-      "ocp-creation-time" : "Tue, 07 Apr 2020 23:41:00 GMT",
-      "Body" : "hello\r\n"
+      "Body" : "hello\n"
     }
   }, {
     "Method" : "GET",
@@ -143,21 +143,21 @@
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 07 Apr 2020 23:41:26 GMT",
+      "date" : "Tue, 14 Apr 2020 18:32:50 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
+      "ocp-batch-file-mode" : "0o100644",
       "transfer-encoding" : "chunked",
       "ocp-batch-file-isdirectory" : "False",
       "ocp-batch-file-url" : "https%3A%2F%2Fsdktest2.westcentralus.batch.azure.com%2Fjobs%2FBatchUser-Job-canReadFromTaskFile%2Ftasks%2Fmytask%2Ffiles%2Fstdout.txt",
       "retry-after" : "0",
-      "request-id" : "dcf9528d-670b-4f3a-bd9c-7e08f26b0a68",
+      "request-id" : "7464cddf-e2d8-4dcc-b874-f99739ad082c",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Tue, 07 Apr 2020 23:41:00 GMT",
+      "last-modified" : "Tue, 14 Apr 2020 18:32:41 GMT",
       "x-content-type-options" : "nosniff",
       "content-type" : "text/plain",
       "dataserviceversion" : "3.0",
-      "ocp-creation-time" : "Tue, 07 Apr 2020 23:41:00 GMT",
-      "Body" : "hello\r\n"
+      "Body" : "hello\n"
     }
   }, {
     "Method" : "HEAD",
@@ -167,21 +167,21 @@
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 07 Apr 2020 23:41:28 GMT",
-      "content-length" : "7",
+      "date" : "Tue, 14 Apr 2020 18:32:50 GMT",
+      "content-length" : "6",
       "server" : "Microsoft-HTTPAPI/2.0",
+      "ocp-batch-file-mode" : "0o100644",
       "ocp-batch-file-isdirectory" : "False",
       "ocp-batch-file-url" : "https%3A%2F%2Fsdktest2.westcentralus.batch.azure.com%2Fjobs%2FBatchUser-Job-canReadFromTaskFile%2Ftasks%2Fmytask%2Ffiles%2Fstdout.txt",
       "retry-after" : "0",
-      "request-id" : "d7f292e7-93e5-40c5-a11c-9fb02802e16f",
+      "request-id" : "0a0e07f1-d5b8-4cd8-a9dd-eeb148a036b3",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Tue, 07 Apr 2020 23:41:00 GMT",
+      "last-modified" : "Tue, 14 Apr 2020 18:32:41 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "d23b8032-c942-48b3-94ce-b530af9e7552",
+      "client-request-id" : "77b7b358-575a-4bed-bf3b-86850847e6b2",
       "content-type" : "text/plain",
       "dataserviceversion" : "3.0",
-      "ocp-creation-time" : "Tue, 07 Apr 2020 23:41:00 GMT",
       "Body" : ""
     }
   }, {
@@ -192,13 +192,13 @@
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 07 Apr 2020 23:41:30 GMT",
+      "date" : "Tue, 14 Apr 2020 18:32:50 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "transfer-encoding" : "chunked",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "b41f2288-92fe-4f70-a683-10ca0d1520a8",
+      "client-request-id" : "42ee941d-06e3-4d72-8416-87452b294b08",
       "retry-after" : "0",
-      "request-id" : "cd7fef27-8b9a-40e7-9bcd-f1d631234c4a",
+      "request-id" : "74a13a1b-7371-4ba7-905c-696726b27080",
       "StatusCode" : "202",
       "dataserviceversion" : "3.0",
       "Body" : "",

@@ -7,17 +7,17 @@
       "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 07 Apr 2020 23:52:34 GMT",
+      "date" : "Tue, 14 Apr 2020 17:24:25 GMT",
       "content-length" : "641",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "1df9174d-50b7-44bd-8bf5-5b26cd655ac8",
+      "client-request-id" : "878d0e13-3e06-49fe-85f4-002ff25deb66",
       "content-type" : "application/json;odata=minimalmetadata",
       "retry-after" : "0",
-      "request-id" : "eda328a0-c912-4949-90f1-dc0ced422157",
+      "request-id" : "0cc41834-002e-4126-80d1-92f4b5a62d05",
       "StatusCode" : "400",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest2.westcentralus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element\",\"code\":\"InvalidPropertyValue\",\"message\":{\r\n    \"lang\":\"en-US\",\"value\":\"The value provided for one of the properties in the request body is invalid.\\nRequestId:eda328a0-c912-4949-90f1-dc0ced422157\\nTime:2020-04-07T23:52:35.0850704Z\"\r\n  },\"values\":[\r\n    {\r\n      \"key\":\"PropertyName\",\"value\":\"containerConfiguration\"\r\n    },{\r\n      \"key\":\"Reason\",\"value\":\"The specified imageReference with publisher Canonical offer UbuntuServer sku 16.04-LTS does not support container feature.\"\r\n    }\r\n  ]\r\n}",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest2.westcentralus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element\",\"code\":\"InvalidPropertyValue\",\"message\":{\r\n    \"lang\":\"en-US\",\"value\":\"The value provided for one of the properties in the request body is invalid.\\nRequestId:0cc41834-002e-4126-80d1-92f4b5a62d05\\nTime:2020-04-14T17:24:25.5219448Z\"\r\n  },\"values\":[\r\n    {\r\n      \"key\":\"PropertyName\",\"value\":\"containerConfiguration\"\r\n    },{\r\n      \"key\":\"Reason\",\"value\":\"The specified imageReference with publisher Canonical offer UbuntuServer sku 16.04-LTS does not support container feature.\"\r\n    }\r\n  ]\r\n}",
       "strict-transport-security" : "max-age=31536000; includeSubDomains"
     }
   }, {
@@ -28,13 +28,13 @@
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 07 Apr 2020 23:52:34 GMT",
+      "date" : "Tue, 14 Apr 2020 17:24:25 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "transfer-encoding" : "chunked",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "afc6849e-0acf-4c65-8d15-009387b036bf",
+      "client-request-id" : "584955ee-fba8-4f7f-aa57-963a4a9c823e",
       "retry-after" : "0",
-      "request-id" : "a8a0bb89-71c9-44ff-883f-d224cd981dd0",
+      "request-id" : "c031cf77-b764-4c3e-bc63-46fea46c48b9",
       "StatusCode" : "404",
       "dataserviceversion" : "3.0",
       "Body" : "",

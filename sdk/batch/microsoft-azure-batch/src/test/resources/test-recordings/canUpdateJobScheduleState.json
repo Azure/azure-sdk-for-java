@@ -7,18 +7,18 @@
       "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 07 Apr 2020 23:41:54 GMT",
+      "date" : "Tue, 14 Apr 2020 17:15:28 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "transfer-encoding" : "chunked",
       "dataserviceid" : "https://sdktest2.westcentralus.batch.azure.com/jobschedules/BatchUser-JobSchedule-updateJobScheduleState",
       "retry-after" : "0",
-      "request-id" : "2d08681d-8520-4c64-815d-f0c84a203253",
+      "request-id" : "e8e2bf3d-c24c-4616-bddf-f71629f38465",
       "StatusCode" : "201",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Tue, 07 Apr 2020 23:41:54 GMT",
+      "last-modified" : "Tue, 14 Apr 2020 17:15:28 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "21532245-ae33-4138-84dd-b1d625fa85f7",
-      "etag" : "0x8D7DB4D41178F12",
+      "client-request-id" : "f5910a28-d1a8-4e32-8551-cfe60cdde64a",
+      "etag" : "0x8D7E0976E1D860C",
       "location" : "https://sdktest2.westcentralus.batch.azure.com/jobschedules/BatchUser-JobSchedule-updateJobScheduleState",
       "dataserviceversion" : "3.0",
       "Body" : ""
@@ -31,20 +31,20 @@
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 07 Apr 2020 23:41:56 GMT",
+      "date" : "Tue, 14 Apr 2020 17:15:28 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "transfer-encoding" : "chunked",
       "retry-after" : "0",
-      "request-id" : "69041d46-70f6-4d64-90a2-6922e88be4d2",
+      "request-id" : "98ec450d-954e-4207-be99-6bfe35e508f8",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Tue, 07 Apr 2020 23:41:54 GMT",
+      "last-modified" : "Tue, 14 Apr 2020 17:15:28 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "d1b47ec4-c09a-4542-a102-a84766d6d74e",
+      "client-request-id" : "03b04097-f15f-4b4b-8e61-e15d9794f8d4",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8D7DB4D41178F12",
+      "etag" : "0x8D7E0976E1D860C",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest2.westcentralus.batch.azure.com/$metadata#jobschedules/@Element\",\"id\":\"BatchUser-JobSchedule-updateJobScheduleState\",\"url\":\"https://sdktest2.westcentralus.batch.azure.com/jobschedules/BatchUser-JobSchedule-updateJobScheduleState\",\"eTag\":\"0x8D7DB4D41178F12\",\"lastModified\":\"2020-04-07T23:41:54.7242258Z\",\"creationTime\":\"2020-04-07T23:41:54.7242258Z\",\"state\":\"active\",\"stateTransitionTime\":\"2020-04-07T23:41:54.7242258Z\",\"schedule\":{\r\n    \"doNotRunUntil\":\"2020-04-07T23:41:53.307Z\",\"doNotRunAfter\":\"2020-04-08T04:41:53.307Z\",\"startWindow\":\"P5D\"\r\n  },\"jobSpecification\":{\r\n    \"priority\":100,\"usesTaskDependencies\":false,\"onAllTasksComplete\":\"noaction\",\"onTaskFailure\":\"noaction\",\"constraints\":{\r\n      \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"maxTaskRetryCount\":0\r\n    },\"poolInfo\":{\r\n      \"poolId\":\"BatchUser-testpool\"\r\n    }\r\n  },\"executionInfo\":{\r\n    \"recentJob\":{\r\n      \"url\":\"https://sdktest2.westcentralus.batch.azure.com/jobs/BatchUser-JobSchedule-updateJobScheduleState:job-1\",\"id\":\"BatchUser-JobSchedule-updateJobScheduleState:job-1\"\r\n    }\r\n  }\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest2.westcentralus.batch.azure.com/$metadata#jobschedules/@Element\",\"id\":\"BatchUser-JobSchedule-updateJobScheduleState\",\"url\":\"https://sdktest2.westcentralus.batch.azure.com/jobschedules/BatchUser-JobSchedule-updateJobScheduleState\",\"eTag\":\"0x8D7E0976E1D860C\",\"lastModified\":\"2020-04-14T17:15:28.8326668Z\",\"creationTime\":\"2020-04-14T17:15:28.8326668Z\",\"state\":\"active\",\"stateTransitionTime\":\"2020-04-14T17:15:28.8326668Z\",\"schedule\":{\r\n    \"doNotRunUntil\":\"2020-04-14T17:15:28.017Z\",\"doNotRunAfter\":\"2020-04-14T22:15:28.017Z\",\"startWindow\":\"P5D\"\r\n  },\"jobSpecification\":{\r\n    \"priority\":100,\"usesTaskDependencies\":false,\"onAllTasksComplete\":\"noaction\",\"onTaskFailure\":\"noaction\",\"constraints\":{\r\n      \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"maxTaskRetryCount\":0\r\n    },\"poolInfo\":{\r\n      \"poolId\":\"BatchUser-testpool\"\r\n    }\r\n  },\"executionInfo\":{\r\n    \"recentJob\":{\r\n      \"url\":\"https://sdktest2.westcentralus.batch.azure.com/jobs/BatchUser-JobSchedule-updateJobScheduleState:job-1\",\"id\":\"BatchUser-JobSchedule-updateJobScheduleState:job-1\"\r\n    }\r\n  }\r\n}"
     }
   }, {
     "Method" : "POST",
@@ -54,18 +54,18 @@
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 07 Apr 2020 23:41:57 GMT",
+      "date" : "Tue, 14 Apr 2020 17:15:28 GMT",
       "content-length" : "0",
       "server" : "Microsoft-HTTPAPI/2.0",
       "dataserviceid" : "https://sdktest2.westcentralus.batch.azure.com/jobschedules/BatchUser-JobSchedule-updateJobScheduleState/disable",
       "retry-after" : "0",
-      "request-id" : "f882ff76-f55c-4a58-981b-2d30066ab8c3",
+      "request-id" : "c1da67cd-27a2-427c-8ec5-dc2741acc330",
       "StatusCode" : "204",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Tue, 07 Apr 2020 23:41:57 GMT",
+      "last-modified" : "Tue, 14 Apr 2020 17:15:29 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "f747e34f-745a-496a-b8a8-199772eb5998",
-      "etag" : "0x8D7DB4D42C9FAA6",
+      "client-request-id" : "b99bb8c5-8448-4065-8ce5-c9599b460493",
+      "etag" : "0x8D7E0976E574F47",
       "dataserviceversion" : "3.0",
       "Body" : ""
     }
@@ -77,20 +77,20 @@
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 07 Apr 2020 23:41:57 GMT",
+      "date" : "Tue, 14 Apr 2020 17:15:28 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "transfer-encoding" : "chunked",
       "retry-after" : "0",
-      "request-id" : "4e5efcd7-c86f-421a-babc-b3fefaec380c",
+      "request-id" : "2392ffb8-db8e-4957-a949-585d639c6c4b",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Tue, 07 Apr 2020 23:41:57 GMT",
+      "last-modified" : "Tue, 14 Apr 2020 17:15:29 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "72d18793-1560-47b9-b709-c7a4756fdd07",
+      "client-request-id" : "831296d3-a309-4d23-91dd-8eaac6088d5e",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8D7DB4D42C9FAA6",
+      "etag" : "0x8D7E0976E574F47",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest2.westcentralus.batch.azure.com/$metadata#jobschedules/@Element\",\"id\":\"BatchUser-JobSchedule-updateJobScheduleState\",\"url\":\"https://sdktest2.westcentralus.batch.azure.com/jobschedules/BatchUser-JobSchedule-updateJobScheduleState\",\"eTag\":\"0x8D7DB4D42C9FAA6\",\"lastModified\":\"2020-04-07T23:41:57.5712422Z\",\"creationTime\":\"2020-04-07T23:41:54.7242258Z\",\"state\":\"disabled\",\"stateTransitionTime\":\"2020-04-07T23:41:57.5712422Z\",\"previousState\":\"active\",\"previousStateTransitionTime\":\"2020-04-07T23:41:54.7242258Z\",\"schedule\":{\r\n    \"doNotRunUntil\":\"2020-04-07T23:41:53.307Z\",\"doNotRunAfter\":\"2020-04-08T04:41:53.307Z\",\"startWindow\":\"P5D\"\r\n  },\"jobSpecification\":{\r\n    \"priority\":100,\"usesTaskDependencies\":false,\"onAllTasksComplete\":\"noaction\",\"onTaskFailure\":\"noaction\",\"constraints\":{\r\n      \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"maxTaskRetryCount\":0\r\n    },\"poolInfo\":{\r\n      \"poolId\":\"BatchUser-testpool\"\r\n    }\r\n  },\"executionInfo\":{\r\n    \"recentJob\":{\r\n      \"url\":\"https://sdktest2.westcentralus.batch.azure.com/jobs/BatchUser-JobSchedule-updateJobScheduleState:job-1\",\"id\":\"BatchUser-JobSchedule-updateJobScheduleState:job-1\"\r\n    }\r\n  }\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest2.westcentralus.batch.azure.com/$metadata#jobschedules/@Element\",\"id\":\"BatchUser-JobSchedule-updateJobScheduleState\",\"url\":\"https://sdktest2.westcentralus.batch.azure.com/jobschedules/BatchUser-JobSchedule-updateJobScheduleState\",\"eTag\":\"0x8D7E0976E574F47\",\"lastModified\":\"2020-04-14T17:15:29.2113735Z\",\"creationTime\":\"2020-04-14T17:15:28.8326668Z\",\"state\":\"disabled\",\"stateTransitionTime\":\"2020-04-14T17:15:29.2113735Z\",\"previousState\":\"active\",\"previousStateTransitionTime\":\"2020-04-14T17:15:28.8326668Z\",\"schedule\":{\r\n    \"doNotRunUntil\":\"2020-04-14T17:15:28.017Z\",\"doNotRunAfter\":\"2020-04-14T22:15:28.017Z\",\"startWindow\":\"P5D\"\r\n  },\"jobSpecification\":{\r\n    \"priority\":100,\"usesTaskDependencies\":false,\"onAllTasksComplete\":\"noaction\",\"onTaskFailure\":\"noaction\",\"constraints\":{\r\n      \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"maxTaskRetryCount\":0\r\n    },\"poolInfo\":{\r\n      \"poolId\":\"BatchUser-testpool\"\r\n    }\r\n  },\"executionInfo\":{\r\n    \"recentJob\":{\r\n      \"url\":\"https://sdktest2.westcentralus.batch.azure.com/jobs/BatchUser-JobSchedule-updateJobScheduleState:job-1\",\"id\":\"BatchUser-JobSchedule-updateJobScheduleState:job-1\"\r\n    }\r\n  }\r\n}"
     }
   }, {
     "Method" : "POST",
@@ -100,18 +100,18 @@
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 07 Apr 2020 23:41:58 GMT",
+      "date" : "Tue, 14 Apr 2020 17:15:29 GMT",
       "content-length" : "0",
       "server" : "Microsoft-HTTPAPI/2.0",
       "dataserviceid" : "https://sdktest2.westcentralus.batch.azure.com/jobschedules/BatchUser-JobSchedule-updateJobScheduleState/enable",
       "retry-after" : "0",
-      "request-id" : "5d265cec-d13d-457a-b6c8-6ca76e8647f9",
+      "request-id" : "821655d9-c21b-46c0-84e4-bdc78cea12c5",
       "StatusCode" : "204",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Tue, 07 Apr 2020 23:41:58 GMT",
+      "last-modified" : "Tue, 14 Apr 2020 17:15:29 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "0af7da12-896a-4b8c-9b31-f0c54192e39b",
-      "etag" : "0x8D7DB4D437A80B2",
+      "client-request-id" : "4805a488-5143-4257-9758-c5317307d756",
+      "etag" : "0x8D7E0976E715B06",
       "dataserviceversion" : "3.0",
       "Body" : ""
     }
@@ -123,20 +123,20 @@
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 07 Apr 2020 23:41:58 GMT",
+      "date" : "Tue, 14 Apr 2020 17:15:29 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "transfer-encoding" : "chunked",
       "retry-after" : "0",
-      "request-id" : "6cedc2c3-a733-425c-8a89-02ecd8f9c23d",
+      "request-id" : "4e13a0f8-f6d7-4dbd-967f-fdae0666378a",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Tue, 07 Apr 2020 23:41:58 GMT",
+      "last-modified" : "Tue, 14 Apr 2020 17:15:29 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "f22b2d7e-c6a6-46c8-8997-b8a2ab3589e9",
+      "client-request-id" : "69782f68-1a7c-4426-954d-1c4ba5df33a7",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8D7DB4D437A80B2",
+      "etag" : "0x8D7E0976E715B06",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest2.westcentralus.batch.azure.com/$metadata#jobschedules/@Element\",\"id\":\"BatchUser-JobSchedule-updateJobScheduleState\",\"url\":\"https://sdktest2.westcentralus.batch.azure.com/jobschedules/BatchUser-JobSchedule-updateJobScheduleState\",\"eTag\":\"0x8D7DB4D437A80B2\",\"lastModified\":\"2020-04-07T23:41:58.7281074Z\",\"creationTime\":\"2020-04-07T23:41:54.7242258Z\",\"state\":\"active\",\"stateTransitionTime\":\"2020-04-07T23:41:58.7281074Z\",\"previousState\":\"disabled\",\"previousStateTransitionTime\":\"2020-04-07T23:41:57.5712422Z\",\"schedule\":{\r\n    \"doNotRunUntil\":\"2020-04-07T23:41:53.307Z\",\"doNotRunAfter\":\"2020-04-08T04:41:53.307Z\",\"startWindow\":\"P5D\"\r\n  },\"jobSpecification\":{\r\n    \"priority\":100,\"usesTaskDependencies\":false,\"onAllTasksComplete\":\"noaction\",\"onTaskFailure\":\"noaction\",\"constraints\":{\r\n      \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"maxTaskRetryCount\":0\r\n    },\"poolInfo\":{\r\n      \"poolId\":\"BatchUser-testpool\"\r\n    }\r\n  },\"executionInfo\":{\r\n    \"recentJob\":{\r\n      \"url\":\"https://sdktest2.westcentralus.batch.azure.com/jobs/BatchUser-JobSchedule-updateJobScheduleState:job-1\",\"id\":\"BatchUser-JobSchedule-updateJobScheduleState:job-1\"\r\n    }\r\n  }\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest2.westcentralus.batch.azure.com/$metadata#jobschedules/@Element\",\"id\":\"BatchUser-JobSchedule-updateJobScheduleState\",\"url\":\"https://sdktest2.westcentralus.batch.azure.com/jobschedules/BatchUser-JobSchedule-updateJobScheduleState\",\"eTag\":\"0x8D7E0976E715B06\",\"lastModified\":\"2020-04-14T17:15:29.3820678Z\",\"creationTime\":\"2020-04-14T17:15:28.8326668Z\",\"state\":\"active\",\"stateTransitionTime\":\"2020-04-14T17:15:29.3820678Z\",\"previousState\":\"disabled\",\"previousStateTransitionTime\":\"2020-04-14T17:15:29.2113735Z\",\"schedule\":{\r\n    \"doNotRunUntil\":\"2020-04-14T17:15:28.017Z\",\"doNotRunAfter\":\"2020-04-14T22:15:28.017Z\",\"startWindow\":\"P5D\"\r\n  },\"jobSpecification\":{\r\n    \"priority\":100,\"usesTaskDependencies\":false,\"onAllTasksComplete\":\"noaction\",\"onTaskFailure\":\"noaction\",\"constraints\":{\r\n      \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"maxTaskRetryCount\":0\r\n    },\"poolInfo\":{\r\n      \"poolId\":\"BatchUser-testpool\"\r\n    }\r\n  },\"executionInfo\":{\r\n    \"recentJob\":{\r\n      \"url\":\"https://sdktest2.westcentralus.batch.azure.com/jobs/BatchUser-JobSchedule-updateJobScheduleState:job-1\",\"id\":\"BatchUser-JobSchedule-updateJobScheduleState:job-1\"\r\n    }\r\n  }\r\n}"
     }
   }, {
     "Method" : "POST",
@@ -146,18 +146,18 @@
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 07 Apr 2020 23:41:58 GMT",
+      "date" : "Tue, 14 Apr 2020 17:15:29 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "transfer-encoding" : "chunked",
       "dataserviceid" : "https://sdktest2.westcentralus.batch.azure.com/jobschedules/BatchUser-JobSchedule-updateJobScheduleState/terminate",
       "retry-after" : "0",
-      "request-id" : "7c6f165a-2577-4a7b-a3dd-164a1bc92990",
+      "request-id" : "e4cee368-1819-4ebb-b3f8-f9aad7ece67f",
       "StatusCode" : "202",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Tue, 07 Apr 2020 23:41:59 GMT",
+      "last-modified" : "Tue, 14 Apr 2020 17:15:29 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "b90baa21-f80b-4a43-a2d6-516886841efa",
-      "etag" : "0x8D7DB4D43EFC268",
+      "client-request-id" : "a53e0aa8-c3f9-43f1-9bef-c043c6fc3ec1",
+      "etag" : "0x8D7E0976E8A35FE",
       "dataserviceversion" : "3.0",
       "Body" : ""
     }
@@ -169,20 +169,20 @@
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 07 Apr 2020 23:41:58 GMT",
+      "date" : "Tue, 14 Apr 2020 17:15:29 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "transfer-encoding" : "chunked",
       "retry-after" : "0",
-      "request-id" : "b11c6bfb-0390-4e41-aecf-4684136b8233",
+      "request-id" : "806a41f9-a1ff-4e79-b206-cc98d0a7beb5",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Tue, 07 Apr 2020 23:41:59 GMT",
+      "last-modified" : "Tue, 14 Apr 2020 17:15:29 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "8e989bd9-e025-4fe7-9e70-86639903272f",
+      "client-request-id" : "bbdfdc20-11f5-4c3d-885b-7f4ca9aab896",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8D7DB4D43EFC268",
+      "etag" : "0x8D7E0976E8A35FE",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest2.westcentralus.batch.azure.com/$metadata#jobschedules/@Element\",\"id\":\"BatchUser-JobSchedule-updateJobScheduleState\",\"url\":\"https://sdktest2.westcentralus.batch.azure.com/jobschedules/BatchUser-JobSchedule-updateJobScheduleState\",\"eTag\":\"0x8D7DB4D43EFC268\",\"lastModified\":\"2020-04-07T23:41:59.4965608Z\",\"creationTime\":\"2020-04-07T23:41:54.7242258Z\",\"state\":\"completed\",\"stateTransitionTime\":\"2020-04-07T23:41:59.5819687Z\",\"previousState\":\"active\",\"previousStateTransitionTime\":\"2020-04-07T23:41:58.7281074Z\",\"schedule\":{\r\n    \"doNotRunUntil\":\"2020-04-07T23:41:53.307Z\",\"doNotRunAfter\":\"2020-04-08T04:41:53.307Z\",\"startWindow\":\"P5D\"\r\n  },\"jobSpecification\":{\r\n    \"priority\":100,\"usesTaskDependencies\":false,\"onAllTasksComplete\":\"noaction\",\"onTaskFailure\":\"noaction\",\"constraints\":{\r\n      \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"maxTaskRetryCount\":0\r\n    },\"poolInfo\":{\r\n      \"poolId\":\"BatchUser-testpool\"\r\n    }\r\n  },\"executionInfo\":{\r\n    \"recentJob\":{\r\n      \"url\":\"https://sdktest2.westcentralus.batch.azure.com/jobs/BatchUser-JobSchedule-updateJobScheduleState:job-1\",\"id\":\"BatchUser-JobSchedule-updateJobScheduleState:job-1\"\r\n    },\"endTime\":\"2020-04-07T23:41:59.5819687Z\"\r\n  }\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest2.westcentralus.batch.azure.com/$metadata#jobschedules/@Element\",\"id\":\"BatchUser-JobSchedule-updateJobScheduleState\",\"url\":\"https://sdktest2.westcentralus.batch.azure.com/jobschedules/BatchUser-JobSchedule-updateJobScheduleState\",\"eTag\":\"0x8D7E0976E8A35FE\",\"lastModified\":\"2020-04-14T17:15:29.5449598Z\",\"creationTime\":\"2020-04-14T17:15:28.8326668Z\",\"state\":\"terminating\",\"stateTransitionTime\":\"2020-04-14T17:15:29.5449598Z\",\"previousState\":\"active\",\"previousStateTransitionTime\":\"2020-04-14T17:15:29.3820678Z\",\"schedule\":{\r\n    \"doNotRunUntil\":\"2020-04-14T17:15:28.017Z\",\"doNotRunAfter\":\"2020-04-14T22:15:28.017Z\",\"startWindow\":\"P5D\"\r\n  },\"jobSpecification\":{\r\n    \"priority\":100,\"usesTaskDependencies\":false,\"onAllTasksComplete\":\"noaction\",\"onTaskFailure\":\"noaction\",\"constraints\":{\r\n      \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"maxTaskRetryCount\":0\r\n    },\"poolInfo\":{\r\n      \"poolId\":\"BatchUser-testpool\"\r\n    }\r\n  },\"executionInfo\":{\r\n    \"recentJob\":{\r\n      \"url\":\"https://sdktest2.westcentralus.batch.azure.com/jobs/BatchUser-JobSchedule-updateJobScheduleState:job-1\",\"id\":\"BatchUser-JobSchedule-updateJobScheduleState:job-1\"\r\n    }\r\n  }\r\n}"
     }
   }, {
     "Method" : "GET",
@@ -192,20 +192,20 @@
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 07 Apr 2020 23:42:01 GMT",
+      "date" : "Tue, 14 Apr 2020 17:15:31 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "transfer-encoding" : "chunked",
       "retry-after" : "0",
-      "request-id" : "e5055b48-1b92-4750-9b20-f26871b5e757",
+      "request-id" : "b7dc697b-168f-481a-85b6-946dd65450ba",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Tue, 07 Apr 2020 23:41:59 GMT",
+      "last-modified" : "Tue, 14 Apr 2020 17:15:29 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "0bd58383-1f08-4a9c-8a83-ce810eec3fe9",
+      "client-request-id" : "ee28ae01-7f89-44a5-b386-24d002df8755",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8D7DB4D43EFC268",
+      "etag" : "0x8D7E0976E8A35FE",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest2.westcentralus.batch.azure.com/$metadata#jobschedules/@Element\",\"id\":\"BatchUser-JobSchedule-updateJobScheduleState\",\"url\":\"https://sdktest2.westcentralus.batch.azure.com/jobschedules/BatchUser-JobSchedule-updateJobScheduleState\",\"eTag\":\"0x8D7DB4D43EFC268\",\"lastModified\":\"2020-04-07T23:41:59.4965608Z\",\"creationTime\":\"2020-04-07T23:41:54.7242258Z\",\"state\":\"completed\",\"stateTransitionTime\":\"2020-04-07T23:41:59.5819687Z\",\"previousState\":\"active\",\"previousStateTransitionTime\":\"2020-04-07T23:41:58.7281074Z\",\"schedule\":{\r\n    \"doNotRunUntil\":\"2020-04-07T23:41:53.307Z\",\"doNotRunAfter\":\"2020-04-08T04:41:53.307Z\",\"startWindow\":\"P5D\"\r\n  },\"jobSpecification\":{\r\n    \"priority\":100,\"usesTaskDependencies\":false,\"onAllTasksComplete\":\"noaction\",\"onTaskFailure\":\"noaction\",\"constraints\":{\r\n      \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"maxTaskRetryCount\":0\r\n    },\"poolInfo\":{\r\n      \"poolId\":\"BatchUser-testpool\"\r\n    }\r\n  },\"executionInfo\":{\r\n    \"recentJob\":{\r\n      \"url\":\"https://sdktest2.westcentralus.batch.azure.com/jobs/BatchUser-JobSchedule-updateJobScheduleState:job-1\",\"id\":\"BatchUser-JobSchedule-updateJobScheduleState:job-1\"\r\n    },\"endTime\":\"2020-04-07T23:41:59.5819687Z\"\r\n  }\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest2.westcentralus.batch.azure.com/$metadata#jobschedules/@Element\",\"id\":\"BatchUser-JobSchedule-updateJobScheduleState\",\"url\":\"https://sdktest2.westcentralus.batch.azure.com/jobschedules/BatchUser-JobSchedule-updateJobScheduleState\",\"eTag\":\"0x8D7E0976E8A35FE\",\"lastModified\":\"2020-04-14T17:15:29.5449598Z\",\"creationTime\":\"2020-04-14T17:15:28.8326668Z\",\"state\":\"completed\",\"stateTransitionTime\":\"2020-04-14T17:15:30.071713Z\",\"previousState\":\"active\",\"previousStateTransitionTime\":\"2020-04-14T17:15:29.3820678Z\",\"schedule\":{\r\n    \"doNotRunUntil\":\"2020-04-14T17:15:28.017Z\",\"doNotRunAfter\":\"2020-04-14T22:15:28.017Z\",\"startWindow\":\"P5D\"\r\n  },\"jobSpecification\":{\r\n    \"priority\":100,\"usesTaskDependencies\":false,\"onAllTasksComplete\":\"noaction\",\"onTaskFailure\":\"noaction\",\"constraints\":{\r\n      \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"maxTaskRetryCount\":0\r\n    },\"poolInfo\":{\r\n      \"poolId\":\"BatchUser-testpool\"\r\n    }\r\n  },\"executionInfo\":{\r\n    \"recentJob\":{\r\n      \"url\":\"https://sdktest2.westcentralus.batch.azure.com/jobs/BatchUser-JobSchedule-updateJobScheduleState:job-1\",\"id\":\"BatchUser-JobSchedule-updateJobScheduleState:job-1\"\r\n    },\"endTime\":\"2020-04-14T17:15:30.071713Z\"\r\n  }\r\n}"
     }
   }, {
     "Method" : "DELETE",
@@ -215,13 +215,13 @@
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 07 Apr 2020 23:42:01 GMT",
+      "date" : "Tue, 14 Apr 2020 17:15:31 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "transfer-encoding" : "chunked",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "6078865f-1662-4b68-a799-9a1c370d01d0",
+      "client-request-id" : "5818f99c-3477-4fb6-91a3-0261927523f1",
       "retry-after" : "0",
-      "request-id" : "6bb732c5-16a7-455b-b8d1-944baf435b5e",
+      "request-id" : "cbfa4676-e572-4b23-9775-f305d2d37bfb",
       "StatusCode" : "202",
       "dataserviceversion" : "3.0",
       "Body" : "",
@@ -235,18 +235,20 @@
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 07 Apr 2020 23:42:02 GMT",
-      "content-length" : "351",
+      "date" : "Tue, 14 Apr 2020 17:15:31 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "x-content-type-options" : "nosniff",
-      "client-request-id" : "9f4685c1-d7e1-4468-b2ed-7c541fc71cf6",
-      "content-type" : "application/json;odata=minimalmetadata",
+      "transfer-encoding" : "chunked",
       "retry-after" : "0",
-      "request-id" : "35253e65-5968-424b-90bb-8dd2bce6f07c",
-      "StatusCode" : "404",
+      "request-id" : "3fbc2d8b-0ecf-41b5-a7c4-e72024b5d422",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 14 Apr 2020 17:15:29 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "68e7edc7-bfa5-47b3-8d8c-91adb1a21298",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8D7E0976E8A35FE",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest2.westcentralus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element\",\"code\":\"JobScheduleNotFound\",\"message\":{\r\n    \"lang\":\"en-US\",\"value\":\"The specified job schedule does not exist.\\nRequestId:35253e65-5968-424b-90bb-8dd2bce6f07c\\nTime:2020-04-07T23:42:02.6305411Z\"\r\n  }\r\n}",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest2.westcentralus.batch.azure.com/$metadata#jobschedules/@Element\",\"id\":\"BatchUser-JobSchedule-updateJobScheduleState\",\"url\":\"https://sdktest2.westcentralus.batch.azure.com/jobschedules/BatchUser-JobSchedule-updateJobScheduleState\",\"eTag\":\"0x8D7E0976E8A35FE\",\"lastModified\":\"2020-04-14T17:15:29.5449598Z\",\"creationTime\":\"2020-04-14T17:15:28.8326668Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2020-04-14T17:15:31.7474284Z\",\"previousState\":\"completed\",\"previousStateTransitionTime\":\"2020-04-14T17:15:30.071713Z\",\"schedule\":{\r\n    \"doNotRunUntil\":\"2020-04-14T17:15:28.017Z\",\"doNotRunAfter\":\"2020-04-14T22:15:28.017Z\",\"startWindow\":\"P5D\"\r\n  },\"jobSpecification\":{\r\n    \"priority\":100,\"usesTaskDependencies\":false,\"onAllTasksComplete\":\"noaction\",\"onTaskFailure\":\"noaction\",\"constraints\":{\r\n      \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"maxTaskRetryCount\":0\r\n    },\"poolInfo\":{\r\n      \"poolId\":\"BatchUser-testpool\"\r\n    }\r\n  },\"executionInfo\":{\r\n    \"recentJob\":{\r\n      \"url\":\"https://sdktest2.westcentralus.batch.azure.com/jobs/BatchUser-JobSchedule-updateJobScheduleState:job-1\",\"id\":\"BatchUser-JobSchedule-updateJobScheduleState:job-1\"\r\n    }\r\n  }\r\n}"
     }
   }, {
     "Method" : "DELETE",
@@ -256,17 +258,17 @@
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 07 Apr 2020 23:42:02 GMT",
+      "date" : "Tue, 14 Apr 2020 17:15:31 GMT",
       "content-length" : "351",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "126980b6-b257-40c7-917a-f8f2c7ec5bea",
+      "client-request-id" : "81ada2af-c9b4-41ab-af9d-83a9025d94cc",
       "content-type" : "application/json;odata=minimalmetadata",
       "retry-after" : "0",
-      "request-id" : "a58cb787-8ef9-468b-a23c-f9fe18b9c345",
+      "request-id" : "38d186af-88c1-48fd-b325-93b900825678",
       "StatusCode" : "404",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest2.westcentralus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element\",\"code\":\"JobScheduleNotFound\",\"message\":{\r\n    \"lang\":\"en-US\",\"value\":\"The specified job schedule does not exist.\\nRequestId:a58cb787-8ef9-468b-a23c-f9fe18b9c345\\nTime:2020-04-07T23:42:02.9096812Z\"\r\n  }\r\n}",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest2.westcentralus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element\",\"code\":\"JobScheduleNotFound\",\"message\":{\r\n    \"lang\":\"en-US\",\"value\":\"The specified job schedule does not exist.\\nRequestId:38d186af-88c1-48fd-b325-93b900825678\\nTime:2020-04-14T17:15:31.8488208Z\"\r\n  }\r\n}",
       "strict-transport-security" : "max-age=31536000; includeSubDomains"
     }
   } ],
