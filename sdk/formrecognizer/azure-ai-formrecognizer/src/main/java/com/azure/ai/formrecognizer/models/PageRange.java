@@ -34,7 +34,7 @@ public final class PageRange {
     }
 
     /**
-     * Get the start page number property.
+     * Get the start page number.
      *
      * @return the start value of the page number .
      */
@@ -43,7 +43,7 @@ public final class PageRange {
     }
 
     /**
-     * Get the end  page number property.
+     * Get the end  page number.
      *
      * @return the end value of the page number .
      */

@@ -125,25 +125,25 @@ public final class USReceipt extends RecognizedReceipt {
     }
 
     /**
-     * Get the receiptItems property: Receipt Items.
+     * Get the itemized fields in the Recognized Receipt.
      *
-     * @return the list of recognized receipt items.
+     * @return the list itemized fields.
      */
     public List<USReceiptItem> getReceiptItems() {
         return this.receiptItems;
     }
 
     /**
-     * Get the receiptType property: Receipt type.
+     * Get the type of Recognized Receipt.
      *
-     * @return the Receipt type value.
+     * @return the type of Recognized Receipt.
      */
     public USReceiptType getReceiptType() {
         return this.receiptType;
     }
 
     /**
-     * Get the merchantName property: Merchant name field.
+     * Get the merchant name field.
      *
      * @return the merchantName value.
      */
@@ -153,7 +153,7 @@ public final class USReceipt extends RecognizedReceipt {
 
 
     /**
-     * Get the merchantAddress property: Merchant address field.
+     * Get the merchant address field.
      *
      * @return the merchantAddress value.
      */
@@ -162,7 +162,7 @@ public final class USReceipt extends RecognizedReceipt {
     }
 
     /**
-     * Get the merchantPhoneNumber property: Merchant Phone number field.
+     * Get the merchant Phone number field.
      *
      * @return the merchantPhoneNumber value.
      */
@@ -171,7 +171,7 @@ public final class USReceipt extends RecognizedReceipt {
     }
 
     /**
-     * Get the subtotal property: The subtotal field.
+     * Get the subtotal field.
      *
      * @return the subtotal value.
      */
@@ -180,7 +180,7 @@ public final class USReceipt extends RecognizedReceipt {
     }
 
     /**
-     * Get the tax property: The tax field.
+     * Get the tax field.
      *
      * @return the tax value.
      */
@@ -189,7 +189,7 @@ public final class USReceipt extends RecognizedReceipt {
     }
 
     /**
-     * Get the tip property: The tip field.
+     * Get the tip field.
      *
      * @return the tip value.
      */
@@ -198,7 +198,7 @@ public final class USReceipt extends RecognizedReceipt {
     }
 
     /**
-     * Get the total property: The Total field.
+     * Get the Total field.
      *
      * @return the total value.
      */
@@ -207,7 +207,7 @@ public final class USReceipt extends RecognizedReceipt {
     }
 
     /**
-     * Get the transactionDate property: The TransactionDate field.
+     * Get the Transaction date field.
      *
      * @return the transactionDate value.
      */
@@ -216,7 +216,7 @@ public final class USReceipt extends RecognizedReceipt {
     }
 
     /**
-     * Get the transactionTime property: The TransactionTime field.
+     * Get the transaction time field.
      *
      * @return the transactionTime value.
      */

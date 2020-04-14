@@ -260,6 +260,12 @@
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.formrecognizer.CustomModelTransforms.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.formrecognizer.implementation.Utility.java" />
 
+  <!-- Common vocabulary error for LRO methods starting with begin* -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.formrecognizer.FormRecognizerAsyncClient.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.formrecognizer.FormRecognizerClient.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.formrecognizer.FormTrainingClient.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.formrecognizer.FormTrainingAsyncClient.java" />
+
   <!-- Throws a non-runtime exception -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
             files="com.azure.core.http.netty.implementation.HttpProxyHandler.java"/>

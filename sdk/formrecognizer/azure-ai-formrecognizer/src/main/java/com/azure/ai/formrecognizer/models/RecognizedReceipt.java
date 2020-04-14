@@ -33,7 +33,7 @@ public class RecognizedReceipt {
     }
 
     /**
-     * Get the receiptLocale property. The locale information for the recognized Receipt.
+     * Get he locale information for the recognized Receipt.
      *
      * @return The locale information for the recognized Receipt.
      */
@@ -42,9 +42,9 @@ public class RecognizedReceipt {
     }
 
     /**
-     * Get the recognizedForm property. The recognized form for the recognized Receipt.
+     * Get the extracted field information form for the provided document.
      *
-     * @return The recognized form for the recognized Receipt.
+     * @return The extracted field information form for the provided document.
      */
     public RecognizedForm getRecognizedForm() {
         return this.recognizedForm;

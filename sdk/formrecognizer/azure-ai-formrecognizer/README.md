@@ -11,7 +11,7 @@ key-value pairs and table data from form documents.
 - [Azure Subscription][azure_subscription]
 - [Cognitive Services or Form Recognizer account][form_recognizer_account] to use this package.
 
-### Adding the package to your product
+### Include the Package
 
 [//]: # ({x-version-update-start;com.azure:azure-ai-formrecognizer;current})
 ```xml
@@ -69,7 +69,7 @@ To use an [API key][api_key], provide the key as a string. This can be found in 
 az cognitiveservices account keys list --resource-group <your-resource-group-name> --name <your-resource-name>
 ``` 
 Use the API key as the credential parameter to authenticate the client:
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L40-L43 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L39-L42 -->
 ```java
 FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
     .apiKey(new AzureKeyCredential("{api_key}"))
@@ -78,7 +78,7 @@ FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
 ```
 The Azure Form Recognizer client library provides a way to **rotate the existing API key**.
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L60-L66 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L59-L65 -->
 ```java
 AzureKeyCredential credential = new AzureKeyCredential("{api_key}");
 FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
@@ -103,14 +103,14 @@ The following sections provide several code snippets covering some of the most c
 Form Recognizer support both synchronous and asynchronous client creation by using
 `FormRecognizerClientBuilder`,
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L40-L43 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L39-L42 -->
 ``` java
 FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
     .apiKey(new AzureKeyCredential("{api_key}"))
     .endpoint("{endpoint}")
     .buildClient();
 ```
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L50-L53 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L49-L52 -->
 ``` java
 FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBuilder()
     .apiKey(new AzureKeyCredential("{api_key}"))
@@ -119,11 +119,11 @@ FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBu
 ```
 
 ### Extract receipt information
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L70-L86 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L69-L85 -->
 ```java
 String receiptSourceUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media/contoso-allinone.jpg";
 SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
-    formRecognizerClient.beginExtractReceiptsFromUrl(receiptSourceUrl);
+    formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptSourceUrl);
 IterableStream<RecognizedReceipt> receiptPageResults = syncPoller.getFinalResult();
 
 receiptPageResults.forEach(recognizedReceipt -> {

@@ -65,6 +65,7 @@ public final class Utility {
                 return operationLocation.substring(lastIndex + 1);
             }
         }
-        throw LOGGER.logExceptionAsError(new RuntimeException("Failed to parse operation header for result Id."));
+        throw LOGGER.logExceptionAsError(
+            new RuntimeException("Failed to parse operation header for result Id from: " + operationLocation));
     }
 }

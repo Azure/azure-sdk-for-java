@@ -29,6 +29,7 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +61,6 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {FormRecognizerAsyncClient.class, FormRecognizerClient.class})
 public final class FormRecognizerClientBuilder {
 
-    static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
     private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
     private static final String CONTENT_TYPE_HEADER_VALUE = ContentType.APPLICATION_JSON;
     private static final String ACCEPT_HEADER = "Accept";
@@ -84,6 +84,8 @@ public final class FormRecognizerClientBuilder {
     private RetryPolicy retryPolicy;
     private FormRecognizerServiceVersion version;
 
+    static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
+    static final Duration DEFAULT_DURATION = Duration.ofSeconds(5);
     /**
      * The constructor with defaults.
      */

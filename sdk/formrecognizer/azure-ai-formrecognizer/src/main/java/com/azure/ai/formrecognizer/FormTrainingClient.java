@@ -7,6 +7,7 @@ import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -22,6 +23,7 @@ import java.time.Duration;
  *
  * @see FormRecognizerClientBuilder
  */
+@ServiceClient(builder = FormRecognizerClientBuilder.class)
 public class FormTrainingClient {
 
     private final FormTrainingAsyncClient client;
@@ -61,6 +63,7 @@ public class FormTrainingClient {
      * @return A {@link SyncPoller} that polls the training model operation until it has completed, has failed, or has
      * been cancelled.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<OperationResult, CustomFormModel> beginTraining(String fileSourceUrl, boolean useLabelFile) {
         return beginTraining(fileSourceUrl, useLabelFile, false, null, null);
     }
@@ -87,6 +90,7 @@ public class FormTrainingClient {
      * @return A {@link SyncPoller} that polls the extract receipt operation until it
      * has completed, has failed, or has been cancelled.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<OperationResult, CustomFormModel> beginTraining(String fileSourceUrl, boolean useLabelFile,
         boolean includeSubFolders, String filePrefix, Duration pollInterval) {
         return client.beginTraining(fileSourceUrl, useLabelFile, includeSubFolders,
@@ -96,26 +100,26 @@ public class FormTrainingClient {
     /**
      * Get detailed information for a specified custom model id.
      *
-     * @param modelId Model identifier.
+     * @param modelId The UUID string format model identifier.
      *
      * @return The detailed information for the specified model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomFormModel getCustomModel(String modelId) {
-        return getCustomFormModelWithResponse(modelId, Context.NONE).getValue();
+        return getCustomModelWithResponse(modelId, Context.NONE).getValue();
     }
 
     /**
      * Get detailed information for a specified custom model id.
      *
-     * @param modelId Model identifier.
+     * @param modelId The UUID string format model identifier.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The detailed information for the specified model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CustomFormModel> getCustomFormModelWithResponse(String modelId, Context context) {
-        return client.getCustomFormModelWithResponse(modelId, context).block();
+    public Response<CustomFormModel> getCustomModelWithResponse(String modelId, Context context) {
+        return client.getCustomModelWithResponse(modelId, context).block();
     }
 
     /**
@@ -143,7 +147,7 @@ public class FormTrainingClient {
     /**
      * Deletes the specified custom model.
      *
-     * @param modelId The modelIdentifier
+     * @param modelId The UUID string format model identifier.
      */
     public void deleteModel(String modelId) {
         deleteModelWithResponse(modelId, Context.NONE);
@@ -152,7 +156,7 @@ public class FormTrainingClient {
     /**
      * Deletes the specified custom model.
      *
-     * @param modelId The modelIdentifier.
+     * @param modelId The UUID string format model identifier.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Mono} containing containing status code and HTTP headers

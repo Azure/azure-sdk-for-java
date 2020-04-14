@@ -43,7 +43,7 @@ public final class CustomFormSubModel {
     }
 
     /**
-     * Get the accuracy property: Estimated extraction accuracy for this model.
+     * Get the estimated extraction accuracy for this model.
      *
      * @return the accuracy value.
      */
@@ -52,7 +52,7 @@ public final class CustomFormSubModel {
     }
 
     /**
-     * Gets the form type for the model.
+     * Gets the recognized form type for the model.
      *
      * @return the form type for the model.
      */

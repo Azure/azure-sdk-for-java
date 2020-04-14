@@ -7,7 +7,6 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 import java.time.OffsetDateTime;
-import java.util.List;
 
 /**
  * The CustomFormModel
@@ -18,7 +17,7 @@ public final class CustomFormModel {
     /*
      * List of errors returned during the training operation.
      */
-    private final List<FormRecognizerError> modelError;
+    private final IterableStream<FormRecognizerError> modelError;
 
     /*
      * Model identifier.
@@ -48,7 +47,7 @@ public final class CustomFormModel {
     /*
      * List of the documents used to train the model.
      */
-    private final List<TrainingDocumentInfo> trainingDocuments;
+    private final IterableStream<TrainingDocumentInfo> trainingDocuments;
 
     /**
      * Constructs a CustomFormModel object.
@@ -63,8 +62,8 @@ public final class CustomFormModel {
      */
     public CustomFormModel(final String modelId, final ModelTrainingStatus modelStatus,
         final OffsetDateTime createdOn, final OffsetDateTime lastUpdatedOn,
-        final IterableStream<CustomFormSubModel> subModels, final List<FormRecognizerError> modelError,
-        final List<TrainingDocumentInfo> trainingDocuments) {
+        final IterableStream<CustomFormSubModel> subModels, final IterableStream<FormRecognizerError> modelError,
+        final IterableStream<TrainingDocumentInfo> trainingDocuments) {
         this.modelId = modelId;
         this.modelStatus = modelStatus;
         this.createdOn = createdOn;
@@ -75,7 +74,7 @@ public final class CustomFormModel {
     }
 
     /**
-     * Get the modelId property: Model identifier.
+     * Get the Model identifier.
      *
      * @return the modelId value.
      */
@@ -84,7 +83,7 @@ public final class CustomFormModel {
     }
 
     /**
-     * Get the status property: Status of the model.
+     * Get the status of the model.
      *
      * @return the status value.
      */
@@ -93,7 +92,7 @@ public final class CustomFormModel {
     }
 
     /**
-     * Get the createdDateTime property: Date and time (UTC) when the model was
+     * Get the Date and time (UTC) when the model was
      * created.
      *
      * @return the createdDateTime value.
@@ -103,7 +102,7 @@ public final class CustomFormModel {
     }
 
     /**
-     * Get the lastUpdatedDateTime property: Date and time (UTC) when the
+     * Get the Date and time (UTC) when the
      * status was last updated.
      *
      * @return the lastUpdatedDateTime value.
@@ -113,16 +112,16 @@ public final class CustomFormModel {
     }
 
     /**
-     * Get the errors property: Errors returned during the training operation.
+     * Get the errors returned during the training operation.
      *
      * @return the errors value.
      */
-    public List<FormRecognizerError> getModelError() {
+    public IterableStream<FormRecognizerError> getModelError() {
         return this.modelError;
     }
 
     /**
-     * Get the sub models property: The sub models returned during the training operation.
+     * Get the recognized sub models returned during the training operation.
      *
      * @return the sub models value.
      */
@@ -131,12 +130,11 @@ public final class CustomFormModel {
     }
 
     /**
-     * Get the trainingDocuments property: List of the documents used to train
-     * the model and any errors reported in each document.
+     * Get the list of the documents used to train the model and any errors reported in each document.
      *
      * @return the trainingDocuments value.
      */
-    public List<TrainingDocumentInfo> getTrainingDocuments() {
+    public IterableStream<TrainingDocumentInfo> getTrainingDocuments() {
         return this.trainingDocuments;
     }
 }

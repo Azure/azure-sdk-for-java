@@ -14,6 +14,7 @@ import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.RecognizedReceipt;
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
@@ -39,7 +40,7 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Function;
 
-import static com.azure.ai.formrecognizer.Transforms.toCustomFormModelInfo;
+import static com.azure.ai.formrecognizer.FormRecognizerClientBuilder.DEFAULT_DURATION;
 import static com.azure.ai.formrecognizer.Transforms.toReceipt;
 import static com.azure.ai.formrecognizer.Transforms.toRecognizedForm;
 import static com.azure.ai.formrecognizer.Transforms.toRecognizedLayout;
@@ -99,12 +100,13 @@ public final class FormRecognizerAsyncClient {
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
-     * @param fileSourceUrl The source URL to the input document. Size of the file must be less than 20 MB.
-     * @param modelId The custom trained model Id to be used.
+     * @param fileSourceUrl The source URL to the input document. Size of the file must be less than 50 MB.
+     * @param modelId The UUID string format custom trained model Id to be used.
      *
      * @return A {@link PollerFlux} that polls the extract custom form operation until it has completed, has failed,
      * or has been cancelled.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, IterableStream<RecognizedForm>>
         beginRecognizeCustomFormsFromUrl(String fileSourceUrl, String modelId) {
         return beginRecognizeCustomFormsFromUrl(fileSourceUrl, modelId, false, null);
@@ -117,20 +119,21 @@ public final class FormRecognizerAsyncClient {
      * error message indicating absence of cancellation support.</p>
      *
      * @param fileSourceUrl The source URL to the input document. Size of the file must be less than 20 MB.
-     * @param modelId The custom trained model Id to be used.
+     * @param modelId The UUID string format custom trained model Id to be used.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
-     *
+     *F
      * @return A {@link PollerFlux} that polls the extract custom form operation until it has completed, has failed,
      * or has been cancelled.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, IterableStream<RecognizedForm>>
         beginRecognizeCustomFormsFromUrl(String fileSourceUrl, String modelId, boolean includeTextDetails,
         Duration pollInterval) {
         Objects.requireNonNull(fileSourceUrl, "'fileSourceUrl' is required and cannot be null.");
         Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
-        final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(5);
+        final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
         return new PollerFlux<OperationResult, IterableStream<RecognizedForm>>(
             interval,
             analyzeFormActivationOperation(fileSourceUrl, modelId, includeTextDetails),
@@ -146,13 +149,14 @@ public final class FormRecognizerAsyncClient {
      * error message indicating absence of cancellation support.</p>
      *
      * @param data The data of the document to be extract receipt information from.
-     * @param modelId The custom trained model Id to be used.
+     * @param modelId The UUID string format custom trained model Id to be used.
      * @param length The exact length of the data. Size of the file must be less than 20 MB.
      * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
      * been cancelled.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, IterableStream<RecognizedForm>>
         beginRecognizeCustomForms(Flux<ByteBuffer> data, String modelId, long length, FormContentType formContentType) {
         return beginRecognizeCustomForms(data, modelId, length, formContentType, false, null);
@@ -165,7 +169,7 @@ public final class FormRecognizerAsyncClient {
      * error message indicating absence of cancellation support.</p>
      *
      * @param data The data of the document to be extract receipt information from.
-     * @param modelId The custom trained model Id to be used.
+     * @param modelId The UUID string format custom trained model Id to be used.
      * @param length The exact length of the data. Size of the file must be less than 20 MB.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
@@ -175,6 +179,7 @@ public final class FormRecognizerAsyncClient {
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
      * been cancelled.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, IterableStream<RecognizedForm>>
         beginRecognizeCustomForms(Flux<ByteBuffer> data, String modelId, long length, FormContentType formContentType,
         boolean includeTextDetails, Duration pollInterval) {
@@ -182,7 +187,7 @@ public final class FormRecognizerAsyncClient {
         Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
         Objects.requireNonNull(formContentType, "'formContentType' is required and cannot be null.");
 
-        final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(5);
+        final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
         return new PollerFlux<OperationResult, IterableStream<RecognizedForm>>(
             interval,
             analyzeFormStreamActivationOperation(data, modelId, length, formContentType, includeTextDetails),
@@ -202,6 +207,7 @@ public final class FormRecognizerAsyncClient {
      * @return A {@link PollerFlux} that polls the extract custom form operation until it has completed, has failed,
      * or has been cancelled.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, IterableStream<FormPage>> beginRecognizeContentFromUrl(String fileSourceUrl) {
         return beginRecognizeContentFromUrl(fileSourceUrl, null);
     }
@@ -219,10 +225,11 @@ public final class FormRecognizerAsyncClient {
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
      * been cancelled.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, IterableStream<FormPage>>
         beginRecognizeContentFromUrl(String sourceUrl, Duration pollInterval) {
         Objects.requireNonNull(sourceUrl, "'sourceUrl' is required and cannot be null.");
-        final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(5);
+        final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
         return new PollerFlux<OperationResult, IterableStream<FormPage>>(interval,
             contentAnalyzeActivationOperation(sourceUrl),
             extractContentPollOperation(),
@@ -244,6 +251,7 @@ public final class FormRecognizerAsyncClient {
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
      * been cancelled.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, IterableStream<FormPage>> beginRecognizeContent(
         Flux<ByteBuffer> data, long length, FormContentType formContentType) {
         return beginRecognizeContent(data, formContentType, length, null);
@@ -264,13 +272,14 @@ public final class FormRecognizerAsyncClient {
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
      * been cancelled.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, IterableStream<FormPage>>
         beginRecognizeContent(Flux<ByteBuffer> data, FormContentType formContentType, long length,
         Duration pollInterval) {
         Objects.requireNonNull(data, "'data' is required and cannot be null.");
         Objects.requireNonNull(formContentType, "'formContentType' is required and cannot be null.");
 
-        final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(5);
+        final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
         return new PollerFlux<OperationResult, IterableStream<FormPage>>(interval,
             contentStreamActivationOperation(data, length, formContentType),
             extractContentPollOperation(),
@@ -290,6 +299,7 @@ public final class FormRecognizerAsyncClient {
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
      * been cancelled.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, IterableStream<RecognizedReceipt>>
         beginRecognizeReceiptsFromUrl(String sourceUrl) {
         return beginRecognizeReceiptsFromUrl(sourceUrl, false, null);
@@ -309,10 +319,11 @@ public final class FormRecognizerAsyncClient {
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
      * been cancelled.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, IterableStream<RecognizedReceipt>>
         beginRecognizeReceiptsFromUrl(String sourceUrl, boolean includeTextDetails, Duration pollInterval) {
         Objects.requireNonNull(sourceUrl, "'sourceUrl' is required and cannot be null.");
-        final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(5);
+        final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
         return new PollerFlux<OperationResult, IterableStream<RecognizedReceipt>>(interval,
             receiptAnalyzeActivationOperation(sourceUrl, includeTextDetails),
             extractReceiptPollOperation(),
@@ -334,6 +345,7 @@ public final class FormRecognizerAsyncClient {
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
      * been cancelled.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, IterableStream<RecognizedReceipt>> beginRecognizeReceipts(
         Flux<ByteBuffer> data, long length, FormContentType formContentType) {
         return beginRecognizeReceipts(data, length, formContentType, false, null);
@@ -355,13 +367,14 @@ public final class FormRecognizerAsyncClient {
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
      * been cancelled.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, IterableStream<RecognizedReceipt>> beginRecognizeReceipts(
         Flux<ByteBuffer> data, long length, FormContentType formContentType, boolean includeTextDetails,
         Duration pollInterval) {
         Objects.requireNonNull(data, "'data' is required and cannot be null.");
         Objects.requireNonNull(formContentType, "'formContentType' is required and cannot be null.");
 
-        final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(5);
+        final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
         return new PollerFlux<OperationResult, IterableStream<RecognizedReceipt>>(interval,
             receiptStreamActivationOperation(data, length, formContentType, includeTextDetails),
             extractReceiptPollOperation(),

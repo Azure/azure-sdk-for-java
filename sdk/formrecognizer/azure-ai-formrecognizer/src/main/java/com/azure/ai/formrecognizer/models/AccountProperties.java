@@ -33,7 +33,7 @@ public final class AccountProperties {
     }
 
     /**
-     * Get the count property: Current count of trained custom models.
+     * Get the current count of trained custom models.
      *
      * @return the count value.
      */
@@ -42,7 +42,7 @@ public final class AccountProperties {
     }
 
     /**
-     * Get the limit property: Max number of models that can be trained for
+     * Get the max number of models that can be trained for
      * this account.
      *
      * @return the limit value.

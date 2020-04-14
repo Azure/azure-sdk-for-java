@@ -23,7 +23,6 @@ import static com.azure.ai.formrecognizer.models.ReceiptItemType.TOTAL_PRICE;
  * The ReceiptExtensions class to allow users to convert a {@link RecognizedReceipt}
  * to a receiptLocale specific Receipt type.
  */
-@SuppressWarnings("unchecked")
 public final class ReceiptExtensions {
 
     private ReceiptExtensions() {
@@ -36,6 +35,7 @@ public final class ReceiptExtensions {
      *
      * @return The converted {@link USReceipt US locale receipt} type.
      */
+    @SuppressWarnings("unchecked")
     public static USReceipt asUSReceipt(RecognizedReceipt receipt) {
         // add receipt fields
         USReceiptType receiptType = null;
@@ -105,6 +105,7 @@ public final class ReceiptExtensions {
      *
      * @return A list of {@link USReceiptItem}.
      */
+    @SuppressWarnings("unchecked")
     private static List<USReceiptItem> toReceiptItems(FormField<?> fieldValueItems) {
         List<FormField<?>> fieldValueArray = (List<FormField<?>>) fieldValueItems.getFieldValue();
         List<USReceiptItem> receiptItemList = new ArrayList<>();

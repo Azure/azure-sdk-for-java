@@ -51,7 +51,7 @@ public final class RecognizedForm {
     }
 
     /**
-     * Get the fields property: Dictionary of named field values.
+     * Get the dictionary of named field values.
      *
      * @return the fields value.
      */
@@ -60,7 +60,7 @@ public final class RecognizedForm {
     }
 
     /**
-     * Get the formType property: Form type.
+     * Get the recognized form type.
      *
      * @return the formType value.
      */
@@ -69,8 +69,7 @@ public final class RecognizedForm {
     }
 
     /**
-     * Get the pageRange property: First and last page number where the
-     * document is found.
+     * Get the first and last page number where the document is found.
      *
      * @return the pageRange value.
      */
@@ -79,7 +78,7 @@ public final class RecognizedForm {
     }
 
     /**
-     * Get the pages property: List of extracted pages.
+     * Get the list of extracted pages.
      *
      * @return the pages value.
      */

@@ -50,7 +50,7 @@ public final class CustomFormModelInfo {
     }
 
     /**
-     * Get the modelId property: Model identifier.
+     * Get the model identifier.
      *
      * @return the modelId value.
      */
@@ -59,7 +59,7 @@ public final class CustomFormModelInfo {
     }
 
     /**
-     * Get the status property: Status of the model.
+     * Get the Status of the model.
      *
      * @return the status value.
      */
@@ -68,8 +68,7 @@ public final class CustomFormModelInfo {
     }
 
     /**
-     * Get the createdDateTime property: Date and time (UTC) when the model was
-     * created.
+     * Get the date and time (UTC) when the model was created.
      *
      * @return the createdDateTime value.
      */
@@ -78,8 +77,7 @@ public final class CustomFormModelInfo {
     }
 
     /**
-     * Get the lastUpdatedDateTime property: Date and time (UTC) when the
-     * status was last updated.
+     * Get the date and time (UTC) when the status was last updated.
      *
      * @return the lastUpdatedDateTime value.
      */

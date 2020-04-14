@@ -10,6 +10,7 @@ import com.azure.ai.formrecognizer.models.CustomFormModelField;
 import com.azure.ai.formrecognizer.models.CustomFormSubModel;
 import com.azure.ai.formrecognizer.models.DimensionUnit;
 import com.azure.ai.formrecognizer.models.FormPage;
+import com.azure.ai.formrecognizer.models.FormRecognizerError;
 import com.azure.ai.formrecognizer.models.ModelTrainingStatus;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.RecognizedReceipt;
@@ -25,11 +26,9 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static com.azure.ai.formrecognizer.CustomModelTransforms.DEFAULT_CONFIDENCE_VALUE;
@@ -47,7 +46,7 @@ final class TestUtils {
     static final String SUPERVISED_MODEL_ID = "a0a3998a-b3c0-4075-aa6b-c4c4affe66b7";
     static final String INVALID_MODEL_ID = "a0a3998a-4c4affe66b7";
     static final String INVALID_STATUS_MODEL_ID = "22138c4e-c4b0-4901-a0e1-6c5beb73fc1d";
-    static final String INVALID_STATUS_MODEL_ERROR = "Model Id provided returned with status: invalid";
+    static final String INVALID_STATUS_MODEL_ERROR = "Model Id " + INVALID_STATUS_MODEL_ID + " returned with status: invalid";
 
     static final String INVALID_SOURCE_URL_ERROR = "Download failed. Please check your input URL.";
     // TODO (savaity): Do not hardcode, generate SAS URL
@@ -90,17 +89,17 @@ final class TestUtils {
         return new IterableStream<RecognizedForm>(getRawExpectedForms(includeTextDetails));
     }
 
-    static List<TrainingDocumentInfo> getTrainingDocuments() {
-        TrainingDocumentInfo trainingDocumentInfo1 = new TrainingDocumentInfo("Invoice_1.pdf", TrainingStatus.SUCCEEDED, 1, Collections.emptyList());
-        TrainingDocumentInfo trainingDocumentInfo2 = new TrainingDocumentInfo("Invoice_2.pdf", TrainingStatus.SUCCEEDED, 1, Collections.emptyList());
-        TrainingDocumentInfo trainingDocumentInfo3 = new TrainingDocumentInfo("Invoice_3.pdf", TrainingStatus.SUCCEEDED, 1, Collections.emptyList());
-        TrainingDocumentInfo trainingDocumentInfo4 = new TrainingDocumentInfo("Invoice_4.pdf", TrainingStatus.SUCCEEDED, 1, Collections.emptyList());
-        TrainingDocumentInfo trainingDocumentInfo5 = new TrainingDocumentInfo("Invoice_5.pdf", TrainingStatus.SUCCEEDED, 1, Collections.emptyList());
-        return new ArrayList<>(Arrays.asList(trainingDocumentInfo1, trainingDocumentInfo2, trainingDocumentInfo3, trainingDocumentInfo4, trainingDocumentInfo5));
+    static IterableStream<TrainingDocumentInfo> getTrainingDocuments() {
+        TrainingDocumentInfo trainingDocumentInfo1 = new TrainingDocumentInfo("Invoice_1.pdf", TrainingStatus.SUCCEEDED, 1, new IterableStream<FormRecognizerError>(Collections.emptyList()));
+        TrainingDocumentInfo trainingDocumentInfo2 = new TrainingDocumentInfo("Invoice_2.pdf", TrainingStatus.SUCCEEDED, 1, new IterableStream<FormRecognizerError>(Collections.emptyList()));
+        TrainingDocumentInfo trainingDocumentInfo3 = new TrainingDocumentInfo("Invoice_3.pdf", TrainingStatus.SUCCEEDED, 1, new IterableStream<FormRecognizerError>(Collections.emptyList()));
+        TrainingDocumentInfo trainingDocumentInfo4 = new TrainingDocumentInfo("Invoice_4.pdf", TrainingStatus.SUCCEEDED, 1, new IterableStream<FormRecognizerError>(Collections.emptyList()));
+        TrainingDocumentInfo trainingDocumentInfo5 = new TrainingDocumentInfo("Invoice_5.pdf", TrainingStatus.SUCCEEDED, 1, new IterableStream<FormRecognizerError>(Collections.emptyList()));
+        return new IterableStream<TrainingDocumentInfo>(Arrays.asList(trainingDocumentInfo1, trainingDocumentInfo2, trainingDocumentInfo3, trainingDocumentInfo4, trainingDocumentInfo5));
     }
 
     static CustomFormModel getExpectedUnsupervisedModel() {
-        Map<String, CustomFormModelField> fieldMap = new HashMap<>() {
+        Map<String, CustomFormModelField> fieldMap = new HashMap<String, CustomFormModelField>() {
             {
                 put("field-0", new CustomFormModelField("field-0", "Address", null));
                 put("field-1", new CustomFormModelField("field-1", "Charges", null));
@@ -118,11 +117,11 @@ final class TestUtils {
             OffsetDateTime.parse("2020-04-09T21:30:28Z"),
             OffsetDateTime.parse("2020-04-09T18:24:56Z"),
             new IterableStream<>(Collections.singletonList(customFormSubModel)),
-            null, getTrainingDocuments());
+            new IterableStream<FormRecognizerError>(Collections.emptyList()), getTrainingDocuments());
     }
 
     static CustomFormModel getExpectedSupervisedModel() {
-        Map<String, CustomFormModelField> fieldMap = new HashMap<>() {
+        Map<String, CustomFormModelField> fieldMap = new HashMap<String, CustomFormModelField>() {
             {
                 put("InvoiceCharges", new CustomFormModelField(null, "InvoiceCharges", 1.0f));
                 put("InvoiceDate", new CustomFormModelField(null, "InvoiceDate", 0.8f));
@@ -136,7 +135,7 @@ final class TestUtils {
             OffsetDateTime.parse("2020-04-09T18:24:49Z"),
             OffsetDateTime.parse("2020-04-09T18:24:56Z"),
             new IterableStream<>(Collections.singletonList(customFormSubModel)),
-            null, getTrainingDocuments());
+            new IterableStream<FormRecognizerError>(Collections.emptyList()), getTrainingDocuments());
     }
 
     static AccountProperties getExpectedAccountProperties() {

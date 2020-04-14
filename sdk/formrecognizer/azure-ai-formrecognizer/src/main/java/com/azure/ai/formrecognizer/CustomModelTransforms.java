@@ -45,7 +45,8 @@ final class CustomModelTransforms {
         ModelInfo modelInfo = modelResponse.getModelInfo();
         if (modelInfo.getStatus() == ModelStatus.INVALID) {
             throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Model Id provided returned with status: " + modelInfo.getStatus()));
+                new IllegalArgumentException(String.format("Model Id %s returned with status: %s",
+                    modelInfo.getModelId(), modelInfo.getStatus())));
         }
 
         List<TrainingDocumentInfo> trainingDocumentInfoList =
@@ -54,7 +55,7 @@ final class CustomModelTransforms {
                     trainingDocumentItem.getDocumentName(),
                     TrainingStatus.fromString(trainingDocumentItem.getStatus().toString()),
                     trainingDocumentItem.getPages(),
-                    setTrainingErrors(trainingDocumentItem.getErrors())))
+                    new IterableStream<FormRecognizerError>(transformTrainingErrors(trainingDocumentItem.getErrors()))))
                 .collect(Collectors.toList());
 
         List<CustomFormSubModel> subModelList = new ArrayList<>();
@@ -92,8 +93,9 @@ final class CustomModelTransforms {
             modelInfo.getCreatedDateTime(),
             modelInfo.getLastUpdatedDateTime(),
             new IterableStream<>(subModelList),
-            setTrainingErrors(modelResponse.getTrainResult().getErrors()),
-            trainingDocumentInfoList);
+            new IterableStream<FormRecognizerError>(
+                transformTrainingErrors(modelResponse.getTrainResult().getErrors())),
+            new IterableStream<TrainingDocumentInfo>(trainingDocumentInfoList));
     }
 
     /**
@@ -103,9 +105,9 @@ final class CustomModelTransforms {
      *
      * @return The list of {@link FormRecognizerError}
      */
-    private static List<FormRecognizerError> setTrainingErrors(List<ErrorInformation> trainingErrorList) {
+    private static List<FormRecognizerError> transformTrainingErrors(List<ErrorInformation> trainingErrorList) {
         if (CoreUtils.isNullOrEmpty(trainingErrorList)) {
-            return null;
+            return new ArrayList<>();
         } else {
             return trainingErrorList.stream().map(errorInformation ->
                 new FormRecognizerError(errorInformation.getCode(),
