@@ -114,6 +114,8 @@ stages:
                 runOnce:
                   deploy:
                     steps:
+                      - checkout: self
+                        path: azure-sdk-for-java
                       - checkout: azure-sdk-build-tools
                         path: azure-sdk-build-tools
                       - template: tools/gpg/gpg.yml@azure-sdk-build-tools
