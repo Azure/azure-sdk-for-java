@@ -3,38 +3,30 @@
 
 package com.azure.ai.formrecognizer.models;
 
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.ExpandableStringEnum;
+
 /**
  * A enum class represents all status a training model can have.
  */
-public enum ModelTrainingStatus {
+
+@Immutable
+public final class ModelTrainingStatus extends ExpandableStringEnum<ModelTrainingStatus> {
     /**
      * Enum value creating.
      */
-    CREATING("creating"),
+    public static final ModelTrainingStatus CREATING = fromString("creating");
 
     /**
      * Enum value ready.
      */
-    READY("ready"),
+    public static final ModelTrainingStatus READY = fromString("ready");
+
 
     /**
      * Enum value invalid.
      */
-    INVALID("invalid");
-
-    /**
-     * The actual serialized value for a ModelStatus instance.
-     */
-    private final String value;
-
-    /**
-     * Constructs a {@link ModelTrainingStatus} box object.
-     *
-     * @param value The serialized value to parse.
-     */
-    ModelTrainingStatus(String value) {
-        this.value = value;
-    }
+    public static final ModelTrainingStatus INVALID = fromString("invalid");
 
     /**
      * Parses a serialized value to a ModelStatus instance.
@@ -43,17 +35,6 @@ public enum ModelTrainingStatus {
      * @return The parsed ModelStatus object, or null if unable to parse.
      */
     public static ModelTrainingStatus fromString(String value) {
-        ModelTrainingStatus[] items = ModelTrainingStatus.values();
-        for (ModelTrainingStatus item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public String toString() {
-        return this.value;
+        return fromString(value, ModelTrainingStatus.class);
     }
 }
