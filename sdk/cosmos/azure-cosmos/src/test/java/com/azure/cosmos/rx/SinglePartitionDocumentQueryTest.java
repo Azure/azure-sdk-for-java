@@ -173,7 +173,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
                 .requestChargeGreaterThanOrEqualTo(1.0).build())
             .build();
 
-        validateQuerySuccess(queryObservable.byPage(), validator);
+        validateQuerySuccess(queryObservable.byPage(maxItemCount), validator);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -198,7 +198,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
 
-        validateQuerySuccess(queryObservable.byPage(), validator);
+        validateQuerySuccess(queryObservable.byPage(maxItemCount), validator);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT * 1000)
@@ -210,7 +210,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
         TestSubscriber<FeedResponse<CosmosItemProperties>> subscriber = new TestSubscriber<>();
-        queryObservable.byPage().take(1).subscribe(subscriber);
+        queryObservable.byPage(maxItemCount).take(1).subscribe(subscriber);
 
         subscriber.awaitTerminalEvent();
         subscriber.assertComplete();
