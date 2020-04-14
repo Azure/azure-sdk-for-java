@@ -1,7 +1,7 @@
 # Azure Key Vault Secret client library for Java
 Azure Key Vault is a cloud service that provides a secure storage of secrets, such as passwords and database connection strings.
 
-Azure Key Vault Secrets client library allows you to securely store and tightly control the access to tokens, passwords, API keys, and other secrets. This library offers operations to create, retrieve, update, delete, purge, backup, restore and list the secrets and its versions.
+Azure Key Vault Secrets client library allows you to securely store and tightly control the access to tokens, passwords, API keys, and other secrets. This library offers operations to create, retrieve, update, delete, purge, backup, restore, and list the secrets and its versions.
 
 Use the Azure Key Vault Secrets client library to create and manage secrets.
 
@@ -60,7 +60,7 @@ Here is [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
     }
     ```
 
-* Use the above returned credentials information to set **AZURE_CLIENT_ID** (appId), **AZURE_CLIENT_SECRET** (password) and **AZURE_TENANT_ID** (tenantId) environment variables. The following example shows a way to do this in Bash:
+* Use the above returned credentials information to set **AZURE_CLIENT_ID** (appId), **AZURE_CLIENT_SECRET** (password), and **AZURE_TENANT_ID** (tenantId) environment variables. The following example shows a way to do this in Bash:
 
   ```Bash
     export AZURE_CLIENT_ID="generated-app-ID"
