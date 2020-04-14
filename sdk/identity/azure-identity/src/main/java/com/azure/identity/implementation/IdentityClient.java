@@ -25,8 +25,6 @@ import com.azure.identity.implementation.util.CertificateUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mcdermottroe.apple.OSXKeychain;
-import com.mcdermottroe.apple.OSXKeychainException;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ClientCredentialParameters;
@@ -36,6 +34,7 @@ import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.RefreshTokenParameters;
 import com.microsoft.aad.msal4j.SilentParameters;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
+import com.microsoft.aad.msal4jextensions.persistence.mac.KeyChainAccessor;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -177,21 +176,19 @@ public class IdentityClient {
                 }
             });
 
-
-
-        } catch (OSXKeychainException | JsonProcessingException e) {
+        } catch (JsonProcessingException e) {
             throw logger.logExceptionAsError(new RuntimeException("Credential is not available", e));
         }
     }
 
-    private JsonNode getIntelliJCredentials() throws OSXKeychainException, JsonProcessingException {
+    private JsonNode getIntelliJCredentials() throws JsonProcessingException {
         String os = System.getProperty("os.name").toLowerCase(Locale.ROOT);
 
         if (os.contains("mac")) {
-            OSXKeychain keychain = OSXKeychain.getInstance();
-
-            String jsonCred =  keychain.findGenericPassword("ADAuthManager",
+            KeyChainAccessor accessor = new KeyChainAccessor(null, "ADAuthManager",
                 "cachedAuthResult");
+
+            String  jsonCred  = new String(accessor.read());
 
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readTree(jsonCred);
