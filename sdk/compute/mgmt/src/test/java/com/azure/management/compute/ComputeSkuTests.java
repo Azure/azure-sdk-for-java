@@ -21,7 +21,7 @@ public class ComputeSkuTests extends ComputeManagementTest {
     }
 
     @Test
-    public void Foo() {
+    public void foo() {
         HashSet<EncryptionStatus> s = new HashSet<>();
         s.add(EncryptionStatus.NOT_ENCRYPTED);
         s.add(EncryptionStatus.NOT_ENCRYPTED);

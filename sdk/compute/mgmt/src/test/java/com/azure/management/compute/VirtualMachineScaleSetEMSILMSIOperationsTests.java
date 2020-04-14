@@ -27,9 +27,9 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 public class VirtualMachineScaleSetEMSILMSIOperationsTests extends TestBase {
-    private String RG_NAME = "";
+    private String rgName = "";
     private Region region = Region.fromName("West Central US");
-    private final String VMSSNAME = "javavmss";
+    private final String vmssName = "javavmss";
 
     private ComputeManager computeManager;
     private MSIManager msiManager;
@@ -47,17 +47,17 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends TestBase {
 
     @Override
     protected void cleanUpResources() {
-        this.resourceManager.resourceGroups().deleteByName(RG_NAME);
+        this.resourceManager.resourceGroups().deleteByName(rgName);
     }
 
     @Test
     public void canCreateUpdateVirtualMachineScaleSetWithEMSI() throws Exception {
-        RG_NAME = generateRandomResourceName("java-ems-c-rg", 15);
+        rgName = generateRandomResourceName("java-ems-c-rg", 15);
         String identityName1 = generateRandomResourceName("msi-id", 15);
         String identityName2 = generateRandomResourceName("msi-id", 15);
         String networkName = generateRandomResourceName("nw", 10);
 
-        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(RG_NAME).withRegion(region).create();
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
         // Create a virtual network to which we will assign "EMSI" with reader access
         //
@@ -114,7 +114,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends TestBase {
             this
                 .computeManager
                 .virtualMachineScaleSets()
-                .define(VMSSNAME)
+                .define(vmssName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
@@ -310,13 +310,13 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends TestBase {
 
     @Test
     public void canCreateVirtualMachineScaleSetWithLMSIAndEMSI() throws Exception {
-        RG_NAME = generateRandomResourceName("java-emsi-c-rg", 15);
+        rgName = generateRandomResourceName("java-emsi-c-rg", 15);
         String identityName1 = generateRandomResourceName("msi-id", 15);
         String networkName = generateRandomResourceName("nw", 10);
 
         // Create a resource group
         //
-        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(RG_NAME).withRegion(region).create();
+        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
         // Create a virtual network to which we will assign "EMSI" with reader access
         //
@@ -361,7 +361,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends TestBase {
             this
                 .computeManager
                 .virtualMachineScaleSets()
-                .define(VMSSNAME)
+                .define(vmssName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
@@ -458,13 +458,13 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends TestBase {
 
     @Test
     public void canUpdateVirtualMachineScaleSetWithEMSIAndLMSI() throws Exception {
-        RG_NAME = generateRandomResourceName("java-emsi-c-rg", 15);
+        rgName = generateRandomResourceName("java-emsi-c-rg", 15);
         String identityName1 = generateRandomResourceName("msi-id-1", 15);
         String identityName2 = generateRandomResourceName("msi-id-2", 15);
 
         // Create a resource group
         //
-        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(RG_NAME).withRegion(region).create();
+        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
         // Create a virtual network for VMSS
         //
@@ -487,7 +487,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends TestBase {
             this
                 .computeManager
                 .virtualMachineScaleSets()
-                .define(VMSSNAME)
+                .define(vmssName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)

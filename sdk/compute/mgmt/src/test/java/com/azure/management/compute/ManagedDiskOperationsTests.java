@@ -12,18 +12,18 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class ManagedDiskOperationsTests extends ComputeManagementTest {
-    private String RG_NAME = "";
+    private String rgName = "";
     private Region region = Region.US_WEST_CENTRAL;
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        RG_NAME = generateRandomResourceName("javacsmrg", 15);
+        rgName = generateRandomResourceName("javacsmrg", 15);
         super.initializeClients(restClient, defaultSubscription, domain);
     }
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().deleteByName(RG_NAME);
+        resourceManager.resourceGroups().deleteByName(rgName);
     }
 
     @Test
@@ -31,7 +31,7 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
         final String diskName = generateRandomResourceName("md-empty-", 20);
         final DiskSkuTypes updateTo = DiskSkuTypes.STANDARD_LRS;
 
-        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(RG_NAME).withRegion(region).create();
+        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
         // Create an empty managed disk
         //
@@ -88,7 +88,7 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
         final String diskName1 = generateRandomResourceName("md-1", 20);
         final String diskName2 = generateRandomResourceName("md-2", 20);
 
-        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(RG_NAME).withRegion(region).create();
+        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
         // Create an empty  managed disk
         //
@@ -139,7 +139,7 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
     public void canOperateOnManagedDiskFromUpload() {
         final String diskName = generateRandomResourceName("md-2", 20);
 
-        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(RG_NAME).withRegion(region).create();
+        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
         // Create a managed disk from upload
         //
@@ -176,7 +176,7 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
         final String snapshotBasedDiskName = generateRandomResourceName("md-snp-", 20);
         final String snapshotName = generateRandomResourceName("snp-", 20);
 
-        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(RG_NAME).withRegion(region).create();
+        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
         Disk emptyDisk =
             computeManager

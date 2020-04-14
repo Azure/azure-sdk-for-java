@@ -11,19 +11,19 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
-    private String RG_NAME = "";
-    private final Region REGION = Region.US_SOUTH_CENTRAL;
-    private final String VMNAME = "javavm";
+    private String rgName = "";
+    private final Region region = Region.US_SOUTH_CENTRAL;
+    private final String vmName = "javavm";
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        RG_NAME = generateRandomResourceName("javacsmrg", 15);
+        rgName = generateRandomResourceName("javacsmrg", 15);
         super.initializeClients(restClient, defaultSubscription, domain);
     }
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().deleteByName(RG_NAME);
+        resourceManager.resourceGroups().deleteByName(rgName);
     }
 
     @Test
@@ -31,9 +31,9 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
         VirtualMachine virtualMachine =
             computeManager
                 .virtualMachines()
-                .define(VMNAME)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
@@ -52,14 +52,14 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
     public void canEnableBootDiagnosticsWithCreatableStorageOnManagedVMCreation() {
         final String storageName = sdkContext.randomResourceName("st", 14);
         Creatable<StorageAccount> creatableStorageAccount =
-            storageManager.storageAccounts().define(storageName).withRegion(REGION).withNewResourceGroup(RG_NAME);
+            storageManager.storageAccounts().define(storageName).withRegion(region).withNewResourceGroup(rgName);
 
         VirtualMachine virtualMachine =
             computeManager
                 .virtualMachines()
-                .define(VMNAME)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
@@ -81,16 +81,16 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
             storageManager
                 .storageAccounts()
                 .define(storageName)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .create();
 
         VirtualMachine virtualMachine =
             computeManager
                 .virtualMachines()
-                .define(VMNAME)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
@@ -111,9 +111,9 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
         VirtualMachine virtualMachine =
             computeManager
                 .virtualMachines()
-                .define(VMNAME)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
@@ -139,9 +139,9 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
         VirtualMachine virtualMachine =
             computeManager
                 .virtualMachines()
-                .define(VMNAME)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
@@ -172,16 +172,16 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
             storageManager
                 .storageAccounts()
                 .define(storageName)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .create();
 
         VirtualMachine virtualMachine =
             computeManager
                 .virtualMachines()
-                .define(VMNAME)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
@@ -205,9 +205,9 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
         VirtualMachine virtualMachine1 =
             computeManager
                 .virtualMachines()
-                .define(VMNAME)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
@@ -224,9 +224,9 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
         VirtualMachine virtualMachine2 =
             computeManager
                 .virtualMachines()
-                .define(VMNAME)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
@@ -250,14 +250,14 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
     public void canEnableBootDiagnosticsWithCreatableStorageOnUnManagedVMCreation() {
         final String storageName = sdkContext.randomResourceName("st", 14);
         Creatable<StorageAccount> creatableStorageAccount =
-            storageManager.storageAccounts().define(storageName).withRegion(REGION).withNewResourceGroup(RG_NAME);
+            storageManager.storageAccounts().define(storageName).withRegion(region).withNewResourceGroup(rgName);
 
         VirtualMachine virtualMachine =
             computeManager
                 .virtualMachines()
-                .define(VMNAME)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()

@@ -12,19 +12,19 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementTest {
-    private String RG_NAME = "";
+    private String rgName = "";
     private Region region = Region.US_EAST;
     private KnownLinuxVirtualMachineImage linuxImage = KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS;
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        RG_NAME = generateRandomResourceName("javacsmrg", 15);
+        rgName = generateRandomResourceName("javacsmrg", 15);
         super.initializeClients(restClient, defaultSubscription, domain);
     }
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().deleteByName(RG_NAME);
+        resourceManager.resourceGroups().deleteByName(rgName);
     }
 
     @Test
@@ -39,7 +39,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .virtualMachines()
                 .define(vmName1)
                 .withRegion(region)
-                .withNewResourceGroup(RG_NAME)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
@@ -87,7 +87,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
         final String explicitlyCreatedEmptyDiskName2 = generateRandomResourceName(vmName1 + "_mdisk_", 25);
         final String explicitlyCreatedEmptyDiskName3 = generateRandomResourceName(vmName1 + "_mdisk_", 25);
 
-        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(RG_NAME).withRegion(region).create();
+        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
         Creatable<Disk> creatableEmptyDisk1 =
             computeManager
@@ -247,7 +247,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
         final String explicitlyCreatedEmptyDiskName2 = generateRandomResourceName(vmName1 + "_mdisk_", 25);
         final String explicitlyCreatedEmptyDiskName3 = generateRandomResourceName(vmName1 + "_mdisk_", 25);
 
-        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(RG_NAME).withRegion(region).create();
+        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
         Creatable<Disk> creatableEmptyDisk1 =
             computeManager
@@ -422,7 +422,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
         final String explicitlyCreatedEmptyDiskName2 = generateRandomResourceName(vmName1 + "_mdisk_", 25);
         final String explicitlyCreatedEmptyDiskName3 = generateRandomResourceName(vmName1 + "_mdisk_", 25);
 
-        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(RG_NAME).withRegion(region).create();
+        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
         Creatable<Disk> creatableEmptyDisk1 =
             computeManager
@@ -503,7 +503,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .virtualMachines()
                 .define(vmName)
                 .withRegion(region)
-                .withNewResourceGroup(RG_NAME)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
@@ -528,7 +528,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .disks()
                 .define(diskName)
                 .withRegion(region)
-                .withExistingResourceGroup(RG_NAME)
+                .withExistingResourceGroup(rgName)
                 .withLinuxFromVhd(osVhdUri)
                 .withStorageAccountName(storageAccountName)
                 .create();
@@ -540,7 +540,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .virtualMachines()
                 .define(vmName)
                 .withRegion(region)
-                .withExistingResourceGroup(RG_NAME)
+                .withExistingResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
@@ -565,7 +565,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .virtualMachines()
                 .define(vmName)
                 .withRegion(region)
-                .withNewResourceGroup(RG_NAME)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()

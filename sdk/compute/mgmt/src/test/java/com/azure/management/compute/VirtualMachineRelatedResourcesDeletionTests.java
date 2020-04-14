@@ -30,18 +30,18 @@ public class VirtualMachineRelatedResourcesDeletionTests extends ComputeManageme
         super(TestBase.RunCondition.LIVE_ONLY);
     }
 
-    private String RG_NAME = "";
+    private String rgName = "";
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        RG_NAME = generateRandomResourceName("javacsmrg", 15);
+        rgName = generateRandomResourceName("javacsmrg", 15);
         super.initializeClients(restClient, defaultSubscription, domain);
     }
 
     @Override
     protected void cleanUpResources() {
         if (resourceManager != null) {
-            resourceManager.resourceGroups().beginDeleteByName(RG_NAME);
+            resourceManager.resourceGroups().beginDeleteByName(rgName);
         }
     }
 
@@ -49,7 +49,7 @@ public class VirtualMachineRelatedResourcesDeletionTests extends ComputeManageme
     public void canDeleteRelatedResourcesFromFailedParallelVMCreations() {
         final int desiredVMCount = 40;
         final Region region = Region.US_EAST;
-        final String resourceGroupName = RG_NAME;
+        final String resourceGroupName = rgName;
 
         // Create one resource group for everything, to ensure no reliance on resource groups
         ResourceGroup resourceGroup =

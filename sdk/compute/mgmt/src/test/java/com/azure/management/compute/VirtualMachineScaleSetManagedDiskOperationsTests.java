@@ -16,25 +16,25 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeManagementTest {
-    private String RG_NAME = "";
+    private String rgName = "";
     private Region region = Region.US_EAST;
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        RG_NAME = generateRandomResourceName("javacsmrg", 15);
+        rgName = generateRandomResourceName("javacsmrg", 15);
         super.initializeClients(restClient, defaultSubscription, domain);
     }
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().deleteByName(RG_NAME);
+        resourceManager.resourceGroups().deleteByName(rgName);
     }
 
     @Test
     public void canCreateUpdateVirtualMachineScaleSetFromPIRWithManagedDisk() throws Exception {
         final String vmssName = generateRandomResourceName("vmss", 10);
 
-        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(RG_NAME).withRegion(region).create();
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
         Network network =
             this
@@ -174,7 +174,7 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
         final String customImageName = generateRandomResourceName("img", 10);
         final String vmssName = generateRandomResourceName("vmss", 10);
 
-        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(RG_NAME).withRegion(region).create();
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
         VirtualMachine vm =
             this

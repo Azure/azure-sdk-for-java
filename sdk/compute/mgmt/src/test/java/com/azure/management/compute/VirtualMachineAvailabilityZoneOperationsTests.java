@@ -26,19 +26,19 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManagementTest {
-    private String RG_NAME = "";
-    private final Region REGION = Region.US_EAST2;
-    private final String VMNAME = "javavm";
+    private String rgName = "";
+    private final Region region = Region.US_EAST2;
+    private final String vmName = "javavm";
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        RG_NAME = generateRandomResourceName("javacsmrg", 15);
+        rgName = generateRandomResourceName("javacsmrg", 15);
         super.initializeClients(restClient, defaultSubscription, domain);
     }
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().deleteByName(RG_NAME);
+        resourceManager.resourceGroups().deleteByName(rgName);
     }
 
     @Test
@@ -50,9 +50,9 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
         VirtualMachine virtualMachine =
             computeManager
                 .virtualMachines()
-                .define(VMNAME)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withNewPrimaryPublicIPAddress(pipDnsLabel)
@@ -116,8 +116,8 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
             networkManager
                 .publicIPAddresses()
                 .define(pipDnsLabel)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withStaticIP()
                 // Optionals
                 .withAvailabilityZone(
@@ -135,8 +135,8 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
             computeManager
                 .disks()
                 .define(diskName)
-                .withRegion(REGION)
-                .withExistingResourceGroup(RG_NAME)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
                 .withData()
                 .withSizeInGB(100)
                 // Optionals
@@ -148,9 +148,9 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
         VirtualMachine virtualMachine =
             computeManager
                 .virtualMachines()
-                .define(VMNAME)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withExistingPrimaryPublicIPAddress(publicIPAddress)
@@ -211,8 +211,8 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
             networkManager
                 .publicIPAddresses()
                 .define(pipDnsLabel)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withStaticIP()
                 // Optionals
                 .withSku(
@@ -227,9 +227,9 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
         VirtualMachine virtualMachine =
             computeManager
                 .virtualMachines()
-                .define(VMNAME)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withExistingPrimaryPublicIPAddress(publicIPAddress)
@@ -268,8 +268,8 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
             networkManager
                 .networks()
                 .define(networkName)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withAddressSpace("10.0.0.0/28")
                 .withSubnet("subnet1", "10.0.0.0/29")
                 .withSubnet("subnet2", "10.0.0.8/29")
@@ -284,8 +284,8 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
             computeManager
                 .virtualMachines()
                 .define(generateRandomResourceName("vm1", 10))
-                .withRegion(REGION)
-                .withExistingResourceGroup(RG_NAME)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
                 .withExistingPrimaryNetwork(network)
                 .withSubnet(subnets.next().name()) // Put VM in first subnet
                 .withPrimaryPrivateIPAddressDynamic()
@@ -302,8 +302,8 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
             computeManager
                 .virtualMachines()
                 .define(generateRandomResourceName("vm2", 10))
-                .withRegion(REGION)
-                .withExistingResourceGroup(RG_NAME)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
                 .withExistingPrimaryNetwork(network)
                 .withSubnet(subnets.next().name()) // Put VM in second subnet
                 .withPrimaryPrivateIPAddressDynamic()
@@ -336,8 +336,8 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
             networkManager
                 .publicIPAddresses()
                 .define(pipDnsLabel)
-                .withRegion(REGION)
-                .withExistingResourceGroup(RG_NAME)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
                 .withStaticIP()
                 // Optionals
                 .withSku(PublicIPSkuType.STANDARD) //  STANDARD LB requires STANDARD PIP
@@ -353,8 +353,8 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
                 .networkManager
                 .loadBalancers()
                 .define(lbName)
-                .withRegion(REGION)
-                .withExistingResourceGroup(RG_NAME)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
                 .defineLoadBalancingRule("rule-1")
                 .withProtocol(TransportProtocol.TCP)
                 .fromFrontend("front-end-1")
@@ -421,8 +421,8 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
             networkManager
                 .networks()
                 .define(networkName)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withAddressSpace("10.0.0.0/28")
                 .withSubnet("subnet1", "10.0.0.0/29")
                 .withSubnet("subnet2", "10.0.0.8/29")
@@ -437,8 +437,8 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
             computeManager
                 .virtualMachines()
                 .define(generateRandomResourceName("vm1", 10))
-                .withRegion(REGION)
-                .withExistingResourceGroup(RG_NAME)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
                 .withExistingPrimaryNetwork(network)
                 .withSubnet(subnets.next().name()) // Put VM in first subnet
                 .withPrimaryPrivateIPAddressDynamic()
@@ -456,8 +456,8 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
             computeManager
                 .virtualMachines()
                 .define(generateRandomResourceName("vm2", 10))
-                .withRegion(REGION)
-                .withExistingResourceGroup(RG_NAME)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
                 .withExistingPrimaryNetwork(network)
                 .withSubnet(subnets.next().name()) // Put VM in second subnet
                 .withPrimaryPrivateIPAddressDynamic()
@@ -479,8 +479,8 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
             networkManager
                 .publicIPAddresses()
                 .define(pipDnsLabel)
-                .withRegion(REGION)
-                .withExistingResourceGroup(RG_NAME)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
                 .withStaticIP()
                 // Optionals
                 .withSku(PublicIPSkuType.STANDARD) //  STANDARD LB requires STANDARD PIP
@@ -504,7 +504,7 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
                 .networkManager
                 .publicIPAddresses()
                 .define(publicIPName)
-                .withRegion(REGION)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withLeafDomainLabel(publicIPName)
                 // Optionals
@@ -518,7 +518,7 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
                 .networkManager
                 .loadBalancers()
                 .define(loadBalancerName)
-                .withRegion(REGION)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
 
                 // Add two rules that uses above backend and probe

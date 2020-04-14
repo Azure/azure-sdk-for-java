@@ -25,9 +25,9 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 public class VirtualMachineEMSILMSIOperationsTests extends TestBase {
-    private String RG_NAME = "";
+    private String rgName = "";
     private Region region = Region.fromName("West Central US");
-    private final String VMNAME = "javavm";
+    private final String vmName = "javavm";
 
     private ComputeManager computeManager;
     private MSIManager msiManager;
@@ -45,21 +45,21 @@ public class VirtualMachineEMSILMSIOperationsTests extends TestBase {
 
     @Override
     protected void cleanUpResources() {
-        this.resourceManager.resourceGroups().deleteByName(RG_NAME);
+        this.resourceManager.resourceGroups().deleteByName(rgName);
     }
 
     @Test
     public void canCreateUpdateVirtualMachineWithEMSI() {
         // this.resourceManager.resourceGroups().beginDeleteByName("41522c6e938c4f6");
 
-        RG_NAME = generateRandomResourceName("java-emsi-c-rg", 15);
+        rgName = generateRandomResourceName("java-emsi-c-rg", 15);
         String identityName1 = generateRandomResourceName("msi-id", 15);
         String identityName2 = generateRandomResourceName("msi-id", 15);
         String networkName = generateRandomResourceName("nw", 10);
 
         // Prepare a definition for yet-to-be-created resource group
         //
-        Creatable<ResourceGroup> creatableRG = resourceManager.resourceGroups().define(RG_NAME).withRegion(region);
+        Creatable<ResourceGroup> creatableRG = resourceManager.resourceGroups().define(rgName).withRegion(region);
 
         // Create a virtual network residing in the above RG
         //
@@ -95,9 +95,9 @@ public class VirtualMachineEMSILMSIOperationsTests extends TestBase {
         VirtualMachine virtualMachine =
             computeManager
                 .virtualMachines()
-                .define(VMNAME)
+                .define(vmName)
                 .withRegion(region)
-                .withNewResourceGroup(RG_NAME)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
@@ -269,13 +269,13 @@ public class VirtualMachineEMSILMSIOperationsTests extends TestBase {
 
     @Test
     public void canCreateVirtualMachineWithLMSIAndEMSI() {
-        RG_NAME = generateRandomResourceName("java-emsi-c-rg", 15);
+        rgName = generateRandomResourceName("java-emsi-c-rg", 15);
         String identityName1 = generateRandomResourceName("msi-id", 15);
         String networkName = generateRandomResourceName("nw", 10);
 
         // Create a resource group
         //
-        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(RG_NAME).withRegion(region).create();
+        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
         // Create a virtual network
         //
@@ -304,9 +304,9 @@ public class VirtualMachineEMSILMSIOperationsTests extends TestBase {
         VirtualMachine virtualMachine =
             computeManager
                 .virtualMachines()
-                .define(VMNAME)
+                .define(vmName)
                 .withRegion(region)
-                .withNewResourceGroup(RG_NAME)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
@@ -398,7 +398,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends TestBase {
 
     @Test
     public void canUpdateVirtualMachineWithEMSIAndLMSI() throws Exception {
-        RG_NAME = generateRandomResourceName("java-emsi-c-rg", 15);
+        rgName = generateRandomResourceName("java-emsi-c-rg", 15);
         String identityName1 = generateRandomResourceName("msi-id-1", 15);
         String identityName2 = generateRandomResourceName("msi-id-2", 15);
 
@@ -407,9 +407,9 @@ public class VirtualMachineEMSILMSIOperationsTests extends TestBase {
         VirtualMachine virtualMachine =
             computeManager
                 .virtualMachines()
-                .define(VMNAME)
+                .define(vmName)
                 .withRegion(region)
-                .withNewResourceGroup(RG_NAME)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()

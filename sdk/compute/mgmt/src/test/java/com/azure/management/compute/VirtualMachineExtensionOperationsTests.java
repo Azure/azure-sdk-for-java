@@ -17,32 +17,32 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class VirtualMachineExtensionOperationsTests extends ComputeManagementTest {
-    private String RG_NAME = "";
-    private Region REGION = Region.US_SOUTH_CENTRAL;
+    private String rgName = "";
+    private Region region = Region.US_SOUTH_CENTRAL;
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        RG_NAME = generateRandomResourceName("vmexttest", 15);
+        rgName = generateRandomResourceName("vmexttest", 15);
         super.initializeClients(restClient, defaultSubscription, domain);
     }
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().deleteByName(RG_NAME);
+        resourceManager.resourceGroups().deleteByName(rgName);
     }
 
     @Test
     public void canEnableDiagnosticsExtension() throws Exception {
-        final String STORAGEACCOUNTNAME = generateRandomResourceName("stg", 15);
-        final String VMNAME = "javavm1";
+        final String storageAccountName = generateRandomResourceName("stg", 15);
+        final String vmName = "javavm1";
 
         // Creates a storage account
         StorageAccount storageAccount =
             storageManager
                 .storageAccounts()
-                .define(STORAGEACCOUNTNAME)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+                .define(storageAccountName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .create();
 
         // Create a Linux VM
@@ -50,9 +50,9 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
         VirtualMachine vm =
             computeManager
                 .virtualMachines()
-                .define(VMNAME)
-                .withRegion(REGION)
-                .withExistingResourceGroup(RG_NAME)
+                .define(vmName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
@@ -103,16 +103,16 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
 
     @Test
     public void canResetPasswordUsingVMAccessExtension() throws Exception {
-        final String VMNAME = "javavm2";
+        final String vmName = "javavm2";
 
         // Create a Linux VM
         //
         VirtualMachine vm =
             computeManager
                 .virtualMachines()
-                .define(VMNAME)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
@@ -154,7 +154,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
 
     @Test
     public void canInstallUninstallCustomExtension() throws Exception {
-        final String VMNAME = "javavm3";
+        final String vmName = "javavm3";
 
         final String mySqlInstallScript =
             "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/4397e808d07df60ff3cdfd1ae40999f0130eb1b3/mysql-standalone-server-ubuntu/scripts/install_mysql_server_5.6.sh";
@@ -167,9 +167,9 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
         VirtualMachine vm =
             computeManager
                 .virtualMachines()
-                .define(VMNAME)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
@@ -206,16 +206,16 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
 
     @Test
     public void canHandleExtensionReference() throws Exception {
-        final String VMNAME = "javavm4";
+        final String vmName = "javavm4";
 
         // Create a Linux VM
         //
         VirtualMachine vm =
             computeManager
                 .virtualMachines()
-                .define(VMNAME)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
@@ -236,10 +236,10 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
         Assertions.assertTrue(vm.listExtensions().size() > 0);
 
         // Get the created virtual machine via VM List not by VM GET
-        PagedIterable<VirtualMachine> virtualMachines = computeManager.virtualMachines().listByResourceGroup(RG_NAME);
+        PagedIterable<VirtualMachine> virtualMachines = computeManager.virtualMachines().listByResourceGroup(rgName);
         VirtualMachine vmWithExtensionReference = null;
         for (VirtualMachine virtualMachine : virtualMachines) {
-            if (virtualMachine.name().equalsIgnoreCase(VMNAME)) {
+            if (virtualMachine.name().equalsIgnoreCase(vmName)) {
                 vmWithExtensionReference = virtualMachine;
                 break;
             }
@@ -259,7 +259,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
                 .apply();
 
         // Again getting VM with extension reference
-        virtualMachines = computeManager.virtualMachines().listByResourceGroup(RG_NAME);
+        virtualMachines = computeManager.virtualMachines().listByResourceGroup(rgName);
         vmWithExtensionReference = null;
         for (VirtualMachine virtualMachine : virtualMachines) {
             vmWithExtensionReference = virtualMachine;

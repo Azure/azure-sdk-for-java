@@ -51,19 +51,19 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest {
-    private String RG_NAME = "";
-    private final Region REGION = Region.US_WEST;
+    private String rgName = "";
+    private final Region region = Region.US_WEST;
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        RG_NAME = generateRandomResourceName("javacsmrg", 15);
+        rgName = generateRandomResourceName("javacsmrg", 15);
         super.initializeClients(restClient, defaultSubscription, domain);
     }
 
     @Override
     protected void cleanUpResources() {
-        if (RG_NAME != null) {
-            resourceManager.resourceGroups().deleteByName(RG_NAME);
+        if (rgName != null) {
+            resourceManager.resourceGroups().deleteByName(rgName);
         }
     }
 
@@ -73,14 +73,14 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         final String uname = "jvuser";
         final String password = "123OData!@#123";
 
-        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(RG_NAME).withRegion(REGION).create();
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
         StorageAccount storageAccount =
             this
                 .storageManager
                 .storageAccounts()
                 .define(generateRandomResourceName("stg", 15))
-                .withRegion(REGION)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .create();
 
@@ -131,7 +131,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .networkManager
                 .networks()
                 .define(generateRandomResourceName("vmssvnet", 15))
-                .withRegion(REGION)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withAddressSpace("10.0.0.0/28")
                 .withSubnet("subnet1", "10.0.0.0/28")
@@ -142,7 +142,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .computeManager
                 .virtualMachineScaleSets()
                 .define(vmssName)
-                .withRegion(REGION)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
                 .withExistingPrimaryNetworkSubnet(network, "subnet1")
@@ -215,26 +215,26 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         List<String> fileUris = new ArrayList<>();
         fileUris.add(apacheInstallScript);
 
-        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(RG_NAME).withRegion(REGION).create();
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
         Network network =
             this
                 .networkManager
                 .networks()
                 .define(generateRandomResourceName("vmssvnet", 15))
-                .withRegion(REGION)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withAddressSpace("10.0.0.0/28")
                 .withSubnet("subnet1", "10.0.0.0/28")
                 .create();
 
-        LoadBalancer publicLoadBalancer = createHttpLoadBalancers(REGION, resourceGroup, "1");
+        LoadBalancer publicLoadBalancer = createHttpLoadBalancers(region, resourceGroup, "1");
         VirtualMachineScaleSet virtualMachineScaleSet =
             this
                 .computeManager
                 .virtualMachineScaleSets()
                 .define(vmssName)
-                .withRegion(REGION)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
                 .withExistingPrimaryNetworkSubnet(network, "subnet1")
@@ -297,19 +297,19 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
     @Test
     public void canCreateVirtualMachineScaleSetWithOptionalNetworkSettings() throws Exception {
-        final String vmss_name = generateRandomResourceName("vmss", 10);
+        final String vmssName = generateRandomResourceName("vmss", 10);
         final String vmssVmDnsLabel = generateRandomResourceName("pip", 10);
         final String nsgName = generateRandomResourceName("nsg", 10);
         final String asgName = generateRandomResourceName("asg", 8);
 
-        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(RG_NAME).withRegion(REGION).create();
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
         Network network =
             this
                 .networkManager
                 .networks()
                 .define("vmssvnet")
-                .withRegion(REGION)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withAddressSpace("10.0.0.0/28")
                 .withSubnet("subnet1", "10.0.0.0/28")
@@ -320,7 +320,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .networkManager
                 .applicationSecurityGroups()
                 .define(asgName)
-                .withRegion(REGION)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .create();
 
@@ -329,8 +329,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             this
                 .computeManager
                 .virtualMachineScaleSets()
-                .define(vmss_name)
-                .withRegion(REGION)
+                .define(vmssName)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D3_V2)
                 .withExistingPrimaryNetworkSubnet(network, "subnet1")
@@ -373,7 +373,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             networkManager
                 .networkSecurityGroups()
                 .define(nsgName)
-                .withRegion(REGION)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .defineRule("rule1")
                 .allowOutbound()
@@ -416,25 +416,25 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
     @Test
     @Disabled("Mock framework doesn't support data plane")
     public void canCreateVirtualMachineScaleSetWithSecret() throws Exception {
-        final String vmss_name = generateRandomResourceName("vmss", 10);
+        final String vmssName = generateRandomResourceName("vmss", 10);
         final String vaultName = generateRandomResourceName("vlt", 10);
         final String secretName = generateRandomResourceName("srt", 10);
 
-        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(RG_NAME).withRegion(REGION).create();
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
         Network network =
             this
                 .networkManager
                 .networks()
                 .define("vmssvnet")
-                .withRegion(REGION)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withAddressSpace("10.0.0.0/28")
                 .withSubnet("subnet1", "10.0.0.0/28")
                 .create();
 
         LoadBalancer publicLoadBalancer =
-            createInternetFacingLoadBalancer(REGION, resourceGroup, "1", LoadBalancerSkuType.BASIC);
+            createInternetFacingLoadBalancer(region, resourceGroup, "1", LoadBalancerSkuType.BASIC);
 
         List<String> backends = new ArrayList<>();
         for (String backend : publicLoadBalancer.backends().keySet()) {
@@ -449,7 +449,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .keyVaultManager
                 .vaults()
                 .define(vaultName)
-                .withRegion(REGION)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .defineAccessPolicy()
                 .forServicePrincipal(credentials.getClientId())
@@ -474,8 +474,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             this
                 .computeManager
                 .virtualMachineScaleSets()
-                .define(vmss_name)
-                .withRegion(REGION)
+                .define(vmssName)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
                 .withExistingPrimaryNetworkSubnet(network, "subnet1")
@@ -503,22 +503,22 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
     }
 
     public void canCreateVirtualMachineScaleSet() throws Exception {
-        final String vmss_name = generateRandomResourceName("vmss", 10);
-        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(RG_NAME).withRegion(REGION).create();
+        final String vmssName = generateRandomResourceName("vmss", 10);
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
         Network network =
             this
                 .networkManager
                 .networks()
                 .define("vmssvnet")
-                .withRegion(REGION)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withAddressSpace("10.0.0.0/28")
                 .withSubnet("subnet1", "10.0.0.0/28")
                 .create();
 
         LoadBalancer publicLoadBalancer =
-            createInternetFacingLoadBalancer(REGION, resourceGroup, "1", LoadBalancerSkuType.BASIC);
+            createInternetFacingLoadBalancer(region, resourceGroup, "1", LoadBalancerSkuType.BASIC);
         List<String> backends = new ArrayList<>();
         for (String backend : publicLoadBalancer.backends().keySet()) {
             backends.add(backend);
@@ -529,8 +529,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             this
                 .computeManager
                 .virtualMachineScaleSets()
-                .define(vmss_name)
-                .withRegion(REGION)
+                .define(vmssName)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
                 .withExistingPrimaryNetworkSubnet(network, "subnet1")
@@ -628,7 +628,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             break;
         }
 
-        LoadBalancer internalLoadBalancer = createInternalLoadBalancer(REGION, resourceGroup, primaryNetwork, "1");
+        LoadBalancer internalLoadBalancer = createInternalLoadBalancer(region, resourceGroup, primaryNetwork, "1");
 
         virtualMachineScaleSet
             .update()
@@ -636,7 +636,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withoutPrimaryInternetFacingLoadBalancerNatPools(inboundNatPoolToRemove) // Remove one NatPool
             .apply();
 
-        virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets().getByResourceGroup(RG_NAME, vmss_name);
+        virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets().getByResourceGroup(rgName, vmssName);
 
         // Check LB after update
         //
@@ -719,17 +719,17 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         // ZoneResilientLoadBalancer -> STANDARD LB -> [Since service deploy them to all zones, user don't have to set
         // zone explicitly, even if he does its a constrain as user can set only one zone at this time]
 
-        Region REGION2 = Region.US_EAST2;
+        Region region2 = Region.US_EAST2;
 
         ResourceGroup resourceGroup =
-            this.resourceManager.resourceGroups().define(RG_NAME).withRegion(REGION2).create();
+            this.resourceManager.resourceGroups().define(rgName).withRegion(region2).create();
 
         Network network =
             this
                 .networkManager
                 .networks()
                 .define("vmssvnet")
-                .withRegion(REGION2)
+                .withRegion(region2)
                 .withExistingResourceGroup(resourceGroup)
                 .withAddressSpace("10.0.0.0/28")
                 .withSubnet("subnet1", "10.0.0.0/28")
@@ -739,7 +739,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         // Each address pool of STANDARD LB can hold different VMSS resource.
         //
         LoadBalancer publicLoadBalancer =
-            createInternetFacingLoadBalancer(REGION2, resourceGroup, "1", LoadBalancerSkuType.STANDARD);
+            createInternetFacingLoadBalancer(region2, resourceGroup, "1", LoadBalancerSkuType.STANDARD);
 
         // With default LB SKU BASIC, an attempt to associate two different VMSS to different
         // backend pool will cause below error (more accurately, while trying to put second VMSS)
@@ -767,15 +767,15 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         }
         Assertions.assertTrue(natpools.size() == 2);
 
-        final String vmss_name1 = generateRandomResourceName("vmss1", 10);
+        final String vmssName1 = generateRandomResourceName("vmss1", 10);
         // HTTP goes to this virtual machine scale set
         //
         VirtualMachineScaleSet virtualMachineScaleSet1 =
             this
                 .computeManager
                 .virtualMachineScaleSets()
-                .define(vmss_name1)
-                .withRegion(REGION2)
+                .define(vmssName1)
+                .withRegion(region2)
                 .withExistingResourceGroup(resourceGroup)
                 .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
                 .withExistingPrimaryNetworkSubnet(network, "subnet1")
@@ -788,15 +788,15 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withRootPassword("123OData!@#123")
                 .create();
 
-        final String vmss_name2 = generateRandomResourceName("vmss2", 10);
+        final String vmssName2 = generateRandomResourceName("vmss2", 10);
         // HTTPS goes to this virtual machine scale set
         //
         VirtualMachineScaleSet virtualMachineScaleSet2 =
             this
                 .computeManager
                 .virtualMachineScaleSets()
-                .define(vmss_name2)
-                .withRegion(REGION2)
+                .define(vmssName2)
+                .withRegion(region2)
                 .withExistingResourceGroup(resourceGroup)
                 .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
                 .withExistingPrimaryNetworkSubnet(network, "subnet1")
@@ -831,17 +831,17 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         // Zone redundant VMSS is the one with multiple zones
         //
 
-        Region REGION2 = Region.US_EAST2;
+        Region region2 = Region.US_EAST2;
 
         ResourceGroup resourceGroup =
-            this.resourceManager.resourceGroups().define(RG_NAME).withRegion(REGION2).create();
+            this.resourceManager.resourceGroups().define(rgName).withRegion(region2).create();
 
         Network network =
             this
                 .networkManager
                 .networks()
                 .define("vmssvnet")
-                .withRegion(REGION2)
+                .withRegion(region2)
                 .withExistingResourceGroup(resourceGroup)
                 .withAddressSpace("10.0.0.0/28")
                 .withSubnet("subnet1", "10.0.0.0/28")
@@ -853,7 +853,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         // Each address pool of STANDARD LB can hold different VMSS resource.
         //
         LoadBalancer publicLoadBalancer =
-            createInternetFacingLoadBalancer(REGION2, resourceGroup, "1", LoadBalancerSkuType.STANDARD);
+            createInternetFacingLoadBalancer(region2, resourceGroup, "1", LoadBalancerSkuType.STANDARD);
 
         List<String> backends = new ArrayList<>();
         for (String backend : publicLoadBalancer.backends().keySet()) {
@@ -861,7 +861,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         }
         Assertions.assertTrue(backends.size() == 2);
 
-        final String vmss_name = generateRandomResourceName("vmss", 10);
+        final String vmssName = generateRandomResourceName("vmss", 10);
         // HTTP & HTTPS traffic on port 80, 443 of Internet-facing LB goes to corresponding port in virtual machine
         // scale set
         //
@@ -869,8 +869,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             this
                 .computeManager
                 .virtualMachineScaleSets()
-                .define(vmss_name)
-                .withRegion(REGION2)
+                .define(vmssName)
+                .withRegion(region2)
                 .withExistingResourceGroup(resourceGroup)
                 .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D3_V2)
                 .withExistingPrimaryNetworkSubnet(network, "subnet1")
@@ -906,22 +906,22 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
     @Test
     public void canEnableMSIOnVirtualMachineScaleSetWithoutRoleAssignment() throws Exception {
-        final String vmss_name = generateRandomResourceName("vmss", 10);
-        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(RG_NAME).withRegion(REGION).create();
+        final String vmssName = generateRandomResourceName("vmss", 10);
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
         Network network =
             this
                 .networkManager
                 .networks()
                 .define("vmssvnet")
-                .withRegion(REGION)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withAddressSpace("10.0.0.0/28")
                 .withSubnet("subnet1", "10.0.0.0/28")
                 .create();
 
         LoadBalancer publicLoadBalancer =
-            createInternetFacingLoadBalancer(REGION, resourceGroup, "1", LoadBalancerSkuType.BASIC);
+            createInternetFacingLoadBalancer(region, resourceGroup, "1", LoadBalancerSkuType.BASIC);
         List<String> backends = new ArrayList<>();
         for (String backend : publicLoadBalancer.backends().keySet()) {
             backends.add(backend);
@@ -932,8 +932,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             this
                 .computeManager
                 .virtualMachineScaleSets()
-                .define(vmss_name)
-                .withRegion(REGION)
+                .define(vmssName)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
                 .withExistingPrimaryNetworkSubnet(network, "subnet1")
@@ -978,22 +978,22 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
     @Test
     public void canEnableMSIOnVirtualMachineScaleSetWithMultipleRoleAssignment() throws Exception {
-        final String vmss_name = generateRandomResourceName("vmss", 10);
-        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(RG_NAME).withRegion(REGION).create();
+        final String vmssName = generateRandomResourceName("vmss", 10);
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
         Network network =
             this
                 .networkManager
                 .networks()
                 .define("vmssvnet")
-                .withRegion(REGION)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withAddressSpace("10.0.0.0/28")
                 .withSubnet("subnet1", "10.0.0.0/28")
                 .create();
 
         LoadBalancer publicLoadBalancer =
-            createInternetFacingLoadBalancer(REGION, resourceGroup, "1", LoadBalancerSkuType.BASIC);
+            createInternetFacingLoadBalancer(region, resourceGroup, "1", LoadBalancerSkuType.BASIC);
         List<String> backends = new ArrayList<>();
         for (String backend : publicLoadBalancer.backends().keySet()) {
             backends.add(backend);
@@ -1005,7 +1005,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .storageManager
                 .storageAccounts()
                 .define(generateRandomResourceName("jvcsrg", 10))
-                .withRegion(REGION)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .create();
 
@@ -1013,8 +1013,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             this
                 .computeManager
                 .virtualMachineScaleSets()
-                .define(vmss_name)
-                .withRegion(REGION)
+                .define(vmssName)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
                 .withExistingPrimaryNetworkSubnet(network, "subnet1")
@@ -1086,22 +1086,22 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
     @Test
     public void canGetSingleVMSSInstance() throws Exception {
 
-        final String vmss_name = generateRandomResourceName("vmss", 10);
-        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(RG_NAME).withRegion(REGION).create();
+        final String vmssName = generateRandomResourceName("vmss", 10);
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
         Network network =
             this
                 .networkManager
                 .networks()
                 .define("vmssvnet")
-                .withRegion(REGION)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withAddressSpace("10.0.0.0/28")
                 .withSubnet("subnet1", "10.0.0.0/28")
                 .create();
 
         LoadBalancer publicLoadBalancer =
-            createInternetFacingLoadBalancer(REGION, resourceGroup, "1", LoadBalancerSkuType.BASIC);
+            createInternetFacingLoadBalancer(region, resourceGroup, "1", LoadBalancerSkuType.BASIC);
 
         List<String> backends = new ArrayList<>();
         for (String backend : publicLoadBalancer.backends().keySet()) {
@@ -1112,8 +1112,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         this
             .computeManager
             .virtualMachineScaleSets()
-            .define(vmss_name)
-            .withRegion(REGION)
+            .define(vmssName)
+            .withRegion(region)
             .withExistingResourceGroup(resourceGroup)
             .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
             .withExistingPrimaryNetworkSubnet(network, "subnet1")
@@ -1129,7 +1129,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .create();
 
         VirtualMachineScaleSet virtualMachineScaleSet =
-            this.computeManager.virtualMachineScaleSets().getByResourceGroup(RG_NAME, vmss_name);
+            this.computeManager.virtualMachineScaleSets().getByResourceGroup(rgName, vmssName);
         VirtualMachineScaleSetVMs virtualMachineScaleSetVMs = virtualMachineScaleSet.virtualMachines();
         VirtualMachineScaleSetVM firstVm = virtualMachineScaleSetVMs.list().iterator().next();
         VirtualMachineScaleSetVM fetchedVm = virtualMachineScaleSetVMs.getInstance(firstVm.instanceId());
@@ -1141,22 +1141,22 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
     @Test
     public void canCreateLowPriorityVMSSInstance() throws Exception {
-        final String vmss_name = generateRandomResourceName("vmss", 10);
-        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(RG_NAME).withRegion(REGION).create();
+        final String vmssName = generateRandomResourceName("vmss", 10);
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
         Network network =
             this
                 .networkManager
                 .networks()
                 .define("vmssvnet")
-                .withRegion(REGION)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withAddressSpace("10.0.0.0/28")
                 .withSubnet("subnet1", "10.0.0.0/28")
                 .create();
 
         LoadBalancer publicLoadBalancer =
-            createInternetFacingLoadBalancer(REGION, resourceGroup, "1", LoadBalancerSkuType.STANDARD);
+            createInternetFacingLoadBalancer(region, resourceGroup, "1", LoadBalancerSkuType.STANDARD);
 
         List<String> backends = new ArrayList<>();
         for (String backend : publicLoadBalancer.backends().keySet()) {
@@ -1168,8 +1168,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             this
                 .computeManager
                 .virtualMachineScaleSets()
-                .define(vmss_name)
-                .withRegion(REGION)
+                .define(vmssName)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D3_V2)
                 .withExistingPrimaryNetworkSubnet(network, "subnet1")
@@ -1285,7 +1285,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
     @Test
     public void testVirtualMachineScaleSetSkuTypes() {
-        RG_NAME = null;
+        rgName = null;
         VirtualMachineScaleSetSkuTypes skuType = VirtualMachineScaleSetSkuTypes.STANDARD_A0;
         Assertions.assertNull(skuType.sku().capacity());
         // first copy of sku

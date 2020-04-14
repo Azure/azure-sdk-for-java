@@ -13,19 +13,19 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class SharedGalleryImageTests extends ComputeManagementTest {
-    private String RG_NAME = "";
-    private final Region REGION = Region.US_WEST_CENTRAL;
-    private final String VMNAME = "javavm";
+    private String rgName = "";
+    private final Region region = Region.US_WEST_CENTRAL;
+    private final String vmName = "javavm";
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        RG_NAME = generateRandomResourceName("javacsmrg", 15);
+        rgName = generateRandomResourceName("javacsmrg", 15);
         super.initializeClients(restClient, defaultSubscription, domain);
     }
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().deleteByName(RG_NAME);
+        resourceManager.resourceGroups().deleteByName(rgName);
     }
 
     @Test
@@ -37,8 +37,8 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .computeManager
                 .galleries()
                 .define("JavaImageGallery")
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 // Optionals - Start
                 .withDescription("java's image gallery")
                 // Optionals - End
@@ -59,7 +59,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
         //
         // List galleries
         //
-        PagedIterable<Gallery> galleries = this.computeManager.galleries().listByResourceGroup(RG_NAME);
+        PagedIterable<Gallery> galleries = this.computeManager.galleries().listByResourceGroup(rgName);
         Assertions.assertEquals(1, TestUtilities.getSize(galleries));
         galleries = this.computeManager.galleries().list();
         Assertions.assertTrue(TestUtilities.getSize(galleries) > 0);
@@ -80,7 +80,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .galleries()
                 .define(galleryName)
                 .withRegion(Region.US_WEST_CENTRAL)
-                .withNewResourceGroup(RG_NAME)
+                .withNewResourceGroup(rgName)
                 .withDescription("java's image gallery")
                 .create();
         //
@@ -92,7 +92,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .galleryImages()
                 .define(galleryImageName)
                 .withExistingGallery(javaGallery)
-                .withLocation(REGION)
+                .withLocation(region)
                 .withIdentifier("JavaSDKTeam", "JDK", "Jdk-9")
                 .withGeneralizedWindows()
                 // Optionals - Start
@@ -105,7 +105,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
 
         Assertions.assertNotNull(galleryImage);
         Assertions.assertNotNull(galleryImage.inner());
-        Assertions.assertTrue(galleryImage.location().equalsIgnoreCase(REGION.toString()));
+        Assertions.assertTrue(galleryImage.location().equalsIgnoreCase(region.toString()));
         Assertions.assertTrue(galleryImage.osType().equals(OperatingSystemTypes.WINDOWS));
         Assertions.assertTrue(galleryImage.osState().equals(OperatingSystemStateTypes.GENERALIZED));
         Assertions.assertEquals(2, galleryImage.unsupportedDiskTypes().size());
@@ -145,20 +145,20 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
         //
         // List images in the gallery
         //
-        PagedIterable<GalleryImage> images = this.computeManager.galleryImages().listByGallery(RG_NAME, galleryName);
+        PagedIterable<GalleryImage> images = this.computeManager.galleryImages().listByGallery(rgName, galleryName);
 
         Assertions.assertEquals(1, TestUtilities.getSize(images));
         //
         // Get image from gallery
         //
-        galleryImage = this.computeManager.galleryImages().getByGallery(RG_NAME, galleryName, galleryImageName);
+        galleryImage = this.computeManager.galleryImages().getByGallery(rgName, galleryName, galleryImageName);
 
         Assertions.assertNotNull(galleryImage);
         Assertions.assertNotNull(galleryImage.inner());
         //
         // Delete an image from gallery
         //
-        this.computeManager.galleryImages().deleteByGallery(RG_NAME, galleryName, galleryImageName);
+        this.computeManager.galleryImages().deleteByGallery(rgName, galleryName, galleryImageName);
     }
 
     @Test
@@ -186,7 +186,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .galleries()
                 .define(galleryName)
                 .withRegion(Region.US_WEST_CENTRAL)
-                .withNewResourceGroup(RG_NAME)
+                .withNewResourceGroup(rgName)
                 .withDescription("java's image gallery")
                 .create();
         //
@@ -200,14 +200,14 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .galleryImages()
                 .define(galleryImageName)
                 .withExistingGallery(gallery)
-                .withLocation(REGION)
+                .withLocation(region)
                 .withIdentifier("JavaSDKTeam", "JDK", "Jdk-9")
                 .withGeneralizedLinux()
                 .create();
         //
         // Create a custom image to base the version on
         //
-        VirtualMachineCustomImage customImage = prepareCustomImage(RG_NAME, REGION, computeManager);
+        VirtualMachineCustomImage customImage = prepareCustomImage(rgName, region, computeManager);
         // String customImageId =
         // "/subscriptions/0b1f6471-1bf0-4dda-aec3-cb9272f09590/resourceGroups/javacsmrg91482/providers/Microsoft.Compute/images/img96429090dee3";
         //
@@ -221,8 +221,8 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .computeManager
                 .galleryImageVersions()
                 .define(versionName)
-                .withExistingImage(RG_NAME, gallery.name(), galleryImage.name())
-                .withLocation(REGION.toString())
+                .withExistingImage(rgName, gallery.name(), galleryImage.name())
+                .withLocation(region.toString())
                 .withSourceCustomImage(customImage)
                 // Options - Start
                 .withRegionAvailability(Region.US_WEST2, 1)
@@ -267,7 +267,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
         this
             .computeManager
             .galleryImageVersions()
-            .deleteByGalleryImage(RG_NAME, galleryName, galleryImageName, versionName);
+            .deleteByGalleryImage(rgName, galleryName, galleryImageName, versionName);
     }
 
     private VirtualMachineCustomImage prepareCustomImage(String rgName, Region region, ComputeManager computeManager) {

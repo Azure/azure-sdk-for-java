@@ -10,18 +10,18 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class VirtualMachineEncryptionOperationsTests extends ComputeManagementTest {
-    private String RG_NAME = "";
-    private Region REGION = Region.US_EAST;
+    private String rgName = "";
+    private Region region = Region.US_EAST;
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        RG_NAME = generateRandomResourceName("vmencryptst", 18);
+        rgName = generateRandomResourceName("vmencryptst", 18);
         super.initializeClients(restClient, defaultSubscription, domain);
     }
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().deleteByName(RG_NAME);
+        resourceManager.resourceGroups().deleteByName(rgName);
     }
 
     @Test
@@ -44,8 +44,8 @@ public class VirtualMachineEncryptionOperationsTests extends ComputeManagementTe
             computeManager
                 .virtualMachines()
                 .define(vmName1)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withNewPrimaryPublicIPAddress(publicIpDnsLabel)

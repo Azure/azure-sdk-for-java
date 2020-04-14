@@ -17,19 +17,19 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 
 public class VirtualMachineManagedServiceIdentityOperationsTests extends ComputeManagementTest {
-    private String RG_NAME = "";
-    private final Region REGION = Region.US_SOUTH_CENTRAL;
-    private final String VMNAME = "javavm";
+    private String rgName = "";
+    private final Region region = Region.US_SOUTH_CENTRAL;
+    private final String vmName = "javavm";
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        RG_NAME = generateRandomResourceName("javacsmrg", 15);
+        rgName = generateRandomResourceName("javacsmrg", 15);
         super.initializeClients(restClient, defaultSubscription, domain);
     }
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().beginDeleteByName(RG_NAME);
+        resourceManager.resourceGroups().beginDeleteByName(rgName);
     }
 
     @Test
@@ -39,9 +39,9 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
         VirtualMachine virtualMachine =
             computeManager
                 .virtualMachines()
-                .define(VMNAME)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
@@ -110,9 +110,9 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
         Flux<Indexable> resources =
             computeManager
                 .virtualMachines()
-                .define(VMNAME)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
@@ -212,7 +212,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
                 .storageAccounts()
                 .define(storageAccountName)
                 .withRegion(Region.US_EAST2)
-                .withNewResourceGroup(RG_NAME)
+                .withNewResourceGroup(rgName)
                 .create();
 
         ResourceGroup resourceGroup =
@@ -221,9 +221,9 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
         VirtualMachine virtualMachine =
             computeManager
                 .virtualMachines()
-                .define(VMNAME)
-                .withRegion(REGION)
-                .withExistingResourceGroup(RG_NAME)
+                .define(vmName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
@@ -289,9 +289,9 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
         VirtualMachine virtualMachine =
             computeManager
                 .virtualMachines()
-                .define(VMNAME)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
