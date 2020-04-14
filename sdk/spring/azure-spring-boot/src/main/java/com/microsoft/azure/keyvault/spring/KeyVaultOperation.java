@@ -68,13 +68,13 @@ public class KeyVaultOperation {
 
     /**
      * For convention we need to support all relaxed binding format from spring, these may include:
-     * <table summary="relaxed binding names">
-     * <tr><td>Spring relaxed binding names</td></tr>
-     * <tr><td>acme.my-project.person.first-name</td></tr>
-     * <tr><td>acme.myProject.person.firstName</td></tr>
-     * <tr><td>acme.my_project.person.first_name</td></tr>
-     * <tr><td>ACME_MYPROJECT_PERSON_FIRSTNAME</td></tr>
-     * </table>
+     * <ul>
+     * <li>Spring relaxed binding names</li>
+     * <li>acme.my-project.person.first-name</li>
+     * <li>acme.myProject.person.firstName</li>
+     * <li>acme.my_project.person.first_name</li>
+     * <li>ACME_MYPROJECT_PERSON_FIRSTNAME</li>
+     * </ul>
      * But azure keyvault only allows ^[0-9a-zA-Z-]+$ and case insensitive, so there must be some conversion
      * between spring names and azure keyvault names.
      * For example, the 4 properties stated above should be convert to acme-myproject-person-firstname in keyvault.

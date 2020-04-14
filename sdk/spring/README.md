@@ -48,7 +48,7 @@ Snapshots built from `master` branch are available, add [maven repositories](htt
   </repository>
 </repositories>
 ```
-### Examples
+## Examples
 You could check below articles to learn more on usage of specific starters.
 
 [How to use the Spring Boot Starter with Azure Cosmos DB API](https://docs.microsoft.com/en-us/java/azure/spring-framework/configure-spring-boot-starter-java-app-with-cosmos-db).
