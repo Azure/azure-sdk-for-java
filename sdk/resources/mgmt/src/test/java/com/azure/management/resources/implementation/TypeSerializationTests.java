@@ -8,8 +8,8 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.management.resources.DeploymentProperties;
 import com.azure.management.resources.models.DeploymentExtendedInner;
 import com.azure.management.resources.models.DeploymentInner;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class TypeSerializationTests {
 
