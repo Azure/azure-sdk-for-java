@@ -93,10 +93,4 @@ public final class KeyValueElement {
         this.elements = elements;
         return this;
     }
-
-    public void validate() {
-        if (getText() == null) {
-            throw new IllegalArgumentException("Missing required property text in model KeyValueElement");
-        }
-    }
 }

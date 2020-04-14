@@ -37,7 +37,4 @@ public final class AnalyzeLayoutAsyncHeaders {
         this.operationLocation = operationLocation;
         return this;
     }
-
-    public void validate() {
-    }
 }

@@ -148,24 +148,4 @@ public final class AnalyzeResult {
         this.errors = errors;
         return this;
     }
-
-    public void validate() {
-        if (getVersion() == null) {
-            throw new IllegalArgumentException("Missing required property version in model AnalyzeResult");
-        }
-        if (getReadResults() == null) {
-            throw new IllegalArgumentException("Missing required property readResults in model AnalyzeResult");
-        } else {
-            getReadResults().forEach(e -> e.validate());
-        }
-        if (getPageResults() != null) {
-            getPageResults().forEach(e -> e.validate());
-        }
-        if (getDocumentResults() != null) {
-            getDocumentResults().forEach(e -> e.validate());
-        }
-        if (getErrors() != null) {
-            getErrors().forEach(e -> e.validate());
-        }
-    }
 }

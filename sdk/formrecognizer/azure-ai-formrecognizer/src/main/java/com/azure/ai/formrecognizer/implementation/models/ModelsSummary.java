@@ -94,10 +94,4 @@ public final class ModelsSummary {
         this.lastUpdatedDateTime = lastUpdatedDateTime;
         return this;
     }
-
-    public void validate() {
-        if (getLastUpdatedDateTime() == null) {
-            throw new IllegalArgumentException("Missing required property lastUpdatedDateTime in model ModelsSummary");
-        }
-    }
 }

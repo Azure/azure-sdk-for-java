@@ -119,18 +119,4 @@ public final class TextLine {
         this.words = words;
         return this;
     }
-
-    public void validate() {
-        if (getText() == null) {
-            throw new IllegalArgumentException("Missing required property text in model TextLine");
-        }
-        if (getBoundingBox() == null) {
-            throw new IllegalArgumentException("Missing required property boundingBox in model TextLine");
-        }
-        if (getWords() == null) {
-            throw new IllegalArgumentException("Missing required property words in model TextLine");
-        } else {
-            getWords().forEach(e -> e.validate());
-        }
-    }
 }

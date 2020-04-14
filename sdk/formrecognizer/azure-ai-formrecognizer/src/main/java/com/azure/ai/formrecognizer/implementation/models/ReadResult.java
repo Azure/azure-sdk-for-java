@@ -224,13 +224,4 @@ public final class ReadResult {
         this.lines = lines;
         return this;
     }
-
-    public void validate() {
-        if (getUnit() == null) {
-            throw new IllegalArgumentException("Missing required property unit in model ReadResult");
-        }
-        if (getLines() != null) {
-            getLines().forEach(e -> e.validate());
-        }
-    }
 }

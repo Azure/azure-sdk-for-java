@@ -121,19 +121,4 @@ public final class ModelInfo {
         this.lastUpdatedDateTime = lastUpdatedDateTime;
         return this;
     }
-
-    public void validate() {
-        if (getModelId() == null) {
-            throw new IllegalArgumentException("Missing required property modelId in model ModelInfo");
-        }
-        if (getStatus() == null) {
-            throw new IllegalArgumentException("Missing required property status in model ModelInfo");
-        }
-        if (getCreatedDateTime() == null) {
-            throw new IllegalArgumentException("Missing required property createdDateTime in model ModelInfo");
-        }
-        if (getLastUpdatedDateTime() == null) {
-            throw new IllegalArgumentException("Missing required property lastUpdatedDateTime in model ModelInfo");
-        }
-    }
 }

@@ -63,10 +63,4 @@ public final class FormFieldsReport {
         this.accuracy = accuracy;
         return this;
     }
-
-    public void validate() {
-        if (getFieldName() == null) {
-            throw new IllegalArgumentException("Missing required property fieldName in model FormFieldsReport");
-        }
-    }
 }

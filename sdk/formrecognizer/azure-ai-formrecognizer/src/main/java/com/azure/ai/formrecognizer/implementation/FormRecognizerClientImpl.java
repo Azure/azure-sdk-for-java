@@ -63,7 +63,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Gets Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus2.api.cognitive.microsoft.com).
-     * 
+     *
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -72,7 +72,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Sets Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus2.api.cognitive.microsoft.com).
-     * 
+     *
      * @param endpoint the endpoint value.
      * @return the service client itself.
      */
@@ -88,7 +88,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -104,7 +104,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Initializes an instance of FormRecognizerClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
     public FormRecognizerClientImpl(HttpPipeline httpPipeline) {
@@ -167,12 +167,12 @@ public final class FormRecognizerClientImpl {
         @Post("/layout/analyze")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsync(@HostParam("endpoint") String endpoint, @BodyParam("application/json") SourcePath fileStream, Context context);
+        Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsync(@HostParam("endpoint") String endpoint, @HeaderParam("Content-Type") ContentType contentType, @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream, @HeaderParam("Content-Length") long contentLength, Context context);
 
         @Post("/layout/analyze")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsync(@HostParam("endpoint") String endpoint, @HeaderParam("Content-Type") ContentType contentType, @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream, @HeaderParam("Content-Length") long contentLength, Context context);
+        Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsync(@HostParam("endpoint") String endpoint, @BodyParam("application/json") SourcePath fileStream, Context context);
 
         @Get("/layout/analyzeResults/{resultId}")
         @ExpectedResponses({200})
@@ -197,7 +197,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Create and train a custom model. The request must include a source parameter that is either an externally accessible Azure storage blob container Uri (preferably a Shared Access Signature Uri) or valid path to a data folder in a locally mounted drive. When local paths are specified, they must follow the Linux/Unix path format and be an absolute path rooted to the input mount configuration setting value e.g., if '{Mounts:Input}' configuration setting value is '/input' then a valid source path would be '/input/contosodataset'. All data to be trained is expected to be under the source folder or sub folders under it. Models are trained using documents that are of the following content type - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff'. Other type of content is ignored.
-     * 
+     *
      * @param trainRequest Request parameter to train a new custom model.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -206,20 +206,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TrainCustomModelAsyncResponse> trainCustomModelAsyncWithResponseAsync(TrainRequest trainRequest) {
-        if (this.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
-        }
-        if (trainRequest == null) {
-            return Mono.error(new IllegalArgumentException("Parameter trainRequest is required and cannot be null."));
-        } else {
-            trainRequest.validate();
-        }
         return FluxUtil.withContext(context -> service.trainCustomModelAsync(this.getEndpoint(), trainRequest, context));
     }
 
     /**
      * Create and train a custom model. The request must include a source parameter that is either an externally accessible Azure storage blob container Uri (preferably a Shared Access Signature Uri) or valid path to a data folder in a locally mounted drive. When local paths are specified, they must follow the Linux/Unix path format and be an absolute path rooted to the input mount configuration setting value e.g., if '{Mounts:Input}' configuration setting value is '/input' then a valid source path would be '/input/contosodataset'. All data to be trained is expected to be under the source folder or sub folders under it. Models are trained using documents that are of the following content type - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff'. Other type of content is ignored.
-     * 
+     *
      * @param trainRequest Request parameter to train a new custom model.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -229,20 +221,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TrainCustomModelAsyncResponse> trainCustomModelAsyncWithResponseAsync(TrainRequest trainRequest, Context context) {
-        if (this.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
-        }
-        if (trainRequest == null) {
-            return Mono.error(new IllegalArgumentException("Parameter trainRequest is required and cannot be null."));
-        } else {
-            trainRequest.validate();
-        }
         return service.trainCustomModelAsync(this.getEndpoint(), trainRequest, context);
     }
 
     /**
      * Get detailed information about a custom model.
-     * 
+     *
      * @param modelId Model identifier.
      * @param includeKeys Include list of extracted keys in model information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -252,18 +236,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Model>> getCustomModelWithResponseAsync(UUID modelId, Boolean includeKeys) {
-        if (this.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
-        }
-        if (modelId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter modelId is required and cannot be null."));
-        }
         return FluxUtil.withContext(context -> service.getCustomModel(this.getEndpoint(), modelId, includeKeys, context));
     }
 
     /**
      * Get detailed information about a custom model.
-     * 
+     *
      * @param modelId Model identifier.
      * @param context The context to associate with this operation.
      * @param includeKeys Include list of extracted keys in model information.
@@ -274,18 +252,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Model>> getCustomModelWithResponseAsync(UUID modelId, Context context, Boolean includeKeys) {
-        if (this.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
-        }
-        if (modelId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter modelId is required and cannot be null."));
-        }
         return service.getCustomModel(this.getEndpoint(), modelId, includeKeys, context);
     }
 
     /**
      * Mark model for deletion. Model artifacts will be permanently removed within a predetermined period.
-     * 
+     *
      * @param modelId Model identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -294,18 +266,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteCustomModelWithResponseAsync(UUID modelId) {
-        if (this.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
-        }
-        if (modelId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter modelId is required and cannot be null."));
-        }
         return FluxUtil.withContext(context -> service.deleteCustomModel(this.getEndpoint(), modelId, context));
     }
 
     /**
      * Mark model for deletion. Model artifacts will be permanently removed within a predetermined period.
-     * 
+     *
      * @param modelId Model identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -315,18 +281,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteCustomModelWithResponseAsync(UUID modelId, Context context) {
-        if (this.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
-        }
-        if (modelId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter modelId is required and cannot be null."));
-        }
         return service.deleteCustomModel(this.getEndpoint(), modelId, context);
     }
 
     /**
      * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     * 
+     *
      * @param modelId Model identifier.
      * @param contentType Content type for upload.
      * @param fileStream Uri or local path to source data.
@@ -339,24 +299,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModelWithResponseAsync(UUID modelId, ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength, Boolean includeTextDetails) {
-        if (this.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
-        }
-        if (modelId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter modelId is required and cannot be null."));
-        }
-        if (contentType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
-        }
-        if (fileStream == null) {
-            return Mono.error(new IllegalArgumentException("Parameter fileStream is required and cannot be null."));
-        }
         return FluxUtil.withContext(context -> service.analyzeWithCustomModel(this.getEndpoint(), modelId, includeTextDetails, contentType, fileStream, contentLength, context));
     }
 
     /**
      * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     * 
+     *
      * @param modelId Model identifier.
      * @param contentType Content type for upload.
      * @param fileStream Uri or local path to source data.
@@ -370,24 +318,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModelWithResponseAsync(UUID modelId, ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength, Context context, Boolean includeTextDetails) {
-        if (this.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
-        }
-        if (modelId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter modelId is required and cannot be null."));
-        }
-        if (contentType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
-        }
-        if (fileStream == null) {
-            return Mono.error(new IllegalArgumentException("Parameter fileStream is required and cannot be null."));
-        }
         return service.analyzeWithCustomModel(this.getEndpoint(), modelId, includeTextDetails, contentType, fileStream, contentLength, context);
     }
 
     /**
      * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     * 
+     *
      * @param modelId Model identifier.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param fileStream Uri or local path to source data.
@@ -398,21 +334,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModelWithResponseAsync(UUID modelId, Boolean includeTextDetails, SourcePath fileStream) {
-        if (this.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
-        }
-        if (modelId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter modelId is required and cannot be null."));
-        }
-        if (fileStream != null) {
-            fileStream.validate();
-        }
         return FluxUtil.withContext(context -> service.analyzeWithCustomModel(this.getEndpoint(), modelId, includeTextDetails, fileStream, context));
     }
 
     /**
      * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     * 
+     *
      * @param modelId Model identifier.
      * @param context The context to associate with this operation.
      * @param includeTextDetails Include text lines and element references in the result.
@@ -424,21 +351,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModelWithResponseAsync(UUID modelId, Context context, Boolean includeTextDetails, SourcePath fileStream) {
-        if (this.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
-        }
-        if (modelId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter modelId is required and cannot be null."));
-        }
-        if (fileStream != null) {
-            fileStream.validate();
-        }
         return service.analyzeWithCustomModel(this.getEndpoint(), modelId, includeTextDetails, fileStream, context);
     }
 
     /**
      * Obtain current status and the result of the analyze form operation.
-     * 
+     *
      * @param modelId Model identifier.
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -448,21 +366,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeFormResultWithResponseAsync(UUID modelId, UUID resultId) {
-        if (this.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
-        }
-        if (modelId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter modelId is required and cannot be null."));
-        }
-        if (resultId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resultId is required and cannot be null."));
-        }
         return FluxUtil.withContext(context -> service.getAnalyzeFormResult(this.getEndpoint(), modelId, resultId, context));
     }
 
     /**
      * Obtain current status and the result of the analyze form operation.
-     * 
+     *
      * @param modelId Model identifier.
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
@@ -473,21 +382,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeFormResultWithResponseAsync(UUID modelId, UUID resultId, Context context) {
-        if (this.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
-        }
-        if (modelId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter modelId is required and cannot be null."));
-        }
-        if (resultId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resultId is required and cannot be null."));
-        }
         return service.getAnalyzeFormResult(this.getEndpoint(), modelId, resultId, context);
     }
 
     /**
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     * 
+     *
      * @param contentType Content type for upload.
      * @param fileStream Uri or local path to source data.
      * @param contentLength The contentLength parameter.
@@ -499,21 +399,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsyncWithResponseAsync(ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength, Boolean includeTextDetails) {
-        if (this.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
-        }
-        if (contentType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
-        }
-        if (fileStream == null) {
-            return Mono.error(new IllegalArgumentException("Parameter fileStream is required and cannot be null."));
-        }
         return FluxUtil.withContext(context -> service.analyzeReceiptAsync(this.getEndpoint(), includeTextDetails, contentType, fileStream, contentLength, context));
     }
 
     /**
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     * 
+     *
      * @param contentType Content type for upload.
      * @param fileStream Uri or local path to source data.
      * @param contentLength The contentLength parameter.
@@ -526,21 +417,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsyncWithResponseAsync(ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength, Context context, Boolean includeTextDetails) {
-        if (this.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
-        }
-        if (contentType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
-        }
-        if (fileStream == null) {
-            return Mono.error(new IllegalArgumentException("Parameter fileStream is required and cannot be null."));
-        }
         return service.analyzeReceiptAsync(this.getEndpoint(), includeTextDetails, contentType, fileStream, contentLength, context);
     }
 
     /**
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     * 
+     *
      * @param includeTextDetails Include text lines and element references in the result.
      * @param fileStream Uri or local path to source data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -550,18 +432,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsyncWithResponseAsync(Boolean includeTextDetails, SourcePath fileStream) {
-        if (this.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
-        }
-        if (fileStream != null) {
-            fileStream.validate();
-        }
         return FluxUtil.withContext(context -> service.analyzeReceiptAsync(this.getEndpoint(), includeTextDetails, fileStream, context));
     }
 
     /**
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param fileStream Uri or local path to source data.
@@ -572,18 +448,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsyncWithResponseAsync(Context context, Boolean includeTextDetails, SourcePath fileStream) {
-        if (this.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
-        }
-        if (fileStream != null) {
-            fileStream.validate();
-        }
         return service.analyzeReceiptAsync(this.getEndpoint(), includeTextDetails, fileStream, context);
     }
 
     /**
      * Track the progress and obtain the result of the analyze receipt operation.
-     * 
+     *
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -592,18 +462,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeReceiptResultWithResponseAsync(UUID resultId) {
-        if (this.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
-        }
-        if (resultId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resultId is required and cannot be null."));
-        }
         return FluxUtil.withContext(context -> service.getAnalyzeReceiptResult(this.getEndpoint(), resultId, context));
     }
 
     /**
      * Track the progress and obtain the result of the analyze receipt operation.
-     * 
+     *
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -613,18 +477,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeReceiptResultWithResponseAsync(UUID resultId, Context context) {
-        if (this.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
-        }
-        if (resultId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resultId is required and cannot be null."));
-        }
         return service.getAnalyzeReceiptResult(this.getEndpoint(), resultId, context);
     }
 
     /**
      * Extract text and layout information from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     * 
+     *
      * @param contentType Content type for upload.
      * @param fileStream Uri or local path to source data.
      * @param contentLength The contentLength parameter.
@@ -635,21 +493,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsyncWithResponseAsync(ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength) {
-        if (this.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
-        }
-        if (contentType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
-        }
-        if (fileStream == null) {
-            return Mono.error(new IllegalArgumentException("Parameter fileStream is required and cannot be null."));
-        }
         return FluxUtil.withContext(context -> service.analyzeLayoutAsync(this.getEndpoint(), contentType, fileStream, contentLength, context));
     }
 
     /**
      * Extract text and layout information from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     * 
+     *
      * @param contentType Content type for upload.
      * @param fileStream Uri or local path to source data.
      * @param contentLength The contentLength parameter.
@@ -661,21 +510,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsyncWithResponseAsync(ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength, Context context) {
-        if (this.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
-        }
-        if (contentType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
-        }
-        if (fileStream == null) {
-            return Mono.error(new IllegalArgumentException("Parameter fileStream is required and cannot be null."));
-        }
         return service.analyzeLayoutAsync(this.getEndpoint(), contentType, fileStream, contentLength, context);
     }
 
     /**
      * Extract text and layout information from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     * 
+     *
      * @param fileStream Uri or local path to source data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -684,18 +524,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsyncWithResponseAsync(SourcePath fileStream) {
-        if (this.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
-        }
-        if (fileStream != null) {
-            fileStream.validate();
-        }
         return FluxUtil.withContext(context -> service.analyzeLayoutAsync(this.getEndpoint(), fileStream, context));
     }
 
     /**
      * Extract text and layout information from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @param fileStream Uri or local path to source data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -705,18 +539,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsyncWithResponseAsync(Context context, SourcePath fileStream) {
-        if (this.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
-        }
-        if (fileStream != null) {
-            fileStream.validate();
-        }
         return service.analyzeLayoutAsync(this.getEndpoint(), fileStream, context);
     }
 
     /**
      * Track the progress and obtain the result of the analyze layout operation.
-     * 
+     *
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -725,18 +553,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeLayoutResultWithResponseAsync(UUID resultId) {
-        if (this.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
-        }
-        if (resultId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resultId is required and cannot be null."));
-        }
         return FluxUtil.withContext(context -> service.getAnalyzeLayoutResult(this.getEndpoint(), resultId, context));
     }
 
     /**
      * Track the progress and obtain the result of the analyze layout operation.
-     * 
+     *
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -746,27 +568,18 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeLayoutResultWithResponseAsync(UUID resultId, Context context) {
-        if (this.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
-        }
-        if (resultId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resultId is required and cannot be null."));
-        }
         return service.getAnalyzeLayoutResult(this.getEndpoint(), resultId, context);
     }
 
     /**
      * Get information about all custom models.
-     * 
+     *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about all custom models.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ModelInfo>> listCustomModelsSinglePageAsync() {
-        if (this.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
-        }
         final String op = "full";
         return FluxUtil.withContext(context -> service.listCustomModels(this.getEndpoint(), op, context))
             .map(res -> new PagedResponseBase<>(
@@ -780,7 +593,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Get information about all custom models.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -789,9 +602,6 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ModelInfo>> listCustomModelsSinglePageAsync(Context context) {
-        if (this.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
-        }
         final String op = "full";
         return service.listCustomModels(this.getEndpoint(), op, context)
             .map(res -> new PagedResponseBase<>(
@@ -805,23 +615,20 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Get information about all custom models.
-     * 
+     *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about all custom models.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Models>> getCustomModelsWithResponseAsync() {
-        if (this.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
-        }
         final String op = "summary";
         return FluxUtil.withContext(context -> service.getCustomModels(this.getEndpoint(), op, context));
     }
 
     /**
      * Get information about all custom models.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -830,16 +637,13 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Models>> getCustomModelsWithResponseAsync(Context context) {
-        if (this.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
-        }
         final String op = "summary";
         return service.getCustomModels(this.getEndpoint(), op, context);
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -848,9 +652,6 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ModelInfo>> listCustomModelsNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
         return FluxUtil.withContext(context -> service.listCustomModelsNext(nextLink, context))
             .map(res -> new PagedResponseBase<>(
                 res.getRequest(),
@@ -863,7 +664,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -873,9 +674,6 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ModelInfo>> listCustomModelsNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
         return service.listCustomModelsNext(nextLink, context)
             .map(res -> new PagedResponseBase<>(
                 res.getRequest(),

@@ -93,18 +93,4 @@ public final class DocumentResult {
         this.fields = fields;
         return this;
     }
-
-    public void validate() {
-        if (getDocType() == null) {
-            throw new IllegalArgumentException("Missing required property docType in model DocumentResult");
-        }
-        if (getPageRange() == null) {
-            throw new IllegalArgumentException("Missing required property pageRange in model DocumentResult");
-        }
-        if (getFields() == null) {
-            throw new IllegalArgumentException("Missing required property fields in model DocumentResult");
-        } else {
-            getFields().values().forEach(e -> e.validate());
-        }
-    }
 }

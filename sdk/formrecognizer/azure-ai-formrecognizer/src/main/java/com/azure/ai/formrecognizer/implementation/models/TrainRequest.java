@@ -91,13 +91,4 @@ public final class TrainRequest {
         this.useLabelFile = useLabelFile;
         return this;
     }
-
-    public void validate() {
-        if (getSource() == null) {
-            throw new IllegalArgumentException("Missing required property source in model TrainRequest");
-        }
-        if (getSourceFilter() != null) {
-            getSourceFilter().validate();
-        }
-    }
 }

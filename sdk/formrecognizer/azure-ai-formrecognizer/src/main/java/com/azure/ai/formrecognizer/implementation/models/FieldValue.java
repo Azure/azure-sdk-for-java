@@ -383,16 +383,4 @@ public final class FieldValue {
         this.page = page;
         return this;
     }
-
-    public void validate() {
-        if (getType() == null) {
-            throw new IllegalArgumentException("Missing required property type in model FieldValue");
-        }
-        if (getValueArray() != null) {
-            getValueArray().forEach(e -> e.validate());
-        }
-        if (getValueObject() != null) {
-            getValueObject().values().forEach(e -> e.validate());
-        }
-    }
 }

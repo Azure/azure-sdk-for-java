@@ -37,7 +37,4 @@ public final class TrainCustomModelAsyncHeaders {
         this.location = location;
         return this;
     }
-
-    public void validate() {
-    }
 }

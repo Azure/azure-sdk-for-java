@@ -63,13 +63,4 @@ public final class ErrorInformation {
         this.message = message;
         return this;
     }
-
-    public void validate() {
-        if (getCode() == null) {
-            throw new IllegalArgumentException("Missing required property code in model ErrorInformation");
-        }
-        if (getMessage() == null) {
-            throw new IllegalArgumentException("Missing required property message in model ErrorInformation");
-        }
-    }
 }
