@@ -18,11 +18,14 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
+import com.azure.storage.blob.implementation.models.FilterBlobItem;
 import com.azure.storage.blob.implementation.models.ServiceGetAccountInfoHeaders;
+import com.azure.storage.blob.implementation.models.ServicesFilterBlobsResponse;
 import com.azure.storage.blob.implementation.models.ServicesListBlobContainersSegmentResponse;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobCorsRule;
+import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobRetentionPolicy;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobServiceStatistics;
@@ -46,6 +49,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
@@ -325,6 +330,46 @@ public final class BlobServiceAsyncClient {
             this.azureBlobStorage.services().listBlobContainersSegmentWithRestResponseAsync(
                 options.getPrefix(), marker, options.getMaxResultsPerPage(), options.getDetails().toIncludeType(), null,
                 null, Context.NONE), timeout);
+    }
+
+    public PagedFlux<FilterBlobItem> filterBlobs(String query) {
+        return this.filterBlobs(query, null, null);
+    }
+
+    public PagedFlux<FilterBlobItem> filterBlobs(String query, Integer maxResults) {
+        try {
+            return filterBlobs(query, maxResults, null);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
+    }
+
+    // TODO: options instead of maxResults?
+    // TODO: Return type?
+    PagedFlux<FilterBlobItem> filterBlobs(String query, Integer maxResults, Duration timeout) {
+        Function<String, Mono<PagedResponse<FilterBlobItem>>> func =
+            marker -> filterBlobs(query, marker, maxResults, timeout)
+                .map(response -> {
+                    List<FilterBlobItem> value = response.getValue().getBlobs() == null
+                        ? new ArrayList<>(0)
+                        : response.getValue().getBlobs();
+
+                    return new PagedResponseBase<>(
+                        response.getRequest(),
+                        response.getStatusCode(),
+                        response.getHeaders(),
+                        value,
+                        response.getValue().getNextMarker(),
+                        response.getDeserializedHeaders());
+                });
+        return new PagedFlux<>(() -> func.apply(null), func);
+    }
+
+    private Mono<ServicesFilterBlobsResponse> filterBlobs(String query, String marker, Integer maxResults,
+        Duration timeout) {
+        return StorageImplUtils.applyOptionalTimeout(
+            this.azureBlobStorage.services().filterBlobsWithRestResponseAsync(null, null, query, marker, maxResults,
+                Context.NONE), timeout);
     }
 
     /**

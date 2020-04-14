@@ -24,6 +24,8 @@ import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.models.BlobGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.BlobGetPropertiesHeaders;
 import com.azure.storage.blob.implementation.models.BlobStartCopyFromURLHeaders;
+import com.azure.storage.blob.implementation.models.BlobTag;
+import com.azure.storage.blob.implementation.models.BlobsGetTagsResponse;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.implementation.util.ModelHelper;
@@ -37,6 +39,8 @@ import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.BlobTagSet;
+import com.azure.storage.blob.models.BlobTags;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
@@ -69,16 +73,17 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import static com.azure.core.util.FluxUtil.fluxError;
-import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.FluxUtil.*;
 import static java.lang.StrictMath.toIntExact;
 
 /**
@@ -1352,6 +1357,52 @@ public class BlobAsyncClientBase {
             requestConditions.getIfNoneMatch(), null, customerProvidedKey, encryptionScope,
             context)
             .map(response -> new SimpleResponse<>(response, null));
+    }
+
+    public Mono<Map<String, String>> getTags() {
+        return this.getTagsWithResponse().map(Response::getValue);
+    }
+
+    public Mono<Response<Map<String, String>>> getTagsWithResponse() {
+        try {
+            return withContext(this::getTagsWithResponse);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<Map<String, String>>> getTagsWithResponse(Context context) {
+        return this.azureBlobStorage.blobs().getTagsWithRestResponseAsync(null, null, null, null, snapshot,
+            null /* versionId */, context)
+            .map(response -> {
+                Map<String, String> tags = new HashMap<>();
+                for(BlobTag tag : response.getValue().getBlobTagSet().getBlobTagList()) {
+                    tags.put(tag.getKey(), tag.getValue());
+                }
+                return new SimpleResponse<>(response, tags);
+            });
+    }
+
+    public Mono<Void> setTags(Map<String, String> tags) {
+        return this.setTagsWithResponse(tags).flatMap(FluxUtil::toMono);
+    }
+
+    public Mono<Response<Void>> setTagsWithResponse(Map<String, String> tags) {
+        try {
+            return withContext(context -> setTagsWithResponse(tags, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<Void>> setTagsWithResponse(Map<String, String> tags, Context context) {
+        List<BlobTag> tagList = new ArrayList<>();
+        for (String tag : tags.keySet()) {
+            tagList.add(new BlobTag().setKey(tag).setValue(tags.get(tag)));
+        }
+        BlobTags t = new BlobTags().setBlobTagSet(new BlobTagSet().setBlobTagList(tagList));
+        return this.azureBlobStorage.blobs().setTagsWithRestResponseAsync(null, null, null, null, snapshot,
+            null /* versionId */, null, null, null, t, context);
     }
 
     /**

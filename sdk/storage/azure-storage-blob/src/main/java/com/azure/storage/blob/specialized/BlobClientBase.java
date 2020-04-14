@@ -48,6 +48,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
 
 /**
@@ -779,6 +781,26 @@ public class BlobClientBase {
     public Response<Void> setMetadataWithResponse(Map<String, String> metadata, BlobRequestConditions requestConditions,
         Duration timeout, Context context) {
         Mono<Response<Void>> response = client.setMetadataWithResponse(metadata, requestConditions, context);
+
+        return blockWithOptionalTimeout(response, timeout);
+    }
+
+    public Map<String, String> getTags() {
+        return this.getTagsWithResponse(null, Context.NONE).getValue();
+    }
+
+    public Response<Map<String, String>> getTagsWithResponse(Duration timeout, Context context) {
+        Mono<Response<Map<String, String>>> response = client.getTagsWithResponse(context);
+
+        return blockWithOptionalTimeout(response, timeout);
+    }
+
+    public void setTags(Map<String, String> tags) {
+        this.setTagsWithResponse(tags, null, Context.NONE);
+    }
+
+    public Response<Void> setTagsWithResponse(Map<String, String> tags, Duration timeout, Context context) {
+        Mono<Response<Void>> response = client.setTagsWithResponse(tags, context);
 
         return blockWithOptionalTimeout(response, timeout);
     }

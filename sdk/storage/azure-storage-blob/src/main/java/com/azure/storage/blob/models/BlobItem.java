@@ -5,8 +5,11 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.storage.blob.implementation.models.BlobTag;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -15,6 +18,32 @@ import java.util.Map;
 @JacksonXmlRootElement(localName = "Blob")
 @Fluent
 public final class BlobItem {
+
+
+    public BlobItem() {
+
+    }
+
+    /**
+     * Initializes a new blob item.
+     *
+     * @param blobItemInternal The internal structure from which to pull state.
+     */
+    public BlobItem(BlobItemInternal blobItemInternal) {
+        this.name = blobItemInternal.getName();
+        this.deleted = blobItemInternal.isDeleted();
+        this.snapshot = blobItemInternal.getSnapshot();
+        this.properties = blobItemInternal.getProperties();
+        this.metadata = blobItemInternal.getMetadata();
+        this.versionId = blobItemInternal.getVersionId();
+        this.isPrefix = blobItemInternal.isPrefix();
+
+        this.tags = new HashMap<>();
+        for (BlobTag tag : blobItemInternal.getBlobTags().getBlobTagSet().getBlobTagList()) {
+            this.tags.put(tag.getKey(), tag.getValue());
+        }
+    }
+
     /*
      * The name property.
      */
@@ -44,6 +73,8 @@ public final class BlobItem {
      */
     @JsonProperty(value = "Metadata")
     private Map<String, String> metadata;
+
+    private Map<String, String> tags;
 
     /*
      * The versionId property.

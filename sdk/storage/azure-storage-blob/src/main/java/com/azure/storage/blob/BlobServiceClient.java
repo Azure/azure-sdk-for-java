@@ -10,6 +10,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.implementation.models.FilterBlobItem;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobServiceStatistics;
@@ -191,6 +192,14 @@ public final class BlobServiceClient {
      */
     public PagedIterable<BlobContainerItem> listBlobContainers(ListBlobContainersOptions options, Duration timeout) {
         return new PagedIterable<>(blobServiceAsyncClient.listBlobContainersWithOptionalTimeout(options, timeout));
+    }
+
+    public PagedIterable<FilterBlobItem> filterBlobs(String query) {
+        return this.filterBlobs(query, null, null);
+    }
+
+    public PagedIterable<FilterBlobItem> filterBlobs(String query, Integer maxResults, Duration timeout) {
+        return new PagedIterable<>(blobServiceAsyncClient.filterBlobs(query, maxResults, timeout));
     }
 
     /**

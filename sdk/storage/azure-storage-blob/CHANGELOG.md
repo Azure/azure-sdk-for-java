@@ -1,7 +1,7 @@
 # Release History
 
 ## 12.6.0-beta.1 (Unreleased)
-
+- Added support for blob tags. Added get/setTags method to Blob(Async)ClientBase. Added filterTags api to BlobServiceClient. Added ability to specify tags on all methods that create a blob. Tag count returned on getProperties/getBlob. Option to include returning tags on listing. 
 
 ## 12.5.0 (2020-03-11)
 - Fixed a bug that was adding an invalid 'include' query-parameter for list blob item requests if no dataset-include options were specified.
