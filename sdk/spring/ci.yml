@@ -39,40 +39,40 @@ stages:
       ServiceDirectory: spring
       Artifacts:
         - name: azure-spring-boot
-          groupId: com.azure
+          groupId: com.microsoft.azure
           safeName: azurespringboot
         - name: azure-spring-boot-starter
-          groupId: com.azure
+          groupId: com.microsoft.azure
           safeName: azurespringbootstarter
         - name: azure-spring-boot-starter-active-directory
-          groupId: com.azure
+          groupId: com.microsoft.azure
           safeName: azurespringbootstarteractivedirectory
         - name: azure-spring-boot-starter-active-directory-b2c
-          groupId: com.azure
+          groupId: com.microsoft.azure
           safeName: azurespringbootstarteractivedirectoryb2c
         - name: azure-spring-boot-starter-cosmosdb
-          groupId: com.azure
+          groupId: com.microsoft.azure
           safeName: azurespringbootstartercosmosdb
         - name: azure-spring-boot-starter-data-gremlin
-          groupId: com.azure
+          groupId: com.microsoft.azure
           safeName: azurespringbootstarterdatagremlin
         - name: azure-spring-boot-starter-keyvault-secrets
-          groupId: com.azure
+          groupId: com.microsoft.azure
           safeName: azurespringbootstarterkeyvaultsecrets
         - name: azure-spring-boot-starter-mediaservices
-          groupId: com.azure
+          groupId: com.microsoft.azure
           safeName: azurespringbootstartermediaservices
         - name: azure-spring-boot-starter-metrics
-          groupId: com.azure
+          groupId: com.microsoft.azure
           safeName: azurespringbootstartermetrics
         - name: azure-spring-boot-starter-servicebus
-          groupId: com.azure
+          groupId: com.microsoft.azure
           safeName: azurespringbootstarterservicebus
         - name: azure-spring-boot-starter-servicebus-jms
-          groupId: com.azure
+          groupId: com.microsoft.azure
           safeName: azurespringbootstarterservicebusjms
         - name: azure-spring-boot-starter-storage
-          groupId: com.azure
+          groupId: com.microsoft.azure
           safeName: azurespringbootstarterstorage
 
 
