@@ -428,7 +428,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = CHANGE_FEED_PROCESSOR_TIMEOUT)
-    public void serviceItemLeaseSerialization() {
+    public void serviceItemLeaseSerialization() throws JsonProcessingException {
         ZonedDateTime timeNow = ZonedDateTime.now();
         String timeNowValue = timeNow.toString();
 
@@ -451,20 +451,16 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
 
         ObjectMapper mapper = new ObjectMapper();
 
-        try {
-            assertThat(mapper.writeValueAsString(lease1)).isEqualTo(
-                String.format("%s%s%s",
-                    "{\"id\":\"id1\",\"_etag\":\"etag1\",\"LeaseToken\":\"1\",\"ContinuationToken\":\"12\",\"timestamp\":\"",
-                    timeNowValue,
-                    "\",\"Owner\":\"Owner1\"}"));
-            assertThat(mapper.writeValueAsString(lease2)).isEqualTo(
-                String.format("%s%s%s",
-                    "{\"id\":\"id2\",\"_etag\":\"etag2\",\"LeaseToken\":\"2\",\"ContinuationToken\":\"22\",\"timestamp\":\"",
-                    timeNowValue,
-                    "\",\"Owner\":null}"));
-        } catch(Exception ex) {
-            ex.printStackTrace();
-        }
+        assertThat(mapper.writeValueAsString(lease1)).isEqualTo(
+            String.format("%s%s%s",
+                "{\"id\":\"id1\",\"_etag\":\"etag1\",\"LeaseToken\":\"1\",\"ContinuationToken\":\"12\",\"timestamp\":\"",
+                timeNowValue,
+                "\",\"Owner\":\"Owner1\"}"));
+        assertThat(mapper.writeValueAsString(lease2)).isEqualTo(
+            String.format("%s%s%s",
+                "{\"id\":\"id2\",\"_etag\":\"etag2\",\"LeaseToken\":\"2\",\"ContinuationToken\":\"22\",\"timestamp\":\"",
+                timeNowValue,
+                "\",\"Owner\":null}"));
     }
 
     private Consumer<List<JsonNode>> changeFeedProcessorHandler() {
