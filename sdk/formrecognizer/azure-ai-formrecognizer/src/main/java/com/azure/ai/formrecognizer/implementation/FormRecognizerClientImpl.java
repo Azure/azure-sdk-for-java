@@ -136,12 +136,12 @@ public final class FormRecognizerClientImpl {
 
         @Post("/custom/models/{modelId}/analyze")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModel(@HostParam("endpoint") String endpoint, @PathParam("modelId") UUID modelId, @QueryParam("includeTextDetails") Boolean includeTextDetails, @BodyParam("application/json") SourcePath fileStream, Context context);
 
         @Post("/custom/models/{modelId}/analyze")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModel(@HostParam("endpoint") String endpoint, @PathParam("modelId") UUID modelId, @QueryParam("includeTextDetails") Boolean includeTextDetails, @HeaderParam("Content-Type") ContentType contentType, @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream, @HeaderParam("Content-Length") long contentLength, Context context);
 
         @Get("/custom/models/{modelId}/analyzeResults/{resultId}")
@@ -151,7 +151,7 @@ public final class FormRecognizerClientImpl {
 
         @Post("/prebuilt/receipt/analyze")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsync(@HostParam("endpoint") String endpoint, @QueryParam("includeTextDetails") Boolean includeTextDetails, @HeaderParam("Content-Type") ContentType contentType, @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream, @HeaderParam("Content-Length") long contentLength, Context context);
 
         @Post("/prebuilt/receipt/analyze")
@@ -166,12 +166,12 @@ public final class FormRecognizerClientImpl {
 
         @Post("/layout/analyze")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsync(@HostParam("endpoint") String endpoint, @HeaderParam("Content-Type") ContentType contentType, @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream, @HeaderParam("Content-Length") long contentLength, Context context);
 
         @Post("/layout/analyze")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsync(@HostParam("endpoint") String endpoint, @BodyParam("application/json") SourcePath fileStream, Context context);
 
         @Get("/layout/analyzeResults/{resultId}")
@@ -574,27 +574,14 @@ public final class FormRecognizerClientImpl {
     /**
      * Get information about all custom models.
      *
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about all custom models.
      */
-    // @ServiceMethod(returns = ReturnType.SINGLE)
-    // public Mono<PagedResponse<ModelInfo>> listCustomModelsSinglePageAsync() {
-    //     final String op = "full";
-    //     return FluxUtil.withContext(context -> service.listCustomModels(this.getEndpoint(), op, context))
-    //         .map(res -> new PagedResponseBase<>(
-    //             res.getRequest(),
-    //             res.getStatusCode(),
-    //             res.getHeaders(),
-    //             res.getValue().getModelList(),
-    //             res.getValue().getNextLink(),
-    //             null));
-    // }
-
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ModelInfo>> listCustomModelsSinglePageAsync(Context context) {
+    public Mono<PagedResponse<ModelInfo>> listCustomModelsSinglePageAsync() {
         final String op = "full";
-        return service.listCustomModels(this.getEndpoint(), op, context)
+        return FluxUtil.withContext(context -> service.listCustomModels(this.getEndpoint(), op, context))
             .map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
@@ -609,7 +596,7 @@ public final class FormRecognizerClientImpl {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about all custom models.
      */
@@ -629,7 +616,7 @@ public final class FormRecognizerClientImpl {
     /**
      * Get information about all custom models.
      *
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about all custom models.
      */
@@ -681,7 +668,7 @@ public final class FormRecognizerClientImpl {
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response to the list custom models operation.
      */

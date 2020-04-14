@@ -5,10 +5,12 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
+import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
@@ -165,6 +167,24 @@ public class FormTrainingClient {
         return client.deleteModelWithResponse(modelId, context).block();
     }
 
-    // list models
-    // TODO
+    /**
+     * List information for all models.
+     *
+     * @return {@link PagedIterable} of {@link CustomFormModelInfo} custom form model information.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<CustomFormModelInfo> listModels() {
+        return new PagedIterable<>(client.listModels(Context.NONE));
+    }
+
+    /**
+     * List information for all models with taking {@link Context}.
+     *
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return {@link PagedIterable} of {@link CustomFormModelInfo} custom form model information.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<CustomFormModelInfo> listModels(Context context) {
+        return new PagedIterable<>(client.listModels(context));
+    }
 }

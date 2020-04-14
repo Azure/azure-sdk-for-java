@@ -19,9 +19,6 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
@@ -46,7 +43,6 @@ import static com.azure.ai.formrecognizer.Transforms.toRecognizedForm;
 import static com.azure.ai.formrecognizer.Transforms.toRecognizedLayout;
 import static com.azure.ai.formrecognizer.implementation.Utility.parseModelId;
 import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * This class provides an asynchronous client that contains all the operations that apply to Azure Form Recognizer.
@@ -381,64 +377,6 @@ public final class FormRecognizerAsyncClient {
             fetchExtractReceiptResult(includeTextDetails));
     }
 
-    /**
-     * List information for all models.
-     *
-     * @return {@link PagedFlux} of {@link CustomFormModelInfo}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<CustomFormModelInfo> listModels() {
-        try {
-            return new PagedFlux<>(() -> withContext(context -> listFirstPageModelInfo(context)),
-                continuationToken -> withContext(context -> listNextPageModelInfo(continuationToken, context)));
-        } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
-        }
-    }
-
-    /**
-     * List information for all models with taking {@link Context}.
-     *
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     *
-     * @return {@link PagedFlux} of {@link CustomFormModelInfo}.
-     */
-    PagedFlux<CustomFormModelInfo> listModels(Context context) {
-        return new PagedFlux<>(() -> listFirstPageModelInfo(context),
-            continuationToken -> listNextPageModelInfo(continuationToken, context));
-    }
-
-    private Mono<PagedResponse<CustomFormModelInfo>> listFirstPageModelInfo(Context context) {
-        return service.listCustomModelsSinglePageAsync(context)
-            .doOnRequest(ignoredValue -> logger.info("Listing information for all models"))
-            .doOnSuccess(response -> logger.info("Listed all models"))
-            .doOnError(error -> logger.warning("Failed to list all models information", error))
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                toCustomFormModelInfo(res.getValue()),
-                res.getContinuationToken(),
-                null));
-    }
-
-    private Mono<PagedResponse<CustomFormModelInfo>> listNextPageModelInfo(String nextPageLink, Context context) {
-        if (CoreUtils.isNullOrEmpty(nextPageLink)) {
-            return Mono.empty();
-        }
-        return service.listCustomModelsNextSinglePageAsync(nextPageLink, context)
-            .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
-            .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
-            .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
-                error))
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                toCustomFormModelInfo(res.getValue()),
-                res.getContinuationToken(),
-                null));
-    }
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> receiptAnalyzeActivationOperation(
         String sourceUrl, boolean includeTextDetails) {
@@ -624,7 +562,7 @@ public final class FormRecognizerAsyncClient {
         return (pollingContext) -> {
             try {
                 return service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId),
-                    includeTextDetails, ContentType.fromString(formContentType.toString()), data, length)
+                     ContentType.fromString(formContentType.toString()), data, length, includeTextDetails)
                     .map(response ->
                         new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation())));
             } catch (RuntimeException ex) {

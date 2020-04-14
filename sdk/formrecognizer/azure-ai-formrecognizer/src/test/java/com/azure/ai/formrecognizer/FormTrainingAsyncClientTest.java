@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -133,6 +134,30 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     void deleteModelValidModelIdWithResponse() {
         // TODO: after List models API is merged.
         // list models select first and delete model Id check success response.
+    }
+
+    /**
+     * Test for listing all models information.
+     */
+    @Test
+    void listModels() {
+        StepVerifier.create(client.listModels())
+            .thenConsumeWhile(customFormModelInfo ->
+                customFormModelInfo.getModelId() != null && customFormModelInfo.getCreatedOn() != null
+                    && customFormModelInfo.getLastUpdatedOn() != null && customFormModelInfo.getStatus() != null)
+            .verifyComplete();
+    }
+
+    /**
+     * Test for listing all models information with {@link Context}.
+     */
+    @Test
+    void listModelsWithContext() {
+        StepVerifier.create(client.listModels(Context.NONE))
+            .thenConsumeWhile(modelInfo ->
+                modelInfo.getModelId() != null && modelInfo.getCreatedOn() != null
+                    && modelInfo.getLastUpdatedOn() != null && modelInfo.getStatus() != null)
+            .verifyComplete();
     }
 
     /**

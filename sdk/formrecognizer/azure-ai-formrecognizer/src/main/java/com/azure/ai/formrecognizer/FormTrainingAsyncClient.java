@@ -9,14 +9,19 @@ import com.azure.ai.formrecognizer.implementation.models.TrainRequest;
 import com.azure.ai.formrecognizer.implementation.models.TrainSourceFilter;
 import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
+import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -31,6 +36,7 @@ import java.util.UUID;
 import java.util.function.Function;
 
 import static com.azure.ai.formrecognizer.CustomModelTransforms.toCustomFormModel;
+import static com.azure.ai.formrecognizer.CustomModelTransforms.toCustomFormModelInfo;
 import static com.azure.ai.formrecognizer.FormRecognizerClientBuilder.DEFAULT_DURATION;
 import static com.azure.ai.formrecognizer.implementation.Utility.parseModelId;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -220,14 +226,70 @@ public class FormTrainingAsyncClient {
         }
     }
 
-    // list models
-    // TODO (shawn) : #9976
-
     Mono<Response<Void>> deleteModelWithResponse(String modelId, Context context) {
         Objects.requireNonNull(modelId, "'modelId' cannot be null");
 
         return service.deleteCustomModelWithResponseAsync(UUID.fromString(modelId), context)
             .map(response -> new SimpleResponse<>(response, null));
+    }
+
+    /**
+     * List information for all models.
+     *
+     * @return {@link PagedFlux} of {@link CustomFormModelInfo}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<CustomFormModelInfo> listModels() {
+        try {
+            return new PagedFlux<>(() -> withContext(context -> listFirstPageModelInfo(context)),
+                continuationToken -> withContext(context -> listNextPageModelInfo(continuationToken, context)));
+        } catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
+        }
+    }
+
+    /**
+     * List information for all models with taking {@link Context}.
+     *
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return {@link PagedFlux} of {@link CustomFormModelInfo}.
+     */
+    PagedFlux<CustomFormModelInfo> listModels(Context context) {
+        return new PagedFlux<>(() -> listFirstPageModelInfo(context),
+            continuationToken -> listNextPageModelInfo(continuationToken, context));
+    }
+
+    private Mono<PagedResponse<CustomFormModelInfo>> listFirstPageModelInfo(Context context) {
+        return service.listCustomModelsSinglePageAsync(context)
+            .doOnRequest(ignoredValue -> logger.info("Listing information for all models"))
+            .doOnSuccess(response -> logger.info("Listed all models"))
+            .doOnError(error -> logger.warning("Failed to list all models information", error))
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                toCustomFormModelInfo(res.getValue()),
+                res.getContinuationToken(),
+                null));
+    }
+
+    private Mono<PagedResponse<CustomFormModelInfo>> listNextPageModelInfo(String nextPageLink, Context context) {
+        if (CoreUtils.isNullOrEmpty(nextPageLink)) {
+            return Mono.empty();
+        }
+        return service.listCustomModelsNextSinglePageAsync(nextPageLink, context)
+            .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
+            .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
+            .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
+                error))
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                toCustomFormModelInfo(res.getValue()),
+                res.getContinuationToken(),
+                null));
     }
 
     private Function<PollingContext<OperationResult>, Mono<CustomFormModel>> fetchTrainingModelResultOperation() {
