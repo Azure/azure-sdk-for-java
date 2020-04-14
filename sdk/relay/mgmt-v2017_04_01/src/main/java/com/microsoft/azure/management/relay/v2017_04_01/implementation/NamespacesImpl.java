@@ -176,10 +176,14 @@ class NamespacesImpl extends GroupableResourcesCoreImpl<RelayNamespace, RelayNam
     public Observable<NamespaceAuthorizationRule> getAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String authorizationRuleName) {
         NamespacesInner client = this.inner();
         return client.getAuthorizationRuleAsync(resourceGroupName, namespaceName, authorizationRuleName)
-        .map(new Func1<AuthorizationRuleInner, NamespaceAuthorizationRule>() {
+        .flatMap(new Func1<AuthorizationRuleInner, Observable<NamespaceAuthorizationRule>>() {
             @Override
-            public NamespaceAuthorizationRule call(AuthorizationRuleInner inner) {
-                return wrapNamespaceAuthorizationRuleModel(inner);
+            public Observable<NamespaceAuthorizationRule> call(AuthorizationRuleInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((NamespaceAuthorizationRule)wrapNamespaceAuthorizationRuleModel(inner));
+                }
             }
        });
     }

@@ -67,10 +67,14 @@ class HybridConnectionsImpl extends WrapperImpl<HybridConnectionsInner> implemen
     public Observable<HybridConnection> getAsync(String resourceGroupName, String namespaceName, String hybridConnectionName) {
         HybridConnectionsInner client = this.inner();
         return client.getAsync(resourceGroupName, namespaceName, hybridConnectionName)
-        .map(new Func1<HybridConnectionInner, HybridConnection>() {
+        .flatMap(new Func1<HybridConnectionInner, Observable<HybridConnection>>() {
             @Override
-            public HybridConnection call(HybridConnectionInner inner) {
-                return wrapModel(inner);
+            public Observable<HybridConnection> call(HybridConnectionInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((HybridConnection)wrapModel(inner));
+                }
             }
        });
     }
@@ -107,10 +111,14 @@ class HybridConnectionsImpl extends WrapperImpl<HybridConnectionsInner> implemen
     public Observable<HybridConnectionNamespaceAuthorizationRule> getAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String hybridConnectionName, String authorizationRuleName) {
         HybridConnectionsInner client = this.inner();
         return client.getAuthorizationRuleAsync(resourceGroupName, namespaceName, hybridConnectionName, authorizationRuleName)
-        .map(new Func1<AuthorizationRuleInner, HybridConnectionNamespaceAuthorizationRule>() {
+        .flatMap(new Func1<AuthorizationRuleInner, Observable<HybridConnectionNamespaceAuthorizationRule>>() {
             @Override
-            public HybridConnectionNamespaceAuthorizationRule call(AuthorizationRuleInner inner) {
-                return wrapHybridConnectionNamespaceAuthorizationRuleModel(inner);
+            public Observable<HybridConnectionNamespaceAuthorizationRule> call(AuthorizationRuleInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((HybridConnectionNamespaceAuthorizationRule)wrapHybridConnectionNamespaceAuthorizationRuleModel(inner));
+                }
             }
        });
     }
