@@ -645,7 +645,7 @@ public class EventHubClientBuilder {
             com.azure.core.http.ProxyOptions coreProxyOptions = com.azure.core.http.ProxyOptions
                 .fromConfiguration(configuration);
             return new ProxyOptions(authentication, new Proxy(coreProxyOptions.getType().toProxyType(),
-                coreProxyOptions.getAddress()),coreProxyOptions.getUsername(), coreProxyOptions.getPassword());
+                coreProxyOptions.getAddress()), coreProxyOptions.getUsername(), coreProxyOptions.getPassword());
         }
     }
 
