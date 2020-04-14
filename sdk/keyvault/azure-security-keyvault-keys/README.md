@@ -59,7 +59,7 @@ Here is [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
     }
     ```
 
-* Use the above returned credentials information to set **AZURE_CLIENT_ID** (appId), **AZURE_CLIENT_SECRET** (password) and **AZURE_TENANT_ID** (tenantId) environment variables. The following example shows a way to do this in Bash:
+* Use the above returned credentials information to set **AZURE_CLIENT_ID** (appId), **AZURE_CLIENT_SECRET** (password), and **AZURE_TENANT_ID** (tenantId) environment variables. The following example shows a way to do this in Bash:
 
   ```Bash
     export AZURE_CLIENT_ID="generated-app-ID"
