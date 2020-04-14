@@ -428,7 +428,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = CHANGE_FEED_PROCESSOR_TIMEOUT)
-    public void testServiceItemLeaseSerialization() {
+    public void serviceItemLeaseSerialization() {
         ZonedDateTime timeNow = ZonedDateTime.now();
         String timeNowValue = timeNow.toString();
 
