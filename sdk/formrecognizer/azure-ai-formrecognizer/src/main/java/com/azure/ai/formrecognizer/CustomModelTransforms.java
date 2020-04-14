@@ -10,9 +10,9 @@ import com.azure.ai.formrecognizer.implementation.models.ModelStatus;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelField;
 import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
+import com.azure.ai.formrecognizer.models.CustomFormModelStatus;
 import com.azure.ai.formrecognizer.models.CustomFormSubModel;
 import com.azure.ai.formrecognizer.models.FormRecognizerError;
-import com.azure.ai.formrecognizer.models.ModelTrainingStatus;
 import com.azure.ai.formrecognizer.models.TrainingDocumentInfo;
 import com.azure.ai.formrecognizer.models.TrainingStatus;
 import com.azure.core.util.CoreUtils;
@@ -98,7 +98,7 @@ final class CustomModelTransforms {
 
         return new CustomFormModel(
             modelInfo.getModelId().toString(),
-            ModelTrainingStatus.fromString(modelInfo.getStatus().toString()),
+            CustomFormModelStatus.fromString(modelInfo.getStatus().toString()),
             modelInfo.getCreatedDateTime(),
             modelInfo.getLastUpdatedDateTime(),
             new IterableStream<>(subModelList),
@@ -137,7 +137,7 @@ final class CustomModelTransforms {
                 @Override
                 CustomFormModelInfo transform(ModelInfo modelInfo) {
                     return new CustomFormModelInfo(modelInfo.getModelId().toString(),
-                        ModelTrainingStatus.fromString(modelInfo.getStatus().toString()),
+                        CustomFormModelStatus.fromString(modelInfo.getStatus().toString()),
                         modelInfo.getCreatedDateTime(), modelInfo.getLastUpdatedDateTime());
                 }
             };

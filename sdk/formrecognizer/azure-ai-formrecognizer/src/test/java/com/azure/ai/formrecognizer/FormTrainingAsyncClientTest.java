@@ -7,6 +7,7 @@ import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,7 @@ import static com.azure.ai.formrecognizer.TestUtils.NULL_SOURCE_URL_ERROR;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedAccountProperties;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedLabeledModel;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedUnlabeledModel;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -104,7 +106,8 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     @Test
     void validGetAccountProperties() {
         StepVerifier.create(client.getAccountProperties())
-            .assertNext(accountProperties -> validateAccountProperties(getExpectedAccountProperties(), accountProperties))
+            .assertNext(accountProperties -> validateAccountProperties(getExpectedAccountProperties(),
+                accountProperties))
             .verifyComplete();
     }
 
@@ -132,8 +135,21 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
 
     @Test
     void deleteModelValidModelIdWithResponse() {
-        // TODO: after List models API is merged.
-        // list models select first and delete model Id check success response.
+        beginTrainingLabeledResultRunner((storageSASUrl, useLabelFile) -> {
+            SyncPoller<OperationResult, CustomFormModel> syncPoller =
+                client.beginTraining(storageSASUrl, useLabelFile).getSyncPoller();
+            syncPoller.waitForCompletion();
+            CustomFormModel createdModel = syncPoller.getFinalResult();
+
+            StepVerifier.create(client.deleteModelWithResponse(createdModel.getModelId()))
+                .assertNext(response ->
+                    assertEquals(response.getStatusCode(), HttpResponseStatus.NO_CONTENT.code()))
+                .verifyComplete();
+
+            StepVerifier.create(client.getCustomModelWithResponse(createdModel.getModelId()))
+                .verifyErrorSatisfies(throwable ->
+                    throwable.getMessage().contains(HttpResponseStatus.NOT_FOUND.toString()));
+        });
     }
 
     /**

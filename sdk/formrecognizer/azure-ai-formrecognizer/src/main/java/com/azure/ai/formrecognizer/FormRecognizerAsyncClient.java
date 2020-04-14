@@ -127,7 +127,7 @@ public final class FormRecognizerAsyncClient {
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
-     *F
+     *
      * @return A {@link PollerFlux} that polls the extract custom form operation until it has completed, has failed,
      * or has been cancelled.
      */

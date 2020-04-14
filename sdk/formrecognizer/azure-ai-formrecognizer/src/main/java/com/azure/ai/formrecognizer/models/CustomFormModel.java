@@ -27,7 +27,7 @@ public final class CustomFormModel {
     /*
      * Status of the model.
      */
-    private final ModelTrainingStatus modelStatus;
+    private final CustomFormModelStatus modelStatus;
 
     /*
      * Date and time (UTC) when the model was created.
@@ -60,7 +60,7 @@ public final class CustomFormModel {
      * @param modelError List of errors returned during the training operation.
      * @param trainingDocuments List of the documents used to train the model.
      */
-    public CustomFormModel(final String modelId, final ModelTrainingStatus modelStatus,
+    public CustomFormModel(final String modelId, final CustomFormModelStatus modelStatus,
         final OffsetDateTime createdOn, final OffsetDateTime lastUpdatedOn,
         final IterableStream<CustomFormSubModel> subModels, final IterableStream<FormRecognizerError> modelError,
         final IterableStream<TrainingDocumentInfo> trainingDocuments) {
@@ -87,7 +87,7 @@ public final class CustomFormModel {
      *
      * @return the status value.
      */
-    public ModelTrainingStatus getModelStatus() {
+    public CustomFormModelStatus getModelStatus() {
         return this.modelStatus;
     }
 
