@@ -14,6 +14,7 @@ import com.azure.management.samples.Utils;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.exception.NotFoundException;
+import com.github.dockerjava.api.model.AuthConfig;
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.Image;
 import com.github.dockerjava.core.command.PullImageResultCallback;
@@ -82,6 +83,7 @@ public class ManageContainerRegistry {
 
             dockerClient.pullImageCmd(dockerImageName)
                     .withTag(dockerImageTag)
+                    .withAuthConfig(new AuthConfig()) // anonymous
                     .exec(new PullImageResultCallback())
                     .awaitSuccess();
             System.out.println("List local Docker images:");
@@ -119,7 +121,6 @@ public class ManageContainerRegistry {
             // Push the new Docker image to the Azure Container Registry
 
             dockerClient.pushImageCmd(privateRepoUrl)
-                    .withAuthConfig(dockerClient.authConfig())
                     .exec(new PushImageResultCallback()).awaitSuccess();
 
             // Remove the temp image from the local Docker host
