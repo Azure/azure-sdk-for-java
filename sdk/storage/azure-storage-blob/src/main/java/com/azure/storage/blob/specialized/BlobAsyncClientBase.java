@@ -1401,8 +1401,9 @@ public class BlobAsyncClientBase {
             tagList.add(new BlobTag().setKey(tag).setValue(tags.get(tag)));
         }
         BlobTags t = new BlobTags().setBlobTagSet(new BlobTagSet().setBlobTagList(tagList));
-        return this.azureBlobStorage.blobs().setTagsWithRestResponseAsync(null, null, null, null, snapshot,
-            null /* versionId */, null, null, null, t, context);
+        return this.azureBlobStorage.blobs().setTagsWithRestResponseAsync(null, null, null, snapshot,
+            null /* versionId */, null, null, null, t, context)
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
