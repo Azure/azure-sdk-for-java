@@ -18,6 +18,7 @@ import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.command.PullImageResultCallback;
 import com.github.dockerjava.api.exception.NotFoundException;
+import com.github.dockerjava.api.model.AuthConfig;
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.Image;
 import com.github.dockerjava.core.command.PushImageResultCallback;
@@ -115,6 +116,7 @@ public class ManageContainerRegistryWithWebhooks {
 
             dockerClient.pullImageCmd(dockerImageName)
                 .withTag(dockerImageTag)
+                .withAuthConfig(new AuthConfig()) // anonymous
                 .exec(new PullImageResultCallback())
                 .awaitCompletion();
             System.out.println("List local Docker images:");
