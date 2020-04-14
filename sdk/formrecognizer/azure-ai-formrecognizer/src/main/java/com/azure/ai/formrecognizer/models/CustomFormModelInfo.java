@@ -6,7 +6,6 @@ package com.azure.ai.formrecognizer.models;
 import com.azure.core.annotation.Immutable;
 
 import java.time.OffsetDateTime;
-import java.util.UUID;
 
 /**
  * The CustomFormModelInfo model.
@@ -17,7 +16,7 @@ public final class CustomFormModelInfo {
     /*
      * Model identifier.
      */
-    private final UUID modelId;
+    private final String modelId;
 
     /*
      * Status of the model.
@@ -42,7 +41,7 @@ public final class CustomFormModelInfo {
      * @param createdOn The date and time (UTC) when the model was created.
      * @param lastUpdatedOn The date and time (UTC) when the status was last updated.
      */
-    public CustomFormModelInfo(final UUID modelId, final ModelTrainingStatus status, final OffsetDateTime createdOn,
+    public CustomFormModelInfo(final String modelId, final ModelTrainingStatus status, final OffsetDateTime createdOn,
         final OffsetDateTime lastUpdatedOn) {
         this.modelId = modelId;
         this.status = status;
@@ -55,7 +54,7 @@ public final class CustomFormModelInfo {
      *
      * @return the modelId value.
      */
-    public UUID getModelId() {
+    public String getModelId() {
         return this.modelId;
     }
 

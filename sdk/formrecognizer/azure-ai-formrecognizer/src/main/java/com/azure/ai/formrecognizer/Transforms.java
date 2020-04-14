@@ -389,7 +389,7 @@ final class Transforms {
             new CollectionTransformer<ModelInfo, CustomFormModelInfo>() {
             @Override
             CustomFormModelInfo transform(ModelInfo modelInfo) {
-                return new CustomFormModelInfo(modelInfo.getModelId(),
+                return new CustomFormModelInfo(modelInfo.getModelId().toString(),
                     ModelTrainingStatus.fromString(modelInfo.getStatus().toString()),
                     modelInfo.getCreatedDateTime(), modelInfo.getLastUpdatedDateTime());
             }
