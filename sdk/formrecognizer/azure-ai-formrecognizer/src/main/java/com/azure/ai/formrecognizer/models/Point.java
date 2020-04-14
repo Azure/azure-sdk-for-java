@@ -28,8 +28,13 @@ public final class Point {
      * @param yCoordinate The y-axis point coordinate.
      */
     public Point(final Float xCoordinate, final Float yCoordinate) {
-        this.xCoordinate = xCoordinate;
-        this.yCoordinate = yCoordinate;
+        if (xCoordinate != null && yCoordinate != null) {
+            this.xCoordinate = xCoordinate;
+            this.yCoordinate = yCoordinate;
+        } else {
+            this.xCoordinate = null;
+            this.yCoordinate = null;
+        }
     }
 
     /**

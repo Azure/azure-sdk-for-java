@@ -63,7 +63,7 @@ public final class FormField<T> {
     }
 
     /**
-     * Get the confidence property: Confidence of the field.
+     * Get the estimated confidence value of the recognized field.
      *
      * @return the confidence value.
      */
@@ -72,7 +72,7 @@ public final class FormField<T> {
     }
 
     /**
-     * Get the labelText property: the text-label value.
+     * Get the label text of the field.
      *
      * @return the text-label value.
      */
@@ -81,7 +81,7 @@ public final class FormField<T> {
     }
 
     /**
-     * Get the name property: Name of the field.
+     * Get the name of the field in the provided document.
      *
      * @return the name value.
      */
@@ -90,7 +90,7 @@ public final class FormField<T> {
     }
 
     /**
-     * Get the value property: Value of the field.
+     * Get the value of the field.
      *
      * @return Value of the field.
      */
@@ -99,9 +99,9 @@ public final class FormField<T> {
     }
 
     /**
-     * Get the valueText property: Value of the value-text of the field.
+     * Get the value text of the field.
      *
-     * @return Value of the value-text of the field.
+     * @return the value text of the field.
      */
     public FieldText getValueText() {
         return this.valueText;

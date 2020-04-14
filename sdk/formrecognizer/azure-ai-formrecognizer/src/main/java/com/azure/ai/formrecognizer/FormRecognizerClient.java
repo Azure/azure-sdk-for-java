@@ -9,6 +9,7 @@ import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.RecognizedReceipt;
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.IterableStream;
@@ -57,11 +58,12 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support</p>
      *
      * @param fileSourceUrl The source URL to the input document. Size of the file must be less than 20 MB.
-     * @param modelId The custom trained model Id to be used.
+     * @param modelId The UUID string format custom trained model Id to be used.
      *
      * @return A {@link SyncPoller} to poll the progress of the extract custom form operation until it has completed,
      * has failed, or has been cancelled.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, IterableStream<RecognizedForm>>
         beginExtractCustomFormsFromUrl(String fileSourceUrl, String modelId) {
         return beginExtractCustomFormsFromUrl(fileSourceUrl, modelId, false, null);
@@ -74,7 +76,7 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support</p>
      *
      * @param fileSourceUrl The source URL to the input document. Size of the file must be less than 20 MB.
-     * @param modelId The custom trained model Id to be used.
+     * @param modelId The UUID string format custom trained model Id to be used.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
@@ -82,6 +84,7 @@ public final class FormRecognizerClient {
      * @return A {@link SyncPoller} to poll the progress of the extract custom form operation until it has completed,
      * has failed, or has been cancelled.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, IterableStream<RecognizedForm>>
         beginExtractCustomFormsFromUrl(String fileSourceUrl, String modelId, boolean includeTextDetails,
         Duration pollInterval) {
@@ -96,15 +99,16 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support.</p>
      *
      * @param data The data of the document to be extract receipt information from.
-     * @param modelId The custom trained model Id to be used.
+     * @param modelId The UUID string format custom trained model Id to be used.
      * @param length The exact length of the data. Size of the file must be less than 20 MB.
      * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
      *
      * @return A {@link SyncPoller} that polls the extract custom form operation until it has completed,
      * has failed, or has been cancelled.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, IterableStream<RecognizedForm>>
-        beginRecognizeCustomForms(Flux<ByteBuffer> data, String modelId, long length, FormContentType formContentType) {
+        beginRecognizeCustomForms(InputStream data, String modelId, long length, FormContentType formContentType) {
         return beginRecognizeCustomForms(data, modelId, length, formContentType, false, null);
     }
 
@@ -115,20 +119,22 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support.</p>
      *
      * @param data The data of the document to be extract receipt information from.
-     * @param modelId The custom trained model Id to be used.
+     * @param modelId The UUID string format custom trained model Id to be used.
      * @param length The exact length of the data. Size of the file must be less than 20 MB.
-     * @param includeTextDetails Include text lines and element references in the result.
      * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
+     * @param includeTextDetails Include text lines and element references in the result.
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
      *
      * @return A {@link SyncPoller} that polls the extract custom form operation until it has completed,
      * has failed, or has been cancelled.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, IterableStream<RecognizedForm>>
-        beginRecognizeCustomForms(Flux<ByteBuffer> data, String modelId, long length, FormContentType formContentType,
+        beginRecognizeCustomForms(InputStream data, String modelId, long length, FormContentType formContentType,
         boolean includeTextDetails, Duration pollInterval) {
-        return client.beginRecognizeCustomForms(data, modelId, length, formContentType, 
+        Flux<ByteBuffer> buffer = Utility.convertStreamToByteBuffer(data);
+        return client.beginRecognizeCustomForms(buffer, modelId, length, formContentType,
             includeTextDetails, pollInterval).getSyncPoller();
     }
 
@@ -143,6 +149,7 @@ public final class FormRecognizerClient {
      * @return A {@link SyncPoller} that polls the extract layout form operation until it has completed, has failed,
      * or has been cancelled.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, IterableStream<FormPage>> beginRecognizeContentFromUrl(String fileSourceUrl) {
         return beginRecognizeContentFromUrl(fileSourceUrl, null);
     }
@@ -160,6 +167,7 @@ public final class FormRecognizerClient {
      * @return A {@link SyncPoller} that polls the extract layout operation until it has completed, has
      * failed, or has been cancelled.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, IterableStream<FormPage>>
         beginRecognizeContentFromUrl(String sourceUrl, Duration pollInterval) {
         return client.beginRecognizeContentFromUrl(sourceUrl, pollInterval).getSyncPoller();
@@ -178,6 +186,7 @@ public final class FormRecognizerClient {
      * @return A {@link SyncPoller} that polls the extract layout operation until it has completed, has failed, or has
      * been cancelled.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, IterableStream<FormPage>>
         beginRecognizeContent(InputStream data, long length, FormContentType formContentType) {
         return beginRecognizeContent(data, length, formContentType, null);
@@ -198,6 +207,7 @@ public final class FormRecognizerClient {
      * @return A {@link SyncPoller} that polls the extract layout operation until it has completed,
      * has failed, or has been cancelled.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, IterableStream<FormPage>>
         beginRecognizeContent(InputStream data, long length, FormContentType formContentType,
                         Duration pollInterval) {
@@ -220,6 +230,7 @@ public final class FormRecognizerClient {
      * @return A {@link SyncPoller} to poll the progress of the extract custom form operation until it has completed,
      * has failed, or has been cancelled.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, IterableStream<RecognizedReceipt>>
         beginRecognizeReceiptsFromUrl(String sourceUrl) {
         return beginRecognizeReceiptsFromUrl(sourceUrl, false, null);
@@ -241,6 +252,7 @@ public final class FormRecognizerClient {
      * @return A {@link SyncPoller} to poll the progress of the extract custom form operation until it has completed,
      * has failed, or has been cancelled.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, IterableStream<RecognizedReceipt>>
         beginRecognizeReceiptsFromUrl(String sourceUrl, boolean includeTextDetails, Duration pollInterval) {
         return client.beginRecognizeReceiptsFromUrl(sourceUrl, includeTextDetails, pollInterval).getSyncPoller();
@@ -260,6 +272,7 @@ public final class FormRecognizerClient {
      * @return A {@link SyncPoller} that polls the extract receipt operation until it has completed,
      * has failed, or has been cancelled.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, IterableStream<RecognizedReceipt>>
         beginRecognizeReceipts(InputStream data, long length, FormContentType formContentType) {
         return beginRecognizeReceipts(data, length, formContentType, false, null);
@@ -281,6 +294,7 @@ public final class FormRecognizerClient {
      * @return A {@link SyncPoller} that polls the extract receipt operation until it
      * has completed, has failed, or has been cancelled.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, IterableStream<RecognizedReceipt>>
         beginRecognizeReceipts(InputStream data, long length, FormContentType formContentType,
         boolean includeTextDetails, Duration pollInterval) {

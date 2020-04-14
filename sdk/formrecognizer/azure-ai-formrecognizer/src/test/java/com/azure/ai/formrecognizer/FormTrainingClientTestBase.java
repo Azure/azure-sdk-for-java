@@ -191,11 +191,13 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         assertNotNull(actualAccountProperties.getCount());
     }
 
-    private static void validateTrainingDocuments(List<TrainingDocumentInfo> expectedTrainingDocuments, List<TrainingDocumentInfo> actualTrainingDocuments) {
-        assertEquals(expectedTrainingDocuments.size(), actualTrainingDocuments.size());
-        for (int i = 0; i < actualTrainingDocuments.size(); i++) {
-            TrainingDocumentInfo expectedTrainingDocument = expectedTrainingDocuments.get(i);
-            TrainingDocumentInfo actualTrainingDocument = actualTrainingDocuments.get(i);
+    private static void validateTrainingDocuments(IterableStream<TrainingDocumentInfo> expectedTrainingDocuments, IterableStream<TrainingDocumentInfo> actualTrainingDocuments) {
+        List<TrainingDocumentInfo> actualTrainingList = actualTrainingDocuments.stream().collect(Collectors.toList());
+        List<TrainingDocumentInfo> expectedTrainingList = expectedTrainingDocuments.stream().collect(Collectors.toList());
+        assertEquals(expectedTrainingList.size(), actualTrainingList.size());
+        for (int i = 0; i < actualTrainingList.size(); i++) {
+            TrainingDocumentInfo expectedTrainingDocument = expectedTrainingList.get(i);
+            TrainingDocumentInfo actualTrainingDocument = actualTrainingList.get(i);
             assertEquals(expectedTrainingDocument.getName(), actualTrainingDocument.getName());
             assertEquals(expectedTrainingDocument.getPageCount(), actualTrainingDocument.getPageCount());
             assertEquals(expectedTrainingDocument.getTrainingStatus(), actualTrainingDocument.getTrainingStatus());
@@ -203,12 +205,14 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         }
     }
 
-    private static void validateErrors(List<FormRecognizerError> expectedErrors, List<FormRecognizerError> actualErrors) {
+    private static void validateErrors(IterableStream<FormRecognizerError> expectedErrors, IterableStream<FormRecognizerError> actualErrors) {
         if (expectedErrors != null && actualErrors != null) {
-            assertEquals(expectedErrors.size(), actualErrors.size());
-            for (int i = 0; i < actualErrors.size(); i++) {
-                FormRecognizerError expectedError = expectedErrors.get(i);
-                FormRecognizerError actualError = actualErrors.get(i);
+            List<FormRecognizerError> actualErrorList = actualErrors.stream().collect(Collectors.toList());
+            List<FormRecognizerError> expectedErrorList = expectedErrors.stream().collect(Collectors.toList());
+            assertEquals(expectedErrorList.size(), actualErrorList.size());
+            for (int i = 0; i < actualErrorList.size(); i++) {
+                FormRecognizerError expectedError = expectedErrorList.get(i);
+                FormRecognizerError actualError = actualErrorList.get(i);
                 assertEquals(expectedError.getCode(), actualError.getCode());
                 assertEquals(expectedError.getMessage(), actualError.getMessage());
             }

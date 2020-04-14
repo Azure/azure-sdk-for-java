@@ -76,7 +76,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     @Test
     void getCustomModelWithResponse() {
         getCustomModelWithResponseRunner(validModelId ->
-            StepVerifier.create(client.getCustomFormModelWithResponse(validModelId))
+            StepVerifier.create(client.getCustomModelWithResponse(validModelId))
                 .assertNext(customFormModel ->
                     validateCustomModel(getExpectedSupervisedModel(), customFormModel.getValue()))
                 .verifyComplete());

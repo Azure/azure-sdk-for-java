@@ -85,7 +85,7 @@ public final class FormTableCell extends FormContent {
     }
 
     /**
-     * Get the confidence property: Confidence of the text of the cell.
+     * Get the confidence of the text of the cell.
      *
      * @return the confidence value.
      */
@@ -93,23 +93,32 @@ public final class FormTableCell extends FormContent {
         return this.confidence;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Integer getPageNumber() {
         return super.getPageNumber();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BoundingBox getBoundingBox() {
         return super.getBoundingBox();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getText() {
         return super.getText();
     }
 
     /**
-     * Get the rowIndex property: Row index of the cell.
+     * Get the row index of the cell.
      *
      * @return the rowIndex value.
      */
@@ -118,7 +127,7 @@ public final class FormTableCell extends FormContent {
     }
 
     /**
-     * Get the columnIndex property: Column index of the cell.
+     * Get the column index of the cell.
      *
      * @return the columnIndex value.
      */
@@ -127,7 +136,7 @@ public final class FormTableCell extends FormContent {
     }
 
     /**
-     * Get the rowSpan property: Number of rows spanned by this cell.
+     * Get the number of rows spanned by this cell.
      *
      * @return the rowSpan value.
      */
@@ -137,7 +146,7 @@ public final class FormTableCell extends FormContent {
 
 
     /**
-     * Get the columnSpan property: Number of columns spanned by this cell.
+     * Get the number of columns spanned by this cell.
      *
      * @return the columnSpan value.
      */
@@ -146,8 +155,8 @@ public final class FormTableCell extends FormContent {
     }
 
     /**
-     * Get the elements property: When includeTextDetails is set to true, a
-     * list of references to the text elements constituting this table cell.
+     * Get the list of references to the text elements constituting this table cell
+     * When includeTextDetails is set to true.
      *
      * @return the elements value.
      */
@@ -156,7 +165,7 @@ public final class FormTableCell extends FormContent {
     }
 
     /**
-     * Get the isHeader property: Is the current cell a header cell?.
+     * Get the boolean if the current cell a header cell.
      *
      * @return the isHeader value.
      */
@@ -165,7 +174,7 @@ public final class FormTableCell extends FormContent {
     }
 
     /**
-     * Get the isFooter property: Is the current cell a footer cell?.
+     * Get the boolean if the current cell a footer cell.
      *
      * @return the isFooter value.
      */

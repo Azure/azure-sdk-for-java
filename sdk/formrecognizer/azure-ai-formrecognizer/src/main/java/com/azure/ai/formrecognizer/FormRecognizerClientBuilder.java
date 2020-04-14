@@ -61,7 +61,6 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {FormRecognizerAsyncClient.class, FormRecognizerClient.class})
 public final class FormRecognizerClientBuilder {
 
-    static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
     private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
     private static final String CONTENT_TYPE_HEADER_VALUE = ContentType.APPLICATION_JSON;
     private static final String ACCEPT_HEADER = "Accept";

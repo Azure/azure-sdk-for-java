@@ -40,7 +40,7 @@ public final class CustomFormModelField {
     }
 
     /**
-     * Get the label property: Training field label.
+     * Get the recognized field label value.
      *
      * @return the fieldName value.
      */
@@ -49,7 +49,7 @@ public final class CustomFormModelField {
     }
 
     /**
-     * Get the name property: Training field name.
+     * Get the recognized field name value.
      *
      * @return the fieldName value.
      */
@@ -58,7 +58,7 @@ public final class CustomFormModelField {
     }
 
     /**
-     * Get the accuracy property: Estimated extraction accuracy for this field.
+     * Get the estimated extraction accuracy for this field.
      *
      * @return the accuracy value.
      */

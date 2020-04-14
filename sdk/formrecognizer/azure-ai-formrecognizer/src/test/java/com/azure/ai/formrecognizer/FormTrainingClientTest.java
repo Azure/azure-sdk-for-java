@@ -41,7 +41,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
     void getCustomModelInvalidStatusModel() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             getCustomModelInvalidStatusModelRunner(invalidId -> client.getCustomModel(invalidId)));
-        assertTrue(exception.getMessage().equals(INVALID_STATUS_MODEL_ERROR));
+        assertEquals(exception.getMessage(), INVALID_STATUS_MODEL_ERROR);
     }
 
     @Test
@@ -66,7 +66,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
     void getCustomModelWithResponse() {
         getCustomModelWithResponseRunner(validModelId ->
             validateCustomModel(getExpectedSupervisedModel(),
-                client.getCustomFormModelWithResponse(validModelId, Context.NONE).getValue()));
+                client.getCustomModelWithResponse(validModelId, Context.NONE).getValue()));
     }
 
     @Test

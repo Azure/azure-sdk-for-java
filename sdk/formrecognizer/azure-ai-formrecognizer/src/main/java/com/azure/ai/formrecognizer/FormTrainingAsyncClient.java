@@ -11,6 +11,7 @@ import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
@@ -30,6 +31,7 @@ import java.util.UUID;
 import java.util.function.Function;
 
 import static com.azure.ai.formrecognizer.CustomModelTransforms.toCustomFormModel;
+import static com.azure.ai.formrecognizer.FormRecognizerClientBuilder.DEFAULT_DURATION;
 import static com.azure.ai.formrecognizer.implementation.Utility.parseModelId;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -42,6 +44,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  *
  * @see FormRecognizerClientBuilder
  */
+@ServiceClient(builder = FormRecognizerClientBuilder.class, isAsync = true)
 public class FormTrainingAsyncClient {
 
     private final ClientLogger logger = new ClientLogger(FormTrainingAsyncClient.class);
@@ -84,6 +87,7 @@ public class FormTrainingAsyncClient {
      * @return A {@link PollerFlux} that polls the training model operation until it has completed, has failed, or has
      * been cancelled.
      */
+    // @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<OperationResult, CustomFormModel> beginTraining(String fileSourceUrl, boolean useLabelFile) {
         return beginTraining(fileSourceUrl, useLabelFile, false, null, null);
     }
@@ -111,10 +115,11 @@ public class FormTrainingAsyncClient {
      * @return A {@link PollerFlux} that polls the extract receipt operation until it
      * has completed, has failed, or has been cancelled.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<OperationResult, CustomFormModel> beginTraining(String fileSourceUrl,
         boolean useLabelFile, boolean includeSubFolders, String filePrefix, Duration pollInterval) {
         Objects.requireNonNull(fileSourceUrl, "'fileSourceUrl' cannot be null.");
-        final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(5);
+        final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
 
         return new PollerFlux<OperationResult, CustomFormModel>(
             interval,
@@ -127,33 +132,32 @@ public class FormTrainingAsyncClient {
     /**
      * Get detailed information for a specified custom model id.
      *
-     * @param modelId Model identifier.
+     * @param modelId The UUID string format model identifier.
      *
      * @return The detailed information for the specified model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CustomFormModel> getCustomModel(String modelId) {
-        return getCustomFormModelWithResponse(modelId).flatMap(FluxUtil::toMono);
+        return getCustomModelWithResponse(modelId).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Get detailed information for a specified custom model id with Http response
      *
-     * @param modelId Model identifier.
+     * @param modelId The UUID string format model identifier.
      *
      * @return A {@link Response} containing the requested {@link CustomFormModel model}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CustomFormModel>> getCustomFormModelWithResponse(String modelId) {
+    public Mono<Response<CustomFormModel>> getCustomModelWithResponse(String modelId) {
         try {
-            return withContext(context -> getCustomFormModelWithResponse(modelId, context));
+            return withContext(context -> getCustomModelWithResponse(modelId, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<CustomFormModel>> getCustomFormModelWithResponse(String modelId, Context context) {
+    Mono<Response<CustomFormModel>> getCustomModelWithResponse(String modelId, Context context) {
         Objects.requireNonNull(modelId, "'modelId' cannot be null");
         return service.getCustomModelWithResponseAsync(UUID.fromString(modelId), context, true)
             .map(response -> new SimpleResponse<>(response, toCustomFormModel(response.getValue())));
@@ -183,7 +187,6 @@ public class FormTrainingAsyncClient {
         }
     }
 
-    @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<AccountProperties>> getAccountPropertiesWithResponse(Context context) {
         return service.getCustomModelsWithResponseAsync(context)
             .map(response -> new SimpleResponse<>(response,
@@ -194,7 +197,7 @@ public class FormTrainingAsyncClient {
     /**
      * Deletes the specified custom model.
      *
-     * @param modelId The modelIdentifier.
+     * @param modelId The UUID string format model identifier.
      *
      * @return An empty Mono.
      */
@@ -205,7 +208,7 @@ public class FormTrainingAsyncClient {
     /**
      * Deletes the specified custom model.
      *
-     * @param modelId The modelIdentifier
+     * @param modelId The UUID string format model identifier.
      *
      * @return A {@link Mono} containing containing status code and HTTP headers
      */
