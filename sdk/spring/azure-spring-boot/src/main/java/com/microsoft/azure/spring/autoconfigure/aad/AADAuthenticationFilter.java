@@ -4,6 +4,7 @@ package com.microsoft.azure.spring.autoconfigure.aad;
 
 import com.microsoft.aad.msal4j.MsalServiceException;
 import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jose.jwk.source.JWKSetCache;
 import com.nimbusds.jose.proc.BadJOSEException;
 import com.nimbusds.jose.util.ResourceRetriever;
 import org.slf4j.Logger;
@@ -21,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.text.ParseException;
-import java.util.concurrent.ExecutionException;
 
 public class AADAuthenticationFilter extends OncePerRequestFilter {
     private static final Logger LOGGER = LoggerFactory.getLogger(AADAuthenticationFilter.class);
@@ -45,10 +45,22 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
         this.principalManager = new UserPrincipalManager(serviceEndpointsProps, aadAuthProps, resourceRetriever, false);
     }
 
+    public AADAuthenticationFilter(AADAuthenticationProperties aadAuthProps,
+                                   ServiceEndpointsProperties serviceEndpointsProps,
+                                   ResourceRetriever resourceRetriever,
+                                   JWKSetCache jwkSetCache) {
+        this.aadAuthProps = aadAuthProps;
+        this.serviceEndpointsProps = serviceEndpointsProps;
+        this.principalManager = new UserPrincipalManager(serviceEndpointsProps,
+                aadAuthProps,
+                resourceRetriever,
+                false,
+                jwkSetCache);
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-
         final String authHeader = request.getHeader(TOKEN_HEADER);
 
         if (authHeader != null && authHeader.startsWith(TOKEN_TYPE)) {
@@ -86,8 +98,7 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
                 authentication.setAuthenticated(true);
                 LOGGER.info("Request token verification success. {}", authentication);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-            } catch (MalformedURLException | ParseException | BadJOSEException | JOSEException | ExecutionException
-                | InterruptedException ex) {
+            } catch (MalformedURLException | ParseException | BadJOSEException | JOSEException ex) {
                 LOGGER.error("Failed to initialize UserPrincipal.", ex);
                 throw new ServletException(ex);
             } catch (ServiceUnavailableException ex) {

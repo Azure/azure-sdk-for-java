@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.autoconfigure.aad;
 
-import java.util.Objects;
 
 /**
  * Pojo file to store the service urls for different azure services.
@@ -43,35 +42,5 @@ public class ServiceEndpoints {
 
     public void setAadMembershipRestUri(String aadMembershipRestUri) {
         this.aadMembershipRestUri = aadMembershipRestUri;
-    }
-
-    @Override
-    public String toString() {
-        return "ServiceEndpoints{"
-            + "aadSigninUri='" + aadSigninUri + '\''
-            + ", aadGraphApiUri='" + aadGraphApiUri + '\''
-            + ", aadKeyDiscoveryUri='" + aadKeyDiscoveryUri + '\''
-            + ", aadMembershipRestUri='" + aadMembershipRestUri + '\''
-            + '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        ServiceEndpoints that = (ServiceEndpoints) o;
-        return Objects.equals(aadSigninUri, that.aadSigninUri)
-            && Objects.equals(aadGraphApiUri, that.aadGraphApiUri)
-            && Objects.equals(aadKeyDiscoveryUri, that.aadKeyDiscoveryUri)
-            && Objects.equals(aadMembershipRestUri, that.aadMembershipRestUri);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(aadSigninUri, aadGraphApiUri, aadKeyDiscoveryUri, aadMembershipRestUri);
     }
 }

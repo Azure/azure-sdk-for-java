@@ -2,58 +2,58 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-client-sdk-parent</artifactId>
-      <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
-      <relativePath>../../../pom.client.xml</relativePath>
-    </parent>
-
+  <parent>
     <groupId>com.azure</groupId>
-    <artifactId>azure-spring-boot-starter-servicebus</artifactId>
-    <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-boot-starter-servicebus;current} -->
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+    <relativePath>../../../pom.client.xml</relativePath>
+  </parent>
 
-    <name>Azure Service Bus Spring Boot Starter</name>
-    <description>Spring Boot Starter for Azure Service Bus</description>
-    <url>https://github.com/Microsoft/azure-spring-boot</url>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-spring-boot-starter-servicebus</artifactId>
+  <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot-starter-servicebus;current} -->
 
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-            <version>2.2.0.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
-            <version>2.2.0.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
-        </dependency>
-        <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>azure-spring-boot</artifactId>
-            <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-boot;current} -->
-        </dependency>
-        <dependency>
-            <groupId>com.microsoft.azure</groupId>
-            <artifactId>azure-servicebus</artifactId>
-            <version>1.2.15</version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus;external_dependency} -->
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>annotations</artifactId>
-            <version>2.0.1</version> <!-- {x-version-update;com.google.code.findbugs:annotations;external_dependency} -->
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>2.10.1</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
-        </dependency>
-        <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <version>1.13</version>  <!-- {x-version-update;commons-codec:commons-codec;external_dependency} -->
-        </dependency>
-    </dependencies>
+  <name>Azure Service Bus Spring Boot Starter</name>
+  <description>Spring Boot Starter for Azure Service Bus</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter</artifactId>
+      <version>2.2.0.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-validation</artifactId>
+      <version>2.2.0.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-spring-boot</artifactId>
+      <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-servicebus</artifactId>
+      <version>1.2.15</version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus;external_dependency} -->
+    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>com.google.code.findbugs</groupId>-->
+<!--      <artifactId>annotations</artifactId>-->
+<!--      <version>2.0.1</version> &lt;!&ndash; {x-version-update;com.google.code.findbugs:annotations;external_dependency} &ndash;&gt;-->
+<!--    </dependency>-->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>2.10.1</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+      <version>1.13</version>  <!-- {x-version-update;commons-codec:commons-codec;external_dependency} -->
+    </dependency>
+  </dependencies>
 </project>

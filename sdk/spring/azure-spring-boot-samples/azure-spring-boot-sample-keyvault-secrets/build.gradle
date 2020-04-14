@@ -1,5 +1,0 @@
-
-description = 'Azure Key Vault Secrets Spring Boot Starter Sample'
-dependencies {
-    compile group: 'com.microsoft.azure', name: 'azure-keyvault-secrets-spring-boot-starter', version:"${azureSpringBootStartersVersion}"
-}

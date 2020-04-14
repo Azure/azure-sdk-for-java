@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.autoconfigure.aad;
 
-import com.microsoft.azure.spring.telemetry.TelemetrySender;
+import com.microsoft.azure.telemetry.TelemetrySender;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -19,8 +19,8 @@ import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.microsoft.azure.spring.telemetry.TelemetryData.SERVICE_NAME;
-import static com.microsoft.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName;
+import static com.microsoft.azure.telemetry.TelemetryData.SERVICE_NAME;
+import static com.microsoft.azure.telemetry.TelemetryData.getClassPackageSimpleName;
 
 @Configuration
 @ConditionalOnResource(resources = "classpath:aad.enable.config")

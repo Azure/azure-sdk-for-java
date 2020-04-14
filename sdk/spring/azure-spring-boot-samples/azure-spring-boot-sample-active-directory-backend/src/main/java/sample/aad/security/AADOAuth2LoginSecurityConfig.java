@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package sample.aad.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +19,11 @@ public class AADOAuth2LoginSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .anyRequest().authenticated()
-                .and()
-                .oauth2Login()
-                .userInfoEndpoint()
-                .oidcUserService(oidcUserService);
+        http.authorizeRequests()
+            .anyRequest().authenticated()
+            .and()
+            .oauth2Login()
+            .userInfoEndpoint()
+            .oidcUserService(oidcUserService);
     }
 }

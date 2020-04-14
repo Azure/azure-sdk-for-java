@@ -2,6 +2,11 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.autoconfigure.aad;
 
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
@@ -13,8 +18,6 @@ import com.nimbusds.jose.util.Resource;
 import com.nimbusds.jose.util.ResourceRetriever;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import org.junit.Before;
-import org.junit.Test;
 
 import java.io.IOException;
 import java.security.KeyPair;
@@ -25,15 +28,14 @@ import java.security.interfaces.RSAPublicKey;
 import java.time.Instant;
 import java.util.Date;
 
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import org.junit.Before;
+import org.junit.Test;
 
 public class UserPrincipalManagerAudienceTest {
 
     private static final String FAKE_CLIENT_ID = "dsflkjsdflkjsdf";
     private static final String FAKE_APPLICATION_URI = "https://oihiugjuzfvbhg";
+
     private JWSSigner signer;
     private String jwkString;
     private ResourceRetriever resourceRetriever;

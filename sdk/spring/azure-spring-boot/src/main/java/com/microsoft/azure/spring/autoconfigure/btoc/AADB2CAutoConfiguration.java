@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.autoconfigure.btoc;
 
-import com.microsoft.azure.spring.telemetry.TelemetrySender;
+import com.microsoft.azure.telemetry.TelemetrySender;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
@@ -28,22 +28,22 @@ import java.util.Map;
 
 import static com.microsoft.azure.spring.autoconfigure.btoc.AADB2CProperties.PREFIX;
 import static com.microsoft.azure.spring.autoconfigure.btoc.AADB2CProperties.USER_FLOW_SIGN_UP_OR_SIGN_IN;
-import static com.microsoft.azure.spring.telemetry.TelemetryData.SERVICE_NAME;
-import static com.microsoft.azure.spring.telemetry.TelemetryData.TENANT_NAME;
-import static com.microsoft.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName;
+import static com.microsoft.azure.telemetry.TelemetryData.SERVICE_NAME;
+import static com.microsoft.azure.telemetry.TelemetryData.TENANT_NAME;
+import static com.microsoft.azure.telemetry.TelemetryData.getClassPackageSimpleName;
 
 @Configuration
 @ConditionalOnWebApplication
 @ConditionalOnResource(resources = "classpath:aadb2c.enable.config")
 @ConditionalOnProperty(
-        prefix = PREFIX,
-        value = {
-                "tenant",
-                "client-id",
-                "client-secret",
-                "reply-url",
-                USER_FLOW_SIGN_UP_OR_SIGN_IN
-        }
+    prefix = PREFIX,
+    value = {
+        "tenant",
+        "client-id",
+        "client-secret",
+        "reply-url",
+        USER_FLOW_SIGN_UP_OR_SIGN_IN
+    }
 )
 @EnableConfigurationProperties(AADB2CProperties.class)
 public class AADB2CAutoConfiguration {
@@ -123,18 +123,18 @@ public class AADB2CAutoConfiguration {
             Assert.hasText(userFlow, "User flow should contains text.");
 
             return ClientRegistration.withRegistrationId(userFlow) // Use flow as registration Id.
-                    .clientId(properties.getClientId())
-                    .clientSecret(properties.getClientSecret())
-                    .clientAuthenticationMethod(ClientAuthenticationMethod.POST)
-                    .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                    .redirectUriTemplate(properties.getReplyUrl())
-                    .scope(properties.getClientId(), "openid")
-                    .authorizationUri(AADB2CURL.getAuthorizationUrl(properties.getTenant()))
-                    .tokenUri(AADB2CURL.getTokenUrl(properties.getTenant(), userFlow))
-                    .jwkSetUri(AADB2CURL.getJwkSetUrl(properties.getTenant(), userFlow))
-                    .userNameAttributeName("name")
-                    .clientName(userFlow)
-                    .build();
+                .clientId(properties.getClientId())
+                .clientSecret(properties.getClientSecret())
+                .clientAuthenticationMethod(ClientAuthenticationMethod.POST)
+                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                .redirectUriTemplate(properties.getReplyUrl())
+                .scope(properties.getClientId(), "openid")
+                .authorizationUri(AADB2CURL.getAuthorizationUrl(properties.getTenant()))
+                .tokenUri(AADB2CURL.getTokenUrl(properties.getTenant(), userFlow))
+                .jwkSetUri(AADB2CURL.getJwkSetUrl(properties.getTenant(), userFlow))
+                .userNameAttributeName("name")
+                .clientName(userFlow)
+                .build();
         }
     }
 }

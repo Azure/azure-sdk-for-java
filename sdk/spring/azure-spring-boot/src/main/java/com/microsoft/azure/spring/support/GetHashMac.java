@@ -87,7 +87,6 @@ public final class GetHashMac {
             } finally {
                 IOUtils.closeQuietly(br);
             }
-
         } catch (IOException e) {
             return null;
         }

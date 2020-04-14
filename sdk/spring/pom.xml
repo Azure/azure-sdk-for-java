@@ -5,11 +5,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure</groupId>
-  <artifactId>azure-spring-service</artifactId>
+  <artifactId>azure-spring-boot-service</artifactId>
   <packaging>pom</packaging>
   <version>0.0.1</version><!-- Need not change for every release-->
   <modules>
     <module>azure-spring-boot</module>
+    <module>azure-spring-boot-bom</module>
     <module>azure-spring-boot-starter</module>
     <module>azure-spring-boot-starter-active-directory</module>
     <module>azure-spring-boot-starter-active-directory-b2c</module>
@@ -21,6 +22,7 @@
     <module>azure-spring-boot-starter-servicebus-jms</module>
     <module>azure-spring-boot-starter-servicebus</module>
     <module>azure-spring-boot-starter-storage</module>
+<!--    <module>azure-spring-boot-samples</module>-->
   </modules>
 
 </project>

@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.autoconfigure.gremlin;
 
-import com.microsoft.azure.spring.telemetry.TelemetrySender;
+import com.microsoft.azure.telemetry.TelemetrySender;
 import com.microsoft.spring.data.gremlin.common.GremlinConfig;
 import com.microsoft.spring.data.gremlin.common.GremlinFactory;
 import com.microsoft.spring.data.gremlin.conversion.MappingGremlinConverter;
@@ -25,8 +25,8 @@ import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.microsoft.azure.spring.telemetry.TelemetryData.SERVICE_NAME;
-import static com.microsoft.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName;
+import static com.microsoft.azure.telemetry.TelemetryData.SERVICE_NAME;
+import static com.microsoft.azure.telemetry.TelemetryData.getClassPackageSimpleName;
 
 @Configuration
 @ConditionalOnClass({GremlinFactory.class, GremlinTemplate.class, MappingGremlinConverter.class})

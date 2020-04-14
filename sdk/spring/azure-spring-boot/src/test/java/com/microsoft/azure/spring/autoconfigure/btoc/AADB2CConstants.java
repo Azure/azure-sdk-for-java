@@ -2,14 +2,11 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.autoconfigure.btoc;
 
+
 import static com.microsoft.azure.spring.autoconfigure.btoc.AADB2CProperties.PREFIX;
 import static com.microsoft.azure.spring.autoconfigure.btoc.AADB2CProperties.USER_FLOW_SIGN_UP_OR_SIGN_IN;
 
-public final class AADB2CConstants {
-
-    private AADB2CConstants() {
-
-    }
+public class AADB2CConstants {
 
     public static final String TEST_TENANT = "fake-tenant";
 

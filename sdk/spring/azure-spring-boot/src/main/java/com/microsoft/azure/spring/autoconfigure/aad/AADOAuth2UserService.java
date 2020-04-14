@@ -20,7 +20,6 @@ import javax.naming.ServiceUnavailableException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
 
 public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, OidcUser> {
     private static final String CONDITIONAL_ACCESS_POLICY = "conditional_access_policy";
@@ -64,7 +63,7 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
             throw wrapException(INVALID_REQUEST, "Failed to acquire token for Graph API.", null, e);
         } catch (ServiceUnavailableException e) {
             throw wrapException(SERVER_ERROR, "Failed to acquire token for Graph API.", null, e);
-        } catch (IOException | ExecutionException | InterruptedException e) {
+        } catch (IOException e) {
             throw wrapException(SERVER_ERROR, "Failed to map group to authorities.", null, e);
         } catch (MsalServiceException e) {
             if (e.claims() != null && !e.claims().isEmpty()) {

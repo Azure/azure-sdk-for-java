@@ -5,6 +5,7 @@ package com.microsoft.azure.spring.autoconfigure.aad;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSObject;
+import com.nimbusds.jose.jwk.source.JWKSetCache;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import com.nimbusds.jose.proc.BadJOSEException;
@@ -61,7 +62,7 @@ public class UserPrincipalManager {
      * @param serviceEndpointsProps -  used to retrieve the JWKS URL
      * @param aadAuthProps          - used to retrieve the environment.
      * @param resourceRetriever     - configures the {@link RemoteJWKSet} call.
-     * @param explicitAudienceCheck -
+     * @param explicitAudienceCheck - explicit audience check
      */
     public UserPrincipalManager(ServiceEndpointsProperties serviceEndpointsProps,
                                 AADAuthenticationProperties aadAuthProps,
@@ -77,7 +78,42 @@ public class UserPrincipalManager {
         }
         try {
             keySource = new RemoteJWKSet<>(new URL(serviceEndpointsProps
-                    .getServiceEndpoints(aadAuthProps.getEnvironment()).getAadKeyDiscoveryUri()), resourceRetriever);
+                .getServiceEndpoints(aadAuthProps.getEnvironment()).getAadKeyDiscoveryUri()), resourceRetriever);
+        } catch (MalformedURLException e) {
+            LOGGER.error("Failed to parse active directory key discovery uri.", e);
+            throw new IllegalStateException("Failed to parse active directory key discovery uri.", e);
+        }
+    }
+
+    /**
+     * Create a new {@link UserPrincipalManager} based of the {@link ServiceEndpoints#getAadKeyDiscoveryUri()} and
+     * {@link AADAuthenticationProperties#getEnvironment()}.
+     *
+     * @param serviceEndpointsProps - used to retrieve the JWKS URL
+     * @param aadAuthProps          - used to retrieve the environment.
+     * @param resourceRetriever     - configures the {@link RemoteJWKSet} call.
+     * @param jwkSetCache           - used to cache the JWK set for a finite time, default set to 5 minutes
+     *                              which matches constructor above if no jwkSetCache is passed in
+     * @param explicitAudienceCheck - explicit audience check
+     */
+    public UserPrincipalManager(ServiceEndpointsProperties serviceEndpointsProps,
+                                AADAuthenticationProperties aadAuthProps,
+                                ResourceRetriever resourceRetriever,
+                                boolean explicitAudienceCheck,
+                                JWKSetCache jwkSetCache) {
+        this.aadAuthProps = aadAuthProps;
+        this.explicitAudienceCheck = explicitAudienceCheck;
+        if (explicitAudienceCheck) {
+            // client-id for "normal" check
+            this.validAudiences.add(this.aadAuthProps.getClientId());
+            // app id uri for client credentials flow (server to server communication)
+            this.validAudiences.add(this.aadAuthProps.getAppIdUri());
+        }
+        try {
+            keySource = new RemoteJWKSet<>(new URL(serviceEndpointsProps
+                .getServiceEndpoints(aadAuthProps.getEnvironment()).getAadKeyDiscoveryUri()),
+                resourceRetriever,
+                jwkSetCache);
         } catch (MalformedURLException e) {
             LOGGER.error("Failed to parse active directory key discovery uri.", e);
             throw new IllegalStateException("Failed to parse active directory key discovery uri.", e);
@@ -87,7 +123,7 @@ public class UserPrincipalManager {
     public UserPrincipal buildUserPrincipal(String idToken) throws ParseException, JOSEException, BadJOSEException {
         final JWSObject jwsObject = JWSObject.parse(idToken);
         final ConfigurableJWTProcessor<SecurityContext> validator =
-                getAadJwtTokenValidator(jwsObject.getHeader().getAlgorithm());
+            getAadJwtTokenValidator(jwsObject.getHeader().getAlgorithm());
         final JWTClaimsSet jwtClaimsSet = validator.process(idToken, null);
         final JWTClaimsSetVerifier<SecurityContext> verifier = validator.getJWTClaimsSetVerifier();
         verifier.verify(jwtClaimsSet, null);
@@ -99,18 +135,18 @@ public class UserPrincipalManager {
         final ConfigurableJWTProcessor<SecurityContext> jwtProcessor = new DefaultJWTProcessor<>();
 
         final JWSKeySelector<SecurityContext> keySelector =
-                new JWSVerificationKeySelector<>(jwsAlgorithm, keySource);
+            new JWSVerificationKeySelector<>(jwsAlgorithm, keySource);
         jwtProcessor.setJWSKeySelector(keySelector);
 
-         //TODO: would it make sense to inject it? and make it configurable or even allow to provide own implementation
+        //TODO: would it make sense to inject it? and make it configurable or even allow to provide own implementation
         jwtProcessor.setJWTClaimsSetVerifier(new DefaultJWTClaimsVerifier<SecurityContext>() {
             @Override
             public void verify(JWTClaimsSet claimsSet, SecurityContext ctx) throws BadJWTException {
                 super.verify(claimsSet, ctx);
                 final String issuer = claimsSet.getIssuer();
                 if (issuer == null || !(issuer.startsWith(LOGIN_MICROSOFT_ONLINE_ISSUER)
-                        || issuer.startsWith(STS_WINDOWS_ISSUER)
-                        || issuer.startsWith(STS_CHINA_CLOUD_API_ISSUER))) {
+                    || issuer.startsWith(STS_WINDOWS_ISSUER)
+                    || issuer.startsWith(STS_CHINA_CLOUD_API_ISSUER))) {
                     throw new BadJWTException("Invalid token issuer");
                 }
                 if (explicitAudienceCheck) {

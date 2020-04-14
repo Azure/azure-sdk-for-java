@@ -1,5 +1,0 @@
-
-description = 'Azure Service Bus Spring Boot Starter Sample'
-dependencies {
-    compile group: 'com.microsoft.azure', name: 'azure-servicebus-spring-boot-starter', version:"${azureSpringBootStartersVersion}"
-}

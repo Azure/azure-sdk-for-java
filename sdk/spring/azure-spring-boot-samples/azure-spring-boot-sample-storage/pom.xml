@@ -16,7 +16,7 @@
 
     <name>Azure Storage Spring Boot Starter Sample</name>
     <description>Sample project for Azure Storage Starter</description>
-    <url>https://github.com/Microsoft/azure-spring-boot</url>
+    <url>https://github.com/Azure/azure-sdk-for-java</url>
 
     <dependencies>
         <dependency>

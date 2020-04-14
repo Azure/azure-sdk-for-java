@@ -1,9 +1,3 @@
-[![Build Status](https://dev.azure.com/azure-spring-integration/azure-spring-boot/_apis/build/status/microsoft.azure-spring-boot?branchName=master)](https://dev.azure.com/azure-spring-integration/azure-spring-boot/_build/latest?definitionId=1&branchName=master)
-[![AppVeyor](https://ci.appveyor.com/api/projects/status/af0qeprdv3g9ox07/branch/master?svg=true)](https://ci.appveyor.com/project/yungez/azure-spring-boot)
-[![codecov](https://codecov.io/gh/Microsoft/azure-spring-boot/branch/master/graph/badge.svg)](https://codecov.io/gh/Microsoft/azure-spring-boot)
-[![MIT License](http://img.shields.io/badge/license-MIT-green.svg) ](https://github.com/Microsoft/azure-spring-boot/blob/master/LICENSE)
-[![Gitter](https://badges.gitter.im/Microsoft/spring-on-azure.svg)](https://gitter.im/Microsoft/spring-on-azure)
-
 # Azure Spring Boot client library for Java
 
 ## Getting started
@@ -65,11 +59,11 @@ You could check below articles to learn more on usage of specific starters.
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
 
-Please follow [instructions here](HowToContribute.md) to build from source or contribute.
+Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md) to build from source or contribute.
 
 ### Filing Issues
 
-If you encounter any bug, please file an issue [here](https://github.com/Microsoft/azure-spring-boot/issues/new).
+If you encounter any bug, please file an issue [here](https://github.com/Azure/azure-sdk-for-java/issues).
 
 To suggest a new feature or changes that could be made, file an issue the same way you would for a bug.
 
@@ -87,4 +81,3 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 This project collects usage data and sends it to Microsoft to help improve our products and services. Read our [privacy](https://privacy.microsoft.com/en-us/privacystatement) statement to learn more.
 
-## Examples
