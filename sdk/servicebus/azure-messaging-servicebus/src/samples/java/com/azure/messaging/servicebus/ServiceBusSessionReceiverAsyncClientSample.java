@@ -5,13 +5,12 @@ package com.azure.messaging.servicebus;
 
 import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
-import com.azure.messaging.servicebus.models.ServiceBusErrorContext;
-import com.azure.messaging.servicebus.models.ServiceBusSessionException;
 import reactor.core.Disposable;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**Receive message from one named session id**/
 public class ServiceBusSessionReceiverAsyncClientSample {
@@ -28,21 +27,33 @@ public class ServiceBusSessionReceiverAsyncClientSample {
         // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
         // "<<queue-name>>" will be the name of the Service Bus queue instance you created
         // inside the Service Bus namespace.
-        ServiceBusSessionReceiverAsyncClient receiverAsyncClient = new ServiceBusClientBuilder()
+        ServiceBusReceiverAsyncClient receiverAsyncClient = new ServiceBusClientBuilder()
             .connectionString(connectionString)
-            .receiverSession()
+            .receiver()
             .receiveMode(ReceiveMode.PEEK_LOCK)
             .queueName("<<queue-name>>")
-            .sessionId("<< session-id >>")
+            .sessionId("<< session-id >>") // one named session and no roll-over to next available session
             .buildAsyncClient();
 
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
             .setEnableAutoComplete(false) // user want to settle the message
             .setMaxAutoRenewDuration(Duration.ofSeconds(60));
 
+        //User maintain all the session id here
+        AtomicReference<List<String>> openSessionIdList =  new AtomicReference<>();
+
         Disposable subscription = receiverAsyncClient.receive(options)
             .flatMap(receivedMessage -> {
-                System.out.println("Session State : " + receiverAsyncClient.getSessionState());
+
+                if (!openSessionIdList.get().contains((receivedMessage.getSessionId()))) {
+                    openSessionIdList.get().add(receivedMessage.getSessionId());
+                    Disposable lockRenewer = receiverAsyncClient.renewSessionLock(
+                        receivedMessage.getSessionId())
+                        .flatMap(time -> Mono.delay(Duration.ofMillis(time.toEpochMilli() - System.currentTimeMillis())))
+                        .repeat() // user can repeat for N times
+                        .subscribe();
+                }
+
                 boolean messageProcessed =  false;
 
                 // Process the message here.

@@ -3,7 +3,9 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusErrorContext;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -39,6 +41,8 @@ public final class ServiceBusReceivedMessage implements MessageLockToken {
     private String to;
     private String viaPartitionKey;
 
+    private ServiceBusErrorContext serviceBusErrorContext;
+
     ServiceBusReceivedMessage(byte[] body) {
         this.body = Objects.requireNonNull(body, "'body' cannot be null.");
         this.properties = new HashMap<>();
@@ -57,6 +61,24 @@ public final class ServiceBusReceivedMessage implements MessageLockToken {
      */
     public byte[] getBody() {
         return Arrays.copyOf(body, body.length);
+    }
+
+    /**
+     * This indicate that the session is in error and this received message can not be processed.
+     * User should use this flag to take appropriate action, For example logging the error.
+     *
+     * @return boolean indicating if there is an error.
+     */
+    public boolean isSessionError(){
+        return !Objects.isNull(serviceBusErrorContext);
+    }
+
+    /**
+     *
+     * @return {@link ServiceBusErrorContext} representing the error.
+     */
+    public ServiceBusErrorContext getServiceBusErrorContext(){
+        return serviceBusErrorContext;
     }
 
     /**

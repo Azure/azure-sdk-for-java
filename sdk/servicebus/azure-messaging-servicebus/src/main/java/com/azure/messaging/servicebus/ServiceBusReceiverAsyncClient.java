@@ -29,6 +29,7 @@ import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
@@ -614,4 +615,11 @@ public class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private AmqpErrorContext getErrorContext() {
         return new SessionErrorContext(getFullyQualifiedNamespace(), getEntityPath());
     }
+
+    /* Following section is for session related API.*/
+    public Mono<Instant> renewSessionLock(String sessionId){return null;}
+    public Mono<ByteBuffer> getSessionState(String sessionId) {return null;}
+    public Mono<Void> setSessionState(ByteBuffer sessionState) {return null;}
+    public String getSessionId(String sessionId){ return null;}
+    public Mono<Instant> getSessionLockedUntil(String sessionId) {return null;}
 }
