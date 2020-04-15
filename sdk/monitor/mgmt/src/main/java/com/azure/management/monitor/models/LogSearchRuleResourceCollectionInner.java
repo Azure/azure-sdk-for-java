@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The LogSearchRuleResourceCollection model.
- */
+/** The LogSearchRuleResourceCollection model. */
 @Fluent
 public final class LogSearchRuleResourceCollectionInner {
     /*
@@ -21,7 +19,7 @@ public final class LogSearchRuleResourceCollectionInner {
 
     /**
      * Get the value property: The values for the Log Search Rule resources.
-     * 
+     *
      * @return the value value.
      */
     public List<LogSearchRuleResourceInner> value() {
@@ -30,7 +28,7 @@ public final class LogSearchRuleResourceCollectionInner {
 
     /**
      * Set the value property: The values for the Log Search Rule resources.
-     * 
+     *
      * @param value the value value to set.
      * @return the LogSearchRuleResourceCollectionInner object itself.
      */

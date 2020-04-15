@@ -8,7 +8,7 @@
     <groupId>com.azure</groupId>
     <artifactId>azure-client-sdk-parent</artifactId>
     <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
-    <relativePath>../../../pom.client.xml</relativePath>
+    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
   </parent>
 
   <groupId>com.azure</groupId>
@@ -128,8 +128,8 @@
                   </excludes>
                   <includes>
                     <include>com.azure:*</include>
-                    <include>org.apache.qpid:proton-j</include>
-                    <include>com.microsoft.azure:qpid-proton-j-extensions</include>
+                    <include>com.microsoft.azure:qpid-proton-j-extensions:[1.2.2]</include> <!-- {x-include-update;com.microsoft.azure:qpid-proton-j-extensions;external_dependency} -->
+                    <include>org.apache.qpid:proton-j:[0.33.2]</include> <!-- {x-include-update;org.apache.qpid:proton-j;external_dependency} -->
                   </includes>
                 </bannedDependencies>
               </rules>

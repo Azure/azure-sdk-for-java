@@ -11,12 +11,8 @@ import com.azure.management.compute.VirtualMachineDataDisk;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
 
-/**
- * The implementation for {@link VirtualMachineDataDisk} interface.
- */
-class VirtualMachineDataDiskImpl
-        extends WrapperImpl<DataDisk>
-        implements VirtualMachineDataDisk  {
+/** The implementation for {@link VirtualMachineDataDisk} interface. */
+class VirtualMachineDataDiskImpl extends WrapperImpl<DataDisk> implements VirtualMachineDataDisk {
 
     VirtualMachineDataDiskImpl(DataDisk dataDiskInner) {
         super(dataDiskInner);

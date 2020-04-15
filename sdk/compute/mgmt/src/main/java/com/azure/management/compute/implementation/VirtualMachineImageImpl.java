@@ -10,17 +10,12 @@ import com.azure.management.compute.VirtualMachineImage;
 import com.azure.management.compute.models.VirtualMachineImageInner;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * The implementation for {@link VirtualMachineImage}.
- */
-class VirtualMachineImageImpl
-        extends IndexableWrapperImpl<VirtualMachineImageInner>
-        implements VirtualMachineImage {
+/** The implementation for {@link VirtualMachineImage}. */
+class VirtualMachineImageImpl extends IndexableWrapperImpl<VirtualMachineImageInner> implements VirtualMachineImage {
     private final Region location;
     private ImageReference imageReference;
 
@@ -34,7 +29,13 @@ class VirtualMachineImageImpl
         this.imageReference.withVersion(version);
     }
 
-    VirtualMachineImageImpl(Region location, String publisher, String offer, String sku, String version, VirtualMachineImageInner innerModel) {
+    VirtualMachineImageImpl(
+        Region location,
+        String publisher,
+        String offer,
+        String sku,
+        String version,
+        VirtualMachineImageInner innerModel) {
         super(innerModel);
         this.location = location;
         this.imageReference = new ImageReference();

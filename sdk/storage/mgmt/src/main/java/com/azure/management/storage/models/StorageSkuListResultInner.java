@@ -8,9 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The StorageSkuListResult model.
- */
+/** The StorageSkuListResult model. */
 @Immutable
 public final class StorageSkuListResultInner {
     /*
@@ -20,9 +18,8 @@ public final class StorageSkuListResultInner {
     private List<SkuInformationInner> value;
 
     /**
-     * Get the value property: Get the list result of storage SKUs and their
-     * properties.
-     * 
+     * Get the value property: Get the list result of storage SKUs and their properties.
+     *
      * @return the value value.
      */
     public List<SkuInformationInner> value() {

@@ -7,28 +7,18 @@ package com.azure.management.monitor;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for Sensitivity.
- */
+/** Defines values for Sensitivity. */
 public enum Sensitivity {
-    /**
-     * Enum value Low.
-     */
+    /** Enum value Low. */
     LOW("Low"),
 
-    /**
-     * Enum value Medium.
-     */
+    /** Enum value Medium. */
     MEDIUM("Medium"),
 
-    /**
-     * Enum value High.
-     */
+    /** Enum value High. */
     HIGH("High");
 
-    /**
-     * The actual serialized value for a Sensitivity instance.
-     */
+    /** The actual serialized value for a Sensitivity instance. */
     private final String value;
 
     Sensitivity(String value) {
@@ -37,7 +27,7 @@ public enum Sensitivity {
 
     /**
      * Parses a serialized value to a Sensitivity instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed Sensitivity object, or null if unable to parse.
      */

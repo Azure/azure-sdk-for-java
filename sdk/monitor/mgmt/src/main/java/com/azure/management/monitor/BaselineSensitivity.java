@@ -8,28 +8,20 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for BaselineSensitivity.
- */
+/** Defines values for BaselineSensitivity. */
 public final class BaselineSensitivity extends ExpandableStringEnum<BaselineSensitivity> {
-    /**
-     * Static value Low for BaselineSensitivity.
-     */
+    /** Static value Low for BaselineSensitivity. */
     public static final BaselineSensitivity LOW = fromString("Low");
 
-    /**
-     * Static value Medium for BaselineSensitivity.
-     */
+    /** Static value Medium for BaselineSensitivity. */
     public static final BaselineSensitivity MEDIUM = fromString("Medium");
 
-    /**
-     * Static value High for BaselineSensitivity.
-     */
+    /** Static value High for BaselineSensitivity. */
     public static final BaselineSensitivity HIGH = fromString("High");
 
     /**
      * Creates or finds a BaselineSensitivity from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding BaselineSensitivity.
      */
@@ -38,9 +30,7 @@ public final class BaselineSensitivity extends ExpandableStringEnum<BaselineSens
         return fromString(name, BaselineSensitivity.class);
     }
 
-    /**
-     * @return known BaselineSensitivity values.
-     */
+    /** @return known BaselineSensitivity values. */
     public static Collection<BaselineSensitivity> values() {
         return values(BaselineSensitivity.class);
     }

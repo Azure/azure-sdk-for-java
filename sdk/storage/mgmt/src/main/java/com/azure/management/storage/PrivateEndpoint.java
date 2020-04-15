@@ -7,9 +7,7 @@ package com.azure.management.storage;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The PrivateEndpoint model.
- */
+/** The PrivateEndpoint model. */
 @Immutable
 public final class PrivateEndpoint {
     /*
@@ -20,7 +18,7 @@ public final class PrivateEndpoint {
 
     /**
      * Get the id property: The ARM identifier for Private Endpoint.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {

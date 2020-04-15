@@ -16,10 +16,10 @@ import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.amqp.Symbol;
-import org.apache.qpid.proton.amqp.UnknownDescribedType;
 import org.apache.qpid.proton.amqp.UnsignedInteger;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
@@ -33,13 +33,13 @@ import java.util.Map;
 import java.util.Objects;
 
 import static com.azure.messaging.servicebus.implementation.MessageUtils.adjustServerTimeout;
-
 /**
  * An AMQP session for Service Bus.
  */
 class ServiceBusReactorSession extends ReactorSession implements ServiceBusSession {
     private static final Symbol LINK_TIMEOUT_PROPERTY = Symbol.getSymbol(AmqpConstants.VENDOR + ":timeout");
     private static final Symbol ENTITY_TYPE_PROPERTY = Symbol.getSymbol(AmqpConstants.VENDOR + ":entity-type");
+    private static final Symbol SESSION_FILTER = Symbol.getSymbol(AmqpConstants.VENDOR + ":session-filter");
 
     private final ClientLogger logger = new ClientLogger(ServiceBusReactorSession.class);
 
@@ -66,20 +66,30 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
 
     @Override
     public Mono<AmqpReceiveLink> createConsumer(String linkName, String entityPath, MessagingEntityType entityType,
-        Duration timeout, AmqpRetryPolicy retry, ReceiveMode receiveMode, boolean isSession) {
+         Duration timeout, AmqpRetryPolicy retry, ReceiveMode receiveMode) {
+        return createConsumer(linkName, entityPath, entityType, timeout, retry, receiveMode, null);
+    }
+
+    @Override
+    public Mono<AmqpReceiveLink> createConsumer(String linkName, String entityPath, MessagingEntityType entityType,
+        Duration timeout, AmqpRetryPolicy retry, ReceiveMode receiveMode, String sessionId) {
         Objects.requireNonNull(linkName, "'linkName' cannot be null.");
         Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         Objects.requireNonNull(timeout, "'timeout' cannot be null.");
         Objects.requireNonNull(retry, "'retry' cannot be null.");
         Objects.requireNonNull(receiveMode, "'receiveMode' cannot be null.");
 
-        final Map<Symbol, UnknownDescribedType> filter = new HashMap<>();
+        final Map<Symbol, Object> filter = new HashMap<>();
 
         final Map<Symbol, Object> linkProperties = new HashMap<>();
         final Duration serverTimeout = adjustServerTimeout(timeout);
         linkProperties.put(LINK_TIMEOUT_PROPERTY, UnsignedInteger.valueOf(serverTimeout.toMillis()));
         if (entityType != null) {
             linkProperties.put(ENTITY_TYPE_PROPERTY, entityType.getValue());
+        }
+
+        if (!CoreUtils.isNullOrEmpty(sessionId)) {
+            filter.put(SESSION_FILTER, sessionId);
         }
 
         final SenderSettleMode senderSettleMode;

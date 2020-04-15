@@ -1,30 +1,27 @@
-///**
-// * Copyright (c) Microsoft Corporation. All rights reserved.
-// * Licensed under the MIT License. See License.txt in the project root for
-// * license information.
-// */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 //
-//package com.azure.management;
+// package com.azure.management;
 //
-//import com.microsoft.azure.management.cdn.CdnEndpoint;
-//import com.microsoft.azure.management.cdn.CdnProfile;
-//import com.microsoft.azure.management.cdn.CdnProfiles;
-//import com.microsoft.azure.management.cdn.EdgeNode;
-//import com.microsoft.azure.management.cdn.GeoFilter;
-//import com.microsoft.azure.management.cdn.GeoFilterActions;
-//import com.microsoft.azure.management.cdn.QueryStringCachingBehavior;
-//import com.microsoft.azure.management.cdn.ResourceUsage;
-//import com.microsoft.azure.management.cdn.SkuName;
-//import com.microsoft.azure.management.resources.fluentcore.arm.CountryIsoCode;
-//import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-//import org.junit.Assert;
+// import com.microsoft.azure.management.cdn.CdnEndpoint;
+// import com.microsoft.azure.management.cdn.CdnProfile;
+// import com.microsoft.azure.management.cdn.CdnProfiles;
+// import com.microsoft.azure.management.cdn.EdgeNode;
+// import com.microsoft.azure.management.cdn.GeoFilter;
+// import com.microsoft.azure.management.cdn.GeoFilterActions;
+// import com.microsoft.azure.management.cdn.QueryStringCachingBehavior;
+// import com.microsoft.azure.management.cdn.ResourceUsage;
+// import com.microsoft.azure.management.cdn.SkuName;
+// import com.microsoft.azure.management.resources.fluentcore.arm.CountryIsoCode;
+// import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+// import org.junit.Assert;
 //
-//import java.util.Map;
+// import java.util.Map;
 //
-///**
+/// **
 // * Test of CDN management.
 // */
-//public class TestCdn extends TestTemplate<CdnProfile, CdnProfiles> {
+// public class TestCdn extends TestTemplate<CdnProfile, CdnProfiles> {
 //    @Override
 //    public CdnProfile createResource(CdnProfiles profiles) throws Exception {
 //        final Region region = Region.US_EAST;
@@ -101,7 +98,8 @@
 //                .withNewEndpoint("www.bing.com")
 //                .defineNewEndpoint("somenewnamefortheendpoint")
 //                    .withOrigin("www.contoso.com")
-//                    .withGeoFilter("/path/music", GeoFilterActions.BLOCK, CountryIsoCode.UNITED_STATES_OUTLYING_ISLANDS)
+//                    .withGeoFilter("/path/music", GeoFilterActions.BLOCK,
+// CountryIsoCode.UNITED_STATES_OUTLYING_ISLANDS)
 //                    .attach()
 //                .updateEndpoint(firstEndpointName)
 //                    .withHttpAllowed(true)
@@ -143,7 +141,8 @@
 //                        .append("\n\t\t\tOrigin host header: ").append(endpoint.originHostHeader())
 //                        .append("\n\t\t\tOrigin path: ").append(endpoint.originPath())
 //                        .append("\n\t\t\tOptimization type: ").append(endpoint.optimizationType())
-//                        .append("\n\t\t\tQuery string caching behavior: ").append(endpoint.queryStringCachingBehavior())
+//                        .append("\n\t\t\tQuery string caching behavior:
+// ").append(endpoint.queryStringCachingBehavior())
 //                        .append("\n\t\t\tHttp allowed: ").append(endpoint.isHttpAllowed())
 //                        .append("\t\tHttp port: ").append(endpoint.httpPort())
 //                        .append("\n\t\t\tHttps allowed: ").append(endpoint.isHttpsAllowed())
@@ -173,4 +172,4 @@
 //        }
 //        System.out.println(info.toString());
 //    }
-//}
+// }

@@ -8,16 +8,13 @@ import com.azure.management.network.TroubleshootingDetails;
 import com.azure.management.network.TroubleshootingParameters;
 import com.azure.management.network.models.TroubleshootingResultInner;
 import com.azure.management.resources.fluentcore.model.implementation.ExecutableImpl;
-import reactor.core.publisher.Mono;
-
 import java.time.OffsetDateTime;
 import java.util.List;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation of Troubleshooting interface.
- */
+/** Implementation of Troubleshooting interface. */
 class TroubleshootingImpl extends ExecutableImpl<Troubleshooting>
-        implements Troubleshooting, Troubleshooting.Definition {
+    implements Troubleshooting, Troubleshooting.Definition {
 
     private final NetworkWatcherImpl parent;
     private TroubleshootingParameters parameters = new TroubleshootingParameters();
@@ -52,9 +49,14 @@ class TroubleshootingImpl extends ExecutableImpl<Troubleshooting>
 
     @Override
     public Mono<Troubleshooting> executeWorkAsync() {
-        return this.parent().manager().inner().networkWatchers()
-                .getTroubleshootingAsync(parent.resourceGroupName(), parent.name(), parameters)
-                .map(troubleshootingResultInner -> {
+        return this
+            .parent()
+            .manager()
+            .inner()
+            .networkWatchers()
+            .getTroubleshootingAsync(parent.resourceGroupName(), parent.name(), parameters)
+            .map(
+                troubleshootingResultInner -> {
                     TroubleshootingImpl.this.result = troubleshootingResultInner;
                     return TroubleshootingImpl.this;
                 });

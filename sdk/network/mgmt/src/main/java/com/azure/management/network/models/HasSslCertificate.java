@@ -3,10 +3,8 @@
 package com.azure.management.network.models;
 
 import com.azure.core.annotation.Fluent;
-
 import java.io.File;
 import java.io.IOException;
-
 
 /**
  * An interface representing a model's ability to reference an SSL certificate.
@@ -15,14 +13,10 @@ import java.io.IOException;
  */
 @Fluent
 public interface HasSslCertificate<T> {
-    /**
-     * @return the associated SSL certificate, if any
-     */
+    /** @return the associated SSL certificate, if any */
     T sslCertificate();
 
-    /**
-     * Grouping of definition stages involving specifying an SSL certificate.
-     */
+    /** Grouping of definition stages involving specifying an SSL certificate. */
     interface DefinitionStages {
         /**
          * The stage of a resource definition allowing to specify the SSL certificate to associate with it.
@@ -32,8 +26,9 @@ public interface HasSslCertificate<T> {
         interface WithSslCertificate<ReturnT> {
             /**
              * Specifies an SSL certificate to associate with this resource.
-             * <p>
-             * If the certificate does not exist yet, it must be defined in the optional part of the parent resource definition.
+             *
+             * <p>If the certificate does not exist yet, it must be defined in the optional part of the parent resource
+             * definition.
              *
              * @param name the name of an existing SSL certificate.
              * @return the next stage of the definition
@@ -50,8 +45,8 @@ public interface HasSslCertificate<T> {
 
             /**
              * Specifies the PFX file to import the SSL certificate from to associated with this resource.
-             * <p>
-             * The certificate will be named using an auto-generated name.
+             *
+             * <p>The certificate will be named using an auto-generated name.
              *
              * @param pfxFile an existing PFX file
              * @return the next stage of the definition
@@ -61,13 +56,15 @@ public interface HasSslCertificate<T> {
         }
 
         /**
-         * The stage of a resource definition allowing to specify the password for the private key of the imported SSL certificate.
+         * The stage of a resource definition allowing to specify the password for the private key of the imported SSL
+         * certificate.
          *
          * @param <ReturnT> the next stage of the definition
          */
         interface WithSslPassword<ReturnT> {
             /**
-             * Specifies the password for the specified PFX file containing the private key of the imported SSL certificate.
+             * Specifies the password for the specified PFX file containing the private key of the imported SSL
+             * certificate.
              *
              * @param password the password of the imported PFX file
              * @return the next stage of the definition
@@ -76,9 +73,7 @@ public interface HasSslCertificate<T> {
         }
     }
 
-    /**
-     * Grouping of update stages involving modifying SSL certificates.
-     */
+    /** Grouping of update stages involving modifying SSL certificates. */
     interface UpdateStages {
         /**
          * The stage of a resource update allowing to specify the SSL certificate to associate with it.
@@ -88,8 +83,8 @@ public interface HasSslCertificate<T> {
         interface WithSslCertificate<ReturnT> {
             /**
              * Specifies an SSL certificate to associate with this resource.
-             * <p>
-             * If the certificate does not exist yet, it must be defined in the parent resource update.
+             *
+             * <p>If the certificate does not exist yet, it must be defined in the parent resource update.
              *
              * @param name the name of an existing SSL certificate associated with this application gateway
              * @return the next stage of the update
@@ -106,8 +101,8 @@ public interface HasSslCertificate<T> {
 
             /**
              * Specifies the PFX file to import the SSL certificate from to associate with this resource.
-             * <p>
-             * The certificate will be named using an auto-generated name.
+             *
+             * <p>The certificate will be named using an auto-generated name.
              *
              * @param pfxFile an existing PFX file
              * @return the next stage of the definition
@@ -117,13 +112,15 @@ public interface HasSslCertificate<T> {
         }
 
         /**
-         * The stage of a resource update allowing to specify the password for the private key of the imported SSL certificate.
+         * The stage of a resource update allowing to specify the password for the private key of the imported SSL
+         * certificate.
          *
          * @param <ReturnT> the next stage of the update
          */
         interface WithSslPassword<ReturnT> {
             /**
-             * Specifies the password for the specified PFX file containing the private key of the imported SSL certificate.
+             * Specifies the password for the specified PFX file containing the private key of the imported SSL
+             * certificate.
              *
              * @param password the password of the imported PFX file
              * @return the next stage of the definition
@@ -144,8 +141,9 @@ public interface HasSslCertificate<T> {
         interface WithSslCertificate<ReturnT> {
             /**
              * Specifies an SSL certificate to associate with this resource.
-             * <p>
-             * If the certificate does not exist yet, it must be defined in the optional part of the parent resource definition.
+             *
+             * <p>If the certificate does not exist yet, it must be defined in the optional part of the parent resource
+             * definition.
              *
              * @param name the name of an existing SSL certificate.
              * @return the next stage of the definition
@@ -162,8 +160,8 @@ public interface HasSslCertificate<T> {
 
             /**
              * Specifies the PFX file to import the SSL certificate from to associated with this resource.
-             * <p>
-             * The certificate will be named using an auto-generated name.
+             *
+             * <p>The certificate will be named using an auto-generated name.
              *
              * @param pfxFile an existing PFX file
              * @return the next stage of the definition
@@ -173,13 +171,15 @@ public interface HasSslCertificate<T> {
         }
 
         /**
-         * The stage of a resource definition allowing to specify the password for the private key of the imported SSL certificate.
+         * The stage of a resource definition allowing to specify the password for the private key of the imported SSL
+         * certificate.
          *
          * @param <ReturnT> the next stage of the definition
          */
         interface WithSslPassword<ReturnT> {
             /**
-             * Specifies the password for the specified PFX file containing the private key of the imported SSL certificate.
+             * Specifies the password for the specified PFX file containing the private key of the imported SSL
+             * certificate.
              *
              * @param password the password of the imported PFX file
              * @return the next stage of the definition

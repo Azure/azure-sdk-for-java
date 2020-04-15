@@ -1,31 +1,28 @@
-///**
-// * Copyright (c) Microsoft Corporation. All rights reserved.
-// * Licensed under the MIT License. See License.txt in the project root for
-// * license information.
-// */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 //
-//package com.azure.management;
+// package com.azure.management;
 //
-//import com.microsoft.azure.management.network.PublicIPAddress;
-//import com.microsoft.azure.management.network.PublicIPAddresses;
-//import com.microsoft.azure.management.resources.ResourceGroup;
-//import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-//import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
-//import com.microsoft.azure.management.trafficmanager.EndpointType;
-//import com.microsoft.azure.management.trafficmanager.TargetAzureResourceType;
-//import com.microsoft.azure.management.trafficmanager.TrafficManagerAzureEndpoint;
-//import com.microsoft.azure.management.trafficmanager.TrafficManagerExternalEndpoint;
-//import com.microsoft.azure.management.trafficmanager.TrafficManagerNestedProfileEndpoint;
-//import com.microsoft.azure.management.trafficmanager.TrafficManagerProfile;
-//import com.microsoft.azure.management.trafficmanager.TrafficManagerProfiles;
-//import org.junit.Assert;
+// import com.microsoft.azure.management.network.PublicIPAddress;
+// import com.microsoft.azure.management.network.PublicIPAddresses;
+// import com.microsoft.azure.management.resources.ResourceGroup;
+// import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+// import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
+// import com.microsoft.azure.management.trafficmanager.EndpointType;
+// import com.microsoft.azure.management.trafficmanager.TargetAzureResourceType;
+// import com.microsoft.azure.management.trafficmanager.TrafficManagerAzureEndpoint;
+// import com.microsoft.azure.management.trafficmanager.TrafficManagerExternalEndpoint;
+// import com.microsoft.azure.management.trafficmanager.TrafficManagerNestedProfileEndpoint;
+// import com.microsoft.azure.management.trafficmanager.TrafficManagerProfile;
+// import com.microsoft.azure.management.trafficmanager.TrafficManagerProfiles;
+// import org.junit.Assert;
 //
-//import java.util.Map;
+// import java.util.Map;
 //
-///**
+/// **
 // * Test of traffic manager management.
 // */
-//public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, TrafficManagerProfiles> {
+// public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, TrafficManagerProfiles> {
 //
 //    private final PublicIPAddresses publicIPAddresses;
 //
@@ -58,7 +55,8 @@
 //        final String tmProfileDnsLabel = SdkContext.randomResourceName("tmdns", 15);
 //        final String nestedTmProfileDnsLabel = "nested" + tmProfileDnsLabel;
 //
-//        ResourceGroup.DefinitionStages.WithCreate rgCreatable = profiles.manager().resourceManager().resourceGroups().define(groupName)
+//        ResourceGroup.DefinitionStages.WithCreate rgCreatable =
+// profiles.manager().resourceManager().resourceGroups().define(groupName)
 //                .withRegion(region);
 //
 //        // Creates a TM profile that will be used as a nested profile endpoint in parent TM profile
@@ -361,4 +359,4 @@
 //        }
 //        System.out.println(info.toString());
 //    }
-//}
+// }

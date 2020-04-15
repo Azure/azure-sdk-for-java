@@ -7,6 +7,7 @@ import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.ManagementConstants;
 import com.azure.messaging.servicebus.implementation.MessageWithLockToken;
 import com.azure.messaging.servicebus.implementation.Messages;
 import org.apache.qpid.proton.Proton;
@@ -57,11 +58,6 @@ class ServiceBusMessageSerializer implements MessageSerializer {
     private static final String PARTITION_KEY_NAME = "x-opt-partition-key";
     private static final String VIA_PARTITION_KEY_NAME = "x-opt-via-partition-key";
     private static final String DEAD_LETTER_SOURCE_NAME = "x-opt-deadletter-source";
-    private static final String REQUEST_RESPONSE_MESSAGES = "messages";
-    private static final String REQUEST_RESPONSE_MESSAGE = "message";
-    private static final String REQUEST_RESPONSE_EXPIRATIONS = "expirations";
-    private static final String LOCK_TOKEN_KEY = "lock-token";
-    private static final String SEQUENCE_NUMBERS = "sequence-numbers";
 
     private final ClientLogger logger = new ClientLogger(ServiceBusMessageSerializer.class);
 
@@ -206,7 +202,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             if (amqpValue.getValue() instanceof Map) {
                 @SuppressWarnings("unchecked")
                 Map<String, Object> responseBody = (Map<String, Object>) amqpValue.getValue();
-                Object expirationListObj = responseBody.get(SEQUENCE_NUMBERS);
+                Object expirationListObj = responseBody.get(ManagementConstants.SEQUENCE_NUMBERS);
 
                 if (expirationListObj instanceof long[]) {
                     return Arrays.stream((long[]) expirationListObj)
@@ -225,7 +221,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             if (amqpValue.getValue() instanceof  Map) {
                 @SuppressWarnings("unchecked")
                 Map<String, Object> responseBody = (Map<String, Object>) amqpValue.getValue();
-                Object expirationListObj = responseBody.get(REQUEST_RESPONSE_EXPIRATIONS);
+                Object expirationListObj = responseBody.get(ManagementConstants.EXPIRATIONS);
 
                 if (expirationListObj instanceof Date[]) {
                     return Arrays.stream((Date[]) expirationListObj)
@@ -237,6 +233,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         return Collections.emptyList();
     }
 
+    @SuppressWarnings("rawtypes")
     private List<ServiceBusReceivedMessage> deserializeListOfMessages(Message amqpMessage) {
         final List<ServiceBusReceivedMessage> messageList = new ArrayList<>();
         final int statusCode = RequestResponseUtils.getResponseStatusCode(amqpMessage);
@@ -257,9 +254,9 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             return Collections.emptyList();
         }
 
-        final Object messages = ((Map) responseBodyMap).get(REQUEST_RESPONSE_MESSAGES);
+        final Object messages = ((Map) responseBodyMap).get(ManagementConstants.MESSAGES);
         if (messages == null) {
-            logger.warning("Response body did not contain key: {}", REQUEST_RESPONSE_MESSAGES);
+            logger.warning("Response body did not contain key: {}", ManagementConstants.MESSAGES);
             return Collections.emptyList();
         } else if (!(messages instanceof Iterable)) {
             logger.warning("Response body contents is not the correct type. Expected: {}. Actual: {}",
@@ -275,7 +272,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             }
 
             final Message responseMessage = Message.Factory.create();
-            final Binary messagePayLoad = (Binary) ((Map) message).get(REQUEST_RESPONSE_MESSAGE);
+            final Binary messagePayLoad = (Binary) ((Map) message).get(ManagementConstants.MESSAGE);
 
             responseMessage.decode(messagePayLoad.getArray(), messagePayLoad.getArrayOffset(),
                 messagePayLoad.getLength());
@@ -283,8 +280,8 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             final ServiceBusReceivedMessage receivedMessage = deserializeMessage(responseMessage);
 
             // if amqp message have lockToken
-            if (((Map) message).containsKey(LOCK_TOKEN_KEY)) {
-                receivedMessage.setLockToken((UUID) ((Map) message).get(LOCK_TOKEN_KEY));
+            if (((Map) message).containsKey(ManagementConstants.LOCK_TOKEN_KEY)) {
+                receivedMessage.setLockToken((UUID) ((Map) message).get(ManagementConstants.LOCK_TOKEN_KEY));
             }
 
             messageList.add(receivedMessage);

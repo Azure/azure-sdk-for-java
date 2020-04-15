@@ -6,11 +6,8 @@ package com.azure.management.monitor;
 import com.azure.management.monitor.models.DiagnosticSettingsCategoryResourceInner;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-/**
- * The Azure event log entries are of type DiagnosticSettingsCategory.
- */
-public interface DiagnosticSettingsCategory
-        extends HasInner<DiagnosticSettingsCategoryResourceInner> {
+/** The Azure event log entries are of type DiagnosticSettingsCategory. */
+public interface DiagnosticSettingsCategory extends HasInner<DiagnosticSettingsCategoryResourceInner> {
     /**
      * Get the diagnostic settings category name value.
      *

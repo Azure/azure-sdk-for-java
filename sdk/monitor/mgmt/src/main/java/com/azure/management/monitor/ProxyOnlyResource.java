@@ -7,9 +7,7 @@ package com.azure.management.monitor;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 
-/**
- * The ProxyOnlyResource model.
- */
+/** The ProxyOnlyResource model. */
 @Immutable
 public class ProxyOnlyResource extends ProxyResource {
 }

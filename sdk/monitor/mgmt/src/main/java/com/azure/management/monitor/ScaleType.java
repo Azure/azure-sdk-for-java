@@ -7,28 +7,18 @@ package com.azure.management.monitor;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for ScaleType.
- */
+/** Defines values for ScaleType. */
 public enum ScaleType {
-    /**
-     * Enum value ChangeCount.
-     */
+    /** Enum value ChangeCount. */
     CHANGE_COUNT("ChangeCount"),
 
-    /**
-     * Enum value PercentChangeCount.
-     */
+    /** Enum value PercentChangeCount. */
     PERCENT_CHANGE_COUNT("PercentChangeCount"),
 
-    /**
-     * Enum value ExactCount.
-     */
+    /** Enum value ExactCount. */
     EXACT_COUNT("ExactCount");
 
-    /**
-     * The actual serialized value for a ScaleType instance.
-     */
+    /** The actual serialized value for a ScaleType instance. */
     private final String value;
 
     ScaleType(String value) {
@@ -37,7 +27,7 @@ public enum ScaleType {
 
     /**
      * Parses a serialized value to a ScaleType instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed ScaleType object, or null if unable to parse.
      */

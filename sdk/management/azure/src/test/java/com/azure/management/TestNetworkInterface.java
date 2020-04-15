@@ -10,10 +10,9 @@ import com.azure.management.network.NetworkInterfaces;
 import com.azure.management.network.NicIPConfiguration;
 import com.azure.management.network.Subnet;
 import com.azure.management.resources.fluentcore.arm.Region;
-import org.junit.jupiter.api.Assertions;
-
 import java.util.Collection;
 import java.util.List;
+import org.junit.jupiter.api.Assertions;
 
 public class TestNetworkInterface extends TestTemplate<NetworkInterface, NetworkInterfaces> {
     @Override
@@ -25,7 +24,11 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
         final String pipName = "pip" + postfix;
         final Region region = Region.US_EAST;
 
-        Network network = networkInterfaces.manager().networks().define(vnetName)
+        Network network =
+            networkInterfaces
+                .manager()
+                .networks()
+                .define(vnetName)
                 .withRegion(region)
                 .withNewResourceGroup()
                 .withAddressSpace("10.0.0.0/28")
@@ -33,7 +36,9 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
                 .withSubnet("subnet2", "10.0.0.8/29")
                 .create();
 
-        NetworkInterface nic = networkInterfaces.define(nicName)
+        NetworkInterface nic =
+            networkInterfaces
+                .define(nicName)
                 .withRegion(region)
                 .withExistingResourceGroup(network.resourceGroupName())
                 .withExistingPrimaryNetwork(network)
@@ -74,13 +79,15 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
 
     @Override
     public NetworkInterface updateResource(NetworkInterface resource) throws Exception {
-        resource = resource.update()
+        resource =
+            resource
+                .update()
                 .withoutIPForwarding()
                 .withoutAcceleratedNetworking()
                 .withSubnet("subnet2")
-                .updateIPConfiguration("primary")  // Updating the primary IP configuration
+                .updateIPConfiguration("primary") // Updating the primary IP configuration
                 .withPrivateIPAddressDynamic() // Equivalent to ..update().withPrimaryPrivateIPAddressDynamic()
-                .withoutPublicIPAddress()      // Equivalent to ..update().withoutPrimaryPublicIPAddress()
+                .withoutPublicIPAddress() // Equivalent to ..update().withoutPrimaryPublicIPAddress()
                 .parent()
                 .withTag("tag1", "value1")
                 .withTag("tag2", "value2")
@@ -98,10 +105,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
 
         Assertions.assertEquals(1, resource.ipConfigurations().size());
 
-        resource.updateTags()
-                .withoutTag("tag1")
-                .withTag("tag3", "value3")
-                .applyTags();
+        resource.updateTags().withoutTag("tag1").withTag("tag3", "value3").applyTags();
         Assertions.assertFalse(resource.tags().containsKey("tag1"));
         Assertions.assertEquals("value3", resource.tags().get("tag3"));
         return resource;
@@ -109,56 +113,89 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
 
     public static void printNic(NetworkInterface resource) {
         StringBuilder info = new StringBuilder();
-        info.append("NetworkInterface: ").append(resource.id())
-                .append("Name: ").append(resource.name())
-                .append("\n\tResource group: ").append(resource.resourceGroupName())
-                .append("\n\tRegion: ").append(resource.region())
-                .append("\n\tTags: ").append(resource.tags())
-                .append("\n\tInternal DNS name label: ").append(resource.internalDnsNameLabel())
-                .append("\n\tInternal FQDN: ").append(resource.internalFqdn())
-                .append("\n\tInternal domain name suffix: ").append(resource.internalDomainNameSuffix())
-                .append("\n\tVirtual machine ID: ").append(resource.virtualMachineId())
-                .append("\n\tApplied DNS servers: ").append(resource.appliedDnsServers().toString())
-                .append("\n\tDNS server IPs: ");
+        info
+            .append("NetworkInterface: ")
+            .append(resource.id())
+            .append("Name: ")
+            .append(resource.name())
+            .append("\n\tResource group: ")
+            .append(resource.resourceGroupName())
+            .append("\n\tRegion: ")
+            .append(resource.region())
+            .append("\n\tTags: ")
+            .append(resource.tags())
+            .append("\n\tInternal DNS name label: ")
+            .append(resource.internalDnsNameLabel())
+            .append("\n\tInternal FQDN: ")
+            .append(resource.internalFqdn())
+            .append("\n\tInternal domain name suffix: ")
+            .append(resource.internalDomainNameSuffix())
+            .append("\n\tVirtual machine ID: ")
+            .append(resource.virtualMachineId())
+            .append("\n\tApplied DNS servers: ")
+            .append(resource.appliedDnsServers().toString())
+            .append("\n\tDNS server IPs: ");
 
         // Output dns servers
         for (String dnsServerIp : resource.dnsServers()) {
             info.append("\n\t\t").append(dnsServerIp);
         }
 
-        info.append("\n\tIP forwarding enabled? ").append(resource.isIPForwardingEnabled())
-                .append("\n\tAccelerated networking enabled? ").append(resource.isAcceleratedNetworkingEnabled())
-                .append("\n\tMAC Address:").append(resource.macAddress())
-                .append("\n\tPrivate IP:").append(resource.primaryPrivateIP())
-                .append("\n\tPrivate allocation method:").append(resource.primaryPrivateIPAllocationMethod())
-                .append("\n\tPrimary virtual network ID: ").append(resource.primaryIPConfiguration().networkId())
-                .append("\n\tPrimary subnet name: ").append(resource.primaryIPConfiguration().subnetName())
-                .append("\n\tIP configurations: ");
+        info
+            .append("\n\tIP forwarding enabled? ")
+            .append(resource.isIPForwardingEnabled())
+            .append("\n\tAccelerated networking enabled? ")
+            .append(resource.isAcceleratedNetworkingEnabled())
+            .append("\n\tMAC Address:")
+            .append(resource.macAddress())
+            .append("\n\tPrivate IP:")
+            .append(resource.primaryPrivateIP())
+            .append("\n\tPrivate allocation method:")
+            .append(resource.primaryPrivateIPAllocationMethod())
+            .append("\n\tPrimary virtual network ID: ")
+            .append(resource.primaryIPConfiguration().networkId())
+            .append("\n\tPrimary subnet name: ")
+            .append(resource.primaryIPConfiguration().subnetName())
+            .append("\n\tIP configurations: ");
 
         // Output IP configs
         for (NicIPConfiguration ipConfig : resource.ipConfigurations().values()) {
-            info.append("\n\t\tName: ").append(ipConfig.name())
-                    .append("\n\t\tPrivate IP: ").append(ipConfig.privateIPAddress())
-                    .append("\n\t\tPrivate IP allocation method: ").append(ipConfig.privateIPAllocationMethod().toString())
-                    .append("\n\t\tPrivate IP version: ").append(ipConfig.privateIPAddressVersion().toString())
-                    .append("\n\t\tPIP id: ").append(ipConfig.publicIPAddressId())
-                    .append("\n\t\tAssociated network ID: ").append(ipConfig.networkId())
-                    .append("\n\t\tAssociated subnet name: ").append(ipConfig.subnetName());
+            info
+                .append("\n\t\tName: ")
+                .append(ipConfig.name())
+                .append("\n\t\tPrivate IP: ")
+                .append(ipConfig.privateIPAddress())
+                .append("\n\t\tPrivate IP allocation method: ")
+                .append(ipConfig.privateIPAllocationMethod().toString())
+                .append("\n\t\tPrivate IP version: ")
+                .append(ipConfig.privateIPAddressVersion().toString())
+                .append("\n\t\tPIP id: ")
+                .append(ipConfig.publicIPAddressId())
+                .append("\n\t\tAssociated network ID: ")
+                .append(ipConfig.networkId())
+                .append("\n\t\tAssociated subnet name: ")
+                .append(ipConfig.subnetName());
 
             // Show associated load balancer backends
             final List<LoadBalancerBackend> backends = ipConfig.listAssociatedLoadBalancerBackends();
             info.append("\n\t\tAssociated load balancer backends: ").append(backends.size());
             for (LoadBalancerBackend backend : backends) {
-                info.append("\n\t\t\tLoad balancer ID: ").append(backend.parent().id())
-                        .append("\n\t\t\t\tBackend name: ").append(backend.name());
+                info
+                    .append("\n\t\t\tLoad balancer ID: ")
+                    .append(backend.parent().id())
+                    .append("\n\t\t\t\tBackend name: ")
+                    .append(backend.name());
             }
 
             // Show associated load balancer inbound NAT rules
             final List<LoadBalancerInboundNatRule> natRules = ipConfig.listAssociatedLoadBalancerInboundNatRules();
             info.append("\n\t\tAssociated load balancer inbound NAT rules: ").append(natRules.size());
             for (LoadBalancerInboundNatRule natRule : natRules) {
-                info.append("\n\t\t\tLoad balancer ID: ").append(natRule.parent().id())
-                        .append("\n\t\t\tInbound NAT rule name: ").append(natRule.name());
+                info
+                    .append("\n\t\t\tLoad balancer ID: ")
+                    .append(natRule.parent().id())
+                    .append("\n\t\t\tInbound NAT rule name: ")
+                    .append(natRule.name());
             }
         }
 

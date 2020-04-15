@@ -7,9 +7,7 @@ package com.azure.management.monitor;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The AutomationRunbookReceiver model.
- */
+/** The AutomationRunbookReceiver model. */
 @Fluent
 public final class AutomationRunbookReceiver {
     /*
@@ -56,9 +54,9 @@ public final class AutomationRunbookReceiver {
     private boolean useCommonAlertSchema;
 
     /**
-     * Get the automationAccountId property: The Azure automation account Id
-     * which holds this runbook and authenticate to Azure resource.
-     * 
+     * Get the automationAccountId property: The Azure automation account Id which holds this runbook and authenticate
+     * to Azure resource.
+     *
      * @return the automationAccountId value.
      */
     public String automationAccountId() {
@@ -66,9 +64,9 @@ public final class AutomationRunbookReceiver {
     }
 
     /**
-     * Set the automationAccountId property: The Azure automation account Id
-     * which holds this runbook and authenticate to Azure resource.
-     * 
+     * Set the automationAccountId property: The Azure automation account Id which holds this runbook and authenticate
+     * to Azure resource.
+     *
      * @param automationAccountId the automationAccountId value to set.
      * @return the AutomationRunbookReceiver object itself.
      */
@@ -79,7 +77,7 @@ public final class AutomationRunbookReceiver {
 
     /**
      * Get the runbookName property: The name for this runbook.
-     * 
+     *
      * @return the runbookName value.
      */
     public String runbookName() {
@@ -88,7 +86,7 @@ public final class AutomationRunbookReceiver {
 
     /**
      * Set the runbookName property: The name for this runbook.
-     * 
+     *
      * @param runbookName the runbookName value to set.
      * @return the AutomationRunbookReceiver object itself.
      */
@@ -98,9 +96,8 @@ public final class AutomationRunbookReceiver {
     }
 
     /**
-     * Get the webhookResourceId property: The resource id for webhook linked
-     * to this runbook.
-     * 
+     * Get the webhookResourceId property: The resource id for webhook linked to this runbook.
+     *
      * @return the webhookResourceId value.
      */
     public String webhookResourceId() {
@@ -108,9 +105,8 @@ public final class AutomationRunbookReceiver {
     }
 
     /**
-     * Set the webhookResourceId property: The resource id for webhook linked
-     * to this runbook.
-     * 
+     * Set the webhookResourceId property: The resource id for webhook linked to this runbook.
+     *
      * @param webhookResourceId the webhookResourceId value to set.
      * @return the AutomationRunbookReceiver object itself.
      */
@@ -120,9 +116,8 @@ public final class AutomationRunbookReceiver {
     }
 
     /**
-     * Get the isGlobalRunbook property: Indicates whether this instance is
-     * global runbook.
-     * 
+     * Get the isGlobalRunbook property: Indicates whether this instance is global runbook.
+     *
      * @return the isGlobalRunbook value.
      */
     public boolean isGlobalRunbook() {
@@ -130,9 +125,8 @@ public final class AutomationRunbookReceiver {
     }
 
     /**
-     * Set the isGlobalRunbook property: Indicates whether this instance is
-     * global runbook.
-     * 
+     * Set the isGlobalRunbook property: Indicates whether this instance is global runbook.
+     *
      * @param isGlobalRunbook the isGlobalRunbook value to set.
      * @return the AutomationRunbookReceiver object itself.
      */
@@ -143,7 +137,7 @@ public final class AutomationRunbookReceiver {
 
     /**
      * Get the name property: Indicates name of the webhook.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -152,7 +146,7 @@ public final class AutomationRunbookReceiver {
 
     /**
      * Set the name property: Indicates name of the webhook.
-     * 
+     *
      * @param name the name value to set.
      * @return the AutomationRunbookReceiver object itself.
      */
@@ -163,7 +157,7 @@ public final class AutomationRunbookReceiver {
 
     /**
      * Get the serviceUri property: The URI where webhooks should be sent.
-     * 
+     *
      * @return the serviceUri value.
      */
     public String serviceUri() {
@@ -172,7 +166,7 @@ public final class AutomationRunbookReceiver {
 
     /**
      * Set the serviceUri property: The URI where webhooks should be sent.
-     * 
+     *
      * @param serviceUri the serviceUri value to set.
      * @return the AutomationRunbookReceiver object itself.
      */
@@ -182,9 +176,8 @@ public final class AutomationRunbookReceiver {
     }
 
     /**
-     * Get the useCommonAlertSchema property: Indicates whether to use common
-     * alert schema.
-     * 
+     * Get the useCommonAlertSchema property: Indicates whether to use common alert schema.
+     *
      * @return the useCommonAlertSchema value.
      */
     public boolean useCommonAlertSchema() {
@@ -192,9 +185,8 @@ public final class AutomationRunbookReceiver {
     }
 
     /**
-     * Set the useCommonAlertSchema property: Indicates whether to use common
-     * alert schema.
-     * 
+     * Set the useCommonAlertSchema property: Indicates whether to use common alert schema.
+     *
      * @param useCommonAlertSchema the useCommonAlertSchema value to set.
      * @return the AutomationRunbookReceiver object itself.
      */

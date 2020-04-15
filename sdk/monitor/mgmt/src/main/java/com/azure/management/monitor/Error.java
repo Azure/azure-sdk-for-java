@@ -7,9 +7,7 @@ package com.azure.management.monitor;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Error model.
- */
+/** The Error model. */
 @Fluent
 public final class Error {
     /*
@@ -26,7 +24,7 @@ public final class Error {
 
     /**
      * Get the code property: Error code identifying the specific error.
-     * 
+     *
      * @return the code value.
      */
     public String code() {
@@ -35,7 +33,7 @@ public final class Error {
 
     /**
      * Set the code property: Error code identifying the specific error.
-     * 
+     *
      * @param code the code value to set.
      * @return the Error object itself.
      */
@@ -46,7 +44,7 @@ public final class Error {
 
     /**
      * Get the message property: Error message in the caller's locale.
-     * 
+     *
      * @return the message value.
      */
     public String message() {
@@ -55,7 +53,7 @@ public final class Error {
 
     /**
      * Set the message property: Error message in the caller's locale.
-     * 
+     *
      * @param message the message value to set.
      * @return the Error object itself.
      */

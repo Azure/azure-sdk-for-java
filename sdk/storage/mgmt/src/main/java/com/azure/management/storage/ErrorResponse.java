@@ -7,9 +7,7 @@ package com.azure.management.storage;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ErrorResponse model.
- */
+/** The ErrorResponse model. */
 @Fluent
 public final class ErrorResponse {
     /*
@@ -27,9 +25,9 @@ public final class ErrorResponse {
     private String message;
 
     /**
-     * Get the code property: An identifier for the error. Codes are invariant
-     * and are intended to be consumed programmatically.
-     * 
+     * Get the code property: An identifier for the error. Codes are invariant and are intended to be consumed
+     * programmatically.
+     *
      * @return the code value.
      */
     public String code() {
@@ -37,9 +35,9 @@ public final class ErrorResponse {
     }
 
     /**
-     * Set the code property: An identifier for the error. Codes are invariant
-     * and are intended to be consumed programmatically.
-     * 
+     * Set the code property: An identifier for the error. Codes are invariant and are intended to be consumed
+     * programmatically.
+     *
      * @param code the code value to set.
      * @return the ErrorResponse object itself.
      */
@@ -49,9 +47,9 @@ public final class ErrorResponse {
     }
 
     /**
-     * Get the message property: A message describing the error, intended to be
-     * suitable for display in a user interface.
-     * 
+     * Get the message property: A message describing the error, intended to be suitable for display in a user
+     * interface.
+     *
      * @return the message value.
      */
     public String message() {
@@ -59,9 +57,9 @@ public final class ErrorResponse {
     }
 
     /**
-     * Set the message property: A message describing the error, intended to be
-     * suitable for display in a user interface.
-     * 
+     * Set the message property: A message describing the error, intended to be suitable for display in a user
+     * interface.
+     *
      * @param message the message value to set.
      * @return the ErrorResponse object itself.
      */

@@ -17,7 +17,6 @@ public class UsageOperationsTests extends StorageManagementTest {
         System.out.println(TestUtilities.getSize(usages));
     }
 
-
     @Override
     protected void cleanUpResources() {
     }

@@ -543,7 +543,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> moveResourcesWithResponseAsync(
@@ -572,13 +572,14 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> moveResourcesAsync(String sourceResourceGroupName, ResourcesMoveInfo parameters) {
         Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
             moveResourcesWithResponseAsync(sourceResourceGroupName, parameters);
-        return this.client
+        return this
+            .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
@@ -612,7 +613,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> validateMoveResourcesWithResponseAsync(
@@ -643,13 +644,14 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> validateMoveResourcesAsync(String sourceResourceGroupName, ResourcesMoveInfo parameters) {
         Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
             validateMoveResourcesWithResponseAsync(sourceResourceGroupName, parameters);
-        return this.client
+        return this
+            .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
@@ -942,7 +944,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -982,7 +984,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
@@ -1000,7 +1002,8 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
                 resourceType,
                 resourceName,
                 apiVersion);
-        return this.client
+        return this
+            .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
@@ -1113,7 +1116,8 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
                 resourceName,
                 apiVersion,
                 parameters);
-        return this.client
+        return this
+            .client
             .<GenericResourceInner, GenericResourceInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), GenericResourceInner.class, GenericResourceInner.class)
             .last()
@@ -1230,7 +1234,8 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
                 resourceName,
                 apiVersion,
                 parameters);
-        return this.client
+        return this
+            .client
             .<GenericResourceInner, GenericResourceInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), GenericResourceInner.class, GenericResourceInner.class)
             .last()
@@ -1389,8 +1394,8 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * Checks by ID whether a resource exists.
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
-     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
-     *     /{resource-type}/{resource-name}.
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -1408,8 +1413,8 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * Checks by ID whether a resource exists.
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
-     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
-     *     /{resource-type}/{resource-name}.
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -1433,8 +1438,8 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * Checks by ID whether a resource exists.
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
-     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
-     *     /{resource-type}/{resource-name}.
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -1450,13 +1455,13 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * Deletes a resource by ID.
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
-     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
-     *     /{resource-type}/{resource-name}.
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteByIdWithResponseAsync(String resourceId, String apiVersion) {
@@ -1469,18 +1474,19 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * Deletes a resource by ID.
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
-     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
-     *     /{resource-type}/{resource-name}.
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteByIdAsync(String resourceId, String apiVersion) {
         Mono<SimpleResponse<Flux<ByteBuffer>>> mono = deleteByIdWithResponseAsync(resourceId, apiVersion);
-        return this.client
+        return this
+            .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
@@ -1490,8 +1496,8 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * Deletes a resource by ID.
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
-     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
-     *     /{resource-type}/{resource-name}.
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -1506,8 +1512,8 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * Create a resource by ID.
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
-     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
-     *     /{resource-type}/{resource-name}.
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1529,8 +1535,8 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * Create a resource by ID.
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
-     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
-     *     /{resource-type}/{resource-name}.
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1543,7 +1549,8 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
         String resourceId, String apiVersion, GenericResourceInner parameters) {
         Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
             createOrUpdateByIdWithResponseAsync(resourceId, apiVersion, parameters);
-        return this.client
+        return this
+            .client
             .<GenericResourceInner, GenericResourceInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), GenericResourceInner.class, GenericResourceInner.class)
             .last()
@@ -1554,8 +1561,8 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * Create a resource by ID.
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
-     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
-     *     /{resource-type}/{resource-name}.
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1573,8 +1580,8 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * Updates a resource by ID.
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
-     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
-     *     /{resource-type}/{resource-name}.
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1595,8 +1602,8 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * Updates a resource by ID.
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
-     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
-     *     /{resource-type}/{resource-name}.
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1608,7 +1615,8 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
     public Mono<GenericResourceInner> updateByIdAsync(
         String resourceId, String apiVersion, GenericResourceInner parameters) {
         Mono<SimpleResponse<Flux<ByteBuffer>>> mono = updateByIdWithResponseAsync(resourceId, apiVersion, parameters);
-        return this.client
+        return this
+            .client
             .<GenericResourceInner, GenericResourceInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), GenericResourceInner.class, GenericResourceInner.class)
             .last()
@@ -1619,8 +1627,8 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * Updates a resource by ID.
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
-     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
-     *     /{resource-type}/{resource-name}.
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1637,8 +1645,8 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * Gets a resource by ID.
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
-     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
-     *     /{resource-type}/{resource-name}.
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -1656,8 +1664,8 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * Gets a resource by ID.
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
-     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
-     *     /{resource-type}/{resource-name}.
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -1681,8 +1689,8 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * Gets a resource by ID.
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
-     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
-     *     /{resource-type}/{resource-name}.
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -1704,7 +1712,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginMoveResourcesWithResponseAsync(
@@ -1733,7 +1741,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> beginMoveResourcesAsync(String sourceResourceGroupName, ResourcesMoveInfo parameters) {
@@ -1769,7 +1777,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginValidateMoveResourcesWithResponseAsync(
@@ -1800,7 +1808,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> beginValidateMoveResourcesAsync(String sourceResourceGroupName, ResourcesMoveInfo parameters) {
@@ -1839,7 +1847,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteWithResponseAsync(
@@ -1879,7 +1887,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> beginDeleteAsync(
@@ -2173,13 +2181,13 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * Deletes a resource by ID.
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
-     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
-     *     /{resource-type}/{resource-name}.
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteByIdWithResponseAsync(String resourceId, String apiVersion) {
@@ -2192,13 +2200,13 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * Deletes a resource by ID.
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
-     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
-     *     /{resource-type}/{resource-name}.
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> beginDeleteByIdAsync(String resourceId, String apiVersion) {
@@ -2209,8 +2217,8 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * Deletes a resource by ID.
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
-     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
-     *     /{resource-type}/{resource-name}.
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -2225,8 +2233,8 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * Create a resource by ID.
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
-     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
-     *     /{resource-type}/{resource-name}.
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2248,8 +2256,8 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * Create a resource by ID.
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
-     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
-     *     /{resource-type}/{resource-name}.
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2275,8 +2283,8 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * Create a resource by ID.
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
-     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
-     *     /{resource-type}/{resource-name}.
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2294,8 +2302,8 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * Updates a resource by ID.
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
-     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
-     *     /{resource-type}/{resource-name}.
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2316,8 +2324,8 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * Updates a resource by ID.
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
-     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
-     *     /{resource-type}/{resource-name}.
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2343,8 +2351,8 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * Updates a resource by ID.
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
-     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
-     *     /{resource-type}/{resource-name}.
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2360,7 +2368,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
     /**
      * Get the next page of items.
      *
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2385,7 +2393,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
     /**
      * Get the next page of items.
      *
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
