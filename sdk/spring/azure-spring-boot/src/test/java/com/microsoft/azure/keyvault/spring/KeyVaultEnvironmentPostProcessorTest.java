@@ -15,7 +15,6 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.mock.env.MockEnvironment;
@@ -30,13 +29,14 @@ import static org.junit.Assert.assertEquals;
 
 public class KeyVaultEnvironmentPostProcessorTest {
     private KeyVaultEnvironmentPostProcessorHelper keyVaultEnvironmentPostProcessorHelper;
-    private ConfigurableEnvironment environment;
+    private MockEnvironment environment;
     private MutablePropertySources propertySources;
     private Map<String, Object> testProperties = new HashMap<>();
 
     @Before
     public void setup() {
         environment = new MockEnvironment();
+        environment.setProperty(Constants.AZURE_KEYVAULT_ALLOW_TELEMETRY, "false");
         testProperties.clear();
         propertySources = environment.getPropertySources();
     }
@@ -80,8 +80,6 @@ public class KeyVaultEnvironmentPostProcessorTest {
 
         assertThat(credentials, IsInstanceOf.instanceOf(ManagedIdentityCredential.class));
     }
-
-
 
     @Test
     public void testGetCredentialsWhenMSIEnabledInVMWithClientId() {
