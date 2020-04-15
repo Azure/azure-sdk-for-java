@@ -65,8 +65,8 @@ public final class FormRecognizerClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, IterableStream<RecognizedForm>>
-        beginExtractCustomFormsFromUrl(String fileSourceUrl, String modelId) {
-        return beginExtractCustomFormsFromUrl(fileSourceUrl, modelId, false, null);
+        beginRecognizeCustomFormsFromUrl(String fileSourceUrl, String modelId) {
+        return beginRecognizeCustomFormsFromUrl(fileSourceUrl, modelId, false, null);
     }
 
     /**
@@ -86,7 +86,7 @@ public final class FormRecognizerClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, IterableStream<RecognizedForm>>
-        beginExtractCustomFormsFromUrl(String fileSourceUrl, String modelId, boolean includeTextDetails,
+        beginRecognizeCustomFormsFromUrl(String fileSourceUrl, String modelId, boolean includeTextDetails,
         Duration pollInterval) {
         return client.beginRecognizeCustomFormsFromUrl(fileSourceUrl, modelId, includeTextDetails, pollInterval)
             .getSyncPoller();

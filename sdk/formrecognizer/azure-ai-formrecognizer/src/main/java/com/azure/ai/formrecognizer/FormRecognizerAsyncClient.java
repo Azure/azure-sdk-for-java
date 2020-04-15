@@ -488,7 +488,7 @@ public final class FormRecognizerAsyncClient {
                 .map(modelSimpleResponse -> {
                     throwIfAnalyzeStatusInvalid(modelSimpleResponse);
                     return new IterableStream<>(
-                        toRecognizedLayout(modelSimpleResponse.getValue().getAnalyzeResult()));
+                        toRecognizedLayout(modelSimpleResponse.getValue().getAnalyzeResult(), true));
                 });
         };
     }

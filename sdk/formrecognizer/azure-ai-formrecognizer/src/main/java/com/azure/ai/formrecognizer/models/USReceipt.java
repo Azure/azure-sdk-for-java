@@ -4,9 +4,9 @@
 package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.IterableStream;
 
 import java.time.LocalDate;
-import java.util.List;
 
 /**
  * The USReceipt model.
@@ -17,7 +17,7 @@ public final class USReceipt extends RecognizedReceipt {
     /**
      * List of recognized field items.
      */
-    private final List<USReceiptItem> receiptItems;
+    private final IterableStream<USReceiptItem> receiptItems;
 
     /**
      * Recognized receipt type information.
@@ -86,14 +86,15 @@ public final class USReceipt extends RecognizedReceipt {
      * @param transactionDate Recognized field transaction date.
      * @param transactionTime Recognized field transaction time.
      */
-    public USReceipt(String receiptLocale, RecognizedForm recognizedForm, final List<USReceiptItem> receiptItems,
-                     final USReceiptType receiptType, final FormField<String> merchantName,
-                     final FormField<String> merchantAddress,
-                     final FormField<String> merchantPhoneNumber, final FormField<Float> subtotal,
-                     final FormField<Float> tax,
-                     final FormField<Float> tip, final FormField<Float> total,
-                     final FormField<LocalDate> transactionDate,
-                     final FormField<String> transactionTime) {
+    public USReceipt(String receiptLocale, RecognizedForm recognizedForm, 
+        final IterableStream<USReceiptItem> receiptItems,
+        final USReceiptType receiptType, final FormField<String> merchantName,
+        final FormField<String> merchantAddress,
+        final FormField<String> merchantPhoneNumber, final FormField<Float> subtotal,
+        final FormField<Float> tax,
+        final FormField<Float> tip, final FormField<Float> total,
+        final FormField<LocalDate> transactionDate,
+        final FormField<String> transactionTime) {
         super(receiptLocale, recognizedForm);
         this.receiptItems = receiptItems;
         this.receiptType = receiptType;
@@ -129,7 +130,7 @@ public final class USReceipt extends RecognizedReceipt {
      *
      * @return the list itemized fields.
      */
-    public List<USReceiptItem> getReceiptItems() {
+    public IterableStream<USReceiptItem> getReceiptItems() {
         return this.receiptItems;
     }
 

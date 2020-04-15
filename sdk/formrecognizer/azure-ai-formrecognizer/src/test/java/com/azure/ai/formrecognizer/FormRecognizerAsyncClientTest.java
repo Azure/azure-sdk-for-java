@@ -105,7 +105,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 = client.beginRecognizeReceipts(getFileBufferData(data), RECEIPT_FILE_LENGTH, FormContentType.IMAGE_JPEG, includeTextDetails,
                 null).getSyncPoller();
             syncPoller.waitForCompletion();
-            validateReceiptResult(false, getExpectedReceipts(false),
+            validateReceiptResult(false, getExpectedReceipts(true),
                 syncPoller.getFinalResult());
         });
     }

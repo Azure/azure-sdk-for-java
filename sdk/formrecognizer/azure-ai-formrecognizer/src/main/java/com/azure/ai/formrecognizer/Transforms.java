@@ -64,13 +64,13 @@ final class Transforms {
         List<DocumentResult> documentResults = analyzeResult.getDocumentResults();
         List<PageResult> pageResults = analyzeResult.getPageResults();
         List<RecognizedForm> extractedFormList = new ArrayList<>();
-        Map<String, FormField<?>> extractedFieldMap = null;
+        Map<String, FormField<?>> extractedFieldMap;
 
         AtomicReference<PageRange> pageRange = new AtomicReference<>();
         AtomicReference<String> formType = new AtomicReference<>("form-");
 
-        List<FormPage> formPages = toRecognizedLayout(analyzeResult);
-        // labeled
+        List<FormPage> formPages = toRecognizedLayout(analyzeResult, includeTextDetails);
+        // unlabeled
         if (!CoreUtils.isNullOrEmpty(documentResults)) {
             for (DocumentResult documentResultItem : documentResults) {
                 List<Integer> documentPageRange = documentResultItem.getPageRange();
@@ -81,14 +81,15 @@ final class Transforms {
                 }
 
                 formType.set(documentResultItem.getDocType());
-                extractedFieldMap = getLabeledFieldMap(documentResultItem, readResults, includeTextDetails);
+                extractedFieldMap = getUnlabeledFieldMap(documentResultItem, readResults, includeTextDetails);
+
+                extractedFormList.add(new RecognizedForm(
+                    extractedFieldMap,
+                    formType.get(),
+                    pageRange.get(),
+                    new IterableStream<>(formPages.subList(pageRange.get().getStartPageNumber() - 1,
+                        pageRange.get().getEndPageNumber()))));
             }
-            extractedFormList.add(new RecognizedForm(
-                extractedFieldMap,
-                formType.get(),
-                pageRange.get(),
-                new IterableStream<>(formPages.subList(pageRange.get().getStartPageNumber(),
-                    pageRange.get().getEndPageNumber()))));
         }
 
         // labeled
@@ -100,7 +101,7 @@ final class Transforms {
                     if (clusterId != null) {
                         formType.set(formType.get() + clusterId);
                     }
-                    extractedFieldMap = getUnlabeledFieldMap(includeTextDetails, readResults, pageResultItem,
+                    extractedFieldMap = getLabeledFieldMap(includeTextDetails, readResults, pageResultItem,
                         pageNumber);
 
                     extractedFormList.add(new RecognizedForm(
@@ -135,9 +136,10 @@ final class Transforms {
      *
      * @param analyzeResult The service returned result for analyze layouts.
      *
+     * @param includeTextDetails Boolean to indicate if to set reference elements data on fields.
      * @return The IterableStream of {@code FormPage}.
      */
-    static List<FormPage> toRecognizedLayout(AnalyzeResult analyzeResult) {
+    static List<FormPage> toRecognizedLayout(AnalyzeResult analyzeResult, boolean includeTextDetails) {
         List<ReadResult> readResults = analyzeResult.getReadResults();
         List<PageResult> pageResults = analyzeResult.getPageResults();
         List<FormPage> formPages = new ArrayList<>();
@@ -147,12 +149,12 @@ final class Transforms {
 
             if (!CoreUtils.isNullOrEmpty(pageResults)) {
                 PageResult pageResultItem = pageResults.get(index);
-                perPageTableList = getPageTables(pageResultItem, pageResultItem.getPage());
+                perPageTableList = getPageTables(pageResultItem, readResults, pageResultItem.getPage());
             }
 
             // add form lines
             List<FormLine> perPageFormLineList = new ArrayList<>();
-            if (!CoreUtils.isNullOrEmpty(readResultItem.getLines())) {
+            if (includeTextDetails && !CoreUtils.isNullOrEmpty(readResultItem.getLines())) {
                 perPageFormLineList = getReadResultFormLines(readResultItem);
             }
 
@@ -170,7 +172,6 @@ final class Transforms {
      * @param biConsumer the function which accepts the index and the each value of the iterable.
      * @param <T> the type of items being returned.
      *
-     * @return The index and each item of the iterable.
      */
     static <T> void forEachWithIndex(Iterable<T> iterable, BiConsumer<Integer, T> biConsumer) {
         int[] index = new int[]{0};
@@ -181,22 +182,26 @@ final class Transforms {
      * Helper method to get per-page table information.
      *
      * @param pageResultItem The extracted page level information returned by the service.
+     * @param readResults The text extraction result returned by the service.
      * @param pageNumber The 1 based page number on which these fields exist.
      *
      * @return The list of per page {@code FormTable}.
      */
-    static List<FormTable> getPageTables(PageResult pageResultItem, Integer pageNumber) {
+    static List<FormTable> getPageTables(PageResult pageResultItem, List<ReadResult> readResults, Integer pageNumber) {
         List<FormTable> extractedTablesList = new ArrayList<>();
         pageResultItem.getTables().forEach(dataTable -> {
-            List<FormTableCell> tableCellList = dataTable.getCells().stream()
-                .map(dataTableCell -> new FormTableCell(dataTableCell.getRowIndex(), dataTableCell.getColumnIndex(),
+            IterableStream<FormTableCell> tableCellList = new IterableStream<>(dataTable.getCells().stream()
+                .map(dataTableCell -> new FormTableCell(
+                    dataTableCell.getRowIndex(), dataTableCell.getColumnIndex(),
                     dataTableCell.getRowSpan(), dataTableCell.getColumnSpan(),
                     dataTableCell.getText(), toBoundingBox(dataTableCell.getBoundingBox()),
-                    dataTableCell.getConfidence(), null,
+                    dataTableCell.getConfidence(),
                     dataTableCell.isHeader() == null ? false : dataTableCell.isHeader(),
                     dataTableCell.isFooter() == null ? false : dataTableCell.isFooter(),
-                    pageNumber))
-                .collect(Collectors.toList());
+                    pageNumber,
+                    setReferenceElements(dataTableCell.getElements(), readResults, pageNumber)
+                ))
+                .collect(Collectors.toList()));
             FormTable extractedTable = new FormTable(dataTable.getRows(), dataTable.getColumns(), tableCellList);
             extractedTablesList.add(extractedTable);
         });
@@ -226,18 +231,19 @@ final class Transforms {
      *
      * @return The {@code RecognizedForm#getFields}.
      */
-    private static Map<String, FormField<?>> getLabeledFieldMap(DocumentResult documentResultItem,
+    private static Map<String, FormField<?>> getUnlabeledFieldMap(DocumentResult documentResultItem,
         List<ReadResult> readResults, boolean includeTextDetails) {
         Map<String, FormField<?>> extractedFieldMap = new TreeMap<>();
         // add receipt fields
         documentResultItem.getFields().forEach((key, fieldValue) -> {
             IterableStream<FormContent> formContentList = null;
             Integer pageNumber = fieldValue.getPage();
-            if (includeTextDetails && !(CoreUtils.isNullOrEmpty(fieldValue.getElements()))) {
+            if (includeTextDetails) {
                 formContentList = setReferenceElements(fieldValue.getElements(), readResults, pageNumber);
             }
             FieldText labelText = new FieldText(key, null, fieldValue.getPage(), null);
-            FieldText valueText = new FieldText(fieldValue.getText(), null, pageNumber, formContentList);
+            FieldText valueText = new FieldText(fieldValue.getText(), toBoundingBox(fieldValue.getBoundingBox()),
+                pageNumber, formContentList);
             extractedFieldMap.put(key, setFormField(labelText, key, fieldValue, valueText, pageNumber, readResults));
         });
         return extractedFieldMap;
@@ -323,16 +329,11 @@ final class Transforms {
     private static Map<String, FormField<?>> toFormFieldObject(Map<String, FieldValue> valueObject,
         Integer pageNumber, List<ReadResult> readResults) {
         Map<String, FormField<?>> fieldValueObjectMap = new TreeMap<>();
-        valueObject.forEach((key, fieldValue) -> {
-            IterableStream<FormContent> formValueContentList = null;
-            if (!CoreUtils.isNullOrEmpty(fieldValue.getElements())) {
-                formValueContentList = setReferenceElements(fieldValue.getElements(), readResults, pageNumber);
-            }
-            fieldValueObjectMap.put(key,
-                setFormField(null, key, fieldValue, new FieldText(fieldValue.getText(),
-                        toBoundingBox(fieldValue.getBoundingBox()), fieldValue.getPage(), formValueContentList),
-                    fieldValue.getPage(), readResults));
-        });
+        valueObject.forEach((key, fieldValue) -> fieldValueObjectMap.put(key,
+            setFormField(null, key, fieldValue, new FieldText(fieldValue.getText(),
+                    toBoundingBox(fieldValue.getBoundingBox()), fieldValue.getPage(),
+                    setReferenceElements(fieldValue.getElements(), readResults, pageNumber)),
+                fieldValue.getPage(), readResults)));
         return fieldValueObjectMap;
     }
 
@@ -385,18 +386,17 @@ final class Transforms {
      *
      * @return The fields populated on {@link RecognizedForm#getFields() fields}.
      */
-    private static Map<String, FormField<?>> getUnlabeledFieldMap(boolean includeTextDetails, List<ReadResult> readResults,
+    private static Map<String, FormField<?>> getLabeledFieldMap(boolean includeTextDetails,
+        List<ReadResult> readResults,
         PageResult pageResultItem, Integer pageNumber) {
         Map<String, FormField<?>> formFieldMap = new TreeMap<>();
         List<KeyValuePair> keyValuePairs = pageResultItem.getKeyValuePairs();
         forEachWithIndex(keyValuePairs, ((index, keyValuePair) -> {
-            IterableStream<FormContent> formKeyContentList = null;
-            IterableStream<FormContent> formValueContentList = null;
-            if (includeTextDetails && !CoreUtils.isNullOrEmpty(keyValuePair.getValue().getElements())) {
+            IterableStream<FormContent> formKeyContentList = new IterableStream<>(Collections.emptyList());
+            IterableStream<FormContent> formValueContentList = new IterableStream<>(Collections.emptyList());
+            if (includeTextDetails) {
                 formKeyContentList = setReferenceElements(keyValuePair.getKey().getElements(), readResults, pageNumber);
-                formValueContentList = setReferenceElements(keyValuePair.getValue().getElements(), readResults,
-                    pageNumber);
-
+                formValueContentList = setReferenceElements(keyValuePair.getValue().getElements(), readResults, pageNumber);
             }
             String fieldName = "field-" + index;
             FieldText labelFieldText = new FieldText(keyValuePair.getKey().getText(),
@@ -418,6 +418,9 @@ final class Transforms {
      */
     private static IterableStream<FormContent> setReferenceElements(List<String> elements,
         List<ReadResult> readResults, Integer pageNumber) {
+        if (CoreUtils.isNullOrEmpty(elements)) {
+            return new IterableStream<>(Collections.emptyList());
+        }
         List<FormContent> formContentList = new ArrayList<>();
         elements.forEach(elementString -> {
             String[] indices = NON_DIGIT_PATTERN.matcher(elementString).replaceAll(" ").trim().split(" ");
@@ -476,8 +479,9 @@ final class Transforms {
             return null;
         }
         List<Point> pointList = new ArrayList<>();
-        forEachWithIndex(serviceBoundingBox,
-            ((index, xCoordinate) -> pointList.add(new Point(xCoordinate, serviceBoundingBox.get(index)))));
-        return new BoundingBox(pointList);
+        for (int i = 0; i < serviceBoundingBox.size(); i++) {
+            pointList.add(new Point(serviceBoundingBox.get(i), serviceBoundingBox.get(++i)));
+        }
+        return new BoundingBox(new IterableStream<Point>(pointList));
     }
 }

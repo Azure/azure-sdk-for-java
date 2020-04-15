@@ -100,8 +100,9 @@ final class TestUtils {
 
     static List<List<FormTable>> getPagedTables() {
         List<PageResult> pageResults = getRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult().getPageResults();
+        List<ReadResult> readResults = getRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult().getReadResults();
         return IntStream.range(0, pageResults.size())
-            .mapToObj(i -> Transforms.getPageTables(pageResults.get(i), i + 1))
+            .mapToObj(i -> Transforms.getPageTables(pageResults.get(i), readResults, i + 1))
             .collect(Collectors.toList());
     }
 
