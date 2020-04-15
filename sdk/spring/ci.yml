@@ -10,7 +10,7 @@ resources:
       type: github
       name: Azure/azure-sdk-tools
       endpoint: azure
-  
+
 trigger:
   branches:
     include:
@@ -32,7 +32,7 @@ pr:
   paths:
     include:
       - sdk/spring/
-  
+
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
     parameters:
