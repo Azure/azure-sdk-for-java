@@ -63,7 +63,7 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
     private Boolean enableIPForwarding;
 
     /**
-     * Get the name value.
+     * Get the network configuration name.
      *
      * @return the name value
      */
@@ -72,7 +72,7 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
     }
 
     /**
-     * Set the name value.
+     * Set the network configuration name.
      *
      * @param name the name value to set
      * @return the VirtualMachineScaleSetUpdateNetworkConfiguration object itself.
@@ -83,7 +83,7 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
     }
 
     /**
-     * Get the primary value.
+     * Get whether this is a primary NIC on a virtual machine.
      *
      * @return the primary value
      */
@@ -92,7 +92,7 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
     }
 
     /**
-     * Set the primary value.
+     * Set whether this is a primary NIC on a virtual machine.
      *
      * @param primary the primary value to set
      * @return the VirtualMachineScaleSetUpdateNetworkConfiguration object itself.
@@ -103,7 +103,7 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
     }
 
     /**
-     * Get the enableAcceleratedNetworking value.
+     * Get specifies whether the network interface is accelerated networking-enabled.
      *
      * @return the enableAcceleratedNetworking value
      */
@@ -112,7 +112,7 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
     }
 
     /**
-     * Set the enableAcceleratedNetworking value.
+     * Set specifies whether the network interface is accelerated networking-enabled.
      *
      * @param enableAcceleratedNetworking the enableAcceleratedNetworking value to set
      * @return the VirtualMachineScaleSetUpdateNetworkConfiguration object itself.
@@ -123,7 +123,7 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
     }
 
     /**
-     * Get the networkSecurityGroup value.
+     * Get the network security group.
      *
      * @return the networkSecurityGroup value
      */
@@ -132,7 +132,7 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
     }
 
     /**
-     * Set the networkSecurityGroup value.
+     * Set the network security group.
      *
      * @param networkSecurityGroup the networkSecurityGroup value to set
      * @return the VirtualMachineScaleSetUpdateNetworkConfiguration object itself.
@@ -143,7 +143,7 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
     }
 
     /**
-     * Get the dnsSettings value.
+     * Get the dns settings to be applied on the network interfaces.
      *
      * @return the dnsSettings value
      */
@@ -152,7 +152,7 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
     }
 
     /**
-     * Set the dnsSettings value.
+     * Set the dns settings to be applied on the network interfaces.
      *
      * @param dnsSettings the dnsSettings value to set
      * @return the VirtualMachineScaleSetUpdateNetworkConfiguration object itself.
@@ -163,7 +163,7 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
     }
 
     /**
-     * Get the ipConfigurations value.
+     * Get the virtual machine scale set IP Configuration.
      *
      * @return the ipConfigurations value
      */
@@ -172,7 +172,7 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
     }
 
     /**
-     * Set the ipConfigurations value.
+     * Set the virtual machine scale set IP Configuration.
      *
      * @param ipConfigurations the ipConfigurations value to set
      * @return the VirtualMachineScaleSetUpdateNetworkConfiguration object itself.
@@ -183,7 +183,7 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
     }
 
     /**
-     * Get the enableIPForwarding value.
+     * Get whether IP forwarding enabled on this NIC.
      *
      * @return the enableIPForwarding value
      */
@@ -192,7 +192,7 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
     }
 
     /**
-     * Set the enableIPForwarding value.
+     * Set whether IP forwarding enabled on this NIC.
      *
      * @param enableIPForwarding the enableIPForwarding value to set
      * @return the VirtualMachineScaleSetUpdateNetworkConfiguration object itself.

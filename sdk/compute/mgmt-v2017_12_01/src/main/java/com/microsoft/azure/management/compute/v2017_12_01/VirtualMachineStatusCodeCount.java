@@ -28,7 +28,7 @@ public class VirtualMachineStatusCodeCount {
     private Integer count;
 
     /**
-     * Get the code value.
+     * Get the instance view status code.
      *
      * @return the code value
      */
@@ -37,7 +37,7 @@ public class VirtualMachineStatusCodeCount {
     }
 
     /**
-     * Get the count value.
+     * Get the number of instances having a particular status code.
      *
      * @return the count value
      */
