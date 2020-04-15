@@ -38,21 +38,9 @@ public final class GsonJsonSerializer implements JsonSerializer {
     }
 
     @Override
-    public byte[] write(Object value, Class<?> clazz) {
-        return gson.toJson(value, clazz).getBytes(StandardCharsets.UTF_8);
-    }
-
-    @Override
     public void write(Object value, OutputStream stream) {
         Objects.requireNonNull(stream, "'stream' cannot be null.");
 
         gson.toJson(value, new OutputStreamWriter(stream, StandardCharsets.UTF_8));
-    }
-
-    @Override
-    public void write(Object value, OutputStream stream, Class<?> clazz) {
-        Objects.requireNonNull(stream, "'stream' cannot be null.");
-
-        gson.toJson(value, clazz, new OutputStreamWriter(stream, StandardCharsets.UTF_8));
     }
 }

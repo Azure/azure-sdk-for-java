@@ -52,31 +52,11 @@ public final class JacksonJsonSerializer implements JsonSerializer {
     }
 
     @Override
-    public byte[] write(Object value, Class<?> clazz) {
-        try {
-            return mapper.writerFor(clazz).writeValueAsBytes(value);
-        } catch (IOException ex) {
-            throw logger.logExceptionAsError(Exceptions.propagate(ex));
-        }
-    }
-
-    @Override
     public void write(Object value, OutputStream stream) {
         Objects.requireNonNull(stream, "'stream' cannot be null.");
 
         try {
             mapper.writeValue(stream, value);
-        } catch (IOException ex) {
-            throw logger.logExceptionAsError(Exceptions.propagate(ex));
-        }
-    }
-
-    @Override
-    public void write(Object value, OutputStream stream, Class<?> clazz) {
-        Objects.requireNonNull(stream, "'stream' cannot be null.");
-
-        try {
-            mapper.writerFor(clazz).writeValue(stream, value);
         } catch (IOException ex) {
             throw logger.logExceptionAsError(Exceptions.propagate(ex));
         }

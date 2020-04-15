@@ -28,28 +28,10 @@ public interface JsonSerializer {
     byte[] write(Object value);
 
     /**
-     * Writes the object into its JSON byte stream.
-     *
-     * @param value The object.
-     * @param clazz {@link Class} representing the object.
-     * @return The JSON byte stream representing the object.
-     */
-    byte[] write(Object value, Class<?> clazz);
-
-    /**
      * Converts the object into a JSON byte stream and writes it to the {@link OutputStream}.
      *
      * @param value The object.
      * @param stream The {@link OutputStream} where the JSON byte stream will be written.
      */
     void write(Object value, OutputStream stream);
-
-    /**
-     * Converts the object into a JSON byte stream and writes it to the {@link OutputStream}.
-     *
-     * @param value The object.
-     * @param stream The {@link OutputStream} where the JSON byte stream will be written.
-     * @param clazz {@link Class} representing the object.
-     */
-    void write(Object value, OutputStream stream, Class<?> clazz);
 }
