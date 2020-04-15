@@ -798,8 +798,8 @@ public final class Field {
      * @return the Field object itself.
      */
     public Field setHidden(Boolean hidden) {
-        retrievable = this.hidden == null ? null : !this.hidden;
         this.hidden = hidden;
+        retrievable = this.hidden == null ? null : !this.hidden;
         return this;
     }
 }

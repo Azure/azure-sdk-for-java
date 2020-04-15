@@ -447,6 +447,6 @@ directive:
         .replace(/(public Field setRetrievable\(Boolean retrievable\))/g, "private Field setRetrievable(Boolean retrievable)")
         .replace(/(public Boolean isRetrievable\(\))/g, "private Boolean isRetrievable()")
         .replace(/(        return this\.hidden\;)/g, "        return retrievable == null ? null : !retrievable;")
-        .replace(/(    public Field setHidden\(Boolean hidden\) \{)/g, "$1\n        retrievable = this.hidden == null ? null : !this.hidden;")
+        .replace(/(this\.hidden \= hidden\;)/g, "$1\n        retrievable = this.hidden == null ? null : !this.hidden;")
         .replace(/(    \@JsonProperty\(value \= \"hidden\"\))/g, "    @JsonIgnore")
 ```
