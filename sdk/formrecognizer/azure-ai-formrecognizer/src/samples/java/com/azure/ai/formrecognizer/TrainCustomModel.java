@@ -11,7 +11,8 @@ import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
 
 /**
- * Sample for training a custom model using training data set source URL.
+ * This sample demonstrates how to train a model with labeled data. See RecognizeCustomFormsAsync
+ * to recognize forms with your custom model.
  */
 public class TrainCustomModel {
 
