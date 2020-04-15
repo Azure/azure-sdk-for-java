@@ -14,10 +14,6 @@ trigger:
   paths:
     include:
       - sdk/netapp/
-    exclude:
-      - sdk/netapp/azure
-      - sdk/netapp/microsoft-azure
-      - sdk/netapp/ms-azure
 
 pr:
   branches:
@@ -29,10 +25,6 @@ pr:
   paths:
     include:
       - sdk/netapp/
-    exclude:
-      - sdk/netapp/azure
-      - sdk/netapp/microsoft-azure
-      - sdk/netapp/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

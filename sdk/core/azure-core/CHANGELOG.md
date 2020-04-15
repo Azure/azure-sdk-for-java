@@ -1,8 +1,20 @@
 # Release History
 
-## 1.4.0-beta.1 (Unreleased)
+## 1.5.0-beta.1 (Unreleased)
 
-- Added `AzureKeyCredential` to support generic key based authorizations.
+- Fixed issue where `FluxUtil.toReactorContext` would include `null` values which aren't allowed in Reactor's `Context`.
+
+## 1.4.0 (2020-04-03)
+
+- Added `AzureKeyCredential` and `AzureKeyCredentialPolicy` to support generic key based authorizations.
+- Fixed a deserialization issue when a JSON property contained a `.` and the containing class was annotated with `JsonFlatten`.
+- Updated `reactor-core` dependency to `3.3.3.RELEASE`.
+- Added APIs to `ClientLogger` to log checked exceptions that will be thrown.
+- Added simplified APIs to `ClientLogger` where only a message will be logged.
+- Fixed URL encoded form request issue where the URL would be encoded improperly.
+- Added property to `HttpLogOptions` to enable pretty printing when logging a request or response body.
+- Added another `withContext` overload in `FluxUtil`.
+- Added additional constants to `Configuration`.
 
 ## 1.3.0 (2020-03-06)
 

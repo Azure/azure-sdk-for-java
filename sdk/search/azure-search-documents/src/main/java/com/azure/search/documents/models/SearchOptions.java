@@ -98,7 +98,7 @@ public final class SearchOptions {
      * "mylocation--122.2,44.8" (without the quotes).
      */
     @JsonProperty(value = "")
-    private List<String> scoringParameters;
+    private List<ScoringParameter> scoringParameters;
 
     /*
      * The name of a scoring profile to evaluate match scores for matching
@@ -387,7 +387,7 @@ public final class SearchOptions {
      *
      * @return the scoringParameters value.
      */
-    public List<String> getScoringParameters() {
+    public List<ScoringParameter> getScoringParameters() {
         return this.scoringParameters;
     }
 
@@ -401,7 +401,7 @@ public final class SearchOptions {
      * @param scoringParameters the scoringParameters value to set.
      * @return the SearchOptions object itself.
      */
-    public SearchOptions setScoringParameters(String... scoringParameters) {
+    public SearchOptions setScoringParameters(ScoringParameter... scoringParameters) {
         this.scoringParameters = Arrays.asList(scoringParameters);
         return this;
     }

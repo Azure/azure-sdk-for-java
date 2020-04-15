@@ -42,13 +42,9 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.credentials.ApplicationTokenCredentials;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.Rule;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.rules.TestName;
 import org.reactivestreams.Publisher;
 import reactor.test.StepVerifier;
 
@@ -69,10 +65,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class SearchServiceTestBase extends TestBase {
-
-    private static final String DEFAULT_DNS_SUFFIX = "search.windows.net";
-    private static final String DOGFOOD_DNS_SUFFIX = "search-dogfood.windows-int.net";
-
     private static final String FAKE_DESCRIPTION = "Some data source";
     private static final String AZURE_TEST_MODE = "AZURE_TEST_MODE";
 
@@ -102,19 +94,15 @@ public abstract class SearchServiceTestBase extends TestBase {
     static final String SQL_DATASOURCE_NAME = "azs-java-test-sql";
 
     private String searchServiceName;
-    private String searchDnsSuffix;
     protected String endpoint;
     AzureKeyCredential searchApiKeyCredential;
+    private static final boolean IS_DEBUG = false;
 
-    private static String testEnvironment;
-    private static AzureSearchResources azureSearchResources;
-
-    @Rule
-    public TestName testName = new TestName();
+    static AzureSearchResources azureSearchResources;
 
     @BeforeAll
     public static void beforeAll() {
-        initializeAzureResources();
+        azureSearchResources = AzureSearchResources.initializeAzureResources();
         if (!playbackMode()) {
             azureSearchResources.initialize();
             azureSearchResources.createResourceGroup();
@@ -123,18 +111,19 @@ public abstract class SearchServiceTestBase extends TestBase {
 
     @AfterAll
     public static void afterAll() {
+        if (IS_DEBUG) {
+            azureSearchResources.deleteResourceGroup();
+        }
     }
 
     @Override
     protected void beforeTest() {
-        searchDnsSuffix = testEnvironment.equals("DOGFOOD") ? DOGFOOD_DNS_SUFFIX : DEFAULT_DNS_SUFFIX;
-
         if (!interceptorManager.isPlaybackMode()) {
             azureSearchResources.createService(testResourceNamer);
             searchApiKeyCredential = new AzureKeyCredential(azureSearchResources.getSearchAdminKey());
         }
         searchServiceName = azureSearchResources.getSearchServiceName();
-        endpoint = String.format("https://%s.%s", searchServiceName, searchDnsSuffix);
+        endpoint = azureSearchResources.getEndpoint();
     }
 
     @Override
@@ -507,23 +496,6 @@ public abstract class SearchServiceTestBase extends TestBase {
         );
     }
 
-    private static void initializeAzureResources() {
-        String appId = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLIENT_ID);
-        String azureDomainId = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_TENANT_ID);
-        String secret = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLIENT_SECRET);
-        String subscriptionId = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID);
-
-        testEnvironment = Configuration.getGlobalConfiguration().get("AZURE_TEST_ENVIRONMENT");
-        testEnvironment = (testEnvironment == null) ? "AZURE" : testEnvironment.toUpperCase(Locale.US);
-
-        AzureEnvironment environment = testEnvironment.equals("DOGFOOD") ? getDogfoodEnvironment() : AzureEnvironment.AZURE;
-
-        ApplicationTokenCredentials applicationTokenCredentials =
-            new ApplicationTokenCredentials(appId, azureDomainId, secret, environment);
-
-        azureSearchResources = new AzureSearchResources(applicationTokenCredentials, subscriptionId, Region.US_WEST2);
-    }
-
     private static AzureEnvironment getDogfoodEnvironment() {
         HashMap<String, String> configuration = new HashMap<>();
         configuration.put("portalUrl", "http://df.onecloud.azure-test.net");
@@ -538,7 +510,7 @@ public abstract class SearchServiceTestBase extends TestBase {
 
     protected SearchIndexClientBuilder getSearchIndexClientBuilder(String indexName) {
         SearchIndexClientBuilder builder = new SearchIndexClientBuilder()
-            .endpoint(String.format("https://%s.%s", searchServiceName, searchDnsSuffix))
+            .endpoint(azureSearchResources.getEndpoint())
             .indexName(indexName);
 
         if (interceptorManager.isPlaybackMode()) {

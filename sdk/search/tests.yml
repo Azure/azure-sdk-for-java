@@ -5,9 +5,6 @@ jobs:
     parameters:
       ServiceDirectory: search
       Timeout: 120
-      # Live tests create their own resources for testing. Resources are created against a
-      # finite resource pool, so we limit parallelism to conserve availability in that pool.
-      MaxParallel: 3
       EnvVars:
         AZURE_TEST_MODE: LIVE
         AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)

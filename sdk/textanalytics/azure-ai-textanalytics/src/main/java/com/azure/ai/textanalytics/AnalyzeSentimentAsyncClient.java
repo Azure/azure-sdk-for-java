@@ -24,16 +24,19 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * Helper class for managing sentiment analysis endpoint.
@@ -64,6 +67,11 @@ class AnalyzeSentimentAsyncClient {
     TextAnalyticsPagedFlux<AnalyzeSentimentResult> analyzeSentimentBatch(Iterable<TextDocumentInput> documents,
         TextAnalyticsRequestOptions options) {
         Objects.requireNonNull(documents, "'documents' cannot be null.");
+        final Iterator<TextDocumentInput> iterator = documents.iterator();
+        if (!iterator.hasNext()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'documents' cannot be empty."));
+        }
+
         try {
             return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> withContext(context ->
                 getAnalyzedSentimentResponseInPage(documents, options, context)).flux());
@@ -85,8 +93,11 @@ class AnalyzeSentimentAsyncClient {
      */
     TextAnalyticsPagedFlux<AnalyzeSentimentResult> analyzeSentimentBatchWithContext(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
-
         Objects.requireNonNull(documents, "'documents' cannot be null.");
+        final Iterator<TextDocumentInput> iterator = documents.iterator();
+        if (!iterator.hasNext()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'documents' cannot be empty."));
+        }
 
         return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
             getAnalyzedSentimentResponseInPage(documents, options, context).flux());
@@ -191,7 +202,8 @@ class AnalyzeSentimentAsyncClient {
         return service.sentimentWithRestResponseAsync(
             new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(documents)),
             options == null ? null : options.getModelVersion(),
-            options == null ? null : options.isIncludeStatistics(), context)
+            options == null ? null : options.isIncludeStatistics(),
+            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
             .doOnSuccess(response -> logger.info("Analyzed sentiment for a batch of documents - {}", response))
             .doOnError(error -> logger.warning("Failed to analyze sentiment - {}", error))

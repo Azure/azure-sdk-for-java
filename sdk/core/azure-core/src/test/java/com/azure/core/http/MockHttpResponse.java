@@ -92,11 +92,7 @@ public class MockHttpResponse extends HttpResponse {
 
     @Override
     public Mono<String> getBodyAsString() {
-        if (bodyBytes == null) {
-            return Mono.empty();
-        } else {
-            return Mono.just(new String(bodyBytes, StandardCharsets.UTF_8));
-        }
+        return getBodyAsString(StandardCharsets.UTF_8);
     }
 
     @Override

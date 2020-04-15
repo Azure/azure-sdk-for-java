@@ -11,8 +11,8 @@ import com.azure.cosmos.implementation.Undefined;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalUtils;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
+import com.azure.cosmos.implementation.guava25.collect.Lists;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
