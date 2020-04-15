@@ -227,7 +227,7 @@ public final class Field {
 
     /*
      * A value indicating whether the field will be returned in a search
-     * result. This property must be true for key fields, and must be null for
+     * result. This property must be false for key fields, and must be null for
      * complex fields. You can hide a field from search results if you want to
      * use it only as a filter, for sorting, or for scoring. This property can
      * also be changed on existing fields and enabling it does not cause an
@@ -788,7 +788,7 @@ public final class Field {
 
     /**
      * Set the hidden property: A value indicating whether the field will be
-     * returned in a search result. This property must be true for key fields,
+     * returned in a search result. This property must be false for key fields,
      * and must be null for complex fields. You can hide a field from search
      * results if you want to use it only as a filter, for sorting, or for
      * scoring. This property can also be changed on existing fields and
