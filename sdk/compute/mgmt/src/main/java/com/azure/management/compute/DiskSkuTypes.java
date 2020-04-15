@@ -26,7 +26,7 @@ public final class DiskSkuTypes {
     public static final DiskSkuTypes ULTRA_SSD_LRS = new DiskSkuTypes(DiskStorageAccountTypes.ULTRA_SSD_LRS);
 
     /** The actual serialized value for a DiskSkuTypes instance. */
-    private DiskStorageAccountTypes value;
+    private final DiskStorageAccountTypes value;
 
     /** @return predefined disk SKU types */
     public static DiskSkuTypes[] values() {

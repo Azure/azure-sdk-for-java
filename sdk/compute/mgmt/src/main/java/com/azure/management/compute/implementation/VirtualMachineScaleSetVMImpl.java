@@ -3,6 +3,7 @@
 package com.azure.management.compute.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.CachingTypes;
 import com.azure.management.compute.DataDisk;
 import com.azure.management.compute.DiagnosticsProfile;
@@ -55,6 +56,7 @@ class VirtualMachineScaleSetVMImpl
     private VirtualMachineInstanceView virtualMachineInstanceView;
     private final VirtualMachineScaleSetVMsInner client;
     private final ComputeManager computeManager;
+    private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetVMImpl.class);
 
     // To track the managed data disks
     private final ManagedDataDiskCollection managedDataDisks = new ManagedDataDiskCollection();
@@ -576,10 +578,11 @@ class VirtualMachineScaleSetVMImpl
     public Update withExistingDataDisk(
         Disk dataDisk, int lun, CachingTypes cachingTypes, StorageAccountTypes storageAccountTypes) {
         if (!this.isManagedDiskEnabled()) {
-            throw new IllegalStateException(ManagedUnmanagedDiskErrors.VM_BOTH_UNMANAGED_AND_MANAGED_DISK_NOT_ALLOWED);
+            throw logger.logExceptionAsError(new IllegalStateException(
+                ManagedUnmanagedDiskErrors.VM_BOTH_UNMANAGED_AND_MANAGED_DISK_NOT_ALLOWED));
         }
         if (dataDisk.inner().diskState() != DiskState.UNATTACHED) {
-            throw new IllegalStateException("Disk need to be in unattached state");
+            throw logger.logExceptionAsError(new IllegalStateException("Disk need to be in unattached state"));
         }
 
         DataDisk attachDataDisk =
@@ -595,10 +598,11 @@ class VirtualMachineScaleSetVMImpl
 
     private Update withExistingDataDisk(DataDisk dataDisk, int lun) {
         if (this.tryFindDataDisk(lun, this.inner().storageProfile().dataDisks()) != null) {
-            throw new IllegalStateException(String.format("A data disk with lun '%d' already attached", lun));
+            throw logger.logExceptionAsError(new IllegalStateException(
+                String.format("A data disk with lun '%d' already attached", lun)));
         } else if (this.tryFindDataDisk(lun, this.managedDataDisks.existingDisksToAttach) != null) {
-            throw new IllegalStateException(
-                String.format("A data disk with lun '%d' already scheduled to be attached", lun));
+            throw logger.logExceptionAsError(new IllegalStateException(
+                String.format("A data disk with lun '%d' already scheduled to be attached", lun)));
         }
         this.managedDataDisks.existingDisksToAttach.add(dataDisk);
         return this;
@@ -608,15 +612,16 @@ class VirtualMachineScaleSetVMImpl
     public Update withoutDataDisk(int lun) {
         DataDisk dataDisk = this.tryFindDataDisk(lun, this.inner().storageProfile().dataDisks());
         if (dataDisk == null) {
-            throw new IllegalStateException(String.format("A data disk with lun '%d' not found", lun));
+            throw logger.logExceptionAsError(new IllegalStateException(
+                String.format("A data disk with lun '%d' not found", lun)));
         }
         if (dataDisk.createOption() != DiskCreateOptionTypes.ATTACH) {
-            throw new IllegalStateException(
+            throw logger.logExceptionAsError(new IllegalStateException(
                 String
                     .format(
                         "A data disk with lun '%d' cannot be detached, as it is part of Virtual Machine Scale Set"
                             + " model",
-                        lun));
+                        lun)));
         }
         this.managedDataDisks.diskLunsToRemove.add(lun);
         return this;

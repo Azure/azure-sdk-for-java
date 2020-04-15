@@ -16,7 +16,7 @@ public abstract class VirtualMachineEncryptionConfiguration<T extends VirtualMac
     protected final String aadClientId;
     protected final String aadSecret;
     protected DiskVolumeType volumeType = DiskVolumeType.ALL;
-    protected String keyEncryptionKeyURL;
+    protected String keyEncryptionKeyUrl;
     protected String keyEncryptionKeyVaultId;
     protected String encryptionAlgorithm = "RSA-OAEP";
     protected String passPhrase;
@@ -98,8 +98,8 @@ public abstract class VirtualMachineEncryptionConfiguration<T extends VirtualMac
     }
 
     /** @return key vault URL to the key (KEK) to protect (encrypt) the disk-encryption key */
-    public String keyEncryptionKeyURL() {
-        return this.keyEncryptionKeyURL;
+    public String keyEncryptionKeyUrl() {
+        return this.keyEncryptionKeyUrl;
     }
 
     /** @return the algorithm used to encrypt the disk-encryption key */
@@ -127,23 +127,23 @@ public abstract class VirtualMachineEncryptionConfiguration<T extends VirtualMac
     /**
      * Specifies the Key Vault URL to the key for protecting or wrapping the disk-encryption key.
      *
-     * @param keyEncryptionKeyURL the key (KEK) URL
+     * @param keyEncryptionKeyUrl the key (KEK) URL
      * @return VirtualMachineEncryptionConfiguration
      */
-    public T withVolumeEncryptionKeyEncrypted(String keyEncryptionKeyURL) {
-        return withVolumeEncryptionKeyEncrypted(keyEncryptionKeyURL, null);
+    public T withVolumeEncryptionKeyEncrypted(String keyEncryptionKeyUrl) {
+        return withVolumeEncryptionKeyEncrypted(keyEncryptionKeyUrl, null);
     }
 
     /**
      * Specifies the and key vault Id and a vault URL to the key for protecting or wrapping the disk-encryption key.
      *
-     * @param keyEncryptionKeyURL the key (KEK) URL
+     * @param keyEncryptionKeyUrl the key (KEK) URL
      * @param keyEncryptionKeyKevVaultId resource ID of the keyVault storing KEK
      * @return VirtualMachineEncryptionConfiguration
      */
     @SuppressWarnings("unchecked")
-    public T withVolumeEncryptionKeyEncrypted(String keyEncryptionKeyURL, String keyEncryptionKeyKevVaultId) {
-        this.keyEncryptionKeyURL = keyEncryptionKeyURL;
+    public T withVolumeEncryptionKeyEncrypted(String keyEncryptionKeyUrl, String keyEncryptionKeyKevVaultId) {
+        this.keyEncryptionKeyUrl = keyEncryptionKeyUrl;
         this.keyEncryptionKeyVaultId = keyEncryptionKeyKevVaultId;
         return (T) this;
     }

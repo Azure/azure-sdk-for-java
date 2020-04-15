@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.management.compute.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.HardwareProfile;
 import com.azure.management.compute.NetworkProfile;
 import com.azure.management.compute.OSDisk;
@@ -36,6 +37,7 @@ class VirtualMachinesImpl
     private final NetworkManager networkManager;
     private final GraphRbacManager rbacManager;
     private final VirtualMachineSizesImpl vmSizes;
+    private final ClientLogger logger = new ClientLogger(VirtualMachinesImpl.class);
 
     VirtualMachinesImpl(
         ComputeManager computeManager,
@@ -137,7 +139,7 @@ class VirtualMachinesImpl
                         ObjectMapper mapper = new ObjectMapper();
                         return mapper.writeValueAsString(captureResultInner);
                     } catch (JsonProcessingException ex) {
-                        throw Exceptions.propagate(ex);
+                        throw logger.logExceptionAsError(Exceptions.propagate(ex));
                     }
                 });
     }

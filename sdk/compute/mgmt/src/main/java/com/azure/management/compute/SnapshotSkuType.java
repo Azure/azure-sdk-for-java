@@ -22,7 +22,7 @@ public final class SnapshotSkuType {
     public static final SnapshotSkuType STANDARD_ZRS = new SnapshotSkuType(SnapshotStorageAccountTypes.STANDARD_ZRS);
 
     /** The actual serialized value for a SnapshotSkuType instance. */
-    private SnapshotStorageAccountTypes value;
+    private final SnapshotStorageAccountTypes value;
 
     /** @return predefined snapshot SKU types */
     public static SnapshotSkuType[] values() {

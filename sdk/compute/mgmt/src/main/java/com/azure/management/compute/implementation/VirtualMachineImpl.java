@@ -5,6 +5,7 @@ package com.azure.management.compute.implementation;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.AzureTokenCredential;
 import com.azure.management.RestClient;
 import com.azure.management.compute.AvailabilitySet;
@@ -156,6 +157,7 @@ class VirtualMachineImpl
     private String newProximityPlacementGroupName;
     // Type fo the new proximity placement group
     private ProximityPlacementGroupType newProximityPlacementGroupType;
+    private final ClientLogger logger = new ClientLogger(VirtualMachineImpl.class);
 
     VirtualMachineImpl(
         String name,
@@ -323,7 +325,7 @@ class VirtualMachineImpl
                         ObjectMapper mapper = new ObjectMapper();
                         return mapper.writeValueAsString(captureResultInner);
                     } catch (JsonProcessingException ex) {
-                        throw Exceptions.propagate(ex);
+                        throw logger.logExceptionAsError(Exceptions.propagate(ex));
                     }
                 });
     }
@@ -783,7 +785,7 @@ class VirtualMachineImpl
                         "/" + containerName + "/" + vhdName);
                 osVhd.withUri(destinationVhdUrl.toString());
             } catch (MalformedURLException ex) {
-                throw new RuntimeException(ex);
+                throw logger.logExceptionAsError(new RuntimeException(ex));
             }
             this.inner().storageProfile().osDisk().withVhd(osVhd);
         }
@@ -893,7 +895,7 @@ class VirtualMachineImpl
                 return (UnmanagedDataDiskImpl) dataDisk;
             }
         }
-        throw new RuntimeException("A data disk with name  '" + name + "' not found");
+        throw logger.logExceptionAsError(new RuntimeException("A data disk with name  '" + name + "' not found"));
     }
 
     // Virtual machine optional managed data disk fluent methods
@@ -2191,13 +2193,13 @@ class VirtualMachineImpl
 
     private void throwIfManagedDiskEnabled(String message) {
         if (this.isManagedDiskEnabled()) {
-            throw new UnsupportedOperationException(message);
+            throw logger.logExceptionAsError(new UnsupportedOperationException(message));
         }
     }
 
     private void throwIfManagedDiskDisabled(String message) {
         if (!this.isManagedDiskEnabled()) {
-            throw new UnsupportedOperationException(message);
+            throw logger.logExceptionAsError(new UnsupportedOperationException(message));
         }
     }
 
@@ -2299,7 +2301,7 @@ class VirtualMachineImpl
                     setAttachableExistingDataDisks(nextLun);
                     setImplicitDataDisks(nextLun);
                 } catch (Exception ex) {
-                    throw Exceptions.propagate(ex);
+                    throw logger.logExceptionAsError(Exceptions.propagate(ex));
                 }
                 setImageBasedDataDisks();
                 removeDataDisks();
@@ -2545,8 +2547,8 @@ class VirtualMachineImpl
                 storageAccount = this.vmImpl.existingStorageAccountToAssociate;
             }
             if (storageAccount == null) {
-                throw new IllegalStateException(
-                    "Unable to retrieve expected storageAccount instance for BootDiagnostics");
+                throw logger.logExceptionAsError(new IllegalStateException(
+                    "Unable to retrieve expected storageAccount instance for BootDiagnostics"));
             }
             vmInner()
                 .diagnosticsProfile()

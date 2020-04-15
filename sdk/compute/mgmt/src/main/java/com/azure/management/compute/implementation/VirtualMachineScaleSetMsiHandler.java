@@ -3,6 +3,7 @@
 
 package com.azure.management.compute.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.ResourceIdentityType;
 import com.azure.management.compute.VirtualMachineScaleSetIdentity;
 import com.azure.management.compute.VirtualMachineScaleSetIdentityUserAssignedIdentities;
@@ -30,6 +31,7 @@ class VirtualMachineScaleSetMsiHandler extends RoleAssignmentHelper {
 
     private List<String> creatableIdentityKeys;
     private Map<String, VirtualMachineScaleSetIdentityUserAssignedIdentities> userAssignedIdentities;
+    private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetMsiHandler.class);
 
     /**
      * Creates VirtualMachineScaleSetMsiHandler.
@@ -247,7 +249,7 @@ class VirtualMachineScaleSetMsiHandler extends RoleAssignmentHelper {
     private void initVMSSIdentity(ResourceIdentityType identityType) {
         if (!identityType.equals(ResourceIdentityType.USER_ASSIGNED)
             && !identityType.equals(ResourceIdentityType.SYSTEM_ASSIGNED)) {
-            throw new IllegalArgumentException("Invalid argument: " + identityType);
+            throw logger.logExceptionAsError(new IllegalArgumentException("Invalid argument: " + identityType));
         }
 
         final VirtualMachineScaleSetInner scaleSetInner = this.scaleSet.inner();

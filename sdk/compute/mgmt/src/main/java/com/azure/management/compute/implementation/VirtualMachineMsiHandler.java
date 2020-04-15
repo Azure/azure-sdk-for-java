@@ -3,6 +3,7 @@
 
 package com.azure.management.compute.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.ResourceIdentityType;
 import com.azure.management.compute.VirtualMachineIdentity;
 import com.azure.management.compute.VirtualMachineIdentityUserAssignedIdentities;
@@ -30,6 +31,7 @@ class VirtualMachineMsiHandler extends RoleAssignmentHelper {
 
     private List<String> creatableIdentityKeys;
     private Map<String, VirtualMachineIdentityUserAssignedIdentities> userAssignedIdentities;
+    private final ClientLogger logger = new ClientLogger(VirtualMachineMsiHandler.class);
 
     /**
      * Creates VirtualMachineMsiHandler.
@@ -252,7 +254,7 @@ class VirtualMachineMsiHandler extends RoleAssignmentHelper {
     private void initVMIdentity(ResourceIdentityType identityType) {
         if (!identityType.equals(ResourceIdentityType.USER_ASSIGNED)
             && !identityType.equals(ResourceIdentityType.SYSTEM_ASSIGNED)) {
-            throw new IllegalArgumentException("Invalid argument: " + identityType);
+            throw logger.logExceptionAsError(new IllegalArgumentException("Invalid argument: " + identityType));
         }
 
         VirtualMachineInner virtualMachineInner = this.virtualMachine.inner();

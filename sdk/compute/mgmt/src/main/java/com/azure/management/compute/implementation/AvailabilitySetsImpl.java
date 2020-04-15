@@ -24,13 +24,11 @@ class AvailabilitySetsImpl
 
     @Override
     public PagedIterable<AvailabilitySet> list() {
-        // TODO validate in tests
         return manager().inner().availabilitySets().list().mapPage(this::wrapModel);
     }
 
     @Override
     public PagedFlux<AvailabilitySet> listAsync() {
-        // TODO validate in tests
         return this.manager().inner().availabilitySets().listAsync().mapPage(this::wrapModel);
     }
 

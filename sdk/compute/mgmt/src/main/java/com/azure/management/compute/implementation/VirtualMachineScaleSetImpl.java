@@ -5,6 +5,7 @@ package com.azure.management.compute.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.AdditionalCapabilities;
 import com.azure.management.compute.ApiEntityReference;
 import com.azure.management.compute.BillingProfile;
@@ -147,6 +148,7 @@ public class VirtualMachineScaleSetImpl
     private String newProximityPlacementGroupName;
     // Type fo the new proximity placement group
     private ProximityPlacementGroupType newProximityPlacementGroupType;
+    private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetImpl.class);
 
     VirtualMachineScaleSetImpl(
         String name,
@@ -623,7 +625,8 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetImpl withExistingPrimaryInternetFacingLoadBalancer(LoadBalancer loadBalancer) {
         if (loadBalancer.publicIPAddressIds().isEmpty()) {
-            throw new IllegalArgumentException("Parameter loadBalancer must be an Internet facing load balancer");
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Parameter loadBalancer must be an Internet facing load balancer"));
         }
 
         if (isInCreateMode()) {
@@ -667,7 +670,8 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetImpl withExistingPrimaryInternalLoadBalancer(LoadBalancer loadBalancer) {
         if (!loadBalancer.publicIPAddressIds().isEmpty()) {
-            throw new IllegalArgumentException("Parameter loadBalancer must be an internal load balancer");
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Parameter loadBalancer must be an internal load balancer"));
         }
         String lbNetworkId = null;
         for (LoadBalancerPrivateFrontend frontEnd : loadBalancer.privateFrontends().values()) {
@@ -685,14 +689,14 @@ public class VirtualMachineScaleSetImpl
             // will show a error above VMSS profile page.
             //
             if (!vmNICNetworkId.equalsIgnoreCase(lbNetworkId)) {
-                throw new IllegalArgumentException(
+                throw logger.logExceptionAsError(new IllegalArgumentException(
                     "Virtual network associated with scale set virtual machines"
                         + " and internal load balancer must be same. "
                         + "'"
                         + vmNICNetworkId
                         + "'"
                         + "'"
-                        + lbNetworkId);
+                        + lbNetworkId));
             }
 
             this.primaryInternalLoadBalancer = loadBalancer;
@@ -702,14 +706,14 @@ public class VirtualMachineScaleSetImpl
             String vmNicVnetId =
                 ResourceUtils.parentResourceIdFromResourceId(primaryNicDefaultIPConfiguration().subnet().getId());
             if (!vmNicVnetId.equalsIgnoreCase(lbNetworkId)) {
-                throw new IllegalArgumentException(
+                throw logger.logExceptionAsError(new IllegalArgumentException(
                     "Virtual network associated with scale set virtual machines"
                         + " and internal load balancer must be same. "
                         + "'"
                         + vmNicVnetId
                         + "'"
                         + "'"
-                        + lbNetworkId);
+                        + lbNetworkId));
             }
             this.primaryInternalLoadBalancerToAttachOnUpdate = loadBalancer;
         }
@@ -1276,18 +1280,21 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withDataDiskUpdated(int lun, int newSizeInGB, CachingTypes cachingType, StorageAccountTypes storageAccountType) {
-        throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VMSS_NO_MANAGED_DISK_TO_UPDATE);
-        VirtualMachineScaleSetDataDisk dataDisk = getDataDiskInner(lun);
-        if (dataDisk == null) {
-            throw new RuntimeException(String.format("A data disk with lun '%d' not found", lun));
-        }
-        dataDisk
-            .withDiskSizeGB(newSizeInGB)
-            .withCaching(cachingType)
-            .managedDisk()
-            .withStorageAccountType(storageAccountType);
-        return this;
+    public VirtualMachineScaleSetImpl withDataDiskUpdated(int lun,
+        int newSizeInGB,
+        CachingTypes cachingType,
+        StorageAccountTypes storageAccountType) {
+            throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VMSS_NO_MANAGED_DISK_TO_UPDATE);
+            VirtualMachineScaleSetDataDisk dataDisk = getDataDiskInner(lun);
+            if (dataDisk == null) {
+                throw new RuntimeException(String.format("A data disk with lun '%d' not found", lun));
+            }
+            dataDisk
+                .withDiskSizeGB(newSizeInGB)
+                .withCaching(cachingType)
+                .managedDisk()
+                .withStorageAccountType(storageAccountType);
+            return this;
     }
 
     private VirtualMachineScaleSetDataDisk getDataDiskInner(int lun) {
@@ -1627,8 +1634,6 @@ public class VirtualMachineScaleSetImpl
                     withOSDiskName(this.name() + "-os-disk");
                 }
             }
-        } else {
-            // NOP [ODDisk CreateOption: ATTACH, ATTACH is not supported for VMSS]
         }
         if (this.osDiskCachingType() == null) {
             withOSDiskCaching(CachingTypes.READ_WRITE);
@@ -1707,7 +1712,8 @@ public class VirtualMachineScaleSetImpl
         if (isInCreateMode()
             && this.creatableStorageAccountKeys.isEmpty()
             && this.existingStorageAccountsToAssociate.isEmpty()) {
-            throw new IllegalStateException("Expected storage account(s) for VMSS OS disk containers not found");
+            throw logger.logExceptionAsError(new IllegalStateException(
+                "Expected storage account(s) for VMSS OS disk containers not found"));
         }
 
         for (String storageAccountKey : this.creatableStorageAccountKeys) {
@@ -1873,7 +1879,7 @@ public class VirtualMachineScaleSetImpl
                         return this;
                     });
         } catch (IOException ioException) {
-            throw new RuntimeException(ioException);
+            throw logger.logExceptionAsError(new RuntimeException(ioException));
         }
     }
 
@@ -1988,7 +1994,8 @@ public class VirtualMachineScaleSetImpl
                 }
             }
         }
-        throw new RuntimeException("Could not find the primary nic configuration or an IP configuration in it");
+        throw logger.logExceptionAsError(new RuntimeException(
+            "Could not find the primary nic configuration or an IP configuration in it"));
     }
 
     private VirtualMachineScaleSetNetworkConfiguration primaryNicConfiguration() {
@@ -2000,7 +2007,7 @@ public class VirtualMachineScaleSetImpl
                 return nicConfiguration;
             }
         }
-        throw new RuntimeException("Could not find the primary nic configuration");
+        throw logger.logExceptionAsError(new RuntimeException("Could not find the primary nic configuration"));
     }
 
     private static void associateBackEndsToIpConfiguration(
@@ -2300,7 +2307,7 @@ public class VirtualMachineScaleSetImpl
 
     private void throwIfManagedDiskDisabled(String message) {
         if (!this.isManagedDiskEnabled()) {
-            throw new UnsupportedOperationException(message);
+            throw logger.logExceptionAsError(new UnsupportedOperationException(message));
         }
     }
 
@@ -2666,7 +2673,7 @@ public class VirtualMachineScaleSetImpl
                 try {
                     setImplicitDataDisks(nextLun);
                 } catch (Exception ex) {
-                    throw Exceptions.propagate(ex);
+                    throw logger.logExceptionAsError(Exceptions.propagate(ex));
                 }
                 setImageBasedDataDisks();
                 removeDataDisks();
@@ -2896,8 +2903,8 @@ public class VirtualMachineScaleSetImpl
                 storageAccount = this.existingStorageAccountToAssociate;
             }
             if (storageAccount == null) {
-                throw new IllegalStateException(
-                    "Unable to retrieve expected storageAccount instance for BootDiagnostics");
+                throw logger.logExceptionAsError(new IllegalStateException(
+                    "Unable to retrieve expected storageAccount instance for BootDiagnostics"));
             }
             vmssInner()
                 .virtualMachineProfile()

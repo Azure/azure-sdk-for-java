@@ -19,7 +19,7 @@ import java.util.List;
 import org.apache.oro.text.regex.MalformedPatternException;
 
 /** Utility class to run commands on Linux VM via SSH. */
-public class SshShell {
+public final class SshShell {
     private final Session session;
     private final ChannelShell channel;
     private final Expect4j expect;

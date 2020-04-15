@@ -60,9 +60,9 @@ abstract class EncryptionSettings {
         @Override
         DiskEncryptionSettings storageProfileEncryptionSettings() {
             KeyVaultKeyReference keyEncryptionKey = null;
-            if (config.keyEncryptionKeyURL() != null) {
+            if (config.keyEncryptionKeyUrl() != null) {
                 keyEncryptionKey = new KeyVaultKeyReference();
-                keyEncryptionKey.withKeyUrl(config.keyEncryptionKeyURL());
+                keyEncryptionKey.withKeyUrl(config.keyEncryptionKeyUrl());
                 if (config.keyEncryptionKeyVaultId() != null) {
                     keyEncryptionKey.withSourceVault(new SubResource().setId(config.keyEncryptionKeyVaultId()));
                 }
@@ -85,12 +85,12 @@ abstract class EncryptionSettings {
             publicSettings.put("KeyVaultURL", config.keyVaultUrl()); // KeyVault to hold "Disk Encryption Key".
             publicSettings.put("VolumeType", config.volumeType().toString());
             publicSettings.put("SequenceVersion", UUID.randomUUID());
-            if (config.keyEncryptionKeyURL() != null) {
+            if (config.keyEncryptionKeyUrl() != null) {
                 publicSettings
                     .put(
                         "KeyEncryptionKeyURL",
                         config
-                            .keyEncryptionKeyURL()); // KeyVault to hold Key for encrypting "Disk Encryption Key" (aka
+                            .keyEncryptionKeyUrl()); // KeyVault to hold Key for encrypting "Disk Encryption Key" (aka
                                                      // kek).
             }
             if (this.requestedForLegacyEncryptExtension()) {
@@ -103,7 +103,7 @@ abstract class EncryptionSettings {
                 // ARM resource id of KeyVaults are required.
                 //
                 publicSettings.put("KeyVaultResourceId", config.keyVaultId());
-                if (config.keyEncryptionKeyURL() != null && config.keyEncryptionKeyVaultId() != null) {
+                if (config.keyEncryptionKeyUrl() != null && config.keyEncryptionKeyVaultId() != null) {
                     publicSettings.put("KekVaultResourceId", config.keyEncryptionKeyVaultId());
                 }
             }
