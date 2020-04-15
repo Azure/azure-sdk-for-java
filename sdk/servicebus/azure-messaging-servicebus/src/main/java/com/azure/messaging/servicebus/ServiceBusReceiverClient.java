@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
+import reactor.core.publisher.Mono;
 
+import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
@@ -362,4 +364,11 @@ public class ServiceBusReceiverClient implements AutoCloseable {
         logger.info("[{}]: Started synchronous message subscriber.", id);
         asyncClient.receive().subscribeWith(syncSubscriber);
     }
+
+    /* Following section is for session related API.*/
+    public Instant renewSessionLock(String sessionId){return null;}
+    public ByteBuffer getSessionState(String sessionId) {return null;}
+    public void setSessionState(ByteBuffer sessionState) {return  ;}
+    public String getSessionId(){ return null;}
+    public Instant getSessionLockedUntil(String sessionId) {return null;}
 }
