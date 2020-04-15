@@ -359,7 +359,8 @@ public class PeeringManagementClientImpl extends AzureServiceClient {
     /**
      * Checks if the peering service provider is present within 1000 miles of customer's location.
      *
-     * @param checkServiceProviderAvailabilityInput The CheckServiceProviderAvailabilityInput indicating customer location and service provider.
+     * @param checkServiceProviderAvailabilityInput The CheckServiceProviderAvailabilityInput
+                 indicating customer location and service provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -372,7 +373,8 @@ public class PeeringManagementClientImpl extends AzureServiceClient {
     /**
      * Checks if the peering service provider is present within 1000 miles of customer's location.
      *
-     * @param checkServiceProviderAvailabilityInput The CheckServiceProviderAvailabilityInput indicating customer location and service provider.
+     * @param checkServiceProviderAvailabilityInput The CheckServiceProviderAvailabilityInput
+                 indicating customer location and service provider.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -384,7 +386,8 @@ public class PeeringManagementClientImpl extends AzureServiceClient {
     /**
      * Checks if the peering service provider is present within 1000 miles of customer's location.
      *
-     * @param checkServiceProviderAvailabilityInput The CheckServiceProviderAvailabilityInput indicating customer location and service provider.
+     * @param checkServiceProviderAvailabilityInput The CheckServiceProviderAvailabilityInput
+                 indicating customer location and service provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
@@ -400,7 +403,8 @@ public class PeeringManagementClientImpl extends AzureServiceClient {
     /**
      * Checks if the peering service provider is present within 1000 miles of customer's location.
      *
-     * @param checkServiceProviderAvailabilityInput The CheckServiceProviderAvailabilityInput indicating customer location and service provider.
+     * @param checkServiceProviderAvailabilityInput The CheckServiceProviderAvailabilityInput
+                 indicating customer location and service provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
