@@ -340,7 +340,7 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.listBlobContainers#ListBlobContainersOptions-Duration}
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.filterBlobs#String}
      *
      * @param query Filters the results to return only blobs whose tags match the specified expression.
      * @return A reactive response emitting the list of blobs.
@@ -355,7 +355,7 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.listBlobContainers#ListBlobContainersOptions-Duration}
+     * {@codesnippet com.azure.storage.blob.BlobAsyncServiceClient.filterBlobs#String-Integer}
      *
      * @param query Filters the results to return only blobs whose tags match the specified expression.
      * @param maxResultsPerPage The maximum number of results to return in a given page.

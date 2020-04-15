@@ -152,7 +152,7 @@ public final class AppendBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#BlobHttpHeaders-Map-BlobRequestConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#BlobHttpHeaders-Map-Map-BlobRequestConditions-Duration-Context}
      *
      * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.

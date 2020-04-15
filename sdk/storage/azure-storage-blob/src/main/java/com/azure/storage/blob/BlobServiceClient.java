@@ -201,7 +201,7 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.listBlobContainers#ListBlobContainersOptions-Duration}
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.filterBlobs#String}
      *
      * @param query Filters the results to return only blobs whose tags match the specified expression.
      * @return The list of blobs.
@@ -217,7 +217,7 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.listBlobContainers#ListBlobContainersOptions-Duration}
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.filterBlobs#String-Integer-Duration}
      *
      * @param query Filters the results to return only blobs whose tags match the specified expression.
      * @param maxResultsPerPage The maximum number of results to return in a given page.

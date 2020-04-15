@@ -281,7 +281,7 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHttpHeaders-Map-AccessTier-byte-BlobRequestConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHttpHeaders-Map-Map-AccessTier-byte-BlobRequestConditions-Duration-Context}
      *
      * @param data The data to write to the blob.
      * @param length The exact length of the data. It is important that this value match precisely the length of the

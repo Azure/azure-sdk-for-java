@@ -429,4 +429,34 @@ public class BlobClientJavaDocCodeSnippets {
         }
         // END: com.azure.storage.blob.BlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions-Duration
     }
+
+    /**
+     * Code snippet for {@link BlobClient#uploadFromFile(String, ParallelTransferOptions, BlobHttpHeaders, Map, Map, AccessTier, BlobRequestConditions, Duration)}
+     *
+     * @throws IOException If an I/O error occurs
+     */
+    public void uploadFromFile3() throws IOException {
+        // BEGIN: com.azure.storage.blob.BlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-Map-AccessTier-BlobRequestConditions-Duration
+        BlobHttpHeaders headers = new BlobHttpHeaders()
+            .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        Map<String, String> tags = Collections.singletonMap("tag", "value");
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+        Integer blockSize = 100 * 1024 * 1024; // 100 MB;
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(blockSize, null, null);
+
+        try {
+            client.uploadFromFile(filePath, parallelTransferOptions, headers, metadata, tags,
+                AccessTier.HOT, requestConditions, timeout);
+            System.out.println("Upload from file succeeded");
+        } catch (UncheckedIOException ex) {
+            System.err.printf("Failed to upload from file %s%n", ex.getMessage());
+        }
+        // END: com.azure.storage.blob.BlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-Map-AccessTier-BlobRequestConditions-Duration
+    }
 }

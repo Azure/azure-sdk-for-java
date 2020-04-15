@@ -388,7 +388,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Cancelling a copy operation</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopyFromUrlCancel#String-Map-AccessTier-RehydratePriority-RequestConditions-BlobRequestConditions-Duration}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopyFromUrlCancel#String-Map-Map-AccessTier-RehydratePriority-RequestConditions-BlobRequestConditions-Duration}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a></p>
@@ -645,7 +645,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromUrlWithResponse#String-Map-AccessTier-RequestConditions-BlobRequestConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromUrlWithResponse#String-Map-Map-AccessTier-RequestConditions-BlobRequestConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
@@ -1364,7 +1364,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.getPropertiesWithResponse#BlobRequestConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.getTags}
      *
      * <p>For more information, see the
      * <a href="GET DOCS LINK">Azure Docs</a></p>
@@ -1380,7 +1380,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.getPropertiesWithResponse#BlobRequestConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.getTagsWithResponse}
      *
      * <p>For more information, see the
      * <a href="GET DOCS LINK">Azure Docs</a></p>
@@ -1413,7 +1413,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setMetadataWithResponse#Map-BlobRequestConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setTags#Map}
      *
      * <p>For more information, see the
      * <a href="ADD DOCS LINK">Azure Docs</a></p>
@@ -1431,7 +1431,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setMetadataWithResponse#Map-BlobRequestConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setTagsWithResponse#Map}
      *
      * <p>For more information, see the
      * <a href="ADD DOCS LINK">Azure Docs</a></p>

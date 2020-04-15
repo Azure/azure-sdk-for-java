@@ -161,7 +161,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#BlobHttpHeaders-Map-BlobRequestConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#BlobHttpHeaders-Map-Map-BlobRequestConditions}
      *
      * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.

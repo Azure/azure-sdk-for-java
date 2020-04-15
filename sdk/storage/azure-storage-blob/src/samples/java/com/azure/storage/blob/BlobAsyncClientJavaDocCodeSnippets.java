@@ -463,6 +463,31 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippet for {@link BlobAsyncClient#uploadWithResponse(Flux, ParallelTransferOptions, BlobHttpHeaders, Map, Map, AccessTier, BlobRequestConditions)}
+     */
+    public void upload6() {
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHttpHeaders-Map-Map-AccessTier-BlobRequestConditions.ProgressReporter
+        BlobHttpHeaders headers = new BlobHttpHeaders()
+            .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        Map<String, String> tags = Collections.singletonMap("tag", "value");
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(blockSize, numBuffers,
+            bytesTransferred -> System.out.printf("Upload progress: %s bytes sent", bytesTransferred));
+
+        client.uploadWithResponse(data, parallelTransferOptions, headers, metadata, tags, AccessTier.HOT, requestConditions)
+            .subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",
+                Base64.getEncoder().encodeToString(response.getValue().getContentMd5())));
+        // END: com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHttpHeaders-Map-Map-AccessTier-BlobRequestConditions.ProgressReporter
+    }
+
+    /**
      * Code snippet for {@link BlobAsyncClient#uploadFromFile(String)}
      */
     public void uploadFromFile() {
@@ -506,5 +531,29 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .doOnError(throwable -> System.err.printf("Failed to upload from file %s%n", throwable.getMessage()))
             .subscribe(completion -> System.out.println("Upload from file succeeded"));
         // END: com.azure.storage.blob.BlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions
+    }
+
+    /**
+     * Code snippet for {@link BlobAsyncClient#uploadFromFile(String, ParallelTransferOptions, BlobHttpHeaders, Map, Map, AccessTier, BlobRequestConditions)}
+     */
+    public void uploadFromFile3() {
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-Map-AccessTier-BlobRequestConditions
+        BlobHttpHeaders headers = new BlobHttpHeaders()
+            .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        Map<String, String> tags = Collections.singletonMap("tag", "value");
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+
+        client.uploadFromFile(filePath,
+            new ParallelTransferOptions(BlobAsyncClient.BLOB_MAX_UPLOAD_BLOCK_SIZE, null, null),
+            headers, metadata, tags, AccessTier.HOT, requestConditions)
+            .doOnError(throwable -> System.err.printf("Failed to upload from file %s%n", throwable.getMessage()))
+            .subscribe(completion -> System.out.println("Upload from file succeeded"));
+        // END: com.azure.storage.blob.BlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-Map-AccessTier-BlobRequestConditions
     }
 }

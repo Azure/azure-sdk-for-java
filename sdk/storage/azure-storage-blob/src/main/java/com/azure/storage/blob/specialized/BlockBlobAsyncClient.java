@@ -208,7 +208,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHttpHeaders-Map-AccessTier-byte-BlobRequestConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHttpHeaders-Map-Map-AccessTier-byte-BlobRequestConditions}
      *
      * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
      * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
@@ -550,7 +550,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHttpHeaders-Map-Map-AccessTier-BlobRequestConditions}
      *
      * @param base64BlockIds A list of base64 encode {@code String}s that specifies the block IDs to be committed.
      * @param headers {@link BlobHttpHeaders}

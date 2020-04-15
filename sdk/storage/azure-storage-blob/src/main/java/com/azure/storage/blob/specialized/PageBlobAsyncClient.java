@@ -195,7 +195,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.createWithResponse#long-Long-BlobHttpHeaders-Map-BlobRequestConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.createWithResponse#long-Long-BlobHttpHeaders-Map-Map-BlobRequestConditions}
      *
      * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
      * 512-byte boundary.

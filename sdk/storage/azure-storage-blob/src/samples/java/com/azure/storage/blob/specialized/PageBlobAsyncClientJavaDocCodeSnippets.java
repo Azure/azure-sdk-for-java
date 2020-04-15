@@ -30,6 +30,7 @@ import java.util.Map;
 public class PageBlobAsyncClientJavaDocCodeSnippets {
     private PageBlobAsyncClient client = new SpecializedBlobClientBuilder().buildPageBlobAsyncClient();
     private Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+    private Map<String, String> tags = Collections.singletonMap("tag", "value");
     private ByteBuffer[] bufferData = new ByteBuffer[]{
         ByteBuffer.wrap(new byte[]{1}),
         ByteBuffer.wrap(new byte[]{2})
@@ -79,6 +80,23 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
                 "Created page blob with sequence number %s%n", response.getValue().getBlobSequenceNumber()));
 
         // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.createWithResponse#long-Long-BlobHttpHeaders-Map-BlobRequestConditions
+    }
+
+    /**
+     * Code snippets for {@link PageBlobAsyncClient#createWithResponse(long, Long, BlobHttpHeaders, Map, Map, BlobRequestConditions)}
+     */
+    public void createWithResponse2CodeSnippet() {
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.createWithResponse#long-Long-BlobHttpHeaders-Map-Map-BlobRequestConditions
+        BlobHttpHeaders headers = new BlobHttpHeaders()
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId);
+
+        client.createWithResponse(size, sequenceNumber, headers, metadata, tags, blobRequestConditions)
+            .subscribe(response -> System.out.printf(
+                "Created page blob with sequence number %s%n", response.getValue().getBlobSequenceNumber()));
+
+        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.createWithResponse#long-Long-BlobHttpHeaders-Map-Map-BlobRequestConditions
     }
 
     /**

@@ -108,6 +108,21 @@ public class BlobServiceClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippets for {@link BlobServiceClient#filterBlobs(String)} and
+     * {@link BlobServiceClient#filterBlobs(String, Integer, Duration)}
+     */
+    public void filterBlobs() {
+        // BEGIN: com.azure.storage.blob.BlobServiceClient.filterBlobs#String
+        client.filterBlobs("where=tag=value").forEach(blob -> System.out.printf("Name: %s%n", blob.getName()));
+        // END: com.azure.storage.blob.BlobServiceClient.filterBlobs#String
+
+        // BEGIN: com.azure.storage.blob.BlobServiceClient.filterBlobs#String-Integer-Duration
+        client.filterBlobs("where=tag=value", 10, timeout)
+            .forEach(blob -> System.out.printf("Name: %s%n", blob.getName()));
+        // END: com.azure.storage.blob.BlobServiceClient.filterBlobs#String-Integer-Duration
+    }
+
+    /**
      * Code snippet for {@link BlobServiceClient#getProperties()}
      */
     public void getProperties() {

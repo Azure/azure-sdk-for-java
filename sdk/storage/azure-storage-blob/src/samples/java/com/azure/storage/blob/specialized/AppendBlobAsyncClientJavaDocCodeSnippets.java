@@ -70,6 +70,24 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippet for {@link AppendBlobAsyncClient#createWithResponse(BlobHttpHeaders, Map, Map, BlobRequestConditions)}
+     */
+    public void create3() {
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#BlobHttpHeaders-Map-Map-BlobRequestConditions
+        BlobHttpHeaders headers = new BlobHttpHeaders()
+            .setContentType("binary")
+            .setContentLanguage("en-US");
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        Map<String, String> tags = Collections.singletonMap("tag", "value");
+        BlobRequestConditions requestConditions = new BlobRequestConditions().setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+
+        client.createWithResponse(headers, metadata, tags, requestConditions).subscribe(response ->
+            System.out.printf("Created AppendBlob at %s%n", response.getValue().getLastModified()));
+        // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#BlobHttpHeaders-Map-Map-BlobRequestConditions
+    }
+
+    /**
      * Code snippet for {@link AppendBlobAsyncClient#appendBlock(Flux, long)}
      */
     public void appendBlock() {

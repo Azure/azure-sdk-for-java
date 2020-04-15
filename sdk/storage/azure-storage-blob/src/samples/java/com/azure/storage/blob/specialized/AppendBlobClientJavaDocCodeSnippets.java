@@ -75,6 +75,27 @@ public class AppendBlobClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippet for {@link AppendBlobClient#createWithResponse(BlobHttpHeaders, Map, Map, BlobRequestConditions,
+     * Duration, Context)}
+     */
+    public void createWithResponse2() {
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#BlobHttpHeaders-Map-Map-BlobRequestConditions-Duration-Context
+        BlobHttpHeaders headers = new BlobHttpHeaders()
+            .setContentType("binary")
+            .setContentLanguage("en-US");
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        Map<String, String> tags = Collections.singletonMap("tags", "value");
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+        Context context = new Context("key", "value");
+
+        System.out.printf("Created AppendBlob at %s%n",
+            client.createWithResponse(headers, metadata, requestConditions, timeout, context).getValue().getLastModified());
+        // END: com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#BlobHttpHeaders-Map-Map-BlobRequestConditions-Duration-Context
+    }
+
+    /**
      * Code snippet for {@link AppendBlobClient#appendBlock(InputStream, long)}
      */
     public void appendBlock() {
