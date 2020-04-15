@@ -2,13 +2,26 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
+import com.azure.core.util.tracing.ProcessKind;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.StoredProcedure;
+import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.models.CosmosAsyncStoredProcedureResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Signal;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
+
+import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * The type Cosmos async stored procedure.
@@ -70,19 +83,20 @@ public class CosmosAsyncStoredProcedure {
      * @return an {@link Mono} containing the single resource response with the read stored procedure or an error.
      */
     public Mono<CosmosAsyncStoredProcedureResponse> read(CosmosStoredProcedureRequestOptions options) {
-        if (options == null) {
-            options = new CosmosStoredProcedureRequestOptions();
-        }
-        return cosmosContainer.getDatabase().getDocClientWrapper().readStoredProcedure(getLink(),
-            ModelBridgeInternal.toRequestOptions(options))
-                              .map(response -> ModelBridgeInternal.createCosmosAsyncStoredProcedureResponse(response, cosmosContainer)).single();
+        return withContext(context -> read(options, context)).subscriberContext(reactorContext -> {
+            Optional<String> master = reactorContext.getOrEmpty(TracerProvider.MASTER_CALL);
+            if (master.isPresent()) {
+                reactorContext = reactorContext.put(TracerProvider.NESTED_CALL, true);
+            }
+            return reactorContext.put(TracerProvider.MASTER_CALL, true);
+        });
     }
 
     /**
      * Deletes a stored procedure by the stored procedure link.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response for the deleted stored 
+     * The {@link Mono} upon successful completion will contain a single resource response for the deleted stored
      * procedure.
      * In case of failure the {@link Mono} will error.
      *
@@ -96,7 +110,7 @@ public class CosmosAsyncStoredProcedure {
      * Deletes a stored procedure by the stored procedure link.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response for the deleted stored 
+     * The {@link Mono} upon successful completion will contain a single resource response for the deleted stored
      * procedure.
      * In case of failure the {@link Mono} will error.
      *
@@ -104,21 +118,20 @@ public class CosmosAsyncStoredProcedure {
      * @return an {@link Mono} containing the single resource response for the deleted stored procedure or an error.
      */
     public Mono<CosmosAsyncStoredProcedureResponse> delete(CosmosStoredProcedureRequestOptions options) {
-        if (options == null) {
-            options = new CosmosStoredProcedureRequestOptions();
-        }
-        return cosmosContainer.getDatabase()
-                   .getDocClientWrapper()
-                   .deleteStoredProcedure(getLink(), ModelBridgeInternal.toRequestOptions(options))
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncStoredProcedureResponse(response, cosmosContainer))
-                   .single();
+        return withContext(context -> delete(options, context)).subscriberContext(reactorContext -> {
+            Optional<String> master = reactorContext.getOrEmpty(TracerProvider.MASTER_CALL);
+            if (master.isPresent()) {
+                reactorContext = reactorContext.put(TracerProvider.NESTED_CALL, true);
+            }
+            return reactorContext.put(TracerProvider.MASTER_CALL, true);
+        });
     }
 
     /**
      * Executes a stored procedure by the stored procedure link.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response with the stored procedure 
+     * The {@link Mono} upon successful completion will contain a single resource response with the stored procedure
      * response.
      * In case of failure the {@link Mono} will error.
      *
@@ -128,21 +141,20 @@ public class CosmosAsyncStoredProcedure {
      */
     public Mono<CosmosAsyncStoredProcedureResponse> execute(Object[] procedureParams,
                                                             CosmosStoredProcedureRequestOptions options) {
-        if (options == null) {
-            options = new CosmosStoredProcedureRequestOptions();
-        }
-        return cosmosContainer.getDatabase()
-                   .getDocClientWrapper()
-                   .executeStoredProcedure(getLink(), ModelBridgeInternal.toRequestOptions(options), procedureParams)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncStoredProcedureResponse(response, cosmosContainer, this.id))
-                   .single();
+        return withContext(context -> execute(procedureParams, options, context)).subscriberContext(reactorContext -> {
+            Optional<String> master = reactorContext.getOrEmpty(TracerProvider.MASTER_CALL);
+            if (master.isPresent()) {
+                reactorContext = reactorContext.put(TracerProvider.NESTED_CALL, true);
+            }
+            return reactorContext.put(TracerProvider.MASTER_CALL, true);
+        });
     }
 
     /**
      * Replaces a stored procedure.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response with the replaced stored 
+     * The {@link Mono} upon successful completion will contain a single resource response with the replaced stored
      * procedure.
      * In case of failure the {@link Mono} will error.
      *
@@ -157,7 +169,7 @@ public class CosmosAsyncStoredProcedure {
      * Replaces a stored procedure.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response with the replaced stored 
+     * The {@link Mono} upon successful completion will contain a single resource response with the replaced stored
      * procedure.
      * In case of failure the {@link Mono} will error.
      *
@@ -167,15 +179,13 @@ public class CosmosAsyncStoredProcedure {
      */
     public Mono<CosmosAsyncStoredProcedureResponse> replace(CosmosStoredProcedureProperties storedProcedureSettings,
                                                             CosmosStoredProcedureRequestOptions options) {
-        if (options == null) {
-            options = new CosmosStoredProcedureRequestOptions();
-        }
-        return cosmosContainer.getDatabase()
-                   .getDocClientWrapper()
-                   .replaceStoredProcedure(new StoredProcedure(ModelBridgeInternal.toJsonFromJsonSerializable(storedProcedureSettings)),
-                       ModelBridgeInternal.toRequestOptions(options))
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncStoredProcedureResponse(response, cosmosContainer))
-                   .single();
+        return withContext(context -> replace(storedProcedureSettings, options, context)).subscriberContext(reactorContext -> {
+            Optional<String> master = reactorContext.getOrEmpty(TracerProvider.MASTER_CALL);
+            if (master.isPresent()) {
+                reactorContext = reactorContext.put(TracerProvider.NESTED_CALL, true);
+            }
+            return reactorContext.put(TracerProvider.MASTER_CALL, true);
+        });
     }
 
     String getURIPathSegment() {
@@ -195,4 +205,197 @@ public class CosmosAsyncStoredProcedure {
         builder.append(id());
         return builder.toString();
     }
+
+    private Mono<CosmosAsyncStoredProcedureResponse> read(CosmosStoredProcedureRequestOptions options,
+                                                               Context context) {
+        final boolean isTracingEnabled = this.cosmosContainer.getDatabase().getClient().getTracerProvider().isEnabled();
+        final AtomicReference<Context> parentContext = isTracingEnabled
+            ? new AtomicReference<>(Context.NONE)
+            : null;
+        String spanName = "readStoredProcedure." + cosmosContainer.getId();
+        Map<String, String> tracingAttributes = new HashMap<String, String>() {{
+            put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
+            put(TracerProvider.DB_INSTANCE, cosmosContainer.getDatabase().getId());
+            put(TracerProvider.DB_URL, cosmosContainer.getDatabase().getClient().getServiceEndpoint());
+            put(TracerProvider.DB_STATEMENT, spanName);
+        }};
+
+        if (options == null) {
+            options = new CosmosStoredProcedureRequestOptions();
+        }
+        return cosmosContainer.getDatabase().getDocClientWrapper().readStoredProcedure(getLink(),
+            ModelBridgeInternal.toRequestOptions(options))
+            .map(response -> ModelBridgeInternal.createCosmosAsyncStoredProcedureResponse(response, cosmosContainer)).single()
+            .doOnSubscribe(ignoredValue -> {
+                if (isTracingEnabled) {
+                    reactor.util.context.Context reactorContext = FluxUtil.toReactorContext(context);
+                    Objects.requireNonNull(reactorContext.hasKey(TracerProvider.MASTER_CALL));
+                    Optional<Object> callerFunc = reactorContext.getOrEmpty(TracerProvider.NESTED_CALL);
+                    if (!callerFunc.isPresent()) {
+                        parentContext.set(this.cosmosContainer.getDatabase().getClient().getTracerProvider().startSpan(spanName,
+                            context.addData(TracerProvider.ATTRIBUTE_MAP, tracingAttributes),
+                            ProcessKind.DATABASE));
+                    }
+                }
+            }).doOnSuccess(response -> {
+                if (isTracingEnabled) {
+                    this.cosmosContainer.getDatabase().getClient().getTracerProvider().endSpan(parentContext.get(),
+                        Signal.complete(),
+                        200);
+                }
+            }).doOnError(throwable -> {
+                if (isTracingEnabled) {
+                    this.cosmosContainer.getDatabase().getClient().getTracerProvider().endSpan(parentContext.get(),
+                        Signal.error(throwable), 0);
+                }
+            });
+    }
+
+    private Mono<CosmosAsyncStoredProcedureResponse> delete(CosmosStoredProcedureRequestOptions options,
+                                                            Context context) {
+        final boolean isTracingEnabled = this.cosmosContainer.getDatabase().getClient().getTracerProvider().isEnabled();
+        final AtomicReference<Context> parentContext = isTracingEnabled
+            ? new AtomicReference<>(Context.NONE)
+            : null;
+        String spanName = "deleteStoredProcedure." + cosmosContainer.getId();
+        Map<String, String> tracingAttributes = new HashMap<String, String>() {{
+            put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
+            put(TracerProvider.DB_INSTANCE, cosmosContainer.getDatabase().getId());
+            put(TracerProvider.DB_URL, cosmosContainer.getDatabase().getClient().getServiceEndpoint());
+            put(TracerProvider.DB_STATEMENT, spanName);
+        }};
+
+        if (options == null) {
+            options = new CosmosStoredProcedureRequestOptions();
+        }
+        if (options == null) {
+            options = new CosmosStoredProcedureRequestOptions();
+        }
+        return cosmosContainer.getDatabase()
+            .getDocClientWrapper()
+            .deleteStoredProcedure(getLink(), ModelBridgeInternal.toRequestOptions(options))
+            .map(response -> ModelBridgeInternal.createCosmosAsyncStoredProcedureResponse(response, cosmosContainer))
+            .single()
+            .doOnSubscribe(ignoredValue -> {
+                if (isTracingEnabled) {
+                    reactor.util.context.Context reactorContext = FluxUtil.toReactorContext(context);
+                    Objects.requireNonNull(reactorContext.hasKey(TracerProvider.MASTER_CALL));
+                    Optional<Object> callerFunc = reactorContext.getOrEmpty(TracerProvider.NESTED_CALL);
+                    if (!callerFunc.isPresent()) {
+                        parentContext.set(this.cosmosContainer.getDatabase().getClient().getTracerProvider().startSpan(spanName,
+                            context.addData(TracerProvider.ATTRIBUTE_MAP, tracingAttributes),
+                            ProcessKind.DATABASE));
+                    }
+                }
+            }).doOnSuccess(response -> {
+                if (isTracingEnabled) {
+                    this.cosmosContainer.getDatabase().getClient().getTracerProvider().endSpan(parentContext.get(),
+                        Signal.complete(),
+                        200);
+                }
+            }).doOnError(throwable -> {
+                if (isTracingEnabled) {
+                    this.cosmosContainer.getDatabase().getClient().getTracerProvider().endSpan(parentContext.get(),
+                        Signal.error(throwable), 0);
+                }
+            });
+    }
+
+    private Mono<CosmosAsyncStoredProcedureResponse> execute(Object[] procedureParams,
+                                                             CosmosStoredProcedureRequestOptions options,
+                                                             Context context) {
+        final boolean isTracingEnabled = this.cosmosContainer.getDatabase().getClient().getTracerProvider().isEnabled();
+        final AtomicReference<Context> parentContext = isTracingEnabled
+            ? new AtomicReference<>(Context.NONE)
+            : null;
+        String spanName = "executeStoredProcedure." + cosmosContainer.getId();
+        Map<String, String> tracingAttributes = new HashMap<String, String>() {{
+            put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
+            put(TracerProvider.DB_INSTANCE, cosmosContainer.getDatabase().getId());
+            put(TracerProvider.DB_URL, cosmosContainer.getDatabase().getClient().getServiceEndpoint());
+            put(TracerProvider.DB_STATEMENT, spanName);
+        }};
+
+        if (options == null) {
+            options = new CosmosStoredProcedureRequestOptions();
+        }
+        return cosmosContainer.getDatabase()
+            .getDocClientWrapper()
+            .executeStoredProcedure(getLink(), ModelBridgeInternal.toRequestOptions(options), procedureParams)
+            .map(response -> ModelBridgeInternal.createCosmosAsyncStoredProcedureResponse(response, cosmosContainer, this.id))
+            .single()
+            .doOnSubscribe(ignoredValue -> {
+                if (isTracingEnabled) {
+                    reactor.util.context.Context reactorContext = FluxUtil.toReactorContext(context);
+                    Objects.requireNonNull(reactorContext.hasKey(TracerProvider.MASTER_CALL));
+                    Optional<Object> callerFunc = reactorContext.getOrEmpty(TracerProvider.NESTED_CALL);
+                    if (!callerFunc.isPresent()) {
+                        parentContext.set(this.cosmosContainer.getDatabase().getClient().getTracerProvider().startSpan(spanName,
+                            context.addData(TracerProvider.ATTRIBUTE_MAP, tracingAttributes),
+                            ProcessKind.DATABASE));
+                    }
+                }
+            }).doOnSuccess(response -> {
+                if (isTracingEnabled) {
+                    this.cosmosContainer.getDatabase().getClient().getTracerProvider().endSpan(parentContext.get(),
+                        Signal.complete(),
+                        200);
+                }
+            }).doOnError(throwable -> {
+                if (isTracingEnabled) {
+                    this.cosmosContainer.getDatabase().getClient().getTracerProvider().endSpan(parentContext.get(),
+                        Signal.error(throwable), 0);
+                }
+            });
+    }
+
+    private Mono<CosmosAsyncStoredProcedureResponse> replace(CosmosStoredProcedureProperties storedProcedureSettings,
+                                                             CosmosStoredProcedureRequestOptions options,
+                                                             Context context) {
+        final boolean isTracingEnabled = this.cosmosContainer.getDatabase().getClient().getTracerProvider().isEnabled();
+        final AtomicReference<Context> parentContext = isTracingEnabled
+            ? new AtomicReference<>(Context.NONE)
+            : null;
+        String spanName = "replaceStoredProcedure." + cosmosContainer.getId();
+        Map<String, String> tracingAttributes = new HashMap<String, String>() {{
+            put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
+            put(TracerProvider.DB_INSTANCE, cosmosContainer.getDatabase().getId());
+            put(TracerProvider.DB_URL, cosmosContainer.getDatabase().getClient().getServiceEndpoint());
+            put(TracerProvider.DB_STATEMENT, spanName);
+        }};
+
+        if (options == null) {
+            options = new CosmosStoredProcedureRequestOptions();
+        }
+        return cosmosContainer.getDatabase()
+            .getDocClientWrapper()
+            .replaceStoredProcedure(new StoredProcedure(ModelBridgeInternal.toJsonFromJsonSerializable(storedProcedureSettings)),
+                ModelBridgeInternal.toRequestOptions(options))
+            .map(response -> ModelBridgeInternal.createCosmosAsyncStoredProcedureResponse(response, cosmosContainer))
+            .single()
+            .doOnSubscribe(ignoredValue -> {
+                if (isTracingEnabled) {
+                    reactor.util.context.Context reactorContext = FluxUtil.toReactorContext(context);
+                    Objects.requireNonNull(reactorContext.hasKey(TracerProvider.MASTER_CALL));
+                    Optional<Object> callerFunc = reactorContext.getOrEmpty(TracerProvider.NESTED_CALL);
+                    if (!callerFunc.isPresent()) {
+                        parentContext.set(this.cosmosContainer.getDatabase().getClient().getTracerProvider().startSpan(spanName,
+                            context.addData(TracerProvider.ATTRIBUTE_MAP, tracingAttributes),
+                            ProcessKind.DATABASE));
+                    }
+                }
+            }).doOnSuccess(response -> {
+                if (isTracingEnabled) {
+                    this.cosmosContainer.getDatabase().getClient().getTracerProvider().endSpan(parentContext.get(),
+                        Signal.complete(),
+                        200);
+                }
+            }).doOnError(throwable -> {
+                if (isTracingEnabled) {
+                    this.cosmosContainer.getDatabase().getClient().getTracerProvider().endSpan(parentContext.get(),
+                        Signal.error(throwable), 0);
+                }
+            });
+    }
+
 }

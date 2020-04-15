@@ -18,7 +18,6 @@ import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
@@ -451,17 +450,7 @@ public final class CosmosAsyncClient implements Closeable {
             put(TracerProvider.DB_STATEMENT, spanName);
         }};
 
-        return database.read().doOnSubscribe(ignoredValue -> {
-            if (isTracingEnabled) {
-                reactor.util.context.Context reactorContext = FluxUtil.toReactorContext(context);
-                Objects.requireNonNull(reactorContext.hasKey(TracerProvider.MASTER_CALL));
-                Optional<Object> callerFunc = reactorContext.getOrEmpty(TracerProvider.NESTED_CALL);
-                if (!callerFunc.isPresent()) {
-                    parentContext.set(tracerProvider.startSpan(spanName,
-                        context.addData(TracerProvider.ATTRIBUTE_MAP, tracingAttributes), ProcessKind.DATABASE));
-                }
-            }
-        }).onErrorResume(exception -> {
+        return database.read().onErrorResume(exception -> {
             final Throwable unwrappedException = Exceptions.unwrap(exception);
             if (unwrappedException instanceof CosmosClientException) {
                 final CosmosClientException cosmosClientException = (CosmosClientException) unwrappedException;
@@ -471,6 +460,16 @@ public final class CosmosAsyncClient implements Closeable {
                 }
             }
             return Mono.error(unwrappedException);
+        }).doOnSubscribe(ignoredValue -> {
+            if (isTracingEnabled) {
+                reactor.util.context.Context reactorContext = FluxUtil.toReactorContext(context);
+                Objects.requireNonNull(reactorContext.hasKey(TracerProvider.MASTER_CALL));
+                Optional<Object> callerFunc = reactorContext.getOrEmpty(TracerProvider.NESTED_CALL);
+                if (!callerFunc.isPresent()) {
+                    parentContext.set(tracerProvider.startSpan(spanName,
+                        context.addData(TracerProvider.ATTRIBUTE_MAP, tracingAttributes), ProcessKind.DATABASE));
+                }
+            }
         }).doOnSuccess(response -> {
             if (isTracingEnabled) {
                 tracerProvider.endSpan(parentContext.get(), Signal.complete(), response.getStatusCode());
@@ -495,26 +494,28 @@ public final class CosmosAsyncClient implements Closeable {
             put(TracerProvider.DB_STATEMENT, spanName);
         }};
 
-        return asyncDocumentClient.createDatabase(database, ModelBridgeInternal.toRequestOptions(options)).doOnSubscribe(ignoredValue -> {
-            if (isTracingEnabled) {
-                reactor.util.context.Context reactorContext = FluxUtil.toReactorContext(context);
-                Objects.requireNonNull(reactorContext.hasKey(TracerProvider.MASTER_CALL));
-                Optional<Object> callerFunc = reactorContext.getOrEmpty(TracerProvider.NESTED_CALL);
-                if(!callerFunc.isPresent()) {
-                    parentContext.set(tracerProvider.startSpan(spanName,
-                        context.addData(TracerProvider.ATTRIBUTE_MAP, tracingAttributes), ProcessKind.DATABASE));
+        return asyncDocumentClient.createDatabase(database, ModelBridgeInternal.toRequestOptions(options))
+            .map(databaseResourceResponse -> ModelBridgeInternal.createCosmosAsyncDatabaseResponse(databaseResourceResponse,
+                this))
+            .single()
+            .doOnSubscribe(ignoredValue -> {
+                if (isTracingEnabled) {
+                    reactor.util.context.Context reactorContext = FluxUtil.toReactorContext(context);
+                    Objects.requireNonNull(reactorContext.hasKey(TracerProvider.MASTER_CALL));
+                    Optional<Object> callerFunc = reactorContext.getOrEmpty(TracerProvider.NESTED_CALL);
+                    if (!callerFunc.isPresent()) {
+                        parentContext.set(tracerProvider.startSpan(spanName,
+                            context.addData(TracerProvider.ATTRIBUTE_MAP, tracingAttributes), ProcessKind.DATABASE));
+                    }
                 }
-            }
-        }).doOnSuccess(response -> {
-            if (isTracingEnabled) {
-                tracerProvider.endSpan(parentContext.get(), Signal.complete(), response.getStatusCode());
-            }
-        }).doOnError(throwable -> {
-            if (isTracingEnabled) {
-                tracerProvider.endSpan(parentContext.get(), Signal.error(throwable), 0);
-            }
-        }).map(databaseResourceResponse -> ModelBridgeInternal.createCosmosAsyncDatabaseResponse(databaseResourceResponse,
-            this))
-            .single();
+            }).doOnSuccess(response -> {
+                if (isTracingEnabled) {
+                    tracerProvider.endSpan(parentContext.get(), Signal.complete(), response.getStatusCode());
+                }
+            }).doOnError(throwable -> {
+                if (isTracingEnabled) {
+                    tracerProvider.endSpan(parentContext.get(), Signal.error(throwable), 0);
+                }
+            });
     }
 }

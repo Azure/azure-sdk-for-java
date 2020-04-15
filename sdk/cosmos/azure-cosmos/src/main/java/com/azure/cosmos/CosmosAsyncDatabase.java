@@ -779,15 +779,17 @@ public class CosmosAsyncDatabase {
                             context.addData(TracerProvider.ATTRIBUTE_MAP, tracingAttributes), ProcessKind.DATABASE));
                     }
                 }
-            }).doOnSuccess(response -> {
+            }).map(response -> ModelBridgeInternal.createCosmosAsyncContainerResponse(response, this)).single()
+            .doOnSuccess(response -> {
                 if (isTracingEnabled) {
-                    client.getTracerProvider().endSpan(parentContext.get(), Signal.complete(), response.getStatusCode());
+                    client.getTracerProvider().endSpan(parentContext.get(), Signal.complete(),
+                        response.getStatusCode());
                 }
             }).doOnError(throwable -> {
                 if (isTracingEnabled) {
                     client.getTracerProvider().endSpan(parentContext.get(), Signal.error(throwable), 0);
                 }
-            }).map(response -> ModelBridgeInternal.createCosmosAsyncContainerResponse(response, this)).single();
+            });
     }
 
     private Mono<CosmosAsyncDatabaseResponse> read(CosmosDatabaseRequestOptions options, Context context) {
@@ -847,15 +849,17 @@ public class CosmosAsyncDatabase {
                         context.addData(TracerProvider.ATTRIBUTE_MAP, tracingAttributes), ProcessKind.DATABASE));
                 }
             }
-        }).doOnSuccess(response -> {
-            if (isTracingEnabled) {
-                client.getTracerProvider().endSpan(parentContext.get(), Signal.complete(), response.getStatusCode());
-            }
-        }).doOnError(throwable -> {
-            if (isTracingEnabled) {
-                client.getTracerProvider().endSpan(parentContext.get(), Signal.error(throwable), 0);
-            }
-        }).map(response -> ModelBridgeInternal.createCosmosAsyncDatabaseResponse(response, getClient())).single();
+        }).map(response -> ModelBridgeInternal.createCosmosAsyncDatabaseResponse(response, getClient())).single()
+            .doOnSuccess(response -> {
+                if (isTracingEnabled) {
+                    client.getTracerProvider().endSpan(parentContext.get(), Signal.complete(),
+                        response.getStatusCode());
+                }
+            }).doOnError(throwable -> {
+                if (isTracingEnabled) {
+                    client.getTracerProvider().endSpan(parentContext.get(), Signal.error(throwable), 0);
+                }
+            });
     }
 
     private Mono<Integer> replaceProvisionedThroughput(int requestUnitsPerSecond, Context context) {
