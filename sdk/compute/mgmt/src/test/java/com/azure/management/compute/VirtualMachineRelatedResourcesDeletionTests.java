@@ -5,44 +5,43 @@ package com.azure.management.compute;
 
 import com.azure.core.management.CloudException;
 import com.azure.management.RestClient;
-import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.network.Network;
 import com.azure.management.network.NetworkInterface;
 import com.azure.management.network.PublicIPAddress;
 import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.core.TestBase;
+import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.arm.models.Resource;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.storage.StorageAccount;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public class VirtualMachineRelatedResourcesDeletionTests extends ComputeManagementTest {
     public VirtualMachineRelatedResourcesDeletionTests() {
         super(TestBase.RunCondition.LIVE_ONLY);
     }
 
-    private String RG_NAME = "";
+    private String rgName = "";
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        RG_NAME = generateRandomResourceName("javacsmrg", 15);
+        rgName = generateRandomResourceName("javacsmrg", 15);
         super.initializeClients(restClient, defaultSubscription, domain);
     }
 
     @Override
     protected void cleanUpResources() {
         if (resourceManager != null) {
-            resourceManager.resourceGroups().beginDeleteByName(RG_NAME);
+            resourceManager.resourceGroups().beginDeleteByName(rgName);
         }
     }
 
@@ -50,14 +49,16 @@ public class VirtualMachineRelatedResourcesDeletionTests extends ComputeManageme
     public void canDeleteRelatedResourcesFromFailedParallelVMCreations() {
         final int desiredVMCount = 40;
         final Region region = Region.US_EAST;
-        final String resourceGroupName = RG_NAME;
+        final String resourceGroupName = rgName;
 
         // Create one resource group for everything, to ensure no reliance on resource groups
-        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(resourceGroupName).withRegion(region).create();
+        ResourceGroup resourceGroup =
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(region).create();
 
         // Needed for tracking related resources
         final Map<String, Collection<Creatable<? extends Resource>>> vmNonNicResourceDefinitions = new HashMap<>();
-        final Map<String, Creatable<NetworkInterface>> nicDefinitions = new HashMap<>(); // Tracking NICs separately because they have to be deleted first
+        final Map<String, Creatable<NetworkInterface>> nicDefinitions =
+            new HashMap<>(); // Tracking NICs separately because they have to be deleted first
         final Map<String, Creatable<VirtualMachine>> vmDefinitions = new HashMap<>();
         final Map<String, String> createdResourceIds = new HashMap<>();
         final List<Throwable> errors = new ArrayList<>();
@@ -68,7 +69,10 @@ public class VirtualMachineRelatedResourcesDeletionTests extends ComputeManageme
 
             // Define a network for each VM
             String networkName = sdkContext.randomResourceName("net", 14);
-            Creatable<Network> networkDefinition = networkManager.networks().define(networkName)
+            Creatable<Network> networkDefinition =
+                networkManager
+                    .networks()
+                    .define(networkName)
                     .withRegion(region)
                     .withExistingResourceGroup(resourceGroup)
                     .withAddressSpace("10.0." + i + ".0/29");
@@ -76,14 +80,21 @@ public class VirtualMachineRelatedResourcesDeletionTests extends ComputeManageme
 
             // Define a PIP for each VM
             String pipName = sdkContext.randomResourceName("pip", 14);
-            PublicIPAddress.DefinitionStages.WithCreate pipDefinition = this.networkManager.publicIPAddresses().define(pipName)
+            PublicIPAddress.DefinitionStages.WithCreate pipDefinition =
+                this
+                    .networkManager
+                    .publicIPAddresses()
+                    .define(pipName)
                     .withRegion(region)
                     .withExistingResourceGroup(resourceGroup);
             relatedDefinitions.add(pipDefinition);
 
             // Define a NIC for each VM
             String nicName = sdkContext.randomResourceName("nic", 14);
-            Creatable<NetworkInterface> nicDefinition = networkManager.networkInterfaces().define(nicName)
+            Creatable<NetworkInterface> nicDefinition =
+                networkManager
+                    .networkInterfaces()
+                    .define(nicName)
                     .withRegion(region)
                     .withExistingResourceGroup(resourceGroup)
                     .withNewPrimaryNetwork(networkDefinition)
@@ -92,14 +103,20 @@ public class VirtualMachineRelatedResourcesDeletionTests extends ComputeManageme
 
             // Define a storage account for each VM
             String storageAccountName = sdkContext.randomResourceName("st", 14);
-            Creatable<StorageAccount> storageAccountDefinition = storageManager.storageAccounts().define(storageAccountName)
+            Creatable<StorageAccount> storageAccountDefinition =
+                storageManager
+                    .storageAccounts()
+                    .define(storageAccountName)
                     .withRegion(region)
                     .withExistingResourceGroup(resourceGroup);
             relatedDefinitions.add(storageAccountDefinition);
 
             // Define an availability set for each VM
             String availabilitySetName = sdkContext.randomResourceName("as", 14);
-            Creatable<AvailabilitySet> availabilitySetDefinition = computeManager.availabilitySets().define(availabilitySetName)
+            Creatable<AvailabilitySet> availabilitySetDefinition =
+                computeManager
+                    .availabilitySets()
+                    .define(availabilitySetName)
                     .withRegion(region)
                     .withExistingResourceGroup(resourceGroup);
             relatedDefinitions.add(availabilitySetDefinition);
@@ -108,13 +125,16 @@ public class VirtualMachineRelatedResourcesDeletionTests extends ComputeManageme
 
             // Define a VM
             String userName;
-            if (i == desiredVMCount/2) {
+            if (i == desiredVMCount / 2) {
                 // Intentionally cause a failure in one of the VMs
                 userName = "";
             } else {
                 userName = "tester";
             }
-            Creatable<VirtualMachine> vmDefinition = computeManager.virtualMachines().define(vmName)
+            Creatable<VirtualMachine> vmDefinition =
+                computeManager
+                    .virtualMachines()
+                    .define(vmName)
                     .withRegion(region)
                     .withExistingResourceGroup(resourceGroup)
                     .withNewPrimaryNetworkInterface(nicDefinition)
@@ -132,8 +152,11 @@ public class VirtualMachineRelatedResourcesDeletionTests extends ComputeManageme
         }
 
         // Start the parallel creation of everything
-        computeManager.virtualMachines().createAsync(new ArrayList<>(vmDefinitions.values()))
-                .map(createdResource -> {
+        computeManager
+            .virtualMachines()
+            .createAsync(new ArrayList<>(vmDefinitions.values()))
+            .map(
+                createdResource -> {
                     if (createdResource instanceof Resource) {
                         Resource resource = (Resource) createdResource;
                         System.out.println("Created: " + resource.id());
@@ -155,11 +178,12 @@ public class VirtualMachineRelatedResourcesDeletionTests extends ComputeManageme
                     }
                     return createdResource;
                 })
-                .onErrorResume(e -> {
+            .onErrorResume(
+                e -> {
                     errors.add(e);
                     return Mono.empty();
                 })
-                .singleOrEmpty();
+            .singleOrEmpty();
 
         // Delete remaining successfully created NICs of failed VM creations
         Collection<String> nicIdsToDelete = new ArrayList<>();
@@ -202,23 +226,30 @@ public class VirtualMachineRelatedResourcesDeletionTests extends ComputeManageme
 
         // Verifications
         final int successfulVMCount = desiredVMCount - vmNonNicResourceDefinitions.size();
-        final int actualVMCount = TestUtilities.getSize(computeManager.virtualMachines().listByResourceGroup(resourceGroupName));
+        final int actualVMCount =
+            TestUtilities.getSize(computeManager.virtualMachines().listByResourceGroup(resourceGroupName));
         System.out.println("Number of actual successful VMs: " + actualVMCount);
 
         Assertions.assertEquals(successfulVMCount, actualVMCount);
-        final int actualNicCount = TestUtilities.getSize(networkManager.networkInterfaces().listByResourceGroup(resourceGroupName));
+        final int actualNicCount =
+            TestUtilities.getSize(networkManager.networkInterfaces().listByResourceGroup(resourceGroupName));
         Assertions.assertEquals(successfulVMCount, actualNicCount);
-        final int actualNetworkCount = TestUtilities.getSize(networkManager.networks().listByResourceGroup(resourceGroupName));
+        final int actualNetworkCount =
+            TestUtilities.getSize(networkManager.networks().listByResourceGroup(resourceGroupName));
         Assertions.assertEquals(successfulVMCount, actualNetworkCount);
-        final int actualPipCount = TestUtilities.getSize(networkManager.publicIPAddresses().listByResourceGroup(resourceGroupName));
+        final int actualPipCount =
+            TestUtilities.getSize(networkManager.publicIPAddresses().listByResourceGroup(resourceGroupName));
         Assertions.assertEquals(successfulVMCount, actualPipCount);
-        final int actualAvailabilitySetCount = TestUtilities.getSize(computeManager.availabilitySets().listByResourceGroup(resourceGroupName));
+        final int actualAvailabilitySetCount =
+            TestUtilities.getSize(computeManager.availabilitySets().listByResourceGroup(resourceGroupName));
         Assertions.assertEquals(successfulVMCount, actualAvailabilitySetCount);
-        final int actualStorageAccountCount = TestUtilities.getSize(storageManager.storageAccounts().listByResourceGroup(resourceGroupName));
+        final int actualStorageAccountCount =
+            TestUtilities.getSize(storageManager.storageAccounts().listByResourceGroup(resourceGroupName));
         Assertions.assertEquals(successfulVMCount, actualStorageAccountCount);
 
         // Verify that at least one VM failed.
-        // TODO: Ideally only one, but today the internal RX logic terminates eagerly -- need to change that for parallel creation to terminate more "lazily" in the future
+        // TODO: Ideally only one, but today the internal RX logic terminates eagerly -- need to change that for
+        // parallel creation to terminate more "lazily" in the future
         Assertions.assertTrue(successfulVMCount < desiredVMCount);
     }
- }
+}
