@@ -21,14 +21,14 @@ import java.util.concurrent.ConcurrentHashMap;
  * ownership details including checkpointing information in-memory. Using this implementation will only facilitate
  * checkpointing and load balancing of Event Processors running within this process.
  */
-public class InMemoryCheckpointStore implements CheckpointStore {
+public class SampleCheckpointStore implements CheckpointStore {
 
     private static final String OWNERSHIP = "ownership";
     private static final String SEPARATOR = "/";
     private static final String CHECKPOINT = "checkpoint";
     private final Map<String, PartitionOwnership> partitionOwnershipMap = new ConcurrentHashMap<>();
     private final Map<String, Checkpoint> checkpointsMap = new ConcurrentHashMap<>();
-    private final ClientLogger logger = new ClientLogger(InMemoryCheckpointStore.class);
+    private final ClientLogger logger = new ClientLogger(SampleCheckpointStore.class);
 
     /**
      * {@inheritDoc}
