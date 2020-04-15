@@ -152,6 +152,10 @@
     "source": "specification/keyvault/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "kubernetesconfiguration/resource-manager": {
+    "source": "specification/kubernetesconfiguration/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "loganalytics/data-plane": {
     "source": "specification/operationalinsights/data-plane/readme.md",
     "args": "--payload-flattening-threshold=1 --override-client-name=LogAnalyticsDataClient"
@@ -318,6 +322,10 @@
     "fconfig": {
       "\"moduleName\"": "\"StreamAnalytics\""
     }
+  },
+  "support/resource-manager": {
+    "source": "specification/support/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
   },
   "synapse/resource-manager": {
     "source": "specification/synapse/resource-manager/readme.md",

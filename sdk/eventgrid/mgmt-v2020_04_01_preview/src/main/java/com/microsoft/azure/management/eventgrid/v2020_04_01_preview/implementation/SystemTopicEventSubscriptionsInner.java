@@ -10,8 +10,12 @@ package com.microsoft.azure.management.eventgrid.v2020_04_01_preview.implementat
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.EventSubscriptionUpdateParameters;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
@@ -29,6 +33,7 @@ import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -93,7 +98,11 @@ public class SystemTopicEventSubscriptionsInner {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventgrid.v2020_04_01_preview.SystemTopicEventSubscriptions listBySystemTopic" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/systemTopics/{systemTopicName}/eventSubscriptions")
-        Observable<Response<ResponseBody>> listBySystemTopic(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("systemTopicName") String systemTopicName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listBySystemTopic(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("systemTopicName") String systemTopicName, @Query("api-version") String apiVersion, @Query("$filter") String filter, @Query("$top") Integer top, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventgrid.v2020_04_01_preview.SystemTopicEventSubscriptions listBySystemTopicNext" })
+        @GET
+        Observable<Response<ResponseBody>> listBySystemTopicNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -862,10 +871,16 @@ public class SystemTopicEventSubscriptionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the List&lt;EventSubscriptionInner&gt; object if successful.
+     * @return the PagedList&lt;EventSubscriptionInner&gt; object if successful.
      */
-    public List<EventSubscriptionInner> listBySystemTopic(String resourceGroupName, String systemTopicName) {
-        return listBySystemTopicWithServiceResponseAsync(resourceGroupName, systemTopicName).toBlocking().single().body();
+    public PagedList<EventSubscriptionInner> listBySystemTopic(final String resourceGroupName, final String systemTopicName) {
+        ServiceResponse<Page<EventSubscriptionInner>> response = listBySystemTopicSinglePageAsync(resourceGroupName, systemTopicName).toBlocking().single();
+        return new PagedList<EventSubscriptionInner>(response.body()) {
+            @Override
+            public Page<EventSubscriptionInner> nextPage(String nextPageLink) {
+                return listBySystemTopicNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
     }
 
     /**
@@ -878,8 +893,16 @@ public class SystemTopicEventSubscriptionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<EventSubscriptionInner>> listBySystemTopicAsync(String resourceGroupName, String systemTopicName, final ServiceCallback<List<EventSubscriptionInner>> serviceCallback) {
-        return ServiceFuture.fromResponse(listBySystemTopicWithServiceResponseAsync(resourceGroupName, systemTopicName), serviceCallback);
+    public ServiceFuture<List<EventSubscriptionInner>> listBySystemTopicAsync(final String resourceGroupName, final String systemTopicName, final ListOperationCallback<EventSubscriptionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listBySystemTopicSinglePageAsync(resourceGroupName, systemTopicName),
+            new Func1<String, Observable<ServiceResponse<Page<EventSubscriptionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<EventSubscriptionInner>>> call(String nextPageLink) {
+                    return listBySystemTopicNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
@@ -889,15 +912,16 @@ public class SystemTopicEventSubscriptionsInner {
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;EventSubscriptionInner&gt; object
+     * @return the observable to the PagedList&lt;EventSubscriptionInner&gt; object
      */
-    public Observable<List<EventSubscriptionInner>> listBySystemTopicAsync(String resourceGroupName, String systemTopicName) {
-        return listBySystemTopicWithServiceResponseAsync(resourceGroupName, systemTopicName).map(new Func1<ServiceResponse<List<EventSubscriptionInner>>, List<EventSubscriptionInner>>() {
-            @Override
-            public List<EventSubscriptionInner> call(ServiceResponse<List<EventSubscriptionInner>> response) {
-                return response.body();
-            }
-        });
+    public Observable<Page<EventSubscriptionInner>> listBySystemTopicAsync(final String resourceGroupName, final String systemTopicName) {
+        return listBySystemTopicWithServiceResponseAsync(resourceGroupName, systemTopicName)
+            .map(new Func1<ServiceResponse<Page<EventSubscriptionInner>>, Page<EventSubscriptionInner>>() {
+                @Override
+                public Page<EventSubscriptionInner> call(ServiceResponse<Page<EventSubscriptionInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
@@ -907,9 +931,32 @@ public class SystemTopicEventSubscriptionsInner {
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;EventSubscriptionInner&gt; object
+     * @return the observable to the PagedList&lt;EventSubscriptionInner&gt; object
      */
-    public Observable<ServiceResponse<List<EventSubscriptionInner>>> listBySystemTopicWithServiceResponseAsync(String resourceGroupName, String systemTopicName) {
+    public Observable<ServiceResponse<Page<EventSubscriptionInner>>> listBySystemTopicWithServiceResponseAsync(final String resourceGroupName, final String systemTopicName) {
+        return listBySystemTopicSinglePageAsync(resourceGroupName, systemTopicName)
+            .concatMap(new Func1<ServiceResponse<Page<EventSubscriptionInner>>, Observable<ServiceResponse<Page<EventSubscriptionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<EventSubscriptionInner>>> call(ServiceResponse<Page<EventSubscriptionInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listBySystemTopicNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * List event subscriptions of a system topic.
+     * List event subscriptions that belong to a specific system topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param systemTopicName Name of the system topic.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;EventSubscriptionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<EventSubscriptionInner>>> listBySystemTopicSinglePageAsync(final String resourceGroupName, final String systemTopicName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -922,18 +969,15 @@ public class SystemTopicEventSubscriptionsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.listBySystemTopic(this.client.subscriptionId(), resourceGroupName, systemTopicName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<EventSubscriptionInner>>>>() {
+        final String filter = null;
+        final Integer top = null;
+        return service.listBySystemTopic(this.client.subscriptionId(), resourceGroupName, systemTopicName, this.client.apiVersion(), filter, top, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<EventSubscriptionInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<List<EventSubscriptionInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<EventSubscriptionInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<EventSubscriptionInner>> result = listBySystemTopicDelegate(response);
-                        List<EventSubscriptionInner> items = null;
-                        if (result.body() != null) {
-                            items = result.body().items();
-                        }
-                        ServiceResponse<List<EventSubscriptionInner>> clientResponse = new ServiceResponse<List<EventSubscriptionInner>>(items, result.response());
-                        return Observable.just(clientResponse);
+                        ServiceResponse<PageImpl<EventSubscriptionInner>> result = listBySystemTopicDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<EventSubscriptionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -941,9 +985,256 @@ public class SystemTopicEventSubscriptionsInner {
             });
     }
 
-    private ServiceResponse<PageImpl1<EventSubscriptionInner>> listBySystemTopicDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl1<EventSubscriptionInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl1<EventSubscriptionInner>>() { }.getType())
+    /**
+     * List event subscriptions of a system topic.
+     * List event subscriptions that belong to a specific system topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param systemTopicName Name of the system topic.
+     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations. These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results to be returned is 20 items per page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;EventSubscriptionInner&gt; object if successful.
+     */
+    public PagedList<EventSubscriptionInner> listBySystemTopic(final String resourceGroupName, final String systemTopicName, final String filter, final Integer top) {
+        ServiceResponse<Page<EventSubscriptionInner>> response = listBySystemTopicSinglePageAsync(resourceGroupName, systemTopicName, filter, top).toBlocking().single();
+        return new PagedList<EventSubscriptionInner>(response.body()) {
+            @Override
+            public Page<EventSubscriptionInner> nextPage(String nextPageLink) {
+                return listBySystemTopicNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * List event subscriptions of a system topic.
+     * List event subscriptions that belong to a specific system topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param systemTopicName Name of the system topic.
+     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations. These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results to be returned is 20 items per page.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<EventSubscriptionInner>> listBySystemTopicAsync(final String resourceGroupName, final String systemTopicName, final String filter, final Integer top, final ListOperationCallback<EventSubscriptionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listBySystemTopicSinglePageAsync(resourceGroupName, systemTopicName, filter, top),
+            new Func1<String, Observable<ServiceResponse<Page<EventSubscriptionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<EventSubscriptionInner>>> call(String nextPageLink) {
+                    return listBySystemTopicNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * List event subscriptions of a system topic.
+     * List event subscriptions that belong to a specific system topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param systemTopicName Name of the system topic.
+     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations. These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results to be returned is 20 items per page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;EventSubscriptionInner&gt; object
+     */
+    public Observable<Page<EventSubscriptionInner>> listBySystemTopicAsync(final String resourceGroupName, final String systemTopicName, final String filter, final Integer top) {
+        return listBySystemTopicWithServiceResponseAsync(resourceGroupName, systemTopicName, filter, top)
+            .map(new Func1<ServiceResponse<Page<EventSubscriptionInner>>, Page<EventSubscriptionInner>>() {
+                @Override
+                public Page<EventSubscriptionInner> call(ServiceResponse<Page<EventSubscriptionInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * List event subscriptions of a system topic.
+     * List event subscriptions that belong to a specific system topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param systemTopicName Name of the system topic.
+     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations. These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results to be returned is 20 items per page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;EventSubscriptionInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<EventSubscriptionInner>>> listBySystemTopicWithServiceResponseAsync(final String resourceGroupName, final String systemTopicName, final String filter, final Integer top) {
+        return listBySystemTopicSinglePageAsync(resourceGroupName, systemTopicName, filter, top)
+            .concatMap(new Func1<ServiceResponse<Page<EventSubscriptionInner>>, Observable<ServiceResponse<Page<EventSubscriptionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<EventSubscriptionInner>>> call(ServiceResponse<Page<EventSubscriptionInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listBySystemTopicNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * List event subscriptions of a system topic.
+     * List event subscriptions that belong to a specific system topic.
+     *
+    ServiceResponse<PageImpl<EventSubscriptionInner>> * @param resourceGroupName The name of the resource group within the user's subscription.
+    ServiceResponse<PageImpl<EventSubscriptionInner>> * @param systemTopicName Name of the system topic.
+    ServiceResponse<PageImpl<EventSubscriptionInner>> * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations. These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+    ServiceResponse<PageImpl<EventSubscriptionInner>> * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results to be returned is 20 items per page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;EventSubscriptionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<EventSubscriptionInner>>> listBySystemTopicSinglePageAsync(final String resourceGroupName, final String systemTopicName, final String filter, final Integer top) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (systemTopicName == null) {
+            throw new IllegalArgumentException("Parameter systemTopicName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listBySystemTopic(this.client.subscriptionId(), resourceGroupName, systemTopicName, this.client.apiVersion(), filter, top, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<EventSubscriptionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<EventSubscriptionInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<EventSubscriptionInner>> result = listBySystemTopicDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<EventSubscriptionInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<EventSubscriptionInner>> listBySystemTopicDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<EventSubscriptionInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<EventSubscriptionInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * List event subscriptions of a system topic.
+     * List event subscriptions that belong to a specific system topic.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;EventSubscriptionInner&gt; object if successful.
+     */
+    public PagedList<EventSubscriptionInner> listBySystemTopicNext(final String nextPageLink) {
+        ServiceResponse<Page<EventSubscriptionInner>> response = listBySystemTopicNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<EventSubscriptionInner>(response.body()) {
+            @Override
+            public Page<EventSubscriptionInner> nextPage(String nextPageLink) {
+                return listBySystemTopicNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * List event subscriptions of a system topic.
+     * List event subscriptions that belong to a specific system topic.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<EventSubscriptionInner>> listBySystemTopicNextAsync(final String nextPageLink, final ServiceFuture<List<EventSubscriptionInner>> serviceFuture, final ListOperationCallback<EventSubscriptionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listBySystemTopicNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<EventSubscriptionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<EventSubscriptionInner>>> call(String nextPageLink) {
+                    return listBySystemTopicNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * List event subscriptions of a system topic.
+     * List event subscriptions that belong to a specific system topic.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;EventSubscriptionInner&gt; object
+     */
+    public Observable<Page<EventSubscriptionInner>> listBySystemTopicNextAsync(final String nextPageLink) {
+        return listBySystemTopicNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<EventSubscriptionInner>>, Page<EventSubscriptionInner>>() {
+                @Override
+                public Page<EventSubscriptionInner> call(ServiceResponse<Page<EventSubscriptionInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * List event subscriptions of a system topic.
+     * List event subscriptions that belong to a specific system topic.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;EventSubscriptionInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<EventSubscriptionInner>>> listBySystemTopicNextWithServiceResponseAsync(final String nextPageLink) {
+        return listBySystemTopicNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<EventSubscriptionInner>>, Observable<ServiceResponse<Page<EventSubscriptionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<EventSubscriptionInner>>> call(ServiceResponse<Page<EventSubscriptionInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listBySystemTopicNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * List event subscriptions of a system topic.
+     * List event subscriptions that belong to a specific system topic.
+     *
+    ServiceResponse<PageImpl<EventSubscriptionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;EventSubscriptionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<EventSubscriptionInner>>> listBySystemTopicNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listBySystemTopicNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<EventSubscriptionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<EventSubscriptionInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<EventSubscriptionInner>> result = listBySystemTopicNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<EventSubscriptionInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<EventSubscriptionInner>> listBySystemTopicNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<EventSubscriptionInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<EventSubscriptionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

@@ -56,6 +56,13 @@ public interface ChangeFeedProcessor {
     Mono<Void> stop();
 
     /**
+     * Returns the state of the change feed processor.
+     *
+     * @return true if the change feed processor is currently active and running.
+     */
+    boolean isStarted();
+
+    /**
      * Helper static method to buildAsyncClient {@link ChangeFeedProcessor} instances
      * as logical representation of the Azure Cosmos DB database service.
      * <p>

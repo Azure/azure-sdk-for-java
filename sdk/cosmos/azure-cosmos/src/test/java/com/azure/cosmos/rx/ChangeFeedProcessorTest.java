@@ -15,7 +15,6 @@ import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
-import com.azure.cosmos.models.SqlParameterList;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.Utils;
@@ -38,6 +37,7 @@ import reactor.core.scheduler.Schedulers;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -113,6 +113,8 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
             log.error(e.getMessage());
         }
 
+        assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
+
         changeFeedProcessor.stop().subscribeOn(Schedulers.elastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
         for (CosmosItemProperties item : createdDocuments) {
@@ -177,6 +179,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         }
 
         assertThat(remainingWork >= 0).as("Failed to receive all the feed documents").isTrue();
+        assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
 
         changeFeedProcessor.stop().subscribeOn(Schedulers.elastic()).timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
@@ -261,8 +264,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                     param.setName("@PartitionLeasePrefix");
                     param.setValue(leasePrefix);
                     SqlQuerySpec querySpec = new SqlQuerySpec(
-                        "SELECT * FROM c WHERE STARTSWITH(c.id, @PartitionLeasePrefix)",
-                        new SqlParameterList(param));
+                        "SELECT * FROM c WHERE STARTSWITH(c.id, @PartitionLeasePrefix)", Collections.singletonList(param));
 
                     FeedOptions feedOptions = new FeedOptions();
 

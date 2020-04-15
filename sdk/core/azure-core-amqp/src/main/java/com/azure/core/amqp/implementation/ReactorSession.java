@@ -13,7 +13,6 @@ import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.Symbol;
-import org.apache.qpid.proton.amqp.UnknownDescribedType;
 import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.messaging.Target;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
@@ -135,6 +134,8 @@ public class ReactorSession implements AmqpSession {
             return;
         }
 
+        logger.info("sessionId[{}]: Disposing of session.", sessionName);
+
         session.close();
         subscriptions.dispose();
 
@@ -166,6 +167,11 @@ public class ReactorSession implements AmqpSession {
      */
     @Override
     public Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry) {
+        if (isDisposed()) {
+            return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
+                "Cannot create send link '%s' from a closed session. entityPath[%s]", linkName, entityPath))));
+        }
+
         final LinkSubscription<AmqpSendLink> existing = openSendLinks.get(linkName);
         if (existing != null) {
             logger.verbose("linkName[{}]: Returning existing send link.", linkName);
@@ -254,9 +260,14 @@ public class ReactorSession implements AmqpSession {
      * @return A new instance of an {@link AmqpReceiveLink} with the correct properties set.
      */
     protected Mono<AmqpReceiveLink> createConsumer(String linkName, String entityPath, Duration timeout,
-        AmqpRetryPolicy retry, Map<Symbol, UnknownDescribedType> sourceFilters,
+        AmqpRetryPolicy retry, Map<Symbol, Object> sourceFilters,
         Map<Symbol, Object> receiverProperties, Symbol[] receiverDesiredCapabilities, SenderSettleMode senderSettleMode,
         ReceiverSettleMode receiverSettleMode) {
+
+        if (isDisposed()) {
+            return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
+                "Cannot create send link '%s' from a closed session. entityPath[%s]", linkName, entityPath))));
+        }
 
         final LinkSubscription<AmqpReceiveLink> existingLink = openReceiveLinks.get(linkName);
         if (existingLink != null) {
@@ -344,7 +355,7 @@ public class ReactorSession implements AmqpSession {
      * NOTE: Ensure this is invoked using the reactor dispatcher because proton-j is not thread-safe.
      */
     private LinkSubscription<AmqpReceiveLink> getSubscription(String linkName, String entityPath,
-        Map<Symbol, UnknownDescribedType> sourceFilters, Map<Symbol, Object> receiverProperties,
+        Map<Symbol, Object> sourceFilters, Map<Symbol, Object> receiverProperties,
         Symbol[] receiverDesiredCapabilities, SenderSettleMode senderSettleMode, ReceiverSettleMode receiverSettleMode,
         TokenManager tokenManager) {
 

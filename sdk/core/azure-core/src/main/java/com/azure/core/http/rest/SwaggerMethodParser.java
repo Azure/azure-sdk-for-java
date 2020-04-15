@@ -460,14 +460,15 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
             return null;
         }
 
+        String encodedKey = UrlEscapers.FORM_ESCAPER.escape(key);
         if (value instanceof List<?>) {
             return ((List<?>) value).stream()
                 .map(element -> serializeAndEncodeFormValue(serializer, element, shouldEncode))
                 .filter(Objects::nonNull)
-                .map(formValue -> key + "=" + formValue)
+                .map(formValue -> encodedKey + "=" + formValue)
                 .collect(Collectors.joining("&"));
         } else {
-            return key + "=" + serializeAndEncodeFormValue(serializer, value, shouldEncode);
+            return encodedKey + "=" + serializeAndEncodeFormValue(serializer, value, shouldEncode);
         }
     }
 

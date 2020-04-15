@@ -14,8 +14,8 @@ import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.ProgressReporter;
-import com.azure.storage.common.implementation.UploadBufferPool;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.UploadBufferPool;
 import com.azure.storage.common.implementation.UploadUtils;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
@@ -33,28 +33,31 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuples;
 
+import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousFileChannel;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.OpenOption;
 import java.nio.file.StandardOpenOption;
-import java.util.HashSet;
-import java.util.Set;
-import java.io.IOException;
-import java.nio.channels.AsynchronousFileChannel;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.fluxError;
+import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
+
 
 /**
  * This class provides a client that contains file operations for Azure Storage Data Lake. Operations provided by
@@ -100,7 +103,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
     DataLakeFileAsyncClient(DataLakePathAsyncClient pathAsyncClient) {
         super(pathAsyncClient.getHttpPipeline(), pathAsyncClient.getPathUrl(), pathAsyncClient.getServiceVersion(),
-            pathAsyncClient.getAccountName(), pathAsyncClient.getFileSystemName(), pathAsyncClient.getObjectPath(),
+            pathAsyncClient.getAccountName(), pathAsyncClient.getFileSystemName(), pathAsyncClient.pathName,
             PathResourceType.FILE, pathAsyncClient.getBlockBlobAsyncClient());
     }
 
@@ -508,7 +511,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     /**
      * Appends data to the specified resource to later be flushed (written) by a call to flush
      *
-     * <p><strong>Code Samples>Code Samples</strong></p>
+     * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.append#Flux-long-long}
      *
@@ -534,7 +537,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     /**
      * Appends data to the specified resource to later be flushed (written) by a call to flush
      *
-     * <p><strong>Code Samples>Code Samples</strong></p>
+     * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.appendWithResponse#Flux-long-long-byte-String}
      *
@@ -579,7 +582,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * The previously uploaded data must be contiguous.
      * <p>By default this method will not overwrite existing data.</p>
      *
-     * <p><strong>Code Samples>Code Samples</strong></p>
+     * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.flush#long}
      *
@@ -603,7 +606,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * Flushes (writes) data previously appended to the file through a call to append.
      * The previously uploaded data must be contiguous.
      *
-     * <p><strong>Code Samples>Code Samples</strong></p>
+     * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.flush#long-boolean}
      *
@@ -633,7 +636,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * Flushes (writes) data previously appended to the file through a call to append.
      * The previously uploaded data must be contiguous.
      *
-     * <p><strong>Code Samples>Code Samples</strong></p>
+     * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.flushWithResponse#long-boolean-boolean-PathHttpHeaders-DataLakeRequestConditions}
      *
@@ -652,8 +655,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     public Mono<Response<PathInfo>> flushWithResponse(long position, boolean retainUncommittedData, boolean close,
         PathHttpHeaders httpHeaders, DataLakeRequestConditions requestConditions) {
         try {
-            return withContext(context -> flushWithResponse(position, retainUncommittedData, close, httpHeaders,
-                requestConditions, context));
+            return withContext(context -> flushWithResponse(position, retainUncommittedData,
+                close, httpHeaders, requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -671,9 +674,11 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
             .setIfNoneMatch(requestConditions.getIfNoneMatch())
             .setIfModifiedSince(requestConditions.getIfModifiedSince())
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
+        context = context == null ? Context.NONE : context;
 
         return this.dataLakeStorage.paths().flushDataWithRestResponseAsync(null, position, retainUncommittedData, close,
-            (long) 0, null, httpHeaders, lac, mac, context)
+            (long) 0, null, httpHeaders, lac, mac,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
                 response.getDeserializedHeaders().getLastModified())));
     }

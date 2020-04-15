@@ -1,4 +1,4 @@
-# Azure Identity client library for Java
+# Azure Identity shared library for Java
 The Azure Identity library provides Azure Active Directory token authentication support across the Azure SDK. It provides a set of TokenCredential implementations which can be used to construct Azure SDK clients which support AAD token authentication.
 
  This library currently supports:

@@ -21,7 +21,9 @@ trigger:
     include:
       - sdk/appconfiguration/
     exclude:
-      - sdk/appconfiguration/mgmt-
+      - sdk/appconfiguration/mgmt-v2019_02_01_preview
+      - sdk/appconfiguration/mgmt-v2019_10_01
+      - sdk/appconfiguration/mgmt-v2019_11_01_preview
 
 pr:
   branches:
@@ -34,7 +36,9 @@ pr:
     include:
       - sdk/appconfiguration/
     exclude:
-      - sdk/appconfiguration/mgmt-
+      - sdk/appconfiguration/mgmt-v2019_02_01_preview
+      - sdk/appconfiguration/mgmt-v2019_10_01
+      - sdk/appconfiguration/mgmt-v2019_11_01_preview
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

@@ -399,6 +399,12 @@ public class SwaggerMethodParserTests {
         @Get("test")
         void encodedFormBody(@FormParam(value = "name", encoded = true) String name, @FormParam("age") Integer age,
             @FormParam("dob") OffsetDateTime dob, @FormParam("favoriteColors") List<String> favoriteColors);
+
+        @Get("test")
+        void encodedFormKey(@FormParam(value = "x:ms:value") String value);
+
+        @Get("test")
+        void encodedFormKey2(@FormParam(value = "x:ms:value", encoded = true) String value);
     }
 
     @ParameterizedTest
@@ -420,6 +426,8 @@ public class SwaggerMethodParserTests {
             List.class);
         Method encodedFormBody = clazz.getDeclaredMethod("encodedFormBody", String.class, Integer.class,
             OffsetDateTime.class, List.class);
+        Method encodedFormKey = clazz.getDeclaredMethod("encodedFormKey", String.class);
+        Method encodedFormKey2 = clazz.getDeclaredMethod("encodedFormKey2", String.class);
 
         OffsetDateTime dob = OffsetDateTime.of(1980, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
         List<String> favoriteColors = Arrays.asList("blue", "green");
@@ -442,7 +450,11 @@ public class SwaggerMethodParserTests {
             Arguments.of(encodedFormBody, toObjectArray("John Doe", 40, null, favoriteColors),
                 APPLICATION_X_WWW_FORM_URLENCODED, "name=John Doe&age=40&favoriteColors=blue&favoriteColors=green"),
             Arguments.of(encodedFormBody, toObjectArray("John Doe", 40, null, badFavoriteColors),
-                APPLICATION_X_WWW_FORM_URLENCODED, "name=John Doe&age=40&favoriteColors=green")
+                APPLICATION_X_WWW_FORM_URLENCODED, "name=John Doe&age=40&favoriteColors=green"),
+            Arguments.of(encodedFormKey, toObjectArray("value"), APPLICATION_X_WWW_FORM_URLENCODED,
+                "x%3ams%3avalue=value"),
+            Arguments.of(encodedFormKey2, toObjectArray("value"), APPLICATION_X_WWW_FORM_URLENCODED,
+                "x%3ams%3avalue=value")
         );
     }
 

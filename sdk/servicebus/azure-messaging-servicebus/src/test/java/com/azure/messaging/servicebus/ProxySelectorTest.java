@@ -68,8 +68,8 @@ public class ProxySelectorTest extends IntegrationTestBase {
             .connectionString(getConnectionString())
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
             .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)))
-            .buildSenderClientBuilder()
-            .entityName(queueName)
+            .sender()
+            .queueName(queueName)
             .buildAsyncClient();
 
         try {

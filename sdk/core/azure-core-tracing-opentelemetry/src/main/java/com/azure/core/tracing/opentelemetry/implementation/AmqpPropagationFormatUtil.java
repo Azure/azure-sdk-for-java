@@ -9,7 +9,7 @@ import io.opentelemetry.trace.SpanContext;
 import io.opentelemetry.trace.SpanId;
 import io.opentelemetry.trace.TraceFlags;
 import io.opentelemetry.trace.TraceId;
-import io.opentelemetry.trace.Tracestate;
+import io.opentelemetry.trace.TraceState;
 
 import java.util.Objects;
 
@@ -71,13 +71,13 @@ public final class AmqpPropagationFormatUtil {
                 TraceId.getInvalid(),
                 SpanId.getInvalid(),
                 TraceFlags.getDefault(),
-                Tracestate.getDefault()
+                TraceState.getDefault()
             );
         }
         return SpanContext.create(
             TraceId.fromLowerBase16(diagnosticId, 3),
             SpanId.fromLowerBase16(diagnosticId, 36),
             TraceFlags.fromLowerBase16(diagnosticId, 53),
-            Tracestate.builder().build());
+            TraceState.builder().build());
     }
 }
