@@ -78,13 +78,13 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure</artifactId>
-      <version>1.33.0</version>
+      <version>1.24.1</version> <!-- {x-version-update;com.microsoft.azure:azure;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-mgmt-network</artifactId>
-      <version>1.33.0</version> <!-- {x-version-update;com.microsoft.azure:azure-storage;external_dependency} -->
+      <version>1.33.0</version> <!-- {x-version-update;com.microsoft.azure:azure-mgmt-network;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
