@@ -11,6 +11,7 @@ public class ServiceBusErrorContext {
     private final String fullyQualifiedNamespace;
 
     private final String entityPath;
+    private final String sessionId;
 
     /**
      * Creates a new instance of {@link ServiceBusErrorContext}.
@@ -23,14 +24,23 @@ public class ServiceBusErrorContext {
      * is {@code null}.
      */
     ServiceBusErrorContext(final Throwable throwable, final String fullyQualifiedNamespace,
-        final String entityPath) {
+        final String entityPath, final String sessionId) {
         this.throwable = Objects.requireNonNull(throwable, "'throwable' cannot be null");
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null");
-        this.entityPath = Objects.requireNonNull(entityPath, "'throwentityPathable' cannot be null");
+        this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null");
+        this.sessionId = Objects.requireNonNull(sessionId, "'sessionId' cannot be null");
     }
 
     public String getFullyQualifiedNamespace() {
         return fullyQualifiedNamespace;
+    }
+
+    public Throwable getThrowable() {
+        return throwable;
+    }
+
+    public String getSessionId() {
+        return sessionId;
     }
 
     public String getEntityPath() {
