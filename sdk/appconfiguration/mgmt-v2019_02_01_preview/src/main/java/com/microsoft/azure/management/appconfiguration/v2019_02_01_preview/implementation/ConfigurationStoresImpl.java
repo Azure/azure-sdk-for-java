@@ -23,6 +23,8 @@ import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.management.appconfiguration.v2019_02_01_preview.ApiKey;
+import com.microsoft.azure.management.appconfiguration.v2019_02_01_preview.KeyValue;
+import com.microsoft.azure.management.appconfiguration.v2019_02_01_preview.ListKeyValueParameters;
 
 class ConfigurationStoresImpl extends GroupableResourcesCoreImpl<ConfigurationStore, ConfigurationStoreImpl, ConfigurationStoreInner, ConfigurationStoresInner, AppConfigurationManager>  implements ConfigurationStores {
     protected ConfigurationStoresImpl(AppConfigurationManager manager) {
@@ -152,6 +154,18 @@ class ConfigurationStoresImpl extends GroupableResourcesCoreImpl<ConfigurationSt
             @Override
             public ApiKey call(ApiKeyInner inner) {
                 return new ApiKeyImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<KeyValue> listKeyValueAsync(String resourceGroupName, String configStoreName, ListKeyValueParameters listKeyValueParameters) {
+        ConfigurationStoresInner client = this.inner();
+        return client.listKeyValueAsync(resourceGroupName, configStoreName, listKeyValueParameters)
+        .map(new Func1<KeyValueInner, KeyValue>() {
+            @Override
+            public KeyValue call(KeyValueInner inner) {
+                return new KeyValueImpl(inner, manager());
             }
         });
     }
