@@ -338,10 +338,11 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
                 for (MessageReceiver rcvr : MessagingFactory.this.watchdogReceivers) {
                     TRACE_LOGGER.info("Watchdog checking receiver " + rcvr.getClientId() + " last: " + rcvr.getLastReceivedTime() + "  allowable: " + longestAgoAllowable);
                     if (!rcvr.getIsClosingOrClosed() && (rcvr.getLastReceivedTime() <= longestAgoAllowable)) {
+                        // TODO: is one dead receiver enough to declare the connection bad?
+                        // Or should we wait for all receivers to be silent?
                         silentReceiverDetected = true;
                         silentClientId = rcvr.getClientId();
                         TRACE_LOGGER.info("Watchdog declaring silence on " + silentClientId);
-                        // TODO: is one dead receiver enough to declare the connection bad?
                         break;
                     }
                 }
@@ -352,7 +353,11 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
                 ErrorCondition suspect = new ErrorCondition(ClientConstants.WATCHDOG_ERROR, "receiver watchdog has fired on " + silentClientId);
                 MessagingFactory.this.connection.setCondition(suspect);
                 MessagingFactory.this.connection.close();
-                // TODO add delay here
+                // TODO TODO TODO
+                // If the remote host is still responding at the TCP level, then the socket will close normally
+                // and cleanup will happen automatically. However, if it isn't, then we must call onConnectionError
+                // here in order to force cleanup. Before this watchdog is released, must add timeout mechanism here
+                // that waits for some period and then forces cleanup if it has not happened already.
                 MessagingFactory.this.onConnectionError(suspect);
             }
 
