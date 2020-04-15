@@ -16,7 +16,6 @@ import java.util.List;
 /**
  * a collection of blob tags.
  */
-@JacksonXmlRootElement(localName = "TagSet")
 @Fluent
 public final class BlobTagSet {
     private static final class TagSetWrapper {

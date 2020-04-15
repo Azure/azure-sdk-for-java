@@ -311,13 +311,14 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
      * RehydratePriority, RequestConditions, BlobRequestConditions, Duration)}
      */
     public void beginCopyFromUrlCancelCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopyFromUrlCancel#String-Map-AccessTier-RehydratePriority-RequestConditions-BlobRequestConditions-Duration
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopyFromUrlCancel#String-Map-Map-AccessTier-RehydratePriority-RequestConditions-BlobRequestConditions-Duration
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        Map<String, String> tags = Collections.singletonMap("tag", "value");
         RequestConditions modifiedRequestConditions = new RequestConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
         BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId);
 
-        PollerFlux<BlobCopyInfo, Void> poller = client.beginCopy(url, metadata, AccessTier.HOT,
+        PollerFlux<BlobCopyInfo, Void> poller = client.beginCopy(url, metadata, tags, AccessTier.HOT,
             RehydratePriority.STANDARD, modifiedRequestConditions, blobRequestConditions, Duration.ofSeconds(2));
 
         poller.take(Duration.ofMinutes(30))
@@ -331,7 +332,7 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
                     }
                     return Mono.just(asyncPollResponse);
                 }).block();
-        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopyFromUrlCancel#String-Map-AccessTier-RehydratePriority-RequestConditions-BlobRequestConditions-Duration
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopyFromUrlCancel#String-Map-Map-AccessTier-RehydratePriority-RequestConditions-BlobRequestConditions-Duration
     }
 
     /**

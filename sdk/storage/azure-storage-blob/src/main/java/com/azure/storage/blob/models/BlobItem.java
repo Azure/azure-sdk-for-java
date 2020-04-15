@@ -39,7 +39,7 @@ public final class BlobItem {
         this.isPrefix = blobItemInternal.isPrefix();
 
         this.tags = new HashMap<>();
-        for (BlobTag tag : blobItemInternal.getBlobTags().getBlobTagSet().getBlobTagList()) {
+        for (BlobTag tag : blobItemInternal.getBlobTags().getBlobTagList()) {
             this.tags.put(tag.getKey(), tag.getValue());
         }
     }

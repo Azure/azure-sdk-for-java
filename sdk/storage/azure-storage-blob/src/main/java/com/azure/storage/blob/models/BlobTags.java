@@ -5,8 +5,14 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.storage.blob.implementation.models.BlobTag;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Blob tags.
@@ -14,29 +20,43 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 @JacksonXmlRootElement(localName = "Tags")
 @Fluent
 public final class BlobTags {
+    private static final class TagSetWrapper {
+        @JacksonXmlProperty(localName = "Tag")
+        private final List<BlobTag> items;
+
+        @JsonCreator
+        private TagSetWrapper(@JacksonXmlProperty(localName = "Tag") List<BlobTag> items) {
+            this.items = items;
+        }
+    }
+
     /*
-     * The blobTagSet property.
+     * The blobTagList property.
      */
     @JsonProperty(value = "TagSet", required = true)
-    private BlobTagSet blobTagSet;
+    private BlobTags.TagSetWrapper blobTagList;
 
     /**
-     * Get the blobTagSet property: The blobTagSet property.
+     * Get the blobTagList property: The blobTagList property.
      *
-     * @return the blobTagSet value.
+     * @return the blobTagList value.
      */
-    public BlobTagSet getBlobTagSet() {
-        return this.blobTagSet;
+    public List<BlobTag> getBlobTagList() {
+        if (this.blobTagList == null) {
+            this.blobTagList = new BlobTags.TagSetWrapper(new ArrayList<BlobTag>());
+        }
+        return this.blobTagList.items;
     }
 
     /**
-     * Set the blobTagSet property: The blobTagSet property.
+     * Set the blobTagList property: The blobTagList property.
      *
-     * @param blobTagSet the blobTagSet value to set.
-     * @return the BlobTags object itself.
+     * @param blobTagList the blobTagList value to set.
+     * @return the BlobTagSet object itself.
      */
-    public BlobTags setBlobTagSet(BlobTagSet blobTagSet) {
-        this.blobTagSet = blobTagSet;
+    public BlobTags setBlobTagList(List<BlobTag> blobTagList) {
+        this.blobTagList = new BlobTags.TagSetWrapper(blobTagList);
         return this;
     }
+
 }

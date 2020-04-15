@@ -350,10 +350,6 @@ public class BlobAsyncClientBase {
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopy#String-Map-AccessTier-RehydratePriority-RequestConditions-BlobRequestConditions-Duration}
      *
-     * <p><strong>Cancelling a copy operation</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopyFromUrlCancel#String-Map-AccessTier-RehydratePriority-RequestConditions-BlobRequestConditions-Duration}
-     *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a></p>
      *
@@ -384,7 +380,7 @@ public class BlobAsyncClientBase {
      * <p><strong>Starting a copy operation</strong></p>
      * Starting a copy operation and polling on the responses.
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopy#String-Map-AccessTier-RehydratePriority-RequestConditions-BlobRequestConditions-Duration}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopy#String-Map-Map-AccessTier-RehydratePriority-RequestConditions-BlobRequestConditions-Duration}
      *
      * <p><strong>Cancelling a copy operation</strong></p>
      *
@@ -1400,7 +1396,7 @@ public class BlobAsyncClientBase {
             null /* versionId */, context)
             .map(response -> {
                 Map<String, String> tags = new HashMap<>();
-                for(BlobTag tag : response.getValue().getBlobTagSet().getBlobTagList()) {
+                for(BlobTag tag : response.getValue().getBlobTagList()) {
                     tags.put(tag.getKey(), tag.getValue());
                 }
                 return new SimpleResponse<>(response, tags);
@@ -1448,11 +1444,14 @@ public class BlobAsyncClientBase {
     }
 
     Mono<Response<Void>> setTagsWithResponse(Map<String, String> tags, Context context) {
-        List<BlobTag> tagList = new ArrayList<>();
-        for (String tag : tags.keySet()) {
-            tagList.add(new BlobTag().setKey(tag).setValue(tags.get(tag)));
+        List<BlobTag> tagList = null;
+        if (tags != null) {
+            tagList = new ArrayList<>();
+            for (String tag : tags.keySet()) {
+                tagList.add(new BlobTag().setKey(tag).setValue(tags.get(tag)));
+            }
         }
-        BlobTags t = new BlobTags().setBlobTagSet(new BlobTagSet().setBlobTagList(tagList));
+        BlobTags t = new BlobTags().setBlobTagList(tagList);
         return this.azureBlobStorage.blobs().setTagsWithRestResponseAsync(null, null, null, snapshot,
             null /* versionId */, null, null, null, t, context)
             .map(response -> new SimpleResponse<>(response, null));

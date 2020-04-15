@@ -109,10 +109,10 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
         client.filterBlobs("where=tag=value").subscribe(blob -> System.out.printf("Name: %s%n", blob.getName()));
         // END: com.azure.storage.blob.BlobServiceAsyncClient.filterBlobs#String
 
-        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.filterBlobs#String-Integer
+        // BEGIN: com.azure.storage.blob.BlobAsyncServiceClient.filterBlobs#String-Integer
         client.filterBlobs("where=tag=value", 10)
             .subscribe(blob -> System.out.printf("Name: %s%n", blob.getName()));
-        // END: com.azure.storage.blob.BlobServiceAsyncClient.filterBlobs#String-Integer
+        // END: com.azure.storage.blob.BlobAsyncServiceClient.filterBlobs#String-Integer
     }
 
     /**

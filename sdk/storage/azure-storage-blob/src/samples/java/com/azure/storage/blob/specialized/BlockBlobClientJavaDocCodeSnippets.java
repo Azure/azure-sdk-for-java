@@ -272,6 +272,6 @@ public class BlockBlobClientJavaDocCodeSnippets {
         System.out.printf("Committing block list completed with status %d%n",
             client.commitBlockListWithResponse(Collections.singletonList(base64BlockId), headers, metadata, tags,
                 AccessTier.HOT, requestConditions, timeout, context).getStatusCode());
-        // END: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#List-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions-Duration-Context
+        // END: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#List-BlobHttpHeaders-Map-Map-AccessTier-BlobRequestConditions-Duration-Context
     }
 }

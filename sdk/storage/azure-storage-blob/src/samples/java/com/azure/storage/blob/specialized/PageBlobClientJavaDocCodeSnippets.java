@@ -88,7 +88,7 @@ public class PageBlobClientJavaDocCodeSnippets {
      * Code snippets for {@link PageBlobClient#createWithResponse(long, Long, BlobHttpHeaders, Map, Map, BlobRequestConditions, Duration, Context)}
      */
     public void createWithResponse2CodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#long-Long-BlobHttpHeaders-Map-BlobRequestConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#long-Long-BlobHttpHeaders-Map-Map-BlobRequestConditions-Duration-Context
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setContentLanguage("en-US")
             .setContentType("binary");

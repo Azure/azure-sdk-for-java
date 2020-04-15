@@ -102,6 +102,30 @@ class AppendBlobAPITest extends APISpec {
     }
 
     @Unroll
+    def "Create tags"() {
+        setup:
+        def metadata = new HashMap<String, String>()
+        if (key1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null) {
+            metadata.put(key2, value2)
+        }
+
+        when:
+        bc.createWithResponse(null, metadata, null, null, Context.NONE)
+        def response = bc.getProperties()
+
+        then:
+        response.getMetadata() == metadata
+
+        where:
+        key1  | value1 | key2   | value2
+        null  | null   | null   | null
+        "foo" | "bar"  | "fizz" | "buzz"
+    }
+
+    @Unroll
     def "Create AC"() {
         setup:
         match = setupBlobMatchCondition(bc, match)

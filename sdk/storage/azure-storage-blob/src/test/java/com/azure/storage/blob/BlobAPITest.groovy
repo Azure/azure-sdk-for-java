@@ -1145,6 +1145,60 @@ class BlobAPITest extends APISpec {
         thrown(BlobStorageException)
     }
 
+    def "Set tags all null"() {
+        when:
+        def response = bc.setTagsWithResponse(Collections.singletonMap("tag", "value"), null, null)
+
+        then:
+        bc.getTags().size() == 0
+        response.getStatusCode() == 200
+        validateBasicHeaders(response.getHeaders())
+    }
+
+    def "Set tags min"() {
+        setup:
+        def metadata = new HashMap<String, String>()
+        metadata.put("foo", "bar")
+
+        when:
+        bc.setMetadata(metadata)
+
+        then:
+        bc.getProperties().getMetadata() == metadata
+    }
+
+    @Unroll
+    def "Set tags tags"() {
+        setup:
+        def metadata = new HashMap<String, String>()
+        if (key1 != null && value1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null && value2 != null) {
+            metadata.put(key2, value2)
+        }
+
+        expect:
+        bc.setMetadataWithResponse(metadata, null, null, null).getStatusCode() == statusCode
+        bc.getProperties().getMetadata() == metadata
+
+        where:
+        key1  | value1 | key2   | value2 || statusCode
+        null  | null   | null   | null   || 200
+        "foo" | "bar"  | "fizz" | "buzz" || 200
+    }
+
+    def "Set tags error"() {
+        setup:
+        bc = cc.getBlobClient(generateBlobName())
+
+        when:
+        bc.setMetadata(null)
+
+        then:
+        thrown(BlobStorageException)
+    }
+
     def "Snapshot"() {
         when:
         def response = bc.createSnapshotWithResponse(null, null, null, null)
