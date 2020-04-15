@@ -620,6 +620,6 @@ public class ServiceBusReceiverAsyncClient implements AutoCloseable {
     public Mono<Instant> renewSessionLock(String sessionId){return null;}
     public Mono<ByteBuffer> getSessionState(String sessionId) {return null;}
     public Mono<Void> setSessionState(ByteBuffer sessionState) {return null;}
-    public String getSessionId(String sessionId){ return null;}
+    public String getSessionId(){ return null;}
     public Mono<Instant> getSessionLockedUntil(String sessionId) {return null;}
 }
