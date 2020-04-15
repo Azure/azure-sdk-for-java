@@ -67,3 +67,5 @@ stages:
       AdditionalModules:
         - name: azure-data-appconfiguration
           groupId: com.azure
+        - name: perf-test-core
+          groupId: com.azure

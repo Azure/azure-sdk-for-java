@@ -186,14 +186,12 @@
                     <exclude>*:*:*:*:provided</exclude>
                   </excludes>
                   <includes>
-                    <include>org.slf4j:slf4j-api</include>
-                    <include>io.projectreactor:reactor-core</include>
-                    <include>io.netty:netty-tcnative-boringssl-static</include>
-
-                    <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml</include>
-                    <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310</include>
-
-                    <include>com.google.code.findbugs:jsr305</include>
+                    <include>io.netty:netty-tcnative-boringssl-static:[2.0.27.Final]</include> <!-- {x-include-update;io.netty:netty-tcnative-boringssl-static;external_dependency} -->
+                    <include>io.projectreactor:reactor-core:[3.3.3.RELEASE]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
+                    <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.10.1]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+                    <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.10.1]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+                    <include>com.google.code.findbugs:jsr305:[3.0.2]</include> <!-- {x-include-update;com.google.code.findbugs:jsr305;external_dependency} -->
+                    <include>org.slf4j:slf4j-api:[1.7.28]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
                   </includes>
                 </bannedDependencies>
               </rules>
