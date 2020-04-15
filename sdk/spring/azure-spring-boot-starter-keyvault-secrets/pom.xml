@@ -66,7 +66,8 @@
                   </excludes>
                   <includes>
                     <include>com.microsoft.azure:*</include>
-                    <include>org.springframework.boot:*</include>
+                    <include>org.springframework.boot:spring-boot-starter:[2.2.0.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+                    <include>org.springframework.boot:spring-boot-starter-validation:[2.2.0.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
                   </includes>
                 </bannedDependencies>
               </rules>

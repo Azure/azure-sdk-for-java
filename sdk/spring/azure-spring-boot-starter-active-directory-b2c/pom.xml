@@ -113,10 +113,16 @@
                   </excludes>
                   <includes>
                     <include>com.microsoft.azure:*</include>
-                    <include>javax.validation:validation-api</include>
-                    <include>org.springframework:*</include>
-                    <include>org.springframework.boot:*</include>
-                    <include>org.springframework.security:*</include>
+                    <include>javax.validation:validation-api:[2.0.1.Final]</include> <!-- {x-include-update;javax.validation:validation-api;external_dependency} -->
+                    <include>org.springframework:spring-web:[5.2.0.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
+                    <include>org.springframework.boot:spring-boot-starter:[2.2.0.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+                    <include>org.springframework.boot:spring-boot-starter-validation:[2.2.0.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
+                    <include>org.springframework.security:spring-security-config:[5.2.0.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-config;external_dependency} -->
+                    <include>org.springframework.security:spring-security-core:[5.2.0.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-core;external_dependency} -->
+                    <include>org.springframework.security:spring-security-oauth2-client:[5.2.0.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-client;external_dependency} -->
+                    <include>org.springframework.security:spring-security-oauth2-core:[5.2.0.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-core;external_dependency} -->
+                    <include>org.springframework.security:spring-security-oauth2-jose:[5.2.0.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
+                    <include>org.springframework.security:spring-security-web:[5.2.0.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-web;external_dependency} -->
                   </includes>
                 </bannedDependencies>
               </rules>

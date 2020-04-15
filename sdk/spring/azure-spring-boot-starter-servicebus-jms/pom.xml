@@ -67,8 +67,8 @@
                   </excludes>
                   <includes>
                     <include>com.microsoft.azure:*</include>
-                    <include>org.apache.qpid:qpid-jms-client</include>
-                    <include>org.springframework:*</include>
+                    <include>org.apache.qpid:qpid-jms-client:[0.43.0]</include> <!-- {x-include-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
+                    <include>org.springframework:spring-jms:[5.2.0.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-jms;external_dependency} -->
                   </includes>
                 </bannedDependencies>
               </rules>

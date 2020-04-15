@@ -72,9 +72,11 @@
                   </excludes>
                   <includes>
                     <include>com.microsoft.azure:*</include>
-                    <include>io.micrometer:micrometer-core</include>
-                    <include>io.micrometer:micrometer-registry-azure-monitor</include>
-                    <include>org.springframework.boot:*</include>
+                    <include>io.micrometer:micrometer-core:[1.3.0]</include> <!-- {x-include-update;spring_io.micrometer:micrometer-core;external_dependency} -->
+                    <include>io.micrometer:micrometer-registry-azure-monitor:[1.3.0]</include> <!-- {x-include-update;spring_io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
+                    <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[2.2.0.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
+                    <include>org.springframework.boot:spring-boot-starter:[2.2.0.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+                    <include>org.springframework.boot:spring-boot-starter-validation:[2.2.0.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
                   </includes>
                 </bannedDependencies>
               </rules>
