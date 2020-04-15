@@ -1,136 +1,137 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcsynccopysourceac0blobapitestsynccopysourceacf6e43275c790?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcsynccopysourceac0blobapitestsynccopysourceacb6279326e4dd?restype=container",
     "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.5 1.8.0_221; Mac OS X 10.14.6",
-      "x-ms-client-request-id" : "5b9d63c5-b533-4d6f-95e3-c3e3cbf5360c"
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "2be24b2e-1073-431e-86d7-c51b4940ab48"
     },
     "Response" : {
-      "x-ms-version" : "2019-02-02",
+      "x-ms-version" : "2019-10-10",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D75A7E61DB6363",
-      "Last-Modified" : "Sun, 27 Oct 2019 01:38:35 GMT",
+      "ETag" : "0x8D7E10754C4A125",
+      "Last-Modified" : "Wed, 15 Apr 2020 06:36:29 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "161ebabd-301e-013a-0b67-8c3580000000",
-      "Date" : "Sun, 27 Oct 2019 01:38:34 GMT",
-      "x-ms-client-request-id" : "5b9d63c5-b533-4d6f-95e3-c3e3cbf5360c"
+      "x-ms-request-id" : "5d79abd2-f01e-00ab-54f0-12e764000000",
+      "Date" : "Wed, 15 Apr 2020 06:36:29 GMT",
+      "x-ms-client-request-id" : "2be24b2e-1073-431e-86d7-c51b4940ab48"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcsynccopysourceac0blobapitestsynccopysourceacf6e43275c790/javablobsynccopysourceac1blobapitestsynccopysourceacf6e009838",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcsynccopysourceac0blobapitestsynccopysourceacb6279326e4dd/javablobsynccopysourceac1blobapitestsynccopysourceacb62499782",
     "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.5 1.8.0_221; Mac OS X 10.14.6",
-      "x-ms-client-request-id" : "9ac62ad7-427d-4724-bb7f-91021c7f5aad",
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "65b3c24a-8712-411f-b58a-bf17990b2a72",
       "Content-Type" : "application/octet-stream"
     },
     "Response" : {
-      "x-ms-version" : "2019-02-02",
+      "x-ms-version" : "2019-10-10",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-content-crc64" : "6RYQPwaVsyQ=",
-      "Last-Modified" : "Sun, 27 Oct 2019 01:38:35 GMT",
+      "Last-Modified" : "Wed, 15 Apr 2020 06:36:29 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Sun, 27 Oct 2019 01:38:34 GMT",
+      "Date" : "Wed, 15 Apr 2020 06:36:29 GMT",
       "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
-      "ETag" : "0x8D75A7E61E3864C",
+      "ETag" : "0x8D7E10754CD0BA6",
       "Content-Length" : "0",
-      "x-ms-request-id" : "161ebad8-301e-013a-2167-8c3580000000",
-      "x-ms-client-request-id" : "9ac62ad7-427d-4724-bb7f-91021c7f5aad"
+      "x-ms-request-id" : "6429af3f-601e-000f-1df0-12dd80000000",
+      "x-ms-client-request-id" : "65b3c24a-8712-411f-b58a-bf17990b2a72"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcsynccopysourceac0blobapitestsynccopysourceacf6e43275c790?restype=container&comp=acl",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcsynccopysourceac0blobapitestsynccopysourceacb6279326e4dd?restype=container&comp=acl",
     "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.5 1.8.0_221; Mac OS X 10.14.6",
-      "x-ms-client-request-id" : "00ba052e-cebf-42fe-bd24-c8d717828436",
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "7aa852be-fd98-4dbc-898b-8ee69a564264",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
-      "x-ms-version" : "2019-02-02",
+      "x-ms-version" : "2019-10-10",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D75A7E61ED83B8",
-      "Last-Modified" : "Sun, 27 Oct 2019 01:38:35 GMT",
+      "ETag" : "0x8D7E10754D594B7",
+      "Last-Modified" : "Wed, 15 Apr 2020 06:36:30 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "161ebaf0-301e-013a-3467-8c3580000000",
-      "Date" : "Sun, 27 Oct 2019 01:38:34 GMT",
-      "x-ms-client-request-id" : "00ba052e-cebf-42fe-bd24-c8d717828436"
+      "x-ms-request-id" : "bde8145a-001e-00fa-23f0-12f991000000",
+      "Date" : "Wed, 15 Apr 2020 06:36:29 GMT",
+      "x-ms-client-request-id" : "7aa852be-fd98-4dbc-898b-8ee69a564264"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcsynccopysourceac0blobapitestsynccopysourceacf6e43275c790/javablobsynccopysourceac2blobapitestsynccopysourceacf6e860633",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcsynccopysourceac0blobapitestsynccopysourceacb6279326e4dd/javablobsynccopysourceac2blobapitestsynccopysourceacb6208634c",
     "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.5 1.8.0_221; Mac OS X 10.14.6",
-      "x-ms-client-request-id" : "0c97c970-4a3b-4ac2-b682-7fb06aec22ee"
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "7544c2fb-24ff-4fe7-8e64-c8ea652f99de"
     },
     "Response" : {
-      "x-ms-version" : "2019-02-02",
+      "x-ms-version" : "2019-10-10",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-copy-id" : "3eda6f83-67fc-40a3-bdc7-4bb9786386ec",
+      "x-ms-copy-id" : "57b783f6-448e-437f-86c3-d36df413d84d",
       "x-ms-content-crc64" : "6RYQPwaVsyQ=",
-      "Last-Modified" : "Sun, 27 Oct 2019 01:38:35 GMT",
+      "Last-Modified" : "Wed, 15 Apr 2020 06:36:30 GMT",
       "retry-after" : "0",
       "StatusCode" : "202",
-      "Date" : "Sun, 27 Oct 2019 01:38:35 GMT",
-      "ETag" : "0x8D75A7E6200F5E2",
+      "Date" : "Wed, 15 Apr 2020 06:36:29 GMT",
+      "ETag" : "0x8D7E10754E43EB3",
       "Content-Length" : "0",
       "x-ms-copy-status" : "success",
-      "x-ms-request-id" : "161ebb01-301e-013a-3c67-8c3580000000",
-      "x-ms-client-request-id" : "0c97c970-4a3b-4ac2-b682-7fb06aec22ee"
+      "x-ms-request-id" : "5d79ac2c-f01e-00ab-24f0-12e764000000",
+      "x-ms-client-request-id" : "7544c2fb-24ff-4fe7-8e64-c8ea652f99de"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net?prefix=jtcsynccopysourceac&comp=list",
+    "Uri" : "https://REDACTED.blob.core.windows.net?prefix=jtcsynccopysourceac&comp=list",
     "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.5 1.8.0_221; Mac OS X 10.14.6",
-      "x-ms-client-request-id" : "092365b6-74ec-4441-9a2b-77f8334ee366"
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "66c23b71-7373-4278-ad87-52c917d8d097"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2019-02-02",
+      "x-ms-version" : "2019-10-10",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "Vary" : "Origin",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "161ebb23-301e-013a-5067-8c3580000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcsynccopysourceac</Prefix><Containers><Container><Name>jtcsynccopysourceac0blobapitestsynccopysourceacf6e43275c790</Name><Properties><Last-Modified>Sun, 27 Oct 2019 01:38:35 GMT</Last-Modified><Etag>\"0x8D75A7E61ED83B8\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><PublicAccess>container</PublicAccess><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Sun, 27 Oct 2019 01:38:35 GMT",
-      "x-ms-client-request-id" : "092365b6-74ec-4441-9a2b-77f8334ee366",
+      "x-ms-request-id" : "6429af9b-601e-000f-65f0-12dd80000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcsynccopysourceac</Prefix><Containers><Container><Name>jtcsynccopysourceac0blobapitestsynccopysourceacb6279326e4dd</Name><Properties><Last-Modified>Wed, 15 Apr 2020 06:36:30 GMT</Last-Modified><Etag>\"0x8D7E10754D594B7\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><PublicAccess>container</PublicAccess><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Wed, 15 Apr 2020 06:36:29 GMT",
+      "x-ms-client-request-id" : "66c23b71-7373-4278-ad87-52c917d8d097",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcsynccopysourceac0blobapitestsynccopysourceacf6e43275c790?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcsynccopysourceac0blobapitestsynccopysourceacb6279326e4dd?restype=container",
     "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.5 1.8.0_221; Mac OS X 10.14.6",
-      "x-ms-client-request-id" : "52531563-0209-44e1-975a-1b80ff272178"
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "a07964ba-80b7-4c28-8cb8-8116e64b2a8c"
     },
     "Response" : {
-      "x-ms-version" : "2019-02-02",
+      "x-ms-version" : "2019-10-10",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "161ebb2c-301e-013a-5767-8c3580000000",
-      "Date" : "Sun, 27 Oct 2019 01:38:35 GMT",
-      "x-ms-client-request-id" : "52531563-0209-44e1-975a-1b80ff272178"
+      "x-ms-request-id" : "bde814de-001e-00fa-1df0-12f991000000",
+      "Date" : "Wed, 15 Apr 2020 06:36:29 GMT",
+      "x-ms-client-request-id" : "a07964ba-80b7-4c28-8cb8-8116e64b2a8c"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtcsynccopysourceac0blobapitestsynccopysourceacf6e43275c790", "javablobsynccopysourceac1blobapitestsynccopysourceacf6e009838", "javablobsynccopysourceac2blobapitestsynccopysourceacf6e860633" ]
+  "variables" : [ "jtcsynccopysourceac0blobapitestsynccopysourceacb6279326e4dd", "javablobsynccopysourceac1blobapitestsynccopysourceacb62499782", "javablobsynccopysourceac2blobapitestsynccopysourceacb6208634c" ]
 }
