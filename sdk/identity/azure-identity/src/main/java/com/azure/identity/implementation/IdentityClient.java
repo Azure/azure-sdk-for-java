@@ -20,6 +20,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.DeviceCodeInfo;
 import com.azure.identity.implementation.util.CertificateUtil;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
@@ -42,6 +43,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.Proxy.Type;
+import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -634,6 +636,8 @@ public class IdentityClient {
                 connection.setRequestMethod("GET");
                 connection.setConnectTimeout(500);
                 connection.connect();
+            } catch (SecurityException | SocketTimeoutException e) {
+                throw new CredentialUnavailableException("Connection to IMDS endpoint cannot be established", null, e);
             } finally {
                 if (connection != null) {
                     connection.disconnect();
