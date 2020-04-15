@@ -12,27 +12,15 @@ import com.azure.management.network.models.SecurityGroupViewResultInner;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import reactor.core.publisher.Mono;
 
-/**
- * Implementation for Network Watcher and its create and update interfaces.
- */
+/** Implementation for Network Watcher and its create and update interfaces. */
 class NetworkWatcherImpl
-        extends GroupableResourceImpl<
-        NetworkWatcher,
-        NetworkWatcherInner,
-        NetworkWatcherImpl,
-        NetworkManager>
-        implements
-        NetworkWatcher,
-        NetworkWatcher.Definition,
-        NetworkWatcher.Update,
-        AppliableWithTags<NetworkWatcher> {
+    extends GroupableResourceImpl<NetworkWatcher, NetworkWatcherInner, NetworkWatcherImpl, NetworkManager>
+    implements NetworkWatcher, NetworkWatcher.Definition, NetworkWatcher.Update, AppliableWithTags<NetworkWatcher> {
 
     private PacketCapturesImpl packetCaptures;
     private ConnectionMonitorsImpl connectionMonitors;
 
-    NetworkWatcherImpl(String name,
-                       final NetworkWatcherInner innerModel,
-                       final NetworkManager networkManager) {
+    NetworkWatcherImpl(String name, final NetworkWatcherInner innerModel, final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
         this.packetCaptures = new PacketCapturesImpl(networkManager.inner().packetCaptures(), this);
         this.connectionMonitors = new ConnectionMonitorsImpl(networkManager.inner().connectionMonitors(), this);
@@ -56,29 +44,35 @@ class NetworkWatcherImpl
 
     @Override
     public SecurityGroupView getSecurityGroupView(String vmId) {
-        SecurityGroupViewResultInner securityGroupViewResultInner = this.manager().inner().networkWatchers()
-                .getVMSecurityRules(this.resourceGroupName(), this.name(), vmId);
+        SecurityGroupViewResultInner securityGroupViewResultInner =
+            this.manager().inner().networkWatchers().getVMSecurityRules(this.resourceGroupName(), this.name(), vmId);
         return new SecurityGroupViewImpl(this, securityGroupViewResultInner, vmId);
     }
 
     @Override
     public Mono<SecurityGroupView> getSecurityGroupViewAsync(final String vmId) {
-        return this.manager().inner().networkWatchers()
-                .getVMSecurityRulesAsync(this.resourceGroupName(), this.name(), vmId)
-                .map(inner -> new SecurityGroupViewImpl(NetworkWatcherImpl.this, inner, vmId));
+        return this
+            .manager()
+            .inner()
+            .networkWatchers()
+            .getVMSecurityRulesAsync(this.resourceGroupName(), this.name(), vmId)
+            .map(inner -> new SecurityGroupViewImpl(NetworkWatcherImpl.this, inner, vmId));
     }
 
     public FlowLogSettings getFlowLogSettings(String nsgId) {
-        FlowLogInformationInner flowLogInformationInner = this.manager().inner().networkWatchers()
-                .getFlowLogStatus(this.resourceGroupName(), this.name(), nsgId);
+        FlowLogInformationInner flowLogInformationInner =
+            this.manager().inner().networkWatchers().getFlowLogStatus(this.resourceGroupName(), this.name(), nsgId);
         return new FlowLogSettingsImpl(this, flowLogInformationInner, nsgId);
     }
 
     @Override
     public Mono<FlowLogSettings> getFlowLogSettingsAsync(final String nsgId) {
-        return this.manager().inner().networkWatchers()
-                .getFlowLogStatusAsync(this.resourceGroupName(), this.name(), nsgId)
-                .map(inner -> new FlowLogSettingsImpl(NetworkWatcherImpl.this, inner, nsgId));
+        return this
+            .manager()
+            .inner()
+            .networkWatchers()
+            .getFlowLogStatusAsync(this.resourceGroupName(), this.name(), nsgId)
+            .map(inner -> new FlowLogSettingsImpl(NetworkWatcherImpl.this, inner, nsgId));
     }
 
     public NextHopImpl nextHop() {
@@ -112,9 +106,12 @@ class NetworkWatcherImpl
 
     @Override
     public Mono<NetworkWatcher> createResourceAsync() {
-        return this.manager().inner().networkWatchers().createOrUpdateAsync(
-                this.resourceGroupName(), this.name(), this.inner())
-                .map(innerToFluentMap(this));
+        return this
+            .manager()
+            .inner()
+            .networkWatchers()
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+            .map(innerToFluentMap(this));
     }
 
     @Override
@@ -134,11 +131,15 @@ class NetworkWatcherImpl
 
     @Override
     public Mono<NetworkWatcher> applyTagsAsync() {
-        return this.manager().inner().networkWatchers().updateTagsAsync(resourceGroupName(), name(), inner().getTags())
-                .flatMap(inner -> {
+        return this
+            .manager()
+            .inner()
+            .networkWatchers()
+            .updateTagsAsync(resourceGroupName(), name(), inner().getTags())
+            .flatMap(
+                inner -> {
                     setInner(inner);
                     return Mono.just((NetworkWatcher) NetworkWatcherImpl.this);
                 });
     }
-
 }

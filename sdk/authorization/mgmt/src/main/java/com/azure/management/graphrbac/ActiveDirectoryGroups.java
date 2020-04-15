@@ -14,12 +14,10 @@ import com.azure.management.resources.fluentcore.collection.SupportsDeletingById
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-/**
- * Entry point to AD group management API.
- */
+/** Entry point to AD group management API. */
 @Fluent
-public interface ActiveDirectoryGroups extends
-        SupportsListing<ActiveDirectoryGroup>,
+public interface ActiveDirectoryGroups
+    extends SupportsListing<ActiveDirectoryGroup>,
         SupportsGettingById<ActiveDirectoryGroup>,
         SupportsGettingByName<ActiveDirectoryGroup>,
         SupportsCreating<ActiveDirectoryGroup.DefinitionStages.Blank>,

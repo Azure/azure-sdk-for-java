@@ -80,7 +80,7 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
         Objects.requireNonNull(options, "'options' cannot be null.");
 
         final String eventPositionExpression = getExpression(eventPosition);
-        final Map<Symbol, UnknownDescribedType> filter = new HashMap<>();
+        final Map<Symbol, Object> filter = new HashMap<>();
         filter.put(AmqpConstants.STRING_FILTER, new UnknownDescribedType(AmqpConstants.STRING_FILTER,
             eventPositionExpression));
 

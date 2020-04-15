@@ -13,20 +13,15 @@ import com.azure.management.monitor.ScaleType;
 import com.azure.management.monitor.TimeAggregationType;
 import com.azure.management.monitor.models.ScaleRuleInner;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
-
 import java.time.Duration;
 
-/**
- * Implementation for ScaleRule.
- */
-class ScaleRuleImpl
-        extends WrapperImpl<ScaleRuleInner>
-        implements
-        ScaleRule,
-            ScaleRule.Definition,
-            ScaleRule.ParentUpdateDefinition,
-            ScaleRule.UpdateDefinition,
-            ScaleRule.Update {
+/** Implementation for ScaleRule. */
+class ScaleRuleImpl extends WrapperImpl<ScaleRuleInner>
+    implements ScaleRule,
+        ScaleRule.Definition,
+        ScaleRule.ParentUpdateDefinition,
+        ScaleRule.UpdateDefinition,
+        ScaleRule.Update {
 
     private final AutoscaleProfileImpl parent;
 
@@ -184,7 +179,8 @@ class ScaleRuleImpl
     }
 
     @Override
-    public ScaleRuleImpl withCondition(TimeAggregationType timeAggregation, ComparisonOperationType condition, double threshold) {
+    public ScaleRuleImpl withCondition(
+        TimeAggregationType timeAggregation, ComparisonOperationType condition, double threshold) {
         this.inner().metricTrigger().withOperator(condition);
         this.inner().metricTrigger().withTimeAggregation(timeAggregation);
         this.inner().metricTrigger().withThreshold(threshold);
@@ -192,7 +188,8 @@ class ScaleRuleImpl
     }
 
     @Override
-    public ScaleRuleImpl withScaleAction(ScaleDirection direction, ScaleType type, int instanceCountChange, Duration cooldown) {
+    public ScaleRuleImpl withScaleAction(
+        ScaleDirection direction, ScaleType type, int instanceCountChange, Duration cooldown) {
         this.inner().scaleAction().withDirection(direction);
         this.inner().scaleAction().withType(type);
         this.inner().scaleAction().withValue(Integer.toString(instanceCountChange));
@@ -200,4 +197,3 @@ class ScaleRuleImpl
         return this;
     }
 }
-

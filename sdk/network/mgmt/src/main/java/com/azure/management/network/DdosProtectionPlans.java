@@ -17,13 +17,10 @@ import com.azure.management.resources.fluentcore.collection.SupportsDeletingById
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-
-/**
- * Entry point to DDoS protection plans management.
- */
+/** Entry point to DDoS protection plans management. */
 @Fluent
-public interface DdosProtectionPlans extends
-        SupportsCreating<DdosProtectionPlan.DefinitionStages.Blank>,
+public interface DdosProtectionPlans
+    extends SupportsCreating<DdosProtectionPlan.DefinitionStages.Blank>,
         SupportsListing<DdosProtectionPlan>,
         SupportsListingByResourceGroup<DdosProtectionPlan>,
         SupportsGettingByResourceGroup<DdosProtectionPlan>,

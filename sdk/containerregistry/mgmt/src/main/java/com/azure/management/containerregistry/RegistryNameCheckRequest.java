@@ -7,9 +7,7 @@ package com.azure.management.containerregistry;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The RegistryNameCheckRequest model.
- */
+/** The RegistryNameCheckRequest model. */
 @Fluent
 public final class RegistryNameCheckRequest {
     /*
@@ -25,16 +23,14 @@ public final class RegistryNameCheckRequest {
     @JsonProperty(value = "type", required = true)
     private String type;
 
-    /**
-     * Creates an instance of RegistryNameCheckRequest class.
-     */
+    /** Creates an instance of RegistryNameCheckRequest class. */
     public RegistryNameCheckRequest() {
         type = "Microsoft.ContainerRegistry/registries";
     }
 
     /**
      * Get the name property: The name of the container registry.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -43,7 +39,7 @@ public final class RegistryNameCheckRequest {
 
     /**
      * Set the name property: The name of the container registry.
-     * 
+     *
      * @param name the name value to set.
      * @return the RegistryNameCheckRequest object itself.
      */
@@ -53,9 +49,9 @@ public final class RegistryNameCheckRequest {
     }
 
     /**
-     * Get the type property: The resource type of the container registry. This
-     * field must be set to 'Microsoft.ContainerRegistry/registries'.
-     * 
+     * Get the type property: The resource type of the container registry. This field must be set to
+     * 'Microsoft.ContainerRegistry/registries'.
+     *
      * @return the type value.
      */
     public String type() {
@@ -63,9 +59,9 @@ public final class RegistryNameCheckRequest {
     }
 
     /**
-     * Set the type property: The resource type of the container registry. This
-     * field must be set to 'Microsoft.ContainerRegistry/registries'.
-     * 
+     * Set the type property: The resource type of the container registry. This field must be set to
+     * 'Microsoft.ContainerRegistry/registries'.
+     *
      * @param type the type value to set.
      * @return the RegistryNameCheckRequest object itself.
      */

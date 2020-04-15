@@ -32,8 +32,7 @@ public final class Identity {
     /*
      * The list of user identities associated with the resource. The user
      * identity dictionary key references will be ARM resource ids in the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity
-     * /userAssignedIdentities/{identityName}'.
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      */
     @JsonProperty(value = "userAssignedIdentities")
     private Map<String, IdentityUserAssignedIdentities> userAssignedIdentities;
@@ -77,11 +76,9 @@ public final class Identity {
     }
 
     /**
-     * Get the userAssignedIdentities property: The list of user identities
-     * associated with the resource. The user identity dictionary key
-     * references will be ARM resource ids in the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity
-     * /userAssignedIdentities/{identityName}'.
+     * Get the userAssignedIdentities property: The list of user identities associated with the resource. The user
+     * identity dictionary key references will be ARM resource ids in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      *
      * @return the userAssignedIdentities value.
      */
@@ -90,11 +87,9 @@ public final class Identity {
     }
 
     /**
-     * Set the userAssignedIdentities property: The list of user identities
-     * associated with the resource. The user identity dictionary key
-     * references will be ARM resource ids in the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity
-     * /userAssignedIdentities/{identityName}'.
+     * Set the userAssignedIdentities property: The list of user identities associated with the resource. The user
+     * identity dictionary key references will be ARM resource ids in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      *
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the Identity object itself.

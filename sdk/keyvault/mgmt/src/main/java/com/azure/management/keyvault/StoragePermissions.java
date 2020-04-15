@@ -8,83 +8,53 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for StoragePermissions.
- */
+/** Defines values for StoragePermissions. */
 public final class StoragePermissions extends ExpandableStringEnum<StoragePermissions> {
-    /**
-     * Static value get for StoragePermissions.
-     */
+    /** Static value get for StoragePermissions. */
     public static final StoragePermissions GET = fromString("get");
 
-    /**
-     * Static value list for StoragePermissions.
-     */
+    /** Static value list for StoragePermissions. */
     public static final StoragePermissions LIST = fromString("list");
 
-    /**
-     * Static value delete for StoragePermissions.
-     */
+    /** Static value delete for StoragePermissions. */
     public static final StoragePermissions DELETE = fromString("delete");
 
-    /**
-     * Static value set for StoragePermissions.
-     */
+    /** Static value set for StoragePermissions. */
     public static final StoragePermissions SET = fromString("set");
 
-    /**
-     * Static value update for StoragePermissions.
-     */
+    /** Static value update for StoragePermissions. */
     public static final StoragePermissions UPDATE = fromString("update");
 
-    /**
-     * Static value regeneratekey for StoragePermissions.
-     */
+    /** Static value regeneratekey for StoragePermissions. */
     public static final StoragePermissions REGENERATEKEY = fromString("regeneratekey");
 
-    /**
-     * Static value recover for StoragePermissions.
-     */
+    /** Static value recover for StoragePermissions. */
     public static final StoragePermissions RECOVER = fromString("recover");
 
-    /**
-     * Static value purge for StoragePermissions.
-     */
+    /** Static value purge for StoragePermissions. */
     public static final StoragePermissions PURGE = fromString("purge");
 
-    /**
-     * Static value backup for StoragePermissions.
-     */
+    /** Static value backup for StoragePermissions. */
     public static final StoragePermissions BACKUP = fromString("backup");
 
-    /**
-     * Static value restore for StoragePermissions.
-     */
+    /** Static value restore for StoragePermissions. */
     public static final StoragePermissions RESTORE = fromString("restore");
 
-    /**
-     * Static value setsas for StoragePermissions.
-     */
+    /** Static value setsas for StoragePermissions. */
     public static final StoragePermissions SETSAS = fromString("setsas");
 
-    /**
-     * Static value listsas for StoragePermissions.
-     */
+    /** Static value listsas for StoragePermissions. */
     public static final StoragePermissions LISTSAS = fromString("listsas");
 
-    /**
-     * Static value getsas for StoragePermissions.
-     */
+    /** Static value getsas for StoragePermissions. */
     public static final StoragePermissions GETSAS = fromString("getsas");
 
-    /**
-     * Static value deletesas for StoragePermissions.
-     */
+    /** Static value deletesas for StoragePermissions. */
     public static final StoragePermissions DELETESAS = fromString("deletesas");
 
     /**
      * Creates or finds a StoragePermissions from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding StoragePermissions.
      */
@@ -93,9 +63,7 @@ public final class StoragePermissions extends ExpandableStringEnum<StoragePermis
         return fromString(name, StoragePermissions.class);
     }
 
-    /**
-     * @return known StoragePermissions values.
-     */
+    /** @return known StoragePermissions values. */
     public static Collection<StoragePermissions> values() {
         return values(StoragePermissions.class);
     }

@@ -10,9 +10,7 @@ import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The ElasticPoolOperation model.
- */
+/** The ElasticPoolOperation model. */
 @JsonFlatten
 @Immutable
 public class ElasticPoolOperationInner extends ProxyResource {
@@ -101,9 +99,8 @@ public class ElasticPoolOperationInner extends ProxyResource {
     private Boolean isCancellable;
 
     /**
-     * Get the elasticPoolName property: The name of the elastic pool the
-     * operation is being performed on.
-     * 
+     * Get the elasticPoolName property: The name of the elastic pool the operation is being performed on.
+     *
      * @return the elasticPoolName value.
      */
     public String elasticPoolName() {
@@ -112,7 +109,7 @@ public class ElasticPoolOperationInner extends ProxyResource {
 
     /**
      * Get the operation property: The name of operation.
-     * 
+     *
      * @return the operation value.
      */
     public String operation() {
@@ -121,7 +118,7 @@ public class ElasticPoolOperationInner extends ProxyResource {
 
     /**
      * Get the operationFriendlyName property: The friendly name of operation.
-     * 
+     *
      * @return the operationFriendlyName value.
      */
     public String operationFriendlyName() {
@@ -129,9 +126,8 @@ public class ElasticPoolOperationInner extends ProxyResource {
     }
 
     /**
-     * Get the percentComplete property: The percentage of the operation
-     * completed.
-     * 
+     * Get the percentComplete property: The percentage of the operation completed.
+     *
      * @return the percentComplete value.
      */
     public Integer percentComplete() {
@@ -140,7 +136,7 @@ public class ElasticPoolOperationInner extends ProxyResource {
 
     /**
      * Get the serverName property: The name of the server.
-     * 
+     *
      * @return the serverName value.
      */
     public String serverName() {
@@ -149,7 +145,7 @@ public class ElasticPoolOperationInner extends ProxyResource {
 
     /**
      * Get the startTime property: The operation start time.
-     * 
+     *
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -158,7 +154,7 @@ public class ElasticPoolOperationInner extends ProxyResource {
 
     /**
      * Get the state property: The operation state.
-     * 
+     *
      * @return the state value.
      */
     public String state() {
@@ -167,7 +163,7 @@ public class ElasticPoolOperationInner extends ProxyResource {
 
     /**
      * Get the errorCode property: The operation error code.
-     * 
+     *
      * @return the errorCode value.
      */
     public Integer errorCode() {
@@ -176,7 +172,7 @@ public class ElasticPoolOperationInner extends ProxyResource {
 
     /**
      * Get the errorDescription property: The operation error description.
-     * 
+     *
      * @return the errorDescription value.
      */
     public String errorDescription() {
@@ -185,7 +181,7 @@ public class ElasticPoolOperationInner extends ProxyResource {
 
     /**
      * Get the errorSeverity property: The operation error severity.
-     * 
+     *
      * @return the errorSeverity value.
      */
     public Integer errorSeverity() {
@@ -194,7 +190,7 @@ public class ElasticPoolOperationInner extends ProxyResource {
 
     /**
      * Get the isUserError property: Whether or not the error is a user error.
-     * 
+     *
      * @return the isUserError value.
      */
     public Boolean isUserError() {
@@ -202,9 +198,8 @@ public class ElasticPoolOperationInner extends ProxyResource {
     }
 
     /**
-     * Get the estimatedCompletionTime property: The estimated completion time
-     * of the operation.
-     * 
+     * Get the estimatedCompletionTime property: The estimated completion time of the operation.
+     *
      * @return the estimatedCompletionTime value.
      */
     public OffsetDateTime estimatedCompletionTime() {
@@ -213,7 +208,7 @@ public class ElasticPoolOperationInner extends ProxyResource {
 
     /**
      * Get the description property: The operation description.
-     * 
+     *
      * @return the description value.
      */
     public String description() {
@@ -222,7 +217,7 @@ public class ElasticPoolOperationInner extends ProxyResource {
 
     /**
      * Get the isCancellable property: Whether the operation can be cancelled.
-     * 
+     *
      * @return the isCancellable value.
      */
     public Boolean isCancellable() {

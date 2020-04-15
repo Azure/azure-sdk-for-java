@@ -7,9 +7,7 @@ package com.azure.management.monitor;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The LogicAppReceiver model.
- */
+/** The LogicAppReceiver model. */
 @Fluent
 public final class LogicAppReceiver {
     /*
@@ -38,9 +36,9 @@ public final class LogicAppReceiver {
     private boolean useCommonAlertSchema;
 
     /**
-     * Get the name property: The name of the logic app receiver. Names must be
-     * unique across all receivers within an action group.
-     * 
+     * Get the name property: The name of the logic app receiver. Names must be unique across all receivers within an
+     * action group.
+     *
      * @return the name value.
      */
     public String name() {
@@ -48,9 +46,9 @@ public final class LogicAppReceiver {
     }
 
     /**
-     * Set the name property: The name of the logic app receiver. Names must be
-     * unique across all receivers within an action group.
-     * 
+     * Set the name property: The name of the logic app receiver. Names must be unique across all receivers within an
+     * action group.
+     *
      * @param name the name value to set.
      * @return the LogicAppReceiver object itself.
      */
@@ -60,9 +58,8 @@ public final class LogicAppReceiver {
     }
 
     /**
-     * Get the resourceId property: The azure resource id of the logic app
-     * receiver.
-     * 
+     * Get the resourceId property: The azure resource id of the logic app receiver.
+     *
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -70,9 +67,8 @@ public final class LogicAppReceiver {
     }
 
     /**
-     * Set the resourceId property: The azure resource id of the logic app
-     * receiver.
-     * 
+     * Set the resourceId property: The azure resource id of the logic app receiver.
+     *
      * @param resourceId the resourceId value to set.
      * @return the LogicAppReceiver object itself.
      */
@@ -82,9 +78,8 @@ public final class LogicAppReceiver {
     }
 
     /**
-     * Get the callbackUrl property: The callback url where http request sent
-     * to.
-     * 
+     * Get the callbackUrl property: The callback url where http request sent to.
+     *
      * @return the callbackUrl value.
      */
     public String callbackUrl() {
@@ -92,9 +87,8 @@ public final class LogicAppReceiver {
     }
 
     /**
-     * Set the callbackUrl property: The callback url where http request sent
-     * to.
-     * 
+     * Set the callbackUrl property: The callback url where http request sent to.
+     *
      * @param callbackUrl the callbackUrl value to set.
      * @return the LogicAppReceiver object itself.
      */
@@ -104,9 +98,8 @@ public final class LogicAppReceiver {
     }
 
     /**
-     * Get the useCommonAlertSchema property: Indicates whether to use common
-     * alert schema.
-     * 
+     * Get the useCommonAlertSchema property: Indicates whether to use common alert schema.
+     *
      * @return the useCommonAlertSchema value.
      */
     public boolean useCommonAlertSchema() {
@@ -114,9 +107,8 @@ public final class LogicAppReceiver {
     }
 
     /**
-     * Set the useCommonAlertSchema property: Indicates whether to use common
-     * alert schema.
-     * 
+     * Set the useCommonAlertSchema property: Indicates whether to use common alert schema.
+     *
      * @param useCommonAlertSchema the useCommonAlertSchema value to set.
      * @return the LogicAppReceiver object itself.
      */

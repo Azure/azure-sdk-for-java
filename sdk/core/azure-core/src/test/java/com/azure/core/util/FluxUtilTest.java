@@ -9,6 +9,11 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.logging.ClientLogger;
+import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -19,15 +24,10 @@ import java.nio.channels.AsynchronousFileChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
-import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import reactor.test.StepVerifier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -62,9 +62,18 @@ public class FluxUtilTest {
     }
 
     @Test
-    public void toReactorContextEmpty() {
-        reactor.util.context.Context reactorContext = FluxUtil.toReactorContext(null);
-        assertTrue(reactorContext.isEmpty());
+    public void toReactorContextNull() {
+        assertTrue(FluxUtil.toReactorContext(null).isEmpty());
+    }
+
+    @Test
+    public void toReactorContextContextNone() {
+        assertTrue(FluxUtil.toReactorContext(Context.NONE).isEmpty());
+    }
+
+    @Test
+    public void toReactorContextCleansesNullValues() {
+        assertTrue(FluxUtil.toReactorContext(new Context("key", null)).isEmpty());
     }
 
     @Test

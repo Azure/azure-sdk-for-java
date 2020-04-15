@@ -16,17 +16,13 @@ import com.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
+import java.util.Collection;
 import reactor.core.publisher.Flux;
 
-import java.util.Collection;
-
-
-/**
- * Entry point to application gateway management API in Azure.
- */
+/** Entry point to application gateway management API in Azure. */
 @Fluent()
-public interface ApplicationGateways extends
-        SupportsCreating<ApplicationGateway.DefinitionStages.Blank>,
+public interface ApplicationGateways
+    extends SupportsCreating<ApplicationGateway.DefinitionStages.Blank>,
         SupportsListing<ApplicationGateway>,
         SupportsListingByResourceGroup<ApplicationGateway>,
         SupportsGettingByResourceGroup<ApplicationGateway>,

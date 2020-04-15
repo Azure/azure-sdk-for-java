@@ -27,147 +27,236 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.management.sql.ServerDnsAliasAcquisition;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * ServerDnsAliases.
- */
+/** An instance of this class provides access to all the operations defined in ServerDnsAliases. */
 public final class ServerDnsAliasesInner {
-    /**
-     * The proxy service used to perform REST calls.
-     */
-    private ServerDnsAliasesService service;
+    /** The proxy service used to perform REST calls. */
+    private final ServerDnsAliasesService service;
 
-    /**
-     * The service client containing this operation class.
-     */
-    private SqlManagementClientImpl client;
+    /** The service client containing this operation class. */
+    private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of ServerDnsAliasesInner.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     ServerDnsAliasesInner(SqlManagementClientImpl client) {
-        this.service = RestProxy.create(ServerDnsAliasesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy.create(ServerDnsAliasesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * SqlManagementClientServerDnsAliases to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for SqlManagementClientServerDnsAliases to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientServerDnsAliases")
+    @ServiceInterface(name = "SqlManagementClientS")
     private interface ServerDnsAliasesService {
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/dnsAliases/{dnsAliasName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
+                + "/{serverName}/dnsAliases/{dnsAliasName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ServerDnsAliasInner>> get(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName, @PathParam("dnsAliasName") String dnsAliasName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<ServerDnsAliasInner>> get(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("dnsAliasName") String dnsAliasName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/dnsAliases/{dnsAliasName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
+                + "/{serverName}/dnsAliases/{dnsAliasName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName, @PathParam("dnsAliasName") String dnsAliasName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("dnsAliasName") String dnsAliasName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/dnsAliases/{dnsAliasName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
+                + "/{serverName}/dnsAliases/{dnsAliasName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName, @PathParam("dnsAliasName") String dnsAliasName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("dnsAliasName") String dnsAliasName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/dnsAliases")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
+                + "/{serverName}/dnsAliases")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ServerDnsAliasListResultInner>> listByServer(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<ServerDnsAliasListResultInner>> listByServer(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/dnsAliases/{dnsAliasName}/acquire")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
+                + "/{serverName}/dnsAliases/{dnsAliasName}/acquire")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> acquire(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName, @PathParam("dnsAliasName") String dnsAliasName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ServerDnsAliasAcquisition parameters);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> acquire(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("dnsAliasName") String dnsAliasName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ServerDnsAliasAcquisition parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/dnsAliases/{dnsAliasName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
+                + "/{serverName}/dnsAliases/{dnsAliasName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ServerDnsAliasInner>> beginCreateOrUpdate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName, @PathParam("dnsAliasName") String dnsAliasName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<ServerDnsAliasInner>> beginCreateOrUpdate(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("dnsAliasName") String dnsAliasName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/dnsAliases/{dnsAliasName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
+                + "/{serverName}/dnsAliases/{dnsAliasName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> beginDelete(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName, @PathParam("dnsAliasName") String dnsAliasName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<Response<Void>> beginDelete(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("dnsAliasName") String dnsAliasName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/dnsAliases/{dnsAliasName}/acquire")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
+                + "/{serverName}/dnsAliases/{dnsAliasName}/acquire")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> beginAcquire(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName, @PathParam("dnsAliasName") String dnsAliasName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ServerDnsAliasAcquisition parameters);
+        Mono<Response<Void>> beginAcquire(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("dnsAliasName") String dnsAliasName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ServerDnsAliasAcquisition parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ServerDnsAliasListResultInner>> listByServerNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<ServerDnsAliasListResultInner>> listByServerNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
      * Gets a server DNS alias.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param dnsAliasName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server that the alias is pointing to.
+     * @param dnsAliasName The name of the server DNS alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a server DNS alias.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ServerDnsAliasInner>> getWithResponseAsync(String resourceGroupName, String serverName, String dnsAliasName) {
+    public Mono<SimpleResponse<ServerDnsAliasInner>> getWithResponseAsync(
+        String resourceGroupName, String serverName, String dnsAliasName) {
         final String apiVersion = "2017-03-01-preview";
-        return service.get(this.client.getHost(), resourceGroupName, serverName, dnsAliasName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .get(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            serverName,
+                            dnsAliasName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a server DNS alias.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param dnsAliasName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server that the alias is pointing to.
+     * @param dnsAliasName The name of the server DNS alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a server DNS alias.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServerDnsAliasInner> getAsync(String resourceGroupName, String serverName, String dnsAliasName) {
         return getWithResponseAsync(resourceGroupName, serverName, dnsAliasName)
-            .flatMap((SimpleResponse<ServerDnsAliasInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<ServerDnsAliasInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets a server DNS alias.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param dnsAliasName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server that the alias is pointing to.
+     * @param dnsAliasName The name of the server DNS alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a server DNS alias.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerDnsAliasInner get(String resourceGroupName, String serverName, String dnsAliasName) {
@@ -176,47 +265,71 @@ public final class ServerDnsAliasesInner {
 
     /**
      * Creates a server dns alias.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param dnsAliasName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server that the alias is pointing to.
+     * @param dnsAliasName The name of the server DNS alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a server DNS alias.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName, String dnsAliasName) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String serverName, String dnsAliasName) {
         final String apiVersion = "2017-03-01-preview";
-        return service.createOrUpdate(this.client.getHost(), resourceGroupName, serverName, dnsAliasName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createOrUpdate(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            serverName,
+                            dnsAliasName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Creates a server dns alias.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param dnsAliasName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server that the alias is pointing to.
+     * @param dnsAliasName The name of the server DNS alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a server DNS alias.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServerDnsAliasInner> createOrUpdateAsync(String resourceGroupName, String serverName, String dnsAliasName) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, serverName, dnsAliasName);
-        return this.client.<ServerDnsAliasInner, ServerDnsAliasInner>getLroResultAsync(mono, this.client.getHttpPipeline(), ServerDnsAliasInner.class, ServerDnsAliasInner.class)
+    public Mono<ServerDnsAliasInner> createOrUpdateAsync(
+        String resourceGroupName, String serverName, String dnsAliasName) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, serverName, dnsAliasName);
+        return this
+            .client
+            .<ServerDnsAliasInner, ServerDnsAliasInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), ServerDnsAliasInner.class, ServerDnsAliasInner.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Creates a server dns alias.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param dnsAliasName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server that the alias is pointing to.
+     * @param dnsAliasName The name of the server DNS alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a server DNS alias.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerDnsAliasInner createOrUpdate(String resourceGroupName, String serverName, String dnsAliasName) {
@@ -225,44 +338,65 @@ public final class ServerDnsAliasesInner {
 
     /**
      * Deletes the server DNS alias with the given name.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param dnsAliasName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server that the alias is pointing to.
+     * @param dnsAliasName The name of the server DNS alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName, String dnsAliasName) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String serverName, String dnsAliasName) {
         final String apiVersion = "2017-03-01-preview";
-        return service.delete(this.client.getHost(), resourceGroupName, serverName, dnsAliasName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .delete(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            serverName,
+                            dnsAliasName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Deletes the server DNS alias with the given name.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param dnsAliasName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server that the alias is pointing to.
+     * @param dnsAliasName The name of the server DNS alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serverName, String dnsAliasName) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serverName, dnsAliasName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, serverName, dnsAliasName);
+        return this
+            .client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Deletes the server DNS alias with the given name.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param dnsAliasName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server that the alias is pointing to.
+     * @param dnsAliasName The name of the server DNS alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -274,34 +408,52 @@ public final class ServerDnsAliasesInner {
 
     /**
      * Gets a list of server DNS aliases for a server.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server that the alias is pointing to.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server DNS aliases for a server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ServerDnsAliasInner>> listByServerSinglePageAsync(String resourceGroupName, String serverName) {
+    public Mono<PagedResponse<ServerDnsAliasInner>> listByServerSinglePageAsync(
+        String resourceGroupName, String serverName) {
         final String apiVersion = "2017-03-01-preview";
-        return service.listByServer(this.client.getHost(), resourceGroupName, serverName, this.client.getSubscriptionId(), apiVersion)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByServer(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            serverName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .<PagedResponse<ServerDnsAliasInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a list of server DNS aliases for a server.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server that the alias is pointing to.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server DNS aliases for a server.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ServerDnsAliasInner> listByServerAsync(String resourceGroupName, String serverName) {
@@ -312,12 +464,14 @@ public final class ServerDnsAliasesInner {
 
     /**
      * Gets a list of server DNS aliases for a server.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server that the alias is pointing to.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server DNS aliases for a server.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServerDnsAliasInner> listByServer(String resourceGroupName, String serverName) {
@@ -326,48 +480,71 @@ public final class ServerDnsAliasesInner {
 
     /**
      * Acquires server DNS alias from another server.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param dnsAliasName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server that the alias is pointing to.
+     * @param dnsAliasName The name of the server dns alias.
      * @param oldServerDnsAliasId The id of the server alias that will be acquired to point to this server instead.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> acquireWithResponseAsync(String resourceGroupName, String serverName, String dnsAliasName, String oldServerDnsAliasId) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> acquireWithResponseAsync(
+        String resourceGroupName, String serverName, String dnsAliasName, String oldServerDnsAliasId) {
         final String apiVersion = "2017-03-01-preview";
         ServerDnsAliasAcquisition parameters = new ServerDnsAliasAcquisition();
         parameters.withOldServerDnsAliasId(oldServerDnsAliasId);
-        return service.acquire(this.client.getHost(), resourceGroupName, serverName, dnsAliasName, this.client.getSubscriptionId(), apiVersion, parameters);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .acquire(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            serverName,
+                            dnsAliasName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            parameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Acquires server DNS alias from another server.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param dnsAliasName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server that the alias is pointing to.
+     * @param dnsAliasName The name of the server dns alias.
      * @param oldServerDnsAliasId The id of the server alias that will be acquired to point to this server instead.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> acquireAsync(String resourceGroupName, String serverName, String dnsAliasName, String oldServerDnsAliasId) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = acquireWithResponseAsync(resourceGroupName, serverName, dnsAliasName, oldServerDnsAliasId);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+    public Mono<Void> acquireAsync(
+        String resourceGroupName, String serverName, String dnsAliasName, String oldServerDnsAliasId) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            acquireWithResponseAsync(resourceGroupName, serverName, dnsAliasName, oldServerDnsAliasId);
+        return this
+            .client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Acquires server DNS alias from another server.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param dnsAliasName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server that the alias is pointing to.
+     * @param dnsAliasName The name of the server dns alias.
      * @param oldServerDnsAliasId The id of the server alias that will be acquired to point to this server instead.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -380,51 +557,72 @@ public final class ServerDnsAliasesInner {
 
     /**
      * Creates a server dns alias.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param dnsAliasName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server that the alias is pointing to.
+     * @param dnsAliasName The name of the server DNS alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a server DNS alias.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ServerDnsAliasInner>> beginCreateOrUpdateWithResponseAsync(String resourceGroupName, String serverName, String dnsAliasName) {
+    public Mono<SimpleResponse<ServerDnsAliasInner>> beginCreateOrUpdateWithResponseAsync(
+        String resourceGroupName, String serverName, String dnsAliasName) {
         final String apiVersion = "2017-03-01-preview";
-        return service.beginCreateOrUpdate(this.client.getHost(), resourceGroupName, serverName, dnsAliasName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginCreateOrUpdate(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            serverName,
+                            dnsAliasName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Creates a server dns alias.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param dnsAliasName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server that the alias is pointing to.
+     * @param dnsAliasName The name of the server DNS alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a server DNS alias.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServerDnsAliasInner> beginCreateOrUpdateAsync(String resourceGroupName, String serverName, String dnsAliasName) {
+    public Mono<ServerDnsAliasInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String serverName, String dnsAliasName) {
         return beginCreateOrUpdateWithResponseAsync(resourceGroupName, serverName, dnsAliasName)
-            .flatMap((SimpleResponse<ServerDnsAliasInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<ServerDnsAliasInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Creates a server dns alias.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param dnsAliasName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server that the alias is pointing to.
+     * @param dnsAliasName The name of the server DNS alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a server DNS alias.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerDnsAliasInner beginCreateOrUpdate(String resourceGroupName, String serverName, String dnsAliasName) {
@@ -433,29 +631,46 @@ public final class ServerDnsAliasesInner {
 
     /**
      * Deletes the server DNS alias with the given name.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param dnsAliasName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server that the alias is pointing to.
+     * @param dnsAliasName The name of the server DNS alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithResponseAsync(String resourceGroupName, String serverName, String dnsAliasName) {
+    public Mono<Response<Void>> beginDeleteWithResponseAsync(
+        String resourceGroupName, String serverName, String dnsAliasName) {
         final String apiVersion = "2017-03-01-preview";
-        return service.beginDelete(this.client.getHost(), resourceGroupName, serverName, dnsAliasName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginDelete(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            serverName,
+                            dnsAliasName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Deletes the server DNS alias with the given name.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param dnsAliasName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server that the alias is pointing to.
+     * @param dnsAliasName The name of the server DNS alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> beginDeleteAsync(String resourceGroupName, String serverName, String dnsAliasName) {
@@ -465,10 +680,11 @@ public final class ServerDnsAliasesInner {
 
     /**
      * Deletes the server DNS alias with the given name.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param dnsAliasName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server that the alias is pointing to.
+     * @param dnsAliasName The name of the server DNS alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -480,73 +696,99 @@ public final class ServerDnsAliasesInner {
 
     /**
      * Acquires server DNS alias from another server.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param dnsAliasName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server that the alias is pointing to.
+     * @param dnsAliasName The name of the server dns alias.
      * @param oldServerDnsAliasId The id of the server alias that will be acquired to point to this server instead.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginAcquireWithResponseAsync(String resourceGroupName, String serverName, String dnsAliasName, String oldServerDnsAliasId) {
+    public Mono<Response<Void>> beginAcquireWithResponseAsync(
+        String resourceGroupName, String serverName, String dnsAliasName, String oldServerDnsAliasId) {
         final String apiVersion = "2017-03-01-preview";
         ServerDnsAliasAcquisition parameters = new ServerDnsAliasAcquisition();
         parameters.withOldServerDnsAliasId(oldServerDnsAliasId);
-        return service.beginAcquire(this.client.getHost(), resourceGroupName, serverName, dnsAliasName, this.client.getSubscriptionId(), apiVersion, parameters);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginAcquire(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            serverName,
+                            dnsAliasName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            parameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Acquires server DNS alias from another server.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param dnsAliasName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server that the alias is pointing to.
+     * @param dnsAliasName The name of the server dns alias.
      * @param oldServerDnsAliasId The id of the server alias that will be acquired to point to this server instead.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginAcquireAsync(String resourceGroupName, String serverName, String dnsAliasName, String oldServerDnsAliasId) {
+    public Mono<Void> beginAcquireAsync(
+        String resourceGroupName, String serverName, String dnsAliasName, String oldServerDnsAliasId) {
         return beginAcquireWithResponseAsync(resourceGroupName, serverName, dnsAliasName, oldServerDnsAliasId)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Acquires server DNS alias from another server.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param dnsAliasName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server that the alias is pointing to.
+     * @param dnsAliasName The name of the server dns alias.
      * @param oldServerDnsAliasId The id of the server alias that will be acquired to point to this server instead.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginAcquire(String resourceGroupName, String serverName, String dnsAliasName, String oldServerDnsAliasId) {
+    public void beginAcquire(
+        String resourceGroupName, String serverName, String dnsAliasName, String oldServerDnsAliasId) {
         beginAcquireAsync(resourceGroupName, serverName, dnsAliasName, oldServerDnsAliasId).block();
     }
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink null
+     *
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server DNS aliases.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ServerDnsAliasInner>> listByServerNextSinglePageAsync(String nextLink) {
-        return service.listByServerNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(context -> service.listByServerNext(nextLink, context))
+            .<PagedResponse<ServerDnsAliasInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 }

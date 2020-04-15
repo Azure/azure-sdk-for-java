@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The RegistryListResult model.
- */
+/** The RegistryListResult model. */
 @Fluent
 public final class RegistryListResultInner {
     /*
@@ -29,10 +27,9 @@ public final class RegistryListResultInner {
     private String nextLink;
 
     /**
-     * Get the value property: The list of container registries. Since this
-     * list may be incomplete, the nextLink field should be used to request the
-     * next list of container registries.
-     * 
+     * Get the value property: The list of container registries. Since this list may be incomplete, the nextLink field
+     * should be used to request the next list of container registries.
+     *
      * @return the value value.
      */
     public List<RegistryInner> value() {
@@ -40,10 +37,9 @@ public final class RegistryListResultInner {
     }
 
     /**
-     * Set the value property: The list of container registries. Since this
-     * list may be incomplete, the nextLink field should be used to request the
-     * next list of container registries.
-     * 
+     * Set the value property: The list of container registries. Since this list may be incomplete, the nextLink field
+     * should be used to request the next list of container registries.
+     *
      * @param value the value value to set.
      * @return the RegistryListResultInner object itself.
      */
@@ -53,9 +49,8 @@ public final class RegistryListResultInner {
     }
 
     /**
-     * Get the nextLink property: The URI that can be used to request the next
-     * list of container registries.
-     * 
+     * Get the nextLink property: The URI that can be used to request the next list of container registries.
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,9 +58,8 @@ public final class RegistryListResultInner {
     }
 
     /**
-     * Set the nextLink property: The URI that can be used to request the next
-     * list of container registries.
-     * 
+     * Set the nextLink property: The URI that can be used to request the next list of container registries.
+     *
      * @param nextLink the nextLink value to set.
      * @return the RegistryListResultInner object itself.
      */

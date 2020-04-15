@@ -53,6 +53,7 @@ public class DockerUtils {
          * @param caPem - content of the ca.pem certificate file
          * @param keyPem - content of the key.pem certificate file
          * @param certPem - content of the cert.pem certificate file
+         * @throws DockerClientException throws when something unexpected happens
          */
         public DockerSSLConfig(String caPem, String keyPem, String certPem) {
             try {
@@ -409,16 +410,16 @@ public class DockerUtils {
             + "if [ ! -d ~/.azuredocker/tls ]; then mkdir -p ~/.azuredocker/tls ; fi \n"
             + "echo Running: sudo apt-get update \n"
             + "sudo apt-get update \n"
-            + "echo Running: sudo apt-get install -y --no-install-recommends apt-transport-https ca-certificates curl software-properties-common \n"
+            + "echo Running: sudo apt-get install -y --no-install-recommends apt-transport-https ca-certificates curl gnupg-agent software-properties-common \n"
             + "sudo apt-get install -y --no-install-recommends apt-transport-https ca-certificates curl software-properties-common \n"
-            + "echo Running: curl -fsSL https://apt.dockerproject.org/gpg | sudo apt-key add - \n"
-            + "curl -fsSL https://apt.dockerproject.org/gpg | sudo apt-key add - \n"
-            + "echo Running: sudo add-apt-repository \"deb https://apt.dockerproject.org/repo/ ubuntu-$(lsb_release -cs) main\" \n"
-            + "sudo add-apt-repository \"deb https://apt.dockerproject.org/repo/ ubuntu-xenial main\" \n"
+            + "echo Running: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - \n"
+            + "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - \n"
+            + "echo Running: sudo add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\" \n"
+            + "sudo add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\" \n"
             + "echo Running: sudo apt-get update \n"
             + "sudo apt-get update \n"
-            + "echo Running: sudo apt-get -y install docker-engine \n"
-            + "sudo apt-get -y install docker-engine \n"
+            + "echo Running: sudo apt-get -y install docker-ce docker-ce-cli containerd.io \n"
+            + "sudo apt-get -y install docker-ce docker-ce-cli containerd.io \n"
             + "echo Running: sudo groupadd docker \n"
             + "sudo groupadd docker \n"
             + "echo Running: sudo usermod -aG docker $USER \n"
@@ -444,10 +445,8 @@ public class DockerUtils {
             + "openssl genrsa -out server-key.pem 2048 \n"
             + "echo Running: openssl req -subj '/CN=HOST_IP' -sha256 -new -key server-key.pem -out server.csr \n"
             + "openssl req -subj '/CN=HOST_IP' -sha256 -new -key server-key.pem -out server.csr \n"
-            + "echo Running: \"echo subjectAltName = DNS:HOST_IP IP:127.0.0.1 > extfile.cnf \" \n"
-            + "echo subjectAltName = DNS:HOST_IP IP:127.0.0.1 > extfile.cnf \n"
-            + "echo Running: openssl x509 -req -passin pass:$CERT_CA_PWD_PARAM$ -days 365 -sha256 -in server.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out server.pem -extfile extfile.cnf \n"
-            + "openssl x509 -req -passin pass:$CERT_CA_PWD_PARAM$ -days 365 -sha256 -in server.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out server.pem -extfile extfile.cnf \n"
+            + "echo Running: openssl x509 -req -passin pass:$CERT_CA_PWD_PARAM$ -days 365 -sha256 -in server.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out server.pem \n"
+            + "openssl x509 -req -passin pass:$CERT_CA_PWD_PARAM$ -days 365 -sha256 -in server.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out server.pem \n"
             // Generate Client certificates
             + "echo Running: openssl genrsa -passout pass:$CERT_CA_PWD_PARAM$ -out key.pem \n"
             + "openssl genrsa -passout pass:$CERT_CA_PWD_PARAM$ -out key.pem \n"

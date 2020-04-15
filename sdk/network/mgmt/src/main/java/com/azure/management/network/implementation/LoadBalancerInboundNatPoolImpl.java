@@ -16,13 +16,9 @@ import com.azure.management.resources.fluentcore.arm.models.implementation.Child
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.utils.Utils;
 
-/**
- * Implementation for LoadBalancerInboundNatRule.
- */
-class LoadBalancerInboundNatPoolImpl
-        extends ChildResourceImpl<InboundNatPool, LoadBalancerImpl, LoadBalancer>
-        implements
-        LoadBalancerInboundNatPool,
+/** Implementation for LoadBalancerInboundNatRule. */
+class LoadBalancerInboundNatPoolImpl extends ChildResourceImpl<InboundNatPool, LoadBalancerImpl, LoadBalancer>
+    implements LoadBalancerInboundNatPool,
         LoadBalancerInboundNatPool.Definition<LoadBalancer.DefinitionStages.WithCreateAndInboundNatPool>,
         LoadBalancerInboundNatPool.UpdateDefinition<LoadBalancer.Update>,
         LoadBalancerInboundNatPool.Update {
@@ -50,9 +46,10 @@ class LoadBalancerInboundNatPoolImpl
 
     @Override
     public LoadBalancerFrontend frontend() {
-        return this.parent().frontends().get(
-                ResourceUtils.nameFromResourceId(
-                        this.inner().frontendIPConfiguration().getId()));
+        return this
+            .parent()
+            .frontends()
+            .get(ResourceUtils.nameFromResourceId(this.inner().frontendIPConfiguration().getId()));
     }
 
     @Override
@@ -108,7 +105,9 @@ class LoadBalancerInboundNatPoolImpl
 
     @Override
     public LoadBalancerInboundNatPoolImpl fromExistingPublicIPAddress(String resourceId) {
-        return (null != resourceId) ? this.fromFrontend(this.parent().ensurePublicFrontendWithPip(resourceId).name()) : this;
+        return (null != resourceId)
+            ? this.fromFrontend(this.parent().ensurePublicFrontendWithPip(resourceId).name())
+            : this;
     }
 
     @Override
@@ -134,21 +133,17 @@ class LoadBalancerInboundNatPoolImpl
     @Override
     public LoadBalancerInboundNatPoolImpl fromExistingSubnet(String networkResourceId, String subnetName) {
         return (null != networkResourceId && null != subnetName)
-                ? this.fromFrontend(this.parent().ensurePrivateFrontendWithSubnet(networkResourceId, subnetName).name())
-                : this;
+            ? this.fromFrontend(this.parent().ensurePrivateFrontendWithSubnet(networkResourceId, subnetName).name())
+            : this;
     }
 
     @Override
     public LoadBalancerInboundNatPoolImpl fromExistingSubnet(Network network, String subnetName) {
-        return (null != network && null != subnetName)
-                ? this.fromExistingSubnet(network.id(), subnetName)
-                : this;
+        return (null != network && null != subnetName) ? this.fromExistingSubnet(network.id(), subnetName) : this;
     }
 
     @Override
     public LoadBalancerInboundNatPoolImpl fromExistingSubnet(Subnet subnet) {
-        return (null != subnet)
-                ? this.fromExistingSubnet(subnet.parent().id(), subnet.name())
-                : this;
+        return (null != subnet) ? this.fromExistingSubnet(subnet.parent().id(), subnet.name()) : this;
     }
 }

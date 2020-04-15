@@ -10,6 +10,9 @@ trim_trailing_whitespace = true
 insert_final_newline = true
 max_line_length = 120
 
+[*.json]
+indent_size = 2
+
 # From https://maven.apache.org/developers/conventions/code.html
 [*.xml]
 indent_size = 2

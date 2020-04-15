@@ -27,7 +27,7 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -125,9 +125,9 @@ eventProcessorClient.stop();
 
 ### Enable client logging
 
-You can set the `AZURE_LOG_LEVEL` environment variable to view logging statements made in the client library. For
-example, setting `AZURE_LOG_LEVEL=2` would show all informational, warning, and error log messages. The log levels can
-be found here: [log levels][source_loglevels].
+Azure SDKs for Java offer a consistent logging story to help aid in troubleshooting application errors and expedite
+their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help
+locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
 
 ### Default SSL library
 All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL
@@ -148,6 +148,7 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [event_hubs_create]: https://docs.microsoft.com/azure/event-hubs/event-hubs-create
 [event_hubs_product_docs]: https://docs.microsoft.com/azure/event-hubs/
 [java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [maven]: https://maven.apache.org/
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [samples_readme]: ./src/samples/README.md

@@ -5,10 +5,12 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.implementation.models.DocumentResult;
+import com.azure.ai.formrecognizer.implementation.models.ModelInfo;
 import com.azure.ai.formrecognizer.implementation.models.ReadResult;
 import com.azure.ai.formrecognizer.implementation.models.TextLine;
 import com.azure.ai.formrecognizer.implementation.models.TextWord;
 import com.azure.ai.formrecognizer.models.BoundingBox;
+import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.models.DateValue;
 import com.azure.ai.formrecognizer.models.DimensionUnit;
 import com.azure.ai.formrecognizer.models.Element;
@@ -17,6 +19,7 @@ import com.azure.ai.formrecognizer.models.FieldValue;
 import com.azure.ai.formrecognizer.models.FloatValue;
 import com.azure.ai.formrecognizer.models.IntegerValue;
 import com.azure.ai.formrecognizer.models.LineElement;
+import com.azure.ai.formrecognizer.models.ModelTrainingStatus;
 import com.azure.ai.formrecognizer.models.PageMetadata;
 import com.azure.ai.formrecognizer.models.PageRange;
 import com.azure.ai.formrecognizer.models.Point;
@@ -373,5 +376,42 @@ final class Transforms {
         return new TimeValue(serviceDateValue.getText(), toBoundingBox(serviceDateValue.getBoundingBox()),
             serviceDateValue.getValueTime(), serviceDateValue.getPage());
         // TODO: currently returning a string, waiting on swagger update.
+    }
+
+    /**
+     * Transform a list of {@link ModelInfo} to a list of {@link CustomFormModelInfo}.
+     *
+     * @param list A list of {@link ModelInfo}.
+     * @return A list of {@link CustomFormModelInfo}.
+     */
+    static List<CustomFormModelInfo> toCustomFormModelInfo(List<ModelInfo> list) {
+        CollectionTransformer<ModelInfo, CustomFormModelInfo> transformer =
+            new CollectionTransformer<ModelInfo, CustomFormModelInfo>() {
+            @Override
+            CustomFormModelInfo transform(ModelInfo modelInfo) {
+                return new CustomFormModelInfo(modelInfo.getModelId().toString(),
+                    ModelTrainingStatus.fromString(modelInfo.getStatus().toString()),
+                    modelInfo.getCreatedDateTime(), modelInfo.getLastUpdatedDateTime());
+            }
+        };
+        return transformer.transform(list);
+    }
+
+    /**
+     * A generic transformation class for collection that transform from type {@code E} to type {@code F}.
+     *
+     * @param <E> Transform type E to another type.
+     * @param <F> Transform to type F from another type.
+     */
+    abstract static class CollectionTransformer<E, F> {
+        abstract F transform(E e);
+
+        List<F> transform(List<E> list) {
+            List<F> newList = new ArrayList<>();
+            for (E e : list) {
+                newList.add(transform(e));
+            }
+            return newList;
+        }
     }
 }

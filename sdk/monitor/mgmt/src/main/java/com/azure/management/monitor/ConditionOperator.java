@@ -7,33 +7,21 @@ package com.azure.management.monitor;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for ConditionOperator.
- */
+/** Defines values for ConditionOperator. */
 public enum ConditionOperator {
-    /**
-     * Enum value GreaterThan.
-     */
+    /** Enum value GreaterThan. */
     GREATER_THAN("GreaterThan"),
 
-    /**
-     * Enum value GreaterThanOrEqual.
-     */
+    /** Enum value GreaterThanOrEqual. */
     GREATER_THAN_OR_EQUAL("GreaterThanOrEqual"),
 
-    /**
-     * Enum value LessThan.
-     */
+    /** Enum value LessThan. */
     LESS_THAN("LessThan"),
 
-    /**
-     * Enum value LessThanOrEqual.
-     */
+    /** Enum value LessThanOrEqual. */
     LESS_THAN_OR_EQUAL("LessThanOrEqual");
 
-    /**
-     * The actual serialized value for a ConditionOperator instance.
-     */
+    /** The actual serialized value for a ConditionOperator instance. */
     private final String value;
 
     ConditionOperator(String value) {
@@ -42,7 +30,7 @@ public enum ConditionOperator {
 
     /**
      * Parses a serialized value to a ConditionOperator instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed ConditionOperator object, or null if unable to parse.
      */

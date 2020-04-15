@@ -5,9 +5,7 @@ package com.azure.management.compute;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for ComputeRoles.
- */
+/** Defines values for ComputeRoles. */
 public enum ComputeRoles {
     /** Enum value PaaS. */
     PAAS("PaaS"),

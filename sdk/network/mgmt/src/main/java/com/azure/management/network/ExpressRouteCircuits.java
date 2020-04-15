@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.management.network;
 
-
 import com.azure.core.annotation.Fluent;
 import com.azure.management.network.implementation.NetworkManager;
 import com.azure.management.network.models.ExpressRouteCircuitsInner;
@@ -17,12 +16,10 @@ import com.azure.management.resources.fluentcore.collection.SupportsDeletingById
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-/**
- * Entry point to express route circuits management API in Azure.
- */
+/** Entry point to express route circuits management API in Azure. */
 @Fluent
-public interface ExpressRouteCircuits extends
-        SupportsCreating<ExpressRouteCircuit.DefinitionStages.Blank>,
+public interface ExpressRouteCircuits
+    extends SupportsCreating<ExpressRouteCircuit.DefinitionStages.Blank>,
         SupportsListing<ExpressRouteCircuit>,
         SupportsListingByResourceGroup<ExpressRouteCircuit>,
         SupportsGettingByResourceGroup<ExpressRouteCircuit>,

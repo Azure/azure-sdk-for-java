@@ -3,11 +3,9 @@
 
 package com.azure.management.compute;
 
-/**
- * Type representing encryption configuration to be applied to a Windows virtual machine.
- */
+/** Type representing encryption configuration to be applied to a Windows virtual machine. */
 public class WindowsVMDiskEncryptionConfiguration
-        extends VirtualMachineEncryptionConfiguration<WindowsVMDiskEncryptionConfiguration> {
+    extends VirtualMachineEncryptionConfiguration<WindowsVMDiskEncryptionConfiguration> {
     /**
      * Creates WindowsVMDiskEncryptionConfiguration.
      *
@@ -15,9 +13,7 @@ public class WindowsVMDiskEncryptionConfiguration
      * @param aadClientId client ID of an AAD application which has permission to the key vault
      * @param aadSecret client secret corresponding to the aadClientId
      */
-    public WindowsVMDiskEncryptionConfiguration(String keyVaultId,
-                                                String aadClientId,
-                                                String aadSecret) {
+    public WindowsVMDiskEncryptionConfiguration(String keyVaultId, String aadClientId, String aadSecret) {
         super(keyVaultId, aadClientId, aadSecret);
     }
 

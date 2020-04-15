@@ -17,13 +17,10 @@ import com.azure.management.resources.fluentcore.collection.SupportsDeletingById
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-
-/**
- * Entry point to public IP address management.
- */
+/** Entry point to public IP address management. */
 @Fluent()
-public interface PublicIPAddresses extends
-        SupportsListing<PublicIPAddress>,
+public interface PublicIPAddresses
+    extends SupportsListing<PublicIPAddress>,
         SupportsCreating<PublicIPAddress.DefinitionStages.Blank>,
         SupportsDeletingById,
         SupportsListingByResourceGroup<PublicIPAddress>,

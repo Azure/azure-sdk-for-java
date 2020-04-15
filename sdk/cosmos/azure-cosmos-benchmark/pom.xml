@@ -9,7 +9,7 @@ Licensed under the MIT License.
     <groupId>com.azure</groupId>
     <artifactId>azure-client-sdk-parent</artifactId>
     <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
-    <relativePath>../../../pom.client.xml</relativePath>
+    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
   </parent>
 
   <groupId>com.azure</groupId>
@@ -222,20 +222,20 @@ Licensed under the MIT License.
             <bannedDependencies>
               <includes>
                 <include>com.azure:*</include>
-                <include>org.slf4j</include>
-                <include>io.dropwizard.metrics:metrics-core</include>
-                <include>com.beust:jcommander</include>
+                <include>com.beust:jcommander:[1.58]</include> <!-- {x-include-update;com.beust:jcommander;external_dependency} -->
+                <include>io.dropwizard.metrics:metrics-core:[4.1.0]</include> <!-- {x-include-update;cosmos_io.dropwizard.metrics:metrics-core;external_dependency} -->
+                <include>org.slf4j:slf4j-api:[1.7.28]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
 
                 <!-- The benchmarking tool is allowed additional dependencies as it is not a library -->
-                <include>com.google.guava:guava</include>
-                <include>io.micrometer:micrometer-registry-graphite</include>
-                <include>org.apache.commons:commons-lang3</include>
-                <include>org.apache.logging.log4j:log4j-core</include>
-                <include>io.dropwizard.metrics:metrics-jvm</include>
-                <include>io.dropwizard.metrics:metrics-graphite</include>
-                <include>io.micrometer:micrometer-registry-azure-monitor</include>
-                <include>org.apache.logging.log4j:log4j-slf4j-impl</include>
-                <include>org.apache.logging.log4j:log4j-api:jar</include>
+                <include>com.google.guava:guava:[25.0-jre]</include> <!-- {x-include-update;cosmos_com.google.guava:guava;external_dependency} -->
+                <include>io.dropwizard.metrics:metrics-graphite:[4.1.0]</include> <!-- {x-include-update;cosmos_io.dropwizard.metrics:metrics-graphite;external_dependency} -->
+                <include>io.dropwizard.metrics:metrics-jvm:[4.1.0]</include> <!-- {x-include-update;cosmos_io.dropwizard.metrics:metrics-jvm;external_dependency} -->
+                <include>io.micrometer:micrometer-registry-azure-monitor:[1.2.0]</include> <!-- {x-include-update;io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
+                <include>io.micrometer:micrometer-registry-graphite:[1.2.0]</include> <!-- {x-include-update;io.micrometer:micrometer-registry-graphite;external_dependency} -->
+                <include>org.apache.commons:commons-lang3:[3.8.1]</include> <!-- {x-include-update;org.apache.commons:commons-lang3;external_dependency} -->
+                <include>org.apache.logging.log4j:log4j-api:[2.11.1]</include> <!-- {x-include-update;org.apache.logging.log4j:log4j-api;external_dependency} -->
+                <include>org.apache.logging.log4j:log4j-core:[2.11.1]</include> <!-- {x-include-update;org.apache.logging.log4j:log4j-core;external_dependency} -->
+                <include>org.apache.logging.log4j:log4j-slf4j-impl:[2.13.0]</include> <!-- {x-include-update;org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

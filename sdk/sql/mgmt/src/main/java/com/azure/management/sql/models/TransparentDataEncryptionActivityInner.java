@@ -10,9 +10,7 @@ import com.azure.core.management.ProxyResource;
 import com.azure.management.sql.TransparentDataEncryptionActivityStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The TransparentDataEncryptionActivity model.
- */
+/** The TransparentDataEncryptionActivity model. */
 @JsonFlatten
 @Immutable
 public class TransparentDataEncryptionActivityInner extends ProxyResource {
@@ -37,7 +35,7 @@ public class TransparentDataEncryptionActivityInner extends ProxyResource {
 
     /**
      * Get the location property: Resource location.
-     * 
+     *
      * @return the location value.
      */
     public String location() {
@@ -46,7 +44,7 @@ public class TransparentDataEncryptionActivityInner extends ProxyResource {
 
     /**
      * Get the status property: The status of the database.
-     * 
+     *
      * @return the status value.
      */
     public TransparentDataEncryptionActivityStatus status() {
@@ -54,9 +52,8 @@ public class TransparentDataEncryptionActivityInner extends ProxyResource {
     }
 
     /**
-     * Get the percentComplete property: The percent complete of the
-     * transparent data encryption scan for a database.
-     * 
+     * Get the percentComplete property: The percent complete of the transparent data encryption scan for a database.
+     *
      * @return the percentComplete value.
      */
     public Float percentComplete() {

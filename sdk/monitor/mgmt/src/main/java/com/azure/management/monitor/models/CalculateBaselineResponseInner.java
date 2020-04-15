@@ -10,9 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/**
- * The CalculateBaselineResponse model.
- */
+/** The CalculateBaselineResponse model. */
 @Fluent
 public final class CalculateBaselineResponseInner {
     /*
@@ -35,7 +33,7 @@ public final class CalculateBaselineResponseInner {
 
     /**
      * Get the type property: the resource type of the baseline resource.
-     * 
+     *
      * @return the type value.
      */
     public String type() {
@@ -44,7 +42,7 @@ public final class CalculateBaselineResponseInner {
 
     /**
      * Set the type property: the resource type of the baseline resource.
-     * 
+     *
      * @param type the type value to set.
      * @return the CalculateBaselineResponseInner object itself.
      */
@@ -55,7 +53,7 @@ public final class CalculateBaselineResponseInner {
 
     /**
      * Get the timestamps property: the array of timestamps of the baselines.
-     * 
+     *
      * @return the timestamps value.
      */
     public List<OffsetDateTime> timestamps() {
@@ -64,7 +62,7 @@ public final class CalculateBaselineResponseInner {
 
     /**
      * Set the timestamps property: the array of timestamps of the baselines.
-     * 
+     *
      * @param timestamps the timestamps value to set.
      * @return the CalculateBaselineResponseInner object itself.
      */
@@ -75,7 +73,7 @@ public final class CalculateBaselineResponseInner {
 
     /**
      * Get the baseline property: the baseline values for each sensitivity.
-     * 
+     *
      * @return the baseline value.
      */
     public List<Baseline> baseline() {
@@ -84,7 +82,7 @@ public final class CalculateBaselineResponseInner {
 
     /**
      * Set the baseline property: the baseline values for each sensitivity.
-     * 
+     *
      * @param baseline the baseline value to set.
      * @return the CalculateBaselineResponseInner object itself.
      */

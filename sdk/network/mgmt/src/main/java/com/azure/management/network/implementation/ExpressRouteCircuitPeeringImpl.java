@@ -12,22 +12,22 @@ import com.azure.management.network.models.ExpressRouteCircuitPeeringInner;
 import com.azure.management.network.models.ExpressRouteCircuitPeeringsInner;
 import com.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
+import java.util.Arrays;
 import reactor.core.publisher.Mono;
 
-import java.util.Arrays;
-
-class ExpressRouteCircuitPeeringImpl extends
-        CreatableUpdatableImpl<ExpressRouteCircuitPeering, ExpressRouteCircuitPeeringInner, ExpressRouteCircuitPeeringImpl>
-        implements
-        ExpressRouteCircuitPeering,
-        ExpressRouteCircuitPeering.Definition,
-        ExpressRouteCircuitPeering.Update {
+class ExpressRouteCircuitPeeringImpl
+    extends CreatableUpdatableImpl<
+        ExpressRouteCircuitPeering, ExpressRouteCircuitPeeringInner, ExpressRouteCircuitPeeringImpl>
+    implements ExpressRouteCircuitPeering, ExpressRouteCircuitPeering.Definition, ExpressRouteCircuitPeering.Update {
     private final ExpressRouteCircuitPeeringsInner client;
     private final ExpressRouteCircuit parent;
     private ExpressRouteCircuitStatsImpl stats;
 
-    ExpressRouteCircuitPeeringImpl(ExpressRouteCircuitImpl parent, ExpressRouteCircuitPeeringInner innerObject,
-                                   ExpressRouteCircuitPeeringsInner client, ExpressRoutePeeringType type) {
+    ExpressRouteCircuitPeeringImpl(
+        ExpressRouteCircuitImpl parent,
+        ExpressRouteCircuitPeeringInner innerObject,
+        ExpressRouteCircuitPeeringsInner client,
+        ExpressRoutePeeringType type) {
         super(type.toString(), innerObject);
         this.client = client;
         this.parent = parent;
@@ -84,12 +84,14 @@ class ExpressRouteCircuitPeeringImpl extends
 
     @Override
     public Mono<ExpressRouteCircuitPeering> createResourceAsync() {
-        return this.client.createOrUpdateAsync(parent.resourceGroupName(), parent.name(), this.name(), inner())
-                .flatMap(innerModel -> {
+        return this
+            .client
+            .createOrUpdateAsync(parent.resourceGroupName(), parent.name(), this.name(), inner())
+            .flatMap(
+                innerModel -> {
                     this.setInner(innerModel);
                     stats = new ExpressRouteCircuitStatsImpl(innerModel.stats());
-                    return parent.refreshAsync()
-                        .then(Mono.just(this));
+                    return parent.refreshAsync().then(Mono.just(this));
                 });
     }
 

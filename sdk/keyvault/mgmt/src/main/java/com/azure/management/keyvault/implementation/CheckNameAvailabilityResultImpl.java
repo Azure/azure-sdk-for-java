@@ -8,11 +8,9 @@ import com.azure.management.keyvault.Reason;
 import com.azure.management.keyvault.models.CheckNameAvailabilityResultInner;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 
-/**
- * The CheckNameAvailability operation response.
- */
+/** The CheckNameAvailability operation response. */
 public class CheckNameAvailabilityResultImpl extends WrapperImpl<CheckNameAvailabilityResultInner>
-        implements CheckNameAvailabilityResult {
+    implements CheckNameAvailabilityResult {
 
     protected CheckNameAvailabilityResultImpl(CheckNameAvailabilityResultInner innerObject) {
         super(innerObject);
@@ -32,5 +30,4 @@ public class CheckNameAvailabilityResultImpl extends WrapperImpl<CheckNameAvaila
     public String message() {
         return inner().message();
     }
-
 }

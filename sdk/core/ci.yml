@@ -20,6 +20,8 @@ trigger:
   paths:
     include:
       - sdk/core/
+      - sdk/parents/azure-sdk-parent/
+      - sdk/parents/azure-client-sdk-parent/
       - eng/
 
 pr:
@@ -32,6 +34,8 @@ pr:
   paths:
     include:
       - sdk/core/
+      - sdk/parents/azure-sdk-parent/
+      - sdk/parents/azure-client-sdk-parent/
       - eng/
 
 stages:
@@ -62,4 +66,6 @@ stages:
           safeName: azurecoretracingopentelemetry
       AdditionalModules:
         - name: azure-data-appconfiguration
+          groupId: com.azure
+        - name: perf-test-core
           groupId: com.azure

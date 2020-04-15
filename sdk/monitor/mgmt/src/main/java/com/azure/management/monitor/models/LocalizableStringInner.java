@@ -7,9 +7,7 @@ package com.azure.management.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The LocalizableString model.
- */
+/** The LocalizableString model. */
 @Fluent
 public final class LocalizableStringInner {
     /*
@@ -26,7 +24,7 @@ public final class LocalizableStringInner {
 
     /**
      * Get the value property: the invariant value.
-     * 
+     *
      * @return the value value.
      */
     public String value() {
@@ -35,7 +33,7 @@ public final class LocalizableStringInner {
 
     /**
      * Set the value property: the invariant value.
-     * 
+     *
      * @param value the value value to set.
      * @return the LocalizableStringInner object itself.
      */
@@ -46,7 +44,7 @@ public final class LocalizableStringInner {
 
     /**
      * Get the localizedValue property: the locale specific value.
-     * 
+     *
      * @return the localizedValue value.
      */
     public String localizedValue() {
@@ -55,7 +53,7 @@ public final class LocalizableStringInner {
 
     /**
      * Set the localizedValue property: the locale specific value.
-     * 
+     *
      * @param localizedValue the localizedValue value to set.
      * @return the LocalizableStringInner object itself.
      */

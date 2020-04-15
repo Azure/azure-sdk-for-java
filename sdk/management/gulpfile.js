@@ -128,9 +128,9 @@ function codegen(project, cb) {
                         ' --azure-arm=true ' +
                         ' --generate-client-as-impl=true --implementation-subpackage=models --sync-methods=all --required-parameter-client-methods=true --add-context-parameter=true ' +
                         generator +
-                        ` --namespace=${mappings[project].package} ` +
+                        ` --java.namespace=${mappings[project].package} ` +
                         ` --java.output-folder=${outDir} ` +
-                        ` --license-header=MICROSOFT_MIT_SMALL ` +
+                        ` --java.license-header=MICROSOFT_MIT_SMALL ` +
                         generatorPath +
                         regenManager +
                         autoRestArgs;

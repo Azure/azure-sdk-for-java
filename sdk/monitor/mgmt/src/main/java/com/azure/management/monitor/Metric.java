@@ -5,14 +5,10 @@ package com.azure.management.monitor;
 
 import com.azure.management.monitor.models.MetricInner;
 import com.azure.management.resources.fluentcore.model.HasInner;
-
 import java.util.List;
 
-/**
- * The Azure metric entries are of type Metric.
- */
-public interface Metric
-        extends HasInner<MetricInner> {
+/** The Azure metric entries are of type Metric. */
+public interface Metric extends HasInner<MetricInner> {
     /**
      * Get the metric Id.
      *
@@ -35,7 +31,8 @@ public interface Metric
     LocalizableString name();
 
     /**
-     * Get the unit of the metric. Possible values include: 'Count', 'Bytes', 'Seconds', 'CountPerSecond', 'BytesPerSecond', 'Percent', 'MilliSeconds', 'ByteSeconds', 'Unspecified'.
+     * Get the unit of the metric. Possible values include: 'Count', 'Bytes', 'Seconds', 'CountPerSecond',
+     * 'BytesPerSecond', 'Percent', 'MilliSeconds', 'ByteSeconds', 'Unspecified'.
      *
      * @return the unit value
      */

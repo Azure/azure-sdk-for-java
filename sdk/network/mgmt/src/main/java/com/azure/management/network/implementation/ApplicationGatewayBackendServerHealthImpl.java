@@ -10,15 +10,15 @@ import com.azure.management.network.NicIPConfiguration;
 import com.azure.management.network.models.ApplicationGatewayBackendHealthServerInner;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 
-/**
- * Implementation of application gateway backend server health information.
- */
+/** Implementation of application gateway backend server health information. */
 public class ApplicationGatewayBackendServerHealthImpl implements ApplicationGatewayBackendServerHealth {
 
     private final ApplicationGatewayBackendHealthServerInner inner;
     private final ApplicationGatewayBackendHttpConfigurationHealthImpl httpConfigHealth;
 
-    ApplicationGatewayBackendServerHealthImpl(ApplicationGatewayBackendHealthServerInner inner, ApplicationGatewayBackendHttpConfigurationHealthImpl httpConfigHealth) {
+    ApplicationGatewayBackendServerHealthImpl(
+        ApplicationGatewayBackendHealthServerInner inner,
+        ApplicationGatewayBackendHttpConfigurationHealthImpl httpConfigHealth) {
         this.inner = inner;
         this.httpConfigHealth = httpConfigHealth;
     }
