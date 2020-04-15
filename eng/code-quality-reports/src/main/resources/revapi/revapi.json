@@ -12,7 +12,8 @@
             "io\\.netty\\..+",
             "org\\.springframework\\..+",
             "com\\.nimbusds(\\..+)?",
-            "com\\.microsoft\\.azure\\.spring\\..+"
+            "com\\.microsoft\\.azure\\.spring\\..+",
+            "com\\.microsoft\\.azure\\.keyvault\\.spring\\..+"
           ]
         }
       }
