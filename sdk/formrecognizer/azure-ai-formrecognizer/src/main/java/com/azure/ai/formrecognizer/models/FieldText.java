@@ -12,6 +12,9 @@ import com.azure.core.util.IterableStream;
 @Immutable
 public final class FieldText extends FormContent {
 
+    /**
+     * The list of text element references for the field value.
+     */
     private final IterableStream<FormContent> textContent;
 
     /**

@@ -8,6 +8,7 @@ import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.ai.formrecognizer.models.USReceipt;
 import com.azure.ai.formrecognizer.models.USReceiptItem;
 import com.azure.ai.formrecognizer.models.USReceiptType;
+import com.azure.core.util.IterableStream;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public final class ReceiptExtensions {
         FormField<Float> total = null;
         FormField<LocalDate> transactionDate = null;
         FormField<String> transactionTime = null;
-        List<USReceiptItem> receiptItems = null;
+        IterableStream<USReceiptItem> receiptItems = null;
 
         for (Map.Entry<String, FormField<?>> entry : receipt.getRecognizedForm().getFields().entrySet()) {
             String key = entry.getKey();
@@ -106,11 +107,12 @@ public final class ReceiptExtensions {
      * @return A list of {@link USReceiptItem}.
      */
     @SuppressWarnings("unchecked")
-    private static List<USReceiptItem> toReceiptItems(FormField<?> fieldValueItems) {
+    private static IterableStream<USReceiptItem> toReceiptItems(FormField<?> fieldValueItems) {
         List<FormField<?>> fieldValueArray = (List<FormField<?>>) fieldValueItems.getFieldValue();
-        List<USReceiptItem> receiptItemList = new ArrayList<>();
+        List<USReceiptItem> receiptItemList = null;
 
         for (FormField<?> eachFieldValue : fieldValueArray) {
+            receiptItemList = new ArrayList<>();
             Map<String, FormField<?>> objectValue = ((Map<String, FormField<?>>) (eachFieldValue.getFieldValue()));
             FormField<String> name = null;
             FormField<Float> quantity = null;
@@ -130,6 +132,6 @@ public final class ReceiptExtensions {
             }
             receiptItemList.add(new USReceiptItem(name, quantity, price, totalPrice));
         }
-        return receiptItemList;
+        return new IterableStream<USReceiptItem>(receiptItemList);
     }
 }

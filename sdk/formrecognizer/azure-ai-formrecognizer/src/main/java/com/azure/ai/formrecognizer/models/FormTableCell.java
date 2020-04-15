@@ -4,8 +4,7 @@
 package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
-
-import java.util.List;
+import com.azure.core.util.IterableStream;
 
 /**
  * The FormTableCell model.
@@ -42,7 +41,7 @@ public final class FormTableCell extends FormContent {
      * When includeTextDetails is set to true, a list of references to the text
      * elements constituting this table cell.
      */
-    private final List<FormContent> elements;
+    private final IterableStream<FormContent> elements;
 
     /*
      * Is the current cell a header cell?
@@ -64,24 +63,24 @@ public final class FormTableCell extends FormContent {
      * @param text The recognized text value.
      * @param boundingBox The bounding box properties of the cell.
      * @param confidence Confidence value of the recognized text.
-     * @param elements a list of references to the text elements constituting this table cell.
      * @param isHeader Is the current cell a header cell?
      * @param isFooter Is the current cell a footer cell?
      * @param pageNumber The 1 based page number of the cell
+     * @param textContent a list of references to the text elements constituting this table cell.
      */
     public FormTableCell(final int rowIndex, final int columnIndex, final Integer rowSpan,
         final Integer columnSpan, final String text, final BoundingBox boundingBox,
-        final Float confidence, final List<FormContent> elements, final boolean isHeader,
-        final boolean isFooter, final int pageNumber) {
+        final Float confidence, final boolean isHeader, final boolean isFooter, final int pageNumber,
+        final IterableStream<FormContent> textContent) {
         super(text, boundingBox, pageNumber, null);
         this.rowIndex = rowIndex;
         this.columnIndex = columnIndex;
         this.rowSpan = rowSpan;
         this.columnSpan = columnSpan;
         this.confidence = confidence;
-        this.elements = elements;
         this.isHeader = isHeader;
         this.isFooter = isFooter;
+        this.elements = textContent;
     }
 
     /**
@@ -160,7 +159,7 @@ public final class FormTableCell extends FormContent {
      *
      * @return the elements value.
      */
-    public List<FormContent> getElements() {
+    public IterableStream<FormContent> getElements() {
         return this.elements;
     }
 

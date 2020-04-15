@@ -6,6 +6,8 @@ package com.azure.ai.formrecognizer.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
+import java.util.Collections;
+
 /**
  * The TrainingDocumentInfo model.
  */
@@ -45,7 +47,9 @@ public final class TrainingDocumentInfo {
         this.name = name;
         this.trainingStatus = trainingStatus;
         this.pageCount = pageCount;
-        this.documentError = documentError;
+        this.documentError = documentError == null
+            ? new IterableStream<FormRecognizerError>(Collections.emptyList())
+            : documentError;
     }
 
     /**

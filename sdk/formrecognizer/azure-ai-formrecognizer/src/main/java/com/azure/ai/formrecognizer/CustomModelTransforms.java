@@ -20,6 +20,7 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -51,20 +52,18 @@ final class CustomModelTransforms {
                     modelInfo.getModelId(), modelInfo.getStatus())));
         }
 
-        IterableStream<TrainingDocumentInfo> trainingDocumentInfoList = null;
+        List<TrainingDocumentInfo> trainingDocumentInfoList = null;
         IterableStream<FormRecognizerError> modelErrors = null;
 
         if (modelResponse.getTrainResult() != null) {
             trainingDocumentInfoList =
-                new IterableStream<>(
-                    modelResponse.getTrainResult().getTrainingDocuments().stream()
-                        .map(trainingDocumentItem -> new TrainingDocumentInfo(
-                            trainingDocumentItem.getDocumentName(),
-                            TrainingStatus.fromString(trainingDocumentItem.getStatus().toString()),
-                            trainingDocumentItem.getPages(),
-                            transformTrainingErrors(trainingDocumentItem.getErrors())))
-                        .collect(Collectors.toList())
-                );
+                modelResponse.getTrainResult().getTrainingDocuments().stream()
+                    .map(trainingDocumentItem -> new TrainingDocumentInfo(
+                        trainingDocumentItem.getDocumentName(),
+                        TrainingStatus.fromString(trainingDocumentItem.getStatus().toString()),
+                        trainingDocumentItem.getPages(),
+                        transformTrainingErrors(trainingDocumentItem.getErrors())))
+                    .collect(Collectors.toList());
             modelErrors = transformTrainingErrors(modelResponse.getTrainResult().getErrors());
         }
 
@@ -103,7 +102,7 @@ final class CustomModelTransforms {
             modelInfo.getLastUpdatedDateTime(),
             new IterableStream<>(subModelList),
             modelErrors,
-            trainingDocumentInfoList);
+            new IterableStream<TrainingDocumentInfo>(trainingDocumentInfoList));
     }
 
     /**
@@ -116,7 +115,7 @@ final class CustomModelTransforms {
     private static IterableStream<FormRecognizerError> transformTrainingErrors(
         List<ErrorInformation> trainingErrorList) {
         if (CoreUtils.isNullOrEmpty(trainingErrorList)) {
-            return null;
+            return new IterableStream<FormRecognizerError>(Collections.emptyList());
         } else {
             return new IterableStream<>(trainingErrorList.stream()
                 .map(errorInformation -> new FormRecognizerError(errorInformation.getCode(),
@@ -129,6 +128,7 @@ final class CustomModelTransforms {
      * Transform a list of {@link ModelInfo} to a list of {@link CustomFormModelInfo}.
      *
      * @param list A list of {@link ModelInfo}.
+     *
      * @return A list of {@link CustomFormModelInfo}.
      */
     static List<CustomFormModelInfo> toCustomFormModelInfo(List<ModelInfo> list) {

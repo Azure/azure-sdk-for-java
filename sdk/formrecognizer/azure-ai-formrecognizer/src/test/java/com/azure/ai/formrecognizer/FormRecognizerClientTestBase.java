@@ -111,7 +111,6 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         validateFieldValue(expectedReceipt.getTip(), actualRecognizedReceipt.getTip(), includeTextDetails);
         validateFieldValue(expectedReceipt.getTransactionDate(), actualRecognizedReceipt.getTransactionDate(), includeTextDetails);
         validateFieldValue(expectedReceipt.getTransactionTime(), actualRecognizedReceipt.getTransactionTime(), includeTextDetails);
-        assertEquals(expectedReceipt.getReceiptItems().size(), expectedReceipt.getReceiptItems().size());
         validateReceiptItems(expectedReceipt.getReceiptItems(), actualRecognizedReceipt.getReceiptItems(), includeTextDetails);
     }
 
@@ -263,11 +262,13 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         validateRecognizedForm(expectedReceipt.getRecognizedForm(), actualReceipt.getRecognizedForm());
     }
 
-    private static void validateCells(List<FormTableCell> expectedTableCells, List<FormTableCell> actualTableCells) {
-        assertEquals(expectedTableCells.size(), actualTableCells.size());
-        for (int i = 0; i < actualTableCells.size(); i++) {
-            FormTableCell expectedTableCell = expectedTableCells.get(i);
-            FormTableCell actualTableCell = actualTableCells.get(i);
+    private static void validateCells(IterableStream<FormTableCell> expectedTableCells, IterableStream<FormTableCell> actualTableCells) {
+        List<FormTableCell> expectedTableCellList = expectedTableCells.stream().collect(Collectors.toList());
+        List<FormTableCell> actualTableCellList = actualTableCells.stream().collect(Collectors.toList());
+        assertEquals(expectedTableCellList.size(), actualTableCellList.size());
+        for (int i = 0; i < actualTableCellList.size(); i++) {
+            FormTableCell expectedTableCell = expectedTableCellList.get(i);
+            FormTableCell actualTableCell = actualTableCellList.get(i);
             assertEquals(expectedTableCell.getColumnIndex(), actualTableCell.getColumnIndex());
             assertEquals(expectedTableCell.getColumnSpan(), actualTableCell.getColumnSpan());
             assertEquals(expectedTableCell.getRowIndex(), actualTableCell.getRowIndex());
@@ -318,10 +319,13 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             .allMatch(e -> e.getValue().equals(actualFieldMap.get(e.getKey())));
     }
 
-    private static void validateReceiptItems(List<USReceiptItem> actualReceiptItems, List<USReceiptItem> expectedReceiptItems, boolean includeTextDetails) {
-        for (int i = 0; i < actualReceiptItems.size(); i++) {
-            USReceiptItem expectedReceiptItem = expectedReceiptItems.get(i);
-            USReceiptItem actualReceiptItem = actualReceiptItems.get(i);
+    private static void validateReceiptItems(IterableStream<USReceiptItem> expectedReceiptItems, IterableStream<USReceiptItem> actualReceiptItems, boolean includeTextDetails) {
+        List<USReceiptItem> expectedReceiptItemList = expectedReceiptItems.stream().collect(Collectors.toList());
+        List<USReceiptItem> actualReceiptItemList = actualReceiptItems.stream().collect(Collectors.toList());
+        assertEquals(expectedReceiptItemList.size(), actualReceiptItemList.size());
+        for (int i = 0; i < expectedReceiptItemList.size(); i++) {
+            USReceiptItem expectedReceiptItem = expectedReceiptItemList.get(i);
+            USReceiptItem actualReceiptItem = actualReceiptItemList.get(i);
             validateFieldValue(expectedReceiptItem.getName(), actualReceiptItem.getName(), includeTextDetails);
             validateFieldValue(expectedReceiptItem.getQuantity(), actualReceiptItem.getQuantity(), includeTextDetails);
             validateFieldValue(expectedReceiptItem.getTotalPrice(), actualReceiptItem.getTotalPrice(), includeTextDetails);
@@ -363,12 +367,17 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     }
 
     private static void validateBoundingBox(BoundingBox expectedPoints, BoundingBox actualPoints) {
-        assertEquals(expectedPoints.getPoints().size(), actualPoints.getPoints().size());
-        for (int i = 0; i < expectedPoints.getPoints().size(); i++) {
-            Point expectedPoint = expectedPoints.getPoints().get(i);
-            Point actualPoint = actualPoints.getPoints().get(i);
-            assertEquals(expectedPoint.getX(), actualPoint.getX());
-            assertEquals(expectedPoint.getY(), actualPoint.getY());
+        if (expectedPoints.getPoints() != null && actualPoints.getPoints() != null) {
+            List<Point> expectedPointList = expectedPoints.getPoints().stream().collect(Collectors.toList());
+            List<Point> actualPointList = actualPoints.getPoints().stream().collect(Collectors.toList());
+            assertEquals(expectedPointList.size(), actualPointList.size());
+            assertEquals(expectedPointList.size(), actualPointList.size());
+            for (int i = 0; i < actualPointList.size(); i++) {
+                Point expectedPoint = expectedPointList.get(i);
+                Point actualPoint = actualPointList.get(i);
+                assertEquals(expectedPoint.getX(), actualPoint.getX());
+                assertEquals(expectedPoint.getY(), actualPoint.getY());
+            }
         }
     }
 
