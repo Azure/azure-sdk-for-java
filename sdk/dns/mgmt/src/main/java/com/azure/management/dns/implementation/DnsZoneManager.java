@@ -103,7 +103,7 @@ public final class DnsZoneManager extends Manager<DnsZoneManager, DnsManagementC
                 new DnsManagementClientBuilder()
                         .pipeline(restClient.getHttpPipeline())
                         .subscriptionId(subscriptionId)
-                        .build(),
+                        .buildClient(),
                 sdkContext
         );
     }
