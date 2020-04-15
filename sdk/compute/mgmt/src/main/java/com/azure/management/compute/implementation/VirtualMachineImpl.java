@@ -19,6 +19,7 @@ import com.azure.management.compute.DiskCreateOptionTypes;
 import com.azure.management.compute.DiskEncryptionSettings;
 import com.azure.management.compute.HardwareProfile;
 import com.azure.management.compute.ImageReference;
+import com.azure.management.compute.InstanceViewTypes;
 import com.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.azure.management.compute.LinuxConfiguration;
@@ -338,7 +339,7 @@ class VirtualMachineImpl
             .manager()
             .inner()
             .virtualMachines()
-            .getByResourceGroupAsync(this.resourceGroupName(), this.name())
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name(), InstanceViewTypes.INSTANCE_VIEW)
             .map(
                 inner -> {
                     virtualMachineInstanceView = new VirtualMachineInstanceViewImpl(inner.instanceView());

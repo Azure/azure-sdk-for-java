@@ -5,12 +5,13 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The VirtualMachineScaleSetIdentity model. */
 @Fluent
-public final class VirtualMachineScaleSetIdentity {
+public class VirtualMachineScaleSetIdentity {
     /*
      * The principal id of virtual machine scale set identity. This property
      * will only be provided for a system assigned identity.
@@ -41,6 +42,7 @@ public final class VirtualMachineScaleSetIdentity {
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      */
     @JsonProperty(value = "userAssignedIdentities")
+    @JsonInclude(content = JsonInclude.Include.ALWAYS)
     private Map<String, VirtualMachineScaleSetIdentityUserAssignedIdentities> userAssignedIdentities;
 
     /**
