@@ -3,8 +3,6 @@
 
 package com.azure.core.serializer;
 
-import reactor.core.publisher.Mono;
-
 import java.io.OutputStream;
 
 /**
@@ -19,7 +17,7 @@ public interface JsonSerializer {
      * @param <T> Type of the object.
      * @return The object representing the JSON string.
      */
-    <T> Mono<T> read(byte[] input, Class<T> clazz);
+    <T> T read(byte[] input, Class<T> clazz);
 
     /**
      * Writes the object into its JSON byte stream.
@@ -27,7 +25,7 @@ public interface JsonSerializer {
      * @param value The object.
      * @return The JSON byte stream representing the object.
      */
-    Mono<byte[]> write(Object value);
+    byte[] write(Object value);
 
     /**
      * Writes the object into its JSON byte stream.
@@ -36,16 +34,15 @@ public interface JsonSerializer {
      * @param clazz {@link Class} representing the object.
      * @return The JSON byte stream representing the object.
      */
-    Mono<byte[]> write(Object value, Class<?> clazz);
+    byte[] write(Object value, Class<?> clazz);
 
     /**
      * Converts the object into a JSON byte stream and writes it to the {@link OutputStream}.
      *
      * @param value The object.
      * @param stream The {@link OutputStream} where the JSON byte stream will be written.
-     * @return An indicator that the object's JSON byte stream has been written to the {@link OutputStream}.
      */
-    Mono<Void> write(Object value, OutputStream stream);
+    void write(Object value, OutputStream stream);
 
     /**
      * Converts the object into a JSON byte stream and writes it to the {@link OutputStream}.
@@ -53,7 +50,6 @@ public interface JsonSerializer {
      * @param value The object.
      * @param stream The {@link OutputStream} where the JSON byte stream will be written.
      * @param clazz {@link Class} representing the object.
-     * @return An indicator that the object's JSON byte stream has been written to the {@link OutputStream}.
      */
-    Mono<Void> write(Object value, OutputStream stream, Class<?> clazz);
+    void write(Object value, OutputStream stream, Class<?> clazz);
 }

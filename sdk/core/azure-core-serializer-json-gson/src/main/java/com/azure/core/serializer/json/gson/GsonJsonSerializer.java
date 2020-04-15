@@ -6,7 +6,6 @@ package com.azure.core.serializer.json.gson;
 import com.azure.core.serializer.JsonSerializer;
 import com.azure.core.util.CoreUtils;
 import com.google.gson.Gson;
-import reactor.core.publisher.Mono;
 
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -29,31 +28,31 @@ public final class GsonJsonSerializer implements JsonSerializer {
     }
 
     @Override
-    public <T> Mono<T> read(byte[] input, Class<T> clazz) {
-        return Mono.fromCallable(() -> gson.fromJson(CoreUtils.bomAwareToString(input, null), clazz));
+    public <T> T read(byte[] input, Class<T> clazz) {
+        return gson.fromJson(CoreUtils.bomAwareToString(input, null), clazz);
     }
 
     @Override
-    public Mono<byte[]> write(Object value) {
-        return Mono.fromCallable(() -> gson.toJson(value).getBytes(StandardCharsets.UTF_8));
+    public byte[] write(Object value) {
+        return gson.toJson(value).getBytes(StandardCharsets.UTF_8);
     }
 
     @Override
-    public Mono<byte[]> write(Object value, Class<?> clazz) {
-        return Mono.fromCallable(() -> gson.toJson(value, clazz).getBytes(StandardCharsets.UTF_8));
+    public byte[] write(Object value, Class<?> clazz) {
+        return gson.toJson(value, clazz).getBytes(StandardCharsets.UTF_8);
     }
 
     @Override
-    public Mono<Void> write(Object value, OutputStream stream) {
+    public void write(Object value, OutputStream stream) {
         Objects.requireNonNull(stream, "'stream' cannot be null.");
 
-        return Mono.fromRunnable(() -> gson.toJson(value, new OutputStreamWriter(stream)));
+        gson.toJson(value, new OutputStreamWriter(stream));
     }
 
     @Override
-    public Mono<Void> write(Object value, OutputStream stream, Class<?> clazz) {
+    public void write(Object value, OutputStream stream, Class<?> clazz) {
         Objects.requireNonNull(stream, "'stream' cannot be null.");
 
-        return Mono.fromRunnable(() -> gson.toJson(value, clazz, new OutputStreamWriter(stream)));
+        gson.toJson(value, clazz, new OutputStreamWriter(stream));
     }
 }

@@ -7,7 +7,6 @@ import com.azure.core.serializer.JsonSerializer;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.Exceptions;
-import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -31,65 +30,55 @@ public final class JacksonJsonSerializer implements JsonSerializer {
     }
 
     @Override
-    public <T> Mono<T> read(byte[] input, Class<T> clazz) {
-        return Mono.fromCallable(() -> {
-            if (input == null) {
-                return null;
-            }
+    public <T> T read(byte[] input, Class<T> clazz) {
+        if (input == null) {
+            return null;
+        }
 
-            try {
-                return mapper.readValue(input, clazz);
-            } catch (IOException ex) {
-                throw logger.logExceptionAsError(Exceptions.propagate(ex));
-            }
-        });
+        try {
+            return mapper.readValue(input, clazz);
+        } catch (IOException ex) {
+            throw logger.logExceptionAsError(Exceptions.propagate(ex));
+        }
     }
 
     @Override
-    public Mono<byte[]> write(Object value) {
-        return Mono.fromCallable(() -> {
-            try {
-                return mapper.writeValueAsBytes(value);
-            } catch (IOException ex) {
-                throw logger.logExceptionAsError(Exceptions.propagate(ex));
-            }
-        });
+    public byte[] write(Object value) {
+        try {
+            return mapper.writeValueAsBytes(value);
+        } catch (IOException ex) {
+            throw logger.logExceptionAsError(Exceptions.propagate(ex));
+        }
     }
 
     @Override
-    public Mono<byte[]> write(Object value, Class<?> clazz) {
-        return Mono.fromCallable(() -> {
-            try {
-                return mapper.writerFor(clazz).writeValueAsBytes(value);
-            } catch (IOException ex) {
-                throw logger.logExceptionAsError(Exceptions.propagate(ex));
-            }
-        });
+    public byte[] write(Object value, Class<?> clazz) {
+        try {
+            return mapper.writerFor(clazz).writeValueAsBytes(value);
+        } catch (IOException ex) {
+            throw logger.logExceptionAsError(Exceptions.propagate(ex));
+        }
     }
 
     @Override
-    public Mono<Void> write(Object value, OutputStream stream) {
+    public void write(Object value, OutputStream stream) {
         Objects.requireNonNull(stream, "'stream' cannot be null.");
 
-        return Mono.fromRunnable(() -> {
-            try {
-                mapper.writeValue(stream, value);
-            } catch (IOException ex) {
-                throw logger.logExceptionAsError(Exceptions.propagate(ex));
-            }
-        });
+        try {
+            mapper.writeValue(stream, value);
+        } catch (IOException ex) {
+            throw logger.logExceptionAsError(Exceptions.propagate(ex));
+        }
     }
 
     @Override
-    public Mono<Void> write(Object value, OutputStream stream, Class<?> clazz) {
+    public void write(Object value, OutputStream stream, Class<?> clazz) {
         Objects.requireNonNull(stream, "'stream' cannot be null.");
 
-        return Mono.fromRunnable(() -> {
-            try {
-                mapper.writerFor(clazz).writeValue(stream, value);
-            } catch (IOException ex) {
-                throw logger.logExceptionAsError(Exceptions.propagate(ex));
-            }
-        });
+        try {
+            mapper.writerFor(clazz).writeValue(stream, value);
+        } catch (IOException ex) {
+            throw logger.logExceptionAsError(Exceptions.propagate(ex));
+        }
     }
 }
