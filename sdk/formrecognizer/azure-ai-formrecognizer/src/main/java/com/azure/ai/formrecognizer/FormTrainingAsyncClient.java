@@ -93,7 +93,7 @@ public class FormTrainingAsyncClient {
      * @return A {@link PollerFlux} that polls the training model operation until it has completed, has failed, or has
      * been cancelled.
      */
-    // @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<OperationResult, CustomFormModel> beginTraining(String fileSourceUrl, boolean useLabelFile) {
         return beginTraining(fileSourceUrl, useLabelFile, false, null, null);
     }
@@ -124,9 +124,7 @@ public class FormTrainingAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<OperationResult, CustomFormModel> beginTraining(String fileSourceUrl,
         boolean useLabelFile, boolean includeSubFolders, String filePrefix, Duration pollInterval) {
-        Objects.requireNonNull(fileSourceUrl, "'fileSourceUrl' cannot be null.");
         final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
-
         return new PollerFlux<OperationResult, CustomFormModel>(
             interval,
             getTrainingActivationOperation(fileSourceUrl, includeSubFolders, filePrefix, useLabelFile),
@@ -207,6 +205,7 @@ public class FormTrainingAsyncClient {
      *
      * @return An empty Mono.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteModel(String modelId) {
         return deleteModelWithResponse(modelId).flatMap(FluxUtil::toMono);
     }
@@ -218,6 +217,7 @@ public class FormTrainingAsyncClient {
      *
      * @return A {@link Mono} containing containing status code and HTTP headers
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteModelWithResponse(String modelId) {
         try {
             return withContext(context -> deleteModelWithResponse(modelId, context));
@@ -317,14 +317,14 @@ public class FormTrainingAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> getTrainingActivationOperation(
-        String sourcePath, boolean includeSubFolders, String filePrefix, boolean useLabelFile) {
-
-        TrainSourceFilter trainSourceFilter = new TrainSourceFilter().setIncludeSubFolders(includeSubFolders)
-            .setPrefix(filePrefix);
-        TrainRequest serviceTrainRequest = new TrainRequest().setSource(sourcePath).
-            setSourceFilter(trainSourceFilter).setUseLabelFile(useLabelFile);
+        String fileSourceUrl, boolean includeSubFolders, String filePrefix, boolean useLabelFile) {
         return (pollingContext) -> {
             try {
+                Objects.requireNonNull(fileSourceUrl, "'fileSourceUrl' cannot be null.");
+                TrainSourceFilter trainSourceFilter = new TrainSourceFilter().setIncludeSubFolders(includeSubFolders)
+                    .setPrefix(filePrefix);
+                TrainRequest serviceTrainRequest = new TrainRequest().setSource(fileSourceUrl).
+                    setSourceFilter(trainSourceFilter).setUseLabelFile(useLabelFile);
                 return service.trainCustomModelAsyncWithResponseAsync(serviceTrainRequest)
                     .map(response ->
                         new OperationResult(parseModelId(response.getDeserializedHeaders().getLocation())));

@@ -21,7 +21,8 @@ import java.time.Duration;
 /**
  * This class provides a synchronous client that contains model management the operations that apply
  * to Azure Form Recognizer.
- * Operations allowed by the client are, to create/tracin custom models. delete models, list models.
+ * Operations allowed by the client are, to creating, training of custom models, delete models, list models and get
+ * subscription account information.
  *
  * @see FormRecognizerClientBuilder
  */

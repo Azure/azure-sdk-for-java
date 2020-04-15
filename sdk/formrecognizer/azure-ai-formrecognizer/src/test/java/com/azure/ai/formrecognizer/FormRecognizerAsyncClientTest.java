@@ -3,12 +3,12 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.models.ErrorResponseException;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.RecognizedReceipt;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.AfterAll;
@@ -115,7 +115,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
      */
     @Test
     void extractReceiptInvalidSourceUrl() {
-        invalidSourceUrlRunner((sourceUrl) -> assertThrows(HttpResponseException.class, () ->
+        invalidSourceUrlRunner((sourceUrl) -> assertThrows(ErrorResponseException.class, () ->
             client.beginRecognizeReceiptsFromUrl(sourceUrl).getSyncPoller()));
     }
 
@@ -152,7 +152,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
      */
     @Test
     void extractLayoutInValidSourceUrl() {
-        invalidSourceUrlRunner((invalidSourceUrl) -> assertThrows(HttpResponseException.class, () ->
+        invalidSourceUrlRunner((invalidSourceUrl) -> assertThrows(ErrorResponseException.class, () ->
             client.beginRecognizeContentFromUrl(invalidSourceUrl).getSyncPoller()));
     }
 
@@ -190,8 +190,8 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
      */
     @Test
     void extractCustomFormInValidSourceUrl() {
-        HttpResponseException httpResponseException = assertThrows(
-            HttpResponseException.class,
+        ErrorResponseException httpResponseException = assertThrows(
+            ErrorResponseException.class,
             () -> client.beginRecognizeCustomFormsFromUrl(INVALID_URL, VALID_MODEL_ID).getSyncPoller().getFinalResult());
         assertEquals(httpResponseException.getMessage(), (INVALID_SOURCE_URL_ERROR));
     }

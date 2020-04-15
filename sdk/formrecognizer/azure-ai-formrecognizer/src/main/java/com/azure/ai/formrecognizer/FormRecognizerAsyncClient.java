@@ -6,9 +6,10 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
-import com.azure.ai.formrecognizer.implementation.models.ErrorInformation;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.implementation.models.SourcePath;
+import com.azure.ai.formrecognizer.models.ErrorInformation;
+import com.azure.ai.formrecognizer.models.ErrorResponseException;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.OperationResult;
@@ -125,8 +126,6 @@ public final class FormRecognizerAsyncClient {
     public PollerFlux<OperationResult, IterableStream<RecognizedForm>>
         beginRecognizeCustomFormsFromUrl(String fileSourceUrl, String modelId, boolean includeTextDetails,
         Duration pollInterval) {
-        Objects.requireNonNull(fileSourceUrl, "'fileSourceUrl' is required and cannot be null.");
-        Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
         final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
         return new PollerFlux<OperationResult, IterableStream<RecognizedForm>>(
             interval,
@@ -177,10 +176,6 @@ public final class FormRecognizerAsyncClient {
     public PollerFlux<OperationResult, IterableStream<RecognizedForm>>
         beginRecognizeCustomForms(Flux<ByteBuffer> data, String modelId, long length, FormContentType formContentType,
         boolean includeTextDetails, Duration pollInterval) {
-        Objects.requireNonNull(data, "'data' is required and cannot be null.");
-        Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
-        Objects.requireNonNull(formContentType, "'formContentType' is required and cannot be null.");
-
         final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
         return new PollerFlux<OperationResult, IterableStream<RecognizedForm>>(
             interval,
@@ -222,7 +217,6 @@ public final class FormRecognizerAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, IterableStream<FormPage>>
         beginRecognizeContentFromUrl(String sourceUrl, Duration pollInterval) {
-        Objects.requireNonNull(sourceUrl, "'sourceUrl' is required and cannot be null.");
         final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
         return new PollerFlux<OperationResult, IterableStream<FormPage>>(interval,
             contentAnalyzeActivationOperation(sourceUrl),
@@ -270,9 +264,6 @@ public final class FormRecognizerAsyncClient {
     public PollerFlux<OperationResult, IterableStream<FormPage>>
         beginRecognizeContent(Flux<ByteBuffer> data, FormContentType formContentType, long length,
         Duration pollInterval) {
-        Objects.requireNonNull(data, "'data' is required and cannot be null.");
-        Objects.requireNonNull(formContentType, "'formContentType' is required and cannot be null.");
-
         final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
         return new PollerFlux<OperationResult, IterableStream<FormPage>>(interval,
             contentStreamActivationOperation(data, length, formContentType),
@@ -316,7 +307,6 @@ public final class FormRecognizerAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, IterableStream<RecognizedReceipt>>
         beginRecognizeReceiptsFromUrl(String sourceUrl, boolean includeTextDetails, Duration pollInterval) {
-        Objects.requireNonNull(sourceUrl, "'sourceUrl' is required and cannot be null.");
         final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
         return new PollerFlux<OperationResult, IterableStream<RecognizedReceipt>>(interval,
             receiptAnalyzeActivationOperation(sourceUrl, includeTextDetails),
@@ -365,9 +355,6 @@ public final class FormRecognizerAsyncClient {
     public PollerFlux<OperationResult, IterableStream<RecognizedReceipt>> beginRecognizeReceipts(
         Flux<ByteBuffer> data, long length, FormContentType formContentType, boolean includeTextDetails,
         Duration pollInterval) {
-        Objects.requireNonNull(data, "'data' is required and cannot be null.");
-        Objects.requireNonNull(formContentType, "'formContentType' is required and cannot be null.");
-
         final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
         return new PollerFlux<OperationResult, IterableStream<RecognizedReceipt>>(interval,
             receiptStreamActivationOperation(data, length, formContentType, includeTextDetails),
@@ -382,6 +369,7 @@ public final class FormRecognizerAsyncClient {
         String sourceUrl, boolean includeTextDetails) {
         return (pollingContext) -> {
             try {
+                Objects.requireNonNull(sourceUrl, "'sourceUrl' is required and cannot be null.");
                 return service.analyzeReceiptAsyncWithResponseAsync(includeTextDetails,
                     new SourcePath().setSource(sourceUrl))
                     .map(response ->
@@ -393,11 +381,13 @@ public final class FormRecognizerAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> receiptStreamActivationOperation(
-        Flux<ByteBuffer> buffer, long length, FormContentType formContentType, boolean includeTextDetails) {
+        Flux<ByteBuffer> data, long length, FormContentType formContentType, boolean includeTextDetails) {
         return (pollingContext) -> {
             try {
+                Objects.requireNonNull(data, "'data' is required and cannot be null.");
+                Objects.requireNonNull(formContentType, "'formContentType' is required and cannot be null.");
                 return service.analyzeReceiptAsyncWithResponseAsync(ContentType.fromString(formContentType.toString()),
-                    buffer, length, includeTextDetails)
+                    data, length, includeTextDetails)
                     .map(response -> new OperationResult(
                         parseModelId(response.getDeserializedHeaders().getOperationLocation())));
             } catch (RuntimeException ex) {
@@ -440,6 +430,7 @@ public final class FormRecognizerAsyncClient {
         String sourceUrl) {
         return (pollingContext) -> {
             try {
+                Objects.requireNonNull(sourceUrl, "'sourceUrl' is required and cannot be null.");
                 return service.analyzeLayoutAsyncWithResponseAsync(new SourcePath().setSource(sourceUrl))
                     .map(response ->
                         new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation())));
@@ -450,11 +441,13 @@ public final class FormRecognizerAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> contentStreamActivationOperation(
-        Flux<ByteBuffer> buffer, long length, FormContentType formContentType) {
+        Flux<ByteBuffer> data, long length, FormContentType formContentType) {
         return (pollingContext) -> {
             try {
+                Objects.requireNonNull(data, "'data' is required and cannot be null.");
+                Objects.requireNonNull(formContentType, "'formContentType' is required and cannot be null.");
                 return service.analyzeLayoutAsyncWithResponseAsync(ContentType.fromString(formContentType.toString()),
-                    buffer, length)
+                    data, length)
                     .map(response -> new OperationResult(
                         parseModelId(response.getDeserializedHeaders().getOperationLocation())));
             } catch (RuntimeException ex) {
@@ -496,6 +489,7 @@ public final class FormRecognizerAsyncClient {
     private Function<PollingContext<OperationResult>, Mono<IterableStream<RecognizedForm>>>
         fetchAnalyzeFormResultOperation(String modelId, boolean includeTextDetails) {
         return (pollingContext) -> {
+            Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
             UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
             UUID modelUid = UUID.fromString(modelId);
             return service.getAnalyzeFormResultWithResponseAsync(modelUid, resultUid)
@@ -519,7 +513,7 @@ public final class FormRecognizerAsyncClient {
                 modelSimpleResponse.getValue().getAnalyzeResult().getErrors();
             if (!CoreUtils.isNullOrEmpty(errorInformationList)) {
                 throw logger.logExceptionAsError(
-                    new HttpResponseException(errorInformationList.get(0).getMessage(), null));
+                    new ErrorResponseException(errorInformationList.get(0).getMessage(), null));
             }
         }
     }
@@ -530,6 +524,7 @@ public final class FormRecognizerAsyncClient {
             PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
             String resultId = operationResultPollResponse.getValue().getResultId();
             try {
+                Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
                 UUID resultUid = UUID.fromString(resultId);
                 UUID modelUid = UUID.fromString(modelId);
                 return service.getAnalyzeFormResultWithResponseAsync(modelUid, resultUid)
@@ -546,6 +541,8 @@ public final class FormRecognizerAsyncClient {
         String fileSourceUrl, String modelId, boolean includeTextDetails) {
         return (pollingContext) -> {
             try {
+                Objects.requireNonNull(fileSourceUrl, "'fileSourceUrl' is required and cannot be null.");
+                Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
                 return service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId), includeTextDetails,
                     new SourcePath().setSource(fileSourceUrl))
                     .map(response ->
@@ -561,6 +558,9 @@ public final class FormRecognizerAsyncClient {
         FormContentType formContentType, boolean includeTextDetails) {
         return (pollingContext) -> {
             try {
+                Objects.requireNonNull(data, "'data' is required and cannot be null.");
+                Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
+                Objects.requireNonNull(formContentType, "'formContentType' is required and cannot be null.");
                 return service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId),
                      ContentType.fromString(formContentType.toString()), data, length, includeTextDetails)
                     .map(response ->

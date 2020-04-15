@@ -6,8 +6,8 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
+import com.azure.ai.formrecognizer.models.ErrorResponseException;
 import com.azure.ai.formrecognizer.models.OperationResult;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
@@ -126,7 +126,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
                 Context.NONE);
             assertEquals(deleteModelWithResponse.getStatusCode(), HttpResponseStatus.NO_CONTENT.code());
 
-            HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
+            ErrorResponseException exception = assertThrows(ErrorResponseException.class, () ->
                 client.getCustomModelWithResponse(createdModel.getModelId(), Context.NONE));
             assertEquals(exception.getResponse().getStatusCode(), HttpResponseStatus.NOT_FOUND.code());
         });

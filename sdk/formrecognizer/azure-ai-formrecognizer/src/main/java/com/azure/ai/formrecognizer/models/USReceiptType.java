@@ -23,11 +23,10 @@ public final class USReceiptType {
 
     /**
      * Constructs a Receipt Type.
-     *
-     * @param type The type of the receipt.
+     *  @param type The type of the receipt.
      * @param confidence The confidence score.
      */
-    public USReceiptType(final String type, final Float confidence) {
+    public USReceiptType(final String type, final float confidence) {
         this.type = type;
         this.confidence = confidence;
     }

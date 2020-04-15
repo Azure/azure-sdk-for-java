@@ -15,6 +15,7 @@ import com.azure.ai.formrecognizer.implementation.models.Models;
 import com.azure.ai.formrecognizer.implementation.models.SourcePath;
 import com.azure.ai.formrecognizer.implementation.models.TrainCustomModelAsyncResponse;
 import com.azure.ai.formrecognizer.implementation.models.TrainRequest;
+import com.azure.ai.formrecognizer.models.ErrorResponseException;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -29,7 +30,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.CookiePolicy;
@@ -54,7 +54,7 @@ public final class FormRecognizerClientImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private FormRecognizerClientService service;
+    private final FormRecognizerClientService service;
 
     /**
      * Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus2.api.cognitive.microsoft.com).
@@ -63,7 +63,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Gets Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus2.api.cognitive.microsoft.com).
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -72,7 +72,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Sets Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus2.api.cognitive.microsoft.com).
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the service client itself.
      */
@@ -88,7 +88,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -104,7 +104,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Initializes an instance of FormRecognizerClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
     public FormRecognizerClientImpl(HttpPipeline httpPipeline) {
@@ -121,86 +121,86 @@ public final class FormRecognizerClientImpl {
     private interface FormRecognizerClientService {
         @Post("/custom/models")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<TrainCustomModelAsyncResponse> trainCustomModelAsync(@HostParam("endpoint") String endpoint, @BodyParam("application/json") TrainRequest trainRequest, Context context);
 
         @Get("/custom/models/{modelId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<SimpleResponse<Model>> getCustomModel(@HostParam("endpoint") String endpoint, @PathParam("modelId") UUID modelId, @QueryParam("includeKeys") Boolean includeKeys, Context context);
 
         @Delete("/custom/models/{modelId}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> deleteCustomModel(@HostParam("endpoint") String endpoint, @PathParam("modelId") UUID modelId, Context context);
 
         @Post("/custom/models/{modelId}/analyze")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModel(@HostParam("endpoint") String endpoint, @PathParam("modelId") UUID modelId, @QueryParam("includeTextDetails") Boolean includeTextDetails, @BodyParam("application/json") SourcePath fileStream, Context context);
 
         @Post("/custom/models/{modelId}/analyze")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModel(@HostParam("endpoint") String endpoint, @PathParam("modelId") UUID modelId, @QueryParam("includeTextDetails") Boolean includeTextDetails, @HeaderParam("Content-Type") ContentType contentType, @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream, @HeaderParam("Content-Length") long contentLength, Context context);
 
         @Get("/custom/models/{modelId}/analyzeResults/{resultId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeFormResult(@HostParam("endpoint") String endpoint, @PathParam("modelId") UUID modelId, @PathParam("resultId") UUID resultId, Context context);
 
         @Post("/prebuilt/receipt/analyze")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsync(@HostParam("endpoint") String endpoint, @QueryParam("includeTextDetails") Boolean includeTextDetails, @HeaderParam("Content-Type") ContentType contentType, @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream, @HeaderParam("Content-Length") long contentLength, Context context);
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsync(@HostParam("endpoint") String endpoint, @QueryParam("includeTextDetails") Boolean includeTextDetails, @BodyParam("application/json") SourcePath fileStream, Context context);
 
         @Post("/prebuilt/receipt/analyze")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsync(@HostParam("endpoint") String endpoint, @QueryParam("includeTextDetails") Boolean includeTextDetails, @BodyParam("application/json") SourcePath fileStream, Context context);
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsync(@HostParam("endpoint") String endpoint, @QueryParam("includeTextDetails") Boolean includeTextDetails, @HeaderParam("Content-Type") ContentType contentType, @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream, @HeaderParam("Content-Length") long contentLength, Context context);
 
         @Get("/prebuilt/receipt/analyzeResults/{resultId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeReceiptResult(@HostParam("endpoint") String endpoint, @PathParam("resultId") UUID resultId, Context context);
 
         @Post("/layout/analyze")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsync(@HostParam("endpoint") String endpoint, @HeaderParam("Content-Type") ContentType contentType, @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream, @HeaderParam("Content-Length") long contentLength, Context context);
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsync(@HostParam("endpoint") String endpoint, @BodyParam("application/json") SourcePath fileStream, Context context);
 
         @Post("/layout/analyze")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsync(@HostParam("endpoint") String endpoint, @BodyParam("application/json") SourcePath fileStream, Context context);
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsync(@HostParam("endpoint") String endpoint, @HeaderParam("Content-Type") ContentType contentType, @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream, @HeaderParam("Content-Length") long contentLength, Context context);
 
         @Get("/layout/analyzeResults/{resultId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeLayoutResult(@HostParam("endpoint") String endpoint, @PathParam("resultId") UUID resultId, Context context);
 
         @Get("/custom/models")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<SimpleResponse<Models>> listCustomModels(@HostParam("endpoint") String endpoint, @QueryParam("op") String op, Context context);
 
         @Get("/custom/models")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<SimpleResponse<Models>> getCustomModels(@HostParam("endpoint") String endpoint, @QueryParam("op") String op, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<SimpleResponse<Models>> listCustomModelsNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
      * Create and train a custom model. The request must include a source parameter that is either an externally accessible Azure storage blob container Uri (preferably a Shared Access Signature Uri) or valid path to a data folder in a locally mounted drive. When local paths are specified, they must follow the Linux/Unix path format and be an absolute path rooted to the input mount configuration setting value e.g., if '{Mounts:Input}' configuration setting value is '/input' then a valid source path would be '/input/contosodataset'. All data to be trained is expected to be under the source folder or sub folders under it. Models are trained using documents that are of the following content type - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff'. Other type of content is ignored.
-     *
+     * 
      * @param trainRequest Request parameter to train a new custom model.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -211,11 +211,11 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Create and train a custom model. The request must include a source parameter that is either an externally accessible Azure storage blob container Uri (preferably a Shared Access Signature Uri) or valid path to a data folder in a locally mounted drive. When local paths are specified, they must follow the Linux/Unix path format and be an absolute path rooted to the input mount configuration setting value e.g., if '{Mounts:Input}' configuration setting value is '/input' then a valid source path would be '/input/contosodataset'. All data to be trained is expected to be under the source folder or sub folders under it. Models are trained using documents that are of the following content type - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff'. Other type of content is ignored.
-     *
+     * 
      * @param trainRequest Request parameter to train a new custom model.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -226,11 +226,11 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Get detailed information about a custom model.
-     *
+     * 
      * @param modelId Model identifier.
      * @param includeKeys Include list of extracted keys in model information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return detailed information about a custom model.
      */
@@ -241,12 +241,12 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Get detailed information about a custom model.
-     *
+     * 
      * @param modelId Model identifier.
      * @param context The context to associate with this operation.
      * @param includeKeys Include list of extracted keys in model information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return detailed information about a custom model.
      */
@@ -257,10 +257,10 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Mark model for deletion. Model artifacts will be permanently removed within a predetermined period.
-     *
+     * 
      * @param modelId Model identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -271,11 +271,11 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Mark model for deletion. Model artifacts will be permanently removed within a predetermined period.
-     *
+     * 
      * @param modelId Model identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -286,14 +286,14 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param modelId Model identifier.
      * @param contentType Content type for upload.
      * @param fileStream Uri or local path to source data.
      * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -304,7 +304,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param modelId Model identifier.
      * @param contentType Content type for upload.
      * @param fileStream Uri or local path to source data.
@@ -312,7 +312,7 @@ public final class FormRecognizerClientImpl {
      * @param context The context to associate with this operation.
      * @param includeTextDetails Include text lines and element references in the result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -323,12 +323,12 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param modelId Model identifier.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param fileStream Uri or local path to source data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -339,13 +339,13 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param modelId Model identifier.
      * @param context The context to associate with this operation.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param fileStream Uri or local path to source data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -356,11 +356,11 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Obtain current status and the result of the analyze form operation.
-     *
+     * 
      * @param modelId Model identifier.
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return status and result of the queued analyze operation.
      */
@@ -371,12 +371,12 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Obtain current status and the result of the analyze form operation.
-     *
+     * 
      * @param modelId Model identifier.
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return status and result of the queued analyze operation.
      */
@@ -387,13 +387,13 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param contentType Content type for upload.
      * @param fileStream Uri or local path to source data.
      * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -404,14 +404,14 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param contentType Content type for upload.
      * @param fileStream Uri or local path to source data.
      * @param contentLength The contentLength parameter.
      * @param context The context to associate with this operation.
      * @param includeTextDetails Include text lines and element references in the result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -422,11 +422,11 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param includeTextDetails Include text lines and element references in the result.
      * @param fileStream Uri or local path to source data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -437,12 +437,12 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param fileStream Uri or local path to source data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -453,10 +453,10 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Track the progress and obtain the result of the analyze receipt operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return status and result of the queued analyze operation.
      */
@@ -467,11 +467,11 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Track the progress and obtain the result of the analyze receipt operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return status and result of the queued analyze operation.
      */
@@ -482,12 +482,12 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Extract text and layout information from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param contentType Content type for upload.
      * @param fileStream Uri or local path to source data.
      * @param contentLength The contentLength parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -498,13 +498,13 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Extract text and layout information from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param contentType Content type for upload.
      * @param fileStream Uri or local path to source data.
      * @param contentLength The contentLength parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -515,10 +515,10 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Extract text and layout information from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param fileStream Uri or local path to source data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -529,11 +529,11 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Extract text and layout information from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @param fileStream Uri or local path to source data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -544,10 +544,10 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Track the progress and obtain the result of the analyze layout operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return status and result of the queued analyze operation.
      */
@@ -558,11 +558,11 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Track the progress and obtain the result of the analyze layout operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return status and result of the queued analyze operation.
      */
@@ -573,8 +573,8 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Get information about all custom models.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * 
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about all custom models.
      */
@@ -593,10 +593,10 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Get information about all custom models.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about all custom models.
      */
@@ -615,8 +615,8 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Get information about all custom models.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * 
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about all custom models.
      */
@@ -628,10 +628,10 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Get information about all custom models.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about all custom models.
      */
@@ -643,10 +643,10 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response to the list custom models operation.
      */
@@ -664,11 +664,11 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response to the list custom models operation.
      */

@@ -18,12 +18,12 @@ public final class CustomFormModelStatus extends ExpandableStringEnum<CustomForm
     public static final CustomFormModelStatus CREATING = fromString("creating");
 
     /**
-     * Static value Creating for CustomFormModelStatus.
+     * Static value ready for CustomFormModelStatus.
      */
     public static final CustomFormModelStatus READY = fromString("ready");
 
     /**
-     * Static value Creating for CustomFormModelStatus.
+     * Static value invalid for CustomFormModelStatus.
      */
     public static final CustomFormModelStatus INVALID = fromString("invalid");
 

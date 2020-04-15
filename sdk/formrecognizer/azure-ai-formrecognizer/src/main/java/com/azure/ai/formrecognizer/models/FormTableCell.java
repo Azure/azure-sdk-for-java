@@ -35,7 +35,7 @@ public final class FormTableCell extends FormContent {
     /*
      * Confidence value.
      */
-    private final Float confidence;
+    private final float confidence;
 
     /*
      * When includeTextDetails is set to true, a list of references to the text
@@ -46,12 +46,12 @@ public final class FormTableCell extends FormContent {
     /*
      * Is the current cell a header cell?
      */
-    private final Boolean isHeader;
+    private final boolean isHeader;
 
     /*
      * Is the current cell a footer cell?
      */
-    private final Boolean isFooter;
+    private final boolean isFooter;
 
     /**
      * Constructs a FormTableCell object.
@@ -70,7 +70,7 @@ public final class FormTableCell extends FormContent {
      */
     public FormTableCell(final int rowIndex, final int columnIndex, final Integer rowSpan,
         final Integer columnSpan, final String text, final BoundingBox boundingBox,
-        final Float confidence, final boolean isHeader, final boolean isFooter, final int pageNumber,
+        final float confidence, final boolean isHeader, final boolean isFooter, final int pageNumber,
         final IterableStream<FormContent> textContent) {
         super(text, boundingBox, pageNumber, null);
         this.rowIndex = rowIndex;
@@ -88,7 +88,7 @@ public final class FormTableCell extends FormContent {
      *
      * @return the confidence value.
      */
-    public Float getConfidence() {
+    public float getConfidence() {
         return this.confidence;
     }
 

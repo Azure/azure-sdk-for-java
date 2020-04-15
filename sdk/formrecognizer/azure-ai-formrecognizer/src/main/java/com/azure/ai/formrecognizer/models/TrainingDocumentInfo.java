@@ -4,9 +4,8 @@
 package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.IterableStream;
 
-import java.util.Collections;
+import java.util.List;
 
 /**
  * The TrainingDocumentInfo model.
@@ -32,7 +31,7 @@ public final class TrainingDocumentInfo {
     /*
      * List of errors.
      */
-    private final IterableStream<FormRecognizerError> documentError;
+    private final List<FormRecognizerError> documentErrors;
 
     /**
      * Constructs a TrainingDocumentInfo object.
@@ -40,20 +39,18 @@ public final class TrainingDocumentInfo {
      * @param name Training document name.
      * @param trainingStatus Status of the training operation.
      * @param pageCount Total number of pages trained.
-     * @param documentError List of errors.
+     * @param documentErrors List of errors.
      */
     public TrainingDocumentInfo(final String name, final TrainingStatus trainingStatus, final int pageCount,
-                                final IterableStream<FormRecognizerError> documentError) {
+                                final List<FormRecognizerError> documentErrors) {
         this.name = name;
         this.trainingStatus = trainingStatus;
         this.pageCount = pageCount;
-        this.documentError = documentError == null
-            ? new IterableStream<FormRecognizerError>(Collections.emptyList())
-            : documentError;
+        this.documentErrors = documentErrors;
     }
 
     /**
-     * Get the documentName property: Training document name.
+     * Get the training document name.
      *
      * @return the documentName value.
      */
@@ -62,7 +59,7 @@ public final class TrainingDocumentInfo {
     }
 
     /**
-     * Get the status property: Status of the training operation.
+     * Get the status of the training operation.
      *
      * @return the status value.
      */
@@ -71,7 +68,7 @@ public final class TrainingDocumentInfo {
     }
 
     /**
-     * Get the pageCount property: Total number of pages trained.
+     * Get the total number of pages trained.
      *
      * @return the pages value.
      */
@@ -80,11 +77,11 @@ public final class TrainingDocumentInfo {
     }
 
     /**
-     * Get the errors property: List of errors.
+     * Get the list of errors.
      *
      * @return the errors value.
      */
-    public IterableStream<FormRecognizerError> getDocumentError() {
-        return this.documentError;
+    public List<FormRecognizerError> getDocumentErrors() {
+        return this.documentErrors;
     }
 }
