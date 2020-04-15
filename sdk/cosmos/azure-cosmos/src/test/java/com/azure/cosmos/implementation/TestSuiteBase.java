@@ -16,6 +16,7 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.Index;
 import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.Resource;
@@ -24,13 +25,12 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.TestNGLogListener;
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.CaseFormat;
-import com.google.common.collect.ImmutableList;
+import com.azure.cosmos.implementation.guava25.base.CaseFormat;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -177,7 +177,7 @@ public class TestSuiteBase extends DocumentClientTest {
             FeedOptions options = new FeedOptions();
             options.setMaxDegreeOfParallelism(-1);
 
-            options.setMaxItemCount(100);
+            ModelBridgeInternal.setFeedOptionsMaxItemCount(options, 100);
 
             logger.info("Truncating collection {} documents ...", collection.getId());
 
@@ -189,7 +189,7 @@ public class TestSuiteBase extends DocumentClientTest {
 
                         if (paths != null && !paths.isEmpty()) {
                             List<String> pkPath = PathParser.getPathParts(paths.get(0));
-                            Object propertyValue = doc.getObjectByPath(pkPath);
+                            Object propertyValue = ModelBridgeInternal.getObjectByPathFromJsonSerializable(doc, pkPath);
                             if (propertyValue == null) {
                                 propertyValue = Undefined.value();
                             }
@@ -437,10 +437,6 @@ public class TestSuiteBase extends DocumentClientTest {
                                                              String collectionLink,
                                                              List<Document> documentDefinitionList) {
         return bulkInsert(client, collectionLink, documentDefinitionList, DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL);
-    }
-
-    public static ConsistencyLevel getAccountDefaultConsistencyLevel(AsyncDocumentClient client) {
-        return ModelBridgeInternal.getConsistencyPolicy(client.getDatabaseAccount().single().block()).getDefaultConsistencyLevel();
     }
 
     public static User createUser(AsyncDocumentClient client, String databaseId, User user) {

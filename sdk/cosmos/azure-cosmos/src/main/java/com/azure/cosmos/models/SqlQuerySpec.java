@@ -4,14 +4,16 @@
 package com.azure.cosmos.models;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Represents a SQL query in the Azure Cosmos DB database service.
  */
 public final class SqlQuerySpec extends JsonSerializable {
 
-    private SqlParameterList parameters;
+    private List<SqlParameter> parameters;
 
     /**
      * Initializes a new instance of the SqlQuerySpec class.
@@ -38,10 +40,23 @@ public final class SqlQuerySpec extends JsonSerializable {
      * @param queryText the query text.
      * @param parameters the query parameters.
      */
-    public SqlQuerySpec(String queryText, SqlParameterList parameters) {
+    public SqlQuerySpec(String queryText, List<SqlParameter> parameters) {
         super();
         this.setQueryText(queryText);
         this.parameters = parameters;
+    }
+
+    /**
+     * Initializes a new instance of the SqlQuerySpec class with the text of the
+     * query and parameters.
+     *
+     * @param queryText the query text.
+     * @param parameters the query parameters.
+     */
+    public SqlQuerySpec(String queryText, SqlParameter... parameters) {
+        super();
+        this.setQueryText(queryText);
+        this.parameters = Arrays.asList(parameters);
     }
 
     /**
@@ -69,14 +84,14 @@ public final class SqlQuerySpec extends JsonSerializable {
      *
      * @return the query parameters.
      */
-    public SqlParameterList getParameters() {
+    public List<SqlParameter> getParameters() {
         if (this.parameters == null) {
             Collection<SqlParameter> sqlParameters = super.getCollection("parameters", SqlParameter.class);
             if (sqlParameters == null) {
-                sqlParameters = new ArrayList<SqlParameter>();
+                sqlParameters = new ArrayList<>();
             }
 
-            this.parameters = new SqlParameterList(sqlParameters);
+            this.parameters = new ArrayList<>(sqlParameters);
         }
 
         return this.parameters;
@@ -88,7 +103,7 @@ public final class SqlQuerySpec extends JsonSerializable {
      * @param parameters the query parameters.
      * @return the SqlQuerySpec.
      */
-    public SqlQuerySpec setParameters(SqlParameterList parameters) {
+    public SqlQuerySpec setParameters(List<SqlParameter> parameters) {
         this.parameters = parameters;
         return this;
     }

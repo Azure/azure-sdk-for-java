@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
@@ -29,8 +30,8 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.routing.RoutingMapProviderHelper;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.ImmutablePair;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -98,7 +99,7 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
 
         if (isClientSideContinuationToken(originalContinuation)) {
             // At this point we know we want back a query plan
-            newFeedOptions.setRequestContinuation(null);
+            ModelBridgeInternal.setFeedOptionsContinuationToken(newFeedOptions, null);
             newFeedOptions.setMaxDegreeOfParallelism(Integer.MAX_VALUE);
         }
 
@@ -120,7 +121,8 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
     public Mono<List<PartitionKeyRange>> getTargetPartitionKeyRangesById(String resourceId,
                                                                                       String partitionKeyRangeIdInternal) {
         return client.getPartitionKeyRangeCache()
-                   .tryGetPartitionKeyRangeByIdAsync(resourceId,
+                   .tryGetPartitionKeyRangeByIdAsync(null,
+                                                     resourceId,
                                                      partitionKeyRangeIdInternal,
                                                      false,
                                                      null)

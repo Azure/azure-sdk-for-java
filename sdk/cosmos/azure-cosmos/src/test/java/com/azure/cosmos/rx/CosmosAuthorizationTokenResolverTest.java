@@ -11,6 +11,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.models.CosmosResourceType;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PermissionMode;
 import com.azure.cosmos.models.RequestVerb;
@@ -23,7 +24,7 @@ import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.models.Permission;
+import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.ResourceResponseValidator;
@@ -111,7 +112,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
         try {
             asyncClientWithTokenResolver = buildClient(connectionMode, PermissionMode.READ);
             RequestOptions requestOptions = new RequestOptions();
-            requestOptions.setPartitionKey(new PartitionKey(resourceResponse.getResource().get("mypk")));
+            requestOptions.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(resourceResponse.getResource(), "mypk")));
             HashMap<String, Object> properties = new HashMap<String, Object>();
             properties.put("UserId", "readUser");
             requestOptions.setProperties(properties);
@@ -133,7 +134,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
         try {
             asyncClientWithTokenResolver = buildClient(connectionMode, PermissionMode.READ);
             RequestOptions requestOptions = new RequestOptions();
-            requestOptions.setPartitionKey(new PartitionKey(resourceResponse.getResource().get("mypk")));
+            requestOptions.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(resourceResponse.getResource(), "mypk")));
             Mono<ResourceResponse<Document>> readObservable = asyncClientWithTokenResolver.deleteDocument(resourceResponse.getResource().getSelfLink(), requestOptions);
             FailureValidator validator = new FailureValidator.Builder().statusCode(HttpConstants.StatusCodes.FORBIDDEN).build();
             validateFailure(readObservable, validator);
@@ -179,7 +180,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
         try {
             asyncClientWithTokenResolver = buildClient(connectionMode, PermissionMode.ALL);
             RequestOptions requestOptions = new RequestOptions();
-            requestOptions.setPartitionKey(new PartitionKey(resourceResponse.getResource().get("mypk")));
+            requestOptions.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(resourceResponse.getResource(), "mypk")));
             Mono<ResourceResponse<Document>> readObservable = asyncClientWithTokenResolver.deleteDocument(resourceResponse.getResource().getSelfLink(), requestOptions);
             ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
                     .nullResource().build();
@@ -238,7 +239,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
                     .withPermissionFeed(permissionFeed)
                     .build();
             RequestOptions requestOptions = new RequestOptions();
-            requestOptions.setPartitionKey(new PartitionKey(resourceResponse.getResource().get("mypk")));
+            requestOptions.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(resourceResponse.getResource(), "mypk")));
             Mono<ResourceResponse<Document>> readObservable = asyncClientWithTokenResolver.readDocument(resourceResponse.getResource().getSelfLink(), requestOptions);
             FailureValidator failureValidator = new FailureValidator.Builder().statusCode(HttpConstants.StatusCodes.UNAUTHORIZED).build();
             validateFailure(readObservable, failureValidator);
@@ -506,7 +507,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
 
     private CosmosAuthorizationTokenResolver getTokenResolver(PermissionMode permissionMode) {
         return (RequestVerb requestVerb, String resourceIdOrFullName, CosmosResourceType resourceType, Map<String, Object>  properties) -> {
-            if(resourceType.equals(CosmosResourceType.System)) {
+            if(resourceType.equals(CosmosResourceType.SYSTEM)) {
                 return readPermission.getToken();
             } if (permissionMode == null) {
                 return "invalid";
@@ -520,7 +521,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
 
     private CosmosAuthorizationTokenResolver getBadTokenResolver() {
         return (RequestVerb requestVerb, String resourceIdOrFullName, CosmosResourceType resourceType, Map<String, Object>  properties) -> {
-            if (resourceType == CosmosResourceType.System) {
+            if (resourceType.equals(CosmosResourceType.SYSTEM)) {
                 return readPermission.getToken();
             }
             if (properties != null) {
@@ -537,7 +538,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
                 currentUser = (UserClass) properties.get(field);
             }
 
-            if (resourceType == CosmosResourceType.System) {
+            if (resourceType.equals(CosmosResourceType.SYSTEM)) {
                 return readPermission.getToken();
             } else if (currentUser != null &&
                     !currentUser.userName.equals(blockListedUser.userName) &&

@@ -13,6 +13,7 @@
     <module>azure-core-amqp</module>
     <module>azure-core-http-netty</module>
     <module>azure-core-http-okhttp</module>
+    <module>azure-core-http-jdk-httpclient</module>
     <module>azure-core-test</module>
     <module>azure-core-tracing-opentelemetry</module>
   </modules>

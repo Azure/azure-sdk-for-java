@@ -1,8 +1,15 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.5 (Unreleased)
+
+
+## 1.0.0-beta.4 (2020-04-07)
+- Throws an illegal argument exception when the given list of documents is an empty list.
+
 **Breaking changes**
-- Rename all input parameters `text` to `document`, and `inputTexts` to `documents`.
+- Renamed all input parameters `text` to `document`, and `inputTexts` to `documents`.
+- Removed all PII endpoints and update with related changes, such as remove related models, samples, codesnippets, docstrings, etc from this library. 
+- Replaced `TextAnalyticsApiKeyCredential` with `AzureKeyCredential`.
 
 ## 1.0.0-beta.3 (2020-03-10)
 **New features**

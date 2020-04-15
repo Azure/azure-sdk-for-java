@@ -3,7 +3,9 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
@@ -11,7 +13,6 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Flux;
 
 import java.net.URI;
@@ -375,7 +376,31 @@ public class RxDocumentServiceRequest implements Cloneable {
             Object options) {
 
         RxDocumentServiceRequest request = new RxDocumentServiceRequest(operation, resourceType, relativePath,
-                resource.serializeJsonToByteBuffer(), headers, AuthorizationTokenType.PrimaryMasterKey);
+            ModelBridgeInternal.serializeJsonToByteBuffer(resource), headers, AuthorizationTokenType.PrimaryMasterKey);
+        request.properties = getProperties(options);
+        return request;
+    }
+
+    /**
+     * Creates a DocumentServiceRequest with a resource.
+     *
+     * @param operation    the operation type.
+     * @param resourceType the resource type.
+     * @param relativePath the relative URI path.
+     * @param byteBuffer   the resource byteBuffer.
+     * @param headers      the request headers.
+     * @param options      the request/feed/changeFeed options.
+     * @return the created document service request.
+     */
+    public static RxDocumentServiceRequest create(OperationType operation,
+                                                  ResourceType resourceType,
+                                                  String relativePath,
+                                                  ByteBuffer byteBuffer,
+                                                  Map<String, String> headers,
+                                                  Object options) {
+
+        RxDocumentServiceRequest request = new RxDocumentServiceRequest(operation, resourceType, relativePath,
+            byteBuffer, headers, AuthorizationTokenType.PrimaryMasterKey);
         request.properties = getProperties(options);
         return request;
     }
@@ -449,7 +474,8 @@ public class RxDocumentServiceRequest implements Cloneable {
         case Query:
         default:
             operation = OperationType.Query;
-            return new RxDocumentServiceRequest(operation, resourceType, relativePath, querySpec.serializeJsonToByteBuffer(), headers, AuthorizationTokenType.PrimaryMasterKey);
+            return new RxDocumentServiceRequest(operation, resourceType, relativePath,
+                ModelBridgeInternal.serializeJsonToByteBuffer(querySpec), headers, AuthorizationTokenType.PrimaryMasterKey);
         }
     }
 
@@ -521,7 +547,7 @@ public class RxDocumentServiceRequest implements Cloneable {
             ResourceType resourceType,
             String relativePath,
             Map<String, String> headers) {
-        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer();
+        ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
         return new RxDocumentServiceRequest(operation, resourceType, relativePath, resourceContent, headers, AuthorizationTokenType.PrimaryMasterKey);
     }
 
@@ -541,7 +567,7 @@ public class RxDocumentServiceRequest implements Cloneable {
             String relativePath,
             Map<String, String> headers,
             AuthorizationTokenType authorizationTokenType) {
-        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer();
+        ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
         return new RxDocumentServiceRequest(operation, resourceType, relativePath, resourceContent, headers, authorizationTokenType);
     }
 
@@ -593,7 +619,7 @@ public class RxDocumentServiceRequest implements Cloneable {
             ResourceType resourceType,
             Resource resource,
             Map<String, String> headers) {
-        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer();
+        ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
         return new RxDocumentServiceRequest(operation, resourceId, resourceType, resourceContent, headers, false, AuthorizationTokenType.PrimaryMasterKey);
     }
 
@@ -613,7 +639,7 @@ public class RxDocumentServiceRequest implements Cloneable {
             Resource resource,
             Map<String, String> headers,
             AuthorizationTokenType authorizationTokenType) {
-        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer();
+        ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
         return new RxDocumentServiceRequest(operation, resourceId, resourceType, resourceContent, headers, false, authorizationTokenType);
     }
 
@@ -662,7 +688,7 @@ public class RxDocumentServiceRequest implements Cloneable {
             Resource resource,
             String resourceFullName,
             ResourceType resourceType) {
-        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer();
+        ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
         return new RxDocumentServiceRequest(operationType,
                 resourceFullName,
                 resourceType,
@@ -679,7 +705,7 @@ public class RxDocumentServiceRequest implements Cloneable {
             String resourceFullName,
             ResourceType resourceType,
             AuthorizationTokenType authorizationTokenType) {
-        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer();
+        ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
         return new RxDocumentServiceRequest(operationType,
                 resourceFullName,
                 resourceType,

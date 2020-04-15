@@ -15,10 +15,12 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import reactor.core.publisher.Mono;
+
+import java.util.Objects;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link
@@ -78,27 +80,6 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
     }
 
     /**
-     * Creates a {@link KeyEncryptionKey} based on options set in the builder.
-     * Every time {@code buildKeyEncryptionKey(String)} is called, a new instance of {@link KeyEncryptionKey}
-     * is created.
-     *
-     * <p>If {@link KeyEncryptionKeyClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline}
-     * and {@code keyId} are used to create the {@link KeyEncryptionKeyClient client}.
-     *  All other builder settings are ignored. If {@code pipeline} is not set, then
-     * {@link KeyEncryptionKeyClientBuilder#credential(TokenCredential) vault credential} and {@code keyId}
-     * are required to build the {@link KeyEncryptionKeyClient client}.</p>
-     *
-     * @param key the key to be used for crypto operations.
-     *
-     * @return A {@link KeyEncryptionKeyClient} with the options set from the builder.
-     * @throws IllegalStateException If {@link KeyEncryptionKeyClientBuilder#credential(TokenCredential)} or
-     * {@code key} have not been set.
-     */
-    public KeyEncryptionKey buildKeyEncryptionKey(KeyVaultKey key) {
-        return new KeyEncryptionKeyClient((KeyEncryptionKeyAsyncClient) buildAsyncKeyEncryptionKey(key).block());
-    }
-
-    /**
      * Creates a {@link KeyEncryptionKeyAsyncClient} based on options set in the builder.
      * Every time {@code buildAsyncKeyEncryptionKey(String)} is called, a new instance of
      * {@link KeyEncryptionKeyAsyncClient} is created.
@@ -134,50 +115,6 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
         HttpPipeline pipeline = builder.setupPipeline();
 
         return Mono.defer(() -> Mono.just(new KeyEncryptionKeyAsyncClient(keyId, pipeline, serviceVersion)));
-    }
-
-    /**
-     * Creates a {@link KeyEncryptionKeyAsyncClient} based on options set in the builder.
-     * Every time {@code buildAsyncKeyEncryptionKey(String)} is called, a new instance of
-     * {@link KeyEncryptionKeyAsyncClient} is created.
-     *
-     * <p>If {@link KeyEncryptionKeyClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline}
-     * and {@code keyId} are used to create the {@link KeyEncryptionKeyAsyncClient async client}.
-     * All other builder settings are ignored. If {@code pipeline} is not set, then
-     * ({@link KeyEncryptionKeyClientBuilder#credential(TokenCredential) jsonWebKey vault credential} and
-     * {@code keyId} are required to build the {@link KeyEncryptionKeyAsyncClient async client}.</p>
-     *
-     * @param key the key to be used for crypto operations.
-     *
-     * @return A {@link KeyEncryptionKeyAsyncClient} with the options set from the builder.
-     * @throws IllegalStateException If {@link KeyEncryptionKeyClientBuilder#credential(TokenCredential)} or
-     * {@code key} have not been set.
-     */
-    public Mono<? extends AsyncKeyEncryptionKey> buildAsyncKeyEncryptionKey(KeyVaultKey key) {
-        builder.key(key);
-        if (key == null) {
-            throw logger.logExceptionAsError(new IllegalStateException(
-                "Key Vault Key parameter cannot be null and is required to create key encryption key async client."));
-        }
-
-        if (key.getKey() == null) {
-            throw logger.logExceptionAsError(new IllegalStateException(
-                "Json Web key value on the Key Vault Key object cannot be null and is required to create key encryption key async client."));
-        }
-        CryptographyServiceVersion serviceVersion = builder.getServiceVersion() != null ? builder.getServiceVersion() : CryptographyServiceVersion.getLatest();
-
-        if (builder.getPipeline() != null) {
-            return Mono.defer(() -> Mono.just(new KeyEncryptionKeyAsyncClient(key, builder.getPipeline(), serviceVersion)));
-        }
-
-        if (builder.getCredential() == null) {
-            throw logger.logExceptionAsError(new IllegalStateException(
-                "Key Vault credentials cannot be null and are required to build the key encryption key async client"));
-        }
-
-        HttpPipeline pipeline = builder.setupPipeline();
-
-        return Mono.defer(() -> Mono.just(new KeyEncryptionKeyAsyncClient(key, pipeline, serviceVersion)));
     }
 
     /**
@@ -270,6 +207,21 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      */
     public KeyEncryptionKeyClientBuilder serviceVersion(CryptographyServiceVersion version) {
         builder.serviceVersion(version);
+        return this;
+    }
+
+    /**
+     * Sets the {@link RetryPolicy} that is used when each request is sent.
+     *
+     * The default retry policy will be used in the pipeline, if not provided.
+     *
+     * @param retryPolicy user's retry policy applied to each request.
+     * @return The updated KeyEncryptionKeyClientBuilder object.
+     * @throws NullPointerException if the specified {@code retryPolicy} is null.
+     */
+    public KeyEncryptionKeyClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+        Objects.requireNonNull(retryPolicy, "The retry policy cannot be bull");
+        builder.retryPolicy(retryPolicy);
         return this;
     }
 }

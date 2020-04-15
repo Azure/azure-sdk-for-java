@@ -10,7 +10,7 @@ import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
-import com.azure.cosmos.CosmosPagedFlux;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
@@ -243,7 +243,7 @@ public class BackPressureTest extends TestSuiteBase {
     public void before_BackPressureTest() throws Exception {
 
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
-        client = new ClientUnderTestBuilder(clientBuilder()).buildAsyncClient();
+        client = new ClientUnderTestBuilder(getClientBuilder()).buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
 
         createdCollection = createCollection(createdDatabase, getSinglePartitionCollectionDefinition(), options, 1000);
@@ -267,7 +267,7 @@ public class BackPressureTest extends TestSuiteBase {
 
         createdDocuments = bulkInsertBlocking(createdCollection, docDefList);
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
         warmUp();
     }
 

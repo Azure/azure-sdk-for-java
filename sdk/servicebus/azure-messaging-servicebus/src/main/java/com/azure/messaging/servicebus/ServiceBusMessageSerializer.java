@@ -7,6 +7,7 @@ import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.ManagementConstants;
 import com.azure.messaging.servicebus.implementation.MessageWithLockToken;
 import com.azure.messaging.servicebus.implementation.Messages;
 import org.apache.qpid.proton.Proton;
@@ -57,9 +58,6 @@ class ServiceBusMessageSerializer implements MessageSerializer {
     private static final String PARTITION_KEY_NAME = "x-opt-partition-key";
     private static final String VIA_PARTITION_KEY_NAME = "x-opt-via-partition-key";
     private static final String DEAD_LETTER_SOURCE_NAME = "x-opt-deadletter-source";
-    private static final String REQUEST_RESPONSE_MESSAGES = "messages";
-    private static final String REQUEST_RESPONSE_MESSAGE = "message";
-    private static final String REQUEST_RESPONSE_EXPIRATIONS = "expirations";
 
     private final ClientLogger logger = new ClientLogger(ServiceBusMessageSerializer.class);
 
@@ -190,20 +188,40 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             return (List<T>) deserializeListOfMessages(message);
         } else if (clazz == Instant.class) {
             return (List<T>) deserializeListOfInstant(message);
+        } else if (clazz == Long.class) {
+            return (List<T>) deserializeListOfLong(message);
         } else {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "Deserialization only supports ServiceBusReceivedMessage."));
         }
     }
 
+    private List<Long> deserializeListOfLong(Message amqpMessage) {
+        if (amqpMessage.getBody() instanceof AmqpValue) {
+            AmqpValue amqpValue = ((AmqpValue) amqpMessage.getBody());
+            if (amqpValue.getValue() instanceof Map) {
+                @SuppressWarnings("unchecked")
+                Map<String, Object> responseBody = (Map<String, Object>) amqpValue.getValue();
+                Object expirationListObj = responseBody.get(ManagementConstants.SEQUENCE_NUMBERS);
+
+                if (expirationListObj instanceof long[]) {
+                    return Arrays.stream((long[]) expirationListObj)
+                        .boxed()
+                        .collect(Collectors.toList());
+                }
+            }
+        }
+        return Collections.emptyList();
+    }
+
     private List<Instant> deserializeListOfInstant(Message amqpMessage) {
-       
+
         if (amqpMessage.getBody() instanceof AmqpValue) {
             AmqpValue amqpValue = ((AmqpValue) amqpMessage.getBody());
             if (amqpValue.getValue() instanceof  Map) {
                 @SuppressWarnings("unchecked")
                 Map<String, Object> responseBody = (Map<String, Object>) amqpValue.getValue();
-                Object expirationListObj = responseBody.get(REQUEST_RESPONSE_EXPIRATIONS);
+                Object expirationListObj = responseBody.get(ManagementConstants.EXPIRATIONS);
 
                 if (expirationListObj instanceof Date[]) {
                     return Arrays.stream((Date[]) expirationListObj)
@@ -214,6 +232,8 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         }
         return Collections.emptyList();
     }
+
+    @SuppressWarnings("rawtypes")
     private List<ServiceBusReceivedMessage> deserializeListOfMessages(Message amqpMessage) {
         final List<ServiceBusReceivedMessage> messageList = new ArrayList<>();
         final int statusCode = RequestResponseUtils.getResponseStatusCode(amqpMessage);
@@ -234,9 +254,9 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             return Collections.emptyList();
         }
 
-        final Object messages = ((Map) responseBodyMap).get(REQUEST_RESPONSE_MESSAGES);
+        final Object messages = ((Map) responseBodyMap).get(ManagementConstants.MESSAGES);
         if (messages == null) {
-            logger.warning("Response body did not contain key: {}", REQUEST_RESPONSE_MESSAGES);
+            logger.warning("Response body did not contain key: {}", ManagementConstants.MESSAGES);
             return Collections.emptyList();
         } else if (!(messages instanceof Iterable)) {
             logger.warning("Response body contents is not the correct type. Expected: {}. Actual: {}",
@@ -252,12 +272,18 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             }
 
             final Message responseMessage = Message.Factory.create();
-            final Binary messagePayLoad = (Binary) ((Map) message).get(REQUEST_RESPONSE_MESSAGE);
+            final Binary messagePayLoad = (Binary) ((Map) message).get(ManagementConstants.MESSAGE);
 
             responseMessage.decode(messagePayLoad.getArray(), messagePayLoad.getArrayOffset(),
                 messagePayLoad.getLength());
 
             final ServiceBusReceivedMessage receivedMessage = deserializeMessage(responseMessage);
+
+            // if amqp message have lockToken
+            if (((Map) message).containsKey(ManagementConstants.LOCK_TOKEN_KEY)) {
+                receivedMessage.setLockToken((UUID) ((Map) message).get(ManagementConstants.LOCK_TOKEN_KEY));
+            }
+
             messageList.add(receivedMessage);
         }
 

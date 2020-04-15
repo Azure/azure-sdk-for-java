@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
 import com.azure.cosmos.implementation.http.HttpRequest;
@@ -50,21 +51,21 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
     public static Object[][] responseContinuationTokenLimitParamProvider() {
 
         FeedOptions options1 = new FeedOptions();
-        options1.setMaxItemCount(1);
+        ModelBridgeInternal.setFeedOptionsMaxItemCount(options1, 1);
         options1.getResponseContinuationTokenLimitInKb(5);
         options1.setPartitionKey(new PartitionKey("99"));
         String query1 = "Select * from r";
         boolean multiPartitionCollection1 = true;
 
         FeedOptions options2 = new FeedOptions();
-        options2.setMaxItemCount(1);
+        ModelBridgeInternal.setFeedOptionsMaxItemCount(options2, 1);
         options2.getResponseContinuationTokenLimitInKb(5);
         options2.setPartitionKey(new PartitionKey("99"));
         String query2 = "Select * from r order by r.prop";
         boolean multiPartitionCollection2 = false;
 
         FeedOptions options3 = new FeedOptions();
-        options3.setMaxItemCount(1);
+        ModelBridgeInternal.setFeedOptionsMaxItemCount(options3, 1);
         options3.getResponseContinuationTokenLimitInKb(5);
         options3.setPartitionKey(new PartitionKey("99"));
         String query3 = "Select * from r";

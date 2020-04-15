@@ -13,6 +13,7 @@ import com.azure.storage.blob.models.BlobListDetails;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.ListBlobsOptions;
+import com.azure.storage.common.implementation.Constants;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -34,10 +35,10 @@ import java.util.Objects;
  * It also serves as the interface to Storage clients. Any operation that needs to use a client should first build an
  * AzureResource using a path and then use the getter to access the client.
  */
-class AzureResource {
+final class AzureResource {
     private final ClientLogger logger = new ClientLogger(AzureResource.class);
 
-    static final String DIR_METADATA_MARKER = "is_hdi_folder";
+    static final String DIR_METADATA_MARKER = Constants.HeaderConstants.DIRECTORY_METADATA_KEY;
 
     private final AzurePath path;
     private final BlobClient blobClient;
@@ -114,10 +115,10 @@ class AzureResource {
                     return DirectoryStatus.NOT_EMPTY;
                 }
                 if (!item.getName().equals(this.blobClient.getBlobName())) {
-                /*
-                Names do not match. Must be a virtual dir with one item. e.g. blob with name "foo/bar" means dir "foo"
-                exists.
-                 */
+                    /*
+                    Names do not match. Must be a virtual dir with one item. e.g. blob with name "foo/bar" means dir
+                    "foo" exists.
+                     */
                     return DirectoryStatus.NOT_EMPTY;
                 }
                 if (item.getMetadata() != null && item.getMetadata().containsKey(DIR_METADATA_MARKER)) {
@@ -211,13 +212,13 @@ class AzureResource {
 
     private AzurePath validatePathInstanceType(Path path) {
         if (!(path instanceof AzurePath)) {
-            throw LoggingUtility.logError(logger, new IllegalArgumentException("This provider cannot operate on " 
+            throw LoggingUtility.logError(logger, new IllegalArgumentException("This provider cannot operate on "
                 + "subtypes of Path other than AzurePath"));
         }
         return (AzurePath) path;
     }
 
-    private BlobContainerClient getContainerClient() {
+    BlobContainerClient getContainerClient() {
         return new BlobContainerClientBuilder().endpoint(this.blobClient.getBlobUrl())
             .pipeline(this.blobClient.getHttpPipeline())
             .buildClient();

@@ -2,6 +2,10 @@
 
 ## 1.1.0-beta.1 (Unreleased)
 
+
+## 1.0.3 (2020-04-08)
+- Fix bug where processor would hang after a reconnect due to being unable to load balance partitions.
+
 ## 1.0.2 (2020-02-12)
 - Dependency fixed so `EventProcessor` consumers can use blocking method calls in their code.
 
@@ -36,3 +40,5 @@ store checkpoints and balance partition load among all instances of Event Proces
 
 - Initial offset provider for each partition is not implemented.
 - Interoperability with Event Processors of other language SDKs like Python is not supported.
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventhubs%2Fazure-messaging-eventhubs-checkpointstore-blob%2FCHANGELOG.png)

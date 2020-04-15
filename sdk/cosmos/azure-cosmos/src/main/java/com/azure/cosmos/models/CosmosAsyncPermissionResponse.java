@@ -5,8 +5,9 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncPermission;
 import com.azure.cosmos.CosmosAsyncUser;
+import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.ResourceResponse;
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 /**
  * The type Cosmos async permission response.

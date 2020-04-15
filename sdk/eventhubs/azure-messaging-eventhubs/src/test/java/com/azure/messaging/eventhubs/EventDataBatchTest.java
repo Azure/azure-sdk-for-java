@@ -34,7 +34,7 @@ public class EventDataBatchTest {
     @Test
     public void nullEventData() {
         assertThrows(IllegalArgumentException.class, () -> {
-            final EventDataBatch batch = new EventDataBatch(1024, null, PARTITION_KEY, null, null);
+            final EventDataBatch batch = new EventDataBatch(1024, null, PARTITION_KEY, null, null, null, null);
             batch.tryAdd(null);
         });
     }
@@ -47,7 +47,7 @@ public class EventDataBatchTest {
         when(errorContextProvider.getErrorContext()).thenReturn(new AmqpErrorContext("test-namespace"));
 
         final EventDataBatch batch = new EventDataBatch(1024, null, PARTITION_KEY, errorContextProvider,
-            new TracerProvider(Collections.emptyList()));
+            new TracerProvider(Collections.emptyList()), null, null);
         final EventData tooBig = new EventData(new byte[1024 * 1024 * 2]);
         try {
             batch.tryAdd(tooBig);
@@ -65,7 +65,7 @@ public class EventDataBatchTest {
     public void withinPayloadSize() {
         final int maxSize = ClientConstants.MAX_MESSAGE_LENGTH_BYTES;
         final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, PARTITION_KEY,
-            null, new TracerProvider(Collections.emptyList()));
+            null, new TracerProvider(Collections.emptyList()), null, null);
         final EventData within = new EventData(new byte[1024]);
 
         Assertions.assertEquals(maxSize, batch.getMaxSizeInBytes());
@@ -83,7 +83,7 @@ public class EventDataBatchTest {
 
         // Act
         final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, partitionId,
-            PARTITION_KEY, null, null);
+            PARTITION_KEY, null, null, null, null);
 
         // Assert
         Assertions.assertEquals(PARTITION_KEY, batch.getPartitionKey());

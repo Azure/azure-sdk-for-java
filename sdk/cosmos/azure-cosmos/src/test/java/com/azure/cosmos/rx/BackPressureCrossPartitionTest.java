@@ -11,7 +11,7 @@ import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
-import com.azure.cosmos.CosmosPagedFlux;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.models.DataType;
 import com.azure.cosmos.models.FeedOptions;
@@ -205,7 +205,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
     @BeforeClass(groups = { "long" }, timeOut = SETUP_TIMEOUT)
     public void before_BackPressureCrossPartitionTest() {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
-        client = new ClientUnderTestBuilder(clientBuilder()).buildAsyncClient();
+        client = new ClientUnderTestBuilder(getClientBuilder()).buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
         createdCollection = createCollection(createdDatabase, getCollectionDefinition(), options, 20000);
 
@@ -221,7 +221,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
         numberOfPartitions = CosmosBridgeInternal.getAsyncDocumentClient(client).readPartitionKeyRanges(getCollectionLink(), null)
                 .flatMap(p -> Flux.fromIterable(p.getResults())).collectList().single().block().size();
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
         warmUp();
     }
 

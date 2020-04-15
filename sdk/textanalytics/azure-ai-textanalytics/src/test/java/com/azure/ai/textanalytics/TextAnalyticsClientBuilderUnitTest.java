@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
+import com.azure.core.credential.AzureKeyCredential;
 import org.junit.jupiter.api.Test;
 
 import static com.azure.ai.textanalytics.TestUtils.VALID_HTTPS_LOCALHOST;
@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class TextAnalyticsClientBuilderUnitTest {
 
     /**
-     * Test for missing endpoint
+     * Test for missing endpoint when building an asynchronous client
      */
     @Test
     public void missingEndpointAsyncClient() {
@@ -26,7 +26,7 @@ public class TextAnalyticsClientBuilderUnitTest {
     }
 
     /**
-     * Test for missing endpoint
+     * Test for missing endpoint when building a synchronous client
      */
     @Test
     public void missingEndpoint() {
@@ -63,9 +63,9 @@ public class TextAnalyticsClientBuilderUnitTest {
      */
     @Test
     public void emptyApiKey() {
-        assertThrows(IllegalArgumentException.class, () -> new TextAnalyticsApiKeyCredential(""));
+        assertThrows(IllegalArgumentException.class, () -> new AzureKeyCredential(""));
     }
-    
+
     /**
      * Test for null AAD credential
      */

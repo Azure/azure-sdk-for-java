@@ -14,10 +14,6 @@ trigger:
   paths:
     include:
       - sdk/resourcegraph/
-    exclude:
-      - sdk/resourcegraph/azure
-      - sdk/resourcegraph/microsoft-azure
-      - sdk/resourcegraph/ms-azure
 
 pr:
   branches:
@@ -29,10 +25,6 @@ pr:
   paths:
     include:
       - sdk/resourcegraph/
-    exclude:
-      - sdk/resourcegraph/azure
-      - sdk/resourcegraph/microsoft-azure
-      - sdk/resourcegraph/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

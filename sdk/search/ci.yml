@@ -21,7 +21,7 @@ trigger:
     include:
       - sdk/search/
     exclude:
-      - sdk/search/mgmt-
+      - sdk/search/mgmt-v2015_02_28
 
 pr:
   branches:
@@ -34,13 +34,13 @@ pr:
     include:
       - sdk/search/
     exclude:
-      - sdk/search/mgmt-
+      - sdk/search/mgmt-v2015_02_28
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
     parameters:
       ServiceDirectory: search
       Artifacts:
-        - name: azure-search
+        - name: azure-search-documents
           groupId: com.azure
           safeName: azuresearch

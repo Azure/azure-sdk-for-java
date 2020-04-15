@@ -48,6 +48,8 @@ import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 /**
  * This class provides a client that contains all operations that apply to any path object.
@@ -59,7 +61,7 @@ public class DataLakePathAsyncClient {
     final DataLakeStorageClientImpl dataLakeStorage;
     private final String accountName;
     private final String fileSystemName;
-    private final String pathName;
+    final String pathName;
     private final DataLakeServiceVersion serviceVersion;
 
     final PathResourceType pathResourceType;
@@ -263,8 +265,8 @@ public class DataLakePathAsyncClient {
     public Mono<Response<PathInfo>> createWithResponse(String permissions, String umask, PathHttpHeaders headers,
         Map<String, String> metadata, DataLakeRequestConditions requestConditions) {
         try {
-            return withContext(context -> createWithResponse(permissions, umask, pathResourceType, headers, metadata,
-                requestConditions, context));
+            return withContext(context -> createWithResponse(permissions, umask, pathResourceType,
+                headers, metadata, requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -282,8 +284,10 @@ public class DataLakePathAsyncClient {
             .setIfModifiedSince(requestConditions.getIfModifiedSince())
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
 
+        context = context == null ? Context.NONE : context;
         return this.dataLakeStorage.paths().createWithRestResponseAsync(resourceType, null, null, null, null,
-            buildMetadataString(metadata), permissions, umask, null, null, headers, lac, mac, null, context)
+            buildMetadataString(metadata), permissions, umask, null, null, headers, lac, mac, null,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
                 response.getDeserializedHeaders().getLastModified())));
     }
@@ -307,7 +311,9 @@ public class DataLakePathAsyncClient {
             .setIfModifiedSince(requestConditions.getIfModifiedSince())
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
 
-        return this.dataLakeStorage.paths().deleteWithRestResponseAsync(recursive, null, null, null, lac, mac, context)
+        context = context == null ? Context.NONE : context;
+        return this.dataLakeStorage.paths().deleteWithRestResponseAsync(recursive, null, null, null, lac, mac,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -534,8 +540,8 @@ public class DataLakePathAsyncClient {
     public Mono<Response<PathInfo>> setAccessControlListWithResponse(List<PathAccessControlEntry> accessControlList,
         String group, String owner, DataLakeRequestConditions requestConditions) {
         try {
-            return withContext(context -> setAccessControlWithResponse(accessControlList, null, group, owner,
-                requestConditions, context));
+            return withContext(context -> setAccessControlWithResponse(accessControlList,
+                null, group, owner, requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -609,8 +615,10 @@ public class DataLakePathAsyncClient {
             ? null
             : PathAccessControlEntry.serializeList(accessControlList);
 
+        context = context == null ? Context.NONE : context;
         return this.dataLakeStorage.paths().setAccessControlWithRestResponseAsync(null, owner, group, permissionsString,
-            accessControlListString, null, lac, mac, context)
+            accessControlListString, null, lac, mac,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
                 response.getDeserializedHeaders().getLastModified())));
     }
@@ -653,8 +661,8 @@ public class DataLakePathAsyncClient {
     public Mono<Response<PathAccessControl>> getAccessControlWithResponse(boolean userPrincipalNameReturned,
         DataLakeRequestConditions requestConditions) {
         try {
-            return withContext(context -> getAccessControlWithResponse(userPrincipalNameReturned, requestConditions,
-                context));
+            return withContext(context -> getAccessControlWithResponse(userPrincipalNameReturned,
+                requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -671,8 +679,10 @@ public class DataLakePathAsyncClient {
             .setIfModifiedSince(requestConditions.getIfModifiedSince())
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
 
+        context = context == null ? Context.NONE : context;
         return this.dataLakeStorage.paths().getPropertiesWithRestResponseAsync(
-            PathGetPropertiesAction.GET_ACCESS_CONTROL, userPrincipalNameReturned, null, null, lac, mac, context)
+            PathGetPropertiesAction.GET_ACCESS_CONTROL, userPrincipalNameReturned, null, null, lac, mac,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, new PathAccessControl(
                 PathAccessControlEntry.parseList(response.getDeserializedHeaders().getAcl()),
                 PathPermissions.parseSymbolic(response.getDeserializedHeaders().getPermissions()),
@@ -722,7 +732,8 @@ public class DataLakePathAsyncClient {
         return dataLakePathAsyncClient.dataLakeStorage.paths().createWithRestResponseAsync(null /* pathResourceType */,
             null /* continuation */, PathRenameMode.LEGACY, renameSource, sourceRequestConditions.getLeaseId(),
             null /* metadata */, null /* permissions */, null /* umask */, null /* request id */, null /* timeout */,
-            null /* pathHttpHeaders */, destLac, destMac, sourceConditions, context)
+            null /* pathHttpHeaders */, destLac, destMac, sourceConditions,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, dataLakePathAsyncClient));
     }
 

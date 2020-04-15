@@ -4,10 +4,11 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.ConnectionPolicy;
-import com.azure.cosmos.models.DatabaseAccount;
+import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseAccountManagerInternal;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.routing.LocationCache;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
@@ -120,6 +121,7 @@ public class GlobalEndPointManagerTest {
         isRefreshInBackground = this.getRefreshInBackground(globalEndPointManager);
         Assert.assertFalse(isRefreshing.get());
         Assert.assertTrue(isRefreshInBackground.get());
+        LifeCycleUtils.closeQuietly(globalEndPointManager);
     }
 
     /**
@@ -173,6 +175,7 @@ public class GlobalEndPointManagerTest {
         isRefreshInBackground = this.getRefreshInBackground(globalEndPointManager);
         Assert.assertFalse(isRefreshing.get());
         Assert.assertTrue(isRefreshInBackground.get());
+        LifeCycleUtils.closeQuietly(globalEndPointManager);
     }
 
     /**
@@ -212,6 +215,7 @@ public class GlobalEndPointManagerTest {
         isRefreshInBackground = this.getRefreshInBackground(globalEndPointManager);
         Assert.assertFalse(isRefreshing.get());
         Assert.assertTrue(isRefreshInBackground.get());
+        LifeCycleUtils.closeQuietly(globalEndPointManager);
     }
 
     /**
@@ -230,6 +234,7 @@ public class GlobalEndPointManagerTest {
 
         AtomicBoolean isRefreshInBackground = getRefreshInBackground(globalEndPointManager);
         Assert.assertFalse(isRefreshInBackground.get());
+        LifeCycleUtils.closeQuietly(globalEndPointManager);
     }
 
     /**
@@ -272,6 +277,7 @@ public class GlobalEndPointManagerTest {
         isRefreshing = this.getIsRefreshing(globalEndPointManager);
         isRefreshInBackground = this.getRefreshInBackground(globalEndPointManager);
         Assert.assertFalse(isRefreshing.get());
+        LifeCycleUtils.closeQuietly(globalEndPointManager);
     }
 
     private LocationCache getLocationCache(GlobalEndpointManager globalEndPointManager) throws Exception {

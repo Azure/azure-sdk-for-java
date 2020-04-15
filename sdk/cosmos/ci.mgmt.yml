@@ -15,9 +15,9 @@ trigger:
     include:
       - sdk/cosmos/
     exclude:
-      - sdk/cosmos/azure
-      - sdk/cosmos/microsoft-azure
-      - sdk/cosmos/ms-azure
+      - sdk/cosmos/azure-cosmos
+      - sdk/cosmos/azure-cosmos-benchmark
+      - sdk/cosmos/azure-cosmos-examples
 
 pr:
   branches:
@@ -30,9 +30,9 @@ pr:
     include:
       - sdk/cosmos/
     exclude:
-      - sdk/cosmos/azure
-      - sdk/cosmos/microsoft-azure
-      - sdk/cosmos/ms-azure
+      - sdk/cosmos/azure-cosmos
+      - sdk/cosmos/azure-cosmos-benchmark
+      - sdk/cosmos/azure-cosmos-examples
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

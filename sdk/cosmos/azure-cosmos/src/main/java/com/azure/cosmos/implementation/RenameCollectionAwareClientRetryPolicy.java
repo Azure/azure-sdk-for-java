@@ -2,9 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -61,7 +62,7 @@ public class RenameCollectionAwareClientRetryPolicy extends DocumentClientRetryP
                     request.forceNameCacheRefresh = true;
                     request.requestContext.resolvedCollectionRid = null;
 
-                    Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(request);
+                    Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosResponseDiagnostics), request);
 
                     return collectionObs.flatMap(collectionValueHolder -> {
                         if (collectionValueHolder.v == null) {

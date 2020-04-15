@@ -5,21 +5,13 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
-import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.IterableStream;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -34,7 +26,6 @@ import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchCategorizedEn
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchDetectedLanguages;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchKeyPhrases;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchLinkedEntities;
-import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchPiiEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchTextSentiment;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedCategorizedEntities;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -326,71 +317,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 .verifyComplete());
     }
 
-    // Personally Identifiable Information Entities
-    @Test
-    public void recognizePiiEntitiesForTextInput() {
-        PiiEntity piiEntity0 = new PiiEntity("Microsoft", EntityCategory.ORGANIZATION, null, 0, 9, 1.0);
-        PiiEntity piiEntity = new PiiEntity("859-98-0987", EntityCategory.fromString("U.S. Social Security Number (SSN)"), null, 28, 11, 0.65);
-        StepVerifier.create(client.recognizePiiEntities("Microsoft employee with ssn 859-98-0987 is using our awesome API's."))
-            .assertNext(response -> validatePiiEntity(piiEntity0, response))
-            .assertNext(response -> validatePiiEntity(piiEntity, response))
-            .verifyComplete();
-    }
-
-    @Test
-    public void recognizePiiEntitiesForEmptyText() {
-        StepVerifier.create(client.recognizePiiEntities(""))
-            .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
-                && throwable.getMessage().equals(INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE));
-    }
-
-    @Test
-    public void recognizePiiEntitiesForFaultyText() {
-        StepVerifier.create(client.recognizePiiEntities("!@#%%"))
-            .expectNextCount(0)
-            .verifyComplete();
-    }
-
-    @Test
-    public void recognizePiiEntitiesForBatchInput() {
-        recognizeBatchPiiRunner((inputs) ->
-            StepVerifier.create(client.recognizePiiEntitiesBatch(inputs, null).byPage())
-                .assertNext(response -> validatePiiEntityWithPagedResponse(false, getExpectedBatchPiiEntities(), response))
-                .verifyComplete());
-    }
-
-    @Test
-    public void recognizePiiEntitiesForBatchInputShowStatistics() {
-        recognizeBatchPiiEntitiesShowStatsRunner((inputs, options) ->
-            StepVerifier.create(client.recognizePiiEntitiesBatch(inputs, options).byPage())
-                .assertNext(response -> validatePiiEntityWithPagedResponse(true, getExpectedBatchPiiEntities(), response))
-                .verifyComplete());
-    }
-
-    @Test
-    public void recognizePiiEntitiesForBatchStringInput() {
-        recognizePiiStringInputRunner((inputs) ->
-            StepVerifier.create(client.recognizePiiEntitiesBatch(inputs).byPage())
-                .assertNext(response -> validatePiiEntityWithPagedResponse(false, getExpectedBatchPiiEntities(), response))
-                .verifyComplete());
-    }
-
-    @Test
-    public void recognizePiiEntitiesForListLanguageHint() {
-        recognizePiiLanguageHintRunner((inputs, language) ->
-            StepVerifier.create(client.recognizePiiEntitiesBatch(inputs, language, null).byPage())
-                .assertNext(response -> validatePiiEntityWithPagedResponse(false, getExpectedBatchPiiEntities(), response))
-                .verifyComplete());
-    }
-
-    @Test
-    public void recognizePiiEntitiesForListStringWithOptions() {
-        recognizeStringBatchPiiEntitiesShowStatsRunner((inputs, options) ->
-            StepVerifier.create(client.recognizePiiEntitiesBatch(inputs, null, options).byPage())
-                .assertNext(response -> validatePiiEntityWithPagedResponse(true, getExpectedBatchPiiEntities(), response))
-                .verifyComplete());
-    }
-
     // Key Phrases
     @Test
     public void extractKeyPhrasesForTextInput() {
@@ -553,126 +479,5 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.analyzeSentimentBatch(inputs, options).byPage())
                 .assertNext(response -> validateSentimentWithPagedResponse(true, getExpectedBatchTextSentiment(), response))
                 .verifyComplete());
-    }
-
-    /**
-     * Test client builder with valid API key
-     */
-    @Test
-    public void validKey() {
-        // Arrange
-        final TextAnalyticsAsyncClient client = createClientBuilder(getEndpoint(),
-            new TextAnalyticsApiKeyCredential(getApiKey())).buildAsyncClient();
-
-        // Action and Assert
-        StepVerifier.create(client.detectLanguage("This is a test English Text"))
-            .assertNext(response ->
-                validatePrimaryLanguage(new DetectedLanguage("English", "en", 1.0), response))
-            .verifyComplete();
-    }
-
-    /**
-     * Test client builder with invalid API key
-     */
-    @Test
-    public void invalidKey() {
-        // Arrange
-        final TextAnalyticsAsyncClient client = createClientBuilder(getEndpoint(),
-            new TextAnalyticsApiKeyCredential(INVALID_KEY)).buildAsyncClient();
-
-        // Action and Assert
-        StepVerifier.create(client.detectLanguage("This is a test English Text"))
-            .verifyError(HttpResponseException.class);
-    }
-
-    /**
-     * Test client with valid API key but update to invalid key and make call to server.
-     */
-    @Test
-    public void updateToInvalidKey() {
-        // Arrange
-        final TextAnalyticsApiKeyCredential credential = new TextAnalyticsApiKeyCredential(getApiKey());
-        final TextAnalyticsAsyncClient client = createClientBuilder(getEndpoint(), credential).buildAsyncClient();
-
-        // Update to invalid key
-        credential.updateCredential(INVALID_KEY);
-
-        // Action and Assert
-        StepVerifier.create(client.detectLanguage("This is a test English Text"))
-            .verifyError(HttpResponseException.class);
-    }
-
-    /**
-     * Test client with invalid API key but update to valid key and make call to server.
-     */
-    @Test
-    public void updateToValidKey() {
-        // Arrange
-        final TextAnalyticsApiKeyCredential credential =
-            new TextAnalyticsApiKeyCredential(INVALID_KEY);
-
-        final TextAnalyticsAsyncClient client = createClientBuilder(getEndpoint(), credential).buildAsyncClient();
-
-        // Update to valid key
-        credential.updateCredential(getApiKey());
-
-        // Action and Assert
-        StepVerifier.create(client.detectLanguage("This is a test English Text"))
-            .assertNext(response ->
-                validatePrimaryLanguage(new DetectedLanguage("English", "en", 1.0), response))
-            .verifyComplete();
-    }
-
-    /**
-     * Test for null service version, which would take the default service version by default
-     */
-    @Test
-    public void nullServiceVersion() {
-        // Arrange
-        final TextAnalyticsClientBuilder clientBuilder = new TextAnalyticsClientBuilder()
-            .endpoint(getEndpoint())
-            .apiKey(new TextAnalyticsApiKeyCredential(getApiKey()))
-            .retryPolicy(new RetryPolicy())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .serviceVersion(null);
-
-        if (interceptorManager.isPlaybackMode()) {
-            clientBuilder.httpClient(interceptorManager.getPlaybackClient());
-        } else {
-            clientBuilder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-                .addPolicy(interceptorManager.getRecordPolicy());
-        }
-
-        // Action and Assert
-        StepVerifier.create(clientBuilder.buildAsyncClient().detectLanguage("This is a test English Text"))
-            .assertNext(response ->
-                validatePrimaryLanguage(new DetectedLanguage("English", "en", 1.0), response))
-            .verifyComplete();
-    }
-
-    /**
-     * Test for default pipeline in client builder
-     */
-    @Test
-    public void defaultPipeline() {
-        // Arrange
-        final TextAnalyticsClientBuilder clientBuilder = new TextAnalyticsClientBuilder()
-            .endpoint(getEndpoint())
-            .apiKey(new TextAnalyticsApiKeyCredential(getApiKey()))
-            .configuration(Configuration.getGlobalConfiguration())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
-
-        if (interceptorManager.isPlaybackMode()) {
-            clientBuilder.httpClient(interceptorManager.getPlaybackClient());
-        } else {
-            clientBuilder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-                .addPolicy(interceptorManager.getRecordPolicy());
-        }
-
-        // Action and Assert
-        StepVerifier.create(clientBuilder.buildAsyncClient().detectLanguage("This is a test English Text"))
-            .assertNext(response ->
-                validatePrimaryLanguage(new DetectedLanguage("English", "en", 1.0), response))
-            .verifyComplete();
     }
 }

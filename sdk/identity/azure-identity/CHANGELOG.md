@@ -1,6 +1,11 @@
 # Release History
 
-## 1.1.0-beta.3 (Unreleased)
+## 1.1.0-beta.3 (2020-04-07)
+- Added `KnownAuthorityHosts` to enable quick references to public azure authority hosts.
+- Added methods to allow credential configuration in `DefaultAzureCredentialBuilder`
+- Added support for authority host to be read from `AZURE_AUTHORITY_HOST` environment variable.
+- Added support for `ClientCertificateCredential` and `UserNamePasswordCredential` in EnvironmentCredential.
+
 
 ## 1.1.0-beta.2 (2020-03-11)
 
