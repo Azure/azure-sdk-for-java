@@ -3,15 +3,12 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.FormTableCell;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
-
-import java.util.Optional;
 
 /*
  *  This sample demonstrates how to analyze a form from a document with a custom

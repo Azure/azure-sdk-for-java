@@ -98,7 +98,7 @@ final class TestUtils {
         return null;
     }
 
-    static List<List<FormTable>> getPagedTables() {
+    static List<IterableStream<FormTable>> getPagedTables() {
         List<PageResult> pageResults = getRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult().getPageResults();
         List<ReadResult> readResults = getRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult().getReadResults();
         return IntStream.range(0, pageResults.size())

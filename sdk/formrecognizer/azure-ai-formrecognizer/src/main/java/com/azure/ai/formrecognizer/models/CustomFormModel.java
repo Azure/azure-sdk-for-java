@@ -7,6 +7,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 import java.time.OffsetDateTime;
+import java.util.Collections;
 
 /**
  * The CustomFormModel
@@ -68,9 +69,15 @@ public final class CustomFormModel {
         this.modelStatus = modelStatus;
         this.createdOn = createdOn;
         this.lastUpdatedOn = lastUpdatedOn;
-        this.subModels = subModels;
-        this.modelError = modelError;
-        this.trainingDocuments = trainingDocuments;
+        this.subModels = subModels == null
+            ? new IterableStream<CustomFormSubModel>(Collections.emptyList())
+            : subModels;
+        this.modelError = modelError == null
+            ? new IterableStream<FormRecognizerError>(Collections.emptyList())
+            : modelError;
+        this.trainingDocuments = trainingDocuments == null
+            ? new IterableStream<TrainingDocumentInfo>(Collections.emptyList())
+            : trainingDocuments;
     }
 
     /**

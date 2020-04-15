@@ -4,6 +4,7 @@
 package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.IterableStream;
 
 /**
  * The FormTable model.
@@ -15,9 +16,12 @@ public final class FormWord extends FormContent {
      */
     private final Float confidence;
 
+    /*
+     *
+     */
+
     /**
      * Creates raw OCR item.
-     *
      * @param text The text content of ExtractedField.
      * @param boundingBox The BoundingBox of ExtractedField.
      * @param pageNumber The 1 based page number.

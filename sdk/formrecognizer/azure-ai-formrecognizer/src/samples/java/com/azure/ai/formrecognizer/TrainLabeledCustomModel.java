@@ -6,10 +6,7 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.polling.LongRunningOperationStatus;
-import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import reactor.core.publisher.Mono;
 
 /**
  * This sample demonstrates how to train a model with labeled data. See RecognizeCustomFormsAsync

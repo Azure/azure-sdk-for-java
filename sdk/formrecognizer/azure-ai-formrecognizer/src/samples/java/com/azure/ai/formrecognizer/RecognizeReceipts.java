@@ -5,16 +5,13 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.implementation.Utility;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.ai.formrecognizer.models.USReceipt;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.IterableStream;
-import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;

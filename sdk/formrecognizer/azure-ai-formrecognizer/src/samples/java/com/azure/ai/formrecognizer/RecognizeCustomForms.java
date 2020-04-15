@@ -8,7 +8,6 @@ import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.SyncPoller;
-import reactor.core.publisher.Mono;
 
 /*
  *  This sample demonstrates how to analyze a form from a document with a custom

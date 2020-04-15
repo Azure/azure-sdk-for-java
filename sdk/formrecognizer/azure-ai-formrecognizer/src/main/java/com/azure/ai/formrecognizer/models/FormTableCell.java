@@ -55,8 +55,7 @@ public final class FormTableCell extends FormContent {
 
     /**
      * Constructs a FormTableCell object.
-     *
-     * @param rowIndex Row index of the cell.
+     *  @param rowIndex Row index of the cell.
      * @param columnIndex Column index of the cell.
      * @param rowSpan Number of rows spanned by this cell.
      * @param columnSpan Number of columns spanned by this cell.

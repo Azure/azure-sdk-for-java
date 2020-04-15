@@ -6,6 +6,8 @@ package com.azure.ai.formrecognizer.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
+import java.util.Collections;
+
 /**
  * The FieldText model.
  */
@@ -28,7 +30,9 @@ public final class FieldText extends FormContent {
     public FieldText(String text, BoundingBox boundingBox, Integer pageNumber,
                      final IterableStream<FormContent> textContent) {
         super(text, boundingBox, pageNumber, null);
-        this.textContent = textContent;
+        this.textContent = textContent == null
+            ? new IterableStream<FormContent>(Collections.emptyList())
+            : textContent;
     }
 
     /**
