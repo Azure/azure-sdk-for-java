@@ -49,6 +49,11 @@ import static com.azure.core.util.FluxUtil.monoError;
  * Operations allowed by the client are recognizing receipt data from documents, extracting layout information and
  * analyzing custom forms for predefined data.
  *
+ * <p><strong>Instantiating an asynchronous Form Recognizer Client</strong></p>
+ * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.instantiation}
+ *
+ * <p>View {@link FormRecognizerClientBuilder} for additional ways to construct the client.</p>
+ *
  * @see FormRecognizerClientBuilder
  */
 @ServiceClient(builder = FormRecognizerClientBuilder.class, isAsync = true)
@@ -94,6 +99,9 @@ public final class FormRecognizerAsyncClient {
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
+     * <p><strong>Code sample</strong></p>*
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl#string-string}
+     *
      * @param fileSourceUrl The source URL to the input document. Size of the file must be less than 50 MB.
      * @param modelId The UUID string format custom trained model Id to be used.
      *
@@ -111,6 +119,9 @@ public final class FormRecognizerAsyncClient {
      * model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
+     *
+     * <p><strong>Code sample</strong></p>*
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl#string-string-boolean-Duration}
      *
      * @param fileSourceUrl The source URL to the input document. Size of the file must be less than 50 MB.
      * @param modelId The UUID string format custom trained model Id to be used.
@@ -142,6 +153,9 @@ public final class FormRecognizerAsyncClient {
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
+     * <p><strong>Code sample</strong></p>*
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#Flux-string-long-FormContentType}
+     *
      * @param data The data of the document to be extract receipt information from.
      * @param modelId The UUID string format custom trained model Id to be used.
      * @param length The exact length of the data. Size of the file must be less than 50 MB.
@@ -161,6 +175,9 @@ public final class FormRecognizerAsyncClient {
      * model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
+     *
+     * <p><strong>Code sample</strong></p>*
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#Flux-string-long-FormContentType-boolean-Duration}
      *
      * @param data The data of the document to be extract receipt information from.
      * @param modelId The UUID string format custom trained model Id to be used.
@@ -196,6 +213,9 @@ public final class FormRecognizerAsyncClient {
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
+     * <p><strong>Code sample</strong></p>*
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContentFromUrl#string}
+     *
      * @param fileSourceUrl The source URL to the input document. Size of the file must be less than 50 MB.
      *
      * @return A {@link PollerFlux} that polls the extract custom form operation until it has completed, has failed,
@@ -211,6 +231,9 @@ public final class FormRecognizerAsyncClient {
      * model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
+     *
+     * <p><strong>Code sample</strong></p>*
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContentFromUrl#String-Duration}
      *
      * @param sourceUrl The source URL to the input document. Size of the file must be less than 50 MB.
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
@@ -238,6 +261,9 @@ public final class FormRecognizerAsyncClient {
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
+     * <p><strong>Code sample</strong></p>*
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-long-FormContentType}
+     *
      * @param data The data of the document to be extract receipt information from.
      * @param length The exact length of the data. Size of the file must be less than 50 MB.
      * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
@@ -256,6 +282,9 @@ public final class FormRecognizerAsyncClient {
      * trained model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
+     *
+     * <p><strong>Code sample</strong></p>*
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-FormContentType-long-Duration}
      *
      * @param data The data of the document to be extract receipt information from.
      * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
@@ -288,6 +317,9 @@ public final class FormRecognizerAsyncClient {
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
+     * <p><strong>Code sample</strong></p>*
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceiptsFromUrl#string}
+     *
      * @param sourceUrl The source URL to the input document. Size of the file must be less than 50 MB.
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
@@ -304,6 +336,9 @@ public final class FormRecognizerAsyncClient {
      * model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
+     *
+     * <p><strong>Code sample</strong></p>*
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceiptsFromUrl#string-boolean-Duration}
      *
      * @param sourceUrl The source URL to the input document. Size of the file must be less than 50 MB.
      * @param includeTextDetails Include text lines and element references in the result.
@@ -332,6 +367,9 @@ public final class FormRecognizerAsyncClient {
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
+     * <p><strong>Code sample</strong></p>*
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long-FormContentType}
+     *
      * @param data The data of the document to be extract receipt information from.
      * @param length The exact length of the data. Size of the file must be less than 50 MB.
      * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
@@ -350,6 +388,9 @@ public final class FormRecognizerAsyncClient {
      * and a prebuilt receipt trained model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
+     *
+     * <p><strong>Code sample</strong></p>*
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long-FormContentType-boolean-Duration}
      *
      * @param data The data of the document to be extract receipt information from.
      * @param length The exact length of the data. Size of the file must be less than 50 MB.
@@ -376,7 +417,6 @@ public final class FormRecognizerAsyncClient {
                 new RuntimeException("Cancellation is not supported")),
             fetchExtractReceiptResult(includeTextDetails));
     }
-
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> receiptAnalyzeActivationOperation(
         String sourceUrl, boolean includeTextDetails) {

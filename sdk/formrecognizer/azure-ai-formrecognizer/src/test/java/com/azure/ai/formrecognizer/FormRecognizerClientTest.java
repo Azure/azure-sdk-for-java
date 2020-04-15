@@ -146,7 +146,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     void extractCustomFormInValidSourceUrl() {
         HttpResponseException httpResponseException = assertThrows(
             HttpResponseException.class,
-            () -> client.beginExtractCustomFormsFromUrl(INVALID_URL, VALID_MODEL_ID).getFinalResult());
+            () -> client.beginRecognizeCustomFormsFromUrl(INVALID_URL, VALID_MODEL_ID).getFinalResult());
 
         assertEquals(httpResponseException.getMessage(), (INVALID_SOURCE_URL_ERROR));
     }
