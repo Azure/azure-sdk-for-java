@@ -130,12 +130,10 @@ public class BasicDemo {
         String query = "SELECT * from root r ";
         FeedOptions options = new FeedOptions();
         options.setPopulateQueryMetrics(true);
-        options.setMaxItemCount(1);
         String continuation = null;
         do {
-            options.setRequestContinuation(continuation);
             CosmosPagedFlux<TestObject> queryFlux = container.queryItems(query, options, TestObject.class);
-            FeedResponse<TestObject> page = queryFlux.byPage().blockFirst();
+            FeedResponse<TestObject> page = queryFlux.byPage(continuation, 1).blockFirst();
             assert page != null;
             log(page.getResults());
             continuation = page.getContinuationToken();

@@ -9,9 +9,7 @@ import com.azure.management.network.models.UsageInner;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
 
-/**
- * The implementation of {@link NetworkUsage}.
- */
+/** The implementation of {@link NetworkUsage}. */
 class NetworkUsageImpl extends WrapperImpl<UsageInner> implements NetworkUsage {
     NetworkUsageImpl(UsageInner innerObject) {
         super(innerObject);
@@ -37,4 +35,3 @@ class NetworkUsageImpl extends WrapperImpl<UsageInner> implements NetworkUsage {
         return inner().name();
     }
 }
-

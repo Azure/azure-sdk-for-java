@@ -5,15 +5,11 @@ package com.azure.management.monitor;
 
 import com.azure.management.monitor.models.ResponseInner;
 import com.azure.management.resources.fluentcore.model.HasInner;
-
 import java.time.Duration;
 import java.util.List;
 
-/**
- * The MetricCollection representing wrapper over ResponseInner type.
- */
-public interface MetricCollection
-        extends HasInner<ResponseInner> {
+/** The MetricCollection representing wrapper over ResponseInner type. */
+public interface MetricCollection extends HasInner<ResponseInner> {
     /**
      * Get the namespace value.
      *

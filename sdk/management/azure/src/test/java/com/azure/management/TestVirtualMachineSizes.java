@@ -20,7 +20,9 @@ public class TestVirtualMachineSizes extends TestTemplate<VirtualMachine, Virtua
         VirtualMachineSize availableSize = availableSizes.iterator().next();
         System.out.println("VM Sizes: " + availableSizes);
         final String vmName = virtualMachines.manager().getSdkContext().randomResourceName("vm", 10);
-        VirtualMachine vm = virtualMachines.define(vmName)
+        VirtualMachine vm =
+            virtualMachines
+                .define(vmName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup()
                 .withNewPrimaryNetwork("10.0.0.0/28")
@@ -48,9 +50,7 @@ public class TestVirtualMachineSizes extends TestTemplate<VirtualMachine, Virtua
             }
         }
         Assertions.assertNotNull(newSize);
-        virtualMachine = virtualMachine.update()
-                .withSize(newSize.name())
-                .apply();
+        virtualMachine = virtualMachine.update().withSize(newSize.name()).apply();
 
         Assertions.assertTrue(virtualMachine.size().toString().equalsIgnoreCase(newSize.name()));
         return virtualMachine;
@@ -58,6 +58,5 @@ public class TestVirtualMachineSizes extends TestTemplate<VirtualMachine, Virtua
 
     @Override
     public void print(VirtualMachine virtualMachine) {
-
     }
 }

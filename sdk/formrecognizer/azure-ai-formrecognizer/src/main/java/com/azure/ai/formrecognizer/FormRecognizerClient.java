@@ -4,10 +4,15 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.implementation.Utility;
+import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.models.ExtractedReceipt;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.SyncPoller;
 import reactor.core.publisher.Flux;
@@ -111,5 +116,26 @@ public final class FormRecognizerClient {
         Flux<ByteBuffer> buffer = Utility.convertStreamToByteBuffer(data);
         return client.beginExtractReceipts(buffer, length, includeTextDetails, formContentType, pollInterval)
             .getSyncPoller();
+    }
+
+    /**
+     * List information for all models.
+     *
+     * @return {@link PagedIterable} of {@link CustomFormModelInfo} custom form model information.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<CustomFormModelInfo> listModels() {
+        return new PagedIterable<>(client.listModels(Context.NONE));
+    }
+
+    /**
+     * List information for all models with taking {@link Context}.
+     *
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return {@link PagedIterable} of {@link CustomFormModelInfo} custom form model information.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<CustomFormModelInfo> listModels(Context context) {
+        return new PagedIterable<>(client.listModels(context));
     }
 }

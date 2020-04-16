@@ -4,33 +4,28 @@
 package com.azure.management.graphrbac.implementation;
 
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.graphrbac.CertificateCredential;
 import com.azure.management.graphrbac.CertificateType;
 import com.azure.management.graphrbac.models.KeyCredentialInner;
 import com.azure.management.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
-import reactor.core.publisher.Mono;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Base64;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for ServicePrincipal and its parent interfaces.
- */
-class CertificateCredentialImpl<T>
-        extends IndexableRefreshableWrapperImpl<CertificateCredential, KeyCredentialInner>
-        implements
-        CertificateCredential,
-        CertificateCredential.Definition<T>,
-        CertificateCredential.UpdateDefinition<T> {
+/** Implementation for ServicePrincipal and its parent interfaces. */
+class CertificateCredentialImpl<T> extends IndexableRefreshableWrapperImpl<CertificateCredential, KeyCredentialInner>
+    implements CertificateCredential, CertificateCredential.Definition<T>, CertificateCredential.UpdateDefinition<T> {
 
     private String name;
     private HasCredential<?> parent;
     private OutputStream authFile;
     private String privateKeyPath;
     private String privateKeyPassword;
+    private final ClientLogger logger = new ClientLogger(CertificateCredentialImpl.class);
 
     CertificateCredentialImpl(KeyCredentialInner keyCredential) {
         super(keyCredential);
@@ -42,7 +37,8 @@ class CertificateCredentialImpl<T>
     }
 
     CertificateCredentialImpl(String name, HasCredential<?> parent) {
-        super(new KeyCredentialInner()
+        super(
+            new KeyCredentialInner()
                 .withUsage("Verify")
                 .withCustomKeyIdentifier(Base64.getEncoder().encodeToString(name.getBytes()))
                 .withStartDate(OffsetDateTime.now())
@@ -53,12 +49,12 @@ class CertificateCredentialImpl<T>
 
     @Override
     public Mono<CertificateCredential> refreshAsync() {
-        throw new UnsupportedOperationException("Cannot refresh credentials.");
+        throw logger.logExceptionAsError(new UnsupportedOperationException("Cannot refresh credentials."));
     }
 
     @Override
     protected Mono<KeyCredentialInner> getInnerAsync() {
-        throw new UnsupportedOperationException("Cannot refresh credentials.");
+        throw logger.logExceptionAsError(new UnsupportedOperationException("Cannot refresh credentials."));
     }
 
     @Override
@@ -75,7 +71,6 @@ class CertificateCredentialImpl<T>
     public String value() {
         return inner().value();
     }
-
 
     @Override
     @SuppressWarnings("unchecked")
@@ -129,20 +124,47 @@ class CertificateCredentialImpl<T>
         }
         AzureEnvironment environment = AzureEnvironment.AZURE;
         StringBuilder builder = new StringBuilder("{\n");
-        builder.append("  ").append(String.format("\"clientId\": \"%s\",", servicePrincipal.applicationId())).append("\n");
-        builder.append("  ").append(String.format("\"clientCertificate\": \"%s\",", privateKeyPath.replace("\\", "\\\\"))).append("\n");
-        builder.append("  ").append(String.format("\"clientCertificatePassword\": \"%s\",", privateKeyPassword)).append("\n");
-        builder.append("  ").append(String.format("\"tenantId\": \"%s\",", servicePrincipal.manager().tenantId())).append("\n");
-        builder.append("  ").append(String.format("\"subscriptionId\": \"%s\",", servicePrincipal.assignedSubscription)).append("\n");
-        builder.append("  ").append(String.format("\"activeDirectoryEndpointUrl\": \"%s\",", environment.getActiveDirectoryEndpoint())).append("\n");
-        builder.append("  ").append(String.format("\"resourceManagerEndpointUrl\": \"%s\",", environment.getResourceManagerEndpoint())).append("\n");
-        builder.append("  ").append(String.format("\"activeDirectoryGraphResourceId\": \"%s\",", environment.getGraphEndpoint())).append("\n");
-        builder.append("  ").append(String.format("\"managementEndpointUrl\": \"%s\"", environment.getManagementEndpoint())).append("\n");
+        builder
+            .append("  ")
+            .append(String.format("\"clientId\": \"%s\",", servicePrincipal.applicationId()))
+            .append("\n");
+        builder
+            .append("  ")
+            .append(String.format("\"clientCertificate\": \"%s\",", privateKeyPath.replace("\\", "\\\\")))
+            .append("\n");
+        builder
+            .append("  ")
+            .append(String.format("\"clientCertificatePassword\": \"%s\",", privateKeyPassword))
+            .append("\n");
+        builder
+            .append("  ")
+            .append(String.format("\"tenantId\": \"%s\",", servicePrincipal.manager().tenantId()))
+            .append("\n");
+        builder
+            .append("  ")
+            .append(String.format("\"subscriptionId\": \"%s\",", servicePrincipal.assignedSubscription))
+            .append("\n");
+        builder
+            .append("  ")
+            .append(String.format("\"activeDirectoryEndpointUrl\": \"%s\",", environment.getActiveDirectoryEndpoint()))
+            .append("\n");
+        builder
+            .append("  ")
+            .append(String.format("\"resourceManagerEndpointUrl\": \"%s\",", environment.getResourceManagerEndpoint()))
+            .append("\n");
+        builder
+            .append("  ")
+            .append(String.format("\"activeDirectoryGraphResourceId\": \"%s\",", environment.getGraphEndpoint()))
+            .append("\n");
+        builder
+            .append("  ")
+            .append(String.format("\"managementEndpointUrl\": \"%s\"", environment.getManagementEndpoint()))
+            .append("\n");
         builder.append("}");
         try {
             authFile.write(builder.toString().getBytes());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw logger.logExceptionAsError(new RuntimeException(e));
         }
     }
 

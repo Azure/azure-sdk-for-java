@@ -6,9 +6,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.collection.SupportsListingByRegion;
 
-/**
- *  Entry point to virtual machine image management API.
- */
+/** Entry point to virtual machine image management API. */
 @Fluent
 public interface VirtualMachineImages extends SupportsListingByRegion<VirtualMachineImage> {
     /**
@@ -35,8 +33,6 @@ public interface VirtualMachineImages extends SupportsListingByRegion<VirtualMac
      */
     VirtualMachineImage getImage(String region, String publisherName, String offerName, String skuName, String version);
 
-    /**
-     * @return entry point to virtual machine image publishers
-     */
+    /** @return entry point to virtual machine image publishers */
     VirtualMachinePublishers publishers();
 }

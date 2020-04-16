@@ -7,9 +7,7 @@ package com.azure.management.storage;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ManagementPolicyAction model.
- */
+/** The ManagementPolicyAction model. */
 @Fluent
 public final class ManagementPolicyAction {
     /*
@@ -26,7 +24,7 @@ public final class ManagementPolicyAction {
 
     /**
      * Get the baseBlob property: The management policy action for base blob.
-     * 
+     *
      * @return the baseBlob value.
      */
     public ManagementPolicyBaseBlob baseBlob() {
@@ -35,7 +33,7 @@ public final class ManagementPolicyAction {
 
     /**
      * Set the baseBlob property: The management policy action for base blob.
-     * 
+     *
      * @param baseBlob the baseBlob value to set.
      * @return the ManagementPolicyAction object itself.
      */
@@ -46,7 +44,7 @@ public final class ManagementPolicyAction {
 
     /**
      * Get the snapshot property: The management policy action for snapshot.
-     * 
+     *
      * @return the snapshot value.
      */
     public ManagementPolicySnapShot snapshot() {
@@ -55,7 +53,7 @@ public final class ManagementPolicyAction {
 
     /**
      * Set the snapshot property: The management policy action for snapshot.
-     * 
+     *
      * @param snapshot the snapshot value to set.
      * @return the ManagementPolicyAction object itself.
      */

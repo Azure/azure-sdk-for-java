@@ -3,11 +3,9 @@
 
 package com.azure.management.compute;
 
-/**
- * Type representing encryption settings to be applied to a Linux virtual machine.
- */
+/** Type representing encryption settings to be applied to a Linux virtual machine. */
 public class LinuxVMDiskEncryptionConfiguration
-        extends VirtualMachineEncryptionConfiguration<LinuxVMDiskEncryptionConfiguration> {
+    extends VirtualMachineEncryptionConfiguration<LinuxVMDiskEncryptionConfiguration> {
     /**
      * Creates LinuxVMDiskEncryptionSettings.
      *
@@ -15,9 +13,7 @@ public class LinuxVMDiskEncryptionConfiguration
      * @param aadClientId client ID of an AAD application which has permission to the KeyVault
      * @param aadSecret client secret corresponding to the client ID
      */
-    public LinuxVMDiskEncryptionConfiguration(String keyVaultId,
-                                              String aadClientId,
-                                              String aadSecret) {
+    public LinuxVMDiskEncryptionConfiguration(String keyVaultId, String aadClientId, String aadSecret) {
         super(keyVaultId, aadClientId, aadSecret);
     }
 

@@ -4,18 +4,16 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
-
 import java.util.Objects;
 
-/**
- * Defines function app runtime for Linux operating system.
- */
+/** Defines function app runtime for Linux operating system. */
 @Fluent
 public class FunctionRuntimeStack {
 
     /** JAVA 8. */
-    public static final FunctionRuntimeStack JAVA_8 = new FunctionRuntimeStack("java", "~3",
-            "java|8", "DOCKER|mcr.microsoft.com/azure-functions/java:3.0-java8-appservice");
+    public static final FunctionRuntimeStack JAVA_8 =
+        new FunctionRuntimeStack(
+            "java", "~3", "java|8", "DOCKER|mcr.microsoft.com/azure-functions/java:3.0-java8-appservice");
 
     private final String runtime;
     private final String version;
@@ -25,12 +23,18 @@ public class FunctionRuntimeStack {
 
     /**
      * Creates a custom function app runtime stack.
+     *
      * @param runtime the language runtime
      * @param version the language runtime version
      * @param linuxFxVersionForConsumptionPlan the LinuxFxVersion property value, for Consumption plan
-     * @param linuxFxVersionForDedicatedPlan the LinuxFxVersion property value, for dedicated plan (app service plan or premium)
+     * @param linuxFxVersionForDedicatedPlan the LinuxFxVersion property value, for dedicated plan (app service plan or
+     *     premium)
      */
-    public FunctionRuntimeStack(String runtime, String version, String linuxFxVersionForConsumptionPlan, String linuxFxVersionForDedicatedPlan) {
+    public FunctionRuntimeStack(
+        String runtime,
+        String version,
+        String linuxFxVersionForConsumptionPlan,
+        String linuxFxVersionForDedicatedPlan) {
         this.runtime = Objects.requireNonNull(runtime);
         this.version = Objects.requireNonNull(version);
 
@@ -38,22 +42,19 @@ public class FunctionRuntimeStack {
         this.linuxFxVersionForDedicatedPlan = Objects.requireNonNull(linuxFxVersionForDedicatedPlan);
     }
 
-    /**
-     * @return the name of the language runtime
-     */
+    /** @return the name of the language runtime */
     public String runtime() {
         return runtime;
     }
 
-    /**
-     * @return the version of the Language runtime
-     */
+    /** @return the version of the Language runtime */
     public String version() {
         return version;
     }
 
     /**
      * Gets LinuxFxVersion property value, for Consumption plan.
+     *
      * @return the LinuxFxVersion property value for siteConfig
      */
     public String getLinuxFxVersionForConsumptionPlan() {
@@ -62,6 +63,7 @@ public class FunctionRuntimeStack {
 
     /**
      * Gets LinuxFxVersion property value, for dedicated plan (app service plan or premium).
+     *
      * @return the LinuxFxVersion property value for siteConfig
      */
     public String getLinuxFxVersionForDedicatedPlan() {
@@ -82,8 +84,7 @@ public class FunctionRuntimeStack {
             return false;
         }
         FunctionRuntimeStack that = (FunctionRuntimeStack) o;
-        return runtime.equals(that.runtime)
-                && version.equals(that.version);
+        return runtime.equals(that.runtime) && version.equals(that.version);
     }
 
     @Override

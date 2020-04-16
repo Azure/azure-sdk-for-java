@@ -4,9 +4,8 @@
 package com.azure.management.appservice.implementation;
 
 import com.azure.management.appservice.AppSetting;
-/**
- * An immutable client-side representation of an app setting on a web app.
- */
+
+/** An immutable client-side representation of an app setting on a web app. */
 class AppSettingImpl implements AppSetting {
     private String key;
     private String value;

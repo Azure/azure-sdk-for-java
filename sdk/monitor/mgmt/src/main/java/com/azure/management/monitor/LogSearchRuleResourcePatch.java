@@ -9,9 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * The LogSearchRuleResourcePatch model.
- */
+/** The LogSearchRuleResourcePatch model. */
 @JsonFlatten
 @Fluent
 public class LogSearchRuleResourcePatch {
@@ -30,7 +28,7 @@ public class LogSearchRuleResourcePatch {
 
     /**
      * Get the tags property: Resource tags.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -39,7 +37,7 @@ public class LogSearchRuleResourcePatch {
 
     /**
      * Set the tags property: Resource tags.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the LogSearchRuleResourcePatch object itself.
      */
@@ -49,9 +47,9 @@ public class LogSearchRuleResourcePatch {
     }
 
     /**
-     * Get the enabled property: The flag which indicates whether the Log
-     * Search rule is enabled. Value should be true or false.
-     * 
+     * Get the enabled property: The flag which indicates whether the Log Search rule is enabled. Value should be true
+     * or false.
+     *
      * @return the enabled value.
      */
     public Enabled enabled() {
@@ -59,9 +57,9 @@ public class LogSearchRuleResourcePatch {
     }
 
     /**
-     * Set the enabled property: The flag which indicates whether the Log
-     * Search rule is enabled. Value should be true or false.
-     * 
+     * Set the enabled property: The flag which indicates whether the Log Search rule is enabled. Value should be true
+     * or false.
+     *
      * @param enabled the enabled value to set.
      * @return the LogSearchRuleResourcePatch object itself.
      */

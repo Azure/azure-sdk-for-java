@@ -4,19 +4,15 @@
 package com.azure.management.monitor.implementation;
 
 import com.azure.management.monitor.Metric;
-import com.azure.management.monitor.models.ResponseInner;
 import com.azure.management.monitor.MetricCollection;
+import com.azure.management.monitor.models.ResponseInner;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
-
 import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * The Azure {@link MetricCollection} wrapper class implementation.
- */
-class MetricCollectionImpl
-        extends WrapperImpl<ResponseInner> implements MetricCollection {
+/** The Azure {@link MetricCollection} wrapper class implementation. */
+class MetricCollectionImpl extends WrapperImpl<ResponseInner> implements MetricCollection {
 
     MetricCollectionImpl(ResponseInner innerObject) {
         super(innerObject);

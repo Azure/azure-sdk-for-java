@@ -3,7 +3,6 @@
 
 package com.azure.management.storage.implementation;
 
-
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.management.storage.BlobServiceProperties;
 import com.azure.management.storage.BlobServices;
@@ -38,7 +37,6 @@ class BlobServicesImpl extends WrapperImpl<BlobServicesInner> implements BlobSer
 
     @Override
     public Mono<BlobServiceProperties> getServicePropertiesAsync(String resourceGroupName, String accountName) {
-        return inner().getServicePropertiesAsync(resourceGroupName, accountName)
-                .map(inner -> wrapModel(inner));
+        return inner().getServicePropertiesAsync(resourceGroupName, accountName).map(inner -> wrapModel(inner));
     }
 }

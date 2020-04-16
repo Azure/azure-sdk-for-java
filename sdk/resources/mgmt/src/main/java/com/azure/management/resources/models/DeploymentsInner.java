@@ -245,8 +245,8 @@ public final class DeploymentsInner
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments"
-                + "/{deploymentName}")
+            "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources"
+                + "/deployments/{deploymentName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> deleteAtManagementGroupScope(
@@ -258,8 +258,8 @@ public final class DeploymentsInner
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Head(
-            "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments"
-                + "/{deploymentName}")
+            "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources"
+                + "/deployments/{deploymentName}")
         @ExpectedResponses({204, 404})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<Boolean>> checkExistenceAtManagementGroupScope(
@@ -271,8 +271,8 @@ public final class DeploymentsInner
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments"
-                + "/{deploymentName}")
+            "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources"
+                + "/deployments/{deploymentName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateAtManagementGroupScope(
@@ -285,8 +285,8 @@ public final class DeploymentsInner
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments"
-                + "/{deploymentName}")
+            "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources"
+                + "/deployments/{deploymentName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<DeploymentExtendedInner>> getAtManagementGroupScope(
@@ -298,8 +298,8 @@ public final class DeploymentsInner
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments"
-                + "/{deploymentName}/cancel")
+            "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources"
+                + "/deployments/{deploymentName}/cancel")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<Response<Void>> cancelAtManagementGroupScope(
@@ -311,8 +311,8 @@ public final class DeploymentsInner
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post(
-            "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments"
-                + "/{deploymentName}/validate")
+            "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources"
+                + "/deployments/{deploymentName}/validate")
         @ExpectedResponses({200, 400})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<DeploymentValidateResultInner>> validateAtManagementGroupScope(
@@ -325,8 +325,8 @@ public final class DeploymentsInner
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post(
-            "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments"
-                + "/{deploymentName}/exportTemplate")
+            "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources"
+                + "/deployments/{deploymentName}/exportTemplate")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<DeploymentExportResultInner>> exportTemplateAtManagementGroupScope(
@@ -337,7 +337,9 @@ public final class DeploymentsInner
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments/")
+        @Get(
+            "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources"
+                + "/deployments/")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<DeploymentListResultInner>> listAtManagementGroupScope(
@@ -405,7 +407,8 @@ public final class DeploymentsInner
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}/validate")
+        @Post(
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}" + "/validate")
         @ExpectedResponses({200, 400})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<DeploymentValidateResultInner>> validateAtSubscriptionScope(
@@ -639,8 +642,8 @@ public final class DeploymentsInner
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments"
-                + "/{deploymentName}")
+            "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources"
+                + "/deployments/{deploymentName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<Response<Void>> beginDeleteAtManagementGroupScope(
@@ -652,8 +655,8 @@ public final class DeploymentsInner
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments"
-                + "/{deploymentName}")
+            "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources"
+                + "/deployments/{deploymentName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<DeploymentExtendedInner>> beginCreateOrUpdateAtManagementGroupScope(
@@ -792,7 +795,7 @@ public final class DeploymentsInner
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteAtScopeWithResponseAsync(String scope, String deploymentName) {
@@ -818,12 +821,13 @@ public final class DeploymentsInner
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAtScopeAsync(String scope, String deploymentName) {
         Mono<SimpleResponse<Flux<ByteBuffer>>> mono = deleteAtScopeWithResponseAsync(scope, deploymentName);
-        return this.client
+        return this
+            .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
@@ -951,7 +955,8 @@ public final class DeploymentsInner
         String scope, String deploymentName, DeploymentInner parameters) {
         Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
             createOrUpdateAtScopeWithResponseAsync(scope, deploymentName, parameters);
-        return this.client
+        return this
+            .client
             .<DeploymentExtendedInner, DeploymentExtendedInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), DeploymentExtendedInner.class, DeploymentExtendedInner.class)
             .last()
@@ -1044,7 +1049,7 @@ public final class DeploymentsInner
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelAtScopeWithResponseAsync(String scope, String deploymentName) {
@@ -1067,7 +1072,7 @@ public final class DeploymentsInner
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelAtScopeAsync(String scope, String deploymentName) {
@@ -1337,7 +1342,7 @@ public final class DeploymentsInner
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteAtTenantScopeWithResponseAsync(String deploymentName) {
@@ -1362,12 +1367,13 @@ public final class DeploymentsInner
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAtTenantScopeAsync(String deploymentName) {
         Mono<SimpleResponse<Flux<ByteBuffer>>> mono = deleteAtTenantScopeWithResponseAsync(deploymentName);
-        return this.client
+        return this
+            .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
@@ -1484,7 +1490,8 @@ public final class DeploymentsInner
         String deploymentName, ScopedDeployment parameters) {
         Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
             createOrUpdateAtTenantScopeWithResponseAsync(deploymentName, parameters);
-        return this.client
+        return this
+            .client
             .<DeploymentExtendedInner, DeploymentExtendedInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), DeploymentExtendedInner.class, DeploymentExtendedInner.class)
             .last()
@@ -1570,7 +1577,7 @@ public final class DeploymentsInner
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelAtTenantScopeWithResponseAsync(String deploymentName) {
@@ -1592,7 +1599,7 @@ public final class DeploymentsInner
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelAtTenantScopeAsync(String deploymentName) {
@@ -1843,7 +1850,7 @@ public final class DeploymentsInner
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteAtManagementGroupScopeWithResponseAsync(
@@ -1870,13 +1877,14 @@ public final class DeploymentsInner
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAtManagementGroupScopeAsync(String groupId, String deploymentName) {
         Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
             deleteAtManagementGroupScopeWithResponseAsync(groupId, deploymentName);
-        return this.client
+        return this
+            .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
@@ -2005,7 +2013,8 @@ public final class DeploymentsInner
         String groupId, String deploymentName, ScopedDeployment parameters) {
         Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
             createOrUpdateAtManagementGroupScopeWithResponseAsync(groupId, deploymentName, parameters);
-        return this.client
+        return this
+            .client
             .<DeploymentExtendedInner, DeploymentExtendedInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), DeploymentExtendedInner.class, DeploymentExtendedInner.class)
             .last()
@@ -2099,7 +2108,7 @@ public final class DeploymentsInner
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelAtManagementGroupScopeWithResponseAsync(String groupId, String deploymentName) {
@@ -2122,7 +2131,7 @@ public final class DeploymentsInner
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelAtManagementGroupScopeAsync(String groupId, String deploymentName) {
@@ -2399,7 +2408,7 @@ public final class DeploymentsInner
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteAtSubscriptionScopeWithResponseAsync(String deploymentName) {
@@ -2428,12 +2437,13 @@ public final class DeploymentsInner
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAtSubscriptionScopeAsync(String deploymentName) {
         Mono<SimpleResponse<Flux<ByteBuffer>>> mono = deleteAtSubscriptionScopeWithResponseAsync(deploymentName);
-        return this.client
+        return this
+            .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
@@ -2559,7 +2569,8 @@ public final class DeploymentsInner
         String deploymentName, DeploymentInner parameters) {
         Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
             createOrUpdateAtSubscriptionScopeWithResponseAsync(deploymentName, parameters);
-        return this.client
+        return this
+            .client
             .<DeploymentExtendedInner, DeploymentExtendedInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), DeploymentExtendedInner.class, DeploymentExtendedInner.class)
             .last()
@@ -2652,7 +2663,7 @@ public final class DeploymentsInner
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelAtSubscriptionScopeWithResponseAsync(String deploymentName) {
@@ -2678,7 +2689,7 @@ public final class DeploymentsInner
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelAtSubscriptionScopeAsync(String deploymentName) {
@@ -2812,7 +2823,8 @@ public final class DeploymentsInner
         String deploymentName, DeploymentWhatIf parameters) {
         Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
             whatIfAtSubscriptionScopeWithResponseAsync(deploymentName, parameters);
-        return this.client
+        return this
+            .client
             .<WhatIfOperationResultInner, WhatIfOperationResultInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), WhatIfOperationResultInner.class, WhatIfOperationResultInner.class)
             .last()
@@ -3010,7 +3022,7 @@ public final class DeploymentsInner
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -3044,12 +3056,13 @@ public final class DeploymentsInner
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String deploymentName) {
         Mono<SimpleResponse<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, deploymentName);
-        return this.client
+        return this
+            .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
@@ -3191,7 +3204,8 @@ public final class DeploymentsInner
         String resourceGroupName, String deploymentName, DeploymentInner parameters) {
         Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, deploymentName, parameters);
-        return this.client
+        return this
+            .client
             .<DeploymentExtendedInner, DeploymentExtendedInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), DeploymentExtendedInner.class, DeploymentExtendedInner.class)
             .last()
@@ -3291,7 +3305,7 @@ public final class DeploymentsInner
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelWithResponseAsync(String resourceGroupName, String deploymentName) {
@@ -3319,7 +3333,7 @@ public final class DeploymentsInner
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelAsync(String resourceGroupName, String deploymentName) {
@@ -3466,7 +3480,8 @@ public final class DeploymentsInner
         String resourceGroupName, String deploymentName, DeploymentWhatIf parameters) {
         Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
             whatIfWithResponseAsync(resourceGroupName, deploymentName, parameters);
-        return this.client
+        return this
+            .client
             .<WhatIfOperationResultInner, WhatIfOperationResultInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), WhatIfOperationResultInner.class, WhatIfOperationResultInner.class)
             .last()
@@ -3742,7 +3757,7 @@ public final class DeploymentsInner
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteAtScopeWithResponseAsync(String scope, String deploymentName) {
@@ -3768,7 +3783,7 @@ public final class DeploymentsInner
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> beginDeleteAtScopeAsync(String scope, String deploymentName) {
@@ -3876,7 +3891,7 @@ public final class DeploymentsInner
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteAtTenantScopeWithResponseAsync(String deploymentName) {
@@ -3901,7 +3916,7 @@ public final class DeploymentsInner
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> beginDeleteAtTenantScopeAsync(String deploymentName) {
@@ -4001,7 +4016,7 @@ public final class DeploymentsInner
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteAtManagementGroupScopeWithResponseAsync(
@@ -4028,7 +4043,7 @@ public final class DeploymentsInner
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> beginDeleteAtManagementGroupScopeAsync(String groupId, String deploymentName) {
@@ -4137,7 +4152,7 @@ public final class DeploymentsInner
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteAtSubscriptionScopeWithResponseAsync(String deploymentName) {
@@ -4166,7 +4181,7 @@ public final class DeploymentsInner
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> beginDeleteAtSubscriptionScopeAsync(String deploymentName) {
@@ -4341,7 +4356,7 @@ public final class DeploymentsInner
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteWithResponseAsync(String resourceGroupName, String deploymentName) {
@@ -4374,7 +4389,7 @@ public final class DeploymentsInner
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> beginDeleteAsync(String resourceGroupName, String deploymentName) {
@@ -4554,7 +4569,7 @@ public final class DeploymentsInner
     /**
      * Get the next page of items.
      *
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4579,7 +4594,7 @@ public final class DeploymentsInner
     /**
      * Get the next page of items.
      *
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4604,7 +4619,7 @@ public final class DeploymentsInner
     /**
      * Get the next page of items.
      *
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4629,7 +4644,7 @@ public final class DeploymentsInner
     /**
      * Get the next page of items.
      *
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4654,7 +4669,7 @@ public final class DeploymentsInner
     /**
      * Get the next page of items.
      *
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

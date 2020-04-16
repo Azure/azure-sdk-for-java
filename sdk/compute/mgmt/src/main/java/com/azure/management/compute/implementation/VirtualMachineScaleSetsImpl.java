@@ -20,14 +20,11 @@ import com.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.azure.management.network.implementation.NetworkManager;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.azure.management.storage.implementation.StorageManager;
-import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.List;
+import reactor.core.publisher.Mono;
 
-/**
- * The implementation for VirtualMachineScaleSets.
- */
+/** The implementation for VirtualMachineScaleSets. */
 public class VirtualMachineScaleSetsImpl
     extends TopLevelModifiableResourcesImpl<
         VirtualMachineScaleSet,
@@ -41,10 +38,10 @@ public class VirtualMachineScaleSetsImpl
     private final GraphRbacManager rbacManager;
 
     VirtualMachineScaleSetsImpl(
-            ComputeManager computeManager,
-            StorageManager storageManager,
-            NetworkManager networkManager,
-            GraphRbacManager rbacManager) {
+        ComputeManager computeManager,
+        StorageManager storageManager,
+        NetworkManager networkManager,
+        GraphRbacManager rbacManager) {
         super(computeManager.inner().virtualMachineScaleSets(), computeManager);
         this.storageManager = storageManager;
         this.networkManager = networkManager;
@@ -98,16 +95,28 @@ public class VirtualMachineScaleSetsImpl
 
     @Override
     public Mono<Void> reimageAsync(String groupName, String name) {
-       return this.inner().reimageAsync(groupName, name, null);
+        return this.inner().reimageAsync(groupName, name, null);
     }
 
     @Override
-    public RunCommandResult runPowerShellScriptInVMInstance(String groupName, String scaleSetName, String vmId, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters) {
-        return this.runPowerShellScriptInVMInstanceAsync(groupName, scaleSetName, vmId, scriptLines, scriptParameters).block();
+    public RunCommandResult runPowerShellScriptInVMInstance(
+        String groupName,
+        String scaleSetName,
+        String vmId,
+        List<String> scriptLines,
+        List<RunCommandInputParameter> scriptParameters) {
+        return this
+            .runPowerShellScriptInVMInstanceAsync(groupName, scaleSetName, vmId, scriptLines, scriptParameters)
+            .block();
     }
 
     @Override
-    public Mono<RunCommandResult> runPowerShellScriptInVMInstanceAsync(String groupName, String scaleSetName, String vmId, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters) {
+    public Mono<RunCommandResult> runPowerShellScriptInVMInstanceAsync(
+        String groupName,
+        String scaleSetName,
+        String vmId,
+        List<String> scriptLines,
+        List<RunCommandInputParameter> scriptParameters) {
         RunCommandInput inputCommand = new RunCommandInput();
         inputCommand.withCommandId("RunPowerShellScript");
         inputCommand.withScript(scriptLines);
@@ -116,12 +125,24 @@ public class VirtualMachineScaleSetsImpl
     }
 
     @Override
-    public RunCommandResult runShellScriptInVMInstance(String groupName, String scaleSetName, String vmId, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters) {
-        return this.runShellScriptInVMInstanceAsync(groupName, scaleSetName, vmId, scriptLines, scriptParameters).block();
+    public RunCommandResult runShellScriptInVMInstance(
+        String groupName,
+        String scaleSetName,
+        String vmId,
+        List<String> scriptLines,
+        List<RunCommandInputParameter> scriptParameters) {
+        return this
+            .runShellScriptInVMInstanceAsync(groupName, scaleSetName, vmId, scriptLines, scriptParameters)
+            .block();
     }
 
     @Override
-    public Mono<RunCommandResult> runShellScriptInVMInstanceAsync(String groupName, String scaleSetName, String vmId, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters) {
+    public Mono<RunCommandResult> runShellScriptInVMInstanceAsync(
+        String groupName,
+        String scaleSetName,
+        String vmId,
+        List<String> scriptLines,
+        List<RunCommandInputParameter> scriptParameters) {
         RunCommandInput inputCommand = new RunCommandInput();
         inputCommand.withCommandId("RunShellScript");
         inputCommand.withScript(scriptLines);
@@ -130,14 +151,20 @@ public class VirtualMachineScaleSetsImpl
     }
 
     @Override
-    public RunCommandResult runCommandInVMInstance(String groupName, String scaleSetName, String vmId, RunCommandInput inputCommand) {
+    public RunCommandResult runCommandInVMInstance(
+        String groupName, String scaleSetName, String vmId, RunCommandInput inputCommand) {
         return this.runCommandVMInstanceAsync(groupName, scaleSetName, vmId, inputCommand).block();
     }
 
     @Override
-    public Mono<RunCommandResult> runCommandVMInstanceAsync(String groupName, String scaleSetName, String vmId, RunCommandInput inputCommand) {
-        return this.manager().inner().virtualMachineScaleSetVMs().runCommandAsync(groupName, scaleSetName, vmId, inputCommand)
-                .map(RunCommandResultImpl::new);
+    public Mono<RunCommandResult> runCommandVMInstanceAsync(
+        String groupName, String scaleSetName, String vmId, RunCommandInput inputCommand) {
+        return this
+            .manager()
+            .inner()
+            .virtualMachineScaleSetVMs()
+            .runCommandAsync(groupName, scaleSetName, vmId, inputCommand)
+            .map(RunCommandResultImpl::new);
     }
 
     @Override
@@ -150,40 +177,37 @@ public class VirtualMachineScaleSetsImpl
         VirtualMachineScaleSetInner inner = new VirtualMachineScaleSetInner();
 
         inner.withVirtualMachineProfile(new VirtualMachineScaleSetVMProfile());
-        inner.virtualMachineProfile()
-                .withStorageProfile(new VirtualMachineScaleSetStorageProfile()
-                        .withOsDisk(new VirtualMachineScaleSetOSDisk().withVhdContainers(new ArrayList<String>())));
-        inner.virtualMachineProfile()
-                .withOsProfile(new VirtualMachineScaleSetOSProfile());
+        inner
+            .virtualMachineProfile()
+            .withStorageProfile(
+                new VirtualMachineScaleSetStorageProfile()
+                    .withOsDisk(new VirtualMachineScaleSetOSDisk().withVhdContainers(new ArrayList<String>())));
+        inner.virtualMachineProfile().withOsProfile(new VirtualMachineScaleSetOSProfile());
 
-        inner.virtualMachineProfile()
-                .withNetworkProfile(new VirtualMachineScaleSetNetworkProfile());
+        inner.virtualMachineProfile().withNetworkProfile(new VirtualMachineScaleSetNetworkProfile());
 
-        inner.virtualMachineProfile()
-                .networkProfile()
-                .withNetworkInterfaceConfigurations(new ArrayList<VirtualMachineScaleSetNetworkConfiguration>());
+        inner
+            .virtualMachineProfile()
+            .networkProfile()
+            .withNetworkInterfaceConfigurations(new ArrayList<VirtualMachineScaleSetNetworkConfiguration>());
 
         VirtualMachineScaleSetNetworkConfiguration primaryNetworkInterfaceConfiguration =
-                new VirtualMachineScaleSetNetworkConfiguration()
-                        .withPrimary(true)
-                        .withName("primary-nic-cfg")
-                        .withIpConfigurations(new ArrayList<VirtualMachineScaleSetIPConfiguration>());
+            new VirtualMachineScaleSetNetworkConfiguration()
+                .withPrimary(true)
+                .withName("primary-nic-cfg")
+                .withIpConfigurations(new ArrayList<VirtualMachineScaleSetIPConfiguration>());
         primaryNetworkInterfaceConfiguration
-                .ipConfigurations()
-                .add(new VirtualMachineScaleSetIPConfiguration()
-                        .withName("primary-nic-ip-cfg"));
+            .ipConfigurations()
+            .add(new VirtualMachineScaleSetIPConfiguration().withName("primary-nic-ip-cfg"));
 
-        inner.virtualMachineProfile()
-                .networkProfile()
-                .networkInterfaceConfigurations()
-                .add(primaryNetworkInterfaceConfiguration);
+        inner
+            .virtualMachineProfile()
+            .networkProfile()
+            .networkInterfaceConfigurations()
+            .add(primaryNetworkInterfaceConfiguration);
 
-        return new VirtualMachineScaleSetImpl(name,
-                inner,
-                this.manager(),
-                this.storageManager,
-                this.networkManager,
-                this.rbacManager);
+        return new VirtualMachineScaleSetImpl(
+            name, inner, this.manager(), this.storageManager, this.networkManager, this.rbacManager);
     }
 
     @Override
@@ -191,11 +215,7 @@ public class VirtualMachineScaleSetsImpl
         if (inner == null) {
             return null;
         }
-        return new VirtualMachineScaleSetImpl(inner.getName(),
-                inner,
-                this.manager(),
-                this.storageManager,
-                this.networkManager,
-                this.rbacManager);
+        return new VirtualMachineScaleSetImpl(
+            inner.getName(), inner, this.manager(), this.storageManager, this.networkManager, this.rbacManager);
     }
 }

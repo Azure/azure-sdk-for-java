@@ -116,8 +116,7 @@ public class DeploymentsTests extends ResourceManagerTestBase {
                 .whatIf();
 
         Assertions.assertEquals("Succeeded", result.status());
-        // FIXME: regression?
-        // Assertions.assertEquals(3, result.changes().size());
+        Assertions.assertEquals(3, result.changes().size());
 
         resourceClient.genericResources().delete(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", "2015-06-15");
     }
@@ -157,8 +156,7 @@ public class DeploymentsTests extends ResourceManagerTestBase {
                 .whatIfAtSubscriptionScope();
 
         Assertions.assertEquals("Succeeded", result.status());
-        // FIXME: Regression?
-        // Assertions.assertEquals(0, result.changes().size());
+        Assertions.assertEquals(0, result.changes().size());
 
         resourceClient.genericResources().delete(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", "2015-06-15");
     }

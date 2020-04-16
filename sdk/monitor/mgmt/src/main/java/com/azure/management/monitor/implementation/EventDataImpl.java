@@ -3,22 +3,18 @@
 
 package com.azure.management.monitor.implementation;
 
+import com.azure.management.monitor.EventData;
+import com.azure.management.monitor.EventLevel;
 import com.azure.management.monitor.HttpRequestInfo;
 import com.azure.management.monitor.LocalizableString;
 import com.azure.management.monitor.SenderAuthorization;
-import com.azure.management.monitor.EventData;
-import com.azure.management.monitor.EventLevel;
 import com.azure.management.monitor.models.EventDataInner;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 import java.time.OffsetDateTime;
-
 import java.util.Map;
 
-/**
- * The Azure {@link EventData} wrapper class implementation.
- */
-class EventDataImpl
-        extends WrapperImpl<EventDataInner> implements EventData {
+/** The Azure {@link EventData} wrapper class implementation. */
+class EventDataImpl extends WrapperImpl<EventDataInner> implements EventData {
     private LocalizableString eventName;
     private LocalizableString category;
     private LocalizableString resourceProviderName;
@@ -31,9 +27,11 @@ class EventDataImpl
         super(innerObject);
         this.eventName = (inner().eventName() == null) ? null : new LocalizableStringImpl(inner().eventName());
         this.category = (inner().category() == null) ? null : new LocalizableStringImpl(inner().category());
-        this.resourceProviderName = (inner().resourceProviderName() == null) ? null : new LocalizableStringImpl(inner().resourceProviderName());
+        this.resourceProviderName =
+            (inner().resourceProviderName() == null) ? null : new LocalizableStringImpl(inner().resourceProviderName());
         this.resourceType = (inner().resourceType() == null) ? null : new LocalizableStringImpl(inner().resourceType());
-        this.operationName = (inner().operationName() == null) ? null : new LocalizableStringImpl(inner().operationName());
+        this.operationName =
+            (inner().operationName() == null) ? null : new LocalizableStringImpl(inner().operationName());
         this.status = (inner().status() == null) ? null : new LocalizableStringImpl(inner().status());
         this.subStatus = (inner().subStatus() == null) ? null : new LocalizableStringImpl(inner().subStatus());
     }

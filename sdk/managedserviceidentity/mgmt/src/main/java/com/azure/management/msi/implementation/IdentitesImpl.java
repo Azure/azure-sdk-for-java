@@ -13,8 +13,12 @@ import com.azure.management.resources.fluentcore.arm.collection.implementation.T
  * The implementation for Identities.
  */
 final class IdentitesImpl
-        extends TopLevelModifiableResourcesImpl<Identity, IdentityImpl, IdentityInner, UserAssignedIdentitiesInner, MSIManager>
-        implements Identities {
+    extends TopLevelModifiableResourcesImpl<Identity,
+        IdentityImpl,
+        IdentityInner,
+        UserAssignedIdentitiesInner,
+        MSIManager>
+    implements Identities {
 
     protected IdentitesImpl(UserAssignedIdentitiesInner innerCollection, MSIManager manager) {
         super(innerCollection, manager);

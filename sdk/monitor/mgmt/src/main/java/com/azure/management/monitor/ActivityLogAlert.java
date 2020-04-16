@@ -4,8 +4,8 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.management.monitor.models.ActivityLogAlertResourceInner;
 import com.azure.management.monitor.implementation.MonitorManager;
+import com.azure.management.monitor.models.ActivityLogAlertResourceInner;
 import com.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.management.resources.fluentcore.arm.models.HasId;
 import com.azure.management.resources.fluentcore.arm.models.Resource;
@@ -13,28 +13,27 @@ import com.azure.management.resources.fluentcore.model.Appliable;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.Refreshable;
 import com.azure.management.resources.fluentcore.model.Updatable;
-
 import java.util.Collection;
 import java.util.Map;
 
-/**
- * An immutable client-side representation of an Azure Activity Log Alert.
- */
+/** An immutable client-side representation of an Azure Activity Log Alert. */
 @Fluent
-public interface ActivityLogAlert extends
-        GroupableResource<MonitorManager, ActivityLogAlertResourceInner>,
+public interface ActivityLogAlert
+    extends GroupableResource<MonitorManager, ActivityLogAlertResourceInner>,
         Refreshable<ActivityLogAlert>,
         Updatable<ActivityLogAlert.Update> {
 
     /**
-     * Get a list of resourceIds that will be used as prefixes. The alert will only apply to activityLogs with resourceIds that fall under one of these prefixes. This list must include at least one item.
+     * Get a list of resourceIds that will be used as prefixes. The alert will only apply to activityLogs with
+     * resourceIds that fall under one of these prefixes. This list must include at least one item.
      *
      * @return the scopes value
      */
     Collection<String> scopes();
 
     /**
-     * Get indicates whether this activity log alert is enabled. If an activity log alert is not enabled, then none of its actions will be activated.
+     * Get indicates whether this activity log alert is enabled. If an activity log alert is not enabled, then none of
+     * its actions will be activated.
      *
      * @return the enabled value
      */
@@ -61,11 +60,9 @@ public interface ActivityLogAlert extends
      */
     String description();
 
-    /**
-     * The entirety of a activity log alerts definition.
-     */
-    interface Definition extends
-            DefinitionStages.Blank,
+    /** The entirety of a activity log alerts definition. */
+    interface Definition
+        extends DefinitionStages.Blank,
             DefinitionStages.WithCreate,
             DefinitionStages.WithScopes,
             DefinitionStages.WithDescription,
@@ -74,19 +71,13 @@ public interface ActivityLogAlert extends
             DefinitionStages.WithCriteriaDefinition {
     }
 
-    /**
-     * Grouping of activity log alerts definition stages.
-     */
+    /** Grouping of activity log alerts definition stages. */
     interface DefinitionStages {
-        /**
-         * The first stage of a activity log alert definition.
-         */
+        /** The first stage of a activity log alert definition. */
         interface Blank extends GroupableResource.DefinitionStages.WithGroupAndRegion<WithScopes> {
         }
 
-        /**
-         * The stage of the definition which specifies target resource or subscription for activity log alert.
-         */
+        /** The stage of the definition which specifies target resource or subscription for activity log alert. */
         interface WithScopes {
             /**
              * Sets specified resource as a target to alert on activity log.
@@ -113,9 +104,7 @@ public interface ActivityLogAlert extends
             WithDescription withTargetSubscription(String targetSubscriptionId);
         }
 
-        /**
-         * The stage of the definition which specifies description text for activity log alert.
-         */
+        /** The stage of the definition which specifies description text for activity log alert. */
         interface WithDescription {
             /**
              * Sets description for activity log alert.
@@ -126,9 +115,7 @@ public interface ActivityLogAlert extends
             WithAlertEnabled withDescription(String description);
         }
 
-        /**
-         * The stage of the definition which specifies if the activity log alert should be enabled upon creation.
-         */
+        /** The stage of the definition which specifies if the activity log alert should be enabled upon creation. */
         interface WithAlertEnabled {
             /**
              * Sets activity log alert as enabled during the creation.
@@ -138,7 +125,7 @@ public interface ActivityLogAlert extends
             WithActionGroup withRuleEnabled();
 
             /**
-             Sets activity log alert as disabled during the creation.
+             * Sets activity log alert as disabled during the creation.
              *
              * @return the next stage of activity log alert definition.
              */
@@ -146,7 +133,8 @@ public interface ActivityLogAlert extends
         }
 
         /**
-         * The stage of the definition which specifies actions that will be activated when the conditions are met in the activity log alert rules.
+         * The stage of the definition which specifies actions that will be activated when the conditions are met in the
+         * activity log alert rules.
          */
         interface WithActionGroup {
             /**
@@ -158,15 +146,17 @@ public interface ActivityLogAlert extends
             WithCriteriaDefinition withActionGroups(String... actionGroupId);
         }
 
-        /**
-         * The stage of the definition which specifies condition that will cause this alert to activate.
-         */
+        /** The stage of the definition which specifies condition that will cause this alert to activate. */
         interface WithCriteriaDefinition {
             /**
              * Adds a condition that will cause this alert to activate.
              *
-             * @param field Set the name of the field that this condition will examine. The possible values for this field are (case-insensitive): 'resourceId', 'category', 'caller', 'level', 'operationName', 'resourceGroup', 'resourceProvider', 'status', 'subStatus', 'resourceType', or anything beginning with 'properties.'.
-             * @param equals Set the field value will be compared to this value (case-insensitive) to determine if the condition is met.
+             * @param field Set the name of the field that this condition will examine. The possible values for this
+             *     field are (case-insensitive): 'resourceId', 'category', 'caller', 'level', 'operationName',
+             *     'resourceGroup', 'resourceProvider', 'status', 'subStatus', 'resourceType', or anything beginning
+             *     with 'properties.'.
+             * @param equals Set the field value will be compared to this value (case-insensitive) to determine if the
+             *     condition is met.
              * @return the next stage of activity log alert definition.
              */
             WithCreate withEqualsCondition(String field, String equals);
@@ -174,30 +164,25 @@ public interface ActivityLogAlert extends
             /**
              * Sets all the conditions that will cause this alert to activate.
              *
-             * @param fieldEqualsMap Set the names of the field that this condition will examine and their values to be compared to.
+             * @param fieldEqualsMap Set the names of the field that this condition will examine and their values to be
+             *     compared to.
              * @return the next stage of activity log alert definition.
              */
             WithCreate withEqualsConditions(Map<String, String> fieldEqualsMap);
         }
 
         /**
-         * The stage of the definition which contains all the minimum required inputs for the resource to be created
-         * but also allows for any other optional settings to be specified.
+         * The stage of the definition which contains all the minimum required inputs for the resource to be created but
+         * also allows for any other optional settings to be specified.
          */
-        interface WithCreate extends
-                Creatable<ActivityLogAlert>,
-                DefinitionWithTags<WithCreate>,
-                WithCriteriaDefinition {
+        interface WithCreate
+            extends Creatable<ActivityLogAlert>, DefinitionWithTags<WithCreate>, WithCriteriaDefinition {
         }
     }
 
-    /**
-     * Grouping of activity log alerts update stages.
-     */
+    /** Grouping of activity log alerts update stages. */
     interface UpdateStages {
-        /**
-         * The stage of a activity log alerts update allowing to modify settings.
-         */
+        /** The stage of a activity log alerts update allowing to modify settings. */
         interface WithActivityLogUpdate {
             /**
              * Sets description for activity log alert.
@@ -240,8 +225,12 @@ public interface ActivityLogAlert extends
             /**
              * Adds a condition that will cause this alert to activate.
              *
-             * @param field Set the name of the field that this condition will examine. The possible values for this field are (case-insensitive): 'resourceId', 'category', 'caller', 'level', 'operationName', 'resourceGroup', 'resourceProvider', 'status', 'subStatus', 'resourceType', or anything beginning with 'properties.'.
-             * @param equals Set the field value will be compared to this value (case-insensitive) to determine if the condition is met.
+             * @param field Set the name of the field that this condition will examine. The possible values for this
+             *     field are (case-insensitive): 'resourceId', 'category', 'caller', 'level', 'operationName',
+             *     'resourceGroup', 'resourceProvider', 'status', 'subStatus', 'resourceType', or anything beginning
+             *     with 'properties.'.
+             * @param equals Set the field value will be compared to this value (case-insensitive) to determine if the
+             *     condition is met.
              * @return the next stage of the activity log alert update.
              */
             Update withEqualsCondition(String field, String equals);
@@ -249,7 +238,8 @@ public interface ActivityLogAlert extends
             /**
              * Sets all the conditions that will cause this alert to activate.
              *
-             * @param fieldEqualsMap Set the names of the field that this condition will examine and their values to be compared to.
+             * @param fieldEqualsMap Set the names of the field that this condition will examine and their values to be
+             *     compared to.
              * @return the next stage of the activity log alert update.
              */
             Update withEqualsConditions(Map<String, String> fieldEqualsMap);
@@ -264,12 +254,8 @@ public interface ActivityLogAlert extends
         }
     }
 
-    /**
-     * The template for an update operation, containing all the settings that can be modified.
-     */
-    interface Update extends
-            Appliable<ActivityLogAlert>,
-            UpdateStages.WithActivityLogUpdate,
-            Resource.UpdateWithTags<Update> {
+    /** The template for an update operation, containing all the settings that can be modified. */
+    interface Update
+        extends Appliable<ActivityLogAlert>, UpdateStages.WithActivityLogUpdate, Resource.UpdateWithTags<Update> {
     }
 }

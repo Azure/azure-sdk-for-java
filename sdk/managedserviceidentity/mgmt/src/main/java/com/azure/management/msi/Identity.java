@@ -42,7 +42,7 @@ public interface Identity
     /**
      * @return the url that can be queried to obtain the identity credentials
      */
-     String clientSecretUrl();
+    String clientSecretUrl();
 
     /**
      * Container interface for all the definitions related to identity.

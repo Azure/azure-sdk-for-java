@@ -8,29 +8,28 @@ import com.azure.management.appservice.FunctionDeploymentSlot;
 import com.azure.management.appservice.models.SiteConfigResourceInner;
 import com.azure.management.appservice.models.SiteInner;
 import com.azure.management.appservice.models.SiteLogsConfigInner;
-import reactor.core.publisher.Mono;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import reactor.core.publisher.Mono;
 
-/**
- * The implementation for FunctionDeploymentSlot.
- */
+/** The implementation for FunctionDeploymentSlot. */
 class FunctionDeploymentSlotImpl
-        extends DeploymentSlotBaseImpl<
+    extends DeploymentSlotBaseImpl<
         FunctionDeploymentSlot,
-            FunctionDeploymentSlotImpl,
-            FunctionAppImpl,
-            FunctionDeploymentSlot.DefinitionStages.WithCreate,
-            FunctionDeploymentSlot.Update>
-        implements
-        FunctionDeploymentSlot,
-        FunctionDeploymentSlot.Definition,
-        FunctionDeploymentSlot.Update {
+        FunctionDeploymentSlotImpl,
+        FunctionAppImpl,
+        FunctionDeploymentSlot.DefinitionStages.WithCreate,
+        FunctionDeploymentSlot.Update>
+    implements FunctionDeploymentSlot, FunctionDeploymentSlot.Definition, FunctionDeploymentSlot.Update {
 
-    FunctionDeploymentSlotImpl(String name, SiteInner innerObject, SiteConfigResourceInner siteConfig, SiteLogsConfigInner logConfig, FunctionAppImpl parent) {
+    FunctionDeploymentSlotImpl(
+        String name,
+        SiteInner innerObject,
+        SiteConfigResourceInner siteConfig,
+        SiteLogsConfigInner logConfig,
+        FunctionAppImpl parent) {
         super(name, innerObject, siteConfig, logConfig, parent);
     }
 

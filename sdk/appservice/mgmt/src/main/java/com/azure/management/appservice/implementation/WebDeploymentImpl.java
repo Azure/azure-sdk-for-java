@@ -8,11 +8,10 @@ import com.azure.management.appservice.WebAppBase;
 import com.azure.management.appservice.WebDeployment;
 import com.azure.management.appservice.models.MSDeployStatusInner;
 import com.azure.management.resources.fluentcore.model.implementation.ExecutableImpl;
-import reactor.core.publisher.Mono;
-
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import reactor.core.publisher.Mono;
 
 /**
  * Implementation of WebDeployment.
@@ -20,11 +19,8 @@ import java.util.HashMap;
  * @param <FluentT> the fluent interface, web app, function app, or deployment slot
  * @param <FluentImplT> the implementation class for FluentT
  */
-public class WebDeploymentImpl<
-        FluentT extends WebAppBase,
-        FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT>>
-        extends ExecutableImpl<WebDeployment>
-        implements WebDeployment, WebDeployment.Definition {
+public class WebDeploymentImpl<FluentT extends WebAppBase, FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT>>
+    extends ExecutableImpl<WebDeployment> implements WebDeployment, WebDeployment.Definition {
     private final WebAppBaseImpl<FluentT, FluentImplT> parent;
     private MSDeploy request;
     private MSDeployStatusInner result;
@@ -68,8 +64,10 @@ public class WebDeploymentImpl<
 
     @Override
     public Mono<WebDeployment> executeWorkAsync() {
-        return parent.createMSDeploy(request)
-                .map(msDeployStatusInner -> {
+        return parent
+            .createMSDeploy(request)
+            .map(
+                msDeployStatusInner -> {
                     result = msDeployStatusInner;
                     return WebDeploymentImpl.this;
                 });

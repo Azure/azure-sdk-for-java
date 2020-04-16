@@ -22,7 +22,7 @@ class PizzaImpl
     final List<Creatable<IPizza>> delayedPizzas;
     boolean prepareCalled = false;
 
-    public PizzaImpl(String name) {
+    PizzaImpl(String name) {
         super(name, name, new PizzaInner());
         delayedPizzas = new ArrayList<>();
     }

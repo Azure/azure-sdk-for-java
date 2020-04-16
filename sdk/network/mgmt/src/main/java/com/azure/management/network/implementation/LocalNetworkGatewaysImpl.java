@@ -11,22 +11,19 @@ import com.azure.management.network.models.LocalNetworkGatewayInner;
 import com.azure.management.network.models.LocalNetworkGatewaysInner;
 import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import reactor.core.publisher.Mono;
-
 import java.util.Iterator;
 import java.util.function.Function;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for LocalNetworkGateways.
- */
+/** Implementation for LocalNetworkGateways. */
 class LocalNetworkGatewaysImpl
-        extends GroupableResourcesImpl<
+    extends GroupableResourcesImpl<
         LocalNetworkGateway,
         LocalNetworkGatewayImpl,
         LocalNetworkGatewayInner,
         LocalNetworkGatewaysInner,
         NetworkManager>
-        implements LocalNetworkGateways {
+    implements LocalNetworkGateways {
 
     LocalNetworkGatewaysImpl(final NetworkManager networkManager) {
         super(networkManager.inner().localNetworkGateways(), networkManager);
@@ -44,22 +41,25 @@ class LocalNetworkGatewaysImpl
 
     @Override
     public PagedFlux<LocalNetworkGateway> listAsync() {
-        PagedIterable<ResourceGroup> resources = new PagedIterable<>(this.manager().getResourceManager().resourceGroups().listAsync());
+        PagedIterable<ResourceGroup> resources =
+            new PagedIterable<>(this.manager().getResourceManager().resourceGroups().listAsync());
         Iterator<ResourceGroup> iterator = resources.iterator();
 
-        Function<String, Mono<PagedResponse<LocalNetworkGatewayInner>>> fetcher = (continuation) -> {
-            if (continuation == null) {
-                if (iterator.hasNext()) {
-                    return inner().listByResourceGroupSinglePageAsync(iterator.next().name());
+        Function<String, Mono<PagedResponse<LocalNetworkGatewayInner>>> fetcher =
+            (continuation) -> {
+                if (continuation == null) {
+                    if (iterator.hasNext()) {
+                        return inner().listByResourceGroupSinglePageAsync(iterator.next().name());
+                    } else {
+                        return Mono.empty();
+                    }
                 } else {
-                    return Mono.empty();
+                    return inner().listByResourceGroupSinglePageAsync(continuation);
                 }
-            } else {
-                return inner().listByResourceGroupSinglePageAsync(continuation);
-            }
-        };
+            };
 
-        return new PagedFlux<>(() -> fetcher.apply(null), (continuation) -> fetcher.apply(continuation)).mapPage(inner -> wrapModel(inner));
+        return new PagedFlux<>(() -> fetcher.apply(null), (continuation) -> fetcher.apply(continuation))
+            .mapPage(inner -> wrapModel(inner));
     }
 
     @Override
@@ -99,4 +99,3 @@ class LocalNetworkGatewaysImpl
         return new LocalNetworkGatewayImpl(inner.getName(), inner, this.manager());
     }
 }
-

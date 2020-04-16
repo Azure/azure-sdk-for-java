@@ -7,9 +7,7 @@ package com.azure.management.monitor;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The RuleManagementEventClaimsDataSource model.
- */
+/** The RuleManagementEventClaimsDataSource model. */
 @Fluent
 public final class RuleManagementEventClaimsDataSource {
     /*
@@ -20,7 +18,7 @@ public final class RuleManagementEventClaimsDataSource {
 
     /**
      * Get the emailAddress property: the email address.
-     * 
+     *
      * @return the emailAddress value.
      */
     public String emailAddress() {
@@ -29,7 +27,7 @@ public final class RuleManagementEventClaimsDataSource {
 
     /**
      * Set the emailAddress property: the email address.
-     * 
+     *
      * @param emailAddress the emailAddress value to set.
      * @return the RuleManagementEventClaimsDataSource object itself.
      */

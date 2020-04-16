@@ -13,13 +13,14 @@ public class RoleAssignmentTests extends GraphRbacManagementTest {
         String roleAssignmentName = sdkContext.randomUuid();
         String spName = sdkContext.randomResourceName("sp", 20);
 
-        ServicePrincipal sp = graphRbacManager.servicePrincipals().define(spName)
-                .withNewApplication("http://" + spName)
-                .create();
+        ServicePrincipal sp =
+            graphRbacManager.servicePrincipals().define(spName).withNewApplication("http://" + spName).create();
 
         SdkContext.sleep(15000);
 
-        RoleAssignment roleAssignment = graphRbacManager.roleAssignments()
+        RoleAssignment roleAssignment =
+            graphRbacManager
+                .roleAssignments()
                 .define(roleAssignmentName)
                 .forServicePrincipal(sp)
                 .withBuiltInRole(BuiltInRole.CONTRIBUTOR)
@@ -28,5 +29,4 @@ public class RoleAssignmentTests extends GraphRbacManagementTest {
 
         Assertions.assertNotNull(roleAssignment);
     }
-
 }

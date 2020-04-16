@@ -177,7 +177,7 @@ public class TestSuiteBase extends DocumentClientTest {
             FeedOptions options = new FeedOptions();
             options.setMaxDegreeOfParallelism(-1);
 
-            options.setMaxItemCount(100);
+            ModelBridgeInternal.setFeedOptionsMaxItemCount(options, 100);
 
             logger.info("Truncating collection {} documents ...", collection.getId());
 

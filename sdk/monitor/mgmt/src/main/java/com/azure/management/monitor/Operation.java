@@ -7,9 +7,7 @@ package com.azure.management.monitor;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Operation model.
- */
+/** The Operation model. */
 @Fluent
 public final class Operation {
     /*
@@ -25,9 +23,8 @@ public final class Operation {
     private OperationDisplay display;
 
     /**
-     * Get the name property: Operation name:
-     * {provider}/{resource}/{operation}.
-     * 
+     * Get the name property: Operation name: {provider}/{resource}/{operation}.
+     *
      * @return the name value.
      */
     public String name() {
@@ -35,9 +32,8 @@ public final class Operation {
     }
 
     /**
-     * Set the name property: Operation name:
-     * {provider}/{resource}/{operation}.
-     * 
+     * Set the name property: Operation name: {provider}/{resource}/{operation}.
+     *
      * @param name the name value to set.
      * @return the Operation object itself.
      */
@@ -47,9 +43,8 @@ public final class Operation {
     }
 
     /**
-     * Get the display property: Display metadata associated with the
-     * operation.
-     * 
+     * Get the display property: Display metadata associated with the operation.
+     *
      * @return the display value.
      */
     public OperationDisplay display() {
@@ -57,9 +52,8 @@ public final class Operation {
     }
 
     /**
-     * Set the display property: Display metadata associated with the
-     * operation.
-     * 
+     * Set the display property: Display metadata associated with the operation.
+     *
      * @param display the display value to set.
      * @return the Operation object itself.
      */

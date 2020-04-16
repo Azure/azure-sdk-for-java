@@ -8,9 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The FileShareItems model.
- */
+/** The FileShareItems model. */
 @Immutable
 public final class FileShareItemsInner {
     /*
@@ -28,7 +26,7 @@ public final class FileShareItemsInner {
 
     /**
      * Get the value property: List of file shares returned.
-     * 
+     *
      * @return the value value.
      */
     public List<FileShareItemInner> value() {
@@ -36,10 +34,9 @@ public final class FileShareItemsInner {
     }
 
     /**
-     * Get the nextLink property: Request URL that can be used to query next
-     * page of shares. Returned when total number of requested shares exceed
-     * maximum page size.
-     * 
+     * Get the nextLink property: Request URL that can be used to query next page of shares. Returned when total number
+     * of requested shares exceed maximum page size.
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
