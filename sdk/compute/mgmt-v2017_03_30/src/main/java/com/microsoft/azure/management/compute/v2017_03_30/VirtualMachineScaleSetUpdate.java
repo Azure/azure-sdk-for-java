@@ -50,7 +50,9 @@ public class VirtualMachineScaleSetUpdate extends UpdateResource {
 
     /**
      * When true this limits the scale set to a single placement group, of max
-     * size 100 virtual machines.
+     * size 100 virtual machines. NOTE: If singlePlacementGroup is true, it may
+     * be modified to false. However, if singlePlacementGroup is false, it may
+     * not be modified to true.
      */
     @JsonProperty(value = "properties.singlePlacementGroup")
     private Boolean singlePlacementGroup;
@@ -162,7 +164,7 @@ public class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
-     * Get when true this limits the scale set to a single placement group, of max size 100 virtual machines.
+     * Get when true this limits the scale set to a single placement group, of max size 100 virtual machines. NOTE: If singlePlacementGroup is true, it may be modified to false. However, if singlePlacementGroup is false, it may not be modified to true.
      *
      * @return the singlePlacementGroup value
      */
@@ -171,7 +173,7 @@ public class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
-     * Set when true this limits the scale set to a single placement group, of max size 100 virtual machines.
+     * Set when true this limits the scale set to a single placement group, of max size 100 virtual machines. NOTE: If singlePlacementGroup is true, it may be modified to false. However, if singlePlacementGroup is false, it may not be modified to true.
      *
      * @param singlePlacementGroup the singlePlacementGroup value to set
      * @return the VirtualMachineScaleSetUpdate object itself.

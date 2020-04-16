@@ -187,7 +187,7 @@ public interface VirtualMachineScaleSet extends HasInner<VirtualMachineScaleSetI
         interface WithZones {
             /**
              * Specifies zones.
-             * @param zones The virtual machine scale set zones
+             * @param zones The virtual machine scale set zones. NOTE: Availability zones can only be set when you create the scale set
              * @return the next definition stage
              */
             WithCreate withZones(List<String> zones);
@@ -253,7 +253,7 @@ public interface VirtualMachineScaleSet extends HasInner<VirtualMachineScaleSetI
         interface WithSinglePlacementGroup {
             /**
              * Specifies singlePlacementGroup.
-             * @param singlePlacementGroup When true this limits the scale set to a single placement group, of max size 100 virtual machines
+             * @param singlePlacementGroup When true this limits the scale set to a single placement group, of max size 100 virtual machines. NOTE: If singlePlacementGroup is true, it may be modified to false. However, if singlePlacementGroup is false, it may not be modified to true
              * @return the next update stage
              */
             Update withSinglePlacementGroup(Boolean singlePlacementGroup);

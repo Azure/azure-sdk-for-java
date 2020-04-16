@@ -86,7 +86,8 @@ public class VirtualMachineScaleSetInner extends Resource {
     private VirtualMachineScaleSetIdentity identity;
 
     /**
-     * The virtual machine scale set zones.
+     * The virtual machine scale set zones. NOTE: Availability zones can only
+     * be set when you create the scale set.
      */
     @JsonProperty(value = "zones")
     private List<String> zones;
@@ -250,7 +251,7 @@ public class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Get the virtual machine scale set zones.
+     * Get the virtual machine scale set zones. NOTE: Availability zones can only be set when you create the scale set.
      *
      * @return the zones value
      */
@@ -259,7 +260,7 @@ public class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Set the virtual machine scale set zones.
+     * Set the virtual machine scale set zones. NOTE: Availability zones can only be set when you create the scale set.
      *
      * @param zones the zones value to set
      * @return the VirtualMachineScaleSetInner object itself.

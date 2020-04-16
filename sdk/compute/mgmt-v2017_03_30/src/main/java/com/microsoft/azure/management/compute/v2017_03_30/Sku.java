@@ -29,7 +29,10 @@ public class Sku {
     private String tier;
 
     /**
-     * Specifies the number of virtual machines in the scale set.
+     * Specifies the number of virtual machines in the scale set. NOTE: If the
+     * new VM SKU is not supported on the hardware the scale set is currently
+     * on, you need to deallocate the VMs in the scale set before you modify
+     * the SKU name.
      */
     @JsonProperty(value = "capacity")
     private Long capacity;
@@ -75,7 +78,7 @@ public class Sku {
     }
 
     /**
-     * Get specifies the number of virtual machines in the scale set.
+     * Get specifies the number of virtual machines in the scale set. NOTE: If the new VM SKU is not supported on the hardware the scale set is currently on, you need to deallocate the VMs in the scale set before you modify the SKU name.
      *
      * @return the capacity value
      */
@@ -84,7 +87,7 @@ public class Sku {
     }
 
     /**
-     * Set specifies the number of virtual machines in the scale set.
+     * Set specifies the number of virtual machines in the scale set. NOTE: If the new VM SKU is not supported on the hardware the scale set is currently on, you need to deallocate the VMs in the scale set before you modify the SKU name.
      *
      * @param capacity the capacity value to set
      * @return the Sku object itself.
