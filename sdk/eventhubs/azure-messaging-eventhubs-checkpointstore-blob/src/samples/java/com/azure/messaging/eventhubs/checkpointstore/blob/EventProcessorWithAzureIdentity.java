@@ -1,28 +1,31 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package com.azure.messaging.eventhubs.checkpointstore.blob;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
-import java.util.function.Consumer;
 
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 /**
- * Sample for using {@link BlobCheckpointStore} with {@link EventProcessorClient}.
+ * Demonstrates how create an EventProcessorClient using Azure Identity to authenticate with Azure Storage Blobs and
+ * Azure Event Hubs.
+ *
+ * @see <a href="https://github.com/Azure/azure-sdk-for-java/wiki/Identity-and-Authentication">Identity and
+ *     Authentication</a>
  */
-public class EventProcessorBlobCheckpointStoreSample {
-
-    private static final String EH_CONNECTION_STRING = "";
-    private static final String SAS_TOKEN_STRING = "";
-    private static final String STORAGE_CONNECTION_STRING = "";
+public class EventProcessorWithAzureIdentity {
+    private static final String FULLY_QUALIFIED_NAMESPACE = "my-event-hubs-namespace.servicebus.windows.net";
+    private static final String EVENT_HUB_NAME = "my-event-hub";
 
     public static final Consumer<EventContext> PARTITION_PROCESSOR = eventContext -> {
         System.out.printf("Processing event from partition %s with sequence number %d %n",
@@ -45,15 +48,20 @@ public class EventProcessorBlobCheckpointStoreSample {
      * @throws Exception if there are any errors while running the sample program.
      */
     public static void main(String[] args) throws Exception {
+        // The DefaultAzureCredential is an aggregate credential that chooses the best credentials to use based
+        // on the running environment. See https://github.com/Azure/azure-sdk-for-java/wiki/Identity-and-Authentication
+        // for more information.
+        TokenCredential credential = new DefaultAzureCredentialBuilder()
+            .build();
+
         BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
-            .connectionString(STORAGE_CONNECTION_STRING)
+            .credential(credential)
             .containerName("<< CONTAINER NAME >>")
-            .sasToken(SAS_TOKEN_STRING)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildAsyncClient();
 
         EventProcessorClientBuilder eventProcessorClientBuilder = new EventProcessorClientBuilder()
-            .connectionString(EH_CONNECTION_STRING)
+            .credential(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, credential)
             .consumerGroup("<< CONSUMER GROUP NAME >>")
             .processEvent(PARTITION_PROCESSOR)
             .processError(ERROR_HANDLER)
@@ -69,5 +77,4 @@ public class EventProcessorBlobCheckpointStoreSample {
         // Stops the event processor
         eventProcessorClient.stop();
     }
-
 }
