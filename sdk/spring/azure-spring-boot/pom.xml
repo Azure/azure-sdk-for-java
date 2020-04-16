@@ -20,6 +20,10 @@
   <description>Azure Spring Boot AutoConfigure</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
+  <properties>
+    <jacoco.min.branchcoverage>0.23</jacoco.min.branchcoverage>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
