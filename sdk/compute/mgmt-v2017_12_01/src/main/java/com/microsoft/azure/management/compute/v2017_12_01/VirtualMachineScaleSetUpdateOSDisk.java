@@ -51,7 +51,7 @@ public class VirtualMachineScaleSetUpdateOSDisk {
     private VirtualMachineScaleSetManagedDiskParameters managedDisk;
 
     /**
-     * Get the caching value.
+     * Get the caching type. Possible values include: 'None', 'ReadOnly', 'ReadWrite'.
      *
      * @return the caching value
      */
@@ -60,7 +60,7 @@ public class VirtualMachineScaleSetUpdateOSDisk {
     }
 
     /**
-     * Set the caching value.
+     * Set the caching type. Possible values include: 'None', 'ReadOnly', 'ReadWrite'.
      *
      * @param caching the caching value to set
      * @return the VirtualMachineScaleSetUpdateOSDisk object itself.
@@ -71,7 +71,7 @@ public class VirtualMachineScaleSetUpdateOSDisk {
     }
 
     /**
-     * Get the writeAcceleratorEnabled value.
+     * Get specifies whether writeAccelerator should be enabled or disabled on the disk.
      *
      * @return the writeAcceleratorEnabled value
      */
@@ -80,7 +80,7 @@ public class VirtualMachineScaleSetUpdateOSDisk {
     }
 
     /**
-     * Set the writeAcceleratorEnabled value.
+     * Set specifies whether writeAccelerator should be enabled or disabled on the disk.
      *
      * @param writeAcceleratorEnabled the writeAcceleratorEnabled value to set
      * @return the VirtualMachineScaleSetUpdateOSDisk object itself.
@@ -91,7 +91,7 @@ public class VirtualMachineScaleSetUpdateOSDisk {
     }
 
     /**
-     * Get the image value.
+     * Get the Source User Image VirtualHardDisk. This VirtualHardDisk will be copied before using it to attach to the Virtual Machine. If SourceImage is provided, the destination VirtualHardDisk should not exist.
      *
      * @return the image value
      */
@@ -100,7 +100,7 @@ public class VirtualMachineScaleSetUpdateOSDisk {
     }
 
     /**
-     * Set the image value.
+     * Set the Source User Image VirtualHardDisk. This VirtualHardDisk will be copied before using it to attach to the Virtual Machine. If SourceImage is provided, the destination VirtualHardDisk should not exist.
      *
      * @param image the image value to set
      * @return the VirtualMachineScaleSetUpdateOSDisk object itself.
@@ -111,7 +111,7 @@ public class VirtualMachineScaleSetUpdateOSDisk {
     }
 
     /**
-     * Get the vhdContainers value.
+     * Get the list of virtual hard disk container uris.
      *
      * @return the vhdContainers value
      */
@@ -120,7 +120,7 @@ public class VirtualMachineScaleSetUpdateOSDisk {
     }
 
     /**
-     * Set the vhdContainers value.
+     * Set the list of virtual hard disk container uris.
      *
      * @param vhdContainers the vhdContainers value to set
      * @return the VirtualMachineScaleSetUpdateOSDisk object itself.
@@ -131,7 +131,7 @@ public class VirtualMachineScaleSetUpdateOSDisk {
     }
 
     /**
-     * Get the managedDisk value.
+     * Get the managed disk parameters.
      *
      * @return the managedDisk value
      */
@@ -140,7 +140,7 @@ public class VirtualMachineScaleSetUpdateOSDisk {
     }
 
     /**
-     * Set the managedDisk value.
+     * Set the managed disk parameters.
      *
      * @param managedDisk the managedDisk value to set
      * @return the VirtualMachineScaleSetUpdateOSDisk object itself.
