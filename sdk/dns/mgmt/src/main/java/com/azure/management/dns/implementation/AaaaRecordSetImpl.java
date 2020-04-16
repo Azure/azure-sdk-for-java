@@ -2,30 +2,23 @@
 // Licensed under the MIT License.
 package com.azure.management.dns.implementation;
 
-import com.azure.management.dns.models.RecordSetInner;
 import com.azure.management.dns.AaaaRecord;
 import com.azure.management.dns.AaaaRecordSet;
 import com.azure.management.dns.RecordType;
-
+import com.azure.management.dns.models.RecordSetInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Implementation of AaaaRecordSet.
- */
-class AaaaRecordSetImpl
-        extends DnsRecordSetImpl
-        implements AaaaRecordSet {
+/** Implementation of AaaaRecordSet. */
+class AaaaRecordSetImpl extends DnsRecordSetImpl implements AaaaRecordSet {
 
     AaaaRecordSetImpl(final String name, final DnsZoneImpl parent, final RecordSetInner innerModel) {
         super(name, RecordType.AAAA.toString(), parent, innerModel);
     }
 
     static AaaaRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent) {
-        return new AaaaRecordSetImpl(name, parent,
-                new RecordSetInner()
-                        .withAaaaRecords(new ArrayList<>()));
+        return new AaaaRecordSetImpl(name, parent, new RecordSetInner().withAaaaRecords(new ArrayList<>()));
     }
 
     @Override

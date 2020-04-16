@@ -8,24 +8,21 @@ import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.management.AzureTokenCredential;
 import com.azure.management.RestClient;
 import com.azure.management.RestClientBuilder;
+import com.azure.management.dns.DnsZones;
 import com.azure.management.dns.models.DnsManagementClientBuilder;
 import com.azure.management.dns.models.DnsManagementClientImpl;
 import com.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.management.resources.fluentcore.arm.implementation.Manager;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
-import com.azure.management.dns.DnsZones;
 
-/**
- * Entry point to Azure DNS zone management.
- */
+/** Entry point to Azure DNS zone management. */
 public final class DnsZoneManager extends Manager<DnsZoneManager, DnsManagementClientImpl> {
     // Collections
     private DnsZones zones;
 
     /**
-     * Get a Configurable instance that can be used to create {@link DnsZoneManager}
-     * with optional configuration.
+     * Get a Configurable instance that can be used to create {@link DnsZoneManager} with optional configuration.
      *
      * @return the instance allowing configurations
      */
@@ -41,11 +38,13 @@ public final class DnsZoneManager extends Manager<DnsZoneManager, DnsManagementC
      * @return the DnsZoneManager
      */
     public static DnsZoneManager authenticate(AzureTokenCredential credential, String subscriptionId) {
-        return authenticate(new RestClientBuilder()
+        return authenticate(
+            new RestClientBuilder()
                 .withBaseUrl(credential.getEnvironment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredential(credential)
                 .withSerializerAdapter(new AzureJacksonAdapter())
-                .buildClient(), subscriptionId);
+                .buildClient(),
+            subscriptionId);
     }
 
     /**
@@ -71,9 +70,7 @@ public final class DnsZoneManager extends Manager<DnsZoneManager, DnsManagementC
         return new DnsZoneManager(restClient, subscriptionId, sdkContext);
     }
 
-    /**
-     * The interface allowing configurations to be set.
-     */
+    /** The interface allowing configurations to be set. */
     public interface Configurable extends AzureConfigurable<Configurable> {
         /**
          * Creates an instance of DnsZoneManager that exposes DNS zone API entry points.
@@ -85,12 +82,8 @@ public final class DnsZoneManager extends Manager<DnsZoneManager, DnsManagementC
         DnsZoneManager authenticate(AzureTokenCredential credential, String subscriptionId);
     }
 
-    /**
-     * The implementation for Configurable interface.
-     */
-    private static class ConfigurableImpl
-            extends AzureConfigurableImpl<Configurable>
-            implements Configurable {
+    /** The implementation for Configurable interface. */
+    private static class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
 
         public DnsZoneManager authenticate(AzureTokenCredential credential, String subscriptionId) {
             return DnsZoneManager.authenticate(buildRestClient(credential), subscriptionId);
@@ -98,19 +91,17 @@ public final class DnsZoneManager extends Manager<DnsZoneManager, DnsManagementC
     }
 
     private DnsZoneManager(RestClient restClient, String subscriptionId, SdkContext sdkContext) {
-        super(restClient,
-                subscriptionId,
-                new DnsManagementClientBuilder()
-                        .pipeline(restClient.getHttpPipeline())
-                        .subscriptionId(subscriptionId)
-                        .buildClient(),
-                sdkContext
-        );
+        super(
+            restClient,
+            subscriptionId,
+            new DnsManagementClientBuilder()
+                .pipeline(restClient.getHttpPipeline())
+                .subscriptionId(subscriptionId)
+                .buildClient(),
+            sdkContext);
     }
 
-    /**
-     * @return entry point to DNS zone manager zone management
-     */
+    /** @return entry point to DNS zone manager zone management */
     public DnsZones zones() {
         if (this.zones == null) {
             this.zones = new DnsZonesImpl(this);
