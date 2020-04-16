@@ -61,22 +61,23 @@ final class TestUtils {
     static final String INVALID_STATUS_MODEL_ERROR = "Model Id " + INVALID_STATUS_MODEL_ID + " returned with invalid"
         + " status.";
 
-    static final String INVALID_SOURCE_URL_ERROR = "Download failed. Please check your input URL.";
-    // TODO (savaity): Do not hardcode, generate SAS URL
-    static final String VALID_LABELED_DATA_SAS_URL = "";
-    static final String VALID_UNLABELED_DATA_SAS_URL = "";
-    static final Object INVALID_MODEL_ID_ERROR = "Invalid UUID string: " + INVALID_MODEL_ID;
-    static final Object NULL_SOURCE_URL_ERROR = "'fileSourceUrl' cannot be null.";
+    static final String INVALID_SOURCE_URL_ERROR = "Status code 400, \"{\"error\":{\"code\":\"1003\","
+        + "\"message\":\"Parameter 'Source' is not a valid Uri.\"}}\"";
+    static final String INVALID_MODEL_ID_ERROR = "Invalid UUID string: " + INVALID_MODEL_ID;
+    static final String NULL_SOURCE_URL_ERROR = "'fileSourceUrl' cannot be null.";
     static final String INVALID_URL = "htttttttps://localhost:8080";
     static final String VALID_HTTPS_LOCALHOST = "https://localhost:8080";
     static final String RECEIPT_LOCAL_URL = "src/test/resources/sample-files/contoso-allinone.jpg";
     static final String LAYOUT_LOCAL_URL = "src/test/resources/sample-files/layout1.jpg";
     static final String FORM_LOCAL_URL = "src/test/resources/sample-files/Invoice_6.pdf";
-    static final Long RECEIPT_FILE_LENGTH = new File(RECEIPT_LOCAL_URL).length();
-    static final Long LAYOUT_FILE_LENGTH = new File(LAYOUT_LOCAL_URL).length();
-    static final Long CUSTOM_FORM_FILE_LENGTH = new File(FORM_LOCAL_URL).length();
+    static final long RECEIPT_FILE_LENGTH = new File(RECEIPT_LOCAL_URL).length();
+    static final long LAYOUT_FILE_LENGTH = new File(LAYOUT_LOCAL_URL).length();
+    static final long CUSTOM_FORM_FILE_LENGTH = new File(FORM_LOCAL_URL).length();
     static final String RECEIPT_URL = "https://raw.githubusercontent.com/Azure-Samples/"
         + "cognitive-services-REST-api-samples/master/curl/form-recognizer/contoso-allinone.jpg";
+    static final String LAYOUT_URL = "https://raw.githubusercontent"
+        + ".com/Azure/azure-sdk-for-java/master/sdk/formrecognizer/azure-ai-formrecognizer/src/test/resources/sample"
+        + "-files/layout1.jpg";
     static final String INVALID_RECEIPT_URL = "https://invalid.blob.core.windows.net/fr/contoso-allinone.jpg";
     private static final String CUSTOM_FORM_LABELED_DATA = "src/test/resources/sample-files/customFormLabeledContent"
         + ".json";
@@ -117,7 +118,7 @@ final class TestUtils {
     }
 
     static IterableStream<FormPage> getExpectedFormPages() {
-        FormPage formPage = new FormPage(3000, 1.2666f, DimensionUnit.PIXEL, 1688,
+        FormPage formPage = new FormPage(2200, 0, DimensionUnit.PIXEL, 1700,
             new IterableStream<FormLine>(getPagedLines().get(0)),
             new IterableStream<FormTable>(getPagedTables().get(0)));
         return new IterableStream<>(Arrays.asList(formPage));

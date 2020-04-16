@@ -58,15 +58,6 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
     }
 
     /**
-     * Verifies custom model info returned for a valid model Id.
-     */
-    @Test
-    void getCustomModelValidModelId() {
-        getCustomModelValidModelIdRunner(validModelId ->
-            validateCustomModel(getExpectedUnlabeledModel(), client.getCustomModel(validModelId)));
-    }
-
-    /**
      * Verifies that an exception is thrown for invalid model Id.
      */
     @Test
@@ -81,9 +72,39 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
      */
     @Test
     void getCustomModelWithResponse() {
-        getCustomModelWithResponseRunner(validModelId ->
-            validateCustomModel(getExpectedLabeledModel(),
-                client.getCustomModelWithResponse(validModelId, Context.NONE).getValue()));
+        beginTrainingUnlabeledResultRunner((unLabeledContainerSasUrl, useLabelFile) -> {
+            CustomFormModel trainedUnlabeledModel = client.beginTraining(unLabeledContainerSasUrl, useLabelFile)
+                .getFinalResult();
+            Response<CustomFormModel> customModelWithResponse =
+                client.getCustomModelWithResponse(trainedUnlabeledModel.getModelId(),
+                Context.NONE);
+            assertEquals(customModelWithResponse.getStatusCode(), HttpResponseStatus.OK.code());
+            validateCustomModel(trainedUnlabeledModel, customModelWithResponse.getValue());
+        });
+    }
+
+    /**
+     * Verifies unlabeled custom model info returned with response for a valid model Id.
+     */
+    @Test
+    void getCustomModelUnlabeled() {
+        beginTrainingUnlabeledResultRunner((unLabeledContainerSasUrl, useLabelFile) -> {
+            CustomFormModel customFormModel = client.beginTraining(unLabeledContainerSasUrl, useLabelFile)
+                .getFinalResult();
+            validateCustomModel(customFormModel, client.getCustomModel(customFormModel.getModelId()));
+        });
+    }
+
+    /**
+     * Verifies labeled custom model info returned with response for a valid model Id.
+     */
+    @Test
+    void getCustomModelLabeled() {
+        beginTrainingLabeledResultRunner((labeledContainerSasUrl, useLabelFile) -> {
+            CustomFormModel customFormModel = client.beginTraining(labeledContainerSasUrl, useLabelFile)
+                .getFinalResult();
+            validateCustomModel(customFormModel, client.getCustomModel(customFormModel.getModelId()));
+        });
     }
 
     /**

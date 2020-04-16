@@ -1,0 +1,104 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://javaformrecognizertestresource.cognitiveservices.azure.com/formrecognizer/v2.0-preview//custom/models",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "7e01ad6c-48a9-4417-904d-3e3d81d64c68",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-envoy-upstream-service-time" : "32",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "59bfe6b6-4a88-409b-b39c-79531f472d2a",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "Date" : "Sat, 18 Apr 2020 19:56:06 GMT",
+      "Location" : "https://javaformrecognizertestresource.cognitiveservices.azure.com/formrecognizer/v2.0-preview/custom/models/c96618e2-9a4d-4b6d-9998-2cebad0cae5c"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://javaformrecognizertestresource.cognitiveservices.azure.com/formrecognizer/v2.0-preview//custom/models/c96618e2-9a4d-4b6d-9998-2cebad0cae5c?includeKeys=true",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "8719e40f-1fbb-4c1e-a999-f2255488702c"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "30",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "fdb979e3-4c9c-4afa-a063-699ee38e0b4b",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"c96618e2-9a4d-4b6d-9998-2cebad0cae5c\",\"status\":\"creating\",\"createdDateTime\":\"2020-04-18T19:56:06Z\",\"lastUpdatedDateTime\":\"2020-04-18T19:56:06Z\"}}",
+      "Date" : "Sat, 18 Apr 2020 19:56:11 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://javaformrecognizertestresource.cognitiveservices.azure.com/formrecognizer/v2.0-preview//custom/models/c96618e2-9a4d-4b6d-9998-2cebad0cae5c?includeKeys=true",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "ee98ddd5-b9ed-4af3-b213-ebe2cc0b8c98"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "15",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "684b6904-de89-40e9-b048-b7c520c61b57",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"c96618e2-9a4d-4b6d-9998-2cebad0cae5c\",\"status\":\"ready\",\"createdDateTime\":\"2020-04-18T19:56:06Z\",\"lastUpdatedDateTime\":\"2020-04-18T19:56:13Z\"},\"keys\":{\"clusters\":{\"0\":[\"Address:\",\"Charges\",\"Invoice Date\",\"Invoice Due Date\",\"Invoice For:\",\"Invoice Number\",\"Microsoft\",\"Page\",\"VAT ID\"]}},\"trainResult\":{\"trainingDocuments\":[{\"documentName\":\"Invoice_1.pdf\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Invoice_2.pdf\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Invoice_3.pdf\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Invoice_4.pdf\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Invoice_5.pdf\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"}],\"errors\":[]}}",
+      "Date" : "Sat, 18 Apr 2020 19:56:16 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://javaformrecognizertestresource.cognitiveservices.azure.com/formrecognizer/v2.0-preview//custom/models/c96618e2-9a4d-4b6d-9998-2cebad0cae5c?includeKeys=true",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "7f13ded9-60ac-4579-9a31-9e36b4641e57"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "32",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "e75b5764-df43-4ea1-9c77-236798a54bc8",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"c96618e2-9a4d-4b6d-9998-2cebad0cae5c\",\"status\":\"ready\",\"createdDateTime\":\"2020-04-18T19:56:06Z\",\"lastUpdatedDateTime\":\"2020-04-18T19:56:13Z\"},\"keys\":{\"clusters\":{\"0\":[\"Address:\",\"Charges\",\"Invoice Date\",\"Invoice Due Date\",\"Invoice For:\",\"Invoice Number\",\"Microsoft\",\"Page\",\"VAT ID\"]}},\"trainResult\":{\"trainingDocuments\":[{\"documentName\":\"Invoice_1.pdf\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Invoice_2.pdf\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Invoice_3.pdf\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Invoice_4.pdf\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Invoice_5.pdf\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"}],\"errors\":[]}}",
+      "Date" : "Sat, 18 Apr 2020 19:56:17 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://javaformrecognizertestresource.cognitiveservices.azure.com/formrecognizer/v2.0-preview//custom/models/c96618e2-9a4d-4b6d-9998-2cebad0cae5c?includeKeys=true",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "3d4ac8e2-c893-401f-bc76-86770b3c06bf"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "24",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "e64f5314-17db-4ae9-8bf0-9e206524ce46",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"c96618e2-9a4d-4b6d-9998-2cebad0cae5c\",\"status\":\"ready\",\"createdDateTime\":\"2020-04-18T19:56:06Z\",\"lastUpdatedDateTime\":\"2020-04-18T19:56:13Z\"},\"keys\":{\"clusters\":{\"0\":[\"Address:\",\"Charges\",\"Invoice Date\",\"Invoice Due Date\",\"Invoice For:\",\"Invoice Number\",\"Microsoft\",\"Page\",\"VAT ID\"]}},\"trainResult\":{\"trainingDocuments\":[{\"documentName\":\"Invoice_1.pdf\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Invoice_2.pdf\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Invoice_3.pdf\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Invoice_4.pdf\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Invoice_5.pdf\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"}],\"errors\":[]}}",
+      "Date" : "Sat, 18 Apr 2020 19:56:17 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "testfr5587154" ]
+}
