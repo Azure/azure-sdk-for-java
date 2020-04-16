@@ -206,7 +206,7 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="src[/\\]test[/\\]java[/\\].*.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
-            files=".*[/\\]com[/\\]azure[/\\]core[/\\]tewst[/\\].*"/>
+            files=".*[/\\]com[/\\]azure[/\\]core[/\\]test[/\\].*"/>
 
   <!-- Temporary suppressions -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
