@@ -3,16 +3,11 @@
 package com.azure.management.dns;
 
 import com.azure.core.annotation.Fluent;
-
 import java.util.List;
 
-/**
- * An immutable client-side representation of an SVR (service) record set in Azure DNS Zone.
- */
+/** An immutable client-side representation of an SVR (service) record set in Azure DNS Zone. */
 @Fluent
 public interface SrvRecordSet extends DnsRecordSet {
-    /**
-     * @return the SRV records in this record set
-     */
+    /** @return the SRV records in this record set */
     List<SrvRecord> records();
 }
