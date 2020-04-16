@@ -5,9 +5,7 @@ package com.azure.management.compute.implementation;
 
 import com.azure.management.compute.OperatingSystemTypes;
 
-/**
- * An internal type expose utility methods around encryption extension identifier.
- */
+/** An internal type expose utility methods around encryption extension identifier. */
 class EncryptionExtensionIdentifier {
     //
     private static final String ENCRYPTION_EXTENSION_PUBLISHER = "Microsoft.Azure.Security";
@@ -21,16 +19,12 @@ class EncryptionExtensionIdentifier {
     private static final String LINUX_ENCRYPTION_TYPE_NAME = "AzureDiskEncryptionForLinux";
     private static final String WINDOWS_ENCRYPTION_TYPE_NAME = "AzureDiskEncryption";
 
-    /**
-     * @return encryption extension publisher name
-     */
+    /** @return encryption extension publisher name */
     static String publisherName() {
         return ENCRYPTION_EXTENSION_PUBLISHER;
     }
 
-    /**
-     * @return OS specific encryption extension type
-     */
+    /** @return OS specific encryption extension type */
     static String typeName(OperatingSystemTypes osType) {
         if (osType == OperatingSystemTypes.LINUX) {
             return LINUX_ENCRYPTION_TYPE_NAME;
@@ -55,8 +49,7 @@ class EncryptionExtensionIdentifier {
     }
 
     /**
-     * Checks whether the given version is a legacy extension version or no-aad extension version
-     * for the given OS type.
+     * Checks whether the given version is a legacy extension version or no-aad extension version for the given OS type.
      *
      * @param osType os type
      * @param version extension version

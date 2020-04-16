@@ -12,50 +12,46 @@ import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.storage.StorageAccount;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagementTest {
-    private String RG_NAME = "";
-    private final Region REGION = Region.US_SOUTH_CENTRAL;
-    private final String VMNAME = "javavm";
+    private String rgName = "";
+    private final Region region = Region.US_SOUTH_CENTRAL;
+    private final String vmName = "javavm";
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        RG_NAME = generateRandomResourceName("javacsmrg", 15);
+        rgName = generateRandomResourceName("javacsmrg", 15);
         super.initializeClients(restClient, defaultSubscription, domain);
     }
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().deleteByName(RG_NAME);
+        resourceManager.resourceGroups().deleteByName(rgName);
     }
 
     @Test
     public void canEnableBootDiagnosticsWithImplicitStorageOnManagedVMSSCreation() throws Exception {
         final String vmssName = generateRandomResourceName("vmss", 10);
 
-        ResourceGroup resourceGroup = this.resourceManager.resourceGroups()
-                .define(RG_NAME)
-                .withRegion(REGION)
-                .create();
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
-        Network network = this.networkManager
+        Network network =
+            this
+                .networkManager
                 .networks()
                 .define("vmssvnet")
-                .withRegion(REGION)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withAddressSpace("10.0.0.0/28")
                 .withSubnet("subnet1", "10.0.0.0/28")
                 .create();
 
-        LoadBalancer publicLoadBalancer = createInternetFacingLoadBalancer(REGION,
-                resourceGroup,
-                "1",
-                LoadBalancerSkuType.BASIC);
+        LoadBalancer publicLoadBalancer =
+            createInternetFacingLoadBalancer(region, resourceGroup, "1", LoadBalancerSkuType.BASIC);
 
         List<String> backends = new ArrayList<>();
         for (String backend : publicLoadBalancer.backends().keySet()) {
@@ -63,9 +59,12 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
         }
         Assertions.assertTrue(backends.size() == 2);
 
-        VirtualMachineScaleSet virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets()
+        VirtualMachineScaleSet virtualMachineScaleSet =
+            this
+                .computeManager
+                .virtualMachineScaleSets()
                 .define(vmssName)
-                .withRegion(REGION)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
                 .withExistingPrimaryNetworkSubnet(network, "subnet1")
@@ -88,24 +87,21 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
         final String vmssName = generateRandomResourceName("vmss", 10);
         final String storageName = sdkContext.randomResourceName("st", 14);
 
-        ResourceGroup resourceGroup = this.resourceManager.resourceGroups()
-                .define(RG_NAME)
-                .withRegion(REGION)
-                .create();
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
-        Network network = this.networkManager
+        Network network =
+            this
+                .networkManager
                 .networks()
                 .define("vmssvnet")
-                .withRegion(REGION)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withAddressSpace("10.0.0.0/28")
                 .withSubnet("subnet1", "10.0.0.0/28")
                 .create();
 
-        LoadBalancer publicLoadBalancer = createInternetFacingLoadBalancer(REGION,
-                resourceGroup,
-                "1",
-                LoadBalancerSkuType.BASIC);
+        LoadBalancer publicLoadBalancer =
+            createInternetFacingLoadBalancer(region, resourceGroup, "1", LoadBalancerSkuType.BASIC);
 
         List<String> backends = new ArrayList<>();
         for (String backend : publicLoadBalancer.backends().keySet()) {
@@ -113,14 +109,15 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
         }
         Assertions.assertTrue(backends.size() == 2);
 
-        Creatable<StorageAccount> creatableStorageAccount = storageManager.storageAccounts()
-                .define(storageName)
-                .withRegion(REGION)
-                .withExistingResourceGroup(RG_NAME);
+        Creatable<StorageAccount> creatableStorageAccount =
+            storageManager.storageAccounts().define(storageName).withRegion(region).withExistingResourceGroup(rgName);
 
-        VirtualMachineScaleSet virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets()
+        VirtualMachineScaleSet virtualMachineScaleSet =
+            this
+                .computeManager
+                .virtualMachineScaleSets()
                 .define(vmssName)
-                .withRegion(REGION)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
                 .withExistingPrimaryNetworkSubnet(network, "subnet1")
@@ -144,24 +141,21 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
         final String vmssName = generateRandomResourceName("vmss", 10);
         final String storageName = sdkContext.randomResourceName("st", 14);
 
-        ResourceGroup resourceGroup = this.resourceManager.resourceGroups()
-                .define(RG_NAME)
-                .withRegion(REGION)
-                .create();
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
-        Network network = this.networkManager
+        Network network =
+            this
+                .networkManager
                 .networks()
                 .define("vmssvnet")
-                .withRegion(REGION)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withAddressSpace("10.0.0.0/28")
                 .withSubnet("subnet1", "10.0.0.0/28")
                 .create();
 
-        LoadBalancer publicLoadBalancer = createInternetFacingLoadBalancer(REGION,
-                resourceGroup,
-                "1",
-                LoadBalancerSkuType.BASIC);
+        LoadBalancer publicLoadBalancer =
+            createInternetFacingLoadBalancer(region, resourceGroup, "1", LoadBalancerSkuType.BASIC);
 
         List<String> backends = new ArrayList<>();
         for (String backend : publicLoadBalancer.backends().keySet()) {
@@ -169,15 +163,20 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
         }
         Assertions.assertTrue(backends.size() == 2);
 
-        StorageAccount storageAccount = storageManager.storageAccounts()
+        StorageAccount storageAccount =
+            storageManager
+                .storageAccounts()
                 .define(storageName)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .create();
 
-        VirtualMachineScaleSet virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets()
+        VirtualMachineScaleSet virtualMachineScaleSet =
+            this
+                .computeManager
+                .virtualMachineScaleSets()
                 .define(vmssName)
-                .withRegion(REGION)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
                 .withExistingPrimaryNetworkSubnet(network, "subnet1")
@@ -200,24 +199,21 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
     public void canDisableVMSSBootDiagnostics() throws Exception {
         final String vmssName = generateRandomResourceName("vmss", 10);
 
-        ResourceGroup resourceGroup = this.resourceManager.resourceGroups()
-                .define(RG_NAME)
-                .withRegion(REGION)
-                .create();
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
-        Network network = this.networkManager
+        Network network =
+            this
+                .networkManager
                 .networks()
                 .define("vmssvnet")
-                .withRegion(REGION)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withAddressSpace("10.0.0.0/28")
                 .withSubnet("subnet1", "10.0.0.0/28")
                 .create();
 
-        LoadBalancer publicLoadBalancer = createInternetFacingLoadBalancer(REGION,
-                resourceGroup,
-                "1",
-                LoadBalancerSkuType.BASIC);
+        LoadBalancer publicLoadBalancer =
+            createInternetFacingLoadBalancer(region, resourceGroup, "1", LoadBalancerSkuType.BASIC);
 
         List<String> backends = new ArrayList<>();
         for (String backend : publicLoadBalancer.backends().keySet()) {
@@ -225,9 +221,12 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
         }
         Assertions.assertTrue(backends.size() == 2);
 
-        VirtualMachineScaleSet virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets()
+        VirtualMachineScaleSet virtualMachineScaleSet =
+            this
+                .computeManager
+                .virtualMachineScaleSets()
                 .define(vmssName)
-                .withRegion(REGION)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
                 .withExistingPrimaryNetworkSubnet(network, "subnet1")
@@ -244,9 +243,7 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
         Assertions.assertTrue(virtualMachineScaleSet.isBootDiagnosticsEnabled());
         Assertions.assertNotNull(virtualMachineScaleSet.bootDiagnosticsStorageUri());
 
-        virtualMachineScaleSet.update()
-                .withoutBootDiagnostics()
-                .apply();
+        virtualMachineScaleSet.update().withoutBootDiagnostics().apply();
 
         Assertions.assertFalse(virtualMachineScaleSet.isBootDiagnosticsEnabled());
         // Disabling boot diagnostics will not remove the storage uri from the vm payload.
@@ -257,24 +254,21 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
     public void bootDiagnosticsShouldUsesVMSSOSUnManagedDiskImplicitStorage() throws Exception {
         final String vmssName = generateRandomResourceName("vmss", 10);
 
-        ResourceGroup resourceGroup = this.resourceManager.resourceGroups()
-                .define(RG_NAME)
-                .withRegion(REGION)
-                .create();
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
-        Network network = this.networkManager
+        Network network =
+            this
+                .networkManager
                 .networks()
                 .define("vmssvnet")
-                .withRegion(REGION)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withAddressSpace("10.0.0.0/28")
                 .withSubnet("subnet1", "10.0.0.0/28")
                 .create();
 
-        LoadBalancer publicLoadBalancer = createInternetFacingLoadBalancer(REGION,
-                resourceGroup,
-                "1",
-                LoadBalancerSkuType.BASIC);
+        LoadBalancer publicLoadBalancer =
+            createInternetFacingLoadBalancer(region, resourceGroup, "1", LoadBalancerSkuType.BASIC);
 
         List<String> backends = new ArrayList<>();
         for (String backend : publicLoadBalancer.backends().keySet()) {
@@ -282,9 +276,12 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
         }
         Assertions.assertTrue(backends.size() == 2);
 
-        VirtualMachineScaleSet virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets()
+        VirtualMachineScaleSet virtualMachineScaleSet =
+            this
+                .computeManager
+                .virtualMachineScaleSets()
                 .define(vmssName)
-                .withRegion(REGION)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
                 .withExistingPrimaryNetworkSubnet(network, "subnet1")
@@ -312,7 +309,9 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
         // Boot diagnostics should share storage used for os/disk containers
         boolean found = false;
         for (String containerStorageUri : containers) {
-            if (containerStorageUri.toLowerCase().startsWith(virtualMachineScaleSet.bootDiagnosticsStorageUri().toLowerCase())) {
+            if (containerStorageUri
+                .toLowerCase()
+                .startsWith(virtualMachineScaleSet.bootDiagnosticsStorageUri().toLowerCase())) {
                 found = true;
                 break;
             }
@@ -325,24 +324,21 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
         final String storageName = sdkContext.randomResourceName("st", 14);
         final String vmssName = generateRandomResourceName("vmss", 10);
 
-        ResourceGroup resourceGroup = this.resourceManager.resourceGroups()
-                .define(RG_NAME)
-                .withRegion(REGION)
-                .create();
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
-        Network network = this.networkManager
+        Network network =
+            this
+                .networkManager
                 .networks()
                 .define("vmssvnet")
-                .withRegion(REGION)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withAddressSpace("10.0.0.0/28")
                 .withSubnet("subnet1", "10.0.0.0/28")
                 .create();
 
-        LoadBalancer publicLoadBalancer = createInternetFacingLoadBalancer(REGION,
-                resourceGroup,
-                "1",
-                LoadBalancerSkuType.BASIC);
+        LoadBalancer publicLoadBalancer =
+            createInternetFacingLoadBalancer(region, resourceGroup, "1", LoadBalancerSkuType.BASIC);
 
         List<String> backends = new ArrayList<>();
         for (String backend : publicLoadBalancer.backends().keySet()) {
@@ -350,15 +346,20 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
         }
         Assertions.assertTrue(backends.size() == 2);
 
-        StorageAccount storageAccount = storageManager.storageAccounts()
+        StorageAccount storageAccount =
+            storageManager
+                .storageAccounts()
                 .define(storageName)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .create();
 
-        VirtualMachineScaleSet virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets()
+        VirtualMachineScaleSet virtualMachineScaleSet =
+            this
+                .computeManager
+                .virtualMachineScaleSets()
                 .define(vmssName)
-                .withRegion(REGION)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
                 .withExistingPrimaryNetworkSubnet(network, "subnet1")
@@ -370,7 +371,8 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
                 .withRootPassword("123OData!@#123")
                 .withUnmanagedDisks()
                 .withBootDiagnostics()
-                .withExistingStorageAccount(storageAccount) // This storage account must be shared by disk and boot diagnostics
+                .withExistingStorageAccount(
+                    storageAccount) // This storage account must be shared by disk and boot diagnostics
                 .create();
 
         Assertions.assertNotNull(virtualMachineScaleSet);
@@ -392,24 +394,21 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
         final String storageName = sdkContext.randomResourceName("st", 14);
         final String vmssName = generateRandomResourceName("vmss", 10);
 
-        ResourceGroup resourceGroup = this.resourceManager.resourceGroups()
-                .define(RG_NAME)
-                .withRegion(REGION)
-                .create();
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
-        Network network = this.networkManager
+        Network network =
+            this
+                .networkManager
                 .networks()
                 .define("vmssvnet")
-                .withRegion(REGION)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withAddressSpace("10.0.0.0/28")
                 .withSubnet("subnet1", "10.0.0.0/28")
                 .create();
 
-        LoadBalancer publicLoadBalancer = createInternetFacingLoadBalancer(REGION,
-                resourceGroup,
-                "1",
-                LoadBalancerSkuType.BASIC);
+        LoadBalancer publicLoadBalancer =
+            createInternetFacingLoadBalancer(region, resourceGroup, "1", LoadBalancerSkuType.BASIC);
 
         List<String> backends = new ArrayList<>();
         for (String backend : publicLoadBalancer.backends().keySet()) {
@@ -417,15 +416,15 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
         }
         Assertions.assertTrue(backends.size() == 2);
 
+        Creatable<StorageAccount> creatableStorageAccount =
+            storageManager.storageAccounts().define(storageName).withRegion(region).withExistingResourceGroup(rgName);
 
-        Creatable<StorageAccount> creatableStorageAccount = storageManager.storageAccounts()
-                .define(storageName)
-                .withRegion(REGION)
-                .withExistingResourceGroup(RG_NAME);
-
-        VirtualMachineScaleSet virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets()
+        VirtualMachineScaleSet virtualMachineScaleSet =
+            this
+                .computeManager
+                .virtualMachineScaleSets()
                 .define(vmssName)
-                .withRegion(REGION)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
                 .withExistingPrimaryNetworkSubnet(network, "subnet1")
@@ -436,7 +435,9 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
                 .withRootUsername("jvuser")
                 .withRootPassword("123OData!@#123")
                 .withUnmanagedDisks()
-                .withBootDiagnostics(creatableStorageAccount) // This storage account should be used for BDiagnostics not OS disk storage account
+                .withBootDiagnostics(
+                    creatableStorageAccount) // This storage account should be used for BDiagnostics not OS disk storage
+                                             // account
                 .create();
 
         Assertions.assertNotNull(virtualMachineScaleSet);
@@ -454,7 +455,9 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
         Assertions.assertFalse(containers.isEmpty());
         boolean notFound = true;
         for (String containerStorageUri : containers) {
-            if (containerStorageUri.toLowerCase().startsWith(virtualMachineScaleSet.bootDiagnosticsStorageUri().toLowerCase())) {
+            if (containerStorageUri
+                .toLowerCase()
+                .startsWith(virtualMachineScaleSet.bootDiagnosticsStorageUri().toLowerCase())) {
                 notFound = false;
                 break;
             }

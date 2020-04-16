@@ -17,12 +17,10 @@ import com.azure.management.resources.fluentcore.collection.SupportsDeletingById
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-/**
- * Entry point to availability set management API.
- */
+/** Entry point to availability set management API. */
 @Fluent
-public interface AvailabilitySets extends
-        SupportsListingByResourceGroup<AvailabilitySet>,
+public interface AvailabilitySets
+    extends SupportsListingByResourceGroup<AvailabilitySet>,
         SupportsGettingByResourceGroup<AvailabilitySet>,
         SupportsGettingById<AvailabilitySet>,
         SupportsListing<AvailabilitySet>,

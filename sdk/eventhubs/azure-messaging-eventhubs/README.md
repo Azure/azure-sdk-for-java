@@ -270,17 +270,19 @@ to newest events that get pushed to the partition by invoking `receiveFromPartit
 can begin receiving events from multiple partitions using the same EventHubConsumerAsyncClient by calling
 `receiveFromPartition(String, EventPosition)` with another partition id, and subscribing to that Flux.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L120-L128 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L120-L130 -->
 ```java
 EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
     .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
     .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
     .buildAsyncConsumerClient();
 
-// Receive events from partition with id "0", only getting events that are newly added to the partition.
+// Receive newly added events from partition with id "0". EventPosition specifies the position
+// within the Event Hub partition to begin consuming events.
 consumer.receiveFromPartition("0", EventPosition.latest()).subscribe(event -> {
     // Process each event as it arrives.
 });
+// add sleep or System.in.read() to receive events before exiting the process.
 ```
 
 #### Consume events with EventHubConsumerClient
@@ -288,7 +290,7 @@ consumer.receiveFromPartition("0", EventPosition.latest()).subscribe(event -> {
 Developers can create a synchronous consumer that returns events in batches using an `EventHubConsumerClient`. In the
 snippet below, a consumer is created that starts reading events from the beginning of the partition's event stream.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L135-L147 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L137-L149 -->
 ```java
 EventHubConsumerClient consumer = new EventHubClientBuilder()
     .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
@@ -321,12 +323,12 @@ received from the Event Hub and writes to console. For production applications, 
 store like [Checkpoint Store with Azure Storage Blobs][BlobCheckpointStore].
 
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L155-L176 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L157-L178 -->
 ```java
 EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
     .consumerGroup("<< CONSUMER GROUP NAME >>")
     .connectionString("<< EVENT HUB CONNECTION STRING >>")
-    .checkpointStore(new InMemoryCheckpointStore())
+    .checkpointStore(new SampleCheckpointStore())
     .processEvent(eventContext -> {
         System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
             + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());

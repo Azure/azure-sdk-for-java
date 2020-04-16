@@ -58,8 +58,8 @@ public final class ElasticPoolDatabaseActivitiesInner {
     private interface ElasticPoolDatabaseActivitiesService {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/elasticPools/{elasticPoolName}/elasticPoolDatabaseActivity")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/elasticPools/{elasticPoolName}/elasticPoolDatabaseActivity")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<ElasticPoolDatabaseActivityListResultInner>> listByElasticPool(

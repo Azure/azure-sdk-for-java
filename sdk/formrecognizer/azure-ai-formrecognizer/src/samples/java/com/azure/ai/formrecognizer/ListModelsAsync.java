@@ -17,10 +17,10 @@ public class ListModelsAsync {
      * @param args Unused. Arguments to the program.
      */
     public static void main(String[] args) {
-        FormRecognizerAsyncClient client = new FormRecognizerClientBuilder()
+        FormTrainingAsyncClient client = new FormRecognizerClientBuilder()
             .apiKey(new AzureKeyCredential("{api_key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
-            .buildAsyncClient();
+            .buildAsyncClient().getFormTrainingAsyncClient();
 
         client.listModels().subscribe(result ->
             System.out.printf("Model ID = %s, model status = %s, created on = %s, last updated on = %s.%n",

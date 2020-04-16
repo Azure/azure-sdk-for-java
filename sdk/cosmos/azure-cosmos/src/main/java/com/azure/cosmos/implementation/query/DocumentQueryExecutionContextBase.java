@@ -115,8 +115,7 @@ implements IDocumentQueryExecutionContext<T> {
 
     public FeedOptions getFeedOptions(String continuationToken, Integer maxPageSize) {
         FeedOptions options = new FeedOptions(this.feedOptions);
-        options.setRequestContinuation(continuationToken);
-        options.setMaxItemCount(maxPageSize);
+        ModelBridgeInternal.setFeedOptionsContinuationTokenAndMaxItemCount(options, continuationToken, maxPageSize);
         return options;
     }
 
