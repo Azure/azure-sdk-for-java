@@ -7,7 +7,6 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClientOptions;
@@ -76,7 +75,7 @@ public class EnvironmentCredential implements TokenCredential {
 
             // Other environment variables
             throw logger.logExceptionAsError(new CredentialUnavailableException(
-                "Cannot create any credentials with the current environment variables", null));
+                "Cannot create any credentials with the current environment variables"));
         }).flatMap(cred -> cred.getToken(request));
     }
 

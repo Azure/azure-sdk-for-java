@@ -111,22 +111,28 @@ public class DefaultAzureCredentialTest {
 
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-        when(identityClient.authenticateToIMDSEndpoint(request)).thenReturn(Mono.error(new RuntimeException("Cannot get token from managed identity")));
-        PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
+        when(identityClient.authenticateToIMDSEndpoint(request))
+            .thenReturn(Mono.error(new CredentialUnavailableException("Cannot get token from managed identity")));
+        PowerMockito.whenNew(IdentityClient.class).withAnyArguments()
+            .thenReturn(identityClient);
 
         SharedTokenCacheCredential sharedTokenCacheCredential = PowerMockito.mock(SharedTokenCacheCredential.class);
-        when(sharedTokenCacheCredential.getToken(request)).thenReturn(Mono.error(new RuntimeException("Cannot get token from shared token cache")));
-        PowerMockito.whenNew(SharedTokenCacheCredential.class).withAnyArguments().thenReturn(sharedTokenCacheCredential);
+        when(sharedTokenCacheCredential.getToken(request))
+            .thenReturn(Mono.error(new CredentialUnavailableException("Cannot get token from shared token cache")));
+        PowerMockito.whenNew(SharedTokenCacheCredential.class).withAnyArguments()
+            .thenReturn(sharedTokenCacheCredential);
 
         AzureCliCredential azureCliCredential = PowerMockito.mock(AzureCliCredential.class);
-        when(azureCliCredential.getToken(request)).thenReturn(Mono.error(new RuntimeException("Cannot get token from Azure CLI credential")));
-        PowerMockito.whenNew(AzureCliCredential.class).withAnyArguments().thenReturn(azureCliCredential);
+        when(azureCliCredential.getToken(request))
+            .thenReturn(Mono.error(new CredentialUnavailableException("Cannot get token from Azure CLI credential")));
+        PowerMockito.whenNew(AzureCliCredential.class).withAnyArguments()
+            .thenReturn(azureCliCredential);
 
 
         // test
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         StepVerifier.create(credential.getToken(request))
-            .expectErrorMatches(t -> t instanceof RuntimeException && t.getMessage()
+            .expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage()
                                       .matches("Tried EnvironmentCredential, ManagedIdentityCredential, "
                                                    + "SharedTokenCacheCredential"
                                                    + "[\\$\\w]+\\$\\d*,\\s+AzureCliCredential[\\$\\w\\s\\.]+"))
@@ -144,7 +150,7 @@ public class DefaultAzureCredentialTest {
     }
 
     @Test
-    public void testExclueEnvironmentCredential() throws Exception {
+    public void testExcludeEnvironmentCredential() throws Exception {
         Configuration configuration = Configuration.getGlobalConfiguration();
 
         TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
@@ -153,7 +159,7 @@ public class DefaultAzureCredentialTest {
                                                 .excludeEnvironmentCredential()
                                                 .build();
         StepVerifier.create(credential.getToken(request1))
-            .expectErrorMatches(t -> t instanceof RuntimeException && t.getMessage()
+            .expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage()
                                       .startsWith("Tried ManagedIdentityCredential, "
                                                    + "SharedTokenCacheCredential, "
                                                    + "AzureCliCredential"))
@@ -170,7 +176,7 @@ public class DefaultAzureCredentialTest {
                                                 .excludeManagedIdentityCredential()
                                                 .build();
         StepVerifier.create(credential.getToken(request1))
-            .expectErrorMatches(t -> t instanceof RuntimeException && t.getMessage()
+            .expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage()
                                       .startsWith("Tried EnvironmentCredential, "
                                                    + "SharedTokenCacheCredential, "
                                                    + "AzureCliCredential"))
@@ -184,12 +190,11 @@ public class DefaultAzureCredentialTest {
         TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
         // test
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
-                                                .excludeEnvironmentCredential()
                                                 .excludeSharedTokenCacheCredential()
                                                 .build();
         StepVerifier.create(credential.getToken(request1))
-            .expectErrorMatches(t -> t instanceof RuntimeException && t.getMessage()
-                                      .startsWith("Tried "
+            .expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage()
+                                      .startsWith("Tried EnvironmentCredential, "
                                                       + "ManagedIdentityCredential, "
                                                       + "AzureCliCredential"))
             .verify();
@@ -202,14 +207,31 @@ public class DefaultAzureCredentialTest {
         TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
         // test
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
-                                                .excludeEnvironmentCredential()
                                                 .excludeAzureCliCredential()
                                                 .build();
         StepVerifier.create(credential.getToken(request1))
-            .expectErrorMatches(t -> t instanceof RuntimeException && t.getMessage()
-                                      .startsWith("Tried "
+            .expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage()
+                                      .startsWith("Tried EnvironmentCredential, "
                                                       + "ManagedIdentityCredential, "
                                                       + "SharedTokenCacheCredential but"))
+            .verify();
+    }
+
+
+    @Test
+    public void testCredentialUnavailable() throws Exception {
+        Configuration configuration = Configuration.getGlobalConfiguration();
+
+        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
+        // test
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
+                                                .build();
+        StepVerifier.create(credential.getToken(request1))
+            .expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage()
+                                        .startsWith("Tried EnvironmentCredential, "
+                                                        + "ManagedIdentityCredential, "
+                                                        + "SharedTokenCacheCredential, "
+                                                        + "AzureCliCredential but"))
             .verify();
     }
 }
