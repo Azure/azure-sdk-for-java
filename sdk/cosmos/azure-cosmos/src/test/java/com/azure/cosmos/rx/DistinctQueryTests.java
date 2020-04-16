@@ -79,7 +79,6 @@ public class DistinctQueryTests extends TestSuiteBase {
     public void queryDocuments(boolean qmEnabled) {
         String query = "SELECT DISTINCT c.name from c";
         FeedOptions options = new FeedOptions();
-        options.setMaxItemCount(5);
         options.setPopulateQueryMetrics(qmEnabled);
         options.setMaxDegreeOfParallelism(2);
         CosmosPagedFlux<CosmosItemProperties> queryObservable =
@@ -100,7 +99,7 @@ public class DistinctQueryTests extends TestSuiteBase {
                 .hasValidQueryMetrics(qmEnabled)
                 .build();
 
-        validateQuerySuccess(queryObservable.byPage(), validator, TIMEOUT);
+        validateQuerySuccess(queryObservable.byPage(5), validator, TIMEOUT);
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT_120)
@@ -194,7 +193,6 @@ public class DistinctQueryTests extends TestSuiteBase {
 
         for (String query : queries) {
             FeedOptions options = new FeedOptions();
-            options.setMaxItemCount(5);
             options.setMaxDegreeOfParallelism(2);
 
             List<CosmosItemProperties> documentsFromWithDistinct = new ArrayList<>();
@@ -226,7 +224,7 @@ public class DistinctQueryTests extends TestSuiteBase {
                                                                                                 CosmosItemProperties.class);
 
 
-            iterator = queryObservableWithDistinct.byPage().toIterable().iterator();
+            iterator = queryObservableWithDistinct.byPage(5).toIterable().iterator();
 
             while (iterator.hasNext()) {
                 FeedResponse<CosmosItemProperties> next = iterator.next();
@@ -242,13 +240,12 @@ public class DistinctQueryTests extends TestSuiteBase {
     public void queryDocumentsForDistinctIntValues(boolean qmEnabled) {
         String query = "SELECT DISTINCT c.intprop from c";
         FeedOptions options = new FeedOptions();
-        options.setMaxItemCount(5);
         options.setPopulateQueryMetrics(qmEnabled);
         options.setMaxDegreeOfParallelism(2);
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options,
                                                                                              CosmosItemProperties.class);
 
-        Iterator<FeedResponse<CosmosItemProperties>> iterator = queryObservable.byPage().collectList().single().block()
+        Iterator<FeedResponse<CosmosItemProperties>> iterator = queryObservable.byPage(5).collectList().single().block()
                                                                     .iterator();
         List<CosmosItemProperties> itemPropertiesList = new ArrayList<>();
         while (iterator.hasNext()) {

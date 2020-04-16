@@ -145,7 +145,7 @@ class DocumentProducer<T extends Resource> {
         this.correlatedActivityId = correlatedActivityId;
 
         this.feedOptions = feedOptions != null ? feedOptions : new FeedOptions();
-        this.feedOptions.setRequestContinuation(initialContinuationToken);
+        ModelBridgeInternal.setFeedOptionsContinuationToken(this.feedOptions, initialContinuationToken);
         this.lastResponseContinuationToken = initialContinuationToken;
         this.resourceType = resourceType;
         this.targetRange = targetRange;
