@@ -23,7 +23,11 @@ import java.time.Duration;
  * to Azure Form Recognizer.
  * Operations allowed by the client are, to create/tracin custom models. delete models, list models.
  *
+ * <p><strong>Code sample</strong></p>
+ * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.initialization}
+ *
  * @see FormRecognizerClientBuilder
+ * @see FormRecognizerClient
  */
 @ServiceClient(builder = FormRecognizerClientBuilder.class)
 public class FormTrainingClient {
@@ -58,6 +62,9 @@ public class FormTrainingClient {
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.beginTraining#string-boolean}
+     *
      * @param fileSourceUrl source URL parameter that is either an externally accessible
      * Azure storage blob container Uri (preferably a Shared Access Signature Uri).
      * @param useLabelFile Boolean to specify the use of labeled files for training the model.
@@ -77,6 +84,9 @@ public class FormTrainingClient {
      * Other type of content is ignored.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.beginTraining#string-boolean-boolean-string-Duration}
      *
      * @param fileSourceUrl source URL parameter that is either an externally accessible Azure storage
      * blob container Uri (preferably a Shared Access Signature Uri).
@@ -102,6 +112,9 @@ public class FormTrainingClient {
     /**
      * Get detailed information for a specified custom model id.
      *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.getCustomModel#string}
+     *
      * @param modelId The UUID string format model identifier.
      *
      * @return The detailed information for the specified model.
@@ -113,6 +126,9 @@ public class FormTrainingClient {
 
     /**
      * Get detailed information for a specified custom model id.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.getCustomModelWithResponse#string-Context}
      *
      * @param modelId The UUID string format model identifier.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -127,6 +143,9 @@ public class FormTrainingClient {
     /**
      * Get account information for all custom models.
      *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.getAccountProperties}
+     *
      * @return The account information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -136,6 +155,9 @@ public class FormTrainingClient {
 
     /**
      * Get account information for all custom models.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.getAccountPropertiesWithResponse#Context}
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
@@ -149,6 +171,9 @@ public class FormTrainingClient {
     /**
      * Deletes the specified custom model.
      *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.deleteModel#string}
+     *
      * @param modelId The UUID string format model identifier.
      */
     public void deleteModel(String modelId) {
@@ -157,6 +182,9 @@ public class FormTrainingClient {
 
     /**
      * Deletes the specified custom model.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.deleteModelWithResponse#string-Context}
      *
      * @param modelId The UUID string format model identifier.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -170,6 +198,9 @@ public class FormTrainingClient {
     /**
      * List information for all models.
      *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.listModels}
+     *
      * @return {@link PagedIterable} of {@link CustomFormModelInfo} custom form model information.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -179,6 +210,9 @@ public class FormTrainingClient {
 
     /**
      * List information for all models with taking {@link Context}.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.listModels#Context}
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link PagedIterable} of {@link CustomFormModelInfo} custom form model information.
