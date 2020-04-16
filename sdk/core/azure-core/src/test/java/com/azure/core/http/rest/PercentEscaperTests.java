@@ -52,7 +52,7 @@ public class PercentEscaperTests {
             Arguments.arguments(defaultEscaper, " ", "%20"),
             Arguments.arguments(new PercentEscaper(null, true), " ", "+"),
             Arguments.arguments(new PercentEscaper("$", false), "$", "$"),
-            Arguments.arguments(new PercentEscaper( "ह", false), "ह", "ह")
+            Arguments.arguments(new PercentEscaper("ह", false), "ह", "ह")
         );
     }
 
