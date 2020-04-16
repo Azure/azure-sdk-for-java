@@ -32,6 +32,11 @@
     <url>https://github.com/azure/azure-sdk-for-java</url>
   </scm>
 
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
+  </properties>
+
   <issueManagement>
     <system>GitHub</system>
     <url>https://github.com/azure/azure-sdk-for-java/issues</url>
