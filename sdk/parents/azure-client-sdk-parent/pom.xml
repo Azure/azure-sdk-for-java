@@ -339,7 +339,46 @@
               <goal>restore-instrumented-classes</goal>
             </goals>
           </execution>
-        </executions>
+          <execution>
+            <id>post-unit-test</id>	
+            <goals>	
+              <goal>report</goal>	
+            </goals>	
+            <configuration>	
+              <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>	
+              <excludes>	
+                <exclude>**/com/azure/cosmos/implementation/apachecommons/**/*</exclude>	
+                <exclude>**/com/azure/cosmos/implementation/guava25/**/*</exclude>	
+                <exclude>**/com/azure/cosmos/implementation/guava27/**/*</exclude>	
+              </excludes>     
+            </configuration>
+          </execution>
+          <execution>	
+            <id>check</id>	
+            <goals>
+              <goal>check</goal>	        
+            </goals>
+            <configuration>	
+              <rules>	
+                <rule>
+                  <element>BUNDLE</element>	
+                  <limits>	
+                    <limit>	
+                      <counter>LINE</counter>	
+                      <value>COVEREDRATIO</value>	
+                      <minimum>${jacoco.min.linecoverage}</minimum>	
+                    </limit>	
+                    <limit>	
+                      <counter>BRANCH</counter>	
+                      <value>COVEREDRATIO</value>	
+                      <minimum>${jacoco.min.branchcoverage}</minimum>	
+                    </limit>	
+                  </limits>	
+                </rule>	
+              </rules>
+            </configuration>
+          </execution>
+      </executions>
     </plugin>
 
       <!-- Allows the sample sources to be built during test-compile phase. -->

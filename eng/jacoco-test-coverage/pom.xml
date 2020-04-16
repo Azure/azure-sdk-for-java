@@ -193,6 +193,9 @@
             <goals>
               <goal>report-aggregate</goal>
             </goals>
+            <configuration>
+              <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
+            </configuration>
           </execution>
         </executions>
       </plugin>
