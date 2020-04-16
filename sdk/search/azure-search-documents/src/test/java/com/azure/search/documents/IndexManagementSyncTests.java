@@ -366,7 +366,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         );
 
         Field tagsField = getFieldByName(existingIndex, "Description_Custom");
-        tagsField.setRetrievable(false)
+        tagsField.setHidden(true)
             .setSearchAnalyzer(AnalyzerName.WHITESPACE)
             .setSynonymMaps(Collections.singletonList(synonymMap.getName()));
 
@@ -378,7 +378,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         addFieldToIndex(existingIndex, hotelWebSiteField);
 
         Field hotelNameField = getFieldByName(existingIndex, "HotelName");
-        hotelNameField.setRetrievable(false);
+        hotelNameField.setHidden(true);
 
         updatedIndex = client.createOrUpdateIndexWithResponse(existingIndex,
             true, new MatchConditions(), generateRequestOptions(), Context.NONE).getValue();
