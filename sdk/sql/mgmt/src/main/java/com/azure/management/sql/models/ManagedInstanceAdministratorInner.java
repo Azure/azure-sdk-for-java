@@ -7,12 +7,11 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.management.sql.AdministratorType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/**
- * The ManagedInstanceAdministrator model.
- */
+/** The ManagedInstanceAdministrator model. */
 @JsonFlatten
 @Fluent
 public class ManagedInstanceAdministratorInner extends ProxyResource {
@@ -20,7 +19,7 @@ public class ManagedInstanceAdministratorInner extends ProxyResource {
      * Type of the managed instance administrator.
      */
     @JsonProperty(value = "properties.administratorType")
-    private String administratorType;
+    private AdministratorType administratorType;
 
     /*
      * Login name of the managed instance administrator.
@@ -41,38 +40,28 @@ public class ManagedInstanceAdministratorInner extends ProxyResource {
     private UUID tenantId;
 
     /**
-     * Creates an instance of ManagedInstanceAdministratorInner class.
-     */
-    public ManagedInstanceAdministratorInner() {
-        administratorType = "ActiveDirectory";
-    }
-
-    /**
-     * Get the administratorType property: Type of the managed instance
-     * administrator.
-     * 
+     * Get the administratorType property: Type of the managed instance administrator.
+     *
      * @return the administratorType value.
      */
-    public String administratorType() {
+    public AdministratorType administratorType() {
         return this.administratorType;
     }
 
     /**
-     * Set the administratorType property: Type of the managed instance
-     * administrator.
-     * 
+     * Set the administratorType property: Type of the managed instance administrator.
+     *
      * @param administratorType the administratorType value to set.
      * @return the ManagedInstanceAdministratorInner object itself.
      */
-    public ManagedInstanceAdministratorInner withAdministratorType(String administratorType) {
+    public ManagedInstanceAdministratorInner withAdministratorType(AdministratorType administratorType) {
         this.administratorType = administratorType;
         return this;
     }
 
     /**
-     * Get the login property: Login name of the managed instance
-     * administrator.
-     * 
+     * Get the login property: Login name of the managed instance administrator.
+     *
      * @return the login value.
      */
     public String login() {
@@ -80,9 +69,8 @@ public class ManagedInstanceAdministratorInner extends ProxyResource {
     }
 
     /**
-     * Set the login property: Login name of the managed instance
-     * administrator.
-     * 
+     * Set the login property: Login name of the managed instance administrator.
+     *
      * @param login the login value to set.
      * @return the ManagedInstanceAdministratorInner object itself.
      */
@@ -92,9 +80,8 @@ public class ManagedInstanceAdministratorInner extends ProxyResource {
     }
 
     /**
-     * Get the sid property: SID (object ID) of the managed instance
-     * administrator.
-     * 
+     * Get the sid property: SID (object ID) of the managed instance administrator.
+     *
      * @return the sid value.
      */
     public UUID sid() {
@@ -102,9 +89,8 @@ public class ManagedInstanceAdministratorInner extends ProxyResource {
     }
 
     /**
-     * Set the sid property: SID (object ID) of the managed instance
-     * administrator.
-     * 
+     * Set the sid property: SID (object ID) of the managed instance administrator.
+     *
      * @param sid the sid value to set.
      * @return the ManagedInstanceAdministratorInner object itself.
      */
@@ -114,9 +100,8 @@ public class ManagedInstanceAdministratorInner extends ProxyResource {
     }
 
     /**
-     * Get the tenantId property: Tenant ID of the managed instance
-     * administrator.
-     * 
+     * Get the tenantId property: Tenant ID of the managed instance administrator.
+     *
      * @return the tenantId value.
      */
     public UUID tenantId() {
@@ -124,9 +109,8 @@ public class ManagedInstanceAdministratorInner extends ProxyResource {
     }
 
     /**
-     * Set the tenantId property: Tenant ID of the managed instance
-     * administrator.
-     * 
+     * Set the tenantId property: Tenant ID of the managed instance administrator.
+     *
      * @param tenantId the tenantId value to set.
      * @return the ManagedInstanceAdministratorInner object itself.
      */

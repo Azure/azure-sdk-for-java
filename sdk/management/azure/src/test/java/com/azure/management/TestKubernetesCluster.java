@@ -8,8 +8,6 @@ import com.azure.management.containerservice.ContainerServiceVMSizeTypes;
 import com.azure.management.containerservice.KubernetesCluster;
 import com.azure.management.containerservice.KubernetesClusters;
 import com.azure.management.resources.fluentcore.arm.Region;
-import org.junit.jupiter.api.Assertions;
-
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -23,11 +21,12 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Properties;
+import org.junit.jupiter.api.Assertions;
 
 public class TestKubernetesCluster extends TestTemplate<KubernetesCluster, KubernetesClusters> {
     @Override
     public KubernetesCluster createResource(KubernetesClusters kubernetesClusters) throws Exception {
-        final String sshKeyData =  this.getSshKey();
+        final String sshKeyData = this.getSshKey();
 
         final String newName = "aks" + kubernetesClusters.manager().getSdkContext().randomResourceName("", 8);
         final String dnsPrefix = "dns" + newName;
@@ -38,38 +37,45 @@ public class TestKubernetesCluster extends TestTemplate<KubernetesCluster, Kuber
         // aks can use another azure auth rather than original client auth to access azure service.
         // Thus, set it to AZURE_AUTH_LOCATION_2 when you want.
         String envSecondaryServicePrincipal = System.getenv("AZURE_AUTH_LOCATION_2");
-        if (envSecondaryServicePrincipal == null || envSecondaryServicePrincipal.isEmpty() || !(new File(envSecondaryServicePrincipal).exists())) {
+        if (envSecondaryServicePrincipal == null
+            || envSecondaryServicePrincipal.isEmpty()
+            || !(new File(envSecondaryServicePrincipal).exists())) {
             envSecondaryServicePrincipal = System.getenv("AZURE_AUTH_LOCATION");
         }
 
         try {
-            HashMap<String, String> credentialsMap = ParseAuthFile(envSecondaryServicePrincipal);
+            HashMap<String, String> credentialsMap = parseAuthFile(envSecondaryServicePrincipal);
             clientId = credentialsMap.get("clientId");
             secret = credentialsMap.get("clientSecret");
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
 
-        KubernetesCluster resource = kubernetesClusters.define(newName)
-            .withRegion(Region.US_EAST)
-            .withNewResourceGroup()
-            .withLatestVersion()
-            .withRootUsername("aksadmin")
-            .withSshKey(sshKeyData)
-            .withServicePrincipalClientId(clientId)
-            .withServicePrincipalSecret(secret)
-            .defineAgentPool(agentPoolName)
+        KubernetesCluster resource =
+            kubernetesClusters
+                .define(newName)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup()
+                .withLatestVersion()
+                .withRootUsername("aksadmin")
+                .withSshKey(sshKeyData)
+                .withServicePrincipalClientId(clientId)
+                .withServicePrincipalSecret(secret)
+                .defineAgentPool(agentPoolName)
                 .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
                 .withAgentPoolVirtualMachineCount(1)
                 .attach()
-            .withDnsPrefix(dnsPrefix)
-            .withTag("tag1", "value1")
-            .create();
+                .withDnsPrefix(dnsPrefix)
+                .withTag("tag1", "value1")
+                .create();
         Assertions.assertNotNull("Container service not found.", resource.id());
         Assertions.assertEquals(Region.US_EAST, resource.region());
         Assertions.assertEquals("aksadmin", resource.linuxRootUsername());
         Assertions.assertEquals(1, resource.agentPools().size());
         Assertions.assertNotNull(resource.agentPools().get(agentPoolName));
         Assertions.assertEquals(1, resource.agentPools().get(agentPoolName).count());
-        Assertions.assertEquals(ContainerServiceVMSizeTypes.STANDARD_D2_V2, resource.agentPools().get(agentPoolName).vmSize());
+        Assertions
+            .assertEquals(
+                ContainerServiceVMSizeTypes.STANDARD_D2_V2, resource.agentPools().get(agentPoolName).vmSize());
         Assertions.assertTrue(resource.tags().containsKey("tag1"));
 
         resource = kubernetesClusters.getByResourceGroup(resource.resourceGroupName(), newName);
@@ -86,15 +92,18 @@ public class TestKubernetesCluster extends TestTemplate<KubernetesCluster, Kuber
     public KubernetesCluster updateResource(KubernetesCluster resource) throws Exception {
         String agentPoolName = new ArrayList<>(resource.agentPools().keySet()).get(0);
         // Modify existing container service
-        resource =  resource.update()
-            .withAgentPoolVirtualMachineCount(agentPoolName, 5)
-            .withTag("tag2", "value2")
-            .withTag("tag3", "value3")
-            .withoutTag("tag1")
-            .apply();
+        resource =
+            resource
+                .update()
+                .withAgentPoolVirtualMachineCount(agentPoolName, 5)
+                .withTag("tag2", "value2")
+                .withTag("tag3", "value3")
+                .withoutTag("tag1")
+                .apply();
 
         Assertions.assertEquals(1, resource.agentPools().size());
-        Assertions.assertTrue( resource.agentPools().get(agentPoolName).count() == 5, "Agent pool count was not updated.");
+        Assertions
+            .assertTrue(resource.agentPools().get(agentPoolName).count() == 5, "Agent pool count was not updated.");
         Assertions.assertTrue(resource.tags().containsKey("tag2"));
         Assertions.assertTrue(!resource.tags().containsKey("tag1"));
         return resource;
@@ -102,19 +111,28 @@ public class TestKubernetesCluster extends TestTemplate<KubernetesCluster, Kuber
 
     @Override
     public void print(KubernetesCluster resource) {
-        System.out.println(new StringBuilder().append("Container Service: ").append(resource.id())
-            .append("Name: ").append(resource.name())
-            .append("\n\tResource group: ").append(resource.resourceGroupName())
-            .append("\n\tRegion: ").append(resource.region())
-            .append("\n\tTags: ").append(resource.tags())
-            .toString());
+        System
+            .out
+            .println(
+                new StringBuilder()
+                    .append("Container Service: ")
+                    .append(resource.id())
+                    .append("Name: ")
+                    .append(resource.name())
+                    .append("\n\tResource group: ")
+                    .append(resource.resourceGroupName())
+                    .append("\n\tRegion: ")
+                    .append(resource.region())
+                    .append("\n\tTags: ")
+                    .append(resource.tags())
+                    .toString());
     }
 
     private String getSshKey() throws Exception {
         KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
         keyPairGenerator.initialize(2048);
-        KeyPair keyPair=keyPairGenerator.generateKeyPair();
-        RSAPublicKey publicKey=(RSAPublicKey)keyPair.getPublic();
+        KeyPair keyPair = keyPairGenerator.generateKeyPair();
+        RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
         ByteArrayOutputStream byteOs = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream(byteOs);
         dos.writeInt("ssh-rsa".getBytes().length);
@@ -123,19 +141,18 @@ public class TestKubernetesCluster extends TestTemplate<KubernetesCluster, Kuber
         dos.write(publicKey.getPublicExponent().toByteArray());
         dos.writeInt(publicKey.getModulus().toByteArray().length);
         dos.write(publicKey.getModulus().toByteArray());
-        String publicKeyEncoded = new String(
-            Base64.getEncoder().encode(byteOs.toByteArray()));
+        String publicKeyEncoded = new String(Base64.getEncoder().encode(byteOs.toByteArray()));
         return "ssh-rsa " + publicKeyEncoded + " ";
     }
 
-
     /**
      * Parse azure auth to hashmap
+     *
      * @param authFilename the azure auth location
      * @return all fields in azure auth json
      * @throws Exception exception
      */
-    private static HashMap<String, String> ParseAuthFile(String authFilename) throws Exception {
+    private static HashMap<String, String> parseAuthFile(String authFilename) throws Exception {
         String content = new String(Files.readAllBytes(new File(authFilename).toPath()), StandardCharsets.UTF_8).trim();
         HashMap<String, String> auth = new HashMap<>();
         if (isJsonBased(content)) {
@@ -146,7 +163,7 @@ public class TestKubernetesCluster extends TestTemplate<KubernetesCluster, Kuber
             authSettings.load(credentialsFileStream);
             credentialsFileStream.close();
 
-            for (final String authName: authSettings.stringPropertyNames()) {
+            for (final String authName : authSettings.stringPropertyNames()) {
                 auth.put(authName, authSettings.getProperty(authName));
             }
         }

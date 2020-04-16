@@ -1,4 +1,4 @@
-# Azure Core client library for Java
+# Azure Core shared library for Java
 
 [![Build Documentation](https://img.shields.io/badge/documentation-published-blue.svg)](https://azure.github.io/azure-sdk-for-java)
 
@@ -55,7 +55,7 @@ _Service methods_ can return a shared Azure Core type `Response<T>`. This type p
 ### Exception Hierarchy with `AzureException`
 
 `AzureException` is the root exception in the hierarchy used in Azure Core. Additional exceptions such as `HttpRequestException` and `HttpResponseException` are used
-to reduce the scope of exception reasons. 
+to reduce the scope of exception reasons.
 
 ### Pagination with `ContinuablePagedFlux<T>`
 
@@ -68,12 +68,13 @@ done processing or all pages have been consumed.
 
 ## Next steps
 
-Get started with some of the Azure libraries that are [built using Azure Core](https://azure.github.io/azure-sdk/releases/latest/#java-packages).
+Get started with some of the Azure libraries that are [built using Azure Core](https://azure.github.io/azure-sdk/releases/latest/#java).
 
 ## Troubleshooting
 
-If you encounter any bugs, please file issues via [GitHub Issues](https://github.com/Azure/azure-sdk-for-java/issues) or checkout
-[StackOverflow for Azure Java SDK](http://stackoverflow.com/questions/tagged/azure-java-sdk).
+If you encounter any bugs, please file issues via [GitHub
+Issues](https://github.com/Azure/azure-sdk-for-java/issues/new/choose) or checkout [StackOverflow for Azure Java
+SDK](http://stackoverflow.com/questions/tagged/azure-java-sdk).
 
 ### Enabling Logging
 
@@ -90,6 +91,9 @@ If you would like to become an active contributor to this project please follow 
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+5. Create new Pull Requestl
+
+<!-- links -->
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core%2FREADME.png)

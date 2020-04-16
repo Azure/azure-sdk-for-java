@@ -5,26 +5,17 @@ package com.azure.management.network;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
-/**
- * Defines values for ServiceEndpointType.
- */
+/** Defines values for ServiceEndpointType. */
 public final class ServiceEndpointType extends ExpandableStringEnum<ServiceEndpointType> {
-    /**
-     * Static value Microsoft.Storage for ServiceEndpointType.
-     */
+    /** Static value Microsoft.Storage for ServiceEndpointType. */
     public static final ServiceEndpointType MICROSOFT_STORAGE = fromString("Microsoft.Storage");
 
-    /**
-     * Static value Microsoft.Sql for ServiceEndpointType.
-     */
+    /** Static value Microsoft.Sql for ServiceEndpointType. */
     public static final ServiceEndpointType MICROSOFT_SQL = fromString("Microsoft.Sql");
 
-    /**
-     * Static value Microsoft.AzureCosmosDB for ServiceEndpointType.
-     */
+    /** Static value Microsoft.AzureCosmosDB for ServiceEndpointType. */
     public static final ServiceEndpointType MICROSOFT_AZURECOSMOSDB = fromString("Microsoft.AzureCosmosDB");
 
     /**
@@ -38,9 +29,7 @@ public final class ServiceEndpointType extends ExpandableStringEnum<ServiceEndpo
         return fromString(name, ServiceEndpointType.class);
     }
 
-    /**
-     * @return known ServiceEndpointType values
-     */
+    /** @return known ServiceEndpointType values */
     public static Collection<ServiceEndpointType> values() {
         return values(ServiceEndpointType.class);
     }

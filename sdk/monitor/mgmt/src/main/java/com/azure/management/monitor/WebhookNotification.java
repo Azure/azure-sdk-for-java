@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * The WebhookNotification model.
- */
+/** The WebhookNotification model. */
 @Fluent
 public final class WebhookNotification {
     /*
@@ -26,9 +24,8 @@ public final class WebhookNotification {
     private Map<String, String> properties;
 
     /**
-     * Get the serviceUri property: the service address to receive the
-     * notification.
-     * 
+     * Get the serviceUri property: the service address to receive the notification.
+     *
      * @return the serviceUri value.
      */
     public String serviceUri() {
@@ -36,9 +33,8 @@ public final class WebhookNotification {
     }
 
     /**
-     * Set the serviceUri property: the service address to receive the
-     * notification.
-     * 
+     * Set the serviceUri property: the service address to receive the notification.
+     *
      * @param serviceUri the serviceUri value to set.
      * @return the WebhookNotification object itself.
      */
@@ -48,9 +44,8 @@ public final class WebhookNotification {
     }
 
     /**
-     * Get the properties property: a property bag of settings. This value can
-     * be empty.
-     * 
+     * Get the properties property: a property bag of settings. This value can be empty.
+     *
      * @return the properties value.
      */
     public Map<String, String> properties() {
@@ -58,9 +53,8 @@ public final class WebhookNotification {
     }
 
     /**
-     * Set the properties property: a property bag of settings. This value can
-     * be empty.
-     * 
+     * Set the properties property: a property bag of settings. This value can be empty.
+     *
      * @param properties the properties value to set.
      * @return the WebhookNotification object itself.
      */

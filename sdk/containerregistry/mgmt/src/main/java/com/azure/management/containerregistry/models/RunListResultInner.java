@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The RunListResult model.
- */
+/** The RunListResult model. */
 @Fluent
 public final class RunListResultInner {
     /*
@@ -27,7 +25,7 @@ public final class RunListResultInner {
 
     /**
      * Get the value property: The collection value.
-     * 
+     *
      * @return the value value.
      */
     public List<RunInner> value() {
@@ -36,7 +34,7 @@ public final class RunListResultInner {
 
     /**
      * Set the value property: The collection value.
-     * 
+     *
      * @param value the value value to set.
      * @return the RunListResultInner object itself.
      */
@@ -46,9 +44,8 @@ public final class RunListResultInner {
     }
 
     /**
-     * Get the nextLink property: The URI that can be used to request the next
-     * set of paged results.
-     * 
+     * Get the nextLink property: The URI that can be used to request the next set of paged results.
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -56,9 +53,8 @@ public final class RunListResultInner {
     }
 
     /**
-     * Set the nextLink property: The URI that can be used to request the next
-     * set of paged results.
-     * 
+     * Set the nextLink property: The URI that can be used to request the next set of paged results.
+     *
      * @param nextLink the nextLink value to set.
      * @return the RunListResultInner object itself.
      */

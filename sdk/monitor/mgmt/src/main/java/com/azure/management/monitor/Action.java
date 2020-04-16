@@ -10,16 +10,26 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
 
-/**
- * The Action model.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type", defaultImpl = Action.class)
+/** The Action model. */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "odata.type",
+    defaultImpl = Action.class)
 @JsonTypeName("Action")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction", value = AlertingAction.class),
-    @JsonSubTypes.Type(name = "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.LogToMetricAction", value = LogToMetricAction.class)
+    @JsonSubTypes.Type(
+        name =
+            "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts"
+                + ".Resources.ScheduledQueryRules.AlertingAction",
+        value = AlertingAction.class),
+    @JsonSubTypes.Type(
+        name =
+            "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts"
+                + ".Resources.ScheduledQueryRules.LogToMetricAction",
+        value = LogToMetricAction.class)
 })
-@Immutable
 @JsonTypeResolver(OdataTypeDiscriminatorTypeResolver.class)
+@Immutable
 public class Action {
 }

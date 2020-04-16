@@ -20,162 +20,238 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * ExtendedDatabaseBlobAuditingPolicies.
- */
+/** An instance of this class provides access to all the operations defined in ExtendedDatabaseBlobAuditingPolicies. */
 public final class ExtendedDatabaseBlobAuditingPoliciesInner {
-    /**
-     * The proxy service used to perform REST calls.
-     */
-    private ExtendedDatabaseBlobAuditingPoliciesService service;
+    /** The proxy service used to perform REST calls. */
+    private final ExtendedDatabaseBlobAuditingPoliciesService service;
 
-    /**
-     * The service client containing this operation class.
-     */
-    private SqlManagementClientImpl client;
+    /** The service client containing this operation class. */
+    private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of ExtendedDatabaseBlobAuditingPoliciesInner.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     ExtendedDatabaseBlobAuditingPoliciesInner(SqlManagementClientImpl client) {
-        this.service = RestProxy.create(ExtendedDatabaseBlobAuditingPoliciesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy
+                .create(
+                    ExtendedDatabaseBlobAuditingPoliciesService.class,
+                    client.getHttpPipeline(),
+                    client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * SqlManagementClientExtendedDatabaseBlobAuditingPolicies to be used by
+     * The interface defining all the services for SqlManagementClientExtendedDatabaseBlobAuditingPolicies to be used by
      * the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientExtendedDatabaseBlobAuditingPolicies")
+    @ServiceInterface(name = "SqlManagementClientE")
     private interface ExtendedDatabaseBlobAuditingPoliciesService {
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/extendedAuditingSettings/{blobAuditingPolicyName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
+                + "/{serverName}/databases/{databaseName}/extendedAuditingSettings/{blobAuditingPolicyName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ExtendedDatabaseBlobAuditingPolicyInner>> get(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName, @PathParam("databaseName") String databaseName, @PathParam("blobAuditingPolicyName") String blobAuditingPolicyName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<ExtendedDatabaseBlobAuditingPolicyInner>> get(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("blobAuditingPolicyName") String blobAuditingPolicyName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/extendedAuditingSettings/{blobAuditingPolicyName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
+                + "/{serverName}/databases/{databaseName}/extendedAuditingSettings/{blobAuditingPolicyName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ExtendedDatabaseBlobAuditingPolicyInner>> createOrUpdate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName, @PathParam("databaseName") String databaseName, @PathParam("blobAuditingPolicyName") String blobAuditingPolicyName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ExtendedDatabaseBlobAuditingPolicyInner parameters);
+        Mono<SimpleResponse<ExtendedDatabaseBlobAuditingPolicyInner>> createOrUpdate(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("blobAuditingPolicyName") String blobAuditingPolicyName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ExtendedDatabaseBlobAuditingPolicyInner parameters,
+            Context context);
     }
 
     /**
      * Gets an extended database's blob auditing policy.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an extended database's blob auditing policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ExtendedDatabaseBlobAuditingPolicyInner>> getWithResponseAsync(String resourceGroupName, String serverName, String databaseName) {
+    public Mono<SimpleResponse<ExtendedDatabaseBlobAuditingPolicyInner>> getWithResponseAsync(
+        String resourceGroupName, String serverName, String databaseName) {
         final String blobAuditingPolicyName = "default";
         final String apiVersion = "2017-03-01-preview";
-        return service.get(this.client.getHost(), resourceGroupName, serverName, databaseName, blobAuditingPolicyName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .get(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            serverName,
+                            databaseName,
+                            blobAuditingPolicyName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets an extended database's blob auditing policy.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an extended database's blob auditing policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ExtendedDatabaseBlobAuditingPolicyInner> getAsync(String resourceGroupName, String serverName, String databaseName) {
+    public Mono<ExtendedDatabaseBlobAuditingPolicyInner> getAsync(
+        String resourceGroupName, String serverName, String databaseName) {
         return getWithResponseAsync(resourceGroupName, serverName, databaseName)
-            .flatMap((SimpleResponse<ExtendedDatabaseBlobAuditingPolicyInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<ExtendedDatabaseBlobAuditingPolicyInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets an extended database's blob auditing policy.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an extended database's blob auditing policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExtendedDatabaseBlobAuditingPolicyInner get(String resourceGroupName, String serverName, String databaseName) {
+    public ExtendedDatabaseBlobAuditingPolicyInner get(
+        String resourceGroupName, String serverName, String databaseName) {
         return getAsync(resourceGroupName, serverName, databaseName).block();
     }
 
     /**
      * Creates or updates an extended database's blob auditing policy.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
      * @param parameters An extended database blob auditing policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an extended database blob auditing policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ExtendedDatabaseBlobAuditingPolicyInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName, String databaseName, ExtendedDatabaseBlobAuditingPolicyInner parameters) {
+    public Mono<SimpleResponse<ExtendedDatabaseBlobAuditingPolicyInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        ExtendedDatabaseBlobAuditingPolicyInner parameters) {
         final String blobAuditingPolicyName = "default";
         final String apiVersion = "2017-03-01-preview";
-        return service.createOrUpdate(this.client.getHost(), resourceGroupName, serverName, databaseName, blobAuditingPolicyName, this.client.getSubscriptionId(), apiVersion, parameters);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createOrUpdate(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            serverName,
+                            databaseName,
+                            blobAuditingPolicyName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            parameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Creates or updates an extended database's blob auditing policy.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
      * @param parameters An extended database blob auditing policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an extended database blob auditing policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ExtendedDatabaseBlobAuditingPolicyInner> createOrUpdateAsync(String resourceGroupName, String serverName, String databaseName, ExtendedDatabaseBlobAuditingPolicyInner parameters) {
+    public Mono<ExtendedDatabaseBlobAuditingPolicyInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        ExtendedDatabaseBlobAuditingPolicyInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, serverName, databaseName, parameters)
-            .flatMap((SimpleResponse<ExtendedDatabaseBlobAuditingPolicyInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<ExtendedDatabaseBlobAuditingPolicyInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Creates or updates an extended database's blob auditing policy.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
      * @param parameters An extended database blob auditing policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an extended database blob auditing policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExtendedDatabaseBlobAuditingPolicyInner createOrUpdate(String resourceGroupName, String serverName, String databaseName, ExtendedDatabaseBlobAuditingPolicyInner parameters) {
+    public ExtendedDatabaseBlobAuditingPolicyInner createOrUpdate(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        ExtendedDatabaseBlobAuditingPolicyInner parameters) {
         return createOrUpdateAsync(resourceGroupName, serverName, databaseName, parameters).block();
     }
 }

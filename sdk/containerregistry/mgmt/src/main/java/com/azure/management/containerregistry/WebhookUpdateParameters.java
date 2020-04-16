@@ -10,9 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/**
- * The WebhookUpdateParameters model.
- */
+/** The WebhookUpdateParameters model. */
 @JsonFlatten
 @Fluent
 public class WebhookUpdateParameters {
@@ -57,7 +55,7 @@ public class WebhookUpdateParameters {
 
     /**
      * Get the tags property: The tags for the webhook.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -66,7 +64,7 @@ public class WebhookUpdateParameters {
 
     /**
      * Set the tags property: The tags for the webhook.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the WebhookUpdateParameters object itself.
      */
@@ -76,9 +74,8 @@ public class WebhookUpdateParameters {
     }
 
     /**
-     * Get the serviceUri property: The service URI for the webhook to post
-     * notifications.
-     * 
+     * Get the serviceUri property: The service URI for the webhook to post notifications.
+     *
      * @return the serviceUri value.
      */
     public String serviceUri() {
@@ -86,9 +83,8 @@ public class WebhookUpdateParameters {
     }
 
     /**
-     * Set the serviceUri property: The service URI for the webhook to post
-     * notifications.
-     * 
+     * Set the serviceUri property: The service URI for the webhook to post notifications.
+     *
      * @param serviceUri the serviceUri value to set.
      * @return the WebhookUpdateParameters object itself.
      */
@@ -98,9 +94,8 @@ public class WebhookUpdateParameters {
     }
 
     /**
-     * Get the customHeaders property: Custom headers that will be added to the
-     * webhook notifications.
-     * 
+     * Get the customHeaders property: Custom headers that will be added to the webhook notifications.
+     *
      * @return the customHeaders value.
      */
     public Map<String, String> customHeaders() {
@@ -108,9 +103,8 @@ public class WebhookUpdateParameters {
     }
 
     /**
-     * Set the customHeaders property: Custom headers that will be added to the
-     * webhook notifications.
-     * 
+     * Set the customHeaders property: Custom headers that will be added to the webhook notifications.
+     *
      * @param customHeaders the customHeaders value to set.
      * @return the WebhookUpdateParameters object itself.
      */
@@ -120,9 +114,8 @@ public class WebhookUpdateParameters {
     }
 
     /**
-     * Get the status property: The status of the webhook at the time the
-     * operation was called.
-     * 
+     * Get the status property: The status of the webhook at the time the operation was called.
+     *
      * @return the status value.
      */
     public WebhookStatus status() {
@@ -130,9 +123,8 @@ public class WebhookUpdateParameters {
     }
 
     /**
-     * Set the status property: The status of the webhook at the time the
-     * operation was called.
-     * 
+     * Set the status property: The status of the webhook at the time the operation was called.
+     *
      * @param status the status value to set.
      * @return the WebhookUpdateParameters object itself.
      */
@@ -142,11 +134,10 @@ public class WebhookUpdateParameters {
     }
 
     /**
-     * Get the scope property: The scope of repositories where the event can be
-     * triggered. For example, 'foo:*' means events for all tags under
-     * repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is
-     * equivalent to 'foo:latest'. Empty means all events.
-     * 
+     * Get the scope property: The scope of repositories where the event can be triggered. For example, 'foo:*' means
+     * events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to
+     * 'foo:latest'. Empty means all events.
+     *
      * @return the scope value.
      */
     public String scope() {
@@ -154,11 +145,10 @@ public class WebhookUpdateParameters {
     }
 
     /**
-     * Set the scope property: The scope of repositories where the event can be
-     * triggered. For example, 'foo:*' means events for all tags under
-     * repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is
-     * equivalent to 'foo:latest'. Empty means all events.
-     * 
+     * Set the scope property: The scope of repositories where the event can be triggered. For example, 'foo:*' means
+     * events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to
+     * 'foo:latest'. Empty means all events.
+     *
      * @param scope the scope value to set.
      * @return the WebhookUpdateParameters object itself.
      */
@@ -168,9 +158,8 @@ public class WebhookUpdateParameters {
     }
 
     /**
-     * Get the actions property: The list of actions that trigger the webhook
-     * to post notifications.
-     * 
+     * Get the actions property: The list of actions that trigger the webhook to post notifications.
+     *
      * @return the actions value.
      */
     public List<WebhookAction> actions() {
@@ -178,9 +167,8 @@ public class WebhookUpdateParameters {
     }
 
     /**
-     * Set the actions property: The list of actions that trigger the webhook
-     * to post notifications.
-     * 
+     * Set the actions property: The list of actions that trigger the webhook to post notifications.
+     *
      * @param actions the actions value to set.
      * @return the WebhookUpdateParameters object itself.
      */

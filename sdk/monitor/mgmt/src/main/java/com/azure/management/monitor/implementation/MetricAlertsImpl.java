@@ -9,17 +9,11 @@ import com.azure.management.monitor.models.MetricAlertResourceInner;
 import com.azure.management.monitor.models.MetricAlertsInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
-/**
- * Implementation for {@link MetricAlerts}.
- */
+/** Implementation for {@link MetricAlerts}. */
 class MetricAlertsImpl
-        extends TopLevelModifiableResourcesImpl<
-        MetricAlert,
-        MetricAlertImpl,
-        MetricAlertResourceInner,
-        MetricAlertsInner,
-        MonitorManager>
-        implements MetricAlerts {
+    extends TopLevelModifiableResourcesImpl<
+        MetricAlert, MetricAlertImpl, MetricAlertResourceInner, MetricAlertsInner, MonitorManager>
+    implements MetricAlerts {
 
     MetricAlertsImpl(final MonitorManager monitorManager) {
         super(monitorManager.inner().metricAlerts(), monitorManager);
@@ -35,7 +29,7 @@ class MetricAlertsImpl
 
     @Override
     protected MetricAlertImpl wrapModel(MetricAlertResourceInner inner) {
-        if (inner ==  null) {
+        if (inner == null) {
             return null;
         }
         return new MetricAlertImpl(inner.getName(), inner, this.manager());

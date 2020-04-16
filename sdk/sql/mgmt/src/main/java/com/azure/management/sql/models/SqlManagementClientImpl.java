@@ -12,18 +12,14 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.management.AzureServiceClient;
 
-/**
- * Initializes a new instance of the SqlManagementClientImpl type.
- */
+/** Initializes a new instance of the SqlManagementClientImpl type. */
 public final class SqlManagementClientImpl extends AzureServiceClient {
-    /**
-     * The subscription ID that identifies an Azure subscription.
-     */
+    /** The subscription ID that identifies an Azure subscription. */
     private String subscriptionId;
 
     /**
      * Gets The subscription ID that identifies an Azure subscription.
-     * 
+     *
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
@@ -32,23 +28,21 @@ public final class SqlManagementClientImpl extends AzureServiceClient {
 
     /**
      * Sets The subscription ID that identifies an Azure subscription.
-     * 
+     *
      * @param subscriptionId the subscriptionId value.
      * @return the service client itself.
      */
-    SqlManagementClientImpl setSubscriptionId(String subscriptionId) {
+    public SqlManagementClientImpl setSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
 
-    /**
-     * server parameter.
-     */
+    /** server parameter. */
     private String host;
 
     /**
      * Gets server parameter.
-     * 
+     *
      * @return the host value.
      */
     public String getHost() {
@@ -57,1285 +51,1133 @@ public final class SqlManagementClientImpl extends AzureServiceClient {
 
     /**
      * Sets server parameter.
-     * 
+     *
      * @param host the host value.
      * @return the service client itself.
      */
-    SqlManagementClientImpl setHost(String host) {
+    public SqlManagementClientImpl setHost(String host) {
         this.host = host;
         return this;
     }
 
-    /**
-     * The HTTP pipeline to send requests through.
-     */
-    private HttpPipeline httpPipeline;
+    /** The HTTP pipeline to send requests through. */
+    private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /**
-     * The RecoverableDatabasesInner object to access its operations.
-     */
-    private RecoverableDatabasesInner recoverableDatabases;
+    /** The RecoverableDatabasesInner object to access its operations. */
+    private final RecoverableDatabasesInner recoverableDatabases;
 
     /**
      * Gets the RecoverableDatabasesInner object to access its operations.
-     * 
+     *
      * @return the RecoverableDatabasesInner object.
      */
     public RecoverableDatabasesInner recoverableDatabases() {
         return this.recoverableDatabases;
     }
 
-    /**
-     * The RestorableDroppedDatabasesInner object to access its operations.
-     */
-    private RestorableDroppedDatabasesInner restorableDroppedDatabases;
+    /** The RestorableDroppedDatabasesInner object to access its operations. */
+    private final RestorableDroppedDatabasesInner restorableDroppedDatabases;
 
     /**
      * Gets the RestorableDroppedDatabasesInner object to access its operations.
-     * 
+     *
      * @return the RestorableDroppedDatabasesInner object.
      */
     public RestorableDroppedDatabasesInner restorableDroppedDatabases() {
         return this.restorableDroppedDatabases;
     }
 
-    /**
-     * The ServerConnectionPoliciesInner object to access its operations.
-     */
-    private ServerConnectionPoliciesInner serverConnectionPolicies;
+    /** The ServerConnectionPoliciesInner object to access its operations. */
+    private final ServerConnectionPoliciesInner serverConnectionPolicies;
 
     /**
      * Gets the ServerConnectionPoliciesInner object to access its operations.
-     * 
+     *
      * @return the ServerConnectionPoliciesInner object.
      */
     public ServerConnectionPoliciesInner serverConnectionPolicies() {
         return this.serverConnectionPolicies;
     }
 
-    /**
-     * The DatabaseThreatDetectionPoliciesInner object to access its operations.
-     */
-    private DatabaseThreatDetectionPoliciesInner databaseThreatDetectionPolicies;
+    /** The DatabaseThreatDetectionPoliciesInner object to access its operations. */
+    private final DatabaseThreatDetectionPoliciesInner databaseThreatDetectionPolicies;
 
     /**
      * Gets the DatabaseThreatDetectionPoliciesInner object to access its operations.
-     * 
+     *
      * @return the DatabaseThreatDetectionPoliciesInner object.
      */
     public DatabaseThreatDetectionPoliciesInner databaseThreatDetectionPolicies() {
         return this.databaseThreatDetectionPolicies;
     }
 
-    /**
-     * The DataMaskingPoliciesInner object to access its operations.
-     */
-    private DataMaskingPoliciesInner dataMaskingPolicies;
+    /** The DataMaskingPoliciesInner object to access its operations. */
+    private final DataMaskingPoliciesInner dataMaskingPolicies;
 
     /**
      * Gets the DataMaskingPoliciesInner object to access its operations.
-     * 
+     *
      * @return the DataMaskingPoliciesInner object.
      */
     public DataMaskingPoliciesInner dataMaskingPolicies() {
         return this.dataMaskingPolicies;
     }
 
-    /**
-     * The DataMaskingRulesInner object to access its operations.
-     */
-    private DataMaskingRulesInner dataMaskingRules;
+    /** The DataMaskingRulesInner object to access its operations. */
+    private final DataMaskingRulesInner dataMaskingRules;
 
     /**
      * Gets the DataMaskingRulesInner object to access its operations.
-     * 
+     *
      * @return the DataMaskingRulesInner object.
      */
     public DataMaskingRulesInner dataMaskingRules() {
         return this.dataMaskingRules;
     }
 
-    /**
-     * The FirewallRulesInner object to access its operations.
-     */
-    private FirewallRulesInner firewallRules;
+    /** The FirewallRulesInner object to access its operations. */
+    private final FirewallRulesInner firewallRules;
 
     /**
      * Gets the FirewallRulesInner object to access its operations.
-     * 
+     *
      * @return the FirewallRulesInner object.
      */
     public FirewallRulesInner firewallRules() {
         return this.firewallRules;
     }
 
-    /**
-     * The GeoBackupPoliciesInner object to access its operations.
-     */
-    private GeoBackupPoliciesInner geoBackupPolicies;
+    /** The GeoBackupPoliciesInner object to access its operations. */
+    private final GeoBackupPoliciesInner geoBackupPolicies;
 
     /**
      * Gets the GeoBackupPoliciesInner object to access its operations.
-     * 
+     *
      * @return the GeoBackupPoliciesInner object.
      */
     public GeoBackupPoliciesInner geoBackupPolicies() {
         return this.geoBackupPolicies;
     }
 
-    /**
-     * The DatabasesInner object to access its operations.
-     */
-    private DatabasesInner databases;
+    /** The DatabasesInner object to access its operations. */
+    private final DatabasesInner databases;
 
     /**
      * Gets the DatabasesInner object to access its operations.
-     * 
+     *
      * @return the DatabasesInner object.
      */
     public DatabasesInner databases() {
         return this.databases;
     }
 
-    /**
-     * The ElasticPoolsInner object to access its operations.
-     */
-    private ElasticPoolsInner elasticPools;
+    /** The ElasticPoolsInner object to access its operations. */
+    private final ElasticPoolsInner elasticPools;
 
     /**
      * Gets the ElasticPoolsInner object to access its operations.
-     * 
+     *
      * @return the ElasticPoolsInner object.
      */
     public ElasticPoolsInner elasticPools() {
         return this.elasticPools;
     }
 
-    /**
-     * The RecommendedElasticPoolsInner object to access its operations.
-     */
-    private RecommendedElasticPoolsInner recommendedElasticPools;
+    /** The RecommendedElasticPoolsInner object to access its operations. */
+    private final RecommendedElasticPoolsInner recommendedElasticPools;
 
     /**
      * Gets the RecommendedElasticPoolsInner object to access its operations.
-     * 
+     *
      * @return the RecommendedElasticPoolsInner object.
      */
     public RecommendedElasticPoolsInner recommendedElasticPools() {
         return this.recommendedElasticPools;
     }
 
-    /**
-     * The ReplicationLinksInner object to access its operations.
-     */
-    private ReplicationLinksInner replicationLinks;
+    /** The ReplicationLinksInner object to access its operations. */
+    private final ReplicationLinksInner replicationLinks;
 
     /**
      * Gets the ReplicationLinksInner object to access its operations.
-     * 
+     *
      * @return the ReplicationLinksInner object.
      */
     public ReplicationLinksInner replicationLinks() {
         return this.replicationLinks;
     }
 
-    /**
-     * The ServerCommunicationLinksInner object to access its operations.
-     */
-    private ServerCommunicationLinksInner serverCommunicationLinks;
+    /** The ServerCommunicationLinksInner object to access its operations. */
+    private final ServerCommunicationLinksInner serverCommunicationLinks;
 
     /**
      * Gets the ServerCommunicationLinksInner object to access its operations.
-     * 
+     *
      * @return the ServerCommunicationLinksInner object.
      */
     public ServerCommunicationLinksInner serverCommunicationLinks() {
         return this.serverCommunicationLinks;
     }
 
-    /**
-     * The ServiceObjectivesInner object to access its operations.
-     */
-    private ServiceObjectivesInner serviceObjectives;
+    /** The ServiceObjectivesInner object to access its operations. */
+    private final ServiceObjectivesInner serviceObjectives;
 
     /**
      * Gets the ServiceObjectivesInner object to access its operations.
-     * 
+     *
      * @return the ServiceObjectivesInner object.
      */
     public ServiceObjectivesInner serviceObjectives() {
         return this.serviceObjectives;
     }
 
-    /**
-     * The ElasticPoolActivitiesInner object to access its operations.
-     */
-    private ElasticPoolActivitiesInner elasticPoolActivities;
+    /** The ElasticPoolActivitiesInner object to access its operations. */
+    private final ElasticPoolActivitiesInner elasticPoolActivities;
 
     /**
      * Gets the ElasticPoolActivitiesInner object to access its operations.
-     * 
+     *
      * @return the ElasticPoolActivitiesInner object.
      */
     public ElasticPoolActivitiesInner elasticPoolActivities() {
         return this.elasticPoolActivities;
     }
 
-    /**
-     * The ElasticPoolDatabaseActivitiesInner object to access its operations.
-     */
-    private ElasticPoolDatabaseActivitiesInner elasticPoolDatabaseActivities;
+    /** The ElasticPoolDatabaseActivitiesInner object to access its operations. */
+    private final ElasticPoolDatabaseActivitiesInner elasticPoolDatabaseActivities;
 
     /**
      * Gets the ElasticPoolDatabaseActivitiesInner object to access its operations.
-     * 
+     *
      * @return the ElasticPoolDatabaseActivitiesInner object.
      */
     public ElasticPoolDatabaseActivitiesInner elasticPoolDatabaseActivities() {
         return this.elasticPoolDatabaseActivities;
     }
 
-    /**
-     * The ServiceTierAdvisorsInner object to access its operations.
-     */
-    private ServiceTierAdvisorsInner serviceTierAdvisors;
+    /** The ServiceTierAdvisorsInner object to access its operations. */
+    private final ServiceTierAdvisorsInner serviceTierAdvisors;
 
     /**
      * Gets the ServiceTierAdvisorsInner object to access its operations.
-     * 
+     *
      * @return the ServiceTierAdvisorsInner object.
      */
     public ServiceTierAdvisorsInner serviceTierAdvisors() {
         return this.serviceTierAdvisors;
     }
 
-    /**
-     * The TransparentDataEncryptionsInner object to access its operations.
-     */
-    private TransparentDataEncryptionsInner transparentDataEncryptions;
+    /** The TransparentDataEncryptionsInner object to access its operations. */
+    private final TransparentDataEncryptionsInner transparentDataEncryptions;
 
     /**
      * Gets the TransparentDataEncryptionsInner object to access its operations.
-     * 
+     *
      * @return the TransparentDataEncryptionsInner object.
      */
     public TransparentDataEncryptionsInner transparentDataEncryptions() {
         return this.transparentDataEncryptions;
     }
 
-    /**
-     * The TransparentDataEncryptionActivitiesInner object to access its operations.
-     */
-    private TransparentDataEncryptionActivitiesInner transparentDataEncryptionActivities;
+    /** The TransparentDataEncryptionActivitiesInner object to access its operations. */
+    private final TransparentDataEncryptionActivitiesInner transparentDataEncryptionActivities;
 
     /**
      * Gets the TransparentDataEncryptionActivitiesInner object to access its operations.
-     * 
+     *
      * @return the TransparentDataEncryptionActivitiesInner object.
      */
     public TransparentDataEncryptionActivitiesInner transparentDataEncryptionActivities() {
         return this.transparentDataEncryptionActivities;
     }
 
-    /**
-     * The ServerUsagesInner object to access its operations.
-     */
-    private ServerUsagesInner serverUsages;
+    /** The ServerUsagesInner object to access its operations. */
+    private final ServerUsagesInner serverUsages;
 
     /**
      * Gets the ServerUsagesInner object to access its operations.
-     * 
+     *
      * @return the ServerUsagesInner object.
      */
     public ServerUsagesInner serverUsages() {
         return this.serverUsages;
     }
 
-    /**
-     * The DatabaseUsagesInner object to access its operations.
-     */
-    private DatabaseUsagesInner databaseUsages;
+    /** The DatabaseUsagesInner object to access its operations. */
+    private final DatabaseUsagesInner databaseUsages;
 
     /**
      * Gets the DatabaseUsagesInner object to access its operations.
-     * 
+     *
      * @return the DatabaseUsagesInner object.
      */
     public DatabaseUsagesInner databaseUsages() {
         return this.databaseUsages;
     }
 
-    /**
-     * The DatabaseAutomaticTuningsInner object to access its operations.
-     */
-    private DatabaseAutomaticTuningsInner databaseAutomaticTunings;
+    /** The DatabaseAutomaticTuningsInner object to access its operations. */
+    private final DatabaseAutomaticTuningsInner databaseAutomaticTunings;
 
     /**
      * Gets the DatabaseAutomaticTuningsInner object to access its operations.
-     * 
+     *
      * @return the DatabaseAutomaticTuningsInner object.
      */
     public DatabaseAutomaticTuningsInner databaseAutomaticTunings() {
         return this.databaseAutomaticTunings;
     }
 
-    /**
-     * The EncryptionProtectorsInner object to access its operations.
-     */
-    private EncryptionProtectorsInner encryptionProtectors;
+    /** The EncryptionProtectorsInner object to access its operations. */
+    private final EncryptionProtectorsInner encryptionProtectors;
 
     /**
      * Gets the EncryptionProtectorsInner object to access its operations.
-     * 
+     *
      * @return the EncryptionProtectorsInner object.
      */
     public EncryptionProtectorsInner encryptionProtectors() {
         return this.encryptionProtectors;
     }
 
-    /**
-     * The FailoverGroupsInner object to access its operations.
-     */
-    private FailoverGroupsInner failoverGroups;
+    /** The FailoverGroupsInner object to access its operations. */
+    private final FailoverGroupsInner failoverGroups;
 
     /**
      * Gets the FailoverGroupsInner object to access its operations.
-     * 
+     *
      * @return the FailoverGroupsInner object.
      */
     public FailoverGroupsInner failoverGroups() {
         return this.failoverGroups;
     }
 
-    /**
-     * The OperationsInner object to access its operations.
-     */
-    private OperationsInner operations;
+    /** The OperationsInner object to access its operations. */
+    private final OperationsInner operations;
 
     /**
      * Gets the OperationsInner object to access its operations.
-     * 
+     *
      * @return the OperationsInner object.
      */
     public OperationsInner operations() {
         return this.operations;
     }
 
-    /**
-     * The ServerKeysInner object to access its operations.
-     */
-    private ServerKeysInner serverKeys;
+    /** The ServerKeysInner object to access its operations. */
+    private final ServerKeysInner serverKeys;
 
     /**
      * Gets the ServerKeysInner object to access its operations.
-     * 
+     *
      * @return the ServerKeysInner object.
      */
     public ServerKeysInner serverKeys() {
         return this.serverKeys;
     }
 
-    /**
-     * The SyncAgentsInner object to access its operations.
-     */
-    private SyncAgentsInner syncAgents;
+    /** The SyncAgentsInner object to access its operations. */
+    private final SyncAgentsInner syncAgents;
 
     /**
      * Gets the SyncAgentsInner object to access its operations.
-     * 
+     *
      * @return the SyncAgentsInner object.
      */
     public SyncAgentsInner syncAgents() {
         return this.syncAgents;
     }
 
-    /**
-     * The SyncGroupsInner object to access its operations.
-     */
-    private SyncGroupsInner syncGroups;
+    /** The SyncGroupsInner object to access its operations. */
+    private final SyncGroupsInner syncGroups;
 
     /**
      * Gets the SyncGroupsInner object to access its operations.
-     * 
+     *
      * @return the SyncGroupsInner object.
      */
     public SyncGroupsInner syncGroups() {
         return this.syncGroups;
     }
 
-    /**
-     * The SyncMembersInner object to access its operations.
-     */
-    private SyncMembersInner syncMembers;
+    /** The SyncMembersInner object to access its operations. */
+    private final SyncMembersInner syncMembers;
 
     /**
      * Gets the SyncMembersInner object to access its operations.
-     * 
+     *
      * @return the SyncMembersInner object.
      */
     public SyncMembersInner syncMembers() {
         return this.syncMembers;
     }
 
-    /**
-     * The SubscriptionUsagesInner object to access its operations.
-     */
-    private SubscriptionUsagesInner subscriptionUsages;
+    /** The SubscriptionUsagesInner object to access its operations. */
+    private final SubscriptionUsagesInner subscriptionUsages;
 
     /**
      * Gets the SubscriptionUsagesInner object to access its operations.
-     * 
+     *
      * @return the SubscriptionUsagesInner object.
      */
     public SubscriptionUsagesInner subscriptionUsages() {
         return this.subscriptionUsages;
     }
 
-    /**
-     * The VirtualClustersInner object to access its operations.
-     */
-    private VirtualClustersInner virtualClusters;
+    /** The VirtualClustersInner object to access its operations. */
+    private final VirtualClustersInner virtualClusters;
 
     /**
      * Gets the VirtualClustersInner object to access its operations.
-     * 
+     *
      * @return the VirtualClustersInner object.
      */
     public VirtualClustersInner virtualClusters() {
         return this.virtualClusters;
     }
 
-    /**
-     * The VirtualNetworkRulesInner object to access its operations.
-     */
-    private VirtualNetworkRulesInner virtualNetworkRules;
+    /** The VirtualNetworkRulesInner object to access its operations. */
+    private final VirtualNetworkRulesInner virtualNetworkRules;
 
     /**
      * Gets the VirtualNetworkRulesInner object to access its operations.
-     * 
+     *
      * @return the VirtualNetworkRulesInner object.
      */
     public VirtualNetworkRulesInner virtualNetworkRules() {
         return this.virtualNetworkRules;
     }
 
-    /**
-     * The ExtendedDatabaseBlobAuditingPoliciesInner object to access its operations.
-     */
-    private ExtendedDatabaseBlobAuditingPoliciesInner extendedDatabaseBlobAuditingPolicies;
+    /** The ExtendedDatabaseBlobAuditingPoliciesInner object to access its operations. */
+    private final ExtendedDatabaseBlobAuditingPoliciesInner extendedDatabaseBlobAuditingPolicies;
 
     /**
      * Gets the ExtendedDatabaseBlobAuditingPoliciesInner object to access its operations.
-     * 
+     *
      * @return the ExtendedDatabaseBlobAuditingPoliciesInner object.
      */
     public ExtendedDatabaseBlobAuditingPoliciesInner extendedDatabaseBlobAuditingPolicies() {
         return this.extendedDatabaseBlobAuditingPolicies;
     }
 
-    /**
-     * The ExtendedServerBlobAuditingPoliciesInner object to access its operations.
-     */
-    private ExtendedServerBlobAuditingPoliciesInner extendedServerBlobAuditingPolicies;
+    /** The ExtendedServerBlobAuditingPoliciesInner object to access its operations. */
+    private final ExtendedServerBlobAuditingPoliciesInner extendedServerBlobAuditingPolicies;
 
     /**
      * Gets the ExtendedServerBlobAuditingPoliciesInner object to access its operations.
-     * 
+     *
      * @return the ExtendedServerBlobAuditingPoliciesInner object.
      */
     public ExtendedServerBlobAuditingPoliciesInner extendedServerBlobAuditingPolicies() {
         return this.extendedServerBlobAuditingPolicies;
     }
 
-    /**
-     * The ServerBlobAuditingPoliciesInner object to access its operations.
-     */
-    private ServerBlobAuditingPoliciesInner serverBlobAuditingPolicies;
+    /** The ServerBlobAuditingPoliciesInner object to access its operations. */
+    private final ServerBlobAuditingPoliciesInner serverBlobAuditingPolicies;
 
     /**
      * Gets the ServerBlobAuditingPoliciesInner object to access its operations.
-     * 
+     *
      * @return the ServerBlobAuditingPoliciesInner object.
      */
     public ServerBlobAuditingPoliciesInner serverBlobAuditingPolicies() {
         return this.serverBlobAuditingPolicies;
     }
 
-    /**
-     * The DatabaseBlobAuditingPoliciesInner object to access its operations.
-     */
-    private DatabaseBlobAuditingPoliciesInner databaseBlobAuditingPolicies;
+    /** The DatabaseBlobAuditingPoliciesInner object to access its operations. */
+    private final DatabaseBlobAuditingPoliciesInner databaseBlobAuditingPolicies;
 
     /**
      * Gets the DatabaseBlobAuditingPoliciesInner object to access its operations.
-     * 
+     *
      * @return the DatabaseBlobAuditingPoliciesInner object.
      */
     public DatabaseBlobAuditingPoliciesInner databaseBlobAuditingPolicies() {
         return this.databaseBlobAuditingPolicies;
     }
 
-    /**
-     * The DatabaseVulnerabilityAssessmentRuleBaselinesInner object to access its operations.
-     */
-    private DatabaseVulnerabilityAssessmentRuleBaselinesInner databaseVulnerabilityAssessmentRuleBaselines;
+    /** The DatabaseVulnerabilityAssessmentRuleBaselinesInner object to access its operations. */
+    private final DatabaseVulnerabilityAssessmentRuleBaselinesInner databaseVulnerabilityAssessmentRuleBaselines;
 
     /**
      * Gets the DatabaseVulnerabilityAssessmentRuleBaselinesInner object to access its operations.
-     * 
+     *
      * @return the DatabaseVulnerabilityAssessmentRuleBaselinesInner object.
      */
     public DatabaseVulnerabilityAssessmentRuleBaselinesInner databaseVulnerabilityAssessmentRuleBaselines() {
         return this.databaseVulnerabilityAssessmentRuleBaselines;
     }
 
-    /**
-     * The DatabaseVulnerabilityAssessmentsInner object to access its operations.
-     */
-    private DatabaseVulnerabilityAssessmentsInner databaseVulnerabilityAssessments;
+    /** The DatabaseVulnerabilityAssessmentsInner object to access its operations. */
+    private final DatabaseVulnerabilityAssessmentsInner databaseVulnerabilityAssessments;
 
     /**
      * Gets the DatabaseVulnerabilityAssessmentsInner object to access its operations.
-     * 
+     *
      * @return the DatabaseVulnerabilityAssessmentsInner object.
      */
     public DatabaseVulnerabilityAssessmentsInner databaseVulnerabilityAssessments() {
         return this.databaseVulnerabilityAssessments;
     }
 
-    /**
-     * The JobAgentsInner object to access its operations.
-     */
-    private JobAgentsInner jobAgents;
+    /** The JobAgentsInner object to access its operations. */
+    private final JobAgentsInner jobAgents;
 
     /**
      * Gets the JobAgentsInner object to access its operations.
-     * 
+     *
      * @return the JobAgentsInner object.
      */
     public JobAgentsInner jobAgents() {
         return this.jobAgents;
     }
 
-    /**
-     * The JobCredentialsInner object to access its operations.
-     */
-    private JobCredentialsInner jobCredentials;
+    /** The JobCredentialsInner object to access its operations. */
+    private final JobCredentialsInner jobCredentials;
 
     /**
      * Gets the JobCredentialsInner object to access its operations.
-     * 
+     *
      * @return the JobCredentialsInner object.
      */
     public JobCredentialsInner jobCredentials() {
         return this.jobCredentials;
     }
 
-    /**
-     * The JobExecutionsInner object to access its operations.
-     */
-    private JobExecutionsInner jobExecutions;
+    /** The JobExecutionsInner object to access its operations. */
+    private final JobExecutionsInner jobExecutions;
 
     /**
      * Gets the JobExecutionsInner object to access its operations.
-     * 
+     *
      * @return the JobExecutionsInner object.
      */
     public JobExecutionsInner jobExecutions() {
         return this.jobExecutions;
     }
 
-    /**
-     * The JobsInner object to access its operations.
-     */
-    private JobsInner jobs;
+    /** The JobsInner object to access its operations. */
+    private final JobsInner jobs;
 
     /**
      * Gets the JobsInner object to access its operations.
-     * 
+     *
      * @return the JobsInner object.
      */
     public JobsInner jobs() {
         return this.jobs;
     }
 
-    /**
-     * The JobStepExecutionsInner object to access its operations.
-     */
-    private JobStepExecutionsInner jobStepExecutions;
+    /** The JobStepExecutionsInner object to access its operations. */
+    private final JobStepExecutionsInner jobStepExecutions;
 
     /**
      * Gets the JobStepExecutionsInner object to access its operations.
-     * 
+     *
      * @return the JobStepExecutionsInner object.
      */
     public JobStepExecutionsInner jobStepExecutions() {
         return this.jobStepExecutions;
     }
 
-    /**
-     * The JobStepsInner object to access its operations.
-     */
-    private JobStepsInner jobSteps;
+    /** The JobStepsInner object to access its operations. */
+    private final JobStepsInner jobSteps;
 
     /**
      * Gets the JobStepsInner object to access its operations.
-     * 
+     *
      * @return the JobStepsInner object.
      */
     public JobStepsInner jobSteps() {
         return this.jobSteps;
     }
 
-    /**
-     * The JobTargetExecutionsInner object to access its operations.
-     */
-    private JobTargetExecutionsInner jobTargetExecutions;
+    /** The JobTargetExecutionsInner object to access its operations. */
+    private final JobTargetExecutionsInner jobTargetExecutions;
 
     /**
      * Gets the JobTargetExecutionsInner object to access its operations.
-     * 
+     *
      * @return the JobTargetExecutionsInner object.
      */
     public JobTargetExecutionsInner jobTargetExecutions() {
         return this.jobTargetExecutions;
     }
 
-    /**
-     * The JobTargetGroupsInner object to access its operations.
-     */
-    private JobTargetGroupsInner jobTargetGroups;
+    /** The JobTargetGroupsInner object to access its operations. */
+    private final JobTargetGroupsInner jobTargetGroups;
 
     /**
      * Gets the JobTargetGroupsInner object to access its operations.
-     * 
+     *
      * @return the JobTargetGroupsInner object.
      */
     public JobTargetGroupsInner jobTargetGroups() {
         return this.jobTargetGroups;
     }
 
-    /**
-     * The JobVersionsInner object to access its operations.
-     */
-    private JobVersionsInner jobVersions;
+    /** The JobVersionsInner object to access its operations. */
+    private final JobVersionsInner jobVersions;
 
     /**
      * Gets the JobVersionsInner object to access its operations.
-     * 
+     *
      * @return the JobVersionsInner object.
      */
     public JobVersionsInner jobVersions() {
         return this.jobVersions;
     }
 
-    /**
-     * The LongTermRetentionBackupsInner object to access its operations.
-     */
-    private LongTermRetentionBackupsInner longTermRetentionBackups;
+    /** The LongTermRetentionBackupsInner object to access its operations. */
+    private final LongTermRetentionBackupsInner longTermRetentionBackups;
 
     /**
      * Gets the LongTermRetentionBackupsInner object to access its operations.
-     * 
+     *
      * @return the LongTermRetentionBackupsInner object.
      */
     public LongTermRetentionBackupsInner longTermRetentionBackups() {
         return this.longTermRetentionBackups;
     }
 
-    /**
-     * The BackupLongTermRetentionPoliciesInner object to access its operations.
-     */
-    private BackupLongTermRetentionPoliciesInner backupLongTermRetentionPolicies;
+    /** The BackupLongTermRetentionPoliciesInner object to access its operations. */
+    private final BackupLongTermRetentionPoliciesInner backupLongTermRetentionPolicies;
 
     /**
      * Gets the BackupLongTermRetentionPoliciesInner object to access its operations.
-     * 
+     *
      * @return the BackupLongTermRetentionPoliciesInner object.
      */
     public BackupLongTermRetentionPoliciesInner backupLongTermRetentionPolicies() {
         return this.backupLongTermRetentionPolicies;
     }
 
-    /**
-     * The ManagedBackupShortTermRetentionPoliciesInner object to access its operations.
-     */
-    private ManagedBackupShortTermRetentionPoliciesInner managedBackupShortTermRetentionPolicies;
+    /** The ManagedBackupShortTermRetentionPoliciesInner object to access its operations. */
+    private final ManagedBackupShortTermRetentionPoliciesInner managedBackupShortTermRetentionPolicies;
 
     /**
      * Gets the ManagedBackupShortTermRetentionPoliciesInner object to access its operations.
-     * 
+     *
      * @return the ManagedBackupShortTermRetentionPoliciesInner object.
      */
     public ManagedBackupShortTermRetentionPoliciesInner managedBackupShortTermRetentionPolicies() {
         return this.managedBackupShortTermRetentionPolicies;
     }
 
-    /**
-     * The ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesInner object to access its operations.
-     */
-    private ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesInner managedRestorableDroppedDatabaseBackupShortTermRetentionPolicies;
+    /** The ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesInner object to access its operations. */
+    private final ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesInner
+        managedRestorableDroppedDatabaseBackupShortTermRetentionPolicies;
 
     /**
      * Gets the ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesInner object to access its operations.
-     * 
+     *
      * @return the ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesInner object.
      */
-    public ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesInner managedRestorableDroppedDatabaseBackupShortTermRetentionPolicies() {
+    public ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesInner
+        managedRestorableDroppedDatabaseBackupShortTermRetentionPolicies() {
         return this.managedRestorableDroppedDatabaseBackupShortTermRetentionPolicies;
     }
 
-    /**
-     * The ServerAutomaticTuningsInner object to access its operations.
-     */
-    private ServerAutomaticTuningsInner serverAutomaticTunings;
+    /** The ServerAutomaticTuningsInner object to access its operations. */
+    private final ServerAutomaticTuningsInner serverAutomaticTunings;
 
     /**
      * Gets the ServerAutomaticTuningsInner object to access its operations.
-     * 
+     *
      * @return the ServerAutomaticTuningsInner object.
      */
     public ServerAutomaticTuningsInner serverAutomaticTunings() {
         return this.serverAutomaticTunings;
     }
 
-    /**
-     * The ServerDnsAliasesInner object to access its operations.
-     */
-    private ServerDnsAliasesInner serverDnsAliases;
+    /** The ServerDnsAliasesInner object to access its operations. */
+    private final ServerDnsAliasesInner serverDnsAliases;
 
     /**
      * Gets the ServerDnsAliasesInner object to access its operations.
-     * 
+     *
      * @return the ServerDnsAliasesInner object.
      */
     public ServerDnsAliasesInner serverDnsAliases() {
         return this.serverDnsAliases;
     }
 
-    /**
-     * The ServerSecurityAlertPoliciesInner object to access its operations.
-     */
-    private ServerSecurityAlertPoliciesInner serverSecurityAlertPolicies;
+    /** The ServerSecurityAlertPoliciesInner object to access its operations. */
+    private final ServerSecurityAlertPoliciesInner serverSecurityAlertPolicies;
 
     /**
      * Gets the ServerSecurityAlertPoliciesInner object to access its operations.
-     * 
+     *
      * @return the ServerSecurityAlertPoliciesInner object.
      */
     public ServerSecurityAlertPoliciesInner serverSecurityAlertPolicies() {
         return this.serverSecurityAlertPolicies;
     }
 
-    /**
-     * The RestorableDroppedManagedDatabasesInner object to access its operations.
-     */
-    private RestorableDroppedManagedDatabasesInner restorableDroppedManagedDatabases;
+    /** The RestorableDroppedManagedDatabasesInner object to access its operations. */
+    private final RestorableDroppedManagedDatabasesInner restorableDroppedManagedDatabases;
 
     /**
      * Gets the RestorableDroppedManagedDatabasesInner object to access its operations.
-     * 
+     *
      * @return the RestorableDroppedManagedDatabasesInner object.
      */
     public RestorableDroppedManagedDatabasesInner restorableDroppedManagedDatabases() {
         return this.restorableDroppedManagedDatabases;
     }
 
-    /**
-     * The RestorePointsInner object to access its operations.
-     */
-    private RestorePointsInner restorePoints;
+    /** The RestorePointsInner object to access its operations. */
+    private final RestorePointsInner restorePoints;
 
     /**
      * Gets the RestorePointsInner object to access its operations.
-     * 
+     *
      * @return the RestorePointsInner object.
      */
     public RestorePointsInner restorePoints() {
         return this.restorePoints;
     }
 
-    /**
-     * The ManagedDatabaseSecurityAlertPoliciesInner object to access its operations.
-     */
-    private ManagedDatabaseSecurityAlertPoliciesInner managedDatabaseSecurityAlertPolicies;
+    /** The ManagedDatabaseSecurityAlertPoliciesInner object to access its operations. */
+    private final ManagedDatabaseSecurityAlertPoliciesInner managedDatabaseSecurityAlertPolicies;
 
     /**
      * Gets the ManagedDatabaseSecurityAlertPoliciesInner object to access its operations.
-     * 
+     *
      * @return the ManagedDatabaseSecurityAlertPoliciesInner object.
      */
     public ManagedDatabaseSecurityAlertPoliciesInner managedDatabaseSecurityAlertPolicies() {
         return this.managedDatabaseSecurityAlertPolicies;
     }
 
-    /**
-     * The ManagedServerSecurityAlertPoliciesInner object to access its operations.
-     */
-    private ManagedServerSecurityAlertPoliciesInner managedServerSecurityAlertPolicies;
+    /** The ManagedServerSecurityAlertPoliciesInner object to access its operations. */
+    private final ManagedServerSecurityAlertPoliciesInner managedServerSecurityAlertPolicies;
 
     /**
      * Gets the ManagedServerSecurityAlertPoliciesInner object to access its operations.
-     * 
+     *
      * @return the ManagedServerSecurityAlertPoliciesInner object.
      */
     public ManagedServerSecurityAlertPoliciesInner managedServerSecurityAlertPolicies() {
         return this.managedServerSecurityAlertPolicies;
     }
 
-    /**
-     * The SensitivityLabelsInner object to access its operations.
-     */
-    private SensitivityLabelsInner sensitivityLabels;
+    /** The SensitivityLabelsInner object to access its operations. */
+    private final SensitivityLabelsInner sensitivityLabels;
 
     /**
      * Gets the SensitivityLabelsInner object to access its operations.
-     * 
+     *
      * @return the SensitivityLabelsInner object.
      */
     public SensitivityLabelsInner sensitivityLabels() {
         return this.sensitivityLabels;
     }
 
-    /**
-     * The ManagedInstanceAdministratorsInner object to access its operations.
-     */
-    private ManagedInstanceAdministratorsInner managedInstanceAdministrators;
+    /** The ManagedInstanceAdministratorsInner object to access its operations. */
+    private final ManagedInstanceAdministratorsInner managedInstanceAdministrators;
 
     /**
      * Gets the ManagedInstanceAdministratorsInner object to access its operations.
-     * 
+     *
      * @return the ManagedInstanceAdministratorsInner object.
      */
     public ManagedInstanceAdministratorsInner managedInstanceAdministrators() {
         return this.managedInstanceAdministrators;
     }
 
-    /**
-     * The DatabaseOperationsInner object to access its operations.
-     */
-    private DatabaseOperationsInner databaseOperations;
+    /** The DatabaseOperationsInner object to access its operations. */
+    private final DatabaseOperationsInner databaseOperations;
 
     /**
      * Gets the DatabaseOperationsInner object to access its operations.
-     * 
+     *
      * @return the DatabaseOperationsInner object.
      */
     public DatabaseOperationsInner databaseOperations() {
         return this.databaseOperations;
     }
 
-    /**
-     * The ElasticPoolOperationsInner object to access its operations.
-     */
-    private ElasticPoolOperationsInner elasticPoolOperations;
+    /** The ElasticPoolOperationsInner object to access its operations. */
+    private final ElasticPoolOperationsInner elasticPoolOperations;
 
     /**
      * Gets the ElasticPoolOperationsInner object to access its operations.
-     * 
+     *
      * @return the ElasticPoolOperationsInner object.
      */
     public ElasticPoolOperationsInner elasticPoolOperations() {
         return this.elasticPoolOperations;
     }
 
-    /**
-     * The DatabaseVulnerabilityAssessmentScansInner object to access its operations.
-     */
-    private DatabaseVulnerabilityAssessmentScansInner databaseVulnerabilityAssessmentScans;
+    /** The DatabaseVulnerabilityAssessmentScansInner object to access its operations. */
+    private final DatabaseVulnerabilityAssessmentScansInner databaseVulnerabilityAssessmentScans;
 
     /**
      * Gets the DatabaseVulnerabilityAssessmentScansInner object to access its operations.
-     * 
+     *
      * @return the DatabaseVulnerabilityAssessmentScansInner object.
      */
     public DatabaseVulnerabilityAssessmentScansInner databaseVulnerabilityAssessmentScans() {
         return this.databaseVulnerabilityAssessmentScans;
     }
 
-    /**
-     * The ManagedDatabaseVulnerabilityAssessmentRuleBaselinesInner object to access its operations.
-     */
-    private ManagedDatabaseVulnerabilityAssessmentRuleBaselinesInner managedDatabaseVulnerabilityAssessmentRuleBaselines;
+    /** The ManagedDatabaseVulnerabilityAssessmentRuleBaselinesInner object to access its operations. */
+    private final ManagedDatabaseVulnerabilityAssessmentRuleBaselinesInner
+        managedDatabaseVulnerabilityAssessmentRuleBaselines;
 
     /**
      * Gets the ManagedDatabaseVulnerabilityAssessmentRuleBaselinesInner object to access its operations.
-     * 
+     *
      * @return the ManagedDatabaseVulnerabilityAssessmentRuleBaselinesInner object.
      */
-    public ManagedDatabaseVulnerabilityAssessmentRuleBaselinesInner managedDatabaseVulnerabilityAssessmentRuleBaselines() {
+    public ManagedDatabaseVulnerabilityAssessmentRuleBaselinesInner
+        managedDatabaseVulnerabilityAssessmentRuleBaselines() {
         return this.managedDatabaseVulnerabilityAssessmentRuleBaselines;
     }
 
-    /**
-     * The ManagedDatabaseVulnerabilityAssessmentScansInner object to access its operations.
-     */
-    private ManagedDatabaseVulnerabilityAssessmentScansInner managedDatabaseVulnerabilityAssessmentScans;
+    /** The ManagedDatabaseVulnerabilityAssessmentScansInner object to access its operations. */
+    private final ManagedDatabaseVulnerabilityAssessmentScansInner managedDatabaseVulnerabilityAssessmentScans;
 
     /**
      * Gets the ManagedDatabaseVulnerabilityAssessmentScansInner object to access its operations.
-     * 
+     *
      * @return the ManagedDatabaseVulnerabilityAssessmentScansInner object.
      */
     public ManagedDatabaseVulnerabilityAssessmentScansInner managedDatabaseVulnerabilityAssessmentScans() {
         return this.managedDatabaseVulnerabilityAssessmentScans;
     }
 
-    /**
-     * The ManagedDatabaseVulnerabilityAssessmentsInner object to access its operations.
-     */
-    private ManagedDatabaseVulnerabilityAssessmentsInner managedDatabaseVulnerabilityAssessments;
+    /** The ManagedDatabaseVulnerabilityAssessmentsInner object to access its operations. */
+    private final ManagedDatabaseVulnerabilityAssessmentsInner managedDatabaseVulnerabilityAssessments;
 
     /**
      * Gets the ManagedDatabaseVulnerabilityAssessmentsInner object to access its operations.
-     * 
+     *
      * @return the ManagedDatabaseVulnerabilityAssessmentsInner object.
      */
     public ManagedDatabaseVulnerabilityAssessmentsInner managedDatabaseVulnerabilityAssessments() {
         return this.managedDatabaseVulnerabilityAssessments;
     }
 
-    /**
-     * The InstanceFailoverGroupsInner object to access its operations.
-     */
-    private InstanceFailoverGroupsInner instanceFailoverGroups;
+    /** The InstanceFailoverGroupsInner object to access its operations. */
+    private final InstanceFailoverGroupsInner instanceFailoverGroups;
 
     /**
      * Gets the InstanceFailoverGroupsInner object to access its operations.
-     * 
+     *
      * @return the InstanceFailoverGroupsInner object.
      */
     public InstanceFailoverGroupsInner instanceFailoverGroups() {
         return this.instanceFailoverGroups;
     }
 
-    /**
-     * The BackupShortTermRetentionPoliciesInner object to access its operations.
-     */
-    private BackupShortTermRetentionPoliciesInner backupShortTermRetentionPolicies;
+    /** The BackupShortTermRetentionPoliciesInner object to access its operations. */
+    private final BackupShortTermRetentionPoliciesInner backupShortTermRetentionPolicies;
 
     /**
      * Gets the BackupShortTermRetentionPoliciesInner object to access its operations.
-     * 
+     *
      * @return the BackupShortTermRetentionPoliciesInner object.
      */
     public BackupShortTermRetentionPoliciesInner backupShortTermRetentionPolicies() {
         return this.backupShortTermRetentionPolicies;
     }
 
-    /**
-     * The TdeCertificatesInner object to access its operations.
-     */
-    private TdeCertificatesInner tdeCertificates;
+    /** The TdeCertificatesInner object to access its operations. */
+    private final TdeCertificatesInner tdeCertificates;
 
     /**
      * Gets the TdeCertificatesInner object to access its operations.
-     * 
+     *
      * @return the TdeCertificatesInner object.
      */
     public TdeCertificatesInner tdeCertificates() {
         return this.tdeCertificates;
     }
 
-    /**
-     * The ManagedInstanceTdeCertificatesInner object to access its operations.
-     */
-    private ManagedInstanceTdeCertificatesInner managedInstanceTdeCertificates;
+    /** The ManagedInstanceTdeCertificatesInner object to access its operations. */
+    private final ManagedInstanceTdeCertificatesInner managedInstanceTdeCertificates;
 
     /**
      * Gets the ManagedInstanceTdeCertificatesInner object to access its operations.
-     * 
+     *
      * @return the ManagedInstanceTdeCertificatesInner object.
      */
     public ManagedInstanceTdeCertificatesInner managedInstanceTdeCertificates() {
         return this.managedInstanceTdeCertificates;
     }
 
-    /**
-     * The ManagedInstanceKeysInner object to access its operations.
-     */
-    private ManagedInstanceKeysInner managedInstanceKeys;
+    /** The ManagedInstanceKeysInner object to access its operations. */
+    private final ManagedInstanceKeysInner managedInstanceKeys;
 
     /**
      * Gets the ManagedInstanceKeysInner object to access its operations.
-     * 
+     *
      * @return the ManagedInstanceKeysInner object.
      */
     public ManagedInstanceKeysInner managedInstanceKeys() {
         return this.managedInstanceKeys;
     }
 
-    /**
-     * The ManagedInstanceEncryptionProtectorsInner object to access its operations.
-     */
-    private ManagedInstanceEncryptionProtectorsInner managedInstanceEncryptionProtectors;
+    /** The ManagedInstanceEncryptionProtectorsInner object to access its operations. */
+    private final ManagedInstanceEncryptionProtectorsInner managedInstanceEncryptionProtectors;
 
     /**
      * Gets the ManagedInstanceEncryptionProtectorsInner object to access its operations.
-     * 
+     *
      * @return the ManagedInstanceEncryptionProtectorsInner object.
      */
     public ManagedInstanceEncryptionProtectorsInner managedInstanceEncryptionProtectors() {
         return this.managedInstanceEncryptionProtectors;
     }
 
-    /**
-     * The RecoverableManagedDatabasesInner object to access its operations.
-     */
-    private RecoverableManagedDatabasesInner recoverableManagedDatabases;
+    /** The RecoverableManagedDatabasesInner object to access its operations. */
+    private final RecoverableManagedDatabasesInner recoverableManagedDatabases;
 
     /**
      * Gets the RecoverableManagedDatabasesInner object to access its operations.
-     * 
+     *
      * @return the RecoverableManagedDatabasesInner object.
      */
     public RecoverableManagedDatabasesInner recoverableManagedDatabases() {
         return this.recoverableManagedDatabases;
     }
 
-    /**
-     * The ManagedInstanceVulnerabilityAssessmentsInner object to access its operations.
-     */
-    private ManagedInstanceVulnerabilityAssessmentsInner managedInstanceVulnerabilityAssessments;
+    /** The ManagedInstanceVulnerabilityAssessmentsInner object to access its operations. */
+    private final ManagedInstanceVulnerabilityAssessmentsInner managedInstanceVulnerabilityAssessments;
 
     /**
      * Gets the ManagedInstanceVulnerabilityAssessmentsInner object to access its operations.
-     * 
+     *
      * @return the ManagedInstanceVulnerabilityAssessmentsInner object.
      */
     public ManagedInstanceVulnerabilityAssessmentsInner managedInstanceVulnerabilityAssessments() {
         return this.managedInstanceVulnerabilityAssessments;
     }
 
-    /**
-     * The ServerVulnerabilityAssessmentsInner object to access its operations.
-     */
-    private ServerVulnerabilityAssessmentsInner serverVulnerabilityAssessments;
+    /** The ServerVulnerabilityAssessmentsInner object to access its operations. */
+    private final ServerVulnerabilityAssessmentsInner serverVulnerabilityAssessments;
 
     /**
      * Gets the ServerVulnerabilityAssessmentsInner object to access its operations.
-     * 
+     *
      * @return the ServerVulnerabilityAssessmentsInner object.
      */
     public ServerVulnerabilityAssessmentsInner serverVulnerabilityAssessments() {
         return this.serverVulnerabilityAssessments;
     }
 
-    /**
-     * The ManagedDatabaseSensitivityLabelsInner object to access its operations.
-     */
-    private ManagedDatabaseSensitivityLabelsInner managedDatabaseSensitivityLabels;
+    /** The ManagedDatabaseSensitivityLabelsInner object to access its operations. */
+    private final ManagedDatabaseSensitivityLabelsInner managedDatabaseSensitivityLabels;
 
     /**
      * Gets the ManagedDatabaseSensitivityLabelsInner object to access its operations.
-     * 
+     *
      * @return the ManagedDatabaseSensitivityLabelsInner object.
      */
     public ManagedDatabaseSensitivityLabelsInner managedDatabaseSensitivityLabels() {
         return this.managedDatabaseSensitivityLabels;
     }
 
-    /**
-     * The InstancePoolsInner object to access its operations.
-     */
-    private InstancePoolsInner instancePools;
+    /** The InstancePoolsInner object to access its operations. */
+    private final InstancePoolsInner instancePools;
 
     /**
      * Gets the InstancePoolsInner object to access its operations.
-     * 
+     *
      * @return the InstancePoolsInner object.
      */
     public InstancePoolsInner instancePools() {
         return this.instancePools;
     }
 
-    /**
-     * The UsagesInner object to access its operations.
-     */
-    private UsagesInner usages;
+    /** The UsagesInner object to access its operations. */
+    private final UsagesInner usages;
 
     /**
      * Gets the UsagesInner object to access its operations.
-     * 
+     *
      * @return the UsagesInner object.
      */
     public UsagesInner usages() {
         return this.usages;
     }
 
-    /**
-     * The ManagedInstancesInner object to access its operations.
-     */
-    private ManagedInstancesInner managedInstances;
+    /** The ManagedInstancesInner object to access its operations. */
+    private final ManagedInstancesInner managedInstances;
 
     /**
      * Gets the ManagedInstancesInner object to access its operations.
-     * 
+     *
      * @return the ManagedInstancesInner object.
      */
     public ManagedInstancesInner managedInstances() {
         return this.managedInstances;
     }
 
-    /**
-     * The PrivateEndpointConnectionsInner object to access its operations.
-     */
-    private PrivateEndpointConnectionsInner privateEndpointConnections;
+    /** The PrivateEndpointConnectionsInner object to access its operations. */
+    private final PrivateEndpointConnectionsInner privateEndpointConnections;
 
     /**
      * Gets the PrivateEndpointConnectionsInner object to access its operations.
-     * 
+     *
      * @return the PrivateEndpointConnectionsInner object.
      */
     public PrivateEndpointConnectionsInner privateEndpointConnections() {
         return this.privateEndpointConnections;
     }
 
-    /**
-     * The PrivateLinkResourcesInner object to access its operations.
-     */
-    private PrivateLinkResourcesInner privateLinkResources;
+    /** The PrivateLinkResourcesInner object to access its operations. */
+    private final PrivateLinkResourcesInner privateLinkResources;
 
     /**
      * Gets the PrivateLinkResourcesInner object to access its operations.
-     * 
+     *
      * @return the PrivateLinkResourcesInner object.
      */
     public PrivateLinkResourcesInner privateLinkResources() {
         return this.privateLinkResources;
     }
 
-    /**
-     * The ServersInner object to access its operations.
-     */
-    private ServersInner servers;
+    /** The ServersInner object to access its operations. */
+    private final ServersInner servers;
 
     /**
      * Gets the ServersInner object to access its operations.
-     * 
+     *
      * @return the ServersInner object.
      */
     public ServersInner servers() {
         return this.servers;
     }
 
-    /**
-     * The CapabilitiesInner object to access its operations.
-     */
-    private CapabilitiesInner capabilities;
+    /** The CapabilitiesInner object to access its operations. */
+    private final CapabilitiesInner capabilities;
 
     /**
      * Gets the CapabilitiesInner object to access its operations.
-     * 
+     *
      * @return the CapabilitiesInner object.
      */
     public CapabilitiesInner capabilities() {
         return this.capabilities;
     }
 
-    /**
-     * The LongTermRetentionManagedInstanceBackupsInner object to access its operations.
-     */
-    private LongTermRetentionManagedInstanceBackupsInner longTermRetentionManagedInstanceBackups;
+    /** The LongTermRetentionManagedInstanceBackupsInner object to access its operations. */
+    private final LongTermRetentionManagedInstanceBackupsInner longTermRetentionManagedInstanceBackups;
 
     /**
      * Gets the LongTermRetentionManagedInstanceBackupsInner object to access its operations.
-     * 
+     *
      * @return the LongTermRetentionManagedInstanceBackupsInner object.
      */
     public LongTermRetentionManagedInstanceBackupsInner longTermRetentionManagedInstanceBackups() {
         return this.longTermRetentionManagedInstanceBackups;
     }
 
-    /**
-     * The ManagedInstanceLongTermRetentionPoliciesInner object to access its operations.
-     */
-    private ManagedInstanceLongTermRetentionPoliciesInner managedInstanceLongTermRetentionPolicies;
+    /** The ManagedInstanceLongTermRetentionPoliciesInner object to access its operations. */
+    private final ManagedInstanceLongTermRetentionPoliciesInner managedInstanceLongTermRetentionPolicies;
 
     /**
      * Gets the ManagedInstanceLongTermRetentionPoliciesInner object to access its operations.
-     * 
+     *
      * @return the ManagedInstanceLongTermRetentionPoliciesInner object.
      */
     public ManagedInstanceLongTermRetentionPoliciesInner managedInstanceLongTermRetentionPolicies() {
         return this.managedInstanceLongTermRetentionPolicies;
     }
 
-    /**
-     * The WorkloadGroupsInner object to access its operations.
-     */
-    private WorkloadGroupsInner workloadGroups;
+    /** The WorkloadGroupsInner object to access its operations. */
+    private final WorkloadGroupsInner workloadGroups;
 
     /**
      * Gets the WorkloadGroupsInner object to access its operations.
-     * 
+     *
      * @return the WorkloadGroupsInner object.
      */
     public WorkloadGroupsInner workloadGroups() {
         return this.workloadGroups;
     }
 
-    /**
-     * The WorkloadClassifiersInner object to access its operations.
-     */
-    private WorkloadClassifiersInner workloadClassifiers;
+    /** The WorkloadClassifiersInner object to access its operations. */
+    private final WorkloadClassifiersInner workloadClassifiers;
 
     /**
      * Gets the WorkloadClassifiersInner object to access its operations.
-     * 
+     *
      * @return the WorkloadClassifiersInner object.
      */
     public WorkloadClassifiersInner workloadClassifiers() {
         return this.workloadClassifiers;
     }
 
+    /** The ManagedDatabaseRestoreDetailsInner object to access its operations. */
+    private final ManagedDatabaseRestoreDetailsInner managedDatabaseRestoreDetails;
+
     /**
-     * The ManagedDatabasesInner object to access its operations.
+     * Gets the ManagedDatabaseRestoreDetailsInner object to access its operations.
+     *
+     * @return the ManagedDatabaseRestoreDetailsInner object.
      */
-    private ManagedDatabasesInner managedDatabases;
+    public ManagedDatabaseRestoreDetailsInner managedDatabaseRestoreDetails() {
+        return this.managedDatabaseRestoreDetails;
+    }
+
+    /** The ManagedDatabasesInner object to access its operations. */
+    private final ManagedDatabasesInner managedDatabases;
 
     /**
      * Gets the ManagedDatabasesInner object to access its operations.
-     * 
+     *
      * @return the ManagedDatabasesInner object.
      */
     public ManagedDatabasesInner managedDatabases() {
         return this.managedDatabases;
     }
 
-    /**
-     * The ServerAzureADAdministratorsInner object to access its operations.
-     */
-    private ServerAzureADAdministratorsInner serverAzureADAdministrators;
+    /** The ServerAzureADAdministratorsInner object to access its operations. */
+    private final ServerAzureADAdministratorsInner serverAzureADAdministrators;
 
     /**
      * Gets the ServerAzureADAdministratorsInner object to access its operations.
-     * 
+     *
      * @return the ServerAzureADAdministratorsInner object.
      */
     public ServerAzureADAdministratorsInner serverAzureADAdministrators() {
         return this.serverAzureADAdministrators;
     }
 
+    /** The ManagedInstanceOperationsInner object to access its operations. */
+    private final ManagedInstanceOperationsInner managedInstanceOperations;
+
     /**
-     * Initializes an instance of SqlManagementClient client.
+     * Gets the ManagedInstanceOperationsInner object to access its operations.
+     *
+     * @return the ManagedInstanceOperationsInner object.
      */
+    public ManagedInstanceOperationsInner managedInstanceOperations() {
+        return this.managedInstanceOperations;
+    }
+
+    /** Initializes an instance of SqlManagementClient client. */
     public SqlManagementClientImpl() {
-        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(), AzureEnvironment.AZURE);
+        this(
+            new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
+            AzureEnvironment.AZURE);
     }
 
     /**
      * Initializes an instance of SqlManagementClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
     public SqlManagementClientImpl(HttpPipeline httpPipeline) {
@@ -1344,7 +1186,7 @@ public final class SqlManagementClientImpl extends AzureServiceClient {
 
     /**
      * Initializes an instance of SqlManagementClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param environment The Azure environment.
      */
@@ -1401,7 +1243,8 @@ public final class SqlManagementClientImpl extends AzureServiceClient {
         this.longTermRetentionBackups = new LongTermRetentionBackupsInner(this);
         this.backupLongTermRetentionPolicies = new BackupLongTermRetentionPoliciesInner(this);
         this.managedBackupShortTermRetentionPolicies = new ManagedBackupShortTermRetentionPoliciesInner(this);
-        this.managedRestorableDroppedDatabaseBackupShortTermRetentionPolicies = new ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesInner(this);
+        this.managedRestorableDroppedDatabaseBackupShortTermRetentionPolicies =
+            new ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesInner(this);
         this.serverAutomaticTunings = new ServerAutomaticTuningsInner(this);
         this.serverDnsAliases = new ServerDnsAliasesInner(this);
         this.serverSecurityAlertPolicies = new ServerSecurityAlertPoliciesInner(this);
@@ -1414,7 +1257,8 @@ public final class SqlManagementClientImpl extends AzureServiceClient {
         this.databaseOperations = new DatabaseOperationsInner(this);
         this.elasticPoolOperations = new ElasticPoolOperationsInner(this);
         this.databaseVulnerabilityAssessmentScans = new DatabaseVulnerabilityAssessmentScansInner(this);
-        this.managedDatabaseVulnerabilityAssessmentRuleBaselines = new ManagedDatabaseVulnerabilityAssessmentRuleBaselinesInner(this);
+        this.managedDatabaseVulnerabilityAssessmentRuleBaselines =
+            new ManagedDatabaseVulnerabilityAssessmentRuleBaselinesInner(this);
         this.managedDatabaseVulnerabilityAssessmentScans = new ManagedDatabaseVulnerabilityAssessmentScansInner(this);
         this.managedDatabaseVulnerabilityAssessments = new ManagedDatabaseVulnerabilityAssessmentsInner(this);
         this.instanceFailoverGroups = new InstanceFailoverGroupsInner(this);
@@ -1438,7 +1282,9 @@ public final class SqlManagementClientImpl extends AzureServiceClient {
         this.managedInstanceLongTermRetentionPolicies = new ManagedInstanceLongTermRetentionPoliciesInner(this);
         this.workloadGroups = new WorkloadGroupsInner(this);
         this.workloadClassifiers = new WorkloadClassifiersInner(this);
+        this.managedDatabaseRestoreDetails = new ManagedDatabaseRestoreDetailsInner(this);
         this.managedDatabases = new ManagedDatabasesInner(this);
         this.serverAzureADAdministrators = new ServerAzureADAdministratorsInner(this);
+        this.managedInstanceOperations = new ManagedInstanceOperationsInner(this);
     }
 }

@@ -7,9 +7,7 @@ package com.azure.management.sql;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The MaxSizeCapability model.
- */
+/** The MaxSizeCapability model. */
 @Immutable
 public final class MaxSizeCapability {
     /*
@@ -25,9 +23,8 @@ public final class MaxSizeCapability {
     private MaxSizeUnit unit;
 
     /**
-     * Get the limit property: The maximum size limit (see 'unit' for the
-     * units).
-     * 
+     * Get the limit property: The maximum size limit (see 'unit' for the units).
+     *
      * @return the limit value.
      */
     public Integer limit() {
@@ -36,7 +33,7 @@ public final class MaxSizeCapability {
 
     /**
      * Get the unit property: The units that the limit is expressed in.
-     * 
+     *
      * @return the unit value.
      */
     public MaxSizeUnit unit() {

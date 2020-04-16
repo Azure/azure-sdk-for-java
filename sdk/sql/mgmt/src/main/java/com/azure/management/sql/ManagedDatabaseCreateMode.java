@@ -8,38 +8,27 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for ManagedDatabaseCreateMode.
- */
+/** Defines values for ManagedDatabaseCreateMode. */
 public final class ManagedDatabaseCreateMode extends ExpandableStringEnum<ManagedDatabaseCreateMode> {
-    /**
-     * Static value Default for ManagedDatabaseCreateMode.
-     */
+    /** Static value Default for ManagedDatabaseCreateMode. */
     public static final ManagedDatabaseCreateMode DEFAULT = fromString("Default");
 
-    /**
-     * Static value RestoreExternalBackup for ManagedDatabaseCreateMode.
-     */
+    /** Static value RestoreExternalBackup for ManagedDatabaseCreateMode. */
     public static final ManagedDatabaseCreateMode RESTORE_EXTERNAL_BACKUP = fromString("RestoreExternalBackup");
 
-    /**
-     * Static value PointInTimeRestore for ManagedDatabaseCreateMode.
-     */
+    /** Static value PointInTimeRestore for ManagedDatabaseCreateMode. */
     public static final ManagedDatabaseCreateMode POINT_IN_TIME_RESTORE = fromString("PointInTimeRestore");
 
-    /**
-     * Static value Recovery for ManagedDatabaseCreateMode.
-     */
+    /** Static value Recovery for ManagedDatabaseCreateMode. */
     public static final ManagedDatabaseCreateMode RECOVERY = fromString("Recovery");
 
-    /**
-     * Static value RestoreLongTermRetentionBackup for ManagedDatabaseCreateMode.
-     */
-    public static final ManagedDatabaseCreateMode RESTORE_LONG_TERM_RETENTION_BACKUP = fromString("RestoreLongTermRetentionBackup");
+    /** Static value RestoreLongTermRetentionBackup for ManagedDatabaseCreateMode. */
+    public static final ManagedDatabaseCreateMode RESTORE_LONG_TERM_RETENTION_BACKUP =
+        fromString("RestoreLongTermRetentionBackup");
 
     /**
      * Creates or finds a ManagedDatabaseCreateMode from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding ManagedDatabaseCreateMode.
      */
@@ -48,9 +37,7 @@ public final class ManagedDatabaseCreateMode extends ExpandableStringEnum<Manage
         return fromString(name, ManagedDatabaseCreateMode.class);
     }
 
-    /**
-     * @return known ManagedDatabaseCreateMode values.
-     */
+    /** @return known ManagedDatabaseCreateMode values. */
     public static Collection<ManagedDatabaseCreateMode> values() {
         return values(ManagedDatabaseCreateMode.class);
     }

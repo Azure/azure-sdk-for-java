@@ -2,27 +2,23 @@
 // Licensed under the MIT License.
 package com.azure.management.network.implementation;
 
-import com.azure.management.network.models.AvailableProvidersListInner;
-import com.azure.management.resources.fluentcore.model.implementation.ExecutableImpl;
 import com.azure.management.network.AvailableProviders;
 import com.azure.management.network.AvailableProvidersListCountry;
 import com.azure.management.network.AvailableProvidersListParameters;
 import com.azure.management.network.NetworkWatcher;
-import reactor.core.publisher.Mono;
-
+import com.azure.management.network.models.AvailableProvidersListInner;
+import com.azure.management.resources.fluentcore.model.implementation.ExecutableImpl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import reactor.core.publisher.Mono;
 
-/**
- * The implementation of AvailableProviders.
- */
+/** The implementation of AvailableProviders. */
 class AvailableProvidersImpl extends ExecutableImpl<AvailableProviders>
-        implements AvailableProviders,
-        AvailableProviders.Definition {
+    implements AvailableProviders, AvailableProviders.Definition {
     private Map<String, AvailableProvidersListCountry> providersByCountry;
     private final NetworkWatcherImpl parent;
     private AvailableProvidersListParameters parameters = new AvailableProvidersListParameters();
@@ -64,9 +60,14 @@ class AvailableProvidersImpl extends ExecutableImpl<AvailableProviders>
 
     @Override
     public Mono<AvailableProviders> executeWorkAsync() {
-        return this.parent().manager().inner().networkWatchers()
-                .listAvailableProvidersAsync(parent().resourceGroupName(), parent().name(), parameters)
-                .map(availableProvidersListInner -> {
+        return this
+            .parent()
+            .manager()
+            .inner()
+            .networkWatchers()
+            .listAvailableProvidersAsync(parent().resourceGroupName(), parent().name(), parameters)
+            .map(
+                availableProvidersListInner -> {
                     AvailableProvidersImpl.this.inner = availableProvidersListInner;
                     AvailableProvidersImpl.this.initializeResourcesFromInner();
                     return AvailableProvidersImpl.this;

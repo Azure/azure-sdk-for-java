@@ -6,7 +6,6 @@ package com.azure.management.network;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.Region;
-import com.azure.management.resources.fluentcore.utils.SdkContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +15,10 @@ public class RouteFilterTests extends NetworkManagementTest {
     public void canCRUDRouteFilter() throws Exception {
         String rfName = sdkContext.randomResourceName("rf", 15);
 
-        RouteFilter routeFilter = networkManager.routeFilters().define(rfName)
+        RouteFilter routeFilter =
+            networkManager
+                .routeFilters()
+                .define(rfName)
                 .withRegion(Region.US_SOUTH_CENTRAL)
                 .withNewResourceGroup(rgName)
                 .withTag("tag1", "value1")
@@ -38,26 +40,26 @@ public class RouteFilterTests extends NetworkManagementTest {
     public void canCreateRouteFilterRule() throws Exception {
         String rfName = sdkContext.randomResourceName("rf", 15);
         String ruleName = "mynewrule";
-        RouteFilter routeFilter = networkManager.routeFilters().define(rfName)
+        RouteFilter routeFilter =
+            networkManager
+                .routeFilters()
+                .define(rfName)
                 .withRegion(Region.US_SOUTH_CENTRAL)
                 .withNewResourceGroup(rgName)
                 .create();
 
-        routeFilter.update()
-                .defineRule(ruleName)
-                .withBgpCommunity("12076:51004")
-                .attach()
-                .apply();
+        routeFilter.update().defineRule(ruleName).withBgpCommunity("12076:51004").attach().apply();
         Assertions.assertEquals(1, routeFilter.rules().size());
         Assertions.assertEquals(1, routeFilter.rules().get(ruleName).communities().size());
         Assertions.assertEquals("12076:51004", routeFilter.rules().get(ruleName).communities().get(0));
 
-        routeFilter.update()
-                .updateRule(ruleName)
-                .withBgpCommunities("12076:51005", "12076:51026")
-                .denyAccess()
-                .parent()
-                .apply();
+        routeFilter
+            .update()
+            .updateRule(ruleName)
+            .withBgpCommunities("12076:51005", "12076:51026")
+            .denyAccess()
+            .parent()
+            .apply();
         Assertions.assertEquals(2, routeFilter.rules().get(ruleName).communities().size());
         Assertions.assertEquals(Access.DENY, routeFilter.rules().get(ruleName).access());
     }

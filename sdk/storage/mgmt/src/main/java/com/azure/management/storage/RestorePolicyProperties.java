@@ -6,10 +6,9 @@ package com.azure.management.storage;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 
-/**
- * The RestorePolicyProperties model.
- */
+/** The RestorePolicyProperties model. */
 @Fluent
 public final class RestorePolicyProperties {
     /*
@@ -25,9 +24,15 @@ public final class RestorePolicyProperties {
     @JsonProperty(value = "days")
     private Integer days;
 
+    /*
+     * Returns the date and time the restore policy was last enabled.
+     */
+    @JsonProperty(value = "lastEnabledTime", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime lastEnabledTime;
+
     /**
      * Get the enabled property: Blob restore is enabled if set to true.
-     * 
+     *
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -36,7 +41,7 @@ public final class RestorePolicyProperties {
 
     /**
      * Set the enabled property: Blob restore is enabled if set to true.
-     * 
+     *
      * @param enabled the enabled value to set.
      * @return the RestorePolicyProperties object itself.
      */
@@ -46,9 +51,9 @@ public final class RestorePolicyProperties {
     }
 
     /**
-     * Get the days property: how long this blob can be restored. It should be
-     * great than zero and less than DeleteRetentionPolicy.days.
-     * 
+     * Get the days property: how long this blob can be restored. It should be great than zero and less than
+     * DeleteRetentionPolicy.days.
+     *
      * @return the days value.
      */
     public Integer days() {
@@ -56,14 +61,23 @@ public final class RestorePolicyProperties {
     }
 
     /**
-     * Set the days property: how long this blob can be restored. It should be
-     * great than zero and less than DeleteRetentionPolicy.days.
-     * 
+     * Set the days property: how long this blob can be restored. It should be great than zero and less than
+     * DeleteRetentionPolicy.days.
+     *
      * @param days the days value to set.
      * @return the RestorePolicyProperties object itself.
      */
     public RestorePolicyProperties withDays(Integer days) {
         this.days = days;
         return this;
+    }
+
+    /**
+     * Get the lastEnabledTime property: Returns the date and time the restore policy was last enabled.
+     *
+     * @return the lastEnabledTime value.
+     */
+    public OffsetDateTime lastEnabledTime() {
+        return this.lastEnabledTime;
     }
 }

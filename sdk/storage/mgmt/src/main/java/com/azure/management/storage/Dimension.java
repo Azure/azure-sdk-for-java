@@ -7,9 +7,7 @@ package com.azure.management.storage;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Dimension model.
- */
+/** The Dimension model. */
 @Fluent
 public final class Dimension {
     /*
@@ -26,7 +24,7 @@ public final class Dimension {
 
     /**
      * Get the name property: Display name of dimension.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -35,7 +33,7 @@ public final class Dimension {
 
     /**
      * Set the name property: Display name of dimension.
-     * 
+     *
      * @param name the name value to set.
      * @return the Dimension object itself.
      */
@@ -46,7 +44,7 @@ public final class Dimension {
 
     /**
      * Get the displayName property: Display name of dimension.
-     * 
+     *
      * @return the displayName value.
      */
     public String displayName() {
@@ -55,7 +53,7 @@ public final class Dimension {
 
     /**
      * Set the displayName property: Display name of dimension.
-     * 
+     *
      * @param displayName the displayName value to set.
      * @return the Dimension object itself.
      */

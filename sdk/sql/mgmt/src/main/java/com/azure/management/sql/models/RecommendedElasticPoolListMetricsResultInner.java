@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The RecommendedElasticPoolListMetricsResult model.
- */
+/** The RecommendedElasticPoolListMetricsResult model. */
 @Fluent
 public final class RecommendedElasticPoolListMetricsResultInner {
     /*
@@ -21,7 +19,7 @@ public final class RecommendedElasticPoolListMetricsResultInner {
 
     /**
      * Get the value property: The list of recommended elastic pools metrics.
-     * 
+     *
      * @return the value value.
      */
     public List<RecommendedElasticPoolMetricInner> value() {
@@ -30,7 +28,7 @@ public final class RecommendedElasticPoolListMetricsResultInner {
 
     /**
      * Set the value property: The list of recommended elastic pools metrics.
-     * 
+     *
      * @param value the value value to set.
      * @return the RecommendedElasticPoolListMetricsResultInner object itself.
      */

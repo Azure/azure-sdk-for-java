@@ -6,9 +6,7 @@ import com.azure.management.compute.VirtualMachineSize;
 import com.azure.management.compute.models.VirtualMachineSizeInner;
 import com.azure.management.resources.fluentcore.utils.Utils;
 
-/**
- * The implementation for {@link VirtualMachineSize}.
- */
+/** The implementation for {@link VirtualMachineSize}. */
 class VirtualMachineSizeImpl implements VirtualMachineSize {
     private VirtualMachineSizeInner innerModel;
 

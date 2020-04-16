@@ -2,21 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.management.network.implementation;
 
-import java.util.Collections;
-import java.util.Map;
-import java.util.TreeMap;
-
-import com.azure.management.network.ApplicationGatewayBackend;
-import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.network.ApplicationGateway;
+import com.azure.management.network.ApplicationGatewayBackend;
 import com.azure.management.network.ApplicationGatewayBackendHealth;
 import com.azure.management.network.ApplicationGatewayBackendHealthHttpSettings;
 import com.azure.management.network.ApplicationGatewayBackendHealthPool;
 import com.azure.management.network.ApplicationGatewayBackendHttpConfigurationHealth;
+import com.azure.management.resources.fluentcore.arm.ResourceUtils;
+import java.util.Collections;
+import java.util.Map;
+import java.util.TreeMap;
 
-/**
- * Implementation of application gateway backend health information.
- */
+/** Implementation of application gateway backend health information. */
 public class ApplicationGatewayBackendHealthImpl implements ApplicationGatewayBackendHealth {
 
     private final ApplicationGatewayBackendHealthPool inner;
@@ -28,7 +25,8 @@ public class ApplicationGatewayBackendHealthImpl implements ApplicationGatewayBa
         this.appGateway = appGateway;
         if (inner != null) {
             for (ApplicationGatewayBackendHealthHttpSettings httpConfigInner : inner.backendHttpSettingsCollection()) {
-                ApplicationGatewayBackendHttpConfigurationHealthImpl httpConfigHealth = new ApplicationGatewayBackendHttpConfigurationHealthImpl(httpConfigInner, this);
+                ApplicationGatewayBackendHttpConfigurationHealthImpl httpConfigHealth =
+                    new ApplicationGatewayBackendHttpConfigurationHealthImpl(httpConfigInner, this);
                 this.httpConfigHealths.put(httpConfigHealth.name(), httpConfigHealth);
             }
         }

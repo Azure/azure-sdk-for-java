@@ -2,9 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.management.compute;
 
-/**
- * The popular Azure Windows images.
- */
+/** The popular Azure Windows images. */
 public enum KnownWindowsVirtualMachineImage {
     /** Windows Server 2008 R2 SP1. */
     WINDOWS_SERVER_2008_R2_SP1("MicrosoftWindowsServer", "WindowsServer", "2008-R2-SP1"),
@@ -15,18 +13,22 @@ public enum KnownWindowsVirtualMachineImage {
     /**
      * Windows Server 2016 technical preview with container.
      *
-     * @deprecated for virtual machine use {@link VirtualMachine.DefinitionShared#withLatestWindowsImage(String publisher, String offer, String sku)}
-     * and for virtual machine scale set use {@link VirtualMachineScaleSet.DefinitionShared#withLatestWindowsImage(String publisher, String offer, String sku)}
-     * with publisher as "MicrosoftWindowsServer", offer as "WindowsServer" and sku as "2016-Datacenter-with-Containers")}.
+     * @deprecated for virtual machine use {@link VirtualMachine.DefinitionShared#withLatestWindowsImage(String
+     *     publisher, String offer, String sku)} and for virtual machine scale set use {@link
+     *     VirtualMachineScaleSet.DefinitionShared#withLatestWindowsImage(String publisher, String offer, String sku)}
+     *     with publisher as "MicrosoftWindowsServer", offer as "WindowsServer" and sku as
+     *     "2016-Datacenter-with-Containers")}.
      */
     @Deprecated
-    WINDOWS_SERVER_2016_TECHNICAL_PREVIEW_WITH_CONTAINERS("MicrosoftWindowsServer", "WindowsServer", "2016-Technical-Preview-with-Containers"),
+    WINDOWS_SERVER_2016_TECHNICAL_PREVIEW_WITH_CONTAINERS(
+        "MicrosoftWindowsServer", "WindowsServer", "2016-Technical-Preview-with-Containers"),
     /**
      * Windows Server 2016 technical preview.
      *
-     * @deprecated for virtual machine use {@link VirtualMachine.DefinitionShared#withLatestWindowsImage(String publisher, String offer, String sku)}
-     * and for virtual machine scale set use {@link VirtualMachineScaleSet.DefinitionShared#withLatestWindowsImage(String publisher, String offer, String sku)}
-     * with publisher as "MicrosoftWindowsServer", offer as "WindowsServer" and sku as "2016-Datacenter")}.
+     * @deprecated for virtual machine use {@link VirtualMachine.DefinitionShared#withLatestWindowsImage(String
+     *     publisher, String offer, String sku)} and for virtual machine scale set use {@link
+     *     VirtualMachineScaleSet.DefinitionShared#withLatestWindowsImage(String publisher, String offer, String sku)}
+     *     with publisher as "MicrosoftWindowsServer", offer as "WindowsServer" and sku as "2016-Datacenter")}.
      */
     @Deprecated
     WINDOWS_SERVER_TECHNICAL_PREVIEW("MicrosoftWindowsServer", "WindowsServer", "Windows-Server-Technical-Preview");
@@ -41,35 +43,23 @@ public enum KnownWindowsVirtualMachineImage {
         this.sku = sku;
     }
 
-    /**
-     * @return the name of the image publisher
-     */
+    /** @return the name of the image publisher */
     public String publisher() {
         return this.publisher;
     }
 
-    /**
-     * @return the name of the image offer
-     */
+    /** @return the name of the image offer */
     public String offer() {
         return this.offer;
     }
 
-    /**
-     * @return the name of the image SKU
-     */
+    /** @return the name of the image SKU */
     public String sku() {
         return this.sku;
     }
 
-    /**
-     * @return the image reference
-     */
+    /** @return the image reference */
     public ImageReference imageReference() {
-        return new ImageReference()
-                .withPublisher(publisher())
-                .withOffer(offer())
-                .withSku(sku())
-                .withVersion("latest");
+        return new ImageReference().withPublisher(publisher()).withOffer(offer()).withSku(sku()).withVersion("latest");
     }
 }

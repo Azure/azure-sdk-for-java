@@ -7,23 +7,15 @@ package com.azure.management.sql;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for AuthenticationType.
- */
+/** Defines values for AuthenticationType. */
 public enum AuthenticationType {
-    /**
-     * Enum value SQL.
-     */
+    /** Enum value SQL. */
     SQL("SQL"),
 
-    /**
-     * Enum value ADPassword.
-     */
+    /** Enum value ADPassword. */
     ADPASSWORD("ADPassword");
 
-    /**
-     * The actual serialized value for a AuthenticationType instance.
-     */
+    /** The actual serialized value for a AuthenticationType instance. */
     private final String value;
 
     AuthenticationType(String value) {
@@ -32,7 +24,7 @@ public enum AuthenticationType {
 
     /**
      * Parses a serialized value to a AuthenticationType instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed AuthenticationType object, or null if unable to parse.
      */

@@ -6,71 +6,50 @@ import com.azure.core.annotation.Fluent;
 import com.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.azure.management.resources.fluentcore.model.Executable;
 
-/**
- * A client-side representation allowing user to get next hop for a packet from specific vm.
- */
+/** A client-side representation allowing user to get next hop for a packet from specific vm. */
 @Fluent
-public interface NextHop extends Executable<NextHop>,
-        HasParent<NetworkWatcher> {
+public interface NextHop extends Executable<NextHop>, HasParent<NetworkWatcher> {
     /**
-     * Get the resource identifier of the target resource against which the action
-     * is to be performed.
+     * Get the resource identifier of the target resource against which the action is to be performed.
      *
      * @return the targetResourceId value
      */
     String targetResourceId();
 
-    /**
-     * @return the source IP address
-     */
+    /** @return the source IP address */
     String sourceIPAddress();
 
-    /**
-     * @return the destination IP address
-     */
+    /** @return the destination IP address */
     String destinationIPAddress();
 
-    /**
-     * @return the network interface id
-     */
+    /** @return the network interface id */
     String targetNetworkInterfaceId();
 
-    /**
-     * @return the next hop type
-     */
+    /** @return the next hop type */
     NextHopType nextHopType();
 
-    /**
-     * @return the next hop IP Address
-     */
+    /** @return the next hop IP Address */
     String nextHopIpAddress();
 
     /**
-     * Get the resource identifier for the route table associated with the route
-     * being returned. If the route being returned does not correspond to any
-     * user created routes then this field will be the string 'System Route'.
+     * Get the resource identifier for the route table associated with the route being returned. If the route being
+     * returned does not correspond to any user created routes then this field will be the string 'System Route'.
      *
      * @return the routeTableId value
      */
     String routeTableId();
 
-    /**
-     * The entirety of next hop parameters definition.
-     */
-    interface Definition extends
-            DefinitionStages.WithTargetResource,
+    /** The entirety of next hop parameters definition. */
+    interface Definition
+        extends DefinitionStages.WithTargetResource,
             DefinitionStages.WithSourceIP,
             DefinitionStages.WithDestinationIP,
             DefinitionStages.WithExecute {
     }
 
-    /**
-     * Grouping of next hop definition stages.
-     */
+    /** Grouping of next hop definition stages. */
     interface DefinitionStages {
-        /**
-         * The first stage of next hop parameters definition.
-         */
+        /** The first stage of next hop parameters definition. */
         interface WithTargetResource {
             /**
              * Set the targetResourceId value.
@@ -81,9 +60,7 @@ public interface NextHop extends Executable<NextHop>,
             WithSourceIP withTargetResourceId(String vmId);
         }
 
-        /**
-         * Sets the source IP address.
-         */
+        /** Sets the source IP address. */
         interface WithSourceIP {
             /**
              * Set the sourceIPAddress value.
@@ -94,9 +71,7 @@ public interface NextHop extends Executable<NextHop>,
             WithDestinationIP withSourceIPAddress(String sourceIPAddress);
         }
 
-        /**
-         * Sets the destination IP address.
-         */
+        /** Sets the destination IP address. */
         interface WithDestinationIP {
             /**
              * Set the destinationIPAddress value.
@@ -108,8 +83,8 @@ public interface NextHop extends Executable<NextHop>,
         }
 
         /**
-         * Sets the NIC ID. (If VM has multiple NICs and IP forwarding is enabled on any
-         * of the nics, then this parameter must be specified. Otherwise optional).
+         * Sets the NIC ID. (If VM has multiple NICs and IP forwarding is enabled on any of the nics, then this
+         * parameter must be specified. Otherwise optional).
          */
         interface WithNetworkInterface {
             /**
@@ -122,12 +97,10 @@ public interface NextHop extends Executable<NextHop>,
         }
 
         /**
-         * The stage of the definition which contains all the minimum required inputs for execution, but also allows
-         * for any other optional settings to be specified.
+         * The stage of the definition which contains all the minimum required inputs for execution, but also allows for
+         * any other optional settings to be specified.
          */
-        interface WithExecute extends
-                Executable<NextHop>,
-                WithNetworkInterface {
+        interface WithExecute extends Executable<NextHop>, WithNetworkInterface {
         }
     }
 }

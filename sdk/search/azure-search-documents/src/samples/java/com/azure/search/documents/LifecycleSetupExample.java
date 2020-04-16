@@ -146,7 +146,7 @@ public class LifecycleSetupExample {
                         .setKey(Boolean.TRUE)
                         .setFacetable(Boolean.TRUE)
                         .setFilterable(Boolean.TRUE)
-                        .setRetrievable(Boolean.TRUE)
+                        .setHidden(Boolean.FALSE)
                         .setSearchable(Boolean.FALSE)
                         .setSortable(Boolean.FALSE),
                     new Field()
@@ -154,17 +154,17 @@ public class LifecycleSetupExample {
                         .setType(DataType.EDM_STRING)
                         .setFacetable(Boolean.FALSE)
                         .setFilterable(Boolean.FALSE)
+                        .setHidden(Boolean.FALSE)
                         .setKey(Boolean.FALSE)
-                        .setRetrievable(Boolean.TRUE)
                         .setSearchable(Boolean.TRUE)
                         .setSortable(Boolean.FALSE)
                         .setAnalyzer(AnalyzerName.EN_MICROSOFT),
                     new Field()
                         .setName("Description")
                         .setType(DataType.EDM_STRING)
-                        .setRetrievable(Boolean.TRUE)
                         .setSearchable(Boolean.TRUE)
                         .setFilterable(Boolean.FALSE)
+                        .setHidden(Boolean.FALSE)
                         .setSortable(Boolean.FALSE)
                         .setFacetable(Boolean.FALSE)
                         .setAnalyzer(AnalyzerName.EN_MICROSOFT),
@@ -173,7 +173,7 @@ public class LifecycleSetupExample {
                         .setType(DataType.collection(DataType.EDM_STRING))
                         .setFacetable(Boolean.TRUE)
                         .setFilterable(Boolean.TRUE)
-                        .setRetrievable(Boolean.TRUE)
+                        .setHidden(Boolean.FALSE)
                         .setSearchable(Boolean.TRUE)
                         .setAnalyzer(AnalyzerName.EN_MICROSOFT)));
 

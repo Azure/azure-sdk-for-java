@@ -7,9 +7,7 @@ package com.azure.management.monitor;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ResponseWithError model.
- */
+/** The ResponseWithError model. */
 @Fluent
 public final class ResponseWithError {
     /*
@@ -20,7 +18,7 @@ public final class ResponseWithError {
 
     /**
      * Get the error property: Error information.
-     * 
+     *
      * @return the error value.
      */
     public Error error() {
@@ -29,7 +27,7 @@ public final class ResponseWithError {
 
     /**
      * Set the error property: Error information.
-     * 
+     *
      * @param error the error value to set.
      * @return the ResponseWithError object itself.
      */

@@ -5,9 +5,7 @@ package com.azure.management.compute;
 
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 
-/**
- * The source from which managed disk or snapshot is created.
- */
+/** The source from which managed disk or snapshot is created. */
 public class CreationSource {
     private final CreationData creationData;
 
@@ -20,9 +18,7 @@ public class CreationSource {
         this.creationData = creationData;
     }
 
-    /**
-     * @return type of the source from which disk or snapshot is created
-     */
+    /** @return type of the source from which disk or snapshot is created */
     public CreationSourceType type() {
         DiskCreateOption createOption = this.creationData.createOption();
         if (createOption == DiskCreateOption.FROM_IMAGE) {
@@ -63,12 +59,10 @@ public class CreationSource {
         return CreationSourceType.UNKNOWN;
     }
 
-    /**
-     * @return ID of the source
-     */
+    /** @return ID of the source */
     public String sourceId() {
         if (this.type() == CreationSourceType.FROM_OS_DISK_IMAGE
-                || this.type() == CreationSourceType.FROM_DATA_DISK_IMAGE) {
+            || this.type() == CreationSourceType.FROM_DATA_DISK_IMAGE) {
             return this.creationData.imageReference().getId();
         }
         if (this.type() == CreationSourceType.IMPORTED_FROM_VHD) {
@@ -92,8 +86,8 @@ public class CreationSource {
     }
 
     /**
-     * @return the LUN value of the data disk image if this disk or snapshot is created from
-     * a data disk image, -1 otherwise
+     * @return the LUN value of the data disk image if this disk or snapshot is created from a data disk image, -1
+     *     otherwise
      */
     public int sourceDataDiskImageLun() {
         if (this.type() == CreationSourceType.FROM_DATA_DISK_IMAGE) {

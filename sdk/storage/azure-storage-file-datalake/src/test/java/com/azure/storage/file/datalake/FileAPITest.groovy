@@ -11,6 +11,7 @@ import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.ProgressReceiver
+import com.azure.storage.common.Utility
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.file.datalake.models.AccessTier
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions
@@ -1593,17 +1594,28 @@ class FileAPITest extends APISpec {
         thrown(DataLakeStorageException)
     }
 
-    def "Rename url encoded path"() {
-        setup:
-        // Add some random url encoded characters to the end
-        fc = fsc.getFileClient(generatePathName() + "%20%25")
-        fc.create()
-
+    @Unroll
+    def "Rename url encoded"() {
         when:
-        def response = fc.renameWithResponse(null, generatePathName(), null, null, null, null)
+        fc = fsc.getFileClient(generatePathName() + source)
+        fc.create()
+        def response = fc.renameWithResponse(null, generatePathName() + destination, null, null, null, null)
 
         then:
         response.getStatusCode() == 201
+
+        when:
+        response = response.getValue().getPropertiesWithResponse(null, null, null)
+
+        then:
+        response.getStatusCode() == 200
+
+        where:
+        source     | destination || _
+        ""         | ""          || _ /* Both non encoded. */
+        "%20%25"   | ""          || _ /* One encoded. */
+        ""         | "%20%25"    || _
+        "%20%25"   | "%20%25"    || _ /* Both encoded. */
     }
 
     @Unroll

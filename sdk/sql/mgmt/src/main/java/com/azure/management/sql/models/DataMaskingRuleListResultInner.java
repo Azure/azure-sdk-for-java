@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The DataMaskingRuleListResult model.
- */
+/** The DataMaskingRuleListResult model. */
 @Fluent
 public final class DataMaskingRuleListResultInner {
     /*
@@ -21,7 +19,7 @@ public final class DataMaskingRuleListResultInner {
 
     /**
      * Get the value property: The list of database data masking rules.
-     * 
+     *
      * @return the value value.
      */
     public List<DataMaskingRuleInner> value() {
@@ -30,7 +28,7 @@ public final class DataMaskingRuleListResultInner {
 
     /**
      * Set the value property: The list of database data masking rules.
-     * 
+     *
      * @param value the value value to set.
      * @return the DataMaskingRuleListResultInner object itself.
      */

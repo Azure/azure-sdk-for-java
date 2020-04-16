@@ -22,103 +22,120 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * SubscriptionUsages.
- */
+/** An instance of this class provides access to all the operations defined in SubscriptionUsages. */
 public final class SubscriptionUsagesInner {
-    /**
-     * The proxy service used to perform REST calls.
-     */
-    private SubscriptionUsagesService service;
+    /** The proxy service used to perform REST calls. */
+    private final SubscriptionUsagesService service;
 
-    /**
-     * The service client containing this operation class.
-     */
-    private SqlManagementClientImpl client;
+    /** The service client containing this operation class. */
+    private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of SubscriptionUsagesInner.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     SubscriptionUsagesInner(SqlManagementClientImpl client) {
-        this.service = RestProxy.create(SubscriptionUsagesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy.create(SubscriptionUsagesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * SqlManagementClientSubscriptionUsages to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for SqlManagementClientSubscriptionUsages to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientSubscriptionUsages")
+    @ServiceInterface(name = "SqlManagementClientS")
     private interface SubscriptionUsagesService {
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/usages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<SubscriptionUsageListResultInner>> listByLocation(@HostParam("$host") String host, @PathParam("locationName") String locationName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<SubscriptionUsageListResultInner>> listByLocation(
+            @HostParam("$host") String host,
+            @PathParam("locationName") String locationName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/usages/{usageName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<SubscriptionUsageInner>> get(@HostParam("$host") String host, @PathParam("locationName") String locationName, @PathParam("usageName") String usageName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<SubscriptionUsageInner>> get(
+            @HostParam("$host") String host,
+            @PathParam("locationName") String locationName,
+            @PathParam("usageName") String usageName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<SubscriptionUsageListResultInner>> listByLocationNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<SubscriptionUsageListResultInner>> listByLocationNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
      * Gets all subscription usage metrics in a given location.
-     * 
-     * @param locationName 
+     *
+     * @param locationName The name of the region where the resource is located.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all subscription usage metrics in a given location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SubscriptionUsageInner>> listByLocationSinglePageAsync(String locationName) {
         final String apiVersion = "2015-05-01-preview";
-        return service.listByLocation(this.client.getHost(), locationName, this.client.getSubscriptionId(), apiVersion)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByLocation(
+                            this.client.getHost(), locationName, this.client.getSubscriptionId(), apiVersion, context))
+            .<PagedResponse<SubscriptionUsageInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets all subscription usage metrics in a given location.
-     * 
-     * @param locationName 
+     *
+     * @param locationName The name of the region where the resource is located.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all subscription usage metrics in a given location.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SubscriptionUsageInner> listByLocationAsync(String locationName) {
         return new PagedFlux<>(
-            () -> listByLocationSinglePageAsync(locationName),
-            nextLink -> listByLocationNextSinglePageAsync(nextLink));
+            () -> listByLocationSinglePageAsync(locationName), nextLink -> listByLocationNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all subscription usage metrics in a given location.
-     * 
-     * @param locationName 
+     *
+     * @param locationName The name of the region where the resource is located.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all subscription usage metrics in a given location.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SubscriptionUsageInner> listByLocation(String locationName) {
@@ -127,48 +144,63 @@ public final class SubscriptionUsagesInner {
 
     /**
      * Gets a subscription usage metric.
-     * 
-     * @param locationName 
-     * @param usageName 
+     *
+     * @param locationName The name of the region where the resource is located.
+     * @param usageName Name of usage metric to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a subscription usage metric.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<SubscriptionUsageInner>> getWithResponseAsync(String locationName, String usageName) {
         final String apiVersion = "2015-05-01-preview";
-        return service.get(this.client.getHost(), locationName, usageName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .get(
+                            this.client.getHost(),
+                            locationName,
+                            usageName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a subscription usage metric.
-     * 
-     * @param locationName 
-     * @param usageName 
+     *
+     * @param locationName The name of the region where the resource is located.
+     * @param usageName Name of usage metric to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a subscription usage metric.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SubscriptionUsageInner> getAsync(String locationName, String usageName) {
         return getWithResponseAsync(locationName, usageName)
-            .flatMap((SimpleResponse<SubscriptionUsageInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<SubscriptionUsageInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets a subscription usage metric.
-     * 
-     * @param locationName 
-     * @param usageName 
+     *
+     * @param locationName The name of the region where the resource is located.
+     * @param usageName Name of usage metric to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a subscription usage metric.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SubscriptionUsageInner get(String locationName, String usageName) {
@@ -177,21 +209,26 @@ public final class SubscriptionUsagesInner {
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink null
+     *
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of subscription usage metrics in a location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SubscriptionUsageInner>> listByLocationNextSinglePageAsync(String nextLink) {
-        return service.listByLocationNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(context -> service.listByLocationNext(nextLink, context))
+            .<PagedResponse<SubscriptionUsageInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 }

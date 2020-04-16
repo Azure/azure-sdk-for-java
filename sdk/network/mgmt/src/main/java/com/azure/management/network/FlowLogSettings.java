@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.management.network;
 
-
 import com.azure.core.annotation.Fluent;
 import com.azure.management.network.models.FlowLogInformationInner;
 import com.azure.management.resources.fluentcore.arm.models.HasParent;
@@ -15,8 +14,8 @@ import com.azure.management.resources.fluentcore.model.Updatable;
  * Client-side representation of the configuration of flow log, associated with network watcher and an Azure resource.
  */
 @Fluent
-public interface FlowLogSettings extends
-        HasParent<NetworkWatcher>,
+public interface FlowLogSettings
+    extends HasParent<NetworkWatcher>,
         HasInner<FlowLogInformationInner>,
         Updatable<FlowLogSettings.Update>,
         Refreshable<FlowLogSettings> {
@@ -27,38 +26,24 @@ public interface FlowLogSettings extends
      */
     String targetResourceId();
 
-    /**
-     * @return the id of the storage account used to store the flow log
-     */
+    /** @return the id of the storage account used to store the flow log */
     String storageId();
 
-    /**
-     * @return true if logging is enabled, false otherwise
-     */
+    /** @return true if logging is enabled, false otherwise */
     boolean enabled();
 
-    /**
-     * @return true if retention policy enabled, false otherwise
-     */
+    /** @return true if retention policy enabled, false otherwise */
     boolean isRetentionEnabled();
 
-    /**
-     * @return the number of days to retain flow log records
-     */
+    /** @return the number of days to retain flow log records */
     int retentionDays();
 
-    /**
-     * @return network security group id these flow log settings apply to
-     */
+    /** @return network security group id these flow log settings apply to */
     String networkSecurityGroupId();
 
-    /**
-     * Grouping of flow log information update stages.
-     */
+    /** Grouping of flow log information update stages. */
     interface UpdateStages {
-        /**
-         * The stage of the flow log information update allowing to set enable/disable property.
-         */
+        /** The stage of the flow log information update allowing to set enable/disable property. */
         interface WithEnabled {
             /**
              * Enable flow logging.
@@ -75,9 +60,7 @@ public interface FlowLogSettings extends
             Update withoutLogging();
         }
 
-        /**
-         * The stage of the flow log information update allowing to specify storage account.
-         */
+        /** The stage of the flow log information update allowing to specify storage account. */
         interface WithStorageAccount {
             /**
              * Specifies the storage account to use for storing log.
@@ -88,9 +71,7 @@ public interface FlowLogSettings extends
             Update withStorageAccount(String storageId);
         }
 
-        /**
-         * The stage of the flow log information update allowing to configure retention policy.
-         */
+        /** The stage of the flow log information update allowing to configure retention policy. */
         interface WithRetentionPolicy {
             /**
              * Enable retention policy.
@@ -117,13 +98,12 @@ public interface FlowLogSettings extends
     }
 
     /**
-     * The template for a flow log information update operation, containing all the settings that
-     * can be modified.
-     * <p>
-     * Call {@link Update#apply()} to apply the changes to the resource in Azure.
+     * The template for a flow log information update operation, containing all the settings that can be modified.
+     *
+     * <p>Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
-    interface Update extends
-            Appliable<FlowLogSettings>,
+    interface Update
+        extends Appliable<FlowLogSettings>,
             UpdateStages.WithEnabled,
             UpdateStages.WithStorageAccount,
             UpdateStages.WithRetentionPolicy {

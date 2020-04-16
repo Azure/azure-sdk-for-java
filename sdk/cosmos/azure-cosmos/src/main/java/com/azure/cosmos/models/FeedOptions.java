@@ -236,7 +236,7 @@ public final class FeedOptions {
      * @param maxItemCount the max number of items.
      * @return the FeedOptionsBase.
      */
-    public FeedOptions setMaxItemCount(Integer maxItemCount) {
+    FeedOptions setMaxItemCount(Integer maxItemCount) {
         this.maxItemCount = maxItemCount;
         return this;
     }
@@ -256,7 +256,7 @@ public final class FeedOptions {
      * @param requestContinuation the request continuation.
      * @return the FeedOptionsBase.
      */
-    public FeedOptions setRequestContinuation(String requestContinuation) {
+    FeedOptions setRequestContinuation(String requestContinuation) {
         this.requestContinuation = requestContinuation;
         return this;
     }

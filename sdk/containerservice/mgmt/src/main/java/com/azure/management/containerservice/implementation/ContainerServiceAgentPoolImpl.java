@@ -11,20 +11,13 @@ import com.azure.management.containerservice.OSType;
 import com.azure.management.containerservice.OrchestratorServiceBase;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
-
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * The implementation for ContainerServiceAgentPool and its create and update interfaces.
- */
-class ContainerServiceAgentPoolImpl extends
-        ChildResourceImpl<ContainerServiceAgentPoolProfile,
-                    ContainerServiceImpl,
-                OrchestratorServiceBase>
-    implements
-        ContainerServiceAgentPool,
-        ContainerServiceAgentPool.Definition {
+/** The implementation for ContainerServiceAgentPool and its create and update interfaces. */
+class ContainerServiceAgentPoolImpl
+    extends ChildResourceImpl<ContainerServiceAgentPoolProfile, ContainerServiceImpl, OrchestratorServiceBase>
+    implements ContainerServiceAgentPool, ContainerServiceAgentPool.Definition {
 
     private String subnetName;
 
@@ -112,13 +105,13 @@ class ContainerServiceAgentPoolImpl extends
     @Override
     public ContainerServiceAgentPoolImpl withVirtualMachineSize(ContainerServiceVMSizeTypes param0) {
         this.inner().withVmSize(param0);
-        return this;        
+        return this;
     }
 
     @Override
     public ContainerServiceAgentPoolImpl withDnsPrefix(String param0) {
         this.inner().withDnsPrefix(param0);
-        return this;        
+        return this;
     }
 
     @Override
@@ -163,5 +156,4 @@ class ContainerServiceAgentPoolImpl extends
         this.parent().inner().agentPoolProfiles().add(this.inner());
         return this.parent();
     }
-
 }

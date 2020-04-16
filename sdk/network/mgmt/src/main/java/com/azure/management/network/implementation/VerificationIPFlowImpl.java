@@ -11,11 +11,9 @@ import com.azure.management.network.models.VerificationIPFlowResultInner;
 import com.azure.management.resources.fluentcore.model.implementation.ExecutableImpl;
 import reactor.core.publisher.Mono;
 
-/**
- * Implementation of VerificationIPFlow.
- */
+/** Implementation of VerificationIPFlow. */
 public class VerificationIPFlowImpl extends ExecutableImpl<VerificationIPFlow>
-        implements VerificationIPFlow, VerificationIPFlow.Definition {
+    implements VerificationIPFlow, VerificationIPFlow.Definition {
     private final NetworkWatcherImpl parent;
     private VerificationIPFlowParameters parameters = new VerificationIPFlowParameters();
     private VerificationIPFlowResultInner result;
@@ -109,9 +107,14 @@ public class VerificationIPFlowImpl extends ExecutableImpl<VerificationIPFlow>
 
     @Override
     public Mono<VerificationIPFlow> executeWorkAsync() {
-        return this.parent().manager().inner().networkWatchers()
-                .verifyIPFlowAsync(parent.resourceGroupName(), parent.name(), parameters)
-                .map(verificationIPFlowResultInner -> {
+        return this
+            .parent()
+            .manager()
+            .inner()
+            .networkWatchers()
+            .verifyIPFlowAsync(parent.resourceGroupName(), parent.name(), parameters)
+            .map(
+                verificationIPFlowResultInner -> {
                     VerificationIPFlowImpl.this.result = verificationIPFlowResultInner;
                     return VerificationIPFlowImpl.this;
                 });

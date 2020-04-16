@@ -10,9 +10,7 @@ import com.azure.core.management.ProxyResource;
 import com.azure.management.sql.JobSchedule;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Job model.
- */
+/** The Job model. */
 @JsonFlatten
 @Fluent
 public class JobInner extends ProxyResource {
@@ -36,7 +34,7 @@ public class JobInner extends ProxyResource {
 
     /**
      * Get the description property: User-defined description of the job.
-     * 
+     *
      * @return the description value.
      */
     public String description() {
@@ -45,7 +43,7 @@ public class JobInner extends ProxyResource {
 
     /**
      * Set the description property: User-defined description of the job.
-     * 
+     *
      * @param description the description value to set.
      * @return the JobInner object itself.
      */
@@ -56,7 +54,7 @@ public class JobInner extends ProxyResource {
 
     /**
      * Get the version property: The job version number.
-     * 
+     *
      * @return the version value.
      */
     public Integer version() {
@@ -65,7 +63,7 @@ public class JobInner extends ProxyResource {
 
     /**
      * Get the schedule property: Schedule properties of the job.
-     * 
+     *
      * @return the schedule value.
      */
     public JobSchedule schedule() {
@@ -74,7 +72,7 @@ public class JobInner extends ProxyResource {
 
     /**
      * Set the schedule property: Schedule properties of the job.
-     * 
+     *
      * @param schedule the schedule value to set.
      * @return the JobInner object itself.
      */

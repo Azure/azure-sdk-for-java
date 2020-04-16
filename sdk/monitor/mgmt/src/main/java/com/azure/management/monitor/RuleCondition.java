@@ -11,18 +11,26 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
 
-/**
- * The RuleCondition model.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type", defaultImpl = RuleCondition.class)
+/** The RuleCondition model. */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "odata.type",
+    defaultImpl = RuleCondition.class)
 @JsonTypeName("RuleCondition")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "Microsoft.Azure.Management.Insights.Models.ThresholdRuleCondition", value = ThresholdRuleCondition.class),
-    @JsonSubTypes.Type(name = "Microsoft.Azure.Management.Insights.Models.LocationThresholdRuleCondition", value = LocationThresholdRuleCondition.class),
-    @JsonSubTypes.Type(name = "Microsoft.Azure.Management.Insights.Models.ManagementEventRuleCondition", value = ManagementEventRuleCondition.class)
+    @JsonSubTypes.Type(
+        name = "Microsoft.Azure.Management.Insights.Models.ThresholdRuleCondition",
+        value = ThresholdRuleCondition.class),
+    @JsonSubTypes.Type(
+        name = "Microsoft.Azure.Management.Insights.Models.LocationThresholdRuleCondition",
+        value = LocationThresholdRuleCondition.class),
+    @JsonSubTypes.Type(
+        name = "Microsoft.Azure.Management.Insights.Models.ManagementEventRuleCondition",
+        value = ManagementEventRuleCondition.class)
 })
-@Fluent
 @JsonTypeResolver(OdataTypeDiscriminatorTypeResolver.class)
+@Fluent
 public class RuleCondition {
     /*
      * the resource from which the rule collects its data. For this type
@@ -32,10 +40,9 @@ public class RuleCondition {
     private RuleDataSource dataSource;
 
     /**
-     * Get the dataSource property: the resource from which the rule collects
-     * its data. For this type dataSource will always be of type
-     * RuleMetricDataSource.
-     * 
+     * Get the dataSource property: the resource from which the rule collects its data. For this type dataSource will
+     * always be of type RuleMetricDataSource.
+     *
      * @return the dataSource value.
      */
     public RuleDataSource dataSource() {
@@ -43,10 +50,9 @@ public class RuleCondition {
     }
 
     /**
-     * Set the dataSource property: the resource from which the rule collects
-     * its data. For this type dataSource will always be of type
-     * RuleMetricDataSource.
-     * 
+     * Set the dataSource property: the resource from which the rule collects its data. For this type dataSource will
+     * always be of type RuleMetricDataSource.
+     *
      * @param dataSource the dataSource value to set.
      * @return the RuleCondition object itself.
      */

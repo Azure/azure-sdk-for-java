@@ -3,8 +3,8 @@
 
 package com.azure.management.monitor;
 
-import com.azure.management.monitor.implementation.MonitorManager;
 import com.azure.core.annotation.Fluent;
+import com.azure.management.monitor.implementation.MonitorManager;
 import com.azure.management.monitor.models.AutoscaleSettingResourceInner;
 import com.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.management.resources.fluentcore.arm.models.Resource;
@@ -12,18 +12,15 @@ import com.azure.management.resources.fluentcore.model.Appliable;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.Refreshable;
 import com.azure.management.resources.fluentcore.model.Updatable;
-
 import java.util.List;
 import java.util.Map;
 
-/**
- * An immutable client-side representation of an Azure autoscale setting.
- */
+/** An immutable client-side representation of an Azure autoscale setting. */
 @Fluent
-public interface AutoscaleSetting extends
-    GroupableResource<MonitorManager, AutoscaleSettingResourceInner>,
-    Refreshable<AutoscaleSetting>,
-    Updatable<AutoscaleSetting.Update> {
+public interface AutoscaleSetting
+    extends GroupableResource<MonitorManager, AutoscaleSettingResourceInner>,
+        Refreshable<AutoscaleSetting>,
+        Updatable<AutoscaleSetting.Update> {
 
     /**
      * Get the resource identifier of the resource that the autoscale setting should be added to.
@@ -40,7 +37,8 @@ public interface AutoscaleSetting extends
     Map<String, AutoscaleProfile> profiles();
 
     /**
-     * Get the enabled flag. Specifies whether automatic scaling is enabled for the resource. The default value is 'true'.
+     * Get the enabled flag. Specifies whether automatic scaling is enabled for the resource. The default value is
+     * 'true'.
      *
      * @return the enabled value.
      */
@@ -74,38 +72,29 @@ public interface AutoscaleSetting extends
      */
     String webhookNotification();
 
-    /**
-     * The entirety of an autoscale setting definition.
-     */
-    interface Definition extends
-        DefinitionStages.Blank,
-        DefinitionStages.WithGroup,
-        DefinitionStages.WithCreate,
-        DefinitionStages.DefineAutoscaleSettingResourceProfiles,
-        DefinitionStages.WithAutoscaleSettingResourceTargetResourceUri,
-        DefinitionStages.WithAutoscaleSettingResourceEnabled {
+    /** The entirety of an autoscale setting definition. */
+    interface Definition
+        extends DefinitionStages.Blank,
+            DefinitionStages.WithGroup,
+            DefinitionStages.WithCreate,
+            DefinitionStages.DefineAutoscaleSettingResourceProfiles,
+            DefinitionStages.WithAutoscaleSettingResourceTargetResourceUri,
+            DefinitionStages.WithAutoscaleSettingResourceEnabled {
     }
 
-    /**
-     * Grouping of autoscale setting definition stages.
-     */
+    /** Grouping of autoscale setting definition stages. */
     interface DefinitionStages {
 
-        /**
-         * The first stage of autoscale setting definition.
-         */
+        /** The first stage of autoscale setting definition. */
         interface Blank extends DefinitionWithRegion<WithGroup> {
         }
 
-        /**
-         * The stage of the definition which selects resource group.
-         */
-        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithAutoscaleSettingResourceTargetResourceUri> {
+        /** The stage of the definition which selects resource group. */
+        interface WithGroup
+            extends GroupableResource.DefinitionStages.WithGroup<WithAutoscaleSettingResourceTargetResourceUri> {
         }
 
-        /**
-         * The stage of the definition which selects target resource.
-         */
+        /** The stage of the definition which selects target resource. */
         interface WithAutoscaleSettingResourceTargetResourceUri {
             /**
              * Set the resource identifier of the resource that the autoscale setting should be added to.
@@ -116,12 +105,11 @@ public interface AutoscaleSetting extends
             DefineAutoscaleSettingResourceProfiles withTargetResource(String targetResourceId);
         }
 
-        /**
-         * The stage of the definition which specifies autoscale profile.
-         */
+        /** The stage of the definition which specifies autoscale profile. */
         interface DefineAutoscaleSettingResourceProfiles {
             /**
-             * Starts the definition of automatic scaling profiles that specify different scaling parameters for different time periods. A maximum of 20 profiles can be specified.
+             * Starts the definition of automatic scaling profiles that specify different scaling parameters for
+             * different time periods. A maximum of 20 profiles can be specified.
              *
              * @param name name of the autoscale profile.
              * @return the next stage of the definition.
@@ -129,9 +117,7 @@ public interface AutoscaleSetting extends
             AutoscaleProfile.DefinitionStages.Blank defineAutoscaleProfile(String name);
         }
 
-        /**
-         * The stage of the definition which specifies autoscale notifications.
-         */
+        /** The stage of the definition which specifies autoscale notifications. */
         interface DefineAutoscaleSettingResourceNotifications {
             /**
              * Specifies that an email should be send to subscription administrator.
@@ -165,7 +151,8 @@ public interface AutoscaleSetting extends
         }
 
         /**
-         * The stage of the definition which specifies if the current autoscale setting should be disabled upon creation.
+         * The stage of the definition which specifies if the current autoscale setting should be disabled upon
+         * creation.
          */
         interface WithAutoscaleSettingResourceEnabled {
             /**
@@ -176,27 +163,22 @@ public interface AutoscaleSetting extends
             WithCreate withAutoscaleDisabled();
         }
 
-        /**
-         * The stage of the definition which allows autoscale setting creation.
-         */
-        interface WithCreate extends
-            Creatable<AutoscaleSetting>,
-            DefineAutoscaleSettingResourceProfiles,
-            DefineAutoscaleSettingResourceNotifications,
-            WithAutoscaleSettingResourceEnabled {
+        /** The stage of the definition which allows autoscale setting creation. */
+        interface WithCreate
+            extends Creatable<AutoscaleSetting>,
+                DefineAutoscaleSettingResourceProfiles,
+                DefineAutoscaleSettingResourceNotifications,
+                WithAutoscaleSettingResourceEnabled {
         }
     }
 
-    /**
-     * Grouping of autoscale setting update stages.
-     */
+    /** Grouping of autoscale setting update stages. */
     interface UpdateStages {
-        /**
-         * The stage of the update which adds or updates autoscale profiles in the current setting.
-         */
+        /** The stage of the update which adds or updates autoscale profiles in the current setting. */
         interface DefineAutoscaleSettingProfiles {
             /**
-             * Starts definition of automatic scaling profiles that specify different scaling parameters for different time periods. A maximum of 20 profiles can be specified.
+             * Starts definition of automatic scaling profiles that specify different scaling parameters for different
+             * time periods. A maximum of 20 profiles can be specified.
              *
              * @param name name of the profile.
              * @return the next stage of autoscale setting update.
@@ -220,9 +202,7 @@ public interface AutoscaleSetting extends
             Update withoutAutoscaleProfile(String name);
         }
 
-        /**
-         * The stage of the update which updates current autoscale setting.
-         */
+        /** The stage of the update which updates current autoscale setting. */
         interface UpdateAutoscaleSettings {
             /**
              * Sets current autoscale setting to the enabled state.
@@ -298,14 +278,11 @@ public interface AutoscaleSetting extends
         }
     }
 
-    /**
-     * Grouping of autoscale setting update stages.
-     */
-    interface Update extends
-            Appliable<AutoscaleSetting>,
+    /** Grouping of autoscale setting update stages. */
+    interface Update
+        extends Appliable<AutoscaleSetting>,
             Resource.UpdateWithTags<Update>,
             UpdateStages.DefineAutoscaleSettingProfiles,
             UpdateStages.UpdateAutoscaleSettings {
     }
-
 }

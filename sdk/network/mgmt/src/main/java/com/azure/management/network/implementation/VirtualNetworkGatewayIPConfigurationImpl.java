@@ -13,18 +13,17 @@ import com.azure.management.network.models.VirtualNetworkGatewayIPConfigurationI
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
-/**
- * Implementation for VirtualNetworkGatewayIPConfiguration.
- */
+/** Implementation for VirtualNetworkGatewayIPConfiguration. */
 class VirtualNetworkGatewayIPConfigurationImpl
-        extends ChildResourceImpl<VirtualNetworkGatewayIPConfigurationInner, VirtualNetworkGatewayImpl, VirtualNetworkGateway>
-        implements
-        VirtualNetworkGatewayIPConfiguration,
+    extends ChildResourceImpl<
+        VirtualNetworkGatewayIPConfigurationInner, VirtualNetworkGatewayImpl, VirtualNetworkGateway>
+    implements VirtualNetworkGatewayIPConfiguration,
         VirtualNetworkGatewayIPConfiguration.Definition<VirtualNetworkGateway.DefinitionStages.WithCreate>,
         VirtualNetworkGatewayIPConfiguration.UpdateDefinition<VirtualNetworkGateway.Update>,
         VirtualNetworkGatewayIPConfiguration.Update {
 
-    VirtualNetworkGatewayIPConfigurationImpl(VirtualNetworkGatewayIPConfigurationInner inner, VirtualNetworkGatewayImpl parent) {
+    VirtualNetworkGatewayIPConfigurationImpl(
+        VirtualNetworkGatewayIPConfigurationInner inner, VirtualNetworkGatewayImpl parent) {
         super(inner, parent);
     }
 

@@ -11,9 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/**
- * The FileShare model.
- */
+/** The FileShare model. */
 @JsonFlatten
 @Fluent
 public class FileShareInner extends AzureEntityResource {
@@ -38,9 +36,8 @@ public class FileShareInner extends AzureEntityResource {
     private Integer shareQuota;
 
     /**
-     * Get the lastModifiedTime property: Returns the date and time the share
-     * was last modified.
-     * 
+     * Get the lastModifiedTime property: Returns the date and time the share was last modified.
+     *
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -48,9 +45,8 @@ public class FileShareInner extends AzureEntityResource {
     }
 
     /**
-     * Get the metadata property: A name-value pair to associate with the share
-     * as metadata.
-     * 
+     * Get the metadata property: A name-value pair to associate with the share as metadata.
+     *
      * @return the metadata value.
      */
     public Map<String, String> metadata() {
@@ -58,9 +54,8 @@ public class FileShareInner extends AzureEntityResource {
     }
 
     /**
-     * Set the metadata property: A name-value pair to associate with the share
-     * as metadata.
-     * 
+     * Set the metadata property: A name-value pair to associate with the share as metadata.
+     *
      * @param metadata the metadata value to set.
      * @return the FileShareInner object itself.
      */
@@ -70,10 +65,9 @@ public class FileShareInner extends AzureEntityResource {
     }
 
     /**
-     * Get the shareQuota property: The maximum size of the share, in
-     * gigabytes. Must be greater than 0, and less than or equal to 5TB (5120).
-     * For Large File Shares, the maximum size is 102400.
-     * 
+     * Get the shareQuota property: The maximum size of the share, in gigabytes. Must be greater than 0, and less than
+     * or equal to 5TB (5120). For Large File Shares, the maximum size is 102400.
+     *
      * @return the shareQuota value.
      */
     public Integer shareQuota() {
@@ -81,10 +75,9 @@ public class FileShareInner extends AzureEntityResource {
     }
 
     /**
-     * Set the shareQuota property: The maximum size of the share, in
-     * gigabytes. Must be greater than 0, and less than or equal to 5TB (5120).
-     * For Large File Shares, the maximum size is 102400.
-     * 
+     * Set the shareQuota property: The maximum size of the share, in gigabytes. Must be greater than 0, and less than
+     * or equal to 5TB (5120). For Large File Shares, the maximum size is 102400.
+     *
      * @param shareQuota the shareQuota value to set.
      * @return the FileShareInner object itself.
      */

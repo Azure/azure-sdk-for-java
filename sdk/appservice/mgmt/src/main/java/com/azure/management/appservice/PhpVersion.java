@@ -3,13 +3,10 @@
 
 package com.azure.management.appservice;
 
+import com.azure.management.resources.fluentcore.arm.ExpandableStringEnum;
 import java.util.Collection;
 
-import com.azure.management.resources.fluentcore.arm.ExpandableStringEnum;
-
-/**
- * Defines values for PHP version.
- */
+/** Defines values for PHP version. */
 public final class PhpVersion extends ExpandableStringEnum<PhpVersion> {
     /** Static value 'Off' for PhpVersion. */
     public static final PhpVersion OFF = PhpVersion.fromString("null");
@@ -28,6 +25,7 @@ public final class PhpVersion extends ExpandableStringEnum<PhpVersion> {
 
     /**
      * Finds or creates a PHP version based on the specified name.
+     *
      * @param name a name
      * @return a PhpVersion instance
      */
@@ -35,9 +33,7 @@ public final class PhpVersion extends ExpandableStringEnum<PhpVersion> {
         return fromString(name, PhpVersion.class);
     }
 
-    /**
-     * @return known PHP versions
-     */
+    /** @return known PHP versions */
     public static Collection<PhpVersion> values() {
         return values(PhpVersion.class);
     }

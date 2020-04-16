@@ -3,7 +3,7 @@
 package com.azure.management.network.samples;
 
 
-import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.management.Azure;
 import com.azure.management.network.ExpressRouteCircuit;
 import com.azure.management.network.ExpressRouteCircuitSkuType;
@@ -132,7 +132,7 @@ public final class ManageExpressRoute {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure.configure()
-                    .withLogOptions(new HttpLogOptions())
+                    .withLogLevel(HttpLogDetailLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 

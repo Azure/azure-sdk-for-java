@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ServiceTierAdvisorListResult model.
- */
+/** The ServiceTierAdvisorListResult model. */
 @Fluent
 public final class ServiceTierAdvisorListResultInner {
     /*
@@ -20,9 +18,8 @@ public final class ServiceTierAdvisorListResultInner {
     private List<ServiceTierAdvisorInner> value;
 
     /**
-     * Get the value property: The list of service tier advisors for specified
-     * database.
-     * 
+     * Get the value property: The list of service tier advisors for specified database.
+     *
      * @return the value value.
      */
     public List<ServiceTierAdvisorInner> value() {
@@ -30,9 +27,8 @@ public final class ServiceTierAdvisorListResultInner {
     }
 
     /**
-     * Set the value property: The list of service tier advisors for specified
-     * database.
-     * 
+     * Set the value property: The list of service tier advisors for specified database.
+     *
      * @param value the value value to set.
      * @return the ServiceTierAdvisorListResultInner object itself.
      */

@@ -5,29 +5,20 @@ package com.azure.management.monitor.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.monitor.EventDataPropertyName;
-import com.azure.management.monitor.LocalizableString;
 import com.azure.management.monitor.ActivityLogs;
 import com.azure.management.monitor.EventData;
+import com.azure.management.monitor.EventDataPropertyName;
+import com.azure.management.monitor.LocalizableString;
 import com.azure.management.monitor.models.ActivityLogsInner;
-import com.azure.management.monitor.models.EventDataInner;
-import com.azure.management.monitor.models.LocalizableStringInner;
-
 import java.time.OffsetDateTime;
-
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
-import java.util.List;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-/**
- * Implementation for {@link ActivityLogs}.
- */
-class ActivityLogsImpl
-    implements ActivityLogs,
-        ActivityLogs.ActivityLogsQueryDefinition {
+/** Implementation for {@link ActivityLogs}. */
+class ActivityLogsImpl implements ActivityLogs, ActivityLogs.ActivityLogsQueryDefinition {
 
     private final MonitorManager myManager;
     private OffsetDateTime queryStartTime;
@@ -93,9 +84,10 @@ class ActivityLogsImpl
     public ActivityLogsImpl withResponseProperties(EventDataPropertyName... responseProperties) {
         this.responsePropertySelector.clear();
 
-        this.responsePropertySelector.addAll(Arrays.stream(responseProperties)
-                .map(EventDataPropertyName::toString)
-                .collect(Collectors.toList()));
+        this
+            .responsePropertySelector
+            .addAll(
+                Arrays.stream(responseProperties).map(EventDataPropertyName::toString).collect(Collectors.toList()));
         return this;
     }
 
@@ -132,7 +124,8 @@ class ActivityLogsImpl
     @Override
     public PagedIterable<EventData> execute() {
         if (this.filterForTenant) {
-            return listEventDataForTenant(getOdataFilterString() + this.filterString + " eventChannels eq 'Admin, Operation'");
+            return listEventDataForTenant(
+                getOdataFilterString() + this.filterString + " eventChannels eq 'Admin, Operation'");
         }
         return listEventData(getOdataFilterString() + this.filterString);
     }
@@ -140,13 +133,16 @@ class ActivityLogsImpl
     @Override
     public PagedFlux<EventData> executeAsync() {
         if (this.filterForTenant) {
-            return listEventDataForTenantAsync(getOdataFilterString() + this.filterString + " eventChannels eq 'Admin, Operation'");
+            return listEventDataForTenantAsync(
+                getOdataFilterString() + this.filterString + " eventChannels eq 'Admin, Operation'");
         }
         return listEventDataAsync(getOdataFilterString() + this.filterString);
     }
 
     private String getOdataFilterString() {
-        return String.format("eventTimestamp ge '%s' and eventTimestamp le '%s'",
+        return String
+            .format(
+                "eventTimestamp ge '%s' and eventTimestamp le '%s'",
                 DateTimeFormatter.ISO_INSTANT.format(this.queryStartTime.atZoneSameInstant(ZoneOffset.UTC)),
                 DateTimeFormatter.ISO_INSTANT.format(this.queryEndTime.atZoneSameInstant(ZoneOffset.UTC)));
     }
@@ -156,7 +152,12 @@ class ActivityLogsImpl
     }
 
     private PagedIterable<EventData> listEventDataForTenant(String filter) {
-        return this.manager().inner().tenantActivityLogs().list(filter, createPropertyFilter()).mapPage(EventDataImpl::new);
+        return this
+            .manager()
+            .inner()
+            .tenantActivityLogs()
+            .list(filter, createPropertyFilter())
+            .mapPage(EventDataImpl::new);
     }
 
     private PagedFlux<EventData> listEventDataAsync(String filter) {
@@ -164,11 +165,17 @@ class ActivityLogsImpl
     }
 
     private PagedFlux<EventData> listEventDataForTenantAsync(String filter) {
-        return this.manager().inner().tenantActivityLogs().listAsync(filter, createPropertyFilter()).mapPage(EventDataImpl::new);
+        return this
+            .manager()
+            .inner()
+            .tenantActivityLogs()
+            .listAsync(filter, createPropertyFilter())
+            .mapPage(EventDataImpl::new);
     }
 
     private String createPropertyFilter() {
-        String propertyFilter = this.responsePropertySelector == null ? null : String.join(",", this.responsePropertySelector);
+        String propertyFilter =
+            this.responsePropertySelector == null ? null : String.join(",", this.responsePropertySelector);
         if (propertyFilter != null && propertyFilter.trim().isEmpty()) {
             propertyFilter = null;
         }

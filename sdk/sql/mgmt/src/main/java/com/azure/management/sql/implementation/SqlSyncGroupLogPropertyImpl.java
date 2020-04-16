@@ -6,14 +6,10 @@ import com.azure.management.resources.fluentcore.model.implementation.WrapperImp
 import com.azure.management.sql.SqlSyncGroupLogProperty;
 import com.azure.management.sql.SyncGroupLogType;
 import com.azure.management.sql.models.SyncGroupLogPropertiesInner;
-
 import java.time.OffsetDateTime;
 
-/**
- * Implementation for SqlSyncGroupLogProperty.
- */
-public class SqlSyncGroupLogPropertyImpl
-    extends WrapperImpl<SyncGroupLogPropertiesInner>
+/** Implementation for SqlSyncGroupLogProperty. */
+public class SqlSyncGroupLogPropertyImpl extends WrapperImpl<SyncGroupLogPropertiesInner>
     implements SqlSyncGroupLogProperty {
     protected SqlSyncGroupLogPropertyImpl(SyncGroupLogPropertiesInner innerObject) {
         super(innerObject);

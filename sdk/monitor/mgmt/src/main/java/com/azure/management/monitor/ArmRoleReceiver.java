@@ -7,9 +7,7 @@ package com.azure.management.monitor;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ArmRoleReceiver model.
- */
+/** The ArmRoleReceiver model. */
 @Fluent
 public final class ArmRoleReceiver {
     /*
@@ -32,9 +30,9 @@ public final class ArmRoleReceiver {
     private boolean useCommonAlertSchema;
 
     /**
-     * Get the name property: The name of the arm role receiver. Names must be
-     * unique across all receivers within an action group.
-     * 
+     * Get the name property: The name of the arm role receiver. Names must be unique across all receivers within an
+     * action group.
+     *
      * @return the name value.
      */
     public String name() {
@@ -42,9 +40,9 @@ public final class ArmRoleReceiver {
     }
 
     /**
-     * Set the name property: The name of the arm role receiver. Names must be
-     * unique across all receivers within an action group.
-     * 
+     * Set the name property: The name of the arm role receiver. Names must be unique across all receivers within an
+     * action group.
+     *
      * @param name the name value to set.
      * @return the ArmRoleReceiver object itself.
      */
@@ -55,7 +53,7 @@ public final class ArmRoleReceiver {
 
     /**
      * Get the roleId property: The arm role id.
-     * 
+     *
      * @return the roleId value.
      */
     public String roleId() {
@@ -64,7 +62,7 @@ public final class ArmRoleReceiver {
 
     /**
      * Set the roleId property: The arm role id.
-     * 
+     *
      * @param roleId the roleId value to set.
      * @return the ArmRoleReceiver object itself.
      */
@@ -74,9 +72,8 @@ public final class ArmRoleReceiver {
     }
 
     /**
-     * Get the useCommonAlertSchema property: Indicates whether to use common
-     * alert schema.
-     * 
+     * Get the useCommonAlertSchema property: Indicates whether to use common alert schema.
+     *
      * @return the useCommonAlertSchema value.
      */
     public boolean useCommonAlertSchema() {
@@ -84,9 +81,8 @@ public final class ArmRoleReceiver {
     }
 
     /**
-     * Set the useCommonAlertSchema property: Indicates whether to use common
-     * alert schema.
-     * 
+     * Set the useCommonAlertSchema property: Indicates whether to use common alert schema.
+     *
      * @param useCommonAlertSchema the useCommonAlertSchema value to set.
      * @return the ArmRoleReceiver object itself.
      */

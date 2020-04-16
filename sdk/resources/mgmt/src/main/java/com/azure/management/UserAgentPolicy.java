@@ -12,6 +12,9 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import reactor.core.publisher.Mono;
 
+/**
+ * Rewrite the UserAgentPolicy, it will use Sdk-Name and Sdk-Version to build default user-agent.
+ */
 public class UserAgentPolicy implements HttpPipelinePolicy {
     private static final String USER_AGENT_KEY = "User-Agent";
     private static final String SDK_NAME_KEY = "Sdk-Name";
@@ -39,12 +42,19 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     private final HttpLogOptions httpLogOptions;
     private final Configuration configuration;
 
-    private static final UserAgentPolicy defaultUserAgentPolicy = new UserAgentPolicy(null, null);
+    private static final UserAgentPolicy DEFAULT_USER_AGENT_POLICY = new UserAgentPolicy(null, null);
 
+    /**
+     * @return default user agent policy
+     */
     public static UserAgentPolicy getDefaultUserAgentPolicy() {
-        return defaultUserAgentPolicy;
+        return DEFAULT_USER_AGENT_POLICY;
     }
 
+    /**
+     * @param httpLogOptions used for get application id
+     * @param configuration used for check telemetry enable or not
+     */
     public UserAgentPolicy(HttpLogOptions httpLogOptions, Configuration configuration) {
         if (httpLogOptions == null) {
             this.httpLogOptions = new HttpLogOptions();
@@ -60,26 +70,26 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     }
 
     protected String buildUserAgent(String applicationId, String sdkName, String sdkVersion) {
-            StringBuilder userAgentBuilder = new StringBuilder();
+        StringBuilder userAgentBuilder = new StringBuilder();
 
-            // Only add the application ID if it is present as it is optional.
-            if (applicationId != null) {
-                userAgentBuilder.append(applicationId).append(" ");
-            }
+        // Only add the application ID if it is present as it is optional.
+        if (applicationId != null) {
+            userAgentBuilder.append(applicationId).append(" ");
+        }
 
-            // Add the required default User-Agent string.
-            userAgentBuilder.append(String.format(DEFAULT_USER_AGENT_FORMAT, sdkName, sdkVersion));
+        // Add the required default User-Agent string.
+        userAgentBuilder.append(String.format(DEFAULT_USER_AGENT_FORMAT, sdkName, sdkVersion));
 
-            // Only add the platform telemetry if it is allowed as it is optional.
-            if (!telemetryDisabled()) {
-                String platformInfo = String.format(PLATFORM_INFO_FORMAT, JAVA_VERSION, OS_NAME, OS_VERSION);
-                userAgentBuilder.append(" ")
-                        .append("(")
-                        .append(platformInfo)
-                        .append(")");
-            }
+        // Only add the platform telemetry if it is allowed as it is optional.
+        if (!telemetryDisabled()) {
+            String platformInfo = String.format(PLATFORM_INFO_FORMAT, JAVA_VERSION, OS_NAME, OS_VERSION);
+            userAgentBuilder.append(" ")
+                    .append("(")
+                    .append(platformInfo)
+                    .append(")");
+        }
 
-            return userAgentBuilder.toString();
+        return userAgentBuilder.toString();
     }
 
     private boolean telemetryDisabled() {
@@ -87,7 +97,7 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next){
+    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         String userAgent = context.getHttpRequest().getHeaders().getValue(USER_AGENT_KEY);
         if (!CoreUtils.isNullOrEmpty(userAgent)) {
             return next.process();

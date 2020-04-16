@@ -3,13 +3,10 @@
 
 package com.azure.management.appservice;
 
+import com.azure.management.resources.fluentcore.arm.ExpandableStringEnum;
 import java.util.Collection;
 
-import com.azure.management.resources.fluentcore.arm.ExpandableStringEnum;
-
-/**
- * Defines values for Python version.
- */
+/** Defines values for Python version. */
 public final class PythonVersion extends ExpandableStringEnum<PythonVersion> {
     /** Static value 'Off' for PythonVersion. */
     public static final PythonVersion OFF = PythonVersion.fromString("null");
@@ -22,6 +19,7 @@ public final class PythonVersion extends ExpandableStringEnum<PythonVersion> {
 
     /**
      * Finds or creates a Python version based on the specified name.
+     *
      * @param name a name
      * @return a PythonVersion instance
      */
@@ -29,9 +27,7 @@ public final class PythonVersion extends ExpandableStringEnum<PythonVersion> {
         return fromString(name, PythonVersion.class);
     }
 
-    /**
-     * @return known Python versions
-     */
+    /** @return known Python versions */
     public static Collection<PythonVersion> values() {
         return values(PythonVersion.class);
     }

@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.management.resources.fluentcore.arm.models;
 
-import com.azure.core.annotation.Fluent;
-
 /**
  * An interface representing a child that has an immediately available parent.
  *

@@ -2,22 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.management.network.models;
 
-
 import com.azure.core.annotation.Fluent;
 
-/**
- * An interface representing a model's ability to have a port number.
- */
+/** An interface representing a model's ability to have a port number. */
 @Fluent
 public interface HasPort {
-    /**
-     * @return the port number
-     */
+    /** @return the port number */
     int port();
 
-    /**
-     * Grouping of definition stages involving specifying a port number.
-     */
+    /** Grouping of definition stages involving specifying a port number. */
     interface DefinitionStages {
         /**
          * The stage of a definition allowing to specify the port number.
@@ -35,9 +28,7 @@ public interface HasPort {
         }
     }
 
-    /**
-     * Grouping of update stages involving specifying the port number.
-     */
+    /** Grouping of update stages involving specifying the port number. */
     interface UpdateStages {
         /**
          * The stage of a definition allowing to specify a port number.
@@ -55,9 +46,7 @@ public interface HasPort {
         }
     }
 
-    /**
-     * Grouping of definition stages of a parent resource update involving specifying a port number.
-     */
+    /** Grouping of definition stages of a parent resource update involving specifying a port number. */
     interface UpdateDefinitionStages {
         /**
          * The stage of a definition allowing to specify the port number.

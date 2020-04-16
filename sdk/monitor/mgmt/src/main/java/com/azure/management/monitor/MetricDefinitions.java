@@ -5,20 +5,13 @@ package com.azure.management.monitor;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.monitor.models.MetricDefinitionsInner;
 import com.azure.management.monitor.implementation.MonitorManager;
+import com.azure.management.monitor.models.MetricDefinitionsInner;
 import com.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-import java.util.List;
-
-
-/**
- * Entry point for Monitor Metric Definitions API.
- */
-public interface MetricDefinitions extends
-        HasManager<MonitorManager>,
-        HasInner<MetricDefinitionsInner> {
+/** Entry point for Monitor Metric Definitions API. */
+public interface MetricDefinitions extends HasManager<MonitorManager>, HasInner<MetricDefinitionsInner> {
 
     /**
      * Lists Metric Definitions for a given resource.

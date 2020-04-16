@@ -7,10 +7,11 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.jproxy.ProxyServer;
 import com.azure.messaging.servicebus.jproxy.SimpleProxy;
+import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
-import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -19,6 +20,7 @@ import java.net.Proxy;
 import java.net.ProxySelector;
 import java.net.SocketAddress;
 import java.net.URI;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -27,8 +29,8 @@ import java.util.UUID;
  * Verify we can use jproxy hosted locally to receive messages.
  */
 public class ProxyReceiveTest extends IntegrationTestBase {
-    private static final int PROXY_PORT = 9340;
-    private static final int NUMBER_OF_EVENTS = 25;
+    private static final int PROXY_PORT = 9102;
+    private static final int NUMBER_OF_EVENTS = 10;
 
     private static ProxyServer proxyServer;
     private static ProxySelector defaultProxySelector;
@@ -37,10 +39,12 @@ public class ProxyReceiveTest extends IntegrationTestBase {
         super(new ClientLogger(ProxyReceiveTest.class));
     }
 
-    @BeforeAll
-    public static void setup() throws IOException {
+    @BeforeEach
+    public void setup() throws IOException {
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
+
         proxyServer = new SimpleProxy(PROXY_PORT);
-        proxyServer.start(null);
+        proxyServer.start(error -> logger.error("Exception occurred in proxy.", error));
 
         defaultProxySelector = ProxySelector.getDefault();
         ProxySelector.setDefault(new ProxySelector() {
@@ -58,8 +62,10 @@ public class ProxyReceiveTest extends IntegrationTestBase {
         });
     }
 
-    @AfterAll()
-    public static void cleanup() throws Exception {
+    @AfterEach()
+    public void cleanup() throws Exception {
+        StepVerifier.resetDefaultTimeout();
+
         if (proxyServer != null) {
             proxyServer.stop();
         }
@@ -68,27 +74,32 @@ public class ProxyReceiveTest extends IntegrationTestBase {
     }
 
     @Test
-    public void testReceiverStartOfStreamFilters() {
+    public void receiveMessage() {
         // Arrange
         final String queueName = getQueueName();
 
         Assertions.assertNotNull(queueName, "'queueName' is not set in environment variable.");
 
         final String messageTracking = UUID.randomUUID().toString();
-        final ServiceBusClientBuilder builder = new ServiceBusClientBuilder()
-            .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
-            .connectionString(getConnectionString());
 
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(NUMBER_OF_EVENTS, messageTracking);
-        final ServiceBusSenderAsyncClient sender = builder.sender()
+        final ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
+            .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
+            .connectionString(getConnectionString())
+            .sender()
             .queueName(queueName)
             .buildAsyncClient();
 
-        final ServiceBusReceiverAsyncClient receiver = builder.receiver()
+        final ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+            .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
+            .connectionString(getConnectionString())
+            .receiver()
             .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
             .queueName(queueName)
-            .isAutoComplete(false)
             .buildAsyncClient();
+
+        final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
+            .setEnableAutoComplete(false);
 
         // Act & Assert
         try {
@@ -102,7 +113,7 @@ public class ProxyReceiveTest extends IntegrationTestBase {
                 }))
                 .verifyComplete();
 
-            StepVerifier.create(receiver.receive().take(NUMBER_OF_EVENTS))
+            StepVerifier.create(receiver.receive(options).take(NUMBER_OF_EVENTS))
                 .expectNextCount(NUMBER_OF_EVENTS)
                 .expectComplete()
                 .verify(TIMEOUT);

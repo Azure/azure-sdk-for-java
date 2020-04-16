@@ -7,9 +7,7 @@ package com.azure.management.sql;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Sku model.
- */
+/** The Sku model. */
 @Fluent
 public final class Sku {
     /*
@@ -44,9 +42,8 @@ public final class Sku {
     private Integer capacity;
 
     /**
-     * Get the name property: The name of the SKU, typically, a letter + Number
-     * code, e.g. P3.
-     * 
+     * Get the name property: The name of the SKU, typically, a letter + Number code, e.g. P3.
+     *
      * @return the name value.
      */
     public String name() {
@@ -54,9 +51,8 @@ public final class Sku {
     }
 
     /**
-     * Set the name property: The name of the SKU, typically, a letter + Number
-     * code, e.g. P3.
-     * 
+     * Set the name property: The name of the SKU, typically, a letter + Number code, e.g. P3.
+     *
      * @param name the name value to set.
      * @return the Sku object itself.
      */
@@ -66,9 +62,8 @@ public final class Sku {
     }
 
     /**
-     * Get the tier property: The tier or edition of the particular SKU, e.g.
-     * Basic, Premium.
-     * 
+     * Get the tier property: The tier or edition of the particular SKU, e.g. Basic, Premium.
+     *
      * @return the tier value.
      */
     public String tier() {
@@ -76,9 +71,8 @@ public final class Sku {
     }
 
     /**
-     * Set the tier property: The tier or edition of the particular SKU, e.g.
-     * Basic, Premium.
-     * 
+     * Set the tier property: The tier or edition of the particular SKU, e.g. Basic, Premium.
+     *
      * @param tier the tier value to set.
      * @return the Sku object itself.
      */
@@ -89,7 +83,7 @@ public final class Sku {
 
     /**
      * Get the size property: Size of the particular SKU.
-     * 
+     *
      * @return the size value.
      */
     public String size() {
@@ -98,7 +92,7 @@ public final class Sku {
 
     /**
      * Set the size property: Size of the particular SKU.
-     * 
+     *
      * @param size the size value to set.
      * @return the Sku object itself.
      */
@@ -108,9 +102,9 @@ public final class Sku {
     }
 
     /**
-     * Get the family property: If the service has different generations of
-     * hardware, for the same SKU, then that can be captured here.
-     * 
+     * Get the family property: If the service has different generations of hardware, for the same SKU, then that can be
+     * captured here.
+     *
      * @return the family value.
      */
     public String family() {
@@ -118,9 +112,9 @@ public final class Sku {
     }
 
     /**
-     * Set the family property: If the service has different generations of
-     * hardware, for the same SKU, then that can be captured here.
-     * 
+     * Set the family property: If the service has different generations of hardware, for the same SKU, then that can be
+     * captured here.
+     *
      * @param family the family value to set.
      * @return the Sku object itself.
      */
@@ -131,7 +125,7 @@ public final class Sku {
 
     /**
      * Get the capacity property: Capacity of the particular SKU.
-     * 
+     *
      * @return the capacity value.
      */
     public Integer capacity() {
@@ -140,7 +134,7 @@ public final class Sku {
 
     /**
      * Set the capacity property: Capacity of the particular SKU.
-     * 
+     *
      * @param capacity the capacity value to set.
      * @return the Sku object itself.
      */

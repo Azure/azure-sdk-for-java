@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.management.network;
 
-
 import com.azure.core.annotation.Fluent;
 import com.azure.management.network.models.PacketCapturesInner;
 import com.azure.management.resources.fluentcore.arm.collection.SupportsGettingByName;
@@ -11,12 +10,10 @@ import com.azure.management.resources.fluentcore.collection.SupportsDeletingByNa
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-/**
- * Entry point to packet captures management API in Azure.
- */
+/** Entry point to packet captures management API in Azure. */
 @Fluent
-public interface PacketCaptures extends
-        SupportsCreating<PacketCapture.DefinitionStages.WithTarget>,
+public interface PacketCaptures
+    extends SupportsCreating<PacketCapture.DefinitionStages.WithTarget>,
         SupportsListing<PacketCapture>,
         SupportsGettingByName<PacketCapture>,
         SupportsDeletingByName,

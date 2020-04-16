@@ -2,19 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.management.cosmosdb;
 
-
 import com.azure.core.annotation.Fluent;
 import com.azure.management.cosmosdb.models.PrivateLinkResourceInner;
 import com.azure.management.resources.fluentcore.model.HasInner;
-
 import java.util.List;
 
-/**
- * A private link resource.
- */
+/** A private link resource. */
 @Fluent
-public interface PrivateLinkResource
-        extends HasInner<PrivateLinkResourceInner> {
+public interface PrivateLinkResource extends HasInner<PrivateLinkResourceInner> {
 
     /**
      * Get the id value.
