@@ -34,6 +34,19 @@ public final class BlobDownloadHeaders {
     private Map<String, String> metadata;
 
     /*
+     * Optional. Only valid when Object Replication is enabled for the storage
+     * container and on the destination blob of the replication.
+     */
+    @JsonProperty(value = "x-ms-or-policy-id")
+    private String objectReplicationPolicyId;
+
+    /*
+     * The objectReplicationRuleStatus property.
+     */
+    @HeaderCollection("x-ms-or-")
+    private Map<String, String> objectReplicationRuleStatus;
+
+    /*
      * The number of bytes present in the response body.
      */
     @JsonProperty(value = "Content-Length")
@@ -219,6 +232,14 @@ public final class BlobDownloadHeaders {
     private String version;
 
     /*
+     * A DateTime value returned by the service that uniquely identifies the
+     * blob. The value of this header indicates the blob version, and may be
+     * used in subsequent requests to access this version of the blob.
+     */
+    @JsonProperty(value = "x-ms-version-id")
+    private String versionId;
+
+    /*
      * Indicates that the service supports requests for partial blob content.
      */
     @JsonProperty(value = "Accept-Ranges")
@@ -339,6 +360,54 @@ public final class BlobDownloadHeaders {
      */
     public BlobDownloadHeaders setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Get the objectReplicationPolicyId property: Optional. Only valid when
+     * Object Replication is enabled for the storage container and on the
+     * destination blob of the replication.
+     *
+     * @return the objectReplicationPolicyId value.
+     */
+    public String getObjectReplicationPolicyId() {
+        return this.objectReplicationPolicyId;
+    }
+
+    /**
+     * Set the objectReplicationPolicyId property: Optional. Only valid when
+     * Object Replication is enabled for the storage container and on the
+     * destination blob of the replication.
+     *
+     * @param objectReplicationPolicyId the objectReplicationPolicyId value to
+     * set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders setObjectReplicationPolicyId(String objectReplicationPolicyId) {
+        this.objectReplicationPolicyId = objectReplicationPolicyId;
+        return this;
+    }
+
+    /**
+     * Get the objectReplicationRuleStatus property: The
+     * objectReplicationRuleStatus property.
+     *
+     * @return the objectReplicationRuleStatus value.
+     */
+    public Map<String, String> getObjectReplicationRuleStatus() {
+        return this.objectReplicationRuleStatus;
+    }
+
+    /**
+     * Set the objectReplicationRuleStatus property: The
+     * objectReplicationRuleStatus property.
+     *
+     * @param objectReplicationRuleStatus the objectReplicationRuleStatus value
+     * to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders setObjectReplicationRuleStatus(Map<String, String> objectReplicationRuleStatus) {
+        this.objectReplicationRuleStatus = objectReplicationRuleStatus;
         return this;
     }
 
@@ -916,6 +985,32 @@ public final class BlobDownloadHeaders {
      */
     public BlobDownloadHeaders setVersion(String version) {
         this.version = version;
+        return this;
+    }
+
+    /**
+     * Get the versionId property: A DateTime value returned by the service
+     * that uniquely identifies the blob. The value of this header indicates
+     * the blob version, and may be used in subsequent requests to access this
+     * version of the blob.
+     *
+     * @return the versionId value.
+     */
+    public String getVersionId() {
+        return this.versionId;
+    }
+
+    /**
+     * Set the versionId property: A DateTime value returned by the service
+     * that uniquely identifies the blob. The value of this header indicates
+     * the blob version, and may be used in subsequent requests to access this
+     * version of the blob.
+     *
+     * @param versionId the versionId value to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders setVersionId(String versionId) {
+        this.versionId = versionId;
         return this;
     }
 

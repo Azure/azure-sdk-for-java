@@ -45,6 +45,19 @@ public final class BlobGetPropertiesHeaders {
     private Map<String, String> metadata;
 
     /*
+     * Optional. Only valid when Object Replication is enabled for the storage
+     * container and on the destination blob of the replication.
+     */
+    @JsonProperty(value = "x-ms-or-policy-id")
+    private String objectReplicationPolicyId;
+
+    /*
+     * The objectReplicationRuleStatus property.
+     */
+    @HeaderCollection("x-ms-or-")
+    private Map<String, String> objectReplicationRuleStatus;
+
+    /*
      * The blob's type. Possible values include: 'BlockBlob', 'PageBlob',
      * 'AppendBlob'
      */
@@ -415,6 +428,54 @@ public final class BlobGetPropertiesHeaders {
      */
     public BlobGetPropertiesHeaders setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Get the objectReplicationPolicyId property: Optional. Only valid when
+     * Object Replication is enabled for the storage container and on the
+     * destination blob of the replication.
+     *
+     * @return the objectReplicationPolicyId value.
+     */
+    public String getObjectReplicationPolicyId() {
+        return this.objectReplicationPolicyId;
+    }
+
+    /**
+     * Set the objectReplicationPolicyId property: Optional. Only valid when
+     * Object Replication is enabled for the storage container and on the
+     * destination blob of the replication.
+     *
+     * @param objectReplicationPolicyId the objectReplicationPolicyId value to
+     * set.
+     * @return the BlobGetPropertiesHeaders object itself.
+     */
+    public BlobGetPropertiesHeaders setObjectReplicationPolicyId(String objectReplicationPolicyId) {
+        this.objectReplicationPolicyId = objectReplicationPolicyId;
+        return this;
+    }
+
+    /**
+     * Get the objectReplicationRuleStatus property: The
+     * objectReplicationRuleStatus property.
+     *
+     * @return the objectReplicationRuleStatus value.
+     */
+    public Map<String, String> getObjectReplicationRuleStatus() {
+        return this.objectReplicationRuleStatus;
+    }
+
+    /**
+     * Set the objectReplicationRuleStatus property: The
+     * objectReplicationRuleStatus property.
+     *
+     * @param objectReplicationRuleStatus the objectReplicationRuleStatus value
+     * to set.
+     * @return the BlobGetPropertiesHeaders object itself.
+     */
+    public BlobGetPropertiesHeaders setObjectReplicationRuleStatus(Map<String, String> objectReplicationRuleStatus) {
+        this.objectReplicationRuleStatus = objectReplicationRuleStatus;
         return this;
     }
 

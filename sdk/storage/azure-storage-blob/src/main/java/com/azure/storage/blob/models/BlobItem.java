@@ -58,6 +58,18 @@ public final class BlobItem {
     private Map<String, String> metadata;
 
     /*
+     * The objectReplicationPolicyId property.
+     */
+    @JsonProperty(value = "ObjectReplicationPolicyId")
+    private String objectReplicationPolicyId;
+
+    /*
+     * The objectReplicationRuleStatus property.
+     */
+    @JsonProperty(value = "BlobObjectReplicationRuleStatus")
+    private Map<String, String> objectReplicationRuleStatus;
+
+    /*
      * The isPrefix property.
      */
     @JsonProperty(value = "IsPrefix")
@@ -200,6 +212,52 @@ public final class BlobItem {
      */
     public BlobItem setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Get the objectReplicationPolicyId property: The
+     * objectReplicationPolicyId property.
+     *
+     * @return the objectReplicationPolicyId value.
+     */
+    public String getObjectReplicationPolicyId() {
+        return this.objectReplicationPolicyId;
+    }
+
+    /**
+     * Set the objectReplicationPolicyId property: The
+     * objectReplicationPolicyId property.
+     *
+     * @param objectReplicationPolicyId the objectReplicationPolicyId value to
+     * set.
+     * @return the BlobItem object itself.
+     */
+    public BlobItem setObjectReplicationPolicyId(String objectReplicationPolicyId) {
+        this.objectReplicationPolicyId = objectReplicationPolicyId;
+        return this;
+    }
+
+    /**
+     * Get the objectReplicationRuleStatus property: The
+     * objectReplicationRuleStatus property.
+     *
+     * @return the objectReplicationRuleStatus value.
+     */
+    public Map<String, String> getObjectReplicationRuleStatus() {
+        return this.objectReplicationRuleStatus;
+    }
+
+    /**
+     * Set the objectReplicationRuleStatus property: The
+     * objectReplicationRuleStatus property.
+     *
+     * @param objectReplicationRuleStatus the objectReplicationRuleStatus value
+     * to set.
+     * @return the BlobItem object itself.
+     */
+    public BlobItem setObjectReplicationRuleStatus(Map<String, String> objectReplicationRuleStatus) {
+        this.objectReplicationRuleStatus = objectReplicationRuleStatus;
         return this;
     }
 
