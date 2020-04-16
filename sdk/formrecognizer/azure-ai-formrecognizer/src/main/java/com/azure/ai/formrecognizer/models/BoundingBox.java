@@ -4,7 +4,8 @@
 package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.IterableStream;
+
+import java.util.List;
 
 /**
  * Quadrangle bounding box, with coordinates specified relative to the top-left of the original image
@@ -15,14 +16,14 @@ public final class BoundingBox {
     /**
      * The list of coordinates of the Bounding box.
      */
-    private final IterableStream<Point> points;
+    private final List<Point> points;
 
     /**
      * Constructs a Bounding box object.
      *
      * @param points The list of coordinates of the Bounding box.
      */
-    public BoundingBox(final IterableStream<Point> points) {
+    public BoundingBox(final List<Point> points) {
         this.points = points;
     }
 
@@ -31,7 +32,7 @@ public final class BoundingBox {
      *
      * @return The list of all point coordinates of the Bounding box.
      */
-    public IterableStream<Point> getPoints() {
+    public List<Point> getPoints() {
         return this.points;
     }
 }

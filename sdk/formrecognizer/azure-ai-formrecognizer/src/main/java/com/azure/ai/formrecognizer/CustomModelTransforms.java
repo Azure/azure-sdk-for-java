@@ -3,7 +3,6 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.implementation.models.ErrorInformation;
 import com.azure.ai.formrecognizer.implementation.models.Model;
 import com.azure.ai.formrecognizer.implementation.models.ModelInfo;
 import com.azure.ai.formrecognizer.implementation.models.ModelStatus;
@@ -12,6 +11,7 @@ import com.azure.ai.formrecognizer.models.CustomFormModelField;
 import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.models.CustomFormModelStatus;
 import com.azure.ai.formrecognizer.models.CustomFormSubModel;
+import com.azure.ai.formrecognizer.models.ErrorInformation;
 import com.azure.ai.formrecognizer.models.FormRecognizerError;
 import com.azure.ai.formrecognizer.models.TrainingDocumentInfo;
 import com.azure.ai.formrecognizer.models.TrainingStatus;
@@ -48,12 +48,12 @@ final class CustomModelTransforms {
         ModelInfo modelInfo = modelResponse.getModelInfo();
         if (modelInfo.getStatus() == ModelStatus.INVALID) {
             throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException(String.format("Model Id %s returned with status: %s",
-                    modelInfo.getModelId(), modelInfo.getStatus())));
+                new IllegalArgumentException(String.format("Model Id %s returned with invalid status.",
+                    modelInfo.getModelId())));
         }
 
         List<TrainingDocumentInfo> trainingDocumentInfoList = null;
-        IterableStream<FormRecognizerError> modelErrors = null;
+        List<FormRecognizerError> modelErrors = null;
 
         if (modelResponse.getTrainResult() != null) {
             trainingDocumentInfoList =
@@ -102,7 +102,21 @@ final class CustomModelTransforms {
             modelInfo.getLastUpdatedDateTime(),
             new IterableStream<>(subModelList),
             modelErrors,
-            new IterableStream<TrainingDocumentInfo>(trainingDocumentInfoList));
+            trainingDocumentInfoList);
+    }
+
+    /**
+     * Transform a list of {@link ModelInfo} to a list of {@link CustomFormModelInfo}.
+     *
+     * @param modelInfoList A list of {@link ModelInfo}.
+     *
+     * @return A list of {@link CustomFormModelInfo}.
+     */
+    static List<CustomFormModelInfo> toCustomFormModelInfo(List<ModelInfo> modelInfoList) {
+        return modelInfoList.stream().map(modelInfo -> new CustomFormModelInfo(modelInfo.getModelId().toString(),
+            CustomFormModelStatus.fromString(modelInfo.getStatus().toString()),
+            modelInfo.getCreatedDateTime(), modelInfo.getLastUpdatedDateTime())).collect(Collectors.toList());
+
     }
 
     /**
@@ -112,53 +126,15 @@ final class CustomModelTransforms {
      *
      * @return The list of {@link FormRecognizerError}
      */
-    private static IterableStream<FormRecognizerError> transformTrainingErrors(
+    private static List<FormRecognizerError> transformTrainingErrors(
         List<ErrorInformation> trainingErrorList) {
         if (CoreUtils.isNullOrEmpty(trainingErrorList)) {
-            return new IterableStream<FormRecognizerError>(Collections.emptyList());
+            return Collections.emptyList();
         } else {
-            return new IterableStream<>(trainingErrorList.stream()
+            return trainingErrorList.stream()
                 .map(errorInformation -> new FormRecognizerError(errorInformation.getCode(),
                     errorInformation.getMessage()))
-                .collect(Collectors.toList()));
-        }
-    }
-
-    /**
-     * Transform a list of {@link ModelInfo} to a list of {@link CustomFormModelInfo}.
-     *
-     * @param list A list of {@link ModelInfo}.
-     *
-     * @return A list of {@link CustomFormModelInfo}.
-     */
-    static List<CustomFormModelInfo> toCustomFormModelInfo(List<ModelInfo> list) {
-        CollectionTransformer<ModelInfo, CustomFormModelInfo> transformer =
-            new CollectionTransformer<ModelInfo, CustomFormModelInfo>() {
-                @Override
-                CustomFormModelInfo transform(ModelInfo modelInfo) {
-                    return new CustomFormModelInfo(modelInfo.getModelId().toString(),
-                        CustomFormModelStatus.fromString(modelInfo.getStatus().toString()),
-                        modelInfo.getCreatedDateTime(), modelInfo.getLastUpdatedDateTime());
-                }
-            };
-        return transformer.transform(list);
-    }
-
-    /**
-     * A generic transformation class for collection that transform from type {@code E} to type {@code F}.
-     *
-     * @param <E> Transform type E to another type.
-     * @param <F> Transform to type F from another type.
-     */
-    abstract static class CollectionTransformer<E, F> {
-        abstract F transform(E e);
-
-        List<F> transform(List<E> list) {
-            List<F> newList = new ArrayList<>();
-            for (E e : list) {
-                newList.add(transform(e));
-            }
-            return newList;
+                .collect(Collectors.toList());
         }
     }
 }

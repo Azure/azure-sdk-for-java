@@ -15,7 +15,6 @@ import com.azure.ai.formrecognizer.models.CustomFormSubModel;
 import com.azure.ai.formrecognizer.models.DimensionUnit;
 import com.azure.ai.formrecognizer.models.FormLine;
 import com.azure.ai.formrecognizer.models.FormPage;
-import com.azure.ai.formrecognizer.models.FormRecognizerError;
 import com.azure.ai.formrecognizer.models.FormTable;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.RecognizedReceipt;
@@ -57,8 +56,8 @@ final class TestUtils {
     static final String LABELED_MODEL_ID = "a0a3998a-b3c0-4075-aa6b-c4c4affe66b7";
     static final String INVALID_MODEL_ID = "a0a3998a-4c4affe66b7";
     static final String INVALID_STATUS_MODEL_ID = "22138c4e-c4b0-4901-a0e1-6c5beb73fc1d";
-    static final String INVALID_STATUS_MODEL_ERROR = "Model Id " + INVALID_STATUS_MODEL_ID + " returned with status: "
-        + "invalid";
+    static final String INVALID_STATUS_MODEL_ERROR = "Model Id " + INVALID_STATUS_MODEL_ID + " returned with invalid"
+        + " status.";
 
     static final String INVALID_SOURCE_URL_ERROR = "Download failed. Please check your input URL.";
     // TODO (savaity): Do not hardcode, generate SAS URL
@@ -98,7 +97,7 @@ final class TestUtils {
         return null;
     }
 
-    static List<IterableStream<FormTable>> getPagedTables() {
+    static List<List<FormTable>> getPagedTables() {
         List<PageResult> pageResults = getRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult().getPageResults();
         List<ReadResult> readResults = getRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult().getReadResults();
         return IntStream.range(0, pageResults.size())
@@ -143,19 +142,19 @@ final class TestUtils {
             toRecognizedForm(getRawResponse(CUSTOM_FORM_LABELED_DATA).getAnalyzeResult(), true));
     }
 
-    static IterableStream<TrainingDocumentInfo> getExpectedTrainingDocuments() {
+    static List<TrainingDocumentInfo> getExpectedTrainingDocuments() {
         TrainingDocumentInfo trainingDocumentInfo1 = new TrainingDocumentInfo("Invoice_1.pdf",
-            TrainingStatus.SUCCEEDED, 1, new IterableStream<FormRecognizerError>(Collections.emptyList()));
+            TrainingStatus.SUCCEEDED, 1, Collections.emptyList());
         TrainingDocumentInfo trainingDocumentInfo2 = new TrainingDocumentInfo("Invoice_2.pdf",
-            TrainingStatus.SUCCEEDED, 1, new IterableStream<FormRecognizerError>(Collections.emptyList()));
+            TrainingStatus.SUCCEEDED, 1, Collections.emptyList());
         TrainingDocumentInfo trainingDocumentInfo3 = new TrainingDocumentInfo("Invoice_3.pdf",
-            TrainingStatus.SUCCEEDED, 1, new IterableStream<FormRecognizerError>(Collections.emptyList()));
+            TrainingStatus.SUCCEEDED, 1, Collections.emptyList());
         TrainingDocumentInfo trainingDocumentInfo4 = new TrainingDocumentInfo("Invoice_4.pdf",
-            TrainingStatus.SUCCEEDED, 1, new IterableStream<FormRecognizerError>(Collections.emptyList()));
+            TrainingStatus.SUCCEEDED, 1, Collections.emptyList());
         TrainingDocumentInfo trainingDocumentInfo5 = new TrainingDocumentInfo("Invoice_5.pdf",
-            TrainingStatus.SUCCEEDED, 1, new IterableStream<FormRecognizerError>(Collections.emptyList()));
-        return new IterableStream<TrainingDocumentInfo>(Arrays.asList(trainingDocumentInfo1, trainingDocumentInfo2,
-            trainingDocumentInfo3, trainingDocumentInfo4, trainingDocumentInfo5));
+            TrainingStatus.SUCCEEDED, 1, Collections.emptyList());
+        return Arrays.asList(trainingDocumentInfo1, trainingDocumentInfo2,
+            trainingDocumentInfo3, trainingDocumentInfo4, trainingDocumentInfo5);
     }
 
     static CustomFormModel getExpectedUnlabeledModel() {
@@ -177,7 +176,7 @@ final class TestUtils {
             OffsetDateTime.parse("2020-04-09T21:30:28Z"),
             OffsetDateTime.parse("2020-04-09T18:24:56Z"),
             new IterableStream<>(Collections.singletonList(customFormSubModel)),
-            new IterableStream<FormRecognizerError>(Collections.emptyList()), getExpectedTrainingDocuments());
+            Collections.emptyList(), getExpectedTrainingDocuments());
     }
 
     static CustomFormModel getExpectedLabeledModel() {
@@ -195,7 +194,7 @@ final class TestUtils {
             OffsetDateTime.parse("2020-04-09T18:24:49Z"),
             OffsetDateTime.parse("2020-04-09T18:24:56Z"),
             new IterableStream<>(Collections.singletonList(customFormSubModel)),
-            new IterableStream<FormRecognizerError>(Collections.emptyList()), getExpectedTrainingDocuments());
+            Collections.emptyList(), getExpectedTrainingDocuments());
     }
 
     static AccountProperties getExpectedAccountProperties() {

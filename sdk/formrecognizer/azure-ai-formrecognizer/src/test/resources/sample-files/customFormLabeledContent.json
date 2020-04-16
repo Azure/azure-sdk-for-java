@@ -1104,7 +1104,7 @@
               1.945,
               3.515
             ],
-            "confidence": 1.0,
+            "confidence": 1,
             "elements": [
               "#/analyzeResult/readResults/0/lines/13/words/0"
             ]
@@ -1124,7 +1124,7 @@
               0.54,
               3.515
             ],
-            "confidence": 1.0,
+            "confidence": 1,
             "elements": [
               "#/analyzeResult/readResults/0/lines/12/words/0"
             ]
@@ -1144,7 +1144,7 @@
               5.29,
               3.54
             ],
-            "confidence": 1.0,
+            "confidence": 1,
             "elements": [
               "#/analyzeResult/readResults/0/lines/15/words/0"
             ]
@@ -1164,7 +1164,7 @@
               3.345,
               3.515
             ],
-            "confidence": 1.0,
+            "confidence": 1,
             "elements": [
               "#/analyzeResult/readResults/0/lines/14/words/0"
             ]

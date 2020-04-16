@@ -319,7 +319,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             .allMatch(e -> e.getValue().equals(actualFieldMap.get(e.getKey())));
     }
 
-    private static void validateReceiptItems(IterableStream<USReceiptItem> expectedReceiptItems, IterableStream<USReceiptItem> actualReceiptItems, boolean includeTextDetails) {
+    private static void validateReceiptItems(List<USReceiptItem> expectedReceiptItems, List<USReceiptItem> actualReceiptItems, boolean includeTextDetails) {
         List<USReceiptItem> expectedReceiptItemList = expectedReceiptItems.stream().collect(Collectors.toList());
         List<USReceiptItem> actualReceiptItemList = actualReceiptItems.stream().collect(Collectors.toList());
         assertEquals(expectedReceiptItemList.size(), actualReceiptItemList.size());
@@ -337,7 +337,6 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         assertEquals(expectedFieldValue.getName(), actualFieldValue.getName());
         if (includeTextDetails) {
             if (expectedFieldValue.getLabelText() != null && actualFieldValue.getLabelText() != null) {
-                // TODO (savaity): confirm if label text is null for Receipt Items?
                 validateReferenceElements(expectedFieldValue.getLabelText().getTextContent(), actualFieldValue.getLabelText().getTextContent());
             }
             validateReferenceElements(expectedFieldValue.getValueText().getTextContent(), actualFieldValue.getValueText().getTextContent());
@@ -368,13 +367,10 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
     private static void validateBoundingBox(BoundingBox expectedPoints, BoundingBox actualPoints) {
         if (expectedPoints.getPoints() != null && actualPoints.getPoints() != null) {
-            List<Point> expectedPointList = expectedPoints.getPoints().stream().collect(Collectors.toList());
-            List<Point> actualPointList = actualPoints.getPoints().stream().collect(Collectors.toList());
-            assertEquals(expectedPointList.size(), actualPointList.size());
-            assertEquals(expectedPointList.size(), actualPointList.size());
-            for (int i = 0; i < actualPointList.size(); i++) {
-                Point expectedPoint = expectedPointList.get(i);
-                Point actualPoint = actualPointList.get(i);
+            assertEquals(expectedPoints.getPoints().size(), actualPoints.getPoints().size());
+            for (int i = 0; i < actualPoints.getPoints().size(); i++) {
+                Point expectedPoint = expectedPoints.getPoints().get(i);
+                Point actualPoint = actualPoints.getPoints().get(i);
                 assertEquals(expectedPoint.getX(), actualPoint.getX());
                 assertEquals(expectedPoint.getY(), actualPoint.getY());
             }

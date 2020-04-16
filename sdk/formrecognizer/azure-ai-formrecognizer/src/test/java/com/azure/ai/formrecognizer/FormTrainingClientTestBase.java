@@ -197,7 +197,7 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         assertNotNull(actualAccountProperties.getCount());
     }
 
-    private static void validateTrainingDocuments(IterableStream<TrainingDocumentInfo> expectedTrainingDocuments, IterableStream<TrainingDocumentInfo> actualTrainingDocuments) {
+    private static void validateTrainingDocuments(List<TrainingDocumentInfo> expectedTrainingDocuments, List<TrainingDocumentInfo> actualTrainingDocuments) {
         List<TrainingDocumentInfo> actualTrainingList = actualTrainingDocuments.stream().collect(Collectors.toList());
         List<TrainingDocumentInfo> expectedTrainingList = expectedTrainingDocuments.stream().collect(Collectors.toList());
         assertEquals(expectedTrainingList.size(), actualTrainingList.size());
@@ -207,11 +207,11 @@ public abstract class FormTrainingClientTestBase extends TestBase {
             assertEquals(expectedTrainingDocument.getName(), actualTrainingDocument.getName());
             assertEquals(expectedTrainingDocument.getPageCount(), actualTrainingDocument.getPageCount());
             assertEquals(expectedTrainingDocument.getTrainingStatus(), actualTrainingDocument.getTrainingStatus());
-            validateErrors(expectedTrainingDocument.getDocumentError(), actualTrainingDocument.getDocumentError());
+            validateErrors(expectedTrainingDocument.getDocumentErrors(), actualTrainingDocument.getDocumentErrors());
         }
     }
 
-    private static void validateErrors(IterableStream<FormRecognizerError> expectedErrors, IterableStream<FormRecognizerError> actualErrors) {
+    private static void validateErrors(List<FormRecognizerError> expectedErrors, List<FormRecognizerError> actualErrors) {
         if (expectedErrors != null && actualErrors != null) {
             List<FormRecognizerError> actualErrorList = actualErrors.stream().collect(Collectors.toList());
             List<FormRecognizerError> expectedErrorList = expectedErrors.stream().collect(Collectors.toList());

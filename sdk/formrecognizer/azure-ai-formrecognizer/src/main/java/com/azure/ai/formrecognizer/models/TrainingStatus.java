@@ -13,16 +13,16 @@ import java.util.Collection;
 public final class TrainingStatus extends ExpandableStringEnum<TrainingStatus> {
 
     /**
-     * Static value Creating for TrainingStatus.
+     * Static value succeeded for TrainingStatus.
      */
     public static final TrainingStatus SUCCEEDED = fromString("succeeded");
     /**
-     * Static value Creating for TrainingStatus.
+     * Static value partiallySucceeded for TrainingStatus.
      */
     public static final TrainingStatus PARTIALLY_SUCCEEDED = fromString("partiallySucceeded");
 
     /**
-     * Static value Creating for TrainingStatus.
+     * Static value failed for TrainingStatus.
      */
     public static final TrainingStatus FAILED = fromString("failed");
 

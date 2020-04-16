@@ -6,8 +6,6 @@ package com.azure.ai.formrecognizer.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
-import java.util.Collections;
-
 /**
  * The FormPage model.
  */
@@ -62,12 +60,8 @@ public final class FormPage {
         this.textAngle = textAngle;
         this.unit = unit;
         this.width = width;
-        this.lines = lines == null
-            ? new IterableStream<FormLine>(Collections.emptyList())
-            : lines;
-        this.tables = tables == null
-            ? new IterableStream<FormTable>(Collections.emptyList())
-            : tables;
+        this.lines = IterableStream.of(lines);
+        this.tables = IterableStream.of(tables);
     }
 
     /**

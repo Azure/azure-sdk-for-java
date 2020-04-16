@@ -21,10 +21,10 @@ public final class FormLine extends FormContent {
      * Creates raw OCR item.
      * When includeTextDetails is set to true, a list of recognized text lines.
      *
-     * @param text The text content of ExtractedField.
-     * @param boundingBox The BoundingBox of ExtractedField.
-     * @param pageNumber the pagenumber.
-     * @param formWords The formwords
+     * @param text The text content of recognized field.
+     * @param boundingBox The BoundingBox of the recognized field.
+     * @param pageNumber the page number.
+     * @param formWords The list of word element references.
      */
     public FormLine(String text, BoundingBox boundingBox, Integer pageNumber,
         final IterableStream<FormWord> formWords) {
