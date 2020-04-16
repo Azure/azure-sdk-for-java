@@ -13,7 +13,6 @@ import org.apache.avro.io.DatumWriter;
 import org.apache.avro.io.DecoderFactory;
 import org.apache.avro.io.EncoderFactory;
 import reactor.core.Exceptions;
-import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -24,54 +23,58 @@ import java.util.Objects;
  * Apache based implementation of the {@link AvroSerializer} interface.
  */
 public class ApacheAvroSerializer implements AvroSerializer {
-    private static final Schema.Parser PARSER = new Schema.Parser();
-    private static final DecoderFactory DECODER_FACTORY = DecoderFactory.get();
-    private static final EncoderFactory ENCODER_FACTORY = EncoderFactory.get();
-
     private final ClientLogger logger = new ClientLogger(ApacheAvroSerializer.class);
 
-    @Override
-    public <T> Mono<T> read(byte[] input, String schema) {
-        return Mono.fromCallable(() -> {
-            if (input == null) {
-                return null;
-            }
+    private final Schema.Parser parser;
+    private final DecoderFactory decoderFactory;
+    private final  EncoderFactory encoderFactory;
 
-            try {
-                DatumReader<T> reader = new GenericDatumReader<>(PARSER.parse(schema));
-                return reader.read(null, DECODER_FACTORY.binaryDecoder(input, null));
-            } catch (IOException ex) {
-                throw logger.logExceptionAsError(Exceptions.propagate(ex));
-            }
-        });
+    ApacheAvroSerializer(Schema.Parser parser, DecoderFactory decoderFactory, EncoderFactory encoderFactory) {
+        this.parser = parser;
+        this.decoderFactory = decoderFactory;
+        this.encoderFactory = encoderFactory;
     }
 
     @Override
-    public Mono<byte[]> write(Object value, String schema) {
-        return Mono.fromCallable(() -> {
-            DatumWriter<Object> writer = new GenericDatumWriter<>(PARSER.parse(schema));
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+    public <T> T read(byte[] input, String schema) {
+        Objects.requireNonNull(schema, "'schema' cannot be null.");
+        if (input == null) {
+            return null;
+        }
 
-            try {
-                writer.write(value, ENCODER_FACTORY.binaryEncoder(stream, null));
-                return stream.toByteArray();
-            } catch (IOException ex) {
-                throw logger.logExceptionAsError(Exceptions.propagate(ex));
-            }
-        });
+        try {
+            DatumReader<T> reader = new GenericDatumReader<>(parser.parse(schema));
+            return reader.read(null, decoderFactory.binaryDecoder(input, null));
+        } catch (IOException ex) {
+            throw logger.logExceptionAsError(Exceptions.propagate(ex));
+        }
     }
 
     @Override
-    public Mono<Void> write(Object value, String schema, OutputStream stream) {
+    public byte[] write(Object value, String schema) {
+        Objects.requireNonNull(schema, "'schema' cannot be null.");
+
+        DatumWriter<Object> writer = new GenericDatumWriter<>(parser.parse(schema));
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+        try {
+            writer.write(value, encoderFactory.binaryEncoder(stream, null));
+            return stream.toByteArray();
+        } catch (IOException ex) {
+            throw logger.logExceptionAsError(Exceptions.propagate(ex));
+        }
+    }
+
+    @Override
+    public void write(Object value, String schema, OutputStream stream) {
+        Objects.requireNonNull(schema, "'schema' cannot be null.");
         Objects.requireNonNull(stream, "'stream' cannot be null.");
 
-        return Mono.fromRunnable(() -> {
-            try {
-                DatumWriter<Object> writer = new GenericDatumWriter<>(PARSER.parse(schema));
-                writer.write(value, ENCODER_FACTORY.binaryEncoder(stream, null));
-            } catch (IOException ex) {
-                throw logger.logExceptionAsError(Exceptions.propagate(ex));
-            }
-        });
+        try {
+            DatumWriter<Object> writer = new GenericDatumWriter<>(parser.parse(schema));
+            writer.write(value, encoderFactory.binaryEncoder(stream, null));
+        } catch (IOException ex) {
+            throw logger.logExceptionAsError(Exceptions.propagate(ex));
+        }
     }
 }
