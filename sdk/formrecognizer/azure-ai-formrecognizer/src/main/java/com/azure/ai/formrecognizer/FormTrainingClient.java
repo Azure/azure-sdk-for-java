@@ -23,7 +23,7 @@ import java.time.Duration;
  * to Azure Form Recognizer.
  * Operations allowed by the client are, to create/tracin custom models. delete models, list models.
  *
- * <p><strong>Code sample</strong></p>
+ * <p><strong>Instantiating a synchronous Form Training Client</strong></p>
  * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.initialization}
  *
  * @see FormRecognizerClientBuilder

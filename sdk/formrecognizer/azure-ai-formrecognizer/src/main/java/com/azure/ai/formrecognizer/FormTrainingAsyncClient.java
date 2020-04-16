@@ -48,7 +48,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * Operations allowed by the client are, to creating, training of custom models, delete models, list models and get
  * subscription account information.
  *
- * <p><strong>Code sample</strong></p>
+ * <p><strong>Instantiating an asynchronous Form Training Client</strong></p>
  * {@codesnippet com.azure.ai.formrecognizer.FormTrainingAsyncClient.initialization}
  *
  * @see FormRecognizerClientBuilder
