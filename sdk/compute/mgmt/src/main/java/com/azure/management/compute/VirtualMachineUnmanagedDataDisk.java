@@ -9,32 +9,22 @@ import com.azure.management.resources.fluentcore.model.Attachable;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.fluentcore.model.Settable;
 
-/**
- * A native data disk of a virtual machine.
- */
+/** A native data disk of a virtual machine. */
 @Fluent
-public interface VirtualMachineUnmanagedDataDisk extends
-        HasInner<DataDisk>,
-        ChildResource<VirtualMachine> {
-    /**
-     * @return the size of this data disk in GB
-     */
+public interface VirtualMachineUnmanagedDataDisk extends HasInner<DataDisk>, ChildResource<VirtualMachine> {
+    /** @return the size of this data disk in GB */
     int size();
 
-    /**
-     * @return the logical unit number assigned to this data disk
-     */
+    /** @return the logical unit number assigned to this data disk */
     int lun();
 
-    /**
-     * @return URI to the virtual hard disk backing this data disk
-     */
+    /** @return URI to the virtual hard disk backing this data disk */
     String vhdUri();
 
     /**
      * Gets the disk caching type.
-     * <p>
-     * possible values are: 'None', 'ReadOnly', 'ReadWrite'
+     *
+     * <p>possible values are: 'None', 'ReadOnly', 'ReadWrite'
      *
      * @return the caching type
      */
@@ -42,29 +32,24 @@ public interface VirtualMachineUnmanagedDataDisk extends
 
     /**
      * Uri to the source virtual hard disk user image from which this disk was created.
-     * <p>
-     * null will be returned if this disk is not based on an image
+     *
+     * <p>null will be returned if this disk is not based on an image
      *
      * @return the URI of the source VHD image
      */
     String sourceImageUri();
 
-    /**
-     * @return the creation method used while creating this disk
-     */
+    /** @return the creation method used while creating this disk */
     DiskCreateOptionTypes creationMethod();
 
-    /**
-     * Grouping of data disk definition stages applicable as part of a virtual machine creation.
-     */
+    /** Grouping of data disk definition stages applicable as part of a virtual machine creation. */
     interface DefinitionStages {
         /**
-         * The first stage of a  data disk definition.
+         * The first stage of a data disk definition.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface Blank<ParentT>
-                extends WithDiskSource<ParentT> {
+        interface Blank<ParentT> extends WithDiskSource<ParentT> {
         }
 
         /**
@@ -81,9 +66,8 @@ public interface VirtualMachineUnmanagedDataDisk extends
              * @param vhdName the name of the VHD file to attach
              * @return the next stage of data disk definition
              */
-            WithVhdAttachedDiskSettings<ParentT> withExistingVhd(String storageAccountName,
-                                                                 String containerName,
-                                                                 String vhdName);
+            WithVhdAttachedDiskSettings<ParentT> withExistingVhd(
+                String storageAccountName, String containerName, String vhdName);
             /**
              * specifies that disk needs to be created with a new VHD of given size.
              *
@@ -207,47 +191,50 @@ public interface VirtualMachineUnmanagedDataDisk extends
         }
     }
 
-    /** The entirety of a unmanaged data disk of a virtual machine scale set definition.
+    /**
+     * The entirety of a unmanaged data disk of a virtual machine scale set definition.
+     *
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
-    interface DefinitionWithExistingVhd<ParentT> extends
-            DefinitionStages.Blank<ParentT>,
+    interface DefinitionWithExistingVhd<ParentT>
+        extends DefinitionStages.Blank<ParentT>,
             DefinitionStages.WithDiskSource<ParentT>,
             DefinitionStages.WithVhdAttachedDiskSettings<ParentT>,
             DefinitionStages.WithAttach<ParentT> {
     }
 
-    /** The entirety of a unmanaged data disk of a virtual machine scale set definition.
+    /**
+     * The entirety of a unmanaged data disk of a virtual machine scale set definition.
+     *
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
-    interface DefinitionWithNewVhd<ParentT> extends
-            DefinitionStages.Blank<ParentT>,
+    interface DefinitionWithNewVhd<ParentT>
+        extends DefinitionStages.Blank<ParentT>,
             DefinitionStages.WithDiskSource<ParentT>,
             DefinitionStages.WithNewVhdDiskSettings<ParentT>,
             DefinitionStages.WithAttach<ParentT> {
     }
 
-    /** The entirety of a unmanaged data disk of a virtual machine scale set definition.
+    /**
+     * The entirety of a unmanaged data disk of a virtual machine scale set definition.
+     *
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
-    interface DefinitionWithImage<ParentT> extends
-            DefinitionStages.Blank<ParentT>,
+    interface DefinitionWithImage<ParentT>
+        extends DefinitionStages.Blank<ParentT>,
             DefinitionStages.WithDiskSource<ParentT>,
             DefinitionStages.WithFromImageDiskSettings<ParentT>,
             DefinitionStages.WithAttach<ParentT> {
     }
 
-    /**
-     * Grouping of data disk definition stages applicable as part of a virtual machine update.
-     */
+    /** Grouping of data disk definition stages applicable as part of a virtual machine update. */
     interface UpdateDefinitionStages {
         /**
-         * The first stage of a  data disk definition.
+         * The first stage of a data disk definition.
          *
          * @param <ParentT> the stage of the parent update to return to after attaching this definition
          */
-        interface Blank<ParentT>
-                extends WithDiskSource<ParentT> {
+        interface Blank<ParentT> extends WithDiskSource<ParentT> {
         }
 
         /**
@@ -264,9 +251,8 @@ public interface VirtualMachineUnmanagedDataDisk extends
              * @param vhdName the name of the VHD file to attach
              * @return the next stage of data disk definition
              */
-            WithVhdAttachedDiskSettings<ParentT> withExistingVhd(String storageAccountName,
-                                                                 String containerName,
-                                                                 String vhdName);
+            WithVhdAttachedDiskSettings<ParentT> withExistingVhd(
+                String storageAccountName, String containerName, String vhdName);
 
             /**
              * specifies that disk needs to be created with a new VHD of given size.
@@ -350,33 +336,33 @@ public interface VirtualMachineUnmanagedDataDisk extends
         }
     }
 
-    /** The entirety of a unmanaged data disk of a virtual machine scale set update.
+    /**
+     * The entirety of a unmanaged data disk of a virtual machine scale set update.
+     *
      * @param <ParentT> the stage of the parent update to return to after attaching this definition
      */
-    interface UpdateDefinitionWithExistingVhd<ParentT> extends
-            UpdateDefinitionStages.Blank<ParentT>,
+    interface UpdateDefinitionWithExistingVhd<ParentT>
+        extends UpdateDefinitionStages.Blank<ParentT>,
             UpdateDefinitionStages.WithDiskSource<ParentT>,
             UpdateDefinitionStages.WithVhdAttachedDiskSettings<ParentT>,
             UpdateDefinitionStages.WithAttach<ParentT> {
     }
 
-    /** The entirety of a unmanaged data disk of a virtual machine scale set update.
+    /**
+     * The entirety of a unmanaged data disk of a virtual machine scale set update.
+     *
      * @param <ParentT> the stage of the parent update to return to after attaching this definition
      */
-    interface UpdateDefinitionWithNewVhd<ParentT> extends
-            UpdateDefinitionStages.Blank<ParentT>,
+    interface UpdateDefinitionWithNewVhd<ParentT>
+        extends UpdateDefinitionStages.Blank<ParentT>,
             UpdateDefinitionStages.WithDiskSource<ParentT>,
             UpdateDefinitionStages.WithNewVhdDiskSettings<ParentT>,
             UpdateDefinitionStages.WithAttach<ParentT> {
     }
 
-    /**
-     * Grouping of data disk update stages.
-     */
+    /** Grouping of data disk update stages. */
     interface UpdateStages {
-        /**
-         * The stage of the virtual machine data disk update allowing to set the disk size.
-         */
+        /** The stage of the virtual machine data disk update allowing to set the disk size. */
         interface WithDiskSize {
             /**
              * Specifies the new size in GB for data disk.
@@ -387,9 +373,7 @@ public interface VirtualMachineUnmanagedDataDisk extends
             Update withSizeInGB(Integer sizeInGB);
         }
 
-        /**
-         * The stage of the virtual machine data disk update allowing to set the disk LUN.
-         */
+        /** The stage of the virtual machine data disk update allowing to set the disk LUN. */
         interface WithDiskLun {
             /**
              * Specifies the new logical unit number for the data disk.
@@ -400,9 +384,7 @@ public interface VirtualMachineUnmanagedDataDisk extends
             Update withLun(Integer lun);
         }
 
-        /**
-         * The stage of the virtual machine data disk update allowing to set the disk caching type.
-         */
+        /** The stage of the virtual machine data disk update allowing to set the disk caching type. */
         interface WithDiskCaching {
             /**
              * Specifies the new caching type for the data disk.
@@ -414,11 +396,9 @@ public interface VirtualMachineUnmanagedDataDisk extends
         }
     }
 
-    /**
-     * The entirety of a data disk update as part of a virtual machine update.
-     */
-    interface Update extends
-            UpdateStages.WithDiskSize,
+    /** The entirety of a data disk update as part of a virtual machine update. */
+    interface Update
+        extends UpdateStages.WithDiskSize,
             UpdateStages.WithDiskLun,
             UpdateStages.WithDiskCaching,
             Settable<VirtualMachine.Update> {

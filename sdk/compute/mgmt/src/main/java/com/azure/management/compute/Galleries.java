@@ -13,11 +13,10 @@ import com.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-/**
- * Entry point to galleries management API in Azure.
- */
+/** Entry point to galleries management API in Azure. */
 @Fluent
-public interface Galleries extends SupportsCreating<Gallery.DefinitionStages.Blank>,
+public interface Galleries
+    extends SupportsCreating<Gallery.DefinitionStages.Blank>,
         SupportsDeletingByResourceGroup,
         SupportsBatchDeletion,
         SupportsGettingByResourceGroup<Gallery>,

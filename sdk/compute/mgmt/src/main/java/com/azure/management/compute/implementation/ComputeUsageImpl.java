@@ -8,9 +8,7 @@ import com.azure.management.compute.UsageName;
 import com.azure.management.compute.models.UsageInner;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 
-/**
- * The implementation of ComputeUsage.
- */
+/** The implementation of ComputeUsage. */
 class ComputeUsageImpl extends WrapperImpl<UsageInner> implements ComputeUsage {
     ComputeUsageImpl(UsageInner innerObject) {
         super(innerObject);
@@ -36,4 +34,3 @@ class ComputeUsageImpl extends WrapperImpl<UsageInner> implements ComputeUsage {
         return inner().name();
     }
 }
-
