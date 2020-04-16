@@ -390,14 +390,12 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
             // Loop through reading the current partition count until we get a split
             //   This can take up to two minute or more.
             String partitionKeyRangesPath = extractContainerSelfLink(createdFeedCollectionForSplit);
-            FeedOptions feedOptions = new FeedOptions();
-            feedOptions.setRequestContinuation(null);
 
             AsyncDocumentClient contextClient = getContextClient(createdDatabase);
             Flux.just(1).subscribeOn(Schedulers.elastic())
                 .flatMap(value -> {
                     log.warn("Reading current hroughput change.");
-                    return contextClient.readPartitionKeyRanges(partitionKeyRangesPath, feedOptions);
+                    return contextClient.readPartitionKeyRanges(partitionKeyRangesPath, null);
                 })
                 .map(partitionKeyRangeFeedResponse -> {
                     int count = partitionKeyRangeFeedResponse.getResults().size();
