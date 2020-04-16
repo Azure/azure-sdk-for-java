@@ -39,7 +39,6 @@ import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.models.BlobTagSet;
 import com.azure.storage.blob.models.BlobTags;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.CpkInfo;
@@ -1396,7 +1395,7 @@ public class BlobAsyncClientBase {
             null /* versionId */, context)
             .map(response -> {
                 Map<String, String> tags = new HashMap<>();
-                for(BlobTag tag : response.getValue().getBlobTagList()) {
+                for(BlobTag tag : response.getValue().getBlobTagSet()) {
                     tags.put(tag.getKey(), tag.getValue());
                 }
                 return new SimpleResponse<>(response, tags);
@@ -1451,7 +1450,7 @@ public class BlobAsyncClientBase {
                 tagList.add(new BlobTag().setKey(tag).setValue(tags.get(tag)));
             }
         }
-        BlobTags t = new BlobTags().setBlobTagList(tagList);
+        BlobTags t = new BlobTags().setBlobTagSet(tagList);
         return this.azureBlobStorage.blobs().setTagsWithRestResponseAsync(null, null, null, snapshot,
             null /* versionId */, null, null, null, t, context)
             .map(response -> new SimpleResponse<>(response, null));

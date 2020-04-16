@@ -1147,45 +1147,44 @@ class BlobAPITest extends APISpec {
 
     def "Set tags all null"() {
         when:
-        def response = bc.setTagsWithResponse(Collections.singletonMap("tag", "value"), null, null)
+        def response = bc.setTagsWithResponse(null, null, null)
 
         then:
         bc.getTags().size() == 0
-        response.getStatusCode() == 200
-        validateBasicHeaders(response.getHeaders())
+        response.getStatusCode() == 204
     }
 
     def "Set tags min"() {
         setup:
-        def metadata = new HashMap<String, String>()
-        metadata.put("foo", "bar")
+        def tags = new HashMap<String, String>()
+        tags.put("foo", "bar")
 
         when:
-        bc.setMetadata(metadata)
+        bc.setTags(tags)
 
         then:
-        bc.getProperties().getMetadata() == metadata
+        bc.getTags() == tags
     }
 
     @Unroll
     def "Set tags tags"() {
         setup:
-        def metadata = new HashMap<String, String>()
+        def tags = new HashMap<String, String>()
         if (key1 != null && value1 != null) {
-            metadata.put(key1, value1)
+            tags.put(key1, value1)
         }
         if (key2 != null && value2 != null) {
-            metadata.put(key2, value2)
+            tags.put(key2, value2)
         }
 
         expect:
-        bc.setMetadataWithResponse(metadata, null, null, null).getStatusCode() == statusCode
-        bc.getProperties().getMetadata() == metadata
+        bc.setTagsWithResponse(tags, null, null).getStatusCode() == statusCode
+        bc.getTags() == tags
 
         where:
         key1  | value1 | key2   | value2 || statusCode
-        null  | null   | null   | null   || 200
-        "foo" | "bar"  | "fizz" | "buzz" || 200
+        null  | null   | null   | null   || 204
+        "foo" | "bar"  | "fizz" | "buzz" || 204
     }
 
     def "Set tags error"() {
@@ -1193,7 +1192,7 @@ class BlobAPITest extends APISpec {
         bc = cc.getBlobClient(generateBlobName())
 
         when:
-        bc.setMetadata(null)
+        bc.setTags(null)
 
         then:
         thrown(BlobStorageException)

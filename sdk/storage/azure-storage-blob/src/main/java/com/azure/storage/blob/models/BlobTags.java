@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,32 +30,31 @@ public final class BlobTags {
     }
 
     /*
-     * The blobTagList property.
+     * The blobTagSet property.
      */
     @JsonProperty(value = "TagSet", required = true)
-    private BlobTags.TagSetWrapper blobTagList;
+    private TagSetWrapper blobTagSet;
 
     /**
-     * Get the blobTagList property: The blobTagList property.
+     * Get the blobTagSet property: The blobTagSet property.
      *
-     * @return the blobTagList value.
+     * @return the blobTagSet value.
      */
-    public List<BlobTag> getBlobTagList() {
-        if (this.blobTagList == null) {
-            this.blobTagList = new BlobTags.TagSetWrapper(new ArrayList<BlobTag>());
+    public List<BlobTag> getBlobTagSet() {
+        if (this.blobTagSet == null) {
+            this.blobTagSet = new TagSetWrapper(new ArrayList<BlobTag>());
         }
-        return this.blobTagList.items;
+        return this.blobTagSet.items;
     }
 
     /**
-     * Set the blobTagList property: The blobTagList property.
+     * Set the blobTagSet property: The blobTagSet property.
      *
-     * @param blobTagList the blobTagList value to set.
-     * @return the BlobTagSet object itself.
+     * @param blobTagSet the blobTagSet value to set.
+     * @return the BlobTags object itself.
      */
-    public BlobTags setBlobTagList(List<BlobTag> blobTagList) {
-        this.blobTagList = new BlobTags.TagSetWrapper(blobTagList);
+    public BlobTags setBlobTagSet(List<BlobTag> blobTagSet) {
+        this.blobTagSet = new TagSetWrapper(blobTagSet);
         return this;
     }
-
 }
