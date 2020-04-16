@@ -11,7 +11,9 @@ package com.microsoft.azure.management.compute.v2017_12_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Describes a virtual machine scale set sku.
+ * Describes a virtual machine scale set sku. NOTE: If the new VM SKU is not
+ * supported on the hardware the scale set is currently on, you need to
+ * deallocate the VMs in the scale set before you modify the SKU name.
  */
 public class Sku {
     /**
