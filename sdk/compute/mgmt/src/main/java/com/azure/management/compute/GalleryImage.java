@@ -6,8 +6,8 @@ package com.azure.management.compute;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.compute.models.GalleryImageInner;
 import com.azure.management.compute.implementation.ComputeManager;
+import com.azure.management.compute.models.GalleryImageInner;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.azure.management.resources.fluentcore.model.Appliable;
@@ -16,111 +16,74 @@ import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.fluentcore.model.Indexable;
 import com.azure.management.resources.fluentcore.model.Refreshable;
 import com.azure.management.resources.fluentcore.model.Updatable;
-import reactor.core.publisher.Mono;
-
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
+import reactor.core.publisher.Mono;
 
 /**
- * An immutable client-side representation of an Azure gallery image.
- * A gallery image resource is a container for multiple versions of the same image.
+ * An immutable client-side representation of an Azure gallery image. A gallery image resource is a container for
+ * multiple versions of the same image.
  */
 @Fluent
-public interface GalleryImage extends HasInner<GalleryImageInner>,
+public interface GalleryImage
+    extends HasInner<GalleryImageInner>,
         Indexable,
         Refreshable<GalleryImage>,
         Updatable<GalleryImage.Update>,
         HasManager<ComputeManager> {
-    /**
-     * @return the description of the image.
-     */
+    /** @return the description of the image. */
     String description();
 
-    /**
-     * @return the disk types not supported by the image.
-     */
+    /** @return the disk types not supported by the image. */
     List<DiskSkuTypes> unsupportedDiskTypes();
 
-    /**
-     * @return a description of features not supported by the image.
-     */
+    /** @return a description of features not supported by the image. */
     Disallowed disallowed();
 
-    /**
-     * @return the date indicating image's end of life.
-     */
+    /** @return the date indicating image's end of life. */
     OffsetDateTime endOfLifeDate();
 
-    /**
-     * @return the image eula.
-     */
+    /** @return the image eula. */
     String eula();
 
-    /**
-     * @return the ARM id of the image.
-     */
+    /** @return the ARM id of the image. */
     String id();
 
-    /**
-     * @return an identifier describing publisher, offer and sku of the image.
-     */
+    /** @return an identifier describing publisher, offer and sku of the image. */
     GalleryImageIdentifier identifier();
 
-    /**
-     * @return the location of the image.
-     */
+    /** @return the location of the image. */
     String location();
 
-    /**
-     * @return the image name.
-     */
+    /** @return the image name. */
     String name();
 
-    /**
-     * @return the OS state of the image.
-     */
+    /** @return the OS state of the image. */
     OperatingSystemStateTypes osState();
 
-    /**
-     * @return the image OS type.
-     */
+    /** @return the image OS type. */
     OperatingSystemTypes osType();
 
-    /**
-     * @return the uri to image privacy statement.
-     */
+    /** @return the uri to image privacy statement. */
     String privacyStatementUri();
 
-    /**
-     * @return the provisioningState of image resource.
-     */
+    /** @return the provisioningState of image resource. */
     String provisioningState();
 
-    /**
-     * @return the purchasePlan of the image.
-     */
+    /** @return the purchasePlan of the image. */
     ImagePurchasePlan purchasePlan();
 
-    /**
-     * @return the value describing recommended configuration for a virtual machine
-     * based on this image.
-     */
+    /** @return the value describing recommended configuration for a virtual machine based on this image. */
     RecommendedMachineConfiguration recommendedVirtualMachineConfiguration();
 
-    /**
-     * @return the uri to the image release note.
-     */
+    /** @return the uri to the image release note. */
     String releaseNoteUri();
 
-    /**
-     * @return the tags associated with the image.
-     */
+    /** @return the tags associated with the image. */
     Map<String, String> tags();
 
-    /**
-     * @return the type value.
-     */
+    /** @return the type value. */
     String type();
 
     /**
@@ -155,10 +118,9 @@ public interface GalleryImage extends HasInner<GalleryImageInner>,
      */
     PagedIterable<GalleryImageVersion> listVersions();
 
-    /**
-     * The entirety of the gallery image definition.
-     */
-    interface Definition extends DefinitionStages.Blank,
+    /** The entirety of the gallery image definition. */
+    interface Definition
+        extends DefinitionStages.Blank,
             DefinitionStages.WithGallery,
             DefinitionStages.WithLocation,
             DefinitionStages.WithIdentifier,
@@ -166,27 +128,21 @@ public interface GalleryImage extends HasInner<GalleryImageInner>,
             DefinitionStages.WithCreate {
     }
 
-    /**
-     * Grouping of gallery image definition stages.
-     */
+    /** Grouping of gallery image definition stages. */
     interface DefinitionStages {
-        /**
-         * The first stage of a gallery image definition.
-         */
+        /** The first stage of a gallery image definition. */
         interface Blank extends WithGallery {
         }
 
-        /**
-         * The stage of the gallery image definition allowing to specify parent gallery it belongs to.
-         */
+        /** The stage of the gallery image definition allowing to specify parent gallery it belongs to. */
         interface WithGallery {
-           /**
-            * Specifies the gallery in which this image resides.
-            *
-            * @param resourceGroupName The name of the resource group
-            * @param galleryName The name of the gallery
-            * @return the next definition stage
-            */
+            /**
+             * Specifies the gallery in which this image resides.
+             *
+             * @param resourceGroupName The name of the resource group
+             * @param galleryName The name of the gallery
+             * @return the next definition stage
+             */
             WithLocation withExistingGallery(String resourceGroupName, String galleryName);
 
             /**
@@ -198,17 +154,15 @@ public interface GalleryImage extends HasInner<GalleryImageInner>,
             WithLocation withExistingGallery(Gallery gallery);
         }
 
-        /**
-         * The stage of the gallery image definition allowing to specify location of the image.
-         */
+        /** The stage of the gallery image definition allowing to specify location of the image. */
         interface WithLocation {
-           /**
-            * Specifies location.
-            *
-            * @param location resource location
-            * @return the next definition stage
-            */
-           WithIdentifier withLocation(String location);
+            /**
+             * Specifies location.
+             *
+             * @param location resource location
+             * @return the next definition stage
+             */
+            WithIdentifier withLocation(String location);
 
             /**
              * Specifies location.
@@ -220,8 +174,8 @@ public interface GalleryImage extends HasInner<GalleryImageInner>,
         }
 
         /**
-         * The stage of the gallery image definition allowing to specify identifier that
-         * identifies publisher, offer and sku of the image.
+         * The stage of the gallery image definition allowing to specify identifier that identifies publisher, offer and
+         * sku of the image.
          */
         interface WithIdentifier {
             /**
@@ -275,9 +229,7 @@ public interface GalleryImage extends HasInner<GalleryImageInner>,
             WithCreate withLinux(OperatingSystemStateTypes osState);
         }
 
-        /**
-         * The stage of the gallery image definition allowing to specify description.
-         */
+        /** The stage of the gallery image definition allowing to specify description. */
         interface WithDescription {
             /**
              * Specifies description.
@@ -289,8 +241,8 @@ public interface GalleryImage extends HasInner<GalleryImageInner>,
         }
 
         /**
-         * The stage of the gallery image definition allowing to specify settings disallowed
-         * for a virtual machine based on the image.
+         * The stage of the gallery image definition allowing to specify settings disallowed for a virtual machine based
+         * on the image.
          */
         interface WithDisallowed {
             /**
@@ -318,9 +270,7 @@ public interface GalleryImage extends HasInner<GalleryImageInner>,
             WithCreate withDisallowed(Disallowed disallowed);
         }
 
-        /**
-         * The stage of the gallery image definition allowing to specify end of life of the version.
-         */
+        /** The stage of the gallery image definition allowing to specify end of life of the version. */
         interface WithEndOfLifeDate {
             /**
              * Specifies end of life date of the image.
@@ -331,9 +281,7 @@ public interface GalleryImage extends HasInner<GalleryImageInner>,
             WithCreate withEndOfLifeDate(OffsetDateTime endOfLifeDate);
         }
 
-        /**
-         * The stage of the gallery image definition allowing to specify eula.
-         */
+        /** The stage of the gallery image definition allowing to specify eula. */
         interface WithEula {
             /**
              * Specifies eula.
@@ -344,9 +292,7 @@ public interface GalleryImage extends HasInner<GalleryImageInner>,
             WithCreate withEula(String eula);
         }
 
-        /**
-         * The stage of the gallery image definition allowing to specify privacy statement uri.
-         */
+        /** The stage of the gallery image definition allowing to specify privacy statement uri. */
         interface WithPrivacyStatementUri {
             /**
              * Specifies image privacy statement uri.
@@ -357,9 +303,7 @@ public interface GalleryImage extends HasInner<GalleryImageInner>,
             WithCreate withPrivacyStatementUri(String privacyStatementUri);
         }
 
-        /**
-         * The stage of the gallery image definition allowing to specify purchase plan.
-         */
+        /** The stage of the gallery image definition allowing to specify purchase plan. */
         interface WithPurchasePlan {
             /**
              * Specifies purchase plan for this image.
@@ -381,8 +325,8 @@ public interface GalleryImage extends HasInner<GalleryImageInner>,
         }
 
         /**
-         * The stage of the gallery image definition allowing to specify recommended
-         * configuration for the virtual machine.
+         * The stage of the gallery image definition allowing to specify recommended configuration for the virtual
+         * machine.
          */
         interface WithRecommendedVMConfiguration {
             /**
@@ -444,9 +388,7 @@ public interface GalleryImage extends HasInner<GalleryImageInner>,
             WithCreate withRecommendedConfigurationForVirtualMachine(RecommendedMachineConfiguration recommendedConfig);
         }
 
-        /**
-         * The stage of the gallery image definition allowing to specify uri to release note.
-         */
+        /** The stage of the gallery image definition allowing to specify uri to release note. */
         interface WithReleaseNoteUri {
             /**
              * Specifies uri to release note.
@@ -457,9 +399,7 @@ public interface GalleryImage extends HasInner<GalleryImageInner>,
             WithCreate withReleaseNoteUri(String releaseNoteUri);
         }
 
-        /**
-         * The stage of the gallery image definition allowing to specify tags.
-         */
+        /** The stage of the gallery image definition allowing to specify tags. */
         interface WithTags {
             /**
              * Specifies tags.
@@ -471,11 +411,11 @@ public interface GalleryImage extends HasInner<GalleryImageInner>,
         }
 
         /**
-         * The stage of the definition which contains all the minimum required inputs for
-         * the resource to be created (via {@link WithCreate#create()}), but also allows
-         * for any other optional settings to be specified.
+         * The stage of the definition which contains all the minimum required inputs for the resource to be created
+         * (via {@link WithCreate#create()}), but also allows for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<GalleryImage>,
+        interface WithCreate
+            extends Creatable<GalleryImage>,
                 DefinitionStages.WithDescription,
                 DefinitionStages.WithDisallowed,
                 DefinitionStages.WithEndOfLifeDate,
@@ -487,10 +427,9 @@ public interface GalleryImage extends HasInner<GalleryImageInner>,
                 DefinitionStages.WithTags {
         }
     }
-    /**
-     * The template for a gallery image update operation, containing all the settings that can be modified.
-     */
-    interface Update extends Appliable<GalleryImage>,
+    /** The template for a gallery image update operation, containing all the settings that can be modified. */
+    interface Update
+        extends Appliable<GalleryImage>,
             UpdateStages.WithDescription,
             UpdateStages.WithDisallowed,
             UpdateStages.WithEndOfLifeDate,
@@ -502,13 +441,9 @@ public interface GalleryImage extends HasInner<GalleryImageInner>,
             UpdateStages.WithTags {
     }
 
-    /**
-     * Grouping of gallery image update stages.
-     */
+    /** Grouping of gallery image update stages. */
     interface UpdateStages {
-        /**
-         * The stage of the gallery image update allowing to specify description.
-         */
+        /** The stage of the gallery image update allowing to specify description. */
         interface WithDescription {
             /**
              * Specifies description of the gallery image resource.
@@ -520,8 +455,8 @@ public interface GalleryImage extends HasInner<GalleryImageInner>,
         }
 
         /**
-         * The stage of the gallery image update allowing to specify settings disallowed
-         * for a virtual machine based on the image.
+         * The stage of the gallery image update allowing to specify settings disallowed for a virtual machine based on
+         * the image.
          */
         interface WithDisallowed {
             /**
@@ -557,9 +492,7 @@ public interface GalleryImage extends HasInner<GalleryImageInner>,
             Update withDisallowed(Disallowed disallowed);
         }
 
-        /**
-         * The stage of the gallery image update allowing to specify EndOfLifeDate.
-         */
+        /** The stage of the gallery image update allowing to specify EndOfLifeDate. */
         interface WithEndOfLifeDate {
             /**
              * Specifies end of life date of the image.
@@ -570,9 +503,7 @@ public interface GalleryImage extends HasInner<GalleryImageInner>,
             Update withEndOfLifeDate(OffsetDateTime endOfLifeDate);
         }
 
-        /**
-         * The stage of the gallery image update allowing to specify Eula.
-         */
+        /** The stage of the gallery image update allowing to specify Eula. */
         interface WithEula {
             /**
              * Specifies eula.
@@ -583,9 +514,7 @@ public interface GalleryImage extends HasInner<GalleryImageInner>,
             Update withEula(String eula);
         }
 
-        /**
-         * The stage of the gallery image update allowing to specify OsState.
-         */
+        /** The stage of the gallery image update allowing to specify OsState. */
         interface WithOsState {
             /**
              * Specifies osState.
@@ -596,9 +525,7 @@ public interface GalleryImage extends HasInner<GalleryImageInner>,
             Update withOsState(OperatingSystemStateTypes osState);
         }
 
-        /**
-         * The stage of the gallery image update allowing to specify privacy statement uri.
-         */
+        /** The stage of the gallery image update allowing to specify privacy statement uri. */
         interface WithPrivacyStatementUri {
             /**
              * Specifies image privacy statement uri.
@@ -610,8 +537,8 @@ public interface GalleryImage extends HasInner<GalleryImageInner>,
         }
 
         /**
-         * The stage of the gallery image definition allowing to specify recommended
-         * configuration for the virtual machine.
+         * The stage of the gallery image definition allowing to specify recommended configuration for the virtual
+         * machine.
          */
         interface WithRecommendedVMConfiguration {
             /**
@@ -673,9 +600,7 @@ public interface GalleryImage extends HasInner<GalleryImageInner>,
             Update withRecommendedConfigurationForVirtualMachine(RecommendedMachineConfiguration recommendedConfig);
         }
 
-        /**
-         * The stage of the gallery image update allowing to specify uri to release note.
-         */
+        /** The stage of the gallery image update allowing to specify uri to release note. */
         interface WithReleaseNoteUri {
             /**
              * Specifies release note uri.
@@ -686,12 +611,11 @@ public interface GalleryImage extends HasInner<GalleryImageInner>,
             Update withReleaseNoteUri(String releaseNoteUri);
         }
 
-        /**
-         * The stage of the gallery image update allowing to specify Tags.
-         */
+        /** The stage of the gallery image update allowing to specify Tags. */
         interface WithTags {
             /**
              * Specifies tags.
+             *
              * @param tags resource tags
              * @return the next update stage
              */

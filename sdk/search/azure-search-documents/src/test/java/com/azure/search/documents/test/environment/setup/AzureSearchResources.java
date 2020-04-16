@@ -9,6 +9,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.microsoft.azure.AzureEnvironment;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.Azure;
@@ -114,13 +115,21 @@ public class AzureSearchResources {
         System.out.println("Creating Azure Cognitive Search service: " + searchServiceName);
         int recreateCount = 0;
         do {
-            searchService = azure.searchServices()
-                .define(searchServiceName)
-                .withRegion(location)
-                .withExistingResourceGroup(resourceGroup)
-                .withFreeSku()
-                .create();
-            recreateCount += 1;
+            try {
+                searchService = azure.searchServices()
+                    .define(searchServiceName)
+                    .withRegion(location)
+                    .withExistingResourceGroup(resourceGroup)
+                    .withFreeSku()
+                    .create();
+                recreateCount += 1;
+            } catch (CloudException ex) {
+                if (ex.getMessage().contains("already exists")) {
+                    System.out.println(String.format("Azure Cognitive Search service %s has already been created. ",
+                        searchServiceName));
+                    break;
+                }
+            }
         } while (recreateCount < 3 && shouldRetryCreateService());
         if (recreateCount == 3 && shouldRetryCreateService()) {
             fail("Failed to create service");

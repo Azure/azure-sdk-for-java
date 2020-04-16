@@ -9,17 +9,18 @@ import com.azure.management.compute.models.VirtualMachineExtensionImagesInner;
 import com.azure.management.compute.models.VirtualMachineImagesInner;
 import com.azure.management.resources.fluentcore.arm.Region;
 
-/**
- * The implementation for {@link VirtualMachinePublisher}.
- */
-class VirtualMachinePublisherImpl
-        implements VirtualMachinePublisher {
+/** The implementation for {@link VirtualMachinePublisher}. */
+class VirtualMachinePublisherImpl implements VirtualMachinePublisher {
     private final Region location;
     private final String publisher;
     private final VirtualMachineOffers offers;
     private final VirtualMachineExtensionImageTypes types;
 
-    VirtualMachinePublisherImpl(Region location, String publisher, VirtualMachineImagesInner imagesClient, VirtualMachineExtensionImagesInner extensionsClient) {
+    VirtualMachinePublisherImpl(
+        Region location,
+        String publisher,
+        VirtualMachineImagesInner imagesClient,
+        VirtualMachineExtensionImagesInner extensionsClient) {
         this.location = location;
         this.publisher = publisher;
         this.offers = new VirtualMachineOffersImpl(imagesClient, this);
@@ -45,5 +46,4 @@ class VirtualMachinePublisherImpl
     public VirtualMachineExtensionImageTypes extensionTypes() {
         return this.types;
     }
-
 }

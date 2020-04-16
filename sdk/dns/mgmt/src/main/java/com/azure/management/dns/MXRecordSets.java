@@ -4,9 +4,7 @@ package com.azure.management.dns;
 
 import com.azure.core.annotation.Fluent;
 
-/**
- *  Entry point to MX record sets in an Azure DNS zone.
- */
+/** Entry point to MX record sets in an Azure DNS zone. */
 @Fluent
 public interface MXRecordSets extends DnsRecordSets<MXRecordSet> {
 }

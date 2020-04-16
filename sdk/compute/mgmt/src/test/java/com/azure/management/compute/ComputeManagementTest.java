@@ -21,11 +21,10 @@ import com.azure.management.resources.implementation.ResourceManager;
 import com.azure.management.storage.implementation.StorageManager;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
-import org.junit.jupiter.api.Assertions;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.Assertions;
 
 public abstract class ComputeManagementTest extends TestBase {
     public ComputeManagementTest() {
@@ -45,22 +44,16 @@ public abstract class ComputeManagementTest extends TestBase {
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        resourceManager = ResourceManager
-                .authenticate(restClient)
-                .withSdkContext(sdkContext)
-                .withSubscription(defaultSubscription);
+        resourceManager =
+            ResourceManager.authenticate(restClient).withSdkContext(sdkContext).withSubscription(defaultSubscription);
 
-        computeManager = ComputeManager
-                .authenticate(restClient, defaultSubscription, sdkContext);
+        computeManager = ComputeManager.authenticate(restClient, defaultSubscription, sdkContext);
 
-        networkManager = NetworkManager
-                .authenticate(restClient, defaultSubscription, sdkContext);
+        networkManager = NetworkManager.authenticate(restClient, defaultSubscription, sdkContext);
 
-        storageManager = StorageManager
-                .authenticate(restClient, defaultSubscription, sdkContext);
+        storageManager = StorageManager.authenticate(restClient, defaultSubscription, sdkContext);
 
-        keyVaultManager = KeyVaultManager
-                .authenticate(restClient, domain, defaultSubscription, sdkContext);
+        keyVaultManager = KeyVaultManager.authenticate(restClient, domain, defaultSubscription, sdkContext);
 
         rbacManager = GraphRbacManager.authenticate(restClient, domain, sdkContext);
     }
@@ -116,7 +109,7 @@ public abstract class ComputeManagementTest extends TestBase {
         }
     }
 
-    protected  void sleep(long milli) {
+    protected void sleep(long milli) {
         if (isPlaybackMode()) {
             return;
         }
@@ -126,53 +119,59 @@ public abstract class ComputeManagementTest extends TestBase {
         }
     }
 
-
-    protected LoadBalancer createHttpLoadBalancers(Region region, ResourceGroup resourceGroup,
-                                                 String id) throws Exception {
+    protected LoadBalancer createHttpLoadBalancers(Region region, ResourceGroup resourceGroup, String id)
+        throws Exception {
         final String loadBalancerName = generateRandomResourceName("extlb" + id + "-", 18);
         final String publicIpName = "pip-" + loadBalancerName;
         final String frontendName = loadBalancerName + "-FE1";
         final String backendPoolName = loadBalancerName + "-BAP1";
         final String natPoolName = loadBalancerName + "-INP1";
 
-        PublicIPAddress publicIPAddress = this.networkManager.publicIPAddresses().define(publicIpName)
+        PublicIPAddress publicIPAddress =
+            this
+                .networkManager
+                .publicIPAddresses()
+                .define(publicIpName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withLeafDomainLabel(publicIpName)
                 .create();
 
-        LoadBalancer loadBalancer = this.networkManager.loadBalancers().define(loadBalancerName)
+        LoadBalancer loadBalancer =
+            this
+                .networkManager
+                .loadBalancers()
+                .define(loadBalancerName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 // Add two rules that uses above backend and probe
                 .defineLoadBalancingRule("httpRule")
-                    .withProtocol(TransportProtocol.TCP)
-                    .fromFrontend(frontendName)
-                    .fromFrontendPort(80)
-                    .toBackend(backendPoolName)
-                    .withProbe("httpProbe")
-                    .attach()
+                .withProtocol(TransportProtocol.TCP)
+                .fromFrontend(frontendName)
+                .fromFrontendPort(80)
+                .toBackend(backendPoolName)
+                .withProbe("httpProbe")
+                .attach()
                 .defineInboundNatPool(natPoolName)
-                    .withProtocol(TransportProtocol.TCP)
-                    .fromFrontend(frontendName)
-                    .fromFrontendPortRange(5000, 5099)
-                    .toBackendPort(22)
-                    .attach()
+                .withProtocol(TransportProtocol.TCP)
+                .fromFrontend(frontendName)
+                .fromFrontendPortRange(5000, 5099)
+                .toBackendPort(22)
+                .attach()
                 // Explicitly define the frontend
                 .definePublicFrontend(frontendName)
-                    .withExistingPublicIPAddress(publicIPAddress)
-                    .attach()
+                .withExistingPublicIPAddress(publicIPAddress)
+                .attach()
                 // Add an HTTP probe
                 .defineHttpProbe("httpProbe")
-                    .withRequestPath("/")
-                    .attach()
-
+                .withRequestPath("/")
+                .attach()
                 .create();
         return loadBalancer;
-
     }
 
-    protected LoadBalancer createInternetFacingLoadBalancer(Region region, ResourceGroup resourceGroup, String id, LoadBalancerSkuType lbSkuType) throws Exception {
+    protected LoadBalancer createInternetFacingLoadBalancer(
+        Region region, ResourceGroup resourceGroup, String id, LoadBalancerSkuType lbSkuType) throws Exception {
         final String loadBalancerName = generateRandomResourceName("extlb" + id + "-", 18);
         final String publicIPName = "pip-" + loadBalancerName;
         final String frontendName = loadBalancerName + "-FE1";
@@ -183,9 +182,14 @@ public abstract class ComputeManagementTest extends TestBase {
 
         // Sku of PublicIP and LoadBalancer must match
         //
-        PublicIPSkuType publicIPSkuType = lbSkuType.equals(LoadBalancerSkuType.BASIC) ? PublicIPSkuType.BASIC : PublicIPSkuType.STANDARD;
+        PublicIPSkuType publicIPSkuType =
+            lbSkuType.equals(LoadBalancerSkuType.BASIC) ? PublicIPSkuType.BASIC : PublicIPSkuType.STANDARD;
 
-        PublicIPAddress publicIPAddress = this.networkManager.publicIPAddresses().define(publicIPName)
+        PublicIPAddress publicIPAddress =
+            this
+                .networkManager
+                .publicIPAddresses()
+                .define(publicIPName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withLeafDomainLabel(publicIPName)
@@ -195,59 +199,63 @@ public abstract class ComputeManagementTest extends TestBase {
                 // Create
                 .create();
 
-        LoadBalancer loadBalancer = this.networkManager.loadBalancers().define(loadBalancerName)
+        LoadBalancer loadBalancer =
+            this
+                .networkManager
+                .loadBalancers()
+                .define(loadBalancerName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
 
                 // Add two rules that uses above backend and probe
                 .defineLoadBalancingRule("httpRule")
-                    .withProtocol(TransportProtocol.TCP)
-                    .fromFrontend(frontendName)
-                    .fromFrontendPort(80)
-                    .toBackend(backendPoolName1)
-                    .withProbe("httpProbe")
-                    .attach()
+                .withProtocol(TransportProtocol.TCP)
+                .fromFrontend(frontendName)
+                .fromFrontendPort(80)
+                .toBackend(backendPoolName1)
+                .withProbe("httpProbe")
+                .attach()
                 .defineLoadBalancingRule("httpsRule")
-                    .withProtocol(TransportProtocol.TCP)
-                    .fromFrontend(frontendName)
-                    .fromFrontendPort(443)
-                    .toBackend(backendPoolName2)
-                    .withProbe("httpsProbe")
-                    .attach()
+                .withProtocol(TransportProtocol.TCP)
+                .fromFrontend(frontendName)
+                .fromFrontendPort(443)
+                .toBackend(backendPoolName2)
+                .withProbe("httpsProbe")
+                .attach()
 
                 // Add two nat pools to enable direct VM connectivity to port SSH and 23
                 .defineInboundNatPool(natPoolName1)
-                    .withProtocol(TransportProtocol.TCP)
-                    .fromFrontend(frontendName)
-                    .fromFrontendPortRange(5000, 5099)
-                    .toBackendPort(22)
-                    .attach()
+                .withProtocol(TransportProtocol.TCP)
+                .fromFrontend(frontendName)
+                .fromFrontendPortRange(5000, 5099)
+                .toBackendPort(22)
+                .attach()
                 .defineInboundNatPool(natPoolName2)
-                    .withProtocol(TransportProtocol.TCP)
-                    .fromFrontend(frontendName)
-                    .fromFrontendPortRange(6000, 6099)
-                    .toBackendPort(23)
-                    .attach()
+                .withProtocol(TransportProtocol.TCP)
+                .fromFrontend(frontendName)
+                .fromFrontendPortRange(6000, 6099)
+                .toBackendPort(23)
+                .attach()
 
                 // Explicitly define the frontend
                 .definePublicFrontend(frontendName)
-                    .withExistingPublicIPAddress(publicIPAddress)   // Frontend with PIP means internet-facing load-balancer
-                    .attach()
+                .withExistingPublicIPAddress(publicIPAddress) // Frontend with PIP means internet-facing load-balancer
+                .attach()
 
-                    // Add two probes one per rule
+                // Add two probes one per rule
                 .defineHttpProbe("httpProbe")
-                    .withRequestPath("/")
-                    .attach()
+                .withRequestPath("/")
+                .attach()
                 .defineHttpProbe("httpsProbe")
-                    .withRequestPath("/")
-                    .attach()
+                .withRequestPath("/")
+                .attach()
                 .withSku(lbSkuType)
                 .create();
         return loadBalancer;
     }
 
-    protected LoadBalancer createInternalLoadBalancer(Region region, ResourceGroup resourceGroup,
-                                                    Network network, String id) throws Exception {
+    protected LoadBalancer createInternalLoadBalancer(
+        Region region, ResourceGroup resourceGroup, Network network, String id) throws Exception {
         final String loadBalancerName = generateRandomResourceName("InternalLb" + id + "-", 18);
         final String privateFrontEndName = loadBalancerName + "-FE1";
         final String backendPoolName1 = loadBalancerName + "-BAP1";
@@ -256,52 +264,55 @@ public abstract class ComputeManagementTest extends TestBase {
         final String natPoolName2 = loadBalancerName + "-INP2";
         final String subnetName = "subnet1";
 
-        LoadBalancer loadBalancer = this.networkManager.loadBalancers().define(loadBalancerName)
+        LoadBalancer loadBalancer =
+            this
+                .networkManager
+                .loadBalancers()
+                .define(loadBalancerName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 // Add two rules that uses above backend and probe
                 .defineLoadBalancingRule("httpRule")
-                    .withProtocol(TransportProtocol.TCP)
-                    .fromFrontend(privateFrontEndName)
-                    .fromFrontendPort(1000)
-                    .toBackend(backendPoolName1)
-                    .withProbe("httpProbe")
-                    .attach()
+                .withProtocol(TransportProtocol.TCP)
+                .fromFrontend(privateFrontEndName)
+                .fromFrontendPort(1000)
+                .toBackend(backendPoolName1)
+                .withProbe("httpProbe")
+                .attach()
                 .defineLoadBalancingRule("httpsRule")
-                    .withProtocol(TransportProtocol.TCP)
-                    .fromFrontend(privateFrontEndName)
-                    .fromFrontendPort(1001)
-                    .toBackend(backendPoolName2)
-                    .withProbe("httpsProbe")
-                    .attach()
+                .withProtocol(TransportProtocol.TCP)
+                .fromFrontend(privateFrontEndName)
+                .fromFrontendPort(1001)
+                .toBackend(backendPoolName2)
+                .withProbe("httpsProbe")
+                .attach()
 
                 // Add two NAT pools to enable direct VM connectivity to port 44 and 45
                 .defineInboundNatPool(natPoolName1)
-                    .withProtocol(TransportProtocol.TCP)
-                    .fromFrontend(privateFrontEndName)
-                    .fromFrontendPortRange(8000, 8099)
-                    .toBackendPort(44)
-                    .attach()
+                .withProtocol(TransportProtocol.TCP)
+                .fromFrontend(privateFrontEndName)
+                .fromFrontendPortRange(8000, 8099)
+                .toBackendPort(44)
+                .attach()
                 .defineInboundNatPool(natPoolName2)
-                    .withProtocol(TransportProtocol.TCP)
-                    .fromFrontend(privateFrontEndName)
-                    .fromFrontendPortRange(9000, 9099)
-                    .toBackendPort(45)
-                    .attach()
+                .withProtocol(TransportProtocol.TCP)
+                .fromFrontend(privateFrontEndName)
+                .fromFrontendPortRange(9000, 9099)
+                .toBackendPort(45)
+                .attach()
 
                 // Explicitly define the frontend
                 .definePrivateFrontend(privateFrontEndName)
-                    .withExistingSubnet(network, subnetName) // Frontend with VNET means internal load-balancer
-                    .attach()
+                .withExistingSubnet(network, subnetName) // Frontend with VNET means internal load-balancer
+                .attach()
 
                 // Add two probes one per rule
                 .defineHttpProbe("httpProbe")
-                    .withRequestPath("/")
-                    .attach()
+                .withRequestPath("/")
+                .attach()
                 .defineHttpProbe("httpsProbe")
-                    .withRequestPath("/")
-                    .attach()
-
+                .withRequestPath("/")
+                .attach()
                 .create();
         return loadBalancer;
     }

@@ -184,6 +184,15 @@
           <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
           <failOnError>true</failOnError>
           <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
+
+          <!-- Enable this plugin when issues documented are fixed -->
+          <!--          <plugins>-->
+          <!--            <plugin>-->
+          <!--              <groupId>com.h3xstream.findsecbugs</groupId>-->
+          <!--              <artifactId>findsecbugs-plugin</artifactId>-->
+          <!--              <version>1.9.0</version> &lt;!&ndash; {x-version-update;com.h3xstream.findsecbugs:findsecbugs-plugin;external_dependency} &ndash;&gt;-->
+          <!--            </plugin>-->
+          <!--          </plugins>-->
           <includeTests>false</includeTests>
           <fork>true</fork>
         </configuration>
@@ -449,57 +458,57 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
         <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <!--
+            Rule: https://maven.apache.org/enforcer/enforcer-rules/bannedDependencies.html
+            We have a list of blessed dependencies here: https://azure.github.io/azure-sdk/java_implementation.html#dependencies
+            Format of includes / excludes is the following: 'groupId[:artifactId][:version][:type][:scope][:classifier]'.
+            Wildcards can be used.
+            -->
+            <bannedDependencies>
+              <searchTransitive>false</searchTransitive>
+              <excludes>
+                <!-- We exclude everything that is runtime-time, compile-time, or provided scoped (i.e. we allow
+                dependencies when they are used for test scope or otherwise) -->
+                <exclude>*:*:*:*:runtime</exclude>
+                <exclude>*:*:*:*:compile</exclude>
+                <exclude>*:*:*:*:provided</exclude>
+              </excludes>
+              <includes>
+                <include>com.azure:*</include>
+
+                <!-- Used by many libraries to bring in annotations used by Reactor -->
+                <include>com.google.code.findbugs:jsr305:[3.0.2]</include> <!-- {x-include-update;com.google.code.findbugs:jsr305;external_dependency} -->
+              </includes>
+            </bannedDependencies>
+
+            <!--
+            Rule: https://maven.apache.org/enforcer/enforcer-rules/requireReleaseDeps.html
+            -->
+            <requireReleaseDeps>
+              <message>No Snapshots Allowed!</message>
+            </requireReleaseDeps>
+
+            <!--
+            Rule: https://maven.apache.org/enforcer/enforcer-rules/requireSameVersions.html
+            This rule is used to enforce that all modules depend on the same version of particular dependencies or
+            plugins.
+            -->
+            <requireSameVersions>
+              <dependencies>
+                <dependency>com.azure.*</dependency>
+              </dependencies>
+            </requireSameVersions>
+          </rules>
+          <fail>true</fail>
+        </configuration>
         <executions>
           <execution>
             <id>default-cli</id>
             <goals>
               <goal>enforce</goal>
             </goals>
-            <configuration>
-              <rules>
-                <!--
-                Rule: https://maven.apache.org/enforcer/enforcer-rules/bannedDependencies.html
-                We have a list of blessed dependencies here: https://azure.github.io/azure-sdk/java_implementation.html#dependencies
-                Format of includes / excludes is the following: 'groupId[:artifactId][:version][:type][:scope][:classifier]'.
-                Wildcards can be used.
-                -->
-                <bannedDependencies>
-                  <searchTransitive>false</searchTransitive>
-                  <excludes>
-                    <!-- We exclude everything that is runtime-time, compile-time, or provided scoped (i.e. we allow
-                    dependencies when they are used for test scope or otherwise) -->
-                    <exclude>*:*:*:*:runtime</exclude>
-                    <exclude>*:*:*:*:compile</exclude>
-                    <exclude>*:*:*:*:provided</exclude>
-                  </excludes>
-                  <includes>
-                    <include>com.azure:*</include>
-
-                    <!-- Used by many libraries to bring in annotations used by Reactor -->
-                    <include>com.google.code.findbugs:jsr305</include>
-                  </includes>
-                </bannedDependencies>
-
-                <!--
-                Rule: https://maven.apache.org/enforcer/enforcer-rules/requireReleaseDeps.html
-                -->
-                <requireReleaseDeps>
-                  <message>No Snapshots Allowed!</message>
-                </requireReleaseDeps>
-
-                <!--
-                Rule: https://maven.apache.org/enforcer/enforcer-rules/requireSameVersions.html
-                This rule is used to enforce that all modules depend on the same version of particular dependencies or
-                plugins.
-                -->
-                <requireSameVersions>
-                  <dependencies>
-                    <dependency>com.azure.*</dependency>
-                  </dependencies>
-                </requireSameVersions>
-              </rules>
-              <fail>true</fail>
-            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -516,7 +525,8 @@
             <doctitle>Azure SDK for Java Reference Documentation</doctitle>
             <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
             <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt;site
-              for more Java documentation, including quick starts, tutorials, and code samples.</footer>
+              for more Java documentation, including quick starts, tutorials, and code samples.
+            </footer>
             <linksource>false</linksource>
             <excludePackageNames>
               *.impl*:
@@ -727,9 +737,8 @@
         <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
         <configuration>
           <configLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
-          <suppressionsLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml
-          </suppressionsLocation>
-          <headerLocation>eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
+          <suppressionsLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+          <headerLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
           <propertyExpansion>samedir=</propertyExpansion>
           <encoding>UTF-8</encoding>
           <consoleOutput>true</consoleOutput>
@@ -763,8 +772,7 @@
           <threshold>Low</threshold>
           <xmlOutput>true</xmlOutput>
           <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
-          <excludeFilterFile>../../../eng/code-quality-reports/src/main/resources/spotbugs/spotbugs-exclude.xml
-          </excludeFilterFile>
+          <excludeFilterFile>../../../eng/code-quality-reports/src/main/resources/spotbugs/spotbugs-exclude.xml</excludeFilterFile>
           <failOnError>true</failOnError>
           <fork>true</fork>
           <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
