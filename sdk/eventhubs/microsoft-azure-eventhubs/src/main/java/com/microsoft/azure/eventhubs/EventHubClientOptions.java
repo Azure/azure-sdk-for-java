@@ -11,14 +11,13 @@ import java.time.Duration;
  */
 public class EventHubClientOptions {
     public static final int WATCHDOG_OFF = 0;
-    public static final int WATCHDOG_SCAN_DEFAULT = 10; // seconds
+    public static final int WATCHDOG_MINIMUM_SECONDS = 30;
 
     private Duration operationTimeout = null;
     private TransportType transportType = null;
     private RetryPolicy retryPolicy = null;
     private ProxyConfiguration proxyConfiguration = null;
-    private int watchdogTimeoutSeconds = WATCHDOG_OFF;
-    private int watchdogScanSeconds = WATCHDOG_SCAN_DEFAULT;
+    private int watchdogTriggerSeconds = WATCHDOG_OFF;
 
     /**
      * Create with all defaults
@@ -101,43 +100,25 @@ public class EventHubClientOptions {
     }
 
     /**
-     * Sets the watchdog timeout in seconds.
+     * Sets the watchdog trigger time in seconds.
      * 
-     * @param watchdogTimeoutSeconds The timeout in seconds, or WATCHDOG_OFF.
+     * @param watchdogTriggerSeconds The time in seconds, or WATCHDOG_OFF. Time must be at least WATCHDOG_MINIMUM_SECONDS.
      * @return The updated options object.
      */
-    public EventHubClientOptions setWatchdogTimeout(int watchdogTimeoutSeconds) {
-        this.watchdogTimeoutSeconds = watchdogTimeoutSeconds;
+    public EventHubClientOptions setWatchdogTriggerTime(int watchdogTriggerSeconds) {
+        if (watchdogTriggerSeconds < EventHubClientOptions.WATCHDOG_MINIMUM_SECONDS) {
+            throw new IllegalArgumentException("Watchdog trigger time must be at least " + EventHubClientOptions.WATCHDOG_MINIMUM_SECONDS + " seconds");
+        }
+        this.watchdogTriggerSeconds = watchdogTriggerSeconds;
         return this;
     }
 
     /**
-     * Gets the watchdog timeout in seconds.
+     * Gets the watchdog trigger time in seconds.
      * 
-     * @return The watchdog timeout.
+     * @return The watchdog trigger time, or WATCHDOG_OFF.
      */
-    public int getWatchdogTimeout() {
-        return this.watchdogTimeoutSeconds;
-    }
-
-    /**
-     * Sets the watchdog scan period in seconds. Ignored if the watchdog timeout is WATCHDOG_OFF.
-     * Defaults to WATCHDOG_SCAN_DEFAULT.
-     * 
-     * @param watchdogScanSeconds The watchdog scan period in seconds
-     * @return The updated options object.
-     */
-    public EventHubClientOptions setWatchdogScan(int watchdogScanSeconds) {
-        this.watchdogScanSeconds = watchdogScanSeconds;
-        return this;
-    }
-
-    /**
-     * Gets the watchdog scan period in seconds.
-     * 
-     * @return The watchdog scan period.
-     */
-    public int getWatchdogScan() {
-        return this.watchdogScanSeconds;
+    public int getWatchdogTriggerTime() {
+        return this.watchdogTriggerSeconds;
     }
 }
