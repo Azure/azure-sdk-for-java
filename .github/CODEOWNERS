@@ -23,7 +23,7 @@
 /sdk/keyvault/                                      @g2vinay @vcolin7 @samvaity
 /sdk/search/                                        @alzimmermsft @sima-zhu
 /sdk/servicebus/                                    @yvgopal @nemakam @hemanttanwar @conniey
-/sdk/storage/                                       @rickle-msft @jaschrep-msft @gapra-msft @alzimmermsft @sima-zhu
+/sdk/storage/                                       @amishra-dev @rickle-msft @jaschrep-msft @gapra-msft @alzimmermsft @sima-zhu
 /sdk/textanalytics/                                 @samvaity @mssfang
 
 # end to end tests
