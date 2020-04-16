@@ -11,7 +11,7 @@ key-value pairs and table data from form documents.
 - [Azure Subscription][azure_subscription]
 - [Cognitive Services or Form Recognizer account][form_recognizer_account] to use this package.
 
-### Adding the package to your product
+### Include the Package
 
 [//]: # ({x-version-update-start;com.azure:azure-ai-formrecognizer;current})
 ```xml
@@ -69,7 +69,7 @@ To use an [API key][api_key], provide the key as a string. This can be found in 
 az cognitiveservices account keys list --resource-group <your-resource-group-name> --name <your-resource-name>
 ``` 
 Use the API key as the credential parameter to authenticate the client:
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L38-L41 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L39-L42 -->
 ```java
 FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
     .apiKey(new AzureKeyCredential("{api_key}"))
@@ -78,7 +78,7 @@ FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
 ```
 The Azure Form Recognizer client library provides a way to **rotate the existing API key**.
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L58-L64 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L59-L65 -->
 ```java
 AzureKeyCredential credential = new AzureKeyCredential("{api_key}");
 FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
@@ -103,14 +103,14 @@ The following sections provide several code snippets covering some of the most c
 Form Recognizer support both synchronous and asynchronous client creation by using
 `FormRecognizerClientBuilder`,
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L38-L41 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L39-L42 -->
 ``` java
 FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
     .apiKey(new AzureKeyCredential("{api_key}"))
     .endpoint("{endpoint}")
     .buildClient();
 ```
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L48-L51 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L49-L52 -->
 ``` java
 FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBuilder()
     .apiKey(new AzureKeyCredential("{api_key}"))
@@ -119,27 +119,25 @@ FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBu
 ```
 
 ### Extract receipt information
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L68-L86 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L69-L85 -->
 ```java
 String receiptSourceUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media/contoso-allinone.jpg";
-SyncPoller<OperationResult, IterableStream<ExtractedReceipt>> syncPoller =
-    formRecognizerClient.beginExtractReceiptsFromUrl(receiptSourceUrl);
-IterableStream<ExtractedReceipt> extractedReceipts = syncPoller.getFinalResult();
+SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
+    formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptSourceUrl);
+IterableStream<RecognizedReceipt> receiptPageResults = syncPoller.getFinalResult();
 
-for (ExtractedReceipt extractedReceiptItem : extractedReceipts) {
-    System.out.printf("Page Number %s%n", extractedReceiptItem.getPageMetadata().getPageNumber());
-    System.out.printf("Merchant Name %s%n", extractedReceiptItem.getMerchantName().getText());
-    System.out.printf("Merchant Address %s%n", extractedReceiptItem.getMerchantAddress().getText());
-    System.out.printf("Merchant Phone Number %s%n", extractedReceiptItem.getMerchantPhoneNumber().getText());
-    System.out.printf("Total: %s%n", extractedReceiptItem.getTotal().getText());
-    System.out.printf("Receipt Items: %n");
-    extractedReceiptItem.getReceiptItems().forEach(receiptItem -> {
-        System.out.printf("Name: %s%n", receiptItem.getName().getText());
-        System.out.printf("Quantity: %s%n", receiptItem.getQuantity().getText());
-        System.out.printf("Total Price: %s%n", receiptItem.getTotalPrice().getText());
-        System.out.println();
-    });
-}
+receiptPageResults.forEach(recognizedReceipt -> {
+    USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
+    System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
+    System.out.printf("Merchant Name %s%n", usReceipt.getMerchantName().getName());
+    System.out.printf("Merchant Name Value: %s%n", usReceipt.getMerchantName().getFieldValue());
+    System.out.printf("Merchant Address %s%n", usReceipt.getMerchantAddress().getName());
+    System.out.printf("Merchant Address Value: %s%n", usReceipt.getMerchantAddress().getFieldValue());
+    System.out.printf("Merchant Phone Number %s%n", usReceipt.getMerchantPhoneNumber().getName());
+    System.out.printf("Merchant Phone Number Value: %s%n", usReceipt.getMerchantPhoneNumber().getFieldValue());
+    System.out.printf("Total: %s%n", usReceipt.getTotal().getName());
+    System.out.printf("Total Value: %s%n", usReceipt.getTotal().getFieldValue());
+});
 ```
 For more detailed examples, refer to [here][samples_readme].
 
