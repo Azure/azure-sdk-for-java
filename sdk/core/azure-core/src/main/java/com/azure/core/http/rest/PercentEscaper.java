@@ -4,6 +4,7 @@
 package com.azure.core.http.rest;
 
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,6 +20,8 @@ final class PercentEscaper {
      */
     private static final String SAFE_CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
+    private final ClientLogger logger = new ClientLogger(PercentEscaper.class);
+
     private final boolean usePlusForSpace;
     private final Set<Integer> safeCharacterPoints;
 
@@ -30,6 +33,11 @@ final class PercentEscaper {
      */
     PercentEscaper(String safeCharacters, boolean usePlusForSpace) {
         this.usePlusForSpace = usePlusForSpace;
+
+        if (usePlusForSpace && safeCharacters != null && safeCharacters.contains(" ")) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "' ' as a safe character with 'usePlusForSpace = true' is an invalid configuration."));
+        }
 
         this.safeCharacterPoints = new HashSet<>();
         SAFE_CHARACTERS.codePoints().forEach(safeCharacterPoints::add);
@@ -60,7 +68,7 @@ final class PercentEscaper {
          * the conversion.
          */
         while (index < end) {
-            int codePoint = getCodePoint(original, index, end);
+            int codePoint = getCodePoint(original, index, end, logger);
 
             // Supplementary code points comprise of two characters in the string.
             index += (Character.isSupplementaryCodePoint(codePoint)) ? 2 : 1;
@@ -203,25 +211,28 @@ final class PercentEscaper {
      * Java uses UTF-16 to represent Strings, due to characters only being 2 bytes they must use surrogate pairs to
      * get the correct code point for characters above 0xFFFF.
      */
-    private static int getCodePoint(String original, int index, int end) {
-        char char1 = original.charAt(index);
+    private static int getCodePoint(String original, int index, int end, ClientLogger logger) {
+        char char1 = original.charAt(index++);
         if (!Character.isSurrogate(char1)) {
             // Character isn't a surrogate, return it as is.
             return char1;
         } else if (Character.isHighSurrogate(char1)) {
             // High surrogates will occur first in the string.
             if (index == end) {
-                return -char1;
+                throw logger.logExceptionAsError(new IllegalStateException(
+                    "String contains trailing high surrogate without paired low surrogate."));
             }
 
-            char char2 = original.charAt(index + 1);
+            char char2 = original.charAt(index);
             if (Character.isLowSurrogate(char2)) {
                 return Character.toCodePoint(char1, char2);
             }
 
-            throw new IllegalStateException("String contains high surrogate without trailing low surrogate.");
+            throw logger.logExceptionAsError(new IllegalStateException(
+                "String contains high surrogate without trailing low surrogate."));
         } else {
-            throw new IllegalStateException("String contains low surrogate without leading high surrogate.");
+            throw logger.logExceptionAsError(new IllegalStateException(
+                "String contains low surrogate without leading high surrogate."));
         }
     }
 }
