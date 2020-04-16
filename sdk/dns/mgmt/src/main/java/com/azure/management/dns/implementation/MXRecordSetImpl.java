@@ -2,29 +2,22 @@
 // Licensed under the MIT License.
 package com.azure.management.dns.implementation;
 
-import com.azure.management.dns.models.RecordSetInner;
 import com.azure.management.dns.MXRecordSet;
 import com.azure.management.dns.MxRecord;
 import com.azure.management.dns.RecordType;
-
+import com.azure.management.dns.models.RecordSetInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Implementation of MXRecordSet.
- */
-class MXRecordSetImpl
-        extends DnsRecordSetImpl
-        implements MXRecordSet {
+/** Implementation of MXRecordSet. */
+class MXRecordSetImpl extends DnsRecordSetImpl implements MXRecordSet {
     MXRecordSetImpl(final String name, final DnsZoneImpl parent, final RecordSetInner innerModel) {
         super(name, RecordType.MX.toString(), parent, innerModel);
     }
 
     static MXRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent) {
-        return new MXRecordSetImpl(name, parent,
-                new RecordSetInner()
-                        .withMxRecords(new ArrayList<>()));
+        return new MXRecordSetImpl(name, parent, new RecordSetInner().withMxRecords(new ArrayList<>()));
     }
 
     @Override
@@ -51,7 +44,8 @@ class MXRecordSetImpl
                 for (MxRecord recordToRemove : this.recordSetRemoveInfo.mxRecords()) {
                     for (MxRecord record : resource.mxRecords()) {
                         if (record.exchange().equalsIgnoreCase(recordToRemove.exchange())
-                                && (record.preference() != null && record.preference().equals(recordToRemove.preference()))) {
+                            && (record.preference() != null
+                                && record.preference().equals(recordToRemove.preference()))) {
                             resource.mxRecords().remove(record);
                             break;
                         }
@@ -63,4 +57,3 @@ class MXRecordSetImpl
         return resource;
     }
 }
-
