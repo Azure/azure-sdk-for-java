@@ -51,6 +51,9 @@ public class EventProcessorWithAzureIdentity {
         // The DefaultAzureCredential is an aggregate credential that chooses the best credentials to use based
         // on the running environment. See https://github.com/Azure/azure-sdk-for-java/wiki/Identity-and-Authentication
         // for more information.
+        // Ensure the credential chosen has permissions to access both the Storage Blob container and the Event Hub.
+        // For example, if you are using a service principal, it has permissions to both resources. Or, if this is
+        // deployed to a service that supports managed identity, that identity can access the resources.
         TokenCredential credential = new DefaultAzureCredentialBuilder()
             .build();
 
