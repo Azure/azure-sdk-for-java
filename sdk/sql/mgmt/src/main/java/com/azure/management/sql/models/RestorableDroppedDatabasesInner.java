@@ -56,8 +56,8 @@ public final class RestorableDroppedDatabasesInner {
     private interface RestorableDroppedDatabasesService {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/restorableDroppedDatabases/{restorableDroppededDatabaseId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/restorableDroppedDatabases/{restorableDroppededDatabaseId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<RestorableDroppedDatabaseInner>> get(
@@ -71,8 +71,8 @@ public final class RestorableDroppedDatabasesInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/restorableDroppedDatabases")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/restorableDroppedDatabases")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<RestorableDroppedDatabaseListResultInner>> listByServer(

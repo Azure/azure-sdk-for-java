@@ -411,8 +411,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
                     .inner()
                     .serverAzureADAdministrators()
                     .createOrUpdateAsync(self.resourceGroupName(), self.name(), serverAzureADAdministratorInner)
-                    .flatMap(
-                        serverAzureADAdministratorInner1 -> context.voidMono());
+                    .flatMap(serverAzureADAdministratorInner1 -> context.voidMono());
             };
         return this;
     }
