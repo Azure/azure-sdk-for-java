@@ -368,7 +368,7 @@ public class ServiceBusReceiverClient implements AutoCloseable {
     /* Following section is for session related API.*/
     public Instant renewSessionLock(String sessionId){return null;}
     public ByteBuffer getSessionState(String sessionId) {return null;}
-    public void setSessionState(ByteBuffer sessionState) {return  ;}
+    public void setSessionState(String sessionId, ByteBuffer sessionState) {return  ;}
     public String getSessionId(){ return null;}
     public Instant getSessionLockedUntil(String sessionId) {return null;}
 }
