@@ -51,7 +51,7 @@ public class NodeTypeDescription {
 
     /**
      * The durability level of the node type. Learn about
-     * [DurabilityLevel](https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-capacity).
+     * [DurabilityLevel](https://docs.microsoft.com/azure/service-fabric/service-fabric-cluster-capacity).
      *
      * - Bronze - No privileges. This is the default.
      * - Silver - The infrastructure jobs can be paused for a duration of 10
@@ -200,7 +200,7 @@ public class NodeTypeDescription {
     }
 
     /**
-     * Get the durability level of the node type. Learn about [DurabilityLevel](https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-capacity).
+     * Get the durability level of the node type. Learn about [DurabilityLevel](https://docs.microsoft.com/azure/service-fabric/service-fabric-cluster-capacity).
        - Bronze - No privileges. This is the default.
        - Silver - The infrastructure jobs can be paused for a duration of 10 minutes per UD.
        - Gold - The infrastructure jobs can be paused for a duration of 2 hours per UD. Gold durability can be enabled only on full node VM SKUs like D15_V2, G5 etc.
@@ -213,7 +213,7 @@ public class NodeTypeDescription {
     }
 
     /**
-     * Set the durability level of the node type. Learn about [DurabilityLevel](https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-capacity).
+     * Set the durability level of the node type. Learn about [DurabilityLevel](https://docs.microsoft.com/azure/service-fabric/service-fabric-cluster-capacity).
        - Bronze - No privileges. This is the default.
        - Silver - The infrastructure jobs can be paused for a duration of 10 minutes per UD.
        - Gold - The infrastructure jobs can be paused for a duration of 2 hours per UD. Gold durability can be enabled only on full node VM SKUs like D15_V2, G5 etc.
