@@ -696,13 +696,13 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Assertions.assertNotNull(sqlADAdmin);
         Assertions.assertEquals("DSEng", sqlADAdmin.signInName());
         Assertions.assertNotNull(sqlADAdmin.id());
-        Assertions.assertEquals(AdministratorType.ACTIVE_DIRECTORY, sqlADAdmin.administratorType());
+        Assertions.assertEquals(ManagedInstanceAdministratorType.ACTIVE_DIRECTORY, sqlADAdmin.administratorType());
 
         sqlADAdmin = sqlServer.setActiveDirectoryAdministrator("DSEngAll", id);
         Assertions.assertNotNull(sqlADAdmin);
         Assertions.assertEquals("DSEngAll", sqlADAdmin.signInName());
         Assertions.assertNotNull(sqlADAdmin.id());
-        Assertions.assertEquals(AdministratorType.ACTIVE_DIRECTORY, sqlADAdmin.administratorType());
+        Assertions.assertEquals(ManagedInstanceAdministratorType.ACTIVE_DIRECTORY, sqlADAdmin.administratorType());
         sqlServer.removeActiveDirectoryAdministrator();
 
         final SqlServer finalSqlServer = sqlServer;
