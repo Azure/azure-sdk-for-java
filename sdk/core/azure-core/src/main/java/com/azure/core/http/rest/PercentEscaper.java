@@ -150,11 +150,6 @@ final class PercentEscaper {
 
                 escapedBuilder.append(chars);
             } else if (codePoint <= 0x10FFFF) {
-                // Character is four bytes, use format '%Fx%xx%xx%xx'.
-                // Leading bits in the first byte are always 11110 (hence it is '%Fx').
-                // Leading bits in the second byte are always 10 (0x2).
-                // Leading bits in the third byte are always 10 (0x2).
-                // Leading bits in the fourth byte are always 10 (0x2).
                 /*
                  * Character is four bytes, use the format '%Fx%xx%xx%xx'. Leading bits in the first byte are always
                  * 11110 (hence it is '%Fx'), the leading bits in the other bytes are always 10. The conversion will
