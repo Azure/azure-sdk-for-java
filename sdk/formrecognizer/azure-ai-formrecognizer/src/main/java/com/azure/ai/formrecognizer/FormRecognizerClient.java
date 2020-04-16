@@ -224,10 +224,9 @@ public final class FormRecognizerClient {
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
      *
-     * @param fileSourceUrl The source URL to the input document. Size of the file must be less than 20 MB.
-     * @param modelId The UUID string format custom trained model Id to be used.
+     * @param sourceUrl The source URL to the input document. Size of the file must be less than 20 MB.
      *
-     * @return A {@link SyncPoller} to poll the progress of the extract custom form operation until it has completed,
+     * @return A {@link SyncPoller} to poll the progress of the extract receipt operation until it has completed,
      * has failed, or has been cancelled.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -243,13 +242,12 @@ public final class FormRecognizerClient {
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
      *
-     * @param fileSourceUrl The source URL to the input document. Size of the file must be less than 20 MB.
-     * @param modelId The UUID string format custom trained model Id to be used.
+     * @param sourceUrl The source URL to the input document. Size of the file must be less than 20 MB.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
      *
-     * @return A {@link SyncPoller} to poll the progress of the extract custom form operation until it has completed,
+     * @return A {@link SyncPoller} to poll the progress of the extract receipt operation until it has completed,
      * has failed, or has been cancelled.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -262,10 +260,9 @@ public final class FormRecognizerClient {
      * Recognizes and extracts data from the provided document data using optical character recognition (OCR)
      * and a prebuilt trained receipt model.
      * <p>The service does not support cancellation of the long running operation and returns with an
-     * error message indicating absence of cancellation support.</p>
+     * error message indicating absence of cancellation support</p>
      *
      * @param data The data of the document to be extract receipt information from.
-     * @param modelId The UUID string format custom trained model Id to be used.
      * @param length The exact length of the data. Size of the file must be less than 20 MB.
      * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
      *

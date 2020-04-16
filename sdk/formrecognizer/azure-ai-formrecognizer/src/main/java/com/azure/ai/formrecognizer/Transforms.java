@@ -132,7 +132,6 @@ final class Transforms {
      * @param analyzeResult The service returned result for analyze layouts.
      * @param includeTextDetails Boolean to indicate if to set reference elements data on fields.
      *
-     *
      * @return The IterableStream of {@code FormPage}.
      */
     static List<FormPage> toRecognizedLayout(AnalyzeResult analyzeResult, boolean includeTextDetails) {

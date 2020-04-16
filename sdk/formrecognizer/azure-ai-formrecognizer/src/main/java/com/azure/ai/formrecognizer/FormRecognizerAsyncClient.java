@@ -81,16 +81,6 @@ public final class FormRecognizerAsyncClient {
     }
 
     /**
-     * Creates a new {@link FormTrainingAsyncClient} object. The new {@code FormTrainingAsyncClient}
-     * uses the same request policy pipeline as the {@code FormRecognizerAsyncClient}.
-     *
-     * @return A new {@link FormTrainingAsyncClient} object.
-     */
-    public FormTrainingAsyncClient getFormTrainingAsyncClient() {
-        return new FormTrainingAsyncClient(this.service, this.serviceVersion);
-    }
-
-    /**
      * Gets the service version the client is using.
      *
      * @return the service version the client is using.
@@ -323,7 +313,7 @@ public final class FormRecognizerAsyncClient {
             extractReceiptPollOperation(),
             (activationResponse, context) -> monoError(logger,
                 new RuntimeException("Cancellation is not supported")),
-            fetchExtractContentResult());
+            fetchExtractReceiptResult(includeTextDetails));
     }
 
     /**
@@ -371,52 +361,8 @@ public final class FormRecognizerAsyncClient {
             extractReceiptPollOperation(),
             (activationResponse, context) -> monoError(logger,
                 new RuntimeException("Cancellation is not supported")),
-            fetchExtractContentResult());
-    }
-
-    /**
-     * Recognizes and extracts receipt data using optical character recognition (OCR) and a prebuilt receipt trained
-     * model.
-     * <p>The service does not support cancellation of the long running operation and returns with an
-     * error message indicating absence of cancellation support.</p>
-     *
-     * @param sourceUrl The source URL to the input document. Size of the file must be less than 50 MB.
-     *
-     * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
-     * been cancelled.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<OperationResult, IterableStream<RecognizedReceipt>>
-        beginRecognizeReceiptsFromUrl(String sourceUrl) {
-        return beginRecognizeReceiptsFromUrl(sourceUrl, false, null);
-    }
-
-    /**
-     * Recognizes and extracts receipt data using optical character recognition (OCR) and a prebuilt receipt trained
-     * model.
-     * <p>The service does not support cancellation of the long running operation and returns with an
-     * error message indicating absence of cancellation support.</p>
-     *
-     * @param sourceUrl The source URL to the input document. Size of the file must be less than 50 MB.
-     * @param includeTextDetails Include text lines and element references in the result.
-     * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
-     * 5 seconds is used.
-     *
-     * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
-     * been cancelled.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<OperationResult, IterableStream<RecognizedReceipt>>
-        beginRecognizeReceiptsFromUrl(String sourceUrl, boolean includeTextDetails, Duration pollInterval) {
-        final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
-        return new PollerFlux<OperationResult, IterableStream<RecognizedReceipt>>(interval,
-            receiptAnalyzeActivationOperation(sourceUrl, includeTextDetails),
-            extractReceiptPollOperation(),
-            (activationResponse, context) -> monoError(logger,
-                new RuntimeException("Cancellation is not supported")),
             fetchExtractReceiptResult(includeTextDetails));
     }
-
 
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> receiptAnalyzeActivationOperation(

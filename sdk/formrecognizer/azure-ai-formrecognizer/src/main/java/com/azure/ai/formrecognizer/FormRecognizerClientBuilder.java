@@ -191,37 +191,6 @@ public final class FormRecognizerClientBuilder {
             .build();
     }
 
-    private HttpPipeline getDefaultHttpPipeline(Configuration buildConfiguration) {
-        // Closest to API goes first, closest to wire goes last.
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
-
-        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
-            buildConfiguration));
-        policies.add(new RequestIdPolicy());
-        policies.add(new AddHeadersPolicy(headers));
-
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
-        policies.add(new AddDatePolicy());
-        // Authentications
-        if (credential != null) {
-            policies.add(new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, credential));
-        } else {
-            // Throw exception that credential and tokenCredential cannot be null
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("Missing credential information while building a client."));
-        }
-        policies.addAll(this.policies);
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-
-        policies.add(new HttpLoggingPolicy(httpLogOptions));
-
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
-            .build();
-    }
-
     /**
      * Sets the service endpoint for the Azure Form Recognizer instance.
      *
