@@ -30,5 +30,6 @@
     <module>sdk/storage</module>
     <module>sdk/template</module>
     <module>sdk/textanalytics</module>
+    <module>sdk/spring</module>
   </modules>
 </project>
