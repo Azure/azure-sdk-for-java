@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class DnsZoneRecordSetETagTests extends TestBase {
-    private String RG_NAME = "";
+    private String rgName = "";
 
     public DnsZoneRecordSetETagTests() {
         super(TestBase.RunCondition.BOTH);
@@ -30,12 +30,12 @@ public class DnsZoneRecordSetETagTests extends TestBase {
         resourceManager =
             ResourceManager.authenticate(restClient).withSdkContext(sdkContext).withSubscription(defaultSubscription);
         zoneManager = DnsZoneManager.authenticate(restClient, defaultSubscription, sdkContext);
-        RG_NAME = generateRandomResourceName("dnsetagtest", 15);
+        rgName = generateRandomResourceName("dnsetagtest", 15);
     }
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().deleteByName(RG_NAME);
+        resourceManager.resourceGroups().deleteByName(rgName);
     }
 
     @Test
@@ -44,7 +44,7 @@ public class DnsZoneRecordSetETagTests extends TestBase {
         final String topLevelDomain = "www.contoso" + generateRandomResourceName("z", 10) + ".com";
 
         DnsZone dnsZone =
-            zoneManager.zones().define(topLevelDomain).withNewResourceGroup(RG_NAME, region).withETagCheck().create();
+            zoneManager.zones().define(topLevelDomain).withNewResourceGroup(rgName, region).withETagCheck().create();
         Assertions.assertNotNull(dnsZone.eTag());
 
         Runnable runnable =
@@ -52,7 +52,7 @@ public class DnsZoneRecordSetETagTests extends TestBase {
                 zoneManager
                     .zones()
                     .define(topLevelDomain)
-                    .withNewResourceGroup(RG_NAME, region)
+                    .withNewResourceGroup(rgName, region)
                     .withETagCheck()
                     .create();
         ensureETagExceptionIsThrown(runnable);
@@ -64,7 +64,7 @@ public class DnsZoneRecordSetETagTests extends TestBase {
         final String topLevelDomain = "www.contoso" + generateRandomResourceName("z", 10) + ".com";
 
         final DnsZone dnsZone =
-            zoneManager.zones().define(topLevelDomain).withNewResourceGroup(RG_NAME, region).withETagCheck().create();
+            zoneManager.zones().define(topLevelDomain).withNewResourceGroup(rgName, region).withETagCheck().create();
         Assertions.assertNotNull(dnsZone.eTag());
 
         Runnable runnable = () -> dnsZone.update().withETagCheck(dnsZone.eTag() + "-foo").apply();
@@ -78,7 +78,7 @@ public class DnsZoneRecordSetETagTests extends TestBase {
         final String topLevelDomain = "www.contoso" + generateRandomResourceName("z", 10) + ".com";
 
         final DnsZone dnsZone =
-            zoneManager.zones().define(topLevelDomain).withNewResourceGroup(RG_NAME, region).withETagCheck().create();
+            zoneManager.zones().define(topLevelDomain).withNewResourceGroup(rgName, region).withETagCheck().create();
         Assertions.assertNotNull(dnsZone.eTag());
 
         Runnable runnable = () -> zoneManager.zones().deleteById(dnsZone.id(), dnsZone.eTag() + "-foo");
@@ -95,7 +95,7 @@ public class DnsZoneRecordSetETagTests extends TestBase {
             zoneManager
                 .zones()
                 .define(topLevelDomain)
-                .withNewResourceGroup(RG_NAME, region)
+                .withNewResourceGroup(rgName, region)
                 .withPrivateAccess()
                 .defineARecordSet("www")
                 .withIPv4Address("23.96.104.40")
@@ -154,7 +154,7 @@ public class DnsZoneRecordSetETagTests extends TestBase {
             zoneManager
                 .zones()
                 .define(topLevelDomain)
-                .withNewResourceGroup(RG_NAME, region)
+                .withNewResourceGroup(rgName, region)
                 .withPrivateAccess()
                 .defineARecordSet("www")
                 .withIPv4Address("23.96.104.40")
@@ -201,7 +201,7 @@ public class DnsZoneRecordSetETagTests extends TestBase {
             zoneManager
                 .zones()
                 .define(topLevelDomain)
-                .withNewResourceGroup(RG_NAME, region)
+                .withNewResourceGroup(rgName, region)
                 .defineARecordSet("www")
                 .withIPv4Address("23.96.104.40")
                 .withIPv4Address("24.97.105.41")
@@ -290,7 +290,7 @@ public class DnsZoneRecordSetETagTests extends TestBase {
             zoneManager
                 .zones()
                 .define(topLevelDomain)
-                .withNewResourceGroup(RG_NAME, region)
+                .withNewResourceGroup(rgName, region)
                 .defineARecordSet("www")
                 .withIPv4Address("23.96.104.40")
                 .withIPv4Address("24.97.105.41")
