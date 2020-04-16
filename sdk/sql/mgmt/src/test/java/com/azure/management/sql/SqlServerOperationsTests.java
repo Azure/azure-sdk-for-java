@@ -1483,12 +1483,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
     private void validateSqlDatabaseNotFound(String newDatabase) {
         validateResourceNotFound(
-            () ->
-                sqlServerManager
-                    .sqlServers()
-                    .getByResourceGroup(rgName, sqlServerName)
-                    .databases()
-                    .get(newDatabase));
+            () -> sqlServerManager.sqlServers().getByResourceGroup(rgName, sqlServerName).databases().get(newDatabase));
     }
 
     private void validateSqlServerNotFound(SqlServer sqlServer) {
