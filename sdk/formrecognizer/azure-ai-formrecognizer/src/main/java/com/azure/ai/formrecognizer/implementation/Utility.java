@@ -3,10 +3,9 @@
 
 package com.azure.ai.formrecognizer.implementation;
 
-import com.azure.core.util.CoreUtils;
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 
 import java.io.IOException;
@@ -34,28 +33,28 @@ public final class Utility {
      */
     public static ContentType getContentType(ByteBuffer buffer) {
         final byte[] bytes = buffer.array();
-        if (bytes.length < 4) {
+        if (bytes.length < 2) {
             throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Invalid input. Expect more than 4 bytes of data"));
+                new IllegalArgumentException("Invalid input. Expect more than 2 bytes of data"));
         }
 
-        if (isEqual(bytes[0], 0x25) && isEqual(bytes[1], 0x50) && isEqual(bytes[2], 0x44) && isEqual(bytes[3], 0x46)) {
+        final byte[] firstFourBytesArray = new byte[] {bytes[0], bytes[1], bytes[2], bytes[3]};
+
+        if (isEqual(firstFourBytesArray, new int[] {0x25, 0x50, 0x44, 0x46})) {
             return ContentType.APPLICATION_PDF;
-        } else if (isEqual(bytes[0], 0xff) && isEqual(bytes[1], 0xd8)) {
+        } else if (bytes[0] == (byte) 0xff && bytes[1] == (byte) 0xd8) {
             return ContentType.IMAGE_JPEG;
-        } else if (
-            isEqual(bytes[0], 0x89) && isEqual(bytes[1], 0x50) && isEqual(bytes[2], 0x4e) && isEqual(bytes[3], 0x47)) {
+        } else if (isEqual(firstFourBytesArray, new int[] {0x89, 0x50, 0x4e, 0x47})) {
             return ContentType.IMAGE_PNG;
         } else if (
             // little-endian
-            (isEqual(bytes[0], 0x49) && isEqual(bytes[1], 0x49) && isEqual(bytes[2], 0x2a) && isEqual(bytes[3], 0x0))
-            // big-endian
-            || (isEqual(bytes[0], 0x4d) && isEqual(bytes[1], 0x4d) && isEqual(bytes[2], 0x0)
-                && isEqual(bytes[3], 0x2a))) {
+            (isEqual(firstFourBytesArray, new int[] {0x49, 0x49, 0x2a, 0x0}))
+                // big-endian
+                || (isEqual(firstFourBytesArray, new int[] {0x4d, 0x4d, 0x0, 0x2a}))) {
             return ContentType.IMAGE_TIFF;
         } else {
-            throw new IllegalArgumentException(
-                "Content type could not be detected. Should use other overload API that takes content type.");
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Content type could not be detected. Should use other overload API that takes content type."));
         }
     }
 
@@ -109,6 +108,30 @@ public final class Utility {
             this.readBytes = cnt;
             return this;
         }
+    }
+
+    /**
+     * Compare if a byte value equals to a hex type value.
+     *
+     * @param byteValueList An array of byte type values.
+     * @param hexValueList An array of hex type values.
+     * @return true if two type's values are equal in unsigned int comparision, otherwise return false.
+     */
+    private static boolean isEqual(byte[] byteValueList, int[] hexValueList) {
+        int byteListSize = byteValueList.length;
+        int hexListSize = hexValueList.length;
+        if (byteListSize != hexListSize) {
+            LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "'byteValueList' has size of %d but 'hexValueList' has size of %d", byteListSize, hexListSize)));
+        }
+
+        for (int i = 0; i < byteListSize; i++) {
+            if (byteValueList[i] != (byte) hexValueList[i]) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**

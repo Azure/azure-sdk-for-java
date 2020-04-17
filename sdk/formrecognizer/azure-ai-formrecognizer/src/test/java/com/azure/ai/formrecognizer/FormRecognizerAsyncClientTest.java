@@ -14,8 +14,14 @@ import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.file.Files;
 import java.time.Duration;
 
 import static com.azure.ai.formrecognizer.TestUtils.CUSTOM_FORM_FILE_LENGTH;
@@ -30,6 +36,8 @@ import static com.azure.ai.formrecognizer.TestUtils.getExpectedRecognizedForms;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedRecognizedLabeledForms;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedUSReceipt;
 import static com.azure.ai.formrecognizer.TestUtils.getFileBufferData;
+import static com.azure.ai.formrecognizer.implementation.Utility.getContentType;
+import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -88,8 +96,8 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     void extractReceiptData() {
         receiptDataRunner((data) -> {
             SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
-                client.beginRecognizeReceipts(getFileBufferData(data), RECEIPT_FILE_LENGTH, FormContentType.IMAGE_JPEG, false,
-                    null).getSyncPoller();
+                client.beginRecognizeReceipts(getFileBufferData(data), RECEIPT_FILE_LENGTH, FormContentType.IMAGE_JPEG,
+                    false, null).getSyncPoller();
             syncPoller.waitForCompletion();
             validateReceiptResult(false, getExpectedReceipts(false), syncPoller.getFinalResult());
         });
@@ -134,6 +142,20 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     }
 
     /**
+     * Verifies receipt data is correctly transformed to USReceipt type.
+     */
+    @Test
+    void extractReceiptAsUSReceiptWithContentTypeAutoDetection() {
+        receiptDataRunnerTextDetails((data, includeTextDetails) -> {
+            SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller
+                = client.beginRecognizeReceipts(getFileBufferData(data), RECEIPT_FILE_LENGTH, null, includeTextDetails,
+                null).getSyncPoller();
+            syncPoller.waitForCompletion();
+            syncPoller.getFinalResult().forEach(recognizedReceipt -> validateUSReceipt(getExpectedUSReceipt(), ReceiptExtensions.asUSReceipt(recognizedReceipt), includeTextDetails));
+        });
+    }
+
+    /**
      * Verifies layout data for a document using source as input stream data.
      */
     @Test
@@ -171,6 +193,17 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     }
 
     /**
+     * Verifies that an exception is thrown for invalid status model Id.
+     */
+    @Test
+    void extractCustomFormInValidSourceUrl() {
+        ErrorResponseException httpResponseException = assertThrows(
+            ErrorResponseException.class,
+            () -> client.beginRecognizeCustomFormsFromUrl(INVALID_URL, VALID_MODEL_ID).getSyncPoller().getFinalResult());
+        assertEquals(httpResponseException.getMessage(), (INVALID_SOURCE_URL_ERROR));
+    }
+
+    /**
      * Verifies custom form data for a document using source as input stream data and valid labeled model Id.
      */
     @Test
@@ -186,13 +219,17 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     }
 
     /**
-     * Verifies that an exception is thrown for invalid status model Id.
+     * Verifies custom form data for a document using source as input stream data and valid labeled model Id.
+     * And the content type is not given. The content will be auto detected.
      */
     @Test
-    void extractCustomFormInValidSourceUrl() {
-        ErrorResponseException httpResponseException = assertThrows(
-            ErrorResponseException.class,
-            () -> client.beginRecognizeCustomFormsFromUrl(INVALID_URL, VALID_MODEL_ID).getSyncPoller().getFinalResult());
-        assertEquals(httpResponseException.getMessage(), (INVALID_SOURCE_URL_ERROR));
+    void extractCustomFormLabeledDataWithContentTypeAutoDetection() {
+        customFormLabeledDataRunner((data, validModelId) -> {
+            SyncPoller<OperationResult, IterableStream<RecognizedForm>> syncPoller
+                = client.beginRecognizeCustomForms(getFileBufferData(data), validModelId,
+                CUSTOM_FORM_FILE_LENGTH, null, true, null).getSyncPoller();
+            syncPoller.waitForCompletion();
+            validateRecognizedFormResult(getExpectedRecognizedLabeledForms(), syncPoller.getFinalResult());
+        });
     }
 }

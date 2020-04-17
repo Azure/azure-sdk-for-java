@@ -33,15 +33,19 @@ import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 import java.time.Duration;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 import static com.azure.ai.formrecognizer.FormRecognizerClientBuilder.DEFAULT_DURATION;
 import static com.azure.ai.formrecognizer.Transforms.toReceipt;
 import static com.azure.ai.formrecognizer.Transforms.toRecognizedForm;
 import static com.azure.ai.formrecognizer.Transforms.toRecognizedLayout;
+import static com.azure.ai.formrecognizer.implementation.Utility.getContentType;
 import static com.azure.ai.formrecognizer.implementation.Utility.parseModelId;
 import static com.azure.core.util.FluxUtil.monoError;
 
@@ -261,11 +265,10 @@ public final class FormRecognizerAsyncClient {
      * been cancelled.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<OperationResult, IterableStream<FormPage>>
-        beginRecognizeContent(Flux<ByteBuffer> data, FormContentType formContentType, long length,
-        Duration pollInterval) {
-        final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
-        return new PollerFlux<OperationResult, IterableStream<FormPage>>(interval,
+    public PollerFlux<OperationResult, IterableStream<FormPage>> beginRecognizeContent(
+        Flux<ByteBuffer> data, FormContentType formContentType, long length, Duration pollInterval) {
+        return new PollerFlux<>(
+            pollInterval != null ? pollInterval : DEFAULT_DURATION,
             contentStreamActivationOperation(data, length, formContentType),
             extractContentPollOperation(),
             (activationResponse, context) -> monoError(logger,
@@ -355,15 +358,15 @@ public final class FormRecognizerAsyncClient {
     public PollerFlux<OperationResult, IterableStream<RecognizedReceipt>> beginRecognizeReceipts(
         Flux<ByteBuffer> data, long length, FormContentType formContentType, boolean includeTextDetails,
         Duration pollInterval) {
-        final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
-        return new PollerFlux<OperationResult, IterableStream<RecognizedReceipt>>(interval,
+
+        return new PollerFlux<>(
+            pollInterval != null ? pollInterval : DEFAULT_DURATION,
             receiptStreamActivationOperation(data, length, formContentType, includeTextDetails),
             extractReceiptPollOperation(),
             (activationResponse, context) -> monoError(logger,
                 new RuntimeException("Cancellation is not supported")),
             fetchExtractReceiptResult(includeTextDetails));
     }
-
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> receiptAnalyzeActivationOperation(
         String sourceUrl, boolean includeTextDetails) {
@@ -382,18 +385,18 @@ public final class FormRecognizerAsyncClient {
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> receiptStreamActivationOperation(
         Flux<ByteBuffer> data, long length, FormContentType formContentType, boolean includeTextDetails) {
-        return (pollingContext) -> {
-            try {
-                Objects.requireNonNull(data, "'data' is required and cannot be null.");
-                Objects.requireNonNull(formContentType, "'formContentType' is required and cannot be null.");
-                return service.analyzeReceiptAsyncWithResponseAsync(ContentType.fromString(formContentType.toString()),
-                    data, length, includeTextDetails)
+        Objects.requireNonNull(data, "'data' is required and cannot be null.");
+
+        return pollingContext -> data.next()
+            .map(byteBuffer -> getContentType(byteBuffer))
+            .flatMap(contentType -> {
+                // if content type is not given, do guessing the content type.
+                final ContentType contentTypeFinal = formContentType == null ? contentType
+                    : ContentType.fromString(formContentType.toString());
+                return service.analyzeReceiptAsyncWithResponseAsync(contentTypeFinal, data, length, includeTextDetails)
                     .map(response -> new OperationResult(
                         parseModelId(response.getDeserializedHeaders().getOperationLocation())));
-            } catch (RuntimeException ex) {
-                return monoError(logger, ex);
-            }
-        };
+            });
     }
 
     private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
@@ -442,18 +445,18 @@ public final class FormRecognizerAsyncClient {
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> contentStreamActivationOperation(
         Flux<ByteBuffer> data, long length, FormContentType formContentType) {
-        return (pollingContext) -> {
-            try {
-                Objects.requireNonNull(data, "'data' is required and cannot be null.");
-                Objects.requireNonNull(formContentType, "'formContentType' is required and cannot be null.");
-                return service.analyzeLayoutAsyncWithResponseAsync(ContentType.fromString(formContentType.toString()),
-                    data, length)
+        Objects.requireNonNull(data, "'data' is required and cannot be null.");
+
+        return pollingContext -> data.next()
+            .map(byteBuffer -> getContentType(byteBuffer))
+            .flatMap(contentType -> {
+                // if content type is not given, do guessing the content type.
+                final ContentType contentTypeFinal = formContentType == null ? contentType
+                    : ContentType.fromString(formContentType.toString());
+                return service.analyzeLayoutAsyncWithResponseAsync(contentTypeFinal, data, length)
                     .map(response -> new OperationResult(
                         parseModelId(response.getDeserializedHeaders().getOperationLocation())));
-            } catch (RuntimeException ex) {
-                return monoError(logger, ex);
-            }
-        };
+            });
     }
 
     private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
@@ -556,19 +559,20 @@ public final class FormRecognizerAsyncClient {
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> analyzeFormStreamActivationOperation(
         Flux<ByteBuffer> data, String modelId, long length,
         FormContentType formContentType, boolean includeTextDetails) {
-        return (pollingContext) -> {
-            try {
-                Objects.requireNonNull(data, "'data' is required and cannot be null.");
-                Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
-                Objects.requireNonNull(formContentType, "'formContentType' is required and cannot be null.");
+        Objects.requireNonNull(data, "'data' is required and cannot be null.");
+        Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
+
+        return pollingContext -> data.next()
+            .map(byteBuffer -> getContentType(byteBuffer))
+            .flatMap(contentType -> {
+                // if content type is not given, do guessing the content type.
+                final ContentType contentTypeFinal = formContentType == null ? contentType
+                    : ContentType.fromString(formContentType.toString());
                 return service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId),
-                     ContentType.fromString(formContentType.toString()), data, length, includeTextDetails)
+                    contentTypeFinal, data, length, includeTextDetails)
                     .map(response ->
                         new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation())));
-            } catch (RuntimeException ex) {
-                return monoError(logger, ex);
-            }
-        };
+            });
     }
 
     private static Mono<PollResponse<OperationResult>> processAnalyzeModelResponse(
