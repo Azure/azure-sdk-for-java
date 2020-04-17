@@ -111,6 +111,14 @@
           <statelessTestsetReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5Xml30StatelessReporter">
             <usePhrasedTestCaseMethodName>true</usePhrasedTestCaseMethodName>
           </statelessTestsetReporter>
+          <properties>
+            <configurationParameters>
+              junit.jupiter.conditions.deactivate = *
+              junit.jupiter.extensions.autodetection.enabled = true
+              junit.jupiter.testinstance.lifecycle.default = per_class
+              junit.jupiter.execution.parallel.enabled = true
+            </configurationParameters>
+          </properties>
         </configuration>
       </plugin>
     </plugins>
