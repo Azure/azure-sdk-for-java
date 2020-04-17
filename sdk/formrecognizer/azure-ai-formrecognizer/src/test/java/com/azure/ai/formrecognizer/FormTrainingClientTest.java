@@ -137,7 +137,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
      */
     @Test
     void getModelInfos() {
-        for (CustomFormModelInfo modelInfo : client.listModels()) {
+        for (CustomFormModelInfo modelInfo : client.getModelInfos()) {
             assertTrue(modelInfo.getModelId() != null && modelInfo.getCreatedOn() != null
                 && modelInfo.getLastUpdatedOn() != null && modelInfo.getStatus() != null);
         }
@@ -148,7 +148,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
      */
     @Test
     void getModelInfosWithContext() {
-        for (CustomFormModelInfo modelInfo : client.listModels(Context.NONE)) {
+        for (CustomFormModelInfo modelInfo : client.getModelInfos(Context.NONE)) {
             assertTrue(modelInfo.getModelId() != null && modelInfo.getCreatedOn() != null
                 && modelInfo.getLastUpdatedOn() != null && modelInfo.getStatus() != null);
         }

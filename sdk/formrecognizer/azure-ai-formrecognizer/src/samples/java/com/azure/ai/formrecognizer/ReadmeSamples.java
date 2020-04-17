@@ -13,16 +13,10 @@ import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.ai.formrecognizer.models.USReceipt;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.SyncPoller;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -110,8 +104,8 @@ public class ReadmeSamples {
     }
 
     public void recognizeReceipt() {
-        String receiptSourceUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media" +
-            "/contoso-allinone.jpg";
+        String receiptSourceUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media"
+            + "/contoso-allinone.jpg";
         SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
             formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptSourceUrl);
         IterableStream<RecognizedReceipt> receiptPageResults = syncPoller.getFinalResult();
@@ -162,7 +156,7 @@ public class ReadmeSamples {
             accountProperties.getCount(), accountProperties.getLimit());
 
         // Next, we get a paged list of all of our custom models
-        PagedIterable<CustomFormModelInfo> customModels = formTrainingClient.listModels();
+        PagedIterable<CustomFormModelInfo> customModels = formTrainingClient.getModelInfos();
         System.out.println("We have following models in the account:");
         customModels.forEach(customFormModelInfo -> {
             System.out.printf("Model Id: %s%n", customFormModelInfo.getModelId());

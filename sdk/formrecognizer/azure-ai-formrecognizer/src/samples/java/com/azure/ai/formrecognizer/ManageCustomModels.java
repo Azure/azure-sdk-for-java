@@ -38,7 +38,7 @@ public class ManageCustomModels {
             accountProperties.getCount(), accountProperties.getLimit());
 
         // Next, we get a paged list of all of our custom models
-        PagedIterable<CustomFormModelInfo> customModels = client.listModels();
+        PagedIterable<CustomFormModelInfo> customModels = client.getModelInfos();
         System.out.println("We have following models in the account:");
         customModels.forEach(customFormModelInfo -> {
             System.out.printf("Model Id: %s%n", customFormModelInfo.getModelId());
