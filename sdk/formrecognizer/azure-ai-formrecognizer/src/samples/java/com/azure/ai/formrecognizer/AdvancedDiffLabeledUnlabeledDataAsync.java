@@ -19,7 +19,7 @@ import java.nio.file.Files;
 import java.util.concurrent.TimeUnit;
 
 /**
- * This sample demonstrates the differences in output that arise when recognize_custom_forms
+ * Async sample to show the differences in output that arise when RecognizeCustomForms
  * is called with custom models trained with labeled and unlabeled data.
  */
 public class AdvancedDiffLabeledUnlabeledDataAsync {

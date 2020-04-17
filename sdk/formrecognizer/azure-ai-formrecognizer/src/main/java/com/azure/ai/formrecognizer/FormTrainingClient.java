@@ -175,7 +175,7 @@ public class FormTrainingClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CustomFormModelInfo> listModels() {
-        return new PagedIterable<>(client.listModels(Context.NONE));
+        return new PagedIterable<>(client.getModelInfos(Context.NONE));
     }
 
     /**
@@ -186,6 +186,6 @@ public class FormTrainingClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CustomFormModelInfo> listModels(Context context) {
-        return new PagedIterable<>(client.listModels(context));
+        return new PagedIterable<>(client.getModelInfos(context));
     }
 }

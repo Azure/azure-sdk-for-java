@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 /**
- * This sample demonstrates the differences in output that arise when recognize_custom_forms
+ * Sample to show the differences in output that arise when RecognizeCustomForms
  * is called with custom models trained with labeled and unlabeled data.
  */
 public class AdvancedDiffLabeledUnlabeledData {

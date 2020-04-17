@@ -16,7 +16,7 @@ import reactor.core.publisher.Mono;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample for recognizing US receipt information using file source URL.
+ * Async sample for recognizing US receipt information using file source URL.
  */
 public class RecognizeReceiptsFromUrlAsync {
 
@@ -32,7 +32,7 @@ public class RecognizeReceiptsFromUrlAsync {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
-        String receiptUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media/contoso" 
+        String receiptUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media/contoso"
             + "-allinone.jpg";
         PollerFlux<OperationResult, IterableStream<RecognizedReceipt>> analyzeReceiptPoller =
             client.beginRecognizeReceiptsFromUrl(receiptUrl);

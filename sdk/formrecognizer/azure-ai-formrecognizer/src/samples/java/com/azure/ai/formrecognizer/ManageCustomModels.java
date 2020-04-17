@@ -14,6 +14,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Sample for demonstrating common custom model management operations.
+ * To learn how to train your own models, look at TrainUnlabeledModel.java and TrainLabeledModel.java.
  */
 public class ManageCustomModels {
 
@@ -29,7 +30,7 @@ public class ManageCustomModels {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient().getFormTrainingClient();
 
-        AtomicReference<String> modelId = null;
+        AtomicReference<String> modelId = new AtomicReference<>();
 
         // First, we see how many custom models we have, and what our limit is
         AccountProperties accountProperties = client.getAccountProperties();

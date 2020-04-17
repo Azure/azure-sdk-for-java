@@ -17,7 +17,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 
 /**
- * Sample for extracting layout information using input stream.
+ * Sample for recognizing content information from a document given through a file.
  */
 public class RecognizeContent {
 

@@ -9,9 +9,9 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.SyncPoller;
 
-/*
- *  This sample demonstrates how to analyze a form from a document with a custom
-    trained model
+/**
+ * Sample to analyze a form from a document with a custom trained model. To learn how to train your own models,
+ * look at TrainUnlabeledModel.java and TrainLabeledModel.java.
  */
 public class RecognizeCustomForms {
 

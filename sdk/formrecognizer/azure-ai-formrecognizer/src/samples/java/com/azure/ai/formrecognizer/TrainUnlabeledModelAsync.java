@@ -13,10 +13,10 @@ import reactor.core.publisher.Mono;
 import java.util.concurrent.TimeUnit;
 
 /**
- * This sample demonstrates how to train a model with unlabeled data. See RecognizeCustomFormsAsync
- * to recognize forms with your created custom model.
+ * Async sample to train a model with unlabeled data. See RecognizeCustomFormsAsync to recognize forms with your
+ * created custom model.
  */
-public class TrainUnlabeledCustomModelAsync {
+public class TrainUnlabeledModelAsync {
 
     /**
      * Main method to invoke this demo.
@@ -32,7 +32,7 @@ public class TrainUnlabeledCustomModelAsync {
             .buildAsyncClient().getFormTrainingAsyncClient();
 
         // Train custom model
-        String trainingSetSource = "{training_set_SAS}";
+        String trainingSetSource = "{unlabeled_training_set_SAS_URL}";
         PollerFlux<OperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingSetSource, false);
 
         Mono<CustomFormModel> customFormModelResult = trainingPoller

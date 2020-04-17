@@ -13,8 +13,7 @@ import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
 
 /*
- * This sample demonstrates how to output the information that will help with manually
- * validating your output from recognize custom forms.
+ * Sample to output the information that will help with manually validating your output from recognize custom forms.
  */
 public class AdvancedManualValidationInfo {
 

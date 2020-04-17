@@ -9,10 +9,9 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
 
 /**
- * This sample demonstrates how to train a model with labeled data. See RecognizeCustomFormsAsync
- * to recognize forms with your custom model.
+ * Sample to train a model with unlabeled data. See RecognizeCustomFormsAsync to recognize forms with your custom model.
  */
-public class TrainUnlabeledCustomModel {
+public class TrainUnlabeledModel {
 
     /**
      * Main method to invoke this demo about how to train a custom model.
@@ -28,7 +27,7 @@ public class TrainUnlabeledCustomModel {
             .buildClient().getFormTrainingClient();
 
         // Train custom model
-        String trainingSetSource = "{training-set-SAS-URL}";
+        String trainingSetSource = "{unlabeled_training_set_SAS_URL}";
         SyncPoller<OperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingSetSource, false);
 
         CustomFormModel customFormModel = trainingPoller.getFinalResult();

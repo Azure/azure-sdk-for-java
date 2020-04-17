@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample for extracting layout information using input stream.
+ * Async sample for recognizing content information from a document given through a URL.
  */
 public class RecognizeContentAsync {
 
@@ -31,7 +31,7 @@ public class RecognizeContentAsync {
             .buildAsyncClient();
 
         PollerFlux<OperationResult, IterableStream<FormPage>> recognizeLayoutPoller =
-            client.beginRecognizeContentFromUrl("file_source_url");
+            client.beginRecognizeContentFromUrl("https://raw.githubusercontent.com/Azure-Samples/cognitive-services-REST-api-samples/master/curl/form-recognizer/contoso-allinone.jpg");
 
         Mono<IterableStream<FormPage>> layoutPageResults = recognizeLayoutPoller
             .last()

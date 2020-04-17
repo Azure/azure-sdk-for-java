@@ -23,7 +23,7 @@ import java.nio.file.Files;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample for recognizing US receipt information from a local file.
+ * Async sample for recognizing US receipt information from a local file.
  */
 public class RecognizeReceiptsAsync {
 

@@ -19,9 +19,9 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.concurrent.TimeUnit;
 
-/*
- *  This sample demonstrates how to analyze a form from a document with a custom
-    trained model.
+/**
+ * Async sample to analyze a form from a document with a custom trained model. To learn how to train your own models,
+ * look at TrainUnlabeledModel.java and TrainLabeledModel.java.
  */
 public class RecognizeCustomFormsAsync {
 

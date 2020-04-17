@@ -15,8 +15,7 @@ import reactor.core.publisher.Mono;
 import java.util.concurrent.TimeUnit;
 
 /*
- * This sample demonstrates how to output the information that will help with manually
- * validating your output from recognize custom forms.
+ * Async sample to output the information that will help with manually validating your output from recognize custom forms.
  */
 public class AdvancedManualValidationInfoAsync {
 
@@ -34,9 +33,9 @@ public class AdvancedManualValidationInfoAsync {
             .buildAsyncClient();
 
         String modelId = "{model_Id}";
-        String analyzeFilePath = "{file_source_url}";
+        String filePath = "{file_source_url}";
         PollerFlux<OperationResult, IterableStream<RecognizedForm>> recognizeFormPoller =
-            client.beginRecognizeCustomFormsFromUrl(analyzeFilePath, modelId, true, null);
+            client.beginRecognizeCustomFormsFromUrl(filePath, modelId, true, null);
 
         Mono<IterableStream<RecognizedForm>> recognizeFormResult = recognizeFormPoller
             .last()

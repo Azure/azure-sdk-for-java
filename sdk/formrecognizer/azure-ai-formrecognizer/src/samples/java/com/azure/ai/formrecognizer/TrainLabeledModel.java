@@ -9,10 +9,9 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
 
 /**
- * This sample demonstrates how to train a model with labeled data. See RecognizeCustomFormsAsync
- * to recognize forms with your custom model.
+ * Sample to train a model with labeled data. See RecognizeCustomFormsAsync to recognize forms with your custom model.
  */
-public class TrainLabeledCustomModel {
+public class TrainLabeledModel {
 
     /**
      * Main method to invoke this demo.

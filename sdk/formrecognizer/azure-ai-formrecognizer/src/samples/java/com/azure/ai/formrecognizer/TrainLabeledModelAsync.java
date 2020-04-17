@@ -13,10 +13,10 @@ import reactor.core.publisher.Mono;
 import java.util.concurrent.TimeUnit;
 
 /**
- * This sample demonstrates how to train a model with labeled data. See RecognizeCustomFormsAsync
- * to recognize forms with your custom model.
+ * Async sample to train a model with labeled data. See RecognizeCustomFormsAsync to recognize forms with your
+ * custom model.
  */
-public class TrainLabeledCustomModelAsync {
+public class TrainLabeledModelAsync {
 
     /**
      * Main method to invoke this demo.
@@ -32,7 +32,7 @@ public class TrainLabeledCustomModelAsync {
             .buildAsyncClient().getFormTrainingAsyncClient();
 
         // Train custom model
-        String trainingSetSource = "{training-set-SAS-URL}";
+        String trainingSetSource = "{labeled_training_set_SAS_URL}";
         PollerFlux<OperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingSetSource, true);
 
         Mono<CustomFormModel> customFormModelResult = trainingPoller

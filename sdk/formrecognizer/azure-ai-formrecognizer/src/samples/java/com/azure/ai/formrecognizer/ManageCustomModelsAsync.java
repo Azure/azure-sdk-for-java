@@ -9,7 +9,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Sample for demonstrating common custom model management operations on your account.
+ * Async sample for demonstrating to perform common custom model management operations on your account.
+ * To learn how to train your own models, look at TrainUnlabeledModel.java and TrainLabeledModel.java.
  */
 public class ManageCustomModelsAsync {
 
@@ -33,7 +34,7 @@ public class ManageCustomModelsAsync {
                 accountProperties.getCount(), accountProperties.getLimit()));
         // Next, we get a paged list of all of our custom models
         System.out.println("We have following models in the account:");
-        client.listModels().subscribe(customFormModelInfo -> {
+        client.getModelInfos().subscribe(customFormModelInfo -> {
             String createdModelId = customFormModelInfo.getModelId();
             System.out.printf("Model Id: %s%n", createdModelId);
             // get custom model info
