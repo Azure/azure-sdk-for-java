@@ -29,9 +29,9 @@ public class AzureTestWatcher implements BeforeTestExecutionCallback, AfterTestE
         }
 
         if (!Objects.equals(displayName, testName)) {
-            System.out.printf("Starting test %s (%s)%n", fullyQualifiedTestName, displayName);
+            System.out.printf("Starting test %s (%s), ", fullyQualifiedTestName, displayName);
         } else {
-            System.out.printf("Starting test %s%n", fullyQualifiedTestName);
+            System.out.printf("Starting test %s, ", fullyQualifiedTestName);
         }
     }
 
@@ -41,7 +41,7 @@ public class AzureTestWatcher implements BeforeTestExecutionCallback, AfterTestE
         long start = getStore(context).remove(testMethod, long.class);
         long duration = System.currentTimeMillis() - start;
 
-        System.out.printf("Test took %d ms.%n", duration);
+        System.out.printf("completed in %d ms.%n", duration);
     }
 
     private ExtensionContext.Store getStore(ExtensionContext context) {

@@ -1,0 +1,3399 @@
+[INFO] Scanning for projects...
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/apache/maven/plugins/maven-antrun-plugin/1.3/maven-antrun-plugin-1.3.pom
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-antrun-plugin/1.3/maven-antrun-plugin-1.3.pom
+Progress (1): 2.2/4.7 kB
+Progress (1): 4.7 kB    
+                    
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-antrun-plugin/1.3/maven-antrun-plugin-1.3.pom (4.7 kB at 30 kB/s)
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/apache/maven/plugins/maven-plugins/12/maven-plugins-12.pom
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-plugins/12/maven-plugins-12.pom
+Progress (1): 2.2/12 kB
+Progress (1): 5.0/12 kB
+Progress (1): 7.8/12 kB
+Progress (1): 11/12 kB 
+Progress (1): 12 kB   
+                   
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-plugins/12/maven-plugins-12.pom (12 kB at 214 kB/s)
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/apache/maven/plugins/maven-antrun-plugin/1.3/maven-antrun-plugin-1.3.jar
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-antrun-plugin/1.3/maven-antrun-plugin-1.3.jar
+Progress (1): 2.2/24 kB
+Progress (1): 5.0/24 kB
+Progress (1): 7.7/24 kB
+Progress (1): 10/24 kB 
+Progress (1): 13/24 kB
+Progress (1): 16/24 kB
+Progress (1): 19/24 kB
+Progress (1): 21/24 kB
+Progress (1): 24 kB   
+                   
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-antrun-plugin/1.3/maven-antrun-plugin-1.3.jar (24 kB at 414 kB/s)
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/apache/maven/plugins/maven-dependency-plugin/2.8/maven-dependency-plugin-2.8.pom
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-dependency-plugin/2.8/maven-dependency-plugin-2.8.pom
+Progress (1): 2.2/11 kB
+Progress (1): 5.0/11 kB
+Progress (1): 7.8/11 kB
+Progress (1): 11/11 kB 
+Progress (1): 11 kB   
+                   
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-dependency-plugin/2.8/maven-dependency-plugin-2.8.pom (11 kB at 239 kB/s)
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/apache/maven/plugins/maven-dependency-plugin/2.8/maven-dependency-plugin-2.8.jar
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-dependency-plugin/2.8/maven-dependency-plugin-2.8.jar
+Progress (1): 2.2/153 kB
+Progress (1): 5.0/153 kB
+Progress (1): 7.7/153 kB
+Progress (1): 10/153 kB 
+Progress (1): 13/153 kB
+Progress (1): 16/153 kB
+Progress (1): 19/153 kB
+Progress (1): 21/153 kB
+Progress (1): 24/153 kB
+Progress (1): 27/153 kB
+Progress (1): 30/153 kB
+Progress (1): 32/153 kB
+Progress (1): 36/153 kB
+Progress (1): 40/153 kB
+Progress (1): 45/153 kB
+Progress (1): 49/153 kB
+Progress (1): 53/153 kB
+Progress (1): 57/153 kB
+Progress (1): 61/153 kB
+Progress (1): 65/153 kB
+Progress (1): 69/153 kB
+Progress (1): 73/153 kB
+Progress (1): 77/153 kB
+Progress (1): 81/153 kB
+Progress (1): 85/153 kB
+Progress (1): 90/153 kB
+Progress (1): 94/153 kB
+Progress (1): 98/153 kB
+Progress (1): 102/153 kB
+Progress (1): 106/153 kB
+Progress (1): 110/153 kB
+Progress (1): 114/153 kB
+Progress (1): 118/153 kB
+Progress (1): 122/153 kB
+Progress (1): 126/153 kB
+Progress (1): 131/153 kB
+Progress (1): 135/153 kB
+Progress (1): 139/153 kB
+Progress (1): 143/153 kB
+Progress (1): 147/153 kB
+Progress (1): 151/153 kB
+Progress (1): 153 kB    
+                    
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-dependency-plugin/2.8/maven-dependency-plugin-2.8.jar (153 kB at 2.3 MB/s)
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/apache/maven/plugins/maven-eclipse-plugin/2.8/maven-eclipse-plugin-2.8.pom
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-eclipse-plugin/2.8/maven-eclipse-plugin-2.8.pom
+Progress (1): 4.1/12 kB
+Progress (1): 7.7/12 kB
+Progress (1): 12 kB    
+                   
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-eclipse-plugin/2.8/maven-eclipse-plugin-2.8.pom (12 kB at 207 kB/s)
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/apache/maven/plugins/maven-eclipse-plugin/2.8/maven-eclipse-plugin-2.8.jar
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-eclipse-plugin/2.8/maven-eclipse-plugin-2.8.jar
+Progress (1): 4.1/206 kB
+Progress (1): 7.7/206 kB
+Progress (1): 12/206 kB 
+Progress (1): 16/206 kB
+Progress (1): 20/206 kB
+Progress (1): 24/206 kB
+Progress (1): 28/206 kB
+Progress (1): 32/206 kB
+Progress (1): 36/206 kB
+Progress (1): 40/206 kB
+Progress (1): 45/206 kB
+Progress (1): 49/206 kB
+Progress (1): 53/206 kB
+Progress (1): 57/206 kB
+Progress (1): 61/206 kB
+Progress (1): 65/206 kB
+Progress (1): 69/206 kB
+Progress (1): 73/206 kB
+Progress (1): 77/206 kB
+Progress (1): 81/206 kB
+Progress (1): 85/206 kB
+Progress (1): 90/206 kB
+Progress (1): 94/206 kB
+Progress (1): 98/206 kB
+Progress (1): 102/206 kB
+Progress (1): 106/206 kB
+Progress (1): 110/206 kB
+Progress (1): 114/206 kB
+Progress (1): 118/206 kB
+Progress (1): 122/206 kB
+Progress (1): 126/206 kB
+Progress (1): 131/206 kB
+Progress (1): 135/206 kB
+Progress (1): 139/206 kB
+Progress (1): 143/206 kB
+Progress (1): 147/206 kB
+Progress (1): 151/206 kB
+Progress (1): 155/206 kB
+Progress (1): 159/206 kB
+Progress (1): 163/206 kB
+Progress (1): 167/206 kB
+Progress (1): 171/206 kB
+Progress (1): 176/206 kB
+Progress (1): 180/206 kB
+Progress (1): 184/206 kB
+Progress (1): 188/206 kB
+Progress (1): 192/206 kB
+Progress (1): 196/206 kB
+Progress (1): 200/206 kB
+Progress (1): 204/206 kB
+Progress (1): 206 kB    
+                    
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-eclipse-plugin/2.8/maven-eclipse-plugin-2.8.jar (206 kB at 2.1 MB/s)
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/apache/maven/plugins/maven-release-plugin/2.5.3/maven-release-plugin-2.5.3.pom
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-release-plugin/2.5.3/maven-release-plugin-2.5.3.pom
+Progress (1): 4.1/11 kB
+Progress (1): 7.7/11 kB
+Progress (1): 11 kB    
+                   
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-release-plugin/2.5.3/maven-release-plugin-2.5.3.pom (11 kB at 258 kB/s)
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/apache/maven/release/maven-release/2.5.3/maven-release-2.5.3.pom
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/release/maven-release/2.5.3/maven-release-2.5.3.pom
+Progress (1): 4.1/5.0 kB
+Progress (1): 5.0 kB    
+                    
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/release/maven-release/2.5.3/maven-release-2.5.3.pom (5.0 kB at 112 kB/s)
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/apache/maven/plugins/maven-release-plugin/2.5.3/maven-release-plugin-2.5.3.jar
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-release-plugin/2.5.3/maven-release-plugin-2.5.3.jar
+Progress (1): 2.8/53 kB
+Progress (1): 5.5/53 kB
+Progress (1): 8.3/53 kB
+Progress (1): 11/53 kB 
+Progress (1): 14/53 kB
+Progress (1): 16/53 kB
+Progress (1): 19/53 kB
+Progress (1): 22/53 kB
+Progress (1): 25/53 kB
+Progress (1): 27/53 kB
+Progress (1): 30/53 kB
+Progress (1): 33/53 kB
+Progress (1): 37/53 kB
+Progress (1): 41/53 kB
+Progress (1): 45/53 kB
+Progress (1): 49/53 kB
+Progress (1): 53 kB   
+                   
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-release-plugin/2.5.3/maven-release-plugin-2.5.3.jar (53 kB at 1.0 MB/s)
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/eclipse/m2e/lifecycle-mapping/1.0.0/lifecycle-mapping-1.0.0.pom
+Downloading from central: https://repo.maven.apache.org/maven2/org/eclipse/m2e/lifecycle-mapping/1.0.0/lifecycle-mapping-1.0.0.pom
+[WARNING] The POM for org.eclipse.m2e:lifecycle-mapping:jar:1.0.0 is missing, no dependency information available
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/eclipse/m2e/lifecycle-mapping/1.0.0/lifecycle-mapping-1.0.0.jar
+Downloading from central: https://repo.maven.apache.org/maven2/org/eclipse/m2e/lifecycle-mapping/1.0.0/lifecycle-mapping-1.0.0.jar
+[WARNING] Failed to retrieve plugin descriptor for org.eclipse.m2e:lifecycle-mapping:1.0.0: Plugin org.eclipse.m2e:lifecycle-mapping:1.0.0 or one of its dependencies could not be resolved: Could not find artifact org.eclipse.m2e:lifecycle-mapping:jar:1.0.0 in ossrh (https://oss.sonatype.org/content/repositories/snapshots/)
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/apache/maven/plugins/maven-project-info-reports-plugin/3.0.0/maven-project-info-reports-plugin-3.0.0.pom
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-project-info-reports-plugin/3.0.0/maven-project-info-reports-plugin-3.0.0.pom
+Progress (1): 2.2/20 kB
+Progress (1): 5.0/20 kB
+Progress (1): 7.8/20 kB
+Progress (1): 11/20 kB 
+Progress (1): 13/20 kB
+Progress (1): 16/20 kB
+Progress (1): 19/20 kB
+Progress (1): 20 kB   
+                   
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-project-info-reports-plugin/3.0.0/maven-project-info-reports-plugin-3.0.0.pom (20 kB at 191 kB/s)
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/apache/maven/plugins/maven-project-info-reports-plugin/3.0.0/maven-project-info-reports-plugin-3.0.0.jar
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-project-info-reports-plugin/3.0.0/maven-project-info-reports-plugin-3.0.0.jar
+Progress (1): 2.2/300 kB
+Progress (1): 5.0/300 kB
+Progress (1): 7.7/300 kB
+Progress (1): 10/300 kB 
+Progress (1): 13/300 kB
+Progress (1): 16/300 kB
+Progress (1): 19/300 kB
+Progress (1): 21/300 kB
+Progress (1): 24/300 kB
+Progress (1): 27/300 kB
+Progress (1): 30/300 kB
+Progress (1): 32/300 kB
+Progress (1): 36/300 kB
+Progress (1): 40/300 kB
+Progress (1): 45/300 kB
+Progress (1): 49/300 kB
+Progress (1): 53/300 kB
+Progress (1): 57/300 kB
+Progress (1): 61/300 kB
+Progress (1): 65/300 kB
+Progress (1): 69/300 kB
+Progress (1): 73/300 kB
+Progress (1): 77/300 kB
+Progress (1): 81/300 kB
+Progress (1): 85/300 kB
+Progress (1): 90/300 kB
+Progress (1): 94/300 kB
+Progress (1): 98/300 kB
+Progress (1): 102/300 kB
+Progress (1): 106/300 kB
+Progress (1): 110/300 kB
+Progress (1): 114/300 kB
+Progress (1): 118/300 kB
+Progress (1): 122/300 kB
+Progress (1): 126/300 kB
+Progress (1): 131/300 kB
+Progress (1): 135/300 kB
+Progress (1): 139/300 kB
+Progress (1): 143/300 kB
+Progress (1): 147/300 kB
+Progress (1): 151/300 kB
+Progress (1): 155/300 kB
+Progress (1): 159/300 kB
+Progress (1): 163/300 kB
+Progress (1): 167/300 kB
+Progress (1): 171/300 kB
+Progress (1): 176/300 kB
+Progress (1): 180/300 kB
+Progress (1): 184/300 kB
+Progress (1): 188/300 kB
+Progress (1): 192/300 kB
+Progress (1): 196/300 kB
+Progress (1): 200/300 kB
+Progress (1): 204/300 kB
+Progress (1): 208/300 kB
+Progress (1): 212/300 kB
+Progress (1): 217/300 kB
+Progress (1): 221/300 kB
+Progress (1): 225/300 kB
+Progress (1): 229/300 kB
+Progress (1): 233/300 kB
+Progress (1): 237/300 kB
+Progress (1): 241/300 kB
+Progress (1): 245/300 kB
+Progress (1): 249/300 kB
+Progress (1): 253/300 kB
+Progress (1): 258/300 kB
+Progress (1): 262/300 kB
+Progress (1): 266/300 kB
+Progress (1): 270/300 kB
+Progress (1): 274/300 kB
+Progress (1): 278/300 kB
+Progress (1): 282/300 kB
+Progress (1): 286/300 kB
+Progress (1): 290/300 kB
+Progress (1): 294/300 kB
+Progress (1): 298/300 kB
+Progress (1): 300 kB    
+                    
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-project-info-reports-plugin/3.0.0/maven-project-info-reports-plugin-3.0.0.jar (300 kB at 3.2 MB/s)
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/apache/maven/plugins/maven-metadata.xml
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/codehaus/mojo/maven-metadata.xml
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-metadata.xml
+Downloading from central: https://repo.maven.apache.org/maven2/org/codehaus/mojo/maven-metadata.xml
+Progress (1): 4.1/14 kB
+Progress (1): 7.7/14 kB
+Progress (1): 12/14 kB 
+Progress (1): 14 kB   
+                   
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-metadata.xml (14 kB at 252 kB/s)
+Progress (1): 2.2/20 kB
+Progress (1): 5.0/20 kB
+Progress (1): 7.8/20 kB
+Progress (1): 11/20 kB 
+Progress (1): 13/20 kB
+Progress (1): 16/20 kB
+Progress (1): 19/20 kB
+Progress (1): 20 kB   
+                   
+Downloaded from central: https://repo.maven.apache.org/maven2/org/codehaus/mojo/maven-metadata.xml (20 kB at 220 kB/s)
+Progress (1): 4.1/10 kB
+Progress (1): 7.8/10 kB
+Progress (1): 10 kB    
+                   
+Downloaded from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/codehaus/mojo/maven-metadata.xml (10 kB at 48 kB/s)
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/apache/maven/plugins/maven-help-plugin/maven-metadata.xml
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-help-plugin/maven-metadata.xml
+Progress (1): 652 B
+                   
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-help-plugin/maven-metadata.xml (652 B at 16 kB/s)
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/apache/maven/plugins/maven-help-plugin/3.2.0/maven-help-plugin-3.2.0.pom
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-help-plugin/3.2.0/maven-help-plugin-3.2.0.pom
+Progress (1): 2.2/11 kB
+Progress (1): 5.0/11 kB
+Progress (1): 7.8/11 kB
+Progress (1): 11/11 kB 
+Progress (1): 11 kB   
+                   
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-help-plugin/3.2.0/maven-help-plugin-3.2.0.pom (11 kB at 289 kB/s)
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/apache/maven/plugins/maven-help-plugin/3.2.0/maven-help-plugin-3.2.0.jar
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-help-plugin/3.2.0/maven-help-plugin-3.2.0.jar
+Progress (1): 2.2/86 kB
+Progress (1): 5.0/86 kB
+Progress (1): 7.7/86 kB
+Progress (1): 10/86 kB 
+Progress (1): 13/86 kB
+Progress (1): 16/86 kB
+Progress (1): 19/86 kB
+Progress (1): 21/86 kB
+Progress (1): 24/86 kB
+Progress (1): 27/86 kB
+Progress (1): 30/86 kB
+Progress (1): 32/86 kB
+Progress (1): 36/86 kB
+Progress (1): 40/86 kB
+Progress (1): 45/86 kB
+Progress (1): 49/86 kB
+Progress (1): 53/86 kB
+Progress (1): 57/86 kB
+Progress (1): 61/86 kB
+Progress (1): 65/86 kB
+Progress (1): 69/86 kB
+Progress (1): 73/86 kB
+Progress (1): 77/86 kB
+Progress (1): 81/86 kB
+Progress (1): 85/86 kB
+Progress (1): 86 kB   
+                   
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-help-plugin/3.2.0/maven-help-plugin-3.2.0.jar (86 kB at 1.3 MB/s)
+[INFO] 
+[INFO] ---------------< com.azure:azure-data-appconfiguration >----------------
+[INFO] Building Microsoft Azure client library for App Configuration 1.2.0-beta.1
+[INFO] --------------------------------[ jar ]---------------------------------
+[WARNING] The POM for org.eclipse.m2e:lifecycle-mapping:jar:1.0.0 is missing, no dependency information available
+[WARNING] Failed to retrieve plugin descriptor for org.eclipse.m2e:lifecycle-mapping:1.0.0: Plugin org.eclipse.m2e:lifecycle-mapping:1.0.0 or one of its dependencies could not be resolved: Failure to find org.eclipse.m2e:lifecycle-mapping:jar:1.0.0 in https://oss.sonatype.org/content/repositories/snapshots/ was cached in the local repository, resolution will not be reattempted until the update interval of ossrh has elapsed or updates are forced
+[INFO] 
+[INFO] --- maven-help-plugin:3.2.0:effective-pom (default-cli) @ azure-data-appconfiguration ---
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/apache/maven/maven-model/3.6.1/maven-model-3.6.1.pom
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/maven-model/3.6.1/maven-model-3.6.1.pom
+Progress (1): 2.2/4.0 kB
+Progress (1): 4.0 kB    
+                    
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/maven-model/3.6.1/maven-model-3.6.1.pom (4.0 kB at 107 kB/s)
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/apache/maven/maven/3.6.1/maven-3.6.1.pom
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/maven/3.6.1/maven-3.6.1.pom
+Progress (1): 2.2/24 kB
+Progress (1): 5.0/24 kB
+Progress (1): 7.8/24 kB
+Progress (1): 11/24 kB 
+Progress (1): 13/24 kB
+Progress (1): 16/24 kB
+Progress (1): 19/24 kB
+Progress (1): 21/24 kB
+Progress (1): 24 kB   
+                   
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/maven/3.6.1/maven-3.6.1.pom (24 kB at 547 kB/s)
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/apache/maven/plugin-tools/maven-plugin-tools-generators/3.5.2/maven-plugin-tools-generators-3.5.2.pom
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugin-tools/maven-plugin-tools-generators/3.5.2/maven-plugin-tools-generators-3.5.2.pom
+Progress (1): 2.2/4.2 kB
+Progress (1): 4.2 kB    
+                    
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugin-tools/maven-plugin-tools-generators/3.5.2/maven-plugin-tools-generators-3.5.2.pom (4.2 kB at 105 kB/s)
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/apache/maven/plugin-tools/maven-plugin-tools/3.5.2/maven-plugin-tools-3.5.2.pom
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugin-tools/maven-plugin-tools/3.5.2/maven-plugin-tools-3.5.2.pom
+Progress (1): 2.8/15 kB
+Progress (1): 5.5/15 kB
+Progress (1): 8.3/15 kB
+Progress (1): 11/15 kB 
+Progress (1): 14/15 kB
+Progress (1): 15 kB   
+                   
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugin-tools/maven-plugin-tools/3.5.2/maven-plugin-tools-3.5.2.pom (15 kB at 334 kB/s)
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/apache/maven/plugin-tools/maven-plugin-tools-api/3.5.2/maven-plugin-tools-api-3.5.2.pom
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugin-tools/maven-plugin-tools-api/3.5.2/maven-plugin-tools-api-3.5.2.pom
+Progress (1): 2.2/2.9 kB
+Progress (1): 2.9 kB    
+                    
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugin-tools/maven-plugin-tools-api/3.5.2/maven-plugin-tools-api-3.5.2.pom (2.9 kB at 71 kB/s)
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/net/sf/jtidy/jtidy/r938/jtidy-r938.pom
+Downloading from central: https://repo.maven.apache.org/maven2/net/sf/jtidy/jtidy/r938/jtidy-r938.pom
+Progress (1): 2.2/9.2 kB
+Progress (1): 5.0/9.2 kB
+Progress (1): 7.8/9.2 kB
+Progress (1): 9.2 kB    
+                    
+Downloaded from central: https://repo.maven.apache.org/maven2/net/sf/jtidy/jtidy/r938/jtidy-r938.pom (9.2 kB at 249 kB/s)
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/apache/maven/shared/maven-artifact-transfer/0.10.0/maven-artifact-transfer-0.10.0.pom
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/shared/maven-artifact-transfer/0.10.0/maven-artifact-transfer-0.10.0.pom
+Progress (1): 2.2/12 kB
+Progress (1): 5.0/12 kB
+Progress (1): 7.8/12 kB
+Progress (1): 11/12 kB 
+Progress (1): 12 kB   
+                   
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/shared/maven-artifact-transfer/0.10.0/maven-artifact-transfer-0.10.0.pom (12 kB at 227 kB/s)
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/apache/maven/shared/maven-shared-components/31/maven-shared-components-31.pom
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/shared/maven-shared-components/31/maven-shared-components-31.pom
+Progress (1): 2.2/5.1 kB
+Progress (1): 5.0/5.1 kB
+Progress (1): 5.1 kB    
+                    
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/shared/maven-shared-components/31/maven-shared-components-31.pom (5.1 kB at 125 kB/s)
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/jdom/jdom2/2.0.6/jdom2-2.0.6.pom
+Downloading from central: https://repo.maven.apache.org/maven2/org/jdom/jdom2/2.0.6/jdom2-2.0.6.pom
+Progress (1): 2.2/4.6 kB
+Progress (1): 4.6 kB    
+                    
+Downloaded from central: https://repo.maven.apache.org/maven2/org/jdom/jdom2/2.0.6/jdom2-2.0.6.pom (4.6 kB at 121 kB/s)
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/com/thoughtworks/xstream/xstream/1.4.11.1/xstream-1.4.11.1.pom
+Downloading from central: https://repo.maven.apache.org/maven2/com/thoughtworks/xstream/xstream/1.4.11.1/xstream-1.4.11.1.pom
+Progress (1): 2.2/20 kB
+Progress (1): 5.0/20 kB
+Progress (1): 7.8/20 kB
+Progress (1): 11/20 kB 
+Progress (1): 13/20 kB
+Progress (1): 16/20 kB
+Progress (1): 19/20 kB
+Progress (1): 20 kB   
+                   
+Downloaded from central: https://repo.maven.apache.org/maven2/com/thoughtworks/xstream/xstream/1.4.11.1/xstream-1.4.11.1.pom (20 kB at 491 kB/s)
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/com/thoughtworks/xstream/xstream-parent/1.4.11.1/xstream-parent-1.4.11.1.pom
+Downloading from central: https://repo.maven.apache.org/maven2/com/thoughtworks/xstream/xstream-parent/1.4.11.1/xstream-parent-1.4.11.1.pom
+Progress (1): 2.2/37 kB
+Progress (1): 5.0/37 kB
+Progress (1): 7.8/37 kB
+Progress (1): 11/37 kB 
+Progress (1): 13/37 kB
+Progress (1): 16/37 kB
+Progress (1): 19/37 kB
+Progress (1): 21/37 kB
+Progress (1): 24/37 kB
+Progress (1): 27/37 kB
+Progress (1): 30/37 kB
+Progress (1): 32/37 kB
+Progress (1): 35/37 kB
+Progress (1): 37 kB   
+                   
+Downloaded from central: https://repo.maven.apache.org/maven2/com/thoughtworks/xstream/xstream-parent/1.4.11.1/xstream-parent-1.4.11.1.pom (37 kB at 852 kB/s)
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/apache/commons/commons-lang3/3.7/commons-lang3-3.7.pom
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/commons/commons-lang3/3.7/commons-lang3-3.7.pom
+Progress (1): 2.2/28 kB
+Progress (1): 5.0/28 kB
+Progress (1): 7.8/28 kB
+Progress (1): 11/28 kB 
+Progress (1): 13/28 kB
+Progress (1): 16/28 kB
+Progress (1): 19/28 kB
+Progress (1): 21/28 kB
+Progress (1): 24/28 kB
+Progress (1): 27/28 kB
+Progress (1): 28 kB   
+                   
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/commons/commons-lang3/3.7/commons-lang3-3.7.pom (28 kB at 656 kB/s)
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/apache/maven/maven-model/3.6.1/maven-model-3.6.1.jar
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/apache/maven/plugin-tools/maven-plugin-tools-generators/3.5.2/maven-plugin-tools-generators-3.5.2.jar
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/apache/maven/plugin-tools/maven-plugin-tools-api/3.5.2/maven-plugin-tools-api-3.5.2.jar
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/commons-collections/commons-collections/3.1/commons-collections-3.1.jar
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/net/sf/jtidy/jtidy/r938/jtidy-r938.jar
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/apache/maven/shared/maven-artifact-transfer/0.10.0/maven-artifact-transfer-0.10.0.jar
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/jdom/jdom2/2.0.6/jdom2-2.0.6.jar
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/com/thoughtworks/xstream/xstream/1.4.11.1/xstream-1.4.11.1.jar
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/apache/commons/commons-lang3/3.7/commons-lang3-3.7.jar
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/maven-model/3.6.1/maven-model-3.6.1.jar
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugin-tools/maven-plugin-tools-generators/3.5.2/maven-plugin-tools-generators-3.5.2.jar
+Downloading from central: https://repo.maven.apache.org/maven2/commons-collections/commons-collections/3.1/commons-collections-3.1.jar
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugin-tools/maven-plugin-tools-api/3.5.2/maven-plugin-tools-api-3.5.2.jar
+Downloading from central: https://repo.maven.apache.org/maven2/net/sf/jtidy/jtidy/r938/jtidy-r938.jar
+Progress (1): 2.2/186 kB
+Progress (1): 5.0/186 kB
+Progress (1): 7.7/186 kB
+Progress (1): 10/186 kB 
+Progress (2): 10/186 kB | 2.2/559 kB
+Progress (2): 13/186 kB | 2.2/559 kB
+Progress (2): 16/186 kB | 2.2/559 kB
+Progress (2): 16/186 kB | 5.0/559 kB
+Progress (2): 16/186 kB | 7.7/559 kB
+Progress (2): 19/186 kB | 7.7/559 kB
+Progress (2): 19/186 kB | 10/559 kB 
+Progress (2): 19/186 kB | 13/559 kB
+Progress (2): 21/186 kB | 13/559 kB
+Progress (2): 21/186 kB | 16/559 kB
+Progress (2): 24/186 kB | 16/559 kB
+Progress (2): 24/186 kB | 19/559 kB
+Progress (2): 24/186 kB | 21/559 kB
+Progress (2): 24/186 kB | 24/559 kB
+Progress (2): 24/186 kB | 27/559 kB
+Progress (2): 24/186 kB | 30/559 kB
+Progress (2): 24/186 kB | 32/559 kB
+Progress (2): 24/186 kB | 36/559 kB
+Progress (2): 24/186 kB | 40/559 kB
+Progress (2): 24/186 kB | 45/559 kB
+Progress (2): 24/186 kB | 49/559 kB
+Progress (2): 24/186 kB | 53/559 kB
+Progress (2): 24/186 kB | 57/559 kB
+Progress (2): 24/186 kB | 61/559 kB
+Progress (2): 24/186 kB | 65/559 kB
+Progress (2): 24/186 kB | 69/559 kB
+Progress (2): 24/186 kB | 73/559 kB
+Progress (2): 24/186 kB | 77/559 kB
+Progress (2): 24/186 kB | 81/559 kB
+Progress (2): 24/186 kB | 85/559 kB
+Progress (2): 24/186 kB | 90/559 kB
+Progress (2): 24/186 kB | 94/559 kB
+Progress (2): 24/186 kB | 98/559 kB
+Progress (2): 24/186 kB | 102/559 kB
+Progress (2): 24/186 kB | 106/559 kB
+Progress (2): 24/186 kB | 110/559 kB
+Progress (2): 24/186 kB | 114/559 kB
+Progress (2): 27/186 kB | 114/559 kB
+Progress (2): 30/186 kB | 114/559 kB
+Progress (2): 32/186 kB | 114/559 kB
+Progress (2): 36/186 kB | 114/559 kB
+Progress (2): 40/186 kB | 114/559 kB
+Progress (2): 45/186 kB | 114/559 kB
+Progress (2): 49/186 kB | 114/559 kB
+Progress (2): 53/186 kB | 114/559 kB
+Progress (2): 57/186 kB | 114/559 kB
+Progress (2): 61/186 kB | 114/559 kB
+Progress (2): 65/186 kB | 114/559 kB
+Progress (2): 69/186 kB | 114/559 kB
+Progress (2): 73/186 kB | 114/559 kB
+Progress (2): 77/186 kB | 114/559 kB
+Progress (2): 81/186 kB | 114/559 kB
+Progress (2): 85/186 kB | 114/559 kB
+Progress (2): 90/186 kB | 114/559 kB
+Progress (2): 94/186 kB | 114/559 kB
+Progress (2): 98/186 kB | 114/559 kB
+Progress (2): 102/186 kB | 114/559 kB
+Progress (2): 106/186 kB | 114/559 kB
+Progress (2): 110/186 kB | 114/559 kB
+Progress (2): 114/186 kB | 114/559 kB
+Progress (2): 114/186 kB | 118/559 kB
+Progress (2): 114/186 kB | 122/559 kB
+Progress (2): 114/186 kB | 126/559 kB
+Progress (2): 114/186 kB | 131/559 kB
+Progress (2): 118/186 kB | 131/559 kB
+Progress (2): 122/186 kB | 131/559 kB
+Progress (2): 126/186 kB | 131/559 kB
+Progress (2): 131/186 kB | 131/559 kB
+Progress (2): 135/186 kB | 131/559 kB
+Progress (2): 139/186 kB | 131/559 kB
+Progress (2): 143/186 kB | 131/559 kB
+Progress (2): 147/186 kB | 131/559 kB
+Progress (2): 147/186 kB | 135/559 kB
+Progress (2): 147/186 kB | 139/559 kB
+Progress (2): 147/186 kB | 143/559 kB
+Progress (2): 147/186 kB | 147/559 kB
+Progress (2): 147/186 kB | 151/559 kB
+Progress (2): 147/186 kB | 155/559 kB
+Progress (2): 147/186 kB | 159/559 kB
+Progress (2): 147/186 kB | 163/559 kB
+Progress (2): 147/186 kB | 167/559 kB
+Progress (2): 147/186 kB | 171/559 kB
+Progress (2): 147/186 kB | 176/559 kB
+Progress (2): 147/186 kB | 180/559 kB
+Progress (2): 147/186 kB | 184/559 kB
+Progress (2): 147/186 kB | 188/559 kB
+Progress (2): 147/186 kB | 192/559 kB
+Progress (2): 147/186 kB | 196/559 kB
+Progress (2): 147/186 kB | 200/559 kB
+Progress (2): 147/186 kB | 204/559 kB
+Progress (2): 147/186 kB | 208/559 kB
+Progress (2): 147/186 kB | 212/559 kB
+Progress (2): 147/186 kB | 217/559 kB
+Progress (2): 147/186 kB | 221/559 kB
+Progress (2): 147/186 kB | 225/559 kB
+Progress (2): 147/186 kB | 229/559 kB
+Progress (2): 147/186 kB | 233/559 kB
+Progress (2): 147/186 kB | 237/559 kB
+Progress (2): 147/186 kB | 241/559 kB
+Progress (2): 147/186 kB | 245/559 kB
+Progress (2): 147/186 kB | 249/559 kB
+Progress (2): 147/186 kB | 253/559 kB
+Progress (2): 147/186 kB | 258/559 kB
+Progress (2): 147/186 kB | 262/559 kB
+Progress (2): 147/186 kB | 266/559 kB
+Progress (2): 147/186 kB | 270/559 kB
+Progress (2): 147/186 kB | 274/559 kB
+Progress (2): 147/186 kB | 278/559 kB
+Progress (2): 151/186 kB | 278/559 kB
+Progress (2): 151/186 kB | 282/559 kB
+Progress (2): 155/186 kB | 282/559 kB
+Progress (2): 155/186 kB | 286/559 kB
+Progress (2): 159/186 kB | 286/559 kB
+Progress (2): 159/186 kB | 290/559 kB
+Progress (2): 163/186 kB | 290/559 kB
+Progress (2): 163/186 kB | 294/559 kB
+Progress (2): 163/186 kB | 298/559 kB
+Progress (2): 163/186 kB | 303/559 kB
+Progress (2): 163/186 kB | 307/559 kB
+Progress (2): 163/186 kB | 311/559 kB
+Progress (2): 163/186 kB | 315/559 kB
+Progress (2): 163/186 kB | 319/559 kB
+Progress (2): 163/186 kB | 323/559 kB
+Progress (2): 163/186 kB | 327/559 kB
+Progress (2): 163/186 kB | 331/559 kB
+Progress (2): 163/186 kB | 335/559 kB
+Progress (2): 167/186 kB | 335/559 kB
+Progress (2): 167/186 kB | 339/559 kB
+Progress (2): 171/186 kB | 339/559 kB
+Progress (2): 171/186 kB | 344/559 kB
+Progress (2): 176/186 kB | 344/559 kB
+Progress (2): 180/186 kB | 344/559 kB
+Progress (2): 184/186 kB | 344/559 kB
+Progress (2): 184/186 kB | 348/559 kB
+Progress (2): 186 kB | 348/559 kB    
+Progress (2): 186 kB | 352/559 kB
+Progress (2): 186 kB | 356/559 kB
+Progress (2): 186 kB | 360/559 kB
+Progress (2): 186 kB | 364/559 kB
+Progress (2): 186 kB | 368/559 kB
+Progress (2): 186 kB | 372/559 kB
+Progress (2): 186 kB | 376/559 kB
+Progress (2): 186 kB | 380/559 kB
+Progress (2): 186 kB | 384/559 kB
+Progress (2): 186 kB | 389/559 kB
+Progress (2): 186 kB | 393/559 kB
+Progress (2): 186 kB | 397/559 kB
+Progress (2): 186 kB | 401/559 kB
+Progress (2): 186 kB | 405/559 kB
+Progress (2): 186 kB | 409/559 kB
+Progress (2): 186 kB | 413/559 kB
+Progress (2): 186 kB | 417/559 kB
+Progress (2): 186 kB | 421/559 kB
+Progress (2): 186 kB | 425/559 kB
+Progress (2): 186 kB | 430/559 kB
+Progress (2): 186 kB | 434/559 kB
+Progress (2): 186 kB | 438/559 kB
+Progress (2): 186 kB | 442/559 kB
+Progress (2): 186 kB | 446/559 kB
+Progress (2): 186 kB | 450/559 kB
+Progress (2): 186 kB | 454/559 kB
+Progress (2): 186 kB | 458/559 kB
+Progress (2): 186 kB | 462/559 kB
+Progress (2): 186 kB | 466/559 kB
+Progress (2): 186 kB | 471/559 kB
+Progress (2): 186 kB | 475/559 kB
+Progress (2): 186 kB | 479/559 kB
+Progress (2): 186 kB | 483/559 kB
+Progress (2): 186 kB | 487/559 kB
+Progress (2): 186 kB | 491/559 kB
+Progress (2): 186 kB | 495/559 kB
+Progress (2): 186 kB | 499/559 kB
+Progress (2): 186 kB | 503/559 kB
+Progress (2): 186 kB | 507/559 kB
+Progress (2): 186 kB | 511/559 kB
+Progress (2): 186 kB | 516/559 kB
+Progress (2): 186 kB | 520/559 kB
+Progress (2): 186 kB | 524/559 kB
+Progress (2): 186 kB | 528/559 kB
+Progress (2): 186 kB | 532/559 kB
+Progress (2): 186 kB | 536/559 kB
+Progress (2): 186 kB | 540/559 kB
+Progress (2): 186 kB | 544/559 kB
+Progress (2): 186 kB | 548/559 kB
+Progress (2): 186 kB | 552/559 kB
+Progress (2): 186 kB | 557/559 kB
+Progress (3): 186 kB | 557/559 kB | 2.2/48 kB
+Progress (3): 186 kB | 559 kB | 2.2/48 kB    
+Progress (4): 186 kB | 559 kB | 2.2/48 kB | 2.2/24 kB
+Progress (4): 186 kB | 559 kB | 5.0/48 kB | 2.2/24 kB
+Progress (4): 186 kB | 559 kB | 8.7/48 kB | 2.2/24 kB
+Progress (4): 186 kB | 559 kB | 8.7/48 kB | 5.0/24 kB
+Progress (4): 186 kB | 559 kB | 11/48 kB | 5.0/24 kB 
+Progress (4): 186 kB | 559 kB | 11/48 kB | 7.7/24 kB
+Progress (5): 186 kB | 559 kB | 11/48 kB | 7.7/24 kB | 2.2/250 kB
+Progress (5): 186 kB | 559 kB | 11/48 kB | 10/24 kB | 2.2/250 kB 
+Progress (5): 186 kB | 559 kB | 11/48 kB | 13/24 kB | 2.2/250 kB
+Progress (5): 186 kB | 559 kB | 11/48 kB | 13/24 kB | 5.0/250 kB
+                                                                
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/maven-model/3.6.1/maven-model-3.6.1.jar (186 kB at 1.7 MB/s)
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/shared/maven-artifact-transfer/0.10.0/maven-artifact-transfer-0.10.0.jar
+Progress (4): 559 kB | 11/48 kB | 13/24 kB | 7.7/250 kB
+Progress (4): 559 kB | 11/48 kB | 13/24 kB | 10/250 kB 
+Progress (4): 559 kB | 11/48 kB | 13/24 kB | 13/250 kB
+Progress (4): 559 kB | 14/48 kB | 13/24 kB | 13/250 kB
+Progress (4): 559 kB | 17/48 kB | 13/24 kB | 13/250 kB
+Progress (4): 559 kB | 20/48 kB | 13/24 kB | 13/250 kB
+Progress (4): 559 kB | 22/48 kB | 13/24 kB | 13/250 kB
+Progress (4): 559 kB | 25/48 kB | 13/24 kB | 13/250 kB
+Progress (4): 559 kB | 28/48 kB | 13/24 kB | 13/250 kB
+Progress (4): 559 kB | 31/48 kB | 13/24 kB | 13/250 kB
+Progress (4): 559 kB | 33/48 kB | 13/24 kB | 13/250 kB
+Progress (4): 559 kB | 33/48 kB | 16/24 kB | 13/250 kB
+Progress (4): 559 kB | 33/48 kB | 16/24 kB | 16/250 kB
+Progress (4): 559 kB | 33/48 kB | 19/24 kB | 16/250 kB
+Progress (4): 559 kB | 33/48 kB | 19/24 kB | 19/250 kB
+Progress (4): 559 kB | 33/48 kB | 21/24 kB | 19/250 kB
+Progress (4): 559 kB | 33/48 kB | 24 kB | 19/250 kB   
+Progress (4): 559 kB | 33/48 kB | 24 kB | 21/250 kB
+Progress (4): 559 kB | 36/48 kB | 24 kB | 21/250 kB
+Progress (4): 559 kB | 36/48 kB | 24 kB | 24/250 kB
+Progress (4): 559 kB | 39/48 kB | 24 kB | 24/250 kB
+Progress (4): 559 kB | 39/48 kB | 24 kB | 27/250 kB
+Progress (4): 559 kB | 39/48 kB | 24 kB | 30/250 kB
+Progress (4): 559 kB | 39/48 kB | 24 kB | 32/250 kB
+                                                   
+Downloaded from central: https://repo.maven.apache.org/maven2/commons-collections/commons-collections/3.1/commons-collections-3.1.jar (559 kB at 4.3 MB/s)
+Downloading from central: https://repo.maven.apache.org/maven2/org/jdom/jdom2/2.0.6/jdom2-2.0.6.jar
+Progress (3): 43/48 kB | 24 kB | 32/250 kB
+Progress (3): 47/48 kB | 24 kB | 32/250 kB
+Progress (3): 48 kB | 24 kB | 32/250 kB   
+Progress (3): 48 kB | 24 kB | 36/250 kB
+Progress (3): 48 kB | 24 kB | 40/250 kB
+Progress (3): 48 kB | 24 kB | 45/250 kB
+Progress (3): 48 kB | 24 kB | 49/250 kB
+Progress (4): 48 kB | 24 kB | 49/250 kB | 4.1/128 kB
+Progress (4): 48 kB | 24 kB | 49/250 kB | 7.7/128 kB
+Progress (4): 48 kB | 24 kB | 49/250 kB | 12/128 kB 
+Progress (4): 48 kB | 24 kB | 49/250 kB | 16/128 kB
+Progress (4): 48 kB | 24 kB | 49/250 kB | 20/128 kB
+Progress (4): 48 kB | 24 kB | 49/250 kB | 24/128 kB
+Progress (4): 48 kB | 24 kB | 49/250 kB | 28/128 kB
+Progress (4): 48 kB | 24 kB | 49/250 kB | 32/128 kB
+Progress (4): 48 kB | 24 kB | 49/250 kB | 36/128 kB
+Progress (4): 48 kB | 24 kB | 49/250 kB | 40/128 kB
+Progress (4): 48 kB | 24 kB | 49/250 kB | 45/128 kB
+Progress (4): 48 kB | 24 kB | 49/250 kB | 49/128 kB
+Progress (4): 48 kB | 24 kB | 49/250 kB | 53/128 kB
+Progress (4): 48 kB | 24 kB | 49/250 kB | 57/128 kB
+Progress (4): 48 kB | 24 kB | 49/250 kB | 61/128 kB
+Progress (4): 48 kB | 24 kB | 49/250 kB | 65/128 kB
+Progress (4): 48 kB | 24 kB | 49/250 kB | 69/128 kB
+Progress (4): 48 kB | 24 kB | 49/250 kB | 73/128 kB
+Progress (4): 48 kB | 24 kB | 49/250 kB | 77/128 kB
+Progress (4): 48 kB | 24 kB | 49/250 kB | 81/128 kB
+Progress (4): 48 kB | 24 kB | 49/250 kB | 85/128 kB
+Progress (4): 48 kB | 24 kB | 49/250 kB | 90/128 kB
+Progress (4): 48 kB | 24 kB | 49/250 kB | 94/128 kB
+Progress (4): 48 kB | 24 kB | 49/250 kB | 98/128 kB
+Progress (4): 48 kB | 24 kB | 49/250 kB | 102/128 kB
+Progress (4): 48 kB | 24 kB | 49/250 kB | 106/128 kB
+Progress (4): 48 kB | 24 kB | 49/250 kB | 110/128 kB
+Progress (4): 48 kB | 24 kB | 49/250 kB | 114/128 kB
+Progress (4): 48 kB | 24 kB | 49/250 kB | 118/128 kB
+Progress (4): 48 kB | 24 kB | 53/250 kB | 118/128 kB
+Progress (4): 48 kB | 24 kB | 53/250 kB | 122/128 kB
+Progress (4): 48 kB | 24 kB | 57/250 kB | 122/128 kB
+Progress (4): 48 kB | 24 kB | 57/250 kB | 126/128 kB
+Progress (4): 48 kB | 24 kB | 61/250 kB | 126/128 kB
+Progress (4): 48 kB | 24 kB | 61/250 kB | 128 kB    
+Progress (4): 48 kB | 24 kB | 65/250 kB | 128 kB
+                                                
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugin-tools/maven-plugin-tools-api/3.5.2/maven-plugin-tools-api-3.5.2.jar (24 kB at 154 kB/s)
+Progress (3): 48 kB | 69/250 kB | 128 kB
+                                        
+Downloading from central: https://repo.maven.apache.org/maven2/com/thoughtworks/xstream/xstream/1.4.11.1/xstream-1.4.11.1.jar
+Progress (3): 48 kB | 73/250 kB | 128 kB
+Progress (3): 48 kB | 77/250 kB | 128 kB
+Progress (3): 48 kB | 81/250 kB | 128 kB
+Progress (4): 48 kB | 81/250 kB | 128 kB | 4.1/305 kB
+Progress (4): 48 kB | 81/250 kB | 128 kB | 7.7/305 kB
+Progress (4): 48 kB | 81/250 kB | 128 kB | 12/305 kB 
+Progress (4): 48 kB | 81/250 kB | 128 kB | 16/305 kB
+Progress (4): 48 kB | 85/250 kB | 128 kB | 16/305 kB
+Progress (4): 48 kB | 90/250 kB | 128 kB | 16/305 kB
+Progress (4): 48 kB | 94/250 kB | 128 kB | 16/305 kB
+Progress (4): 48 kB | 98/250 kB | 128 kB | 16/305 kB
+Progress (4): 48 kB | 98/250 kB | 128 kB | 20/305 kB
+Progress (4): 48 kB | 98/250 kB | 128 kB | 24/305 kB
+Progress (4): 48 kB | 98/250 kB | 128 kB | 28/305 kB
+Progress (4): 48 kB | 98/250 kB | 128 kB | 32/305 kB
+Progress (4): 48 kB | 102/250 kB | 128 kB | 32/305 kB
+Progress (4): 48 kB | 106/250 kB | 128 kB | 32/305 kB
+Progress (4): 48 kB | 110/250 kB | 128 kB | 32/305 kB
+Progress (4): 48 kB | 114/250 kB | 128 kB | 32/305 kB
+Progress (4): 48 kB | 114/250 kB | 128 kB | 36/305 kB
+Progress (4): 48 kB | 114/250 kB | 128 kB | 40/305 kB
+Progress (4): 48 kB | 114/250 kB | 128 kB | 45/305 kB
+Progress (4): 48 kB | 114/250 kB | 128 kB | 49/305 kB
+Progress (4): 48 kB | 118/250 kB | 128 kB | 49/305 kB
+Progress (4): 48 kB | 122/250 kB | 128 kB | 49/305 kB
+Progress (4): 48 kB | 126/250 kB | 128 kB | 49/305 kB
+Progress (4): 48 kB | 131/250 kB | 128 kB | 49/305 kB
+Progress (4): 48 kB | 135/250 kB | 128 kB | 49/305 kB
+Progress (4): 48 kB | 139/250 kB | 128 kB | 49/305 kB
+                                                     
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugin-tools/maven-plugin-tools-generators/3.5.2/maven-plugin-tools-generators-3.5.2.jar (48 kB at 291 kB/s)
+Progress (3): 143/250 kB | 128 kB | 49/305 kB
+                                             
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/commons/commons-lang3/3.7/commons-lang3-3.7.jar
+Progress (3): 147/250 kB | 128 kB | 49/305 kB
+Progress (3): 147/250 kB | 128 kB | 53/305 kB
+Progress (3): 147/250 kB | 128 kB | 57/305 kB
+Progress (3): 147/250 kB | 128 kB | 61/305 kB
+Progress (3): 147/250 kB | 128 kB | 65/305 kB
+Progress (3): 151/250 kB | 128 kB | 65/305 kB
+Progress (3): 155/250 kB | 128 kB | 65/305 kB
+Progress (3): 159/250 kB | 128 kB | 65/305 kB
+Progress (3): 159/250 kB | 128 kB | 69/305 kB
+                                             
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/shared/maven-artifact-transfer/0.10.0/maven-artifact-transfer-0.10.0.jar (128 kB at 735 kB/s)
+Progress (2): 159/250 kB | 73/305 kB
+Progress (2): 163/250 kB | 73/305 kB
+Progress (2): 163/250 kB | 77/305 kB
+Progress (2): 163/250 kB | 81/305 kB
+Progress (2): 167/250 kB | 81/305 kB
+Progress (2): 171/250 kB | 81/305 kB
+Progress (2): 176/250 kB | 81/305 kB
+Progress (3): 176/250 kB | 81/305 kB | 2.2/621 kB
+Progress (3): 180/250 kB | 81/305 kB | 2.2/621 kB
+Progress (3): 180/250 kB | 81/305 kB | 5.0/621 kB
+Progress (3): 180/250 kB | 81/305 kB | 7.7/621 kB
+Progress (3): 180/250 kB | 81/305 kB | 10/621 kB 
+Progress (3): 184/250 kB | 81/305 kB | 10/621 kB
+Progress (3): 184/250 kB | 85/305 kB | 10/621 kB
+Progress (3): 184/250 kB | 85/305 kB | 13/621 kB
+Progress (3): 184/250 kB | 90/305 kB | 13/621 kB
+Progress (3): 188/250 kB | 90/305 kB | 13/621 kB
+Progress (3): 188/250 kB | 94/305 kB | 13/621 kB
+Progress (3): 188/250 kB | 94/305 kB | 16/621 kB
+Progress (3): 188/250 kB | 98/305 kB | 16/621 kB
+Progress (3): 192/250 kB | 98/305 kB | 16/621 kB
+Progress (3): 192/250 kB | 98/305 kB | 19/621 kB
+Progress (3): 196/250 kB | 98/305 kB | 19/621 kB
+Progress (3): 196/250 kB | 98/305 kB | 21/621 kB
+Progress (3): 196/250 kB | 98/305 kB | 24/621 kB
+Progress (3): 196/250 kB | 98/305 kB | 27/621 kB
+Progress (3): 200/250 kB | 98/305 kB | 27/621 kB
+Progress (3): 204/250 kB | 98/305 kB | 27/621 kB
+Progress (3): 204/250 kB | 98/305 kB | 30/621 kB
+Progress (3): 204/250 kB | 102/305 kB | 30/621 kB
+Progress (3): 204/250 kB | 102/305 kB | 32/621 kB
+Progress (3): 208/250 kB | 102/305 kB | 32/621 kB
+Progress (3): 208/250 kB | 106/305 kB | 32/621 kB
+Progress (3): 212/250 kB | 106/305 kB | 32/621 kB
+Progress (3): 212/250 kB | 110/305 kB | 32/621 kB
+Progress (3): 212/250 kB | 114/305 kB | 32/621 kB
+Progress (3): 217/250 kB | 114/305 kB | 32/621 kB
+Progress (3): 221/250 kB | 114/305 kB | 32/621 kB
+Progress (3): 221/250 kB | 118/305 kB | 32/621 kB
+Progress (3): 225/250 kB | 118/305 kB | 32/621 kB
+Progress (3): 225/250 kB | 122/305 kB | 32/621 kB
+Progress (3): 229/250 kB | 122/305 kB | 32/621 kB
+Progress (3): 229/250 kB | 126/305 kB | 32/621 kB
+Progress (3): 229/250 kB | 131/305 kB | 32/621 kB
+Progress (3): 233/250 kB | 131/305 kB | 32/621 kB
+Progress (3): 237/250 kB | 131/305 kB | 32/621 kB
+Progress (3): 237/250 kB | 135/305 kB | 32/621 kB
+Progress (3): 241/250 kB | 135/305 kB | 32/621 kB
+Progress (3): 241/250 kB | 139/305 kB | 32/621 kB
+Progress (3): 245/250 kB | 139/305 kB | 32/621 kB
+Progress (3): 245/250 kB | 143/305 kB | 32/621 kB
+Progress (3): 245/250 kB | 147/305 kB | 32/621 kB
+Progress (3): 249/250 kB | 147/305 kB | 32/621 kB
+Progress (3): 250 kB | 147/305 kB | 32/621 kB    
+Progress (3): 250 kB | 151/305 kB | 32/621 kB
+Progress (3): 250 kB | 155/305 kB | 32/621 kB
+Progress (3): 250 kB | 159/305 kB | 32/621 kB
+Progress (3): 250 kB | 163/305 kB | 32/621 kB
+Progress (3): 250 kB | 167/305 kB | 32/621 kB
+Progress (3): 250 kB | 171/305 kB | 32/621 kB
+Progress (3): 250 kB | 176/305 kB | 32/621 kB
+Progress (3): 250 kB | 180/305 kB | 32/621 kB
+Progress (3): 250 kB | 184/305 kB | 32/621 kB
+Progress (3): 250 kB | 188/305 kB | 32/621 kB
+Progress (3): 250 kB | 192/305 kB | 32/621 kB
+Progress (3): 250 kB | 196/305 kB | 32/621 kB
+Progress (3): 250 kB | 196/305 kB | 36/621 kB
+Progress (3): 250 kB | 196/305 kB | 40/621 kB
+Progress (3): 250 kB | 196/305 kB | 45/621 kB
+Progress (3): 250 kB | 196/305 kB | 49/621 kB
+Progress (3): 250 kB | 196/305 kB | 53/621 kB
+Progress (3): 250 kB | 196/305 kB | 57/621 kB
+Progress (3): 250 kB | 196/305 kB | 61/621 kB
+Progress (3): 250 kB | 196/305 kB | 65/621 kB
+Progress (3): 250 kB | 196/305 kB | 69/621 kB
+Progress (3): 250 kB | 196/305 kB | 73/621 kB
+Progress (3): 250 kB | 196/305 kB | 77/621 kB
+Progress (3): 250 kB | 196/305 kB | 81/621 kB
+Progress (3): 250 kB | 200/305 kB | 81/621 kB
+Progress (3): 250 kB | 200/305 kB | 85/621 kB
+Progress (3): 250 kB | 204/305 kB | 85/621 kB
+Progress (3): 250 kB | 204/305 kB | 90/621 kB
+Progress (3): 250 kB | 208/305 kB | 90/621 kB
+Progress (3): 250 kB | 208/305 kB | 94/621 kB
+Progress (3): 250 kB | 212/305 kB | 94/621 kB
+Progress (3): 250 kB | 212/305 kB | 98/621 kB
+Progress (4): 250 kB | 212/305 kB | 98/621 kB | 2.2/500 kB
+Progress (4): 250 kB | 212/305 kB | 98/621 kB | 5.0/500 kB
+Progress (4): 250 kB | 212/305 kB | 98/621 kB | 7.7/500 kB
+Progress (4): 250 kB | 212/305 kB | 98/621 kB | 10/500 kB 
+Progress (4): 250 kB | 212/305 kB | 98/621 kB | 13/500 kB
+Progress (4): 250 kB | 212/305 kB | 98/621 kB | 16/500 kB
+Progress (4): 250 kB | 212/305 kB | 98/621 kB | 19/500 kB
+Progress (4): 250 kB | 212/305 kB | 98/621 kB | 21/500 kB
+Progress (4): 250 kB | 212/305 kB | 98/621 kB | 24/500 kB
+Progress (4): 250 kB | 212/305 kB | 98/621 kB | 27/500 kB
+Progress (4): 250 kB | 212/305 kB | 98/621 kB | 30/500 kB
+Progress (4): 250 kB | 212/305 kB | 98/621 kB | 32/500 kB
+Progress (4): 250 kB | 212/305 kB | 98/621 kB | 36/500 kB
+Progress (4): 250 kB | 212/305 kB | 98/621 kB | 40/500 kB
+Progress (4): 250 kB | 212/305 kB | 98/621 kB | 45/500 kB
+Progress (4): 250 kB | 212/305 kB | 98/621 kB | 49/500 kB
+Progress (4): 250 kB | 212/305 kB | 98/621 kB | 53/500 kB
+Progress (4): 250 kB | 212/305 kB | 98/621 kB | 57/500 kB
+Progress (4): 250 kB | 212/305 kB | 98/621 kB | 61/500 kB
+Progress (4): 250 kB | 212/305 kB | 98/621 kB | 65/500 kB
+Progress (4): 250 kB | 212/305 kB | 98/621 kB | 69/500 kB
+Progress (4): 250 kB | 212/305 kB | 98/621 kB | 73/500 kB
+Progress (4): 250 kB | 212/305 kB | 98/621 kB | 77/500 kB
+Progress (4): 250 kB | 217/305 kB | 98/621 kB | 77/500 kB
+Progress (4): 250 kB | 217/305 kB | 98/621 kB | 81/500 kB
+Progress (4): 250 kB | 221/305 kB | 98/621 kB | 81/500 kB
+Progress (4): 250 kB | 225/305 kB | 98/621 kB | 81/500 kB
+Progress (4): 250 kB | 225/305 kB | 98/621 kB | 85/500 kB
+Progress (4): 250 kB | 229/305 kB | 98/621 kB | 85/500 kB
+Progress (4): 250 kB | 229/305 kB | 98/621 kB | 90/500 kB
+Progress (4): 250 kB | 229/305 kB | 98/621 kB | 94/500 kB
+Progress (4): 250 kB | 229/305 kB | 98/621 kB | 98/500 kB
+Progress (4): 250 kB | 229/305 kB | 98/621 kB | 102/500 kB
+Progress (4): 250 kB | 229/305 kB | 98/621 kB | 106/500 kB
+Progress (4): 250 kB | 229/305 kB | 98/621 kB | 110/500 kB
+Progress (4): 250 kB | 229/305 kB | 98/621 kB | 114/500 kB
+Progress (4): 250 kB | 229/305 kB | 98/621 kB | 118/500 kB
+Progress (4): 250 kB | 229/305 kB | 98/621 kB | 122/500 kB
+Progress (4): 250 kB | 229/305 kB | 98/621 kB | 126/500 kB
+Progress (4): 250 kB | 229/305 kB | 98/621 kB | 131/500 kB
+Progress (4): 250 kB | 229/305 kB | 98/621 kB | 135/500 kB
+Progress (4): 250 kB | 229/305 kB | 98/621 kB | 139/500 kB
+Progress (4): 250 kB | 229/305 kB | 98/621 kB | 143/500 kB
+Progress (4): 250 kB | 229/305 kB | 98/621 kB | 147/500 kB
+Progress (4): 250 kB | 229/305 kB | 98/621 kB | 151/500 kB
+Progress (4): 250 kB | 229/305 kB | 98/621 kB | 155/500 kB
+Progress (4): 250 kB | 229/305 kB | 98/621 kB | 159/500 kB
+Progress (4): 250 kB | 229/305 kB | 98/621 kB | 163/500 kB
+Progress (4): 250 kB | 229/305 kB | 98/621 kB | 167/500 kB
+Progress (4): 250 kB | 229/305 kB | 98/621 kB | 171/500 kB
+Progress (4): 250 kB | 229/305 kB | 98/621 kB | 176/500 kB
+Progress (4): 250 kB | 229/305 kB | 98/621 kB | 180/500 kB
+Progress (4): 250 kB | 229/305 kB | 102/621 kB | 180/500 kB
+Progress (4): 250 kB | 229/305 kB | 106/621 kB | 180/500 kB
+Progress (4): 250 kB | 233/305 kB | 106/621 kB | 180/500 kB
+Progress (4): 250 kB | 233/305 kB | 106/621 kB | 184/500 kB
+Progress (4): 250 kB | 233/305 kB | 110/621 kB | 184/500 kB
+Progress (4): 250 kB | 233/305 kB | 110/621 kB | 188/500 kB
+Progress (4): 250 kB | 237/305 kB | 110/621 kB | 188/500 kB
+Progress (4): 250 kB | 237/305 kB | 110/621 kB | 192/500 kB
+Progress (4): 250 kB | 237/305 kB | 114/621 kB | 192/500 kB
+Progress (4): 250 kB | 237/305 kB | 114/621 kB | 196/500 kB
+Progress (4): 250 kB | 241/305 kB | 114/621 kB | 196/500 kB
+Progress (4): 250 kB | 241/305 kB | 114/621 kB | 200/500 kB
+Progress (4): 250 kB | 245/305 kB | 114/621 kB | 200/500 kB
+Progress (4): 250 kB | 245/305 kB | 114/621 kB | 204/500 kB
+Progress (4): 250 kB | 245/305 kB | 114/621 kB | 208/500 kB
+Progress (4): 250 kB | 245/305 kB | 114/621 kB | 212/500 kB
+Progress (4): 250 kB | 249/305 kB | 114/621 kB | 212/500 kB
+Progress (4): 250 kB | 253/305 kB | 114/621 kB | 212/500 kB
+Progress (4): 250 kB | 258/305 kB | 114/621 kB | 212/500 kB
+Progress (4): 250 kB | 262/305 kB | 114/621 kB | 212/500 kB
+Progress (4): 250 kB | 262/305 kB | 118/621 kB | 212/500 kB
+Progress (4): 250 kB | 266/305 kB | 118/621 kB | 212/500 kB
+Progress (4): 250 kB | 266/305 kB | 122/621 kB | 212/500 kB
+Progress (4): 250 kB | 270/305 kB | 122/621 kB | 212/500 kB
+Progress (4): 250 kB | 270/305 kB | 126/621 kB | 212/500 kB
+Progress (4): 250 kB | 274/305 kB | 126/621 kB | 212/500 kB
+Progress (4): 250 kB | 274/305 kB | 131/621 kB | 212/500 kB
+Progress (4): 250 kB | 278/305 kB | 131/621 kB | 212/500 kB
+Progress (4): 250 kB | 282/305 kB | 131/621 kB | 212/500 kB
+Progress (4): 250 kB | 282/305 kB | 135/621 kB | 212/500 kB
+Progress (4): 250 kB | 286/305 kB | 135/621 kB | 212/500 kB
+Progress (4): 250 kB | 286/305 kB | 139/621 kB | 212/500 kB
+Progress (4): 250 kB | 290/305 kB | 139/621 kB | 212/500 kB
+Progress (4): 250 kB | 290/305 kB | 143/621 kB | 212/500 kB
+Progress (4): 250 kB | 294/305 kB | 143/621 kB | 212/500 kB
+Progress (4): 250 kB | 294/305 kB | 147/621 kB | 212/500 kB
+Progress (4): 250 kB | 298/305 kB | 147/621 kB | 212/500 kB
+Progress (4): 250 kB | 303/305 kB | 147/621 kB | 212/500 kB
+Progress (4): 250 kB | 303/305 kB | 151/621 kB | 212/500 kB
+Progress (4): 250 kB | 305 kB | 151/621 kB | 212/500 kB    
+Progress (4): 250 kB | 305 kB | 155/621 kB | 212/500 kB
+Progress (4): 250 kB | 305 kB | 159/621 kB | 212/500 kB
+Progress (4): 250 kB | 305 kB | 163/621 kB | 212/500 kB
+Progress (4): 250 kB | 305 kB | 167/621 kB | 212/500 kB
+Progress (4): 250 kB | 305 kB | 171/621 kB | 212/500 kB
+Progress (4): 250 kB | 305 kB | 176/621 kB | 212/500 kB
+Progress (4): 250 kB | 305 kB | 180/621 kB | 212/500 kB
+Progress (4): 250 kB | 305 kB | 184/621 kB | 212/500 kB
+Progress (4): 250 kB | 305 kB | 188/621 kB | 212/500 kB
+Progress (4): 250 kB | 305 kB | 192/621 kB | 212/500 kB
+                                                       
+Downloaded from central: https://repo.maven.apache.org/maven2/net/sf/jtidy/jtidy/r938/jtidy-r938.jar (250 kB at 1.0 MB/s)
+Progress (3): 305 kB | 196/621 kB | 212/500 kB
+Progress (3): 305 kB | 200/621 kB | 212/500 kB
+Progress (3): 305 kB | 204/621 kB | 212/500 kB
+Progress (3): 305 kB | 208/621 kB | 212/500 kB
+Progress (3): 305 kB | 212/621 kB | 212/500 kB
+Progress (3): 305 kB | 217/621 kB | 212/500 kB
+Progress (3): 305 kB | 221/621 kB | 212/500 kB
+Progress (3): 305 kB | 225/621 kB | 212/500 kB
+Progress (3): 305 kB | 229/621 kB | 212/500 kB
+Progress (3): 305 kB | 233/621 kB | 212/500 kB
+Progress (3): 305 kB | 237/621 kB | 212/500 kB
+Progress (3): 305 kB | 241/621 kB | 212/500 kB
+Progress (3): 305 kB | 245/621 kB | 212/500 kB
+Progress (3): 305 kB | 249/621 kB | 212/500 kB
+Progress (3): 305 kB | 253/621 kB | 212/500 kB
+Progress (3): 305 kB | 258/621 kB | 212/500 kB
+Progress (3): 305 kB | 262/621 kB | 212/500 kB
+Progress (3): 305 kB | 266/621 kB | 212/500 kB
+Progress (3): 305 kB | 270/621 kB | 212/500 kB
+Progress (3): 305 kB | 274/621 kB | 212/500 kB
+Progress (3): 305 kB | 278/621 kB | 212/500 kB
+Progress (3): 305 kB | 282/621 kB | 212/500 kB
+Progress (3): 305 kB | 286/621 kB | 212/500 kB
+Progress (3): 305 kB | 290/621 kB | 212/500 kB
+Progress (3): 305 kB | 294/621 kB | 212/500 kB
+Progress (3): 305 kB | 298/621 kB | 212/500 kB
+Progress (3): 305 kB | 303/621 kB | 212/500 kB
+Progress (3): 305 kB | 307/621 kB | 212/500 kB
+Progress (3): 305 kB | 311/621 kB | 212/500 kB
+Progress (3): 305 kB | 315/621 kB | 212/500 kB
+Progress (3): 305 kB | 319/621 kB | 212/500 kB
+Progress (3): 305 kB | 323/621 kB | 212/500 kB
+Progress (3): 305 kB | 327/621 kB | 212/500 kB
+Progress (3): 305 kB | 331/621 kB | 212/500 kB
+Progress (3): 305 kB | 335/621 kB | 212/500 kB
+Progress (3): 305 kB | 339/621 kB | 212/500 kB
+Progress (3): 305 kB | 344/621 kB | 212/500 kB
+Progress (3): 305 kB | 348/621 kB | 212/500 kB
+Progress (3): 305 kB | 352/621 kB | 212/500 kB
+Progress (3): 305 kB | 356/621 kB | 212/500 kB
+Progress (3): 305 kB | 360/621 kB | 212/500 kB
+Progress (3): 305 kB | 364/621 kB | 212/500 kB
+Progress (3): 305 kB | 368/621 kB | 212/500 kB
+Progress (3): 305 kB | 372/621 kB | 212/500 kB
+Progress (3): 305 kB | 376/621 kB | 212/500 kB
+Progress (3): 305 kB | 380/621 kB | 212/500 kB
+Progress (3): 305 kB | 384/621 kB | 212/500 kB
+Progress (3): 305 kB | 389/621 kB | 212/500 kB
+Progress (3): 305 kB | 393/621 kB | 212/500 kB
+                                              
+Downloaded from central: https://repo.maven.apache.org/maven2/org/jdom/jdom2/2.0.6/jdom2-2.0.6.jar (305 kB at 1.1 MB/s)
+Progress (2): 397/621 kB | 212/500 kB
+Progress (2): 401/621 kB | 212/500 kB
+Progress (2): 405/621 kB | 212/500 kB
+Progress (2): 409/621 kB | 212/500 kB
+Progress (2): 413/621 kB | 212/500 kB
+Progress (2): 417/621 kB | 212/500 kB
+Progress (2): 421/621 kB | 212/500 kB
+Progress (2): 425/621 kB | 212/500 kB
+Progress (2): 430/621 kB | 212/500 kB
+Progress (2): 434/621 kB | 212/500 kB
+Progress (2): 438/621 kB | 212/500 kB
+Progress (2): 442/621 kB | 212/500 kB
+Progress (2): 446/621 kB | 212/500 kB
+Progress (2): 450/621 kB | 212/500 kB
+Progress (2): 454/621 kB | 212/500 kB
+Progress (2): 458/621 kB | 212/500 kB
+Progress (2): 462/621 kB | 212/500 kB
+Progress (2): 466/621 kB | 212/500 kB
+Progress (2): 470/621 kB | 212/500 kB
+Progress (2): 475/621 kB | 212/500 kB
+Progress (2): 479/621 kB | 212/500 kB
+Progress (2): 483/621 kB | 212/500 kB
+Progress (2): 487/621 kB | 212/500 kB
+Progress (2): 491/621 kB | 212/500 kB
+Progress (2): 495/621 kB | 212/500 kB
+Progress (2): 499/621 kB | 212/500 kB
+Progress (2): 503/621 kB | 212/500 kB
+Progress (2): 507/621 kB | 212/500 kB
+Progress (2): 511/621 kB | 212/500 kB
+Progress (2): 516/621 kB | 212/500 kB
+Progress (2): 520/621 kB | 212/500 kB
+Progress (2): 524/621 kB | 212/500 kB
+Progress (2): 528/621 kB | 212/500 kB
+Progress (2): 532/621 kB | 212/500 kB
+Progress (2): 536/621 kB | 212/500 kB
+Progress (2): 540/621 kB | 212/500 kB
+Progress (2): 544/621 kB | 212/500 kB
+Progress (2): 548/621 kB | 212/500 kB
+Progress (2): 552/621 kB | 212/500 kB
+Progress (2): 557/621 kB | 212/500 kB
+Progress (2): 561/621 kB | 212/500 kB
+Progress (2): 565/621 kB | 212/500 kB
+Progress (2): 569/621 kB | 212/500 kB
+Progress (2): 573/621 kB | 212/500 kB
+Progress (2): 577/621 kB | 212/500 kB
+Progress (2): 581/621 kB | 212/500 kB
+Progress (2): 585/621 kB | 212/500 kB
+Progress (2): 589/621 kB | 212/500 kB
+Progress (2): 593/621 kB | 212/500 kB
+Progress (2): 597/621 kB | 212/500 kB
+Progress (2): 602/621 kB | 212/500 kB
+Progress (2): 606/621 kB | 212/500 kB
+Progress (2): 610/621 kB | 212/500 kB
+Progress (2): 614/621 kB | 212/500 kB
+Progress (2): 618/621 kB | 212/500 kB
+Progress (2): 621 kB | 212/500 kB    
+                                 
+Downloaded from central: https://repo.maven.apache.org/maven2/com/thoughtworks/xstream/xstream/1.4.11.1/xstream-1.4.11.1.jar (621 kB at 1.9 MB/s)
+Progress (1): 217/500 kB
+Progress (1): 221/500 kB
+Progress (1): 225/500 kB
+Progress (1): 229/500 kB
+Progress (1): 233/500 kB
+Progress (1): 237/500 kB
+Progress (1): 241/500 kB
+Progress (1): 245/500 kB
+Progress (1): 249/500 kB
+Progress (1): 253/500 kB
+Progress (1): 258/500 kB
+Progress (1): 262/500 kB
+Progress (1): 266/500 kB
+Progress (1): 270/500 kB
+Progress (1): 274/500 kB
+Progress (1): 278/500 kB
+Progress (1): 282/500 kB
+Progress (1): 286/500 kB
+Progress (1): 290/500 kB
+Progress (1): 294/500 kB
+Progress (1): 298/500 kB
+Progress (1): 303/500 kB
+Progress (1): 307/500 kB
+Progress (1): 311/500 kB
+Progress (1): 315/500 kB
+Progress (1): 319/500 kB
+Progress (1): 323/500 kB
+Progress (1): 327/500 kB
+Progress (1): 331/500 kB
+Progress (1): 335/500 kB
+Progress (1): 339/500 kB
+Progress (1): 344/500 kB
+Progress (1): 348/500 kB
+Progress (1): 352/500 kB
+Progress (1): 356/500 kB
+Progress (1): 360/500 kB
+Progress (1): 364/500 kB
+Progress (1): 368/500 kB
+Progress (1): 372/500 kB
+Progress (1): 376/500 kB
+Progress (1): 380/500 kB
+Progress (1): 384/500 kB
+Progress (1): 389/500 kB
+Progress (1): 393/500 kB
+Progress (1): 397/500 kB
+Progress (1): 401/500 kB
+Progress (1): 405/500 kB
+Progress (1): 409/500 kB
+Progress (1): 413/500 kB
+Progress (1): 417/500 kB
+Progress (1): 421/500 kB
+Progress (1): 425/500 kB
+Progress (1): 430/500 kB
+Progress (1): 434/500 kB
+Progress (1): 438/500 kB
+Progress (1): 442/500 kB
+Progress (1): 446/500 kB
+Progress (1): 450/500 kB
+Progress (1): 454/500 kB
+Progress (1): 458/500 kB
+Progress (1): 462/500 kB
+Progress (1): 466/500 kB
+Progress (1): 471/500 kB
+Progress (1): 475/500 kB
+Progress (1): 479/500 kB
+Progress (1): 483/500 kB
+Progress (1): 487/500 kB
+Progress (1): 491/500 kB
+Progress (1): 495/500 kB
+Progress (1): 499/500 kB
+Progress (1): 500 kB    
+                    
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/commons/commons-lang3/3.7/commons-lang3-3.7.jar (500 kB at 1.0 MB/s)
+[INFO] 
+Effective POMs, after inheritance, interpolation, and profiles are applied:
+
+<?xml version="1.0" encoding="Cp1252"?>
+<!-- ====================================================================== -->
+<!--                                                                        -->
+<!-- Generated by Maven Help Plugin on 2020-04-17T13:50:34-07:00            -->
+<!-- See: http://maven.apache.org/plugins/maven-help-plugin/                -->
+<!--                                                                        -->
+<!-- ====================================================================== -->
+<!-- ====================================================================== -->
+<!--                                                                        -->
+<!-- Effective POM for project                                              -->
+<!-- 'com.azure:azure-data-appconfiguration:jar:1.2.0-beta.1'               -->
+<!--                                                                        -->
+<!-- ====================================================================== -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>1.7.0</version>
+    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
+  </parent>
+  <groupId>com.azure</groupId>
+  <artifactId>azure-data-appconfiguration</artifactId>
+  <version>1.2.0-beta.1</version>
+  <name>Microsoft Azure client library for App Configuration</name>
+  <description>This package contains the Microsoft Azure App Configuration client library.</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
+  <organization>
+    <name>Microsoft Corporation</name>
+    <url>http://microsoft.com</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>The MIT License (MIT)</name>
+      <url>http://opensource.org/licenses/MIT</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>microsoft</id>
+      <name>Microsoft Corporation</name>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
+    <developerConnection />
+    <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
+  </scm>
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/Azure/azure-sdk-for-java/issues</url>
+  </issueManagement>
+  <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <name>Sonatype Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+    </snapshotRepository>
+    <site>
+      <id>azure-java-build-docs</id>
+      <url>https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/site/azure-data-appconfiguration</url>
+    </site>
+  </distributionManagement>
+  <properties>
+    <alternativePlaybackServerPort>11081</alternativePlaybackServerPort>
+    <build.context>azure-client-sdk-parent</build.context>
+    <issues.url>https://github.com/Azure/azure-sdk-for-java/issues</issues.url>
+    <jacoco.min.branchcoverage>0.30</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.40</jacoco.min.linecoverage>
+    <legal>[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.</legal>
+    <packageOutputDirectory>C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration\target</packageOutputDirectory>
+    <playbackServerPort>11080</playbackServerPort>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <site.url>https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java</site.url>
+    <testMode>playback</testMode>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>1.4.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-netty</artifactId>
+      <version>1.5.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-test</artifactId>
+      <version>1.2.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-okhttp</artifactId>
+      <version>1.2.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.4.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.4.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
+      <version>5.4.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-library</artifactId>
+      <version>2.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-test</artifactId>
+      <version>3.3.3.RELEASE</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.0.4</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-test-watcher</artifactId>
+      <version>1.0.0-beta.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jacoco</groupId>
+      <artifactId>org.jacoco.agent</artifactId>
+      <version>0.8.5</version>
+      <classifier>runtime</classifier>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+  <repositories>
+    <repository>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>daily</updatePolicy>
+      </snapshots>
+      <id>ossrh</id>
+      <name>Sonatype Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+    </repository>
+    <repository>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <id>azure-sdk-for-java</id>
+      <url>https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1</url>
+    </repository>
+    <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>central</id>
+      <name>Central Repository</name>
+      <url>https://repo.maven.apache.org/maven2</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
+      <id>ossrh</id>
+      <name>Sonatype Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+    </pluginRepository>
+    <pluginRepository>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>central</id>
+      <name>Central Repository</name>
+      <url>https://repo.maven.apache.org/maven2</url>
+    </pluginRepository>
+  </pluginRepositories>
+  <build>
+    <sourceDirectory>C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration\src\main\java</sourceDirectory>
+    <scriptSourceDirectory>C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration\src\main\scripts</scriptSourceDirectory>
+    <testSourceDirectory>C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration\src\test\java</testSourceDirectory>
+    <outputDirectory>C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration\target\classes</outputDirectory>
+    <testOutputDirectory>C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration\target\test-classes</testOutputDirectory>
+    <resources>
+      <resource>
+        <filtering>true</filtering>
+        <directory>C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\sdk\appconfiguration\azure-data-appconfiguration\src\main\resources</directory>
+      </resource>
+    </resources>
+    <testResources>
+      <testResource>
+        <directory>C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration\src\test\resources</directory>
+      </testResource>
+    </testResources>
+    <directory>C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration\target</directory>
+    <finalName>azure-data-appconfiguration-1.2.0-beta.1</finalName>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <artifactId>maven-antrun-plugin</artifactId>
+          <version>1.3</version>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <version>3.0.0</version>
+          <executions>
+            <execution>
+              <id>compile-samples-source</id>
+              <phase>generate-test-sources</phase>
+              <goals>
+                <goal>add-test-source</goal>
+              </goals>
+              <configuration>
+                <sources>
+                  <source>src/samples/java</source>
+                </sources>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <version>3.2.0</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>2.8</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-eclipse-plugin</artifactId>
+          <version>2.8</version>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <version>1.2.1</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>2.4.3</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>3.1.1</version>
+          <configuration>
+            <source>1.8</source>
+            <doctitle>Azure SDK for Java Reference Documentation</doctitle>
+            <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
+            <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt;site
+              for more Java documentation, including quick starts, tutorials, and code samples.</footer>
+            <linksource>false</linksource>
+            <excludePackageNames>*.impl*:
+              *.implementation*:
+              com.azure.tools.checkstyle*:
+              com.azure.core.test*:
+              com.azure.endtoend*:
+              com.azure.perf*</excludePackageNames>
+            <sourceFileExcludes>
+              <sourceFileExclude>com.azure.cosmos.*BridgeInternal.java</sourceFileExclude>
+              <sourceFileExclude>module-info.java</sourceFileExclude>
+            </sourceFileExcludes>
+            <groups>
+              <group>
+                <title>Azure Core</title>
+                <packages>com.azure.core:com.azure.core.annotation:com.azure.core.credentials:com.azure.core.exception:com.azure.core.http*:com.azure.core.configuration:com.azure.core.util*:com.azure.core.credential:com.azure.core.cryptography</packages>
+              </group>
+              <group>
+                <title>Azure Core - AMQP</title>
+                <packages>com.azure.core.amqp*</packages>
+              </group>
+              <group>
+                <title>Azure Core - Authentication</title>
+                <packages>com.azure.core.auth*</packages>
+              </group>
+              <group>
+                <title>Azure Core - HTTP - Netty</title>
+                <packages>com.azure.core.http.netty*</packages>
+              </group>
+              <group>
+                <title>Azure Core - HTTP - OkHttp</title>
+                <packages>com.azure.core.http.okhttp*</packages>
+              </group>
+              <group>
+                <title>Azure Core - Management</title>
+                <packages>com.azure.core.management*</packages>
+              </group>
+              <group>
+                <title>Azure App Configuration</title>
+                <packages>com.azure.data.appconfiguration*</packages>
+              </group>
+              <group>
+                <title>Azure Cosmos</title>
+                <packages>com.azure.cosmos*</packages>
+              </group>
+              <group>
+                <title>Azure Event Hubs</title>
+                <packages>com.azure.messaging.eventhubs*</packages>
+              </group>
+              <group>
+                <title>Azure Form Recognizer</title>
+                <packages>com.azure.ai.formrecognizer*</packages>
+              </group>
+              <group>
+                <title>Azure Identity</title>
+                <packages>com.azure.identity*</packages>
+              </group>
+              <group>
+                <title>Azure Key Vault</title>
+                <packages>com.azure.security.keyvault*</packages>
+              </group>
+              <group>
+                <title>Azure Search</title>
+                <packages>com.azure.search*</packages>
+              </group>
+              <group>
+                <title>Azure Service Bus</title>
+                <packages>com.azure.messaging.servicebus*</packages>
+              </group>
+              <group>
+                <title>Azure Storage - Common</title>
+                <packages>com.azure.storage.common*</packages>
+              </group>
+              <group>
+                <title>Azure Storage - Blobs</title>
+                <packages>com.azure.storage.blob*</packages>
+              </group>
+              <group>
+                <title>Azure Storage Blob - Batch</title>
+                <packages>com.azure.storage.blob.batch*</packages>
+              </group>
+              <group>
+                <title>Azure Storage Blobs - Cryptography</title>
+                <packages>com.azure.storage.blob.cryptography*</packages>
+              </group>
+              <group>
+                <title>Azure Storage Blobs - NIO</title>
+                <packages>com.azure.storage.blob.nio*</packages>
+              </group>
+              <group>
+                <title>Azure Storage - Files</title>
+                <packages>com.azure.storage.file*</packages>
+              </group>
+              <group>
+                <title>Azure Storage Files - Data Lake</title>
+                <packages>com.azure.storage.file.datalake*</packages>
+              </group>
+              <group>
+                <title>Azure Storage - Queues</title>
+                <packages>com.azure.storage.queue*</packages>
+              </group>
+              <group>
+                <title>Azure Telemetry</title>
+                <title>Azure Telemetry - OpenTelemetry</title>
+                <packages>com.azure.core.tracing*</packages>
+              </group>
+              <group>
+                <title>Azure Text Analytics</title>
+                <packages>com.azure.ai.textanalytics*</packages>
+              </group>
+            </groups>
+            <links>
+              <link>https://docs.oracle.com/javase/8/docs/api/</link>
+              <link>https://projectreactor.io/docs/core/release/api/</link>
+              <link>https://netty.io/4.1/api/</link>
+              <link>http://reactivex.io/RxJava/javadoc/</link>
+            </links>
+            <isOffline>false</isOffline>
+            <doclet>org.apidesign.javadoc.codesnippet.Doclet</doclet>
+            <docletArtifact>
+              <groupId>org.apidesign.javadoc</groupId>
+              <artifactId>codesnippet-doclet</artifactId>
+              <version>0.53</version>
+            </docletArtifact>
+            <additionalOptions>
+              <additionalOption>-maxLineLength 120</additionalOption>
+              <additionalOption>-snippetpath C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration/src/samples/java</additionalOption>
+              <additionalOption>-suppressMissingLinkWarnings</additionalOption>
+            </additionalOptions>
+            <failOnError>true</failOnError>
+            <failOnWarnings>true</failOnWarnings>
+            <doclint>all</doclint>
+            <quiet>true</quiet>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>com.github.spotbugs</groupId>
+          <artifactId>spotbugs-maven-plugin</artifactId>
+          <version>3.1.12.2</version>
+          <dependencies>
+            <dependency>
+              <groupId>com.azure</groupId>
+              <artifactId>sdk-build-tools</artifactId>
+              <version>1.0.0</version>
+            </dependency>
+            <dependency>
+              <groupId>com.github.spotbugs</groupId>
+              <artifactId>spotbugs</artifactId>
+              <version>4.0.0-beta3</version>
+            </dependency>
+          </dependencies>
+          <configuration>
+            <effort>max</effort>
+            <threshold>Low</threshold>
+            <xmlOutput>true</xmlOutput>
+            <spotbugsXmlOutputDirectory>C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration\target/spotbugs</spotbugsXmlOutputDirectory>
+            <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
+            <failOnError>true</failOnError>
+            <fork>true</fork>
+            <includeTests>false</includeTests>
+          </configuration>
+        </plugin>
+        <plugin>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <version>3.1.0</version>
+          <configuration>
+            <failsOnError>true</failsOnError>
+            <failOnViolation>true</failOnViolation>
+          </configuration>
+        </plugin>
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>3.0.0-M4</version>
+          <configuration>
+            <useSystemClassLoader>false</useSystemClassLoader>
+            <properties>
+              <configurationParameters>junit.jupiter.extensions.autodetection.enabled = true</configurationParameters>
+            </properties>
+            <argLine>${surefireArgLine}</argLine>
+            <includes>
+              <include>**/Test*.java</include>
+              <include>**/*Test.java</include>
+              <include>**/*Tests.java</include>
+              <include>**/*TestCase.java</include>
+            </includes>
+            <systemPropertyVariables>
+              <configurationAPIRuntimeFound>runtimeConfiguration</configurationAPIRuntimeFound>
+              <configurationAPIUseRuntimeFirst>runtimeConfiguration</configurationAPIUseRuntimeFirst>
+            </systemPropertyVariables>
+            <environmentVariables>
+              <test.mode>playback</test.mode>
+              <KEYVAULT_VAULTURI>https://azure-keyvault-3.vault.azure.net</KEYVAULT_VAULTURI>
+              <KEYVAULT_VAULTURI_ALT>https://azure-keyvault-2.vault.azure.net</KEYVAULT_VAULTURI_ALT>
+              <configurationAPIEnvironmentFound>environmentConfiguration</configurationAPIEnvironmentFound>
+              <configurationAPIUseRuntimeFirst>environmentConfiguration</configurationAPIUseRuntimeFirst>
+            </environmentVariables>
+          </configuration>
+        </plugin>
+        <plugin>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>2.5.3</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>3.0.0</version>
+          <configuration>
+            <excludeDefaultDirectories>true</excludeDefaultDirectories>
+            <filesets>
+              <fileset>
+                <directory>target</directory>
+                <followSymlinks>false</followSymlinks>
+                <includes>
+                  <include>**</include>
+                </includes>
+                <excludes>
+                  <exclude>test-classes/session-records/</exclude>
+                </excludes>
+              </fileset>
+            </filesets>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>com.googlecode.addjars-maven-plugin</groupId>
+                    <artifactId>addjars-maven-plugin</artifactId>
+                    <versionRange>[1.0.5,)</versionRange>
+                    <goals>
+                      <goal>add-jars</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore />
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
+        </plugin>
+        <plugin>
+          <artifactId>maven-failsafe-plugin</artifactId>
+          <version>2.22.0</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>integration-test</goal>
+                <goal>verify</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.1.2</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>3.7.1</version>
+          <configuration>
+            <relativizeDecorationLinks>false</relativizeDecorationLinks>
+          </configuration>
+        </plugin>
+        <plugin>
+          <artifactId>maven-project-info-reports-plugin</artifactId>
+          <version>3.0.0</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
+        <executions>
+          <execution>
+            <id>default-compile</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <configuration>
+              <release>11</release>
+              <testRelease>11</testRelease>
+              <compilerArgs>
+                <arg>-proc:none</arg>
+                <arg>-Xlint:cast</arg>
+                <arg>-Xlint:classfile</arg>
+                <arg>-Xlint:dep-ann</arg>
+                <arg>-Xlint:divzero</arg>
+                <arg>-Xlint:empty</arg>
+                <arg>-Xlint:fallthrough</arg>
+                <arg>-Xlint:finally</arg>
+                <arg>-Xlint:options</arg>
+                <arg>-Xlint:overrides</arg>
+                <arg>-Xlint:path</arg>
+                <arg>-Xlint:rawtypes</arg>
+                <arg>-Xlint:static</arg>
+                <arg>-Xlint:try</arg>
+                <arg>-Xlint:unchecked</arg>
+                <arg>-Xlint:varargs</arg>
+                <arg>-Xlint:-module</arg>
+                <arg>-Xlint:-requires-transitive-automatic</arg>
+              </compilerArgs>
+              <showWarnings>true</showWarnings>
+              <failOnWarning>true</failOnWarning>
+            </configuration>
+          </execution>
+          <execution>
+            <id>default-testCompile</id>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>testCompile</goal>
+            </goals>
+            <configuration>
+              <testRelease>11</testRelease>
+              <compilerArgs>
+                <arg>-proc:none</arg>
+                <arg>-Xlint:cast</arg>
+                <arg>-Xlint:classfile</arg>
+                <arg>-Xlint:dep-ann</arg>
+                <arg>-Xlint:divzero</arg>
+                <arg>-Xlint:empty</arg>
+                <arg>-Xlint:fallthrough</arg>
+                <arg>-Xlint:finally</arg>
+                <arg>-Xlint:options</arg>
+                <arg>-Xlint:overrides</arg>
+                <arg>-Xlint:path</arg>
+                <arg>-Xlint:rawtypes</arg>
+                <arg>-Xlint:static</arg>
+                <arg>-Xlint:try</arg>
+                <arg>-Xlint:unchecked</arg>
+                <arg>-Xlint:varargs</arg>
+                <arg>-Xlint:-module</arg>
+                <arg>-Xlint:-requires-transitive-automatic</arg>
+              </compilerArgs>
+              <showWarnings>true</showWarnings>
+              <failOnWarning>true</failOnWarning>
+            </configuration>
+          </execution>
+          <execution>
+            <id>base-compile</id>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <configuration>
+              <release>8</release>
+              <excludes>
+                <exclude>module-info.java</exclude>
+              </excludes>
+              <testRelease>11</testRelease>
+              <compilerArgs>
+                <arg>-proc:none</arg>
+                <arg>-Xlint:cast</arg>
+                <arg>-Xlint:classfile</arg>
+                <arg>-Xlint:dep-ann</arg>
+                <arg>-Xlint:divzero</arg>
+                <arg>-Xlint:empty</arg>
+                <arg>-Xlint:fallthrough</arg>
+                <arg>-Xlint:finally</arg>
+                <arg>-Xlint:options</arg>
+                <arg>-Xlint:overrides</arg>
+                <arg>-Xlint:path</arg>
+                <arg>-Xlint:rawtypes</arg>
+                <arg>-Xlint:static</arg>
+                <arg>-Xlint:try</arg>
+                <arg>-Xlint:unchecked</arg>
+                <arg>-Xlint:varargs</arg>
+                <arg>-Xlint:-module</arg>
+                <arg>-Xlint:-requires-transitive-automatic</arg>
+              </compilerArgs>
+              <showWarnings>true</showWarnings>
+              <failOnWarning>true</failOnWarning>
+            </configuration>
+          </execution>
+        </executions>
+        <configuration>
+          <testRelease>11</testRelease>
+          <compilerArgs>
+            <arg>-proc:none</arg>
+            <arg>-Xlint:cast</arg>
+            <arg>-Xlint:classfile</arg>
+            <arg>-Xlint:dep-ann</arg>
+            <arg>-Xlint:divzero</arg>
+            <arg>-Xlint:empty</arg>
+            <arg>-Xlint:fallthrough</arg>
+            <arg>-Xlint:finally</arg>
+            <arg>-Xlint:options</arg>
+            <arg>-Xlint:overrides</arg>
+            <arg>-Xlint:path</arg>
+            <arg>-Xlint:rawtypes</arg>
+            <arg>-Xlint:static</arg>
+            <arg>-Xlint:try</arg>
+            <arg>-Xlint:unchecked</arg>
+            <arg>-Xlint:varargs</arg>
+            <arg>-Xlint:-module</arg>
+            <arg>-Xlint:-requires-transitive-automatic</arg>
+          </compilerArgs>
+          <showWarnings>true</showWarnings>
+          <failOnWarning>true</failOnWarning>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>3.1.0</version>
+        <executions>
+          <execution>
+            <phase>verify</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <configLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
+              <suppressionsLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+              <headerLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
+              <propertyExpansion>samedir=</propertyExpansion>
+              <encoding>UTF-8</encoding>
+              <consoleOutput>true</consoleOutput>
+              <includeTestSourceDirectory>true</includeTestSourceDirectory>
+              <linkXRef>true</linkXRef>
+              <failsOnError>true</failsOnError>
+              <failOnViolation>true</failOnViolation>
+            </configuration>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>sdk-build-tools</artifactId>
+            <version>1.0.0</version>
+            <scope>compile</scope>
+          </dependency>
+          <dependency>
+            <groupId>com.puppycrawl.tools</groupId>
+            <artifactId>checkstyle</artifactId>
+            <version>8.29</version>
+            <scope>compile</scope>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <configLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
+          <suppressionsLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+          <headerLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
+          <propertyExpansion>samedir=</propertyExpansion>
+          <encoding>UTF-8</encoding>
+          <consoleOutput>true</consoleOutput>
+          <includeTestSourceDirectory>true</includeTestSourceDirectory>
+          <linkXRef>true</linkXRef>
+          <failsOnError>true</failsOnError>
+          <failOnViolation>true</failOnViolation>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>3.1.12.2</version>
+        <executions>
+          <execution>
+            <phase>verify</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <effort>max</effort>
+              <threshold>Low</threshold>
+              <xmlOutput>true</xmlOutput>
+              <spotbugsXmlOutputDirectory>C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration\target/spotbugs</spotbugsXmlOutputDirectory>
+              <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
+              <failOnError>true</failOnError>
+              <includeTests>false</includeTests>
+              <fork>true</fork>
+            </configuration>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>sdk-build-tools</artifactId>
+            <version>1.0.0</version>
+            <scope>compile</scope>
+          </dependency>
+          <dependency>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs</artifactId>
+            <version>4.0.0-beta3</version>
+            <scope>compile</scope>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <effort>max</effort>
+          <threshold>Low</threshold>
+          <xmlOutput>true</xmlOutput>
+          <spotbugsXmlOutputDirectory>C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration\target/spotbugs</spotbugsXmlOutputDirectory>
+          <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
+          <failOnError>true</failOnError>
+          <includeTests>false</includeTests>
+          <fork>true</fork>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>xml-maven-plugin</artifactId>
+        <version>1.0</version>
+        <executions>
+          <execution>
+            <phase>verify</phase>
+            <goals>
+              <goal>transform</goal>
+            </goals>
+            <configuration>
+              <transformationSets>
+                <transformationSet>
+                  <dir>C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration\target/spotbugs</dir>
+                  <includes>
+                    <include>spotbugsXml.xml</include>
+                  </includes>
+                  <outputDir>C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration\target/spotbugs</outputDir>
+                  <stylesheet>fancy-hist.xsl</stylesheet>
+                  <fileMappers>
+                    <fileMapper implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
+                      <targetExtension>.html</targetExtension>
+                    </fileMapper>
+                  </fileMappers>
+                </transformationSet>
+              </transformationSets>
+            </configuration>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs</artifactId>
+            <version>4.0.0-beta3</version>
+            <scope>compile</scope>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <transformationSets>
+            <transformationSet>
+              <dir>C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration\target/spotbugs</dir>
+              <includes>
+                <include>spotbugsXml.xml</include>
+              </includes>
+              <outputDir>C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration\target/spotbugs</outputDir>
+              <stylesheet>fancy-hist.xsl</stylesheet>
+              <fileMappers>
+                <fileMapper implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
+                  <targetExtension>.html</targetExtension>
+                </fileMapper>
+              </fileMappers>
+            </transformationSet>
+          </transformationSets>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.1.2</version>
+        <executions>
+          <execution>
+            <id>default-jar</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration\target</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+        <configuration>
+          <outputDirectory>C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration\target</outputDirectory>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.1.1</version>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <jarOutputDirectory>C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration\target</jarOutputDirectory>
+              <failOnError>true</failOnError>
+              <failOnWarnings>true</failOnWarnings>
+              <doclint>all</doclint>
+              <quiet>true</quiet>
+              <source>1.8</source>
+              <doctitle>Azure SDK for Java Reference Documentation</doctitle>
+              <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
+              <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt;site
+              for more Java documentation, including quick starts, tutorials, and code samples.</footer>
+              <linksource>false</linksource>
+              <excludePackageNames>*.impl*:
+              *.implementation*:
+              com.azure.tools.checkstyle*:
+              com.azure.core.test*:
+              com.azure.endtoend*:
+              com.azure.perf*</excludePackageNames>
+              <sourceFileExcludes>
+                <sourceFileExclude>com.azure.cosmos.*BridgeInternal.java</sourceFileExclude>
+                <sourceFileExclude>module-info.java</sourceFileExclude>
+              </sourceFileExcludes>
+              <groups>
+                <group>
+                  <title>Azure Core</title>
+                  <packages>com.azure.core:com.azure.core.annotation:com.azure.core.credentials:com.azure.core.exception:com.azure.core.http*:com.azure.core.configuration:com.azure.core.util*:com.azure.core.credential:com.azure.core.cryptography</packages>
+                </group>
+                <group>
+                  <title>Azure Core - AMQP</title>
+                  <packages>com.azure.core.amqp*</packages>
+                </group>
+                <group>
+                  <title>Azure Core - Authentication</title>
+                  <packages>com.azure.core.auth*</packages>
+                </group>
+                <group>
+                  <title>Azure Core - HTTP - Netty</title>
+                  <packages>com.azure.core.http.netty*</packages>
+                </group>
+                <group>
+                  <title>Azure Core - HTTP - OkHttp</title>
+                  <packages>com.azure.core.http.okhttp*</packages>
+                </group>
+                <group>
+                  <title>Azure Core - Management</title>
+                  <packages>com.azure.core.management*</packages>
+                </group>
+                <group>
+                  <title>Azure App Configuration</title>
+                  <packages>com.azure.data.appconfiguration*</packages>
+                </group>
+                <group>
+                  <title>Azure Cosmos</title>
+                  <packages>com.azure.cosmos*</packages>
+                </group>
+                <group>
+                  <title>Azure Event Hubs</title>
+                  <packages>com.azure.messaging.eventhubs*</packages>
+                </group>
+                <group>
+                  <title>Azure Form Recognizer</title>
+                  <packages>com.azure.ai.formrecognizer*</packages>
+                </group>
+                <group>
+                  <title>Azure Identity</title>
+                  <packages>com.azure.identity*</packages>
+                </group>
+                <group>
+                  <title>Azure Key Vault</title>
+                  <packages>com.azure.security.keyvault*</packages>
+                </group>
+                <group>
+                  <title>Azure Search</title>
+                  <packages>com.azure.search*</packages>
+                </group>
+                <group>
+                  <title>Azure Service Bus</title>
+                  <packages>com.azure.messaging.servicebus*</packages>
+                </group>
+                <group>
+                  <title>Azure Storage - Common</title>
+                  <packages>com.azure.storage.common*</packages>
+                </group>
+                <group>
+                  <title>Azure Storage - Blobs</title>
+                  <packages>com.azure.storage.blob*</packages>
+                </group>
+                <group>
+                  <title>Azure Storage Blob - Batch</title>
+                  <packages>com.azure.storage.blob.batch*</packages>
+                </group>
+                <group>
+                  <title>Azure Storage Blobs - Cryptography</title>
+                  <packages>com.azure.storage.blob.cryptography*</packages>
+                </group>
+                <group>
+                  <title>Azure Storage Blobs - NIO</title>
+                  <packages>com.azure.storage.blob.nio*</packages>
+                </group>
+                <group>
+                  <title>Azure Storage - Files</title>
+                  <packages>com.azure.storage.file*</packages>
+                </group>
+                <group>
+                  <title>Azure Storage Files - Data Lake</title>
+                  <packages>com.azure.storage.file.datalake*</packages>
+                </group>
+                <group>
+                  <title>Azure Storage - Queues</title>
+                  <packages>com.azure.storage.queue*</packages>
+                </group>
+                <group>
+                  <title>Azure Telemetry</title>
+                  <title>Azure Telemetry - OpenTelemetry</title>
+                  <packages>com.azure.core.tracing*</packages>
+                </group>
+                <group>
+                  <title>Azure Text Analytics</title>
+                  <packages>com.azure.ai.textanalytics*</packages>
+                </group>
+              </groups>
+              <links>
+                <link>https://docs.oracle.com/javase/8/docs/api/</link>
+                <link>https://projectreactor.io/docs/core/release/api/</link>
+                <link>https://netty.io/4.1/api/</link>
+                <link>http://reactivex.io/RxJava/javadoc/</link>
+              </links>
+              <isOffline>false</isOffline>
+              <doclet>org.apidesign.javadoc.codesnippet.Doclet</doclet>
+              <docletArtifact>
+                <groupId>org.apidesign.javadoc</groupId>
+                <artifactId>codesnippet-doclet</artifactId>
+                <version>0.53</version>
+              </docletArtifact>
+              <additionalOptions>
+                <additionalOption>-maxLineLength 120</additionalOption>
+                <additionalOption>-snippetpath C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration/src/samples/java</additionalOption>
+                <additionalOption>-suppressMissingLinkWarnings</additionalOption>
+              </additionalOptions>
+            </configuration>
+          </execution>
+        </executions>
+        <configuration>
+          <source>1.8</source>
+          <doctitle>Azure SDK for Java Reference Documentation</doctitle>
+          <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
+          <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt;site
+              for more Java documentation, including quick starts, tutorials, and code samples.</footer>
+          <linksource>false</linksource>
+          <excludePackageNames>*.impl*:
+              *.implementation*:
+              com.azure.tools.checkstyle*:
+              com.azure.core.test*:
+              com.azure.endtoend*:
+              com.azure.perf*</excludePackageNames>
+          <sourceFileExcludes>
+            <sourceFileExclude>com.azure.cosmos.*BridgeInternal.java</sourceFileExclude>
+            <sourceFileExclude>module-info.java</sourceFileExclude>
+          </sourceFileExcludes>
+          <groups>
+            <group>
+              <title>Azure Core</title>
+              <packages>com.azure.core:com.azure.core.annotation:com.azure.core.credentials:com.azure.core.exception:com.azure.core.http*:com.azure.core.configuration:com.azure.core.util*:com.azure.core.credential:com.azure.core.cryptography</packages>
+            </group>
+            <group>
+              <title>Azure Core - AMQP</title>
+              <packages>com.azure.core.amqp*</packages>
+            </group>
+            <group>
+              <title>Azure Core - Authentication</title>
+              <packages>com.azure.core.auth*</packages>
+            </group>
+            <group>
+              <title>Azure Core - HTTP - Netty</title>
+              <packages>com.azure.core.http.netty*</packages>
+            </group>
+            <group>
+              <title>Azure Core - HTTP - OkHttp</title>
+              <packages>com.azure.core.http.okhttp*</packages>
+            </group>
+            <group>
+              <title>Azure Core - Management</title>
+              <packages>com.azure.core.management*</packages>
+            </group>
+            <group>
+              <title>Azure App Configuration</title>
+              <packages>com.azure.data.appconfiguration*</packages>
+            </group>
+            <group>
+              <title>Azure Cosmos</title>
+              <packages>com.azure.cosmos*</packages>
+            </group>
+            <group>
+              <title>Azure Event Hubs</title>
+              <packages>com.azure.messaging.eventhubs*</packages>
+            </group>
+            <group>
+              <title>Azure Form Recognizer</title>
+              <packages>com.azure.ai.formrecognizer*</packages>
+            </group>
+            <group>
+              <title>Azure Identity</title>
+              <packages>com.azure.identity*</packages>
+            </group>
+            <group>
+              <title>Azure Key Vault</title>
+              <packages>com.azure.security.keyvault*</packages>
+            </group>
+            <group>
+              <title>Azure Search</title>
+              <packages>com.azure.search*</packages>
+            </group>
+            <group>
+              <title>Azure Service Bus</title>
+              <packages>com.azure.messaging.servicebus*</packages>
+            </group>
+            <group>
+              <title>Azure Storage - Common</title>
+              <packages>com.azure.storage.common*</packages>
+            </group>
+            <group>
+              <title>Azure Storage - Blobs</title>
+              <packages>com.azure.storage.blob*</packages>
+            </group>
+            <group>
+              <title>Azure Storage Blob - Batch</title>
+              <packages>com.azure.storage.blob.batch*</packages>
+            </group>
+            <group>
+              <title>Azure Storage Blobs - Cryptography</title>
+              <packages>com.azure.storage.blob.cryptography*</packages>
+            </group>
+            <group>
+              <title>Azure Storage Blobs - NIO</title>
+              <packages>com.azure.storage.blob.nio*</packages>
+            </group>
+            <group>
+              <title>Azure Storage - Files</title>
+              <packages>com.azure.storage.file*</packages>
+            </group>
+            <group>
+              <title>Azure Storage Files - Data Lake</title>
+              <packages>com.azure.storage.file.datalake*</packages>
+            </group>
+            <group>
+              <title>Azure Storage - Queues</title>
+              <packages>com.azure.storage.queue*</packages>
+            </group>
+            <group>
+              <title>Azure Telemetry</title>
+              <title>Azure Telemetry - OpenTelemetry</title>
+              <packages>com.azure.core.tracing*</packages>
+            </group>
+            <group>
+              <title>Azure Text Analytics</title>
+              <packages>com.azure.ai.textanalytics*</packages>
+            </group>
+          </groups>
+          <links>
+            <link>https://docs.oracle.com/javase/8/docs/api/</link>
+            <link>https://projectreactor.io/docs/core/release/api/</link>
+            <link>https://netty.io/4.1/api/</link>
+            <link>http://reactivex.io/RxJava/javadoc/</link>
+          </links>
+          <isOffline>false</isOffline>
+          <doclet>org.apidesign.javadoc.codesnippet.Doclet</doclet>
+          <docletArtifact>
+            <groupId>org.apidesign.javadoc</groupId>
+            <artifactId>codesnippet-doclet</artifactId>
+            <version>0.53</version>
+          </docletArtifact>
+          <additionalOptions>
+            <additionalOption>-maxLineLength 120</additionalOption>
+            <additionalOption>-snippetpath C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration/src/samples/java</additionalOption>
+            <additionalOption>-suppressMissingLinkWarnings</additionalOption>
+          </additionalOptions>
+          <failOnError>true</failOnError>
+          <failOnWarnings>true</failOnWarnings>
+          <doclint>all</doclint>
+          <quiet>true</quiet>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>3.0.1</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration\target</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.8</version>
+        <executions>
+          <execution>
+            <id>copy</id>
+            <phase>package</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <copy file="C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration\pom.xml" tofile="C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration\target/azure-data-appconfiguration-1.2.0-beta.1.pom" />
+              </target>
+            </configuration>
+          </execution>
+          <execution>
+            <id>copy-changelog</id>
+            <phase>package</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <echo>Copying C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration/CHANGELOG.md to
+                      C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration\target/azure-data-appconfiguration-1.2.0-beta.1-changelog.md</echo>
+                <copy file="C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration/CHANGELOG.md" tofile="C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration\target/azure-data-appconfiguration-1.2.0-beta.1-changelog.md" />
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.5</version>
+        <executions>
+          <execution>
+            <id>default-instrument</id>
+            <goals>
+              <goal>instrument</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>default-restore-instrumented-classes</id>
+            <goals>
+              <goal>restore-instrumented-classes</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>post-unit-test</id>
+            <goals>
+              <goal>report</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration\target\site/test-coverage</outputDirectory>
+              <excludes>
+                <exclude>**/com/azure/cosmos/implementation/apachecommons/**/*</exclude>
+                <exclude>**/com/azure/cosmos/implementation/guava25/**/*</exclude>
+                <exclude>**/com/azure/cosmos/implementation/guava27/**/*</exclude>
+              </excludes>
+            </configuration>
+          </execution>
+          <execution>
+            <id>check</id>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <rule>
+                  <element>BUNDLE</element>
+                  <limits>
+                    <limit>
+                      <counter>LINE</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>0.40</minimum>
+                    </limit>
+                    <limit>
+                      <counter>BRANCH</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>0.30</minimum>
+                    </limit>
+                  </limits>
+                </rule>
+              </rules>
+              <excludes>
+                <exclude>**/com/azure/cosmos/implementation/apachecommons/**/*</exclude>
+                <exclude>**/com/azure/cosmos/implementation/guava25/**/*</exclude>
+                <exclude>**/com/azure/cosmos/implementation/guava27/**/*</exclude>
+              </excludes>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <execution>
+            <id>compile-samples-source</id>
+            <phase>generate-test-sources</phase>
+            <goals>
+              <goal>add-test-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>src/samples/java</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.revapi</groupId>
+        <artifactId>revapi-maven-plugin</artifactId>
+        <version>0.11.2</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <analysisConfigurationFiles>
+                <configurationFile>
+                  <resource>revapi/revapi.json</resource>
+                </configurationFile>
+              </analysisConfigurationFiles>
+              <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
+              <checkDependencies>true</checkDependencies>
+              <failBuildOnProblemsFound>true</failBuildOnProblemsFound>
+            </configuration>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>sdk-build-tools</artifactId>
+            <version>1.0.0</version>
+            <scope>compile</scope>
+          </dependency>
+          <dependency>
+            <groupId>org.revapi</groupId>
+            <artifactId>revapi-java</artifactId>
+            <version>0.20.0</version>
+            <scope>compile</scope>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <analysisConfigurationFiles>
+            <configurationFile>
+              <resource>revapi/revapi.json</resource>
+            </configurationFile>
+          </analysisConfigurationFiles>
+          <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
+          <checkDependencies>true</checkDependencies>
+          <failBuildOnProblemsFound>true</failBuildOnProblemsFound>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>net.jonathangiles.tools</groupId>
+        <artifactId>whitelistgenerator-maven-plugin</artifactId>
+        <version>1.0.1</version>
+        <executions>
+          <execution>
+            <id>generateWhitelistReport</id>
+            <phase>package</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+            <configuration>
+              <baseDir>.</baseDir>
+              <reportFile>target/dependency-whitelist.json</reportFile>
+              <ignoredGA>
+                <param>com.azure:azure-cosmos-examples</param>
+                <param>com.azure:azure-cosmos-benchmark</param>
+                <param>com.azure:azure-core-test</param>
+                <param>com.azure:azure-e2e</param>
+                <param>com.azure:azure-storage-perf</param>
+                <param>com.azure:perf-test-core</param>
+              </ignoredGA>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version>
+        <executions>
+          <execution>
+            <id>default-cli</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <bannedDependencies>
+                  <searchTransitive>false</searchTransitive>
+                  <excludes>
+                    <exclude>*:*:*:*:runtime</exclude>
+                    <exclude>*:*:*:*:compile</exclude>
+                    <exclude>*:*:*:*:provided</exclude>
+                  </excludes>
+                  <includes>
+                    <include>com.azure:*</include>
+                    <include>com.google.code.findbugs:jsr305:[3.0.2]</include>
+                  </includes>
+                </bannedDependencies>
+                <requireReleaseDeps>
+                  <message>No Snapshots Allowed!</message>
+                </requireReleaseDeps>
+                <requireSameVersions>
+                  <dependencies>
+                    <dependency>com.azure.*</dependency>
+                  </dependencies>
+                </requireSameVersions>
+              </rules>
+              <fail>true</fail>
+            </configuration>
+          </execution>
+        </executions>
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <searchTransitive>false</searchTransitive>
+              <excludes>
+                <exclude>*:*:*:*:runtime</exclude>
+                <exclude>*:*:*:*:compile</exclude>
+                <exclude>*:*:*:*:provided</exclude>
+              </excludes>
+              <includes>
+                <include>com.azure:*</include>
+                <include>com.google.code.findbugs:jsr305:[3.0.2]</include>
+              </includes>
+            </bannedDependencies>
+            <requireReleaseDeps>
+              <message>No Snapshots Allowed!</message>
+            </requireReleaseDeps>
+            <requireSameVersions>
+              <dependencies>
+                <dependency>com.azure.*</dependency>
+              </dependencies>
+            </requireSameVersions>
+          </rules>
+          <fail>true</fail>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.0.0-M4</version>
+        <executions>
+          <execution>
+            <id>default-test</id>
+            <phase>test</phase>
+            <goals>
+              <goal>test</goal>
+            </goals>
+            <configuration>
+              <argLine>--add-exports com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
+                --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
+                --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+                --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+
+                
+                --add-reads com.azure.core=ALL-UNNAMED
+                --add-reads com.azure.core.test=ALL-UNNAMED
+                --add-reads com.azure.core.amqp=ALL-UNNAMED
+
+                
+                --add-opens com.azure.core/com.azure.core=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.http.rest=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.util.logging=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.util.polling=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.util.serializer=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.http=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.http.policy=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.http.rest=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
+                --add-opens com.azure.ai.formrecognizer/com.azure.ai.formrecognizer=ALL-UNNAMED
+                --add-opens com.azure.ai.textanalytics/com.azure.ai.textanalytics=ALL-UNNAMED
+                --add-opens com.azure.data.appconfiguration/com.azure.data.appconfiguration=ALL-UNNAMED
+                --add-opens com.azure.security.keyvault.certificates/com.azure.security.keyvault.certificates=ALL-UNNAMED
+                --add-opens com.azure.security.keyvault.secrets/com.azure.security.keyvault.secrets=ALL-UNNAMED
+                --add-opens com.azure.security.keyvault.keys/com.azure.security.keyvault.keys.cryptography=ALL-UNNAMED
+                --add-opens com.azure.security.keyvault.keys/com.azure.security.keyvault.keys=ALL-UNNAMED
+
+                
+                --add-opens com.azure.cosmos/com.azure.cosmos=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.caches=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.http=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.directconnectivity=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.query=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.routing=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.models=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.rx=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.rx.proxy=ALL-UNNAMED
+
+                
+                --add-opens com.azure.core.amqp/com.azure.core.amqp.implementation=ALL-UNNAMED
+                --add-opens com.azure.core.amqp/com.azure.core.amqp.implementation.handler=ALL-UNNAMED
+
+                
+                --add-opens com.azure.messaging.eventhubs.checkpointstore.blob/com.azure.messaging.eventhubs.checkpointstore.blob=ALL-UNNAMED
+                --add-reads com.azure.messaging.eventhubs=ALL-UNNAMED
+
+                
+                --add-opens com.azure.core/com.azure.core.implementation.entities=com.fasterxml.jackson.databind
+                --add-opens com.azure.core/com.azure.core.implementation.entities=ALL-UNNAMED</argLine>
+              <useSystemClassLoader>false</useSystemClassLoader>
+              <forkCount>1</forkCount>
+              <testFailureIgnore>false</testFailureIgnore>
+              <systemPropertyVariables>
+                <jacoco-agent.destfile>C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration\target/jacoco.exec</jacoco-agent.destfile>
+                <configurationAPIRuntimeFound>runtimeConfiguration</configurationAPIRuntimeFound>
+                <configurationAPIUseRuntimeFirst>runtimeConfiguration</configurationAPIUseRuntimeFirst>
+              </systemPropertyVariables>
+              <properties>
+                <configurationParameters>junit.jupiter.extensions.autodetection.enabled = true</configurationParameters>
+              </properties>
+              <includes>
+                <include>**/Test*.java</include>
+                <include>**/*Test.java</include>
+                <include>**/*Tests.java</include>
+                <include>**/*TestCase.java</include>
+              </includes>
+              <environmentVariables>
+                <test.mode>playback</test.mode>
+                <KEYVAULT_VAULTURI>https://azure-keyvault-3.vault.azure.net</KEYVAULT_VAULTURI>
+                <KEYVAULT_VAULTURI_ALT>https://azure-keyvault-2.vault.azure.net</KEYVAULT_VAULTURI_ALT>
+                <configurationAPIEnvironmentFound>environmentConfiguration</configurationAPIEnvironmentFound>
+                <configurationAPIUseRuntimeFirst>environmentConfiguration</configurationAPIUseRuntimeFirst>
+              </environmentVariables>
+            </configuration>
+          </execution>
+        </executions>
+        <configuration>
+          <argLine>--add-exports com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
+                --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
+                --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+                --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+
+                
+                --add-reads com.azure.core=ALL-UNNAMED
+                --add-reads com.azure.core.test=ALL-UNNAMED
+                --add-reads com.azure.core.amqp=ALL-UNNAMED
+
+                
+                --add-opens com.azure.core/com.azure.core=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.http.rest=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.util.logging=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.util.polling=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.util.serializer=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.http=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.http.policy=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.http.rest=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
+                --add-opens com.azure.ai.formrecognizer/com.azure.ai.formrecognizer=ALL-UNNAMED
+                --add-opens com.azure.ai.textanalytics/com.azure.ai.textanalytics=ALL-UNNAMED
+                --add-opens com.azure.data.appconfiguration/com.azure.data.appconfiguration=ALL-UNNAMED
+                --add-opens com.azure.security.keyvault.certificates/com.azure.security.keyvault.certificates=ALL-UNNAMED
+                --add-opens com.azure.security.keyvault.secrets/com.azure.security.keyvault.secrets=ALL-UNNAMED
+                --add-opens com.azure.security.keyvault.keys/com.azure.security.keyvault.keys.cryptography=ALL-UNNAMED
+                --add-opens com.azure.security.keyvault.keys/com.azure.security.keyvault.keys=ALL-UNNAMED
+
+                
+                --add-opens com.azure.cosmos/com.azure.cosmos=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.caches=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.http=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.directconnectivity=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.query=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.routing=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.models=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.rx=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.rx.proxy=ALL-UNNAMED
+
+                
+                --add-opens com.azure.core.amqp/com.azure.core.amqp.implementation=ALL-UNNAMED
+                --add-opens com.azure.core.amqp/com.azure.core.amqp.implementation.handler=ALL-UNNAMED
+
+                
+                --add-opens com.azure.messaging.eventhubs.checkpointstore.blob/com.azure.messaging.eventhubs.checkpointstore.blob=ALL-UNNAMED
+                --add-reads com.azure.messaging.eventhubs=ALL-UNNAMED
+
+                
+                --add-opens com.azure.core/com.azure.core.implementation.entities=com.fasterxml.jackson.databind
+                --add-opens com.azure.core/com.azure.core.implementation.entities=ALL-UNNAMED</argLine>
+          <useSystemClassLoader>false</useSystemClassLoader>
+          <forkCount>1</forkCount>
+          <testFailureIgnore>false</testFailureIgnore>
+          <systemPropertyVariables>
+            <jacoco-agent.destfile>C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration\target/jacoco.exec</jacoco-agent.destfile>
+            <configurationAPIRuntimeFound>runtimeConfiguration</configurationAPIRuntimeFound>
+            <configurationAPIUseRuntimeFirst>runtimeConfiguration</configurationAPIUseRuntimeFirst>
+          </systemPropertyVariables>
+          <properties>
+            <configurationParameters>junit.jupiter.extensions.autodetection.enabled = true</configurationParameters>
+          </properties>
+          <includes>
+            <include>**/Test*.java</include>
+            <include>**/*Test.java</include>
+            <include>**/*Tests.java</include>
+            <include>**/*TestCase.java</include>
+          </includes>
+          <environmentVariables>
+            <test.mode>playback</test.mode>
+            <KEYVAULT_VAULTURI>https://azure-keyvault-3.vault.azure.net</KEYVAULT_VAULTURI>
+            <KEYVAULT_VAULTURI_ALT>https://azure-keyvault-2.vault.azure.net</KEYVAULT_VAULTURI_ALT>
+            <configurationAPIEnvironmentFound>environmentConfiguration</configurationAPIEnvironmentFound>
+            <configurationAPIUseRuntimeFirst>environmentConfiguration</configurationAPIUseRuntimeFirst>
+          </environmentVariables>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <execution>
+            <id>default-clean</id>
+            <phase>clean</phase>
+            <goals>
+              <goal>clean</goal>
+            </goals>
+            <configuration>
+              <excludeDefaultDirectories>true</excludeDefaultDirectories>
+              <filesets>
+                <fileset>
+                  <directory>target</directory>
+                  <followSymlinks>false</followSymlinks>
+                  <includes>
+                    <include>**</include>
+                  </includes>
+                  <excludes>
+                    <exclude>test-classes/session-records/</exclude>
+                  </excludes>
+                </fileset>
+              </filesets>
+            </configuration>
+          </execution>
+        </executions>
+        <configuration>
+          <excludeDefaultDirectories>true</excludeDefaultDirectories>
+          <filesets>
+            <fileset>
+              <directory>target</directory>
+              <followSymlinks>false</followSymlinks>
+              <includes>
+                <include>**</include>
+              </includes>
+              <excludes>
+                <exclude>test-classes/session-records/</exclude>
+              </excludes>
+            </fileset>
+          </filesets>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.4.3</version>
+        <executions>
+          <execution>
+            <id>default-testResources</id>
+            <phase>process-test-resources</phase>
+            <goals>
+              <goal>testResources</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>default-resources</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>resources</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-install-plugin</artifactId>
+        <version>2.4</version>
+        <executions>
+          <execution>
+            <id>default-install</id>
+            <phase>install</phase>
+            <goals>
+              <goal>install</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>2.7</version>
+        <executions>
+          <execution>
+            <id>default-deploy</id>
+            <phase>deploy</phase>
+            <goals>
+              <goal>deploy</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>3.7.1</version>
+        <executions>
+          <execution>
+            <id>default-site</id>
+            <phase>site</phase>
+            <goals>
+              <goal>site</goal>
+            </goals>
+            <configuration>
+              <relativizeDecorationLinks>false</relativizeDecorationLinks>
+              <outputDirectory>C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration\target\site</outputDirectory>
+              <reportPlugins>
+                <reportPlugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-checkstyle-plugin</artifactId>
+                  <version>3.1.0</version>
+                  <configuration>
+                    <configLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
+                    <suppressionsLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+                    <headerLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
+                    <propertyExpansion>samedir=</propertyExpansion>
+                    <encoding>UTF-8</encoding>
+                    <consoleOutput>true</consoleOutput>
+                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                    <linkXRef>true</linkXRef>
+                    <failsOnError>true</failsOnError>
+                    <failOnViolation>true</failOnViolation>
+                  </configuration>
+                  <reportSets>
+                    <reportSet>
+                      <id>non-aggregate</id>
+                      <configuration>
+                        <configLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
+                        <suppressionsLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+                        <headerLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
+                        <propertyExpansion>samedir=</propertyExpansion>
+                        <encoding>UTF-8</encoding>
+                        <consoleOutput>true</consoleOutput>
+                        <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                        <linkXRef>true</linkXRef>
+                        <failsOnError>true</failsOnError>
+                        <failOnViolation>true</failOnViolation>
+                      </configuration>
+                      <reports>
+                        <report>checkstyle</report>
+                      </reports>
+                    </reportSet>
+                  </reportSets>
+                </reportPlugin>
+                <reportPlugin>
+                  <groupId>com.github.spotbugs</groupId>
+                  <artifactId>spotbugs-maven-plugin</artifactId>
+                  <version>3.1.12.2</version>
+                  <configuration>
+                    <effort>max</effort>
+                    <threshold>Low</threshold>
+                    <xmlOutput>true</xmlOutput>
+                    <spotbugsXmlOutputDirectory>C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration\target/spotbugs</spotbugsXmlOutputDirectory>
+                    <excludeFilterFile>../../../eng/code-quality-reports/src/main/resources/spotbugs/spotbugs-exclude.xml</excludeFilterFile>
+                    <failOnError>true</failOnError>
+                    <fork>true</fork>
+                    <includeTests>false</includeTests>
+                  </configuration>
+                </reportPlugin>
+                <reportPlugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-javadoc-plugin</artifactId>
+                  <version>3.1.1</version>
+                  <configuration>
+                    <failOnWarnings>false</failOnWarnings>
+                  </configuration>
+                  <reportSets>
+                    <reportSet>
+                      <id>non-aggregate</id>
+                      <configuration>
+                        <failOnWarnings>false</failOnWarnings>
+                      </configuration>
+                      <reports>
+                        <report>javadoc</report>
+                      </reports>
+                    </reportSet>
+                  </reportSets>
+                </reportPlugin>
+                <reportPlugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-project-info-reports-plugin</artifactId>
+                  <version>3.0.0</version>
+                  <reportSets>
+                    <reportSet>
+                      <id>default</id>
+                      <reports>
+                        <report>index</report>
+                        <report>summary</report>
+                        <report>dependency-info</report>
+                        <report>dependency-management</report>
+                        <report>dependency-convergence</report>
+                        <report>ci-management</report>
+                        <report>dependencies</report>
+                        <report>issue-management</report>
+                      </reports>
+                    </reportSet>
+                  </reportSets>
+                </reportPlugin>
+                <reportPlugin>
+                  <groupId>org.revapi</groupId>
+                  <artifactId>revapi-maven-plugin</artifactId>
+                  <version>0.11.2</version>
+                  <configuration>
+                    <analysisConfigurationFiles>
+                      <configurationFile>
+                        <resource>revapi/revapi.json</resource>
+                      </configurationFile>
+                    </analysisConfigurationFiles>
+                    <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
+                    <checkDependencies>false</checkDependencies>
+                    <failBuildOnProblemsFound>true</failBuildOnProblemsFound>
+                  </configuration>
+                  <reportSets>
+                    <reportSet>
+                      <id>default</id>
+                      <configuration>
+                        <analysisConfigurationFiles>
+                          <configurationFile>
+                            <resource>revapi/revapi.json</resource>
+                          </configurationFile>
+                        </analysisConfigurationFiles>
+                        <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
+                        <checkDependencies>false</checkDependencies>
+                        <failBuildOnProblemsFound>true</failBuildOnProblemsFound>
+                      </configuration>
+                      <reports>
+                        <report>report</report>
+                      </reports>
+                    </reportSet>
+                  </reportSets>
+                </reportPlugin>
+              </reportPlugins>
+            </configuration>
+          </execution>
+          <execution>
+            <id>default-deploy</id>
+            <phase>site-deploy</phase>
+            <goals>
+              <goal>deploy</goal>
+            </goals>
+            <configuration>
+              <relativizeDecorationLinks>false</relativizeDecorationLinks>
+              <outputDirectory>C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration\target\site</outputDirectory>
+              <reportPlugins>
+                <reportPlugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-checkstyle-plugin</artifactId>
+                  <version>3.1.0</version>
+                  <configuration>
+                    <configLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
+                    <suppressionsLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+                    <headerLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
+                    <propertyExpansion>samedir=</propertyExpansion>
+                    <encoding>UTF-8</encoding>
+                    <consoleOutput>true</consoleOutput>
+                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                    <linkXRef>true</linkXRef>
+                    <failsOnError>true</failsOnError>
+                    <failOnViolation>true</failOnViolation>
+                  </configuration>
+                  <reportSets>
+                    <reportSet>
+                      <id>non-aggregate</id>
+                      <configuration>
+                        <configLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
+                        <suppressionsLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+                        <headerLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
+                        <propertyExpansion>samedir=</propertyExpansion>
+                        <encoding>UTF-8</encoding>
+                        <consoleOutput>true</consoleOutput>
+                        <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                        <linkXRef>true</linkXRef>
+                        <failsOnError>true</failsOnError>
+                        <failOnViolation>true</failOnViolation>
+                      </configuration>
+                      <reports>
+                        <report>checkstyle</report>
+                      </reports>
+                    </reportSet>
+                  </reportSets>
+                </reportPlugin>
+                <reportPlugin>
+                  <groupId>com.github.spotbugs</groupId>
+                  <artifactId>spotbugs-maven-plugin</artifactId>
+                  <version>3.1.12.2</version>
+                  <configuration>
+                    <effort>max</effort>
+                    <threshold>Low</threshold>
+                    <xmlOutput>true</xmlOutput>
+                    <spotbugsXmlOutputDirectory>C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration\target/spotbugs</spotbugsXmlOutputDirectory>
+                    <excludeFilterFile>../../../eng/code-quality-reports/src/main/resources/spotbugs/spotbugs-exclude.xml</excludeFilterFile>
+                    <failOnError>true</failOnError>
+                    <fork>true</fork>
+                    <includeTests>false</includeTests>
+                  </configuration>
+                </reportPlugin>
+                <reportPlugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-javadoc-plugin</artifactId>
+                  <version>3.1.1</version>
+                  <configuration>
+                    <failOnWarnings>false</failOnWarnings>
+                  </configuration>
+                  <reportSets>
+                    <reportSet>
+                      <id>non-aggregate</id>
+                      <configuration>
+                        <failOnWarnings>false</failOnWarnings>
+                      </configuration>
+                      <reports>
+                        <report>javadoc</report>
+                      </reports>
+                    </reportSet>
+                  </reportSets>
+                </reportPlugin>
+                <reportPlugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-project-info-reports-plugin</artifactId>
+                  <version>3.0.0</version>
+                  <reportSets>
+                    <reportSet>
+                      <id>default</id>
+                      <reports>
+                        <report>index</report>
+                        <report>summary</report>
+                        <report>dependency-info</report>
+                        <report>dependency-management</report>
+                        <report>dependency-convergence</report>
+                        <report>ci-management</report>
+                        <report>dependencies</report>
+                        <report>issue-management</report>
+                      </reports>
+                    </reportSet>
+                  </reportSets>
+                </reportPlugin>
+                <reportPlugin>
+                  <groupId>org.revapi</groupId>
+                  <artifactId>revapi-maven-plugin</artifactId>
+                  <version>0.11.2</version>
+                  <configuration>
+                    <analysisConfigurationFiles>
+                      <configurationFile>
+                        <resource>revapi/revapi.json</resource>
+                      </configurationFile>
+                    </analysisConfigurationFiles>
+                    <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
+                    <checkDependencies>false</checkDependencies>
+                    <failBuildOnProblemsFound>true</failBuildOnProblemsFound>
+                  </configuration>
+                  <reportSets>
+                    <reportSet>
+                      <id>default</id>
+                      <configuration>
+                        <analysisConfigurationFiles>
+                          <configurationFile>
+                            <resource>revapi/revapi.json</resource>
+                          </configurationFile>
+                        </analysisConfigurationFiles>
+                        <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
+                        <checkDependencies>false</checkDependencies>
+                        <failBuildOnProblemsFound>true</failBuildOnProblemsFound>
+                      </configuration>
+                      <reports>
+                        <report>report</report>
+                      </reports>
+                    </reportSet>
+                  </reportSets>
+                </reportPlugin>
+              </reportPlugins>
+            </configuration>
+          </execution>
+        </executions>
+        <configuration>
+          <relativizeDecorationLinks>false</relativizeDecorationLinks>
+          <outputDirectory>C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration\target\site</outputDirectory>
+          <reportPlugins>
+            <reportPlugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-checkstyle-plugin</artifactId>
+              <version>3.1.0</version>
+              <configuration>
+                <configLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
+                <suppressionsLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+                <headerLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
+                <propertyExpansion>samedir=</propertyExpansion>
+                <encoding>UTF-8</encoding>
+                <consoleOutput>true</consoleOutput>
+                <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                <linkXRef>true</linkXRef>
+                <failsOnError>true</failsOnError>
+                <failOnViolation>true</failOnViolation>
+              </configuration>
+              <reportSets>
+                <reportSet>
+                  <id>non-aggregate</id>
+                  <configuration>
+                    <configLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
+                    <suppressionsLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+                    <headerLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
+                    <propertyExpansion>samedir=</propertyExpansion>
+                    <encoding>UTF-8</encoding>
+                    <consoleOutput>true</consoleOutput>
+                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                    <linkXRef>true</linkXRef>
+                    <failsOnError>true</failsOnError>
+                    <failOnViolation>true</failOnViolation>
+                  </configuration>
+                  <reports>
+                    <report>checkstyle</report>
+                  </reports>
+                </reportSet>
+              </reportSets>
+            </reportPlugin>
+            <reportPlugin>
+              <groupId>com.github.spotbugs</groupId>
+              <artifactId>spotbugs-maven-plugin</artifactId>
+              <version>3.1.12.2</version>
+              <configuration>
+                <effort>max</effort>
+                <threshold>Low</threshold>
+                <xmlOutput>true</xmlOutput>
+                <spotbugsXmlOutputDirectory>C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration\target/spotbugs</spotbugsXmlOutputDirectory>
+                <excludeFilterFile>../../../eng/code-quality-reports/src/main/resources/spotbugs/spotbugs-exclude.xml</excludeFilterFile>
+                <failOnError>true</failOnError>
+                <fork>true</fork>
+                <includeTests>false</includeTests>
+              </configuration>
+            </reportPlugin>
+            <reportPlugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-javadoc-plugin</artifactId>
+              <version>3.1.1</version>
+              <configuration>
+                <failOnWarnings>false</failOnWarnings>
+              </configuration>
+              <reportSets>
+                <reportSet>
+                  <id>non-aggregate</id>
+                  <configuration>
+                    <failOnWarnings>false</failOnWarnings>
+                  </configuration>
+                  <reports>
+                    <report>javadoc</report>
+                  </reports>
+                </reportSet>
+              </reportSets>
+            </reportPlugin>
+            <reportPlugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-project-info-reports-plugin</artifactId>
+              <version>3.0.0</version>
+              <reportSets>
+                <reportSet>
+                  <id>default</id>
+                  <reports>
+                    <report>index</report>
+                    <report>summary</report>
+                    <report>dependency-info</report>
+                    <report>dependency-management</report>
+                    <report>dependency-convergence</report>
+                    <report>ci-management</report>
+                    <report>dependencies</report>
+                    <report>issue-management</report>
+                  </reports>
+                </reportSet>
+              </reportSets>
+            </reportPlugin>
+            <reportPlugin>
+              <groupId>org.revapi</groupId>
+              <artifactId>revapi-maven-plugin</artifactId>
+              <version>0.11.2</version>
+              <configuration>
+                <analysisConfigurationFiles>
+                  <configurationFile>
+                    <resource>revapi/revapi.json</resource>
+                  </configurationFile>
+                </analysisConfigurationFiles>
+                <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
+                <checkDependencies>false</checkDependencies>
+                <failBuildOnProblemsFound>true</failBuildOnProblemsFound>
+              </configuration>
+              <reportSets>
+                <reportSet>
+                  <id>default</id>
+                  <configuration>
+                    <analysisConfigurationFiles>
+                      <configurationFile>
+                        <resource>revapi/revapi.json</resource>
+                      </configurationFile>
+                    </analysisConfigurationFiles>
+                    <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
+                    <checkDependencies>false</checkDependencies>
+                    <failBuildOnProblemsFound>true</failBuildOnProblemsFound>
+                  </configuration>
+                  <reports>
+                    <report>report</report>
+                  </reports>
+                </reportSet>
+              </reportSets>
+            </reportPlugin>
+          </reportPlugins>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <reporting>
+    <outputDirectory>C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration\target\site</outputDirectory>
+    <plugins>
+      <plugin>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>3.1.0</version>
+        <reportSets>
+          <reportSet>
+            <id>non-aggregate</id>
+            <reports>
+              <report>checkstyle</report>
+            </reports>
+            <configuration>
+              <configLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
+              <suppressionsLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+              <headerLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
+              <propertyExpansion>samedir=</propertyExpansion>
+              <encoding>UTF-8</encoding>
+              <consoleOutput>true</consoleOutput>
+              <includeTestSourceDirectory>true</includeTestSourceDirectory>
+              <linkXRef>true</linkXRef>
+              <failsOnError>true</failsOnError>
+              <failOnViolation>true</failOnViolation>
+            </configuration>
+          </reportSet>
+        </reportSets>
+        <configuration>
+          <configLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
+          <suppressionsLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+          <headerLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
+          <propertyExpansion>samedir=</propertyExpansion>
+          <encoding>UTF-8</encoding>
+          <consoleOutput>true</consoleOutput>
+          <includeTestSourceDirectory>true</includeTestSourceDirectory>
+          <linkXRef>true</linkXRef>
+          <failsOnError>true</failsOnError>
+          <failOnViolation>true</failOnViolation>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>3.1.12.2</version>
+        <configuration>
+          <effort>max</effort>
+          <threshold>Low</threshold>
+          <xmlOutput>true</xmlOutput>
+          <spotbugsXmlOutputDirectory>C:\Users\alzimmer\Documents\GitHub\azure-sdk-for-java\.\sdk\appconfiguration\azure-data-appconfiguration\target/spotbugs</spotbugsXmlOutputDirectory>
+          <excludeFilterFile>../../../eng/code-quality-reports/src/main/resources/spotbugs/spotbugs-exclude.xml</excludeFilterFile>
+          <failOnError>true</failOnError>
+          <fork>true</fork>
+          <includeTests>false</includeTests>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.1.1</version>
+        <reportSets>
+          <reportSet>
+            <id>non-aggregate</id>
+            <reports>
+              <report>javadoc</report>
+            </reports>
+            <configuration>
+              <failOnWarnings>false</failOnWarnings>
+            </configuration>
+          </reportSet>
+        </reportSets>
+        <configuration>
+          <failOnWarnings>false</failOnWarnings>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>3.0.0</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>index</report>
+              <report>summary</report>
+              <report>dependency-info</report>
+              <report>dependency-management</report>
+              <report>dependency-convergence</report>
+              <report>ci-management</report>
+              <report>dependencies</report>
+              <report>issue-management</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+      <plugin>
+        <groupId>org.revapi</groupId>
+        <artifactId>revapi-maven-plugin</artifactId>
+        <version>0.11.2</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>report</report>
+            </reports>
+            <configuration>
+              <analysisConfigurationFiles>
+                <configurationFile>
+                  <resource>revapi/revapi.json</resource>
+                </configurationFile>
+              </analysisConfigurationFiles>
+              <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
+              <checkDependencies>false</checkDependencies>
+              <failBuildOnProblemsFound>true</failBuildOnProblemsFound>
+            </configuration>
+          </reportSet>
+        </reportSets>
+        <configuration>
+          <analysisConfigurationFiles>
+            <configurationFile>
+              <resource>revapi/revapi.json</resource>
+            </configurationFile>
+          </analysisConfigurationFiles>
+          <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
+          <checkDependencies>false</checkDependencies>
+          <failBuildOnProblemsFound>true</failBuildOnProblemsFound>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
+</project>
+
+
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  10.187 s
+[INFO] Finished at: 2020-04-17T13:50:34-07:00
+[INFO] ------------------------------------------------------------------------
