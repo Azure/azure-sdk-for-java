@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.changefeed.PartitionController;
 import com.azure.cosmos.implementation.changefeed.PartitionSupervisor;
 import com.azure.cosmos.implementation.changefeed.PartitionSupervisorFactory;
 import com.azure.cosmos.implementation.changefeed.PartitionSynchronizer;
+import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
 import com.azure.cosmos.implementation.changefeed.exceptions.PartitionSplitException;
 import com.azure.cosmos.implementation.changefeed.exceptions.TaskCancelledException;
 import org.slf4j.Logger;
@@ -75,7 +76,10 @@ class PartitionControllerImpl implements PartitionController {
                 this.currentlyOwnedPartitions.put(updatedLease.getLeaseToken(), this.processPartition(supervisor, updatedLease));
                 return updatedLease;
             })
-            .onErrorResume(throwable -> this.removeLease(lease).then(Mono.error(throwable)));
+            .onErrorResume(throwable -> {
+                logger.warn("Partition {}: unexpected error; removing lease from current cache.", lease.getLeaseToken());
+                return this.removeLease(lease).then(Mono.error(throwable));
+            });
     }
 
     @Override
@@ -110,10 +114,15 @@ class PartitionControllerImpl implements PartitionController {
 
             return this.leaseManager.release(lease)
                 .onErrorResume(e -> {
+                    if (e instanceof LeaseLostException) {
+                        logger.warn("Partition {}: lease already removed.", lease.getLeaseToken());
+                    } else {
                         logger.warn("Partition {}: failed to remove lease.", lease.getLeaseToken(), e);
-                        return Mono.empty();
                     }
-                ).doOnSuccess(aVoid -> {
+
+                    return Mono.empty();
+                })
+                .doOnSuccess(aVoid -> {
                     logger.info("Partition {}: successfully removed lease.", lease.getLeaseToken());
                 });
     }
