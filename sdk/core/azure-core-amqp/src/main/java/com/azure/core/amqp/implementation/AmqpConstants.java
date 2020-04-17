@@ -16,6 +16,8 @@ public final class AmqpConstants {
     public static final String VENDOR = "com.microsoft";
 
     public static final Symbol STRING_FILTER = Symbol.getSymbol(APACHE + ":selector-filter:string");
+    public static final Symbol SESSION_FILTER = Symbol.getSymbol(AmqpConstants.VENDOR + ":session-filter");
+    public static final Symbol LOCKED_UNTIL_UTC = Symbol.getSymbol(AmqpConstants.VENDOR + ":locked-until-utc");
 
     static final int AMQP_BATCH_MESSAGE_FORMAT = 0x80013700; // 2147563264L;
 }

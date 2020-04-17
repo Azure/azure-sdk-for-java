@@ -509,6 +509,9 @@ public final class ServiceBusClientBuilder {
         private String subscriptionName;
         private String topicName;
         private String sessionId;
+
+        /* Indicate if the entity is in session or not.*/
+        private boolean sessionEnabledEntity;
         private ReceiveMode receiveMode = ReceiveMode.PEEK_LOCK;
         private int maxConcurrentSessions;
 
@@ -589,18 +592,21 @@ public final class ServiceBusClientBuilder {
          */
         public ServiceBusReceiverClientBuilder maxConcurrentSessions(int maxConcurrentSessions) {
             this.maxConcurrentSessions = maxConcurrentSessions;
+            this.sessionEnabledEntity = true;
             return this;
         }
 
         /**
          * Sets the session id.
          *
-         * @param sessionId session id.
+         * @param sessionId session id, if null, service will return the first available session, otherwise, service
+         * will return specified session.
          *
          * @return The modified {@link ServiceBusReceiverClientBuilder} object.
          */
         public ServiceBusReceiverClientBuilder sessionId(String sessionId) {
             this.sessionId = sessionId;
+            this.sessionEnabledEntity = true;
             return this;
         }
 
@@ -655,7 +661,7 @@ public final class ServiceBusClientBuilder {
             final MessageLockContainer messageLockContainer = new MessageLockContainer();
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
-                sessionId);
+                sessionId, sessionEnabledEntity, maxConcurrentSessions);
 
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
                 entityType, receiverOptions, connectionProcessor,

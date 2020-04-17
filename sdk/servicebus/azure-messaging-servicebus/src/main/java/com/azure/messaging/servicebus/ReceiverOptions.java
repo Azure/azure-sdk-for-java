@@ -13,10 +13,26 @@ class ReceiverOptions {
     private final int prefetchCount;
     private final String sessionId;
 
-    ReceiverOptions(ReceiveMode receiveMode, int prefetchCount, String sessionId) {
+    /* Indicate if the entity is in session or not.*/
+    private boolean sessionEnabledEntity;
+
+    private int maxConcurrentSessions;
+
+    ReceiverOptions(ReceiveMode receiveMode, int prefetchCount, String sessionId, boolean sessionEnabledEntity,
+        int maxConcurrentSessions) {
         this.receiveMode = receiveMode;
         this.prefetchCount = prefetchCount;
         this.sessionId = sessionId;
+        this.sessionEnabledEntity = sessionEnabledEntity;
+        this.maxConcurrentSessions = maxConcurrentSessions;
+    }
+
+    /**
+     *
+     * @return max concurrent sessions
+     */
+    public int getMaxConcurrentSessions() {
+        return maxConcurrentSessions;
     }
 
     /**
@@ -39,5 +55,9 @@ class ReceiverOptions {
 
     int getPrefetchCount() {
         return prefetchCount;
+    }
+
+    boolean isSessionEnabledEntity() {
+        return sessionEnabledEntity;
     }
 }

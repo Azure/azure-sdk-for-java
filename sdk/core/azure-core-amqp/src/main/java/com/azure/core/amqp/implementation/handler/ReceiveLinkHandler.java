@@ -3,7 +3,11 @@
 
 package com.azure.core.amqp.implementation.handler;
 
+import com.azure.core.amqp.implementation.AmqpConstants;
+import com.azure.core.amqp.implementation.AmqpUtil;
 import com.azure.core.util.logging.ClientLogger;
+import org.apache.qpid.proton.amqp.Symbol;
+import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
@@ -12,6 +16,8 @@ import org.apache.qpid.proton.engine.Receiver;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 
+import java.time.Instant;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ReceiveLinkHandler extends LinkHandler {
@@ -19,6 +25,8 @@ public class ReceiveLinkHandler extends LinkHandler {
     private AtomicBoolean isFirstResponse = new AtomicBoolean(true);
     private final Flux<Delivery> deliveries;
     private FluxSink<Delivery> deliverySink;
+    private String sessionId;
+    private Instant sessionLockedUntilUtc;
 
     public ReceiveLinkHandler(String connectionId, String hostname, String receiverName, String entityPath) {
         super(connectionId, hostname, entityPath, new ClientLogger(ReceiveLinkHandler.class));
@@ -52,6 +60,37 @@ public class ReceiveLinkHandler extends LinkHandler {
         final Link link = event.getLink();
         if (link instanceof Receiver) {
             if (link.getRemoteSource() != null) {
+                Object remoteSourceFilterObj = ((Source) link.getRemoteSource()).getFilter();
+                Map<Symbol, Object> remoteSourceFilter = null;
+                if (remoteSourceFilterObj != null) {
+                    @SuppressWarnings("unchecked")
+                    Map<Symbol, Object> responseBody = (Map<Symbol, Object>) ((Source) link.getRemoteSource())
+                        .getFilter();
+                    remoteSourceFilter = responseBody;
+                }
+                if (remoteSourceFilter != null && remoteSourceFilter.containsKey(AmqpConstants.SESSION_FILTER)) {
+                    this.sessionId = (String) remoteSourceFilter.get(AmqpConstants.SESSION_FILTER);
+                    setSessionId(this.sessionId);
+
+                    if (link.getRemoteProperties() != null && link.getRemoteProperties()
+                        .containsKey(AmqpConstants.LOCKED_UNTIL_UTC)) {
+                        this.sessionLockedUntilUtc = AmqpUtil.convertDotNetTicksToInstant((long) link
+                            .getRemoteProperties().get(AmqpConstants.LOCKED_UNTIL_UTC));
+                        setSessionLockedUntilUtc(sessionLockedUntilUtc);
+                        Instant now = Instant.now();
+                        logger.info("Accepted a session with id '{} and SessionLockedUntilUtc {} Now {} . "
+                                + "How long session is locked {} ", this.sessionId, this.sessionLockedUntilUtc,
+                            now, (this.sessionLockedUntilUtc.getEpochSecond() - now.getEpochSecond()));
+                    } else {
+                        logger.info("Accepted a session with id '{}', which didn't set '{}' property on the "
+                            + "receive link.", this.sessionId, AmqpConstants.LOCKED_UNTIL_UTC);
+                        this.sessionLockedUntilUtc = Instant.ofEpochMilli(0);
+                    }
+
+                    logger.info("Accepted session with id '{}', lockedUntilUtc '{}''.", this.sessionId,
+                        this.sessionLockedUntilUtc);
+                }
+
                 logger.info("onLinkRemoteOpen connectionId[{}], linkName[{}], remoteSource[{}]",
                     getConnectionId(), link.getName(), link.getRemoteSource());
 

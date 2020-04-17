@@ -11,6 +11,7 @@ import reactor.core.publisher.ReplayProcessor;
 import reactor.core.publisher.UnicastProcessor;
 
 import java.io.Closeable;
+import java.time.Instant;
 
 public abstract class Handler extends BaseHandler implements Closeable {
     private final ReplayProcessor<EndpointState> endpointStateProcessor =
@@ -20,6 +21,8 @@ public abstract class Handler extends BaseHandler implements Closeable {
     private final FluxSink<Throwable> errorSink = errorContextProcessor.sink();
     private final String connectionId;
     private final String hostname;
+    private String sessionId;
+    private Instant sessionLockedUntilUtc;
 
     Handler(final String connectionId, final String hostname) {
         this.connectionId = connectionId;
@@ -38,6 +41,20 @@ public abstract class Handler extends BaseHandler implements Closeable {
         return endpointStateProcessor.distinct();
     }
 
+    public String getSessionId() {
+        return this.sessionId;
+    }
+
+    public Instant getSessionLockedUntilUtc() {
+        return this.sessionLockedUntilUtc;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
+    public void setSessionLockedUntilUtc(Instant sessionLockedUntilUtc) {
+        this.sessionLockedUntilUtc = sessionLockedUntilUtc;
+    }
     public Flux<Throwable> getErrors() {
         return errorContextProcessor;
     }

@@ -32,8 +32,11 @@ import reactor.core.publisher.Mono;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -83,6 +86,8 @@ public class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private final ReceiveAsyncOptions defaultReceiveOptions;
     private final Runnable onClientClose;
     private final String sessionId;
+    private final boolean sessionEnabledEntity;
+    private final int maxConcurrentSessions;
 
     /**
      * Map containing linkNames and their associated consumers. Key: linkName Value: consumer associated with that
@@ -118,6 +123,8 @@ public class ServiceBusReceiverAsyncClient implements AutoCloseable {
         this.prefetch = receiverOptions.getPrefetchCount();
         this.receiveMode = receiverOptions.getReceiveMode();
         this.sessionId = receiverOptions.getSessionId();
+        this.sessionEnabledEntity = receiverOptions.isSessionEnabledEntity();
+        this.maxConcurrentSessions = receiverOptions.getMaxConcurrentSessions();
         this.entityType = entityType;
         this.messageLockContainer = messageLockContainer;
         this.onClientClose = onClientClose;
@@ -409,6 +416,66 @@ public class ServiceBusReceiverAsyncClient implements AutoCloseable {
             });
     }
 
+    public Flux<ServiceBusReceivedMessage> receiveMultiSession(ReceiveAsyncOptions options) {
+        if (isDisposed.get()) {
+            return fluxError(logger, new IllegalStateException(
+                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "receive")));
+        }
+
+        if (Objects.isNull(options)) {
+            return fluxError(logger, new NullPointerException("'options' cannot be null"));
+        } else if (options.getMaxAutoRenewDuration() != null && options.getMaxAutoRenewDuration().isNegative()) {
+            return fluxError(logger, new IllegalArgumentException("'maxAutoRenewDuration' cannot be negative."));
+        }
+
+        if (receiveMode != ReceiveMode.PEEK_LOCK && options.isEnableAutoComplete()) {
+            return Flux.error(logger.logExceptionAsError(new UnsupportedOperationException(
+                "Auto-complete is not supported on a receiver opened in ReceiveMode.RECEIVE_AND_DELETE.")));
+        }
+
+        // TODO (conniey): This returns the same consumer instance because the entityPath is not unique.
+        //  Python and .NET does not have the same behaviour.
+        return Flux.usingWhen(
+            Mono.fromCallable(() -> getOrCreateConsumer(entityPath, options)),
+            consumer -> {
+                    List<Flux<ServiceBusReceivedMessage>> list = new ArrayList<>();
+                    Flux<ServiceBusReceivedMessage> messagePublisher= recursivePublisher(consumer, options);
+                    list.add(messagePublisher);
+                    System.out.println(getClass().getName() + " Merging Number of publisher : " + list.size());
+                    return Flux.merge(list);
+            },
+            consumer -> {
+                final String linkName = consumer.getLinkName();
+                logger.info("{}: Receiving completed. Disposing", linkName);
+
+                final ServiceBusAsyncConsumer removed = openConsumers.remove(linkName);
+                if (removed == null) {
+                    logger.warning("Could not find consumer to remove for: {}", linkName);
+                } else {
+                    removed.close();
+                }
+
+                return Mono.empty();
+            });
+    }
+
+    private Flux<ServiceBusReceivedMessage> recursivePublisher(ServiceBusAsyncConsumer consumer, ReceiveAsyncOptions options) {
+        // TODO : Change it to what user has configured, This is the timeout we will wait for next message to come
+        Flux<ServiceBusReceivedMessage> publisher = consumer.receive().timeout(Duration.ofSeconds(30));
+
+        boolean rollOverToNextPublisher = true;
+            publisher.onErrorResume(throwable -> {
+                if (rollOverToNextPublisher) {
+                    ServiceBusAsyncConsumer nextConsumer = getOrCreateConsumer(entityPath, options);
+                    System.out.println(getClass().getName() + " onErrorResume for Failed Consumer link:"
+                        + consumer.getLinkName() + ", Next Consumer link:" + nextConsumer.getLinkName());
+                    return recursivePublisher(nextConsumer, options);
+                } else {
+                    return Mono.empty();
+                }
+            });
+        return publisher;
+    }
     /**
      * Receives a deferred {@link ServiceBusReceivedMessage message}. Deferred messages can only be received by using
      * sequence number.
@@ -584,28 +651,35 @@ public class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     private ServiceBusAsyncConsumer getOrCreateConsumer(String linkName, ReceiveAsyncOptions options) {
-        return openConsumers.computeIfAbsent(linkName, name -> {
-            logger.info("{}: Creating consumer for link '{}'", entityPath, linkName);
+        String linkNameKey = linkName;
+        System.out.println(getClass().getName() + " getOrCreateConsumer sessionEnabledEntity: " + sessionEnabledEntity);
+        if (sessionEnabledEntity) {
+            linkNameKey =  linkNameKey.concat( "-" + new Random().nextLong());
+        }
+
+        String finalLinkNameKey = linkNameKey;
+        return openConsumers.computeIfAbsent(linkNameKey, name -> {
+            logger.info("{}: Creating consumer for link '{}'", entityPath, finalLinkNameKey);
 
             final Flux<AmqpReceiveLink> receiveLink =
-                connectionProcessor.flatMap(connection -> connection.createReceiveLink(linkName, entityPath,
-                    receiveMode, null, entityType, sessionId))
+                connectionProcessor.flatMap(connection -> connection.createReceiveLink(finalLinkNameKey, entityPath,
+                    receiveMode, null, entityType, sessionId, sessionEnabledEntity))
                     .doOnNext(next -> {
                         final String format = "Created consumer for Service Bus resource: [{}] mode: [{}]"
                             + " sessionEnabled? {} transferEntityPath: [{}], entityType: [{}]";
                         logger.verbose(format, next.getEntityPath(), receiveMode,
-                            CoreUtils.isNullOrEmpty(sessionId), "N/A", entityType);
+                            sessionEnabledEntity, "N/A", entityType);
                     })
                     .repeat();
 
-            final LinkErrorContext context = new LinkErrorContext(fullyQualifiedNamespace, entityPath, linkName, null);
+            final LinkErrorContext context = new LinkErrorContext(fullyQualifiedNamespace, entityPath, finalLinkNameKey, null);
             final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionProcessor.getRetryOptions());
             final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLink.subscribeWith(
                 new ServiceBusReceiveLinkProcessor(prefetch, retryPolicy, connectionProcessor, context));
-            final boolean isAutoLockRenewal = options.getMaxAutoRenewDuration() != null
+            final boolean isAutoLockRenewal = !sessionEnabledEntity && options.getMaxAutoRenewDuration() != null
                 && !options.getMaxAutoRenewDuration().isZero();
 
-            return new ServiceBusAsyncConsumer(linkName, linkMessageProcessor, messageSerializer,
+            return new ServiceBusAsyncConsumer(finalLinkNameKey, linkMessageProcessor, messageSerializer,
                 options.isEnableAutoComplete(), isAutoLockRenewal, options.getMaxAutoRenewDuration(),
                 connectionProcessor.getRetryOptions(), messageLockContainer,
                 this::complete, this::abandon, this::renewMessageLock);

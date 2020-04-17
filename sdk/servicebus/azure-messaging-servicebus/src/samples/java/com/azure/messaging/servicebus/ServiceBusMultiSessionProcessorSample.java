@@ -18,36 +18,39 @@ public class ServiceBusMultiSessionProcessorSample {
 
     public static void main(String[] args) {
         final MyStorageMessageProcessor myMessageProcessor = new MyStorageMessageProcessor();
-
+        String connectionString = System.getenv("AZURE_SERVICEBUS_CONNECTION_STRING");
+        String queueName = System.getenv("AZURE_SERVICEBUS_QUEUE_NAME");
         ServiceBusReceiverAsyncClient multiSessionReceiverAsyncClient = new ServiceBusClientBuilder()
-            .connectionString("connectionString")
+            .connectionString(connectionString)
             .receiver()
-            .receiveMode(ReceiveMode.PEEK_LOCK)
-            .queueName("<<queue-name>>")
-            .maxConcurrentSessions(2) // This will enable infinite roll-over of next available session id
+            .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+            .queueName(queueName)
+            .maxConcurrentSessions(1) // This will enable infinite roll-over of next available session id
             .buildAsyncClient();
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
             .setEnableAutoComplete(false) // user want to settle the message
-            .setMaxAutoRenewDuration(Duration.ofSeconds(60));
+            .setMaxAutoRenewDuration(Duration.ofSeconds(20));
 
-        Disposable subscription = multiSessionReceiverAsyncClient.receive(options)
+        Disposable subscription = multiSessionReceiverAsyncClient.receiveMultiSession(options)
             .flatMap(receivedMessage -> {
-                System.out.println("Session State : " + multiSessionReceiverAsyncClient.getSessionState(
-                    receivedMessage.getSessionId()));
-
+               /* System.out.println("Session State : " + multiSessionReceiverAsyncClient.getSessionState(
+                    receivedMessage.getSessionId()));*/
+                System.out.println("!!! Received Message seq no  "+ receivedMessage.getSequenceNumber() +" SessionId " +  receivedMessage.getSessionId() + " Data : " +  new String (receivedMessage.getBody()));
                 if (receivedMessage.isSessionError()) {
                     myMessageProcessor.processError(receivedMessage.getServiceBusErrorContext());
                     return Mono.empty();
                 }
-                return myMessageProcessor.processMessage(receivedMessage, multiSessionReceiverAsyncClient);
+                return Mono.empty();
+                //return myMessageProcessor.processMessage(receivedMessage, multiSessionReceiverAsyncClient);
             }).subscribe();
-
+        System.out.println(" Waiting for message to arrive .. ");
 
         // Subscribe is not a blocking call so we sleep here so the program does not end.
         try {
-            Thread.sleep(Duration.ofSeconds(60).toMillis());
+            Thread.sleep(Duration.ofSeconds(3 * 60).toMillis());
         } catch (InterruptedException ignored) {
         }
+        System.out.println(" !!! Test DONE !!!  ");
         // Disposing of the subscription will cancel the receive() operation.
         subscription.dispose();
 
@@ -69,7 +72,10 @@ public class ServiceBusMultiSessionProcessorSample {
             boolean messageProcessed =  true;
 
             if (messageProcessed) {
-                return receiver.complete(message).then();
+                System.out.println(getClass().getName() + " Going to complete message .. ");
+                receiver.complete(message).then();
+                System.out.println(getClass().getName() + " After  completing message .. ");
+                return Mono.empty();
             } else {
                 return  receiver.abandon(message).then();
             }

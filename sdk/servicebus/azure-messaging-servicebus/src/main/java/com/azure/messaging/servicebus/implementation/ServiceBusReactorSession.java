@@ -67,12 +67,13 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
     @Override
     public Mono<AmqpReceiveLink> createConsumer(String linkName, String entityPath, MessagingEntityType entityType,
          Duration timeout, AmqpRetryPolicy retry, ReceiveMode receiveMode) {
-        return createConsumer(linkName, entityPath, entityType, timeout, retry, receiveMode, null);
+        return createConsumer(linkName, entityPath, entityType, timeout, retry, receiveMode, null, false);
     }
 
     @Override
     public Mono<AmqpReceiveLink> createConsumer(String linkName, String entityPath, MessagingEntityType entityType,
-        Duration timeout, AmqpRetryPolicy retry, ReceiveMode receiveMode, String sessionId) {
+        Duration timeout, AmqpRetryPolicy retry, ReceiveMode receiveMode, String sessionId,
+        boolean sessionEnabledEntity) {
         Objects.requireNonNull(linkName, "'linkName' cannot be null.");
         Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         Objects.requireNonNull(timeout, "'timeout' cannot be null.");
@@ -88,7 +89,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
             linkProperties.put(ENTITY_TYPE_PROPERTY, entityType.getValue());
         }
 
-        if (!CoreUtils.isNullOrEmpty(sessionId)) {
+        if ( sessionEnabledEntity || !CoreUtils.isNullOrEmpty(sessionId)) {
             filter.put(SESSION_FILTER, sessionId);
         }
 

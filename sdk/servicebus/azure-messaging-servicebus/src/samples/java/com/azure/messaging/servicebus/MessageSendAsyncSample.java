@@ -23,27 +23,28 @@ public class MessageSendAsyncSample {
         // 2. Go to "Shared access policies"
         // 3. Copy the connection string for the "RootManageSharedAccessKey" policy.
         String connectionString = System.getenv("AZURE_SERVICEBUS_CONNECTION_STRING");
-
+        String queueName = System.getenv("AZURE_SERVICEBUS_QUEUE_NAME");
         // Instantiate a client that will be used to call the service.
         ServiceBusSenderAsyncClient senderAsyncClient = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .sender()
-            .queueName("<< QUEUE NAME >>")
+            .queueName(queueName/*"<< QUEUE NAME >>"*/)
             .buildAsyncClient();
 
         // Create an message to send.
-        ServiceBusMessage message = new ServiceBusMessage("Hello world!".getBytes(UTF_8));
-
+        ServiceBusMessage message = new ServiceBusMessage("session 2 - message 1".getBytes(UTF_8));
+        message.setSessionId("seattle-id2");
         // Send that message. This call returns a Mono<Void>, which we subscribe to. It completes successfully when the
         // message has been delivered to the Service Bus. It completes with an error if an exception occurred while
         // sending the message.
 
-        senderAsyncClient.send(message).subscribe();
-
+        //senderAsyncClient.send(message).subscribe(aVoid -> {System.out.println("MEssage sent..");});
+        senderAsyncClient.send(message).block();
+        System.out.println("Message sent..");
         // Subscribe is not a blocking call so we sleep here so the program does not end while finishing
         // the operation.
         try {
-            Thread.sleep(Duration.ofSeconds(20).toMillis());
+            Thread.sleep(Duration.ofSeconds(30).toMillis());
         } catch (InterruptedException ignored) {
         }
     }
