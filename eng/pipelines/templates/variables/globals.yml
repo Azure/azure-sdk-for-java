@@ -7,3 +7,5 @@ variables:
   skipComponentGovernanceDetection: true
   EmulatorMsiUrl: 'https://aka.ms/cosmosdb-emulator'
   AdditionalOptions: ''
+  # format !<group1Id>:<artifact1Id>, !<group2Id>:<artifact2Id>,... no trailing comma is necessary
+  PLSkipOptions: ''
