@@ -1108,6 +1108,14 @@
               <systemPropertyVariables>
                 <jacoco-agent.destfile>${project.build.directory}/jacoco.exec</jacoco-agent.destfile>
               </systemPropertyVariables>
+              <properties>
+                <configurationParameters>
+                  junit.jupiter.conditions.deactivate = *
+                  junit.jupiter.extensions.autodetection.enabled = true
+                  junit.jupiter.testinstance.lifecycle.default = per_class
+                  junit.jupiter.execution.parallel.enabled = true
+                </configurationParameters>
+              </properties>
             </configuration>
           </plugin>
         </plugins>
@@ -1125,6 +1133,7 @@
         <module>../../../eng/spotbugs-aggregate-report</module>
         <module>../../../eng/code-quality-reports</module>
         <module>../../../eng/jacoco-test-coverage</module>
+        <module>../../../eng/azure-test-watcher</module>
       </modules>
     </profile>
 
