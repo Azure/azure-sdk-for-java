@@ -203,6 +203,7 @@ jobs:
 
     variables:
       - template: ../variables/globals.yml
+        additional_test_build_options: ''
 
     strategy:
       matrix: ${{ parameters.TestMatrix }}
@@ -258,11 +259,16 @@ jobs:
           Artifacts: ${{parameters.Artifacts}}
           AdditionalModules: ${{parameters.AdditionalModules}}
 
+      - pwsh: |
+          echo "##vso[task.setvariable variable=additional_test_build_options]-amd"
+        condition: and(succeeded(), eq(variables['ShouldRunSourceTests'],'true'))
+        displayName: 'Set amd switch for From Source run'
+
       - task: Maven@3
         displayName: 'Run tests'
         inputs:
           mavenPomFile: pom.xml
-          options: ${{ parameters.TestOptions }} -pl $(ProjectList) -am
+          options: ${{ parameters.TestOptions }} -pl $(ProjectList) -am $(additional_test_build_options)
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
