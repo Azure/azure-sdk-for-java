@@ -73,7 +73,7 @@ To use an [API key][api_key], provide the key as a string to the AzureKeyCredent
 az cognitiveservices account keys list --resource-group <your-resource-group-name> --name <your-resource-name>
 ``` 
 Use the API key as the credential parameter to authenticate the client:
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L43-L46 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L37-L40 -->
 ```java
 FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
     .apiKey(new AzureKeyCredential("{api_key}"))
@@ -82,7 +82,7 @@ FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
 ```
 The Azure Form Recognizer client library provides a way to **rotate the existing API key**.
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L53-L59 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L47-L53 -->
 ```java
 AzureKeyCredential credential = new AzureKeyCredential("{api_key}");
 FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
@@ -101,7 +101,7 @@ recognizing content from forms, and analyzing receipts.
 
 ### FormTrainingClient
 The [FormTrainingClient][form_training_sync_client] and 
-[FormTrainingAsyncClient][form_training_async_client] provide both both synchronous and asynchronous operations for 
+[FormTrainingAsyncClient][form_training_async_client] provide both synchronous and asynchronous operations for 
 for training custom models, retrieving and deleting models, as well as understanding how close you are to 
 reaching subscription limits for the number of models you can train.
 
@@ -146,7 +146,7 @@ The following section provides several code snippets covering some of the most c
 ### Recognize Forms Using a Custom Model
 Recognize name/value pairs and table data from forms. These models are trained with your own data,
 so they're tailored to your forms. You should only recognize forms of the same form type that the custom model was trained on.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L63-L79 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L57-L73 -->
 ```java
 String analyzeFilePath = "{file_source_url}";
 String modelId = "{custom_trained_model_id}";
@@ -169,7 +169,7 @@ recognizedForms.forEach(form -> {
 
 ### Recognize Content
 Recognize text and table structures, along with their bounding box coordinates, from documents.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L83-L109 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L77-L103 -->
 ```java
 String analyzeFilePath = "{file_source_url}";
 SyncPoller<OperationResult, IterableStream<FormPage>> recognizeLayoutPoller =
@@ -202,10 +202,10 @@ layoutPageResults.forEach(formPage -> {
 
 ### Recognize receipts
 Recognize data from USA sales receipts using a prebuilt model.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L113-L130 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L107-L124 -->
 ```java
-String receiptSourceUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media" +
-    "/contoso-allinone.jpg";
+String receiptSourceUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media"
+    + "/contoso-allinone.jpg";
 SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
     formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptSourceUrl);
 IterableStream<RecognizedReceipt> receiptPageResults = syncPoller.getFinalResult();
@@ -228,7 +228,7 @@ receiptPageResults.forEach(recognizedReceipt -> {
 Train a machine-learned model on your own form type. The resulting model will be able to recognize values from the types of forms it was trained on.
 Provide a container SAS url to your Azure Storage Blob container where you're storing the training documents. See details on setting this up
 in the [service quickstart documentation][quickstart_training].
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L134-L154 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L128-L148 -->
 ```java
 String trainingSetSource = "{unlabeled_training_set_SAS_URL}";
 SyncPoller<OperationResult, CustomFormModel> trainingPoller =
@@ -255,7 +255,7 @@ customFormModel.getSubModels().forEach(customFormSubModel -> {
 
 ### Manage your models
 Manage the custom models attached to your account.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L158-L187 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L152-L181 -->
 ```java
 AtomicReference<String> modelId = new AtomicReference<>();
 // First, we see how many custom models we have, and what our limit is
@@ -264,7 +264,7 @@ System.out.printf("The account has %s custom models, and we can have at most %s 
     accountProperties.getCount(), accountProperties.getLimit());
 
 // Next, we get a paged list of all of our custom models
-PagedIterable<CustomFormModelInfo> customModels = formTrainingClient.listModels();
+PagedIterable<CustomFormModelInfo> customModels = formTrainingClient.getModelInfos();
 System.out.println("We have following models in the account:");
 customModels.forEach(customFormModelInfo -> {
     System.out.printf("Model Id: %s%n", customFormModelInfo.getModelId());
@@ -297,7 +297,7 @@ to provide an invalid file source URL an `ErrorResponseException` would be raise
 In the following code snippet, the error is handled 
 gracefully by catching the exception and display the additional information about the error.
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L194-L198 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L188-L192 -->
 ```java
 try {
     formRecognizerClient.beginRecognizeContentFromUrl("invalidSourceUrl");
