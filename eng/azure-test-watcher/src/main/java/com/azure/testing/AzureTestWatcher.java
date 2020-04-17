@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.testing;
 
 import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
@@ -7,7 +10,12 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import java.lang.reflect.Method;
 import java.util.Objects;
 
+/**
+ * JUnit 5 extension class which reports on testing running and simple metrics about the test such as run time.
+ */
 public class AzureTestWatcher implements BeforeTestExecutionCallback, AfterTestExecutionCallback {
+
+    @Override
     public void beforeTestExecution(ExtensionContext extensionContext) {
         String displayName = extensionContext.getDisplayName();
         getStore(extensionContext).put(extensionContext.getRequiredTestMethod(), System.currentTimeMillis());
