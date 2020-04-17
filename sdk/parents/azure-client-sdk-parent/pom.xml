@@ -712,6 +712,11 @@
           <version>3.0.0-M4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
           <configuration>
             <useSystemClassLoader>false</useSystemClassLoader>
+            <properties>
+              <configurationParameters>
+                junit.jupiter.extensions.autodetection.enabled = true
+              </configurationParameters>
+            </properties>
           </configuration>
         </plugin>
       </plugins>
@@ -1108,11 +1113,6 @@
               <systemPropertyVariables>
                 <jacoco-agent.destfile>${project.build.directory}/jacoco.exec</jacoco-agent.destfile>
               </systemPropertyVariables>
-              <properties>
-                <configurationParameters>
-                  junit.jupiter.extensions.autodetection.enabled = true
-                </configurationParameters>
-              </properties>
             </configuration>
           </plugin>
         </plugins>
