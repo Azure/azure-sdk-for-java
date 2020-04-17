@@ -152,15 +152,4 @@ public final class Utility {
         throw LOGGER.logExceptionAsError(
             new RuntimeException("Failed to parse operation header for result Id from: " + operationLocation));
     }
-
-    /**
-     * Compare if a byte value equals to a hex type value.
-     *
-     * @param byteValue the byte type value
-     * @param hexValue the hex type value
-     * @return true if two type's values are equal in unsigned int comparision.
-     */
-    private static boolean isEqual(byte byteValue, int hexValue) {
-        return Byte.toUnsignedInt(byteValue) == Byte.toUnsignedInt((byte) hexValue);
-    }
 }
