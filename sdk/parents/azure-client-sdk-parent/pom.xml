@@ -716,6 +716,9 @@
               <configurationParameters>
                 junit.jupiter.extensions.autodetection.enabled = true
               </configurationParameters>
+              <statelessTestsetReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5Xml30StatelessReporter">
+                <usePhrasedTestCaseMethodName>true</usePhrasedTestCaseMethodName>
+              </statelessTestsetReporter>
             </properties>
           </configuration>
         </plugin>
