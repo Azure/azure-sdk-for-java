@@ -10,6 +10,8 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * This sample demonstrates how to train a model with labeled data. See RecognizeCustomFormsAsync
  * to recognize forms with your custom model.
@@ -17,7 +19,7 @@ import reactor.core.publisher.Mono;
 public class TrainLabeledCustomModelAsync {
 
     /**
-     * Main method to invoke this demo about how to train a custom model.
+     * Main method to invoke this demo.
      *
      * @param args Unused arguments to the program.
      */
@@ -31,9 +33,9 @@ public class TrainLabeledCustomModelAsync {
 
         // Train custom model
         String trainingSetSource = "{training-set-SAS-URL}";
-        PollerFlux<OperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingSetSource, false);
+        PollerFlux<OperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingSetSource, true);
 
-        CustomFormModel customFormModel = trainingPoller
+        Mono<CustomFormModel> customFormModelResult = trainingPoller
             .last()
             .flatMap(trainingOperationResponse -> {
                 if (trainingOperationResponse.getStatus().equals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)) {
@@ -43,32 +45,46 @@ public class TrainLabeledCustomModelAsync {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
                         + trainingOperationResponse.getStatus()));
                 }
-            }).block();
+            });
 
-        // Model Info
-        System.out.printf("Model Id: %s%n", customFormModel.getModelId());
-        System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
-        // looping through the sub-models, which contains the fields they were trained on
-        // The labels are based on the ones you gave the training document.
-        System.out.println("Recognized Fields:");
-        customFormModel.getSubModels().forEach(customFormSubModel -> {
+        customFormModelResult.subscribe(customFormModel -> {
+            // Model Info
+            System.out.printf("Model Id: %s%n", customFormModel.getModelId());
+            System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
+            System.out.printf("Model created on: %s%n", customFormModel.getCreatedOn());
+            System.out.printf("Model last updated: %s%n%n", customFormModel.getLastUpdatedOn());
+
+            // looping through the sub-models, which contains the fields they were trained on
+            // The labels are based on the ones you gave the training document.
+            System.out.println("Recognized Fields:");
             // Since the data is labeled, we are able to return the accuracy of the model
-            System.out.printf("Sub-model accuracy: %s%n", customFormSubModel.getAccuracy());
-            customFormSubModel.getFieldMap().forEach((label, customFormModelField) ->
-                System.out.printf("Field: %s Field Name: %s Field Accuracy: %s%n",
-                    label, customFormModelField.getName(), customFormModelField.getAccuracy()));
-        });
-
-        customFormModel.getTrainingDocuments().forEach(trainingDocumentInfo -> {
-            System.out.printf("Document name: %s%n", trainingDocumentInfo.getName());
-            System.out.printf("Document status: %s%n", trainingDocumentInfo.getName());
-            System.out.printf("Document page count: %s%n", trainingDocumentInfo.getName());
-            System.out.println("Document errors:");
-            trainingDocumentInfo.getDocumentError().forEach(formRecognizerError -> {
-                System.out.printf("Error code %s, Error message: %s%n", formRecognizerError.getCode(),
-                    formRecognizerError.getMessage());
+            customFormModel.getSubModels().forEach(customFormSubModel -> {
+                System.out.printf("Sub-model accuracy: %s%n", customFormSubModel.getAccuracy());
+                customFormSubModel.getFieldMap().forEach((label, customFormModelField) ->
+                    System.out.printf("Field: %s Field Name: %s Field Accuracy: %s%n",
+                        label, customFormModelField.getName(), customFormModelField.getAccuracy()));
+            });
+            System.out.println();
+            customFormModel.getTrainingDocuments().forEach(trainingDocumentInfo -> {
+                System.out.printf("Document name: %s%n", trainingDocumentInfo.getName());
+                System.out.printf("Document status: %s%n", trainingDocumentInfo.getName());
+                System.out.printf("Document page count: %s%n", trainingDocumentInfo.getPageCount());
+                if (!trainingDocumentInfo.getDocumentErrors().isEmpty()) {
+                    System.out.println("Document Errors:");
+                    trainingDocumentInfo.getDocumentErrors().forEach(formRecognizerError ->
+                        System.out.printf("Error code %s, Error message: %s%n", formRecognizerError.getCode(),
+                            formRecognizerError.getMessage()));
+                }
             });
         });
 
+        // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
+        // the thread so the program does not end before the send operation is complete. Using .block() instead of
+        // .subscribe() will turn this into a synchronous call.
+        try {
+            TimeUnit.MINUTES.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

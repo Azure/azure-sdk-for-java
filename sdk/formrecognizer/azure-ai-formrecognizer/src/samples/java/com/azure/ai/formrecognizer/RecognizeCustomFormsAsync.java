@@ -3,6 +3,8 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.implementation.Utility;
+import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
@@ -10,51 +12,75 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.util.concurrent.TimeUnit;
+
 /*
  *  This sample demonstrates how to analyze a form from a document with a custom
-    trained model
+    trained model.
  */
 public class RecognizeCustomFormsAsync {
 
     /**
-     * Main method to invoke this demo to analyze a form from a document with a custom
-     * trained model.
+     * Main method to invoke this demo.
      *
      * @param args Unused arguments to the program.
      *
+     * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         // Instantiate a client that will be used to call the service.
         FormRecognizerAsyncClient client = new FormRecognizerClientBuilder()
             .apiKey(new AzureKeyCredential("{api_key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
-        String analyzeFilePath = "{file_source_url}";
-        String modelId = "{custom_trained_model_id}";
-        PollerFlux<OperationResult, IterableStream<RecognizedForm>> recognizeFormPoller =
-            client.beginRecognizeCustomFormsFromUrl(analyzeFilePath, modelId);
+        // The form you are recognizing must be of the same type as the forms the custom model was trained on
+        File sourceFile = new File("../../test/resources/sample-files/Invoice_6.pdf");
+        byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
+        InputStream targetStream = new ByteArrayInputStream(fileContent);
+        String modelId = "{modelId}";
 
-        IterableStream<RecognizedForm> recognizedForms = recognizeFormPoller
+        PollerFlux<OperationResult, IterableStream<RecognizedForm>> recognizeFormPoller =
+            client.beginRecognizeCustomForms(Utility.convertStreamToByteBuffer(targetStream), modelId,
+                sourceFile.length(),
+                FormContentType.APPLICATION_PDF);
+
+        Mono<IterableStream<RecognizedForm>> recognizeFormResult = recognizeFormPoller
             .last()
-            .flatMap(trainingOperationResponse -> {
-                if (trainingOperationResponse.getStatus().isComplete()) {
+            .flatMap(recognizeFormPollOperation -> {
+                if (recognizeFormPollOperation.getStatus().isComplete()) {
                     // training completed successfully, retrieving final result.
-                    return trainingOperationResponse.getFinalResult();
+                    return recognizeFormPollOperation.getFinalResult();
                 } else {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
-                        + trainingOperationResponse.getStatus()));
+                        + recognizeFormPollOperation.getStatus()));
                 }
-            }).block();
-
-        recognizedForms.forEach(form -> {
-            System.out.println("----------- Recognized Form -----------");
-            System.out.printf("Form has type {}", form.getFormType());
-            form.getFields().forEach((fieldText, fieldValue) -> {
-                System.out.printf("Field % has value %s with confidence score of %s", fieldText, fieldValue,
-                    fieldValue.getFieldValue());
             });
-            System.out.print("-----------------------------------");
-        });
+
+        recognizeFormResult.subscribe(recognizedForms ->
+            recognizedForms.forEach(form -> {
+                System.out.println("----------- Recognized Form -----------");
+                System.out.printf("Form type: %s%n", form.getFormType());
+                form.getFields().forEach((label, formField) -> {
+                    System.out.printf("Field %s has value %s with confidence score of %s %n", label,
+                        formField.getFieldValue(),
+                        formField.getConfidence());
+                });
+                System.out.print("-----------------------------------");
+            }));
+
+        // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
+        // the thread so the program does not end before the send operation is complete. Using .block() instead of
+        // .subscribe() will turn this into a synchronous call.
+        try {
+            TimeUnit.MINUTES.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

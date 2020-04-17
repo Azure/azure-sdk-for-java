@@ -23,8 +23,9 @@ import java.nio.file.Files;
  * Sample for recognizing US receipt information using file source URL.
  */
 public class RecognizeReceipts {
+
     /**
-     * Sample for recognizing US receipt information using file source URL.
+     * Main method to invoke this demo.
      *
      * @param args Unused. Arguments to the program.
      * @throws IOException from reading file.
@@ -50,23 +51,23 @@ public class RecognizeReceipts {
             USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
             System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
             System.out.printf("Merchant Name: %s, confidence: %s%n", usReceipt.getMerchantName().getFieldValue(), usReceipt.getMerchantName().getConfidence());
-            System.out.printf("Merchant Address %s%n", usReceipt.getMerchantAddress().getName());
-            System.out.printf("Merchant Address: %s, confidence: %s%n", usReceipt.getMerchantAddress().getFieldValue(), usReceipt.getMerchantAddress().getConfidence());
-            System.out.printf("Merchant Phone Number %s%n", usReceipt.getMerchantPhoneNumber().getName());
-            System.out.printf("Merchant Phone Number: %s, confidence: %s%n", usReceipt.getMerchantPhoneNumber().getFieldValue(), usReceipt.getMerchantPhoneNumber().getConfidence());
-            System.out.printf("Total: %s%n", usReceipt.getTotal().getName());
-            System.out.printf("Total: %s, confidence: %s%n", usReceipt.getTotal().getFieldValue(), usReceipt.getTotal().getConfidence());
+            System.out.printf("Merchant Address: %s, confidence: %s%n", usReceipt.getMerchantAddress().getName(), usReceipt.getMerchantAddress().getConfidence());
+            System.out.printf("Merchant Phone Number %s, confidence: %s%n", usReceipt.getMerchantPhoneNumber().getFieldValue(), usReceipt.getMerchantPhoneNumber().getConfidence());
+            System.out.printf("Total: %s confidence: %s%n", usReceipt.getTotal().getName(), usReceipt.getTotal().getConfidence());
             System.out.printf("Receipt Items: %n");
             usReceipt.getReceiptItems().forEach(receiptItem -> {
-                System.out.printf("Name: %s, confidence: %s%n", receiptItem.getName() == null
-                    ? "N/A" : receiptItem.getName().getFieldValue(), receiptItem.getName().getConfidence());
-                System.out.printf("Quantity: %s, confidence: %s%n", receiptItem.getQuantity() == null
-                    ? "N/A" : receiptItem.getQuantity().getFieldValue(), receiptItem.getQuantity().getConfidence());
-                System.out.printf("Price: %s, confidence: %s%n", receiptItem.getPrice() == null
-                    ? "N/A" : receiptItem.getPrice().getFieldValue(), receiptItem.getPrice().getConfidence());
-                System.out.printf("Total Price: %s, confidence: %s%n", receiptItem.getTotalPrice() == null
-                    ? "N/A" : receiptItem.getTotalPrice(), receiptItem.getTotalPrice().getConfidence());
-                System.out.println();
+                if (receiptItem.getName() != null) {
+                    System.out.printf("Name: %s, confidence: %s%n", receiptItem.getName().getFieldValue(), receiptItem.getName().getConfidence());
+                }
+                if (receiptItem.getQuantity() != null) {
+                    System.out.printf("Quantity: %s, confidence: %s%n", receiptItem.getQuantity().getFieldValue(), receiptItem.getQuantity().getConfidence());
+                }
+                if (receiptItem.getPrice() != null) {
+                    System.out.printf("Price: %s, confidence: %s%n", receiptItem.getPrice().getFieldValue(), receiptItem.getPrice().getConfidence());
+                }
+                if (receiptItem.getTotalPrice() != null) {
+                    System.out.printf("Total Price: %s, confidence: %s%n", receiptItem.getTotalPrice().getFieldValue(), receiptItem.getTotalPrice().getConfidence());
+                }
             });
             System.out.print("-----------------------------------");
         });

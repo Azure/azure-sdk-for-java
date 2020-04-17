@@ -36,26 +36,31 @@ public class TrainUnlabeledCustomModel {
         // Model Info
         System.out.printf("Model Id: %s%n", customFormModel.getModelId());
         System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
-        // looping through the submodels, which contains the fields they were trained on
-        // Since the given training documents are unlabeled, we still group them but they do not have a label.
+        System.out.printf("Model created on: %s%n", customFormModel.getCreatedOn());
+        System.out.printf("Model last updated: %s%n%n", customFormModel.getLastUpdatedOn());
+
         System.out.println("Recognized Fields:");
+        // looping through the sub-models, which contains the fields they were trained on
+        // Since the given training documents are unlabeled, we still group them but they do not have a label.
         customFormModel.getSubModels().forEach(customFormSubModel -> {
             // Since the training data is unlabeled, we are unable to return the accuracy of this model
             customFormSubModel.getFieldMap().forEach((field, customFormModelField) ->
                 System.out.printf("Field: %s Field Label: %s%n",
                     field, customFormModelField.getLabel()));
         });
+        System.out.println();
 
+        // Training result information
         customFormModel.getTrainingDocuments().forEach(trainingDocumentInfo -> {
             System.out.printf("Document name: %s%n", trainingDocumentInfo.getName());
             System.out.printf("Document status: %s%n", trainingDocumentInfo.getName());
-            System.out.printf("Document page count: %s%n", trainingDocumentInfo.getName());
-            System.out.println("Document errors:");
-            trainingDocumentInfo.getDocumentError().forEach(formRecognizerError -> {
-                System.out.printf("Error code %s, Error message: %s%n", formRecognizerError.getCode(),
-                    formRecognizerError.getMessage());
-            });
+            System.out.printf("Document page count: %s%n", trainingDocumentInfo.getPageCount());
+            if (!trainingDocumentInfo.getDocumentErrors().isEmpty()) {
+                System.out.println("Document Errors:");
+                trainingDocumentInfo.getDocumentErrors().forEach(formRecognizerError ->
+                    System.out.printf("Error code %s, Error message: %s%n", formRecognizerError.getCode(),
+                        formRecognizerError.getMessage()));
+            }
         });
-
     }
 }

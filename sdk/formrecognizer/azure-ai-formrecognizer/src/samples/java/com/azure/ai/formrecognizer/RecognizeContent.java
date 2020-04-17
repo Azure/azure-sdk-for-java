@@ -5,7 +5,6 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormPage;
-import com.azure.ai.formrecognizer.models.FormTableCell;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.IterableStream;
@@ -16,7 +15,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.util.Optional;
 
 /**
  * Sample for extracting layout information using input stream.
@@ -24,7 +22,7 @@ import java.util.Optional;
 public class RecognizeContent {
 
     /**
-     * Sample for extracting layout information using input stream.
+     * Main method to invoke this demo.
      *
      * @param args Unused. Arguments to the program.
      *
@@ -38,14 +36,14 @@ public class RecognizeContent {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
-        File sourceFile = new File("C/.pdf");
+        File sourceFile = new File("../../test/resources/sample-files/layout1.jpg");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
-        SyncPoller<OperationResult, IterableStream<FormPage>> analyzeLayoutPoller =
-            client.beginRecognizeContent(targetStream, sourceFile.length(), FormContentType.APPLICATION_PDF);
+        SyncPoller<OperationResult, IterableStream<FormPage>> recognizeLayoutPoller =
+            client.beginRecognizeContent(targetStream, sourceFile.length(), FormContentType.IMAGE_JPEG);
 
-        IterableStream<FormPage> layoutPageResults = analyzeLayoutPoller.getFinalResult();
+        IterableStream<FormPage> layoutPageResults = recognizeLayoutPoller.getFinalResult();
 
         layoutPageResults.forEach(formPage -> {
             // Table information
@@ -54,27 +52,18 @@ public class RecognizeContent {
                 formPage.getHeight(),
                 formPage.getUnit());
             formPage.getTables().forEach(formTable -> {
-                System.out.printf("Table has %s rows and %s columns%n", formTable.getRowCount(), formTable.getColumnCount());
-                for (int i = 0; i < formTable.getRowCount(); i++) {
-                    for (int j = 0; j < formTable.getColumnCount(); j++) {
-                        int finalJ = j;
-                        int finalI = i;
-                        Optional<FormTableCell> optionalFormTableCell =
-                            formTable.getCells().stream().filter(formTableCell ->
-                                formTableCell.getRowIndex() == finalI && formTableCell.getColumnIndex() == finalJ).findFirst();
-                        if (optionalFormTableCell.isPresent()) {
-                            FormTableCell recognizedTableCell = optionalFormTableCell.get();
-                            if (recognizedTableCell.isHeader()) {
-                                System.out.println(recognizedTableCell.getText());
-                            } else {
-                                // System.out.printf("Cell text %s within bounding box %s%n", recognizedTableCell.getText(),
-                                //     recognizedTableCell.getBoundingBox().getPoints().forEach(point ->
-                                //         String.format("[%s, %s]", point.getX(), point.getY())));
-                            }
-                        }
+                System.out.printf("Table has %s rows and %s columns.%n", formTable.getRowCount(),
+                    formTable.getColumnCount());
+                formTable.getCells().forEach(formTableCell -> {
+                    final StringBuilder boundingBoxStr = new StringBuilder();
+                    if (formTableCell.getBoundingBox() != null) {
+                        formTableCell.getBoundingBox().getPoints().forEach(point ->
+                            boundingBoxStr.append(String.format("[%s, %s]", point.getX(), point.getY())));
                     }
-                    System.out.println();
-                }
+                    System.out.printf("Cell has text %s, within bounding box %s.%n", formTableCell.getText(),
+                        boundingBoxStr);
+                });
+                System.out.println();
             });
         });
     }

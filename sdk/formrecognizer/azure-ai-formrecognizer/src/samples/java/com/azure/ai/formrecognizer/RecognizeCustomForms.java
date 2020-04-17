@@ -16,8 +16,7 @@ import com.azure.core.util.polling.SyncPoller;
 public class RecognizeCustomForms {
 
     /**
-     * Main method to invoke this demo to analyze a form from a document with a custom
-     * trained model.
+     * Main method to invoke this demo.
      *
      * @param args Unused arguments to the program.
      *
@@ -38,10 +37,11 @@ public class RecognizeCustomForms {
 
         recognizedForms.forEach(form -> {
             System.out.println("----------- Recognized Form -----------");
-            System.out.printf("Form has type {}", form.getFormType());
-            form.getFields().forEach((fieldText, fieldValue) -> {
-                System.out.printf("Field % has value %s with confidence score of %s", fieldText, fieldValue,
-                    fieldValue.getFieldValue());
+            System.out.printf("Form type: %s%n", form.getFormType());
+            form.getFields().forEach((label, formField) -> {
+                System.out.printf("Field %s has value %s with confidence score of %s %n", label,
+                    formField.getFieldValue(),
+                    formField.getConfidence());
             });
             System.out.print("-----------------------------------");
         });

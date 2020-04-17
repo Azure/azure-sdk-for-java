@@ -5,15 +5,16 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.core.credential.AzureKeyCredential;
 
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Sample for demonstrating common custom model management operations.
+ * Sample for demonstrating common custom model management operations on your account.
  */
 public class ManageCustomModelsAsync {
 
     /**
-     * Main program to invoke the demo for performing operations of a custom model.
+     * Main program to invoke the demo.
      *
      * @param args Unused. Arguments to the program.
      */
@@ -24,19 +25,19 @@ public class ManageCustomModelsAsync {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient().getFormTrainingAsyncClient();
 
-        AtomicReference<String> modelId = null;
+        AtomicReference<String> modelId = new AtomicReference<>();
 
         // First, we see how many custom models we have, and what our limit is
         client.getAccountProperties().subscribe(accountProperties ->
-            System.out.printf("The account has %s custom models, and we can have at most %s custom models",
+            System.out.printf("The account has %s custom models, and we can have at most %s custom models.%n",
                 accountProperties.getCount(), accountProperties.getLimit()));
-
         // Next, we get a paged list of all of our custom models
         System.out.println("We have following models in the account:");
         client.listModels().subscribe(customFormModelInfo -> {
-            System.out.printf("Model Id: %s%n", customFormModelInfo.getModelId());
+            String createdModelId = customFormModelInfo.getModelId();
+            System.out.printf("Model Id: %s%n", createdModelId);
             // get custom model info
-            modelId.set(customFormModelInfo.getModelId());
+            modelId.set(createdModelId);
             client.getCustomModel(customFormModelInfo.getModelId()).subscribe(customModel -> {
                 System.out.printf("Model Id: %s%n", customModel.getModelId());
                 System.out.printf("Model Status: %s%n", customModel.getModelStatus());
@@ -57,7 +58,15 @@ public class ManageCustomModelsAsync {
         });
 
         // Delete Custom Model
-        System.out.printf("Deleted model with model Id: %s%n", modelId.get(),
-            client.deleteModelWithResponse(modelId.get()));
+        System.out.printf("Deleted model with model Id: %s%n", modelId.get(), client.deleteModelWithResponse(modelId.get()));
+
+        // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
+        // the thread so the program does not end before the send operation is complete. Using .block() instead of
+        // .subscribe() will turn this into a synchronous call.
+        try {
+            TimeUnit.SECONDS.sleep(15);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

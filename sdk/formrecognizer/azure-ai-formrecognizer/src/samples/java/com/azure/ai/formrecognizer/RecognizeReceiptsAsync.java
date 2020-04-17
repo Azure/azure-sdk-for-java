@@ -20,16 +20,18 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.util.concurrent.TimeUnit;
 
 /**
- * Sample for recognizing US receipt information using file source URL.
+ * Sample for recognizing US receipt information from a local file.
  */
 public class RecognizeReceiptsAsync {
+
     /**
-     * Sample for recognizing US receipt information using file source URL.
+     * Main method to invoke this demo.
      *
      * @param args Unused. Arguments to the program.
-     * @throws IOException from reading file.
+     * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public static void main(final String[] args) throws IOException {
         // Instantiate a client that will be used to call the service.
@@ -38,24 +40,24 @@ public class RecognizeReceiptsAsync {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
-        File sourceFile = new File("");
+        File sourceFile = new File("../../test/resources/sample-files/contoso-allinone.jpg");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
         PollerFlux<OperationResult, IterableStream<RecognizedReceipt>> analyzeReceiptPoller =
             client.beginRecognizeReceipts(Utility.convertStreamToByteBuffer(targetStream),
-                sourceFile.length(), FormContentType.APPLICATION_PDF);
+                sourceFile.length(), FormContentType.IMAGE_JPEG);
 
         IterableStream<RecognizedReceipt> receiptPageResults = analyzeReceiptPoller
             .last()
-            .flatMap(trainingOperationResponse -> {
-                if (trainingOperationResponse.getStatus().isComplete()) {
+            .flatMap(recognizeReceiptPollOperation -> {
+                if (recognizeReceiptPollOperation.getStatus().isComplete()) {
                     System.out.println("Polling completed successfully");
                     // training completed successfully, retrieving final result.
-                    return trainingOperationResponse.getFinalResult();
+                    return recognizeReceiptPollOperation.getFinalResult();
                 } else {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
-                        + trainingOperationResponse.getStatus()));
+                        + recognizeReceiptPollOperation.getStatus()));
                 }
             }).block();
 
@@ -64,25 +66,34 @@ public class RecognizeReceiptsAsync {
             USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
             System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
             System.out.printf("Merchant Name: %s, confidence: %s%n", usReceipt.getMerchantName().getFieldValue(), usReceipt.getMerchantName().getConfidence());
-            System.out.printf("Merchant Address %s%n", usReceipt.getMerchantAddress().getName());
-            System.out.printf("Merchant Address: %s, confidence: %s%n", usReceipt.getMerchantAddress().getFieldValue(), usReceipt.getMerchantAddress().getConfidence());
-            System.out.printf("Merchant Phone Number %s%n", usReceipt.getMerchantPhoneNumber().getName());
-            System.out.printf("Merchant Phone Number: %s, confidence: %s%n", usReceipt.getMerchantPhoneNumber().getFieldValue(), usReceipt.getMerchantPhoneNumber().getConfidence());
-            System.out.printf("Total: %s%n", usReceipt.getTotal().getName());
-            System.out.printf("Total: %s, confidence: %s%n", usReceipt.getTotal().getFieldValue(), usReceipt.getTotal().getConfidence());
+            System.out.printf("Merchant Address: %s, confidence: %s%n", usReceipt.getMerchantAddress().getName(), usReceipt.getMerchantAddress().getConfidence());
+            System.out.printf("Merchant Phone Number %s, confidence: %s%n", usReceipt.getMerchantPhoneNumber().getFieldValue(), usReceipt.getMerchantPhoneNumber().getConfidence());
+            System.out.printf("Total: %s confidence: %s%n", usReceipt.getTotal().getName(), usReceipt.getTotal().getConfidence());
             System.out.printf("Receipt Items: %n");
             usReceipt.getReceiptItems().forEach(receiptItem -> {
-                System.out.printf("Name: %s, confidence: %s%n", receiptItem.getName() == null
-                    ? "N/A" : receiptItem.getName().getFieldValue(), receiptItem.getName().getConfidence());
-                System.out.printf("Quantity: %s, confidence: %s%n", receiptItem.getQuantity() == null
-                    ? "N/A" : receiptItem.getQuantity().getFieldValue(), receiptItem.getQuantity().getConfidence());
-                System.out.printf("Price: %s, confidence: %s%n", receiptItem.getPrice() == null
-                    ? "N/A" : receiptItem.getPrice().getFieldValue(), receiptItem.getPrice().getConfidence());
-                System.out.printf("Total Price: %s, confidence: %s%n", receiptItem.getTotalPrice() == null
-                    ? "N/A" : receiptItem.getTotalPrice(), receiptItem.getTotalPrice().getConfidence());
-                System.out.println();
+                if (receiptItem.getName() != null) {
+                    System.out.printf("Name: %s, confidence: %s%n", receiptItem.getName().getFieldValue(), receiptItem.getName().getConfidence());
+                }
+                if (receiptItem.getQuantity() != null) {
+                    System.out.printf("Quantity: %s, confidence: %s%n", receiptItem.getQuantity().getFieldValue(), receiptItem.getQuantity().getConfidence());
+                }
+                if (receiptItem.getPrice() != null) {
+                    System.out.printf("Price: %s, confidence: %s%n", receiptItem.getPrice().getFieldValue(), receiptItem.getPrice().getConfidence());
+                }
+                if (receiptItem.getTotalPrice() != null) {
+                    System.out.printf("Total Price: %s, confidence: %s%n", receiptItem.getTotalPrice().getFieldValue(), receiptItem.getTotalPrice().getConfidence());
+                }
             });
             System.out.print("-----------------------------------");
         });
+
+        // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
+        // the thread so the program does not end before the send operation is complete. Using .block() instead of
+        // .subscribe() will turn this into a synchronous call.
+        try {
+            TimeUnit.MINUTES.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

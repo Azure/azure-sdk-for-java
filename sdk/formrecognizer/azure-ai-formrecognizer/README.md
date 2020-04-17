@@ -3,10 +3,10 @@ Azure Cognitive Services Form Recognizer is a cloud service that uses machine le
 from form documents. Form Recognizer is made up of the following services:
 
 * Custom models - Extract name/value pairs and table data from forms. These models are trained with your own data, so they're tailored to your forms.
-* Prebuilt receipt model - Extract data from USA receipts using a prebuilt model.
+* Prebuilt receipt model - Extract data from USA sales receipts using a prebuilt model.
 * Layout API - Extract text and table structures, along with their bounding box coordinates, from documents.
 
-[Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][samples_readme]
+[Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][sample_readme]
 
 ## Getting started
 
@@ -228,16 +228,15 @@ The following section provides several code snippets illustrating common pattern
 ### More sample code
 
 These code samples show common scenario operations with the Azure Form Recognizer client library.
-The async versions of the samples (the sample files appended with `_async`) show asynchronous operations
-with Form Recognizer.
+The async versions of the samples show asynchronous operations with Form Recognizer.
 
-* Recognize receipts: [sample_recognize_receipts][sample_recognize_receipts] ([async version][sample_recognize_receipts_async])
-* Recognize receipts from a URL: [sample_recognize_receipts_from_url][sample_recognize_receipts_from_url] ([async version][sample_recognize_receipts_from_url_async])
-* Recognize content: [sample_recognize_content][sample_recognize_content] ([async version][sample_recognize_content_async])
-* Recognize custom forms: [sample_recognize_custom_forms][sample_recognize_custom_forms] ([async version][sample_recognize_custom_forms_async])
-* Train a model without labels: [sample_train_unlabeled_model][sample_train_unlabeled_model] ([async version][sample_train_unlabeled_model_async])
-* Train a model with labels: [sample_train_labeled_model][sample_train_labeled_model] ([async version][sample_train_labeled_model_async])
-* Manage custom models: [sample_manage_custom_models][sample_manage_custom_models] ([async_version][sample_manage_custom_models_async])
+* Recognize receipts: [recognize_receipts][recognize_receipts] ([async][recognize_receipts_async])
+* Recognize receipts from a URL: [recognize_receipts_from_url][recognize_receipts_from_url] ([async][recognize_receipts_from_url_async])
+* Recognize content: [recognize_content][recognize_content] ([async][recognize_content_async])
+* Recognize custom forms: [recognize_custom_forms][recognize_custom_forms] ([async][recognize_custom_forms_async])
+* Train a model without labels: [train_unlabeled_model][train_unlabeled_model] ([async][train_unlabeled_model_async])
+* Train a model with labels: [train_labeled_model][train_labeled_model] ([async][train_labeled_model_async])
+* Manage custom models: [manage_custom_models][manage_custom_models] ([async_version][manage_custom_models_async])
 
 ### Additional documentation
 
@@ -270,21 +269,21 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [package]: TODO
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [product_documentation]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview
-[samples_readme]: src/samples/README.md
-[sample_manage_custom_models]: src/samples/java/com/azure/ai/formrecognizer/ManageCustomModels.java
-[sample_manage_custom_models_async]: src/samples/java/com/azure/ai/formrecognizer/ManageCustomModelsAsync.java
-[sample_recognize_content]: src/samples/java/com/azure/ai/formrecognizer/RecognizeContent.java
-[sample_recognize_content_async]: src/samples/java/com/azure/ai/formrecognizer/RecognizeContentAsync.java
-[sample_recognize_receipts]: src/samples/java/com/azure/ai/formrecognizer/RecognizeReceipts.java
-[sample_recognize_receipts_async]: src/samples/java/com/azure/ai/formrecognizer/RecognizeReceiptsAsync.java
-[sample_recognize_receipts_from_url]: src/samples/java/com/azure/ai/formrecognizer/RecognizeReceiptsFromUrl.java
-[sample_recognize_receipts_from_url_async]: src/samples/java/com/azure/ai/formrecognizer/RecognizeReceiptsFromUrlAsync.java
-[sample_recognize_custom_forms]: src/samples/java/com/azure/ai/formrecognizer/RecognizeCustomForms.java
-[sample_recognize_custom_forms_async]: src/samples/java/com/azure/ai/formrecognizer/RecognizeCustomFormsAsync.java
-[sample_train_unlabeled_model]: src/samples/java/com/azure/ai/formrecognizer/TrainUnlabeledCustomModel.java
-[sample_train_unlabeled_model_async]: src/samples/java/com/azure/ai/formrecognizer/TrainUnlabeledCustomModelAsync.java
-[sample_train_labeled_model]: src/samples/java/com/azure/ai/formrecognizer/TrainLabeledCustomModel.java
-[sample_train_labeled_model_async]: src/samples/java/com/azure/ai/formrecognizer/TrainLabeledCustomModelAsync.java
+[sample_readme]: src/samples/README.md
+[manage_custom_models]: src/samples/java/com/azure/ai/formrecognizer/ManageCustomModels.java
+[manage_custom_models_async]: src/samples/java/com/azure/ai/formrecognizer/ManageCustomModelsAsync.java
+[recognize_content]: src/samples/java/com/azure/ai/formrecognizer/RecognizeContent.java
+[recognize_content_async]: src/samples/java/com/azure/ai/formrecognizer/RecognizeContentAsync.java
+[recognize_receipts]: src/samples/java/com/azure/ai/formrecognizer/RecognizeReceipts.java
+[recognize_receipts_async]: src/samples/java/com/azure/ai/formrecognizer/RecognizeReceiptsAsync.java
+[recognize_receipts_from_url]: src/samples/java/com/azure/ai/formrecognizer/RecognizeReceiptsFromUrl.java
+[recognize_receipts_from_url_async]: src/samples/java/com/azure/ai/formrecognizer/RecognizeReceiptsFromUrlAsync.java
+[recognize_custom_forms]: src/samples/java/com/azure/ai/formrecognizer/RecognizeCustomForms.java
+[recognize_custom_forms_async]: src/samples/java/com/azure/ai/formrecognizer/RecognizeCustomFormsAsync.java
+[train_unlabeled_model]: src/samples/java/com/azure/ai/formrecognizer/TrainUnlabeledCustomModel.java
+[train_unlabeled_model_async]: src/samples/java/com/azure/ai/formrecognizer/TrainUnlabeledCustomModelAsync.java
+[train_labeled_model]: src/samples/java/com/azure/ai/formrecognizer/TrainLabeledCustomModel.java
+[train_labeled_model_async]: src/samples/java/com/azure/ai/formrecognizer/TrainLabeledCustomModelAsync.java
 [service_access]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
 [source_code]: src
 [form_recognizer_account]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
