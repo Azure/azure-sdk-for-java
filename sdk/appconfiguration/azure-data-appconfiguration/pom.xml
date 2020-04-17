@@ -93,6 +93,12 @@
       <version>1.0.4</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-test-watcher</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-test-watcher;dependency} -->
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -105,6 +111,14 @@
           <statelessTestsetReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5Xml30StatelessReporter">
             <usePhrasedTestCaseMethodName>true</usePhrasedTestCaseMethodName>
           </statelessTestsetReporter>
+          <properties>
+            <configurationParameters>
+              junit.jupiter.conditions.deactivate = *
+              junit.jupiter.extensions.autodetection.enabled = true
+              junit.jupiter.testinstance.lifecycle.default = per_class
+              junit.jupiter.execution.parallel.enabled = true
+            </configurationParameters>
+          </properties>
         </configuration>
       </plugin>
     </plugins>

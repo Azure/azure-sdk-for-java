@@ -21,6 +21,11 @@
       <artifactId>junit-jupiter</artifactId>
       <version>5.4.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
     </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.4.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+    </dependency>
   </dependencies>
 
   <build>
@@ -34,6 +39,7 @@
             <bannedDependencies>
               <includes>
                 <include>org.junit.jupiter:junit-jupiter:[5.4.2]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
+                <include>org.junit.jupiter:junit-jupiter-api:[5.4.2]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

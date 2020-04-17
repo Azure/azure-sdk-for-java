@@ -41,7 +41,7 @@ public class AzureTestWatcher implements BeforeTestExecutionCallback, AfterTestE
         long start = getStore(context).remove(testMethod, long.class);
         long duration = System.currentTimeMillis() - start;
 
-        System.out.printf("Test took %d ms.", duration);
+        System.out.printf("Test took %d ms.%n", duration);
     }
 
     private ExtensionContext.Store getStore(ExtensionContext context) {
