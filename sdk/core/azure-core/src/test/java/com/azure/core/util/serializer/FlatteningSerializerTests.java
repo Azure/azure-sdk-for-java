@@ -4,6 +4,7 @@
 package com.azure.core.util.serializer;
 
 
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
@@ -629,6 +630,7 @@ public class FlatteningSerializerTests {
         Assertions.assertEquals(productDeserialized.productType, "chai");
     }
 
+    @JsonFlatten
     private class School {
         @JsonProperty(value = "teacher")
         private Teacher teacher;
@@ -689,6 +691,7 @@ public class FlatteningSerializerTests {
         return school;
     }
 
+    @JsonFlatten
     public static class FlattenedProduct {
         // Flattened and escaped property
         @JsonProperty(value = "properties.p\\.name")

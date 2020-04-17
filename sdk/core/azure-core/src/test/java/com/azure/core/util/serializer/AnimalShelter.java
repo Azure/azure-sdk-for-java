@@ -3,10 +3,12 @@
 
 package com.azure.core.util.serializer;
 
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
+@JsonFlatten
 public class AnimalShelter {
     @JsonProperty(value = "properties.description")
     private String description;
