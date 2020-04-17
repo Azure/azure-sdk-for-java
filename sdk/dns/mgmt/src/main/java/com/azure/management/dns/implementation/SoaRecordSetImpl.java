@@ -2,25 +2,19 @@
 // Licensed under the MIT License.
 package com.azure.management.dns.implementation;
 
-import com.azure.management.dns.models.RecordSetInner;
 import com.azure.management.dns.RecordType;
 import com.azure.management.dns.SoaRecord;
 import com.azure.management.dns.SoaRecordSet;
+import com.azure.management.dns.models.RecordSetInner;
 
-/**
- * Implementation of SoaRecordSet.
- */
-class SoaRecordSetImpl
-        extends DnsRecordSetImpl
-        implements SoaRecordSet {
+/** Implementation of SoaRecordSet. */
+class SoaRecordSetImpl extends DnsRecordSetImpl implements SoaRecordSet {
     SoaRecordSetImpl(final String name, final DnsZoneImpl parent, final RecordSetInner innerModel) {
         super(name, RecordType.SOA.toString(), parent, innerModel);
     }
 
     static SoaRecordSetImpl newRecordSet(final DnsZoneImpl parent) {
-        return new SoaRecordSetImpl("@", parent,
-                new RecordSetInner()
-                        .withSoaRecord(new SoaRecord()));
+        return new SoaRecordSetImpl("@", parent, new RecordSetInner().withSoaRecord(new SoaRecord()));
     }
 
     @Override

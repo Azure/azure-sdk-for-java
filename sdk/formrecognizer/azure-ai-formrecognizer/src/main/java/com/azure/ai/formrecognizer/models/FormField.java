@@ -7,6 +7,7 @@ import com.azure.core.annotation.Immutable;
 
 /**
  * The FormField model.
+ *
  * @param <T> The type of FormField.
  */
 @Immutable
@@ -15,7 +16,7 @@ public final class FormField<T> {
     /*
      * The confidence value of the field.
      */
-    private final Float confidence;
+    private final float confidence;
 
     /*
      * The label text of the field.
@@ -52,7 +53,7 @@ public final class FormField<T> {
      * @param valueText The label value text for the field.
      * @param pageNumber The label text value for the field.
      */
-    public FormField(final Float confidence, final FieldText labelText, final String name, final T fieldValue,
+    public FormField(final float confidence, final FieldText labelText, final String name, final T fieldValue,
         final FieldText valueText, final Integer pageNumber) {
         this.confidence = confidence;
         this.labelText = labelText;
@@ -67,7 +68,7 @@ public final class FormField<T> {
      *
      * @return the confidence value.
      */
-    public Float getConfidence() {
+    public float getConfidence() {
         return this.confidence;
     }
 

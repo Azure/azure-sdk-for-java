@@ -46,6 +46,7 @@ public final class FormPage {
 
     /**
      * Constructs a FormPage object.
+     *
      * @param height The height of the image/PDF in pixels/inches, respectively.
      * @param textAngle The general orientation of the text in clockwise direction.
      * @param unit The unit used by the width, height and boundingBox properties.
@@ -56,11 +57,11 @@ public final class FormPage {
     public FormPage(final float height, final float textAngle, final DimensionUnit unit,
         final float width, final IterableStream<FormLine> lines, final IterableStream<FormTable> tables) {
         this.height = height;
-        this.lines = lines;
-        this.tables = tables;
         this.textAngle = textAngle;
         this.unit = unit;
         this.width = width;
+        this.lines = IterableStream.of(lines);
+        this.tables = IterableStream.of(tables);
     }
 
     /**
@@ -72,7 +73,6 @@ public final class FormPage {
     public float getHeight() {
         return this.height;
     }
-
 
     /**
      * Get the lines property: When includeTextDetails is set to true, a list

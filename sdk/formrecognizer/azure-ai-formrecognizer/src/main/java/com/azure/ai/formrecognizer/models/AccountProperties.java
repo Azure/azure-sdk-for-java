@@ -12,7 +12,7 @@ import com.azure.core.annotation.Immutable;
 public final class AccountProperties {
 
     /*
-     * Max number of models that can be trained for this account.
+     * The current count of trained custom models.
      */
     private final int count;
 
@@ -24,7 +24,7 @@ public final class AccountProperties {
     /**
      * Constructs an AccountProperties object.
      *
-     * @param count Max number of models that can be trained for this account.
+     * @param count The current count of trained custom models.
      * @param limit Max number of models that can be trained for this account.
      */
     public AccountProperties(final int count, final int limit) {

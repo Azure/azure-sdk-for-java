@@ -204,7 +204,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
      * Code snippet for {@link FormRecognizerClient#beginRecognizeContentFromUrl} with options
      */
     public void beginRecognizeContentFromUrlWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContentFromUrl#String-Duration
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContentFromUrl#string-Duration
         String sourceFilePath = "{file_source_url}";
         formRecognizerClient.beginRecognizeContentFromUrl(sourceFilePath, Duration.ofSeconds(5)).getFinalResult()
             .forEach(formPage -> {
@@ -231,7 +231,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                         }}
                 });
             });
-        // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContentFromUrl#String-Duration
+        // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContentFromUrl#string-Duration
     }
 
     /**

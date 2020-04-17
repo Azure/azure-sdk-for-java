@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
@@ -98,7 +99,7 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
 
         if (isClientSideContinuationToken(originalContinuation)) {
             // At this point we know we want back a query plan
-            newFeedOptions.setRequestContinuation(null);
+            ModelBridgeInternal.setFeedOptionsContinuationToken(newFeedOptions, null);
             newFeedOptions.setMaxDegreeOfParallelism(Integer.MAX_VALUE);
         }
 

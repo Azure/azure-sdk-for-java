@@ -7,6 +7,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 
 /**
  * The CustomFormModel
@@ -17,7 +18,7 @@ public final class CustomFormModel {
     /*
      * List of errors returned during the training operation.
      */
-    private final IterableStream<FormRecognizerError> modelError;
+    private final List<FormRecognizerError> modelError;
 
     /*
      * Model identifier.
@@ -47,7 +48,7 @@ public final class CustomFormModel {
     /*
      * List of the documents used to train the model.
      */
-    private final IterableStream<TrainingDocumentInfo> trainingDocuments;
+    private final List<TrainingDocumentInfo> trainingDocuments;
 
     /**
      * Constructs a CustomFormModel object.
@@ -62,8 +63,8 @@ public final class CustomFormModel {
      */
     public CustomFormModel(final String modelId, final CustomFormModelStatus modelStatus,
         final OffsetDateTime createdOn, final OffsetDateTime lastUpdatedOn,
-        final IterableStream<CustomFormSubModel> subModels, final IterableStream<FormRecognizerError> modelError,
-        final IterableStream<TrainingDocumentInfo> trainingDocuments) {
+        final IterableStream<CustomFormSubModel> subModels, final List<FormRecognizerError> modelError,
+        final List<TrainingDocumentInfo> trainingDocuments) {
         this.modelId = modelId;
         this.modelStatus = modelStatus;
         this.createdOn = createdOn;
@@ -116,7 +117,7 @@ public final class CustomFormModel {
      *
      * @return the errors value.
      */
-    public IterableStream<FormRecognizerError> getModelError() {
+    public List<FormRecognizerError> getModelError() {
         return this.modelError;
     }
 
@@ -134,7 +135,7 @@ public final class CustomFormModel {
      *
      * @return the trainingDocuments value.
      */
-    public IterableStream<TrainingDocumentInfo> getTrainingDocuments() {
+    public List<TrainingDocumentInfo> getTrainingDocuments() {
         return this.trainingDocuments;
     }
 }

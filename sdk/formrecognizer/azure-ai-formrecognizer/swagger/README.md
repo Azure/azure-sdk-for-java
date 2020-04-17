@@ -31,4 +31,6 @@ license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
 context-client-method-parameter: true
+custom-types-subpackage: models
+custom-types: ErrorResponseException,ErrorResponse,ErrorInformation
 ```

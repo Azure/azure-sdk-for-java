@@ -23,7 +23,10 @@ import java.time.Duration;
 /**
  * This class provides a synchronous client that contains all the operations that apply to Azure Form Recognizer.
  * Operations allowed by the client are recognizing receipt data from documents, extracting layout information and
- *  * analyzing custom forms for predefined data.
+ * analyzing custom forms for predefined data.
+ *
+ * <p><strong>Instantiating a synchronous Form Recognizer Client</strong></p>
+ * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.instantiation}
  *
  * @see FormRecognizerClientBuilder
  */
@@ -57,7 +60,7 @@ public final class FormRecognizerClient {
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
      *
-     * <p><strong>Code sample</strong></p>*
+     * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string}
      *
      * @param fileSourceUrl The source URL to the input document. Size of the file must be less than 20 MB.
@@ -68,7 +71,7 @@ public final class FormRecognizerClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, IterableStream<RecognizedForm>>
-    beginRecognizeCustomFormsFromUrl(String fileSourceUrl, String modelId) {
+        beginRecognizeCustomFormsFromUrl(String fileSourceUrl, String modelId) {
         return beginRecognizeCustomFormsFromUrl(fileSourceUrl, modelId, false, null);
     }
 
@@ -78,7 +81,7 @@ public final class FormRecognizerClient {
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
      *
-     * <p><strong>Code sample</strong></p>*
+     * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string-boolean-Duration}
      *
      * @param fileSourceUrl The source URL to the input document. Size of the file must be less than 20 MB.
@@ -104,7 +107,7 @@ public final class FormRecognizerClient {
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
-     * <p><strong>Code sample</strong></p>*
+     * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#InputStream-string-long-FormContentType}
      *
      * @param data The data of the document to be extract receipt information from.
@@ -127,7 +130,7 @@ public final class FormRecognizerClient {
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
-     * <p><strong>Code sample</strong></p>*
+     * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#InputStream-string-long-FormContentType-boolean-Duration}
      *
      * @param data The data of the document to be extract receipt information from.
@@ -156,7 +159,7 @@ public final class FormRecognizerClient {
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
-     * <p><strong>Code sample</strong></p>*
+     * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContentFromUrl#string}
      *
      * @param fileSourceUrl The source URL to the input document. Size of the file must be less than 20 MB.
@@ -170,17 +173,16 @@ public final class FormRecognizerClient {
     }
 
     /**
-     * Recognizes and extracts layout data using optical character recognition (OCR) and a custom trained
-     * model.
+     * Recognizes and extracts layout data using optical character recognition (OCR) and a custom trained model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContentFromUrl#string-Duration}
      *
      * @param sourceUrl The source URL to the input document. Size of the file must be less than 20 MB.
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
-     *
-     * <p><strong>Code sample</strong></p>*
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContentFromUrl#String-Duration}
      *
      * @return A {@link SyncPoller} that polls the extract layout operation until it has completed, has
      * failed, or has been cancelled.
@@ -192,17 +194,16 @@ public final class FormRecognizerClient {
     }
 
     /**
-     * Recognizes and extracts layout data using optical character recognition (OCR) and a custom trained
-     * model.
+     * Recognizes and extracts layout data using optical character recognition (OCR) and a custom trained model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContent#InputStream-long-FormContentType}
      *
      * @param data The data of the document to be extract receipt information from.
      * @param length The exact length of the data. Size of the file must be less than 20 MB.
      * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
-     *
-     * <p><strong>Code sample</strong></p>*
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContent#InputStream-long-FormContentType}
      *
      * @return A {@link SyncPoller} that polls the extract layout operation until it has completed, has failed, or has
      * been cancelled.
@@ -219,14 +220,14 @@ public final class FormRecognizerClient {
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
      *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContent#InputStream-long-FormContentType-Duration}
+     *
      * @param data The data of the document to be extract receipt information from.
      * @param length The exact length of the data. Size of the file must be less than 20 MB.
      * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
-     *
-     * <p><strong>Code sample</strong></p>*
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContent#InputStream-long-FormContentType-Duration}
      *
      * @return A {@link SyncPoller} that polls the extract layout operation until it has completed,
      * has failed, or has been cancelled.
@@ -241,16 +242,15 @@ public final class FormRecognizerClient {
     }
 
     /**
-     * Recognizes and extracts receipt data from documentsusing optical character recognition (OCR) and a
-     * prebuilt receipt trained
-     * model.
+     * Recognizes and extracts receipt data from document susing optical character recognition (OCR) and a
+     * prebuilt receipt trained model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
      *
-     * @param sourceUrl The source URL to the input document. Size of the file must be less than 20 MB.
-     *
-     * <p><strong>Code sample</strong></p>*
+     * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceiptsFromUrl#string}
+     *
+     * @param sourceUrl The source URL to the input document. Size of the file must be less than 20 MB.
      *
      * @return A {@link SyncPoller} to poll the progress of the extract receipt operation until it has completed,
      * has failed, or has been cancelled.
@@ -262,19 +262,18 @@ public final class FormRecognizerClient {
     }
 
     /**
-     * Recognizes and extracts receipt data from documentsusing optical character recognition (OCR) and a
-     * prebuilt receipt trained
-     * model.
+     * Recognizes and extracts receipt data from documents using optical character recognition (OCR) and a
+     * prebuilt receipt trained model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceiptsFromUrl#string-boolean-Duration}
      *
      * @param sourceUrl The source URL to the input document. Size of the file must be less than 20 MB.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
-     *
-     * <p><strong>Code sample</strong></p>*
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceiptsFromUrl#string-boolean-Duration}
      *
      * @return A {@link SyncPoller} to poll the progress of the extract receipt operation until it has completed,
      * has failed, or has been cancelled.
@@ -291,12 +290,12 @@ public final class FormRecognizerClient {
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
      *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceipts#InputStream-long-FormContentType}
+     *
      * @param data The data of the document to be extract receipt information from.
      * @param length The exact length of the data. Size of the file must be less than 20 MB.
      * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
-     *
-     * <p><strong>Code sample</strong></p>*
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceipts#InputStream-long-FormContentType}
      *
      * @return A {@link SyncPoller} that polls the extract receipt operation until it has completed,
      * has failed, or has been cancelled.
@@ -313,15 +312,15 @@ public final class FormRecognizerClient {
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
      *
+     * <p><strong>Code sample</strong></p>*
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceipts#InputStream-long-FormContentType-boolean-Duration}
+     *
      * @param data The data of the document to be extract receipt information from.
      * @param length The exact length of the data. Size of the file must be less than 20 MB.
      * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
-     *
-     * <p><strong>Code sample</strong></p>*
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceipts#InputStream-long-FormContentType-boolean-Duration}
      *
      * @return A {@link SyncPoller} that polls the extract receipt operation until it
      * has completed, has failed, or has been cancelled.

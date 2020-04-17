@@ -4,8 +4,7 @@
 package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
-
-import java.util.List;
+import com.azure.core.util.IterableStream;
 
 /**
  * The FormTable model.
@@ -26,7 +25,7 @@ public final class FormTable {
     /*
      * List of cells contained in the table.
      */
-    private final List<FormTableCell> cells;
+    private final IterableStream<FormTableCell> cells;
 
     /**
      * Constructs a FormTable object.
@@ -35,7 +34,7 @@ public final class FormTable {
      * @param columnCount Number of columns.
      * @param cells ist of cells contained in the table.
      */
-    public FormTable(final int rowCount, final int columnCount, final List<FormTableCell> cells) {
+    public FormTable(final int rowCount, final int columnCount, final IterableStream<FormTableCell> cells) {
         this.rowCount = rowCount;
         this.columnCount = columnCount;
         this.cells = cells;
@@ -59,13 +58,12 @@ public final class FormTable {
         return this.columnCount;
     }
 
-
     /**
      * Get the cells property: List of cells contained in the table.
      *
      * @return the cells value.
      */
-    public List<FormTableCell> getCells() {
+    public IterableStream<FormTableCell> getCells() {
         return this.cells;
     }
 }

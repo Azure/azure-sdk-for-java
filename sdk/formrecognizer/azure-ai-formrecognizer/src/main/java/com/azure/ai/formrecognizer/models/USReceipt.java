@@ -86,14 +86,15 @@ public final class USReceipt extends RecognizedReceipt {
      * @param transactionDate Recognized field transaction date.
      * @param transactionTime Recognized field transaction time.
      */
-    public USReceipt(String receiptLocale, RecognizedForm recognizedForm, final List<USReceiptItem> receiptItems,
-                     final USReceiptType receiptType, final FormField<String> merchantName,
-                     final FormField<String> merchantAddress,
-                     final FormField<String> merchantPhoneNumber, final FormField<Float> subtotal,
-                     final FormField<Float> tax,
-                     final FormField<Float> tip, final FormField<Float> total,
-                     final FormField<LocalDate> transactionDate,
-                     final FormField<String> transactionTime) {
+    public USReceipt(String receiptLocale, RecognizedForm recognizedForm,
+        final List<USReceiptItem> receiptItems,
+        final USReceiptType receiptType, final FormField<String> merchantName,
+        final FormField<String> merchantAddress,
+        final FormField<String> merchantPhoneNumber, final FormField<Float> subtotal,
+        final FormField<Float> tax,
+        final FormField<Float> tip, final FormField<Float> total,
+        final FormField<LocalDate> transactionDate,
+        final FormField<String> transactionTime) {
         super(receiptLocale, recognizedForm);
         this.receiptItems = receiptItems;
         this.receiptType = receiptType;
@@ -150,7 +151,6 @@ public final class USReceipt extends RecognizedReceipt {
     public FormField<String> getMerchantName() {
         return this.merchantName;
     }
-
 
     /**
      * Get the merchant address field.

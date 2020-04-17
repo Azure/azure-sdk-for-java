@@ -11,13 +11,11 @@ import com.azure.management.compute.VirtualMachineExtensionInstanceView;
 import com.azure.management.compute.VirtualMachineInstanceView;
 import com.azure.management.compute.models.VirtualMachineInstanceViewInner;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
-
 import java.util.List;
 
-/**
- * The implementation of ComputeUsage.
- */
-class VirtualMachineInstanceViewImpl extends WrapperImpl<VirtualMachineInstanceViewInner> implements VirtualMachineInstanceView {
+/** The implementation of ComputeUsage. */
+class VirtualMachineInstanceViewImpl extends WrapperImpl<VirtualMachineInstanceViewInner>
+    implements VirtualMachineInstanceView {
     VirtualMachineInstanceViewImpl(VirtualMachineInstanceViewInner innerObject) {
         super(innerObject);
     }
@@ -72,7 +70,6 @@ class VirtualMachineInstanceViewImpl extends WrapperImpl<VirtualMachineInstanceV
         return inner().osVersion();
     }
 
-
     /**
      * Get the Remote desktop certificate thumbprint.
      *
@@ -82,7 +79,6 @@ class VirtualMachineInstanceViewImpl extends WrapperImpl<VirtualMachineInstanceV
     public String rdpThumbPrint() {
         return inner().rdpThumbPrint();
     }
-
 
     /**
      * Get the VM Agent running on the virtual machine.
@@ -94,7 +90,6 @@ class VirtualMachineInstanceViewImpl extends WrapperImpl<VirtualMachineInstanceV
         return inner().vmAgent();
     }
 
-
     /**
      * Get the Maintenance Operation status on the virtual machine.
      *
@@ -104,7 +99,6 @@ class VirtualMachineInstanceViewImpl extends WrapperImpl<VirtualMachineInstanceV
     public MaintenanceRedeployStatus maintenanceRedeployStatus() {
         return inner().maintenanceRedeployStatus();
     }
-
 
     /**
      * Get the virtual machine disk information.
@@ -116,7 +110,6 @@ class VirtualMachineInstanceViewImpl extends WrapperImpl<VirtualMachineInstanceV
         return inner().disks();
     }
 
-
     /**
      * Get the extensions information.
      *
@@ -127,9 +120,10 @@ class VirtualMachineInstanceViewImpl extends WrapperImpl<VirtualMachineInstanceV
         return inner().extensions();
     }
 
-
     /**
-     * Get boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM status. &lt;br&gt;&lt;br&gt; You can easily view the output of your console log. &lt;br&gt;&lt;br&gt; Azure also enables you to see a screenshot of the VM from the hypervisor.
+     * Get boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM
+     * status. &lt;br&gt;&lt;br&gt; You can easily view the output of your console log. &lt;br&gt;&lt;br&gt; Azure also
+     * enables you to see a screenshot of the VM from the hypervisor.
      *
      * @return the bootDiagnostics value
      */
@@ -137,7 +131,6 @@ class VirtualMachineInstanceViewImpl extends WrapperImpl<VirtualMachineInstanceV
     public BootDiagnosticsInstanceView bootDiagnostics() {
         return inner().bootDiagnostics();
     }
-
 
     /**
      * Get the resource status information.
@@ -149,4 +142,3 @@ class VirtualMachineInstanceViewImpl extends WrapperImpl<VirtualMachineInstanceV
         return inner().statuses();
     }
 }
-

@@ -13,17 +13,16 @@ public final class FormWord extends FormContent {
     /*
      * The confidence value of the recognized word.
      */
-    private final Float confidence;
+    private final float confidence;
 
     /**
      * Creates raw OCR item.
-     *
-     * @param text The text content of ExtractedField.
+     *  @param text The text content of ExtractedField.
      * @param boundingBox The BoundingBox of ExtractedField.
      * @param pageNumber The 1 based page number.
      * @param confidence the confidence.
      */
-    public FormWord(String text, BoundingBox boundingBox, Integer pageNumber, final Float confidence) {
+    public FormWord(String text, BoundingBox boundingBox, Integer pageNumber, final float confidence) {
         super(text, boundingBox, pageNumber, TextContentType.WORD);
         this.confidence = confidence;
     }
@@ -33,7 +32,7 @@ public final class FormWord extends FormContent {
      *
      * @return The confidence property of the Form Word.
      */
-    public Float getConfidence() {
+    public float getConfidence() {
         return this.confidence;
     }
 

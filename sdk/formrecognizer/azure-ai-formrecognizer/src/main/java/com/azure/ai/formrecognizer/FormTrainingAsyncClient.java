@@ -134,9 +134,7 @@ public class FormTrainingAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<OperationResult, CustomFormModel> beginTraining(String fileSourceUrl,
         boolean useLabelFile, boolean includeSubFolders, String filePrefix, Duration pollInterval) {
-        Objects.requireNonNull(fileSourceUrl, "'fileSourceUrl' cannot be null.");
         final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
-
         return new PollerFlux<OperationResult, CustomFormModel>(
             interval,
             getTrainingActivationOperation(fileSourceUrl, includeSubFolders, filePrefix, useLabelFile),
@@ -350,14 +348,14 @@ public class FormTrainingAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> getTrainingActivationOperation(
-        String sourcePath, boolean includeSubFolders, String filePrefix, boolean useLabelFile) {
-
-        TrainSourceFilter trainSourceFilter = new TrainSourceFilter().setIncludeSubFolders(includeSubFolders)
-            .setPrefix(filePrefix);
-        TrainRequest serviceTrainRequest = new TrainRequest().setSource(sourcePath).
-            setSourceFilter(trainSourceFilter).setUseLabelFile(useLabelFile);
+        String fileSourceUrl, boolean includeSubFolders, String filePrefix, boolean useLabelFile) {
         return (pollingContext) -> {
             try {
+                Objects.requireNonNull(fileSourceUrl, "'fileSourceUrl' cannot be null.");
+                TrainSourceFilter trainSourceFilter = new TrainSourceFilter().setIncludeSubFolders(includeSubFolders)
+                    .setPrefix(filePrefix);
+                TrainRequest serviceTrainRequest = new TrainRequest().setSource(fileSourceUrl).
+                    setSourceFilter(trainSourceFilter).setUseLabelFile(useLabelFile);
                 return service.trainCustomModelAsyncWithResponseAsync(serviceTrainRequest)
                     .map(response ->
                         new OperationResult(parseModelId(response.getDeserializedHeaders().getLocation())));

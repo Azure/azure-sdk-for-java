@@ -149,7 +149,7 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
         String modelId = "{model_id}";
         formTrainingAsyncClient.deleteModelWithResponse(modelId).subscribe(val ->
             System.out.printf("Model ID = %s is deleted%n", modelId));
-        // END: com.azure.ai.formrecognizer.FormTrainingAsyncClient.deleteModelWithResponse#string-string
+        // END: com.azure.ai.formrecognizer.FormTrainingAsyncClient.deleteModelWithResponse#string
     }
 
     /**

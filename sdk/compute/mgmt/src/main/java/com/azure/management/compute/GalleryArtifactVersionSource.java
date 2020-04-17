@@ -6,14 +6,9 @@ package com.azure.management.compute;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The gallery artifact version source.
- */
+/** The gallery artifact version source. */
 public class GalleryArtifactVersionSource {
-    /**
-     * The id of the gallery artifact version source. Can specify a disk uri,
-     * snapshot uri, or user image.
-     */
+    /** The id of the gallery artifact version source. Can specify a disk uri, snapshot uri, or user image. */
     @JsonProperty(value = "id", required = true)
     private String id;
 
@@ -36,5 +31,4 @@ public class GalleryArtifactVersionSource {
         this.id = id;
         return this;
     }
-
 }

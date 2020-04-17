@@ -108,9 +108,10 @@ public final class ReceiptExtensions {
     @SuppressWarnings("unchecked")
     private static List<USReceiptItem> toReceiptItems(FormField<?> fieldValueItems) {
         List<FormField<?>> fieldValueArray = (List<FormField<?>>) fieldValueItems.getFieldValue();
-        List<USReceiptItem> receiptItemList = new ArrayList<>();
+        List<USReceiptItem> receiptItemList = null;
 
         for (FormField<?> eachFieldValue : fieldValueArray) {
+            receiptItemList = new ArrayList<>();
             Map<String, FormField<?>> objectValue = ((Map<String, FormField<?>>) (eachFieldValue.getFieldValue()));
             FormField<String> name = null;
             FormField<Float> quantity = null;
