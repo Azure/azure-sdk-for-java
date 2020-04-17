@@ -3,6 +3,7 @@
 
 package com.azure.core.util.serializer;
 
+import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -16,7 +17,6 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.deser.BeanDeserializer;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
 import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
@@ -71,7 +71,7 @@ final class FlatteningDeserializer extends StdDeserializer<Object> implements Re
             public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config,
                                                           BeanDescription beanDesc,
                                                           JsonDeserializer<?> deserializer) {
-                if (BeanDeserializer.class.isAssignableFrom(deserializer.getClass())) {
+                if (beanDesc.getBeanClass().getAnnotation(JsonFlatten.class) != null) {
                     // Register 'FlatteningDeserializer' for complex type so that 'deserializeWithType'
                     // will get called for complex types and it can analyze typeId discriminator.
                     return new FlatteningDeserializer(beanDesc.getBeanClass(), deserializer, mapper);
