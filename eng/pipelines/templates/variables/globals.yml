@@ -6,3 +6,4 @@ variables:
   #Agent.Source.Git.ShallowFetchDepth: 1
   skipComponentGovernanceDetection: true
   EmulatorMsiUrl: 'https://aka.ms/cosmosdb-emulator'
+  AdditionalOptions: ''
