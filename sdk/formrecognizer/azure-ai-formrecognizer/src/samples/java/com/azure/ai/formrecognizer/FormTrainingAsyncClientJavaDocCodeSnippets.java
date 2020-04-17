@@ -31,17 +31,18 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
     public void beginTraining() {
         // BEGIN: com.azure.ai.formrecognizer.FormTrainingAsyncClient.beginTraining#string-boolean
         String trainingSetSource = "{training-set-SAS-URL}";
-        formTrainingAsyncClient.beginTraining(trainingSetSource, true).subscribe(
-            trainingOperationResponse -> {
-                // training completed successfully, retrieving final result.
-                trainingOperationResponse.getFinalResult().subscribe(customFormModel -> {
+        boolean useLabelFile = true;
+        formTrainingAsyncClient.beginTraining(trainingSetSource, useLabelFile).subscribe(
+            trainingPollOperationResponse -> {
+                // if training polling operation completed, retrieve the final result.
+                trainingPollOperationResponse.getFinalResult().subscribe(customFormModel -> {
                     System.out.printf("Model Id: %s%n", customFormModel.getModelId());
                     System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
                     customFormModel.getSubModels().forEach(customFormSubModel ->
                         customFormSubModel.getFieldMap().forEach((key, customFormModelField) ->
-                            System.out.printf("Model Type Id: %s Field Text: %s Field Accuracy: %s%n",
+                            System.out.printf("Form type: %s Field Text: %s Field Accuracy: %s%n",
                                 key, customFormModelField.getName(), customFormModelField.getAccuracy())));
-                    });
+                });
             });
         // END: com.azure.ai.formrecognizer.FormTrainingAsyncClient.beginTraining#string-boolean
     }
@@ -54,15 +55,17 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
         String trainingSetSource = "{training-set-SAS-URL}";
         boolean isIncludeSubFolders = false; // {is-include-subfolders}
         String filePrefix = "{file-prefix}";
-        formTrainingAsyncClient.beginTraining(trainingSetSource, true, isIncludeSubFolders, filePrefix,
-            Duration.ofSeconds(5)).subscribe(trainingOperationResponse -> {
-                // training completed successfully, retrieving final result.
-                trainingOperationResponse.getFinalResult().subscribe(customFormModel -> {
+        boolean useLabelFile = true;
+
+        formTrainingAsyncClient.beginTraining(trainingSetSource, useLabelFile, isIncludeSubFolders, filePrefix,
+            Duration.ofSeconds(5)).subscribe(trainingPollOperationResponse -> {
+                // if training polling operation completed, retrieve the final result.
+                trainingPollOperationResponse.getFinalResult().subscribe(customFormModel -> {
                     System.out.printf("Model Id: %s%n", customFormModel.getModelId());
                     System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
                     customFormModel.getSubModels().forEach(customFormSubModel ->
                         customFormSubModel.getFieldMap().forEach((key, customFormModelField) ->
-                            System.out.printf("Model Type Id: %s Field Text: %s Field Accuracy: %s%n",
+                            System.out.printf("Form Type Id: %s Field Text: %s Field Accuracy: %s%n",
                                 key, customFormModelField.getName(), customFormModelField.getAccuracy())));
                 });
             });
@@ -80,7 +83,7 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
             System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
             customFormModel.getSubModels().forEach(customFormSubModel ->
                 customFormSubModel.getFieldMap().forEach((key, customFormModelField) ->
-                    System.out.printf("Model Type Id: %s Field Text: %s Field Accuracy: %s%n",
+                    System.out.printf("Form Type Id: %s Field Text: %s Field Accuracy: %s%n",
                         key, customFormModelField.getName(), customFormModelField.getAccuracy())));
 
         });
@@ -99,7 +102,7 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
             System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
             customFormModel.getSubModels().forEach(customFormSubModel ->
                 customFormSubModel.getFieldMap().forEach((key, customFormModelField) ->
-                    System.out.printf("Model Type Id: %s Field Text: %s Field Accuracy: %s%n",
+                    System.out.printf("Form Type Id: %s Field Text: %s Field Accuracy: %s%n",
                         key, customFormModelField.getName(), customFormModelField.getAccuracy())));
         });
         // END: com.azure.ai.formrecognizer.FormTrainingAsyncClient.getCustomModelWithResponse#string
@@ -111,8 +114,9 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
     public void getAccountProperties() {
         // BEGIN: com.azure.ai.formrecognizer.FormTrainingAsyncClient.getAccountProperties
         formTrainingAsyncClient.getAccountProperties().subscribe(accountProperties -> {
-            System.out.printf("Account properties limit: %s%n", accountProperties.getLimit());
-            System.out.printf("Account properties count: %d%n", accountProperties.getCount());
+            System.out.printf("Max number of models that can be trained for this account: %s%n",
+                accountProperties.getLimit());
+            System.out.printf("Current count of trained custom models: %d%n", accountProperties.getCount());
         });
         // END: com.azure.ai.formrecognizer.FormTrainingAsyncClient.getAccountProperties
     }
@@ -124,8 +128,9 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.formrecognizer.FormTrainingAsyncClient.getAccountPropertiesWithResponse
         formTrainingAsyncClient.getAccountPropertiesWithResponse().subscribe(response -> {
             AccountProperties accountProperties = response.getValue();
-            System.out.printf("Account properties limit: %s%n", accountProperties.getLimit());
-            System.out.printf("Account properties count: %d%n", accountProperties.getCount());
+            System.out.printf("Max number of models that can be trained for this account: %s%n",
+                accountProperties.getLimit());
+            System.out.printf("Current count of trained custom models: %d%n", accountProperties.getCount());
         });
         // END: com.azure.ai.formrecognizer.FormTrainingAsyncClient.getAccountPropertiesWithResponse
     }
@@ -137,7 +142,7 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.formrecognizer.FormTrainingAsyncClient.deleteModel#string
         String modelId = "{model_id}";
         formTrainingAsyncClient.deleteModel(modelId).subscribe(val ->
-            System.out.printf("Model ID = %s is deleted%n", modelId));
+            System.out.printf("Model Id: %s is deleted%n", modelId));
         // END: com.azure.ai.formrecognizer.FormTrainingAsyncClient.deleteModel#string
     }
 
@@ -147,8 +152,10 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
     public void deleteModelWithResponse() {
         // BEGIN: com.azure.ai.formrecognizer.FormTrainingAsyncClient.deleteModelWithResponse#string
         String modelId = "{model_id}";
-        formTrainingAsyncClient.deleteModelWithResponse(modelId).subscribe(val ->
-            System.out.printf("Model ID = %s is deleted%n", modelId));
+        formTrainingAsyncClient.deleteModelWithResponse(modelId).subscribe(response -> {
+            System.out.printf("Response Status Code: %d.", response.getStatusCode());
+            System.out.printf("Model Id: %s is deleted%n", modelId);
+        });
         // END: com.azure.ai.formrecognizer.FormTrainingAsyncClient.deleteModelWithResponse#string
     }
 
@@ -158,7 +165,7 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
     public void listModels() {
         // BEGIN: com.azure.ai.formrecognizer.FormTrainingAsyncClient.listModels
         formTrainingAsyncClient.listModels().subscribe(result ->
-            System.out.printf("Model ID = %s, model status = %s, created on = %s, last updated on = %s.%n",
+            System.out.printf("Model Id: %s, Model status: %s, Created on: %s, Last updated on: %s.%n",
                 result.getModelId(),
                 result.getStatus(),
                 result.getCreatedOn(),

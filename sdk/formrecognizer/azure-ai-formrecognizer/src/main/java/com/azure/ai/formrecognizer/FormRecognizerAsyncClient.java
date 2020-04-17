@@ -384,6 +384,7 @@ public final class FormRecognizerAsyncClient {
      * @param data The data of the document to be extract receipt information from.
      * @param length The exact length of the data. Size of the file must be less than 50 MB.
      * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
+     * @param includeTextDetails Include text lines and element references in the result.
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
      *

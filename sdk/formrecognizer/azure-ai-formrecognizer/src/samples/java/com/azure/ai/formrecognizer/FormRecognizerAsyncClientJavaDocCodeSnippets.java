@@ -5,26 +5,18 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.implementation.Utility;
 import com.azure.ai.formrecognizer.models.FormContentType;
-import com.azure.ai.formrecognizer.models.FormPage;
-import com.azure.ai.formrecognizer.models.FormTableCell;
-import com.azure.ai.formrecognizer.models.OperationResult;
-import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.ai.formrecognizer.models.USReceipt;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.util.IterableStream;
-import com.azure.core.util.polling.SyncPoller;
 import reactor.core.publisher.Flux;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.time.Duration;
-import java.util.Optional;
 
 /**
  * Code snippet for {@link FormRecognizerAsyncClient}
@@ -72,25 +64,19 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         String modelId = "{model_id}";
 
         formRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl(analyzeFilePath, modelId).subscribe(
-            trainingOperationResponse ->
-                // training completed successfully, retrieving final result.
-                trainingOperationResponse.getFinalResult().subscribe(recognizedForms ->
-                    recognizedForms.forEach(extractedForm -> {
-                        extractedForm.getFields().forEach((fieldText, fieldValue) -> {
+            trainingPollOperationResponse ->
+                // if training polling operation completed, retrieve the final result.
+                trainingPollOperationResponse.getFinalResult().subscribe(recognizedForms ->
+                    recognizedForms.forEach(recognizedForm -> {
+                        recognizedForm.getFields().forEach((fieldText, fieldValue) -> {
                             System.out.printf("Page number: %s%n", fieldValue.getPageNumber());
                             System.out.printf("Field text: %s%n", fieldText);
                             System.out.printf("Field value: %s%n", fieldValue.getFieldValue());
-                        });
-
-                        // Page Information
-                        extractedForm.getPages().forEach(formPage -> {
-                            System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
-                            System.out.printf("Page Dimension unit: %s%n", formPage.getUnit());
-                            System.out.println();
+                            System.out.printf("Confidence score: %s%n", fieldValue.getConfidence());
                         });
                     })
                 )
-            );
+        );
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl#string-string
     }
 
@@ -101,23 +87,17 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl#string-string-boolean-Duration
         String analyzeFilePath = "{file_source_url}";
         String modelId = "{model_id}";
-
-        formRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl(analyzeFilePath, modelId, true,
-            Duration.ofSeconds(5)).subscribe(trainingOperationResponse ->
-                // training completed successfully, retrieving final result.
-                trainingOperationResponse.getFinalResult().subscribe(recognizedForms ->
-                    recognizedForms.forEach(extractedForm -> {
-                        extractedForm.getFields().forEach((fieldText, fieldValue) -> {
+        boolean includeTextDetails = true;
+        formRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl(analyzeFilePath, modelId, includeTextDetails,
+            Duration.ofSeconds(5)).subscribe(trainingPollOperationResponse ->
+                // if training polling operation completed, retrieve the final result.
+                trainingPollOperationResponse.getFinalResult().subscribe(recognizedForms ->
+                    recognizedForms.forEach(recognizedForm -> {
+                        recognizedForm.getFields().forEach((fieldText, fieldValue) -> {
                             System.out.printf("Page number: %s%n", fieldValue.getPageNumber());
                             System.out.printf("Field text: %s%n", fieldText);
                             System.out.printf("Field value: %s%n", fieldValue.getFieldValue());
-                        });
-
-                        // Page Information
-                        extractedForm.getPages().forEach(formPage -> {
-                            System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
-                            System.out.printf("Page Dimension unit: %s%n", formPage.getUnit());
-                            System.out.println();
+                            System.out.printf("Confidence score: %s%n", fieldValue.getConfidence());
                         });
                     })
                 )
@@ -127,6 +107,8 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for {@link FormRecognizerAsyncClient#beginRecognizeCustomForms}
+     *
+     * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginRecognizeCustomForms() throws IOException {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#Flux-string-long-FormContentType
@@ -136,21 +118,15 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
             new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
 
         formRecognizerAsyncClient.beginRecognizeCustomForms(buffer, modelId, sourceFile.length(),
-            FormContentType.IMAGE_JPEG).subscribe(trainingOperationResponse ->
-                // training completed successfully, retrieving final result.
-                trainingOperationResponse.getFinalResult().subscribe(recognizedForms ->
-                    recognizedForms.forEach(extractedForm -> {
-                        extractedForm.getFields().forEach((fieldText, fieldValue) -> {
+            FormContentType.IMAGE_JPEG).subscribe(trainingPollOperationResponse ->
+                // if training polling operation completed, retrieve the final result.
+                trainingPollOperationResponse.getFinalResult().subscribe(recognizedForms ->
+                    recognizedForms.forEach(recognizedForm -> {
+                        recognizedForm.getFields().forEach((fieldText, fieldValue) -> {
                             System.out.printf("Page number: %s%n", fieldValue.getPageNumber());
                             System.out.printf("Field text: %s%n", fieldText);
                             System.out.printf("Field value: %s%n", fieldValue.getFieldValue());
-                        });
-
-                        // Page Information
-                        extractedForm.getPages().forEach(formPage -> {
-                            System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
-                            System.out.printf("Page Dimension unit: %s%n", formPage.getUnit());
-                            System.out.println();
+                            System.out.printf("Confidence score: %s%n", fieldValue.getConfidence());
                         });
                     })
                 )
@@ -160,35 +136,32 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for {@link FormRecognizerAsyncClient#beginRecognizeCustomForms} with options
+     *
+     * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginRecognizeCustomFormsWithOptions() throws IOException {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#Flux-string-long-FormContentType-boolean-Duration
         File sourceFile = new File("{file_source_url}");
         String modelId = "{model_id}";
+        boolean includeTextDetails = true;
         Flux<ByteBuffer> buffer = Utility.convertStreamToByteBuffer(
             new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
 
         formRecognizerAsyncClient.beginRecognizeCustomForms(buffer, modelId, sourceFile.length(),
-            FormContentType.IMAGE_JPEG, true, Duration.ofSeconds(5))
-            .subscribe(trainingOperationResponse ->
-                // training completed successfully, retrieving final result.
-                trainingOperationResponse.getFinalResult().subscribe(recognizedForms ->
-                    recognizedForms.forEach(extractedForm -> {
-                        extractedForm.getFields().forEach((fieldText, fieldValue) -> {
+            FormContentType.IMAGE_JPEG, includeTextDetails, Duration.ofSeconds(5))
+            .subscribe(trainingPollOperationResponse ->
+                // if training polling operation completed, retrieve the final result.
+                trainingPollOperationResponse.getFinalResult().subscribe(recognizedForms ->
+                    recognizedForms.forEach(recognizedForm -> {
+                        recognizedForm.getFields().forEach((fieldText, fieldValue) -> {
                             System.out.printf("Page number: %s%n", fieldValue.getPageNumber());
                             System.out.printf("Field text: %s%n", fieldText);
                             System.out.printf("Field value: %s%n", fieldValue.getFieldValue());
-                        });
-
-                        // Page Information
-                        extractedForm.getPages().forEach(formPage -> {
-                            System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
-                            System.out.printf("Page Dimension unit: %s%n", formPage.getUnit());
-                            System.out.println();
+                            System.out.printf("Confidence score: %s%n", fieldValue.getConfidence());
                         });
                     })
                 )
-        );
+            );
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#Flux-string-long-FormContentType-boolean-Duration
     }
 
@@ -199,33 +172,19 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
     public void beginRecognizeContentFromUrl() {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContentFromUrl#string
         String sourceFilePath = "{file_source_url}";
-        formRecognizerAsyncClient.beginRecognizeContentFromUrl(sourceFilePath).subscribe(trainingOperationResponse ->
-            trainingOperationResponse.getFinalResult().subscribe(layoutPageResults ->
-                layoutPageResults.forEach(formPage -> {
-                    System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
-                    System.out.printf("Page Dimension unit: %s%n", formPage.getUnit());
-                    // Table information
-                    System.out.println("Recognized Tables: ");
-                    formPage.getTables().forEach(formTable -> {
-                        for (int i = 0; i < formTable.getRowCount(); i++) {
-                            for (int j = 0; j < formTable.getColumnCount(); j++) {
-                                int finalJ = j;
-                                int finalI = i;
-                                Optional<FormTableCell> optionalFormTableCell =
-                                    formTable.getCells().stream().filter(formTableCell ->
-                                        formTableCell.getRowIndex() == finalI
-                                            && formTableCell.getColumnIndex() == finalJ)
-                                        .findFirst();
-                                FormTableCell recognizedTableCell = optionalFormTableCell.get();
-                                if (recognizedTableCell.isHeader()) {
-                                    System.out.println(recognizedTableCell.getText());
-                                } else {
-                                    System.out.printf("%s || ", recognizedTableCell.getText());
-                                }
-                            }}
-                    });
-                })
-            ));
+        formRecognizerAsyncClient.beginRecognizeContentFromUrl(sourceFilePath).subscribe(
+            trainingPollOperationResponse ->
+                trainingPollOperationResponse.getFinalResult().subscribe(layoutPageResults ->
+                    layoutPageResults.forEach(recognizedForm -> {
+                        System.out.printf("Page Angle: %s%n", recognizedForm.getTextAngle());
+                        System.out.printf("Page Dimension unit: %s%n", recognizedForm.getUnit());
+                        // Table information
+                        System.out.println("Recognized Tables: ");
+                        recognizedForm.getTables().forEach(formTable ->
+                            formTable.getCells().forEach(recognizedTableCell ->
+                                System.out.printf("%s || ", recognizedTableCell.getText())));
+                    })
+                ));
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContentFromUrl#string
     }
 
@@ -236,31 +195,16 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContentFromUrl#string-Duration
         String sourceFilePath = "{file_source_url}";
         formRecognizerAsyncClient.beginRecognizeContentFromUrl(sourceFilePath, Duration.ofSeconds(5)).subscribe(
-            trainingOperationResponse ->
-                trainingOperationResponse.getFinalResult().subscribe(layoutPageResults ->
-                    layoutPageResults.forEach(formPage -> {
-                        System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
-                        System.out.printf("Page Dimension unit: %s%n", formPage.getUnit());
+            trainingPollOperationResponse ->
+                trainingPollOperationResponse.getFinalResult().subscribe(layoutPageResults ->
+                    layoutPageResults.forEach(recognizedForm -> {
+                        System.out.printf("Page Angle: %s%n", recognizedForm.getTextAngle());
+                        System.out.printf("Page Dimension unit: %s%n", recognizedForm.getUnit());
                         // Table information
                         System.out.println("Recognized Tables: ");
-                        formPage.getTables().forEach(formTable -> {
-                            for (int i = 0; i < formTable.getRowCount(); i++) {
-                                for (int j = 0; j < formTable.getColumnCount(); j++) {
-                                    int finalJ = j;
-                                    int finalI = i;
-                                    Optional<FormTableCell> optionalFormTableCell =
-                                        formTable.getCells().stream().filter(formTableCell ->
-                                            formTableCell.getRowIndex() == finalI
-                                                && formTableCell.getColumnIndex() == finalJ)
-                                            .findFirst();
-                                    FormTableCell recognizedTableCell = optionalFormTableCell.get();
-                                    if (recognizedTableCell.isHeader()) {
-                                        System.out.println(recognizedTableCell.getText());
-                                    } else {
-                                        System.out.printf("%s || ", recognizedTableCell.getText());
-                                    }
-                                }}
-                        });
+                        recognizedForm.getTables().forEach(formTable ->
+                            formTable.getCells().forEach(recognizedTableCell ->
+                                System.out.printf("%s || ", recognizedTableCell.getText())));
                     })
                 ));
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContentFromUrl#string-Duration
@@ -268,6 +212,8 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for {@link FormRecognizerAsyncClient#beginRecognizeContent}
+     *
+     * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginRecognizeContent() throws IOException {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-long-FormContentType
@@ -276,31 +222,16 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
             new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
 
         formRecognizerAsyncClient.beginRecognizeContent(buffer, sourceFile.length(), FormContentType.APPLICATION_PDF)
-            .subscribe(trainingOperationResponse ->
-                trainingOperationResponse.getFinalResult().subscribe(layoutPageResults ->
-                    layoutPageResults.forEach(formPage -> {
-                        System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
-                        System.out.printf("Page Dimension unit: %s%n", formPage.getUnit());
+            .subscribe(trainingPollOperationResponse ->
+                trainingPollOperationResponse.getFinalResult().subscribe(layoutPageResults ->
+                    layoutPageResults.forEach(recognizedForm -> {
+                        System.out.printf("Page Angle: %s%n", recognizedForm.getTextAngle());
+                        System.out.printf("Page Dimension unit: %s%n", recognizedForm.getUnit());
                         // Table information
                         System.out.println("Recognized Tables: ");
-                        formPage.getTables().forEach(formTable -> {
-                            for (int i = 0; i < formTable.getRowCount(); i++) {
-                                for (int j = 0; j < formTable.getColumnCount(); j++) {
-                                    int finalJ = j;
-                                    int finalI = i;
-                                    Optional<FormTableCell> optionalFormTableCell =
-                                        formTable.getCells().stream().filter(formTableCell ->
-                                            formTableCell.getRowIndex() == finalI
-                                                && formTableCell.getColumnIndex() == finalJ)
-                                            .findFirst();
-                                    FormTableCell recognizedTableCell = optionalFormTableCell.get();
-                                    if (recognizedTableCell.isHeader()) {
-                                        System.out.println(recognizedTableCell.getText());
-                                    } else {
-                                        System.out.printf("%s || ", recognizedTableCell.getText());
-                                    }
-                                }}
-                        });
+                        recognizedForm.getTables().forEach(formTable ->
+                            formTable.getCells().forEach(recognizedTableCell ->
+                                System.out.printf("%s || ", recognizedTableCell.getText())));
                     })
             ));
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-long-FormContentType
@@ -308,6 +239,8 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for {@link FormRecognizerAsyncClient#beginRecognizeContent} with options
+     *
+     * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginRecognizeContentWithOptions() throws IOException {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-FormContentType-long-Duration
@@ -316,31 +249,16 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
             new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
 
         formRecognizerAsyncClient.beginRecognizeContent(buffer, FormContentType.APPLICATION_PDF, sourceFile.length(),
-            Duration.ofSeconds(5)).subscribe(trainingOperationResponse ->
-                trainingOperationResponse.getFinalResult().subscribe(layoutPageResults ->
-                    layoutPageResults.forEach(formPage -> {
-                        System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
-                        System.out.printf("Page Dimension unit: %s%n", formPage.getUnit());
+            Duration.ofSeconds(5)).subscribe(trainingPollOperationResponse ->
+                trainingPollOperationResponse.getFinalResult().subscribe(layoutPageResults ->
+                    layoutPageResults.forEach(recognizedForm -> {
+                        System.out.printf("Page Angle: %s%n", recognizedForm.getTextAngle());
+                        System.out.printf("Page Dimension unit: %s%n", recognizedForm.getUnit());
                         // Table information
                         System.out.println("Recognized Tables: ");
-                        formPage.getTables().forEach(formTable -> {
-                            for (int i = 0; i < formTable.getRowCount(); i++) {
-                                for (int j = 0; j < formTable.getColumnCount(); j++) {
-                                    int finalJ = j;
-                                    int finalI = i;
-                                    Optional<FormTableCell> optionalFormTableCell =
-                                        formTable.getCells().stream().filter(formTableCell ->
-                                            formTableCell.getRowIndex() == finalI
-                                                && formTableCell.getColumnIndex() == finalJ)
-                                            .findFirst();
-                                    FormTableCell recognizedTableCell = optionalFormTableCell.get();
-                                    if (recognizedTableCell.isHeader()) {
-                                        System.out.println(recognizedTableCell.getText());
-                                    } else {
-                                        System.out.printf("%s || ", recognizedTableCell.getText());
-                                    }
-                                }}
-                        });
+                        recognizedForm.getTables().forEach(formTable ->
+                            formTable.getCells().forEach(recognizedTableCell ->
+                                System.out.printf("%s || ", recognizedTableCell.getText())));
                     })
                 ));
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-FormContentType-long-Duration
@@ -353,10 +271,9 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
     public void beginRecognizeReceiptsFromUrl() {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceiptsFromUrl#string
         String receiptUrl = "{file_source_url}";
-        formRecognizerAsyncClient.beginRecognizeReceiptsFromUrl(receiptUrl).subscribe(trainingOperationResponse -> {
-            System.out.println("Polling completed successfully");
-            // training completed successfully, retrieving final result.
-            trainingOperationResponse.getFinalResult().subscribe(recognizedReceipts ->
+        formRecognizerAsyncClient.beginRecognizeReceiptsFromUrl(receiptUrl).subscribe(trainingPollOperationResponse -> {
+            // if training polling operation completed, retrieve the final result.
+            trainingPollOperationResponse.getFinalResult().subscribe(recognizedReceipts ->
                 recognizedReceipts.forEach(recognizedReceipt -> {
                     USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
                     System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
@@ -377,18 +294,19 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
     public void beginRecognizeReceiptsFromUrlWithOptions() {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceiptsFromUrl#string-boolean-Duration
         String receiptUrl = "{file_source_url}";
-        formRecognizerAsyncClient.beginRecognizeReceiptsFromUrl(receiptUrl, true, Duration.ofSeconds(5))
-            .subscribe(trainingOperationResponse -> {
-                System.out.println("Polling completed successfully");
-                // training completed successfully, retrieving final result.
-                trainingOperationResponse.getFinalResult().subscribe(recognizedReceipts ->
+        boolean includeTextDetails = true;
+        formRecognizerAsyncClient.beginRecognizeReceiptsFromUrl(receiptUrl, includeTextDetails, Duration.ofSeconds(5))
+            .subscribe(trainingPollOperationResponse -> {
+                // if training polling operation completed, retrieve the final result.
+                trainingPollOperationResponse.getFinalResult().subscribe(recognizedReceipts ->
                     recognizedReceipts.forEach(recognizedReceipt -> {
                         USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
                         System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
                         System.out.printf("Merchant Name %s%n", usReceipt.getMerchantName().getName());
                         System.out.printf("Merchant Name Value: %s%n", usReceipt.getMerchantName().getFieldValue());
                         System.out.printf("Merchant Address %s%n", usReceipt.getMerchantAddress().getName());
-                        System.out.printf("Merchant Address Value: %s%n", usReceipt.getMerchantAddress().getFieldValue());
+                        System.out.printf("Merchant Address Value: %s%n",
+                            usReceipt.getMerchantAddress().getFieldValue());
                         System.out.printf("Total: %s%n", usReceipt.getTotal().getName());
                         System.out.printf("Total Value: %s%n", usReceipt.getTotal().getFieldValue());
                     }));
@@ -398,6 +316,8 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for {@link FormRecognizerAsyncClient#beginRecognizeReceipts}
+     *
+     * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginRecognizeReceipts() throws IOException {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long-FormContentType
@@ -405,17 +325,17 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         Flux<ByteBuffer> buffer = Utility.convertStreamToByteBuffer(
             new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
         formRecognizerAsyncClient.beginRecognizeReceipts(buffer, sourceFile.length(), FormContentType.IMAGE_JPEG)
-            .subscribe(trainingOperationResponse -> {
-                System.out.println("Polling completed successfully");
-                // training completed successfully, retrieving final result.
-                trainingOperationResponse.getFinalResult().subscribe(recognizedReceipts ->
+            .subscribe(trainingPollOperationResponse -> {
+                // if training polling operation completed, retrieve the final result.
+                trainingPollOperationResponse.getFinalResult().subscribe(recognizedReceipts ->
                     recognizedReceipts.forEach(recognizedReceipt -> {
                         USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
                         System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
                         System.out.printf("Merchant Name %s%n", usReceipt.getMerchantName().getName());
                         System.out.printf("Merchant Name Value: %s%n", usReceipt.getMerchantName().getFieldValue());
                         System.out.printf("Merchant Address %s%n", usReceipt.getMerchantAddress().getName());
-                        System.out.printf("Merchant Address Value: %s%n", usReceipt.getMerchantAddress().getFieldValue());
+                        System.out.printf("Merchant Address Value: %s%n",
+                            usReceipt.getMerchantAddress().getFieldValue());
                         System.out.printf("Total: %s%n", usReceipt.getTotal().getName());
                         System.out.printf("Total Value: %s%n", usReceipt.getTotal().getFieldValue());
                     }));
@@ -426,28 +346,30 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for {@link FormRecognizerAsyncClient#beginRecognizeReceipts} with options
+     *
+     * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginRecognizeReceiptsWithOptions() throws IOException {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long-FormContentType-boolean-Duration
         File sourceFile = new File("{file_source_url}");
+        boolean includeTextDetails = true;
         Flux<ByteBuffer> buffer = Utility.convertStreamToByteBuffer(
             new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
-        formRecognizerAsyncClient.beginRecognizeReceipts(buffer, sourceFile.length(), FormContentType.IMAGE_JPEG, true,
-            Duration.ofSeconds(5)).subscribe(trainingOperationResponse -> {
-            System.out.println("Polling completed successfully");
-            // training completed successfully, retrieving final result.
-            trainingOperationResponse.getFinalResult().subscribe(recognizedReceipts ->
-                recognizedReceipts.forEach(recognizedReceipt -> {
-                    USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
-                    System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
-                    System.out.printf("Merchant Name %s%n", usReceipt.getMerchantName().getName());
-                    System.out.printf("Merchant Name Value: %s%n", usReceipt.getMerchantName().getFieldValue());
-                    System.out.printf("Merchant Address %s%n", usReceipt.getMerchantAddress().getName());
-                    System.out.printf("Merchant Address Value: %s%n", usReceipt.getMerchantAddress().getFieldValue());
-                    System.out.printf("Total: %s%n", usReceipt.getTotal().getName());
-                    System.out.printf("Total Value: %s%n", usReceipt.getTotal().getFieldValue());
-                }));
-        });
+        formRecognizerAsyncClient.beginRecognizeReceipts(buffer, sourceFile.length(), FormContentType.IMAGE_JPEG,
+            includeTextDetails, Duration.ofSeconds(5)).subscribe(trainingPollOperationResponse -> {
+                // if training polling operation completed, retrieve the final result.
+                trainingPollOperationResponse.getFinalResult().subscribe(recognizedReceipts ->
+                    recognizedReceipts.forEach(recognizedReceipt -> {
+                        USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
+                        System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
+                        System.out.printf("Merchant Name %s%n", usReceipt.getMerchantName().getName());
+                        System.out.printf("Merchant Name Value: %s%n", usReceipt.getMerchantName().getFieldValue());
+                        System.out.printf("Merchant Address %s%n", usReceipt.getMerchantAddress().getName());
+                        System.out.printf("Merchant Address Value: %s%n", usReceipt.getMerchantAddress().getFieldValue());
+                        System.out.printf("Total: %s%n", usReceipt.getTotal().getName());
+                        System.out.printf("Total Value: %s%n", usReceipt.getTotal().getFieldValue());
+                    }));
+            });
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long-FormContentType-boolean-Duration
     }
 }

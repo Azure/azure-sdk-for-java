@@ -4,7 +4,6 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.FormContentType;
-import com.azure.ai.formrecognizer.models.FormTableCell;
 import com.azure.ai.formrecognizer.models.USReceipt;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipeline;
@@ -16,7 +15,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.time.Duration;
-import java.util.Optional;
 
 /**
  * Code snippet for {@link FormRecognizerClient}
@@ -65,18 +63,11 @@ public class FormRecognizerClientJavaDocCodeSnippets {
         String modelId = "{model_id}";
 
         formRecognizerClient.beginRecognizeCustomFormsFromUrl(analyzeFilePath, modelId).getFinalResult()
-            .forEach(extractedForm -> {
-                extractedForm.getFields().forEach((fieldText, fieldValue) -> {
+            .forEach(recognizedForm -> {
+                recognizedForm.getFields().forEach((fieldText, fieldValue) -> {
                     System.out.printf("Page number: %s%n", fieldValue.getPageNumber());
                     System.out.printf("Field text: %s%n", fieldText);
                     System.out.printf("Field value: %s%n", fieldValue.getFieldValue());
-                });
-
-                // Page Information
-                extractedForm.getPages().forEach(formPage -> {
-                    System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
-                    System.out.printf("Page Dimension unit: %s%n", formPage.getUnit());
-                    System.out.println();
                 });
             });
         // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string
@@ -89,20 +80,14 @@ public class FormRecognizerClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string-boolean-Duration
         String analyzeFilePath = "{file_source_url}";
         String modelId = "{model_id}";
+        boolean includeTextDetails = true;
 
-        formRecognizerClient.beginRecognizeCustomFormsFromUrl(analyzeFilePath, modelId, true,
-            Duration.ofSeconds(5)).getFinalResult().forEach(extractedForm -> {
-                extractedForm.getFields().forEach((fieldText, fieldValue) -> {
+        formRecognizerClient.beginRecognizeCustomFormsFromUrl(analyzeFilePath, modelId, includeTextDetails,
+            Duration.ofSeconds(5)).getFinalResult().forEach(recognizedForm -> {
+                recognizedForm.getFields().forEach((fieldText, fieldValue) -> {
                     System.out.printf("Page number: %s%n", fieldValue.getPageNumber());
                     System.out.printf("Field text: %s%n", fieldText);
                     System.out.printf("Field value: %s%n", fieldValue.getFieldValue());
-                });
-
-                // Page Information
-                extractedForm.getPages().forEach(formPage -> {
-                    System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
-                    System.out.printf("Page Dimension unit: %s%n", formPage.getUnit());
-                    System.out.println();
                 });
             });
         // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string-boolean-Duration
@@ -110,6 +95,8 @@ public class FormRecognizerClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for {@link FormRecognizerClient#beginRecognizeCustomForms}
+     *
+     * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginRecognizeCustomForms() throws IOException {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#InputStream-string-long-FormContentType
@@ -119,18 +106,11 @@ public class FormRecognizerClientJavaDocCodeSnippets {
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
         formRecognizerClient.beginRecognizeCustomForms(targetStream, modelId, sourceFile.length(),
-            FormContentType.IMAGE_JPEG).getFinalResult().forEach(extractedForm -> {
-                extractedForm.getFields().forEach((fieldText, fieldValue) -> {
+            FormContentType.IMAGE_JPEG).getFinalResult().forEach(recognizedForm -> {
+                recognizedForm.getFields().forEach((fieldText, fieldValue) -> {
                     System.out.printf("Page number: %s%n", fieldValue.getPageNumber());
                     System.out.printf("Field text: %s%n", fieldText);
                     System.out.printf("Field value: %s%n", fieldValue.getFieldValue());
-                });
-
-                // Page Information
-                extractedForm.getPages().forEach(formPage -> {
-                    System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
-                    System.out.printf("Page Dimension unit: %s%n", formPage.getUnit());
-                    System.out.println();
                 });
             });
         // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#InputStream-string-long-FormContentType
@@ -138,28 +118,25 @@ public class FormRecognizerClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for {@link FormRecognizerClient#beginRecognizeCustomForms} with options
+     *
+     * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginRecognizeCustomFormsWithOptions() throws IOException {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#InputStream-string-long-FormContentType-boolean-Duration
         File sourceFile = new File("{file_source_url}");
         String modelId = "{model_id}";
+        boolean includeTextDetails = true;
+
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
         formRecognizerClient.beginRecognizeCustomForms(targetStream, modelId, sourceFile.length(),
-            FormContentType.IMAGE_JPEG, true, Duration.ofSeconds(5)).getFinalResult()
-                .forEach(extractedForm -> {
-                    extractedForm.getFields().forEach((fieldText, fieldValue) -> {
+            FormContentType.IMAGE_JPEG, includeTextDetails, Duration.ofSeconds(5)).getFinalResult()
+                .forEach(recognizedForm -> {
+                    recognizedForm.getFields().forEach((fieldText, fieldValue) -> {
                         System.out.printf("Page number: %s%n", fieldValue.getPageNumber());
                         System.out.printf("Field text: %s%n", fieldText);
                         System.out.printf("Field value: %s%n", fieldValue.getFieldValue());
-                    });
-
-                    // Page Information
-                    extractedForm.getPages().forEach(formPage -> {
-                        System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
-                        System.out.printf("Page Dimension unit: %s%n", formPage.getUnit());
-                        System.out.println();
                     });
                 });
         // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#InputStream-string-long-FormContentType-boolean-Duration
@@ -173,29 +150,14 @@ public class FormRecognizerClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContentFromUrl#string
         String sourceFilePath = "{file_source_url}";
         formRecognizerClient.beginRecognizeContentFromUrl(sourceFilePath).getFinalResult()
-            .forEach(formPage -> {
-                System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
-                System.out.printf("Page Dimension unit: %s%n", formPage.getUnit());
+            .forEach(recognizedForm -> {
+                System.out.printf("Page Angle: %s%n", recognizedForm.getTextAngle());
+                System.out.printf("Page Dimension unit: %s%n", recognizedForm.getUnit());
                 // Table information
                 System.out.println("Recognized Tables: ");
-                formPage.getTables().forEach(formTable -> {
-                    for (int i = 0; i < formTable.getRowCount(); i++) {
-                        for (int j = 0; j < formTable.getColumnCount(); j++) {
-                            int finalJ = j;
-                            int finalI = i;
-                            Optional<FormTableCell> optionalFormTableCell =
-                                formTable.getCells().stream().filter(formTableCell ->
-                                    formTableCell.getRowIndex() == finalI
-                                        && formTableCell.getColumnIndex() == finalJ)
-                                    .findFirst();
-                            FormTableCell recognizedTableCell = optionalFormTableCell.get();
-                            if (recognizedTableCell.isHeader()) {
-                                System.out.println(recognizedTableCell.getText());
-                            } else {
-                                System.out.printf("%s || ", recognizedTableCell.getText());
-                            }
-                        }}
-                });
+                recognizedForm.getTables().forEach(formTable ->
+                    formTable.getCells().forEach(recognizedTableCell ->
+                        System.out.printf("%s || ", recognizedTableCell.getText())));
             });
         // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContentFromUrl#string
     }
@@ -207,35 +169,22 @@ public class FormRecognizerClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContentFromUrl#string-Duration
         String sourceFilePath = "{file_source_url}";
         formRecognizerClient.beginRecognizeContentFromUrl(sourceFilePath, Duration.ofSeconds(5)).getFinalResult()
-            .forEach(formPage -> {
-                System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
-                System.out.printf("Page Dimension unit: %s%n", formPage.getUnit());
+            .forEach(recognizedForm -> {
+                System.out.printf("Page Angle: %s%n", recognizedForm.getTextAngle());
+                System.out.printf("Page Dimension unit: %s%n", recognizedForm.getUnit());
                 // Table information
                 System.out.println("Recognized Tables: ");
-                formPage.getTables().forEach(formTable -> {
-                    for (int i = 0; i < formTable.getRowCount(); i++) {
-                        for (int j = 0; j < formTable.getColumnCount(); j++) {
-                            int finalJ = j;
-                            int finalI = i;
-                            Optional<FormTableCell> optionalFormTableCell =
-                                formTable.getCells().stream().filter(formTableCell ->
-                                    formTableCell.getRowIndex() == finalI
-                                        && formTableCell.getColumnIndex() == finalJ)
-                                    .findFirst();
-                            FormTableCell recognizedTableCell = optionalFormTableCell.get();
-                            if (recognizedTableCell.isHeader()) {
-                                System.out.println(recognizedTableCell.getText());
-                            } else {
-                                System.out.printf("%s || ", recognizedTableCell.getText());
-                            }
-                        }}
-                });
+                recognizedForm.getTables().forEach(formTable ->
+                    formTable.getCells().forEach(recognizedTableCell ->
+                        System.out.printf("%s || ", recognizedTableCell.getText())));
             });
         // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContentFromUrl#string-Duration
     }
 
     /**
      * Code snippet for {@link FormRecognizerClient#beginRecognizeContent}
+     *
+     * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginRecognizeContent() throws IOException {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContent#InputStream-long-FormContentType
@@ -244,35 +193,22 @@ public class FormRecognizerClientJavaDocCodeSnippets {
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
         formRecognizerClient.beginRecognizeContent(targetStream, sourceFile.length(), FormContentType.APPLICATION_PDF)
-            .getFinalResult().forEach(formPage -> {
-                System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
-                System.out.printf("Page Dimension unit: %s%n", formPage.getUnit());
+            .getFinalResult().forEach(recognizedForm -> {
+                System.out.printf("Page Angle: %s%n", recognizedForm.getTextAngle());
+                System.out.printf("Page Dimension unit: %s%n", recognizedForm.getUnit());
                 // Table information
                 System.out.println("Recognized Tables: ");
-                formPage.getTables().forEach(formTable -> {
-                    for (int i = 0; i < formTable.getRowCount(); i++) {
-                        for (int j = 0; j < formTable.getColumnCount(); j++) {
-                            int finalJ = j;
-                            int finalI = i;
-                            Optional<FormTableCell> optionalFormTableCell =
-                                formTable.getCells().stream().filter(formTableCell ->
-                                    formTableCell.getRowIndex() == finalI
-                                        && formTableCell.getColumnIndex() == finalJ)
-                                    .findFirst();
-                            FormTableCell recognizedTableCell = optionalFormTableCell.get();
-                            if (recognizedTableCell.isHeader()) {
-                                System.out.println(recognizedTableCell.getText());
-                            } else {
-                                System.out.printf("%s || ", recognizedTableCell.getText());
-                            }
-                        }}
-                });
+                recognizedForm.getTables().forEach(formTable ->
+                    formTable.getCells().forEach(recognizedTableCell ->
+                        System.out.printf("%s || ", recognizedTableCell.getText())));
             });
         // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContent#InputStream-long-FormContentType
     }
 
     /**
      * Code snippet for {@link FormRecognizerClient#beginRecognizeContent} with options
+     *
+     * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginRecognizeContentWithOptions() throws IOException {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContent#InputStream-long-FormContentType-Duration
@@ -281,29 +217,14 @@ public class FormRecognizerClientJavaDocCodeSnippets {
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
         formRecognizerClient.beginRecognizeContent(targetStream, sourceFile.length(), FormContentType.APPLICATION_PDF,
-            Duration.ofSeconds(5)).getFinalResult().forEach(formPage -> {
-                System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
-                System.out.printf("Page Dimension unit: %s%n", formPage.getUnit());
+            Duration.ofSeconds(5)).getFinalResult().forEach(recognizedForm -> {
+                System.out.printf("Page Angle: %s%n", recognizedForm.getTextAngle());
+                System.out.printf("Page Dimension unit: %s%n", recognizedForm.getUnit());
                 // Table information
                 System.out.println("Recognized Tables: ");
-                formPage.getTables().forEach(formTable -> {
-                    for (int i = 0; i < formTable.getRowCount(); i++) {
-                        for (int j = 0; j < formTable.getColumnCount(); j++) {
-                            int finalJ = j;
-                            int finalI = i;
-                            Optional<FormTableCell> optionalFormTableCell =
-                                formTable.getCells().stream().filter(formTableCell ->
-                                    formTableCell.getRowIndex() == finalI
-                                        && formTableCell.getColumnIndex() == finalJ)
-                                    .findFirst();
-                            FormTableCell recognizedTableCell = optionalFormTableCell.get();
-                            if (recognizedTableCell.isHeader()) {
-                                System.out.println(recognizedTableCell.getText());
-                            } else {
-                                System.out.printf("%s || ", recognizedTableCell.getText());
-                            }
-                        }}
-                });
+                recognizedForm.getTables().forEach(formTable ->
+                    formTable.getCells().forEach(recognizedTableCell ->
+                        System.out.printf("%s || ", recognizedTableCell.getText())));
             });
         // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContent#InputStream-long-FormContentType-Duration
     }
@@ -317,14 +238,14 @@ public class FormRecognizerClientJavaDocCodeSnippets {
         String receiptUrl = "{file_source_url}";
         formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptUrl).getFinalResult()
             .forEach(recognizedReceipt -> {
-                    USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
-                    System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
-                    System.out.printf("Merchant Name %s%n", usReceipt.getMerchantName().getName());
-                    System.out.printf("Merchant Name Value: %s%n", usReceipt.getMerchantName().getFieldValue());
-                    System.out.printf("Merchant Address %s%n", usReceipt.getMerchantAddress().getName());
-                    System.out.printf("Merchant Address Value: %s%n", usReceipt.getMerchantAddress().getFieldValue());
-                    System.out.printf("Total: %s%n", usReceipt.getTotal().getName());
-                    System.out.printf("Total Value: %s%n", usReceipt.getTotal().getFieldValue());
+                USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
+                System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
+                System.out.printf("Merchant Name %s%n", usReceipt.getMerchantName().getName());
+                System.out.printf("Merchant Name Value: %s%n", usReceipt.getMerchantName().getFieldValue());
+                System.out.printf("Merchant Address %s%n", usReceipt.getMerchantAddress().getName());
+                System.out.printf("Merchant Address Value: %s%n", usReceipt.getMerchantAddress().getFieldValue());
+                System.out.printf("Total: %s%n", usReceipt.getTotal().getName());
+                System.out.printf("Total Value: %s%n", usReceipt.getTotal().getFieldValue());
             });
         // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceiptsFromUrl#string
     }
@@ -335,7 +256,9 @@ public class FormRecognizerClientJavaDocCodeSnippets {
     public void beginRecognizeReceiptsFromUrlWithOptions() {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceiptsFromUrl#string-boolean-Duration
         String receiptUrl = "{file_source_url}";
-        formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptUrl, true, Duration.ofSeconds(5))
+        boolean includeTextDetails = true;
+
+        formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptUrl, includeTextDetails, Duration.ofSeconds(5))
             .getFinalResult().forEach(recognizedReceipt -> {
                 USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
                 System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
@@ -351,6 +274,8 @@ public class FormRecognizerClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for {@link FormRecognizerClient#beginRecognizeReceipts}
+     *
+     * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginRecognizeReceipts() throws IOException {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceipts#InputStream-long-FormContentType
@@ -374,14 +299,17 @@ public class FormRecognizerClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for {@link FormRecognizerClient#beginRecognizeReceipts} with options
+     *
+     * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginRecognizeReceiptsWithOptions() throws IOException {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceipts#InputStream-long-FormContentType-boolean-Duration
         File sourceFile = new File("{file_source_url}");
+        boolean includeTextDetails = true;
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);
-        formRecognizerClient.beginRecognizeReceipts(targetStream, sourceFile.length(), FormContentType.IMAGE_JPEG, true,
-            Duration.ofSeconds(5)).getFinalResult().forEach(recognizedReceipt -> {
+        formRecognizerClient.beginRecognizeReceipts(targetStream, sourceFile.length(), FormContentType.IMAGE_JPEG,
+            includeTextDetails, Duration.ofSeconds(5)).getFinalResult().forEach(recognizedReceipt -> {
                 USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
                 System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
                 System.out.printf("Merchant Name %s%n", usReceipt.getMerchantName().getName());

@@ -48,15 +48,15 @@ public class AnalyzeForm {
             }).block();
 
         System.out.println("Page Metadata: ");
-        recognizedForms.forEach(extractedForm -> {
-            extractedForm.getFields().forEach((fieldText, fieldValue) -> {
+        recognizedForms.forEach(recognizedForm -> {
+            recognizedForm.getFields().forEach((fieldText, fieldValue) -> {
                 System.out.printf("Page number: %s%n", fieldValue.getPageNumber());
                 System.out.printf("Field text: %s%n", fieldText);
                 System.out.printf("Field value: %s%n", fieldValue.getFieldValue());
             });
 
             // Page Information
-            extractedForm.getPages().forEach(formPage -> {
+            recognizedForm.getPages().forEach(formPage -> {
                 System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
                 System.out.printf("Page Dimension unit: %s%n", formPage.getUnit());
                 System.out.println();
