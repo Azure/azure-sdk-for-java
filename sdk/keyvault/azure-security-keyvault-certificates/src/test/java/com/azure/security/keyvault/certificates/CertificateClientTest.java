@@ -72,6 +72,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
             assertEquals(certName, expected.getName());
             assertNotNull(expected.getProperties().getCreatedOn());
         });
+        fail("This is for test purpose.");
     }
 
     private void deleteAndPurgeCertificate(String certName) {

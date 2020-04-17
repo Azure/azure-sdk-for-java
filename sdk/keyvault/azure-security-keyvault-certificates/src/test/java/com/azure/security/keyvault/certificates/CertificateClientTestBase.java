@@ -620,10 +620,6 @@ public abstract class CertificateClientTestBase extends TestBase {
                     CertificateClientTestBase::shouldServiceVersionBeTested)
                     .forEach(serviceVersion -> {
                         argumentsList.add(Arguments.of(httpClient, serviceVersion));
-                        System.out.println("-----------------------------------------------------------");
-                        System.out.println(httpClient);
-                        System.out.println(serviceVersion);
-                        System.out.println("-----------------------------------------------------------");
                     });
             });
         return argumentsList.stream();
