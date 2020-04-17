@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ApplicationInsightsComponentBillingFeaturesInner {
     /**
-     * An Application Insights component daily data volumne cap.
+     * An Application Insights component daily data volume cap.
      */
     @JsonProperty(value = "DataVolumeCap")
     private ApplicationInsightsComponentDataVolumeCap dataVolumeCap;
@@ -30,7 +30,7 @@ public class ApplicationInsightsComponentBillingFeaturesInner {
     private List<String> currentBillingFeatures;
 
     /**
-     * Get an Application Insights component daily data volumne cap.
+     * Get an Application Insights component daily data volume cap.
      *
      * @return the dataVolumeCap value
      */
@@ -39,7 +39,7 @@ public class ApplicationInsightsComponentBillingFeaturesInner {
     }
 
     /**
-     * Set an Application Insights component daily data volumne cap.
+     * Set an Application Insights component daily data volume cap.
      *
      * @param dataVolumeCap the dataVolumeCap value to set
      * @return the ApplicationInsightsComponentBillingFeaturesInner object itself.
