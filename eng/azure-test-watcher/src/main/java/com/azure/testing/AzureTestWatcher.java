@@ -29,8 +29,7 @@ public class AzureTestWatcher implements BeforeTestExecutionCallback, AfterTestE
         }
 
         if (!Objects.equals(displayName, testName)) {
-            System.out.printf("Starting test %s (%s)%n", fullyQualifiedTestName,
-                displayName);
+            System.out.printf("Starting test %s (%s)%n", fullyQualifiedTestName, displayName);
         } else {
             System.out.printf("Starting test %s%n", fullyQualifiedTestName);
         }
