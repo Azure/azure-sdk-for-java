@@ -94,19 +94,4 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.0.0-M4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-        <configuration>
-          <statelessTestsetReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5Xml30StatelessReporter">
-            <usePhrasedTestCaseMethodName>true</usePhrasedTestCaseMethodName>
-          </statelessTestsetReporter>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 </project>
