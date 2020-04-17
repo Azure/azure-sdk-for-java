@@ -29,7 +29,7 @@ import java.util.Objects;
  * A rest client builder.
  */
 @ServiceClientBuilder(serviceClients = RestClient.class)
-public final class RestClientBuilder {
+public final class RestClientBuilder implements Cloneable {
 
     private final ClientLogger logger = new ClientLogger(RestClientBuilder.class);
 

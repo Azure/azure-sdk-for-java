@@ -41,7 +41,6 @@ public abstract class IndependentChildrenImpl<
         SupportsGettingById<T>,
         SupportsGettingByParent<T, ParentT, ManagerT>,
         SupportsListingByParent<T, ParentT, ManagerT>,
-        SupportsDeletingById,
         SupportsDeletingByParent,
         HasManager<ManagerT>,
         HasInner<InnerCollectionT> {
@@ -81,7 +80,7 @@ public abstract class IndependentChildrenImpl<
     @Override
     public Mono<T> getByIdAsync(String id) {
         ResourceId resourceId = ResourceId.fromString(id);
-        if (resourceId == null) {
+        if (resourceId.parent() == null) {
             return null;
         }
 

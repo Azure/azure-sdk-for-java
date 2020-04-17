@@ -79,12 +79,12 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
      *
      * @param <ResourceT> the type of the resources in the batch.
      */
-    private class CreatedResourcesImpl<ResourceT extends Indexable>
+    private static class CreatedResourcesImpl<ResourceT extends Indexable>
             extends HashMap<String, ResourceT>
             implements CreatedResources<ResourceT> {
-        private final ClientLogger logger = new ClientLogger(this.getClass());
+        private final transient ClientLogger logger = new ClientLogger(this.getClass());
         private static final long serialVersionUID = -1360746896732289907L;
-        private CreatableUpdatableResourcesRoot<ResourceT> creatableUpdatableResourcesRoot;
+        private transient CreatableUpdatableResourcesRoot<ResourceT> creatableUpdatableResourcesRoot;
 
         CreatedResourcesImpl(CreatableUpdatableResourcesRoot<ResourceT> creatableUpdatableResourcesRoot) {
             this.creatableUpdatableResourcesRoot = creatableUpdatableResourcesRoot;

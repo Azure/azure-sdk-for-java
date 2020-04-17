@@ -45,11 +45,6 @@ public abstract class TopLevelModifiableResourcesImpl<
         ManagerT extends ManagerBase>
         extends GroupableResourcesImpl<T, ImplT, InnerT, InnerCollectionT, ManagerT>
         implements
-        SupportsGettingById<T>,
-        SupportsGettingByResourceGroup<T>,
-        SupportsDeletingByResourceGroup,
-        HasManager<ManagerT>,
-        HasInner<InnerCollectionT>,
         SupportsListing<T>,
         SupportsListingByResourceGroup<T>,
         SupportsBatchDeletion {

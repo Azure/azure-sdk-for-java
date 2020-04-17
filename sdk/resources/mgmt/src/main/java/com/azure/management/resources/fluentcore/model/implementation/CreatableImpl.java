@@ -20,9 +20,7 @@ public abstract class CreatableImpl<
         InnerModelT,
         FluentModelImplT extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>>
         extends
-        CreatableUpdatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
-        implements
-        Creatable<FluentModelT> {
+        CreatableUpdatableImpl<FluentModelT, InnerModelT, FluentModelImplT> {
     private final ClientLogger logger = new ClientLogger(getClass());
     /**
      * Creates a CreatableImpl.

@@ -109,8 +109,7 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
 
         String fromKey = node.key();
         visited.add(fromKey);
-        time++;
-        entryTime.put(fromKey, time);
+        entryTime.put(fromKey, ++time);
         for (String toKey : node.children()) {
             if (!visited.contains(toKey)) {
                 parent.put(toKey, fromKey);
@@ -120,8 +119,7 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
                 visitor.visitEdge(fromKey, toKey, edgeType(fromKey, toKey));
             }
         }
-        time++;
-        exitTime.put(fromKey, time);
+        exitTime.put(fromKey, ++time);
         processed.add(fromKey);
     }
 

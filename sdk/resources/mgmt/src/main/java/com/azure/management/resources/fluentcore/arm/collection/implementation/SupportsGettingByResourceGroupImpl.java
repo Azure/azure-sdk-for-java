@@ -18,8 +18,7 @@ import reactor.core.publisher.Mono;
 public abstract class SupportsGettingByResourceGroupImpl<T>
         extends SupportsGettingByIdImpl<T>
         implements
-        SupportsGettingByResourceGroup<T>,
-        SupportsGettingById<T> {
+        SupportsGettingByResourceGroup<T> {
     @Override
     public T getByResourceGroup(String resourceGroupName, String name) {
         return this.getByResourceGroupAsync(resourceGroupName, name).block();
@@ -29,9 +28,7 @@ public abstract class SupportsGettingByResourceGroupImpl<T>
     @Override
     public Mono<T> getByIdAsync(String id) {
         ResourceId resourceId = ResourceId.fromString(id);
-        if (resourceId == null) {
-            return null;
-        }
+
         return this.getByResourceGroupAsync(resourceId.resourceGroupName(), resourceId.name());
     }
 }

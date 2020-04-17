@@ -68,6 +68,10 @@ public abstract class IndependentChildImpl<
         }
     }
 
+    protected String parentName() {
+        return this.parentName;
+    }
+
     /**
      * @return <tt>true</tt> if currently in define..create mode
      */

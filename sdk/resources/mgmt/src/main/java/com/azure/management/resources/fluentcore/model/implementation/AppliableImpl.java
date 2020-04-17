@@ -24,8 +24,7 @@ public abstract class AppliableImpl<
         extends
         CreatableUpdatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
         implements
-        Updatable<FluentModelImplT>,
-        Appliable<FluentModelT> {
+        Updatable<FluentModelImplT> {
     private final ClientLogger logger = new ClientLogger(getClass());
     /**
      * Creates an AppliableImpl.
