@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.core.util.CoreUtils;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import com.azure.messaging.servicebus.models.ServiceBusErrorContext;
 
@@ -46,6 +45,12 @@ public final class ServiceBusReceivedMessage implements MessageLockToken {
     ServiceBusReceivedMessage(byte[] body) {
         this.body = Objects.requireNonNull(body, "'body' cannot be null.");
         this.properties = new HashMap<>();
+    }
+
+    ServiceBusReceivedMessage(ServiceBusErrorContext errorContext) {
+        this.serviceBusErrorContext = Objects.requireNonNull(errorContext, "'errorContext' cannot be null.");
+        this.properties = new HashMap<>();
+        this.body = null;
     }
 
     /**

@@ -32,13 +32,15 @@ public class MessageSendAsyncSample {
             .buildAsyncClient();
 
         // Create an message to send.
-        ServiceBusMessage message = new ServiceBusMessage("session 2 - message 1".getBytes(UTF_8));
-        message.setSessionId("seattle-id2");
+        String sessionid = "seattle-id1";
+        ServiceBusMessage message = new ServiceBusMessage((sessionid + " message").getBytes(UTF_8));
+        message.setSessionId(sessionid);
         // Send that message. This call returns a Mono<Void>, which we subscribe to. It completes successfully when the
         // message has been delivered to the Service Bus. It completes with an error if an exception occurred while
         // sending the message.
 
         //senderAsyncClient.send(message).subscribe(aVoid -> {System.out.println("MEssage sent..");});
+        senderAsyncClient.send(message).block();
         senderAsyncClient.send(message).block();
         System.out.println("Message sent..");
         // Subscribe is not a blocking call so we sleep here so the program does not end while finishing

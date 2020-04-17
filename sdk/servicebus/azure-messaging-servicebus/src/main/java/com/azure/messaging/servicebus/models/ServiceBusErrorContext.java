@@ -23,7 +23,7 @@ public class ServiceBusErrorContext {
      * @throws NullPointerException if {@code throwable},{@code fullyQualifiedNamespace} or {@code entityPath}
      * is {@code null}.
      */
-    ServiceBusErrorContext(final Throwable throwable, final String fullyQualifiedNamespace,
+    public ServiceBusErrorContext(final Throwable throwable, final String fullyQualifiedNamespace,
         final String entityPath, final String sessionId) {
         this.throwable = Objects.requireNonNull(throwable, "'throwable' cannot be null");
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null");

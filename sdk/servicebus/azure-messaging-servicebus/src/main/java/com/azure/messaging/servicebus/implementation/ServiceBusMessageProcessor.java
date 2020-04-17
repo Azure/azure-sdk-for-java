@@ -123,6 +123,7 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
 
     @Override
     public void onNext(ServiceBusReceivedMessage message) {
+
         if (isTerminated()) {
             final Context context = downstream == null ? currentContext() : downstream.currentContext();
             Operators.onNextDropped(message, context);
@@ -132,8 +133,13 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
 
         messageQueue.add(message);
         drain();
+        if (!onceOnlyFakeErrorGenerated.getAndSet(true)) {
+            System.out.println(getClass().getName() + " onNext fake error generation .. ");
+            Operators.error(downstream,
+                new IllegalStateException("!!! Fake .. Error in session Lock."));
+        }
     }
-
+    public static AtomicBoolean onceOnlyFakeErrorGenerated = new AtomicBoolean(true);
     /**
      * Invoked when an error occurs upstream.
      *

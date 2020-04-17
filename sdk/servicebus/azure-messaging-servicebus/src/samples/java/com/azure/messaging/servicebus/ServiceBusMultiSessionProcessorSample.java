@@ -34,10 +34,11 @@ public class ServiceBusMultiSessionProcessorSample {
         Disposable subscription = multiSessionReceiverAsyncClient.receiveMultiSession(options)
             .flatMap(receivedMessage -> {
                /* System.out.println("Session State : " + multiSessionReceiverAsyncClient.getSessionState(
-                    receivedMessage.getSessionId()));*/
+                    receivedMessage.getSessionId())); */
                 System.out.println("!!! Received Message seq no  "+ receivedMessage.getSequenceNumber() +" SessionId " +  receivedMessage.getSessionId() + " Data : " +  new String (receivedMessage.getBody()));
                 if (receivedMessage.isSessionError()) {
-                    myMessageProcessor.processError(receivedMessage.getServiceBusErrorContext());
+                    System.out.println("!!! Error Message session id" +  receivedMessage.getServiceBusErrorContext().getSessionId());
+                    //myMessageProcessor.processError(receivedMessage.getServiceBusErrorContext());
                     return Mono.empty();
                 }
                 return Mono.empty();

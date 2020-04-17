@@ -203,7 +203,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
             .flatMap(session -> {
                 logger.verbose("Get or create consumer for path: '{}'", entityPath);
                 final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
-
+                logger.verbose("Create consumer for path: '{}' and Linkname: '{}'.", entityPath, linkName);
                 return session.createConsumer(linkName, entityPath, entityType, retryOptions.getTryTimeout(),
                     retryPolicy, receiveMode, sessionId, sessionEnabledEntity);
             });

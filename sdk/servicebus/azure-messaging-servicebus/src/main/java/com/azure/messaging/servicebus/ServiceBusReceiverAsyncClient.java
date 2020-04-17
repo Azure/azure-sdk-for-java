@@ -25,6 +25,7 @@ import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
 import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusErrorContext;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -436,24 +437,34 @@ public class ServiceBusReceiverAsyncClient implements AutoCloseable {
         // TODO (conniey): This returns the same consumer instance because the entityPath is not unique.
         //  Python and .NET does not have the same behaviour.
         return Flux.usingWhen(
-            Mono.fromCallable(() -> getOrCreateConsumer(entityPath, options)),
-            consumer -> {
-                    List<Flux<ServiceBusReceivedMessage>> list = new ArrayList<>();
-                    Flux<ServiceBusReceivedMessage> messagePublisher= recursivePublisher(consumer, options);
-                    list.add(messagePublisher);
-                    System.out.println(getClass().getName() + " Merging Number of publisher : " + list.size());
-                    return Flux.merge(list);
-            },
-            consumer -> {
-                final String linkName = consumer.getLinkName();
-                logger.info("{}: Receiving completed. Disposing", linkName);
-
-                final ServiceBusAsyncConsumer removed = openConsumers.remove(linkName);
-                if (removed == null) {
-                    logger.warning("Could not find consumer to remove for: {}", linkName);
-                } else {
-                    removed.close();
+            Mono.fromCallable(() -> {
+                List<ServiceBusAsyncConsumer> listConsumer =  new ArrayList<>();
+                for (int index = 0 ; index < maxConcurrentSessions; ++index ) {
+                    listConsumer.add(getOrCreateConsumer(entityPath, options));
                 }
+                return listConsumer;
+            }),
+            consumerList -> {
+                    List<Flux<ServiceBusReceivedMessage>> listFlux = new ArrayList<>();
+                    for (int index = 0 ; index < consumerList.size(); ++index ) {
+                        Flux<ServiceBusReceivedMessage> messagePublisher = recursivePublisher(consumerList.get(index), options);
+                        listFlux.add(messagePublisher);
+                    }
+                    return Flux.merge(listFlux);
+            },
+            consumerList -> {
+                for (int index = 0 ; index < consumerList.size(); ++index ) {
+                    final String linkName = consumerList.get(index).getLinkName();
+                    logger.info("{}. {}: Receiving completed. Disposing", index, linkName);
+
+                    /*final ServiceBusAsyncConsumer removed = openConsumers.remove(linkName);
+                    if (removed == null) {
+                        logger.warning("Could not find consumer to remove for: {}", linkName);
+                    } else {
+                        removed.close();
+                    }*/
+                }
+
 
                 return Mono.empty();
             });
@@ -461,20 +472,20 @@ public class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
     private Flux<ServiceBusReceivedMessage> recursivePublisher(ServiceBusAsyncConsumer consumer, ReceiveAsyncOptions options) {
         // TODO : Change it to what user has configured, This is the timeout we will wait for next message to come
-        Flux<ServiceBusReceivedMessage> publisher = consumer.receive().timeout(Duration.ofSeconds(30));
+        Flux<ServiceBusReceivedMessage> publisher = consumer.receive()
+            .timeout(Duration.ofSeconds(15));
 
         boolean rollOverToNextPublisher = true;
-            publisher.onErrorResume(throwable -> {
+        return publisher.onErrorResume(throwable -> {
                 if (rollOverToNextPublisher) {
                     ServiceBusAsyncConsumer nextConsumer = getOrCreateConsumer(entityPath, options);
-                    System.out.println(getClass().getName() + " onErrorResume for Failed Consumer link:"
+                    logger.info("Failed Consumer link:"
                         + consumer.getLinkName() + ", Next Consumer link:" + nextConsumer.getLinkName());
                     return recursivePublisher(nextConsumer, options);
                 } else {
                     return Mono.empty();
                 }
             });
-        return publisher;
     }
     /**
      * Receives a deferred {@link ServiceBusReceivedMessage message}. Deferred messages can only be received by using
