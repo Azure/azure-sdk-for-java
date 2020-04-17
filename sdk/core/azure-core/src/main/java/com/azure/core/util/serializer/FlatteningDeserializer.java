@@ -97,18 +97,14 @@ final class FlatteningDeserializer extends StdDeserializer<Object> implements Re
         JsonNode currentJsonNode = mapper.readTree(jp);
         final Class<?> tClass = this.defaultDeserializer.handledType();
         for (Class<?> c : TypeUtil.getAllClasses(tClass)) {
-            if (c.isAssignableFrom(Object.class)) {
-                continue;
-            } else {
-                final JsonTypeInfo typeInfo = c.getAnnotation(com.fasterxml.jackson.annotation.JsonTypeInfo.class);
-                if (typeInfo != null) {
-                    String typeId = typeInfo.property();
-                    if (containsDot(typeId)) {
-                        final String typeIdOnWire = unescapeEscapedDots(typeId);
-                        JsonNode typeIdValue = ((ObjectNode) currentJsonNode).remove(typeIdOnWire);
-                        if (typeIdValue != null) {
-                            ((ObjectNode) currentJsonNode).put(typeId, typeIdValue);
-                        }
+            final JsonTypeInfo typeInfo = c.getAnnotation(com.fasterxml.jackson.annotation.JsonTypeInfo.class);
+            if (typeInfo != null) {
+                String typeId = typeInfo.property();
+                if (containsDot(typeId)) {
+                    final String typeIdOnWire = unescapeEscapedDots(typeId);
+                    JsonNode typeIdValue = ((ObjectNode) currentJsonNode).remove(typeIdOnWire);
+                    if (typeIdValue != null) {
+                        ((ObjectNode) currentJsonNode).put(typeId, typeIdValue);
                     }
                 }
             }
