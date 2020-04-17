@@ -9,20 +9,33 @@
 package com.microsoft.azure.management.applicationinsights.v2015_05_01.implementation;
 
 import com.microsoft.azure.management.applicationinsights.v2015_05_01.WorkItemConfiguration;
-import com.microsoft.azure.arm.model.implementation.WrapperImpl;
+import com.microsoft.azure.arm.model.implementation.IndexableRefreshableWrapperImpl;
 import rx.Observable;
 
-class WorkItemConfigurationImpl extends WrapperImpl<WorkItemConfigurationInner> implements WorkItemConfiguration {
+class WorkItemConfigurationImpl extends IndexableRefreshableWrapperImpl<WorkItemConfiguration, WorkItemConfigurationInner> implements WorkItemConfiguration {
     private final InsightsManager manager;
+    private String resourceGroupName;
+    private String resourceName;
+    private String workItemConfigId;
 
     WorkItemConfigurationImpl(WorkItemConfigurationInner inner,  InsightsManager manager) {
-        super(inner);
+        super(null, inner);
         this.manager = manager;
+        // set resource ancestor and positional variables
+        this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
+        this.resourceName = IdParsingUtils.getValueFromIdByName(inner.id(), "components");
+        this.workItemConfigId = IdParsingUtils.getValueFromIdByName(inner.id(), "WorkItemConfigs");
     }
 
     @Override
     public InsightsManager manager() {
         return this.manager;
+    }
+
+    @Override
+    protected Observable<WorkItemConfigurationInner> getInnerAsync() {
+        WorkItemConfigurationsInner client = this.manager().inner().workItemConfigurations();
+        return client.getItemAsync(this.resourceGroupName, this.resourceName, this.workItemConfigId);
     }
 
 
