@@ -3,18 +3,14 @@
 
 package com.azure.management.sql.implementation;
 
-import com.azure.management.sql.ServiceLevelObjectiveUsageMetric;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.management.sql.ServiceLevelObjectiveUsageMetric;
 import com.azure.management.sql.ServiceObjectiveName;
 import com.azure.management.sql.SloUsageMetric;
-
 import java.util.UUID;
 
-/**
- * Implementation for Azure SQL Database's SloUsageMetric.
- */
-class ServiceLevelObjectiveUsageMetricImpl
-    extends WrapperImpl<SloUsageMetric>
+/** Implementation for Azure SQL Database's SloUsageMetric. */
+class ServiceLevelObjectiveUsageMetricImpl extends WrapperImpl<SloUsageMetric>
     implements ServiceLevelObjectiveUsageMetric {
 
     protected ServiceLevelObjectiveUsageMetricImpl(SloUsageMetric innerObject) {

@@ -10,17 +10,15 @@ import com.azure.management.appservice.models.AppServiceCertificateOrderInner;
 import com.azure.management.appservice.models.AppServiceCertificateOrdersInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
-/**
- * The implementation for {@link AppServicePlans}.
- */
+/** The implementation for {@link AppServicePlans}. */
 class AppServiceCertificateOrdersImpl
-        extends TopLevelModifiableResourcesImpl<
-                AppServiceCertificateOrder,
-                AppServiceCertificateOrderImpl,
-                AppServiceCertificateOrderInner,
-                AppServiceCertificateOrdersInner,
-                AppServiceManager>
-        implements AppServiceCertificateOrders {
+    extends TopLevelModifiableResourcesImpl<
+        AppServiceCertificateOrder,
+        AppServiceCertificateOrderImpl,
+        AppServiceCertificateOrderInner,
+        AppServiceCertificateOrdersInner,
+        AppServiceManager>
+    implements AppServiceCertificateOrders {
 
     AppServiceCertificateOrdersImpl(AppServiceManager manager) {
         super(manager.inner().appServiceCertificateOrders(), manager);
@@ -43,5 +41,4 @@ class AppServiceCertificateOrdersImpl
     public AppServiceCertificateOrderImpl define(String name) {
         return wrapModel(name);
     }
-
 }

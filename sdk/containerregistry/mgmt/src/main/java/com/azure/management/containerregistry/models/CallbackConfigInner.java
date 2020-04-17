@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * The CallbackConfig model.
- */
+/** The CallbackConfig model. */
 @Fluent
 public final class CallbackConfigInner {
     /*
@@ -26,9 +24,8 @@ public final class CallbackConfigInner {
     private Map<String, String> customHeaders;
 
     /**
-     * Get the serviceUri property: The service URI for the webhook to post
-     * notifications.
-     * 
+     * Get the serviceUri property: The service URI for the webhook to post notifications.
+     *
      * @return the serviceUri value.
      */
     public String serviceUri() {
@@ -36,9 +33,8 @@ public final class CallbackConfigInner {
     }
 
     /**
-     * Set the serviceUri property: The service URI for the webhook to post
-     * notifications.
-     * 
+     * Set the serviceUri property: The service URI for the webhook to post notifications.
+     *
      * @param serviceUri the serviceUri value to set.
      * @return the CallbackConfigInner object itself.
      */
@@ -48,9 +44,8 @@ public final class CallbackConfigInner {
     }
 
     /**
-     * Get the customHeaders property: Custom headers that will be added to the
-     * webhook notifications.
-     * 
+     * Get the customHeaders property: Custom headers that will be added to the webhook notifications.
+     *
      * @return the customHeaders value.
      */
     public Map<String, String> customHeaders() {
@@ -58,9 +53,8 @@ public final class CallbackConfigInner {
     }
 
     /**
-     * Set the customHeaders property: Custom headers that will be added to the
-     * webhook notifications.
-     * 
+     * Set the customHeaders property: Custom headers that will be added to the webhook notifications.
+     *
      * @param customHeaders the customHeaders value to set.
      * @return the CallbackConfigInner object itself.
      */

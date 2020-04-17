@@ -9,14 +9,13 @@ import com.azure.management.compute.InstanceViewStatus;
 import com.azure.management.compute.OperatingSystemTypes;
 import com.azure.management.compute.models.VirtualMachineExtensionInner;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
-import reactor.core.publisher.Mono;
-
 import java.util.HashMap;
 import java.util.Map;
+import reactor.core.publisher.Mono;
 
 /**
- * The implementation for DiskVolumeEncryptionStatus for Linux virtual machine.
- * This implementation monitor status of encrypt-decrypt through legacy encryption extension.
+ * The implementation for DiskVolumeEncryptionStatus for Linux virtual machine. This implementation monitor status of
+ * encrypt-decrypt through legacy encryption extension.
  */
 class LinuxDiskVolumeLegacyEncryptionMonitorImpl implements DiskVolumeEncryptionMonitor {
     private final String rgName;
@@ -81,11 +80,12 @@ class LinuxDiskVolumeLegacyEncryptionMonitorImpl implements DiskVolumeEncryption
         // Refreshes the cached encryption extension installed in the Linux virtual machine.
         final DiskVolumeEncryptionMonitor self = this;
         return retrieveEncryptExtensionWithInstanceViewAsync()
-                .flatMap(virtualMachineExtensionInner -> {
+            .flatMap(
+                virtualMachineExtensionInner -> {
                     encryptionExtension = virtualMachineExtensionInner;
                     return Mono.just(self);
                 })
-                .switchIfEmpty(Mono.just(self));
+            .switchIfEmpty(Mono.just(self));
     }
 
     /**
@@ -105,34 +105,47 @@ class LinuxDiskVolumeLegacyEncryptionMonitorImpl implements DiskVolumeEncryption
     }
 
     /**
-     * Retrieve the extension with latest state. If the extension could not be found then
-     * an empty observable will be returned.
+     * Retrieve the extension with latest state. If the extension could not be found then an empty observable will be
+     * returned.
      *
      * @param extension the extension name
      * @return an observable that emits the retrieved extension
      */
-    private Mono<VirtualMachineExtensionInner> retrieveExtensionWithInstanceViewAsync(VirtualMachineExtensionInner extension) {
-        return computeManager.inner().virtualMachineExtensions()
-                .getAsync(rgName, vmName, extension.getName(), "instanceView")
-                .onErrorResume(e -> Mono.empty());
+    private Mono<VirtualMachineExtensionInner> retrieveExtensionWithInstanceViewAsync(
+        VirtualMachineExtensionInner extension) {
+        return computeManager
+            .inner()
+            .virtualMachineExtensions()
+            .getAsync(rgName, vmName, extension.getName(), "instanceView")
+            .onErrorResume(e -> Mono.empty());
     }
 
     /**
-     * Retrieve the encryption extension from the virtual machine and then retrieve it again with instance view expanded.
-     * If the virtual machine does not exists then an error observable will be returned, if the extension could not be
-     * located then an empty observable will be returned.
+     * Retrieve the encryption extension from the virtual machine and then retrieve it again with instance view
+     * expanded. If the virtual machine does not exists then an error observable will be returned, if the extension
+     * could not be located then an empty observable will be returned.
      *
      * @return the retrieved extension
      */
     private Mono<VirtualMachineExtensionInner> retrieveEncryptExtensionWithInstanceViewFromVMAsync() {
-        return computeManager.inner().virtualMachines()
-                .getByResourceGroupAsync(rgName, vmName)
-                .onErrorResume(e -> Mono.error(new Exception(String.format("VM with name '%s' not found (resource group '%s')", vmName, rgName))))
-                .flatMap(virtualMachine -> {
+        return computeManager
+            .inner()
+            .virtualMachines()
+            .getByResourceGroupAsync(rgName, vmName)
+            .onErrorResume(
+                e ->
+                    Mono
+                        .error(
+                            new Exception(
+                                String.format("VM with name '%s' not found (resource group '%s')", vmName, rgName))))
+            .flatMap(
+                virtualMachine -> {
                     if (virtualMachine.resources() != null) {
                         for (VirtualMachineExtensionInner extension : virtualMachine.resources()) {
                             if (EncryptionExtensionIdentifier.isEncryptionPublisherName(extension.publisher())
-                                    && EncryptionExtensionIdentifier.isEncryptionTypeName(extension.virtualMachineExtensionType(), OperatingSystemTypes.LINUX)) {
+                                && EncryptionExtensionIdentifier
+                                    .isEncryptionTypeName(
+                                        extension.virtualMachineExtensionType(), OperatingSystemTypes.LINUX)) {
                                 return retrieveExtensionWithInstanceViewAsync(extension);
                             }
                         }

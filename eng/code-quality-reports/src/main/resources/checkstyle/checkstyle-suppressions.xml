@@ -155,9 +155,9 @@
     https://github.com/Azure/azure-sdk/issues/321 -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files=".*EventHubClientBuilder.java"/>
 
-  <!-- Suppress warnings for KeyEncryptionKey as it is a specialized client and doesn't follow the guidelines completely -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck"
-            files=".*KeyEncryptionKeyClientBuilder.java"/>
+  <!-- Suppress warnings for KeyEncryptionKey and LocalCrypto client as it is a specialized client and doesn't follow the guidelines completely -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files=".*KeyEncryptionKeyClientBuilder.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files=".*LocalCryptographyClientBuilder.java"/>
 
   <!-- Suppress warnings for ServiceBusReceiverClientBuilder and ServiceBusSenderClientBuilder. They are created from
   the main ServiceBusClientBuilder. -->
@@ -257,7 +257,14 @@
 
   <!-- Use the logger in a Utility static method. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.formrecognizer.Transforms.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.formrecognizer.CustomModelTransforms.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.formrecognizer.implementation.Utility.java" />
+
+    <!-- Common vocabulary error for LRO methods starting with begin* https://github.com/Azure/azure-sdk-for-java/issues/10147 -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.formrecognizer.FormRecognizerAsyncClient.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.formrecognizer.FormRecognizerClient.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.formrecognizer.FormTrainingClient.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.formrecognizer.FormTrainingAsyncClient.java" />
 
   <!-- Throws a non-runtime exception -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
@@ -387,7 +394,7 @@
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]cosmos[/\\]examples[/\\]"/>
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]cosmos[/\\]implementation[/\\]"/>
   <suppress checks="[a-zA-Z0-9]*"
-            files=".*[/\\]cosmos[/\\]((?!(BridgeInternal|CosmosBridgeInternal|CommonsBridgeInternal)).*)"/>
+            files=".*[/\\]azure-cosmos[/\\]((?!(BridgeInternal|CosmosBridgeInternal|CommonsBridgeInternal)).*)"/>
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]cosmos[/\\]rx[/\\]examples[/\\]"/>
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-cosmos-benchmark[/\\]"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
@@ -407,10 +414,10 @@
             files="com.azure.cosmos.ClientSideRequestStatistics"/> <!-- Need OperatingSystemMXBean from sun to obtain cpu info -->
 
   <!-- perf-test files are not public API, so they don't need to fulfill all requirements. -->
-  <suppress checks="Javadoc" files=".*[/\\]perf-test[/\\].*\.java"/>
+  <suppress checks="Javadoc" files=".*[/\\]azure-storage-perf[/\\].*\.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
-            files=".*[/\\]perf-test[/\\].*\.java"/>
-  <suppress checks="GoodLogging" files=".*[/\\]perf-test[/\\].*\.java"/>
+            files=".*[/\\]azure-storage-perf[/\\].*\.java"/>
+  <suppress checks="GoodLogging" files=".*[/\\]azure-storage-perf[/\\].*\.java"/>
   <suppress checks="GoodLogging" files=".*[/\\]com.azure.perf.test.core[/\\].*"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
             files=".*[/\\]com.azure.perf.test.core[/\\].*"/>

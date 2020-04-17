@@ -8,23 +8,17 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for DataStatus.
- */
+/** Defines values for DataStatus. */
 public final class DataStatus extends ExpandableStringEnum<DataStatus> {
-    /**
-     * Static value present for DataStatus.
-     */
+    /** Static value present for DataStatus. */
     public static final DataStatus PRESENT = fromString("present");
 
-    /**
-     * Static value notPresent for DataStatus.
-     */
+    /** Static value notPresent for DataStatus. */
     public static final DataStatus NOT_PRESENT = fromString("notPresent");
 
     /**
      * Creates or finds a DataStatus from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding DataStatus.
      */
@@ -33,9 +27,7 @@ public final class DataStatus extends ExpandableStringEnum<DataStatus> {
         return fromString(name, DataStatus.class);
     }
 
-    /**
-     * @return known DataStatus values.
-     */
+    /** @return known DataStatus values. */
     public static Collection<DataStatus> values() {
         return values(DataStatus.class);
     }

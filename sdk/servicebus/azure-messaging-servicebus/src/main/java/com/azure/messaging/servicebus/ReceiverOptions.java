@@ -11,10 +11,12 @@ import com.azure.messaging.servicebus.models.ReceiveMode;
 class ReceiverOptions {
     private final ReceiveMode receiveMode;
     private final int prefetchCount;
+    private final String sessionId;
 
-    ReceiverOptions(ReceiveMode receiveMode, int prefetchCount) {
+    ReceiverOptions(ReceiveMode receiveMode, int prefetchCount, String sessionId) {
         this.receiveMode = receiveMode;
         this.prefetchCount = prefetchCount;
+        this.sessionId = sessionId;
     }
 
     /**
@@ -27,10 +29,14 @@ class ReceiverOptions {
     }
 
     /**
-     * Gets the prefetch count of the receiver.
+     * Gets the sessionId for the message.
      *
-     * @return The prefetch count of the receiver.
+     * @return Id of the session to receive messages from.
      */
+    String getSessionId() {
+        return sessionId;
+    }
+
     int getPrefetchCount() {
         return prefetchCount;
     }

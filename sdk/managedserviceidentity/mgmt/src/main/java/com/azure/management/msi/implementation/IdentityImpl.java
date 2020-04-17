@@ -25,7 +25,9 @@ final class IdentityImpl
 
     protected IdentityImpl(String name, IdentityInner innerObject, MSIManager manager) {
         super(name, innerObject, manager);
-        this.roleAssignmentHelper = new RoleAssignmentHelper(manager.graphRbacManager(), this.taskGroup(), this.idProvider());
+        this.roleAssignmentHelper = new RoleAssignmentHelper(manager.graphRbacManager(),
+            this.taskGroup(),
+            this.idProvider());
     }
 
     @Override

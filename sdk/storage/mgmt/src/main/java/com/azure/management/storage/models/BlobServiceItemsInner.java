@@ -8,9 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The BlobServiceItems model.
- */
+/** The BlobServiceItems model. */
 @Immutable
 public final class BlobServiceItemsInner {
     /*
@@ -21,7 +19,7 @@ public final class BlobServiceItemsInner {
 
     /**
      * Get the value property: List of blob services returned.
-     * 
+     *
      * @return the value value.
      */
     public List<BlobServicePropertiesInner> value() {

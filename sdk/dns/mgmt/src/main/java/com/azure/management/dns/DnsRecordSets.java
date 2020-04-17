@@ -16,10 +16,8 @@ import com.azure.management.resources.fluentcore.collection.SupportsListing;
  * @param <RecordSetT> the record set type
  */
 @Fluent
-public interface DnsRecordSets<RecordSetT> extends
-        SupportsListing<RecordSetT>,
-        SupportsGettingByName<RecordSetT>,
-        HasParent<DnsZone> {
+public interface DnsRecordSets<RecordSetT>
+    extends SupportsListing<RecordSetT>, SupportsGettingByName<RecordSetT>, HasParent<DnsZone> {
     /**
      * Lists all the record sets with the given suffix.
      *
@@ -35,8 +33,8 @@ public interface DnsRecordSets<RecordSetT> extends
      */
     PagedIterable<RecordSetT> list(int pageSize);
     /**
-     * Lists all the record sets with the given suffix, also limits the number of entries
-     * per page to the given page size.
+     * Lists all the record sets with the given suffix, also limits the number of entries per page to the given page
+     * size.
      *
      * @param recordSetNameSuffix the record set name suffix
      * @param pageSize the maximum number of record sets in a page
@@ -58,8 +56,8 @@ public interface DnsRecordSets<RecordSetT> extends
      */
     PagedFlux<RecordSetT> listAsync(int pageSize);
     /**
-     * Lists all the record sets with the given suffix, also limits the number of entries
-     * per page to the given page size.
+     * Lists all the record sets with the given suffix, also limits the number of entries per page to the given page
+     * size.
      *
      * @param recordSetNameSuffix the record set name suffix
      * @param pageSize the maximum number of record sets in a page

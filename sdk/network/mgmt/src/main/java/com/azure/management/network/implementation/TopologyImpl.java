@@ -9,20 +9,15 @@ import com.azure.management.network.TopologyParameters;
 import com.azure.management.network.TopologyResource;
 import com.azure.management.network.models.TopologyInner;
 import com.azure.management.resources.fluentcore.model.implementation.ExecutableImpl;
-import reactor.core.publisher.Mono;
-
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import reactor.core.publisher.Mono;
 
-/**
- * The implementation of Topology.
- */
-class TopologyImpl extends ExecutableImpl<Topology>
-        implements Topology,
-        Topology.Definition {
+/** The implementation of Topology. */
+class TopologyImpl extends ExecutableImpl<Topology> implements Topology, Topology.Definition {
     private Map<String, TopologyResource> resources;
     private final NetworkWatcherImpl parent;
     private TopologyParameters parameters = new TopologyParameters();
@@ -86,7 +81,9 @@ class TopologyImpl extends ExecutableImpl<Topology>
 
     @Override
     public TopologyImpl withTargetSubnet(String subnetName) {
-        parameters.withTargetSubnet(new SubResource().setId(parameters.targetVirtualNetwork().getId() + "/subnets/" + subnetName));
+        parameters
+            .withTargetSubnet(
+                new SubResource().setId(parameters.targetVirtualNetwork().getId() + "/subnets/" + subnetName));
         return this;
     }
 
@@ -97,9 +94,14 @@ class TopologyImpl extends ExecutableImpl<Topology>
 
     @Override
     public Mono<Topology> executeWorkAsync() {
-        return this.parent().manager().inner().networkWatchers()
-                .getTopologyAsync(parent().resourceGroupName(), parent().name(), parameters)
-                .map(topologyInner -> {
+        return this
+            .parent()
+            .manager()
+            .inner()
+            .networkWatchers()
+            .getTopologyAsync(parent().resourceGroupName(), parent().name(), parameters)
+            .map(
+                topologyInner -> {
                     TopologyImpl.this.inner = topologyInner;
                     TopologyImpl.this.initializeResourcesFromInner();
                     return TopologyImpl.this;

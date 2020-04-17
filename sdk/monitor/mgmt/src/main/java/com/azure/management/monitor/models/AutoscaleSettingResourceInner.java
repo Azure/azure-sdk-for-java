@@ -11,9 +11,7 @@ import com.azure.management.monitor.AutoscaleNotification;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The AutoscaleSettingResource model.
- */
+/** The AutoscaleSettingResource model. */
 @JsonFlatten
 @Fluent
 public class AutoscaleSettingResourceInner extends Resource {
@@ -52,10 +50,9 @@ public class AutoscaleSettingResourceInner extends Resource {
     private String targetResourceUri;
 
     /**
-     * Get the profiles property: the collection of automatic scaling profiles
-     * that specify different scaling parameters for different time periods. A
-     * maximum of 20 profiles can be specified.
-     * 
+     * Get the profiles property: the collection of automatic scaling profiles that specify different scaling parameters
+     * for different time periods. A maximum of 20 profiles can be specified.
+     *
      * @return the profiles value.
      */
     public List<AutoscaleProfileInner> profiles() {
@@ -63,10 +60,9 @@ public class AutoscaleSettingResourceInner extends Resource {
     }
 
     /**
-     * Set the profiles property: the collection of automatic scaling profiles
-     * that specify different scaling parameters for different time periods. A
-     * maximum of 20 profiles can be specified.
-     * 
+     * Set the profiles property: the collection of automatic scaling profiles that specify different scaling parameters
+     * for different time periods. A maximum of 20 profiles can be specified.
+     *
      * @param profiles the profiles value to set.
      * @return the AutoscaleSettingResourceInner object itself.
      */
@@ -77,7 +73,7 @@ public class AutoscaleSettingResourceInner extends Resource {
 
     /**
      * Get the notifications property: the collection of notifications.
-     * 
+     *
      * @return the notifications value.
      */
     public List<AutoscaleNotification> notifications() {
@@ -86,7 +82,7 @@ public class AutoscaleSettingResourceInner extends Resource {
 
     /**
      * Set the notifications property: the collection of notifications.
-     * 
+     *
      * @param notifications the notifications value to set.
      * @return the AutoscaleSettingResourceInner object itself.
      */
@@ -96,9 +92,9 @@ public class AutoscaleSettingResourceInner extends Resource {
     }
 
     /**
-     * Get the enabled property: the enabled flag. Specifies whether automatic
-     * scaling is enabled for the resource. The default value is 'true'.
-     * 
+     * Get the enabled property: the enabled flag. Specifies whether automatic scaling is enabled for the resource. The
+     * default value is 'true'.
+     *
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -106,9 +102,9 @@ public class AutoscaleSettingResourceInner extends Resource {
     }
 
     /**
-     * Set the enabled property: the enabled flag. Specifies whether automatic
-     * scaling is enabled for the resource. The default value is 'true'.
-     * 
+     * Set the enabled property: the enabled flag. Specifies whether automatic scaling is enabled for the resource. The
+     * default value is 'true'.
+     *
      * @param enabled the enabled value to set.
      * @return the AutoscaleSettingResourceInner object itself.
      */
@@ -119,7 +115,7 @@ public class AutoscaleSettingResourceInner extends Resource {
 
     /**
      * Get the namePropertiesName property: the name of the autoscale setting.
-     * 
+     *
      * @return the namePropertiesName value.
      */
     public String namePropertiesName() {
@@ -128,7 +124,7 @@ public class AutoscaleSettingResourceInner extends Resource {
 
     /**
      * Set the namePropertiesName property: the name of the autoscale setting.
-     * 
+     *
      * @param namePropertiesName the namePropertiesName value to set.
      * @return the AutoscaleSettingResourceInner object itself.
      */
@@ -138,9 +134,9 @@ public class AutoscaleSettingResourceInner extends Resource {
     }
 
     /**
-     * Get the targetResourceUri property: the resource identifier of the
-     * resource that the autoscale setting should be added to.
-     * 
+     * Get the targetResourceUri property: the resource identifier of the resource that the autoscale setting should be
+     * added to.
+     *
      * @return the targetResourceUri value.
      */
     public String targetResourceUri() {
@@ -148,9 +144,9 @@ public class AutoscaleSettingResourceInner extends Resource {
     }
 
     /**
-     * Set the targetResourceUri property: the resource identifier of the
-     * resource that the autoscale setting should be added to.
-     * 
+     * Set the targetResourceUri property: the resource identifier of the resource that the autoscale setting should be
+     * added to.
+     *
      * @param targetResourceUri the targetResourceUri value to set.
      * @return the AutoscaleSettingResourceInner object itself.
      */

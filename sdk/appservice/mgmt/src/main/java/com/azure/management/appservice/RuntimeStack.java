@@ -4,12 +4,9 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
-
 import java.util.Collection;
 
-/**
- * Defines App service pricing tiers.
- */
+/** Defines App service pricing tiers. */
 @Fluent
 public class RuntimeStack {
     private static final AttributeCollection<RuntimeStack> COLLECTION = new AttributeCollection<>();
@@ -153,12 +150,13 @@ public class RuntimeStack {
     public static final RuntimeStack TOMCAT_9_0_JRE8 = COLLECTION.addValue(new RuntimeStack("TOMCAT", "9.0-jre8"));
 
     /** The name of the language runtime stack. */
-    private String stack;
+    private final String stack;
     /** The version of the runtime. */
-    private String version;
+    private final String version;
 
     /**
      * Creates a custom app service runtime stack on Linux operating system.
+     *
      * @param stack the name of the language stack
      * @param version the version of the runtime
      */
@@ -167,16 +165,12 @@ public class RuntimeStack {
         this.version = version;
     }
 
-    /**
-     * @return the name of the language runtime stack
-     */
+    /** @return the name of the language runtime stack */
     public String stack() {
         return stack;
     }
 
-    /**
-     * @return the version of the runtime stack
-     */
+    /** @return the version of the runtime stack */
     public String version() {
         return version;
     }

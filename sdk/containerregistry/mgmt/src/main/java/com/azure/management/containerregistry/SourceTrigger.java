@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The SourceTrigger model.
- */
+/** The SourceTrigger model. */
 @Fluent
 public final class SourceTrigger {
     /*
@@ -38,9 +36,8 @@ public final class SourceTrigger {
     private String name;
 
     /**
-     * Get the sourceRepository property: The properties that describes the
-     * source(code) for the task.
-     * 
+     * Get the sourceRepository property: The properties that describes the source(code) for the task.
+     *
      * @return the sourceRepository value.
      */
     public SourceProperties sourceRepository() {
@@ -48,9 +45,8 @@ public final class SourceTrigger {
     }
 
     /**
-     * Set the sourceRepository property: The properties that describes the
-     * source(code) for the task.
-     * 
+     * Set the sourceRepository property: The properties that describes the source(code) for the task.
+     *
      * @param sourceRepository the sourceRepository value to set.
      * @return the SourceTrigger object itself.
      */
@@ -60,9 +56,8 @@ public final class SourceTrigger {
     }
 
     /**
-     * Get the sourceTriggerEvents property: The source event corresponding to
-     * the trigger.
-     * 
+     * Get the sourceTriggerEvents property: The source event corresponding to the trigger.
+     *
      * @return the sourceTriggerEvents value.
      */
     public List<SourceTriggerEvent> sourceTriggerEvents() {
@@ -70,9 +65,8 @@ public final class SourceTrigger {
     }
 
     /**
-     * Set the sourceTriggerEvents property: The source event corresponding to
-     * the trigger.
-     * 
+     * Set the sourceTriggerEvents property: The source event corresponding to the trigger.
+     *
      * @param sourceTriggerEvents the sourceTriggerEvents value to set.
      * @return the SourceTrigger object itself.
      */
@@ -83,7 +77,7 @@ public final class SourceTrigger {
 
     /**
      * Get the status property: The current status of trigger.
-     * 
+     *
      * @return the status value.
      */
     public TriggerStatus status() {
@@ -92,7 +86,7 @@ public final class SourceTrigger {
 
     /**
      * Set the status property: The current status of trigger.
-     * 
+     *
      * @param status the status value to set.
      * @return the SourceTrigger object itself.
      */
@@ -103,7 +97,7 @@ public final class SourceTrigger {
 
     /**
      * Get the name property: The name of the trigger.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -112,7 +106,7 @@ public final class SourceTrigger {
 
     /**
      * Set the name property: The name of the trigger.
-     * 
+     *
      * @param name the name value to set.
      * @return the SourceTrigger object itself.
      */

@@ -27,6 +27,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.management.resources.fluentcore.collection.InnerSupportsGet;
@@ -36,148 +38,244 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * ManagedInstances.
- */
-public final class ManagedInstancesInner implements InnerSupportsGet<ManagedInstanceInner>, InnerSupportsListing<ManagedInstanceInner>, InnerSupportsDelete<Void> {
-    /**
-     * The proxy service used to perform REST calls.
-     */
-    private ManagedInstancesService service;
+/** An instance of this class provides access to all the operations defined in ManagedInstances. */
+public final class ManagedInstancesInner
+    implements InnerSupportsGet<ManagedInstanceInner>,
+        InnerSupportsListing<ManagedInstanceInner>,
+        InnerSupportsDelete<Void> {
+    /** The proxy service used to perform REST calls. */
+    private final ManagedInstancesService service;
 
-    /**
-     * The service client containing this operation class.
-     */
-    private SqlManagementClientImpl client;
+    /** The service client containing this operation class. */
+    private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of ManagedInstancesInner.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     ManagedInstancesInner(SqlManagementClientImpl client) {
-        this.service = RestProxy.create(ManagedInstancesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy.create(ManagedInstancesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * SqlManagementClientManagedInstances to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for SqlManagementClientManagedInstances to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientManagedInstances")
+    @ServiceInterface(name = "SqlManagementClientM")
     private interface ManagedInstancesService {
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/instancePools/{instancePoolName}/managedInstances")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/instancePools/{instancePoolName}/managedInstances")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ManagedInstanceListResultInner>> listByInstancePool(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("instancePoolName") String instancePoolName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<ManagedInstanceListResultInner>> listByInstancePool(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("instancePoolName") String instancePoolName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ManagedInstanceListResultInner>> listByResourceGroup(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<ManagedInstanceListResultInner>> listByResourceGroup(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ManagedInstanceInner>> getByResourceGroup(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("managedInstanceName") String managedInstanceName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<ManagedInstanceInner>> getByResourceGroup(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("managedInstanceName") String managedInstanceName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ManagedInstanceInner parameters);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ManagedInstanceInner parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("managedInstanceName") String managedInstanceName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Patch(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> update(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("managedInstanceName") String managedInstanceName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ManagedInstanceUpdate parameters);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> update(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ManagedInstanceUpdate parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/managedInstances")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ManagedInstanceListResultInner>> list(@HostParam("$host") String host, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<ManagedInstanceListResultInner>> list(
+            @HostParam("$host") String host,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ManagedInstanceInner>> beginCreateOrUpdate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("managedInstanceName") String managedInstanceName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ManagedInstanceInner parameters);
+        Mono<SimpleResponse<ManagedInstanceInner>> beginCreateOrUpdate(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ManagedInstanceInner parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> beginDelete(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("managedInstanceName") String managedInstanceName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<Response<Void>> beginDelete(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Patch(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ManagedInstanceInner>> beginUpdate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("managedInstanceName") String managedInstanceName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ManagedInstanceUpdate parameters);
+        Mono<SimpleResponse<ManagedInstanceInner>> beginUpdate(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ManagedInstanceUpdate parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ManagedInstanceListResultInner>> listByInstancePoolNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<ManagedInstanceListResultInner>> listByInstancePoolNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ManagedInstanceListResultInner>> listByResourceGroupNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<ManagedInstanceListResultInner>> listByResourceGroupNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ManagedInstanceListResultInner>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<ManagedInstanceListResultInner>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
      * Gets a list of all managed instances in an instance pool.
-     * 
-     * @param resourceGroupName 
-     * @param instancePoolName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param instancePoolName The instance pool name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all managed instances in an instance pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ManagedInstanceInner>> listByInstancePoolSinglePageAsync(String resourceGroupName, String instancePoolName) {
+    public Mono<PagedResponse<ManagedInstanceInner>> listByInstancePoolSinglePageAsync(
+        String resourceGroupName, String instancePoolName) {
         final String apiVersion = "2018-06-01-preview";
-        return service.listByInstancePool(this.client.getHost(), resourceGroupName, instancePoolName, this.client.getSubscriptionId(), apiVersion)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByInstancePool(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            instancePoolName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .<PagedResponse<ManagedInstanceInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a list of all managed instances in an instance pool.
-     * 
-     * @param resourceGroupName 
-     * @param instancePoolName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param instancePoolName The instance pool name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all managed instances in an instance pool.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedInstanceInner> listByInstancePoolAsync(String resourceGroupName, String instancePoolName) {
@@ -188,12 +286,14 @@ public final class ManagedInstancesInner implements InnerSupportsGet<ManagedInst
 
     /**
      * Gets a list of all managed instances in an instance pool.
-     * 
-     * @param resourceGroupName 
-     * @param instancePoolName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param instancePoolName The instance pool name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all managed instances in an instance pool.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedInstanceInner> listByInstancePool(String resourceGroupName, String instancePoolName) {
@@ -202,32 +302,48 @@ public final class ManagedInstancesInner implements InnerSupportsGet<ManagedInst
 
     /**
      * Gets a list of managed instances in a resource group.
-     * 
-     * @param resourceGroupName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of managed instances in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ManagedInstanceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         final String apiVersion = "2018-06-01-preview";
-        return service.listByResourceGroup(this.client.getHost(), resourceGroupName, this.client.getSubscriptionId(), apiVersion)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByResourceGroup(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .<PagedResponse<ManagedInstanceInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a list of managed instances in a resource group.
-     * 
-     * @param resourceGroupName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of managed instances in a resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedInstanceInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -238,11 +354,13 @@ public final class ManagedInstancesInner implements InnerSupportsGet<ManagedInst
 
     /**
      * Gets a list of managed instances in a resource group.
-     * 
-     * @param resourceGroupName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of managed instances in a resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedInstanceInner> listByResourceGroup(String resourceGroupName) {
@@ -251,48 +369,67 @@ public final class ManagedInstancesInner implements InnerSupportsGet<ManagedInst
 
     /**
      * Gets a managed instance.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ManagedInstanceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String managedInstanceName) {
+    public Mono<SimpleResponse<ManagedInstanceInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String managedInstanceName) {
         final String apiVersion = "2018-06-01-preview";
-        return service.getByResourceGroup(this.client.getHost(), resourceGroupName, managedInstanceName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getByResourceGroup(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a managed instance.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedInstanceInner> getByResourceGroupAsync(String resourceGroupName, String managedInstanceName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, managedInstanceName)
-            .flatMap((SimpleResponse<ManagedInstanceInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<ManagedInstanceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets a managed instance.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedInstanceInner getByResourceGroup(String resourceGroupName, String managedInstanceName) {
@@ -301,90 +438,134 @@ public final class ManagedInstancesInner implements InnerSupportsGet<ManagedInst
 
     /**
      * Creates or updates a managed instance.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @param parameters An Azure SQL managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL managed instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String managedInstanceName, ManagedInstanceInner parameters) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String managedInstanceName, ManagedInstanceInner parameters) {
         final String apiVersion = "2018-06-01-preview";
-        return service.createOrUpdate(this.client.getHost(), resourceGroupName, managedInstanceName, this.client.getSubscriptionId(), apiVersion, parameters);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createOrUpdate(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            parameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Creates or updates a managed instance.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @param parameters An Azure SQL managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL managed instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedInstanceInner> createOrUpdateAsync(String resourceGroupName, String managedInstanceName, ManagedInstanceInner parameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName, parameters);
-        return this.client.<ManagedInstanceInner, ManagedInstanceInner>getLroResultAsync(mono, this.client.getHttpPipeline(), ManagedInstanceInner.class, ManagedInstanceInner.class)
+    public Mono<ManagedInstanceInner> createOrUpdateAsync(
+        String resourceGroupName, String managedInstanceName, ManagedInstanceInner parameters) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName, parameters);
+        return this
+            .client
+            .<ManagedInstanceInner, ManagedInstanceInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), ManagedInstanceInner.class, ManagedInstanceInner.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Creates or updates a managed instance.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @param parameters An Azure SQL managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL managed instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedInstanceInner createOrUpdate(String resourceGroupName, String managedInstanceName, ManagedInstanceInner parameters) {
+    public ManagedInstanceInner createOrUpdate(
+        String resourceGroupName, String managedInstanceName, ManagedInstanceInner parameters) {
         return createOrUpdateAsync(resourceGroupName, managedInstanceName, parameters).block();
     }
 
     /**
      * Deletes a managed instance.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String managedInstanceName) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String managedInstanceName) {
         final String apiVersion = "2018-06-01-preview";
-        return service.delete(this.client.getHost(), resourceGroupName, managedInstanceName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .delete(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Deletes a managed instance.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String managedInstanceName) {
         Mono<SimpleResponse<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, managedInstanceName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return this
+            .client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Deletes a managed instance.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -396,90 +577,121 @@ public final class ManagedInstancesInner implements InnerSupportsGet<ManagedInst
 
     /**
      * Updates a managed instance.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @param parameters An update request for an Azure SQL Database managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL managed instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String managedInstanceName, ManagedInstanceUpdate parameters) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName, String managedInstanceName, ManagedInstanceUpdate parameters) {
         final String apiVersion = "2018-06-01-preview";
-        return service.update(this.client.getHost(), resourceGroupName, managedInstanceName, this.client.getSubscriptionId(), apiVersion, parameters);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .update(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            parameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Updates a managed instance.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @param parameters An update request for an Azure SQL Database managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL managed instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedInstanceInner> updateAsync(String resourceGroupName, String managedInstanceName, ManagedInstanceUpdate parameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, managedInstanceName, parameters);
-        return this.client.<ManagedInstanceInner, ManagedInstanceInner>getLroResultAsync(mono, this.client.getHttpPipeline(), ManagedInstanceInner.class, ManagedInstanceInner.class)
+    public Mono<ManagedInstanceInner> updateAsync(
+        String resourceGroupName, String managedInstanceName, ManagedInstanceUpdate parameters) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, managedInstanceName, parameters);
+        return this
+            .client
+            .<ManagedInstanceInner, ManagedInstanceInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), ManagedInstanceInner.class, ManagedInstanceInner.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Updates a managed instance.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @param parameters An update request for an Azure SQL Database managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL managed instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedInstanceInner update(String resourceGroupName, String managedInstanceName, ManagedInstanceUpdate parameters) {
+    public ManagedInstanceInner update(
+        String resourceGroupName, String managedInstanceName, ManagedInstanceUpdate parameters) {
         return updateAsync(resourceGroupName, managedInstanceName, parameters).block();
     }
 
     /**
      * Gets a list of all managed instances in the subscription.
-     * 
+     *
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all managed instances in the subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ManagedInstanceInner>> listSinglePageAsync() {
         final String apiVersion = "2018-06-01-preview";
-        return service.list(this.client.getHost(), this.client.getSubscriptionId(), apiVersion)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(
+                context -> service.list(this.client.getHost(), this.client.getSubscriptionId(), apiVersion, context))
+            .<PagedResponse<ManagedInstanceInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a list of all managed instances in the subscription.
-     * 
+     *
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all managed instances in the subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedInstanceInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(),
-            nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets a list of all managed instances in the subscription.
-     * 
+     *
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all managed instances in the subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedInstanceInner> list() {
@@ -488,80 +700,117 @@ public final class ManagedInstancesInner implements InnerSupportsGet<ManagedInst
 
     /**
      * Creates or updates a managed instance.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @param parameters An Azure SQL managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL managed instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ManagedInstanceInner>> beginCreateOrUpdateWithResponseAsync(String resourceGroupName, String managedInstanceName, ManagedInstanceInner parameters) {
+    public Mono<SimpleResponse<ManagedInstanceInner>> beginCreateOrUpdateWithResponseAsync(
+        String resourceGroupName, String managedInstanceName, ManagedInstanceInner parameters) {
         final String apiVersion = "2018-06-01-preview";
-        return service.beginCreateOrUpdate(this.client.getHost(), resourceGroupName, managedInstanceName, this.client.getSubscriptionId(), apiVersion, parameters);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginCreateOrUpdate(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            parameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Creates or updates a managed instance.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @param parameters An Azure SQL managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL managed instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedInstanceInner> beginCreateOrUpdateAsync(String resourceGroupName, String managedInstanceName, ManagedInstanceInner parameters) {
+    public Mono<ManagedInstanceInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String managedInstanceName, ManagedInstanceInner parameters) {
         return beginCreateOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName, parameters)
-            .flatMap((SimpleResponse<ManagedInstanceInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<ManagedInstanceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Creates or updates a managed instance.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @param parameters An Azure SQL managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL managed instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedInstanceInner beginCreateOrUpdate(String resourceGroupName, String managedInstanceName, ManagedInstanceInner parameters) {
+    public ManagedInstanceInner beginCreateOrUpdate(
+        String resourceGroupName, String managedInstanceName, ManagedInstanceInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, parameters).block();
     }
 
     /**
      * Deletes a managed instance.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteWithResponseAsync(String resourceGroupName, String managedInstanceName) {
         final String apiVersion = "2018-06-01-preview";
-        return service.beginDelete(this.client.getHost(), resourceGroupName, managedInstanceName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginDelete(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Deletes a managed instance.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> beginDeleteAsync(String resourceGroupName, String managedInstanceName) {
@@ -571,9 +820,10 @@ public final class ManagedInstancesInner implements InnerSupportsGet<ManagedInst
 
     /**
      * Deletes a managed instance.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -585,114 +835,151 @@ public final class ManagedInstancesInner implements InnerSupportsGet<ManagedInst
 
     /**
      * Updates a managed instance.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @param parameters An update request for an Azure SQL Database managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL managed instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ManagedInstanceInner>> beginUpdateWithResponseAsync(String resourceGroupName, String managedInstanceName, ManagedInstanceUpdate parameters) {
+    public Mono<SimpleResponse<ManagedInstanceInner>> beginUpdateWithResponseAsync(
+        String resourceGroupName, String managedInstanceName, ManagedInstanceUpdate parameters) {
         final String apiVersion = "2018-06-01-preview";
-        return service.beginUpdate(this.client.getHost(), resourceGroupName, managedInstanceName, this.client.getSubscriptionId(), apiVersion, parameters);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginUpdate(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            parameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Updates a managed instance.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @param parameters An update request for an Azure SQL Database managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL managed instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedInstanceInner> beginUpdateAsync(String resourceGroupName, String managedInstanceName, ManagedInstanceUpdate parameters) {
+    public Mono<ManagedInstanceInner> beginUpdateAsync(
+        String resourceGroupName, String managedInstanceName, ManagedInstanceUpdate parameters) {
         return beginUpdateWithResponseAsync(resourceGroupName, managedInstanceName, parameters)
-            .flatMap((SimpleResponse<ManagedInstanceInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<ManagedInstanceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Updates a managed instance.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @param parameters An update request for an Azure SQL Database managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL managed instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedInstanceInner beginUpdate(String resourceGroupName, String managedInstanceName, ManagedInstanceUpdate parameters) {
+    public ManagedInstanceInner beginUpdate(
+        String resourceGroupName, String managedInstanceName, ManagedInstanceUpdate parameters) {
         return beginUpdateAsync(resourceGroupName, managedInstanceName, parameters).block();
     }
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink null
+     *
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of managed instances.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ManagedInstanceInner>> listByInstancePoolNextSinglePageAsync(String nextLink) {
-        return service.listByInstancePoolNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(context -> service.listByInstancePoolNext(nextLink, context))
+            .<PagedResponse<ManagedInstanceInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink null
+     *
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of managed instances.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ManagedInstanceInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
-        return service.listByResourceGroupNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(context -> service.listByResourceGroupNext(nextLink, context))
+            .<PagedResponse<ManagedInstanceInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink null
+     *
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of managed instances.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ManagedInstanceInner>> listNextSinglePageAsync(String nextLink) {
-        return service.listNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(context -> service.listNext(nextLink, context))
+            .<PagedResponse<ManagedInstanceInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 }

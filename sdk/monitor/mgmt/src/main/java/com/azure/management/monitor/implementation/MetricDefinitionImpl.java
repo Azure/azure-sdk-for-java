@@ -2,34 +2,28 @@
 // Licensed under the MIT License.
 
 package com.azure.management.monitor.implementation;
+
+import com.azure.management.monitor.AggregationType;
 import com.azure.management.monitor.LocalizableString;
 import com.azure.management.monitor.MetricAvailability;
+import com.azure.management.monitor.MetricCollection;
 import com.azure.management.monitor.MetricDefinition;
 import com.azure.management.monitor.ResultType;
 import com.azure.management.monitor.Unit;
-import com.azure.management.monitor.AggregationType;
-import com.azure.management.monitor.MetricCollection;
 import com.azure.management.monitor.models.LocalizableStringInner;
 import com.azure.management.monitor.models.MetricDefinitionInner;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
-import reactor.core.publisher.Mono;
-
 import java.time.Duration;
 import java.time.OffsetDateTime;
-
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import reactor.core.publisher.Mono;
 
-/**
- * The Azure metric definition entries are of type MetricDefinition.
- */
-class MetricDefinitionImpl
-        extends WrapperImpl<MetricDefinitionInner>
-            implements
-        MetricDefinition,
-                MetricDefinition.MetricsQueryDefinition {
+/** The Azure metric definition entries are of type MetricDefinition. */
+class MetricDefinitionImpl extends WrapperImpl<MetricDefinitionInner>
+    implements MetricDefinition, MetricDefinition.MetricsQueryDefinition {
 
     private final MonitorManager myManager;
     private MetricDefinitionInner inner;
@@ -51,8 +45,7 @@ class MetricDefinitionImpl
         this.inner = innerModel;
         this.name = (inner.name() == null) ? null : new LocalizableStringImpl(inner.name());
         this.dimensions = null;
-        if (this.inner.dimensions() != null
-                && this.inner.dimensions().size() > 0) {
+        if (this.inner.dimensions() != null && this.inner.dimensions().size() > 0) {
             this.dimensions = new ArrayList<>();
             for (LocalizableStringInner lsi : inner.dimensions()) {
                 this.dimensions.add(new LocalizableStringImpl(lsi));
@@ -181,8 +174,15 @@ class MetricDefinitionImpl
 
     @Override
     public Mono<MetricCollection> executeAsync() {
-        return this.manager().inner().metrics().listAsync(this.inner.resourceId(),
-                String.format("%s/%s",
+        return this
+            .manager()
+            .inner()
+            .metrics()
+            .listAsync(
+                this.inner.resourceId(),
+                String
+                    .format(
+                        "%s/%s",
                         DateTimeFormatter.ISO_INSTANT.format(this.queryStartTime.atZoneSameInstant(ZoneOffset.UTC)),
                         DateTimeFormatter.ISO_INSTANT.format(this.queryEndTime.atZoneSameInstant(ZoneOffset.UTC))),
                 this.interval,
@@ -192,6 +192,7 @@ class MetricDefinitionImpl
                 this.orderBy,
                 this.odataFilter,
                 this.resultType,
-                this.namespaceFilter).map(MetricCollectionImpl::new);
+                this.namespaceFilter)
+            .map(MetricCollectionImpl::new);
     }
 }

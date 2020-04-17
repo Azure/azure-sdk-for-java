@@ -10,14 +10,12 @@ import com.azure.management.compute.ImageDataDisk;
 import com.azure.management.compute.VirtualMachineCustomImage;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
-/**
- * The implementation for {@link VirtualMachineCustomImage.CustomImageDataDisk}.
- */
+/** The implementation for {@link VirtualMachineCustomImage.CustomImageDataDisk}. */
 class CustomImageDataDiskImpl
-        extends ChildResourceImpl<ImageDataDisk, VirtualMachineCustomImageImpl, VirtualMachineCustomImage>
-        implements
-        VirtualMachineCustomImage.CustomImageDataDisk,
-        VirtualMachineCustomImage.CustomImageDataDisk.Definition<VirtualMachineCustomImage.DefinitionStages.WithCreateAndDataDiskImageOSDiskSettings> {
+    extends ChildResourceImpl<ImageDataDisk, VirtualMachineCustomImageImpl, VirtualMachineCustomImage>
+    implements VirtualMachineCustomImage.CustomImageDataDisk,
+        VirtualMachineCustomImage.CustomImageDataDisk.Definition<
+            VirtualMachineCustomImage.DefinitionStages.WithCreateAndDataDiskImageOSDiskSettings> {
 
     CustomImageDataDiskImpl(ImageDataDisk inner, VirtualMachineCustomImageImpl parent) {
         super(inner, parent);

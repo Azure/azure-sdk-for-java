@@ -17,7 +17,6 @@ class RegistryTaskRunsImpl implements RegistryTaskRuns {
         this.registryManager = registryManager;
     }
 
-
     @Override
     public RegistryTaskRun.DefinitionStages.BlankFromRuns scheduleRun() {
         return new RegistryTaskRunImpl(registryManager, new RunInner());
@@ -25,8 +24,7 @@ class RegistryTaskRunsImpl implements RegistryTaskRuns {
 
     @Override
     public PagedFlux<RegistryTaskRun> listByRegistryAsync(String rgName, String acrName) {
-        return this.registryManager.inner().runs().listAsync(rgName, acrName)
-                .mapPage(inner -> wrapModel(inner));
+        return this.registryManager.inner().runs().listAsync(rgName, acrName).mapPage(inner -> wrapModel(inner));
     }
 
     @Override
@@ -36,7 +34,11 @@ class RegistryTaskRunsImpl implements RegistryTaskRuns {
 
     @Override
     public Mono<String> getLogSasUrlAsync(String rgName, String acrName, String runId) {
-        return this.registryManager.inner().runs().getLogSasUrlAsync(rgName, acrName, runId)
+        return this
+            .registryManager
+            .inner()
+            .runs()
+            .getLogSasUrlAsync(rgName, acrName, runId)
             .map(runGetLogResultInner -> runGetLogResultInner.logLink());
     }
 

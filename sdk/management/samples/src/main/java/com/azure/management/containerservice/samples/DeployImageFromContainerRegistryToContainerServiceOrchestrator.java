@@ -5,7 +5,6 @@ package com.azure.management.containerservice.samples;
 
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.management.Azure;
 import com.azure.management.containerservice.ContainerService;
 import com.azure.management.containerservice.ContainerServiceMasterProfileCount;
@@ -439,7 +438,7 @@ public class DeployImageFromContainerRegistryToContainerServiceOrchestrator {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure.configure()
-                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY))
+                    .withLogLevel(HttpLogDetailLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 

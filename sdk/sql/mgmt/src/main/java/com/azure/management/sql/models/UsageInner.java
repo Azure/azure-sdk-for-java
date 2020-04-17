@@ -8,9 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.management.sql.Name;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Usage model.
- */
+/** The Usage model. */
 @Immutable
 public final class UsageInner {
     /*
@@ -57,7 +55,7 @@ public final class UsageInner {
 
     /**
      * Get the id property: Resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -66,7 +64,7 @@ public final class UsageInner {
 
     /**
      * Get the name property: Resource name.
-     * 
+     *
      * @return the name value.
      */
     public Name name() {
@@ -75,7 +73,7 @@ public final class UsageInner {
 
     /**
      * Get the type property: Resource type.
-     * 
+     *
      * @return the type value.
      */
     public String type() {
@@ -84,7 +82,7 @@ public final class UsageInner {
 
     /**
      * Get the unit property: Usage unit.
-     * 
+     *
      * @return the unit value.
      */
     public String unit() {
@@ -93,7 +91,7 @@ public final class UsageInner {
 
     /**
      * Get the currentValue property: Usage current value.
-     * 
+     *
      * @return the currentValue value.
      */
     public Integer currentValue() {
@@ -102,7 +100,7 @@ public final class UsageInner {
 
     /**
      * Get the limit property: Usage limit.
-     * 
+     *
      * @return the limit value.
      */
     public Integer limit() {
@@ -111,7 +109,7 @@ public final class UsageInner {
 
     /**
      * Get the requestedLimit property: Usage requested limit.
-     * 
+     *
      * @return the requestedLimit value.
      */
     public Integer requestedLimit() {

@@ -15,9 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/**
- * The FailoverGroup model.
- */
+/** The FailoverGroup model. */
 @JsonFlatten
 @Fluent
 public class FailoverGroupInner extends ProxyResource {
@@ -71,7 +69,7 @@ public class FailoverGroupInner extends ProxyResource {
 
     /**
      * Get the location property: Resource location.
-     * 
+     *
      * @return the location value.
      */
     public String location() {
@@ -80,7 +78,7 @@ public class FailoverGroupInner extends ProxyResource {
 
     /**
      * Get the tags property: Resource tags.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -89,7 +87,7 @@ public class FailoverGroupInner extends ProxyResource {
 
     /**
      * Set the tags property: Resource tags.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the FailoverGroupInner object itself.
      */
@@ -99,9 +97,8 @@ public class FailoverGroupInner extends ProxyResource {
     }
 
     /**
-     * Get the readWriteEndpoint property: Read-write endpoint of the failover
-     * group instance.
-     * 
+     * Get the readWriteEndpoint property: Read-write endpoint of the failover group instance.
+     *
      * @return the readWriteEndpoint value.
      */
     public FailoverGroupReadWriteEndpoint readWriteEndpoint() {
@@ -109,9 +106,8 @@ public class FailoverGroupInner extends ProxyResource {
     }
 
     /**
-     * Set the readWriteEndpoint property: Read-write endpoint of the failover
-     * group instance.
-     * 
+     * Set the readWriteEndpoint property: Read-write endpoint of the failover group instance.
+     *
      * @param readWriteEndpoint the readWriteEndpoint value to set.
      * @return the FailoverGroupInner object itself.
      */
@@ -121,9 +117,8 @@ public class FailoverGroupInner extends ProxyResource {
     }
 
     /**
-     * Get the readOnlyEndpoint property: Read-only endpoint of the failover
-     * group instance.
-     * 
+     * Get the readOnlyEndpoint property: Read-only endpoint of the failover group instance.
+     *
      * @return the readOnlyEndpoint value.
      */
     public FailoverGroupReadOnlyEndpoint readOnlyEndpoint() {
@@ -131,9 +126,8 @@ public class FailoverGroupInner extends ProxyResource {
     }
 
     /**
-     * Set the readOnlyEndpoint property: Read-only endpoint of the failover
-     * group instance.
-     * 
+     * Set the readOnlyEndpoint property: Read-only endpoint of the failover group instance.
+     *
      * @param readOnlyEndpoint the readOnlyEndpoint value to set.
      * @return the FailoverGroupInner object itself.
      */
@@ -143,9 +137,8 @@ public class FailoverGroupInner extends ProxyResource {
     }
 
     /**
-     * Get the replicationRole property: Local replication role of the failover
-     * group instance.
-     * 
+     * Get the replicationRole property: Local replication role of the failover group instance.
+     *
      * @return the replicationRole value.
      */
     public FailoverGroupReplicationRole replicationRole() {
@@ -153,9 +146,8 @@ public class FailoverGroupInner extends ProxyResource {
     }
 
     /**
-     * Get the replicationState property: Replication state of the failover
-     * group instance.
-     * 
+     * Get the replicationState property: Replication state of the failover group instance.
+     *
      * @return the replicationState value.
      */
     public String replicationState() {
@@ -163,9 +155,8 @@ public class FailoverGroupInner extends ProxyResource {
     }
 
     /**
-     * Get the partnerServers property: List of partner server information for
-     * the failover group.
-     * 
+     * Get the partnerServers property: List of partner server information for the failover group.
+     *
      * @return the partnerServers value.
      */
     public List<PartnerInfo> partnerServers() {
@@ -173,9 +164,8 @@ public class FailoverGroupInner extends ProxyResource {
     }
 
     /**
-     * Set the partnerServers property: List of partner server information for
-     * the failover group.
-     * 
+     * Set the partnerServers property: List of partner server information for the failover group.
+     *
      * @param partnerServers the partnerServers value to set.
      * @return the FailoverGroupInner object itself.
      */
@@ -186,7 +176,7 @@ public class FailoverGroupInner extends ProxyResource {
 
     /**
      * Get the databases property: List of databases in the failover group.
-     * 
+     *
      * @return the databases value.
      */
     public List<String> databases() {
@@ -195,7 +185,7 @@ public class FailoverGroupInner extends ProxyResource {
 
     /**
      * Set the databases property: List of databases in the failover group.
-     * 
+     *
      * @param databases the databases value to set.
      * @return the FailoverGroupInner object itself.
      */

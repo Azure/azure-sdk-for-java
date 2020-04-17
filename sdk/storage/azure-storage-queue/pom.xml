@@ -6,14 +6,14 @@
     <groupId>com.azure</groupId>
     <artifactId>azure-client-sdk-parent</artifactId>
     <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
-    <relativePath>../../../pom.client.xml</relativePath>
+    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-queue</artifactId>
-  <version>12.5.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;current} -->
+  <version>12.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;current} -->
 
   <name>Microsoft Azure client library for Queue Storage</name>
   <description>This module contains client library for Microsoft Azure Queue Storage.</description>
@@ -41,7 +41,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.6.0</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.7.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -144,7 +144,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.0.0-M4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
           </plugin>
         </plugins>
       </build>
@@ -209,7 +209,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.0.0-M4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <argLine>
                 --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED

@@ -10,13 +10,10 @@ import com.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-
-/**
- * Entry point to virtual machine scale set network interface management API.
- */
+/** Entry point to virtual machine scale set network interface management API. */
 @Fluent
-public interface VirtualMachineScaleSetNetworkInterfaces extends
-        SupportsListing<VirtualMachineScaleSetNetworkInterface>,
+public interface VirtualMachineScaleSetNetworkInterfaces
+    extends SupportsListing<VirtualMachineScaleSetNetworkInterface>,
         HasInner<NetworkInterfacesInner>,
         HasManager<NetworkManager> {
     /**

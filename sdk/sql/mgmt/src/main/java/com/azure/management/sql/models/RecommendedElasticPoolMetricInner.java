@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The RecommendedElasticPoolMetric model.
- */
+/** The RecommendedElasticPoolMetric model. */
 @Fluent
 public final class RecommendedElasticPoolMetricInner {
     /*
@@ -34,7 +32,7 @@ public final class RecommendedElasticPoolMetricInner {
 
     /**
      * Get the dateTime property: The time of metric (ISO8601 format).
-     * 
+     *
      * @return the dateTime value.
      */
     public OffsetDateTime dateTime() {
@@ -43,7 +41,7 @@ public final class RecommendedElasticPoolMetricInner {
 
     /**
      * Set the dateTime property: The time of metric (ISO8601 format).
-     * 
+     *
      * @param dateTime the dateTime value to set.
      * @return the RecommendedElasticPoolMetricInner object itself.
      */
@@ -53,10 +51,9 @@ public final class RecommendedElasticPoolMetricInner {
     }
 
     /**
-     * Get the dtu property: Gets or sets the DTUs (Database Transaction
-     * Units). See
+     * Get the dtu property: Gets or sets the DTUs (Database Transaction Units). See
      * https://azure.microsoft.com/documentation/articles/sql-database-what-is-a-dtu/.
-     * 
+     *
      * @return the dtu value.
      */
     public Double dtu() {
@@ -64,10 +61,9 @@ public final class RecommendedElasticPoolMetricInner {
     }
 
     /**
-     * Set the dtu property: Gets or sets the DTUs (Database Transaction
-     * Units). See
+     * Set the dtu property: Gets or sets the DTUs (Database Transaction Units). See
      * https://azure.microsoft.com/documentation/articles/sql-database-what-is-a-dtu/.
-     * 
+     *
      * @param dtu the dtu value to set.
      * @return the RecommendedElasticPoolMetricInner object itself.
      */
@@ -78,7 +74,7 @@ public final class RecommendedElasticPoolMetricInner {
 
     /**
      * Get the sizeGB property: Gets or sets size in gigabytes.
-     * 
+     *
      * @return the sizeGB value.
      */
     public Double sizeGB() {
@@ -87,7 +83,7 @@ public final class RecommendedElasticPoolMetricInner {
 
     /**
      * Set the sizeGB property: Gets or sets size in gigabytes.
-     * 
+     *
      * @param sizeGB the sizeGB value to set.
      * @return the RecommendedElasticPoolMetricInner object itself.
      */

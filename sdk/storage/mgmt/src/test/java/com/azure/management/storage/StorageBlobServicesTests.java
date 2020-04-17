@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.management.storage;
 
 import com.azure.management.RestClient;
@@ -20,49 +23,52 @@ public class StorageBlobServicesTests extends StorageManagementTest {
         resourceManager.resourceGroups().deleteByName(rgName);
     }
 
-
     @Test
     public void canCreateBlobServices() {
-        String SA_NAME = generateRandomResourceName("javacsmsa", 15);
+        String saName = generateRandomResourceName("javacsmsa", 15);
 
-        StorageAccount storageAccount = storageManager.storageAccounts()
-                .define(SA_NAME)
+        StorageAccount storageAccount =
+            storageManager
+                .storageAccounts()
+                .define(saName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
                 .create();
 
         BlobServices blobServices = this.storageManager.blobServices();
-        BlobServiceProperties blobService = blobServices.define("blobServicesTest")
+        BlobServiceProperties blobService =
+            blobServices
+                .define("blobServicesTest")
                 .withExistingStorageAccount(storageAccount.resourceGroupName(), storageAccount.name())
                 .withDeleteRetentionPolicyEnabled(5)
                 .create();
 
         Assertions.assertTrue(blobService.deleteRetentionPolicy().enabled());
         Assertions.assertEquals(5, blobService.deleteRetentionPolicy().days().intValue());
-
     }
 
     @Test
     public void canUpdateBlobServices() {
-        String SA_NAME = generateRandomResourceName("javacsmsa", 15);
+        String saName = generateRandomResourceName("javacsmsa", 15);
 
-        StorageAccount storageAccount = storageManager.storageAccounts()
-                .define(SA_NAME)
+        StorageAccount storageAccount =
+            storageManager
+                .storageAccounts()
+                .define(saName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
                 .create();
 
         BlobServices blobServices = this.storageManager.blobServices();
-        BlobServiceProperties blobService = blobServices.define("blobServicesTest")
+        BlobServiceProperties blobService =
+            blobServices
+                .define("blobServicesTest")
                 .withExistingStorageAccount(storageAccount.resourceGroupName(), storageAccount.name())
                 .withDeleteRetentionPolicyEnabled(5)
                 .create();
 
-        blobService.update()
-                .withDeleteRetentionPolicyDisabled()
-                .apply();
+        blobService.update().withDeleteRetentionPolicyDisabled().apply();
 
         Assertions.assertFalse(blobService.deleteRetentionPolicy().enabled());
-
     }
 }

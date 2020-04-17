@@ -9,9 +9,7 @@ import com.azure.management.containerregistry.QuarantinePolicy;
 import com.azure.management.containerregistry.TrustPolicy;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The RegistryPolicies model.
- */
+/** The RegistryPolicies model. */
 @Fluent
 public final class RegistryPoliciesInner {
     /*
@@ -27,9 +25,8 @@ public final class RegistryPoliciesInner {
     private TrustPolicy trustPolicy;
 
     /**
-     * Get the quarantinePolicy property: An object that represents quarantine
-     * policy for a container registry.
-     * 
+     * Get the quarantinePolicy property: An object that represents quarantine policy for a container registry.
+     *
      * @return the quarantinePolicy value.
      */
     public QuarantinePolicy quarantinePolicy() {
@@ -37,9 +34,8 @@ public final class RegistryPoliciesInner {
     }
 
     /**
-     * Set the quarantinePolicy property: An object that represents quarantine
-     * policy for a container registry.
-     * 
+     * Set the quarantinePolicy property: An object that represents quarantine policy for a container registry.
+     *
      * @param quarantinePolicy the quarantinePolicy value to set.
      * @return the RegistryPoliciesInner object itself.
      */
@@ -49,9 +45,8 @@ public final class RegistryPoliciesInner {
     }
 
     /**
-     * Get the trustPolicy property: An object that represents content trust
-     * policy for a container registry.
-     * 
+     * Get the trustPolicy property: An object that represents content trust policy for a container registry.
+     *
      * @return the trustPolicy value.
      */
     public TrustPolicy trustPolicy() {
@@ -59,9 +54,8 @@ public final class RegistryPoliciesInner {
     }
 
     /**
-     * Set the trustPolicy property: An object that represents content trust
-     * policy for a container registry.
-     * 
+     * Set the trustPolicy property: An object that represents content trust policy for a container registry.
+     *
      * @param trustPolicy the trustPolicy value to set.
      * @return the RegistryPoliciesInner object itself.
      */

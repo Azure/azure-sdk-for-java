@@ -3,26 +3,21 @@
 
 package com.azure.management.sql.implementation;
 
-
 import com.azure.management.resources.fluentcore.arm.ResourceId;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.management.sql.TransparentDataEncryptionActivity;
 import com.azure.management.sql.TransparentDataEncryptionActivityStatus;
 import com.azure.management.sql.models.TransparentDataEncryptionActivityInner;
 
-/**
- * Implementation for TransparentDataEncryptionActivity.
- */
-class TransparentDataEncryptionActivityImpl
-        extends WrapperImpl<TransparentDataEncryptionActivityInner>
-        implements TransparentDataEncryptionActivity {
+/** Implementation for TransparentDataEncryptionActivity. */
+class TransparentDataEncryptionActivityImpl extends WrapperImpl<TransparentDataEncryptionActivityInner>
+    implements TransparentDataEncryptionActivity {
     private final ResourceId resourceId;
 
     protected TransparentDataEncryptionActivityImpl(TransparentDataEncryptionActivityInner innerObject) {
         super(innerObject);
         this.resourceId = ResourceId.fromString(this.inner().getId());
     }
-
 
     @Override
     public String name() {

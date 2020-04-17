@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ManagementPolicyFilter model.
- */
+/** The ManagementPolicyFilter model. */
 @Fluent
 public final class ManagementPolicyFilter {
     /*
@@ -26,9 +24,8 @@ public final class ManagementPolicyFilter {
     private List<String> blobTypes;
 
     /**
-     * Get the prefixMatch property: An array of strings for prefixes to be
-     * match.
-     * 
+     * Get the prefixMatch property: An array of strings for prefixes to be match.
+     *
      * @return the prefixMatch value.
      */
     public List<String> prefixMatch() {
@@ -36,9 +33,8 @@ public final class ManagementPolicyFilter {
     }
 
     /**
-     * Set the prefixMatch property: An array of strings for prefixes to be
-     * match.
-     * 
+     * Set the prefixMatch property: An array of strings for prefixes to be match.
+     *
      * @param prefixMatch the prefixMatch value to set.
      * @return the ManagementPolicyFilter object itself.
      */
@@ -48,9 +44,8 @@ public final class ManagementPolicyFilter {
     }
 
     /**
-     * Get the blobTypes property: An array of predefined enum values. Only
-     * blockBlob is supported.
-     * 
+     * Get the blobTypes property: An array of predefined enum values. Only blockBlob is supported.
+     *
      * @return the blobTypes value.
      */
     public List<String> blobTypes() {
@@ -58,9 +53,8 @@ public final class ManagementPolicyFilter {
     }
 
     /**
-     * Set the blobTypes property: An array of predefined enum values. Only
-     * blockBlob is supported.
-     * 
+     * Set the blobTypes property: An array of predefined enum values. Only blockBlob is supported.
+     *
      * @param blobTypes the blobTypes value to set.
      * @return the ManagementPolicyFilter object itself.
      */

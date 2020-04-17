@@ -5,23 +5,15 @@ package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
 
-/**
- * An immutable client-side representation of an app setting on a web app.
- */
+/** An immutable client-side representation of an app setting on a web app. */
 @Fluent
 public interface AppSetting {
-    /**
-     * @return the key of the setting
-     */
+    /** @return the key of the setting */
     String key();
 
-    /**
-     * @return the value of the setting
-     */
+    /** @return the value of the setting */
     String value();
 
-    /**
-     * @return if the setting sticks to the slot during a swap
-     */
+    /** @return if the setting sticks to the slot during a swap */
     boolean sticky();
 }

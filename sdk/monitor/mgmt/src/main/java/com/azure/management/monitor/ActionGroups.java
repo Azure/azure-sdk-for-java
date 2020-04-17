@@ -4,8 +4,8 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.management.monitor.models.ActionGroupsInner;
 import com.azure.management.monitor.implementation.MonitorManager;
+import com.azure.management.monitor.models.ActionGroupsInner;
 import com.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -18,12 +18,10 @@ import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
-/**
- * Entry point for Action Group management API.
- */
+/** Entry point for Action Group management API. */
 @Fluent
-public interface ActionGroups extends
-        SupportsCreating<ActionGroup.DefinitionStages.Blank>,
+public interface ActionGroups
+    extends SupportsCreating<ActionGroup.DefinitionStages.Blank>,
         SupportsListing<ActionGroup>,
         SupportsListingByResourceGroup<ActionGroup>,
         SupportsGettingById<ActionGroup>,
@@ -35,7 +33,8 @@ public interface ActionGroups extends
         HasInner<ActionGroupsInner> {
 
     /**
-     * Enable a receiver in an action group. This changes the receiver's status from Disabled to Enabled. This operation is only supported for Email or SMS receivers.
+     * Enable a receiver in an action group. This changes the receiver's status from Disabled to Enabled. This operation
+     * is only supported for Email or SMS receivers.
      *
      * @param resourceGroupName The name of the resource group.
      * @param actionGroupName The name of the action group.
@@ -44,7 +43,8 @@ public interface ActionGroups extends
     void enableReceiver(String resourceGroupName, String actionGroupName, String receiverName);
 
     /**
-     * Enable a receiver in an action group. This changes the receiver's status from Disabled to Enabled. This operation is only supported for Email or SMS receivers.
+     * Enable a receiver in an action group. This changes the receiver's status from Disabled to Enabled. This operation
+     * is only supported for Email or SMS receivers.
      *
      * @param resourceGroupName The name of the resource group.
      * @param actionGroupName The name of the action group.

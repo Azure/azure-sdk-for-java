@@ -6,30 +6,22 @@ import com.azure.core.annotation.Fluent;
 import com.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.azure.management.resources.fluentcore.model.Creatable;
 
-/**
- * A representation of the Azure SQL Firewall rule operations.
- */
+/** A representation of the Azure SQL Firewall rule operations. */
 @Fluent
-public interface SqlFirewallRuleOperations extends
-    SupportsCreating<SqlFirewallRuleOperations.DefinitionStages.WithSqlServer>,
-    SqlChildrenOperations<SqlFirewallRule> {
+public interface SqlFirewallRuleOperations
+    extends SupportsCreating<SqlFirewallRuleOperations.DefinitionStages.WithSqlServer>,
+        SqlChildrenOperations<SqlFirewallRule> {
 
-    /**
-     * Container interface for all the definitions that need to be implemented.
-     */
-    interface SqlFirewallRuleOperationsDefinition extends
-        SqlFirewallRuleOperations.DefinitionStages.WithSqlServer,
-        SqlFirewallRuleOperations.DefinitionStages.WithIPAddressRange,
-        SqlFirewallRuleOperations.DefinitionStages.WithCreate {
+    /** Container interface for all the definitions that need to be implemented. */
+    interface SqlFirewallRuleOperationsDefinition
+        extends SqlFirewallRuleOperations.DefinitionStages.WithSqlServer,
+            SqlFirewallRuleOperations.DefinitionStages.WithIPAddressRange,
+            SqlFirewallRuleOperations.DefinitionStages.WithCreate {
     }
 
-    /**
-     * Grouping of all the SQL Firewall rule definition stages.
-     */
+    /** Grouping of all the SQL Firewall rule definition stages. */
     interface DefinitionStages {
-        /**
-         * The first stage of the SQL Server Firewall rule definition.
-         */
+        /** The first stage of the SQL Server Firewall rule definition. */
         interface WithSqlServer {
             /**
              * Sets the parent SQL server name and resource group it belongs to.
@@ -57,9 +49,7 @@ public interface SqlFirewallRuleOperations extends
             WithIPAddressRange withExistingSqlServer(SqlServer sqlServer);
         }
 
-        /**
-         * The SQL Firewall Rule definition to set the IP address range for the parent SQL Server.
-         */
+        /** The SQL Firewall Rule definition to set the IP address range for the parent SQL Server. */
         interface WithIPAddressRange {
             /**
              * Sets the starting IP address of SQL server's firewall rule.
@@ -79,16 +69,12 @@ public interface SqlFirewallRuleOperations extends
             WithCreate withIPAddress(String ipAddress);
         }
 
-        /**
-         * The final stage of the SQL Firewall Rule definition.
-         */
+        /** The final stage of the SQL Firewall Rule definition. */
         interface WithCreate extends Creatable<SqlFirewallRule> {
         }
     }
 
-    /**
-     * Grouping of the Azure SQL Server Firewall Rule common actions.
-     */
+    /** Grouping of the Azure SQL Server Firewall Rule common actions. */
     interface SqlFirewallRuleActionsDefinition extends SqlChildrenActionsDefinition<SqlFirewallRule> {
         /**
          * Begins the definition of a new SQL Firewall rule to be added to this server.

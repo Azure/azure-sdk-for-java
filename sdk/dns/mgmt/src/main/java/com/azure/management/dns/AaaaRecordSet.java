@@ -3,16 +3,11 @@
 package com.azure.management.dns;
 
 import com.azure.core.annotation.Fluent;
-
 import java.util.List;
 
-/**
- * An immutable client-side representation of a AAAA (IPv6) record set in Azure DNS Zone.
- */
+/** An immutable client-side representation of a AAAA (IPv6) record set in Azure DNS Zone. */
 @Fluent
 public interface AaaaRecordSet extends DnsRecordSet {
-    /**
-     * @return the IPv6 addresses of AAAA records in this record set
-     */
+    /** @return the IPv6 addresses of AAAA records in this record set */
     List<String> ipv6Addresses();
 }

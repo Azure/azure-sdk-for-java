@@ -136,7 +136,7 @@ public class IndexAndServiceStatisticsExample {
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
                     .setFacetable(Boolean.TRUE)
-                    .setRetrievable(Boolean.TRUE),
+                    .setHidden(Boolean.FALSE),
                 new Field()
                     .setName("HotelName")
                     .setType(DataType.EDM_STRING)
@@ -144,7 +144,7 @@ public class IndexAndServiceStatisticsExample {
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
                     .setFacetable(Boolean.FALSE)
-                    .setRetrievable(Boolean.TRUE),
+                    .setHidden(Boolean.FALSE),
                 new Field()
                     .setName("Description")
                     .setType(DataType.EDM_STRING)
@@ -154,7 +154,7 @@ public class IndexAndServiceStatisticsExample {
                     .setSortable(Boolean.FALSE)
                     .setFacetable(Boolean.FALSE)
                     .setAnalyzer(AnalyzerName.EN_LUCENE)
-                    .setRetrievable(Boolean.TRUE),
+                    .setHidden(Boolean.FALSE),
                 new Field()
                     .setName("DescriptionFr")
                     .setType(DataType.EDM_STRING)
@@ -163,7 +163,7 @@ public class IndexAndServiceStatisticsExample {
                     .setSortable(Boolean.FALSE)
                     .setFacetable(Boolean.FALSE)
                     .setAnalyzer(AnalyzerName.FR_LUCENE)
-                    .setRetrievable(Boolean.TRUE),
+                    .setHidden(Boolean.FALSE),
                 new Field()
                     .setName("Description_Custom")
                     .setType(DataType.EDM_STRING)
@@ -173,7 +173,7 @@ public class IndexAndServiceStatisticsExample {
                     .setFacetable(Boolean.FALSE)
                     .setSearchAnalyzer(AnalyzerName.STOP)
                     .setIndexAnalyzer(AnalyzerName.STOP)
-                    .setRetrievable(Boolean.TRUE),
+                    .setHidden(Boolean.FALSE),
                 new Field()
                     .setName("Category")
                     .setType(DataType.EDM_STRING)
@@ -181,7 +181,7 @@ public class IndexAndServiceStatisticsExample {
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
                     .setFacetable(Boolean.TRUE)
-                    .setRetrievable(Boolean.TRUE),
+                    .setHidden(Boolean.FALSE),
                 new Field()
                     .setName("Tags")
                     .setType(DataType.collection(DataType.EDM_STRING))
@@ -189,35 +189,35 @@ public class IndexAndServiceStatisticsExample {
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.FALSE)
                     .setFacetable(Boolean.TRUE)
-                    .setRetrievable(Boolean.TRUE),
+                    .setHidden(Boolean.FALSE),
                 new Field()
                     .setName("ParkingIncluded")
                     .setType(DataType.EDM_BOOLEAN)
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
                     .setFacetable(Boolean.TRUE)
-                    .setRetrievable(Boolean.TRUE),
+                    .setHidden(Boolean.FALSE),
                 new Field()
                     .setName("SmokingAllowed")
                     .setType(DataType.EDM_BOOLEAN)
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
                     .setFacetable(Boolean.TRUE)
-                    .setRetrievable(Boolean.TRUE),
+                    .setHidden(Boolean.FALSE),
                 new Field()
                     .setName("LastRenovationDate")
                     .setType(DataType.EDM_DATE_TIME_OFFSET)
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
                     .setFacetable(Boolean.TRUE)
-                    .setRetrievable(Boolean.TRUE),
+                    .setHidden(Boolean.FALSE),
                 new Field()
                     .setName("Rating")
                     .setType(DataType.EDM_INT32)
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
                     .setFacetable(Boolean.TRUE)
-                    .setRetrievable(Boolean.TRUE),
+                    .setHidden(Boolean.FALSE),
                 new Field()
                     .setName("Address")
                     .setType(DataType.EDM_COMPLEX_TYPE)
@@ -226,7 +226,7 @@ public class IndexAndServiceStatisticsExample {
                             .setName("StreetAddress")
                             .setType(DataType.EDM_STRING)
                             .setSearchable(Boolean.TRUE)
-                            .setRetrievable(Boolean.TRUE),
+                            .setHidden(Boolean.FALSE),
                         new Field()
                             .setName("City")
                             .setType(DataType.EDM_STRING)
@@ -234,7 +234,7 @@ public class IndexAndServiceStatisticsExample {
                             .setFilterable(Boolean.TRUE)
                             .setSortable(Boolean.TRUE)
                             .setFacetable(Boolean.TRUE)
-                            .setRetrievable(Boolean.TRUE),
+                            .setHidden(Boolean.FALSE),
                         new Field()
                             .setName("StateProvince")
                             .setType(DataType.EDM_STRING)
@@ -242,7 +242,7 @@ public class IndexAndServiceStatisticsExample {
                             .setFilterable(Boolean.TRUE)
                             .setSortable(Boolean.TRUE)
                             .setFacetable(Boolean.TRUE)
-                            .setRetrievable(Boolean.TRUE),
+                            .setHidden(Boolean.FALSE),
                         new Field()
                             .setName("Country")
                             .setType(DataType.EDM_STRING)
@@ -250,7 +250,7 @@ public class IndexAndServiceStatisticsExample {
                             .setFilterable(Boolean.TRUE)
                             .setSortable(Boolean.TRUE)
                             .setFacetable(Boolean.TRUE)
-                            .setRetrievable(Boolean.TRUE),
+                            .setHidden(Boolean.FALSE),
                         new Field()
                             .setName("PostalCode")
                             .setType(DataType.EDM_STRING)
@@ -258,7 +258,7 @@ public class IndexAndServiceStatisticsExample {
                             .setFilterable(Boolean.TRUE)
                             .setSortable(Boolean.TRUE)
                             .setFacetable(Boolean.TRUE)
-                            .setRetrievable(Boolean.TRUE)
+                            .setHidden(Boolean.FALSE)
                         )
                     ),
                 new Field()
@@ -267,8 +267,7 @@ public class IndexAndServiceStatisticsExample {
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
                     .setFacetable(Boolean.FALSE)
-                    .setRetrievable(Boolean.TRUE)
-                    .setRetrievable(Boolean.TRUE),
+                    .setHidden(Boolean.FALSE),
                 new Field()
                     .setName("Rooms")
                     .setType(DataType.collection(DataType.EDM_COMPLEX_TYPE))
@@ -277,13 +276,13 @@ public class IndexAndServiceStatisticsExample {
                             .setName("Description")
                             .setType(DataType.EDM_STRING)
                             .setSearchable(Boolean.TRUE)
-                            .setRetrievable(Boolean.TRUE)
+                            .setHidden(Boolean.FALSE)
                             .setAnalyzer(AnalyzerName.EN_LUCENE),
                         new Field()
                             .setName("DescriptionFr")
                             .setType(DataType.EDM_STRING)
                             .setSearchable(Boolean.TRUE)
-                            .setRetrievable(Boolean.TRUE)
+                            .setHidden(Boolean.FALSE)
                             .setAnalyzer(AnalyzerName.FR_LUCENE),
                         new Field()
                             .setName("Type")
@@ -291,7 +290,7 @@ public class IndexAndServiceStatisticsExample {
                             .setSearchable(Boolean.TRUE)
                             .setFilterable(Boolean.TRUE)
                             .setFacetable(Boolean.TRUE)
-                            .setRetrievable(Boolean.TRUE),
+                            .setHidden(Boolean.FALSE),
                         new Field()
                             .setName("BaseRate")
                             .setType(DataType.EDM_DOUBLE)
@@ -299,26 +298,26 @@ public class IndexAndServiceStatisticsExample {
                             .setSearchable(Boolean.FALSE)
                             .setFilterable(Boolean.TRUE)
                             .setFacetable(Boolean.TRUE)
-                            .setRetrievable(Boolean.TRUE),
+                            .setHidden(Boolean.FALSE),
                         new Field()
                             .setName("BedOptions")
                             .setType(DataType.EDM_STRING)
                             .setSearchable(Boolean.TRUE)
                             .setFilterable(Boolean.TRUE)
                             .setFacetable(Boolean.TRUE)
-                            .setRetrievable(Boolean.TRUE),
+                            .setHidden(Boolean.FALSE),
                         new Field()
                             .setName("SleepsCount")
                             .setType(DataType.EDM_INT32)
                             .setFilterable(Boolean.TRUE)
                             .setFacetable(Boolean.TRUE)
-                            .setRetrievable(Boolean.TRUE),
+                            .setHidden(Boolean.FALSE),
                         new Field()
                             .setName("SmokingAllowed")
                             .setType(DataType.EDM_BOOLEAN)
                             .setFilterable(Boolean.TRUE)
                             .setFacetable(Boolean.TRUE)
-                            .setRetrievable(Boolean.TRUE),
+                            .setHidden(Boolean.FALSE),
                         new Field()
                             .setName("Tags")
                             .setType(DataType.collection(DataType.EDM_STRING))
@@ -326,7 +325,7 @@ public class IndexAndServiceStatisticsExample {
                             .setFilterable(Boolean.TRUE)
                             .setSortable(Boolean.FALSE)
                             .setFacetable(Boolean.TRUE)
-                            .setRetrievable(Boolean.TRUE)
+                            .setHidden(Boolean.FALSE)
                         )
                     ),
                 new Field()
@@ -335,8 +334,7 @@ public class IndexAndServiceStatisticsExample {
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
                     .setFacetable(Boolean.TRUE)
-                    .setRetrievable(Boolean.FALSE
-                    ),
+                    .setHidden(Boolean.TRUE),
                 new Field()
                     .setName("ProfitMargin")
                     .setType(DataType.EDM_DOUBLE)

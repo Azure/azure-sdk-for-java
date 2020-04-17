@@ -7,9 +7,7 @@ package com.azure.management.containerregistry;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The SourceTriggerDescriptor model.
- */
+/** The SourceTriggerDescriptor model. */
 @Fluent
 public final class SourceTriggerDescriptor {
     /*
@@ -56,7 +54,7 @@ public final class SourceTriggerDescriptor {
 
     /**
      * Get the id property: The unique ID of the trigger.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -65,7 +63,7 @@ public final class SourceTriggerDescriptor {
 
     /**
      * Set the id property: The unique ID of the trigger.
-     * 
+     *
      * @param id the id value to set.
      * @return the SourceTriggerDescriptor object itself.
      */
@@ -76,7 +74,7 @@ public final class SourceTriggerDescriptor {
 
     /**
      * Get the eventType property: The event type of the trigger.
-     * 
+     *
      * @return the eventType value.
      */
     public String eventType() {
@@ -85,7 +83,7 @@ public final class SourceTriggerDescriptor {
 
     /**
      * Set the eventType property: The event type of the trigger.
-     * 
+     *
      * @param eventType the eventType value to set.
      * @return the SourceTriggerDescriptor object itself.
      */
@@ -96,7 +94,7 @@ public final class SourceTriggerDescriptor {
 
     /**
      * Get the commitId property: The unique ID that identifies a commit.
-     * 
+     *
      * @return the commitId value.
      */
     public String commitId() {
@@ -105,7 +103,7 @@ public final class SourceTriggerDescriptor {
 
     /**
      * Set the commitId property: The unique ID that identifies a commit.
-     * 
+     *
      * @param commitId the commitId value to set.
      * @return the SourceTriggerDescriptor object itself.
      */
@@ -115,9 +113,8 @@ public final class SourceTriggerDescriptor {
     }
 
     /**
-     * Get the pullRequestId property: The unique ID that identifies pull
-     * request.
-     * 
+     * Get the pullRequestId property: The unique ID that identifies pull request.
+     *
      * @return the pullRequestId value.
      */
     public String pullRequestId() {
@@ -125,9 +122,8 @@ public final class SourceTriggerDescriptor {
     }
 
     /**
-     * Set the pullRequestId property: The unique ID that identifies pull
-     * request.
-     * 
+     * Set the pullRequestId property: The unique ID that identifies pull request.
+     *
      * @param pullRequestId the pullRequestId value to set.
      * @return the SourceTriggerDescriptor object itself.
      */
@@ -138,7 +134,7 @@ public final class SourceTriggerDescriptor {
 
     /**
      * Get the repositoryUrl property: The repository URL.
-     * 
+     *
      * @return the repositoryUrl value.
      */
     public String repositoryUrl() {
@@ -147,7 +143,7 @@ public final class SourceTriggerDescriptor {
 
     /**
      * Set the repositoryUrl property: The repository URL.
-     * 
+     *
      * @param repositoryUrl the repositoryUrl value to set.
      * @return the SourceTriggerDescriptor object itself.
      */
@@ -158,7 +154,7 @@ public final class SourceTriggerDescriptor {
 
     /**
      * Get the branchName property: The branch name in the repository.
-     * 
+     *
      * @return the branchName value.
      */
     public String branchName() {
@@ -167,7 +163,7 @@ public final class SourceTriggerDescriptor {
 
     /**
      * Set the branchName property: The branch name in the repository.
-     * 
+     *
      * @param branchName the branchName value to set.
      * @return the SourceTriggerDescriptor object itself.
      */
@@ -178,7 +174,7 @@ public final class SourceTriggerDescriptor {
 
     /**
      * Get the providerType property: The source control provider type.
-     * 
+     *
      * @return the providerType value.
      */
     public String providerType() {
@@ -187,7 +183,7 @@ public final class SourceTriggerDescriptor {
 
     /**
      * Set the providerType property: The source control provider type.
-     * 
+     *
      * @param providerType the providerType value to set.
      * @return the SourceTriggerDescriptor object itself.
      */

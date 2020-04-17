@@ -7,9 +7,7 @@ package com.azure.management.containerregistry;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The AgentProperties model.
- */
+/** The AgentProperties model. */
 @Fluent
 public final class AgentProperties {
     /*
@@ -19,9 +17,8 @@ public final class AgentProperties {
     private Integer cpu;
 
     /**
-     * Get the cpu property: The CPU configuration in terms of number of cores
-     * required for the run.
-     * 
+     * Get the cpu property: The CPU configuration in terms of number of cores required for the run.
+     *
      * @return the cpu value.
      */
     public Integer cpu() {
@@ -29,9 +26,8 @@ public final class AgentProperties {
     }
 
     /**
-     * Set the cpu property: The CPU configuration in terms of number of cores
-     * required for the run.
-     * 
+     * Set the cpu property: The CPU configuration in terms of number of cores required for the run.
+     *
      * @param cpu the cpu value to set.
      * @return the AgentProperties object itself.
      */

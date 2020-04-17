@@ -18,6 +18,7 @@ class RegistryTasksImpl implements RegistryTasks {
     RegistryTasksImpl(ContainerRegistryManager registryManager) {
         this.registryManager = registryManager;
     }
+
     @Override
     public RegistryTask.DefinitionStages.Blank define(String name) {
         return new RegistryTaskImpl(this.registryManager, name);
@@ -25,8 +26,12 @@ class RegistryTasksImpl implements RegistryTasks {
 
     @Override
     public PagedFlux<RegistryTask> listByRegistryAsync(String resourceGroupName, String registryName) {
-        return this.registryManager.inner().tasks().listAsync(resourceGroupName, registryName)
-                .mapPage(inner -> wrapModel(inner));
+        return this
+            .registryManager
+            .inner()
+            .tasks()
+            .listAsync(resourceGroupName, registryName)
+            .mapPage(inner -> wrapModel(inner));
     }
 
     @Override
@@ -35,18 +40,28 @@ class RegistryTasksImpl implements RegistryTasks {
     }
 
     @Override
-    public Mono<RegistryTask> getByRegistryAsync(String resourceGroupName, String registryName, String taskName, boolean includeSecrets) {
+    public Mono<RegistryTask> getByRegistryAsync(
+        String resourceGroupName, String registryName, String taskName, boolean includeSecrets) {
         if (includeSecrets) {
-            return this.registryManager.inner().tasks().getDetailsAsync(resourceGroupName, registryName, taskName)
+            return this
+                .registryManager
+                .inner()
+                .tasks()
+                .getDetailsAsync(resourceGroupName, registryName, taskName)
                 .map(taskInner -> new RegistryTaskImpl(registryManager, taskInner));
         } else {
-            return this.registryManager.inner().tasks().getAsync(resourceGroupName, registryName, taskName)
+            return this
+                .registryManager
+                .inner()
+                .tasks()
+                .getAsync(resourceGroupName, registryName, taskName)
                 .map(taskInner -> new RegistryTaskImpl(registryManager, taskInner));
         }
     }
 
     @Override
-    public RegistryTask getByRegistry(String resourceGroupName, String registryName, String taskName, boolean includeSecrets) {
+    public RegistryTask getByRegistry(
+        String resourceGroupName, String registryName, String taskName, boolean includeSecrets) {
         return this.getByRegistryAsync(resourceGroupName, registryName, taskName, includeSecrets).block();
     }
 

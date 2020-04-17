@@ -8,28 +8,20 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for ManagedInstanceProxyOverride.
- */
+/** Defines values for ManagedInstanceProxyOverride. */
 public final class ManagedInstanceProxyOverride extends ExpandableStringEnum<ManagedInstanceProxyOverride> {
-    /**
-     * Static value Proxy for ManagedInstanceProxyOverride.
-     */
+    /** Static value Proxy for ManagedInstanceProxyOverride. */
     public static final ManagedInstanceProxyOverride PROXY = fromString("Proxy");
 
-    /**
-     * Static value Redirect for ManagedInstanceProxyOverride.
-     */
+    /** Static value Redirect for ManagedInstanceProxyOverride. */
     public static final ManagedInstanceProxyOverride REDIRECT = fromString("Redirect");
 
-    /**
-     * Static value Default for ManagedInstanceProxyOverride.
-     */
+    /** Static value Default for ManagedInstanceProxyOverride. */
     public static final ManagedInstanceProxyOverride DEFAULT = fromString("Default");
 
     /**
      * Creates or finds a ManagedInstanceProxyOverride from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding ManagedInstanceProxyOverride.
      */
@@ -38,9 +30,7 @@ public final class ManagedInstanceProxyOverride extends ExpandableStringEnum<Man
         return fromString(name, ManagedInstanceProxyOverride.class);
     }
 
-    /**
-     * @return known ManagedInstanceProxyOverride values.
-     */
+    /** @return known ManagedInstanceProxyOverride values. */
     public static Collection<ManagedInstanceProxyOverride> values() {
         return values(ManagedInstanceProxyOverride.class);
     }

@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The EventListResult model.
- */
+/** The EventListResult model. */
 @Fluent
 public final class EventListResultInner {
     /*
@@ -27,10 +25,9 @@ public final class EventListResultInner {
     private String nextLink;
 
     /**
-     * Get the value property: The list of events. Since this list may be
-     * incomplete, the nextLink field should be used to request the next list
-     * of events.
-     * 
+     * Get the value property: The list of events. Since this list may be incomplete, the nextLink field should be used
+     * to request the next list of events.
+     *
      * @return the value value.
      */
     public List<EventInner> value() {
@@ -38,10 +35,9 @@ public final class EventListResultInner {
     }
 
     /**
-     * Set the value property: The list of events. Since this list may be
-     * incomplete, the nextLink field should be used to request the next list
-     * of events.
-     * 
+     * Set the value property: The list of events. Since this list may be incomplete, the nextLink field should be used
+     * to request the next list of events.
+     *
      * @param value the value value to set.
      * @return the EventListResultInner object itself.
      */
@@ -51,9 +47,8 @@ public final class EventListResultInner {
     }
 
     /**
-     * Get the nextLink property: The URI that can be used to request the next
-     * list of events.
-     * 
+     * Get the nextLink property: The URI that can be used to request the next list of events.
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -61,9 +56,8 @@ public final class EventListResultInner {
     }
 
     /**
-     * Set the nextLink property: The URI that can be used to request the next
-     * list of events.
-     * 
+     * Set the nextLink property: The URI that can be used to request the next list of events.
+     *
      * @param nextLink the nextLink value to set.
      * @return the EventListResultInner object itself.
      */

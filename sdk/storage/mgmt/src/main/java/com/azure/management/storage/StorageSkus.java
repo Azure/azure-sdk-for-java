@@ -9,12 +9,6 @@ import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.storage.implementation.StorageManager;
 import com.azure.management.storage.models.SkusInner;
 
-/**
- * Entry point to storage service SKUs.
- */
-public interface StorageSkus
-        extends
-        SupportsListing<StorageSku>,
-        HasInner<SkusInner>,
-        HasManager<StorageManager> {
+/** Entry point to storage service SKUs. */
+public interface StorageSkus extends SupportsListing<StorageSku>, HasInner<SkusInner>, HasManager<StorageManager> {
 }

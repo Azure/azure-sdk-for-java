@@ -11,34 +11,24 @@ import com.azure.management.resources.fluentcore.arm.models.HasResourceGroup;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.fluentcore.model.Refreshable;
 import com.azure.management.sql.models.TransparentDataEncryptionInner;
+import java.util.List;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-
-
-/**
- * An immutable client-side representation of an Azure SQL database's TransparentDataEncryption.
- */
+/** An immutable client-side representation of an Azure SQL database's TransparentDataEncryption. */
 @Fluent
-public interface TransparentDataEncryption extends
-        Refreshable<TransparentDataEncryption>,
+public interface TransparentDataEncryption
+    extends Refreshable<TransparentDataEncryption>,
         HasInner<TransparentDataEncryptionInner>,
         HasResourceGroup,
         HasName,
         HasId {
-    /**
-     * @return name of the SQL Server to which this replication belongs
-     */
+    /** @return name of the SQL Server to which this replication belongs */
     String sqlServerName();
 
-    /**
-     * @return name of the SQL Database to which this replication belongs
-     */
+    /** @return name of the SQL Database to which this replication belongs */
     String databaseName();
 
-    /**
-     * @return the status of the Azure SQL Database Transparent Data Encryption
-     */
+    /** @return the status of the Azure SQL Database Transparent Data Encryption */
     TransparentDataEncryptionStatus status();
 
     /**
@@ -57,14 +47,9 @@ public interface TransparentDataEncryption extends
      */
     Mono<TransparentDataEncryption> updateStatusAsync(TransparentDataEncryptionStatus transparentDataEncryptionState);
 
-    /**
-     * @return an Azure SQL Database Transparent Data Encryption Activities
-     */
+    /** @return an Azure SQL Database Transparent Data Encryption Activities */
     List<TransparentDataEncryptionActivity> listActivities();
 
-    /**
-     * @return an Azure SQL Database Transparent Data Encryption Activities
-     */
+    /** @return an Azure SQL Database Transparent Data Encryption Activities */
     PagedFlux<TransparentDataEncryptionActivity> listActivitiesAsync();
 }
-

@@ -58,7 +58,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static reactor.core.publisher.Mono.just;
 
-public class ServiceBusSenderAsyncClientTest {
+/**
+ * Unit tests for {@link ServiceBusSenderAsyncClient}.
+ */
+class ServiceBusSenderAsyncClientTest {
     private static final String NAMESPACE = "my-namespace";
     private static final String ENTITY_NAME = "my-servicebus-entity";
 

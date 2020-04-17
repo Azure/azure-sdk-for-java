@@ -7,9 +7,7 @@ package com.azure.management.containerregistry;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The QuarantinePolicy model.
- */
+/** The QuarantinePolicy model. */
 @Fluent
 public final class QuarantinePolicy {
     /*
@@ -19,9 +17,8 @@ public final class QuarantinePolicy {
     private PolicyStatus status;
 
     /**
-     * Get the status property: The value that indicates whether the policy is
-     * enabled or not.
-     * 
+     * Get the status property: The value that indicates whether the policy is enabled or not.
+     *
      * @return the status value.
      */
     public PolicyStatus status() {
@@ -29,9 +26,8 @@ public final class QuarantinePolicy {
     }
 
     /**
-     * Set the status property: The value that indicates whether the policy is
-     * enabled or not.
-     * 
+     * Set the status property: The value that indicates whether the policy is enabled or not.
+     *
      * @param status the status value to set.
      * @return the QuarantinePolicy object itself.
      */

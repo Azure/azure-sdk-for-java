@@ -8,9 +8,7 @@ import com.azure.management.containerregistry.WebhookEventInfo;
 import com.azure.management.containerregistry.models.EventInner;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 
-/**
- * Response containing the webhook event info.
- */
+/** Response containing the webhook event info. */
 public class WebhookEventInfoImpl extends WrapperImpl<EventInner> implements WebhookEventInfo {
     protected WebhookEventInfoImpl(EventInner innerObject) {
         super(innerObject);

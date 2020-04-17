@@ -3,13 +3,10 @@
 
 package com.azure.management.appservice;
 
+import com.azure.management.resources.fluentcore.arm.ExpandableStringEnum;
 import java.util.Collection;
 
-import com.azure.management.resources.fluentcore.arm.ExpandableStringEnum;
-
-/**
- * Defines values for .NET framework version.
- */
+/** Defines values for .NET framework version. */
 public final class NetFrameworkVersion extends ExpandableStringEnum<NetFrameworkVersion> {
     /** Static value v3.5 for NetFrameworkVersion. */
     public static final NetFrameworkVersion V3_0 = NetFrameworkVersion.fromString("v3.0");
@@ -19,6 +16,7 @@ public final class NetFrameworkVersion extends ExpandableStringEnum<NetFramework
 
     /**
      * Finds or creates a .NET Framework version based on the name.
+     *
      * @param name a name
      * @return an instance of NetFrameworkVersion
      */
@@ -26,9 +24,7 @@ public final class NetFrameworkVersion extends ExpandableStringEnum<NetFramework
         return fromString(name, NetFrameworkVersion.class);
     }
 
-    /**
-     * @return known .NET framework versions
-     */
+    /** @return known .NET framework versions */
     public static Collection<NetFrameworkVersion> values() {
         return values(NetFrameworkVersion.class);
     }

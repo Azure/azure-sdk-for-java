@@ -9,6 +9,7 @@ import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -85,7 +86,7 @@ public class Worker {
                 do {
 
                     FeedOptions options = new FeedOptions();
-                    options.setRequestContinuation(response != null ? response.getContinuationToken() : null);
+                    ModelBridgeInternal.setFeedOptionsContinuationToken(options, response != null ? response.getContinuationToken() : null);
 
                     response = this.client.readDocuments(this.documentCollectionUri, options).take(1)
                             .subscribeOn(schedulerForBlockingWork).single().block();
@@ -122,7 +123,7 @@ public class Worker {
         do {
 
             FeedOptions options = new FeedOptions();
-            options.setRequestContinuation(response != null ? response.getContinuationToken() : null);
+            ModelBridgeInternal.setFeedOptionsContinuationToken(options, response != null ? response.getContinuationToken() : null);
 
             response = this.client.readDocuments(this.documentCollectionUri, options).take(1)
                     .subscribeOn(schedulerForBlockingWork).single().block();

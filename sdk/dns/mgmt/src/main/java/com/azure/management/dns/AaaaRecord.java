@@ -7,9 +7,7 @@ package com.azure.management.dns;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The AaaaRecord model.
- */
+/** The AaaaRecord model. */
 @Fluent
 public final class AaaaRecord {
     /*
@@ -20,7 +18,7 @@ public final class AaaaRecord {
 
     /**
      * Get the ipv6Address property: The IPv6 address of this AAAA record.
-     * 
+     *
      * @return the ipv6Address value.
      */
     public String ipv6Address() {
@@ -29,7 +27,7 @@ public final class AaaaRecord {
 
     /**
      * Set the ipv6Address property: The IPv6 address of this AAAA record.
-     * 
+     *
      * @param ipv6Address the ipv6Address value to set.
      * @return the AaaaRecord object itself.
      */

@@ -12,8 +12,8 @@ import com.azure.management.storage.models.ImmutabilityPolicyInner;
 import reactor.core.publisher.Mono;
 
 class ImmutabilityPolicyImpl
-        extends CreatableUpdatableImpl<ImmutabilityPolicy, ImmutabilityPolicyInner, ImmutabilityPolicyImpl>
-        implements ImmutabilityPolicy, ImmutabilityPolicy.Definition, ImmutabilityPolicy.Update {
+    extends CreatableUpdatableImpl<ImmutabilityPolicy, ImmutabilityPolicyInner, ImmutabilityPolicyImpl>
+    implements ImmutabilityPolicy, ImmutabilityPolicy.Definition, ImmutabilityPolicy.Update {
     private final StorageManager manager;
     private String resourceGroupName;
     private String accountName;
@@ -50,16 +50,31 @@ class ImmutabilityPolicyImpl
     @Override
     public Mono<ImmutabilityPolicy> createResourceAsync() {
         BlobContainersInner client = this.manager().inner().blobContainers();
-        return client.createOrUpdateImmutabilityPolicyAsync(this.resourceGroupName, this.accountName, this.containerName, null, this.cImmutabilityPeriodSinceCreationInDays, null)
-                .map(innerToFluentMap(this));
+        return client
+            .createOrUpdateImmutabilityPolicyAsync(
+                this.resourceGroupName,
+                this.accountName,
+                this.containerName,
+                null,
+                this.cImmutabilityPeriodSinceCreationInDays,
+                null)
+            .map(innerToFluentMap(this));
     }
 
     @Override
     public Mono<ImmutabilityPolicy> updateResourceAsync() {
         BlobContainersInner client = this.manager().inner().blobContainers();
-        return client.createOrUpdateImmutabilityPolicyAsync(this.resourceGroupName, this.accountName, this.containerName, this.eTagState.ifMatchValueOnUpdate(this.inner().etag()), this.uImmutabilityPeriodSinceCreationInDays, null)
-                .map(innerToFluentMap(this))
-                .map(self -> {
+        return client
+            .createOrUpdateImmutabilityPolicyAsync(
+                this.resourceGroupName,
+                this.accountName,
+                this.containerName,
+                this.eTagState.ifMatchValueOnUpdate(this.inner().etag()),
+                this.uImmutabilityPeriodSinceCreationInDays,
+                null)
+            .map(innerToFluentMap(this))
+            .map(
+                self -> {
                     eTagState.clear();
                     return self;
                 });
@@ -75,7 +90,6 @@ class ImmutabilityPolicyImpl
     public boolean isInCreateMode() {
         return this.inner().getId() == null;
     }
-
 
     @Override
     public String etag() {
@@ -108,7 +122,8 @@ class ImmutabilityPolicyImpl
     }
 
     @Override
-    public ImmutabilityPolicyImpl withExistingContainer(String resourceGroupName, String accountName, String containerName) {
+    public ImmutabilityPolicyImpl withExistingContainer(
+        String resourceGroupName, String accountName, String containerName) {
         this.resourceGroupName = resourceGroupName;
         this.accountName = accountName;
         this.containerName = containerName;
@@ -136,5 +151,4 @@ class ImmutabilityPolicyImpl
         }
         return this;
     }
-
 }

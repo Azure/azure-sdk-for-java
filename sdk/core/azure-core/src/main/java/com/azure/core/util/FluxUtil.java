@@ -223,7 +223,10 @@ public final class FluxUtil {
             return reactor.util.context.Context.empty();
         }
 
-        Map<Object, Object> contextValues = context.getValues();
+        // Filter out null value entries as Reactor's context doesn't allow null values.
+        Map<Object, Object> contextValues = context.getValues().entrySet().stream()
+            .filter(kvp -> kvp.getValue() != null)
+            .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
 
         return CoreUtils.isNullOrEmpty(contextValues)
             ? reactor.util.context.Context.empty()

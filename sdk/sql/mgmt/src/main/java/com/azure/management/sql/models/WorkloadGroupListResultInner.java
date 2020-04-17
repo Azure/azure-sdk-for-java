@@ -8,9 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The WorkloadGroupListResult model.
- */
+/** The WorkloadGroupListResult model. */
 @Immutable
 public final class WorkloadGroupListResultInner {
     /*
@@ -27,7 +25,7 @@ public final class WorkloadGroupListResultInner {
 
     /**
      * Get the value property: Array of results.
-     * 
+     *
      * @return the value value.
      */
     public List<WorkloadGroupInner> value() {
@@ -36,7 +34,7 @@ public final class WorkloadGroupListResultInner {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {

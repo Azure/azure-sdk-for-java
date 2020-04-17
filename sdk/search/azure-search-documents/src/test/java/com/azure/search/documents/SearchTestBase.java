@@ -209,32 +209,32 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
                 new Field()
                     .setName("Key")
                     .setType(DataType.EDM_STRING)
-                    .setKey(true)
-                    .setRetrievable(true),
+                    .setHidden(false)
+                    .setKey(true),
                 new Field()
                     .setName("Rating")
-                    .setType(DataType.EDM_INT32)
-                    .setRetrievable(true),
+                    .setHidden(false)
+                    .setType(DataType.EDM_INT32),
                 new Field()
                     .setName("Count")
-                    .setType(DataType.EDM_INT64)
-                    .setRetrievable(true),
+                    .setHidden(false)
+                    .setType(DataType.EDM_INT64),
                 new Field()
                     .setName("IsEnabled")
-                    .setType(DataType.EDM_BOOLEAN)
-                    .setRetrievable(true),
+                    .setHidden(false)
+                    .setType(DataType.EDM_BOOLEAN),
                 new Field()
                     .setName("Ratio")
-                    .setType(DataType.EDM_DOUBLE)
-                    .setRetrievable(true),
+                    .setHidden(false)
+                    .setType(DataType.EDM_DOUBLE),
                 new Field()
                     .setName("StartDate")
-                    .setType(DataType.EDM_DATE_TIME_OFFSET)
-                    .setRetrievable(true),
+                    .setHidden(false)
+                    .setType(DataType.EDM_DATE_TIME_OFFSET),
                 new Field()
                     .setName("EndDate")
-                    .setType(DataType.EDM_DATE_TIME_OFFSET)
-                    .setRetrievable(true),
+                    .setHidden(false)
+                    .setType(DataType.EDM_DATE_TIME_OFFSET),
                 new Field()
                     .setName("TopLevelBucket")
                     .setType(DataType.EDM_COMPLEX_TYPE)

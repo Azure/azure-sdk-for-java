@@ -7,29 +7,17 @@ import com.azure.core.annotation.Fluent;
 import com.azure.management.resources.fluentcore.arm.models.HasId;
 import com.azure.management.resources.fluentcore.arm.models.HasName;
 import com.azure.management.resources.fluentcore.model.Indexable;
-
 import java.time.OffsetDateTime;
 
-/**
- * An immutable client-side representation of an Azure AD credential.
- */
+/** An immutable client-side representation of an Azure AD credential. */
 @Fluent
-public interface Credential extends
-        Indexable,
-        HasId,
-        HasName {
-    /**
-     * @return start date.
-     */
+public interface Credential extends Indexable, HasId, HasName {
+    /** @return start date. */
     OffsetDateTime startDate();
 
-    /**
-     * @return end date.
-     */
+    /** @return end date. */
     OffsetDateTime endDate();
 
-    /**
-     * @return key value.
-     */
+    /** @return key value. */
     String value();
 }

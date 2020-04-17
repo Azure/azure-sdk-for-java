@@ -7,9 +7,7 @@ package com.azure.management.sql;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The MaxSizeRangeCapability model.
- */
+/** The MaxSizeRangeCapability model. */
 @Fluent
 public final class MaxSizeRangeCapability {
     /*
@@ -51,7 +49,7 @@ public final class MaxSizeRangeCapability {
 
     /**
      * Get the minValue property: Minimum value.
-     * 
+     *
      * @return the minValue value.
      */
     public MaxSizeCapability minValue() {
@@ -60,7 +58,7 @@ public final class MaxSizeRangeCapability {
 
     /**
      * Get the maxValue property: Maximum value.
-     * 
+     *
      * @return the maxValue value.
      */
     public MaxSizeCapability maxValue() {
@@ -68,9 +66,8 @@ public final class MaxSizeRangeCapability {
     }
 
     /**
-     * Get the scaleSize property: Scale/step size for discrete values between
-     * the minimum value and the maximum value.
-     * 
+     * Get the scaleSize property: Scale/step size for discrete values between the minimum value and the maximum value.
+     *
      * @return the scaleSize value.
      */
     public MaxSizeCapability scaleSize() {
@@ -79,7 +76,7 @@ public final class MaxSizeRangeCapability {
 
     /**
      * Get the logSize property: Size of transaction log.
-     * 
+     *
      * @return the logSize value.
      */
     public LogSizeCapability logSize() {
@@ -88,7 +85,7 @@ public final class MaxSizeRangeCapability {
 
     /**
      * Get the status property: The status of the capability.
-     * 
+     *
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -96,9 +93,8 @@ public final class MaxSizeRangeCapability {
     }
 
     /**
-     * Get the reason property: The reason for the capability not being
-     * available.
-     * 
+     * Get the reason property: The reason for the capability not being available.
+     *
      * @return the reason value.
      */
     public String reason() {
@@ -106,9 +102,8 @@ public final class MaxSizeRangeCapability {
     }
 
     /**
-     * Set the reason property: The reason for the capability not being
-     * available.
-     * 
+     * Set the reason property: The reason for the capability not being available.
+     *
      * @param reason the reason value to set.
      * @return the MaxSizeRangeCapability object itself.
      */

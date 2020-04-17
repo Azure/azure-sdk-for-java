@@ -9,7 +9,7 @@
     <groupId>com.azure</groupId>
     <artifactId>azure-client-sdk-parent</artifactId>
     <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
-    <relativePath>../../../pom.client.xml</relativePath>
+    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
   </parent>
 
   <groupId>com.azure</groupId>
@@ -136,32 +136,16 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
         <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <id>default-cli</id>
-            <goals>
-              <goal>enforce</goal>
-            </goals>
-            <configuration>
-              <rules>
-                <bannedDependencies>
-                  <searchTransitive>false</searchTransitive>
-                  <excludes>
-                    <!-- We exclude everything that is runtime-time, compile-time, or provided scoped (i.e. we allow
-                    dependencies when they are used for test scope or otherwise) -->
-                    <exclude>*:*:*:*:runtime</exclude>
-                    <exclude>*:*:*:*:compile</exclude>
-                    <exclude>*:*:*:*:provided</exclude>
-                  </excludes>
-                  <includes>
-                    <include>com.azure:*</include>
-                    <include>com.squareup.okhttp3:okhttp</include>
-                  </includes>
-                </bannedDependencies>
-              </rules>
-            </configuration>
-          </execution>
-        </executions>
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <include>com.azure:*</include>
+                <include>com.squareup.okhttp3:okhttp:[4.2.2]</include> <!-- {x-include-update;com.squareup.okhttp3:okhttp;external_dependency} -->
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
       </plugin>
     </plugins>
   </build>

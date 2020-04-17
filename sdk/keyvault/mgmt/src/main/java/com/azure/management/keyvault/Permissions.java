@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The Permissions model.
- */
+/** The Permissions model. */
 @Fluent
 public final class Permissions {
     /*
@@ -39,7 +37,7 @@ public final class Permissions {
 
     /**
      * Get the keys property: Permissions to keys.
-     * 
+     *
      * @return the keys value.
      */
     public List<KeyPermissions> keys() {
@@ -48,7 +46,7 @@ public final class Permissions {
 
     /**
      * Set the keys property: Permissions to keys.
-     * 
+     *
      * @param keys the keys value to set.
      * @return the Permissions object itself.
      */
@@ -59,7 +57,7 @@ public final class Permissions {
 
     /**
      * Get the secrets property: Permissions to secrets.
-     * 
+     *
      * @return the secrets value.
      */
     public List<SecretPermissions> secrets() {
@@ -68,7 +66,7 @@ public final class Permissions {
 
     /**
      * Set the secrets property: Permissions to secrets.
-     * 
+     *
      * @param secrets the secrets value to set.
      * @return the Permissions object itself.
      */
@@ -79,7 +77,7 @@ public final class Permissions {
 
     /**
      * Get the certificates property: Permissions to certificates.
-     * 
+     *
      * @return the certificates value.
      */
     public List<CertificatePermissions> certificates() {
@@ -88,7 +86,7 @@ public final class Permissions {
 
     /**
      * Set the certificates property: Permissions to certificates.
-     * 
+     *
      * @param certificates the certificates value to set.
      * @return the Permissions object itself.
      */
@@ -99,7 +97,7 @@ public final class Permissions {
 
     /**
      * Get the storage property: Permissions to storage accounts.
-     * 
+     *
      * @return the storage value.
      */
     public List<StoragePermissions> storage() {
@@ -108,7 +106,7 @@ public final class Permissions {
 
     /**
      * Set the storage property: Permissions to storage accounts.
-     * 
+     *
      * @param storage the storage value to set.
      * @return the Permissions object itself.
      */

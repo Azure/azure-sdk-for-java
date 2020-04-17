@@ -7,9 +7,7 @@ package com.azure.management.dns;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The CaaRecord model.
- */
+/** The CaaRecord model. */
 @Fluent
 public final class CaaRecord {
     /*
@@ -31,9 +29,8 @@ public final class CaaRecord {
     private String value;
 
     /**
-     * Get the flags property: The flags for this CAA record as an integer
-     * between 0 and 255.
-     * 
+     * Get the flags property: The flags for this CAA record as an integer between 0 and 255.
+     *
      * @return the flags value.
      */
     public Integer flags() {
@@ -41,9 +38,8 @@ public final class CaaRecord {
     }
 
     /**
-     * Set the flags property: The flags for this CAA record as an integer
-     * between 0 and 255.
-     * 
+     * Set the flags property: The flags for this CAA record as an integer between 0 and 255.
+     *
      * @param flags the flags value to set.
      * @return the CaaRecord object itself.
      */
@@ -54,7 +50,7 @@ public final class CaaRecord {
 
     /**
      * Get the tag property: The tag for this CAA record.
-     * 
+     *
      * @return the tag value.
      */
     public String tag() {
@@ -63,7 +59,7 @@ public final class CaaRecord {
 
     /**
      * Set the tag property: The tag for this CAA record.
-     * 
+     *
      * @param tag the tag value to set.
      * @return the CaaRecord object itself.
      */
@@ -74,7 +70,7 @@ public final class CaaRecord {
 
     /**
      * Get the value property: The value for this CAA record.
-     * 
+     *
      * @return the value value.
      */
     public String value() {
@@ -83,7 +79,7 @@ public final class CaaRecord {
 
     /**
      * Set the value property: The value for this CAA record.
-     * 
+     *
      * @param value the value value to set.
      * @return the CaaRecord object itself.
      */
