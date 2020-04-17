@@ -207,7 +207,8 @@ public final class Utils {
         } else {
             String baseUrl = restClient.getBaseUrl().toString();
             for (AzureEnvironment env : AzureEnvironment.knownEnvironments()) {
-                if (env.getResourceManagerEndpoint().toLowerCase(Locale.ROOT).contains(baseUrl.toLowerCase(Locale.ROOT))) {
+                if (env.getResourceManagerEndpoint().toLowerCase(Locale.ROOT)
+                        .contains(baseUrl.toLowerCase(Locale.ROOT))) {
                     environment = env;
                     break;
                 }

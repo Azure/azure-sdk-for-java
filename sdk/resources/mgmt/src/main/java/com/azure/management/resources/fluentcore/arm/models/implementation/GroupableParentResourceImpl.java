@@ -3,7 +3,6 @@
 
 package com.azure.management.resources.fluentcore.arm.models.implementation;
 
-import com.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.management.resources.fluentcore.arm.implementation.ManagerBase;
 import com.azure.management.resources.fluentcore.arm.models.Resource;
 import reactor.core.publisher.Mono;

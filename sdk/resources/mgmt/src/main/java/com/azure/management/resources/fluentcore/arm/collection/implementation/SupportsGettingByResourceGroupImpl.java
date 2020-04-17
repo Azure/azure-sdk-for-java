@@ -3,7 +3,6 @@
 
 package com.azure.management.resources.fluentcore.arm.collection.implementation;
 
-import com.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.management.resources.fluentcore.arm.ResourceId;
 import com.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import reactor.core.publisher.Mono;

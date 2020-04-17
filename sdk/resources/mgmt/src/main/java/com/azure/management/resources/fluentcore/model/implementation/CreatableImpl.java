@@ -5,7 +5,6 @@ package com.azure.management.resources.fluentcore.model.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.fluentcore.model.Indexable;
-import com.azure.management.resources.fluentcore.model.Creatable;
 import reactor.core.publisher.Mono;
 
 /**
