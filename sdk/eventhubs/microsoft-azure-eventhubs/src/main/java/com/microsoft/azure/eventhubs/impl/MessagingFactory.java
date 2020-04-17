@@ -70,6 +70,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
     private final long watchdogTriggerSeconds;
     private ScheduledFuture<?> watchdogFuture;
     private final long watchdogScanSeconds;
+    private boolean watchdogCleanupDone;
 
     private Reactor reactor;
     private ReactorDispatcher reactorDispatcher;
@@ -120,10 +121,6 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
         this.watchdogScanSeconds = watchdogTriggerSeconds / MessagingFactory.WATCHDOG_SCAN_DIVISOR;
         this.watchdogReceivers = new LinkedList<MessageReceiver>();
         this.watchdogSyncObject = new Object();
-        if (this.watchdogTriggerSeconds > EventHubClientOptions.WATCHDOG_OFF) {
-            TRACE_LOGGER.info("Watchdog scheduling first run");
-            this.watchdogFuture = this.executor.schedule(new WatchDog(), this.watchdogScanSeconds, TimeUnit.SECONDS);
-        }
 
         this.closeTask = new CompletableFuture<>();
     }
@@ -258,6 +255,8 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
     private static CompletableFuture<MessagingFactory> factoryStartup(MessagingFactory messagingFactory) throws IOException {
         messagingFactory.createConnection();
 
+        messagingFactory.startWatchdog();
+
         final Timer timer = new Timer(messagingFactory);
         messagingFactory.openTimer = timer.schedule(
                 new Runnable() {
@@ -303,6 +302,15 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
         }
     }
 
+    private void startWatchdog() {
+        if (this.watchdogTriggerSeconds > EventHubClientOptions.WATCHDOG_OFF) {
+            TRACE_LOGGER.info("Watchdog scheduling first run");
+            this.watchdogFuture = this.executor.schedule(new WatchDog(), this.watchdogScanSeconds, TimeUnit.SECONDS);
+        } else {
+            TRACE_LOGGER.info("Watchdog is OFF");
+        }
+    }
+
     private class WatchDog implements Runnable {
         @Override
         public void run() {
@@ -315,31 +323,47 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
                 return;
             }
 
-            boolean anyReceiverIsAlive = false;
-            final long longestAgoAllowable = Instant.now().getEpochSecond() - MessagingFactory.this.watchdogTriggerSeconds;
             LinkedList<MessageReceiver> copiedList = null;
             synchronized (MessagingFactory.this.watchdogSyncObject) {
                 copiedList = new LinkedList<MessageReceiver>(MessagingFactory.this.watchdogReceivers);
             }
-            for (MessageReceiver rcvr : copiedList) {
-                TRACE_LOGGER.info("Watchdog checking receiver " + rcvr.getClientId() + " last: " + rcvr.getLastReceivedTime() + "  allowable: " + longestAgoAllowable);
-                if (!rcvr.getIsClosingOrClosed() && (rcvr.getLastReceivedTime() >= longestAgoAllowable)) {
-                    anyReceiverIsAlive = true;
-                    break;
-                }
-            }
+            if (!copiedList.isEmpty()) {
+                boolean anyReceiverIsAlive = false;
+                final long longestAgoAllowable = Instant.now().getEpochSecond()
+                        - MessagingFactory.this.watchdogTriggerSeconds;
 
-            if (!anyReceiverIsAlive && !MessagingFactory.this.getIsClosingOrClosed()) {
-                TRACE_LOGGER.info("Watchdog forcing connection closed");
-                ErrorCondition suspect = new ErrorCondition(ClientConstants.WATCHDOG_ERROR, "receiver watchdog has fired, all receivers silent");
-                MessagingFactory.this.connection.setCondition(suspect);
-                MessagingFactory.this.connection.close();
-                // TODO TODO TODO
-                // If the remote host is still responding at the TCP level, then the socket will close normally
-                // and cleanup will happen automatically. However, if it isn't, then we must call onConnectionError
-                // here in order to force cleanup. Before this watchdog is released, must add timeout mechanism here
-                // that waits for some period and then forces cleanup if it has not happened already.
-                MessagingFactory.this.onConnectionError(suspect);
+                for (MessageReceiver rcvr : copiedList) {
+                    TRACE_LOGGER.info("Watchdog checking receiver " + rcvr.getClientId() + " last: "
+                            + rcvr.getLastReceivedTime() + "  allowable: " + longestAgoAllowable);
+                    if (!rcvr.getIsClosingOrClosed() && (rcvr.getLastReceivedTime() >= longestAgoAllowable)) {
+                        anyReceiverIsAlive = true;
+                        // Found one live receiver, no need to check the rest.
+                        break;
+                    }
+                }
+
+                if (!anyReceiverIsAlive && !MessagingFactory.this.getIsClosingOrClosed()) {
+                    TRACE_LOGGER.info("Watchdog forcing connection closed");
+                    ErrorCondition suspect = new ErrorCondition(ClientConstants.WATCHDOG_ERROR,
+                            "receiver watchdog has fired, all receivers silent");
+                    MessagingFactory.this.watchdogCleanupDone = false;
+                    MessagingFactory.this.connection.setCondition(suspect);
+                    MessagingFactory.this.connection.close();
+                    // If the remote host is still responding at the TCP level, then the socket will
+                    // close normally and cleanup/recreation will happen automatically. However, if it
+                    // isn't, then we must call onConnectionError here in order to force cleanup and
+                    // recreation.
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                    }
+                    if (!MessagingFactory.this.watchdogCleanupDone) {
+                        TRACE_LOGGER.info("Watchdog forcing cleanup");
+                        MessagingFactory.this.onConnectionError(suspect);
+                    } else {
+                        TRACE_LOGGER.info("Watchdog cleanup already in progress");
+                    }
+                }
             }
 
             synchronized (MessagingFactory.this.watchdogSyncObject) {
@@ -465,6 +489,8 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
 
     @Override
     public void onConnectionError(ErrorCondition error) {
+        this.watchdogCleanupDone = true;
+
         if (TRACE_LOGGER.isWarnEnabled()) {
             TRACE_LOGGER.warn(String.format(Locale.US, "onConnectionError messagingFactory[%s], hostname[%s], error[%s]",
                     this.getClientId(),
