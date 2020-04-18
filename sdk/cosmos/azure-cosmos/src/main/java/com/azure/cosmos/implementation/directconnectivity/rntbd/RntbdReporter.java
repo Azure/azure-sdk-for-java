@@ -9,7 +9,10 @@ import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MessageFormatter;
 
 import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.URL;
+import java.util.Objects;
 
 public final class RntbdReporter {
 
@@ -22,7 +25,7 @@ public final class RntbdReporter {
             File file = new File(url.toURI());
             value = file.getName();
         } catch (Throwable error) {
-            value = "azure-cosmosdb-direct";
+            value = "azure-cosmos";
         }
         codeSource = value;
     }
@@ -30,7 +33,11 @@ public final class RntbdReporter {
     private RntbdReporter() {
     }
 
-    public static void reportIssue(Logger logger, Object subject, String format, Object... arguments) {
+    public static void reportIssue(
+        final Logger logger,
+        final Object subject,
+        final String format,
+        final Object... arguments) {
         if (logger.isErrorEnabled()) {
             doReportIssue(logger, subject, format, arguments);
         }
@@ -40,27 +47,30 @@ public final class RntbdReporter {
         final Logger logger,
         final boolean predicate,
         final Object subject,
-        final String format, final Object... arguments) {
+        final String format,
+        final Object... arguments) {
         if (!predicate && logger.isErrorEnabled()) {
             doReportIssue(logger, subject, format, arguments);
         }
     }
 
-    private static void doReportIssue(Logger logger, Object subject, String format, Object[] arguments) {
+    private static void doReportIssue(
+        final Logger logger,
+        final Object subject,
+        final String format,
+        final Object[] arguments) {
 
-        FormattingTuple formattingTuple = MessageFormatter.arrayFormat(format, arguments);
-        StackTraceElement[] stackTrace = new Exception().getStackTrace();
-        Throwable throwable = formattingTuple.getThrowable();
+        final FormattingTuple formattingTuple = MessageFormatter.arrayFormat(format, arguments);
+        final Exception exception = new Exception();
+        final Throwable throwable = formattingTuple.getThrowable();
+        final StackTraceElement[] stackTrace = exception.getStackTrace();
 
-        if (throwable == null) {
-            logger.error("Report this {} issue to ensure it is addressed:\n[{}]\n[{}]\n[{}]",
-                codeSource, subject, stackTrace[2], formattingTuple.getMessage()
-            );
-        } else {
-            logger.error("Report this {} issue to ensure it is addressed:\n[{}]\n[{}]\n[{}{}]",
-                codeSource, subject, stackTrace[2], formattingTuple.getMessage(),
-                ExceptionUtils.getStackTrace(throwable)
-            );
-        }
+        logger.error("Report this {} issue to ensure it is addressed:\n[{}]\n[{}]\n[{}{}]",
+            codeSource,
+            subject,
+            stackTrace[2],
+            formattingTuple.getMessage(),
+            ExceptionUtils.getStackTrace(throwable != null ? throwable : exception)
+        );
     }
 }
