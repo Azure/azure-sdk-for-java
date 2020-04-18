@@ -515,35 +515,35 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
                     .setName("Key")
                     .setType(DataType.EDM_STRING)
                     .setKey(true)
-                    .setRetrievable(true),
+                    .setHidden(false),
                 new Field()
                     .setName("Bools")
                     .setType(DataType.collection(DataType.EDM_BOOLEAN))
-                    .setRetrievable(true),
+                    .setHidden(false),
                 new Field()
                     .setName("Dates")
                     .setType(DataType.collection(DataType.EDM_DATE_TIME_OFFSET))
-                    .setRetrievable(true),
+                    .setHidden(false),
                 new Field()
                     .setName("Doubles")
                     .setType(DataType.collection(DataType.EDM_DOUBLE))
-                    .setRetrievable(true),
+                    .setHidden(false),
                 new Field()
                     .setName("Points")
                     .setType(DataType.collection(DataType.EDM_GEOGRAPHY_POINT))
-                    .setRetrievable(true),
+                    .setHidden(false),
                 new Field()
                     .setName("Ints")
                     .setType(DataType.collection(DataType.EDM_INT32))
-                    .setRetrievable(true),
+                    .setHidden(false),
                 new Field()
                     .setName("Longs")
                     .setType(DataType.collection(DataType.EDM_INT64))
-                    .setRetrievable(true),
+                    .setHidden(false),
                 new Field()
                     .setName("Strings")
                     .setType(DataType.collection(DataType.EDM_STRING))
-                    .setRetrievable(true)
+                    .setHidden(false)
             ));
 
         setupIndex(index);

@@ -1,0 +1,24 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://javaformrecognizertestresource.cognitiveservices.azure.com/formrecognizer/v2.0-preview//custom/models?op=summary",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "cbe8833d-57f8-4157-b9da-8a1cb27f429c"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "10",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "3fdd5e44-7ad9-4dfb-9e35-3813d2d0bf13",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"summary\":{\"count\":23,\"limit\":5000,\"lastUpdatedDateTime\":\"2020-04-09T21:38:17Z\"}}",
+      "Date" : "Thu, 09 Apr 2020 21:38:17 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

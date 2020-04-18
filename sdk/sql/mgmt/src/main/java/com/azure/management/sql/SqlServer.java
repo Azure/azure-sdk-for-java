@@ -411,7 +411,8 @@ public interface SqlServer
              * @param elasticPoolName the name of the new SQL Elastic Pool
              * @return the first stage of the new SQL Elastic Pool definition
              */
-            SqlElasticPool.DefinitionStages.Blank<DefinitionStages.WithCreate> defineElasticPool(String elasticPoolName);
+            SqlElasticPool.DefinitionStages.Blank<DefinitionStages.WithCreate> defineElasticPool(
+                String elasticPoolName);
 
             /**
              * Create new elastic pool in the SQL Server.
@@ -455,7 +456,7 @@ public interface SqlServer
              * @return the first stage of the new SQL Database definition
              */
             SqlDatabase.DefinitionStages.Blank<DefinitionStages.WithCreate> defineDatabase(String databaseName);
-            
+
             /**
              * Create new database in the SQL Server.
              *
@@ -483,7 +484,8 @@ public interface SqlServer
              * @param firewallRuleName the name of the new SQL Firewall rule
              * @return the first stage of the new SQL Firewall rule definition
              */
-            SqlFirewallRule.DefinitionStages.Blank<DefinitionStages.WithCreate> defineFirewallRule(String firewallRuleName);
+            SqlFirewallRule.DefinitionStages.Blank<DefinitionStages.WithCreate> defineFirewallRule(
+                String firewallRuleName);
 
             /**
              * Create new firewall rule in the SQL Server.

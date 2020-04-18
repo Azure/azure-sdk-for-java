@@ -7,9 +7,7 @@ package com.azure.management.dns;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ARecord model.
- */
+/** The ARecord model. */
 @Fluent
 public final class ARecord {
     /*
@@ -20,7 +18,7 @@ public final class ARecord {
 
     /**
      * Get the ipv4Address property: The IPv4 address of this A record.
-     * 
+     *
      * @return the ipv4Address value.
      */
     public String ipv4Address() {
@@ -29,7 +27,7 @@ public final class ARecord {
 
     /**
      * Set the ipv4Address property: The IPv4 address of this A record.
-     * 
+     *
      * @param ipv4Address the ipv4Address value to set.
      * @return the ARecord object itself.
      */
