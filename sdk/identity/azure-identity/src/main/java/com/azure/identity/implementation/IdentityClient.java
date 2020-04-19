@@ -41,6 +41,7 @@ import reactor.core.scheduler.Schedulers;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -62,7 +63,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.List;
@@ -154,31 +155,100 @@ public class IdentityClient {
 
     public Mono<MsalToken> authenticateWithIntelliJ(TokenRequestContext request) {
         try {
-            JsonNode intelliJCredentials = getIntelliJCredentials();
-            String refreshToken = intelliJCredentials.get("refreshToken").textValue();
-            long expiresOnDate = intelliJCredentials.get("expiresOnDate").longValue();
 
+            AuthMethodDetails authType = determineIntelliJAuthType();
 
-
-            OffsetDateTime expires = OffsetDateTime.ofInstant(Instant.ofEpochMilli(expiresOnDate),
-                ZoneOffset.UTC);
-
-            RefreshTokenParameters parameters = RefreshTokenParameters
-                                                    .builder(new HashSet<>(request.getScopes()), refreshToken)
-                                                    .build();
-
-            return Mono.defer(() -> {
+            if (authType.getAuthMethod().equals("SP")) {
+                HashMap<String, String> spDetails = parseIntelliJCredentialFile(authType.getCredFilePath());
+                String authorityUrl = spDetails.get("authURL") + tenantId;
                 try {
-                    return Mono.fromFuture(publicClientApplication.acquireToken(parameters))
+                    ConfidentialClientApplication.Builder applicationBuilder =
+                        ConfidentialClientApplication.builder(clientId,
+                            ClientCredentialFactory.createFromSecret(spDetails.get("key")))
+                            .authority(authorityUrl);
+
+                    // If http pipeline is available, then it should override the proxy options if any configured.
+                    if (httpPipelineAdapter != null) {
+                        applicationBuilder.httpClient(httpPipelineAdapter);
+                    } else if (options.getProxyOptions() != null) {
+                        applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
+                    }
+
+                    if (options.getExecutorService() != null) {
+                        applicationBuilder.executorService(options.getExecutorService());
+                    }
+
+                    ConfidentialClientApplication application = applicationBuilder.build();
+                    return Mono.fromFuture(application.acquireToken(
+                        ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
+                            .build()))
                                .map(ar -> new MsalToken(ar, options));
-                } catch (Exception e) {
+                } catch (MalformedURLException e) {
                     return Mono.error(e);
                 }
-            });
+            } else {
 
-        } catch (JsonProcessingException e) {
-            throw logger.logExceptionAsError(new RuntimeException("Credential is not available", e));
+                JsonNode intelliJCredentials = getIntelliJCredentials();
+                String refreshToken = intelliJCredentials.get("refreshToken").textValue();
+                long expiresOnDate = intelliJCredentials.get("expiresOnDate").longValue();
+
+
+                OffsetDateTime expires = OffsetDateTime.ofInstant(Instant.ofEpochMilli(expiresOnDate),
+                    ZoneOffset.UTC);
+
+                RefreshTokenParameters parameters = RefreshTokenParameters
+                                                        .builder(new HashSet<>(request.getScopes()), refreshToken)
+                                                        .build();
+
+                return Mono.defer(() -> {
+                    try {
+                        return Mono.fromFuture(publicClientApplication.acquireToken(parameters))
+                                   .map(ar -> new MsalToken(ar, options));
+                    } catch (Exception e) {
+                        return Mono.error(e);
+                    }
+                });
+
+            }
+        } catch(IOException e){
+                throw logger.logExceptionAsError(new RuntimeException("Credential is not available", e));
+            }
+    }
+
+    private HashMap<String, String> parseIntelliJCredentialFile(String credFilePath) {
+        BufferedReader reader;
+        HashMap<String, String> servicePrincipalDetails = new HashMap<>(8);
+        try {
+            reader = new BufferedReader(new FileReader(credFilePath));
+            String line = reader.readLine();
+            while (line != null) {
+                System.out.println(line);
+                String[] split = line.split("=");
+                split[1] = split[1].replace("\\", "");
+                servicePrincipalDetails.put(split[0], split[1]);
+                // read next line
+                line = reader.readLine();
+            }
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        return servicePrincipalDetails;
+    }
+
+    private static AuthMethodDetails determineIntelliJAuthType() throws IOException {
+        String os = System.getProperty("os.name").toLowerCase(Locale.ROOT);
+
+        if (os.contains("mac")) {
+            String homeDir = System.getProperty("user.home");
+            String a = homeDir + "/AzureToolsForIntelliJ/AuthMethodDetails.json";
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            File file = new File(a);
+
+            return objectMapper.readValue(file, AuthMethodDetails.class);
+        }
+        return null;
     }
 
     private JsonNode getIntelliJCredentials() throws JsonProcessingException {
