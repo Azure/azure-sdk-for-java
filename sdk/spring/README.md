@@ -51,7 +51,7 @@ Snapshots built from `master` branch are available, add [maven repositories](htt
 ## Examples
 You could check below articles to learn more on usage of specific starters.
 
-[How to use the Spring Boot Starter with Azure Cosmos DB API](https://docs.microsoft.com/en-us/java/azure/spring-framework/configure-spring-boot-starter-java-app-with-cosmos-db).
+[How to use the Spring Boot Starter with Azure Cosmos DB API](https://docs.microsoft.com/java/azure/spring-framework/configure-spring-boot-starter-java-app-with-cosmos-db).
 
 ## Troubleshooting
 ## Next steps
@@ -79,5 +79,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 ### Data/Telemetry
 
-This project collects usage data and sends it to Microsoft to help improve our products and services. Read our [privacy](https://privacy.microsoft.com/en-us/privacystatement) statement to learn more.
+This project collects usage data and sends it to Microsoft to help improve our products and services. Read our [privacy](https://privacy.microsoft.com/privacystatement) statement to learn more.
 

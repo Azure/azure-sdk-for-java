@@ -92,7 +92,7 @@ public class Constants {
         + "834302E3131333535362E312E342E3233333100000000'\"\n"
         + "}";
 
-    /** Token from https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-id-and-access-tokens */
+    /** Token from https://docs.microsoft.com/azure/active-directory/develop/v2-id-and-access-tokens */
     public static final String JWT_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ik1uQ19WWmNBVGZNNXBPWWlKSE1"
         + "iYTlnb0VLWSJ9.eyJhdWQiOiI2NzMxZGU3Ni0xNGE2LTQ5YWUtOTdiYy02ZWJhNjkxNDM5MWUiLCJpc3MiOiJodHRwczovL2xvZ2lu"
         + "Lm1pY3Jvc29mdG9ubGluZS5jb20vYjk0MTk4MTgtMDlhZi00OWMyLWIwYzMtNjUzYWRjMWYzNzZlL3YyLjAiLCJpYXQiOjE0NTIyOD"
