@@ -152,13 +152,13 @@ public final class RntbdClientChannelPool implements ChannelPool {
         //  Alternatively: drop acquisition timeout and acquisition timeout action
         //  Decision will be based on performance, reliability, scalability, and usability considerations
 
-        final AcquisitionTimeoutAction acquisitionTimeoutAction = AcquisitionTimeoutAction.NEW;
-
         if (acquisitionTimeoutInNanos <= 0) {
 
             this.acquisitionTimeoutTask = null;
 
         } else {
+
+            final AcquisitionTimeoutAction acquisitionTimeoutAction = AcquisitionTimeoutAction.NEW;
 
             switch (acquisitionTimeoutAction) {
                 case FAIL:
@@ -184,11 +184,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                         @Override
                         public void onTimeout(AcquireTask task) {
                             task.acquired(true);
-                            try {
-                                RntbdClientChannelPool.this.acquire(task.promise);
-                            } catch (Throwable error) {
-                                logger.error("acquisition failed due to ", error);
-                            }
+                            RntbdClientChannelPool.this.acquire(task.promise);
                         }
                     };
                     break;
@@ -220,10 +216,14 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
     /**
      * Gets the current channel count.
+     * <p>
+     * The value returned is consistent, if called from the {@link RntbdClientChannelPool pool}'s thread
+     * {@link #executor}. It is an approximation that may be inconsistent depending on the pattern of {@link #acquire}
+     * and {@link #release} operations, if called from any other thread.
      *
      * @return the current channel count.
      */
-    public synchronized int channels() {
+    public int channels() {
         return this.acquiredChannels.size() + this.availableChannels.size() + (this.connecting.get() ? 1 : 0);
     }
 
@@ -579,11 +579,15 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
         this.ensureValidRunState();
 
-        logger.debug("{}, {}, {}, {}",
-            OffsetDateTime.now(),
-            this.remoteAddress(),
-            this.pendingAcquisitionQueue.size(),
-            this.channels());
+        if (logger.isDebugEnabled()) {
+            logger.debug("{}, {}, {}, {}, {}, {}",
+                OffsetDateTime.now(),
+                this.remoteAddress(),
+                this.channels(),
+                this.channelsAcquired(),
+                this.channelsAvailable(),
+                this.requestQueueLength());
+        }
 
         if (this.pendingAcquisitionQueue.size() >= this.maxPendingAcquisitions) {
 
@@ -1230,7 +1234,11 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     break;
                 }
                 this.pool.pendingAcquisitionQueue.remove();
-                this.onTimeout(task);
+                try {
+                    this.onTimeout(task);
+                } catch (Throwable error) {
+                    logger.error("{} channel acquisition timeout task failed due to ", this.pool, error);
+                }
             }
         }
     }
