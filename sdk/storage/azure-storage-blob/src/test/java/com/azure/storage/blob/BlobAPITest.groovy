@@ -861,6 +861,7 @@ class BlobAPITest extends APISpec {
         properties.isAccessTierInferred()
         properties.getArchiveStatus() == null
         properties.getCreationTime() != null
+        properties.getTagCount() == 1
     }
 
     def "Get properties min"() {
@@ -1185,9 +1186,10 @@ class BlobAPITest extends APISpec {
         bc.getTags() == tags
 
         where:
-        key1  | value1 | key2   | value2 || statusCode
-        null  | null   | null   | null   || 204
-        "foo" | "bar"  | "fizz" | "buzz" || 204
+        key1                | value1     | key2   | value2 || statusCode
+        null                | null       | null   | null   || 204
+        "foo"               | "bar"      | "fizz" | "buzz" || 204
+        " +-./:=_  +-./:=_" | " +-./:=_" | null   | null   || 204
     }
 
     def "Set tags error"() {
