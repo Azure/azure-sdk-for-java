@@ -6,9 +6,8 @@ package com.azure.core.amqp.implementation;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
-import com.azure.core.amqp.exception.AmqpErrorCondition;
+import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.util.logging.ClientLogger;
@@ -255,6 +254,15 @@ public class RequestResponseChannel implements Disposable {
                 }));
     }
 
+    /**
+     * Gets the error context for the channel.
+     *
+     * @return The error context for the channel.
+     */
+    public AmqpErrorContext getErrorContext() {
+        return receiveLinkHandler.getErrorContext(receiveLink);
+    }
+
     private Message decodeDelivery(Delivery delivery) {
         final Message response = Proton.message();
         final int msgSize = delivery.pending();
@@ -282,24 +290,7 @@ public class RequestResponseChannel implements Disposable {
             return;
         }
 
-        if (RequestResponseUtils.isSuccessful(message)) {
-            sink.success(message);
-        } else {
-            final AmqpResponseCode statusCode = RequestResponseUtils.getStatusCode(message);
-            final String statusDescription = RequestResponseUtils.getStatusDescription(message);
-            final AmqpErrorCondition errorCondition = RequestResponseUtils.getErrorCondition(message);
-
-            final Throwable error;
-            if (errorCondition != RequestResponseUtils.UNDEFINED_ERROR_CONDITION) {
-                error = ExceptionUtil.toException(errorCondition.getErrorCondition(), statusDescription,
-                    receiveLinkHandler.getErrorContext(receiveLink));
-            } else {
-                error = ExceptionUtil.amqpResponseCodeToException(statusCode.getValue(), statusDescription,
-                    receiveLinkHandler.getErrorContext(receiveLink));
-            }
-
-            sink.error(error);
-        }
+        sink.success(message);
     }
 
     private void handleException(Throwable error) {
