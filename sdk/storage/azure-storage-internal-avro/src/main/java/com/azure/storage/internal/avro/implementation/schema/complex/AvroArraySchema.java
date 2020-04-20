@@ -14,26 +14,35 @@ import java.util.function.Consumer;
  * items. A block with count zero indicates the end of the array. Each item is encoded per the array's item schema.
  * If a block's count is negative, its absolute value is used, and the count is followed immediately by a long block
  * size indicating the number of bytes in the block.
+ *
+ * Long Item Item Item .... Long Item Item Item .... Long(0)
+ * If initial Long parsed is negative, it can look like
+ * Long(negative) Long Item Item Item ....
  */
-/* TODO : Look into possibly reducing duplicate code between MapSchema and ArraySchema.
-    This may add a little more complexity to the AvroTypes. */
+/* TODO (gapra) : Look into possibly reducing duplicate code between MapSchema and ArraySchema.
+    This may add a little more complexity to the AvroTypes, so I'm putting it off for now. */
 public class AvroArraySchema extends AvroSchema<List<Object>> {
 
-    private final AvroType item;
+    private final AvroType itemType;
     private Long blockCount;
 
-    public AvroArraySchema(AvroType item, AvroParserState state, Consumer<List<Object>> onResult) {
+    /**
+     * Constructs a new AvroArraySchema.
+     *
+     * @param itemType The type of items in the array.
+     * @param state The state of the parser.
+     * @param onResult The result handler.
+     */
+    public AvroArraySchema(AvroType itemType, AvroParserState state, Consumer<List<Object>> onResult) {
         super(state, onResult);
         this.result = new ArrayList<>();
-        this.item = item;
+        this.itemType = itemType;
     }
 
-    /**
-     * Read the block size.
-     */
     @Override
     public void add() {
         this.state.push(this);
+        /* Read the block size, call onBlockCount. */
         AvroLongSchema blockCountSchema = new AvroLongSchema(
             this.state,
             this::onBlockCount
@@ -42,23 +51,24 @@ public class AvroArraySchema extends AvroSchema<List<Object>> {
     }
 
     /**
-     * Once we read the blockCount,
-     * If the block count is zero, that indicates we are done.
-     * If the block count is positive, read the item by adding its schema.
-     * If the block count is negative, use the absolute value and read the number of bytes in the block.
+     * Block count handler
+     *
      * @param blockCount The number of elements in the block.
      */
     private void onBlockCount(Long blockCount) {
+        /* If blockCount = 0, then we're done.*/
         if (blockCount == 0) {
             this.done = true;
+        /* If blockCount > 0, read the item, call onItem. */
         } else if (blockCount > 0) {
             this.blockCount = blockCount;
             AvroSchema itemSchema = getSchema(
-                this.item,
+                this.itemType,
                 this.state,
                 this::onItem
             );
             itemSchema.add();
+        /* If blockCount < 0, use absolute value, read the byteCount, call onByteCount. */
         } else {
             this.blockCount = -blockCount;
             AvroLongSchema byteCountSchema = new AvroLongSchema(
@@ -70,14 +80,15 @@ public class AvroArraySchema extends AvroSchema<List<Object>> {
     }
 
     /**
-     * Once we read the byteCount
-     * ignore the number of bytes in this block for QQ and CF.
-     * Read the item by adding its schema.
+     * Byte count handler.
+     *
+     * @param ignore The number of bytes in the block.
      */
     private void onByteCount(Long ignore) {
-        /* No-op. */
+        /* TODO (gapra) : Use this in case we want to skip through the array in the future. Not required for now. */
+        /* Read the item, call onItem. */
         AvroSchema itemSchema = getSchema(
-            this.item,
+            this.itemType,
             this.state,
             this::onItem
         );
@@ -85,25 +96,28 @@ public class AvroArraySchema extends AvroSchema<List<Object>> {
     }
 
     /**
-     * Once we read the item, decrement the blockCount.
-     * If the blockCount is 0, read the blockCount,
-     * otherwise read another item.
+     * Item handler.
+     *
      * @param item The item.
      */
     private void onItem(Object item) {
+        /* Add the item to the list. */
         this.result.add(item);
 
+        /* Decrement the block count. */
         this.blockCount--;
 
+        /* If blockCount = 0, there are no more items in the block, read another blockCount and call onBlockCount. */
         if (blockCount == 0) {
             AvroLongSchema blockCountSchema = new AvroLongSchema(
                 this.state,
                 this::onBlockCount
             );
             blockCountSchema.add();
+        /* If blockCount != 0, there are more items in the block, read another item and call onItem. */
         } else {
             AvroSchema itemSchema = getSchema(
-                this.item,
+                this.itemType,
                 this.state,
                 this::onItem
             );
@@ -113,10 +127,12 @@ public class AvroArraySchema extends AvroSchema<List<Object>> {
 
     @Override
     public void progress() {
+        /* Progress is defined by progress on the sub-type schemas. */
     }
 
     @Override
     public boolean canProgress() {
+        /* Can always make progress since it is defined by the progress on the sub-type schemas. */
         return true;
     }
 }

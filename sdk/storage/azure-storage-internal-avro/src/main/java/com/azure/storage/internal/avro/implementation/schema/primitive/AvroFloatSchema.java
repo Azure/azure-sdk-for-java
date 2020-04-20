@@ -13,9 +13,17 @@ import java.util.function.Consumer;
 /**
  * a float is written as 4 bytes. The float is converted into a 32-bit integer using a method equivalent to Java's
  * floatToIntBits and then encoded in little-endian format.
+ *
+ * Byte Byte Byte Byte
  */
 public class AvroFloatSchema extends AvroSchema<Float> {
 
+    /**
+     * Constructs a new AvroFloatSchema.
+     *
+     * @param state The state of the parser.
+     * @param onResult The result handler.
+     */
     public AvroFloatSchema(AvroParserState state, Consumer<Float> onResult) {
         super(state, onResult);
     }
@@ -27,22 +35,21 @@ public class AvroFloatSchema extends AvroSchema<Float> {
 
     @Override
     public void progress() {
-        /* Get 4 bytes from the cache. */
+        /* Consume 4 bytes. */
         List<ByteBuffer> buffers = this.state.consume(AvroConstants.FLOAT_SIZE);
         byte[] floatBytes = AvroUtils.getBytes(buffers);
 
         /* Integer encoded in little endian format. */
         int floatInt = ByteBuffer.wrap(floatBytes).order(ByteOrder.LITTLE_ENDIAN).getInt();
 
-        /* Encoded using a method equivalent to floatToIntBits. */
-        Float result = Float.intBitsToFloat(floatInt);
-
+        /* Encoded using a method equivalent to floatToIntBits, then we're done. */
+        this.result = Float.intBitsToFloat(floatInt);
         this.done = true;
-        this.result = result;
     }
 
     @Override
     public boolean canProgress() {
+        /* State must have at least FLOAT_SIZE bytes to progress on a float. */
         return this.state.contains(AvroConstants.FLOAT_SIZE);
     }
 }

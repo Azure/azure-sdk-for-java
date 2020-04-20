@@ -12,38 +12,46 @@ import java.util.function.Consumer;
  */
 public class AvroIntegerSchema extends AvroSchema<Integer> {
 
+    /**
+     * Constructs a new AvroIntegerSchema.
+     *
+     * @param state The state of the parser.
+     * @param onResult The result handler.
+     */
     public AvroIntegerSchema(AvroParserState state, Consumer<Integer> onResult){
         super(state, onResult);
     }
 
-    /**
-     * Read the long.
-     */
     @Override
     public void add() {
-        state.push(this);
-        AvroLongSchema numSchema = new AvroLongSchema(
-            state,
-            this::onNum
+        this.state.push(this);
+        /* Read the Long, then convert it to an Integer. */
+        AvroLongSchema numberSchema = new AvroLongSchema(
+            this.state,
+            this::onNumber
         );
-        numSchema.add();
+        numberSchema.add();
     }
 
     /**
-     * Once we read the Long, we can convert it to an Integer.
+     * Number handler
+     *
      * @param n The Long to convert.
      */
-    private void onNum(Long n) {
-        this.done = true;
+    private void onNumber(Long n) {
+        /* Convert the Long into an Integer, then we're done. */
         this.result = Math.toIntExact(n);
+        this.done = true;
     }
 
     @Override
     public void progress() {
+        /* Progress is defined by progress on the sub-type schemas. */
     }
 
     @Override
     public boolean canProgress() {
+        /* Can always make progress since it is defined by the progress on the sub-type schemas. */
         return true;
     }
 }

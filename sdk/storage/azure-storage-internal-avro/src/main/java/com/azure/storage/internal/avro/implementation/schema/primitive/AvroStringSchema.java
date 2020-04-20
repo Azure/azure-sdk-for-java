@@ -14,19 +14,26 @@ import java.util.function.Consumer;
  *
  * The BytesSchema does most of the same work, so add a BytesSchema to read the bytes, then
  * decode them.
+ *
+ * Bytes
  */
 public class AvroStringSchema extends AvroSchema<String> {
 
+    /**
+     * Constructs a new AvroStringSchema.
+     *
+     * @param state The state of the parser.
+     * @param onResult The result handler.
+     */
     public AvroStringSchema(AvroParserState state, Consumer<String> onResult) {
         super(state, onResult);
     }
 
-    /**
-     * Read the bytes.
-     */
     @Override
     public void add() {
         this.state.push(this);
+
+        /* Read the byte, call onBytes. */
         AvroBytesSchema bytesSchema = new AvroBytesSchema(
             this.state,
             this::onBytes
@@ -35,22 +42,25 @@ public class AvroStringSchema extends AvroSchema<String> {
     }
 
     /**
-     * Once we read the bytes, we can UTF-8 decode them and we're done.
+     * Bytes handler.
+     *
      * @param bytes The bytes.
      */
     private void onBytes(List<ByteBuffer> bytes) {
+        /* UTF_8 decode the bytes, then we're done. */
         byte[] str = AvroUtils.getBytes(bytes);
-        this.done = true;
         this.result = new String(str, StandardCharsets.UTF_8);
+        this.done = true;
     }
 
     @Override
     public void progress() {
-
+        /* Progress is defined by progress on the sub-type schemas. */
     }
 
     @Override
     public boolean canProgress() {
+        /* Can always make progress since it is defined by the progress on the sub-type schemas. */
         return true;
     }
 }

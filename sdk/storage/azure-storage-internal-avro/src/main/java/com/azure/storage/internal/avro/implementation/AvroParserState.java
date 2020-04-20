@@ -23,7 +23,10 @@ public class AvroParserState {
     private List<ByteBuffer> cache;
     private long size;
 
-    public AvroParserState() {
+    /**
+     * Creates a new instance of an AvroParserState.
+     */
+    AvroParserState() {
         this.stack = new Stack<>();
         this.cache = new LinkedList<>();
         this.size = 0;
@@ -66,7 +69,8 @@ public class AvroParserState {
     }
 
     /**
-     * Whether or not the state is ready to emit sizeRequired bytes
+     * Whether or not the state is ready to emit sizeRequired bytes.
+     *
      * @param sizeRequired The number of bytes required.
      * @return Whether or not the state is ready to emit sizeRequired bytes
      */
@@ -76,6 +80,8 @@ public class AvroParserState {
 
     /**
      * Consumes bytes from the state's internal cache of buffers.
+     * Meant for use by AvroSchema objects (specifically ones that represent primitive types, since complex types
+     * are just a combination of primitive types)
      *
      * @param size The number of bytes to consume.
      * @return A List of ByteBuffers with the number of bytes requested.
@@ -106,8 +112,10 @@ public class AvroParserState {
 
     /**
      * Consumes a single byte from the state's internal cache of buffers.
+     * Meant for use by AvroSchema objects (specifically ones that represent primitive types, since complex types
+     * are just a combination of primitive types)
      *
-     * @return The next byte.
+     * @return The byte requested.
      */
     public byte consume() {
         Iterator<ByteBuffer> iterator = this.cache.iterator();
@@ -119,6 +127,4 @@ public class AvroParserState {
         this.size--;
         return b;
     }
-
-
 }

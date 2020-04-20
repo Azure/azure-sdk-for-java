@@ -11,37 +11,60 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A class that represents a push based AvroParser that can parse from a reactive stream.
+ * A class that represents a push based AvroParser that can parse avro data from a reactive stream.
+ *
+ * The parser stores the {@link AvroParserState current state}, the sync marker (parsed from the header),
+ * the file type (parsed from the header metadata), and the list of records collected so far.
+ *
+ * For each ByteBuffer that is emitted from the stream, we first add it to the state's cache, while we can make
+ * progress in parsing schema on the stack, we continue to progress in parsing schemas on the stack. When a schema
+ * identifies itself as done, we first pop the schema off the stack, then publish the result by calling the schema's
+ * result handler. The result handler will publish it to the location identified by the parent of the schema, and the
+ * parent could add another item to the stack or determine that it is done.
  *
  */
 public class AvroParser {
 
     private AvroParserState state; /* State of the Avro Parser. */
     private byte[] syncMarker; /* Sync marker read in the header. */
-    private AvroType fileType; /* Type of objects in this Avro file.  */
+    private AvroType objectType; /* Type of objects in this Avro file. */
     private List<Object> records; /* Holds records collected so far. */
 
     public AvroParser() {
         this.state = new AvroParserState();
-        this.records = new ArrayList<>(); /* Based off the file schema. */
+        this.records = new ArrayList<>();
+
         /* TODO (gapra): Make this a record schema since it essentially does the same stuff. */
+        /* Start off by adding the header schema to the stack so we can parse it. */
         AvroHeaderSchema headerSchema = new AvroHeaderSchema(
-            schema -> this.fileType = schema,
-            syncMarker -> this.syncMarker = syncMarker,
+            objectType -> this.objectType = objectType, /* Handler to store the objectType. */
+            syncMarker -> this.syncMarker = syncMarker, /* Handler to store the sync marker. */
             this.state,
             this::onHeader
         );
         headerSchema.add();
     }
 
+    /**
+     * Header handler.
+     *
+     * @param ignore null
+     */
     private void onHeader(Object ignore) {
+        /* On reading the header, read a block. */
         onBlock(ignore);
     }
 
+    /**
+     * Block handler.
+     *
+     * @param ignore null
+     */
     private void onBlock(Object ignore) {
+        /* On reading the block, read a header. */
         AvroBlockSchema blockSchema = new AvroBlockSchema(
-            this.fileType,
-            o -> this.records.add(o),
+            this.objectType,
+            o -> this.records.add(o), /* Object result handler. */
             this.syncMarker,
             this.state,
             this::onBlock
@@ -51,6 +74,7 @@ public class AvroParser {
 
     /**
      * Parses as many objects as possible in the buffer.
+     *
      * Caches buffer remaining as part of state in case the entire buffer is not used.
      * @param buffer {@link ByteBuffer} that is part of an Avro file.
      * @return A reactive stream of Objects found in this
@@ -59,7 +83,7 @@ public class AvroParser {
         /* Cache the buffer as part of state. */
         this.state.write(buffer);
 
-        /* Keep consuming schemas while able to. */
+        /* Keep progressing in parsing schemas while able to make progress. */
         AvroSchema schema = this.state.peek();
         while (schema.canProgress()) {
             schema.progress();
@@ -73,6 +97,7 @@ public class AvroParser {
             schema = this.state.peek();
         }
 
+        /* Convert the records collected so far into a Flux. */
         Flux<Object> result;
         if (this.records.isEmpty()) {
             result = Flux.empty();

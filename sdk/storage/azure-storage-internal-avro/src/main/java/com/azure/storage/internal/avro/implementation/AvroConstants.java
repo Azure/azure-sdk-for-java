@@ -2,7 +2,11 @@ package com.azure.storage.internal.avro.implementation;
 
 import java.util.Set;
 
+/**
+ * Constants for Avro.
+ */
 public class AvroConstants {
+
     public static final int SYNC_MARKER_SIZE = 16;
     public static final byte[] MAGIC_BYTES = { (byte) 'O', (byte) 'b', (byte) 'j', (byte) 1 };
     public static final String CODEC_KEY = "avro.codec";
@@ -10,7 +14,7 @@ public class AvroConstants {
     public static final String DEFLATE_CODEC = "deflate";
     public static final String RECORD = "$record";
 
-    public static final long BOOL_SIZE = 1;
+    public static final long BOOLEAN_SIZE = 1;
     public static final long FLOAT_SIZE = 4;
     public static final long DOUBLE_SIZE = 8;
 

@@ -19,6 +19,8 @@ import java.util.function.Consumer;
  *
  * The field value schemas will do most of the work, so we need to just keep track of which field we are
  * working on and add them to the map as they come in.
+ *
+ * Field1 Field2 Field3 ....
  */
 public class AvroRecordSchema extends AvroSchema<Map<String, Object>> {
 
@@ -26,6 +28,14 @@ public class AvroRecordSchema extends AvroSchema<Map<String, Object>> {
     private Iterator<AvroRecordField> fieldIterator;
     private AvroRecordField currentField;
 
+    /**
+     * Constructs a new AvroRecordSchema.
+     *
+     * @param name The name of the record.
+     * @param fields The fields in the record.
+     * @param state The state of the parser.
+     * @param onResult The result handler.
+     */
     public AvroRecordSchema(String name, List<AvroRecordField> fields, AvroParserState state,
         Consumer<Map<String, Object>> onResult) {
         super(state, onResult);
@@ -36,13 +46,11 @@ public class AvroRecordSchema extends AvroSchema<Map<String, Object>> {
         this.result.put(AvroConstants.RECORD, name);
     }
 
-    /**
-     * Read the first field by adding its schema.
-     * @see AvroSchema#getSchema(AvroType, AvroParserState, Consumer)
-     */
     @Override
     public void add() {
         this.state.push(this);
+
+        /* Read the first field, call onField. */
         this.fieldIterator = this.fields.iterator();
         this.currentField = this.fieldIterator.next();
 
@@ -55,6 +63,7 @@ public class AvroRecordSchema extends AvroSchema<Map<String, Object>> {
     }
 
     /**
+     * Field handler.
      * Once we read the field, add the field to the result map.
      * If there are more fields to be read, add the schema of the next field,
      * otherwise, mark yourself as done.
@@ -62,8 +71,10 @@ public class AvroRecordSchema extends AvroSchema<Map<String, Object>> {
      * @param result The field.
      */
     private void onField(Object result) {
+        /* Add the name, result pair to the map. */
         this.result.put(this.currentField.getName(), result);
 
+        /* If there are more fields to be read, read the next field and call onField. */
         if (this.fieldIterator.hasNext()) {
             this.currentField = this.fieldIterator.next();
             AvroSchema fieldSchema = getSchema(
@@ -72,6 +83,7 @@ public class AvroRecordSchema extends AvroSchema<Map<String, Object>> {
                 this::onField
             );
             fieldSchema.add();
+        /* If there are no more fields, then we're done. */
         } else {
             this.done = true;
         }
@@ -79,11 +91,12 @@ public class AvroRecordSchema extends AvroSchema<Map<String, Object>> {
 
     @Override
     public void progress() {
-
+        /* Progress is defined by progress on the sub-type schemas. */
     }
 
     @Override
     public boolean canProgress() {
+        /* Can always make progress since it is defined by the progress on the sub-type schemas. */
         return true;
     }
 }

@@ -8,9 +8,17 @@ import java.util.function.Consumer;
 
 /**
  *  boolean is written as a single byte whose value is either 0 (false) or 1 (true).
+ *
+ *  Byte
  */
 public class AvroBooleanSchema extends AvroSchema<Boolean> {
 
+    /**
+     * Constructs a new AvroBooleanSchema.
+     *
+     * @param state The state of the parser.
+     * @param onResult The result handler.
+     */
     public AvroBooleanSchema(AvroParserState state, Consumer<Boolean> onResult) {
         super(state, onResult);
     }
@@ -22,6 +30,7 @@ public class AvroBooleanSchema extends AvroSchema<Boolean> {
 
     @Override
     public void progress() {
+        /* Consume a byte, and determine what it represents. */
         byte b = this.state.consume();
         if (b == (byte) 0) {
             this.result = false;
@@ -35,6 +44,7 @@ public class AvroBooleanSchema extends AvroSchema<Boolean> {
 
     @Override
     public boolean canProgress() {
-        return this.state.contains(AvroConstants.BOOL_SIZE);
+        /* State must have at least BOOLEAN_SIZE bytes to progess on a boolean. */
+        return this.state.contains(AvroConstants.BOOLEAN_SIZE);
     }
 }

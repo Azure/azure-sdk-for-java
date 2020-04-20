@@ -14,31 +14,42 @@ import java.util.function.Consumer;
  * Add a LongSchema to read the length, then add a FixedSchema to read that many bytes.
  * Note: We return a List of ByteBuffer since the number of bytes requested can be long and a single ByteBuffer can
  * only hold Integer.MAX bytes.
+ *
+ * Integer FixedBytes
  */
 public class AvroBytesSchema extends AvroSchema<List<ByteBuffer>> {
 
+    /**
+     * Constructs a new AvroBytesSchema.
+     *
+     * @param state The state of the parser.
+     * @param onResult The result handler.
+     */
     public AvroBytesSchema(AvroParserState state, Consumer<List<ByteBuffer>> onResult) {
         super(state, onResult);
     }
 
     /**
-     * Read the length.
+     * Push parent to the stack.
+     * Read the length, call onLength
      */
     @Override
     public void add() {
-        state.push(this);
+        this.state.push(this);
         AvroLongSchema lengthSchema = new AvroLongSchema(
-            state,
+            this.state,
             this::onLength
         );
         lengthSchema.add();
     }
 
     /**
-     * Once we read the length of the bytes, we can read that many bytes.
+     * Length handler.
+     *
      * @param length The number of bytes to read.
      */
     private void onLength(Long length) {
+        /* Read length number of bytes, call onBytes. */
         AvroFixedSchema bytesSchema = new AvroFixedSchema(
             length,
             this.state,
@@ -48,20 +59,24 @@ public class AvroBytesSchema extends AvroSchema<List<ByteBuffer>> {
     }
 
     /**
-     * Once we read the bytes, we're done.
+     * Bytes handler
+     *
      * @param bytes The bytes.
      */
     private void onBytes(List<ByteBuffer> bytes) {
-        this.done = true;
+        /* We're done. */
         this.result = bytes;
+        this.done = true;
     }
 
     @Override
     public void progress() {
+        /* Progress is defined by progress on the sub-type schemas. */
     }
 
     @Override
     public boolean canProgress() {
+        /* Can always make progress since it is defined by the progress on the sub-type schemas. */
         return true;
     }
 }

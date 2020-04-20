@@ -10,6 +10,12 @@ import java.util.function.Consumer;
  */
 public class AvroNullSchema extends AvroSchema<AvroNullSchema.Null> {
 
+    /**
+     * Constructs a new AvroNullSchema.
+     *
+     * @param state The state of the parser.
+     * @param onResult The result handler.
+     */
     public AvroNullSchema(AvroParserState state, Consumer<Null> onResult) {
         super(state, onResult);
     }
@@ -21,11 +27,14 @@ public class AvroNullSchema extends AvroSchema<AvroNullSchema.Null> {
 
     @Override
     public void progress() {
-        Null result = new Null();
-        done = true;
-        this.result = result;
+        /* Just return a custom null object, then we're done. */
+        this.result = new Null();
+        this.done = true;
     }
 
+    /**
+     * Can always make progress since null is zero bytes.
+     */
     @Override
     public boolean canProgress() {
         return true;

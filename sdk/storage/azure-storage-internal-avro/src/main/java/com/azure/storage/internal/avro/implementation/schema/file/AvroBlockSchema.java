@@ -16,98 +16,116 @@ import java.util.function.Consumer;
 /**
  * A file data block consists of:
  * A long indicating the count of objects in this block.
- * A long indicating the size in bytes of the serialized objects in the current block, after any codec is applied
+ * A long indicating the size in bytes of the serialized objects in the current block.
  * The serialized objects. If a codec is specified, this is compressed by that codec.
  * The file's 16-byte sync marker.
+ *
+ * Long Long Object Object Object .... SyncMarker
  */
 public class AvroBlockSchema extends AvroSchema<Object> {
 
-    private final Consumer<Object> onSchemaObject;
-    private final AvroType object;
+    private final Consumer<Object> onAvroObject;
+    private final AvroType objectType;
     private Long blockCount;
     private final byte[] syncMarker;
 
-    public AvroBlockSchema(AvroType object, Consumer<Object> onSchemaObject, byte[] syncMarker, AvroParserState state,
+    /**
+     * Constructs a new AvroBlockSchema.
+     *
+     * @param objectType The type of object to parse in the block.
+     * @param onAvroObject The handler to add the object to the AvroParser's list.
+     * @param syncMarker The sync marker to use to validate.
+     * @param state The state of the parser.
+     * @param onResult The result handler.
+     */
+    public AvroBlockSchema(AvroType objectType, Consumer<Object> onAvroObject, byte[] syncMarker, AvroParserState state,
         Consumer<Object> onResult) {
         super(state, onResult);
-        this.object = object;
-        this.onSchemaObject = onSchemaObject;
+        this.objectType = objectType;
+        this.onAvroObject = onAvroObject;
         this.syncMarker = syncMarker;
     }
 
-    /**
-     * Add LongSchema to read the block count.
-     */
     @Override
     public void add() {
-        state.push(this);
-        AvroLongSchema longSchema = new AvroLongSchema(
-            state,
+        this.state.push(this);
+
+        /* Read the block count, call onBlockCount. */
+        AvroLongSchema blockCountSchema = new AvroLongSchema(
+            this.state,
             this::onBlockCount
         );
-        longSchema.add();
+        blockCountSchema.add();
     }
 
     /**
-     * On reading the block count, store it and read the block size
-     * @param blockCount The block count.
+     * Block count handler.
+     *
+     * @param blockCount The number of elements in the block.
      */
     private void onBlockCount(Long blockCount) {
         this.blockCount = blockCount;
-        AvroLongSchema longSchema = new AvroLongSchema(
-            state,
+        /* Read the block size, call onBlockSize. */
+        AvroLongSchema blockSizeSchema = new AvroLongSchema(
+            this.state,
             this::onBlockSize
         );
-        longSchema.add();
+        blockSizeSchema.add();
     }
 
-    /* Block COunt, Block Size, Obj, Obj, Obj...... Sync marker*/
-
     /**
+     * Block size handler.
      * On reading the block size, ignore it and read an object.
      * @param ignore The block size.
      */
     private void onBlockSize(Long ignore) {
-        /* No-op */
-        AvroSchema schema = AvroSchema.getSchema(
-            this.object,
+        /* TODO (gapra) : Use this in case we want to skip through blocks. */
+        /* Read the object, call onObject. */
+        AvroSchema objectSchema = AvroSchema.getSchema(
+            this.objectType,
             this.state,
             this::onObject
         );
-        schema.add();
+        objectSchema.add();
     }
 
     /**
-     * On reading the object, call the object handler and decrement the block count.
-     * If the block count is 0, read the sync marker,
-     * otherwise read another object.
+     * Object handler.
+     *
      * @param schema The object.
      */
     private void onObject(Object schema) {
-        this.onSchemaObject.accept(schema);
+        /* Call the object handler to store this object in the AvroParser. */
+        this.onAvroObject.accept(schema);
+
+        /* Decrement the block count. */
         this.blockCount--;
+         /* If blockCount = 0, there are no more items in the block, read the sync marker, call validateSync */
         if (this.blockCount == 0) {
-            AvroFixedSchema fixedSchema = new AvroFixedSchema(
+            AvroFixedSchema syncSchema = new AvroFixedSchema(
                 AvroConstants.SYNC_MARKER_SIZE,
                 this.state,
                 this::validateSync
             );
-            fixedSchema.add();
+            syncSchema.add();
+        /* If block count != 0, there are more objects in the block, read another object and call onObject. */
         } else {
-            AvroSchema record = AvroSchema.getSchema(
-                this.object,
+            AvroSchema objectSchema = AvroSchema.getSchema(
+                this.objectType,
                 this.state,
                 this::onObject
             );
-            record.add();
+            objectSchema.add();
         }
     }
 
     /**
-     * On reading the sync marker, validate it and then we're done.
+     * Sync marker handler.
+     *
      * @param sync The sync marker.
      */
     private void validateSync(List<ByteBuffer> sync) {
+        /* Validate the sync marker, then we're done. */
         byte[] syncBytes = AvroUtils.getBytes(sync);
         if (Arrays.equals(syncBytes, syncMarker)) {
             this.done = true;
@@ -119,10 +137,12 @@ public class AvroBlockSchema extends AvroSchema<Object> {
 
     @Override
     public void progress() {
+        /* Progress is defined by progress on the sub-type schemas. */
     }
 
     @Override
     public boolean canProgress() {
+        /* Can always make progress since it is defined by the progress on the sub-type schemas. */
         return true;
     }
 }

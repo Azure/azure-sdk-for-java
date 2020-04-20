@@ -100,6 +100,8 @@ public abstract class AvroSchema<T> {
      * @param state {@link AvroParserState}
      * @param onResult {@link Consumer}
      * @return {@link AvroSchema}
+     *
+     * @see AvroType
      */
     public static AvroSchema getSchema(AvroType type, AvroParserState state, Consumer onResult) {
         switch (type.getType()) {
@@ -133,7 +135,7 @@ public abstract class AvroSchema<T> {
             }
             case MAP: {
                 AvroType.AvroMapType mapType = (AvroType.AvroMapType) type;
-                return new AvroMapSchema(mapType.getValues(), state, onResult);
+                return new AvroMapSchema(mapType.getValueType(), state, onResult);
             }
             case UNION: {
                 AvroType.AvroUnionType unionType = (AvroType.AvroUnionType) type;

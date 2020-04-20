@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import static com.azure.storage.internal.avro.implementation.AvroConstants.Types.ARRAY;
@@ -27,6 +26,7 @@ import static com.azure.storage.internal.avro.implementation.AvroConstants.Types
 /**
  * A class that represents an Avro type.
  * AvroTypes function as a type that stores all the data a schema may need.
+ * @see AvroType#getType(JsonNode)
  */
 public class AvroType {
 
@@ -87,14 +87,14 @@ public class AvroType {
         /**
          * @return the name.
          */
-        public String getName() {
+        String getName() {
             return name;
         }
 
         /**
          * @return the fields.
          */
-        public List<AvroRecordField> getFields() {
+        List<AvroRecordField> getFields() {
             return fields;
         }
     }
@@ -129,7 +129,7 @@ public class AvroType {
         /**
          * @return the symbols.
          */
-        public List<String> getSymbols() {
+        List<String> getSymbols() {
             return symbols;
         }
     }
@@ -154,42 +154,63 @@ public class AvroType {
         /**
          * @return the type of the items.
          */
-        public AvroType getItemType() {
+        AvroType getItemType() {
             return itemType;
         }
     }
 
-    public static class AvroMapType extends AvroType {
+    /**
+     * An avro map type.
+     * A map is defined by the type of the values in it. The key by default is of type String.
+     */
+    static class AvroMapType extends AvroType {
 
-        private final AvroType values;
+        private final AvroType valueType;
 
-        AvroMapType(AvroType values) {
+        /**
+         * Creates a new instance of an AvroMapType.
+         * @param valueType The type of the values in the map.
+         */
+        AvroMapType(AvroType valueType) {
             super(MAP);
-            this.values = values;
+            this.valueType = valueType;
         }
 
-        public AvroType getValues() {
-            return values;
+        /**
+         * @return the type of the values.
+         */
+        AvroType getValueType() {
+            return valueType;
         }
-
     }
 
+    /**
+     * An avro union type.
+     * A union is defined by an array of AvroTypes it could possibly be.
+     */
     static class AvroUnionType extends AvroType {
 
         private final List<AvroType> types;
 
+        /**
+         * Creates a new instance of an AvroUnionType.
+         * @param types The types that define a union.
+         */
         AvroUnionType(List<AvroType> types) {
             super(UNION);
             this.types = types;
         }
 
+        /**
+         * @return the types.
+         */
         List<AvroType> getTypes() {
             return types;
         }
 
     }
 
-    public static class AvroFixedType extends AvroType {
+    static class AvroFixedType extends AvroType {
 
         private final Long size;
 
@@ -198,31 +219,39 @@ public class AvroType {
             this.size = size;
         }
 
-        public Long getSize() {
+        Long getSize() {
             return size;
         }
 
     }
 
-    public static AvroType getType(JsonNode schema) {
-        JsonNodeType nodeType = schema.getNodeType();
+    /**
+     * Gets the AvroType specified by the JsonNode.
+     *
+     * @param jsonSchema the json node that specifies the schema.
+     * @return {@link AvroType}
+     */
+    public static AvroType getType(JsonNode jsonSchema) {
+        JsonNodeType nodeType = jsonSchema.getNodeType();
         switch (nodeType) {
             /* Primitive Avro Types. */
             case STRING: {
-                /* TODO : This could also be another named type. */
-                String type = schema.asText();
+                /* TODO (gapra): This could also be another named type. Not required for QQ/CF. */
+                /* Example: "long" */
+                String type = jsonSchema.asText();
                 if (PRIMITIVE_TYPES.contains(type)) {
                     return new AvroPrimitiveType(type);
                 }
             }
             /* Union Avro Types. */
             case ARRAY: {
-                List<AvroType> types = getUnionTypes(schema.iterator());
+                /* Example: ["null","string"] */
+                List<AvroType> types = getUnionTypes(jsonSchema);
                 return new AvroUnionType(types);
             }
             /* Complex Avro Types. */
             case OBJECT: {
-                String type = schema.get("type").asText();
+                String type = jsonSchema.get("type").asText();
                 switch (type) {
                     /* Primitive Types. */
                     case NULL:
@@ -233,33 +262,48 @@ public class AvroType {
                     case DOUBLE:
                     case BYTES:
                     case STRING:
+                        /* Example: {"type": "string"} */
                         return new AvroPrimitiveType(type);
                     case RECORD:{
-                        if (schema.get("aliases") != null) {
+                        /* Example: { "type": "record",
+                                      "name": "test",
+                                      "fields" : [
+                                                  {"name": "a", "type": "long"},
+                                                  {"name": "b", "type": "string"}
+                                                 ]
+                                    } */
+                        if (jsonSchema.get("aliases") != null) {
                             throw new IllegalArgumentException("Unexpected aliases in schema.");
                         }
-                        String name = schema.get("name").asText();
-                        List<AvroRecordField> fields = getRecordFields(schema.withArray("fields"));
+                        String name = jsonSchema.get("name").asText();
+                        List<AvroRecordField> fields = getRecordFields(jsonSchema.withArray("fields"));
                         return new AvroRecordType(name, fields);
                     }
                     case ENUM: {
-                        if (schema.get("aliases") != null) {
+                        /* Example: { "type": "enum",
+                                      "name": "Suit",
+                                      "symbols" : ["SPADES", "HEARTS", "DIAMONDS", "CLUBS"]
+                                    } */
+                        if (jsonSchema.get("aliases") != null) {
                             throw new IllegalArgumentException("Unexpected aliases in schema.");
                         }
-                        String name = schema.get("name").asText();
-                        List<String> symbols = getEnumSymbols(schema.withArray("symbols"));
+                        String name = jsonSchema.get("name").asText();
+                        List<String> symbols = getEnumSymbols(jsonSchema.withArray("symbols"));
                         return new AvroEnumType(name, symbols);
                     }
                     case ARRAY: {
-                        AvroType items = getType(schema.get("items"));
+                        /* Example: {"type": "array", "items": "string"} */
+                        AvroType items = getType(jsonSchema.get("items"));
                         return new AvroArrayType(items);
                     }
                     case MAP: {
-                        AvroType values = getType(schema.get("values"));
+                        /* Example: {"type": "map", "values": "long"} */
+                        AvroType values = getType(jsonSchema.get("values"));
                         return new AvroMapType(values);
                     }
                     case FIXED: {
-                        Long size = schema.get("size").asLong();
+                        /* Example: {"type": "fixed", "size": 16, "name": "md5"} */
+                        Long size = jsonSchema.get("size").asLong();
                         return new AvroFixedType(size);
                     }
                 }
@@ -269,31 +313,54 @@ public class AvroType {
         }
     }
 
-    private static List<AvroType> getUnionTypes(Iterator<JsonNode> t) {
+    /**
+     * Gets the types of the union.
+     *
+     * @param parent the JsonNode array
+     * @return The types of the union.
+     */
+    private static List<AvroType> getUnionTypes(JsonNode parent) {
+        /* Example: ["null","string"] */
         List<AvroType> types = new ArrayList<>();
-        t.forEachRemaining(typeNode -> {
-            AvroType type = getType(typeNode);
+        /* Get the type of each JsonNode in parent. */
+        for (JsonNode child : parent) {
+            AvroType type = getType(child);
             types.add(type);
-        });
+        }
         return types;
     }
 
-    private static List<String> getEnumSymbols(JsonNode s) {
+    /**
+     * Gets the symbols of the enum.
+     *
+     * @param parent The JsonNode array
+     * @return The symbols of the enum.
+     */
+    private static List<String> getEnumSymbols(JsonNode parent) {
+        /* Example: ["A", "B", "C", "D"] */
         List<String> symbols = new ArrayList<>();
-        for (JsonNode symbol : s) {
-            symbols.add(symbol.asText());
+        for (JsonNode child : parent) {
+            symbols.add(child.asText());
         }
         return symbols;
     }
 
-    private static List<AvroRecordField> getRecordFields(JsonNode f) {
+    /**
+     * Gets the fields of the record.
+     *
+     * @param parent The JsonNode array
+     * @return The fields of the record.
+     */
+    private static List<AvroRecordField> getRecordFields(JsonNode parent) {
+        /* Example: [ {"name": "a", "type": "long"}, {"name": "b", "type": "string"} ] */
         List<AvroRecordField> fields = new ArrayList<>();
-        for (JsonNode field : f) {
-            String name = field.get("name").asText();
-            AvroType type = getType(field.get("type"));
+        /* Get the name and type of each JsonNode in parent. */
+        for (JsonNode child : parent) {
+            String name = child.get("name").asText();
+            AvroType type = getType(child.get("type"));
+
             fields.add(new AvroRecordField(name, type));
         }
         return fields;
     }
-
 }

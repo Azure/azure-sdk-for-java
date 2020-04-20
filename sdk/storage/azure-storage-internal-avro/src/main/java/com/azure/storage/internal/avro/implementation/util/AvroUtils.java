@@ -4,7 +4,11 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Utility methods for Avro.
+ */
 public class AvroUtils {
+
     /**
      * Converts a List of ByteBuffers into a byte array.
      * @param bytes The buffers to convert.
