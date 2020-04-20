@@ -137,9 +137,6 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     }
 
     @Test
-    abstract void getCustomModelInvalidStatusModel();
-
-    @Test
     abstract void getCustomModelNullModelId();
 
     @Test
@@ -166,20 +163,8 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     @Test
     abstract void deleteModelValidModelIdWithResponse();
 
-    // void getCustomModelValidModelIdRunner(Consumer<String> testRunner) {
-    //     testRunner.accept(TestUtils.VALID_MODEL_ID);
-    // }
-
     @Test
     abstract void getModelInfos();
-
-    // void getCustomModelWithResponseRunner(Consumer<String> testRunner) {
-    //     testRunner.accept(TestUtils.LABELED_MODEL_ID);
-    // }
-    //
-    // void getCustomModelLabeledRunner(BiConsumer<String, Boolean> testRunner) {
-    //     testRunner.accept(createStorageAndGenerateSas("src/test/resources/sample_files/Train_Labeled"), true);
-    // }
 
     @Test
     abstract void getModelInfosWithContext();

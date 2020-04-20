@@ -25,7 +25,6 @@ import static com.azure.ai.formrecognizer.TestUtils.INVALID_SOURCE_URL_ERROR;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_URL;
 import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_FILE_LENGTH;
-import static com.azure.ai.formrecognizer.TestUtils.VALID_MODEL_ID;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedFormPages;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedReceipts;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedRecognizedForms;
@@ -197,10 +196,14 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
      */
     @Test
     void recognizeCustomFormInvalidSourceUrl() {
-        ErrorResponseException httpResponseException = assertThrows(
-            ErrorResponseException.class,
-            () -> client.beginRecognizeCustomFormsFromUrl(INVALID_URL, VALID_MODEL_ID).getSyncPoller().getFinalResult());
-        assertEquals(httpResponseException.getMessage(), (INVALID_SOURCE_URL_ERROR));
+        beginTrainingLabeledResultRunner((storageSASUrl, useLabelFile) -> {
+            SyncPoller<OperationResult, CustomFormModel> syncPoller =
+                client.getFormTrainingAsyncClient().beginTraining(storageSASUrl, useLabelFile).getSyncPoller();
+            syncPoller.waitForCompletion();
+            CustomFormModel createdModel = syncPoller.getFinalResult();
+            StepVerifier.create(client.beginRecognizeCustomFormsFromUrl(INVALID_URL,
+                createdModel.getModelId())).verifyErrorSatisfies(throwable -> assertEquals(throwable.getMessage(), INVALID_SOURCE_URL_ERROR));
+        });
     }
 
     /**

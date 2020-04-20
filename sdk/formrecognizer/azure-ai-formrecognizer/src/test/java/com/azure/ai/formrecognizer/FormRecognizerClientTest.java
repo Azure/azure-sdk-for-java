@@ -19,7 +19,6 @@ import static com.azure.ai.formrecognizer.TestUtils.INVALID_SOURCE_URL_ERROR;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_URL;
 import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_FILE_LENGTH;
-import static com.azure.ai.formrecognizer.TestUtils.VALID_MODEL_ID;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedFormPages;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedReceipts;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedRecognizedForms;
@@ -122,9 +121,14 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         });
     }
 
-    @Override
+    @Test
     void recognizeLayoutSourceUrl() {
-
+        layoutSourceUrlRunner(sourceUrl -> {
+            SyncPoller<OperationResult, IterableStream<FormPage>> syncPoller
+                = client.beginRecognizeContentFromUrl(sourceUrl);
+            syncPoller.waitForCompletion();
+            validateLayoutResult(getExpectedFormPages(), syncPoller.getFinalResult());
+        });
     }
 
     /**
@@ -141,11 +145,18 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @Test
     void recognizeCustomFormInvalidSourceUrl() {
-        ErrorResponseException httpResponseException = assertThrows(
-            ErrorResponseException.class,
-            () -> client.beginRecognizeCustomFormsFromUrl(INVALID_URL, VALID_MODEL_ID).getFinalResult());
+        beginTrainingLabeledResultRunner((storageSASUrl, useLabelFile) -> {
+            SyncPoller<OperationResult, CustomFormModel> syncPoller =
+                client.getFormTrainingClient().beginTraining(storageSASUrl, useLabelFile);
+            syncPoller.waitForCompletion();
+            CustomFormModel createdModel = syncPoller.getFinalResult();
 
-        assertEquals(httpResponseException.getMessage(), (INVALID_SOURCE_URL_ERROR));
+            ErrorResponseException httpResponseException = assertThrows(
+                ErrorResponseException.class,
+                () -> client.beginRecognizeCustomFormsFromUrl(INVALID_URL, createdModel.getModelId()).getFinalResult());
+
+            assertEquals(httpResponseException.getMessage(), (INVALID_SOURCE_URL_ERROR));
+        });
     }
 
     /**

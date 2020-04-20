@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test;
 
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID_ERROR;
-import static com.azure.ai.formrecognizer.TestUtils.INVALID_STATUS_MODEL_ERROR;
 import static com.azure.ai.formrecognizer.TestUtils.NULL_SOURCE_URL_ERROR;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedAccountProperties;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedLabeledModel;
@@ -37,16 +36,6 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
                 .pipeline(httpPipeline)
                 .buildClient());
         client = formRecognizerClient.getFormTrainingClient();
-    }
-
-    /**
-     * Verifies that an exception is thrown for invalid status model Id.
-     */
-    @Test
-    void getCustomModelInvalidStatusModel() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () ->
-            getCustomModelInvalidStatusModelRunner(invalidId -> client.getCustomModel(invalidId)));
-        assertEquals(exception.getMessage(), INVALID_STATUS_MODEL_ERROR);
     }
 
     /**
@@ -77,7 +66,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
                 .getFinalResult();
             Response<CustomFormModel> customModelWithResponse =
                 client.getCustomModelWithResponse(trainedUnlabeledModel.getModelId(),
-                Context.NONE);
+                    Context.NONE);
             assertEquals(customModelWithResponse.getStatusCode(), HttpResponseStatus.OK.code());
             validateCustomModel(trainedUnlabeledModel, customModelWithResponse.getValue());
         });
@@ -89,8 +78,10 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
     @Test
     void getCustomModelUnlabeled() {
         beginTrainingUnlabeledResultRunner((unLabeledContainerSasUrl, useLabelFile) -> {
-            CustomFormModel customFormModel = client.beginTraining(unLabeledContainerSasUrl, useLabelFile)
-                .getFinalResult();
+            SyncPoller<OperationResult, CustomFormModel> syncPoller = client.beginTraining(unLabeledContainerSasUrl,
+                useLabelFile);
+            syncPoller.waitForCompletion();
+            CustomFormModel customFormModel = syncPoller.getFinalResult();
             validateCustomModel(customFormModel, client.getCustomModel(customFormModel.getModelId()));
         });
     }
