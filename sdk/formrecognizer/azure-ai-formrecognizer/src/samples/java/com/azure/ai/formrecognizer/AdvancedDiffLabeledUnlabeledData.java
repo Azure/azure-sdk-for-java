@@ -29,8 +29,8 @@ public class AdvancedDiffLabeledUnlabeledData {
         // Instantiate a client that will be used to call the service.
 
         FormRecognizerClient client = new FormRecognizerClientBuilder()
-            .apiKey(new AzureKeyCredential("48c9ec5b1c444c899770946defc486c4"))
-            .endpoint("https://javaformrecognizertestresource.cognitiveservices.azure.com/")
+            .apiKey(new AzureKeyCredential("{api_key}"))
+            .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
         File analyzeFile = new File("../../test/resources/sample-files/Invoice_6.pdf");
