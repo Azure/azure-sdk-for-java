@@ -14,21 +14,15 @@ import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.file.Files;
 import java.time.Duration;
 
 import static com.azure.ai.formrecognizer.TestUtils.CUSTOM_FORM_FILE_LENGTH;
-import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_FILE_LENGTH;
-import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_SOURCE_URL_ERROR;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_URL;
+import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_FILE_LENGTH;
+import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.VALID_MODEL_ID;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedFormPages;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedReceipts;
@@ -36,8 +30,6 @@ import static com.azure.ai.formrecognizer.TestUtils.getExpectedRecognizedForms;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedRecognizedLabeledForms;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedUSReceipt;
 import static com.azure.ai.formrecognizer.TestUtils.getFileBufferData;
-import static com.azure.ai.formrecognizer.implementation.Utility.getContentType;
-import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -168,6 +160,21 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             validateLayoutResult(getExpectedFormPages(), syncPoller.getFinalResult());
         });
     }
+
+    // TODO: once PR https://github.com/Azure/azure-sdk-for-java/pull/10354/files is merged, record it
+//    /**
+//     * Verifies layout data for a document using source as input stream data.
+//     */
+//    @Test
+//    void extractLayoutValidSourceWithContentTypeAutoDetection() {
+//        layoutValidSourceUrlRunner((data) -> {
+//            SyncPoller<OperationResult, IterableStream<FormPage>> syncPoller
+//                = client.beginRecognizeContent(getFileBufferData(data),
+//                null, LAYOUT_FILE_LENGTH, null).getSyncPoller();
+//            syncPoller.waitForCompletion();
+//            validateLayoutResult(getExpectedFormPages(), syncPoller.getFinalResult());
+//        });
+//    }
 
     /**
      * Verifies that an exception is thrown for invalid status model Id.
