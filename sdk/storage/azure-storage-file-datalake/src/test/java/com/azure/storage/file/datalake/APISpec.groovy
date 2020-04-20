@@ -372,6 +372,23 @@ class APISpec extends Specification {
         return builder.credential(credential).buildFileClient()
     }
 
+    DataLakeFileAsyncClient getFileAsyncClient(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
+        DataLakePathClientBuilder builder = new DataLakePathClientBuilder()
+            .endpoint(endpoint)
+            .httpClient(getHttpClient())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy)
+        }
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        return builder.credential(credential).buildFileAsyncClient()
+    }
+
     DataLakeFileClient getFileClient(StorageSharedKeyCredential credential, String endpoint, String pathName) {
         DataLakePathClientBuilder builder = new DataLakePathClientBuilder()
             .endpoint(endpoint)
