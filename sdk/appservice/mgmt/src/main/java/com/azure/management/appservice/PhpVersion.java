@@ -3,7 +3,8 @@
 
 package com.azure.management.appservice;
 
-import com.azure.management.resources.fluentcore.arm.ExpandableStringEnum;
+import com.azure.core.util.ExpandableStringEnum;
+
 import java.util.Collection;
 
 /** Defines values for PHP version. */
