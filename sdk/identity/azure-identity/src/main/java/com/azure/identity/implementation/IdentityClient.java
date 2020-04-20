@@ -20,6 +20,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.DeviceCodeInfo;
 import com.azure.identity.implementation.util.CertificateUtil;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
@@ -41,10 +42,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.Proxy.Type;
+import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -221,7 +224,7 @@ public class IdentityClient {
                 }
                 if (line.startsWith(WINDOWS_PROCESS_ERROR_MESSAGE) || line.matches(LINUX_MAC_PROCESS_ERROR_MESSAGE)) {
                     throw logger.logExceptionAsError(
-                        new ClientAuthenticationException("Azure CLI not installed", null));
+                        new CredentialUnavailableException("Azure CLI not installed"));
                 }
                 output.append(line);
             }
@@ -232,6 +235,10 @@ public class IdentityClient {
             if (process.exitValue() != 0) {
                 if (processOutput.length() > 0) {
                     String redactedOutput = redactInfo("\"accessToken\": \"(.*?)(\"|$)", processOutput);
+                    if (redactedOutput.contains("az login") || redactedOutput.contains("az account set")) {
+                        throw logger.logExceptionAsError(
+                            new CredentialUnavailableException("Please run 'az login' to set up account"));
+                    }
                     throw logger.logExceptionAsError(new ClientAuthenticationException(redactedOutput, null));
                 } else {
                     throw logger.logExceptionAsError(
@@ -523,8 +530,8 @@ public class IdentityClient {
         String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId + "/";
         // find if the Public Client app with the requested username exists
         return Mono.fromFuture(() -> getPublicClientApplication().getAccounts())
-                .onErrorResume(t -> Mono.error(new ClientAuthenticationException(
-                        "Cannot get accounts from token cache. Error: " + t.getMessage(), null, t)))
+                .onErrorResume(t -> Mono.error(new CredentialUnavailableException(
+                        "Cannot get accounts from token cache. Error: " + t.getMessage(), t)))
                 .flatMap(set -> {
                     IAccount requestedAccount;
                     Map<String, IAccount> accounts = new HashMap<>(); // home account id -> account
@@ -539,22 +546,22 @@ public class IdentityClient {
 
                     if (accounts.size() == 0) {
                         if (username == null) {
-                            return Mono.error(new RuntimeException("No accounts were discovered in the shared token "
+                            return Mono.error(new CredentialUnavailableException("No accounts were discovered in the shared token "
                                     + "cache. To fix, authenticate through tooling supporting azure developer sign "
                                     + "on."));
                         } else {
-                            return Mono.error(new RuntimeException(String.format("User account '%s' was not found in "
+                            return Mono.error(new CredentialUnavailableException(String.format("User account '%s' was not found in "
                                     + "the shared token cache. Discovered Accounts: [ '%s' ]", username, set.stream()
                                     .map(IAccount::username).distinct().collect(Collectors.joining(", ")))));
                         }
                     } else if (accounts.size() > 1) {
                         if (username == null) {
-                            return Mono.error(new RuntimeException("Multiple accounts were discovered in the shared "
+                            return Mono.error(new CredentialUnavailableException("Multiple accounts were discovered in the shared "
                                     + "token cache. To fix, set the AZURE_USERNAME and AZURE_TENANT_ID environment "
                                     + "variable to the preferred username, or specify it when constructing "
                                     + "SharedTokenCacheCredential."));
                         } else {
-                            return Mono.error(new RuntimeException("Multiple entries for the user account " + username
+                            return Mono.error(new CredentialUnavailableException("Multiple entries for the user account " + username
                                     + " were found in the shared token cache. This is not currently supported by the"
                                     + " SharedTokenCacheCredential."));
                         }
@@ -749,6 +756,10 @@ public class IdentityClient {
                 connection.setRequestMethod("GET");
                 connection.setConnectTimeout(500);
                 connection.connect();
+            } catch (ConnectException | SecurityException | SocketTimeoutException e) {
+                throw logger.logExceptionAsError(
+                    new CredentialUnavailableException("Connection to IMDS endpoint cannot be established. "
+                                                             + e.getMessage(), e));
             } finally {
                 if (connection != null) {
                     connection.disconnect();

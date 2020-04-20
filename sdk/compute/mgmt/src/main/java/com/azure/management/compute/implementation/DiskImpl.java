@@ -20,26 +20,15 @@ import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
 import com.azure.management.storage.StorageAccount;
-import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import reactor.core.publisher.Mono;
 
-/**
- * The implementation for {@link Disk} and its create and update interfaces.
- */
-class DiskImpl
-        extends GroupableResourceImpl<
-        Disk,
-        DiskInner,
-        DiskImpl,
-        ComputeManager>
-        implements
-        Disk,
-        Disk.Definition,
-        Disk.Update  {
+/** The implementation for {@link Disk} and its create and update interfaces. */
+class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeManager>
+    implements Disk, Disk.Definition, Disk.Update {
 
     DiskImpl(String name, DiskInner innerModel, final ComputeManager computeManager) {
         super(name, innerModel, computeManager);
@@ -75,7 +64,6 @@ class DiskImpl
         return this.inner().diskSizeBytes();
     }
 
-
     @Override
     public OperatingSystemTypes osType() {
         return this.inner().osType();
@@ -110,13 +98,15 @@ class DiskImpl
     @Override
     public Mono<String> grantAccessAsync(int accessDurationInSeconds) {
         GrantAccessData grantAccessDataInner = new GrantAccessData();
-        grantAccessDataInner.withAccess(AccessLevel.READ)
-                .withDurationInSeconds(accessDurationInSeconds);
+        grantAccessDataInner.withAccess(AccessLevel.READ).withDurationInSeconds(accessDurationInSeconds);
 
-        return this.manager().inner().disks()
-                .grantAccessAsync(this.resourceGroupName(), this.name(), grantAccessDataInner)
-                .onErrorResume(e -> Mono.empty())
-                .map(accessUriInner -> accessUriInner.accessSAS());
+        return this
+            .manager()
+            .inner()
+            .disks()
+            .grantAccessAsync(this.resourceGroupName(), this.name(), grantAccessDataInner)
+            .onErrorResume(e -> Mono.empty())
+            .map(accessUriInner -> accessUriInner.accessSas());
     }
 
     @Override
@@ -131,23 +121,25 @@ class DiskImpl
 
     @Override
     public DiskImpl withLinuxFromVhd(String vhdUrl) {
-        this.inner()
-                .withOsType(OperatingSystemTypes.LINUX)
-                .withCreationData(new CreationData())
-                .creationData()
-                .withCreateOption(DiskCreateOption.IMPORT)
-                .withSourceUri(vhdUrl);
+        this
+            .inner()
+            .withOsType(OperatingSystemTypes.LINUX)
+            .withCreationData(new CreationData())
+            .creationData()
+            .withCreateOption(DiskCreateOption.IMPORT)
+            .withSourceUri(vhdUrl);
         return this;
     }
 
     @Override
     public DiskImpl withLinuxFromDisk(String sourceDiskId) {
-        this.inner()
-                .withOsType(OperatingSystemTypes.LINUX)
-                .withCreationData(new CreationData())
-                .creationData()
-                .withCreateOption(DiskCreateOption.COPY)
-                .withSourceResourceId(sourceDiskId);
+        this
+            .inner()
+            .withOsType(OperatingSystemTypes.LINUX)
+            .withCreationData(new CreationData())
+            .creationData()
+            .withCreateOption(DiskCreateOption.COPY)
+            .withSourceResourceId(sourceDiskId);
         return this;
     }
 
@@ -163,12 +155,13 @@ class DiskImpl
 
     @Override
     public DiskImpl withLinuxFromSnapshot(String sourceSnapshotId) {
-        this.inner()
-                .withOsType(OperatingSystemTypes.LINUX)
-                .withCreationData(new CreationData())
-                .creationData()
-                .withCreateOption(DiskCreateOption.COPY)
-                .withSourceResourceId(sourceSnapshotId);
+        this
+            .inner()
+            .withOsType(OperatingSystemTypes.LINUX)
+            .withCreationData(new CreationData())
+            .creationData()
+            .withCreateOption(DiskCreateOption.COPY)
+            .withSourceResourceId(sourceSnapshotId);
         return this;
     }
 
@@ -184,23 +177,25 @@ class DiskImpl
 
     @Override
     public DiskImpl withWindowsFromVhd(String vhdUrl) {
-        this.inner()
-                .withOsType(OperatingSystemTypes.WINDOWS)
-                .withCreationData(new CreationData())
-                .creationData()
-                .withCreateOption(DiskCreateOption.IMPORT)
-                .withSourceUri(vhdUrl);
+        this
+            .inner()
+            .withOsType(OperatingSystemTypes.WINDOWS)
+            .withCreationData(new CreationData())
+            .creationData()
+            .withCreateOption(DiskCreateOption.IMPORT)
+            .withSourceUri(vhdUrl);
         return this;
     }
 
     @Override
     public DiskImpl withWindowsFromDisk(String sourceDiskId) {
-        this.inner()
-                .withOsType(OperatingSystemTypes.WINDOWS)
-                .withCreationData(new CreationData())
-                .creationData()
-                .withCreateOption(DiskCreateOption.COPY)
-                .withSourceResourceId(sourceDiskId);
+        this
+            .inner()
+            .withOsType(OperatingSystemTypes.WINDOWS)
+            .withCreationData(new CreationData())
+            .creationData()
+            .withCreateOption(DiskCreateOption.COPY)
+            .withSourceResourceId(sourceDiskId);
         return this;
     }
 
@@ -216,12 +211,13 @@ class DiskImpl
 
     @Override
     public DiskImpl withWindowsFromSnapshot(String sourceSnapshotId) {
-        this.inner()
-                .withOsType(OperatingSystemTypes.WINDOWS)
-                .withCreationData(new CreationData())
-                .creationData()
-                .withCreateOption(DiskCreateOption.COPY)
-                .withSourceResourceId(sourceSnapshotId);
+        this
+            .inner()
+            .withOsType(OperatingSystemTypes.WINDOWS)
+            .withCreationData(new CreationData())
+            .creationData()
+            .withCreateOption(DiskCreateOption.COPY)
+            .withSourceResourceId(sourceSnapshotId);
         return this;
     }
 
@@ -237,40 +233,40 @@ class DiskImpl
 
     @Override
     public DiskImpl withData() {
-        this.inner()
-                .withCreationData(new CreationData())
-                .creationData()
-                .withCreateOption(DiskCreateOption.EMPTY);
+        this.inner().withCreationData(new CreationData()).creationData().withCreateOption(DiskCreateOption.EMPTY);
         return this;
     }
 
     @Override
     public DiskImpl fromVhd(String vhdUrl) {
-        this.inner()
-                .withCreationData(new CreationData())
-                .creationData()
-                .withCreateOption(DiskCreateOption.IMPORT)
-                .withSourceUri(vhdUrl);
+        this
+            .inner()
+            .withCreationData(new CreationData())
+            .creationData()
+            .withCreateOption(DiskCreateOption.IMPORT)
+            .withSourceUri(vhdUrl);
         return this;
     }
 
     @Override
     public DiskImpl withUploadSizeInMB(long uploadSizeInMB) {
-        this.inner()
-                .withCreationData(new CreationData())
-                .creationData()
-                .withCreateOption(DiskCreateOption.UPLOAD)
-                .withUploadSizeBytes(uploadSizeInMB * 1024 * 1024 + 512);
+        this
+            .inner()
+            .withCreationData(new CreationData())
+            .creationData()
+            .withCreateOption(DiskCreateOption.UPLOAD)
+            .withUploadSizeBytes(uploadSizeInMB * 1024 * 1024 + 512);
         return this;
     }
 
     @Override
     public DiskImpl fromSnapshot(String snapshotId) {
-        this.inner()
-                .withCreationData(new CreationData())
-                .creationData()
-                .withCreateOption(DiskCreateOption.COPY)
-                .withSourceResourceId(snapshotId);
+        this
+            .inner()
+            .withCreationData(new CreationData())
+            .creationData()
+            .withCreateOption(DiskCreateOption.COPY)
+            .withSourceResourceId(snapshotId);
         return this;
     }
 
@@ -281,19 +277,18 @@ class DiskImpl
 
     @Override
     public DiskImpl fromDisk(String managedDiskId) {
-        this.inner()
-                .withCreationData(new CreationData())
-                .creationData()
-                .withCreateOption(DiskCreateOption.COPY)
-                .withSourceResourceId(managedDiskId);
+        this
+            .inner()
+            .withCreationData(new CreationData())
+            .creationData()
+            .withCreateOption(DiskCreateOption.COPY)
+            .withSourceResourceId(managedDiskId);
         return this;
     }
 
     @Override
     public DiskImpl fromDisk(Disk managedDisk) {
-        return fromDisk(managedDisk.id())
-                .withOSType(managedDisk.osType())
-                .withSku(managedDisk.sku());
+        return fromDisk(managedDisk.id()).withOSType(managedDisk.osType()).withSku(managedDisk.sku());
     }
 
     @Override
@@ -322,13 +317,15 @@ class DiskImpl
 
     @Override
     public DiskImpl withStorageAccountName(String storageAccountName) {
-        String id = ResourceUtils.constructResourceId(this.myManager.getSubscriptionId(),
-                this.resourceGroupName(),
-                "Microsoft.Storage",
-                "storageAccounts",
-                storageAccountName,
-                ""
-                );
+        String id =
+            ResourceUtils
+                .constructResourceId(
+                    this.myManager.getSubscriptionId(),
+                    this.resourceGroupName(),
+                    "Microsoft.Storage",
+                    "storageAccounts",
+                    storageAccountName,
+                    "");
         return this.withStorageAccountId(id);
     }
 
@@ -352,8 +349,11 @@ class DiskImpl
 
     @Override
     public Mono<Disk> createResourceAsync() {
-        return manager().inner().disks().createOrUpdateAsync(resourceGroupName(), name(), this.inner())
-                .map(innerToFluentMap(this));
+        return manager()
+            .inner()
+            .disks()
+            .createOrUpdateAsync(resourceGroupName(), name(), this.inner())
+            .map(innerToFluentMap(this));
     }
 
     @Override

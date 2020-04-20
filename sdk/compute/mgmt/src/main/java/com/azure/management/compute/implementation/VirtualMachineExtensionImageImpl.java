@@ -9,15 +9,13 @@ import com.azure.management.compute.VirtualMachineExtensionImageVersion;
 import com.azure.management.compute.models.VirtualMachineExtensionImageInner;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 
-/**
- * The implementation for {@link VirtualMachineExtensionImage}.
- */
-class VirtualMachineExtensionImageImpl
-        extends WrapperImpl<VirtualMachineExtensionImageInner>
-        implements VirtualMachineExtensionImage {
+/** The implementation for {@link VirtualMachineExtensionImage}. */
+class VirtualMachineExtensionImageImpl extends WrapperImpl<VirtualMachineExtensionImageInner>
+    implements VirtualMachineExtensionImage {
     private final VirtualMachineExtensionImageVersion version;
 
-    VirtualMachineExtensionImageImpl(VirtualMachineExtensionImageVersion version, VirtualMachineExtensionImageInner inner) {
+    VirtualMachineExtensionImageImpl(
+        VirtualMachineExtensionImageVersion version, VirtualMachineExtensionImageInner inner) {
         super(inner);
         this.version = version;
     }

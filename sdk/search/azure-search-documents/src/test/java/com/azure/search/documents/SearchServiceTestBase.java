@@ -187,33 +187,33 @@ public abstract class SearchServiceTestBase extends TestBase {
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
                     .setFacetable(Boolean.TRUE)
-                    .setRetrievable(Boolean.TRUE),
+                    .setHidden(Boolean.FALSE),
                 new Field()
                     .setName("HotelName")
                     .setType(DataType.EDM_STRING)
                     .setSearchable(Boolean.TRUE)
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
-                    .setRetrievable(Boolean.TRUE),
+                    .setHidden(Boolean.FALSE),
                 new Field()
                     .setName("Description")
                     .setType(DataType.EDM_STRING)
                     .setSearchable(Boolean.TRUE)
                     .setAnalyzer(AnalyzerName.EN_LUCENE)
-                    .setRetrievable(Boolean.TRUE),
+                    .setHidden(Boolean.FALSE),
                 new Field()
                     .setName("DescriptionFr")
                     .setType(DataType.EDM_STRING)
                     .setSearchable(Boolean.TRUE)
                     .setAnalyzer(AnalyzerName.FR_LUCENE)
-                    .setRetrievable(Boolean.TRUE),
+                    .setHidden(Boolean.FALSE),
                 new Field()
                     .setName("Description_Custom")
                     .setType(DataType.EDM_STRING)
                     .setSearchable(Boolean.TRUE)
                     .setSearchAnalyzer(AnalyzerName.STOP)
                     .setIndexAnalyzer(AnalyzerName.STOP)
-                    .setRetrievable(Boolean.TRUE),
+                    .setHidden(Boolean.FALSE),
                 new Field()
                     .setName("Category")
                     .setType(DataType.EDM_STRING)
@@ -221,42 +221,42 @@ public abstract class SearchServiceTestBase extends TestBase {
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
                     .setFacetable(Boolean.TRUE)
-                    .setRetrievable(Boolean.TRUE),
+                    .setHidden(Boolean.FALSE),
                 new Field()
                     .setName("Tags")
                     .setType(DataType.collection(DataType.EDM_STRING))
                     .setSearchable(Boolean.TRUE)
                     .setFilterable(Boolean.TRUE)
                     .setFacetable(Boolean.TRUE)
-                    .setRetrievable(Boolean.TRUE),
+                    .setHidden(Boolean.FALSE),
                 new Field()
                     .setName("ParkingIncluded")
                     .setType(DataType.EDM_BOOLEAN)
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
                     .setFacetable(Boolean.TRUE)
-                    .setRetrievable(Boolean.TRUE),
+                    .setHidden(Boolean.FALSE),
                 new Field()
                     .setName("SmokingAllowed")
                     .setType(DataType.EDM_BOOLEAN)
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
                     .setFacetable(Boolean.TRUE)
-                    .setRetrievable(Boolean.TRUE),
+                    .setHidden(Boolean.FALSE),
                 new Field()
                     .setName("LastRenovationDate")
                     .setType(DataType.EDM_DATE_TIME_OFFSET)
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
                     .setFacetable(Boolean.TRUE)
-                    .setRetrievable(Boolean.TRUE),
+                    .setHidden(Boolean.FALSE),
                 new Field()
                     .setName("Rating")
                     .setType(DataType.EDM_INT32)
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
                     .setFacetable(Boolean.TRUE)
-                    .setRetrievable(Boolean.TRUE),
+                    .setHidden(Boolean.FALSE),
                 new Field()
                     .setName("Address")
                     .setType(DataType.EDM_COMPLEX_TYPE)
@@ -265,7 +265,7 @@ public abstract class SearchServiceTestBase extends TestBase {
                             .setName("StreetAddress")
                             .setType(DataType.EDM_STRING)
                             .setSearchable(Boolean.TRUE)
-                            .setRetrievable(Boolean.TRUE),
+                            .setHidden(Boolean.FALSE),
                         new Field()
                             .setName("City")
                             .setType(DataType.EDM_STRING)
@@ -273,7 +273,7 @@ public abstract class SearchServiceTestBase extends TestBase {
                             .setFilterable(Boolean.TRUE)
                             .setSortable(Boolean.TRUE)
                             .setFacetable(Boolean.TRUE)
-                            .setRetrievable(Boolean.TRUE),
+                            .setHidden(Boolean.FALSE),
                         new Field()
                             .setName("StateProvince")
                             .setType(DataType.EDM_STRING)
@@ -281,7 +281,7 @@ public abstract class SearchServiceTestBase extends TestBase {
                             .setFilterable(Boolean.TRUE)
                             .setSortable(Boolean.TRUE)
                             .setFacetable(Boolean.TRUE)
-                            .setRetrievable(Boolean.TRUE),
+                            .setHidden(Boolean.FALSE),
                         new Field()
                             .setName("Country")
                             .setType(DataType.EDM_STRING)
@@ -289,7 +289,7 @@ public abstract class SearchServiceTestBase extends TestBase {
                             .setFilterable(Boolean.TRUE)
                             .setSortable(Boolean.TRUE)
                             .setFacetable(Boolean.TRUE)
-                            .setRetrievable(Boolean.TRUE),
+                            .setHidden(Boolean.FALSE),
                         new Field()
                             .setName("PostalCode")
                             .setType(DataType.EDM_STRING)
@@ -297,7 +297,7 @@ public abstract class SearchServiceTestBase extends TestBase {
                             .setFilterable(Boolean.TRUE)
                             .setSortable(Boolean.TRUE)
                             .setFacetable(Boolean.TRUE)
-                            .setRetrievable(Boolean.TRUE)
+                            .setHidden(Boolean.FALSE)
                         )
                     ),
                 new Field()
@@ -305,8 +305,7 @@ public abstract class SearchServiceTestBase extends TestBase {
                     .setType(DataType.EDM_GEOGRAPHY_POINT)
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
-                    .setRetrievable(Boolean.TRUE)
-                    .setRetrievable(Boolean.TRUE),
+                    .setHidden(Boolean.FALSE),
                 new Field()
                     .setName("Rooms")
                     .setType(DataType.collection(DataType.EDM_COMPLEX_TYPE))
@@ -315,54 +314,53 @@ public abstract class SearchServiceTestBase extends TestBase {
                             .setName("Description")
                             .setType(DataType.EDM_STRING)
                             .setSearchable(Boolean.TRUE)
-                            .setRetrievable(Boolean.TRUE)
                             .setAnalyzer(AnalyzerName.EN_LUCENE),
                         new Field()
                             .setName("DescriptionFr")
                             .setType(DataType.EDM_STRING)
                             .setSearchable(Boolean.TRUE)
-                            .setRetrievable(Boolean.TRUE)
-                            .setAnalyzer(AnalyzerName.FR_LUCENE),
+                            .setAnalyzer(AnalyzerName.FR_LUCENE)
+                            .setHidden(Boolean.FALSE),
                         new Field()
                             .setName("Type")
                             .setType(DataType.EDM_STRING)
                             .setSearchable(Boolean.TRUE)
                             .setFilterable(Boolean.TRUE)
                             .setFacetable(Boolean.TRUE)
-                            .setRetrievable(Boolean.TRUE),
+                            .setHidden(Boolean.FALSE),
                         new Field()
                             .setName("BaseRate")
                             .setType(DataType.EDM_DOUBLE)
                             .setKey(Boolean.FALSE)
                             .setFilterable(Boolean.TRUE)
                             .setFacetable(Boolean.TRUE)
-                            .setRetrievable(Boolean.TRUE),
+                            .setHidden(Boolean.FALSE),
                         new Field()
                             .setName("BedOptions")
                             .setType(DataType.EDM_STRING)
                             .setSearchable(Boolean.TRUE)
                             .setFilterable(Boolean.TRUE)
                             .setFacetable(Boolean.TRUE)
-                            .setRetrievable(Boolean.TRUE),
+                            .setHidden(Boolean.FALSE),
                         new Field()
                             .setName("SleepsCount")
                             .setType(DataType.EDM_INT32)
                             .setFilterable(Boolean.TRUE)
                             .setFacetable(Boolean.TRUE)
-                            .setRetrievable(Boolean.TRUE),
+                            .setHidden(Boolean.FALSE),
                         new Field()
                             .setName("SmokingAllowed")
                             .setType(DataType.EDM_BOOLEAN)
                             .setFilterable(Boolean.TRUE)
                             .setFacetable(Boolean.TRUE)
-                            .setRetrievable(Boolean.TRUE),
+                            .setHidden(Boolean.FALSE),
                         new Field()
                             .setName("Tags")
                             .setType(DataType.collection(DataType.EDM_STRING))
                             .setSearchable(Boolean.TRUE)
                             .setFilterable(Boolean.TRUE)
                             .setFacetable(Boolean.TRUE)
-                            .setRetrievable(Boolean.TRUE)
+                            .setHidden(Boolean.FALSE)
                         )
                     ),
                 new Field()

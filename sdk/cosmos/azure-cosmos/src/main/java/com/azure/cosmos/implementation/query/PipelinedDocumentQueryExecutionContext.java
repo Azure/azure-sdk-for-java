@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -56,7 +57,7 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
         if (queryInfo.hasOrderBy()) {
             createBaseComponentFunction = (continuationToken) -> {
                 FeedOptions orderByFeedOptions = new FeedOptions(feedOptions);
-                orderByFeedOptions.setRequestContinuation(continuationToken);
+                ModelBridgeInternal.setFeedOptionsContinuationToken(orderByFeedOptions, continuationToken);
                 return OrderByDocumentQueryExecutionContext.createAsync(client, resourceTypeEnum, resourceType,
                         expression, orderByFeedOptions, resourceLink, collectionRid, partitionedQueryExecutionInfo,
                         targetRanges, initialPageSize, isContinuationExpected, getLazyFeedResponse,
@@ -65,7 +66,7 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
         } else {
             createBaseComponentFunction = (continuationToken) -> {
                 FeedOptions parallelFeedOptions = new FeedOptions(feedOptions);
-                parallelFeedOptions.setRequestContinuation(continuationToken);
+                ModelBridgeInternal.setFeedOptionsContinuationToken(parallelFeedOptions, continuationToken);
                 return ParallelDocumentQueryExecutionContext.createAsync(client, resourceTypeEnum, resourceType,
                         expression, parallelFeedOptions, resourceLink, collectionRid, partitionedQueryExecutionInfo,
                         targetRanges, initialPageSize, isContinuationExpected, getLazyFeedResponse,

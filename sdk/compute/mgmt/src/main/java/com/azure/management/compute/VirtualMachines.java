@@ -16,15 +16,12 @@ import com.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
+import java.util.List;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-
-/**
- *  Entry point to virtual machine management API.
- */
-public interface VirtualMachines extends
-        SupportsListing<VirtualMachine>,
+/** Entry point to virtual machine management API. */
+public interface VirtualMachines
+    extends SupportsListing<VirtualMachine>,
         SupportsListingByResourceGroup<VirtualMachine>,
         SupportsGettingByResourceGroup<VirtualMachine>,
         SupportsGettingById<VirtualMachine>,
@@ -36,9 +33,7 @@ public interface VirtualMachines extends
         HasManager<ComputeManager>,
         HasInner<VirtualMachinesInner> {
 
-    /**
-     * @return available virtual machine sizes
-     */
+    /** @return available virtual machine sizes */
     VirtualMachineSizes sizes();
 
     /**
@@ -54,7 +49,6 @@ public interface VirtualMachines extends
      *
      * @param groupName the name of the resource group the virtual machine is in
      * @param name the virtual machine name
-     *
      * @return a representation of the deferred computation of this call
      */
     Mono<Void> deallocateAsync(String groupName, String name);
@@ -86,9 +80,9 @@ public interface VirtualMachines extends
 
     /**
      * Powers off (stops) the virtual machine asynchronously.
+     *
      * @param groupName the name of the resource group the virtual machine is in
      * @param name the virtual machine name
-     *
      * @return a representation of the deferred computation of this call
      */
     Mono<Void> powerOffAsync(String groupName, String name);
@@ -120,9 +114,9 @@ public interface VirtualMachines extends
 
     /**
      * Starts the virtual machine asynchronously.
+     *
      * @param groupName the name of the resource group the virtual machine is in
      * @param name the virtual machine name
-     *
      * @return a representation of the deferred computation of this call
      */
     Mono<Void> startAsync(String groupName, String name);
@@ -145,8 +139,8 @@ public interface VirtualMachines extends
     Mono<Void> redeployAsync(String groupName, String name);
 
     /**
-     * Captures the virtual machine by copying virtual hard disks of the VM and returns template as a JSON
-     * string that can be used to create similar VMs.
+     * Captures the virtual machine by copying virtual hard disks of the VM and returns template as a JSON string that
+     * can be used to create similar VMs.
      *
      * @param groupName the resource group name
      * @param name the virtual machine name
@@ -167,7 +161,8 @@ public interface VirtualMachines extends
      * @param overwriteVhd whether to overwrites destination VHD if it exists
      * @return a representation of the deferred computation of this call
      */
-    Mono<String> captureAsync(String groupName, String name, String containerName, String vhdPrefix, boolean overwriteVhd);
+    Mono<String> captureAsync(
+        String groupName, String name, String containerName, String vhdPrefix, boolean overwriteVhd);
 
     /**
      * Migrates the virtual machine with unmanaged disks to use managed disks.
@@ -195,7 +190,8 @@ public interface VirtualMachines extends
      * @param scriptParameters script parameters
      * @return result of PowerShell script execution
      */
-    RunCommandResult runPowerShellScript(String groupName, String name, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters);
+    RunCommandResult runPowerShellScript(
+        String groupName, String name, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters);
 
     /**
      * Run shell script in a virtual machine asynchronously.
@@ -206,7 +202,8 @@ public interface VirtualMachines extends
      * @param scriptParameters script parameters
      * @return handle to the asynchronous execution
      */
-    Mono<RunCommandResult> runPowerShellScriptAsync(String groupName, String name, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters);
+    Mono<RunCommandResult> runPowerShellScriptAsync(
+        String groupName, String name, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters);
 
     /**
      * Run shell script in a virtual machine.
@@ -217,8 +214,8 @@ public interface VirtualMachines extends
      * @param scriptParameters script parameters
      * @return result of shell script execution
      */
-    RunCommandResult runShellScript(String groupName, String name, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters);
-
+    RunCommandResult runShellScript(
+        String groupName, String name, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters);
 
     /**
      * Run shell script in a virtual machine asynchronously.
@@ -229,7 +226,8 @@ public interface VirtualMachines extends
      * @param scriptParameters script parameters
      * @return handle to the asynchronous execution
      */
-    Mono<RunCommandResult> runShellScriptAsync(String groupName, String name, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters);
+    Mono<RunCommandResult> runShellScriptAsync(
+        String groupName, String name, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters);
 
     /**
      * Run commands in a virtual machine.

@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseContainer;
 import com.azure.cosmos.implementation.changefeed.LeaseManager;
 import com.azure.cosmos.implementation.changefeed.PartitionSynchronizer;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -102,8 +103,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
     private Flux<PartitionKeyRange> enumPartitionKeyRanges() {
         String partitionKeyRangesPath = extractContainerSelfLink(this.collectionSelfLink);
         FeedOptions feedOptions = new FeedOptions();
-        feedOptions.setMaxItemCount(this.maxBatchSize);
-        feedOptions.setRequestContinuation(null);
+        ModelBridgeInternal.setFeedOptionsContinuationTokenAndMaxItemCount(feedOptions, null, this.maxBatchSize);
 
         return this.documentClient.readPartitionKeyRangeFeed(partitionKeyRangesPath, feedOptions)
             .map(partitionKeyRangeFeedResponse -> partitionKeyRangeFeedResponse.getResults())

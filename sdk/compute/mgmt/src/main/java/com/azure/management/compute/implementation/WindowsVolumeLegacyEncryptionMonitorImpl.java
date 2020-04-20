@@ -12,15 +12,14 @@ import com.azure.management.compute.models.VirtualMachineExtensionInner;
 import com.azure.management.compute.models.VirtualMachineInner;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.utils.Utils;
-import reactor.core.publisher.Mono;
-
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import reactor.core.publisher.Mono;
 
 /**
- * The implementation for DiskVolumeEncryptionStatus for Windows virtual machine.
- * This implementation monitor status of encrypt-decrypt through legacy encryption extension.
+ * The implementation for DiskVolumeEncryptionStatus for Windows virtual machine. This implementation monitor status of
+ * encrypt-decrypt through legacy encryption extension.
  */
 class WindowsVolumeLegacyEncryptionMonitorImpl implements DiskVolumeEncryptionMonitor {
     private final String rgName;
@@ -66,17 +65,14 @@ class WindowsVolumeLegacyEncryptionMonitorImpl implements DiskVolumeEncryptionMo
             return EncryptionStatus.NOT_ENCRYPTED;
         }
         if (this.virtualMachine.storageProfile() == null
-                || virtualMachine.storageProfile().osDisk() == null
-                || virtualMachine.storageProfile().osDisk().encryptionSettings() == null) {
+            || virtualMachine.storageProfile().osDisk() == null
+            || virtualMachine.storageProfile().osDisk().encryptionSettings() == null) {
             return EncryptionStatus.NOT_ENCRYPTED;
         }
-        DiskEncryptionSettings encryptionSettings = virtualMachine
-                .storageProfile()
-                .osDisk()
-                .encryptionSettings();
+        DiskEncryptionSettings encryptionSettings = virtualMachine.storageProfile().osDisk().encryptionSettings();
         if (encryptionSettings.diskEncryptionKey() != null
-                && encryptionSettings.diskEncryptionKey().secretUrl() != null
-                && Utils.toPrimitiveBoolean(encryptionSettings.enabled())) {
+            && encryptionSettings.diskEncryptionKey().secretUrl() != null
+            && Utils.toPrimitiveBoolean(encryptionSettings.enabled())) {
             return EncryptionStatus.ENCRYPTED;
         }
         return EncryptionStatus.NOT_ENCRYPTED;
@@ -98,10 +94,10 @@ class WindowsVolumeLegacyEncryptionMonitorImpl implements DiskVolumeEncryptionMo
             publicSettings = (LinkedHashMap<String, Object>) encryptionExtension.settings();
         }
         if (!publicSettings.containsKey("VolumeType")
-                || publicSettings.get("VolumeType") == null
-                || ((String) publicSettings.get("VolumeType")).isEmpty()
-                || ((String) publicSettings.get("VolumeType")).equalsIgnoreCase("All")
-                || ((String) publicSettings.get("VolumeType")).equalsIgnoreCase("Data")) {
+            || publicSettings.get("VolumeType") == null
+            || ((String) publicSettings.get("VolumeType")).isEmpty()
+            || ((String) publicSettings.get("VolumeType")).equalsIgnoreCase("All")
+            || ((String) publicSettings.get("VolumeType")).equalsIgnoreCase("Data")) {
             String encryptionOperation = (String) publicSettings.get("EncryptionOperation");
             if (encryptionOperation != null && encryptionOperation.equalsIgnoreCase("EnableEncryption")) {
                 return EncryptionStatus.ENCRYPTED;
@@ -127,12 +123,15 @@ class WindowsVolumeLegacyEncryptionMonitorImpl implements DiskVolumeEncryptionMo
         final WindowsVolumeLegacyEncryptionMonitorImpl self = this;
         // Refreshes the cached Windows virtual machine and installed encryption extension
         return retrieveVirtualMachineAsync()
-                .map(virtualMachine -> {
+            .map(
+                virtualMachine -> {
                     self.virtualMachine = virtualMachine;
                     if (virtualMachine.resources() != null) {
                         for (VirtualMachineExtensionInner extension : virtualMachine.resources()) {
                             if (EncryptionExtensionIdentifier.isEncryptionPublisherName(extension.publisher())
-                                    && EncryptionExtensionIdentifier.isEncryptionTypeName(extension.virtualMachineExtensionType(), OperatingSystemTypes.WINDOWS)) {
+                                && EncryptionExtensionIdentifier
+                                    .isEncryptionTypeName(
+                                        extension.virtualMachineExtensionType(), OperatingSystemTypes.WINDOWS)) {
                                 self.encryptionExtension = extension;
                                 break;
                             }
@@ -143,18 +142,22 @@ class WindowsVolumeLegacyEncryptionMonitorImpl implements DiskVolumeEncryptionMo
     }
 
     /**
-     * Retrieve the virtual machine.
-     * If the virtual machine does not exists then an error observable will be returned.
+     * Retrieve the virtual machine. If the virtual machine does not exists then an error observable will be returned.
      *
      * @return the retrieved virtual machine
      */
     private Mono<VirtualMachineInner> retrieveVirtualMachineAsync() {
-        return this.computeManager
-                .inner()
-                .virtualMachines()
-                .getByResourceGroupAsync(rgName, vmName)
-                .onErrorResume(e -> Mono.error(new Exception(String.format("VM with name '%s' not found (resource group '%s')",
-                        vmName, rgName))));
+        return this
+            .computeManager
+            .inner()
+            .virtualMachines()
+            .getByResourceGroupAsync(rgName, vmName)
+            .onErrorResume(
+                e ->
+                    Mono
+                        .error(
+                            new Exception(
+                                String.format("VM with name '%s' not found (resource group '%s')", vmName, rgName))));
     }
 
     private boolean hasEncryptionDetails() {
