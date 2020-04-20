@@ -2,15 +2,15 @@
 # This file is generated automatically and any changes will be lost.
 
 resources:
-    repositories:
-      - repository: azure-sdk-build-tools
-        type: git
-        name: internal/azure-sdk-build-tools
-      - repository: azure-sdk-tools
-        type: github
-        name: Azure/azure-sdk-tools
-        endpoint: azure
-    
+  repositories:
+    - repository: azure-sdk-build-tools
+      type: git
+      name: internal/azure-sdk-build-tools
+    - repository: azure-sdk-tools
+      type: github
+      name: Azure/azure-sdk-tools
+      endpoint: azure
+
   trigger:
     branches:
       include:
@@ -20,7 +20,7 @@ resources:
     paths:
       include:
         - sdk/parents/
-  
+
   pr:
     branches:
       include:
@@ -31,7 +31,7 @@ resources:
     paths:
       include:
         - sdk/parents/
-    
+
   stages:
     - stage: Placeholder
       jobs:
@@ -39,4 +39,3 @@ resources:
           steps:
             - script: |
                 echo Hello, world!
-  
