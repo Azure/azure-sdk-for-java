@@ -4,7 +4,8 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.management.resources.fluentcore.arm.ExpandableStringEnum;
+import com.azure.core.util.ExpandableStringEnum;
+
 import java.util.Collection;
 
 /** Compute resource sku names. */
