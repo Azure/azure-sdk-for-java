@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -52,7 +53,7 @@ final class AuthFile {
      * @throws IOException thrown when the auth file or the certificate file cannot be read or parsed
      */
     static AuthFile parse(File file) throws IOException {
-        String content = new String(Files.readAllBytes(Paths.get(file.getPath())));
+        String content = new String(Files.readAllBytes(Paths.get(file.getPath())), StandardCharsets.UTF_8);
         AuthFile authFile;
         if (isJsonBased(content)) {
             authFile = ADAPTER.deserialize(content, AuthFile.class, SerializerEncoding.JSON);

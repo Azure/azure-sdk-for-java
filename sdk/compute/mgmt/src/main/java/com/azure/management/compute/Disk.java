@@ -14,67 +14,43 @@ import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.Refreshable;
 import com.azure.management.resources.fluentcore.model.Updatable;
 import com.azure.management.storage.StorageAccount;
+import java.util.Set;
 import reactor.core.publisher.Mono;
 
-import java.util.Set;
-
-/**
- * An immutable client-side representation of an Azure managed disk.
- */
+/** An immutable client-side representation of an Azure managed disk. */
 @Fluent
-public interface Disk extends
-        GroupableResource<ComputeManager, DiskInner>,
-        Refreshable<Disk>,
-        Updatable<Disk.Update> {
-    /**
-     * @return the disk SKU
-     */
+public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refreshable<Disk>, Updatable<Disk.Update> {
+    /** @return the disk SKU */
     DiskSkuTypes sku();
 
-    /**
-     * @return the disk creation method
-     */
+    /** @return the disk creation method */
     DiskCreateOption creationMethod();
 
-    /**
-     * @return true if the disk is attached to a virtual machine, otherwise false
-     */
+    /** @return true if the disk is attached to a virtual machine, otherwise false */
     boolean isAttachedToVirtualMachine();
 
     /**
-     * @return the resource ID of the virtual machine this disk is attached to, or null
-     * if the disk is in a detached state
+     * @return the resource ID of the virtual machine this disk is attached to, or null if the disk is in a detached
+     *     state
      */
     String virtualMachineId();
 
-    /**
-     * @return disk size in GB
-     */
+    /** @return disk size in GB */
     int sizeInGB();
 
-    /**
-     * @return disk size in byte
-     */
+    /** @return disk size in byte */
     long sizeInByte();
 
-    /**
-     * @return the type of the operating system on the disk
-     */
+    /** @return the type of the operating system on the disk */
     OperatingSystemTypes osType();
 
-    /**
-     * @return the details of the source from which the disk is created
-     */
+    /** @return the details of the source from which the disk is created */
     CreationSource source();
 
-    /**
-     * @return the availability zones assigned to the disk
-     */
+    /** @return the availability zones assigned to the disk */
     Set<AvailabilityZoneId> availabilityZones();
 
-    /**
-     * @return the disk encryption settings
-     */
+    /** @return the disk encryption settings */
     EncryptionSettingsCollection encryptionSettings();
 
     /**
@@ -93,9 +69,7 @@ public interface Disk extends
      */
     Mono<String> grantAccessAsync(int accessDurationInSeconds);
 
-    /**
-     * Revokes access granted to the disk.
-     */
+    /** Revokes access granted to the disk. */
     void revokeAccess();
 
     /**
@@ -105,11 +79,9 @@ public interface Disk extends
      */
     Mono<Void> revokeAccessAsync();
 
-    /**
-     * The entirety of the managed disk definition.
-     */
-    interface Definition extends
-            DefinitionStages.Blank,
+    /** The entirety of the managed disk definition. */
+    interface Definition
+        extends DefinitionStages.Blank,
             DefinitionStages.WithGroup,
             DefinitionStages.WithDiskSource,
             DefinitionStages.WithWindowsDiskSource,
@@ -125,35 +97,21 @@ public interface Disk extends
             DefinitionStages.WithCreate {
     }
 
-    /**
-     * Grouping of managed disk definition stages.
-     */
+    /** Grouping of managed disk definition stages. */
     interface DefinitionStages {
-        /**
-         * The first stage of a managed disk definition.
-         */
+        /** The first stage of a managed disk definition. */
         interface Blank extends GroupableResource.DefinitionWithRegion<WithGroup> {
         }
 
-        /**
-         * The stage of a managed disk definition allowing to specify the resource group.
-         */
+        /** The stage of a managed disk definition allowing to specify the resource group. */
         interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithDiskSource> {
         }
 
-        /**
-         * The stage of a managed disk definition allowing to choose OS source or data source.
-         */
-        interface WithDiskSource
-                extends
-                WithWindowsDiskSource,
-                WithLinuxDiskSource,
-                WithData {
+        /** The stage of a managed disk definition allowing to choose OS source or data source. */
+        interface WithDiskSource extends WithWindowsDiskSource, WithLinuxDiskSource, WithData {
         }
 
-        /**
-         *  The stage of a managed disk definition allowing to choose a Windows OS source.
-         */
+        /** The stage of a managed disk definition allowing to choose a Windows OS source. */
         interface WithWindowsDiskSource {
             /**
              * Specifies a source Windows OS managed disk.
@@ -196,9 +154,7 @@ public interface Disk extends
             WithStorageAccount withWindowsFromVhd(String vhdUrl);
         }
 
-        /**
-         *  The stage of the managed disk definition allowing to choose Linux OS source.
-         */
+        /** The stage of the managed disk definition allowing to choose Linux OS source. */
         interface WithLinuxDiskSource {
             /**
              * Specifies the source Linux OS managed disk.
@@ -241,9 +197,7 @@ public interface Disk extends
             WithStorageAccount withLinuxFromVhd(String vhdUrl);
         }
 
-        /**
-         * The stage of the managed disk definition that specifies it hold data.
-         */
+        /** The stage of the managed disk definition that specifies it hold data. */
         interface WithData {
             /**
              * Begins definition of managed disk containing data.
@@ -253,14 +207,9 @@ public interface Disk extends
             WithDataDiskSource withData();
         }
 
-        /**
-         * The stage of the managed disk definition allowing to choose data source.
-         */
-        interface WithDataDiskSource extends
-                WithDataDiskFromVhd,
-                WithDataDiskFromUpload,
-                WithDataDiskFromDisk,
-                WithDataDiskFromSnapshot {
+        /** The stage of the managed disk definition allowing to choose data source. */
+        interface WithDataDiskSource
+            extends WithDataDiskFromVhd, WithDataDiskFromUpload, WithDataDiskFromDisk, WithDataDiskFromSnapshot {
             /**
              * Specifies the disk size for an empty disk.
              *
@@ -270,9 +219,7 @@ public interface Disk extends
             WithCreate withSizeInGB(int sizeInGB);
         }
 
-        /**
-         * The stage of the managed disk definition allowing to choose source data disk VHD.
-         */
+        /** The stage of the managed disk definition allowing to choose source data disk VHD. */
         interface WithDataDiskFromVhd {
             /**
              * Specifies the source data VHD.
@@ -283,23 +230,19 @@ public interface Disk extends
             WithStorageAccount fromVhd(String vhdUrl);
         }
 
-        /**
-         *  The stage of the managed disk definition allowing to create disk from upload.
-         */
+        /** The stage of the managed disk definition allowing to create disk from upload. */
         interface WithDataDiskFromUpload {
             /**
-             * Gets or sets if createOption is Upload, this is the size of the
-             * contents of the upload including the VHD footer. This value should
-             * be between 20 (20 MiB) and 33554432 bytes (32 TiB).
+             * Gets or sets if createOption is Upload, this is the size of the contents of the upload including the VHD
+             * footer. This value should be between 20 (20 MiB) and 33554432 bytes (32 TiB).
+             *
              * @param uploadSizeInMB The size of the contents of the upload in MB
              * @return The next stage of the definition.
              */
             WithCreate withUploadSizeInMB(long uploadSizeInMB);
         }
 
-        /**
-         * The stage of the managed disk definition allowing to choose managed disk containing data.
-         */
+        /** The stage of the managed disk definition allowing to choose managed disk containing data. */
         interface WithDataDiskFromDisk {
             /**
              * Specifies the ID of source data managed disk.
@@ -318,9 +261,7 @@ public interface Disk extends
             WithCreateAndSize fromDisk(Disk managedDisk);
         }
 
-        /**
-         * The stage of the managed disk definition allowing to choose managed snapshot containing data.
-         */
+        /** The stage of the managed disk definition allowing to choose managed snapshot containing data. */
         interface WithDataDiskFromSnapshot {
             /**
              * Specifies the source data managed snapshot.
@@ -339,9 +280,7 @@ public interface Disk extends
             WithCreateAndSize fromSnapshot(Snapshot snapshot);
         }
 
-        /**
-         * The stage of the managed disk definition allowing to choose source operating system image.
-         */
+        /** The stage of the managed disk definition allowing to choose source operating system image. */
         interface WithOSDiskFromImage {
             /**
              * Specifies the ID of an image containing the operating system.
@@ -350,8 +289,7 @@ public interface Disk extends
              * @param osType operating system type
              * @return the next stage of the definition
              */
-            WithCreateAndSize fromImage(String imageId,
-                                        OperatingSystemTypes osType);
+            WithCreateAndSize fromImage(String imageId, OperatingSystemTypes osType);
 
             /**
              * Specifies an image containing the operating system.
@@ -369,9 +307,7 @@ public interface Disk extends
              */
             WithCreateAndSize fromImage(VirtualMachineCustomImage image);
         }
-        /**
-         * The stage of the managed disk definition allowing to choose source data disk image.
-         */
+        /** The stage of the managed disk definition allowing to choose source data disk image. */
         interface WithDataDiskFromImage {
             /**
              * Specifies the ID of an image containing source data disk image.
@@ -380,8 +316,7 @@ public interface Disk extends
              * @param diskLun LUN of the disk image
              * @return the next stage of the definition
              */
-            WithCreateAndSize fromImage(String imageId,
-                                        int diskLun);
+            WithCreateAndSize fromImage(String imageId, int diskLun);
 
             /**
              * Specifies an image containing source data disk image.
@@ -403,10 +338,9 @@ public interface Disk extends
         }
 
         /**
-         * The stage of the managed disk definition allowing to specify storage account
-         * that contains disk information.
+         * The stage of the managed disk definition allowing to specify storage account that contains disk information.
          *
-         * It is mandatory in import option.
+         * <p>It is mandatory in import option.
          */
         interface WithStorageAccount {
             /**
@@ -434,9 +368,7 @@ public interface Disk extends
             WithCreateAndSize withStorageAccount(StorageAccount account);
         }
 
-        /**
-         * The stage of the managed disk definition allowing to specify availability zone.
-         */
+        /** The stage of the managed disk definition allowing to specify availability zone. */
         interface WithAvailabilityZone {
             /**
              * Specifies the availability zone for the managed disk.
@@ -447,9 +379,7 @@ public interface Disk extends
             WithCreate withAvailabilityZone(AvailabilityZoneId zoneId);
         }
 
-        /**
-         * The stage of the managed disk definition allowing to create the disk or optionally specify size.
-         */
+        /** The stage of the managed disk definition allowing to create the disk or optionally specify size. */
         interface WithCreateAndSize extends WithCreate {
             /**
              * Specifies the disk size.
@@ -460,9 +390,7 @@ public interface Disk extends
             WithCreate withSizeInGB(int sizeInGB);
         }
 
-        /**
-         * The stage of the managed disk definition allowing to choose account type.
-         */
+        /** The stage of the managed disk definition allowing to choose account type. */
         interface WithSku {
             /**
              * Specifies the SKU.
@@ -474,25 +402,20 @@ public interface Disk extends
         }
 
         /**
-         * The stage of the definition which contains all the minimum required inputs for
-         * the resource to be created, but also allows
-         * for any other optional settings to be specified.
+         * The stage of the definition which contains all the minimum required inputs for the resource to be created,
+         * but also allows for any other optional settings to be specified.
          */
-        interface WithCreate extends
-                Creatable<Disk>,
+        interface WithCreate
+            extends Creatable<Disk>,
                 Resource.DefinitionWithTags<Disk.DefinitionStages.WithCreate>,
                 WithSku,
                 WithAvailabilityZone {
         }
     }
 
-    /**
-     * Grouping of managed disk update stages.
-     */
+    /** Grouping of managed disk update stages. */
     interface UpdateStages {
-        /**
-         * The stage of the managed disk update allowing to choose the SKU type.
-         */
+        /** The stage of the managed disk update allowing to choose the SKU type. */
         interface WithSku {
             /**
              * Specifies the SKU.
@@ -503,9 +426,7 @@ public interface Disk extends
             Update withSku(DiskSkuTypes sku);
         }
 
-        /**
-         * The stage of the managed disk definition allowing to specify new size.
-         */
+        /** The stage of the managed disk definition allowing to specify new size. */
         interface WithSize {
             /**
              * Specifies the disk size.
@@ -516,9 +437,7 @@ public interface Disk extends
             Update withSizeInGB(int sizeInGB);
         }
 
-        /**
-         * The stage of the managed disk update allowing to specify OS settings.
-         */
+        /** The stage of the managed disk update allowing to specify OS settings. */
         interface WithOSSettings {
             /**
              * Specifies the operating system.
@@ -530,12 +449,9 @@ public interface Disk extends
         }
     }
 
-    /**
-     * The template for an update operation, containing all the settings that
-     * can be modified.
-     */
-    interface Update extends
-            Appliable<Disk>,
+    /** The template for an update operation, containing all the settings that can be modified. */
+    interface Update
+        extends Appliable<Disk>,
             Resource.UpdateWithTags<Disk.Update>,
             UpdateStages.WithSku,
             UpdateStages.WithSize,

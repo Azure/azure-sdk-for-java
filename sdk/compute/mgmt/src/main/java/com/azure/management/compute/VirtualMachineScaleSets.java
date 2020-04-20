@@ -5,8 +5,8 @@ package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.CloudException;
-import com.azure.management.compute.models.VirtualMachineScaleSetsInner;
 import com.azure.management.compute.implementation.ComputeManager;
+import com.azure.management.compute.models.VirtualMachineScaleSetsInner;
 import com.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -18,17 +18,14 @@ import com.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
-import reactor.core.publisher.Mono;
-
 import java.io.IOException;
 import java.util.List;
+import reactor.core.publisher.Mono;
 
-/**
- *  Entry point to virtual machine scale set management API.
- */
+/** Entry point to virtual machine scale set management API. */
 @Fluent
-public interface VirtualMachineScaleSets extends
-        SupportsListing<VirtualMachineScaleSet>,
+public interface VirtualMachineScaleSets
+    extends SupportsListing<VirtualMachineScaleSet>,
         SupportsListingByResourceGroup<VirtualMachineScaleSet>,
         SupportsGettingByResourceGroup<VirtualMachineScaleSet>,
         SupportsGettingById<VirtualMachineScaleSet>,
@@ -55,7 +52,6 @@ public interface VirtualMachineScaleSets extends
      *
      * @param groupName the name of the resource group the virtual machine scale set is in
      * @param name the name of the virtual machine scale set
-     *
      * @return a representation of the deferred computation of this call
      */
     Mono<Void> deallocateAsync(String groupName, String name);
@@ -73,9 +69,9 @@ public interface VirtualMachineScaleSets extends
 
     /**
      * Powers off (stops) the virtual machines in the scale set asynchronously.
+     *
      * @param groupName the name of the resource group the virtual machine in the scale set is in
      * @param name the name of the virtual machine scale set
-     *
      * @return a representation of the deferred computation of this call
      */
     Mono<Void> powerOffAsync(String groupName, String name);
@@ -113,9 +109,9 @@ public interface VirtualMachineScaleSets extends
 
     /**
      * Starts the virtual machines in the scale set asynchronously.
+     *
      * @param groupName the name of the resource group the virtual machine scale set is in
      * @param name the name of the virtual machine scale set
-     *
      * @return a representation of the deferred computation of this call
      */
     Mono<Void> startAsync(String groupName, String name);
@@ -132,11 +128,11 @@ public interface VirtualMachineScaleSets extends
     void reimage(String groupName, String name) throws CloudException, IOException, InterruptedException;
 
     /**
-     * Re-images (updates the version of the installed operating system) the virtual machines in the scale set asynchronously.
+     * Re-images (updates the version of the installed operating system) the virtual machines in the scale set
+     * asynchronously.
      *
      * @param groupName the name of the resource group the virtual machine scale set is in
      * @param name the name of the virtual machine scale set
-     *
      * @return a representation of the deferred computation of this call
      */
     Mono<Void> reimageAsync(String groupName, String name);
@@ -151,7 +147,12 @@ public interface VirtualMachineScaleSets extends
      * @param scriptParameters script parameters
      * @return result of PowerShell script execution
      */
-    RunCommandResult runPowerShellScriptInVMInstance(String groupName, String scaleSetName, String vmId, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters);
+    RunCommandResult runPowerShellScriptInVMInstance(
+        String groupName,
+        String scaleSetName,
+        String vmId,
+        List<String> scriptLines,
+        List<RunCommandInputParameter> scriptParameters);
 
     /**
      * Run PowerShell in a virtual machine instance in a scale set asynchronously.
@@ -163,7 +164,12 @@ public interface VirtualMachineScaleSets extends
      * @param scriptParameters script parameters
      * @return handle to the asynchronous execution
      */
-    Mono<RunCommandResult> runPowerShellScriptInVMInstanceAsync(String groupName, String scaleSetName, String vmId, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters);
+    Mono<RunCommandResult> runPowerShellScriptInVMInstanceAsync(
+        String groupName,
+        String scaleSetName,
+        String vmId,
+        List<String> scriptLines,
+        List<RunCommandInputParameter> scriptParameters);
 
     /**
      * Run shell script in a virtual machine instance in a scale set.
@@ -175,8 +181,12 @@ public interface VirtualMachineScaleSets extends
      * @param scriptParameters script parameters
      * @return result of shell script execution
      */
-    RunCommandResult runShellScriptInVMInstance(String groupName, String scaleSetName, String vmId, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters);
-
+    RunCommandResult runShellScriptInVMInstance(
+        String groupName,
+        String scaleSetName,
+        String vmId,
+        List<String> scriptLines,
+        List<RunCommandInputParameter> scriptParameters);
 
     /**
      * Run shell script in a virtual machine instance in a scale set asynchronously.
@@ -188,7 +198,12 @@ public interface VirtualMachineScaleSets extends
      * @param scriptParameters script parameters
      * @return handle to the asynchronous execution
      */
-    Mono<RunCommandResult> runShellScriptInVMInstanceAsync(String groupName, String scaleSetName, String vmId, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters);
+    Mono<RunCommandResult> runShellScriptInVMInstanceAsync(
+        String groupName,
+        String scaleSetName,
+        String vmId,
+        List<String> scriptLines,
+        List<RunCommandInputParameter> scriptParameters);
 
     /**
      * Run commands in a virtual machine instance in a scale set.
@@ -199,7 +214,8 @@ public interface VirtualMachineScaleSets extends
      * @param inputCommand command input
      * @return result of execution
      */
-    RunCommandResult runCommandInVMInstance(String groupName, String scaleSetName, String vmId, RunCommandInput inputCommand);
+    RunCommandResult runCommandInVMInstance(
+        String groupName, String scaleSetName, String vmId, RunCommandInput inputCommand);
 
     /**
      * Run commands in a virtual machine instance in a scale set asynchronously.
@@ -210,5 +226,6 @@ public interface VirtualMachineScaleSets extends
      * @param inputCommand command input
      * @return handle to the asynchronous execution
      */
-    Mono<RunCommandResult> runCommandVMInstanceAsync(String groupName, String scaleSetName, String vmId, RunCommandInput inputCommand);
+    Mono<RunCommandResult> runCommandVMInstanceAsync(
+        String groupName, String scaleSetName, String vmId, RunCommandInput inputCommand);
 }

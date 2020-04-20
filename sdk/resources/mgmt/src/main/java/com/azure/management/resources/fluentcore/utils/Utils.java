@@ -17,6 +17,7 @@ import com.azure.management.resources.fluentcore.model.Indexable;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Defines a few utilities.
@@ -206,7 +207,8 @@ public final class Utils {
         } else {
             String baseUrl = restClient.getBaseUrl().toString();
             for (AzureEnvironment env : AzureEnvironment.knownEnvironments()) {
-                if (env.getResourceManagerEndpoint().toLowerCase().contains(baseUrl.toLowerCase())) {
+                if (env.getResourceManagerEndpoint().toLowerCase(Locale.ROOT)
+                        .contains(baseUrl.toLowerCase(Locale.ROOT))) {
                     environment = env;
                     break;
                 }
