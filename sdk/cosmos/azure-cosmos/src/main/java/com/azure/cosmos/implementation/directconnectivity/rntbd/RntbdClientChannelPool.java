@@ -76,8 +76,12 @@ public final class RntbdClientChannelPool implements ChannelPool {
         new StacklessIllegalStateException("too many outstanding acquire operations"),
         RntbdClientChannelPool.class, "acquire");
 
+    private static final EventExecutor closer = new DefaultEventExecutor(new RntbdThreadFactory(
+        "channel-pool-closer",
+        true,
+        Thread.NORM_PRIORITY));
+
     private static final Logger logger = LoggerFactory.getLogger(RntbdClientChannelPool.class);
-    private static final EventExecutor closer = new DefaultEventExecutor();
 
     private final long acquisitionTimeoutInNanos;
     private final PooledByteBufAllocatorMetric allocatorMetric;
@@ -140,7 +144,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
         //  This metric is redundant in the scope of this class and should be pulled up to RntbdServiceEndpoint or
         //  entirely removed.
 
-        this.acquisitionTimeoutInNanos = Duration.ofSeconds(5).toNanos(); // TODO (DANOBLE) config.connectionAcquisitionTimeoutInNanos();
+        this.acquisitionTimeoutInNanos = config.connectionAcquisitionTimeoutInNanos();
         this.allocatorMetric = config.allocator().metric();
         this.maxChannels = config.maxChannelsPerEndpoint();
         this.maxRequestsPerChannel = config.maxRequestsPerChannel();
@@ -193,6 +197,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
             }
         }
 
+        final long requestTimerResolutionInNanos = config.requestTimerResolutionInNanos();
         final long idleEndpointTimeoutInNanos = config.idleEndpointTimeoutInNanos();
 
         this.idleStateDetectionScheduledFuture = this.executor.scheduleAtFixedRate(
@@ -209,7 +214,10 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     }
                     endpoint.close();
                 }
-            }, idleEndpointTimeoutInNanos, idleEndpointTimeoutInNanos, TimeUnit.NANOSECONDS);
+
+                this.runTasksInPendingAcquisitionQueue();
+
+            }, requestTimerResolutionInNanos, requestTimerResolutionInNanos, TimeUnit.NANOSECONDS);
     }
 
     // region Accessors
@@ -422,12 +430,12 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
         anotherPromise.addListener((FutureListener<Void>) future -> {
 
-            ensureInEventLoop();
+            this.ensureValidRunState();
 
             if (this.isClosed()) {
                 // Since the pool is closed, we have no choice but to close the channel
                 promise.setFailure(POOL_CLOSED_ON_RELEASE);
-                channel.close();
+                this.closeChannel(channel);
                 return;
             }
 
@@ -711,7 +719,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
     private void doClose() {
 
-        ensureInEventLoop();
+        this.ensureInEventLoop();
         this.idleStateDetectionScheduledFuture.cancel(true);
 
         for (; ; ) {
@@ -770,8 +778,8 @@ public final class RntbdClientChannelPool implements ChannelPool {
      */
     private void ensureValidRunState() {
 
-        ensureInEventLoop();
-
+        this.ensureInEventLoop();
+// TODO (DANOBLE) remove or restore this code:
 //        final int channelsAvailable = this.channelsAvailable();
 //        final int channelsAcquired = this.channelsAcquired();
 //        final int channelCount = this.channels();
@@ -1043,8 +1051,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
     private void runTasksInPendingAcquisitionQueue() {
 
         this.ensureValidRunState();
+        int channelsAvailable = this.availableChannels.size();
 
-        for (int i = 0; i < this.channelsAvailable(); i++) {
+        while (--channelsAvailable >= 0) {
 
             final AcquireTask task = this.pendingAcquisitionQueue.poll();
 
