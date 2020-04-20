@@ -37,7 +37,6 @@ public class ChainedTokenCredential implements TokenCredential {
 
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
-        AtomicReference<Throwable> cause = new AtomicReference<>();
         List<CredentialUnavailableException> exceptions = new ArrayList<>(4);
         return Flux.fromIterable(credentials)
                    .flatMap(p -> p.getToken(request).onErrorResume(CredentialUnavailableException.class, t -> {

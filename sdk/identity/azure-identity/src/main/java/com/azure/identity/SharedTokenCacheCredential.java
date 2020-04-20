@@ -118,7 +118,8 @@ public class SharedTokenCacheCredential implements TokenCredential {
 
                 if (accounts.size() != 1) {
                     if (accounts.size() == 0) {
-                        new CredentialUnavailableException(String.format("SharedTokenCacheCredential authentication "
+                        return Mono.error(new CredentialUnavailableException(
+                            String.format("SharedTokenCacheCredential authentication "
                              + "unavailable. No account matching the specified username %s was found in "
                              + "the cache.", username));
                     } else {
