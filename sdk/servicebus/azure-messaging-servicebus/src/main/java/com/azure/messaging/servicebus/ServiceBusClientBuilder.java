@@ -24,7 +24,6 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
-import com.azure.messaging.servicebus.implementation.MessageLockContainer;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
@@ -32,7 +31,6 @@ import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusSharedKeyCredential;
 import com.azure.messaging.servicebus.models.ReceiveMode;
-import java.util.regex.Pattern;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -45,6 +43,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.ServiceLoader;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Pattern;
 
 /**
  * The builder to create {@link ServiceBusReceiverAsyncClient} and {@link ServiceBusSenderAsyncClient}.
@@ -630,14 +629,13 @@ public final class ServiceBusClientBuilder {
                     "prefetchCount (%s) cannot be less than 1.", prefetchCount)));
             }
 
-            final MessageLockContainer messageLockContainer = new MessageLockContainer();
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
                 sessionId);
 
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
-                entityType, receiverOptions, connectionProcessor,
-                tracerProvider, messageSerializer, messageLockContainer, ServiceBusClientBuilder.this::onClientClose);
+                entityType, receiverOptions, connectionProcessor, tracerProvider, messageSerializer,
+                ServiceBusClientBuilder.this::onClientClose);
         }
 
         /**
