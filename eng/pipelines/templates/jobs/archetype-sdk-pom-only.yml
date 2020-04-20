@@ -46,7 +46,7 @@ jobs:
           inputs:
             mavenPomFile: sdk/${{parameters.ServiceDirectory}}/${{artifact.name}}/pom.xml
             goals: 'install'
-            options: '-pl ${{artifact.groupId}}:${{artifact.name}} -DlocalRepositoryPath=$(Build.ArtifactStagingDirectory)'
+            options: '-pl ${{artifact.groupId}}:${{artifact.name}} -DlocalRepositoryPath=$(Build.ArtifactStagingDirectory) -Dgpg.skip'
             mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
             javaHomeOption: 'JDKVersion'
             jdkVersionOption: $(JavaVersion)
