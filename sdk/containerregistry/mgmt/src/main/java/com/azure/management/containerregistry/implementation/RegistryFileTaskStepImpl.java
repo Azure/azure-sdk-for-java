@@ -3,7 +3,6 @@
 
 package com.azure.management.containerregistry.implementation;
 
-import com.azure.management.containerregistry.EncodedTaskStep;
 import com.azure.management.containerregistry.FileTaskStep;
 import com.azure.management.containerregistry.FileTaskStepUpdateParameters;
 import com.azure.management.containerregistry.OverridingValue;
