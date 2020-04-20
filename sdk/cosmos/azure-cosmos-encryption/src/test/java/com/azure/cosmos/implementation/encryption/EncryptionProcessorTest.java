@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.encryption.api.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.implementation.encryption.api.DataEncryptionKey;
 import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
+import com.azure.cosmos.implementation.encryption.api.EncryptionType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,9 +24,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class EncryptionProcessorTest {
-
     public EncryptionProcessorTest() {}
-
     private byte[] key;
 
     @BeforeClass(groups = "unit")
@@ -59,22 +58,17 @@ public class EncryptionProcessorTest {
     public void aesEncryptThenDecrypt()  {
         AeadAes256CbcHmac256EncryptionKey aeadAesKey = new AeadAes256CbcHmac256EncryptionKey(key, "AES");
         AeadAes256CbcHmac256Algorithm encryptionAlgorithm = new AeadAes256CbcHmac256Algorithm(aeadAesKey, EncryptionType.RANDOMIZED, (byte) 0x01);
+        String keyId = UUID.randomUUID().toString();
+
         DataEncryptionKey javaDataEncryptionKey = new DataEncryptionKey() {
-            String keyId = UUID.randomUUID().toString();
-
-            @Override
-            public String getId() {
-                return keyId;
-            }
-
             @Override
             public byte[] getRawKey() {
                 return  key;
             }
 
             @Override
-            public CosmosEncryptionAlgorithm getCosmosEncryptionAlgorithm() {
-                return CosmosEncryptionAlgorithm.AE_AES_256_CBC_HMAC_SHA_256_RANDOMIZED;
+            public String getEncryptionAlgorithm() {
+                return CosmosEncryptionAlgorithm.AEAes256CbcHmacSha256Randomized;
             }
 
             @Override
@@ -88,13 +82,14 @@ public class EncryptionProcessorTest {
             }
         };
 
-        JavaKeyProvider keyProvider = new JavaKeyProvider();
-        keyProvider.addKey(javaDataEncryptionKey);
+        SimpleInMemoryProvider keyProvider = new SimpleInMemoryProvider();
+        keyProvider.addKey(keyId, javaDataEncryptionKey);
 
         EncryptionProcessor encryptionProcessor = new EncryptionProcessor();
         com.azure.cosmos.implementation.encryption.api.EncryptionOptions encryptionOptions = new EncryptionOptions();
         encryptionOptions.setPathsToEncrypt(ImmutableList.of("/sensitive"));
-        encryptionOptions.setDataEncryptionKeyId(javaDataEncryptionKey.getId());
+        encryptionOptions.setDataEncryptionKeyId(keyId);
+        encryptionOptions.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAes256CbcHmacSha256Randomized);
 
         TestPojo testDate = getTestDate();
         byte[] inputAsByteArray = toByteArray(testDate);

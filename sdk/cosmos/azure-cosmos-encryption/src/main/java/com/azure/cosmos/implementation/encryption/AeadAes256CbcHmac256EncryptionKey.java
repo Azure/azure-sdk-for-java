@@ -62,7 +62,7 @@ public class AeadAes256CbcHmac256EncryptionKey extends SymmetricKey {
      * @param rootKey
      * @param algorithmName
      */
-     AeadAes256CbcHmac256EncryptionKey(byte[] rootKey, String algorithmName) {
+     public AeadAes256CbcHmac256EncryptionKey(byte[] rootKey, String algorithmName) {
         super(rootKey);
         this.algorithmName = algorithmName;
 
@@ -70,7 +70,7 @@ public class AeadAes256CbcHmac256EncryptionKey extends SymmetricKey {
 
         // Key validation
         if (rootKey.length != keySizeInBytes) {
-            throw EncryptionExceptionFactory.InvalidKeySize(
+            throw EncryptionExceptionFactory.invalidKeySize(
                 this.algorithmName,
                 rootKey.length,
                 keySizeInBytes);
@@ -83,19 +83,19 @@ public class AeadAes256CbcHmac256EncryptionKey extends SymmetricKey {
             this.algorithmName,
             KEY_SIZE);
         byte[] buff1 = new byte[keySizeInBytes];
-        SecurityUtility.getHMACWithSHA256(Utils.getUTF8Bytes(encryptionKeySalt), this.getRootKey(), buff1);
+        SecurityUtility.getHMACWithSHA256(Utils.getUtf16Bytes(encryptionKeySalt), this.getRootKey(), buff1);
         this.encryptionKey = new SymmetricKey(buff1);
 
         // Derive mac key
         String macKeySalt = Strings.lenientFormat(MAC_KEY_SALT_FORMAT, this.algorithmName, KEY_SIZE);
         byte[] buff2 = new byte[keySizeInBytes];
-        SecurityUtility.getHMACWithSHA256(Utils.getUTF8Bytes(macKeySalt), this.getRootKey(), buff2);
+        SecurityUtility.getHMACWithSHA256(Utils.getUtf16Bytes(macKeySalt), this.getRootKey(), buff2);
         this.macKey = new SymmetricKey(buff2);
 
         // Derive iv key
         String ivKeySalt = Strings.lenientFormat(IV_KEY_SALT_FORMAT, this.algorithmName, KEY_SIZE);
         byte[] buff3 = new byte[keySizeInBytes];
-        SecurityUtility.getHMACWithSHA256(Utils.getUTF8Bytes(ivKeySalt), this.getRootKey(), buff3);
+        SecurityUtility.getHMACWithSHA256(Utils.getUtf16Bytes(ivKeySalt), this.getRootKey(), buff3);
         this.ivKey = new SymmetricKey(buff3);
     }
 

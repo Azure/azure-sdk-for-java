@@ -3,7 +3,9 @@
 
 package com.azure.cosmos.implementation.encryption;
 
-class SecurityUtility {
+import com.azure.cosmos.implementation.encryption.Bytes;
+
+public class SecurityUtility {
     final static int MAX_SHA_256_HASH_BYTES = 32;
 
     /**
@@ -46,7 +48,7 @@ class SecurityUtility {
      *
      * @param randomBytes Buffer into which cryptographically random bytes are to be generated.
      */
-    static void generateRandomBytes(byte[] randomBytes) {
+    public static void generateRandomBytes(byte[] randomBytes) {
         // Generate random bytes cryptographically.
         try (RNGCryptoServiceProvider rngCsp = new RNGCryptoServiceProvider()) {
             rngCsp.getBytes(randomBytes);

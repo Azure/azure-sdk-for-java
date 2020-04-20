@@ -5,10 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.encryption.EncryptionProcessor;
 import com.azure.cosmos.implementation.encryption.api.DataEncryptionKeyProvider;
-import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
-import java.nio.ByteBuffer;
 
 
 public interface ItemDeserializer {

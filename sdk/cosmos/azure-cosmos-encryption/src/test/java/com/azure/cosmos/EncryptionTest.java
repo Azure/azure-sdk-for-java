@@ -8,8 +8,8 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.encryption.AeadAes256CbcHmac256Algorithm;
 import com.azure.cosmos.implementation.encryption.AeadAes256CbcHmac256EncryptionKey;
-import com.azure.cosmos.implementation.encryption.EncryptionType;
-import com.azure.cosmos.implementation.encryption.JavaKeyProvider;
+import com.azure.cosmos.implementation.encryption.api.EncryptionType;
+import com.azure.cosmos.implementation.encryption.SimpleInMemoryProvider;
 import com.azure.cosmos.implementation.encryption.TestUtils;
 import com.azure.cosmos.implementation.encryption.api.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.implementation.encryption.api.DataEncryptionKey;
@@ -37,7 +37,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class EncryptionTest extends TestSuiteBase {
-    static JavaKeyProvider javaKeyProvider = new JavaKeyProvider();
+    static SimpleInMemoryProvider simpleInMemoryProvider = new SimpleInMemoryProvider();
 
     private CosmosClient client;
     private CosmosContainer container;
@@ -45,10 +45,10 @@ public class EncryptionTest extends TestSuiteBase {
 
     @Factory(dataProvider = "clientBuilders")
     public EncryptionTest(CosmosClientBuilder clientBuilder) {
-        super(CosmosBridgeInternal.setDateKeyProvider(clientBuilder, javaKeyProvider));
+        super(CosmosBridgeInternal.setDateKeyProvider(clientBuilder, simpleInMemoryProvider));
     }
 
-    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosItemTest() {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildClient();
@@ -56,22 +56,30 @@ public class EncryptionTest extends TestSuiteBase {
         container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
     }
 
-    @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @BeforeClass(groups = "emulator")
+    public void beforeClass() {
+        TestUtils.initialized();
+    }
+
+    @AfterClass(groups = {"emulator"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         assertThat(this.client).isNotNull();
         this.client.close();
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void createItemEncrypt_readItemDecrypt() throws Exception {
         CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
         EncryptionOptions encryptionOptions = new EncryptionOptions();
         encryptionOptions.setPathsToEncrypt(ImmutableList.of("/sensitive"));
 
-        DataEncryptionKey dataEncryptionKey = createDataEncryptionKey();
-        javaKeyProvider.addKey(dataEncryptionKey);
+        String keyId = UUID.randomUUID().toString();
 
-        encryptionOptions.setDataEncryptionKeyId(dataEncryptionKey.getId());
+        DataEncryptionKey dataEncryptionKey = createDataEncryptionKey();
+        simpleInMemoryProvider.addKey(keyId, dataEncryptionKey);
+
+        encryptionOptions.setDataEncryptionKeyId(keyId);
+        encryptionOptions.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAes256CbcHmacSha256Randomized);
         ModelBridgeInternal.setEncryptionOptions(requestOptions, encryptionOptions);
 
         Pojo properties = getItem(UUID.randomUUID().toString());
@@ -85,17 +93,19 @@ public class EncryptionTest extends TestSuiteBase {
         validateReadResponseIsValid(properties, readItem);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void upsertItem_readItem() throws Exception {
         CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
         EncryptionOptions encryptionOptions = new EncryptionOptions();
         encryptionOptions.setPathsToEncrypt(ImmutableList.of("/sensitive"));
 
+        String keyId = UUID.randomUUID().toString();
         DataEncryptionKey dataEncryptionKey = createDataEncryptionKey();
-        javaKeyProvider.addKey(dataEncryptionKey);
+        simpleInMemoryProvider.addKey(keyId, dataEncryptionKey);
 
-        encryptionOptions.setDataEncryptionKeyId(dataEncryptionKey.getId());
+        encryptionOptions.setDataEncryptionKeyId(keyId);
         ModelBridgeInternal.setEncryptionOptions(requestOptions, encryptionOptions);
+        encryptionOptions.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAes256CbcHmacSha256Randomized);
 
         Pojo properties = getItem(UUID.randomUUID().toString());
         CosmosItemResponse<Pojo> itemResponse = container.upsertItem(properties, requestOptions);
@@ -107,6 +117,7 @@ public class EncryptionTest extends TestSuiteBase {
         Pojo readItem = container.readItem(properties.id, new PartitionKey(properties.mypk), requestOptions, Pojo.class).getItem();
         validateReadResponseIsValid(properties, readItem);
     }
+
 
     private void validateWriteResponseIsValid(Pojo originalItem, Pojo result) {
         assertThat(result.sensitive).isNull();
@@ -141,7 +152,7 @@ public class EncryptionTest extends TestSuiteBase {
         validateItemResponse(properties, readResponse1);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void readAllItems() throws Exception {
         Pojo properties = getItem(UUID.randomUUID().toString());
         CosmosItemResponse<Pojo> itemResponse = container.createItem(properties);
@@ -154,7 +165,7 @@ public class EncryptionTest extends TestSuiteBase {
     }
 
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void queryItems() throws Exception {
         Pojo properties = getItem(UUID.randomUUID().toString());
         CosmosItemResponse<Pojo> itemResponse = container.createItem(properties);
@@ -173,7 +184,7 @@ public class EncryptionTest extends TestSuiteBase {
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void queryItemsWithContinuationTokenAndPageSize() throws Exception {
         List<String> actualIds = new ArrayList<>();
         Pojo properties = getItem(UUID.randomUUID().toString());
@@ -251,12 +262,6 @@ public class EncryptionTest extends TestSuiteBase {
         AeadAes256CbcHmac256EncryptionKey aeadAesKey = TestUtils.instantiateAeadAes256CbcHmac256EncryptionKey(key);
         AeadAes256CbcHmac256Algorithm encryptionAlgorithm = TestUtils.instantiateAeadAes256CbcHmac256Algorithm(aeadAesKey, EncryptionType.RANDOMIZED, (byte) 0x01);
         DataEncryptionKey javaDataEncryptionKey = new DataEncryptionKey() {
-            String id = UUID.randomUUID().toString();
-
-            @Override
-            public String getId() {
-                return id;
-            }
 
             @Override
             public byte[] getRawKey() {
@@ -264,8 +269,8 @@ public class EncryptionTest extends TestSuiteBase {
             }
 
             @Override
-            public CosmosEncryptionAlgorithm getCosmosEncryptionAlgorithm() {
-                return CosmosEncryptionAlgorithm.AE_AES_256_CBC_HMAC_SHA_256_RANDOMIZED;
+            public String getEncryptionAlgorithm() {
+                return CosmosEncryptionAlgorithm.AEAes256CbcHmacSha256Randomized;
             }
 
             @Override

@@ -80,6 +80,10 @@ public class Utils {
 
     }
 
+    public static byte[] getUtf16Bytes(String str) {
+        return str.getBytes(StandardCharsets.UTF_16LE);
+    }
+
     public static String encodeBase64String(byte[] binaryData) {
         String encodedString = Base64Encoder.encodeToString(binaryData);
 

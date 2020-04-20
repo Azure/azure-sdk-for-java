@@ -22,47 +22,54 @@ public class EncryptionPropertiesTest {
         ObjectNode objectNode = objectMapper.createObjectNode();
 
         objectNode.put("_ef", 1);
-        objectNode.put("_ek", "keyId");
+        objectNode.put("_ea", "myAlgo");
+        objectNode.put("_en", "keyId");
         objectNode.put("_ed", "AwQ=");
 
         EncryptionProperties encryptionProperties = EncryptionProperties.fromObjectNode(objectNode);
 
         assertThat(encryptionProperties.getEncryptionFormatVersion()).isEqualTo(1);
-        assertThat(encryptionProperties.getDataEncryptionKeyRid()).isEqualTo("keyId");
+        assertThat(encryptionProperties.getDataEncryptionKeyId()).isEqualTo("keyId");
+        assertThat(encryptionProperties.getEncryptionAlgorithm()).isEqualTo("myAlgo");
         assertThat(encryptionProperties.getEncryptedData()).isEqualTo(new byte[]{3, 4});
     }
 
     @Test(groups = "unit")
     public void toJsonNode() throws Exception {
-        EncryptionProperties encryptionProperties = new EncryptionProperties(1, "keyId", new byte[]{3, 4});
+        EncryptionProperties encryptionProperties = new EncryptionProperties(1, "myAlgo", "keyId", new byte[]{3, 4});
         ObjectNode objectNode = encryptionProperties.toObjectNode();
 
         assertThat(objectNode.get("_ef").isInt()).isTrue();
         assertThat(objectNode.get("_ef").asInt()).isEqualTo(1);
 
-        assertThat(objectNode.get("_ek").isTextual()).isTrue();
-        assertThat(objectNode.get("_ek").asText()).isEqualTo("keyId");
+        assertThat(objectNode.get("_en").isTextual()).isTrue();
+        assertThat(objectNode.get("_en").asText()).isEqualTo("keyId");
+
+
+        assertThat(objectNode.get("_ea").isTextual()).isTrue();
+        assertThat(objectNode.get("_ea").asText()).isEqualTo("myAlgo");
+
 
         assertThat(objectNode.get("_ed").isBinary()).isTrue();
         assertThat(objectNode.get("_ed").binaryValue()).isEqualTo(new byte[] {3, 4});
 
-        assertThat(objectNode.fieldNames()).hasSize(3);
+        assertThat(objectNode.fieldNames()).hasSize(4);
     }
 
     @Test(groups = "unit")
     public void serialize() throws Exception {
-        EncryptionProperties encryptionProperties = new EncryptionProperties(1, "2", new byte[]{3, 4});
+        EncryptionProperties encryptionProperties = new EncryptionProperties(1, "myAlgo", "2", new byte[]{3, 4});
         String encryptionPropertiesAsString = EncryptionProperties.getObjectWriter().writeValueAsString(encryptionProperties);
 
-        assertThat(encryptionPropertiesAsString).isEqualTo("{\"_ef\":1,\"_ek\":\"2\",\"_ed\":\"AwQ=\"}");
+        assertThat(encryptionPropertiesAsString).isEqualTo("{\"_ef\":1,\"_ea\":\"myAlgo\",\"_en\":\"2\",\"_ed\":\"AwQ=\"}");
     }
 
     @Test(groups = "unit")
     public void deserialize() throws Exception {
-        EncryptionProperties parsedEncryptionProperties = EncryptionProperties.getObjectReader().readValue("{\"_ef\":1,\"_ek\":\"2\",\"_ed\":\"AwQ=\"}");
+        EncryptionProperties parsedEncryptionProperties = EncryptionProperties.getObjectReader().readValue("{\"_ef\":1,\"_en\":\"2\",\"_ea\":\"myAlgo\",\"_ed\":\"AwQ=\"}");
 
         assertThat(parsedEncryptionProperties.getEncryptionFormatVersion()).isEqualTo(1);
-        assertThat(parsedEncryptionProperties.getDataEncryptionKeyRid()).isEqualTo("2");
+        assertThat(parsedEncryptionProperties.getDataEncryptionKeyId()).isEqualTo("2");
         assertThat(parsedEncryptionProperties.getEncryptedData()).isEqualTo(new byte[]{3, 4});
     }
 
@@ -71,13 +78,14 @@ public class EncryptionPropertiesTest {
         EncryptionProperties encryptionProperties = new EncryptionProperties(
             RandomUtils.nextInt(),
             UUID.randomUUID().toString(),
+            UUID.randomUUID().toString(),
             RandomStringUtils.randomAlphabetic(10).getBytes(StandardCharsets.UTF_8));
 
         byte[] encryptionPropertiesAsBytes = EncryptionProperties.getObjectWriter().writeValueAsBytes(encryptionProperties);
         EncryptionProperties parsedEncryptionProperties = EncryptionProperties.getObjectReader().readValue(encryptionPropertiesAsBytes);
 
         assertThat(parsedEncryptionProperties.getEncryptionFormatVersion()).isEqualTo(encryptionProperties.getEncryptionFormatVersion());
-        assertThat(parsedEncryptionProperties.getDataEncryptionKeyRid()).isEqualTo(encryptionProperties.getDataEncryptionKeyRid());
+        assertThat(parsedEncryptionProperties.getDataEncryptionKeyId()).isEqualTo(encryptionProperties.getDataEncryptionKeyId());
         assertThat(parsedEncryptionProperties.getEncryptedData()).isEqualTo(encryptionProperties.getEncryptedData());
     }
 }

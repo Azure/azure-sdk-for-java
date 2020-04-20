@@ -7,15 +7,32 @@ import java.util.List;
 
 public class EncryptionOptions {
 
-    public CosmosEncryptionAlgorithm getEncryptionAlgorithm() {
+
+    /**
+     *  Gets Algorithm to be used for encrypting the data in the request payload.
+     * @return
+     */
+    public String getEncryptionAlgorithm() {
         return encryptionAlgorithm;
     }
 
-    public EncryptionOptions setEncryptionAlgorithm(CosmosEncryptionAlgorithm encryptionAlgorithm) {
+
+    /**
+     * Sets Algorithm to be used for encrypting the data in the request payload.
+     * @param encryptionAlgorithm
+     * @return
+     */
+    public EncryptionOptions setEncryptionAlgorithm(String encryptionAlgorithm) {
         this.encryptionAlgorithm = encryptionAlgorithm;
         return this;
     }
 
+
+    /**
+     * Gets Identifier of the data encryption key to be used for encrypting the data in the request payload.
+     * The data encryption key must be suitable for use with the EncryptionAlgorithm provided.
+     * @return data encryption key id.
+     */
     public String getDataEncryptionKeyId() {
         return dataEncryptionKeyId;
     }
@@ -52,5 +69,5 @@ public class EncryptionOptions {
     /**
      * Algorithm to be used for encrypting the data in the request payload.
      */
-    private CosmosEncryptionAlgorithm encryptionAlgorithm;
+    private String encryptionAlgorithm;
 }

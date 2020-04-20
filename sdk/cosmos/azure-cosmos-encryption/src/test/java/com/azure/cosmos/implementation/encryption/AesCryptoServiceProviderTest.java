@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.encryption;
 
+import com.azure.cosmos.implementation.encryption.api.EncryptionType;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;

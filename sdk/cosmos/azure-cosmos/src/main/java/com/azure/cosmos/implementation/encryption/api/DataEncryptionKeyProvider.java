@@ -3,14 +3,20 @@
 
 package com.azure.cosmos.implementation.encryption.api;
 
+/**
+ * Abstraction for a provider to get data encryption keys for use in client-side encryption.
+ * See https://aka.ms/CosmosClientEncryption for more information on client-side encryption support in Azure Cosmos DB.
+ */
 public interface DataEncryptionKeyProvider {
 
     /**
-     * Loads the data encryption key for the given id.
+     * Retrieves the data encryption key for the given id.
      * @param id Identifier of the data encryption key.
-     * @return Data encryption key bytes
+     * @param encryptionAlgorithm Encryption algorithm that the retrieved key will be used with.
+     * @return Data encryption key bytes.
+     * TODO: @moderakh look into if this method needs to be async.
      */
     DataEncryptionKey loadDataEncryptionKey(
         String id,
-        CosmosEncryptionAlgorithm algorithm);
+        String encryptionAlgorithm);
 }

@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.encryption;
 
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -43,7 +44,8 @@ class EncryptionProperties {
     public ObjectNode toObjectNode() {
         ObjectNode objectNode = OBJECT_MAPPER.createObjectNode();
         objectNode.put(Constants.Properties.EncryptionFormatVersion, this.encryptionFormatVersion);
-        objectNode.put(Constants.Properties.DataEncryptionKeyRid, this.dataEncryptionKeyRid);
+        objectNode.put(Constants.Properties.EncryptionAlgorithm, this.encryptionAlgorithm);
+        objectNode.put(Constants.Properties.DataEncryptionKeyId, this.dataEncryptionKeyId);
         objectNode.put(Constants.Properties.EncryptedData, this.encryptedData);
         return objectNode;
     }
@@ -55,28 +57,46 @@ class EncryptionProperties {
     public EncryptionProperties() {
     }
 
+    public String getEncryptionAlgorithm() {
+        return this.encryptionAlgorithm;
+    }
+
     public int getEncryptionFormatVersion() {
         return encryptionFormatVersion;
     }
 
-    public String getDataEncryptionKeyRid() {
-        return dataEncryptionKeyRid;
+    public String getDataEncryptionKeyId() {
+        return dataEncryptionKeyId;
     }
 
     public byte[] getEncryptedData() {
         return encryptedData;
     }
 
+
+    private String encryptionAlgorithm;
+
     private int encryptionFormatVersion;
-    private String dataEncryptionKeyRid;
+    private String dataEncryptionKeyId;
     private byte[] encryptedData;
 
     public EncryptionProperties(
         int encryptionFormatVersion,
-        String dataEncryptionKeyRid,
+        String encryptionAlgorithm,
+        String dataEncryptionKeyId,
         byte[] encryptedData) {
+
+        if (StringUtils.isEmpty(encryptionAlgorithm)) {
+            throw new IllegalArgumentException("encryptionAlgorithm is missing");
+        }
+
+        if (StringUtils.isEmpty(dataEncryptionKeyId)) {
+            throw new IllegalArgumentException("dataEncryptionKeyId is missing");
+        }
+
         this.encryptionFormatVersion = encryptionFormatVersion;
-        this.dataEncryptionKeyRid = dataEncryptionKeyRid;
+        this.encryptionAlgorithm = encryptionAlgorithm;
+        this.dataEncryptionKeyId = dataEncryptionKeyId;
         this.encryptedData = encryptedData;
     }
 
@@ -91,7 +111,8 @@ class EncryptionProperties {
         public void serialize(final EncryptionProperties value, final JsonGenerator generator, final SerializerProvider provider) throws IOException {
             generator.writeStartObject();
             generator.writeNumberField(Constants.Properties.EncryptionFormatVersion, value.encryptionFormatVersion);
-            generator.writeStringField(Constants.Properties.DataEncryptionKeyRid, value.dataEncryptionKeyRid);
+            generator.writeStringField(Constants.Properties.EncryptionAlgorithm, value.encryptionAlgorithm);
+            generator.writeStringField(Constants.Properties.DataEncryptionKeyId, value.dataEncryptionKeyId);
             generator.writeBinaryField(Constants.Properties.EncryptedData, value.encryptedData);
             generator.writeEndObject();
         }
@@ -122,9 +143,13 @@ class EncryptionProperties {
             validateOrThrow(jsonParser,node != null && node.isInt(), Constants.Properties.EncryptionFormatVersion, "can't deserialize");
             encryptionProperties.encryptionFormatVersion = node.asInt();
 
-            node = root.get(Constants.Properties.DataEncryptionKeyRid);
-            validateOrThrow(jsonParser, node != null && node.isTextual(), Constants.Properties.DataEncryptionKeyRid, "can't deserialize");
-            encryptionProperties.dataEncryptionKeyRid = node.asText();
+            node = root.get(Constants.Properties.EncryptionAlgorithm);
+            validateOrThrow(jsonParser, node != null && node.isTextual(), Constants.Properties.EncryptionAlgorithm, "can't deserialize");
+            encryptionProperties.encryptionAlgorithm = node.asText();
+
+            node = root.get(Constants.Properties.DataEncryptionKeyId);
+            validateOrThrow(jsonParser, node != null && node.isTextual(), Constants.Properties.DataEncryptionKeyId, "can't deserialize");
+            encryptionProperties.dataEncryptionKeyId = node.asText();
 
             node = root.get(Constants.Properties.EncryptedData);
             validateOrThrow(jsonParser, node != null && node.isBinary() || node.isTextual(), Constants.Properties.EncryptedData, "can't deserialize");

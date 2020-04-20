@@ -4,7 +4,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.encryption.AeadAes256CbcHmac256Algorithm;
 import com.azure.cosmos.implementation.encryption.AeadAes256CbcHmac256EncryptionKey;
-import com.azure.cosmos.implementation.encryption.EncryptionType;
+import com.azure.cosmos.implementation.encryption.api.EncryptionType;
 import com.azure.cosmos.implementation.encryption.TestUtils;
 import com.azure.cosmos.implementation.encryption.api.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.implementation.encryption.api.DataEncryptionKey;
@@ -32,7 +32,6 @@ public class EncryptionCodeSnippet {
             .dataEncryptionKeyProvider(naiveDataEncryptionKeyProvider())
             .buildClient();
 
-
         CosmosContainer container = client.getDatabase("myDb").getContainer("myCol");
 
         Pojo pojo = new Pojo();
@@ -40,7 +39,7 @@ public class EncryptionCodeSnippet {
         pojo.mypk = UUID.randomUUID().toString();
         pojo.nonSensitive = UUID.randomUUID().toString();
         pojo.sensitive1 = "this is a secret to be encrypted";
-        pojo.sensitive1 = "this is a another secret to be encrypted";
+        pojo.sensitive2 = "this is a another secret to be encrypted";
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         EncryptionOptions encryptionOptions = new EncryptionOptions();
@@ -60,7 +59,7 @@ public class EncryptionCodeSnippet {
         assert response.getItem().sensitive1 != null;
         assert response.getItem().sensitive2 != null;
 
-        
+
     }
 
     private DataEncryptionKeyProvider naiveDataEncryptionKeyProvider() {
@@ -71,7 +70,7 @@ public class EncryptionCodeSnippet {
 
         return new DataEncryptionKeyProvider() {
             @Override
-            public DataEncryptionKey loadDataEncryptionKey(String id, CosmosEncryptionAlgorithm algorithm) {
+            public DataEncryptionKey loadDataEncryptionKey(String id, String algorithm) {
                 return key;
             }
         };
@@ -90,7 +89,6 @@ public class EncryptionCodeSnippet {
         public String sensitive2;
     }
 
-
     private DataEncryptionKey createDataEncryptionKey() {
 
         byte[] key;
@@ -102,13 +100,7 @@ public class EncryptionCodeSnippet {
 
         AeadAes256CbcHmac256EncryptionKey aeadAesKey = TestUtils.instantiateAeadAes256CbcHmac256EncryptionKey(key);
         AeadAes256CbcHmac256Algorithm encryptionAlgorithm = TestUtils.instantiateAeadAes256CbcHmac256Algorithm(aeadAesKey, EncryptionType.RANDOMIZED, (byte) 0x01);
-        DataEncryptionKey javaDataEncryptionKey = new DataEncryptionKey() {
-            String id = UUID.randomUUID().toString();
-
-            @Override
-            public String getId() {
-                return id;
-            }
+        DataEncryptionKey dataEncryptionKey = new DataEncryptionKey() {
 
             @Override
             public byte[] getRawKey() {
@@ -116,8 +108,8 @@ public class EncryptionCodeSnippet {
             }
 
             @Override
-            public CosmosEncryptionAlgorithm getCosmosEncryptionAlgorithm() {
-                return CosmosEncryptionAlgorithm.AE_AES_256_CBC_HMAC_SHA_256_RANDOMIZED;
+            public String getEncryptionAlgorithm() {
+                return CosmosEncryptionAlgorithm.AEAes256CbcHmacSha256Randomized;
             }
 
             @Override
@@ -130,7 +122,7 @@ public class EncryptionCodeSnippet {
                 return encryptionAlgorithm.decryptData(cipherText);
             }
         };
-        return javaDataEncryptionKey;
+        return dataEncryptionKey;
     }
 }
 

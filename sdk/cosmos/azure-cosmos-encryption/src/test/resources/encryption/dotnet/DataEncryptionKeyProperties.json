@@ -1,0 +1,15 @@
+{
+  "id": "mydek",
+  "encryptionAlgorithm": "AEAes256CbcHmacSha256Randomized",
+  "wrappedDataEncryptionKey": "6JA4qWfHgxVYZlrFlM6ol5kdYzQC8pzHZ2cJF17dZf4=",
+  "keyWrapMetadata": {
+    "type": "custom",
+    "value": "metadata1updated"
+  },
+  "createTime": 1587096167,
+  "_rid": "YJIgAPkqHVYBAAAAAAAAAA==",
+  "_self": "dbs/YJIgAA==/colls/YJIgAPkqHVY=/docs/YJIgAPkqHVYBAAAAAAAAAA==/",
+  "_etag": "\"00000000-0000-0000-146d-0e494cde01d6\"",
+  "_attachments": "attachments/",
+  "_ts": 1587096167
+}

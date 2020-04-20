@@ -43,6 +43,10 @@ public class EncryptionProcessor {
             throw new IllegalArgumentException("Invalid encryption options: encryptionOptions.getDataEncryptionKeyId." + encryptionOptions.getDataEncryptionKeyId());
         }
 
+        if (encryptionOptions.getEncryptionAlgorithm() == null) {
+            throw new IllegalArgumentException("Invalid encryption options: encryptionOptions.getEncryptionAlgorithm." + encryptionOptions.getEncryptionAlgorithm());
+        }
+
         if (dataEncryptionKeyProvider == null) {
             throw new IllegalArgumentException(RMResources.EncryptionKeyProviderNotConfigured);
         }
@@ -66,8 +70,9 @@ public class EncryptionProcessor {
         DataEncryptionKey dataEncryptionKey = dataEncryptionKeyProvider.loadDataEncryptionKey(encryptionOptions.getDataEncryptionKeyId(), encryptionOptions.getEncryptionAlgorithm());
 
         EncryptionProperties encryptionProperties = new EncryptionProperties(
-            /** encryptionFormatVersion: **/1,
-            dataEncryptionKey.getId(),
+            /* encryptionFormatVersion: */ 2,
+            encryptionOptions.getEncryptionAlgorithm(),
+            encryptionOptions.getDataEncryptionKeyId(),
             dataEncryptionKey.encryptData(plainText));
 
         itemJObj.set(Constants.Properties.EncryptedInfo, encryptionProperties.toObjectNode());
@@ -98,13 +103,13 @@ public class EncryptionProcessor {
         } catch (IOException e) {
             throw new IllegalArgumentException(e);
         }
-        if (encryptionProperties.getEncryptionFormatVersion() != 1) {
+        if (encryptionProperties.getEncryptionFormatVersion() != 2) {
             throw new InternalServerErrorException(Strings.lenientFormat(
                 "Unknown encryption format version: %s. Please upgrade your SDK to the latest version.", encryptionProperties.getEncryptionFormatVersion()));
         }
 
         // get key
-        DataEncryptionKey inMemoryRawDek = keyProvider.loadDataEncryptionKey(encryptionProperties.getDataEncryptionKeyRid(), CosmosEncryptionAlgorithm.AE_AES_256_CBC_HMAC_SHA_256_RANDOMIZED);
+        DataEncryptionKey inMemoryRawDek = keyProvider.loadDataEncryptionKey(encryptionProperties.getDataEncryptionKeyId(), CosmosEncryptionAlgorithm.AEAes256CbcHmacSha256Randomized);
 
         byte[] plainText = inMemoryRawDek.decryptData(encryptionProperties.getEncryptedData());
 

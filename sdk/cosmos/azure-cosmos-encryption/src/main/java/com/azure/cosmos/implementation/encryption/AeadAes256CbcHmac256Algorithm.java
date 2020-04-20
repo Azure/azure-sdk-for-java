@@ -1,5 +1,10 @@
 package com.azure.cosmos.implementation.encryption;
 
+import com.azure.cosmos.implementation.encryption.api.CosmosEncryptionAlgorithm;
+import com.azure.cosmos.implementation.encryption.api.DataEncryptionKey;
+import com.azure.cosmos.implementation.encryption.api.EncryptionType;
+
+
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
@@ -9,19 +14,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * This (and AeadAes256CbcHmac256EncryptionKey) implementation for Cosmos DB is same as the existing
  * SQL client implementation with StyleCop related changes - also, we restrict to randomized encryption to start with.
  */
-public class AeadAes256CbcHmac256Algorithm implements EncryptionAlgorithm {
+public class AeadAes256CbcHmac256Algorithm implements DataEncryptionKey {
 
-    private final static String ALGORITHM_NAME = "AEAD_AES_256_CBC_HMAC_SHA256";
-
-    /**
-     * Gets Algorithm Name
-     *
-     * @return Algorithm Name
-     */
-    @Override
-    public String getAlgorithmName() {
-        return ALGORITHM_NAME;
-    }
+    public final static String ALGORITHM_NAME = "AEAD_AES_256_CBC_HMAC_SHA256";
 
     /**
      * Key size in bytes
@@ -85,6 +80,22 @@ public class AeadAes256CbcHmac256Algorithm implements EncryptionAlgorithm {
      */
     private final ConcurrentLinkedQueue<AesCryptoServiceProvider> cryptoProviderPool;
 
+    @Override
+    public byte[] getRawKey() {
+        return  this.dataEncryptionKey.getRootKey();
+    }
+
+
+    @Override
+    public String getEncryptionAlgorithm() {
+        return CosmosEncryptionAlgorithm.AEAes256CbcHmacSha256Randomized;
+    }
+
+
+    public AeadAes256CbcHmac256Algorithm(byte[] encryptionKey, EncryptionType encryptionType, byte algorithmVersion) {
+        this(new AeadAes256CbcHmac256EncryptionKey(encryptionKey,  AeadAes256CbcHmac256Algorithm.ALGORITHM_NAME), encryptionType, algorithmVersion);
+    }
+
     /**
      * Initializes a new instance of AeadAes256CbcHmac256Algorithm algorithm with a given key and encryption type
      *
@@ -94,7 +105,7 @@ public class AeadAes256CbcHmac256Algorithm implements EncryptionAlgorithm {
      *                         For Randomized encryption, a random IV will be generated during encryption.
      * @param algorithmVersion Algorithm version
      */
-    AeadAes256CbcHmac256Algorithm(AeadAes256CbcHmac256EncryptionKey encryptionKey, EncryptionType encryptionType, byte algorithmVersion) {
+    public AeadAes256CbcHmac256Algorithm(AeadAes256CbcHmac256EncryptionKey encryptionKey, EncryptionType encryptionType, byte algorithmVersion) {
         this.dataEncryptionKey = encryptionKey;
         this.algorithmVersion = algorithmVersion;
 
@@ -250,14 +261,14 @@ public class AeadAes256CbcHmac256Algorithm implements EncryptionAlgorithm {
 
         int minimumCipherTextLength = hasAuthenticationTag ? MINIMUM_CIPHER_TEXT_LENGTH_IN_BYTES_WITH_AUTHENTICATION_TAG : MINIMUM_CIPHER_TEXT_LENGTH_IN_BYTES_NO_AUTHENTICATION_TAG;
         if (cipherText.length < minimumCipherTextLength) {
-            throw EncryptionExceptionFactory.InvalidCipherTextSize(cipherText.length, minimumCipherTextLength);
+            throw EncryptionExceptionFactory.invalidCipherTextSize(cipherText.length, minimumCipherTextLength);
         }
 
         // Validate the version byte
         int startIndex = 0;
         if (cipherText[startIndex] != this.algorithmVersion) {
             // Cipher text was computed with a different algorithm version than this.
-            throw EncryptionExceptionFactory.InvalidAlgorithmVersion(cipherText[startIndex], this.algorithmVersion);
+            throw EncryptionExceptionFactory.invalidAlgorithmVersion(cipherText[startIndex], this.algorithmVersion);
         }
 
         startIndex += 1;
@@ -282,7 +293,7 @@ public class AeadAes256CbcHmac256Algorithm implements EncryptionAlgorithm {
             byte[] authenticationTag = this.prepareAuthenticationTag(iv, cipherText, cipherTextOffset, cipherTextCount);
             if (!SecurityUtility.compareBytes(authenticationTag, cipherText, authenticationTagOffset, authenticationTag.length)) {
                 // Potentially tampered data, throw an exception
-                throw EncryptionExceptionFactory.InvalidAuthenticationTag();
+                throw EncryptionExceptionFactory.invalidAuthenticationTag();
             }
         }
 

@@ -3,12 +3,17 @@
 
 package com.azure.cosmos.implementation.encryption;
 
+import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.encryption.api.EncryptionType;
 import com.google.common.io.BaseEncoding;
+import com.google.common.io.ByteStreams;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.IOException;
+import java.io.InputStream;
 import java.security.NoSuchAlgorithmException;
 import java.security.Security;
 import java.security.spec.InvalidKeySpecException;
@@ -20,11 +25,15 @@ public class TestUtils {
         Security.addProvider(new BouncyCastleProvider());
     }
 
+    public static void initialized() {}
+
     public static AeadAes256CbcHmac256EncryptionKey instantiateAeadAes256CbcHmac256EncryptionKey(byte[] key) {
         return new AeadAes256CbcHmac256EncryptionKey(key, "AES");
     }
 
-    public static AeadAes256CbcHmac256Algorithm instantiateAeadAes256CbcHmac256Algorithm(AeadAes256CbcHmac256EncryptionKey aeadAesKey, EncryptionType encryptionType, byte version) {
+    public static AeadAes256CbcHmac256Algorithm instantiateAeadAes256CbcHmac256Algorithm(AeadAes256CbcHmac256EncryptionKey aeadAesKey,
+                                                                                         EncryptionType encryptionType,
+                                                                                         byte version) {
         return new AeadAes256CbcHmac256Algorithm(aeadAesKey, EncryptionType.RANDOMIZED, version);
     }
 
@@ -41,5 +50,25 @@ public class TestUtils {
         byte[] key = secretKeyFactory.generateSecret(spec).getEncoded();
         SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
         return keySpec.getEncoded();
+    }
+
+    public static InputStream getResourceAsInputStream(String path) {
+        return TestUtils.class.getClassLoader().getResourceAsStream(path);
+    }
+
+    public static byte[] getResourceAsByteArray(String path) {
+        try {
+            return ByteStreams.toByteArray(getResourceAsInputStream(path));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static <T> T loadPojo(String path, Class<T> classType) {
+        try {
+            return Utils.getSimpleObjectMapper().readValue(getResourceAsByteArray(path), classType);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
