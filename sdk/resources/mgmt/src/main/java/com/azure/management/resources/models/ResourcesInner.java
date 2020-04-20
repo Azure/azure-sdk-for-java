@@ -930,7 +930,11 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
                     resourceName,
                     apiVersion)
                 .block();
-        return value == null ? false : value;
+        if (value != null) {
+            return value;
+        } else {
+            throw new NullPointerException();
+        }
     }
 
     /**
@@ -1451,7 +1455,11 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean checkExistenceById(String resourceId, String apiVersion) {
         Boolean value = checkExistenceByIdAsync(resourceId, apiVersion).block();
-        return value == null ? false : value;
+        if (value != null) {
+            return value;
+        } else {
+            throw new NullPointerException();
+        }
     }
 
     /**

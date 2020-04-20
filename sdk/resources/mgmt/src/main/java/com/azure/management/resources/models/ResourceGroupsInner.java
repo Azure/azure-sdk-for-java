@@ -234,7 +234,11 @@ public final class ResourceGroupsInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean checkExistence(String resourceGroupName) {
         Boolean value = checkExistenceAsync(resourceGroupName).block();
-        return value == null ? false : value;
+        if (value != null) {
+            return value;
+        } else {
+            throw new NullPointerException();
+        }
     }
 
     /**

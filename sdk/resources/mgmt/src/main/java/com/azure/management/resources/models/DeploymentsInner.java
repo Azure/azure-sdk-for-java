@@ -909,7 +909,11 @@ public final class DeploymentsInner
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean checkExistenceAtScope(String scope, String deploymentName) {
         Boolean value = checkExistenceAtScopeAsync(scope, deploymentName).block();
-        return value == null ? false : value;
+        if (value != null) {
+            return value;
+        } else {
+            throw new NullPointerException();
+        }
     }
 
     /**
@@ -1452,7 +1456,11 @@ public final class DeploymentsInner
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean checkExistenceAtTenantScope(String deploymentName) {
         Boolean value = checkExistenceAtTenantScopeAsync(deploymentName).block();
-        return value == null ? false : value;
+        if (value != null) {
+            return value;
+        } else {
+            throw new NullPointerException();
+        }
     }
 
     /**
@@ -1969,7 +1977,11 @@ public final class DeploymentsInner
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean checkExistenceAtManagementGroupScope(String groupId, String deploymentName) {
         Boolean value = checkExistenceAtManagementGroupScopeAsync(groupId, deploymentName).block();
-        return value == null ? false : value;
+        if (value != null) {
+            return value;
+        } else {
+            throw new NullPointerException();
+        }
     }
 
     /**
@@ -2528,7 +2540,11 @@ public final class DeploymentsInner
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean checkExistenceAtSubscriptionScope(String deploymentName) {
         Boolean value = checkExistenceAtSubscriptionScopeAsync(deploymentName).block();
-        return value == null ? false : value;
+        if (value != null) {
+            return value;
+        } else {
+            throw new NullPointerException();
+        }
     }
 
     /**
@@ -3159,7 +3175,11 @@ public final class DeploymentsInner
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean checkExistence(String resourceGroupName, String deploymentName) {
         Boolean value = checkExistenceAsync(resourceGroupName, deploymentName).block();
-        return value == null ? false : value;
+        if (value != null) {
+            return value;
+        } else {
+            throw new NullPointerException();
+        }
     }
 
     /**
