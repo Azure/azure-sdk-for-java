@@ -3,7 +3,8 @@
 
 package com.azure.management.compute;
 
-import com.azure.management.resources.fluentcore.arm.ExpandableStringEnum;
+import com.azure.core.util.ExpandableStringEnum;
+
 import java.util.Collection;
 
 /** Defines values for EncryptionStatuses. */

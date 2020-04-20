@@ -2,23 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.management.dns.implementation;
 
-import com.azure.management.dns.models.RecordSetInner;
-import com.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesNonCachedImpl;
 import com.azure.management.dns.DnsRecordSet;
 import com.azure.management.dns.DnsZone;
+import com.azure.management.dns.models.RecordSetInner;
+import com.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesNonCachedImpl;
 
-/**
- * Represents an record set collection associated with a DNS zone.
- */
-class DnsRecordSetsImpl extends
-        ExternalChildResourcesNonCachedImpl<DnsRecordSetImpl,
-                        DnsRecordSet,
-                        RecordSetInner,
-                        DnsZoneImpl,
-                        DnsZone> {
-    /**
-     * The default record set ttl in seconds.
-     */
+/** Represents an record set collection associated with a DNS zone. */
+class DnsRecordSetsImpl
+    extends ExternalChildResourcesNonCachedImpl<DnsRecordSetImpl, DnsRecordSet, RecordSetInner, DnsZoneImpl, DnsZone> {
+    /** The default record set ttl in seconds. */
     private final long defaultTtlInSeconds = 3600;
 
     /**

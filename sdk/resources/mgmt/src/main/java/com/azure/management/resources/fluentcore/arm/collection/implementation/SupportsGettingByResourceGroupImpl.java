@@ -3,7 +3,6 @@
 
 package com.azure.management.resources.fluentcore.arm.collection.implementation;
 
-import com.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.management.resources.fluentcore.arm.ResourceId;
 import com.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import reactor.core.publisher.Mono;
@@ -18,8 +17,7 @@ import reactor.core.publisher.Mono;
 public abstract class SupportsGettingByResourceGroupImpl<T>
         extends SupportsGettingByIdImpl<T>
         implements
-        SupportsGettingByResourceGroup<T>,
-        SupportsGettingById<T> {
+        SupportsGettingByResourceGroup<T> {
     @Override
     public T getByResourceGroup(String resourceGroupName, String name) {
         return this.getByResourceGroupAsync(resourceGroupName, name).block();
@@ -29,9 +27,7 @@ public abstract class SupportsGettingByResourceGroupImpl<T>
     @Override
     public Mono<T> getByIdAsync(String id) {
         ResourceId resourceId = ResourceId.fromString(id);
-        if (resourceId == null) {
-            return null;
-        }
+
         return this.getByResourceGroupAsync(resourceId.resourceGroupName(), resourceId.name());
     }
 }

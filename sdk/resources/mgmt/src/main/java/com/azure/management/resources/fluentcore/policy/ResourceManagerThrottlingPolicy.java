@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
  *   write requests to 1,200 per hour. These limits apply to each Azure Resource Manager instance.
  */
 public class ResourceManagerThrottlingPolicy implements HttpPipelinePolicy {
-    private final String retryMessageFormat =
+    private static final String RETRY_MESSAGE_FORMAT =
         "Azure Resource Manager read/write per hour limit reached. Will retry in: %d seconds";
 
     @Override
@@ -50,7 +50,9 @@ public class ResourceManagerThrottlingPolicy implements HttpPipelinePolicy {
                             OffsetDateTime retryWhen = null;
                             try {
                                 retryWhen = new DateTimeRfc1123(retryAfterHeader).getDateTime();
-                            } catch (Exception e) { }
+                            } catch (Exception e) {
+                                retryWhen = null;
+                            }
                             if (retryWhen == null) {
                                 retryAfter = Integer.parseInt(retryAfterHeader);
                             } else {
@@ -78,7 +80,7 @@ public class ResourceManagerThrottlingPolicy implements HttpPipelinePolicy {
                         if (retryAfter > 0) {
                             final ClientLogger logger = new ClientLogger(
                                 (String) context.getData("caller-method").orElse(""));
-                            logger.info(retryMessageFormat, retryAfter);
+                            logger.info(RETRY_MESSAGE_FORMAT, retryAfter);
                             SdkContext.sleep((int) (TimeUnit.SECONDS.toMillis(retryAfter) + 100));
                         }
                         return next.clone().process();

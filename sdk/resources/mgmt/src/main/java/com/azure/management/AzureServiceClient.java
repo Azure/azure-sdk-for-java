@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.NetworkInterface;
@@ -159,8 +160,7 @@ public abstract class AzureServiceClient {
         MessageDigest messageDigest;
         try {
             messageDigest = MessageDigest.getInstance("SHA-256");
-            messageDigest.update(bytes);
-            messageDigest.digest(bytes).toString();
+            return new HexBinaryAdapter().marshal(messageDigest.digest(bytes));
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }

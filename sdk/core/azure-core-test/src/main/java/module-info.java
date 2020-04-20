@@ -20,6 +20,6 @@ module com.azure.core.test {
         com.fasterxml.jackson.databind,
         com.azure.core;
 
-    opens com.azure.core.test.implementation.entities to com.fasterxml.jackson.databind;
+    opens com.azure.core.test.implementation.entities to com.fasterxml.jackson.databind, com.azure.core;
     opens com.azure.core.test to com.fasterxml.jackson.databind;
 }

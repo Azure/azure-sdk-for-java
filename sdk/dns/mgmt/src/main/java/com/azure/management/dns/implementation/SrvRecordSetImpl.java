@@ -2,29 +2,22 @@
 // Licensed under the MIT License.
 package com.azure.management.dns.implementation;
 
-import com.azure.management.dns.models.RecordSetInner;
 import com.azure.management.dns.RecordType;
 import com.azure.management.dns.SrvRecord;
 import com.azure.management.dns.SrvRecordSet;
-
+import com.azure.management.dns.models.RecordSetInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Implementation of SrvRecordSet.
- */
-class SrvRecordSetImpl
-        extends DnsRecordSetImpl
-        implements SrvRecordSet {
+/** Implementation of SrvRecordSet. */
+class SrvRecordSetImpl extends DnsRecordSetImpl implements SrvRecordSet {
     SrvRecordSetImpl(final String name, final DnsZoneImpl parent, final RecordSetInner innerModel) {
         super(name, RecordType.SRV.toString(), parent, innerModel);
     }
 
     static SrvRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent) {
-        return new SrvRecordSetImpl(name, parent,
-                new RecordSetInner()
-                        .withSrvRecords(new ArrayList<>()));
+        return new SrvRecordSetImpl(name, parent, new RecordSetInner().withSrvRecords(new ArrayList<>()));
     }
 
     @Override
@@ -51,9 +44,9 @@ class SrvRecordSetImpl
                 for (SrvRecord recordToRemove : this.recordSetRemoveInfo.srvRecords()) {
                     for (SrvRecord record : resource.srvRecords()) {
                         if (record.target().equalsIgnoreCase(recordToRemove.target())
-                                && (record.port().intValue() == recordToRemove.port().intValue())
-                                && (record.weight().intValue() == recordToRemove.weight().intValue())
-                                && (record.priority().intValue() == recordToRemove.priority().intValue())) {
+                            && (record.port().intValue() == recordToRemove.port().intValue())
+                            && (record.weight().intValue() == recordToRemove.weight().intValue())
+                            && (record.priority().intValue() == recordToRemove.priority().intValue())) {
                             resource.srvRecords().remove(record);
                             break;
                         }
