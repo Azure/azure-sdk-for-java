@@ -34,6 +34,7 @@ import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.RefreshTokenParameters;
 import com.microsoft.aad.msal4j.SilentParameters;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
+import com.microsoft.aad.msal4jextensions.persistence.linux.KeyRingAccessor;
 import com.microsoft.aad.msal4jextensions.persistence.mac.KeyChainAccessor;
 import com.sun.jna.platform.win32.Crypt32Util;
 import reactor.core.publisher.Mono;
@@ -262,6 +263,17 @@ public class IdentityClient {
 
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readTree(jsonCred);
+
+        } else if (os.contains("nix") || os.contains("nux")) {
+            KeyRingAccessor accessor = new KeyRingAccessor(null, null,
+                null, null, "service", "ADAuthManager",
+                "account", "cachedAuthResult");
+
+            String  jsonCred  = new String(accessor.read());
+
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readTree(jsonCred);
+
         } else if (os.contains("win")) {
 
             String database = options.getKeepPassDatabasePath();
