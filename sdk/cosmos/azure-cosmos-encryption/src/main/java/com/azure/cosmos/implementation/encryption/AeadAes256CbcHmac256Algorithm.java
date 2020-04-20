@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.cosmos.implementation.encryption;
 
 import com.azure.cosmos.implementation.encryption.api.CosmosEncryptionAlgorithm;
@@ -14,7 +17,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * This (and AeadAes256CbcHmac256EncryptionKey) implementation for Cosmos DB is same as the existing
  * SQL client implementation with StyleCop related changes - also, we restrict to randomized encryption to start with.
  */
-public class AeadAes256CbcHmac256Algorithm implements DataEncryptionKey {
+class AeadAes256CbcHmac256Algorithm implements DataEncryptionKey {
 
     public final static String ALGORITHM_NAME = "AEAD_AES_256_CBC_HMAC_SHA256";
 
@@ -89,11 +92,6 @@ public class AeadAes256CbcHmac256Algorithm implements DataEncryptionKey {
     @Override
     public String getEncryptionAlgorithm() {
         return CosmosEncryptionAlgorithm.AEAes256CbcHmacSha256Randomized;
-    }
-
-
-    public AeadAes256CbcHmac256Algorithm(byte[] encryptionKey, EncryptionType encryptionType, byte algorithmVersion) {
-        this(new AeadAes256CbcHmac256EncryptionKey(encryptionKey,  AeadAes256CbcHmac256Algorithm.ALGORITHM_NAME), encryptionType, algorithmVersion);
     }
 
     /**

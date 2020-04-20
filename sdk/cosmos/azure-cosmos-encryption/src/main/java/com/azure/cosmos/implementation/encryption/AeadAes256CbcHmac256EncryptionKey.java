@@ -14,7 +14,7 @@ import com.azure.cosmos.implementation.guava27.Strings;
  * 3) mac_key - A derived key that is used to compute HMAC of the cipher text
  * 4) iv_key - A derived key that is used to generate a synthetic IV from plain text data.
  */
-public class AeadAes256CbcHmac256EncryptionKey extends SymmetricKey {
+class AeadAes256CbcHmac256EncryptionKey extends SymmetricKey {
 
     /**
      * Key size in bits

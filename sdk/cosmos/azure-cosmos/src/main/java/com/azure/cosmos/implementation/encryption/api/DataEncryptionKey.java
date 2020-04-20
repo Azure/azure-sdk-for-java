@@ -54,7 +54,7 @@ public interface DataEncryptionKey {
 
         try {
             DataEncryptionKey.class.getClassLoader()
-                .loadClass("com.azure.cosmos.implementation.encryption.SecurityUtility")
+                .loadClass("com.azure.cosmos.implementation.encryption.AeadAes256CbcHmac256AlgorithmProvider")
                 .getDeclaredMethod("generateRandomBytes", byte[].class)
                 .invoke(null, rawKey);
 
@@ -85,13 +85,12 @@ public interface DataEncryptionKey {
 
         try {
             return (DataEncryptionKey) DataEncryptionKey.class.getClassLoader()
-                .loadClass("com.azure.cosmos.implementation.encryption.AeadAes256CbcHmac256Algorithm")
-                .getDeclaredConstructor(byte[].class, EncryptionType.class, byte.class)
-                .newInstance(rawKey, EncryptionType.RANDOMIZED, /** algorithmVersion **/(byte) 1);
+                .loadClass("com.azure.cosmos.implementation.encryption.AeadAes256CbcHmac256AlgorithmProvider")
+                .getDeclaredMethod("createAlgorithm", byte[].class, EncryptionType.class, byte.class)
+                .invoke(null, rawKey, EncryptionType.RANDOMIZED, /** algorithmVersion **/(byte) 1);
 
-        } catch (InstantiationException|IllegalAccessException|InvocationTargetException|NoSuchMethodException|ClassNotFoundException e) {
+        } catch (IllegalAccessException|InvocationTargetException|NoSuchMethodException|ClassNotFoundException e) {
             throw new IllegalStateException("azure-cosmos-encryption is not in the classpath");
         }
-
     }
 }

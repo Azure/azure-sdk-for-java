@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
-public class HMACSHA256 implements Closeable {
+class HMACSHA256 implements Closeable {
     private static final String ALGO_NAME = "HMACSHA256";
     private final Mac mac;
     private byte[] hashValue;

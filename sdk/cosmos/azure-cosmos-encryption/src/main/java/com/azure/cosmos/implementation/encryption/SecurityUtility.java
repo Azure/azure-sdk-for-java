@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.encryption;
 
-public class SecurityUtility {
+class SecurityUtility {
     final static int MAX_SHA_256_HASH_BYTES = 32;
 
     /**
