@@ -1469,8 +1469,8 @@
     <module>../../core/azure-core-test</module>
     <module>../../core/azure-core-tracing-opentelemetry</module>
     <module>../../cosmos/azure-cosmos</module>
-    <module>../../cosmos/azure-cosmos-benchmark</module> <!-- CosmosSkip - Benchmark will go away, this is temporary -->
-    <module>../../cosmos/azure-cosmos-examples</module> <!-- CosmosSkip - Examples will go away, this is temporary -->
+    <module>../../cosmos/azure-cosmos-benchmark</module>
+    <module>../../cosmos/azure-cosmos-examples</module> 
     <module>../../e2e</module>
     <module>../../eventhubs/azure-messaging-eventhubs</module>
     <module>../../eventhubs/azure-messaging-eventhubs-checkpointstore-blob</module>

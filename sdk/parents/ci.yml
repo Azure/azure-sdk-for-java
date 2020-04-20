@@ -10,7 +10,7 @@ resources:
       type: github
       name: Azure/azure-sdk-tools
       endpoint: azure
-
+      
 trigger:
   branches:
     include:
@@ -31,6 +31,7 @@ pr:
   paths:
     include:
       - sdk/parents/
+<<<<<<< HEAD
 
 stages:
   - stage: Placeholder
@@ -39,3 +40,23 @@ stages:
         steps:
           - script: |
               echo Hello, world!
+=======
+  
+stages:
+  - template: ../../eng/pipelines/templates/stages/archetype-sdk-pom-only.yml
+    parameters:
+      ServiceDirectory: parents
+      Artifacts:
+        - name: azure-arm-parent
+          groupId: com.microsoft.azure
+          safeName: azurearmparent
+        - name: azure-client-sdk-parent
+          groupId: com.azure
+          safeName: azureclientsdkparent
+        - name: azure-data-sdk-parent
+          groupId: com.azure
+          safeName: azuredatasdkparent
+        - name: azuresdkparent
+          groupId: com.azure
+          safeName: azuresdkparent
+>>>>>>> Revising POM-only pipeline.

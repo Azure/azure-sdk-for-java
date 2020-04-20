@@ -38,32 +38,20 @@ jobs:
           ward scan -d $(Build.SourcesDirectory) -c $(Build.SourcesDirectory)/eng/.docsettings.yml
         displayName: 'Verify Readmes'
 
-      - script: |
-          pip install markdown2 BeautifulSoup4
-        displayName: 'pip install markdown2 and BeautifulSoup4'
-
       - template: ../steps/cache-maven-repository.yml
 
-      - template: eng/pipelines/templates/scripts/replace-relative-links.yml@azure-sdk-tools
-        parameters:
-          TargetFolder: $(Build.SourcesDirectory)
-          RootFolder: $(Build.SourcesDirectory)
-          BuildSHA: $(Build.SourceVersion)
-          RepoId: 'Azure/azure-sdk-for-java'
-
-      - task: Maven@3
-        displayName: 'Build and Package'
-        inputs:
-          mavenPomFile: pom.xml
-          goals: 'install'
-          options: '$(DefaultOptions) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests -Dgenerate-overview -pl com.azure:azure-sdk-bom'
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaVersion)
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-
-      - ${{ parameters.ValidationSteps }}
+      - ${{ each artifact in parameters.Artifacts }}:
+        - task: Maven@3
+          displayName: 'Prepare POM: ${{artifact.groupId}}:${{artifact.name}}'
+          inputs:
+            mavenPomFile: sdk/${{parameters.ServiceDirectory}}/${{artifact.name}}/pom.xml
+            goals: 'package'
+            options: "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -pl ${{artifact.groupId}}:${{artifact.name}}'
+            mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+            javaHomeOption: 'JDKVersion'
+            jdkVersionOption: $(JavaVersion)
+            jdkArchitectureOption: 'x64'
+            publishJUnitResults: false
 
       - publish: $(Build.ArtifactStagingDirectory)
         displayName: 'Publish Artifacts $(ArtifactName)'

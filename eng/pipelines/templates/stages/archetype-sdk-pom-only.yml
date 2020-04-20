@@ -1,6 +1,6 @@
 parameters:
   Artifacts: []
-  SDKType: bom
+  SDKType: pom
   ServiceDirectory: not-specified
   Skip.UpdatePackageVersion: true
   Skip.VersionVerification: true
