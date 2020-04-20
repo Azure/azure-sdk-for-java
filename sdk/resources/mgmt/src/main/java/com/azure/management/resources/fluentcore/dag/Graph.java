@@ -165,7 +165,7 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
     /**
      * The edge types in a graph.
      */
-    enum EdgeType {
+    protected enum EdgeType {
         /**
          * An edge (u, v) is a tree edge if v is visited the first time.
          */
@@ -190,7 +190,7 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
      *
      * @param <U> the type of the node
      */
-    interface Visitor<U> {
+    protected interface Visitor<U> {
         /**
          * visit a node.
          *

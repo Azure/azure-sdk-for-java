@@ -648,7 +648,7 @@ public class TaskGroup
      * "post run" dependents are those TaskGroup which need to be invoked as part of invocation
      * of actual TaskGroup.
      */
-    static final class ProxyTaskGroupWrapper {
+    protected static final class ProxyTaskGroupWrapper {
         // The "proxy TaskGroup"
         private TaskGroup proxyTaskGroup;
         // The "actual TaskGroup" for which above TaskGroup act as proxy
