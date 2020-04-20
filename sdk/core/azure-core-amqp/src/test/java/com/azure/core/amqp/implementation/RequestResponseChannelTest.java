@@ -5,6 +5,7 @@ package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.exception.AmqpErrorContext;
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import org.apache.qpid.proton.amqp.UnsignedLong;
@@ -38,6 +39,7 @@ import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -274,5 +276,25 @@ class RequestResponseChannelTest {
         verify(sender).delivery(any());
         verify(sender).send(any(), eq(0), eq(encodedSize));
         verify(sender).advance();
+    }
+
+    @Test
+    void clearMessagesOnError() {
+        // Arrange
+        final RequestResponseChannel channel = new RequestResponseChannel(CONNECTION_ID, NAMESPACE, LINK_NAME,
+            ENTITY_PATH, session, retryOptions, handlerProvider, reactorProvider, serializer, SenderSettleMode.SETTLED,
+            ReceiverSettleMode.SECOND);
+        final AmqpException error = new AmqpException(true, "Message", new AmqpErrorContext("some-context"));
+        final Message message = mock(Message.class);
+        when(serializer.getSize(message)).thenReturn(150);
+        when(message.encode(any(), eq(0), anyInt())).thenReturn(143);
+
+        // Act
+        StepVerifier.create(channel.sendWithAck(message))
+            .then(() -> endpointStateReplayProcessor.sink().error(error))
+            .verifyError(AmqpException.class);
+
+        // Assert
+        assertTrue(channel.isDisposed());
     }
 }

@@ -7,7 +7,6 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorContext;
-import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.util.logging.ClientLogger;
@@ -49,6 +48,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class RequestResponseChannel implements Disposable {
     private final ConcurrentSkipListMap<UnsignedLong, MonoSink<Message>> unconfirmedSends =
         new ConcurrentSkipListMap<>();
+    private final AtomicBoolean hasError = new AtomicBoolean();
     private final ReplayProcessor<AmqpEndpointState> endpointStates =
         ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED);
     private final FluxSink<AmqpEndpointState> endpointStatesSink =
@@ -70,8 +70,8 @@ public class RequestResponseChannel implements Disposable {
     private final SenderSettleMode senderSettleMode;
 
     /**
-     * Creates a new instance of {@link RequestResponseChannel} to send and receive responses from the
-     * {@code entityPath} in the message broker.
+     * Creates a new instance of {@link RequestResponseChannel} to send and receive responses from the {@code
+     * entityPath} in the message broker.
      *
      * @param connectionId Identifier of the connection.
      * @param fullyQualifiedNamespace Fully qualified namespace for the the host.
@@ -83,12 +83,11 @@ public class RequestResponseChannel implements Disposable {
      * @param provider The reactor provider that the request will be sent with.
      * @param senderSettleMode to set as {@link SenderSettleMode} on sender.
      * @param receiverSettleMode to set as {@link ReceiverSettleMode} on receiver.
-
      */
     protected RequestResponseChannel(String connectionId, String fullyQualifiedNamespace, String linkName,
-            String entityPath, Session session, AmqpRetryOptions retryOptions, ReactorHandlerProvider handlerProvider,
-            ReactorProvider provider, MessageSerializer messageSerializer,
-            SenderSettleMode senderSettleMode, ReceiverSettleMode receiverSettleMode) {
+        String entityPath, Session session, AmqpRetryOptions retryOptions, ReactorHandlerProvider handlerProvider,
+        ReactorProvider provider, MessageSerializer messageSerializer,
+        SenderSettleMode senderSettleMode, ReceiverSettleMode receiverSettleMode) {
         this.logger = new ClientLogger(String.format("%s<%s>", RequestResponseChannel.class, linkName));
         this.provider = provider;
         this.operationTimeout = retryOptions.getTryTimeout();
@@ -131,30 +130,19 @@ public class RequestResponseChannel implements Disposable {
                 .subscribe(message -> {
                     logger.verbose("Settling message: {}", message.getCorrelationId());
                     settleMessage(message);
-                }, this::handleException),
+                }),
 
-            receiveLinkHandler.getEndpointStates().subscribe(state -> {
-                endpointStatesSink.next(AmqpEndpointStateUtil.getConnectionState(state));
-            }, error -> {
-                    endpointStatesSink.error(error);
-                    dispose();
-                }, () -> dispose()),
-            receiveLinkHandler.getErrors().subscribe(error -> {
-                endpointStatesSink.error(error);
-                dispose();
-            }),
+            receiveLinkHandler.getEndpointStates().subscribe(
+                state -> endpointStatesSink.next(AmqpEndpointStateUtil.getConnectionState(state)),
+                this::handleError, this::dispose),
+            receiveLinkHandler.getErrors().subscribe(this::handleError),
 
-            sendLinkHandler.getEndpointStates().subscribe(state -> {
-                endpointStatesSink.next(AmqpEndpointStateUtil.getConnectionState(state));
-            }, error -> {
-                    endpointStatesSink.error(error);
-                    dispose();
-                }, () -> dispose()),
-            sendLinkHandler.getErrors().subscribe(error -> {
-                endpointStatesSink.error(error);
-                dispose();
-            })
+            sendLinkHandler.getEndpointStates().subscribe(state ->
+                endpointStatesSink.next(AmqpEndpointStateUtil.getConnectionState(state)),
+                this::handleError, this::dispose),
+            sendLinkHandler.getErrors().subscribe(this::handleError)
         );
+
         //@formatter:on
 
         // If we try to do proton-j API calls such as opening/closing/sending on AMQP links, it may
@@ -292,18 +280,16 @@ public class RequestResponseChannel implements Disposable {
         sink.success(message);
     }
 
-    private void handleException(Throwable error) {
-        if (error instanceof AmqpException) {
-            AmqpException exception = (AmqpException) error;
-
-            if (!exception.isTransient()) {
-                logger.error("Exception encountered. Closing channel and clearing unconfirmed sends.", exception);
-                dispose();
-
-                unconfirmedSends.forEach((key, value) -> {
-                    value.error(error);
-                });
-            }
+    private void handleError(Throwable error) {
+        if (hasError.getAndSet(true)) {
+            return;
         }
+
+        endpointStatesSink.error(error);
+        logger.error("Exception in RequestResponse links. Disposing and clearing unconfirmed sends.", error);
+        dispose();
+
+        unconfirmedSends.forEach((key, value) -> value.error(error));
+        unconfirmedSends.clear();
     }
 }
