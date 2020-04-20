@@ -128,6 +128,18 @@ public interface ExpressRouteCircuitConnection extends HasInner<ExpressRouteCirc
         }
 
         /**
+         * The stage of the expressroutecircuitconnection definition allowing to specify CircuitConnectionStatus.
+         */
+        interface WithCircuitConnectionStatus {
+            /**
+             * Specifies circuitConnectionStatus.
+             * @param circuitConnectionStatus Express Route Circuit connection state. Possible values include: 'Connected', 'Connecting', 'Disconnected'
+             * @return the next definition stage
+             */
+            WithCreate withCircuitConnectionStatus(CircuitConnectionStatus circuitConnectionStatus);
+        }
+
+        /**
          * The stage of the expressroutecircuitconnection definition allowing to specify ExpressRouteCircuitPeering.
          */
         interface WithExpressRouteCircuitPeering {
@@ -180,13 +192,13 @@ public interface ExpressRouteCircuitConnection extends HasInner<ExpressRouteCirc
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<ExpressRouteCircuitConnection>, DefinitionStages.WithAddressPrefix, DefinitionStages.WithAuthorizationKey, DefinitionStages.WithExpressRouteCircuitPeering, DefinitionStages.WithId, DefinitionStages.WithName, DefinitionStages.WithPeerExpressRouteCircuitPeering {
+        interface WithCreate extends Creatable<ExpressRouteCircuitConnection>, DefinitionStages.WithAddressPrefix, DefinitionStages.WithAuthorizationKey, DefinitionStages.WithCircuitConnectionStatus, DefinitionStages.WithExpressRouteCircuitPeering, DefinitionStages.WithId, DefinitionStages.WithName, DefinitionStages.WithPeerExpressRouteCircuitPeering {
         }
     }
     /**
      * The template for a ExpressRouteCircuitConnection update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<ExpressRouteCircuitConnection>, UpdateStages.WithAddressPrefix, UpdateStages.WithAuthorizationKey, UpdateStages.WithExpressRouteCircuitPeering, UpdateStages.WithId, UpdateStages.WithName, UpdateStages.WithPeerExpressRouteCircuitPeering {
+    interface Update extends Appliable<ExpressRouteCircuitConnection>, UpdateStages.WithAddressPrefix, UpdateStages.WithAuthorizationKey, UpdateStages.WithCircuitConnectionStatus, UpdateStages.WithExpressRouteCircuitPeering, UpdateStages.WithId, UpdateStages.WithName, UpdateStages.WithPeerExpressRouteCircuitPeering {
     }
 
     /**
@@ -215,6 +227,18 @@ public interface ExpressRouteCircuitConnection extends HasInner<ExpressRouteCirc
              * @return the next update stage
              */
             Update withAuthorizationKey(String authorizationKey);
+        }
+
+        /**
+         * The stage of the expressroutecircuitconnection update allowing to specify CircuitConnectionStatus.
+         */
+        interface WithCircuitConnectionStatus {
+            /**
+             * Specifies circuitConnectionStatus.
+             * @param circuitConnectionStatus Express Route Circuit connection state. Possible values include: 'Connected', 'Connecting', 'Disconnected'
+             * @return the next update stage
+             */
+            Update withCircuitConnectionStatus(CircuitConnectionStatus circuitConnectionStatus);
         }
 
         /**
