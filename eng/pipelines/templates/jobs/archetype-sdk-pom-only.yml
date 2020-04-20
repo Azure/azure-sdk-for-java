@@ -54,7 +54,7 @@ jobs:
       - task: Maven@3
         displayName: 'Install build tools'
         inputs:
-          mavenPomFile: pom
+          mavenPomFile: pom.xml
           goals: 'install'
           options: '-pl com.azure:sdk-build-tools -am'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
