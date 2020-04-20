@@ -734,8 +734,8 @@ public final class RntbdClientChannelPool implements ChannelPool {
             task.promise.setFailure(new ClosedChannelException());
         }
 
-        // Ensure we dispatch this on another Thread as close0 will be called from the EventExecutor and we need to
-        // ensure we will not block in an EventExecutor
+        // NOTE: we must dispatch this request on another Thread--the closer Thread--as this.doClose is called on
+        // this.executor and we need to ensure we will not block it.
 
         closer.submit(() -> {
 
