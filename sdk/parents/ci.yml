@@ -11,31 +11,31 @@ resources:
       name: Azure/azure-sdk-tools
       endpoint: azure
 
-  trigger:
-    branches:
-      include:
-        - master
-        - hotfix/*
-        - release/*
-    paths:
-      include:
-        - sdk/parents/
+trigger:
+  branches:
+    include:
+      - master
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/parents/
 
-  pr:
-    branches:
-      include:
-        - master
-        - feature/*
-        - hotfix/*
-        - release/*
-    paths:
-      include:
-        - sdk/parents/
+pr:
+  branches:
+    include:
+      - master
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/parents/
 
-  stages:
-    - stage: Placeholder
-      jobs:
-        - job: Placeholder
-          steps:
-            - script: |
-                echo Hello, world!
+stages:
+  - stage: Placeholder
+    jobs:
+      - job: Placeholder
+        steps:
+          - script: |
+              echo Hello, world!
