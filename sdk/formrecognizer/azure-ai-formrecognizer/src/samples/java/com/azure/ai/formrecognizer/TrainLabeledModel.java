@@ -43,9 +43,9 @@ public class TrainLabeledModel {
         System.out.println("Recognized Fields:");
         // Since the data is labeled, we are able to return the accuracy of the model
         customFormModel.getSubModels().forEach(customFormSubModel -> {
-            System.out.printf("Sub-model accuracy: %s%n", customFormSubModel.getAccuracy());
+            System.out.printf("Sub-model accuracy: %.2f%n", customFormSubModel.getAccuracy());
             customFormSubModel.getFieldMap().forEach((label, customFormModelField) ->
-                System.out.printf("Field: %s Field Name: %s Field Accuracy: %s%n",
+                System.out.printf("Field: %s Field Name: %s Field Accuracy: %.2f%n",
                     label, customFormModelField.getName(), customFormModelField.getAccuracy()));
         });
         System.out.println();

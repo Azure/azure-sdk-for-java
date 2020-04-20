@@ -65,7 +65,7 @@ public class ReadmeSamples {
             System.out.println("----------- Recognized Form -----------");
             System.out.printf("Form type: %s%n", form.getFormType());
             form.getFields().forEach((label, formField) -> {
-                System.out.printf("Field %s has value %s with confidence score of %s %n", label,
+                System.out.printf("Field %s has value %s with confidence score of %d.%n", label,
                     formField.getFieldValue(),
                     formField.getConfidence());
             });
@@ -83,20 +83,14 @@ public class ReadmeSamples {
         layoutPageResults.forEach(formPage -> {
             // Table information
             System.out.println("----Recognizing content ----");
-            System.out.printf("Has width: %s and height: %s, measured with unit: %s%n", formPage.getWidth(),
+            System.out.printf("Has width: %d and height: %d, measured with unit: %s.%n", formPage.getWidth(),
                 formPage.getHeight(),
                 formPage.getUnit());
             formPage.getTables().forEach(formTable -> {
-                System.out.printf("Table has %s rows and %s columns.%n", formTable.getRowCount(),
+                System.out.printf("Table has %d rows and %d columns.%n", formTable.getRowCount(),
                     formTable.getColumnCount());
                 formTable.getCells().forEach(formTableCell -> {
-                    final StringBuilder boundingBoxStr = new StringBuilder();
-                    if (formTableCell.getBoundingBox() != null) {
-                        formTableCell.getBoundingBox().getPoints().forEach(point ->
-                            boundingBoxStr.append(String.format("[%s, %s]", point.getX(), point.getY())));
-                    }
-                    System.out.printf("Cell has text %s, within bounding box %s.%n", formTableCell.getText(),
-                        boundingBoxStr);
+                    System.out.printf("Cell has text %s.%n", formTableCell.getText());
                 });
                 System.out.println();
             });
@@ -168,11 +162,11 @@ public class ReadmeSamples {
             System.out.printf("Updated on: %s%n", customModel.getLastUpdatedOn());
             customModel.getSubModels().forEach(customFormSubModel -> {
                 System.out.printf("Custom Model Form type: %s%n", customFormSubModel.getFormType());
-                System.out.printf("Custom Model Accuracy: %s%n", customFormSubModel.getAccuracy());
+                System.out.printf("Custom Model Accuracy: %d%n", customFormSubModel.getAccuracy());
                 if (customFormSubModel.getFieldMap() != null) {
                     customFormSubModel.getFieldMap().forEach((fieldText, customFormModelField) -> {
                         System.out.printf("Field Text: %s%n", fieldText);
-                        System.out.printf("Field Accuracy: %s%n", customFormModelField.getAccuracy());
+                        System.out.printf("Field Accuracy: %d%n", customFormModelField.getAccuracy());
                     });
                 }
             });

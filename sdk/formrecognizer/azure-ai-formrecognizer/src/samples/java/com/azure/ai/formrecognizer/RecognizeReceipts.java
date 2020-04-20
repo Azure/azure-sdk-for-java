@@ -37,7 +37,7 @@ public class RecognizeReceipts {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
-        File sourceFile = new File("../../test/resources/sample-files/contoso-allinone.jpg");
+        File sourceFile = new File("../src/test/resources/sample-files/contoso-allinone.jpg");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
@@ -50,23 +50,23 @@ public class RecognizeReceipts {
             System.out.println("----------- Recognized Receipt -----------");
             USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
             System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
-            System.out.printf("Merchant Name: %s, confidence: %s%n", usReceipt.getMerchantName().getFieldValue(), usReceipt.getMerchantName().getConfidence());
-            System.out.printf("Merchant Address: %s, confidence: %s%n", usReceipt.getMerchantAddress().getName(), usReceipt.getMerchantAddress().getConfidence());
-            System.out.printf("Merchant Phone Number %s, confidence: %s%n", usReceipt.getMerchantPhoneNumber().getFieldValue(), usReceipt.getMerchantPhoneNumber().getConfidence());
-            System.out.printf("Total: %s confidence: %s%n", usReceipt.getTotal().getName(), usReceipt.getTotal().getConfidence());
+            System.out.printf("Merchant Name: %s, confidence: %.2f%n", usReceipt.getMerchantName().getFieldValue(), usReceipt.getMerchantName().getConfidence());
+            System.out.printf("Merchant Address: %s, confidence: %.2f%n", usReceipt.getMerchantAddress().getName(), usReceipt.getMerchantAddress().getConfidence());
+            System.out.printf("Merchant Phone Number %s, confidence: %.2f%n", usReceipt.getMerchantPhoneNumber().getFieldValue(), usReceipt.getMerchantPhoneNumber().getConfidence());
+            System.out.printf("Total: %s confidence: %.2f%n", usReceipt.getTotal().getName(), usReceipt.getTotal().getConfidence());
             System.out.printf("Receipt Items: %n");
             usReceipt.getReceiptItems().forEach(receiptItem -> {
                 if (receiptItem.getName() != null) {
-                    System.out.printf("Name: %s, confidence: %s%n", receiptItem.getName().getFieldValue(), receiptItem.getName().getConfidence());
+                    System.out.printf("Name: %s, confidence: %.2fs%n", receiptItem.getName().getFieldValue(), receiptItem.getName().getConfidence());
                 }
                 if (receiptItem.getQuantity() != null) {
-                    System.out.printf("Quantity: %s, confidence: %s%n", receiptItem.getQuantity().getFieldValue(), receiptItem.getQuantity().getConfidence());
+                    System.out.printf("Quantity: %s, confidence: %.2f%n", receiptItem.getQuantity().getFieldValue(), receiptItem.getQuantity().getConfidence());
                 }
                 if (receiptItem.getPrice() != null) {
-                    System.out.printf("Price: %s, confidence: %s%n", receiptItem.getPrice().getFieldValue(), receiptItem.getPrice().getConfidence());
+                    System.out.printf("Price: %s, confidence: %.2f%n", receiptItem.getPrice().getFieldValue(), receiptItem.getPrice().getConfidence());
                 }
                 if (receiptItem.getTotalPrice() != null) {
-                    System.out.printf("Total Price: %s, confidence: %s%n", receiptItem.getTotalPrice().getFieldValue(), receiptItem.getTotalPrice().getConfidence());
+                    System.out.printf("Total Price: %s, confidence: %.2f%n", receiptItem.getTotalPrice().getFieldValue(), receiptItem.getTotalPrice().getConfidence());
                 }
             });
             System.out.print("-----------------------------------");

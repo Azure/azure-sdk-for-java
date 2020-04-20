@@ -58,7 +58,7 @@ public class RecognizeContentAsync {
                     final StringBuilder boundingBoxStr = new StringBuilder();
                     if (formTableCell.getBoundingBox() != null) {
                         formTableCell.getBoundingBox().getPoints().forEach(point ->
-                            boundingBoxStr.append(String.format("[%s, %s]", point.getX(), point.getY())));
+                            boundingBoxStr.append(String.format("[%.2f, %.2f]", point.getX(), point.getY())));
                     }
                     System.out.printf("Cell has text %s, within bounding box %s.%n", formTableCell.getText(),
                         boundingBoxStr);

@@ -23,7 +23,6 @@ public class AdvancedManualValidationInfoAsync {
      * Main method to invoke this demo.
      *
      * @param args Unused arguments to the program.
-     *
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
@@ -56,8 +55,8 @@ public class AdvancedManualValidationInfoAsync {
             //     The value of the field can also be a FormField, or a list of FormFields
             //     In our sample, it is not.
             recognizedForm.getFields().forEach((fieldText, fieldValue) -> {
-                System.out.printf("Field %s has value %s based on %s within bounding box, with a confidence score "
-                        + "of %s.%n",
+                System.out.printf("Field %s has value %s based on %s with a confidence score "
+                        + "of %.2f.%n",
                     fieldText, fieldValue.getFieldValue(), fieldValue.getValueText().getText(),
                     fieldValue.getConfidence());
             });
@@ -79,14 +78,14 @@ public class AdvancedManualValidationInfoAsync {
                         formTableCell.getElements().forEach(formContent -> {
                             if (formContent.getTextContentType().equals(TextContentType.WORD)) {
                                 FormWord formWordElement = (FormWord) (formContent);
-                                StringBuilder str = new StringBuilder();
+                                StringBuilder boundingBoxStr = new StringBuilder();
                                 if (formWordElement.getBoundingBox() != null) {
                                     formWordElement.getBoundingBox().getPoints().forEach(point -> {
-                                        str.append(String.format("[%s, %s]", point.getX(), point.getY()));
+                                        boundingBoxStr.append(String.format("[%.2f, %.2f]", point.getX(), point.getY()));
                                     });
                                 }
-                                System.out.printf("Word '%s' within bounding box %s with a confidence of %s.%n",
-                                    formWordElement.getText(), str, formWordElement.getConfidence());
+                                System.out.printf("Word '%s' within bounding box %s with a confidence of %.2f.%n",
+                                    formWordElement.getText(), boundingBoxStr, formWordElement.getConfidence());
                             }
                         });
                     });

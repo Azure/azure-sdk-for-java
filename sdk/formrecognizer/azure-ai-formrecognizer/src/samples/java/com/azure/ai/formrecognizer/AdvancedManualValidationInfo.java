@@ -9,8 +9,7 @@ import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.TextContentType;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.IterableStream;
-import com.azure.core.util.polling.PollerFlux;
-import reactor.core.publisher.Mono;
+import com.azure.core.util.polling.SyncPoller;
 
 /*
  * Sample to output the information that will help with manually validating your output from recognize custom forms.
@@ -24,27 +23,17 @@ public class AdvancedManualValidationInfo {
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
-        FormRecognizerAsyncClient client = new FormRecognizerClientBuilder()
+        FormRecognizerClient client = new FormRecognizerClientBuilder()
             .apiKey(new AzureKeyCredential("{api_key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
-            .buildAsyncClient();
+            .buildClient();
 
         String modelId = "{model_Id}";
         String filePath = "{analyze_file_path}";
-        PollerFlux<OperationResult, IterableStream<RecognizedForm>> trainingPoller =
+        SyncPoller<OperationResult, IterableStream<RecognizedForm>> trainingPoller =
             client.beginRecognizeCustomFormsFromUrl(filePath, modelId, true, null);
 
-        IterableStream<RecognizedForm> recognizedForms = trainingPoller
-            .last()
-            .flatMap(trainingOperationResponse -> {
-                if (trainingOperationResponse.getStatus().isComplete()) {
-                    // training completed successfully, retrieving final result.
-                    return trainingOperationResponse.getFinalResult();
-                } else {
-                    return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
-                        + trainingOperationResponse.getStatus()));
-                }
-            }).block();
+        IterableStream<RecognizedForm> recognizedForms = trainingPoller.getFinalResult();
 
         System.out.println("--------RECOGNIZING FORM --------");
         recognizedForms.forEach(recognizedForm -> {
@@ -52,15 +41,15 @@ public class AdvancedManualValidationInfo {
             // each field is of type FormField
             //     The value of the field can also be a FormField, or a list of FormFields
             //     In our sample, it is not.
-            recognizedForm.getFields().forEach((fieldText, fieldValue) -> System.out.printf("Field %s has value %s based on %s within bounding box, with a confidence score "
-                    + "of %s.%n",
+            recognizedForm.getFields().forEach((fieldText, fieldValue) -> System.out.printf("Field %s has value %s based on %s with a confidence score "
+                    + "of %.2f.%n",
                 fieldText, fieldValue.getFieldValue(), fieldValue.getValueText().getText(),
                 fieldValue.getConfidence()));
 
             // Page Information
             recognizedForm.getPages().forEach(formPage -> {
                 System.out.printf("-------Recognizing Page %s of Form -------%n", 1);
-                System.out.printf("Has width %s , angle %s, height %s %n", formPage.getWidth(),
+                System.out.printf("Has width %d , angle %.2f, height %d %n", formPage.getWidth(),
                     formPage.getTextAngle(), formPage.getHeight());
                 // Table information
                 System.out.println("Recognized Tables: ");
@@ -77,10 +66,10 @@ public class AdvancedManualValidationInfo {
                                 StringBuilder str = new StringBuilder();
                                 if (formWordElement.getBoundingBox() != null) {
                                     formWordElement.getBoundingBox().getPoints().forEach(point -> {
-                                        str.append(String.format("[%s, %s]", point.getX(), point.getY()));
+                                        str.append(String.format("[%.2f, %.2f]", point.getX(), point.getY()));
                                     });
                                 }
-                                System.out.printf("Word '%s' within bounding box %s with a confidence of %s.%n",
+                                System.out.printf("Word '%s' within bounding box %s with a confidence of %.2f.%n",
                                     formWordElement.getText(), str, formWordElement.getConfidence());
                             }
                         });

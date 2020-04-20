@@ -109,11 +109,11 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
             final StringBuilder boundingBoxStr = new StringBuilder();
             if (formField.getValueText().getBoundingBox() != null) {
                 formField.getValueText().getBoundingBox().getPoints().forEach(point ->
-                    boundingBoxStr.append(String.format("[%s, %s]", point.getX(), point.getY())));
+                    boundingBoxStr.append(String.format("[%2f, %.2f]", point.getX(), point.getY())));
             }
             // The unlabeled custom model will also include data about your labels
             System.out.printf("Field %s has value %s based on %s within bounding box %s with a confidence score "
-                    + "of %s.%n",
+                    + "of %.2f.%n",
                 label, formField.getFieldValue(), formField.getValueText().getText(), boundingBoxStr,
                 formField.getConfidence());
         }));

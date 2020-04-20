@@ -8,10 +8,9 @@ import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.IterableStream;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 
 /**
  * Sample to show the differences in output that arise when RecognizeCustomForms
@@ -30,23 +29,24 @@ public class AdvancedDiffLabeledUnlabeledData {
         // Instantiate a client that will be used to call the service.
 
         FormRecognizerClient client = new FormRecognizerClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_Key}"))
-            .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
+            .apiKey(new AzureKeyCredential("48c9ec5b1c444c899770946defc486c4"))
+            .endpoint("https://javaformrecognizertestresource.cognitiveservices.azure.com/")
             .buildClient();
 
-        File analyzeFile = new File("../../test/resources/sample-files/Invoice_1.pdf");
-        byte[] fileContent = Files.readAllBytes(analyzeFile.toPath());
+        File analyzeFile = new File("../../test/resources/sample-files/Invoice_6.pdf");
+        System.out.println(analyzeFile.exists());
 
         IterableStream<RecognizedForm> formsWithLabeledModel =
-            client.beginRecognizeCustomForms(new ByteArrayInputStream(fileContent), "{labeled_model_Id}", analyzeFile.length(), FormContentType.APPLICATION_PDF, true, null).getFinalResult();
+            client.beginRecognizeCustomForms(new FileInputStream(analyzeFile), "{labeled_model_Id}", analyzeFile.length(), FormContentType.APPLICATION_PDF, true, null).getFinalResult();
         IterableStream<RecognizedForm> formsWithUnlabeledModel =
-            client.beginRecognizeCustomForms(new ByteArrayInputStream(fileContent), "{unlabeled_model_Id}", analyzeFile.length(), FormContentType.APPLICATION_PDF).getFinalResult();
+            client.beginRecognizeCustomForms(new FileInputStream(analyzeFile), "{unlabeled_model_Id}", analyzeFile.length(), FormContentType.APPLICATION_PDF).getFinalResult();
 
         //  The main difference is found in the labels of its fields
         // The form recognized with a labeled model will have the labels it was trained with,
         // the unlabeled one will be denoted with indices
         System.out.println("--------Recognizing forms with labeled custom model--------");
         printFieldData(formsWithLabeledModel);
+
 
         System.out.println("-----------------------------------------------------------");
 
@@ -62,11 +62,11 @@ public class AdvancedDiffLabeledUnlabeledData {
             final StringBuilder boundingBoxStr = new StringBuilder();
             if (formField.getValueText().getBoundingBox() != null) {
                 formField.getValueText().getBoundingBox().getPoints().forEach(point ->
-                    boundingBoxStr.append(String.format("[%s, %s]", point.getX(), point.getY())));
+                    boundingBoxStr.append(String.format("[%.2f, %.2f]", point.getX(), point.getY())));
             }
             // The unlabeled custom model will also include data about your labels
             System.out.printf("Field %s has value %s based on %s within bounding box %s with a confidence score "
-                    + "of %s.%n",
+                    + "of %.2f.%n",
                 label, formField.getFieldValue(), formField.getValueText().getText(), boundingBoxStr,
                 formField.getConfidence());
         }));

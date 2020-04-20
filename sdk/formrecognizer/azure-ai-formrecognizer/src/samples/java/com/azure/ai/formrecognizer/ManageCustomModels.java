@@ -51,11 +51,11 @@ public class ManageCustomModels {
             System.out.printf("Updated on: %s%n", customModel.getLastUpdatedOn());
             customModel.getSubModels().forEach(customFormSubModel -> {
                 System.out.printf("Custom Model Form type: %s%n", customFormSubModel.getFormType());
-                System.out.printf("Custom Model Accuracy: %s%n", customFormSubModel.getAccuracy());
+                System.out.printf("Custom Model Accuracy: %.2f%n", customFormSubModel.getAccuracy());
                 if (customFormSubModel.getFieldMap() != null) {
                     customFormSubModel.getFieldMap().forEach((fieldText, customFormModelField) -> {
                         System.out.printf("Field Text: %s%n", fieldText);
-                        System.out.printf("Field Accuracy: %s%n", customFormModelField.getAccuracy());
+                        System.out.printf("Field Accuracy: %.2f%n", customFormModelField.getAccuracy());
                     });
                 }
 

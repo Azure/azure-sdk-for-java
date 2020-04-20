@@ -44,7 +44,7 @@ Following section provides code samples for some of the advanced scenarios in Fo
 - Get info to help with manually validating the output of the `FormRecognizer` client
   - [AdvancedManualValidationInfo][get_manual_validation_info] and [AdvancedManualValidationInfoAsync][get_manual_validation_info_async]
 - See the differences in output when using a custom model trained with labeled data and one trained with unlabeled data
- - [AdvancedDiffCustomFormsLabeledUnlabeledData][differentiate_custom_forms_with_labeled_and_unlabeled_models] and [AdvancedDiffCustomFormsLabeledUnlabeledDataAsync][differentiate_custom_forms_with_labeled_and_unlabeled_models_async]
+  - [AdvancedDiffCustomFormsLabeledUnlabeledData][differentiate_custom_forms_with_labeled_and_unlabeled_models] and [AdvancedDiffCustomFormsLabeledUnlabeledDataAsync][differentiate_custom_forms_with_labeled_and_unlabeled_models_async]
 
 ## Contributing
 If you would like to become an active contributor to this project please refer to our [Contribution

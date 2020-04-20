@@ -159,7 +159,7 @@ recognizedForms.forEach(form -> {
     System.out.println("----------- Recognized Form -----------");
     System.out.printf("Form type: %s%n", form.getFormType());
     form.getFields().forEach((label, formField) -> {
-        System.out.printf("Field %s has value %s with confidence score of %s %n", label,
+        System.out.printf("Field %s has value %s with confidence score of %d.%n", label,
             formField.getFieldValue(),
             formField.getConfidence());
     });
@@ -169,7 +169,7 @@ recognizedForms.forEach(form -> {
 
 ### Recognize Content
 Recognize text and table structures, along with their bounding box coordinates, from documents.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L77-L103 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L77-L97 -->
 ```java
 String analyzeFilePath = "{file_source_url}";
 SyncPoller<OperationResult, IterableStream<FormPage>> recognizeLayoutPoller =
@@ -180,20 +180,14 @@ IterableStream<FormPage> layoutPageResults = recognizeLayoutPoller.getFinalResul
 layoutPageResults.forEach(formPage -> {
     // Table information
     System.out.println("----Recognizing content ----");
-    System.out.printf("Has width: %s and height: %s, measured with unit: %s%n", formPage.getWidth(),
+    System.out.printf("Has width: %d and height: %d, measured with unit: %s.%n", formPage.getWidth(),
         formPage.getHeight(),
         formPage.getUnit());
     formPage.getTables().forEach(formTable -> {
-        System.out.printf("Table has %s rows and %s columns.%n", formTable.getRowCount(),
+        System.out.printf("Table has %d rows and %d columns.%n", formTable.getRowCount(),
             formTable.getColumnCount());
         formTable.getCells().forEach(formTableCell -> {
-            final StringBuilder boundingBoxStr = new StringBuilder();
-            if (formTableCell.getBoundingBox() != null) {
-                formTableCell.getBoundingBox().getPoints().forEach(point ->
-                    boundingBoxStr.append(String.format("[%s, %s]", point.getX(), point.getY())));
-            }
-            System.out.printf("Cell has text %s, within bounding box %s.%n", formTableCell.getText(),
-                boundingBoxStr);
+            System.out.printf("Cell has text %s.%n", formTableCell.getText());
         });
         System.out.println();
     });
@@ -202,7 +196,7 @@ layoutPageResults.forEach(formPage -> {
 
 ### Recognize receipts
 Recognize data from USA sales receipts using a prebuilt model.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L107-L124 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L101-L118 -->
 ```java
 String receiptSourceUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media"
     + "/contoso-allinone.jpg";
@@ -228,7 +222,7 @@ receiptPageResults.forEach(recognizedReceipt -> {
 Train a machine-learned model on your own form type. The resulting model will be able to recognize values from the types of forms it was trained on.
 Provide a container SAS url to your Azure Storage Blob container where you're storing the training documents. See details on setting this up
 in the [service quickstart documentation][quickstart_training].
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L128-L148 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L122-L142 -->
 ```java
 String trainingSetSource = "{unlabeled_training_set_SAS_URL}";
 SyncPoller<OperationResult, CustomFormModel> trainingPoller =
@@ -255,7 +249,7 @@ customFormModel.getSubModels().forEach(customFormSubModel -> {
 
 ### Manage your models
 Manage the custom models attached to your account.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L152-L181 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L146-L175 -->
 ```java
 AtomicReference<String> modelId = new AtomicReference<>();
 // First, we see how many custom models we have, and what our limit is
@@ -276,11 +270,11 @@ customModels.forEach(customFormModelInfo -> {
     System.out.printf("Updated on: %s%n", customModel.getLastUpdatedOn());
     customModel.getSubModels().forEach(customFormSubModel -> {
         System.out.printf("Custom Model Form type: %s%n", customFormSubModel.getFormType());
-        System.out.printf("Custom Model Accuracy: %s%n", customFormSubModel.getAccuracy());
+        System.out.printf("Custom Model Accuracy: %d%n", customFormSubModel.getAccuracy());
         if (customFormSubModel.getFieldMap() != null) {
             customFormSubModel.getFieldMap().forEach((fieldText, customFormModelField) -> {
                 System.out.printf("Field Text: %s%n", fieldText);
-                System.out.printf("Field Accuracy: %s%n", customFormModelField.getAccuracy());
+                System.out.printf("Field Accuracy: %d%n", customFormModelField.getAccuracy());
             });
         }
     });
@@ -297,7 +291,7 @@ to provide an invalid file source URL an `ErrorResponseException` would be raise
 In the following code snippet, the error is handled 
 gracefully by catching the exception and display the additional information about the error.
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L188-L192 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L182-L186 -->
 ```java
 try {
     formRecognizerClient.beginRecognizeContentFromUrl("invalidSourceUrl");
@@ -334,7 +328,7 @@ The async versions of the samples show asynchronous operations with Form Recogni
 
 ### Additional documentation
 
-For more extensive documentation on Azure Cognitive Services Form Recognizer, see the [Form Recognizer documentation][api_reference_doc] on docs.microsoft.com.
+For more extensive documentation on Azure Cognitive Services Form Recognizer, see the [Form Recognizer documentation][api_reference_doc].
 
 ## Contributing
 
