@@ -93,6 +93,12 @@
       <version>2.8.5</version> <!-- {x-version-update;com.google.code.gson:gson;external_dependency} -->
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>msal4j-persistence-extension</artifactId>
+      <version>0.1</version>
+    </dependency>
   </dependencies>
 
   <build>

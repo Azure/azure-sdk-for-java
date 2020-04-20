@@ -21,6 +21,7 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.identity.DeviceCodeInfo;
+import com.azure.identity.KnownAuthorityHosts;
 import com.azure.identity.implementation.util.CertificateUtil;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
@@ -28,8 +29,11 @@ import com.microsoft.aad.msal4j.ClientCredentialParameters;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
 import com.microsoft.aad.msal4j.PublicClientApplication;
+import com.microsoft.aad.msal4j.RefreshTokenParameters;
 import com.microsoft.aad.msal4j.SilentParameters;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
+import com.microsoft.aad.msal4jextensions.persistence.linux.KeyRingAccessor;
+import com.microsoft.aad.msal4jextensions.persistence.mac.KeyChainAccessor;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -420,6 +424,66 @@ public class IdentityClient {
                     dc.verificationUri(), OffsetDateTime.now().plusSeconds(dc.expiresIn()), dc.message()))).build();
             return publicClientApplication.acquireToken(parameters);
         }).map(ar -> new MsalToken(ar, options));
+    }
+
+    /**
+     * Asynchronously acquire a token from Active Directory with a device code challenge. Active Directory will provide
+     * a device code for login and the user must meet the challenge by authenticating in a browser on the current or a
+     * different device.
+     *
+     * @param request the details of the token request
+     * @return a Publisher that emits an AccessToken when the device challenge is met, or an exception if the device
+     *     code expires
+     */
+    public Mono<MsalToken> authenticateWithVsCodeCredential(TokenRequestContext request) {
+
+        String os = System.getProperty("os.name").toLowerCase(Locale.ROOT);
+        String refreshToken = "";
+        if (os.contains("nix") || os.contains("nux")) {
+
+            KeyRingAccessor keyRingAccessor = new KeyRingAccessor(null, null,
+                null, null, "service", "VS Code Azure",
+                "account", "Azure");
+
+            byte[] readCreds = keyRingAccessor.read();
+            refreshToken= new String(readCreds);
+
+        } else if (os.contains("mac")) {
+
+            KeyChainAccessor keyChainAccessor = new KeyChainAccessor(null,
+                "VS Code Azure", "Azure");
+
+            byte[] readCreds = keyChainAccessor.read();
+            refreshToken= new String(readCreds);
+
+        } else {
+            new RuntimeException("Platform could not be determined for VsCode Credential authentication.");
+        }
+
+
+        String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/organizations/" + tenantId;
+        PublicClientApplication.Builder publicClientApplicationBuilder = PublicClientApplication.builder(clientId);
+        RefreshTokenParameters parameters = RefreshTokenParameters
+                                                .builder(new HashSet<>(request.getScopes()), refreshToken)
+                                                .build();
+
+        try {
+            PublicClientApplication clientApplication =  publicClientApplicationBuilder
+                                                             .authority(authorityUrl)
+                                                             .build();
+        } catch (MalformedURLException e) {
+            return Mono.error(e);
+        }
+
+        return Mono.defer(() -> {
+            try {
+                return Mono.fromFuture(publicClientApplication.acquireToken(parameters))
+                           .map(ar -> new MsalToken(ar, options));
+            } catch (Exception e) {
+                return Mono.error(e);
+            }
+        });
+
     }
 
     /**
