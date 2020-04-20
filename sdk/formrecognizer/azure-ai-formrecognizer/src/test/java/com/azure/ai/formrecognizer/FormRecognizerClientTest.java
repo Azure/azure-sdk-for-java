@@ -77,6 +77,20 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     }
 
     /**
+     * Verifies receipt data for a document using source as input stream data.
+     * And the content type is not given. The content will be auto detected.
+     */
+    @Test
+    void extractReceiptDataWithContentTypeAutoDetection() {
+        receiptDataRunner((data) -> {
+            SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
+                client.beginRecognizeReceipts(data, RECEIPT_FILE_LENGTH, null, false, null);
+            syncPoller.waitForCompletion();
+            validateReceiptResult(false, getExpectedReceipts(false), syncPoller.getFinalResult());
+        });
+    }
+
+    /**
      * Verifies receipt data for a document using source as as input stream data and text content when includeTextDetails is true.
      */
     @Test
@@ -126,6 +140,18 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     }
 
     /**
+     * Verifies that an exception is thrown for invalid training data source.
+     */
+    @Test
+    void extractCustomFormInValidSourceUrl() {
+        ErrorResponseException httpResponseException = assertThrows(
+            ErrorResponseException.class,
+            () -> client.beginRecognizeCustomFormsFromUrl(INVALID_URL, VALID_MODEL_ID).getFinalResult());
+
+        assertEquals(httpResponseException.getMessage(), (INVALID_SOURCE_URL_ERROR));
+    }
+
+    /**
      * Verifies custom form data for a document using source as input stream data and valid labeled model Id.
      */
     @Test
@@ -140,14 +166,17 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     }
 
     /**
-     * Verifies that an exception is thrown for invalid training data source.
+     * Verifies custom form data for a document using source as input stream data and valid labeled model Id.
+     * And the content type is not given. The content will be auto detected.
      */
     @Test
-    void extractCustomFormInValidSourceUrl() {
-        ErrorResponseException httpResponseException = assertThrows(
-            ErrorResponseException.class,
-            () -> client.beginRecognizeCustomFormsFromUrl(INVALID_URL, VALID_MODEL_ID).getFinalResult());
-
-        assertEquals(httpResponseException.getMessage(), (INVALID_SOURCE_URL_ERROR));
+    void extractCustomFormLabeledDataWithContentTypeAutoDetection() {
+        customFormLabeledDataRunner((data, validModelId) -> {
+            SyncPoller<OperationResult, IterableStream<RecognizedForm>> syncPoller
+                = client.beginRecognizeCustomForms(data, validModelId,
+                CUSTOM_FORM_FILE_LENGTH, null, true, null);
+            syncPoller.waitForCompletion();
+            validateRecognizedFormResult(getExpectedRecognizedLabeledForms(), syncPoller.getFinalResult());
+        });
     }
 }

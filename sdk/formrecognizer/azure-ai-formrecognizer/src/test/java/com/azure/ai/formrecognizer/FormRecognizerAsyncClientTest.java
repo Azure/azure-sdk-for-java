@@ -96,6 +96,21 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     }
 
     /**
+     * Verifies receipt data from a document using file data as source.
+     * And the content type is not given. The content will be auto detected.
+     */
+    @Test
+    void extractReceiptDataWithContentTypeAutoDetection() {
+        receiptDataRunner((data) -> {
+            SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
+                client.beginRecognizeReceipts(getFileBufferData(data), RECEIPT_FILE_LENGTH, null,
+                    false, null).getSyncPoller();
+            syncPoller.waitForCompletion();
+            validateReceiptResult(false, getExpectedReceipts(false), syncPoller.getFinalResult());
+        });
+    }
+
+    /**
      * Verifies receipt data from a document using file data as source and including text content details.
      */
     @Test
@@ -134,20 +149,6 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     }
 
     /**
-     * Verifies receipt data is correctly transformed to USReceipt type.
-     */
-    @Test
-    void extractReceiptAsUSReceiptWithContentTypeAutoDetection() {
-        receiptDataRunnerTextDetails((data, includeTextDetails) -> {
-            SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller
-                = client.beginRecognizeReceipts(getFileBufferData(data), RECEIPT_FILE_LENGTH, null, includeTextDetails,
-                null).getSyncPoller();
-            syncPoller.waitForCompletion();
-            syncPoller.getFinalResult().forEach(recognizedReceipt -> validateUSReceipt(getExpectedUSReceipt(), ReceiptExtensions.asUSReceipt(recognizedReceipt), includeTextDetails));
-        });
-    }
-
-    /**
      * Verifies layout data for a document using source as input stream data.
      */
     @Test
@@ -164,6 +165,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     // TODO: once PR https://github.com/Azure/azure-sdk-for-java/pull/10354/files is merged, record it
 //    /**
 //     * Verifies layout data for a document using source as input stream data.
+//     * And the content type is not given. The content will be auto detected.
 //     */
 //    @Test
 //    void extractLayoutValidSourceWithContentTypeAutoDetection() {
