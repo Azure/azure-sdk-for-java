@@ -62,6 +62,7 @@ sequence number and the timestamp of when it was enqueued.
 
 ## Examples
 - [Create an instance of Storage Container client][sample_container_client]
+- [Create an instance using Azure Identity][sample_azure_identity]
 - [Consume events from all Event Hub partitions][sample_event_processor]
 - [Specify storage version to create checkpoint store][sample_checkpointstore_custom_storage_version]
 
@@ -152,6 +153,7 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [maven]: https://maven.apache.org/
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [samples_readme]: ./src/samples/README.md
+[sample_azure_identity]: ./src/samples/java/com/azure/messaging/eventhubs/checkpointstore/blob/EventProcessorWithAzureIdentity.java
 [sample_container_client]: ./src/samples/java/com/azure/messaging/eventhubs/checkpointstore/blob/BlobCheckpointStoreSample.java
 [sample_event_hubs]: ./src/samples/java/com/azure/messaging/eventhubs
 [sample_event_processor]: ./src/samples/java/com/azure/messaging/eventhubs/checkpointstore/blob/EventProcessorBlobCheckpointStoreSample.java
@@ -159,7 +161,7 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [sample_examples]: ./src/samples/java/com/azure/messaging/eventhubs/checkpointstore/blob
 [sas_token]: https://docs.microsoft.com/azure/storage/common/storage-dotnet-shared-access-signature-part-1
 [source_code]: ./
-[source_eventprocessorclient]: ./src/main/java/com/azure/messaging/eventhubs/EventProcessorClient.java
+[source_eventprocessorclient]: ../azure-messaging-eventhubs/src/main/java/com/azure/messaging/eventhubs/EventProcessorClient.java
 [source_blobcheckpointstore]: ./src/main/java/com/azure/messaging/eventhubs/checkpointstore/blob/BlobCheckpointStore.java
 [source_loglevels]: ../../core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 [storage_account]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal

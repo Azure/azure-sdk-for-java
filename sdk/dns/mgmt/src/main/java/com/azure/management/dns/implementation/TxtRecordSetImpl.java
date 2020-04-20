@@ -2,29 +2,22 @@
 // Licensed under the MIT License.
 package com.azure.management.dns.implementation;
 
-import com.azure.management.dns.models.RecordSetInner;
 import com.azure.management.dns.RecordType;
 import com.azure.management.dns.TxtRecord;
 import com.azure.management.dns.TxtRecordSet;
-
+import com.azure.management.dns.models.RecordSetInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Implementation of TxtRecordSet.
- */
-class TxtRecordSetImpl
-        extends DnsRecordSetImpl
-        implements TxtRecordSet {
+/** Implementation of TxtRecordSet. */
+class TxtRecordSetImpl extends DnsRecordSetImpl implements TxtRecordSet {
     TxtRecordSetImpl(final String name, final DnsZoneImpl parent, final RecordSetInner innerModel) {
         super(name, RecordType.TXT.toString(), parent, innerModel);
     }
 
     static TxtRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent) {
-        return new TxtRecordSetImpl(name, parent,
-                new RecordSetInner()
-                        .withTxtRecords(new ArrayList<>()));
+        return new TxtRecordSetImpl(name, parent, new RecordSetInner().withTxtRecords(new ArrayList<>()));
     }
 
     @Override
@@ -63,5 +56,3 @@ class TxtRecordSetImpl
         return resource;
     }
 }
-
-

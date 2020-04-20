@@ -470,6 +470,19 @@ public final class ModelBridgeInternal {
         return jsonSerializable.getPropertyBag();
     }
 
+    public static void setFeedOptionsContinuationTokenAndMaxItemCount(FeedOptions feedOptions, String continuationToken, Integer maxItemCount) {
+        feedOptions.setRequestContinuation(continuationToken);
+        feedOptions.setMaxItemCount(maxItemCount);
+    }
+
+    public static void setFeedOptionsContinuationToken(FeedOptions feedOptions, String continuationToken) {
+        feedOptions.setRequestContinuation(continuationToken);
+    }
+
+    public static void setFeedOptionsMaxItemCount(FeedOptions feedOptions, Integer maxItemCount) {
+        feedOptions.setMaxItemCount(maxItemCount);
+    }
+
     public static CosmosItemRequestOptions setEncryptionOptions(CosmosItemRequestOptions options,
                                                                 EncryptionOptions encryptionOptions) {
         options.setEncryptionOptions(encryptionOptions);

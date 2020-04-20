@@ -457,19 +457,6 @@ public final class BridgeInternal {
         return ModelBridgeInternal.getPartitionKeyInternal(partitionKey);
     }
 
-    public static void setFeedOptionsContinuationTokenAndMaxItemCount(FeedOptions feedOptions, String continuationToken, Integer maxItemCount) {
-        feedOptions.setRequestContinuation(continuationToken);
-        feedOptions.setMaxItemCount(maxItemCount);
-    }
-
-    public static void setFeedOptionsContinuationToken(FeedOptions feedOptions, String continuationToken) {
-        feedOptions.setRequestContinuation(continuationToken);
-    }
-
-    public static void setFeedOptionsMaxItemCount(FeedOptions feedOptions, Integer maxItemCount) {
-        feedOptions.setMaxItemCount(maxItemCount);
-    }
-
     public static <T> CosmosItemProperties getProperties(CosmosAsyncItemResponse<T> cosmosItemResponse) {
         return ModelBridgeInternal.getCosmosItemProperties(cosmosItemResponse);
     }

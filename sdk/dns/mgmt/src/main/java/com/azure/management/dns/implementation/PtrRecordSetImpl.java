@@ -2,29 +2,22 @@
 // Licensed under the MIT License.
 package com.azure.management.dns.implementation;
 
-import com.azure.management.dns.models.RecordSetInner;
 import com.azure.management.dns.PtrRecord;
 import com.azure.management.dns.PtrRecordSet;
 import com.azure.management.dns.RecordType;
-
+import com.azure.management.dns.models.RecordSetInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Implementation of {@link PtrRecordSet}.
- */
-class PtrRecordSetImpl
-        extends DnsRecordSetImpl
-        implements PtrRecordSet {
+/** Implementation of {@link PtrRecordSet}. */
+class PtrRecordSetImpl extends DnsRecordSetImpl implements PtrRecordSet {
     PtrRecordSetImpl(final String name, final DnsZoneImpl parent, final RecordSetInner innerModel) {
         super(name, RecordType.PTR.toString(), parent, innerModel);
     }
 
     static PtrRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent) {
-        return new PtrRecordSetImpl(name, parent,
-                new RecordSetInner()
-                        .withPtrRecords(new ArrayList<>()));
+        return new PtrRecordSetImpl(name, parent, new RecordSetInner().withPtrRecords(new ArrayList<>()));
     }
 
     @Override
@@ -65,4 +58,3 @@ class PtrRecordSetImpl
         return resource;
     }
 }
-

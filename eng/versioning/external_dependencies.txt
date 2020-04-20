@@ -9,6 +9,7 @@ com.github.spotbugs:spotbugs;4.0.0-beta3
 com.github.spotbugs:spotbugs-maven-plugin;3.1.12.2
 com.google.code.gson:gson;2.8.5
 com.google.guava:guava;24.1.1-jre
+com.h3xstream.findsecbugs:findsecbugs-plugin;1.9.0
 com.microsoft.azure:azure-annotations;1.7.0
 com.microsoft.azure:azure-arm-client-runtime;1.7.3
 com.microsoft.azure:azure-client-authentication;1.7.3
@@ -133,7 +134,7 @@ org.apache.maven.plugins:maven-release-plugin;2.5.3
 org.apache.maven.plugins:maven-resources-plugin;2.4.3
 org.apache.maven.plugins:maven-site-plugin;3.7.1
 org.apache.maven.plugins:maven-source-plugin;3.0.1
-org.apache.maven.plugins:maven-surefire-plugin;3.0.0-M3
+org.apache.maven.plugins:maven-surefire-plugin;3.0.0-M4
 org.apidesign.javadoc:codesnippet-doclet;0.53
 org.codehaus.mojo:build-helper-maven-plugin;3.0.0
 org.codehaus.mojo:exec-maven-plugin;1.2.1

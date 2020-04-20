@@ -8,6 +8,7 @@ import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import io.reactivex.subscribers.TestSubscriber;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -28,23 +29,23 @@ public class FetcherTest {
     public static Object[][] queryParamProvider() {
 
         FeedOptions options1 = new FeedOptions();
-        options1.setMaxItemCount(100);
-        options1.setRequestContinuation("cp-init"); // initial continuation token
+        // initial continuation token
+        ModelBridgeInternal.setFeedOptionsContinuationTokenAndMaxItemCount(options1,"cp-init",100);
         int top1 = -1; // no top
 
         // no continuation token
         FeedOptions options2 = new FeedOptions();
-        options2.setMaxItemCount(100);
+        ModelBridgeInternal.setFeedOptionsMaxItemCount(options2, 100);
         int top2 = -1; // no top
 
         // top more than max item count
         FeedOptions options3 = new FeedOptions();
-        options3.setMaxItemCount(100);
+        ModelBridgeInternal.setFeedOptionsMaxItemCount(options3, 100);
         int top3 = 200;
 
         // top less than max item count
         FeedOptions options4 = new FeedOptions();
-        options4.setMaxItemCount(100);
+        ModelBridgeInternal.setFeedOptionsMaxItemCount(options4, 100);
         int top4 = 20;
 
         return new Object[][] {

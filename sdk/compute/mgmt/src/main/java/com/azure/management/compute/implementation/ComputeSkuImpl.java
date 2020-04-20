@@ -19,7 +19,6 @@ import com.azure.management.compute.VirtualMachineSizeTypes;
 import com.azure.management.compute.models.ResourceSkuInner;
 import com.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.management.resources.fluentcore.arm.Region;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,9 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * The implementation for {@link ComputeSku}.
- */
+/** The implementation for {@link ComputeSku}. */
 final class ComputeSkuImpl implements ComputeSku {
     private final ResourceSkuInner inner;
 
@@ -68,8 +65,8 @@ final class ComputeSkuImpl implements ComputeSku {
     @Override
     public VirtualMachineSizeTypes virtualMachineSizeType() {
         if (this.inner.resourceType() != null
-                && this.inner.resourceType().equalsIgnoreCase("virtualMachines")
-                && this.inner.name() != null) {
+            && this.inner.resourceType().equalsIgnoreCase("virtualMachines")
+            && this.inner.name() != null) {
             return VirtualMachineSizeTypes.fromString(this.inner.name());
         } else {
             return null;
@@ -79,8 +76,9 @@ final class ComputeSkuImpl implements ComputeSku {
     @Override
     public DiskSkuTypes diskSkuType() {
         if (this.inner.resourceType() != null
-                && (this.inner.resourceType().equalsIgnoreCase("disks") || this.inner.resourceType().equalsIgnoreCase("snapshots"))
-                && this.inner.name() != null) {
+            && (this.inner.resourceType().equalsIgnoreCase("disks")
+                || this.inner.resourceType().equalsIgnoreCase("snapshots"))
+            && this.inner.name() != null) {
             return DiskSkuTypes.fromStorageAccountType(DiskStorageAccountTypes.fromString(this.inner.name()));
         } else {
             return null;
@@ -90,8 +88,8 @@ final class ComputeSkuImpl implements ComputeSku {
     @Override
     public AvailabilitySetSkuTypes availabilitySetSkuType() {
         if (this.inner.resourceType() != null
-                && (this.inner.resourceType().equalsIgnoreCase("availabilitySets"))
-                && this.inner.name() != null) {
+            && (this.inner.resourceType().equalsIgnoreCase("availabilitySets"))
+            && this.inner.name() != null) {
             return AvailabilitySetSkuTypes.fromString(this.inner.name());
         } else {
             return null;

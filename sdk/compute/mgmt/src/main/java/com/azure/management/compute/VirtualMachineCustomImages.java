@@ -18,12 +18,10 @@ import com.azure.management.resources.fluentcore.collection.SupportsDeletingById
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-/**
- * Entry point to custom virtual machine image management.
- */
+/** Entry point to custom virtual machine image management. */
 @Fluent
-public interface VirtualMachineCustomImages extends
-        SupportsListing<VirtualMachineCustomImage>,
+public interface VirtualMachineCustomImages
+    extends SupportsListing<VirtualMachineCustomImage>,
         SupportsCreating<VirtualMachineCustomImage.DefinitionStages.Blank>,
         SupportsDeletingById,
         SupportsListingByResourceGroup<VirtualMachineCustomImage>,

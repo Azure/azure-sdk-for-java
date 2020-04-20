@@ -4,20 +4,18 @@ package com.azure.management.compute.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.compute.models.VirtualMachineImageResourceInner;
-import com.azure.management.compute.models.VirtualMachineImagesInner;
 import com.azure.management.compute.VirtualMachineOffer;
 import com.azure.management.compute.VirtualMachineSku;
 import com.azure.management.compute.VirtualMachineSkus;
+import com.azure.management.compute.models.VirtualMachineImageResourceInner;
+import com.azure.management.compute.models.VirtualMachineImagesInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.azure.management.resources.fluentcore.utils.PagedConverter;
 
-/**
- * The implementation for {@link VirtualMachineSkus}.
- */
+/** The implementation for {@link VirtualMachineSkus}. */
 class VirtualMachineSkusImpl
-        extends ReadableWrappersImpl<VirtualMachineSku, VirtualMachineSkuImpl, VirtualMachineImageResourceInner>
-        implements VirtualMachineSkus {
+    extends ReadableWrappersImpl<VirtualMachineSku, VirtualMachineSkuImpl, VirtualMachineImageResourceInner>
+    implements VirtualMachineSkus {
 
     private final VirtualMachineImagesInner innerCollection;
     private final VirtualMachineOffer offer;
@@ -42,10 +40,9 @@ class VirtualMachineSkusImpl
 
     @Override
     public PagedFlux<VirtualMachineSku> listAsync() {
-        return PagedConverter.convertListToPagedFlux(innerCollection.listSkusAsync(
-                offer.region().toString(),
-                offer.publisher().name(),
-                offer.name()))
-                .mapPage(this::wrapModel);
+        return PagedConverter
+            .convertListToPagedFlux(
+                innerCollection.listSkusAsync(offer.region().toString(), offer.publisher().name(), offer.name()))
+            .mapPage(this::wrapModel);
     }
 }

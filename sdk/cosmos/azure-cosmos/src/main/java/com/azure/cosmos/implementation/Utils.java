@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.uuid.EthernetAddress;
 import com.azure.cosmos.implementation.uuid.Generators;
 import com.azure.cosmos.implementation.uuid.impl.TimeBasedGenerator;
 import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -600,10 +601,10 @@ public class Utils {
             return;
         }
         if (pagedFluxOptions.getRequestContinuation() != null) {
-            feedOptions.setRequestContinuation(pagedFluxOptions.getRequestContinuation());
+            ModelBridgeInternal.setFeedOptionsContinuationToken(feedOptions, pagedFluxOptions.getRequestContinuation());
         }
         if (pagedFluxOptions.getMaxItemCount() != null) {
-            feedOptions.setMaxItemCount(pagedFluxOptions.getMaxItemCount());
+            ModelBridgeInternal.setFeedOptionsMaxItemCount(feedOptions, pagedFluxOptions.getMaxItemCount());
         }
     }
 
