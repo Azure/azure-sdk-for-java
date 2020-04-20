@@ -908,7 +908,8 @@ public final class DeploymentsInner
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean checkExistenceAtScope(String scope, String deploymentName) {
-        return checkExistenceAtScopeAsync(scope, deploymentName).block();
+        Boolean value = checkExistenceAtScopeAsync(scope, deploymentName).block();
+        return value == null ? false : value;
     }
 
     /**
@@ -1450,7 +1451,8 @@ public final class DeploymentsInner
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean checkExistenceAtTenantScope(String deploymentName) {
-        return checkExistenceAtTenantScopeAsync(deploymentName).block();
+        Boolean value = checkExistenceAtTenantScopeAsync(deploymentName).block();
+        return value == null ? false : value;
     }
 
     /**
@@ -1966,7 +1968,8 @@ public final class DeploymentsInner
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean checkExistenceAtManagementGroupScope(String groupId, String deploymentName) {
-        return checkExistenceAtManagementGroupScopeAsync(groupId, deploymentName).block();
+        Boolean value = checkExistenceAtManagementGroupScopeAsync(groupId, deploymentName).block();
+        return value == null ? false : value;
     }
 
     /**
@@ -2524,7 +2527,8 @@ public final class DeploymentsInner
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean checkExistenceAtSubscriptionScope(String deploymentName) {
-        return checkExistenceAtSubscriptionScopeAsync(deploymentName).block();
+        Boolean value = checkExistenceAtSubscriptionScopeAsync(deploymentName).block();
+        return value == null ? false : value;
     }
 
     /**
@@ -3154,7 +3158,8 @@ public final class DeploymentsInner
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean checkExistence(String resourceGroupName, String deploymentName) {
-        return checkExistenceAsync(resourceGroupName, deploymentName).block();
+        Boolean value = checkExistenceAsync(resourceGroupName, deploymentName).block();
+        return value == null ? false : value;
     }
 
     /**

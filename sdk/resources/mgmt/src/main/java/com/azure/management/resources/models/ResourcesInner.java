@@ -921,14 +921,16 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
         String resourceType,
         String resourceName,
         String apiVersion) {
-        return checkExistenceAsync(
-                resourceGroupName,
-                resourceProviderNamespace,
-                parentResourcePath,
-                resourceType,
-                resourceName,
-                apiVersion)
-            .block();
+        Boolean value =
+            checkExistenceAsync(
+                    resourceGroupName,
+                    resourceProviderNamespace,
+                    parentResourcePath,
+                    resourceType,
+                    resourceName,
+                    apiVersion)
+                .block();
+        return value == null ? false : value;
     }
 
     /**
@@ -1448,7 +1450,8 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean checkExistenceById(String resourceId, String apiVersion) {
-        return checkExistenceByIdAsync(resourceId, apiVersion).block();
+        Boolean value = checkExistenceByIdAsync(resourceId, apiVersion).block();
+        return value == null ? false : value;
     }
 
     /**

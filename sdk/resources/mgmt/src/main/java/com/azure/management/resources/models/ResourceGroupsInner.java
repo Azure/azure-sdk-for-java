@@ -233,7 +233,8 @@ public final class ResourceGroupsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean checkExistence(String resourceGroupName) {
-        return checkExistenceAsync(resourceGroupName).block();
+        Boolean value = checkExistenceAsync(resourceGroupName).block();
+        return value == null ? false : value;
     }
 
     /**
