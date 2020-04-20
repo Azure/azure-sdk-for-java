@@ -14,6 +14,7 @@ import com.azure.core.management.AzureEnvironment;
 
 import reactor.core.publisher.Mono;
 
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -46,7 +47,7 @@ public class AuthenticationPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        if ("http".equals(context.getHttpRequest().getUrl().getProtocol().toLowerCase())) {
+        if ("http".equals(context.getHttpRequest().getUrl().getProtocol().toLowerCase(Locale.ROOT))) {
             return Mono.error(new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
         }
 

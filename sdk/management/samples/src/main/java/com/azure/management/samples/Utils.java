@@ -1503,8 +1503,8 @@ public final class Utils {
                 .append("\n\tResource group: ").append(firewallRule.resourceGroupName())
                 .append("\n\tRegion: ").append(firewallRule.region())
                 .append("\n\tSqlServer Name: ").append(firewallRule.sqlServerName())
-                .append("\n\tStart IP Address of the firewall rule: ").append(firewallRule.startIPAddress())
-                .append("\n\tEnd IP Address of the firewall rule: ").append(firewallRule.endIPAddress());
+                .append("\n\tStart IP Address of the firewall rule: ").append(firewallRule.startIpAddress())
+                .append("\n\tEnd IP Address of the firewall rule: ").append(firewallRule.endIpAddress());
 
         System.out.println(builder.toString());
     }
