@@ -2,11 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.encryption.AeadAes256CbcHmac256Algorithm;
-import com.azure.cosmos.implementation.encryption.AeadAes256CbcHmac256EncryptionKey;
-import com.azure.cosmos.implementation.encryption.api.EncryptionType;
-import com.azure.cosmos.implementation.encryption.TestUtils;
-import com.azure.cosmos.implementation.encryption.api.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.implementation.encryption.api.DataEncryptionKey;
 import com.azure.cosmos.implementation.encryption.api.DataEncryptionKeyProvider;
 import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
@@ -58,8 +53,6 @@ public class EncryptionCodeSnippet {
         assert response.getItem().nonSensitive != null;
         assert response.getItem().sensitive1 != null;
         assert response.getItem().sensitive2 != null;
-
-
     }
 
     private DataEncryptionKeyProvider naiveDataEncryptionKeyProvider() {
@@ -90,39 +83,8 @@ public class EncryptionCodeSnippet {
     }
 
     private DataEncryptionKey createDataEncryptionKey() {
-
-        byte[] key;
-        try {
-            key = TestUtils.generatePBEKeySpec("testPass");
-        } catch (Exception e) {
-           throw new IllegalArgumentException(e);
-        }
-
-        AeadAes256CbcHmac256EncryptionKey aeadAesKey = TestUtils.instantiateAeadAes256CbcHmac256EncryptionKey(key);
-        AeadAes256CbcHmac256Algorithm encryptionAlgorithm = TestUtils.instantiateAeadAes256CbcHmac256Algorithm(aeadAesKey, EncryptionType.RANDOMIZED, (byte) 0x01);
-        DataEncryptionKey dataEncryptionKey = new DataEncryptionKey() {
-
-            @Override
-            public byte[] getRawKey() {
-                return key;
-            }
-
-            @Override
-            public String getEncryptionAlgorithm() {
-                return CosmosEncryptionAlgorithm.AEAes256CbcHmacSha256Randomized;
-            }
-
-            @Override
-            public byte[] encryptData(byte[] plainText) {
-                return encryptionAlgorithm.encryptData(plainText);
-            }
-
-            @Override
-            public byte[] decryptData(byte[] cipherText) {
-                return encryptionAlgorithm.decryptData(cipherText);
-            }
-        };
-        return dataEncryptionKey;
+        byte[] key = DataEncryptionKey.generate("AEAes256CbcHmacSha256Randomized");
+        return DataEncryptionKey.create(key, "AEAes256CbcHmacSha256Randomized");
     }
 }
 

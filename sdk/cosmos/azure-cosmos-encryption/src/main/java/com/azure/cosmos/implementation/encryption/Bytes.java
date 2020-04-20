@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.encryption;
 
-public class Bytes {
+class Bytes {
 
     public static final int ONE_BYTE_SIZE = 1;
 

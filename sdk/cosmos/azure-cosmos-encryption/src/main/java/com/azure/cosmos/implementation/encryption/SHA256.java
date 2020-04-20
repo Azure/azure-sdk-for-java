@@ -7,7 +7,7 @@ import java.io.Closeable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class SHA256 implements Closeable {
+class SHA256 implements Closeable {
     private final MessageDigest digest;
 
     private SHA256() {

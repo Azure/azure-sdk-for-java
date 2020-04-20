@@ -4,6 +4,8 @@
 package com.azure.cosmos.implementation.encryption;
 
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.encryption.api.CosmosEncryptionAlgorithm;
+import com.azure.cosmos.implementation.encryption.api.DataEncryptionKey;
 import com.azure.cosmos.implementation.encryption.api.EncryptionType;
 import com.google.common.io.BaseEncoding;
 import com.google.common.io.ByteStreams;
@@ -70,5 +72,35 @@ public class TestUtils {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static DataEncryptionKey createDataEncryptionKey() throws Exception {
+        byte[] key = TestUtils.generatePBEKeySpec("testPass");
+
+        AeadAes256CbcHmac256EncryptionKey aeadAesKey = TestUtils.instantiateAeadAes256CbcHmac256EncryptionKey(key);
+        AeadAes256CbcHmac256Algorithm encryptionAlgorithm = TestUtils.instantiateAeadAes256CbcHmac256Algorithm(aeadAesKey, EncryptionType.RANDOMIZED, (byte) 0x01);
+        DataEncryptionKey javaDataEncryptionKey = new DataEncryptionKey() {
+
+            @Override
+            public byte[] getRawKey() {
+                return key;
+            }
+
+            @Override
+            public String getEncryptionAlgorithm() {
+                return CosmosEncryptionAlgorithm.AEAes256CbcHmacSha256Randomized;
+            }
+
+            @Override
+            public byte[] encryptData(byte[] plainText) {
+                return encryptionAlgorithm.encryptData(plainText);
+            }
+
+            @Override
+            public byte[] decryptData(byte[] cipherText) {
+                return encryptionAlgorithm.decryptData(cipherText);
+            }
+        };
+        return javaDataEncryptionKey;
     }
 }

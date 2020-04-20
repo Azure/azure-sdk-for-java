@@ -6,9 +6,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.encryption.AeadAes256CbcHmac256Algorithm;
-import com.azure.cosmos.implementation.encryption.AeadAes256CbcHmac256EncryptionKey;
-import com.azure.cosmos.implementation.encryption.api.EncryptionType;
 import com.azure.cosmos.implementation.encryption.SimpleInMemoryProvider;
 import com.azure.cosmos.implementation.encryption.TestUtils;
 import com.azure.cosmos.implementation.encryption.api.CosmosEncryptionAlgorithm;
@@ -36,7 +33,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class EncryptionTest extends TestSuiteBase {
+public class EncryptionTest2 extends TestSuiteBase {
     static SimpleInMemoryProvider simpleInMemoryProvider = new SimpleInMemoryProvider();
 
     private CosmosClient client;
@@ -44,7 +41,7 @@ public class EncryptionTest extends TestSuiteBase {
     private static final int TIMEOUT = 60_000;
 
     @Factory(dataProvider = "clientBuilders")
-    public EncryptionTest(CosmosClientBuilder clientBuilder) {
+    public EncryptionTest2(CosmosClientBuilder clientBuilder) {
         super(CosmosBridgeInternal.setDateKeyProvider(clientBuilder, simpleInMemoryProvider));
     }
 
@@ -257,32 +254,6 @@ public class EncryptionTest extends TestSuiteBase {
     }
 
     private DataEncryptionKey createDataEncryptionKey() throws Exception {
-        byte[] key = TestUtils.generatePBEKeySpec("testPass");
-
-        AeadAes256CbcHmac256EncryptionKey aeadAesKey = TestUtils.instantiateAeadAes256CbcHmac256EncryptionKey(key);
-        AeadAes256CbcHmac256Algorithm encryptionAlgorithm = TestUtils.instantiateAeadAes256CbcHmac256Algorithm(aeadAesKey, EncryptionType.RANDOMIZED, (byte) 0x01);
-        DataEncryptionKey javaDataEncryptionKey = new DataEncryptionKey() {
-
-            @Override
-            public byte[] getRawKey() {
-                return key;
-            }
-
-            @Override
-            public String getEncryptionAlgorithm() {
-                return CosmosEncryptionAlgorithm.AEAes256CbcHmacSha256Randomized;
-            }
-
-            @Override
-            public byte[] encryptData(byte[] plainText) {
-                return encryptionAlgorithm.encryptData(plainText);
-            }
-
-            @Override
-            public byte[] decryptData(byte[] cipherText) {
-                return encryptionAlgorithm.decryptData(cipherText);
-            }
-        };
-        return javaDataEncryptionKey;
+        return TestUtils.createDataEncryptionKey();
     }
 }
