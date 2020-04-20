@@ -25,6 +25,8 @@ import com.azure.management.cosmosdb.VirtualNetworkRule;
 import com.azure.management.cosmosdb.models.DatabaseAccountGetResultsInner;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -603,7 +605,7 @@ class CosmosDBAccountImpl
                                         .flatMap(
                                             index -> {
                                                 data.set(0, data.get(0) + 30);
-                                                return Mono.delay(SdkContext.getLroRetryDuration());
+                                                return Mono.delay(SdkContext.getDelayDuration(Duration.ofSeconds(30)));
                                             }));
                     }
                 });
