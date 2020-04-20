@@ -43,5 +43,22 @@
       <artifactId>azure-storage-common</artifactId>
       <version>12.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-blob</artifactId>
+      <version>12.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+    </dependency>
+    <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-test</artifactId>
+      <version>3.3.0.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.spockframework</groupId>
+      <artifactId>spock-core</artifactId>
+      <version>1.3-groovy-2.5</version> <!-- {x-version-update;org.spockframework:spock-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 </project>
