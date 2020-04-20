@@ -43,7 +43,7 @@ public class ChainedTokenCredential implements TokenCredential {
                    .flatMap(p -> p.getToken(request).onErrorResume(CredentialUnavailableException.class, t -> {
                        exceptions.add(t);
                        return Mono.empty();
-                   }))
+                   }), 1)
                    .next()
                    .switchIfEmpty(Mono.defer(() -> {
 
