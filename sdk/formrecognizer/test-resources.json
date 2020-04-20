@@ -5,21 +5,10 @@
         "baseName": {
             "type": "String"
         },
-        "endpointSuffix": {
-            "type": "string",
-            "defaultValue": "core.windows.net"
-        },
         "testApplicationOid": {
             "type": "string",
             "metadata": {
                 "description": "The principal to assign the role to. This is application object id."
-            }
-        },
-        "formRecognizerBaseName": {
-            "type": "string",
-            "defaultValue": "[resourceGroup().name]",
-            "metadata": {
-                "description": "The base resource name."
             }
         },
         "formRecognizerEndpointSuffix": {
@@ -33,10 +22,10 @@
         "blobDataContributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
         "contributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c')]",
         "primaryAccountName": "[concat('prim', parameters('baseName'))]",
-        "secondaryAccountName": "[concat('sec', parameters('baseName'))]",
+        "formRecognizerBaseName": "[concat('formRecognizer', parameters('baseName'))]",
         "location": "[resourceGroup().location]",
         "formRecognizerApiVersion": "2017-04-18",
-        "azureFormRecognizerUrl": "[concat('https://', parameters('formRecognizerBaseName'), parameters('formRecognizerEndpointSuffix'))]",
+        "azureFormRecognizerUrl": "[concat('https://', variables('formRecognizerBaseName'), parameters('formRecognizerEndpointSuffix'))]",
         "cognitiveServiceUserRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/a97b65f3-24c7-4388-baec-2e87135dc908')]"
     },
     "resources": [
@@ -97,43 +86,11 @@
             }
         },
         {
-            "type": "Microsoft.Storage/storageAccounts",
-            "apiVersion": "[variables('storageApiVersion')]",
-            "name": "[variables('secondaryAccountName')]",
-            "location": "[variables('location')]",
-            "sku": {
-                "name": "Standard_RAGRS",
-                "tier": "Standard"
-            },
-            "kind": "StorageV2",
-            "properties": {
-                "networkAcls": {
-                    "bypass": "AzureServices",
-                    "virtualNetworkRules": [],
-                    "ipRules": [],
-                    "defaultAction": "Allow"
-                },
-                "supportsHttpsTrafficOnly": true,
-                "encryption": {
-                    "services": {
-                        "file": {
-                            "enabled": true
-                        },
-                        "blob": {
-                            "enabled": true
-                        }
-                    },
-                    "keySource": "Microsoft.Storage"
-                },
-                "accessTier": "Hot"
-            }
-        },
-        {
             "type": "Microsoft.Authorization/roleAssignments",
             "apiVersion": "[variables('authorizationApiVersion')]",
-            "name": "[guid(concat(variables('cognitiveServiceUserRoleId'), parameters('formRecognizerBaseName')))]",
+            "name": "[guid(concat(variables('cognitiveServiceUserRoleId'), variables('formRecognizerBaseName')))]",
             "dependsOn": [
-                "[parameters('formRecognizerBaseName')]"
+                "[variables('formRecognizerBaseName')]"
             ],
             "properties": {
                 "principalId": "[parameters('testApplicationOid')]",
@@ -142,15 +99,15 @@
         },
         {
             "type": "Microsoft.CognitiveServices/accounts",
-            "name": "[parameters('formRecognizerBaseName')]",
+            "name": "[variables('formRecognizerBaseName')]",
             "apiVersion": "[variables('formRecognizerApiVersion')]",
             "sku": {
-                "name": "S"
+                "name": "S0"
             },
             "kind": "FormRecognizer",
             "location": "[resourceGroup().location]",
             "properties": {
-                "customSubDomainName": "[parameters('formRecognizerBaseName')]"
+                "customSubDomainName": "[variables('formRecognizerBaseName')]"
             }
         }
     ],
@@ -163,25 +120,9 @@
             "type": "string",
             "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value]"
         },
-        "SECONDARY_STORAGE_ACCOUNT_NAME": {
-            "type": "string",
-            "value": "[variables('secondaryAccountName')]"
-        },
-        "SECONDARY_STORAGE_ACCOUNT_KEY": {
-            "type": "string",
-            "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('secondaryAccountName')), variables('storageApiVersion')).keys[0].value]"
-        },
-        "BLOB_STORAGE_ACCOUNT_NAME": {
-            "type": "string",
-            "value": "[variables('secondaryAccountName')]"
-        },
-        "BLOB_STORAGE_ACCOUNT_KEY": {
-            "type": "string",
-            "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('secondaryAccountName')), variables('storageApiVersion')).keys[0].value]"
-        },
         "AZURE_FORM_RECOGNIZER_API_KEY": {
             "type": "string",
-            "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', parameters('formRecognizerBaseName')), variables('formRecognizerApiVersion')).key1]"
+            "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', variables('formRecognizerBaseName')), variables('formRecognizerApiVersion')).key1]"
         },
         "AZURE_FORM_RECOGNIZER_ENDPOINT": {
             "type": "string",
