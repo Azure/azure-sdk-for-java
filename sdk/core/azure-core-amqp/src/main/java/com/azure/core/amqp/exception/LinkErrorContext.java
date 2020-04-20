@@ -16,6 +16,7 @@ public class LinkErrorContext extends SessionErrorContext {
 
     private final String trackingId;
     private final Integer linkCredit;
+    private final String redirectHostName;
 
     /**
      * Creates a new instance with the AMQP link's {@code namespace} and {@code entityPath} information. Allows for
@@ -31,10 +32,30 @@ public class LinkErrorContext extends SessionErrorContext {
      * @throws IllegalArgumentException if {@code namespace} or {@code entityPath} is {@code null} or empty.
      */
     public LinkErrorContext(String namespace, String entityPath, String trackingId, Integer linkCredit) {
+        this(namespace, entityPath, trackingId, linkCredit, null);
+    }
+
+    /**
+     * Creates a new instance with the AMQP link's {@code namespace} and {@code entityPath} information. Allows for
+     * optional information about the link if it was successfully opened such as {@code linkCredit} and
+     * {@code trackingId}.
+     *
+     * @param namespace The service namespace of the error context.
+     * @param entityPath The remote container the AMQP receive link is fetching messages from.
+     * @param trackingId The tracking id for the error. Tracking id can be {@code null} if the error was not thrown from
+     *         the remote AMQP message broker.
+     * @param linkCredit the number of link credits the current AMQP link has when this error occurred, can be
+     *         {@code null} if the receive link has not opened yet.
+     * @param redirectHostName the host to redirect to if the underlying link error condition was due to link redirect.
+     * @throws IllegalArgumentException if {@code namespace} or {@code entityPath} is {@code null} or empty.
+     */
+    public LinkErrorContext(String namespace, String entityPath, String trackingId, Integer linkCredit,
+        String redirectHostName) {
         super(namespace, entityPath);
 
         this.trackingId = trackingId;
         this.linkCredit = linkCredit;
+        this.redirectHostName = redirectHostName;
     }
 
     /**
@@ -57,6 +78,15 @@ public class LinkErrorContext extends SessionErrorContext {
     }
 
     /**
+     * Returns the redirect hostname if the link error condition was "amqp:link:redirect", {@code null} otherwise.
+     *
+     * @return the redirect hostname if the link error condition was "amqp:link:redirect", {@code null} otherwise.
+     */
+    public String getRedirectHostName() {
+        return redirectHostName;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -71,6 +101,11 @@ public class LinkErrorContext extends SessionErrorContext {
         if (getLinkCredit() != null) {
             builder.append(MESSAGE_PARAMETER_DELIMITER);
             builder.append(String.format(Locale.US, "LINK_CREDIT: %s", getLinkCredit()));
+        }
+
+        if (getRedirectHostName() != null) {
+            builder.append(MESSAGE_PARAMETER_DELIMITER);
+            builder.append(String.format(Locale.US, "REDIRECT_HOSTNAME: %s", getRedirectHostName()));
         }
 
         return builder.toString();

@@ -58,6 +58,8 @@ public enum AmqpErrorCondition {
      */
     LINK_DETACH_FORCED("amqp:link:detach-forced"),
 
+    LINK_REDIRECT("amqp:link:redirect"),
+
     /**
      * An operator intervened to close the connection for some reason. The client could retry at some later date.
      */
@@ -99,6 +101,8 @@ public enum AmqpErrorCondition {
      * Tracking Id for an exception.
      */
     TRACKING_ID_PROPERTY("com.microsoft:tracking-id"),
+
+
     /**
      * IO exceptions that occur in proton-j library.
      */

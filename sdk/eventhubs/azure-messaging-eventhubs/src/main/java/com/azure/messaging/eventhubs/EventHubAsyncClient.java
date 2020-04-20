@@ -32,9 +32,11 @@ class EventHubAsyncClient implements Closeable {
     private final boolean isSharedConnection;
     private final Runnable onClientClose;
     private final TracerProvider tracerProvider;
+    private final String entityPath;
 
     EventHubAsyncClient(EventHubConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
-        MessageSerializer messageSerializer, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose) {
+        MessageSerializer messageSerializer, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose,
+        String entityPath) {
         this.tracerProvider = Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.connectionProcessor = Objects.requireNonNull(connectionProcessor,
@@ -43,6 +45,7 @@ class EventHubAsyncClient implements Closeable {
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
 
         this.isSharedConnection = isSharedConnection;
+        this.entityPath = entityPath;
     }
 
     /**
@@ -130,7 +133,7 @@ class EventHubAsyncClient implements Closeable {
 
         return new EventHubConsumerAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), getEventHubName(),
             connectionProcessor, messageSerializer, consumerGroup, prefetchCount, scheduler, isSharedConnection,
-            onClientClose);
+            onClientClose, entityPath);
     }
 
     /**

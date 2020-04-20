@@ -81,10 +81,12 @@ public class EventHubConsumerAsyncClient implements Closeable {
      */
     private final ConcurrentHashMap<String, EventHubPartitionAsyncConsumer> openPartitionConsumers =
         new ConcurrentHashMap<>();
+    private final String entityPath;
 
     EventHubConsumerAsyncClient(String fullyQualifiedNamespace, String eventHubName,
         EventHubConnectionProcessor connectionProcessor, MessageSerializer messageSerializer, String consumerGroup,
-        int prefetchCount, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClosed) {
+        int prefetchCount, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClosed,
+        String entityPath) {
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
         this.connectionProcessor = connectionProcessor;
@@ -94,6 +96,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
         this.scheduler = scheduler;
         this.isSharedConnection = isSharedConnection;
         this.onClientClosed = onClientClosed;
+        this.entityPath = entityPath;
     }
 
     /**
@@ -350,7 +353,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
     private EventHubPartitionAsyncConsumer createPartitionConsumer(String linkName, String partitionId,
         EventPosition startingPosition, ReceiveOptions receiveOptions) {
         final String entityPath = String.format(Locale.US, RECEIVER_ENTITY_PATH_FORMAT,
-            getEventHubName(), consumerGroup, partitionId);
+            this.entityPath == null ? getEventHubName() : this.entityPath, consumerGroup, partitionId);
 
         final AtomicReference<Supplier<EventPosition>> initialPosition = new AtomicReference<>(() -> startingPosition);
         final Flux<AmqpReceiveLink> receiveLinkMono = connectionProcessor

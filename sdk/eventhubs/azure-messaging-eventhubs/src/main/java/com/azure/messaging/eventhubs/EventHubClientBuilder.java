@@ -135,6 +135,8 @@ public class EventHubClientBuilder {
     private String consumerGroup;
     private EventHubConnectionProcessor eventHubConnectionProcessor;
     private int prefetchCount;
+    private String entityPath;
+    private CbsAuthorizationType cbsAuthorizationType;
 
     /**
      * Keeps track of the open clients that were created from this builder when there is a shared connection.
@@ -149,6 +151,11 @@ public class EventHubClientBuilder {
     public EventHubClientBuilder() {
         transport = AmqpTransportType.AMQP;
         prefetchCount = DEFAULT_PREFETCH_COUNT;
+    }
+
+    public EventHubClientBuilder entityPath(String entityPath) {
+        this.entityPath = entityPath;
+        return this;
     }
 
     /**
@@ -268,6 +275,12 @@ public class EventHubClientBuilder {
      */
     public EventHubClientBuilder credential(String fullyQualifiedNamespace, String eventHubName,
         TokenCredential credential) {
+        return this.credential(fullyQualifiedNamespace, eventHubName, credential, null);
+    }
+
+    public EventHubClientBuilder credential(String fullyQualifiedNamespace, String eventHubName,
+        TokenCredential credential, CbsAuthorizationType cbsAuthorizationType) {
+
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.credentials = Objects.requireNonNull(credential, "'credential' cannot be null.");
@@ -278,6 +291,8 @@ public class EventHubClientBuilder {
         } else if (CoreUtils.isNullOrEmpty(eventHubName)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
         }
+
+        this.cbsAuthorizationType = cbsAuthorizationType;
 
         return this;
     }
@@ -486,7 +501,7 @@ public class EventHubClientBuilder {
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
         return new EventHubAsyncClient(processor, tracerProvider, messageSerializer, scheduler,
-            isSharedConnection.get(), this::onClientClose);
+            isSharedConnection.get(), this::onClientClose, entityPath);
     }
 
     /**
@@ -607,9 +622,13 @@ public class EventHubClientBuilder {
                 "Cannot use a proxy when TransportType is not AMQP Web Sockets."));
         }
 
-        final CbsAuthorizationType authorizationType = credentials instanceof EventHubSharedKeyCredential
-            ? CbsAuthorizationType.SHARED_ACCESS_SIGNATURE
-            : CbsAuthorizationType.JSON_WEB_TOKEN;
+        CbsAuthorizationType authorizationType = cbsAuthorizationType;
+
+        if(authorizationType == null) {
+            authorizationType = credentials instanceof EventHubSharedKeyCredential
+                ? CbsAuthorizationType.SHARED_ACCESS_SIGNATURE
+                : CbsAuthorizationType.JSON_WEB_TOKEN;
+        }
 
         return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType, transport, retryOptions,
             proxyOptions, scheduler);

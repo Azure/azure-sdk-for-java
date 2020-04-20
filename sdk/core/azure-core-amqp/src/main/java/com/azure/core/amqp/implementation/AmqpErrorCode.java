@@ -27,6 +27,7 @@ public final class AmqpErrorCode {
         Symbol.getSymbol(AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED.getErrorCondition());
     public static final Symbol LINK_DETACH_FORCED =
         Symbol.getSymbol(AmqpErrorCondition.LINK_DETACH_FORCED.getErrorCondition());
+    public static final Symbol LINK_REDIRECT = Symbol.getSymbol(AmqpErrorCondition.LINK_REDIRECT.getErrorCondition());
 
     // connection errors
     public static final Symbol CONNECTION_FORCED =

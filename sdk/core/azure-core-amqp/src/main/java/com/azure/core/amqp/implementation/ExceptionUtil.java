@@ -55,6 +55,7 @@ public final class ExceptionUtil {
                 break;
             case ENTITY_DISABLED_ERROR:
             case LINK_STOLEN:
+            case LINK_REDIRECT:
             case UNAUTHORIZED_ACCESS:
             case LINK_PAYLOAD_SIZE_EXCEEDED:
             case ARGUMENT_ERROR:

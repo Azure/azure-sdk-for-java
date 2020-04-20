@@ -5,9 +5,11 @@ package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.LinkErrorContext;
+import com.azure.core.amqp.implementation.AmqpErrorCode;
 import com.azure.core.amqp.implementation.ClientConstants;
 import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.util.logging.ClientLogger;
+import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
@@ -75,6 +77,14 @@ abstract class LinkHandler extends Handler {
             referenceId = link.getRemoteProperties().get(TRACKING_ID_PROPERTY).toString();
         } else {
             referenceId = link.getName();
+        }
+
+        if (link.getRemoteCondition() != null && link.getRemoteCondition().getCondition() != null
+            && link.getRemoteCondition().getCondition().equals(AmqpErrorCode.LINK_REDIRECT)
+            && link.getRemoteCondition().getInfo() != null
+            && link.getRemoteCondition().getInfo().containsKey(Symbol.getSymbol("hostname"))) {
+            return new LinkErrorContext(getHostname(), entityPath, referenceId, link.getCredit(),
+                (String) link.getRemoteCondition().getInfo().get(Symbol.getSymbol("hostname")));
         }
 
         return new LinkErrorContext(getHostname(), entityPath, referenceId, link.getCredit());
