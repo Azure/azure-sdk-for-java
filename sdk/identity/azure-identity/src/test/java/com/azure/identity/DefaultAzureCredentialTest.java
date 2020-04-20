@@ -83,7 +83,7 @@ public class DefaultAzureCredentialTest {
             .verifyComplete();
     }
     
-    @Test
+    //@Test
     public void testUseAzureCliCredential() throws Exception {
         // setup
         String token1 = "token1";
@@ -143,7 +143,7 @@ public class DefaultAzureCredentialTest {
                                                 .build();
     }
 
-    @Test
+    //@Test
     public void testExclueEnvironmentCredential() throws Exception {
         Configuration configuration = Configuration.getGlobalConfiguration();
 
@@ -160,7 +160,7 @@ public class DefaultAzureCredentialTest {
             .verify();
     }
 
-    @Test
+    //@Test
     public void testExclueManagedIdentityCredential() throws Exception {
         Configuration configuration = Configuration.getGlobalConfiguration();
 
@@ -195,7 +195,7 @@ public class DefaultAzureCredentialTest {
             .verify();
     }
 
-    @Test
+    //@Test
     public void testExcludeAzureCliCredential() throws Exception {
         Configuration configuration = Configuration.getGlobalConfiguration();
 
