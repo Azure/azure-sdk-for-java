@@ -6,6 +6,7 @@ package com.azure.core.amqp.implementation;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
@@ -178,15 +179,6 @@ public class RequestResponseChannel implements Disposable {
         return endpointStates;
     }
 
-    /**
-     * Gets the name of the receiver link.
-     *
-     * @return The name of the receiver link.
-     */
-    public String getReceiveLinkName() {
-        return receiveLink.getName();
-    }
-
     @Override
     public void dispose() {
         if (isDisposed.getAndSet(true)) {
@@ -290,15 +282,23 @@ public class RequestResponseChannel implements Disposable {
             return;
         }
 
-        final int statusCode = RequestResponseUtils.getStatusCode(message);
-
-        if (statusCode != AmqpResponseCode.ACCEPTED.getValue() && statusCode != AmqpResponseCode.OK.getValue()) {
-            final String statusDescription = RequestResponseUtils.getStatusDescription(message);
-
-            sink.error(ExceptionUtil.amqpResponseCodeToException(statusCode, statusDescription,
-                receiveLinkHandler.getErrorContext(receiveLink)));
-        } else {
+        if (RequestResponseUtils.isSuccessful(message)) {
             sink.success(message);
+        } else {
+            final AmqpResponseCode statusCode = RequestResponseUtils.getStatusCode(message);
+            final String statusDescription = RequestResponseUtils.getStatusDescription(message);
+            final AmqpErrorCondition errorCondition = RequestResponseUtils.getErrorCondition(message);
+
+            final Throwable error;
+            if (errorCondition != RequestResponseUtils.UNDEFINED_ERROR_CONDITION) {
+                error = ExceptionUtil.toException(errorCondition.getErrorCondition(), statusDescription,
+                    receiveLinkHandler.getErrorContext(receiveLink));
+            } else {
+                error = ExceptionUtil.amqpResponseCodeToException(statusCode.getValue(), statusDescription,
+                    receiveLinkHandler.getErrorContext(receiveLink));
+            }
+
+            sink.error(error);
         }
     }
 
