@@ -8,7 +8,7 @@ parameters:
 stages:
   - stage: Build
     jobs:
-      - template: ../jobs/archetype-sdk-bom.yml
+      - template: ../jobs/archetype-sdk-pom-only.yml
         parameters:
           ServiceDirectory: ${{parameters.ServiceDirectory}}
           SDKType: ${{parameters.SDKType}}
@@ -16,7 +16,7 @@ stages:
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
-      - template: pipelines/stages/archetype-java-release.yml@azure-sdk-build-tools
+      - template: archetype-java-release.yml
         parameters:
           DependsOn: Build
           ServiceDirectory: ${{parameters.ServiceDirectory}}
