@@ -46,7 +46,7 @@ jobs:
           inputs:
             mavenPomFile: sdk/${{parameters.ServiceDirectory}}/${{artifact.name}}/pom.xml
             goals: 'package'
-            options: "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -pl ${{artifact.groupId}}:${{artifact.name}}'
+            options: '-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory) -pl ${{artifact.groupId}}:${{artifact.name}}'
             mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
             javaHomeOption: 'JDKVersion'
             jdkVersionOption: $(JavaVersion)
