@@ -59,7 +59,7 @@ jobs:
         # copy output/pom.client.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
 
         Copy-Item eng/common/InterdependencyGraph.html $(Build.ArtifactStagingDirectory)/staging
-        Copy-Item eng/common/dependency-whitelist.html $(Build.ArtifactStagingDirectory)/staging
+        Copy-Item eng/reporting/dependency-whitelist.html $(Build.ArtifactStagingDirectory)/staging
         Copy-Item data.js $(Build.ArtifactStagingDirectory)/staging
       displayName: 'Copy reports to artifact staging'
 
