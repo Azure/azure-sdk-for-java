@@ -51,6 +51,7 @@ Maven dependency for Azure Secret Client library. Add it to your project's pom f
 [//]: # ({x-version-update-end})
 
 ### Prerequisites
+* [Java Development Kit (JDK)][jdk] with version 8 or above
 * An [Azure subscription][azure_sub].
 * An existing Azure Active Directory service principal. If you need to create a service principal, you can use the Azure Portal or [Azure CLI][azure_cli].
 
