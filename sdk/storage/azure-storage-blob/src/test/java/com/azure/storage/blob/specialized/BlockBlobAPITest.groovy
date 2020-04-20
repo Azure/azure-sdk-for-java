@@ -457,6 +457,32 @@ class BlockBlobAPITest extends APISpec {
     }
 
     @Unroll
+    def "Commit block list tags"() {
+        setup:
+        def tags = new HashMap<String, String>()
+        if (key1 != null) {
+            tags.put(key1, value1)
+        }
+        if (key2 != null) {
+            tags.put(key2, value2)
+        }
+
+        when:
+        blockBlobClient.commitBlockListWithResponse(null, null, null, tags, null, null, null, null)
+        def response = blockBlobClient.getTagsWithResponse(null, null)
+
+        then:
+        response.getStatusCode() == 200
+        response.getValue() == tags
+
+        where:
+        key1                | value1     | key2   | value2
+        null                | null       | null   | null
+        "foo"               | "bar"      | "fizz" | "buzz"
+        " +-./:=_  +-./:=_" | " +-./:=_" | null   | null
+    }
+
+    @Unroll
     def "Commit block list AC"() {
         setup:
         match = setupBlobMatchCondition(blockBlobClient, match)
@@ -694,6 +720,25 @@ class BlockBlobAPITest extends APISpec {
     }
 
     @Requires({ liveMode() })
+    def "Upload from file with tags"() {
+        given:
+        def tags = Collections.singletonMap("tag", "value")
+        def file = getRandomFile(Constants.KB)
+        def outStream = new ByteArrayOutputStream()
+
+        when:
+        blobClient.uploadFromFile(file.getAbsolutePath(), null, null, null, tags, null, null, null)
+
+        then:
+        tags == blockBlobClient.getTags()
+        blockBlobClient.download(outStream)
+        outStream.toByteArray() == Files.readAllBytes(file.toPath())
+
+        cleanup:
+        file.delete()
+    }
+
+    @Requires({ liveMode() })
     def "Upload from file default no overwrite"() {
         when:
         def file = getRandomFile(50)
@@ -763,6 +808,7 @@ class BlockBlobAPITest extends APISpec {
      * number of reportings as upload from file hooks into the loading data from disk data stream which is a hard-coded
      * read size.
      */
+
     class FileUploadReporter implements ProgressReceiver {
         private long reportedByteCount
 
@@ -939,6 +985,33 @@ class BlockBlobAPITest extends APISpec {
         key1  | value1 | key2   | value2
         null  | null   | null   | null
         "foo" | "bar"  | "fizz" | "buzz"
+    }
+
+    @Unroll
+    def "Upload tags"() {
+        setup:
+        def tags = new HashMap<String, String>()
+        if (key1 != null) {
+            tags.put(key1, value1)
+        }
+        if (key2 != null) {
+            tags.put(key2, value2)
+        }
+
+        when:
+        blockBlobClient.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, tags, null, null,
+            null, null, null)
+        def response = blockBlobClient.getTagsWithResponse(null, null)
+
+        then:
+        response.getStatusCode() == 200
+        response.getValue() == tags
+
+        where:
+        key1                | value1     | key2   | value2
+        null                | null       | null   | null
+        "foo"               | "bar"      | "fizz" | "buzz"
+        " +-./:=_  +-./:=_" | " +-./:=_" | null   | null
     }
 
     @Unroll
@@ -1289,9 +1362,9 @@ class BlockBlobAPITest extends APISpec {
         then:
         StepVerifier.create(uploadOperation.then(blockBlobAsyncClient.getPropertiesWithResponse(null)))
             .assertNext({
-            assert validateBlobProperties(it, cacheControl, contentDisposition, contentEncoding, contentLanguage,
-                contentMD5, contentType == null ? "application/octet-stream" : contentType)
-        }).verifyComplete()
+                assert validateBlobProperties(it, cacheControl, contentDisposition, contentEncoding, contentLanguage,
+                    contentMD5, contentType == null ? "application/octet-stream" : contentType)
+            }).verifyComplete()
         // HTTP default content type is application/octet-stream.
 
         where:
@@ -1325,14 +1398,46 @@ class BlockBlobAPITest extends APISpec {
         then:
         StepVerifier.create(uploadOperation.then(blobAsyncClient.getPropertiesWithResponse(null)))
             .assertNext({
-            assert it.getStatusCode() == 200
-            assert it.getValue().getMetadata() == metadata
-        }).verifyComplete()
+                assert it.getStatusCode() == 200
+                assert it.getValue().getMetadata() == metadata
+            }).verifyComplete()
 
         where:
         key1  | value1 | key2   | value2
         null  | null   | null   | null
         "foo" | "bar"  | "fizz" | "buzz"
+    }
+
+    // Only run these tests in live mode as they use variables that can't be captured.
+    @Unroll
+    @Requires({ liveMode() })
+    def "Buffered upload tags"() {
+        setup:
+        def tags = new HashMap<String, String>()
+        if (key1 != null) {
+            tags.put(key1, value1)
+        }
+        if (key2 != null) {
+            tags.put(key2, value2)
+        }
+
+        when:
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(10, 10, null)
+        def uploadOperation = blobAsyncClient.uploadWithResponse(Flux.just(getRandomData(10)),
+            parallelTransferOptions, null, null, tags, null, null)
+
+        then:
+        StepVerifier.create(uploadOperation.then(blobAsyncClient.getTagsWithResponse(null)))
+            .assertNext({
+                assert it.getStatusCode() == 200
+                assert it.getValue() == tags
+            }).verifyComplete()
+
+        where:
+        key1                | value1     | key2   | value2
+        null                | null       | null   | null
+        "foo"               | "bar"      | "fizz" | "buzz"
+        " +-./:=_  +-./:=_" | " +-./:=_" | null   | null
     }
 
     @Unroll
@@ -1520,9 +1625,9 @@ class BlockBlobAPITest extends APISpec {
         // A second subscription to a download stream will
         StepVerifier.create(blobAsyncClient.upload(blockBlobAsyncClient.download(), parallelTransferOptions, true))
             .verifyErrorSatisfies({
-            assert it instanceof BlobStorageException
-            assert it.getStatusCode() == 500
-        })
+                assert it instanceof BlobStorageException
+                assert it.getStatusCode() == 500
+            })
     }
 
     @Requires({ liveMode() })

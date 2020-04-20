@@ -7,7 +7,6 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -19,14 +18,13 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
-import com.azure.storage.blob.implementation.models.FilterBlobItem;
+import com.azure.storage.blob.models.FilterBlobItem;
 import com.azure.storage.blob.implementation.models.ServiceGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.ServicesFilterBlobsResponse;
 import com.azure.storage.blob.implementation.models.ServicesListBlobContainersSegmentResponse;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobCorsRule;
-import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobRetentionPolicy;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobServiceStatistics;
@@ -50,8 +48,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
@@ -345,8 +341,8 @@ public final class BlobServiceAsyncClient {
      * @param query Filters the results to return only blobs whose tags match the specified expression.
      * @return A reactive response emitting the list of blobs.
      */
-    public PagedFlux<FilterBlobItem> filterBlobs(String query) {
-        return this.filterBlobs(query, null, null);
+    public PagedFlux<FilterBlobItem> findBlobsByTags(String query) {
+        return this.findBlobsByTags(query, null, null);
     }
 
     /**
@@ -361,9 +357,9 @@ public final class BlobServiceAsyncClient {
      * @param maxResultsPerPage The maximum number of results to return in a given page.
      * @return A reactive response emitting the list of blobs.
      */
-    public PagedFlux<FilterBlobItem> filterBlobs(String query, Integer maxResultsPerPage) {
+    public PagedFlux<FilterBlobItem> findBlobsByTags(String query, Integer maxResultsPerPage) {
         try {
-            return filterBlobs(query, maxResultsPerPage, null);
+            return findBlobsByTags(query, maxResultsPerPage, null);
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
@@ -371,9 +367,10 @@ public final class BlobServiceAsyncClient {
 
     // TODO: options instead of maxResults?
     // TODO: Return type?
-    PagedFlux<FilterBlobItem> filterBlobs(String query, Integer maxResults, Duration timeout) {
+    PagedFlux<FilterBlobItem> findBlobsByTags(String query, Integer maxResults, Duration timeout) {
+        throwOnAnonymousAccess();
         Function<String, Mono<PagedResponse<FilterBlobItem>>> func =
-            marker -> filterBlobs(query, marker, maxResults, timeout)
+            marker -> findBlobsByTags(query, marker, maxResults, timeout)
                 .map(response -> {
                     List<FilterBlobItem> value = response.getValue().getBlobs() == null
                         ? new ArrayList<>(0)
@@ -390,8 +387,9 @@ public final class BlobServiceAsyncClient {
         return new PagedFlux<>(() -> func.apply(null), func);
     }
 
-    private Mono<ServicesFilterBlobsResponse> filterBlobs(String query, String marker, Integer maxResults,
+    private Mono<ServicesFilterBlobsResponse> findBlobsByTags(String query, String marker, Integer maxResults,
         Duration timeout) {
+        throwOnAnonymousAccess();
         return StorageImplUtils.applyOptionalTimeout(
             this.azureBlobStorage.services().filterBlobsWithRestResponseAsync(null, null, query, marker, maxResults,
                 Context.NONE), timeout);

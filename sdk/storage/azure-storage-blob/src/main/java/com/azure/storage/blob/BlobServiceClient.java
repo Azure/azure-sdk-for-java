@@ -10,7 +10,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.implementation.models.FilterBlobItem;
+import com.azure.storage.blob.models.FilterBlobItem;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobServiceStatistics;
@@ -206,8 +206,8 @@ public final class BlobServiceClient {
      * @param query Filters the results to return only blobs whose tags match the specified expression.
      * @return The list of blobs.
      */
-    public PagedIterable<FilterBlobItem> filterBlobs(String query) {
-        return this.filterBlobs(query, null, null);
+    public PagedIterable<FilterBlobItem> findBlobsByTags(String query) {
+        return this.findBlobsByTags(query, null, null);
     }
 
     /**
@@ -224,8 +224,8 @@ public final class BlobServiceClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The list of blobs.
      */
-    public PagedIterable<FilterBlobItem> filterBlobs(String query, Integer maxResultsPerPage, Duration timeout) {
-        return new PagedIterable<>(blobServiceAsyncClient.filterBlobs(query, maxResultsPerPage, timeout));
+    public PagedIterable<FilterBlobItem> findBlobsByTags(String query, Integer maxResultsPerPage, Duration timeout) {
+        return new PagedIterable<>(blobServiceAsyncClient.findBlobsByTags(query, maxResultsPerPage, timeout));
     }
 
     /**

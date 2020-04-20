@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob
 
+import com.azure.core.util.paging.ContinuablePage
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.BlobAnalyticsLogging
 import com.azure.storage.blob.models.BlobContainerItem
@@ -25,6 +26,7 @@ import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
 
+import java.nio.charset.Charset
 import java.time.Duration
 import java.time.OffsetDateTime
 
@@ -102,12 +104,16 @@ class ServiceAPITest extends APISpec {
             primaryBlobServiceClient.createBlobContainer(generateContainerName())
         }
 
-        def listResponse = primaryBlobServiceClient.listBlobContainers().iterator()
-        def firstContainerName = listResponse.next().getName()
+        def options = new ListBlobContainersOptions().setMaxResultsPerPage(5)
+        def firstPage = primaryBlobServiceClient.listBlobContainers(options, null).iterableByPage().iterator().next()
+        def marker = firstPage.getContinuationToken()
+        def firstContainerName = firstPage.getValue().first().getName()
+
+        def secondPage = primaryBlobServiceClient.listBlobContainers().iterableByPage(marker).iterator().next()
 
         expect:
         // Assert that the second segment is indeed after the first alphabetically
-        firstContainerName < listResponse.next().getName()
+        firstContainerName < secondPage.getValue().first().getName()
     }
 
     def "List containers details"() {
@@ -165,6 +171,105 @@ class ServiceAPITest extends APISpec {
     }
 
     def "List containers with timeout still backed by PagedFlux"() {
+        setup:
+        def NUM_CONTAINERS = 5
+        def PAGE_RESULTS = 3
+
+        def containers = [] as Collection<BlobContainerClient>
+        for (i in (1..NUM_CONTAINERS)) {
+            containers << primaryBlobServiceClient.createBlobContainer(generateContainerName())
+        }
+
+        when: "Consume results by page"
+        primaryBlobServiceClient.listBlobContainers(new ListBlobContainersOptions().setMaxResultsPerPage(PAGE_RESULTS), Duration.ofSeconds(10)).streamByPage().count()
+
+        then: "Still have paging functionality"
+        notThrown(Exception)
+
+        cleanup:
+        containers.each { container -> container.delete() }
+    }
+
+    void setupTagsTest() {
+        def containerClient = primaryBlobServiceClient.createBlobContainer(generateContainerName())
+        def blobClient = containerClient.getBlobClient(generateBlobName())
+        blobClient.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null,
+            Collections.singletonMap("key", "value"), null, null, null, null)
+        blobClient = containerClient.getBlobClient(generateBlobName())
+        blobClient.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null,
+            Collections.singletonMap("bar", "foo"), null, null, null, null)
+        blobClient = containerClient.getBlobClient(generateBlobName())
+        blobClient.upload(defaultInputStream.get(), defaultDataSize)
+    }
+
+    def "Find blobs min"() {
+        when:
+        primaryBlobServiceClient.findBlobsByTags("\"key\"='value'").iterator().hasNext()
+
+        then:
+        notThrown(BlobStorageException)
+    }
+
+    def "Find blobs marker"() {
+        setup:
+        def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName())
+        def tags = Collections.singletonMap("tag", "value")
+        for (int i = 0; i < 10; i++) {
+            cc.getBlobClient(generateBlobName()).uploadWithResponse(defaultInputStream.get(), defaultDataSize, null,
+                null, null, tags, null, null, null, null)
+        }
+
+        def firstPage = primaryBlobServiceClient.findBlobsByTags("\"tag\"='value'", 5, null)
+            .iterableByPage().iterator().next()
+        def marker = firstPage.getContinuationToken()
+        def firstBlobName = firstPage.getValue().first().getName()
+
+        def secondPage = primaryBlobServiceClient.findBlobsByTags("\"tag\"='value'", 5, null)
+            .iterableByPage(marker).iterator().next()
+
+        expect:
+        // Assert that the second segment is indeed after the first alphabetically
+        firstBlobName < secondPage.getValue().first().getName()
+    }
+
+
+    def "Find blobs maxResults"() {
+        setup:
+        def NUM_BLOBS = 7
+        def PAGE_RESULTS = 3
+        def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName())
+        def tags = Collections.singletonMap("tag", "value")
+
+        for (i in (1..NUM_BLOBS)) {
+            cc.getBlobClient(generateBlobName()).uploadWithResponse(defaultInputStream.get(), defaultDataSize, null,
+                null, null, tags, null, null, null, null)
+        }
+
+        expect:
+        for (ContinuablePage page :
+            primaryBlobServiceClient.findBlobsByTags("\"tag\"='value'", PAGE_RESULTS, null).iterableByPage()) {
+            assert page.iterator().size() <= PAGE_RESULTS
+        }
+    }
+
+    def "Find blobs error"() {
+        when:
+        primaryBlobServiceClient.findBlobsByTags("garbageTag").streamByPage().count()
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    def "Find blobs anonymous"() {
+        when:
+        // Invalid query, but the anonymous check will fail before hitting the wire
+        anonymousClient.findBlobsByTags("foo=bar").iterator()
+
+        then:
+        thrown(IllegalStateException)
+    }
+
+    def "Find blobs with timeout still backed by PagedFlux"() {
         setup:
         def NUM_CONTAINERS = 5
         def PAGE_RESULTS = 3

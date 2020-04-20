@@ -39,10 +39,13 @@ public final class BlobItem {
         this.isPrefix = blobItemInternal.isPrefix();
 
         this.tags = new HashMap<>();
-        for (BlobTag tag : blobItemInternal.getBlobTags().getBlobTagSet()) {
-            this.tags.put(tag.getKey(), tag.getValue());
+        if (blobItemInternal.getBlobTags() != null && blobItemInternal.getBlobTags().getBlobTagSet() != null) {
+            for (BlobTag tag : blobItemInternal.getBlobTags().getBlobTagSet()) {
+                this.tags.put(tag.getKey(), tag.getValue());
+            }
         }
     }
+
 
     /*
      * The name property.
@@ -186,6 +189,15 @@ public final class BlobItem {
     public BlobItem setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
+    }
+
+    /**
+     * Get the tags property: The tag property.
+     *
+     * @return the metadata value.
+     */
+    public Map<String, String> getTags() {
+        return this.tags;
     }
 
     /**

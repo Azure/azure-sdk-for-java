@@ -574,7 +574,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                         } else {
                             // Otherwise we know it can be sent in a single request reducing network overhead.
                             return blockBlobAsyncClient.uploadWithResponse(FluxUtil.readFile(channel), fileSize,
-                                headers, metadata, tier, null, requestConditions)
+                                headers, metadata, tags, tier, null, requestConditions)
                                 .then();
                         }
                     } catch (IOException ex) {

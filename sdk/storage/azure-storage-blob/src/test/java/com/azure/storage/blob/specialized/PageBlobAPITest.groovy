@@ -114,6 +114,33 @@ class PageBlobAPITest extends APISpec {
     }
 
     @Unroll
+    def "Create tags"() {
+        setup:
+        def tags = new HashMap<String, String>()
+        if (key1 != null) {
+            tags.put(key1, value1)
+        }
+        if (key2 != null) {
+            tags.put(key2, value2)
+        }
+
+        when:
+        bc.createWithResponse(PageBlobClient.PAGE_BYTES, null, null, null, tags, null, null, null)
+
+        def response = bc.getTagsWithResponse(null, null)
+
+        then:
+        response.getStatusCode() == 200
+        response.getValue() == tags
+
+        where:
+        key1                | value1     | key2   | value2
+        null                | null       | null   | null
+        "foo"               | "bar"      | "fizz" | "buzz"
+        " +-./:=_  +-./:=_" | " +-./:=_" | null   | null
+    }
+
+    @Unroll
     def "Create AC"() {
         setup:
         def bac = new BlobRequestConditions()
@@ -1164,7 +1191,7 @@ class PageBlobAPITest extends APISpec {
         "blob"                 | "blob"
         "path/to]a blob"       | "path/to]a blob"
         "path%2Fto%5Da%20blob" | "path/to]a blob"
-        "斑點"                 | "斑點"
+        "斑點"                   | "斑點"
         "%E6%96%91%E9%BB%9E"   | "斑點"
     }
 

@@ -63,8 +63,10 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
+import java.nio.charset.Charset;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
@@ -484,10 +486,19 @@ public class BlobAsyncClientBase {
     }
 
     String tagsToString(Map<String, String> tags) {
-        if (tags == null) {
+        if (tags == null || tags.isEmpty()) {
             return null;
         }
-        return "";
+        StringBuilder sb = new StringBuilder();
+        for (String key : tags.keySet()) {
+            sb.append(URLEncoder.encode(key, Charset.defaultCharset()));
+            sb.append("=");
+            sb.append(URLEncoder.encode(tags.get(key), Charset.defaultCharset()));
+            sb.append("&");
+        }
+
+        sb.deleteCharAt(sb.length()-1); // Remove the last '&'
+        return sb.toString();
     }
 
     private Mono<PollResponse<BlobCopyInfo>> onPoll(PollResponse<BlobCopyInfo> pollResponse) {
@@ -595,7 +606,7 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromUrl#String}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob-from-url">Azure Docs</a></p>
      *
      * @param copySource The source URL to copy from.
      * @return A reactive response containing the copy ID for the long running operation.
@@ -616,7 +627,7 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromUrlWithResponse#String-Map-AccessTier-RequestConditions-BlobRequestConditions}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob-from-url">Azure Docs</a></p>
      *
      * @param copySource The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @param metadata Metadata to associate with the destination blob.
@@ -643,7 +654,7 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromUrlWithResponse#String-Map-Map-AccessTier-RequestConditions-BlobRequestConditions}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob-from-url">Azure Docs</a></p>
      *
      * @param copySource The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @param metadata Metadata to associate with the destination blob.
@@ -1097,9 +1108,11 @@ public class BlobAsyncClientBase {
             response.getDeserializedHeaders().getCopyCompletionTime(),
             response.getDeserializedHeaders().getCopyStatusDescription(),
             response.getDeserializedHeaders().isServerEncrypted(), null, null, null, null, null,
-            response.getDeserializedHeaders().getEncryptionKeySha256(), null,
+            response.getDeserializedHeaders().getEncryptionKeySha256(),
+            response.getDeserializedHeaders().getEncryptionScope(), null,
             response.getDeserializedHeaders().getMetadata(),
-            response.getDeserializedHeaders().getBlobCommittedBlockCount());
+            response.getDeserializedHeaders().getBlobCommittedBlockCount(),
+            response.getDeserializedHeaders().getTagCount());
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), properties);
     }
 
@@ -1233,8 +1246,8 @@ public class BlobAsyncClientBase {
                     hd.getCopyCompletionTime(), hd.getCopyStatusDescription(), hd.isServerEncrypted(),
                     hd.isIncrementalCopy(), hd.getDestinationSnapshot(), AccessTier.fromString(hd.getAccessTier()),
                     hd.isAccessTierInferred(), ArchiveStatus.fromString(hd.getArchiveStatus()),
-                    hd.getEncryptionKeySha256(), hd.getAccessTierChangeTime(), hd.getMetadata(),
-                    hd.getBlobCommittedBlockCount());
+                    hd.getEncryptionKeySha256(), hd.getEncryptionScope(), hd.getAccessTierChangeTime(),
+                    hd.getMetadata(), hd.getBlobCommittedBlockCount(), hd.getTagCount());
                 return new SimpleResponse<>(rb, properties);
             });
     }
