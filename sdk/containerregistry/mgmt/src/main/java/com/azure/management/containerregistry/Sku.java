@@ -7,9 +7,7 @@ package com.azure.management.containerregistry;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Sku model.
- */
+/** The Sku model. */
 @Fluent
 public final class Sku {
     /*
@@ -25,9 +23,8 @@ public final class Sku {
     private SkuTier tier;
 
     /**
-     * Get the name property: The SKU name of the container registry. Required
-     * for registry creation.
-     * 
+     * Get the name property: The SKU name of the container registry. Required for registry creation.
+     *
      * @return the name value.
      */
     public SkuName name() {
@@ -35,9 +32,8 @@ public final class Sku {
     }
 
     /**
-     * Set the name property: The SKU name of the container registry. Required
-     * for registry creation.
-     * 
+     * Set the name property: The SKU name of the container registry. Required for registry creation.
+     *
      * @param name the name value to set.
      * @return the Sku object itself.
      */
@@ -48,7 +44,7 @@ public final class Sku {
 
     /**
      * Get the tier property: The SKU tier based on the SKU name.
-     * 
+     *
      * @return the tier value.
      */
     public SkuTier tier() {

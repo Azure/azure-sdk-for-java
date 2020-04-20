@@ -8,9 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The PrivateEndpointConnectionListResult model.
- */
+/** The PrivateEndpointConnectionListResult model. */
 @Immutable
 public final class PrivateEndpointConnectionListResultInner {
     /*
@@ -27,7 +25,7 @@ public final class PrivateEndpointConnectionListResultInner {
 
     /**
      * Get the value property: Array of results.
-     * 
+     *
      * @return the value value.
      */
     public List<PrivateEndpointConnectionInner> value() {
@@ -36,7 +34,7 @@ public final class PrivateEndpointConnectionListResultInner {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {

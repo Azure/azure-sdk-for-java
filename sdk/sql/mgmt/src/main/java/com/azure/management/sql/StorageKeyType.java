@@ -7,23 +7,15 @@ package com.azure.management.sql;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for StorageKeyType.
- */
+/** Defines values for StorageKeyType. */
 public enum StorageKeyType {
-    /**
-     * Enum value StorageAccessKey.
-     */
+    /** Enum value StorageAccessKey. */
     STORAGE_ACCESS_KEY("StorageAccessKey"),
 
-    /**
-     * Enum value SharedAccessKey.
-     */
+    /** Enum value SharedAccessKey. */
     SHARED_ACCESS_KEY("SharedAccessKey");
 
-    /**
-     * The actual serialized value for a StorageKeyType instance.
-     */
+    /** The actual serialized value for a StorageKeyType instance. */
     private final String value;
 
     StorageKeyType(String value) {
@@ -32,7 +24,7 @@ public enum StorageKeyType {
 
     /**
      * Parses a serialized value to a StorageKeyType instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed StorageKeyType object, or null if unable to parse.
      */

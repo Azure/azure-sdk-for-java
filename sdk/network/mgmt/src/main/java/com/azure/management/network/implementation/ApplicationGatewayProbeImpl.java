@@ -2,29 +2,27 @@
 // Licensed under the MIT License.
 package com.azure.management.network.implementation;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.ApplicationGateway;
 import com.azure.management.network.ApplicationGatewayProbe;
 import com.azure.management.network.ApplicationGatewayProbeHealthResponseMatch;
 import com.azure.management.network.ApplicationGatewayProtocol;
 import com.azure.management.network.models.ApplicationGatewayProbeInner;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
-/**
- * Implementation for ApplicationGatewayProbe.
- */
+/** Implementation for ApplicationGatewayProbe. */
 class ApplicationGatewayProbeImpl
-        extends ChildResourceImpl<ApplicationGatewayProbeInner, ApplicationGatewayImpl, ApplicationGateway>
-        implements
-        ApplicationGatewayProbe,
+    extends ChildResourceImpl<ApplicationGatewayProbeInner, ApplicationGatewayImpl, ApplicationGateway>
+    implements ApplicationGatewayProbe,
         ApplicationGatewayProbe.Definition<ApplicationGateway.DefinitionStages.WithCreate>,
         ApplicationGatewayProbe.UpdateDefinition<ApplicationGateway.Update>,
         ApplicationGatewayProbe.Update {
+    private final ClientLogger logger = new ClientLogger(getClass());
 
     ApplicationGatewayProbeImpl(ApplicationGatewayProbeInner inner, ApplicationGatewayImpl parent) {
         super(inner, parent);
@@ -65,11 +63,7 @@ class ApplicationGatewayProbeImpl
     @Override
     public Set<String> healthyHttpResponseStatusCodeRanges() {
         Set<String> httpResponseStatusCodeRanges = new TreeSet<>();
-        if (this.inner().match() == null) {
-            // Empty
-        } else if (this.inner().match().statusCodes() == null) {
-            // Empty
-        } else {
+        if (this.inner().match() != null && this.inner().match().statusCodes() != null) {
             httpResponseStatusCodeRanges.addAll(this.inner().match().statusCodes());
         }
 
@@ -178,9 +172,11 @@ class ApplicationGatewayProbeImpl
     @Override
     public ApplicationGatewayProbeImpl withHealthyHttpResponseStatusCodeRange(int from, int to) {
         if (from < 0 || to < 0) {
-            throw new IllegalArgumentException("The start and end of a range cannot be negative numbers.");
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("The start and end of a range cannot be negative numbers."));
         } else if (to < from) {
-            throw new IllegalArgumentException("The end of the range cannot be less than the start of the range.");
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("The end of the range cannot be less than the start of the range."));
         } else {
             return this.withHealthyHttpResponseStatusCodeRange(String.valueOf(from) + "-" + String.valueOf(to));
         }
@@ -209,13 +205,13 @@ class ApplicationGatewayProbeImpl
             }
             match.withBody(text);
         } else {
-            if (match == null) {
-                // Nothing else to do
-            } else if (match.statusCodes() == null || match.statusCodes().isEmpty()) {
-                // If match is becoming empty then remove altogether
-                this.inner().withMatch(null);
-            } else {
-                match.withBody(null);
+            if (match != null) {
+                if (match.statusCodes() == null || match.statusCodes().isEmpty()) {
+                    // If match is becoming empty then remove altogether
+                    this.inner().withMatch(null);
+                } else {
+                    match.withBody(null);
+                }
             }
         }
         return this;

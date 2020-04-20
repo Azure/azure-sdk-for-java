@@ -8,29 +8,28 @@ import com.azure.management.appservice.WebApp;
 import com.azure.management.appservice.models.SiteConfigResourceInner;
 import com.azure.management.appservice.models.SiteInner;
 import com.azure.management.appservice.models.SiteLogsConfigInner;
-import reactor.core.publisher.Mono;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import reactor.core.publisher.Mono;
 
-/**
- * The implementation for DeploymentSlot.
- */
+/** The implementation for DeploymentSlot. */
 class DeploymentSlotImpl
-        extends DeploymentSlotBaseImpl<
+    extends DeploymentSlotBaseImpl<
         DeploymentSlot,
-            DeploymentSlotImpl,
-            WebAppImpl,
-            DeploymentSlot.DefinitionStages.WithCreate,
-            DeploymentSlot.Update>
-        implements
-            DeploymentSlot,
-            DeploymentSlot.Definition,
-            DeploymentSlot.Update {
+        DeploymentSlotImpl,
+        WebAppImpl,
+        DeploymentSlot.DefinitionStages.WithCreate,
+        DeploymentSlot.Update>
+    implements DeploymentSlot, DeploymentSlot.Definition, DeploymentSlot.Update {
 
-    DeploymentSlotImpl(String name, SiteInner innerObject, SiteConfigResourceInner siteConfig, SiteLogsConfigInner logConfig, WebAppImpl parent) {
+    DeploymentSlotImpl(
+        String name,
+        SiteInner innerObject,
+        SiteConfigResourceInner siteConfig,
+        SiteLogsConfigInner logConfig,
+        WebAppImpl parent) {
         super(name, innerObject, siteConfig, logConfig, parent);
     }
 
@@ -102,9 +101,7 @@ class DeploymentSlotImpl
 
     @Override
     public Mono<Void> zipDeployAsync(InputStream zipFile) {
-        return kuduClient.zipDeployAsync(zipFile)
-                .then(stopAsync())
-                .then(startAsync());
+        return kuduClient.zipDeployAsync(zipFile).then(stopAsync()).then(startAsync());
     }
 
     @Override

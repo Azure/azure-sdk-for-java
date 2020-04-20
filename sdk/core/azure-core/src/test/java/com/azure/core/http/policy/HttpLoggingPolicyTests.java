@@ -260,12 +260,12 @@ public class HttpLoggingPolicyTests {
 
         @Override
         public Mono<String> getBodyAsString() {
-            return getBodyAsByteArray().map(String::new);
+            return getBodyAsString(StandardCharsets.UTF_8);
         }
 
         @Override
         public Mono<String> getBodyAsString(Charset charset) {
-            return getBodyAsByteArray().map(bytes -> new String(bytes, StandardCharsets.UTF_8));
+            return getBodyAsByteArray().map(bytes -> new String(bytes, charset));
         }
     }
 }

@@ -5,7 +5,6 @@ package com.azure.management.network;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.Region;
-import com.azure.management.resources.fluentcore.utils.SdkContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +14,10 @@ public class DdosProtectionPlanTests extends NetworkManagementTest {
     public void canCRUDDdosProtectionPlan() throws Exception {
         String ppName = sdkContext.randomResourceName("ddosplan", 15);
 
-        DdosProtectionPlan pPlan = networkManager.ddosProtectionPlans().define(ppName)
+        DdosProtectionPlan pPlan =
+            networkManager
+                .ddosProtectionPlans()
+                .define(ppName)
                 .withRegion(Region.US_SOUTH_CENTRAL)
                 .withNewResourceGroup(rgName)
                 .withTag("tag1", "value1")

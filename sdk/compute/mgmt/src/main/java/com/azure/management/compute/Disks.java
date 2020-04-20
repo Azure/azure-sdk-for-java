@@ -19,12 +19,10 @@ import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
-/**
- * Entry point to managed disk management API in Azure.
- */
+/** Entry point to managed disk management API in Azure. */
 @Fluent
-public interface Disks extends
-        SupportsCreating<Disk.DefinitionStages.Blank>,
+public interface Disks
+    extends SupportsCreating<Disk.DefinitionStages.Blank>,
         SupportsListing<Disk>,
         SupportsListingByResourceGroup<Disk>,
         SupportsGettingByResourceGroup<Disk>,
@@ -45,10 +43,7 @@ public interface Disks extends
      * @param accessDuration access duration
      * @return the read-only SAS URI to the disk
      */
-    String grantAccess(String resourceGroupName,
-                       String diskName,
-                       AccessLevel accessLevel,
-                       int accessDuration);
+    String grantAccess(String resourceGroupName, String diskName, AccessLevel accessLevel, int accessDuration);
 
     /**
      * Grants access to the disk asynchronously.
@@ -59,10 +54,8 @@ public interface Disks extends
      * @param accessDuration access duration
      * @return a representation of the deferred computation of this call returning a read-only SAS URI to the disk
      */
-    Mono<String> grantAccessAsync(String resourceGroupName,
-                                  String diskName,
-                                  AccessLevel accessLevel,
-                                  int accessDuration);
+    Mono<String> grantAccessAsync(
+        String resourceGroupName, String diskName, AccessLevel accessLevel, int accessDuration);
 
     /**
      * Revoke access granted to a disk.

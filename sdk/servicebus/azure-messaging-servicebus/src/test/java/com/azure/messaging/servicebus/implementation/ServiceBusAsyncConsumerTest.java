@@ -6,9 +6,11 @@ package com.azure.messaging.servicebus.implementation;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.MessageLockToken;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterAll;
@@ -63,11 +65,11 @@ class ServiceBusAsyncConsumerTest {
     @Mock
     private MessageSerializer serializer;
     @Mock
-    private Function<ServiceBusReceivedMessage, Mono<Void>> onComplete;
+    private Function<MessageLockToken, Mono<Void>> onComplete;
     @Mock
-    private Function<ServiceBusReceivedMessage, Mono<Void>> onAbandon;
+    private Function<MessageLockToken, Mono<Void>> onAbandon;
     @Mock
-    private Function<ServiceBusReceivedMessage, Mono<Instant>> onRenewLock;
+    private Function<MessageLockToken, Mono<Instant>> onRenewLock;
 
     @BeforeAll
     static void beforeAll() {
@@ -85,7 +87,8 @@ class ServiceBusAsyncConsumerTest {
 
         MockitoAnnotations.initMocks(this);
         linkProcessor = Flux.<AmqpReceiveLink>create(sink -> sink.next(link))
-            .subscribeWith(new ServiceBusReceiveLinkProcessor(10, retryPolicy, parentConnection));
+            .subscribeWith(new ServiceBusReceiveLinkProcessor(10, retryPolicy, parentConnection,
+                new AmqpErrorContext("a-namespace")));
 
         when(connection.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
 
@@ -116,9 +119,9 @@ class ServiceBusAsyncConsumerTest {
         final Message message1 = mock(Message.class);
         final Message message2 = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage1 = mock(ServiceBusReceivedMessage.class);
-        final UUID lockToken1 = UUID.randomUUID();
+        final String lockToken1 = UUID.randomUUID().toString();
         final ServiceBusReceivedMessage receivedMessage2 = mock(ServiceBusReceivedMessage.class);
-        final UUID lockToken2 = UUID.randomUUID();
+        final String lockToken2 = UUID.randomUUID().toString();
 
         when(receivedMessage1.getLockToken()).thenReturn(lockToken1);
         when(receivedMessage2.getLockToken()).thenReturn(lockToken2);
@@ -153,9 +156,9 @@ class ServiceBusAsyncConsumerTest {
         final Message message1 = mock(Message.class);
         final Message message2 = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage1 = mock(ServiceBusReceivedMessage.class);
-        final UUID lockToken1 = UUID.randomUUID();
+        final String lockToken1 = UUID.randomUUID().toString();
         final ServiceBusReceivedMessage receivedMessage2 = mock(ServiceBusReceivedMessage.class);
-        final UUID lockToken2 = UUID.randomUUID();
+        final String lockToken2 = UUID.randomUUID().toString();
 
         when(receivedMessage1.getLockToken()).thenReturn(lockToken1);
         when(receivedMessage2.getLockToken()).thenReturn(lockToken2);
@@ -187,7 +190,7 @@ class ServiceBusAsyncConsumerTest {
     void canDispose() {
         // Arrange
         final boolean isAutoComplete = false;
-        final Function<ServiceBusReceivedMessage, Mono<Void>> onComplete = (message) -> {
+        final Function<MessageLockToken, Mono<Void>> onComplete = (message) -> {
             Assertions.fail("Should not complete");
             return Mono.empty();
         };
@@ -198,6 +201,7 @@ class ServiceBusAsyncConsumerTest {
         final Message message1 = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage1 = mock(ServiceBusReceivedMessage.class);
 
+        when(receivedMessage1.getLockToken()).thenReturn(UUID.randomUUID().toString());
         when(serializer.deserialize(message1, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage1);
 
         // Act and Assert

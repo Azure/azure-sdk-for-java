@@ -61,7 +61,7 @@ public class DataLakePathAsyncClient {
     final DataLakeStorageClientImpl dataLakeStorage;
     private final String accountName;
     private final String fileSystemName;
-    private final String pathName;
+    final String pathName;
     private final DataLakeServiceVersion serviceVersion;
 
     final PathResourceType pathResourceType;

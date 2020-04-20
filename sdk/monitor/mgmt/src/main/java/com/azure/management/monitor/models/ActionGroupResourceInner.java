@@ -20,9 +20,7 @@ import com.azure.management.monitor.WebhookReceiver;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ActionGroupResource model.
- */
+/** The ActionGroupResource model. */
 @JsonFlatten
 @Fluent
 public class ActionGroupResourceInner extends Resource {
@@ -102,9 +100,8 @@ public class ActionGroupResourceInner extends Resource {
     private List<ArmRoleReceiver> armRoleReceivers;
 
     /**
-     * Get the groupShortName property: The short name of the action group.
-     * This will be used in SMS messages.
-     * 
+     * Get the groupShortName property: The short name of the action group. This will be used in SMS messages.
+     *
      * @return the groupShortName value.
      */
     public String groupShortName() {
@@ -112,9 +109,8 @@ public class ActionGroupResourceInner extends Resource {
     }
 
     /**
-     * Set the groupShortName property: The short name of the action group.
-     * This will be used in SMS messages.
-     * 
+     * Set the groupShortName property: The short name of the action group. This will be used in SMS messages.
+     *
      * @param groupShortName the groupShortName value to set.
      * @return the ActionGroupResourceInner object itself.
      */
@@ -124,10 +120,9 @@ public class ActionGroupResourceInner extends Resource {
     }
 
     /**
-     * Get the enabled property: Indicates whether this action group is
-     * enabled. If an action group is not enabled, then none of its receivers
-     * will receive communications.
-     * 
+     * Get the enabled property: Indicates whether this action group is enabled. If an action group is not enabled, then
+     * none of its receivers will receive communications.
+     *
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -135,10 +130,9 @@ public class ActionGroupResourceInner extends Resource {
     }
 
     /**
-     * Set the enabled property: Indicates whether this action group is
-     * enabled. If an action group is not enabled, then none of its receivers
-     * will receive communications.
-     * 
+     * Set the enabled property: Indicates whether this action group is enabled. If an action group is not enabled, then
+     * none of its receivers will receive communications.
+     *
      * @param enabled the enabled value to set.
      * @return the ActionGroupResourceInner object itself.
      */
@@ -148,9 +142,8 @@ public class ActionGroupResourceInner extends Resource {
     }
 
     /**
-     * Get the emailReceivers property: The list of email receivers that are
-     * part of this action group.
-     * 
+     * Get the emailReceivers property: The list of email receivers that are part of this action group.
+     *
      * @return the emailReceivers value.
      */
     public List<EmailReceiver> emailReceivers() {
@@ -158,9 +151,8 @@ public class ActionGroupResourceInner extends Resource {
     }
 
     /**
-     * Set the emailReceivers property: The list of email receivers that are
-     * part of this action group.
-     * 
+     * Set the emailReceivers property: The list of email receivers that are part of this action group.
+     *
      * @param emailReceivers the emailReceivers value to set.
      * @return the ActionGroupResourceInner object itself.
      */
@@ -170,9 +162,8 @@ public class ActionGroupResourceInner extends Resource {
     }
 
     /**
-     * Get the smsReceivers property: The list of SMS receivers that are part
-     * of this action group.
-     * 
+     * Get the smsReceivers property: The list of SMS receivers that are part of this action group.
+     *
      * @return the smsReceivers value.
      */
     public List<SmsReceiver> smsReceivers() {
@@ -180,9 +171,8 @@ public class ActionGroupResourceInner extends Resource {
     }
 
     /**
-     * Set the smsReceivers property: The list of SMS receivers that are part
-     * of this action group.
-     * 
+     * Set the smsReceivers property: The list of SMS receivers that are part of this action group.
+     *
      * @param smsReceivers the smsReceivers value to set.
      * @return the ActionGroupResourceInner object itself.
      */
@@ -192,9 +182,8 @@ public class ActionGroupResourceInner extends Resource {
     }
 
     /**
-     * Get the webhookReceivers property: The list of webhook receivers that
-     * are part of this action group.
-     * 
+     * Get the webhookReceivers property: The list of webhook receivers that are part of this action group.
+     *
      * @return the webhookReceivers value.
      */
     public List<WebhookReceiver> webhookReceivers() {
@@ -202,9 +191,8 @@ public class ActionGroupResourceInner extends Resource {
     }
 
     /**
-     * Set the webhookReceivers property: The list of webhook receivers that
-     * are part of this action group.
-     * 
+     * Set the webhookReceivers property: The list of webhook receivers that are part of this action group.
+     *
      * @param webhookReceivers the webhookReceivers value to set.
      * @return the ActionGroupResourceInner object itself.
      */
@@ -214,9 +202,8 @@ public class ActionGroupResourceInner extends Resource {
     }
 
     /**
-     * Get the itsmReceivers property: The list of ITSM receivers that are part
-     * of this action group.
-     * 
+     * Get the itsmReceivers property: The list of ITSM receivers that are part of this action group.
+     *
      * @return the itsmReceivers value.
      */
     public List<ItsmReceiver> itsmReceivers() {
@@ -224,9 +211,8 @@ public class ActionGroupResourceInner extends Resource {
     }
 
     /**
-     * Set the itsmReceivers property: The list of ITSM receivers that are part
-     * of this action group.
-     * 
+     * Set the itsmReceivers property: The list of ITSM receivers that are part of this action group.
+     *
      * @param itsmReceivers the itsmReceivers value to set.
      * @return the ActionGroupResourceInner object itself.
      */
@@ -236,9 +222,8 @@ public class ActionGroupResourceInner extends Resource {
     }
 
     /**
-     * Get the azureAppPushReceivers property: The list of AzureAppPush
-     * receivers that are part of this action group.
-     * 
+     * Get the azureAppPushReceivers property: The list of AzureAppPush receivers that are part of this action group.
+     *
      * @return the azureAppPushReceivers value.
      */
     public List<AzureAppPushReceiver> azureAppPushReceivers() {
@@ -246,9 +231,8 @@ public class ActionGroupResourceInner extends Resource {
     }
 
     /**
-     * Set the azureAppPushReceivers property: The list of AzureAppPush
-     * receivers that are part of this action group.
-     * 
+     * Set the azureAppPushReceivers property: The list of AzureAppPush receivers that are part of this action group.
+     *
      * @param azureAppPushReceivers the azureAppPushReceivers value to set.
      * @return the ActionGroupResourceInner object itself.
      */
@@ -258,9 +242,9 @@ public class ActionGroupResourceInner extends Resource {
     }
 
     /**
-     * Get the automationRunbookReceivers property: The list of
-     * AutomationRunbook receivers that are part of this action group.
-     * 
+     * Get the automationRunbookReceivers property: The list of AutomationRunbook receivers that are part of this action
+     * group.
+     *
      * @return the automationRunbookReceivers value.
      */
     public List<AutomationRunbookReceiver> automationRunbookReceivers() {
@@ -268,22 +252,21 @@ public class ActionGroupResourceInner extends Resource {
     }
 
     /**
-     * Set the automationRunbookReceivers property: The list of
-     * AutomationRunbook receivers that are part of this action group.
-     * 
-     * @param automationRunbookReceivers the automationRunbookReceivers value
-     * to set.
+     * Set the automationRunbookReceivers property: The list of AutomationRunbook receivers that are part of this action
+     * group.
+     *
+     * @param automationRunbookReceivers the automationRunbookReceivers value to set.
      * @return the ActionGroupResourceInner object itself.
      */
-    public ActionGroupResourceInner withAutomationRunbookReceivers(List<AutomationRunbookReceiver> automationRunbookReceivers) {
+    public ActionGroupResourceInner withAutomationRunbookReceivers(
+        List<AutomationRunbookReceiver> automationRunbookReceivers) {
         this.automationRunbookReceivers = automationRunbookReceivers;
         return this;
     }
 
     /**
-     * Get the voiceReceivers property: The list of voice receivers that are
-     * part of this action group.
-     * 
+     * Get the voiceReceivers property: The list of voice receivers that are part of this action group.
+     *
      * @return the voiceReceivers value.
      */
     public List<VoiceReceiver> voiceReceivers() {
@@ -291,9 +274,8 @@ public class ActionGroupResourceInner extends Resource {
     }
 
     /**
-     * Set the voiceReceivers property: The list of voice receivers that are
-     * part of this action group.
-     * 
+     * Set the voiceReceivers property: The list of voice receivers that are part of this action group.
+     *
      * @param voiceReceivers the voiceReceivers value to set.
      * @return the ActionGroupResourceInner object itself.
      */
@@ -303,9 +285,8 @@ public class ActionGroupResourceInner extends Resource {
     }
 
     /**
-     * Get the logicAppReceivers property: The list of logic app receivers that
-     * are part of this action group.
-     * 
+     * Get the logicAppReceivers property: The list of logic app receivers that are part of this action group.
+     *
      * @return the logicAppReceivers value.
      */
     public List<LogicAppReceiver> logicAppReceivers() {
@@ -313,9 +294,8 @@ public class ActionGroupResourceInner extends Resource {
     }
 
     /**
-     * Set the logicAppReceivers property: The list of logic app receivers that
-     * are part of this action group.
-     * 
+     * Set the logicAppReceivers property: The list of logic app receivers that are part of this action group.
+     *
      * @param logicAppReceivers the logicAppReceivers value to set.
      * @return the ActionGroupResourceInner object itself.
      */
@@ -325,9 +305,8 @@ public class ActionGroupResourceInner extends Resource {
     }
 
     /**
-     * Get the azureFunctionReceivers property: The list of azure function
-     * receivers that are part of this action group.
-     * 
+     * Get the azureFunctionReceivers property: The list of azure function receivers that are part of this action group.
+     *
      * @return the azureFunctionReceivers value.
      */
     public List<AzureFunctionReceiver> azureFunctionReceivers() {
@@ -335,9 +314,8 @@ public class ActionGroupResourceInner extends Resource {
     }
 
     /**
-     * Set the azureFunctionReceivers property: The list of azure function
-     * receivers that are part of this action group.
-     * 
+     * Set the azureFunctionReceivers property: The list of azure function receivers that are part of this action group.
+     *
      * @param azureFunctionReceivers the azureFunctionReceivers value to set.
      * @return the ActionGroupResourceInner object itself.
      */
@@ -347,10 +325,9 @@ public class ActionGroupResourceInner extends Resource {
     }
 
     /**
-     * Get the armRoleReceivers property: The list of ARM role receivers that
-     * are part of this action group. Roles are Azure RBAC roles and only
-     * built-in roles are supported.
-     * 
+     * Get the armRoleReceivers property: The list of ARM role receivers that are part of this action group. Roles are
+     * Azure RBAC roles and only built-in roles are supported.
+     *
      * @return the armRoleReceivers value.
      */
     public List<ArmRoleReceiver> armRoleReceivers() {
@@ -358,10 +335,9 @@ public class ActionGroupResourceInner extends Resource {
     }
 
     /**
-     * Set the armRoleReceivers property: The list of ARM role receivers that
-     * are part of this action group. Roles are Azure RBAC roles and only
-     * built-in roles are supported.
-     * 
+     * Set the armRoleReceivers property: The list of ARM role receivers that are part of this action group. Roles are
+     * Azure RBAC roles and only built-in roles are supported.
+     *
      * @param armRoleReceivers the armRoleReceivers value to set.
      * @return the ActionGroupResourceInner object itself.
      */

@@ -1,0 +1,102 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://javaformrecognizertestresource.cognitiveservices.azure.com/formrecognizer/v2.0-preview//custom/models",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "b11bb0c8-a842-49a7-a238-bb4b13b04b87",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-envoy-upstream-service-time" : "33",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "10a1322f-2673-42de-9993-043bd9500637",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "Date" : "Tue, 14 Apr 2020 20:16:51 GMT",
+      "Location" : "https://javaformrecognizertestresource.cognitiveservices.azure.com/formrecognizer/v2.0-preview/custom/models/c022df38-1bfb-49b8-a42e-e9e74236dc4a"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://javaformrecognizertestresource.cognitiveservices.azure.com/formrecognizer/v2.0-preview//custom/models/c022df38-1bfb-49b8-a42e-e9e74236dc4a?includeKeys=true",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "dee6e071-6730-454c-b983-e9456a855bee"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "16",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "e911dda1-8f9c-4233-8048-cba893a08acf",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"c022df38-1bfb-49b8-a42e-e9e74236dc4a\",\"status\":\"ready\",\"createdDateTime\":\"2020-04-14T20:16:51Z\",\"lastUpdatedDateTime\":\"2020-04-14T20:16:53Z\"},\"trainResult\":{\"averageModelAccuracy\":0.92,\"trainingDocuments\":[{\"documentName\":\"Invoice_1.pdf\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Invoice_2.pdf\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Invoice_3.pdf\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Invoice_4.pdf\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Invoice_5.pdf\",\"pages\":1,\"status\":\"succeeded\"}],\"fields\":[{\"fieldName\":\"InvoiceCharges\",\"accuracy\":1.0},{\"fieldName\":\"InvoiceDate\",\"accuracy\":0.8},{\"fieldName\":\"InvoiceDueDate\",\"accuracy\":0.8},{\"fieldName\":\"InvoiceNumber\",\"accuracy\":1.0},{\"fieldName\":\"InvoiceVatId\",\"accuracy\":1.0}],\"errors\":[]}}",
+      "Date" : "Tue, 14 Apr 2020 20:16:57 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://javaformrecognizertestresource.cognitiveservices.azure.com/formrecognizer/v2.0-preview//custom/models/c022df38-1bfb-49b8-a42e-e9e74236dc4a?includeKeys=true",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "2e802525-f36b-4aed-b318-3c41c6a27b56"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "28",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "506d4635-27b3-446f-952d-23aa4ec59d57",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"c022df38-1bfb-49b8-a42e-e9e74236dc4a\",\"status\":\"ready\",\"createdDateTime\":\"2020-04-14T20:16:51Z\",\"lastUpdatedDateTime\":\"2020-04-14T20:16:53Z\"},\"trainResult\":{\"averageModelAccuracy\":0.92,\"trainingDocuments\":[{\"documentName\":\"Invoice_1.pdf\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Invoice_2.pdf\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Invoice_3.pdf\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Invoice_4.pdf\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Invoice_5.pdf\",\"pages\":1,\"status\":\"succeeded\"}],\"fields\":[{\"fieldName\":\"InvoiceCharges\",\"accuracy\":1.0},{\"fieldName\":\"InvoiceDate\",\"accuracy\":0.8},{\"fieldName\":\"InvoiceDueDate\",\"accuracy\":0.8},{\"fieldName\":\"InvoiceNumber\",\"accuracy\":1.0},{\"fieldName\":\"InvoiceVatId\",\"accuracy\":1.0}],\"errors\":[]}}",
+      "Date" : "Tue, 14 Apr 2020 20:16:57 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://javaformrecognizertestresource.cognitiveservices.azure.com/formrecognizer/v2.0-preview//custom/models/c022df38-1bfb-49b8-a42e-e9e74236dc4a",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "e577599d-8409-4766-af24-0cc12eff5a76"
+    },
+    "Response" : {
+      "x-envoy-upstream-service-time" : "16",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "593819b0-d076-4488-b410-318400d6346a",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "Date" : "Tue, 14 Apr 2020 20:16:57 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://javaformrecognizertestresource.cognitiveservices.azure.com/formrecognizer/v2.0-preview//custom/models/c022df38-1bfb-49b8-a42e-e9e74236dc4a?includeKeys=true",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "1bb6c48a-f40e-452a-a298-a2f3bc9ce0e8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "13",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "f45f3d92-80e5-485a-9044-b84d9d398ec5",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "Body" : "{\"error\":{\"code\":\"1022\",\"message\":\"Model with 'id=c022df38-1bfb-49b8-a42e-e9e74236dc4a' not found.\"}}",
+      "Date" : "Tue, 14 Apr 2020 20:16:57 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

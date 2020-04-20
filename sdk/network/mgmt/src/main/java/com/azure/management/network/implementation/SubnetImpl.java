@@ -18,7 +18,6 @@ import com.azure.management.network.models.SubnetInner;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -29,13 +28,9 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-/**
- * Implementation for Subnet and its create and update interfaces.
- */
-class SubnetImpl
-        extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
-        implements
-        Subnet,
+/** Implementation for Subnet and its create and update interfaces. */
+class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
+    implements Subnet,
         Subnet.Definition<Network.DefinitionStages.WithCreateAndSubnet>,
         Subnet.UpdateDefinition<Network.Update>,
         Subnet.Update {
@@ -111,7 +106,8 @@ class SubnetImpl
 
     @Override
     public SubnetImpl withExistingNetworkSecurityGroup(String resourceId) {
-        // Workaround for REST API's expectation of an object rather than string ID - should be fixed in Swagger specs or REST
+        // Workaround for REST API's expectation of an object rather than string ID - should be fixed in Swagger specs
+        // or REST
         NetworkSecurityGroupInner reference = new NetworkSecurityGroupInner().withId(resourceId);
         this.inner().withNetworkSecurityGroup(reference);
         return this;
@@ -141,7 +137,6 @@ class SubnetImpl
         return this;
     }
 
-
     @Override
     public SubnetImpl withAccessFromService(ServiceEndpointType service) {
         if (this.inner().serviceEndpoints() == null) {
@@ -155,11 +150,13 @@ class SubnetImpl
             }
         }
         if (!found) {
-            this.inner()
-                    .serviceEndpoints()
-                    .add(new ServiceEndpointPropertiesFormat()
-                            .withService(service.toString())
-                            .withLocations(new ArrayList<String>()));
+            this
+                .inner()
+                .serviceEndpoints()
+                .add(
+                    new ServiceEndpointPropertiesFormat()
+                        .withService(service.toString())
+                        .withLocations(new ArrayList<String>()));
         }
         return this;
     }
@@ -193,16 +190,14 @@ class SubnetImpl
     @Override
     public RouteTable getRouteTable() {
         return (this.routeTableId() != null)
-                ? this.parent().manager().routeTables().getById(this.routeTableId())
-                : null;
+            ? this.parent().manager().routeTables().getById(this.routeTableId())
+            : null;
     }
 
     @Override
     public NetworkSecurityGroup getNetworkSecurityGroup() {
         String nsgId = this.networkSecurityGroupId();
-        return (nsgId != null)
-                ? this.parent().manager().networkSecurityGroups().getById(nsgId)
-                : null;
+        return (nsgId != null) ? this.parent().manager().networkSecurityGroups().getById(nsgId) : null;
     }
 
     @Override
@@ -260,10 +255,13 @@ class SubnetImpl
         }
         String takenIPAddress = cidr.split("/")[0];
 
-        IPAddressAvailabilityResultInner result = this.parent().manager().networks().inner().checkIPAddressAvailability(
-                this.parent().resourceGroupName(),
-                this.parent().name(),
-                takenIPAddress);
+        IPAddressAvailabilityResultInner result =
+            this
+                .parent()
+                .manager()
+                .networks()
+                .inner()
+                .checkIPAddressAvailability(this.parent().resourceGroupName(), this.parent().name(), takenIPAddress);
         if (result == null) {
             return ipAddresses;
         }

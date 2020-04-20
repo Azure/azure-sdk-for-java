@@ -5,7 +5,6 @@ package com.azure.management.cosmosdb.samples;
 
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.CloudException;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
@@ -72,7 +71,7 @@ public final class ManageHACosmosDB {
                     .withReadReplication(Region.AUSTRALIA_SOUTHEAST)
                     .withReadReplication(Region.UK_SOUTH)
                     .apply();
-                    
+
             System.out.println("Updated CosmosDB");
             Utils.print(cosmosDBAccount);
 
@@ -153,7 +152,7 @@ public final class ManageHACosmosDB {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure.configure()
-                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+                    .withLogLevel(HttpLogDetailLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 

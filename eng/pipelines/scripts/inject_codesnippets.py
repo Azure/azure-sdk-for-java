@@ -174,3 +174,4 @@ if __name__ == "__main__":
             with open(file, "w", encoding="utf-8") as out_file:
                 for line in amended_file:
                     out_file.write(line)
+ 

@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
-/**
- * The MetricTrigger model.
- */
+/** The MetricTrigger model. */
 @Fluent
 public final class MetricTrigger {
     /*
@@ -68,9 +66,8 @@ public final class MetricTrigger {
     private double threshold;
 
     /**
-     * Get the metricName property: the name of the metric that defines what
-     * the rule monitors.
-     * 
+     * Get the metricName property: the name of the metric that defines what the rule monitors.
+     *
      * @return the metricName value.
      */
     public String metricName() {
@@ -78,9 +75,8 @@ public final class MetricTrigger {
     }
 
     /**
-     * Set the metricName property: the name of the metric that defines what
-     * the rule monitors.
-     * 
+     * Set the metricName property: the name of the metric that defines what the rule monitors.
+     *
      * @param metricName the metricName value to set.
      * @return the MetricTrigger object itself.
      */
@@ -90,9 +86,8 @@ public final class MetricTrigger {
     }
 
     /**
-     * Get the metricResourceUri property: the resource identifier of the
-     * resource the rule monitors.
-     * 
+     * Get the metricResourceUri property: the resource identifier of the resource the rule monitors.
+     *
      * @return the metricResourceUri value.
      */
     public String metricResourceUri() {
@@ -100,9 +95,8 @@ public final class MetricTrigger {
     }
 
     /**
-     * Set the metricResourceUri property: the resource identifier of the
-     * resource the rule monitors.
-     * 
+     * Set the metricResourceUri property: the resource identifier of the resource the rule monitors.
+     *
      * @param metricResourceUri the metricResourceUri value to set.
      * @return the MetricTrigger object itself.
      */
@@ -112,10 +106,9 @@ public final class MetricTrigger {
     }
 
     /**
-     * Get the timeGrain property: the granularity of metrics the rule
-     * monitors. Must be one of the predefined values returned from metric
-     * definitions for the metric. Must be between 12 hours and 1 minute.
-     * 
+     * Get the timeGrain property: the granularity of metrics the rule monitors. Must be one of the predefined values
+     * returned from metric definitions for the metric. Must be between 12 hours and 1 minute.
+     *
      * @return the timeGrain value.
      */
     public Duration timeGrain() {
@@ -123,10 +116,9 @@ public final class MetricTrigger {
     }
 
     /**
-     * Set the timeGrain property: the granularity of metrics the rule
-     * monitors. Must be one of the predefined values returned from metric
-     * definitions for the metric. Must be between 12 hours and 1 minute.
-     * 
+     * Set the timeGrain property: the granularity of metrics the rule monitors. Must be one of the predefined values
+     * returned from metric definitions for the metric. Must be between 12 hours and 1 minute.
+     *
      * @param timeGrain the timeGrain value to set.
      * @return the MetricTrigger object itself.
      */
@@ -136,9 +128,8 @@ public final class MetricTrigger {
     }
 
     /**
-     * Get the statistic property: the metric statistic type. How the metrics
-     * from multiple instances are combined.
-     * 
+     * Get the statistic property: the metric statistic type. How the metrics from multiple instances are combined.
+     *
      * @return the statistic value.
      */
     public MetricStatisticType statistic() {
@@ -146,9 +137,8 @@ public final class MetricTrigger {
     }
 
     /**
-     * Set the statistic property: the metric statistic type. How the metrics
-     * from multiple instances are combined.
-     * 
+     * Set the statistic property: the metric statistic type. How the metrics from multiple instances are combined.
+     *
      * @param statistic the statistic value to set.
      * @return the MetricTrigger object itself.
      */
@@ -158,11 +148,10 @@ public final class MetricTrigger {
     }
 
     /**
-     * Get the timeWindow property: the range of time in which instance data is
-     * collected. This value must be greater than the delay in metric
-     * collection, which can vary from resource-to-resource. Must be between 12
-     * hours and 5 minutes.
-     * 
+     * Get the timeWindow property: the range of time in which instance data is collected. This value must be greater
+     * than the delay in metric collection, which can vary from resource-to-resource. Must be between 12 hours and 5
+     * minutes.
+     *
      * @return the timeWindow value.
      */
     public Duration timeWindow() {
@@ -170,11 +159,10 @@ public final class MetricTrigger {
     }
 
     /**
-     * Set the timeWindow property: the range of time in which instance data is
-     * collected. This value must be greater than the delay in metric
-     * collection, which can vary from resource-to-resource. Must be between 12
-     * hours and 5 minutes.
-     * 
+     * Set the timeWindow property: the range of time in which instance data is collected. This value must be greater
+     * than the delay in metric collection, which can vary from resource-to-resource. Must be between 12 hours and 5
+     * minutes.
+     *
      * @param timeWindow the timeWindow value to set.
      * @return the MetricTrigger object itself.
      */
@@ -184,10 +172,9 @@ public final class MetricTrigger {
     }
 
     /**
-     * Get the timeAggregation property: time aggregation type. How the data
-     * that is collected should be combined over time. The default value is
-     * Average.
-     * 
+     * Get the timeAggregation property: time aggregation type. How the data that is collected should be combined over
+     * time. The default value is Average.
+     *
      * @return the timeAggregation value.
      */
     public TimeAggregationType timeAggregation() {
@@ -195,10 +182,9 @@ public final class MetricTrigger {
     }
 
     /**
-     * Set the timeAggregation property: time aggregation type. How the data
-     * that is collected should be combined over time. The default value is
-     * Average.
-     * 
+     * Set the timeAggregation property: time aggregation type. How the data that is collected should be combined over
+     * time. The default value is Average.
+     *
      * @param timeAggregation the timeAggregation value to set.
      * @return the MetricTrigger object itself.
      */
@@ -208,9 +194,8 @@ public final class MetricTrigger {
     }
 
     /**
-     * Get the operator property: the operator that is used to compare the
-     * metric data and the threshold.
-     * 
+     * Get the operator property: the operator that is used to compare the metric data and the threshold.
+     *
      * @return the operator value.
      */
     public ComparisonOperationType operator() {
@@ -218,9 +203,8 @@ public final class MetricTrigger {
     }
 
     /**
-     * Set the operator property: the operator that is used to compare the
-     * metric data and the threshold.
-     * 
+     * Set the operator property: the operator that is used to compare the metric data and the threshold.
+     *
      * @param operator the operator value to set.
      * @return the MetricTrigger object itself.
      */
@@ -230,9 +214,8 @@ public final class MetricTrigger {
     }
 
     /**
-     * Get the threshold property: the threshold of the metric that triggers
-     * the scale action.
-     * 
+     * Get the threshold property: the threshold of the metric that triggers the scale action.
+     *
      * @return the threshold value.
      */
     public double threshold() {
@@ -240,9 +223,8 @@ public final class MetricTrigger {
     }
 
     /**
-     * Set the threshold property: the threshold of the metric that triggers
-     * the scale action.
-     * 
+     * Set the threshold property: the threshold of the metric that triggers the scale action.
+     *
      * @param threshold the threshold value to set.
      * @return the MetricTrigger object itself.
      */

@@ -8,23 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for TransparentDataEncryptionActivityStatus.
- */
-public final class TransparentDataEncryptionActivityStatus extends ExpandableStringEnum<TransparentDataEncryptionActivityStatus> {
-    /**
-     * Static value Encrypting for TransparentDataEncryptionActivityStatus.
-     */
+/** Defines values for TransparentDataEncryptionActivityStatus. */
+public final class TransparentDataEncryptionActivityStatus
+    extends ExpandableStringEnum<TransparentDataEncryptionActivityStatus> {
+    /** Static value Encrypting for TransparentDataEncryptionActivityStatus. */
     public static final TransparentDataEncryptionActivityStatus ENCRYPTING = fromString("Encrypting");
 
-    /**
-     * Static value Decrypting for TransparentDataEncryptionActivityStatus.
-     */
+    /** Static value Decrypting for TransparentDataEncryptionActivityStatus. */
     public static final TransparentDataEncryptionActivityStatus DECRYPTING = fromString("Decrypting");
 
     /**
      * Creates or finds a TransparentDataEncryptionActivityStatus from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding TransparentDataEncryptionActivityStatus.
      */
@@ -33,9 +28,7 @@ public final class TransparentDataEncryptionActivityStatus extends ExpandableStr
         return fromString(name, TransparentDataEncryptionActivityStatus.class);
     }
 
-    /**
-     * @return known TransparentDataEncryptionActivityStatus values.
-     */
+    /** @return known TransparentDataEncryptionActivityStatus values. */
     public static Collection<TransparentDataEncryptionActivityStatus> values() {
         return values(TransparentDataEncryptionActivityStatus.class);
     }

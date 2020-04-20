@@ -4,19 +4,16 @@
 package com.azure.management.compute.implementation;
 
 import com.azure.core.management.SubResource;
-import com.azure.management.compute.models.ProximityPlacementGroupInner;
 import com.azure.management.compute.ComputeSku;
 import com.azure.management.compute.ProximityPlacementGroup;
 import com.azure.management.compute.ProximityPlacementGroupType;
+import com.azure.management.compute.models.ProximityPlacementGroupInner;
 import com.azure.management.resources.fluentcore.arm.ResourceId;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * The implementation for {@link ComputeSku}.
- */
+/** The implementation for {@link ComputeSku}. */
 final class ProximityPlacementGroupImpl implements ProximityPlacementGroup {
     private final ProximityPlacementGroupInner inner;
 
@@ -63,7 +60,6 @@ final class ProximityPlacementGroupImpl implements ProximityPlacementGroup {
     public ProximityPlacementGroupInner inner() {
         return inner;
     }
-
 
     private List<String> getStringListFromSubResourceList(List<SubResource> subList) {
         List<String> stringList = null;

@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * The ZoneUpdate model.
- */
+/** The ZoneUpdate model. */
 @Fluent
 public final class ZoneUpdate {
     /*
@@ -21,7 +19,7 @@ public final class ZoneUpdate {
 
     /**
      * Get the tags property: Resource tags.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -30,7 +28,7 @@ public final class ZoneUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the ZoneUpdate object itself.
      */

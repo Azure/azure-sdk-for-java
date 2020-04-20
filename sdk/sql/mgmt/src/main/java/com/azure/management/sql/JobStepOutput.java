@@ -8,16 +8,14 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/**
- * The JobStepOutput model.
- */
+/** The JobStepOutput model. */
 @Fluent
 public final class JobStepOutput {
     /*
      * The output destination type.
      */
     @JsonProperty(value = "type")
-    private String type;
+    private JobStepOutputType type;
 
     /*
      * The output destination subscription id.
@@ -63,35 +61,28 @@ public final class JobStepOutput {
     private String credential;
 
     /**
-     * Creates an instance of JobStepOutput class.
-     */
-    public JobStepOutput() {
-        type = "SqlDatabase";
-    }
-
-    /**
      * Get the type property: The output destination type.
-     * 
+     *
      * @return the type value.
      */
-    public String type() {
+    public JobStepOutputType type() {
         return this.type;
     }
 
     /**
      * Set the type property: The output destination type.
-     * 
+     *
      * @param type the type value to set.
      * @return the JobStepOutput object itself.
      */
-    public JobStepOutput withType(String type) {
+    public JobStepOutput withType(JobStepOutputType type) {
         this.type = type;
         return this;
     }
 
     /**
      * Get the subscriptionId property: The output destination subscription id.
-     * 
+     *
      * @return the subscriptionId value.
      */
     public UUID subscriptionId() {
@@ -100,7 +91,7 @@ public final class JobStepOutput {
 
     /**
      * Set the subscriptionId property: The output destination subscription id.
-     * 
+     *
      * @param subscriptionId the subscriptionId value to set.
      * @return the JobStepOutput object itself.
      */
@@ -110,9 +101,8 @@ public final class JobStepOutput {
     }
 
     /**
-     * Get the resourceGroupName property: The output destination resource
-     * group.
-     * 
+     * Get the resourceGroupName property: The output destination resource group.
+     *
      * @return the resourceGroupName value.
      */
     public String resourceGroupName() {
@@ -120,9 +110,8 @@ public final class JobStepOutput {
     }
 
     /**
-     * Set the resourceGroupName property: The output destination resource
-     * group.
-     * 
+     * Set the resourceGroupName property: The output destination resource group.
+     *
      * @param resourceGroupName the resourceGroupName value to set.
      * @return the JobStepOutput object itself.
      */
@@ -133,7 +122,7 @@ public final class JobStepOutput {
 
     /**
      * Get the serverName property: The output destination server name.
-     * 
+     *
      * @return the serverName value.
      */
     public String serverName() {
@@ -142,7 +131,7 @@ public final class JobStepOutput {
 
     /**
      * Set the serverName property: The output destination server name.
-     * 
+     *
      * @param serverName the serverName value to set.
      * @return the JobStepOutput object itself.
      */
@@ -153,7 +142,7 @@ public final class JobStepOutput {
 
     /**
      * Get the databaseName property: The output destination database.
-     * 
+     *
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -162,7 +151,7 @@ public final class JobStepOutput {
 
     /**
      * Set the databaseName property: The output destination database.
-     * 
+     *
      * @param databaseName the databaseName value to set.
      * @return the JobStepOutput object itself.
      */
@@ -173,7 +162,7 @@ public final class JobStepOutput {
 
     /**
      * Get the schemaName property: The output destination schema.
-     * 
+     *
      * @return the schemaName value.
      */
     public String schemaName() {
@@ -182,7 +171,7 @@ public final class JobStepOutput {
 
     /**
      * Set the schemaName property: The output destination schema.
-     * 
+     *
      * @param schemaName the schemaName value to set.
      * @return the JobStepOutput object itself.
      */
@@ -193,7 +182,7 @@ public final class JobStepOutput {
 
     /**
      * Get the tableName property: The output destination table.
-     * 
+     *
      * @return the tableName value.
      */
     public String tableName() {
@@ -202,7 +191,7 @@ public final class JobStepOutput {
 
     /**
      * Set the tableName property: The output destination table.
-     * 
+     *
      * @param tableName the tableName value to set.
      * @return the JobStepOutput object itself.
      */
@@ -212,9 +201,8 @@ public final class JobStepOutput {
     }
 
     /**
-     * Get the credential property: The resource ID of the credential to use to
-     * connect to the output destination.
-     * 
+     * Get the credential property: The resource ID of the credential to use to connect to the output destination.
+     *
      * @return the credential value.
      */
     public String credential() {
@@ -222,9 +210,8 @@ public final class JobStepOutput {
     }
 
     /**
-     * Set the credential property: The resource ID of the credential to use to
-     * connect to the output destination.
-     * 
+     * Set the credential property: The resource ID of the credential to use to connect to the output destination.
+     *
      * @param credential the credential value to set.
      * @return the JobStepOutput object itself.
      */

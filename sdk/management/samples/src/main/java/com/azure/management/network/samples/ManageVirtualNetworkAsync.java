@@ -4,7 +4,6 @@
 package com.azure.management.network.samples;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.management.Azure;
 import com.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.azure.management.compute.VirtualMachine;
@@ -39,7 +38,7 @@ public final class ManageVirtualNetworkAsync {
         Indexable indexable;
         Long duration;
 
-        public Indexable2Duration(Indexable indexable, long duration) {
+        Indexable2Duration(Indexable indexable, long duration) {
             this.indexable = indexable;
             this.duration = duration;
         }
@@ -280,7 +279,7 @@ public final class ManageVirtualNetworkAsync {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure.configure()
-                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY))
+                    .withLogLevel(HttpLogDetailLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 

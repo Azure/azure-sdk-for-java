@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.management.network.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.NetworkSecurityGroup;
 import com.azure.management.network.NetworkSecurityRule;
 import com.azure.management.network.SecurityRuleAccess;
@@ -11,7 +12,6 @@ import com.azure.management.network.models.ApplicationSecurityGroupInner;
 import com.azure.management.network.models.SecurityRuleInner;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -20,18 +20,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * Implementation for {@link NetworkSecurityRule} and its create and update interfaces.
- */
+/** Implementation for {@link NetworkSecurityRule} and its create and update interfaces. */
 class NetworkSecurityRuleImpl
-        extends ChildResourceImpl<SecurityRuleInner, NetworkSecurityGroupImpl, NetworkSecurityGroup>
-        implements
-        NetworkSecurityRule,
+    extends ChildResourceImpl<SecurityRuleInner, NetworkSecurityGroupImpl, NetworkSecurityGroup>
+    implements NetworkSecurityRule,
         NetworkSecurityRule.Definition<NetworkSecurityGroup.DefinitionStages.WithCreate>,
         NetworkSecurityRule.UpdateDefinition<NetworkSecurityGroup.Update>,
         NetworkSecurityRule.Update {
     private Map<String, ApplicationSecurityGroupInner> sourceAsgs = new HashMap<>();
     private Map<String, ApplicationSecurityGroupInner> destinationAsgs = new HashMap<>();
+    private final ClientLogger logger = new ClientLogger(getClass());
 
     NetworkSecurityRuleImpl(SecurityRuleInner inner, NetworkSecurityGroupImpl parent) {
         super(inner, parent);
@@ -128,30 +126,22 @@ class NetworkSecurityRuleImpl
 
     @Override
     public NetworkSecurityRuleImpl allowInbound() {
-        return this
-                .withDirection(SecurityRuleDirection.INBOUND)
-                .withAccess(SecurityRuleAccess.ALLOW);
+        return this.withDirection(SecurityRuleDirection.INBOUND).withAccess(SecurityRuleAccess.ALLOW);
     }
 
     @Override
     public NetworkSecurityRuleImpl allowOutbound() {
-        return this
-                .withDirection(SecurityRuleDirection.OUTBOUND)
-                .withAccess(SecurityRuleAccess.ALLOW);
+        return this.withDirection(SecurityRuleDirection.OUTBOUND).withAccess(SecurityRuleAccess.ALLOW);
     }
 
     @Override
     public NetworkSecurityRuleImpl denyInbound() {
-        return this
-                .withDirection(SecurityRuleDirection.INBOUND)
-                .withAccess(SecurityRuleAccess.DENY);
+        return this.withDirection(SecurityRuleDirection.INBOUND).withAccess(SecurityRuleAccess.DENY);
     }
 
     @Override
     public NetworkSecurityRuleImpl denyOutbound() {
-        return this
-                .withDirection(SecurityRuleDirection.OUTBOUND)
-                .withAccess(SecurityRuleAccess.DENY);
+        return this.withDirection(SecurityRuleDirection.OUTBOUND).withAccess(SecurityRuleAccess.DENY);
     }
 
     @Override
@@ -162,7 +152,7 @@ class NetworkSecurityRuleImpl
 
     @Override
     public NetworkSecurityRuleImpl withAnyProtocol() {
-        return this.withProtocol(SecurityRuleProtocol._);
+        return this.withProtocol(SecurityRuleProtocol.STAR);
     }
 
     @Override
@@ -272,7 +262,8 @@ class NetworkSecurityRuleImpl
     @Override
     public NetworkSecurityRuleImpl withPriority(int priority) {
         if (priority < 100 || priority > 4096) {
-            throw new IllegalArgumentException("The priority number of a network security rule must be between 100 and 4096.");
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "The priority number of a network security rule must be between 100 and 4096."));
         }
 
         this.inner().withPriority(priority);
@@ -312,7 +303,6 @@ class NetworkSecurityRuleImpl
         this.inner().withAccess(permission);
         return this;
     }
-
 
     // Verbs
 

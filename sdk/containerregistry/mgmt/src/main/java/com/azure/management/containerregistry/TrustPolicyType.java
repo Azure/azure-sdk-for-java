@@ -7,18 +7,12 @@ package com.azure.management.containerregistry;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for TrustPolicyType.
- */
+/** Defines values for TrustPolicyType. */
 public enum TrustPolicyType {
-    /**
-     * Enum value Notary.
-     */
+    /** Enum value Notary. */
     NOTARY("Notary");
 
-    /**
-     * The actual serialized value for a TrustPolicyType instance.
-     */
+    /** The actual serialized value for a TrustPolicyType instance. */
     private final String value;
 
     TrustPolicyType(String value) {
@@ -27,7 +21,7 @@ public enum TrustPolicyType {
 
     /**
      * Parses a serialized value to a TrustPolicyType instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed TrustPolicyType object, or null if unable to parse.
      */

@@ -17,28 +17,26 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URISyntaxException;
+import java.net.http.HttpRequest.BodyPublisher;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
-
-import java.net.http.HttpRequest.BodyPublisher;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.Flow;
 
-import static java.net.http.HttpResponse.BodyHandlers.ofPublisher;
 import static java.net.http.HttpRequest.BodyPublishers.fromPublisher;
 import static java.net.http.HttpRequest.BodyPublishers.noBody;
+import static java.net.http.HttpResponse.BodyHandlers.ofPublisher;
 
 /**
  * HttpClient implementation for the JDK HttpClient.
  */
 class JdkAsyncHttpClient implements HttpClient {
     private final ClientLogger logger = new ClientLogger(JdkAsyncHttpClient.class);
+
     private final java.net.http.HttpClient jdkHttpClient;
-    private final int javaVersion;
 
     // These headers are restricted by default in native JDK12 HttpClient.
     // These headers can be whitelisted by setting jdk.httpclient.allowRestrictedHeaders
@@ -60,10 +58,9 @@ class JdkAsyncHttpClient implements HttpClient {
 
     JdkAsyncHttpClient(java.net.http.HttpClient httpClient) {
         this.jdkHttpClient = httpClient;
-        this.javaVersion = getJavaVersion();
+        int javaVersion = getJavaVersion();
         if (javaVersion <= 11) {
-            logger.logExceptionAsError(
-                new RuntimeException("JdkAsyncHttpClient is not supported in Java version 11 and below."));
+            logger.error("JdkAsyncHttpClient is not supported in Java version 11 and below.");
         }
     }
 
@@ -96,11 +93,8 @@ class JdkAsyncHttpClient implements HttpClient {
                         final String headerValue = header.getValue();
                         builder.setHeader(headerName, headerValue);
                     } else {
-                        logger.logExceptionAsError(
-                            new IllegalArgumentException("The header "
-                                + "'" + headerName
-                                + "' is restricted by default in JDK HttpClient 12 and above."
-                                + "(unless it is whitelisted in JAVA_HOME/conf/net.properties)"));
+                        logger.error("The header '" + headerName + "' is restricted by default in JDK HttpClient 12 "
+                            + "and above (unless it is whitelisted in JAVA_HOME/conf/net.properties).");
                     }
                 }
             }
@@ -216,14 +210,13 @@ class JdkAsyncHttpClient implements HttpClient {
 
         @Override
         public Mono<String> getBodyAsString() {
-            return getBodyAsByteArray()
-                .map(bytes -> new String(bytes, StandardCharsets.UTF_8));
+            return getBodyAsByteArray().map(bytes ->
+                CoreUtils.bomAwareToString(bytes, headers.getValue("Content-Type")));
         }
 
         @Override
         public Mono<String> getBodyAsString(Charset charset) {
-            return getBodyAsByteArray()
-                .map(bytes -> new String(bytes, charset));
+            return getBodyAsByteArray().map(bytes -> new String(bytes, charset));
         }
 
         @Override
@@ -246,7 +239,7 @@ class JdkAsyncHttpClient implements HttpClient {
             final HttpHeaders httpHeaders = new HttpHeaders();
             for (final String key : headers.map().keySet()) {
                 final List<String> values = headers.allValues(key);
-                if (values == null || values.size() == 0) {
+                if (CoreUtils.isNullOrEmpty(values)) {
                     continue;
                 } else if (values.size() == 1) {
                     httpHeaders.put(key, values.get(0));

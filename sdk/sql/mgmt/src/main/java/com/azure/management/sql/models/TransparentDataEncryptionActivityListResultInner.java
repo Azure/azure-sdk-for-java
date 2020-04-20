@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The TransparentDataEncryptionActivityListResult model.
- */
+/** The TransparentDataEncryptionActivityListResult model. */
 @Fluent
 public final class TransparentDataEncryptionActivityListResultInner {
     /*
@@ -20,9 +18,8 @@ public final class TransparentDataEncryptionActivityListResultInner {
     private List<TransparentDataEncryptionActivityInner> value;
 
     /**
-     * Get the value property: The list of database transparent data encryption
-     * activities.
-     * 
+     * Get the value property: The list of database transparent data encryption activities.
+     *
      * @return the value value.
      */
     public List<TransparentDataEncryptionActivityInner> value() {
@@ -30,14 +27,13 @@ public final class TransparentDataEncryptionActivityListResultInner {
     }
 
     /**
-     * Set the value property: The list of database transparent data encryption
-     * activities.
-     * 
+     * Set the value property: The list of database transparent data encryption activities.
+     *
      * @param value the value value to set.
-     * @return the TransparentDataEncryptionActivityListResultInner object
-     * itself.
+     * @return the TransparentDataEncryptionActivityListResultInner object itself.
      */
-    public TransparentDataEncryptionActivityListResultInner withValue(List<TransparentDataEncryptionActivityInner> value) {
+    public TransparentDataEncryptionActivityListResultInner withValue(
+        List<TransparentDataEncryptionActivityInner> value) {
         this.value = value;
         return this;
     }

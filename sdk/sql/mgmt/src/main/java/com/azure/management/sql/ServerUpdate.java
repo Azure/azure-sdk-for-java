@@ -10,9 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/**
- * The ServerUpdate model.
- */
+/** The ServerUpdate model. */
 @JsonFlatten
 @Fluent
 public class ServerUpdate {
@@ -74,7 +72,7 @@ public class ServerUpdate {
 
     /**
      * Get the tags property: Resource tags.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -83,7 +81,7 @@ public class ServerUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the ServerUpdate object itself.
      */
@@ -93,9 +91,8 @@ public class ServerUpdate {
     }
 
     /**
-     * Get the administratorLogin property: Administrator username for the
-     * server. Once created it cannot be changed.
-     * 
+     * Get the administratorLogin property: Administrator username for the server. Once created it cannot be changed.
+     *
      * @return the administratorLogin value.
      */
     public String administratorLogin() {
@@ -103,9 +100,8 @@ public class ServerUpdate {
     }
 
     /**
-     * Set the administratorLogin property: Administrator username for the
-     * server. Once created it cannot be changed.
-     * 
+     * Set the administratorLogin property: Administrator username for the server. Once created it cannot be changed.
+     *
      * @param administratorLogin the administratorLogin value to set.
      * @return the ServerUpdate object itself.
      */
@@ -115,9 +111,8 @@ public class ServerUpdate {
     }
 
     /**
-     * Get the administratorLoginPassword property: The administrator login
-     * password (required for server creation).
-     * 
+     * Get the administratorLoginPassword property: The administrator login password (required for server creation).
+     *
      * @return the administratorLoginPassword value.
      */
     public String administratorLoginPassword() {
@@ -125,11 +120,9 @@ public class ServerUpdate {
     }
 
     /**
-     * Set the administratorLoginPassword property: The administrator login
-     * password (required for server creation).
-     * 
-     * @param administratorLoginPassword the administratorLoginPassword value
-     * to set.
+     * Set the administratorLoginPassword property: The administrator login password (required for server creation).
+     *
+     * @param administratorLoginPassword the administratorLoginPassword value to set.
      * @return the ServerUpdate object itself.
      */
     public ServerUpdate withAdministratorLoginPassword(String administratorLoginPassword) {
@@ -139,7 +132,7 @@ public class ServerUpdate {
 
     /**
      * Get the version property: The version of the server.
-     * 
+     *
      * @return the version value.
      */
     public String version() {
@@ -148,7 +141,7 @@ public class ServerUpdate {
 
     /**
      * Set the version property: The version of the server.
-     * 
+     *
      * @param version the version value to set.
      * @return the ServerUpdate object itself.
      */
@@ -159,7 +152,7 @@ public class ServerUpdate {
 
     /**
      * Get the state property: The state of the server.
-     * 
+     *
      * @return the state value.
      */
     public String state() {
@@ -167,9 +160,8 @@ public class ServerUpdate {
     }
 
     /**
-     * Get the fullyQualifiedDomainName property: The fully qualified domain
-     * name of the server.
-     * 
+     * Get the fullyQualifiedDomainName property: The fully qualified domain name of the server.
+     *
      * @return the fullyQualifiedDomainName value.
      */
     public String fullyQualifiedDomainName() {
@@ -177,9 +169,8 @@ public class ServerUpdate {
     }
 
     /**
-     * Get the privateEndpointConnections property: List of private endpoint
-     * connections on a server.
-     * 
+     * Get the privateEndpointConnections property: List of private endpoint connections on a server.
+     *
      * @return the privateEndpointConnections value.
      */
     public List<ServerPrivateEndpointConnection> privateEndpointConnections() {
@@ -187,9 +178,8 @@ public class ServerUpdate {
     }
 
     /**
-     * Get the minimalTlsVersion property: Minimal TLS version. Allowed values:
-     * '1.0', '1.1', '1.2'.
-     * 
+     * Get the minimalTlsVersion property: Minimal TLS version. Allowed values: '1.0', '1.1', '1.2'.
+     *
      * @return the minimalTlsVersion value.
      */
     public String minimalTlsVersion() {
@@ -197,9 +187,8 @@ public class ServerUpdate {
     }
 
     /**
-     * Set the minimalTlsVersion property: Minimal TLS version. Allowed values:
-     * '1.0', '1.1', '1.2'.
-     * 
+     * Set the minimalTlsVersion property: Minimal TLS version. Allowed values: '1.0', '1.1', '1.2'.
+     *
      * @param minimalTlsVersion the minimalTlsVersion value to set.
      * @return the ServerUpdate object itself.
      */
@@ -209,10 +198,9 @@ public class ServerUpdate {
     }
 
     /**
-     * Get the publicNetworkAccess property: Whether or not public endpoint
-     * access is allowed for this server.  Value is optional but if passed in,
-     * must be 'Enabled' or 'Disabled'.
-     * 
+     * Get the publicNetworkAccess property: Whether or not public endpoint access is allowed for this server. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     *
      * @return the publicNetworkAccess value.
      */
     public ServerPublicNetworkAccess publicNetworkAccess() {
@@ -220,10 +208,9 @@ public class ServerUpdate {
     }
 
     /**
-     * Set the publicNetworkAccess property: Whether or not public endpoint
-     * access is allowed for this server.  Value is optional but if passed in,
-     * must be 'Enabled' or 'Disabled'.
-     * 
+     * Set the publicNetworkAccess property: Whether or not public endpoint access is allowed for this server. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     *
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ServerUpdate object itself.
      */

@@ -8,23 +8,16 @@ import com.azure.management.storage.CheckNameAvailabilityResult;
 import com.azure.management.storage.ServiceSasParameters;
 import com.azure.management.storage.SkuName;
 import com.azure.management.storage.StorageAccount;
-import com.azure.management.storage.StorageAccountCheckNameAvailabilityParameters;
 import com.azure.management.storage.StorageAccounts;
 import com.azure.management.storage.models.StorageAccountInner;
 import com.azure.management.storage.models.StorageAccountsInner;
 import reactor.core.publisher.Mono;
 
-/**
- * The implementation of StorageAccounts and its parent interfaces.
- */
+/** The implementation of StorageAccounts and its parent interfaces. */
 class StorageAccountsImpl
-        extends TopLevelModifiableResourcesImpl<
-        StorageAccount,
-        StorageAccountImpl,
-        StorageAccountInner,
-        StorageAccountsInner,
-        StorageManager>
-        implements StorageAccounts {
+    extends TopLevelModifiableResourcesImpl<
+        StorageAccount, StorageAccountImpl, StorageAccountInner, StorageAccountsInner, StorageManager>
+    implements StorageAccounts {
 
     StorageAccountsImpl(final StorageManager storageManager) {
         super(storageManager.inner().storageAccounts(), storageManager);
@@ -37,14 +30,15 @@ class StorageAccountsImpl
 
     @Override
     public Mono<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name) {
-        return this.inner().checkNameAvailabilityAsync(name).map(checkNameAvailabilityResultInner -> new CheckNameAvailabilityResult(checkNameAvailabilityResultInner));
+        return this
+            .inner()
+            .checkNameAvailabilityAsync(name)
+            .map(checkNameAvailabilityResultInner -> new CheckNameAvailabilityResult(checkNameAvailabilityResultInner));
     }
 
     @Override
     public StorageAccountImpl define(String name) {
-        return wrapModel(name)
-                .withSku(SkuName.STANDARD_GRS)
-                .withGeneralPurposeAccountKind();
+        return wrapModel(name).withSku(SkuName.STANDARD_GRS).withGeneralPurposeAccountKind();
     }
 
     @Override
@@ -66,8 +60,12 @@ class StorageAccountsImpl
     }
 
     @Override
-    public Mono<String> createSasTokenAsync(String resourceGroupName, String accountName, ServiceSasParameters parameters) {
-        return this.inner().listServiceSASAsync(resourceGroupName, accountName, parameters).map(listServiceSasResponseInner -> listServiceSasResponseInner.serviceSasToken());
+    public Mono<String> createSasTokenAsync(
+        String resourceGroupName, String accountName, ServiceSasParameters parameters) {
+        return this
+            .inner()
+            .listServiceSasAsync(resourceGroupName, accountName, parameters)
+            .map(listServiceSasResponseInner -> listServiceSasResponseInner.serviceSasToken());
     }
 
     @Override

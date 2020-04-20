@@ -89,7 +89,7 @@ public class PartitionBasedLoadBalancerTest {
                 eventDataList.add(eventData);
             });
         when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
-        this.checkpointStore = new InMemoryCheckpointStore();
+        this.checkpointStore = new SampleCheckpointStore();
     }
 
     @AfterEach

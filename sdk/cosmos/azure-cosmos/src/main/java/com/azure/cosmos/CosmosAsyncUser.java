@@ -11,7 +11,7 @@ import com.azure.cosmos.models.CosmosPermissionRequestOptions;
 import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.Permission;
+import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import reactor.core.publisher.Mono;

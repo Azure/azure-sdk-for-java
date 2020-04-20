@@ -4,11 +4,9 @@
 package com.azure.management.network.samples;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.management.Azure;
 import com.azure.management.network.ApplicationGateway;
 import com.azure.management.resources.fluentcore.arm.Region;
-import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.samples.Utils;
 
 import java.io.File;
@@ -155,7 +153,7 @@ public final class ManageSimpleApplicationGateway {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure.configure()
-                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.NONE))
+                    .withLogLevel(HttpLogDetailLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 

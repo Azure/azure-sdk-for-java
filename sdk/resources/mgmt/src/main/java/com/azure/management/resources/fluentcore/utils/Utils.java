@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.AzureTokenCredential;
 import com.azure.management.RestClient;
 import com.azure.management.resources.fluentcore.arm.ResourceId;
@@ -16,6 +17,7 @@ import com.azure.management.resources.fluentcore.model.Indexable;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Defines a few utilities.
@@ -205,13 +207,16 @@ public final class Utils {
         } else {
             String baseUrl = restClient.getBaseUrl().toString();
             for (AzureEnvironment env : AzureEnvironment.knownEnvironments()) {
-                if (env.getResourceManagerEndpoint().toLowerCase().contains(baseUrl.toLowerCase())) {
+                if (env.getResourceManagerEndpoint().toLowerCase(Locale.ROOT)
+                        .contains(baseUrl.toLowerCase(Locale.ROOT))) {
                     environment = env;
                     break;
                 }
             }
             if (environment == null) {
-                throw new IllegalArgumentException("Unknown resource manager endpoint " + baseUrl);
+                ClientLogger logger = new ClientLogger(Utils.class);
+                throw logger.logExceptionAsError(
+                    new IllegalArgumentException("Unknown resource manager endpoint " + baseUrl));
             }
         }
         return environment;

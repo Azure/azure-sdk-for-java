@@ -3,12 +3,9 @@
 package com.azure.management.containerregistry;
 
 import com.azure.core.util.ExpandableStringEnum;
-
 import java.util.Collection;
 
-/**
- * Defines values for admin user access key names.
- */
+/** Defines values for admin user access key names. */
 public class AccessKeyType extends ExpandableStringEnum<AccessKeyType> {
     /** Primary key. */
     public static final AccessKeyType PRIMARY = fromString(PasswordName.PASSWORD.toString());
@@ -18,6 +15,7 @@ public class AccessKeyType extends ExpandableStringEnum<AccessKeyType> {
 
     /**
      * Finds or creates an access key name based on the provided name.
+     *
      * @param name a name
      * @return a AccessKeyType instance
      */
@@ -25,9 +23,7 @@ public class AccessKeyType extends ExpandableStringEnum<AccessKeyType> {
         return fromString(name, AccessKeyType.class);
     }
 
-    /**
-     * @return known admin user access key names
-     */
+    /** @return known admin user access key names */
     public static Collection<AccessKeyType> values() {
         return values(AccessKeyType.class);
     }

@@ -2,25 +2,19 @@
 // Licensed under the MIT License.
 package com.azure.management.dns.implementation;
 
-import com.azure.management.dns.models.RecordSetInner;
-import com.azure.management.dns.CnameRecord;
 import com.azure.management.dns.CNameRecordSet;
+import com.azure.management.dns.CnameRecord;
 import com.azure.management.dns.RecordType;
+import com.azure.management.dns.models.RecordSetInner;
 
-/**
- * Implementation of CNameRecordSet.
- */
-class CNameRecordSetImpl
-        extends DnsRecordSetImpl
-        implements CNameRecordSet {
+/** Implementation of CNameRecordSet. */
+class CNameRecordSetImpl extends DnsRecordSetImpl implements CNameRecordSet {
     CNameRecordSetImpl(final String name, final DnsZoneImpl parent, final RecordSetInner innerModel) {
         super(name, RecordType.CNAME.toString(), parent, innerModel);
     }
 
     static CNameRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent) {
-        return new CNameRecordSetImpl(name, parent,
-                new RecordSetInner()
-                        .withCnameRecord(new CnameRecord()));
+        return new CNameRecordSetImpl(name, parent, new RecordSetInner().withCnameRecord(new CnameRecord()));
     }
 
     @Override

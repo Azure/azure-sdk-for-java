@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * The VaultCreateOrUpdateParameters model.
- */
+/** The VaultCreateOrUpdateParameters model. */
 @Fluent
 public final class VaultCreateOrUpdateParameters {
     /*
@@ -32,9 +30,8 @@ public final class VaultCreateOrUpdateParameters {
     private VaultProperties properties;
 
     /**
-     * Get the location property: The supported Azure location where the key
-     * vault should be created.
-     * 
+     * Get the location property: The supported Azure location where the key vault should be created.
+     *
      * @return the location value.
      */
     public String location() {
@@ -42,9 +39,8 @@ public final class VaultCreateOrUpdateParameters {
     }
 
     /**
-     * Set the location property: The supported Azure location where the key
-     * vault should be created.
-     * 
+     * Set the location property: The supported Azure location where the key vault should be created.
+     *
      * @param location the location value to set.
      * @return the VaultCreateOrUpdateParameters object itself.
      */
@@ -55,7 +51,7 @@ public final class VaultCreateOrUpdateParameters {
 
     /**
      * Get the tags property: The tags that will be assigned to the key vault.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -64,7 +60,7 @@ public final class VaultCreateOrUpdateParameters {
 
     /**
      * Set the tags property: The tags that will be assigned to the key vault.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the VaultCreateOrUpdateParameters object itself.
      */
@@ -75,7 +71,7 @@ public final class VaultCreateOrUpdateParameters {
 
     /**
      * Get the properties property: Properties of the vault.
-     * 
+     *
      * @return the properties value.
      */
     public VaultProperties properties() {
@@ -84,7 +80,7 @@ public final class VaultCreateOrUpdateParameters {
 
     /**
      * Set the properties property: Properties of the vault.
-     * 
+     *
      * @param properties the properties value to set.
      * @return the VaultCreateOrUpdateParameters object itself.
      */

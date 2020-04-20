@@ -48,7 +48,7 @@ public class DocumentQueryExecutionContextFactory {
                 resourceLink, null
                 // TODO      AuthorizationTokenType.INVALID)
                 ); //this request doesnt actually go to server
-        return collectionCache.resolveCollectionAsync(request);
+        return collectionCache.resolveCollectionAsync(null, request);
     }
 
     public static <T extends Resource> Flux<? extends IDocumentQueryExecutionContext<T>> createDocumentQueryExecutionContextAsync(

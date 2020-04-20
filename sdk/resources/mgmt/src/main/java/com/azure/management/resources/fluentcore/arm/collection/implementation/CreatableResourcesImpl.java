@@ -3,6 +3,7 @@
 
 package com.azure.management.resources.fluentcore.arm.collection.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.CreatedResources;
@@ -13,14 +14,16 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
- * Base class for creatable resource collection, i.e. those where the member of the collection is of <code>Resource</code>
- * type and are creatable.
+ * Base class for creatable resource collection,
+ * i.e. those where the member of the collection is of <code>Resource</code> type and are creatable.
  * (Internal use only)
  *
  * @param <T> the individual resource type returned
@@ -79,15 +82,15 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
      * @param <ResourceT> the type of the resources in the batch.
      */
     private class CreatedResourcesImpl<ResourceT extends Indexable>
-            extends HashMap<String, ResourceT>
             implements CreatedResources<ResourceT> {
-        private static final long serialVersionUID = -1360746896732289907L;
+        private final ClientLogger logger = new ClientLogger(this.getClass());
         private CreatableUpdatableResourcesRoot<ResourceT> creatableUpdatableResourcesRoot;
+        private Map<String, ResourceT> resources = new HashMap<>();
 
         CreatedResourcesImpl(CreatableUpdatableResourcesRoot<ResourceT> creatableUpdatableResourcesRoot) {
             this.creatableUpdatableResourcesRoot = creatableUpdatableResourcesRoot;
             for (ResourceT resource : this.creatableUpdatableResourcesRoot.createdTopLevelResources()) {
-                super.put(resource.key(), resource);
+                resources.put(resource.key(), resource);
             }
         }
 
@@ -98,22 +101,62 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
 
         @Override
         public void clear() {
-            throw new UnsupportedOperationException();
+            throw logger.logExceptionAsError(new UnsupportedOperationException());
+        }
+
+        @Override
+        public Set<String> keySet() {
+            return resources.keySet();
+        }
+
+        @Override
+        public Collection<ResourceT> values() {
+            return resources.values();
+        }
+
+        @Override
+        public Set<Entry<String, ResourceT>> entrySet() {
+            return resources.entrySet();
+        }
+
+        @Override
+        public int size() {
+            return resources.size();
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return resources.isEmpty();
+        }
+
+        @Override
+        public boolean containsKey(Object key) {
+            return resources.containsKey(key);
+        }
+
+        @Override
+        public boolean containsValue(Object value) {
+            return resources.containsValue(value);
+        }
+
+        @Override
+        public ResourceT get(Object key) {
+            return resources.get(key);
         }
 
         @Override
         public ResourceT put(String key, ResourceT value) {
-            throw new UnsupportedOperationException();
+            throw logger.logExceptionAsError(new UnsupportedOperationException());
         }
 
         @Override
         public ResourceT remove(Object key) {
-            throw new UnsupportedOperationException();
+            throw logger.logExceptionAsError(new UnsupportedOperationException());
         }
 
         @Override
         public void putAll(Map<? extends String, ? extends ResourceT> m) {
-            throw new UnsupportedOperationException();
+            throw logger.logExceptionAsError(new UnsupportedOperationException());
         }
     }
 
@@ -135,7 +178,9 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
      * @param <ResourceT> the type of the resources in the batch.
      */
     private class CreatableUpdatableResourcesRootImpl<ResourceT extends Indexable>
-            extends CreatableUpdatableImpl<CreatableUpdatableResourcesRoot<ResourceT>, Object, CreatableUpdatableResourcesRootImpl<ResourceT>>
+            extends CreatableUpdatableImpl<CreatableUpdatableResourcesRoot<ResourceT>,
+                                           Object,
+                                           CreatableUpdatableResourcesRootImpl<ResourceT>>
             implements CreatableUpdatableResourcesRoot<ResourceT> {
         /**
          * Collection of keys of top level resources in this batch.

@@ -9,19 +9,17 @@ import com.azure.management.containerregistry.RegistryEncodedTaskRunRequest;
 import com.azure.management.containerregistry.SetValue;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.fluentcore.utils.Utils;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-class RegistryEncodedTaskRunRequestImpl implements
-        RegistryEncodedTaskRunRequest,
+class RegistryEncodedTaskRunRequestImpl
+    implements RegistryEncodedTaskRunRequest,
         RegistryEncodedTaskRunRequest.Definition,
         HasInner<EncodedTaskRunRequest> {
 
     private EncodedTaskRunRequest inner;
     private RegistryTaskRunImpl registryTaskRunImpl;
-
 
     @Override
     public int timeout() {
@@ -85,7 +83,6 @@ class RegistryEncodedTaskRunRequestImpl implements
             value.withValue(entry.getValue().value());
             value.withIsSecret(entry.getValue().isSecret());
             overridingValuesList.add(value);
-
         }
         this.inner.withValues(overridingValuesList);
         return this;

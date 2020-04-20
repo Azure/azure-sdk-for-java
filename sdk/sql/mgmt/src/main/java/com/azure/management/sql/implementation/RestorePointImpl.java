@@ -8,16 +8,10 @@ import com.azure.management.resources.fluentcore.model.implementation.WrapperImp
 import com.azure.management.sql.RestorePoint;
 import com.azure.management.sql.RestorePointType;
 import com.azure.management.sql.models.RestorePointInner;
-
 import java.time.OffsetDateTime;
 
-
-/**
- * Implementation for Restore point interface.
- */
-class RestorePointImpl
-        extends WrapperImpl<RestorePointInner>
-        implements RestorePoint {
+/** Implementation for Restore point interface. */
+class RestorePointImpl extends WrapperImpl<RestorePointInner> implements RestorePoint {
     private final ResourceId resourceId;
     private final String sqlServerName;
     private final String resourceGroupName;

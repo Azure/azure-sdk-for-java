@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.management.resources.fluentcore.arm.models.implementation;
 
 import com.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
@@ -378,7 +379,8 @@ public abstract class ExternalChildResourceImpl<FluentModelT extends Indexable,
          *
          * @param externalChild an external child this TaskItem composes.
          */
-        ExternalChildActionTaskItem(final ExternalChildResourceImpl<FluentModelT, InnerModelT, ParentImplT, ParentT> externalChild) {
+        ExternalChildActionTaskItem(
+                final ExternalChildResourceImpl<FluentModelT, InnerModelT, ParentImplT, ParentT> externalChild) {
             this.externalChild = externalChild;
         }
 
@@ -388,7 +390,8 @@ public abstract class ExternalChildResourceImpl<FluentModelT extends Indexable,
          * @param key the task group key for this item
          * @param externalChild an external child this TaskItem composes.
          */
-        ExternalChildActionTaskItem(final String key, final ExternalChildResourceImpl<FluentModelT, InnerModelT, ParentImplT, ParentT> externalChild) {
+        ExternalChildActionTaskItem(final String key,
+                final ExternalChildResourceImpl<FluentModelT, InnerModelT, ParentImplT, ParentT> externalChild) {
             super(key);
             this.externalChild = externalChild;
         }
@@ -410,7 +413,8 @@ public abstract class ExternalChildResourceImpl<FluentModelT extends Indexable,
                             .doOnNext(createdExternalChild -> externalChild.setPendingOperation(PendingOperation.None))
                             .map(updatedExternalChild -> updatedExternalChild);
                 case ToBeRemoved:
-                    // With 2.0 runtime, deleteResourceAsync() will be returning 'Completable' then use below code instead
+                    // With 2.0 runtime, deleteResourceAsync() will be
+                    // returning 'Completable' then use below code instead
                     //
                     //  return this.externalChild.deleteResourceAsync().doOnCompleted(new Action0() {
                     //      @Override
@@ -426,7 +430,9 @@ public abstract class ExternalChildResourceImpl<FluentModelT extends Indexable,
                 default:
                     // PendingOperation.None
                     //
-                    return Mono.error(new IllegalStateException("No action pending on child resource: " + externalChild.name + ", invokeAsync should not be called "));
+                    return Mono.error(new IllegalStateException(
+                        String.format("No action pending on child resource: %s, invokeAsync should not be called ",
+                                      externalChild.name)));
             }
         }
 

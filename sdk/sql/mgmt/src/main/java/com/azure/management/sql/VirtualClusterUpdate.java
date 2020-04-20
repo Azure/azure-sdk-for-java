@@ -10,9 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/**
- * The VirtualClusterUpdate model.
- */
+/** The VirtualClusterUpdate model. */
 @JsonFlatten
 @Fluent
 public class VirtualClusterUpdate {
@@ -43,7 +41,7 @@ public class VirtualClusterUpdate {
 
     /**
      * Get the tags property: Resource tags.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -52,7 +50,7 @@ public class VirtualClusterUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the VirtualClusterUpdate object itself.
      */
@@ -63,7 +61,7 @@ public class VirtualClusterUpdate {
 
     /**
      * Get the subnetId property: Subnet resource ID for the virtual cluster.
-     * 
+     *
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -71,9 +69,9 @@ public class VirtualClusterUpdate {
     }
 
     /**
-     * Get the family property: If the service has different generations of
-     * hardware, for the same SKU, then that can be captured here.
-     * 
+     * Get the family property: If the service has different generations of hardware, for the same SKU, then that can be
+     * captured here.
+     *
      * @return the family value.
      */
     public String family() {
@@ -81,9 +79,9 @@ public class VirtualClusterUpdate {
     }
 
     /**
-     * Set the family property: If the service has different generations of
-     * hardware, for the same SKU, then that can be captured here.
-     * 
+     * Set the family property: If the service has different generations of hardware, for the same SKU, then that can be
+     * captured here.
+     *
      * @param family the family value to set.
      * @return the VirtualClusterUpdate object itself.
      */
@@ -93,9 +91,8 @@ public class VirtualClusterUpdate {
     }
 
     /**
-     * Get the childResources property: List of resources in this virtual
-     * cluster.
-     * 
+     * Get the childResources property: List of resources in this virtual cluster.
+     *
      * @return the childResources value.
      */
     public List<String> childResources() {

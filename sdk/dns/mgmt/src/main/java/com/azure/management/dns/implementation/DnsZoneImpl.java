@@ -5,11 +5,6 @@ package com.azure.management.dns.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.SubResource;
-import com.azure.management.dns.models.RecordSetInner;
-import com.azure.management.dns.models.ZoneInner;
-import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.azure.management.resources.fluentcore.utils.PagedConverter;
-import com.azure.management.resources.fluentcore.utils.Utils;
 import com.azure.management.dns.ARecordSets;
 import com.azure.management.dns.AaaaRecordSets;
 import com.azure.management.dns.CNameRecordSets;
@@ -24,24 +19,19 @@ import com.azure.management.dns.SoaRecordSet;
 import com.azure.management.dns.SrvRecordSets;
 import com.azure.management.dns.TxtRecordSets;
 import com.azure.management.dns.ZoneType;
-import reactor.core.publisher.Mono;
-
+import com.azure.management.dns.models.RecordSetInner;
+import com.azure.management.dns.models.ZoneInner;
+import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.management.resources.fluentcore.utils.ETagState;
+import com.azure.management.resources.fluentcore.utils.PagedConverter;
+import com.azure.management.resources.fluentcore.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for {@link DnsZone}.
- */
-public class DnsZoneImpl
-        extends GroupableResourceImpl<
-                DnsZone,
-                ZoneInner,
-                DnsZoneImpl,
-                DnsZoneManager>
-        implements
-            DnsZone,
-            DnsZone.Definition,
-            DnsZone.Update {
+/** Implementation for {@link DnsZone}. */
+public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZoneImpl, DnsZoneManager>
+    implements DnsZone, DnsZone.Definition, DnsZone.Update {
 
     private ARecordSets aRecordSets;
     private AaaaRecordSets aaaaRecordSets;
@@ -53,7 +43,7 @@ public class DnsZoneImpl
     private SrvRecordSets srvRecordSets;
     private TxtRecordSets txtRecordSets;
     private DnsRecordSetsImpl recordSets;
-    private String dnsZoneETag;
+    private final ETagState eTagState = new ETagState();
 
     DnsZoneImpl(String name, final ZoneInner innerModel, final DnsZoneManager manager) {
         super(name, innerModel, manager);
@@ -182,7 +172,8 @@ public class DnsZoneImpl
 
     @Override
     public SoaRecordSet getSoaRecordSet() {
-        RecordSetInner inner = this.manager().inner().recordSets().get(this.resourceGroupName(), this.name(), "@", RecordType.SOA);
+        RecordSetInner inner =
+            this.manager().inner().recordSets().get(this.resourceGroupName(), this.name(), "@", RecordType.SOA);
         if (inner == null) {
             return null;
         }
@@ -216,7 +207,6 @@ public class DnsZoneImpl
     public DnsRecordSetImpl defineCNameRecordSet(String name) {
         return recordSets.defineCNameRecordSet(name);
     }
-
 
     @Override
     public DnsRecordSetImpl defineMXRecordSet(String name) {
@@ -394,52 +384,58 @@ public class DnsZoneImpl
 
     @Override
     public DnsZoneImpl withETagCheck() {
-        if (isInCreateMode()) {
-            this.dnsZoneETag = "*";
-            return this;
-        }
-        return this.withETagCheck(this.inner().etag());
+        this.eTagState.withImplicitETagCheckOnCreateOrUpdate(this.isInCreateMode());
+        return this;
     }
 
     @Override
     public DnsZoneImpl withETagCheck(String eTagValue) {
-        this.dnsZoneETag = eTagValue;
+        this.eTagState.withExplicitETagCheckOnUpdate(eTagValue);
         return this;
     }
 
     @Override
     public Mono<DnsZone> createResourceAsync() {
-        return Mono.just(this)
-                .flatMap(self -> {
-                    if (self.isInCreateMode()) {
-                        return self.manager().inner().zones().createOrUpdateAsync(self.resourceGroupName(),
-                                self.name(), self.inner(), null/*IfMatch*/, self.dnsZoneETag/*IfNoneMatch*/);
-                    } else {
-                        return self.manager().inner().zones().createOrUpdateAsync(self.resourceGroupName(),
-                                self.name(), self.inner(), self.dnsZoneETag/*IfMatch*/, null/*IfNoneMatch*/);
-                    }
-                })
-                .map(innerToFluentMap(this))
-                .map(dnsZone -> {
-                    this.dnsZoneETag = null;
+        return Mono
+            .just(this)
+            .flatMap(
+                self ->
+                    self
+                        .manager()
+                        .inner()
+                        .zones()
+                        .createOrUpdateAsync(
+                            self.resourceGroupName(),
+                            self.name(),
+                            self.inner(),
+                            eTagState.ifMatchValueOnUpdate(self.inner().etag()),
+                            eTagState.ifNonMatchValueOnCreate()))
+            .map(innerToFluentMap(this))
+            .map(
+                dnsZone -> {
+                    this.eTagState.clear();
                     return dnsZone;
                 });
     }
 
     @Override
     public Mono<Void> afterPostRunAsync(boolean isGroupFaulted) {
-        return Mono.just(true)
-                .map(ignored -> {
+        return Mono
+            .just(true)
+            .map(
+                ignored -> {
                     recordSets.clear();
                     return ignored;
                 })
-                .then();
+            .then();
     }
 
     @Override
     public Mono<DnsZone> refreshAsync() {
-        return super.refreshAsync()
-                .map(dnsZone -> {
+        return super
+            .refreshAsync()
+            .map(
+                dnsZone -> {
                     DnsZoneImpl impl = (DnsZoneImpl) dnsZone;
                     impl.initRecordSets();
                     return impl;
@@ -466,35 +462,41 @@ public class DnsZoneImpl
 
     private PagedIterable<DnsRecordSet> listRecordSetsIntern(String recordSetSuffix, Integer pageSize) {
         final DnsZoneImpl self = this;
-        PagedFlux<DnsRecordSet> recordSets = PagedConverter.flatMapPage(
-                this.manager().inner().recordSets().listByDnsZoneAsync(this.resourceGroupName(), this.name(), pageSize, recordSetSuffix),
-                inner -> {
-                    DnsRecordSet recordSet = new DnsRecordSetImpl(inner.getName(), inner.getType(), self, inner);
-                    switch (recordSet.recordType()) {
-                        case A:
-                            return Mono.just(new ARecordSetImpl(inner.getName(), self, inner));
-                        case AAAA:
-                            return Mono.just(new AaaaRecordSetImpl(inner.getName(), self, inner));
-                        case CAA:
-                            return Mono.just(new CaaRecordSetImpl(inner.getName(), self, inner));
-                        case CNAME:
-                            return Mono.just(new CNameRecordSetImpl(inner.getName(), self, inner));
-                        case MX:
-                            return Mono.just(new MXRecordSetImpl(inner.getName(), self, inner));
-                        case NS:
-                            return Mono.just(new NSRecordSetImpl(inner.getName(), self, inner));
-                        case PTR:
-                            return Mono.just(new PtrRecordSetImpl(inner.getName(), self, inner));
-                        case SOA:
-                            return Mono.just(new SoaRecordSetImpl(inner.getName(), self, inner));
-                        case SRV:
-                            return Mono.just(new SrvRecordSetImpl(inner.getName(), self, inner));
-                        case TXT:
-                            return Mono.just(new TxtRecordSetImpl(inner.getName(), self, inner));
-                        default:
-                            return Mono.just(recordSet);
-                    }
-                });
+        PagedFlux<DnsRecordSet> recordSets =
+            PagedConverter
+                .flatMapPage(
+                    this
+                        .manager()
+                        .inner()
+                        .recordSets()
+                        .listByDnsZoneAsync(this.resourceGroupName(), this.name(), pageSize, recordSetSuffix),
+                    inner -> {
+                        DnsRecordSet recordSet = new DnsRecordSetImpl(inner.getName(), inner.getType(), self, inner);
+                        switch (recordSet.recordType()) {
+                            case A:
+                                return Mono.just(new ARecordSetImpl(inner.getName(), self, inner));
+                            case AAAA:
+                                return Mono.just(new AaaaRecordSetImpl(inner.getName(), self, inner));
+                            case CAA:
+                                return Mono.just(new CaaRecordSetImpl(inner.getName(), self, inner));
+                            case CNAME:
+                                return Mono.just(new CNameRecordSetImpl(inner.getName(), self, inner));
+                            case MX:
+                                return Mono.just(new MXRecordSetImpl(inner.getName(), self, inner));
+                            case NS:
+                                return Mono.just(new NSRecordSetImpl(inner.getName(), self, inner));
+                            case PTR:
+                                return Mono.just(new PtrRecordSetImpl(inner.getName(), self, inner));
+                            case SOA:
+                                return Mono.just(new SoaRecordSetImpl(inner.getName(), self, inner));
+                            case SRV:
+                                return Mono.just(new SrvRecordSetImpl(inner.getName(), self, inner));
+                            case TXT:
+                                return Mono.just(new TxtRecordSetImpl(inner.getName(), self, inner));
+                            default:
+                                return Mono.just(recordSet);
+                        }
+                    });
         return new PagedIterable<>(recordSets);
     }
 
@@ -515,7 +517,8 @@ public class DnsZoneImpl
     }
 
     @Override
-    public DnsZoneImpl withPrivateAccess(List<String> registrationVirtualNetworkIds, List<String> resolutionVirtualNetworkIds) {
+    public DnsZoneImpl withPrivateAccess(
+        List<String> registrationVirtualNetworkIds, List<String> resolutionVirtualNetworkIds) {
         this.withPrivateAccess();
         this.inner().withRegistrationVirtualNetworks(new ArrayList<>());
         this.inner().withResolutionVirtualNetworks(new ArrayList<>());

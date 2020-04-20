@@ -9,9 +9,7 @@ import com.azure.management.containerregistry.RegistryPassword;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The RegistryListCredentialsResult model.
- */
+/** The RegistryListCredentialsResult model. */
 @Fluent
 public final class RegistryListCredentialsResultInner {
     /*
@@ -28,7 +26,7 @@ public final class RegistryListCredentialsResultInner {
 
     /**
      * Get the username property: The username for a container registry.
-     * 
+     *
      * @return the username value.
      */
     public String username() {
@@ -37,7 +35,7 @@ public final class RegistryListCredentialsResultInner {
 
     /**
      * Set the username property: The username for a container registry.
-     * 
+     *
      * @param username the username value to set.
      * @return the RegistryListCredentialsResultInner object itself.
      */
@@ -47,9 +45,8 @@ public final class RegistryListCredentialsResultInner {
     }
 
     /**
-     * Get the passwords property: The list of passwords for a container
-     * registry.
-     * 
+     * Get the passwords property: The list of passwords for a container registry.
+     *
      * @return the passwords value.
      */
     public List<RegistryPassword> passwords() {
@@ -57,9 +54,8 @@ public final class RegistryListCredentialsResultInner {
     }
 
     /**
-     * Set the passwords property: The list of passwords for a container
-     * registry.
-     * 
+     * Set the passwords property: The list of passwords for a container registry.
+     *
      * @param passwords the passwords value to set.
      * @return the RegistryListCredentialsResultInner object itself.
      */

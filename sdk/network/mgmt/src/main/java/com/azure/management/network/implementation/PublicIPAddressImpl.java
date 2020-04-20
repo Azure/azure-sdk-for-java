@@ -19,33 +19,19 @@ import com.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
-import reactor.core.publisher.Mono;
-
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for PublicIPAddress and its create and update interfaces.
- */
+/** Implementation for PublicIPAddress and its create and update interfaces. */
 class PublicIPAddressImpl
-        extends GroupableResourceImpl<
-        PublicIPAddress,
-        PublicIPAddressInner,
-        PublicIPAddressImpl,
-        NetworkManager>
-        implements
-        PublicIPAddress,
-        PublicIPAddress.Definition,
-        PublicIPAddress.Update,
-        AppliableWithTags<PublicIPAddress> {
+    extends GroupableResourceImpl<PublicIPAddress, PublicIPAddressInner, PublicIPAddressImpl, NetworkManager>
+    implements PublicIPAddress, PublicIPAddress.Definition, PublicIPAddress.Update, AppliableWithTags<PublicIPAddress> {
 
-    PublicIPAddressImpl(String name,
-                        PublicIPAddressInner innerModel,
-                        final NetworkManager networkManager) {
+    PublicIPAddressImpl(String name, PublicIPAddressInner innerModel, final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
     }
 
@@ -53,7 +39,11 @@ class PublicIPAddressImpl
 
     @Override
     protected Mono<PublicIPAddressInner> getInnerAsync() {
-        return this.manager().inner().publicIPAddresses().getByResourceGroupAsync(this.resourceGroupName(), this.name(), null);
+        return this
+            .manager()
+            .inner()
+            .publicIPAddresses()
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name(), null);
     }
 
     // Setters (fluent)
@@ -178,15 +168,18 @@ class PublicIPAddressImpl
         final PublicIPAddressDnsSettings dnsSettings = this.inner().dnsSettings();
         if (dnsSettings != null) {
             if ((dnsSettings.domainNameLabel() == null || dnsSettings.domainNameLabel().isEmpty())
-                    && (dnsSettings.fqdn() == null || dnsSettings.fqdn().isEmpty())
-                    && (dnsSettings.reverseFqdn() == null || dnsSettings.reverseFqdn().isEmpty())) {
+                && (dnsSettings.fqdn() == null || dnsSettings.fqdn().isEmpty())
+                && (dnsSettings.reverseFqdn() == null || dnsSettings.reverseFqdn().isEmpty())) {
                 this.inner().withDnsSettings(null);
             }
         }
 
-        return this.manager().inner().publicIPAddresses().createOrUpdateAsync(
-                this.resourceGroupName(), this.name(), this.inner())
-                .map(innerToFluentMap(this));
+        return this
+            .manager()
+            .inner()
+            .publicIPAddresses()
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+            .map(innerToFluentMap(this));
     }
 
     private boolean equalsResourceType(String resourceType) {
@@ -269,8 +262,13 @@ class PublicIPAddressImpl
 
     @Override
     public Mono<PublicIPAddress> applyTagsAsync() {
-        return this.manager().inner().publicIPAddresses().updateTagsAsync(resourceGroupName(), name(), inner().getTags())
-                .flatMap(inner -> {
+        return this
+            .manager()
+            .inner()
+            .publicIPAddresses()
+            .updateTagsAsync(resourceGroupName(), name(), inner().getTags())
+            .flatMap(
+                inner -> {
                     setInner(inner);
                     return Mono.just((PublicIPAddress) PublicIPAddressImpl.this);
                 });

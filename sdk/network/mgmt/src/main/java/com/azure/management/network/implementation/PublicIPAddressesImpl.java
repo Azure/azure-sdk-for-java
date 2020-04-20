@@ -9,16 +9,10 @@ import com.azure.management.network.models.PublicIPAddressInner;
 import com.azure.management.network.models.PublicIPAddressesInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
-/**
- *  Implementation for {@link PublicIPAddresses}.
- */
+/** Implementation for {@link PublicIPAddresses}. */
 class PublicIPAddressesImpl
     extends TopLevelModifiableResourcesImpl<
-            PublicIPAddress,
-            PublicIPAddressImpl,
-            PublicIPAddressInner,
-            PublicIPAddressesInner,
-            NetworkManager>
+        PublicIPAddress, PublicIPAddressImpl, PublicIPAddressInner, PublicIPAddressesInner, NetworkManager>
     implements PublicIPAddresses {
 
     PublicIPAddressesImpl(final NetworkManager networkManager) {

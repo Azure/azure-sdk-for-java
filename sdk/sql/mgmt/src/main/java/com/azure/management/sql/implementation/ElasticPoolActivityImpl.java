@@ -3,20 +3,15 @@
 
 package com.azure.management.sql.implementation;
 
-import com.azure.management.sql.ElasticPoolActivity;
 import com.azure.management.resources.fluentcore.arm.ResourceId;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
+import com.azure.management.sql.ElasticPoolActivity;
 import com.azure.management.sql.models.ElasticPoolActivityInner;
-
 import java.time.OffsetDateTime;
 
-/**
- * Implementation for Elastic Pool Activity interface.
- */
-class ElasticPoolActivityImpl
-        extends WrapperImpl<ElasticPoolActivityInner>
-        implements ElasticPoolActivity {
+/** Implementation for Elastic Pool Activity interface. */
+class ElasticPoolActivityImpl extends WrapperImpl<ElasticPoolActivityInner> implements ElasticPoolActivity {
     private final ResourceId resourceId;
 
     protected ElasticPoolActivityImpl(ElasticPoolActivityInner innerObject) {

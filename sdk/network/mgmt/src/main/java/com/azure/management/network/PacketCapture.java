@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.management.network;
 
-
 import com.azure.core.annotation.Fluent;
 import com.azure.management.network.models.PacketCaptureResultInner;
 import com.azure.management.resources.fluentcore.arm.models.HasId;
@@ -10,62 +9,43 @@ import com.azure.management.resources.fluentcore.arm.models.HasName;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.fluentcore.model.Indexable;
+import java.util.List;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-
-/**
- * Client-side representation of Packet capture object, associated with Network Watcher.
- */
+/** Client-side representation of Packet capture object, associated with Network Watcher. */
 @Fluent
-public interface PacketCapture extends
-        HasInner<PacketCaptureResultInner>,
-        HasName,
-        HasId,
-        Indexable {
-    /**
-     * @return the target id value
-     */
+public interface PacketCapture extends HasInner<PacketCaptureResultInner>, HasName, HasId, Indexable {
+    /** @return the target id value */
     String targetId();
 
-    /**
-     * @return the number of bytes captured per packet, the remaining bytes are truncated.
-     */
+    /** @return the number of bytes captured per packet, the remaining bytes are truncated. */
     int bytesToCapturePerPacket();
 
-    /**
-     * @return the maximum size of the capture output
-     */
+    /** @return the maximum size of the capture output */
     int totalBytesPerSession();
 
-    /**
-     * @return the maximum duration of the capture session in seconds
-     */
+    /** @return the maximum duration of the capture session in seconds */
     int timeLimitInSeconds();
 
-    /**
-     * @return the storageLocation value
-     */
+    /** @return the storageLocation value */
     PacketCaptureStorageLocation storageLocation();
 
-    /**
-     * @return the filters value
-     */
+    /** @return the filters value */
     List<PacketCaptureFilter> filters();
 
     /**
      * Get the provisioning state of the packet capture session.
+     *
      * @return the provisioningState value
      */
     ProvisioningState provisioningState();
 
-    /**
-     * Stops a specified packet capture session.
-     */
+    /** Stops a specified packet capture session. */
     void stop();
 
     /**
      * Stops a specified packet capture session asynchronously.
+     *
      * @return the handle to the REST call
      */
     Mono<Void> stopAsync();
@@ -84,18 +64,14 @@ public interface PacketCapture extends
      */
     Mono<PacketCaptureStatus> getStatusAsync();
 
-    /**
-     * The entirety of the packet capture definition.
-     */
-    interface Definition extends
-            PacketCapture.DefinitionStages.WithTarget,
+    /** The entirety of the packet capture definition. */
+    interface Definition
+        extends PacketCapture.DefinitionStages.WithTarget,
             PacketCapture.DefinitionStages.WithStorageLocation,
             PacketCapture.DefinitionStages.WithCreateAndStoragePath {
     }
 
-    /**
-     * Grouping of Packet Capture definition stages.
-     */
+    /** Grouping of Packet Capture definition stages. */
     interface DefinitionStages {
 
         interface WithTarget {
@@ -110,8 +86,8 @@ public interface PacketCapture extends
 
         interface WithStorageLocation {
             /**
-             * The ID of the storage account to save the packet capture session.
-             * Required if no local file path is provided.
+             * The ID of the storage account to save the packet capture session. Required if no local file path is
+             * provided.
              *
              * @param storageId The ID of the storage account to save the packet capture session
              * @return the next stage of the definition
@@ -119,9 +95,8 @@ public interface PacketCapture extends
             WithCreateAndStoragePath withStorageAccountId(String storageId);
 
             /**
-             * A valid local path on the targeting VM. Must include the name of the
-             * capture file (*.cap). For linux virtual machine it must start with
-             * /var/captures. Required if no storage ID is provided, otherwise
+             * A valid local path on the targeting VM. Must include the name of the capture file (*.cap). For linux
+             * virtual machine it must start with /var/captures. Required if no storage ID is provided, otherwise
              * optional.
              *
              * @param filePath A valid local path on the targeting VM
@@ -130,8 +105,7 @@ public interface PacketCapture extends
             WithCreate withFilePath(String filePath);
         }
 
-        interface WithCreate extends
-                Creatable<PacketCapture> {
+        interface WithCreate extends Creatable<PacketCapture> {
             /**
              * Set number of bytes captured per packet, the remaining bytes are truncated.
              *
@@ -158,6 +132,7 @@ public interface PacketCapture extends
 
             /**
              * Begin the definition of packet capture filter.
+             *
              * @return the next stage
              */
             PCFilter.DefinitionStages.Blank<WithCreate> definePacketCaptureFilter();
@@ -165,10 +140,11 @@ public interface PacketCapture extends
 
         interface WithCreateAndStoragePath extends WithCreate {
             /**
-             * The URI of the storage path to save the packet capture. Must be a
-             * well-formed URI describing the location to save the packet capture.
+             * The URI of the storage path to save the packet capture. Must be a well-formed URI describing the location
+             * to save the packet capture.
              *
-             * @param storagePath The URI of the storage path to save the packet capture. Must be a well-formed URI describing the location to save the packet capture.
+             * @param storagePath The URI of the storage path to save the packet capture. Must be a well-formed URI
+             *     describing the location to save the packet capture.
              * @return the next stage
              */
             WithCreate withStoragePath(String storagePath);

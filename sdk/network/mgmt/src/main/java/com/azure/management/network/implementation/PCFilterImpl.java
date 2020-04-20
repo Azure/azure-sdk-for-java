@@ -7,16 +7,11 @@ import com.azure.management.network.PacketCapture;
 import com.azure.management.network.PacketCaptureFilter;
 import com.azure.management.network.PcProtocol;
 import com.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
-
 import java.util.List;
 
-/**
- * Represents Packet Capture filter.
- */
+/** Represents Packet Capture filter. */
 class PCFilterImpl extends IndexableWrapperImpl<PacketCaptureFilter>
-        implements
-        PCFilter,
-        PCFilter.Definition<PacketCapture.DefinitionStages.WithCreate> {
+    implements PCFilter, PCFilter.Definition<PacketCapture.DefinitionStages.WithCreate> {
     private static final String DELIMITER = ";";
     private static final String RANGE_DELIMITER = "-";
     private PacketCaptureImpl parent;
@@ -64,7 +59,8 @@ class PCFilterImpl extends IndexableWrapperImpl<PacketCaptureFilter>
     }
 
     @Override
-    public Definition<PacketCapture.DefinitionStages.WithCreate> withLocalIPAddressesRange(String startIPAddress, String endIPAddress) {
+    public Definition<PacketCapture.DefinitionStages.WithCreate> withLocalIPAddressesRange(
+        String startIPAddress, String endIPAddress) {
         this.inner().withLocalIPAddress(startIPAddress + RANGE_DELIMITER + endIPAddress);
         return this;
     }
@@ -86,7 +82,8 @@ class PCFilterImpl extends IndexableWrapperImpl<PacketCaptureFilter>
     }
 
     @Override
-    public Definition<PacketCapture.DefinitionStages.WithCreate> withRemoteIPAddressesRange(String startIPAddress, String endIPAddress) {
+    public Definition<PacketCapture.DefinitionStages.WithCreate> withRemoteIPAddressesRange(
+        String startIPAddress, String endIPAddress) {
         this.inner().withRemoteIPAddress(startIPAddress + RANGE_DELIMITER + endIPAddress);
         return this;
     }

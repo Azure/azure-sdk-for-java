@@ -7,9 +7,7 @@ package com.azure.management.monitor;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The AzureFunctionReceiver model.
- */
+/** The AzureFunctionReceiver model. */
 @Fluent
 public final class AzureFunctionReceiver {
     /*
@@ -44,9 +42,9 @@ public final class AzureFunctionReceiver {
     private boolean useCommonAlertSchema;
 
     /**
-     * Get the name property: The name of the azure function receiver. Names
-     * must be unique across all receivers within an action group.
-     * 
+     * Get the name property: The name of the azure function receiver. Names must be unique across all receivers within
+     * an action group.
+     *
      * @return the name value.
      */
     public String name() {
@@ -54,9 +52,9 @@ public final class AzureFunctionReceiver {
     }
 
     /**
-     * Set the name property: The name of the azure function receiver. Names
-     * must be unique across all receivers within an action group.
-     * 
+     * Set the name property: The name of the azure function receiver. Names must be unique across all receivers within
+     * an action group.
+     *
      * @param name the name value to set.
      * @return the AzureFunctionReceiver object itself.
      */
@@ -66,9 +64,8 @@ public final class AzureFunctionReceiver {
     }
 
     /**
-     * Get the functionAppResourceId property: The azure resource id of the
-     * function app.
-     * 
+     * Get the functionAppResourceId property: The azure resource id of the function app.
+     *
      * @return the functionAppResourceId value.
      */
     public String functionAppResourceId() {
@@ -76,9 +73,8 @@ public final class AzureFunctionReceiver {
     }
 
     /**
-     * Set the functionAppResourceId property: The azure resource id of the
-     * function app.
-     * 
+     * Set the functionAppResourceId property: The azure resource id of the function app.
+     *
      * @param functionAppResourceId the functionAppResourceId value to set.
      * @return the AzureFunctionReceiver object itself.
      */
@@ -89,7 +85,7 @@ public final class AzureFunctionReceiver {
 
     /**
      * Get the functionName property: The function name in the function app.
-     * 
+     *
      * @return the functionName value.
      */
     public String functionName() {
@@ -98,7 +94,7 @@ public final class AzureFunctionReceiver {
 
     /**
      * Set the functionName property: The function name in the function app.
-     * 
+     *
      * @param functionName the functionName value to set.
      * @return the AzureFunctionReceiver object itself.
      */
@@ -108,9 +104,8 @@ public final class AzureFunctionReceiver {
     }
 
     /**
-     * Get the httpTriggerUrl property: The http trigger url where http request
-     * sent to.
-     * 
+     * Get the httpTriggerUrl property: The http trigger url where http request sent to.
+     *
      * @return the httpTriggerUrl value.
      */
     public String httpTriggerUrl() {
@@ -118,9 +113,8 @@ public final class AzureFunctionReceiver {
     }
 
     /**
-     * Set the httpTriggerUrl property: The http trigger url where http request
-     * sent to.
-     * 
+     * Set the httpTriggerUrl property: The http trigger url where http request sent to.
+     *
      * @param httpTriggerUrl the httpTriggerUrl value to set.
      * @return the AzureFunctionReceiver object itself.
      */
@@ -130,9 +124,8 @@ public final class AzureFunctionReceiver {
     }
 
     /**
-     * Get the useCommonAlertSchema property: Indicates whether to use common
-     * alert schema.
-     * 
+     * Get the useCommonAlertSchema property: Indicates whether to use common alert schema.
+     *
      * @return the useCommonAlertSchema value.
      */
     public boolean useCommonAlertSchema() {
@@ -140,9 +133,8 @@ public final class AzureFunctionReceiver {
     }
 
     /**
-     * Set the useCommonAlertSchema property: Indicates whether to use common
-     * alert schema.
-     * 
+     * Set the useCommonAlertSchema property: Indicates whether to use common alert schema.
+     *
      * @param useCommonAlertSchema the useCommonAlertSchema value to set.
      * @return the AzureFunctionReceiver object itself.
      */

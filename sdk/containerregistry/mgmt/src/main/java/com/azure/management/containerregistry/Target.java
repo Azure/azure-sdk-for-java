@@ -7,9 +7,7 @@ package com.azure.management.containerregistry;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Target model.
- */
+/** The Target model. */
 @Fluent
 public final class Target {
     /*
@@ -69,7 +67,7 @@ public final class Target {
 
     /**
      * Get the mediaType property: The MIME type of the referenced object.
-     * 
+     *
      * @return the mediaType value.
      */
     public String mediaType() {
@@ -78,7 +76,7 @@ public final class Target {
 
     /**
      * Set the mediaType property: The MIME type of the referenced object.
-     * 
+     *
      * @param mediaType the mediaType value to set.
      * @return the Target object itself.
      */
@@ -88,9 +86,8 @@ public final class Target {
     }
 
     /**
-     * Get the size property: The number of bytes of the content. Same as
-     * Length field.
-     * 
+     * Get the size property: The number of bytes of the content. Same as Length field.
+     *
      * @return the size value.
      */
     public Long size() {
@@ -98,9 +95,8 @@ public final class Target {
     }
 
     /**
-     * Set the size property: The number of bytes of the content. Same as
-     * Length field.
-     * 
+     * Set the size property: The number of bytes of the content. Same as Length field.
+     *
      * @param size the size value to set.
      * @return the Target object itself.
      */
@@ -110,9 +106,8 @@ public final class Target {
     }
 
     /**
-     * Get the digest property: The digest of the content, as defined by the
-     * Registry V2 HTTP API Specification.
-     * 
+     * Get the digest property: The digest of the content, as defined by the Registry V2 HTTP API Specification.
+     *
      * @return the digest value.
      */
     public String digest() {
@@ -120,9 +115,8 @@ public final class Target {
     }
 
     /**
-     * Set the digest property: The digest of the content, as defined by the
-     * Registry V2 HTTP API Specification.
-     * 
+     * Set the digest property: The digest of the content, as defined by the Registry V2 HTTP API Specification.
+     *
      * @param digest the digest value to set.
      * @return the Target object itself.
      */
@@ -132,9 +126,8 @@ public final class Target {
     }
 
     /**
-     * Get the length property: The number of bytes of the content. Same as
-     * Size field.
-     * 
+     * Get the length property: The number of bytes of the content. Same as Size field.
+     *
      * @return the length value.
      */
     public Long length() {
@@ -142,9 +135,8 @@ public final class Target {
     }
 
     /**
-     * Set the length property: The number of bytes of the content. Same as
-     * Size field.
-     * 
+     * Set the length property: The number of bytes of the content. Same as Size field.
+     *
      * @param length the length value to set.
      * @return the Target object itself.
      */
@@ -155,7 +147,7 @@ public final class Target {
 
     /**
      * Get the repository property: The repository name.
-     * 
+     *
      * @return the repository value.
      */
     public String repository() {
@@ -164,7 +156,7 @@ public final class Target {
 
     /**
      * Set the repository property: The repository name.
-     * 
+     *
      * @param repository the repository value to set.
      * @return the Target object itself.
      */
@@ -175,7 +167,7 @@ public final class Target {
 
     /**
      * Get the url property: The direct URL to the content.
-     * 
+     *
      * @return the url value.
      */
     public String url() {
@@ -184,7 +176,7 @@ public final class Target {
 
     /**
      * Set the url property: The direct URL to the content.
-     * 
+     *
      * @param url the url value to set.
      * @return the Target object itself.
      */
@@ -195,7 +187,7 @@ public final class Target {
 
     /**
      * Get the tag property: The tag name.
-     * 
+     *
      * @return the tag value.
      */
     public String tag() {
@@ -204,7 +196,7 @@ public final class Target {
 
     /**
      * Set the tag property: The tag name.
-     * 
+     *
      * @param tag the tag value to set.
      * @return the Target object itself.
      */
@@ -215,7 +207,7 @@ public final class Target {
 
     /**
      * Get the name property: The name of the artifact.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -224,7 +216,7 @@ public final class Target {
 
     /**
      * Set the name property: The name of the artifact.
-     * 
+     *
      * @param name the name value to set.
      * @return the Target object itself.
      */
@@ -235,7 +227,7 @@ public final class Target {
 
     /**
      * Get the version property: The version of the artifact.
-     * 
+     *
      * @return the version value.
      */
     public String version() {
@@ -244,7 +236,7 @@ public final class Target {
 
     /**
      * Set the version property: The version of the artifact.
-     * 
+     *
      * @param version the version value to set.
      * @return the Target object itself.
      */

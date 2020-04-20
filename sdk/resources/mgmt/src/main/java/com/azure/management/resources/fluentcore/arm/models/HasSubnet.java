@@ -62,7 +62,8 @@ public interface HasSubnet {
     }
 
     /**
-     * Grouping of definition stages applicable as part of a parent resource update, involving associating a subnet with a resource.
+     * Grouping of definition stages applicable as part of a parent resource update,
+     * involving associating a subnet with a resource.
      */
     interface UpdateDefinitionStages {
         /**

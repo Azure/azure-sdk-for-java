@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.NetworkInterface;
@@ -90,7 +91,7 @@ public abstract class AzureServiceClient {
         JAVA_VERSION = version != null ? version : "Unknown";
     }
 
-    private SerializerAdapter serializerAdapter = new AzureJacksonAdapter();
+    private final SerializerAdapter serializerAdapter = new AzureJacksonAdapter();
 
     private String sdkName;
 
@@ -159,8 +160,7 @@ public abstract class AzureServiceClient {
         MessageDigest messageDigest;
         try {
             messageDigest = MessageDigest.getInstance("SHA-256");
-            messageDigest.update(bytes);
-            messageDigest.digest(bytes).toString();
+            return new HexBinaryAdapter().marshal(messageDigest.digest(bytes));
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
@@ -177,9 +177,11 @@ public abstract class AzureServiceClient {
         }
 
         @Override
-        public OffsetDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
+        public OffsetDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
+                    throws IOException, JsonProcessingException {
             String string = jsonParser.getText();
-            TemporalAccessor temporal = DateTimeFormatter.ISO_DATE_TIME.parseBest(string, OffsetDateTime::from, LocalDateTime::from);
+            TemporalAccessor temporal =
+                DateTimeFormatter.ISO_DATE_TIME.parseBest(string, OffsetDateTime::from, LocalDateTime::from);
             if (temporal.query(TemporalQueries.offset()) == null) {
                 return LocalDateTime.from(temporal).atOffset(ZoneOffset.UTC);
             } else {

@@ -7,11 +7,8 @@ import com.azure.management.monitor.LocalizableString;
 import com.azure.management.monitor.models.LocalizableStringInner;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 
-/**
- * The {@link LocalizableString} wrapper class implementation.
- */
-class LocalizableStringImpl
-        extends WrapperImpl<LocalizableStringInner> implements LocalizableString {
+/** The {@link LocalizableString} wrapper class implementation. */
+class LocalizableStringImpl extends WrapperImpl<LocalizableStringInner> implements LocalizableString {
 
     LocalizableStringImpl(LocalizableStringInner innerObject) {
         super(innerObject);

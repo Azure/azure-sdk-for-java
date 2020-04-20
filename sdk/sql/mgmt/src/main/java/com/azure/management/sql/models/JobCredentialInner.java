@@ -9,9 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The JobCredential model.
- */
+/** The JobCredential model. */
 @JsonFlatten
 @Fluent
 public class JobCredentialInner extends ProxyResource {
@@ -29,7 +27,7 @@ public class JobCredentialInner extends ProxyResource {
 
     /**
      * Get the username property: The credential user name.
-     * 
+     *
      * @return the username value.
      */
     public String username() {
@@ -38,7 +36,7 @@ public class JobCredentialInner extends ProxyResource {
 
     /**
      * Set the username property: The credential user name.
-     * 
+     *
      * @param username the username value to set.
      * @return the JobCredentialInner object itself.
      */
@@ -49,7 +47,7 @@ public class JobCredentialInner extends ProxyResource {
 
     /**
      * Get the password property: The credential password.
-     * 
+     *
      * @return the password value.
      */
     public String password() {
@@ -58,7 +56,7 @@ public class JobCredentialInner extends ProxyResource {
 
     /**
      * Set the password property: The credential password.
-     * 
+     *
      * @param password the password value to set.
      * @return the JobCredentialInner object itself.
      */

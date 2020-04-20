@@ -28,6 +28,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.management.sql.CompleteDatabaseRestoreDefinition;
 import com.azure.management.sql.ManagedDatabaseUpdate;
@@ -35,148 +37,264 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * ManagedDatabases.
- */
+/** An instance of this class provides access to all the operations defined in ManagedDatabases. */
 public final class ManagedDatabasesInner {
-    /**
-     * The proxy service used to perform REST calls.
-     */
-    private ManagedDatabasesService service;
+    /** The proxy service used to perform REST calls. */
+    private final ManagedDatabasesService service;
 
-    /**
-     * The service client containing this operation class.
-     */
-    private SqlManagementClientImpl client;
+    /** The service client containing this operation class. */
+    private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of ManagedDatabasesInner.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     ManagedDatabasesInner(SqlManagementClientImpl client) {
-        this.service = RestProxy.create(ManagedDatabasesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy.create(ManagedDatabasesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * SqlManagementClientManagedDatabases to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for SqlManagementClientManagedDatabases to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientManagedDatabases")
+    @ServiceInterface(name = "SqlManagementClientM")
     private interface ManagedDatabasesService {
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}/databases")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ManagedDatabaseListResultInner>> listByInstance(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("managedInstanceName") String managedInstanceName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<ManagedDatabaseListResultInner>> listByInstance(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}/databases/{databaseName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ManagedDatabaseInner>> get(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("managedInstanceName") String managedInstanceName, @PathParam("databaseName") String databaseName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<ManagedDatabaseInner>> get(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}/databases/{databaseName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("managedInstanceName") String managedInstanceName, @PathParam("databaseName") String databaseName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ManagedDatabaseInner parameters);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ManagedDatabaseInner parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}/databases/{databaseName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("managedInstanceName") String managedInstanceName, @PathParam("databaseName") String databaseName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Patch(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}/databases/{databaseName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> update(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("managedInstanceName") String managedInstanceName, @PathParam("databaseName") String databaseName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ManagedDatabaseUpdate parameters);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> update(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ManagedDatabaseUpdate parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/inaccessibleManagedDatabases")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}/inaccessibleManagedDatabases")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ManagedDatabaseListResultInner>> listInaccessibleByInstance(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("managedInstanceName") String managedInstanceName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<ManagedDatabaseListResultInner>> listInaccessibleByInstance(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/completeRestore")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}/databases/{databaseName}/completeRestore")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> completeRestore(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("managedInstanceName") String managedInstanceName, @PathParam("databaseName") String databaseName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") CompleteDatabaseRestoreDefinition parameters);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> completeRestore(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CompleteDatabaseRestoreDefinition parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}/databases/{databaseName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ManagedDatabaseInner>> beginCreateOrUpdate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("managedInstanceName") String managedInstanceName, @PathParam("databaseName") String databaseName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ManagedDatabaseInner parameters);
+        Mono<SimpleResponse<ManagedDatabaseInner>> beginCreateOrUpdate(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ManagedDatabaseInner parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}/databases/{databaseName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> beginDelete(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("managedInstanceName") String managedInstanceName, @PathParam("databaseName") String databaseName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<Response<Void>> beginDelete(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Patch(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}/databases/{databaseName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ManagedDatabaseInner>> beginUpdate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("managedInstanceName") String managedInstanceName, @PathParam("databaseName") String databaseName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ManagedDatabaseUpdate parameters);
+        Mono<SimpleResponse<ManagedDatabaseInner>> beginUpdate(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ManagedDatabaseUpdate parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/completeRestore")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}/databases/{databaseName}/completeRestore")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> beginCompleteRestore(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("managedInstanceName") String managedInstanceName, @PathParam("databaseName") String databaseName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") CompleteDatabaseRestoreDefinition parameters);
+        Mono<Response<Void>> beginCompleteRestore(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CompleteDatabaseRestoreDefinition parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ManagedDatabaseListResultInner>> listByInstanceNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<ManagedDatabaseListResultInner>> listByInstanceNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ManagedDatabaseListResultInner>> listInaccessibleByInstanceNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<ManagedDatabaseListResultInner>> listInaccessibleByInstanceNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
      * Gets a list of managed databases.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of managed databases.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ManagedDatabaseInner>> listByInstanceSinglePageAsync(String resourceGroupName, String managedInstanceName) {
+    public Mono<PagedResponse<ManagedDatabaseInner>> listByInstanceSinglePageAsync(
+        String resourceGroupName, String managedInstanceName) {
         final String apiVersion = "2019-06-01-preview";
-        return service.listByInstance(this.client.getHost(), resourceGroupName, managedInstanceName, this.client.getSubscriptionId(), apiVersion)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByInstance(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .<PagedResponse<ManagedDatabaseInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a list of managed databases.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of managed databases.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedDatabaseInner> listByInstanceAsync(String resourceGroupName, String managedInstanceName) {
@@ -187,12 +305,14 @@ public final class ManagedDatabasesInner {
 
     /**
      * Gets a list of managed databases.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of managed databases.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedDatabaseInner> listByInstance(String resourceGroupName, String managedInstanceName) {
@@ -201,51 +321,72 @@ public final class ManagedDatabasesInner {
 
     /**
      * Gets a managed database.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ManagedDatabaseInner>> getWithResponseAsync(String resourceGroupName, String managedInstanceName, String databaseName) {
+    public Mono<SimpleResponse<ManagedDatabaseInner>> getWithResponseAsync(
+        String resourceGroupName, String managedInstanceName, String databaseName) {
         final String apiVersion = "2019-06-01-preview";
-        return service.get(this.client.getHost(), resourceGroupName, managedInstanceName, databaseName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .get(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            databaseName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a managed database.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedDatabaseInner> getAsync(String resourceGroupName, String managedInstanceName, String databaseName) {
+    public Mono<ManagedDatabaseInner> getAsync(
+        String resourceGroupName, String managedInstanceName, String databaseName) {
         return getWithResponseAsync(resourceGroupName, managedInstanceName, databaseName)
-            .flatMap((SimpleResponse<ManagedDatabaseInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<ManagedDatabaseInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets a managed database.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedDatabaseInner get(String resourceGroupName, String managedInstanceName, String databaseName) {
@@ -254,96 +395,143 @@ public final class ManagedDatabasesInner {
 
     /**
      * Creates a new database or updates an existing database.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
      * @param parameters A managed database resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed database resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseInner parameters) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseInner parameters) {
         final String apiVersion = "2019-06-01-preview";
-        return service.createOrUpdate(this.client.getHost(), resourceGroupName, managedInstanceName, databaseName, this.client.getSubscriptionId(), apiVersion, parameters);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createOrUpdate(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            databaseName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            parameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Creates a new database or updates an existing database.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
      * @param parameters A managed database resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed database resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedDatabaseInner> createOrUpdateAsync(String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseInner parameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, parameters);
-        return this.client.<ManagedDatabaseInner, ManagedDatabaseInner>getLroResultAsync(mono, this.client.getHttpPipeline(), ManagedDatabaseInner.class, ManagedDatabaseInner.class)
+    public Mono<ManagedDatabaseInner> createOrUpdateAsync(
+        String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseInner parameters) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, parameters);
+        return this
+            .client
+            .<ManagedDatabaseInner, ManagedDatabaseInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), ManagedDatabaseInner.class, ManagedDatabaseInner.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Creates a new database or updates an existing database.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
      * @param parameters A managed database resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed database resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedDatabaseInner createOrUpdate(String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseInner parameters) {
+    public ManagedDatabaseInner createOrUpdate(
+        String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseInner parameters) {
         return createOrUpdateAsync(resourceGroupName, managedInstanceName, databaseName, parameters).block();
     }
 
     /**
      * Deletes a managed database.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String managedInstanceName, String databaseName) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String managedInstanceName, String databaseName) {
         final String apiVersion = "2019-06-01-preview";
-        return service.delete(this.client.getHost(), resourceGroupName, managedInstanceName, databaseName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .delete(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            databaseName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Deletes a managed database.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String managedInstanceName, String databaseName) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, managedInstanceName, databaseName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, managedInstanceName, databaseName);
+        return this
+            .client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Deletes a managed database.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -355,89 +543,134 @@ public final class ManagedDatabasesInner {
 
     /**
      * Updates an existing database.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
      * @param parameters An managed database update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed database resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseUpdate parameters) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseUpdate parameters) {
         final String apiVersion = "2019-06-01-preview";
-        return service.update(this.client.getHost(), resourceGroupName, managedInstanceName, databaseName, this.client.getSubscriptionId(), apiVersion, parameters);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .update(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            databaseName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            parameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Updates an existing database.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
      * @param parameters An managed database update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed database resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedDatabaseInner> updateAsync(String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseUpdate parameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, parameters);
-        return this.client.<ManagedDatabaseInner, ManagedDatabaseInner>getLroResultAsync(mono, this.client.getHttpPipeline(), ManagedDatabaseInner.class, ManagedDatabaseInner.class)
+    public Mono<ManagedDatabaseInner> updateAsync(
+        String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseUpdate parameters) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, parameters);
+        return this
+            .client
+            .<ManagedDatabaseInner, ManagedDatabaseInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), ManagedDatabaseInner.class, ManagedDatabaseInner.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Updates an existing database.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
      * @param parameters An managed database update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed database resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedDatabaseInner update(String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseUpdate parameters) {
+    public ManagedDatabaseInner update(
+        String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseUpdate parameters) {
         return updateAsync(resourceGroupName, managedInstanceName, databaseName, parameters).block();
     }
 
     /**
      * Gets a list of inaccessible managed databases in a managed instance.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of inaccessible managed databases in a managed instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ManagedDatabaseInner>> listInaccessibleByInstanceSinglePageAsync(String resourceGroupName, String managedInstanceName) {
+    public Mono<PagedResponse<ManagedDatabaseInner>> listInaccessibleByInstanceSinglePageAsync(
+        String resourceGroupName, String managedInstanceName) {
         final String apiVersion = "2019-06-01-preview";
-        return service.listInaccessibleByInstance(this.client.getHost(), resourceGroupName, managedInstanceName, this.client.getSubscriptionId(), apiVersion)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listInaccessibleByInstance(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .<PagedResponse<ManagedDatabaseInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a list of inaccessible managed databases in a managed instance.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of inaccessible managed databases in a managed instance.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ManagedDatabaseInner> listInaccessibleByInstanceAsync(String resourceGroupName, String managedInstanceName) {
+    public PagedFlux<ManagedDatabaseInner> listInaccessibleByInstanceAsync(
+        String resourceGroupName, String managedInstanceName) {
         return new PagedFlux<>(
             () -> listInaccessibleByInstanceSinglePageAsync(resourceGroupName, managedInstanceName),
             nextLink -> listInaccessibleByInstanceNextSinglePageAsync(nextLink));
@@ -445,153 +678,220 @@ public final class ManagedDatabasesInner {
 
     /**
      * Gets a list of inaccessible managed databases in a managed instance.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of inaccessible managed databases in a managed instance.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagedDatabaseInner> listInaccessibleByInstance(String resourceGroupName, String managedInstanceName) {
+    public PagedIterable<ManagedDatabaseInner> listInaccessibleByInstance(
+        String resourceGroupName, String managedInstanceName) {
         return new PagedIterable<>(listInaccessibleByInstanceAsync(resourceGroupName, managedInstanceName));
     }
 
     /**
      * Completes the restore operation on a managed database.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
      * @param lastBackupName The last backup name to apply.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> completeRestoreWithResponseAsync(String resourceGroupName, String managedInstanceName, String databaseName, String lastBackupName) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> completeRestoreWithResponseAsync(
+        String resourceGroupName, String managedInstanceName, String databaseName, String lastBackupName) {
         final String apiVersion = "2019-06-01-preview";
         CompleteDatabaseRestoreDefinition parameters = new CompleteDatabaseRestoreDefinition();
         parameters.withLastBackupName(lastBackupName);
-        return service.completeRestore(this.client.getHost(), resourceGroupName, managedInstanceName, databaseName, this.client.getSubscriptionId(), apiVersion, parameters);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .completeRestore(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            databaseName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            parameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Completes the restore operation on a managed database.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
      * @param lastBackupName The last backup name to apply.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> completeRestoreAsync(String resourceGroupName, String managedInstanceName, String databaseName, String lastBackupName) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = completeRestoreWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, lastBackupName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+    public Mono<Void> completeRestoreAsync(
+        String resourceGroupName, String managedInstanceName, String databaseName, String lastBackupName) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            completeRestoreWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, lastBackupName);
+        return this
+            .client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Completes the restore operation on a managed database.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
      * @param lastBackupName The last backup name to apply.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void completeRestore(String resourceGroupName, String managedInstanceName, String databaseName, String lastBackupName) {
+    public void completeRestore(
+        String resourceGroupName, String managedInstanceName, String databaseName, String lastBackupName) {
         completeRestoreAsync(resourceGroupName, managedInstanceName, databaseName, lastBackupName).block();
     }
 
     /**
      * Creates a new database or updates an existing database.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
      * @param parameters A managed database resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed database resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ManagedDatabaseInner>> beginCreateOrUpdateWithResponseAsync(String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseInner parameters) {
+    public Mono<SimpleResponse<ManagedDatabaseInner>> beginCreateOrUpdateWithResponseAsync(
+        String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseInner parameters) {
         final String apiVersion = "2019-06-01-preview";
-        return service.beginCreateOrUpdate(this.client.getHost(), resourceGroupName, managedInstanceName, databaseName, this.client.getSubscriptionId(), apiVersion, parameters);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginCreateOrUpdate(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            databaseName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            parameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Creates a new database or updates an existing database.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
      * @param parameters A managed database resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed database resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedDatabaseInner> beginCreateOrUpdateAsync(String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseInner parameters) {
+    public Mono<ManagedDatabaseInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseInner parameters) {
         return beginCreateOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, parameters)
-            .flatMap((SimpleResponse<ManagedDatabaseInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<ManagedDatabaseInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Creates a new database or updates an existing database.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
      * @param parameters A managed database resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed database resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedDatabaseInner beginCreateOrUpdate(String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseInner parameters) {
+    public ManagedDatabaseInner beginCreateOrUpdate(
+        String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, databaseName, parameters).block();
     }
 
     /**
      * Deletes a managed database.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithResponseAsync(String resourceGroupName, String managedInstanceName, String databaseName) {
+    public Mono<Response<Void>> beginDeleteWithResponseAsync(
+        String resourceGroupName, String managedInstanceName, String databaseName) {
         final String apiVersion = "2019-06-01-preview";
-        return service.beginDelete(this.client.getHost(), resourceGroupName, managedInstanceName, databaseName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginDelete(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            databaseName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Deletes a managed database.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> beginDeleteAsync(String resourceGroupName, String managedInstanceName, String databaseName) {
@@ -601,10 +901,11 @@ public final class ManagedDatabasesInner {
 
     /**
      * Deletes a managed database.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -616,149 +917,204 @@ public final class ManagedDatabasesInner {
 
     /**
      * Updates an existing database.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
      * @param parameters An managed database update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed database resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ManagedDatabaseInner>> beginUpdateWithResponseAsync(String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseUpdate parameters) {
+    public Mono<SimpleResponse<ManagedDatabaseInner>> beginUpdateWithResponseAsync(
+        String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseUpdate parameters) {
         final String apiVersion = "2019-06-01-preview";
-        return service.beginUpdate(this.client.getHost(), resourceGroupName, managedInstanceName, databaseName, this.client.getSubscriptionId(), apiVersion, parameters);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginUpdate(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            databaseName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            parameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Updates an existing database.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
      * @param parameters An managed database update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed database resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedDatabaseInner> beginUpdateAsync(String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseUpdate parameters) {
+    public Mono<ManagedDatabaseInner> beginUpdateAsync(
+        String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseUpdate parameters) {
         return beginUpdateWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, parameters)
-            .flatMap((SimpleResponse<ManagedDatabaseInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<ManagedDatabaseInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Updates an existing database.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
      * @param parameters An managed database update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed database resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedDatabaseInner beginUpdate(String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseUpdate parameters) {
+    public ManagedDatabaseInner beginUpdate(
+        String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseUpdate parameters) {
         return beginUpdateAsync(resourceGroupName, managedInstanceName, databaseName, parameters).block();
     }
 
     /**
      * Completes the restore operation on a managed database.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
      * @param lastBackupName The last backup name to apply.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginCompleteRestoreWithResponseAsync(String resourceGroupName, String managedInstanceName, String databaseName, String lastBackupName) {
+    public Mono<Response<Void>> beginCompleteRestoreWithResponseAsync(
+        String resourceGroupName, String managedInstanceName, String databaseName, String lastBackupName) {
         final String apiVersion = "2019-06-01-preview";
         CompleteDatabaseRestoreDefinition parameters = new CompleteDatabaseRestoreDefinition();
         parameters.withLastBackupName(lastBackupName);
-        return service.beginCompleteRestore(this.client.getHost(), resourceGroupName, managedInstanceName, databaseName, this.client.getSubscriptionId(), apiVersion, parameters);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginCompleteRestore(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            databaseName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            parameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Completes the restore operation on a managed database.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
      * @param lastBackupName The last backup name to apply.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginCompleteRestoreAsync(String resourceGroupName, String managedInstanceName, String databaseName, String lastBackupName) {
-        return beginCompleteRestoreWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, lastBackupName)
+    public Mono<Void> beginCompleteRestoreAsync(
+        String resourceGroupName, String managedInstanceName, String databaseName, String lastBackupName) {
+        return beginCompleteRestoreWithResponseAsync(
+                resourceGroupName, managedInstanceName, databaseName, lastBackupName)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Completes the restore operation on a managed database.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
      * @param lastBackupName The last backup name to apply.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginCompleteRestore(String resourceGroupName, String managedInstanceName, String databaseName, String lastBackupName) {
+    public void beginCompleteRestore(
+        String resourceGroupName, String managedInstanceName, String databaseName, String lastBackupName) {
         beginCompleteRestoreAsync(resourceGroupName, managedInstanceName, databaseName, lastBackupName).block();
     }
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink null
+     *
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of managed databases.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ManagedDatabaseInner>> listByInstanceNextSinglePageAsync(String nextLink) {
-        return service.listByInstanceNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(context -> service.listByInstanceNext(nextLink, context))
+            .<PagedResponse<ManagedDatabaseInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink null
+     *
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of managed databases.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ManagedDatabaseInner>> listInaccessibleByInstanceNextSinglePageAsync(String nextLink) {
-        return service.listInaccessibleByInstanceNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(context -> service.listInaccessibleByInstanceNext(nextLink, context))
+            .<PagedResponse<ManagedDatabaseInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 }

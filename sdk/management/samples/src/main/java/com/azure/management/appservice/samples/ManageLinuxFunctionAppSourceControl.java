@@ -11,7 +11,6 @@ import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.samples.Utils;
 import com.azure.management.storage.StorageAccountSkuType;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import org.apache.commons.lang.time.StopWatch;
 
@@ -52,7 +51,7 @@ public class ManageLinuxFunctionAppSourceControl {
 
             System.out.println("Creating function app " + app1Name + " in resource group " + rgName + "...");
 
-            FunctionApp app1 = azure.appServices().functionApps().define(app1Name)
+            FunctionApp app1 = azure.functionApps().define(app1Name)
                     .withRegion(Region.US_WEST)
                     .withNewResourceGroup(rgName)
                     .withNewLinuxAppServicePlan(plan1Name, PricingTier.STANDARD_S1)
@@ -89,7 +88,7 @@ public class ManageLinuxFunctionAppSourceControl {
 
             System.out.println("Creating function app " + app2Name + " in resource group " + rgName + "...");
 
-            FunctionApp app2 = azure.appServices().functionApps().define(app2Name)
+            FunctionApp app2 = azure.functionApps().define(app2Name)
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
                     .withNewLinuxConsumptionPlan(plan2Name)
@@ -152,7 +151,7 @@ public class ManageLinuxFunctionAppSourceControl {
 
             Azure azure = Azure
                     .configure()
-                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                    .withLogLevel(HttpLogDetailLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 

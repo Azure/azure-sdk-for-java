@@ -7,9 +7,7 @@ package com.azure.management.monitor;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The BaselineMetadata model.
- */
+/** The BaselineMetadata model. */
 @Fluent
 public final class BaselineMetadata {
     /*
@@ -26,7 +24,7 @@ public final class BaselineMetadata {
 
     /**
      * Get the name property: Name of the baseline metadata.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -35,7 +33,7 @@ public final class BaselineMetadata {
 
     /**
      * Set the name property: Name of the baseline metadata.
-     * 
+     *
      * @param name the name value to set.
      * @return the BaselineMetadata object itself.
      */
@@ -46,7 +44,7 @@ public final class BaselineMetadata {
 
     /**
      * Get the value property: Value of the baseline metadata.
-     * 
+     *
      * @return the value value.
      */
     public String value() {
@@ -55,7 +53,7 @@ public final class BaselineMetadata {
 
     /**
      * Set the value property: Value of the baseline metadata.
-     * 
+     *
      * @param value the value value to set.
      * @return the BaselineMetadata object itself.
      */

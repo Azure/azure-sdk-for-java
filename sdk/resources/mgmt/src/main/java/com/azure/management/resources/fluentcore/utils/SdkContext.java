@@ -23,7 +23,7 @@ public class SdkContext {
     /**
      * Default constructor for SdkContext.
      */
-    public SdkContext() {}
+    public SdkContext() { }
 
     /**
      * Function to override the ResourceNamerFactory.
@@ -121,6 +121,8 @@ public class SdkContext {
 
     /**
      * Get long-running operation retry timeout.
+     *
+     * @return the duration
      */
     public static Duration getLroRetryDuration() {
         return delayProvider.getLroRetryTimeout();

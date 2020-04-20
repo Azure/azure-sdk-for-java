@@ -8,32 +8,23 @@ import com.azure.management.compute.models.ResourceSkuInner;
 import com.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.HasInner;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * Type representing sku for an Azure compute resource.
- */
+/** Type representing sku for an Azure compute resource. */
 @Fluent
 public interface ComputeSku extends HasInner<ResourceSkuInner> {
-    /**
-     * @return the sku name
-     */
+    /** @return the sku name */
     ComputeSkuName name();
-    /**
-     * @return the sku tier
-     */
+    /** @return the sku tier */
     ComputeSkuTier tier();
-    /**
-     * @return the compute resource type that the sku describes
-     */
+    /** @return the compute resource type that the sku describes */
     ComputeResourceType resourceType();
     /**
      * The virtual machine size type if the sku describes sku for virtual machine resource type.
      *
-     * The size can be used for {@link VirtualMachine.DefinitionStages.WithVMSize#withSize(VirtualMachineSizeTypes)}
+     * <p>The size can be used for {@link VirtualMachine.DefinitionStages.WithVMSize#withSize(VirtualMachineSizeTypes)}
      * and {@link VirtualMachine.Update#withSize(VirtualMachineSizeTypes)}.
      *
      * @return the virtual machine size type
@@ -42,10 +33,9 @@ public interface ComputeSku extends HasInner<ResourceSkuInner> {
     /**
      * The managed disk or snapshot sku type if the sku describes sku for disk or snapshot resource type.
      *
-     * The sku type can be used for {@link Disk.DefinitionStages.WithSku#withSku(DiskSkuTypes)},
-     * {@link Disk.UpdateStages.WithSku#withSku(DiskSkuTypes)},
-     * {@link Snapshot.DefinitionStages.WithSku#withSku(DiskSkuTypes)} and
-     * {@link Snapshot.UpdateStages.WithSku#withSku(DiskSkuTypes)}.
+     * <p>The sku type can be used for {@link Disk.DefinitionStages.WithSku#withSku(DiskSkuTypes)}, {@link
+     * Disk.UpdateStages.WithSku#withSku(DiskSkuTypes)}, {@link Snapshot.DefinitionStages.WithSku#withSku(DiskSkuTypes)}
+     * and {@link Snapshot.UpdateStages.WithSku#withSku(DiskSkuTypes)}.
      *
      * @return the managed disk or snapshot sku type
      */
@@ -53,38 +43,24 @@ public interface ComputeSku extends HasInner<ResourceSkuInner> {
     /**
      * The availability set sku type if the sku describes sku for availability set resource type.
      *
-     * The sku type can be used for {@link AvailabilitySet.DefinitionStages.WithSku#withSku(AvailabilitySetSkuTypes)}
+     * <p>The sku type can be used for {@link AvailabilitySet.DefinitionStages.WithSku#withSku(AvailabilitySetSkuTypes)}
      * and {@link AvailabilitySet.UpdateStages.WithSku#withSku(AvailabilitySetSkuTypes)}.
      *
      * @return the availability set sku type
      */
     AvailabilitySetSkuTypes availabilitySetSkuType();
-    /**
-     * @return the regions that the sku is available
-     */
+    /** @return the regions that the sku is available */
     List<Region> regions();
-    /**
-     * @return the availability zones supported for this sku, index by region
-     */
-    Map<Region, Set<AvailabilityZoneId>>  zones();
-    /**
-     * @return the scaling information of the sku
-     */
+    /** @return the availability zones supported for this sku, index by region */
+    Map<Region, Set<AvailabilityZoneId>> zones();
+    /** @return the scaling information of the sku */
     ResourceSkuCapacity capacity();
-    /**
-     * @return the api versions that this sku supports
-     */
+    /** @return the api versions that this sku supports */
     List<String> apiVersions();
-    /**
-     * @return the metadata for querying the sku pricing information
-     */
+    /** @return the metadata for querying the sku pricing information */
     List<ResourceSkuCosts> costs();
-    /**
-     * @return the capabilities of the sku
-     */
+    /** @return the capabilities of the sku */
     List<ResourceSkuCapabilities> capabilities();
-    /**
-     * @return the restrictions because of which SKU cannot be used
-     */
+    /** @return the restrictions because of which SKU cannot be used */
     List<ResourceSkuRestrictions> restrictions();
 }

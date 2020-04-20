@@ -7,9 +7,7 @@ package com.azure.management.dns;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The CnameRecord model.
- */
+/** The CnameRecord model. */
 @Fluent
 public final class CnameRecord {
     /*
@@ -20,7 +18,7 @@ public final class CnameRecord {
 
     /**
      * Get the cname property: The canonical name for this CNAME record.
-     * 
+     *
      * @return the cname value.
      */
     public String cname() {
@@ -29,7 +27,7 @@ public final class CnameRecord {
 
     /**
      * Set the cname property: The canonical name for this CNAME record.
-     * 
+     *
      * @param cname the cname value to set.
      * @return the CnameRecord object itself.
      */

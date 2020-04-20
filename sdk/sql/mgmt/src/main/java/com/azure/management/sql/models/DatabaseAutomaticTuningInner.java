@@ -12,9 +12,7 @@ import com.azure.management.sql.AutomaticTuningOptions;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * The DatabaseAutomaticTuning model.
- */
+/** The DatabaseAutomaticTuning model. */
 @JsonFlatten
 @Fluent
 public class DatabaseAutomaticTuningInner extends ProxyResource {
@@ -38,7 +36,7 @@ public class DatabaseAutomaticTuningInner extends ProxyResource {
 
     /**
      * Get the desiredState property: Automatic tuning desired state.
-     * 
+     *
      * @return the desiredState value.
      */
     public AutomaticTuningMode desiredState() {
@@ -47,7 +45,7 @@ public class DatabaseAutomaticTuningInner extends ProxyResource {
 
     /**
      * Set the desiredState property: Automatic tuning desired state.
-     * 
+     *
      * @param desiredState the desiredState value to set.
      * @return the DatabaseAutomaticTuningInner object itself.
      */
@@ -58,7 +56,7 @@ public class DatabaseAutomaticTuningInner extends ProxyResource {
 
     /**
      * Get the actualState property: Automatic tuning actual state.
-     * 
+     *
      * @return the actualState value.
      */
     public AutomaticTuningMode actualState() {
@@ -67,7 +65,7 @@ public class DatabaseAutomaticTuningInner extends ProxyResource {
 
     /**
      * Get the options property: Automatic tuning options definition.
-     * 
+     *
      * @return the options value.
      */
     public Map<String, AutomaticTuningOptions> options() {
@@ -76,7 +74,7 @@ public class DatabaseAutomaticTuningInner extends ProxyResource {
 
     /**
      * Set the options property: Automatic tuning options definition.
-     * 
+     *
      * @param options the options value to set.
      * @return the DatabaseAutomaticTuningInner object itself.
      */

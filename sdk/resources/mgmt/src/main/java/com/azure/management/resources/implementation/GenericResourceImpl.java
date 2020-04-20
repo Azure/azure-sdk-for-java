@@ -102,7 +102,12 @@ final class GenericResourceImpl
     }
 
     public GenericResourceImpl withPlan(String name, String publisher, String product, String promotionCode) {
-        inner().withPlan(new Plan().withName(name).withPublisher(publisher).withProduct(product).withPromotionCode(promotionCode));
+        inner().withPlan(
+            new Plan()
+                .withName(name)
+                .withPublisher(publisher)
+                .withProduct(product)
+                .withPromotionCode(promotionCode));
         return this;
     }
 

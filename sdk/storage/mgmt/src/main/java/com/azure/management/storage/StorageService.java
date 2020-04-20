@@ -3,14 +3,10 @@
 
 package com.azure.management.storage;
 
-
 import com.azure.core.util.ExpandableStringEnum;
-
 import java.util.Collection;
 
-/**
- * Azure storage service types.
- */
+/** Azure storage service types. */
 public class StorageService extends ExpandableStringEnum<StorageService> {
     /** Static value Blob for StorageService. */
     public static final StorageService BLOB = fromString("Blob");
@@ -34,9 +30,7 @@ public class StorageService extends ExpandableStringEnum<StorageService> {
         return fromString(name, StorageService.class);
     }
 
-    /**
-     * @return known storage service types.
-     */
+    /** @return known storage service types. */
     public static Collection<StorageService> values() {
         return values(StorageService.class);
     }

@@ -7,9 +7,7 @@ package com.azure.management.monitor;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The EnableRequest model.
- */
+/** The EnableRequest model. */
 @Fluent
 public final class EnableRequest {
     /*
@@ -20,7 +18,7 @@ public final class EnableRequest {
 
     /**
      * Get the receiverName property: The name of the receiver to resubscribe.
-     * 
+     *
      * @return the receiverName value.
      */
     public String receiverName() {
@@ -29,7 +27,7 @@ public final class EnableRequest {
 
     /**
      * Set the receiverName property: The name of the receiver to resubscribe.
-     * 
+     *
      * @param receiverName the receiverName value to set.
      * @return the EnableRequest object itself.
      */
