@@ -436,7 +436,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             BlobServiceClient storageClient =
                 new BlobServiceClientBuilder().endpoint(endpoint).credential(credential).buildClient();
             BlobContainerClient blobContainerClient =
-                storageClient.getBlobContainerClient(this.testResourceNamer.randomName("testFr", 16));
+                storageClient.getBlobContainerClient(this.testResourceNamer.randomName("testFR", 16));
             blobContainerClient.create();
             BlockBlobClient blobClient;
             File folder = new File(folderPath);

@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import static com.azure.ai.formrecognizer.TestUtils.CUSTOM_FORM_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_SOURCE_URL_ERROR;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_URL;
+import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.VALID_MODEL_ID;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedFormPages;
@@ -115,7 +116,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     void recognizeLayoutData() {
         layoutDataRunner((data) -> {
             SyncPoller<OperationResult, IterableStream<FormPage>> syncPoller =
-                client.beginRecognizeContent(data.block(), RECEIPT_FILE_LENGTH, FormContentType.IMAGE_PNG, null);
+                client.beginRecognizeContent(data, LAYOUT_FILE_LENGTH, FormContentType.IMAGE_PNG, null);
             syncPoller.waitForCompletion();
             validateLayoutResult(getExpectedFormPages(), syncPoller.getFinalResult());
         });
