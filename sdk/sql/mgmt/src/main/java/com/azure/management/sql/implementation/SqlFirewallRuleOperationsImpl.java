@@ -166,13 +166,11 @@ public class SqlFirewallRuleOperationsImpl
         List<SqlFirewallRule> firewallRuleSet = new ArrayList<>();
         PagedIterable<FirewallRuleInner> firewallRuleInners =
             this.sqlServerManager.inner().firewallRules().listByServer(resourceGroupName, sqlServerName);
-        if (firewallRuleInners != null) {
-            for (FirewallRuleInner inner : firewallRuleInners) {
-                firewallRuleSet
-                    .add(
-                        new SqlFirewallRuleImpl(
-                            resourceGroupName, sqlServerName, inner.getName(), inner, this.sqlServerManager));
-            }
+        for (FirewallRuleInner inner : firewallRuleInners) {
+            firewallRuleSet
+                .add(
+                    new SqlFirewallRuleImpl(
+                        resourceGroupName, sqlServerName, inner.getName(), inner, this.sqlServerManager));
         }
         return Collections.unmodifiableList(firewallRuleSet);
     }
