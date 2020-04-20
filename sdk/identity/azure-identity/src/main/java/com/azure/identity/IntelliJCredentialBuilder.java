@@ -15,6 +15,11 @@ import java.util.function.Consumer;
  */
 public class IntelliJCredentialBuilder extends CredentialBuilderBase<IntelliJCredentialBuilder> {
 
+
+    public IntelliJCredentialBuilder windowsKeepPassDatabasePath(String databasePath) {
+        this.identityClientOptions.setKeepPassDatabasePath(databasePath);
+    }
+
     /**
      * Creates a new {@link IntelliJCredential} with the current configurations.
      *

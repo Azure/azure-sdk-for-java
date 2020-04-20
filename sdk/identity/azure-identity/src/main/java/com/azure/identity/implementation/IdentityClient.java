@@ -35,15 +35,21 @@ import com.microsoft.aad.msal4j.RefreshTokenParameters;
 import com.microsoft.aad.msal4j.SilentParameters;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 import com.microsoft.aad.msal4jextensions.persistence.mac.KeyChainAccessor;
+import com.sun.jna.platform.win32.Crypt32Util;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+import org.linguafranca.pwdb.Database;
+import org.linguafranca.pwdb.Entry;
+import org.linguafranca.pwdb.kdbx.KdbxCreds;
+import org.linguafranca.pwdb.kdbx.simple.SimpleDatabase;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.Proxy;
@@ -52,9 +58,13 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -62,15 +72,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.List;
-import java.util.Locale;
-import java.util.Random;
-import java.util.Scanner;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Consumer;
 
 /**
@@ -210,7 +212,7 @@ public class IdentityClient {
                 });
 
             }
-        } catch(IOException e){
+        } catch(Exception e){
                 throw logger.logExceptionAsError(new RuntimeException("Credential is not available", e));
             }
     }
@@ -236,22 +238,20 @@ public class IdentityClient {
         return servicePrincipalDetails;
     }
 
-    private static AuthMethodDetails determineIntelliJAuthType() throws IOException {
+    private AuthMethodDetails determineIntelliJAuthType() throws IOException {
         String os = System.getProperty("os.name").toLowerCase(Locale.ROOT);
 
-        if (os.contains("mac")) {
-            String homeDir = System.getProperty("user.home");
-            String a = homeDir + "/AzureToolsForIntelliJ/AuthMethodDetails.json";
-            ObjectMapper objectMapper = new ObjectMapper();
+        String homeDir = System.getProperty("user.home");
+        String a = homeDir + String.format("%sAzureToolsForIntelliJ%sAuthMethodDetails.json",
+            File.separator, File.separator);
+        ObjectMapper objectMapper = new ObjectMapper();
 
-            File file = new File(a);
+        File file = new File(a);
 
-            return objectMapper.readValue(file, AuthMethodDetails.class);
-        }
-        return null;
+        return objectMapper.readValue(file, AuthMethodDetails.class);
     }
 
-    private JsonNode getIntelliJCredentials() throws JsonProcessingException {
+    private JsonNode getIntelliJCredentials() throws Exception {
         String os = System.getProperty("os.name").toLowerCase(Locale.ROOT);
 
         if (os.contains("mac")) {
@@ -262,10 +262,68 @@ public class IdentityClient {
 
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readTree(jsonCred);
+        } else if (os.contains("win")) {
+
+            String database = options.getKeepPassDatabasePath();
+            String pwd = new File(options.getKeepPassDatabasePath()).getParent() + "\\" + "c.pwd";
+            String extractedpwd = "";
+
+            byte[] cryptoKey = new byte[] { 0x50, 0x72, 0x6f, 0x78, 0x79, 0x20, 0x43, 0x6f, 0x6e, 0x66,
+                0x69, 0x67, 0x20, 0x53, 0x65, 0x63};
+
+            SecretKeySpec key = new SecretKeySpec(cryptoKey, "AES");
+
+            BufferedReader reader;
+            try {
+                reader = new BufferedReader(new FileReader(pwd));
+                String line = reader.readLine();
+
+                while (line != null) {
+                    if (line.contains("value")) {
+                        System.out.println(line);
+                        String[] tokens = line.split(" ");
+                        if (tokens.length == 3) {
+                            extractedpwd = tokens[2];
+                        }
+                        // read next line
+                    }
+                    line = reader.readLine();
+                }
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+
+            byte[] dataToDecrypt = Crypt32Util.cryptUnprotectData(Base64.getDecoder().decode(extractedpwd));
+
+            ByteBuffer df = ByteBuffer.wrap(dataToDecrypt);
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+
+            int ivLen = df.getInt();
+            cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(dataToDecrypt, df.position(), ivLen));
+
+            int dataOffset = df.position() + ivLen;
+
+            byte[] decrypted = cipher.doFinal(dataToDecrypt, dataOffset, dataToDecrypt.length - dataOffset);
+
+            String password = new String(decrypted);
+
+            KdbxCreds creds = new KdbxCreds(password.getBytes());
+            InputStream inputStream = new FileInputStream(new File("C:\\Users\\uxjava\\.IdeaIC2019.1\\config\\c.kdbx"));
+
+            Database database3 = SimpleDatabase.load(creds, inputStream);
+
+            List<Entry> bcv = database3.findEntries("ADAuthManager");
+
+            bcv.get(0).getPassword();
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readTree(bcv.get(0).getPassword());
+
         }
         return null;
     }
-
     /**
      * Asynchronously acquire a token from Active Directory with Azure CLI.
      *

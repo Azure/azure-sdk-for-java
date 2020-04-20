@@ -129,8 +129,10 @@
       <version>0.1</version>
     </dependency>
 
-
-
-
+    <dependency>
+      <groupId>org.linguafranca.pwdb</groupId>
+      <artifactId>KeePassJava2</artifactId>
+      <version>2.1.4</version>
+    </dependency>
   </dependencies>
 </project>

@@ -24,7 +24,6 @@ public class IntelliJCredential implements TokenCredential {
     private final IdentityClient identityClient;
     private final AtomicReference<MsalToken> cachedToken;
 
-
     /**
      * Creates an AzureCliSecretCredential with default identity client options.
      * @param identityClientOptions the options to configure the identity client
