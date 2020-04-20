@@ -47,8 +47,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * broker and receive the associated response.
  */
 public class RequestResponseChannel implements Disposable {
-    private static final String STATUS_DESCRIPTION = "status-description";
-
     private final ConcurrentSkipListMap<UnsignedLong, MonoSink<Message>> unconfirmedSends =
         new ConcurrentSkipListMap<>();
     private final ReplayProcessor<AmqpEndpointState> endpointStates =
@@ -64,7 +62,6 @@ public class RequestResponseChannel implements Disposable {
     private final ReactorProvider provider;
     private final Duration operationTimeout;
     private final AtomicBoolean isDisposed = new AtomicBoolean();
-    private final AtomicBoolean hasOpened = new AtomicBoolean();
     private final AtomicLong requestId = new AtomicLong(0);
     private final SendLinkHandler sendLinkHandler;
     private final ReceiveLinkHandler receiveLinkHandler;
@@ -293,11 +290,10 @@ public class RequestResponseChannel implements Disposable {
             return;
         }
 
-        final int statusCode = RequestResponseUtils.getResponseStatusCode(message);
+        final int statusCode = RequestResponseUtils.getStatusCode(message);
 
         if (statusCode != AmqpResponseCode.ACCEPTED.getValue() && statusCode != AmqpResponseCode.OK.getValue()) {
-            final String statusDescription =
-                (String) message.getApplicationProperties().getValue().get(STATUS_DESCRIPTION);
+            final String statusDescription = RequestResponseUtils.getStatusDescription(message);
 
             sink.error(ExceptionUtil.amqpResponseCodeToException(statusCode, statusDescription,
                 receiveLinkHandler.getErrorContext(receiveLink)));

@@ -14,7 +14,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.core.amqp.implementation.RequestResponseUtils.REQUEST_RESPONSE_UNDEFINED_STATUS_CODE;
+import static com.azure.core.amqp.implementation.RequestResponseUtils.UNDEFINED_STATUS_CODE;
+import static com.azure.core.amqp.implementation.RequestResponseUtils.UNDEFINED_STATUS_DESCRIPTION;
 
 class RequestResponseUtilsTest {
     /**
@@ -35,17 +36,17 @@ class RequestResponseUtilsTest {
         message.setApplicationProperties(new ApplicationProperties(properties));
 
         // Act
-        final int actual = RequestResponseUtils.getResponseStatusCode(message);
+        final int actual = RequestResponseUtils.getStatusCode(message);
 
         // Assert
         Assertions.assertEquals(expected, actual);
     }
 
     /**
-     * Verifies the default non-status code is returned.
+     * Verifies the default status code and description are returned.
      */
     @Test
-    void defaultResponseRequestCode() {
+    void defaultResponseRequestResponses() {
         // Arrange
         final Map<String, Object> properties = new HashMap<>();
         properties.put("non-existent", 33214);
@@ -55,9 +56,11 @@ class RequestResponseUtilsTest {
         message.setApplicationProperties(new ApplicationProperties(properties));
 
         // Act
-        final int actual = RequestResponseUtils.getResponseStatusCode(message);
+        final int actual = RequestResponseUtils.getStatusCode(message);
+        final String description = RequestResponseUtils.getStatusDescription(message);
 
         // Assert
-        Assertions.assertEquals(REQUEST_RESPONSE_UNDEFINED_STATUS_CODE, actual);
+        Assertions.assertEquals(UNDEFINED_STATUS_CODE, actual);
+        Assertions.assertEquals(UNDEFINED_STATUS_DESCRIPTION, description);
     }
 }
