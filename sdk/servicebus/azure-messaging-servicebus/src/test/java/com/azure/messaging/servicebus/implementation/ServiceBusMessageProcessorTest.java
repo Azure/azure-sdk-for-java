@@ -53,7 +53,6 @@ class ServiceBusMessageProcessorTest {
     private final AmqpErrorContext errorContext = new LinkErrorContext("foo", "bar", "link-name", 10);
     private final ClientLogger logger = new ClientLogger(ServiceBusMessageProcessorTest.class);
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions();
-    private final MessageLockContainer messageContainer = new MessageLockContainer();
 
     @BeforeEach
     void setup() {
@@ -85,7 +84,7 @@ class ServiceBusMessageProcessorTest {
 
         final ServiceBusMessageProcessor processor = createMessageSink(message1, message2, message3, message4)
             .subscribeWith(new ServiceBusMessageProcessor(true, false, Duration.ZERO,
-                retryOptions, messageContainer, errorContext, onComplete, onAbandon, onRenewLock));
+                retryOptions, errorContext, onComplete, onAbandon, onRenewLock));
 
         // Act & Assert
         StepVerifier.create(processor)
@@ -118,7 +117,7 @@ class ServiceBusMessageProcessorTest {
 
         final ServiceBusMessageProcessor processor = createMessageSink(message1, message2)
             .subscribeWith(new ServiceBusMessageProcessor(true, true, maxRenewDuration,
-                retryOptions, messageContainer, errorContext, onComplete, onAbandon, onRenewLock));
+                retryOptions, errorContext, onComplete, onAbandon, onRenewLock));
 
         // Act & Assert
         StepVerifier.create(processor)
@@ -149,7 +148,7 @@ class ServiceBusMessageProcessorTest {
         // Arrange
         final ServiceBusMessageProcessor processor = createMessageSink(message1, message2, message3, message4)
             .subscribeWith(new ServiceBusMessageProcessor(false, false, Duration.ZERO,
-                retryOptions, messageContainer, errorContext, onComplete, onAbandon, onRenewLock));
+                retryOptions, errorContext, onComplete, onAbandon, onRenewLock));
 
         // Act & Assert
         StepVerifier.create(processor)
@@ -180,7 +179,7 @@ class ServiceBusMessageProcessorTest {
 
         final ServiceBusMessageProcessor processor = createMessageSink(message1, message2)
             .subscribeWith(new ServiceBusMessageProcessor(true, true, maxRenewDuration,
-                retryOptions, messageContainer, errorContext, onComplete, onAbandon, onRenewLock));
+                retryOptions, errorContext, onComplete, onAbandon, onRenewLock));
 
         // Act & Assert
         StepVerifier.create(processor)
@@ -226,7 +225,7 @@ class ServiceBusMessageProcessorTest {
 
         final ServiceBusMessageProcessor processor = createMessageSink(message1, message2)
             .subscribeWith(new ServiceBusMessageProcessor(true, true, maxRenewDuration,
-                retryOptions, messageContainer, errorContext, onComplete, onAbandon, onRenewLock));
+                retryOptions, errorContext, onComplete, onAbandon, onRenewLock));
 
         // Act & Assert
         StepVerifier.create(processor)
@@ -274,7 +273,7 @@ class ServiceBusMessageProcessorTest {
 
         final ServiceBusMessageProcessor processor = createMessageSink(message1, message2)
             .subscribeWith(new ServiceBusMessageProcessor(true, true, maxRenewDuration,
-                retryOptions, messageContainer, errorContext, onComplete, onAbandon, onRenewLock));
+                retryOptions, errorContext, onComplete, onAbandon, onRenewLock));
 
         // Act & Assert
         StepVerifier.create(processor)

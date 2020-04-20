@@ -15,7 +15,6 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
-import com.azure.messaging.servicebus.implementation.MessageLockContainer;
 import com.azure.messaging.servicebus.implementation.MessageWithLockToken;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
@@ -87,7 +86,6 @@ class ServiceBusReceiverAsyncClientTest {
     private ServiceBusConnectionProcessor connectionProcessor;
     private ServiceBusReceiverAsyncClient consumer;
     private ReceiverOptions receiveOptions;
-    private MessageLockContainer messageContainer;
 
     @Mock
     private AmqpReceiveLink amqpReceiveLink;
@@ -136,7 +134,8 @@ class ServiceBusReceiverAsyncClientTest {
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
         endpointSink.next(AmqpEndpointState.ACTIVE);
 
-        when(connection.getManagementNode(eq(ENTITY_PATH), eq(ENTITY_TYPE), any())).thenReturn(Mono.just(managementNode));
+        when(connection.getManagementNode(eq(ENTITY_PATH), eq(ENTITY_TYPE), any()))
+            .thenReturn(Mono.just(managementNode));
 
         when(connection.createReceiveLink(anyString(), anyString(), any(ReceiveMode.class), any(),
             any(MessagingEntityType.class), isNull())).thenReturn(Mono.just(amqpReceiveLink));
@@ -148,9 +147,8 @@ class ServiceBusReceiverAsyncClientTest {
 
         receiveOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, null);
 
-        messageContainer = new MessageLockContainer();
         consumer = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            receiveOptions, connectionProcessor, tracerProvider, messageSerializer, messageContainer, onClientClose);
+            receiveOptions, connectionProcessor, tracerProvider, messageSerializer, onClientClose);
     }
 
     @AfterEach
@@ -234,7 +232,7 @@ class ServiceBusReceiverAsyncClientTest {
         final ReceiverOptions options = new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, null);
         final ServiceBusReceiverAsyncClient consumer2 = new ServiceBusReceiverAsyncClient(
             NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE, options, connectionProcessor, tracerProvider,
-            messageSerializer, messageContainer, onClientClose);
+            messageSerializer, onClientClose);
 
         final UUID lockToken1 = UUID.randomUUID();
         final UUID lockToken2 = UUID.randomUUID();
@@ -286,7 +284,7 @@ class ServiceBusReceiverAsyncClientTest {
         final ReceiverOptions options = new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, null);
         final ServiceBusReceiverAsyncClient consumer2 = new ServiceBusReceiverAsyncClient(
             NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE, options, connectionProcessor, tracerProvider,
-            messageSerializer, messageContainer, onClientClose);
+            messageSerializer, onClientClose);
 
         final MessageWithLockToken message = mock(MessageWithLockToken.class);
         final MessageWithLockToken message2 = mock(MessageWithLockToken.class);
@@ -360,7 +358,7 @@ class ServiceBusReceiverAsyncClientTest {
         final ReceiverOptions options = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, PREFETCH, null);
         ServiceBusReceiverAsyncClient client = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, options, connectionProcessor, tracerProvider, messageSerializer,
-            messageContainer, onClientClose);
+            onClientClose);
 
         final String lockToken1 = UUID.randomUUID().toString();
 
@@ -431,7 +429,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         when(messageSerializer.deserialize(message, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage);
 
-        when(receivedMessage.getLockToken()).thenReturn(lockToken1.toString());
+        when(receivedMessage.getLockToken()).thenReturn(lockToken1);
         when(receivedMessage.getLockedUntil()).thenReturn(expiration);
 
         when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE)).thenReturn(Mono.just(managementNode));
