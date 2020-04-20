@@ -43,7 +43,7 @@ public class ChainedTokenCredential implements TokenCredential {
                    .flatMap(p -> p.getToken(request).onErrorResume(CredentialUnavailableException.class, t -> {
                        exceptions.add(t);
                        return Mono.empty();
-                   }), 1)
+                   }))
                    .next()
                    .switchIfEmpty(Mono.defer(() -> {
 
@@ -51,7 +51,7 @@ public class ChainedTokenCredential implements TokenCredential {
                              + credentials.stream().map(c -> c.getClass().getSimpleName())
                                    .collect(Collectors.joining(", "))
                              + " but failed to acquire a token for any of them. Please verify the"
-                             + " environment for either of them"
+                             + " environment for the credentials"
                              + " and see more details in the causes below.");
 
                        // Chain Exceptions.
