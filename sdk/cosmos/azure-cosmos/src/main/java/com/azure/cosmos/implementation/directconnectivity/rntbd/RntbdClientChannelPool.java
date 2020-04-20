@@ -213,6 +213,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                             Duration.ofNanos(idleEndpointTimeoutInNanos));
                     }
                     endpoint.close();
+                    return;
                 }
 
                 this.runTasksInPendingAcquisitionQueue();
