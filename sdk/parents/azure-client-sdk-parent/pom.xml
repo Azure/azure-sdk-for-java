@@ -1130,10 +1130,10 @@
         </property>
       </activation>
       <modules>
+        <module>../../../common/azure-test-watcher</module>
         <module>../../../eng/spotbugs-aggregate-report</module>
         <module>../../../eng/code-quality-reports</module>
         <module>../../../eng/jacoco-test-coverage</module>
-        <module>../../../eng/azure-test-watcher</module>
       </modules>
     </profile>
 
