@@ -5,6 +5,7 @@ package com.azure.core.amqp.implementation;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import org.apache.qpid.proton.Proton;
+import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.message.Message;
@@ -115,5 +116,23 @@ class RequestResponseUtilsTest {
         Assertions.assertEquals(UNDEFINED_STATUS_CODE, actual);
         Assertions.assertEquals(UNDEFINED_STATUS_DESCRIPTION, description);
         Assertions.assertEquals(UNDEFINED_ERROR_CONDITION, errorCondition);
+    }
+
+    @Test
+    void getErrorConditionSymbol() {
+        // Arrange
+        final AmqpErrorCondition expected = AmqpErrorCondition.SERVER_BUSY_ERROR;
+        final Map<String, Object> properties = new HashMap<>();
+        properties.put("error-condition", Symbol.valueOf(expected.getErrorCondition()));
+
+        final Message message = Proton.message();
+        message.setBody(new AmqpValue("test"));
+        message.setApplicationProperties(new ApplicationProperties(properties));
+
+        // Act
+        final AmqpErrorCondition actual = RequestResponseUtils.getErrorCondition(message);
+
+        // Assert
+        Assertions.assertEquals(expected, actual);
     }
 }

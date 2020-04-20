@@ -5,9 +5,11 @@ package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpResponseCode;
+import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.message.Message;
 
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * This consists of various utilities needed to manage Request/Response channel.
@@ -87,15 +89,22 @@ public class RequestResponseUtils {
      */
     public static AmqpErrorCondition getErrorCondition(Message message) {
         final Map<String, Object> properties = message.getApplicationProperties().getValue();
+        final Function<Object, String> getCondition = errorCondition -> {
+            if (errorCondition instanceof Symbol) {
+                return ((Symbol) errorCondition).toString();
+            } else {
+                return String.valueOf(errorCondition);
+            }
+        };
         if (properties == null) {
             return UNDEFINED_ERROR_CONDITION;
         }
 
         final String value;
         if (properties.containsKey(ERROR_CONDITION)) {
-            value = (String) properties.get(ERROR_CONDITION);
+            value = getCondition.apply(properties.get(ERROR_CONDITION));
         } else if (properties.containsKey(LEGACY_ERROR_CONDITION)) {
-            value = (String) properties.get(LEGACY_ERROR_CONDITION);
+            value = getCondition.apply(properties.get(LEGACY_ERROR_CONDITION));
         } else {
             return UNDEFINED_ERROR_CONDITION;
         }

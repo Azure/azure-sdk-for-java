@@ -4,7 +4,6 @@
 package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
-import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.ExceptionUtil;
@@ -168,16 +167,9 @@ public class ManagementChannel implements EventHubManagementNode {
 
                     final AmqpResponseCode statusCode = RequestResponseUtils.getStatusCode(message);
                     final String statusDescription = RequestResponseUtils.getStatusDescription(message);
-                    final AmqpErrorCondition errorCondition = RequestResponseUtils.getErrorCondition(message);
+                    final Throwable error = ExceptionUtil.amqpResponseCodeToException(statusCode.getValue(),
+                        statusDescription, channel.getErrorContext());
 
-                    final Throwable error;
-                    if (errorCondition != RequestResponseUtils.UNDEFINED_ERROR_CONDITION) {
-                        error = ExceptionUtil.toException(errorCondition.getErrorCondition(), statusDescription,
-                            channel.getErrorContext());
-                    } else {
-                        error = ExceptionUtil.amqpResponseCodeToException(statusCode.getValue(), statusDescription,
-                            channel.getErrorContext());
-                    }
                     throw logger.logExceptionAsWarning(Exceptions.propagate(error));
                 }));
         });
