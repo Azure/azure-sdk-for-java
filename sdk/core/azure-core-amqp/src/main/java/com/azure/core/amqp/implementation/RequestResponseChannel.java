@@ -208,8 +208,7 @@ public class RequestResponseChannel implements Disposable {
         }
 
         if (message == null) {
-            return Mono.error(logger.logExceptionAsError(
-                new IllegalArgumentException("message cannot be null")));
+            return Mono.error(logger.logExceptionAsError(new NullPointerException("message cannot be null")));
         }
         if (message.getMessageId() != null) {
             return Mono.error(logger.logExceptionAsError(
