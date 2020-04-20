@@ -1464,6 +1464,7 @@
 
   <modules>
     <module>../../../common/perf-test-core</module>
+    <module>../../../common/azure-test-watcher</module>
     <module>../../appconfiguration/azure-data-appconfiguration</module>
     <module>../../core/azure-core</module>
     <module>../../core/azure-core-amqp</module>
