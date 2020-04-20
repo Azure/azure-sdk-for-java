@@ -759,7 +759,7 @@ class ContainerAPITest extends APISpec {
         blobs.get(2).getName() == metadataName
         blobs.get(2).getMetadata() == null
         blobs.get(3).getTags().get("tag") == "value"
-        // blobs.get(3).getProperties().getTagCount
+        blobs.get(3).getProperties().getTagCount() == 1
         blobs.size() == 4 // Normal, copy, metadata, tags
     }
 
@@ -1076,7 +1076,7 @@ class ContainerAPITest extends APISpec {
         blobs.get(2).getName() == metadataName
         blobs.get(2).getMetadata() == null
         blobs.get(3).getTags().get("tag") == "value"
-        // blobs.get(3).getProperties().getTagCount
+        blobs.get(3).getProperties().getTagCount() == 1
         blobs.size() == 4 // Normal, copy, metadata, tags
     }
 

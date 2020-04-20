@@ -212,6 +212,12 @@ public final class BlobItemProperties {
     @JsonProperty(value = "AccessTierChangeTime")
     private DateTimeRfc1123 accessTierChangeTime;
 
+    /*
+     * The tagCount property.
+     */
+    @JsonProperty(value = "TagCount")
+    private Integer tagCount;
+
     /**
      * Get the creationTime property: The creationTime property.
      *
@@ -911,6 +917,26 @@ public final class BlobItemProperties {
         } else {
             this.accessTierChangeTime = new DateTimeRfc1123(accessTierChangeTime);
         }
+        return this;
+    }
+
+    /**
+     * Get the tagCount property: The tagCount property.
+     *
+     * @return the tagCount value.
+     */
+    public Integer getTagCount() {
+        return this.tagCount;
+    }
+
+    /**
+     * Set the tagCount property: The tagCount property.
+     *
+     * @param tagCount the tagCount value to set.
+     * @return the BlobItemProperties object itself.
+     */
+    public BlobItemProperties setTagCount(Integer tagCount) {
+        this.tagCount = tagCount;
         return this;
     }
 }
