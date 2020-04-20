@@ -12,7 +12,7 @@ Use the client library for App Configuration to create and manage application co
 
 ### Prerequisites
 
-- Java Development Kit (JDK) with version 8 or above
+- [Java Development Kit (JDK)][azure_jdk] with version 8 or above
 - [Azure Subscription][azure_subscription]
 - [App Configuration Store][app_config_store]
 
@@ -34,13 +34,13 @@ To create a Configuration Store you can use the Azure Portal or [Azure CLI][azur
 
 You need to install the Azure App Configuration CLI extension first by executing the following command:
 
-```Powershell
+```bash
 az extension add -n appconfig
 ```
 
 After that, create the Configuration Store:
 
-```Powershell
+```bash
 az appconfig create --name <config-store-name> --resource-group <resource-group-name> --location eastus
 ```
 
@@ -56,7 +56,7 @@ to connect to the service.
 
 Use the [Azure CLI][azure_cli] snippet below to get the connection string from the Configuration Store.
 
-```Powershell
+```bash
 az appconfig credential list --name <config-store-name>
 ```
 
@@ -409,6 +409,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [azconfig_docs]: https://docs.microsoft.com/azure/azure-app-configuration
 [azure_cli]: https://docs.microsoft.com/cli/azure
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity
+[azure_jdk]: https://docs.microsoft.com/en-us/java/azure/jdk/?view=azure-java-stable
 [azure_subscription]: https://azure.microsoft.com/free
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
