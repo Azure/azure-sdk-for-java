@@ -22,7 +22,8 @@ import com.microsoft.azure.arm.utils.RXMapper;
 import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
-import com.microsoft.azure.management.network.v2019_04_01.PrivateEndpointConnection;
+import com.microsoft.azure.management.network.v2019_04_01.PrivateLinkServiceVisibility;
+import com.microsoft.azure.management.network.v2019_04_01.AutoApprovedPrivateLinkService;
 
 class PrivateLinkServicesImpl extends GroupableResourcesCoreImpl<PrivateLinkService, PrivateLinkServiceImpl, PrivateLinkServiceInner, PrivateLinkServicesInner, NetworkManager>  implements PrivateLinkServices {
     protected PrivateLinkServicesImpl(NetworkManager manager) {
@@ -127,12 +128,6 @@ class PrivateLinkServicesImpl extends GroupableResourcesCoreImpl<PrivateLinkServ
     }
 
     @Override
-    public Completable updatePrivateEndpointConnectionAsync(String resourceGroupName, String serviceName, String peConnectionName, PrivateEndpointConnection parameters) {
-        PrivateLinkServicesInner client = this.inner();
-        return client.updatePrivateEndpointConnectionAsync(resourceGroupName, serviceName, peConnectionName, parameters).toCompletable();
-    }
-
-    @Override
     protected PrivateLinkServiceImpl wrapModel(PrivateLinkServiceInner inner) {
         return  new PrivateLinkServiceImpl(inner.name(), inner, manager());
     }
@@ -142,10 +137,78 @@ class PrivateLinkServicesImpl extends GroupableResourcesCoreImpl<PrivateLinkServ
         return new PrivateLinkServiceImpl(name, new PrivateLinkServiceInner(), this.manager());
     }
 
+    private PrivateEndpointConnectionImpl wrapPrivateEndpointConnectionModel(PrivateEndpointConnectionInner inner) {
+        return  new PrivateEndpointConnectionImpl(inner, manager());
+    }
+
+    private AutoApprovedPrivateLinkServiceImpl wrapAutoApprovedPrivateLinkServiceModel(AutoApprovedPrivateLinkServiceInner inner) {
+        return  new AutoApprovedPrivateLinkServiceImpl(inner, manager());
+    }
+
     @Override
     public Completable deletePrivateEndpointConnectionAsync(String resourceGroupName, String serviceName, String peConnectionName) {
         PrivateLinkServicesInner client = this.inner();
         return client.deletePrivateEndpointConnectionAsync(resourceGroupName, serviceName, peConnectionName).toCompletable();
+    }
+
+    @Override
+    public Observable<PrivateLinkServiceVisibility> checkPrivateLinkServiceVisibilityAsync(String location) {
+        PrivateLinkServicesInner client = this.inner();
+        return client.checkPrivateLinkServiceVisibilityAsync(location)
+        .map(new Func1<PrivateLinkServiceVisibilityInner, PrivateLinkServiceVisibility>() {
+            @Override
+            public PrivateLinkServiceVisibility call(PrivateLinkServiceVisibilityInner inner) {
+                return new PrivateLinkServiceVisibilityImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<PrivateLinkServiceVisibility> checkPrivateLinkServiceVisibilityByResourceGroupAsync(String location, String resourceGroupName) {
+        PrivateLinkServicesInner client = this.inner();
+        return client.checkPrivateLinkServiceVisibilityByResourceGroupAsync(location, resourceGroupName)
+        .map(new Func1<PrivateLinkServiceVisibilityInner, PrivateLinkServiceVisibility>() {
+            @Override
+            public PrivateLinkServiceVisibility call(PrivateLinkServiceVisibilityInner inner) {
+                return new PrivateLinkServiceVisibilityImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<AutoApprovedPrivateLinkService> listAutoApprovedPrivateLinkServicesAsync(final String location) {
+        PrivateLinkServicesInner client = this.inner();
+        return client.listAutoApprovedPrivateLinkServicesAsync(location)
+        .flatMapIterable(new Func1<Page<AutoApprovedPrivateLinkServiceInner>, Iterable<AutoApprovedPrivateLinkServiceInner>>() {
+            @Override
+            public Iterable<AutoApprovedPrivateLinkServiceInner> call(Page<AutoApprovedPrivateLinkServiceInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<AutoApprovedPrivateLinkServiceInner, AutoApprovedPrivateLinkService>() {
+            @Override
+            public AutoApprovedPrivateLinkService call(AutoApprovedPrivateLinkServiceInner inner) {
+                return wrapAutoApprovedPrivateLinkServiceModel(inner);
+            }
+        });
+    }
+
+    @Override
+    public Observable<AutoApprovedPrivateLinkService> listAutoApprovedPrivateLinkServicesByResourceGroupAsync(final String location, final String resourceGroupName) {
+        PrivateLinkServicesInner client = this.inner();
+        return client.listAutoApprovedPrivateLinkServicesByResourceGroupAsync(location, resourceGroupName)
+        .flatMapIterable(new Func1<Page<AutoApprovedPrivateLinkServiceInner>, Iterable<AutoApprovedPrivateLinkServiceInner>>() {
+            @Override
+            public Iterable<AutoApprovedPrivateLinkServiceInner> call(Page<AutoApprovedPrivateLinkServiceInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<AutoApprovedPrivateLinkServiceInner, AutoApprovedPrivateLinkService>() {
+            @Override
+            public AutoApprovedPrivateLinkService call(AutoApprovedPrivateLinkServiceInner inner) {
+                return new AutoApprovedPrivateLinkServiceImpl(inner, manager());
+            }
+        });
     }
 
 }
