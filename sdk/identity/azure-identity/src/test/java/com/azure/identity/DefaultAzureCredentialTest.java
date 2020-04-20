@@ -152,17 +152,26 @@ public class DefaultAzureCredentialTest {
     @Test
     public void testExcludeEnvironmentCredential() throws Exception {
         Configuration configuration = Configuration.getGlobalConfiguration();
+        // setup
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
 
-        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
+
+        ManagedIdentityCredential managedIdentityCredential = PowerMockito.mock(ManagedIdentityCredential.class);
+        when(managedIdentityCredential.getToken(request))
+            .thenReturn(Mono.error(
+                new CredentialUnavailableException("Cannot get token from Managed Identity credential")));
+        PowerMockito.whenNew(ManagedIdentityCredential.class).withAnyArguments()
+            .thenReturn(managedIdentityCredential);
+
         // test
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
                                                 .excludeEnvironmentCredential()
                                                 .build();
-        StepVerifier.create(credential.getToken(request1))
+        StepVerifier.create(credential.getToken(request))
             .expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage()
-                                      .startsWith("Tried ManagedIdentityCredential, "
-                                                   + "SharedTokenCacheCredential, "
-                                                   + "AzureCliCredential"))
+                  .matches("Tried ManagedIdentityCredential[\\$\\w]+\\$\\d*,"
+                               + " SharedTokenCacheCredential, "
+                               + "AzureCliCredential[\\$\\w\\s\\.]+"))
             .verify();
     }
 
@@ -170,12 +179,13 @@ public class DefaultAzureCredentialTest {
     public void testExclueManagedIdentityCredential() throws Exception {
         Configuration configuration = Configuration.getGlobalConfiguration();
 
-        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+
         // test
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
                                                 .excludeManagedIdentityCredential()
                                                 .build();
-        StepVerifier.create(credential.getToken(request1))
+        StepVerifier.create(credential.getToken(request))
             .expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage()
                                       .startsWith("Tried EnvironmentCredential, "
                                                    + "SharedTokenCacheCredential, "
@@ -186,17 +196,25 @@ public class DefaultAzureCredentialTest {
     @Test
     public void testExcludeSharedTokenCacheCredential() throws Exception {
         Configuration configuration = Configuration.getGlobalConfiguration();
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
 
-        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
+        ManagedIdentityCredential managedIdentityCredential = PowerMockito.mock(ManagedIdentityCredential.class);
+        when(managedIdentityCredential.getToken(request))
+            .thenReturn(Mono.error(
+                new CredentialUnavailableException("Cannot get token from Managed Identity credential")));
+        PowerMockito.whenNew(ManagedIdentityCredential.class).withAnyArguments()
+            .thenReturn(managedIdentityCredential);
+
+
         // test
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
                                                 .excludeSharedTokenCacheCredential()
                                                 .build();
-        StepVerifier.create(credential.getToken(request1))
+        StepVerifier.create(credential.getToken(request))
             .expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage()
-                                      .startsWith("Tried EnvironmentCredential, "
-                                                      + "ManagedIdentityCredential, "
-                                                      + "AzureCliCredential"))
+                                      .matches("Tried EnvironmentCredential, "
+                                                      + "ManagedIdentityCredential[\\$\\w]+\\$\\d*, "
+                                                      + "AzureCliCredential[\\$\\w\\s\\.]+"))
             .verify();
     }
 
@@ -204,16 +222,24 @@ public class DefaultAzureCredentialTest {
     public void testExcludeAzureCliCredential() throws Exception {
         Configuration configuration = Configuration.getGlobalConfiguration();
 
-        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        ManagedIdentityCredential managedIdentityCredential = PowerMockito.mock(ManagedIdentityCredential.class);
+        when(managedIdentityCredential.getToken(request))
+            .thenReturn(Mono.error(
+                new CredentialUnavailableException("Cannot get token from Managed Identity credential")));
+        PowerMockito.whenNew(ManagedIdentityCredential.class).withAnyArguments()
+            .thenReturn(managedIdentityCredential);
+
+
         // test
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
                                                 .excludeAzureCliCredential()
                                                 .build();
-        StepVerifier.create(credential.getToken(request1))
+        StepVerifier.create(credential.getToken(request))
             .expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage()
-                                      .startsWith("Tried EnvironmentCredential, "
-                                                      + "ManagedIdentityCredential, "
-                                                      + "SharedTokenCacheCredential but"))
+                                      .matches("Tried EnvironmentCredential, "
+                                                      + "ManagedIdentityCredential[\\$\\w]+\\$\\d*, "
+                                                      + "SharedTokenCacheCredential but[\\$\\w\\s\\.]+"))
             .verify();
     }
 
@@ -222,16 +248,24 @@ public class DefaultAzureCredentialTest {
     public void testCredentialUnavailable() throws Exception {
         Configuration configuration = Configuration.getGlobalConfiguration();
 
-        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+
+        ManagedIdentityCredential managedIdentityCredential = PowerMockito.mock(ManagedIdentityCredential.class);
+        when(managedIdentityCredential.getToken(request))
+            .thenReturn(Mono.error(
+                new CredentialUnavailableException("Cannot get token from Managed Identity credential")));
+        PowerMockito.whenNew(ManagedIdentityCredential.class).withAnyArguments()
+            .thenReturn(managedIdentityCredential);
+
         // test
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
                                                 .build();
-        StepVerifier.create(credential.getToken(request1))
+        StepVerifier.create(credential.getToken(request))
             .expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage()
-                                        .startsWith("Tried EnvironmentCredential, "
-                                                        + "ManagedIdentityCredential, "
+                                        .matches("Tried EnvironmentCredential, "
+                                                        + "ManagedIdentityCredential[\\$\\w]+\\$\\d*, "
                                                         + "SharedTokenCacheCredential, "
-                                                        + "AzureCliCredential but"))
+                                                        + "AzureCliCredential but[\\$\\w\\s\\.]+"))
             .verify();
     }
 }
