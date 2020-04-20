@@ -4,7 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.ResourceId;
-import org.apache.commons.lang3.tuple.Pair;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;

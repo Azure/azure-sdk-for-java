@@ -54,6 +54,7 @@ public final class BlobClientBuilder {
     private String containerName;
     private String blobName;
     private String snapshot;
+    private String versionId;
 
     private CpkInfo customerProvidedKey;
     private EncryptionScope encryptionScope;
@@ -131,7 +132,8 @@ public final class BlobClientBuilder {
             httpClient, additionalPolicies, configuration, logger);
 
         return new BlobAsyncClient(pipeline, String.format("%s/%s/%s", endpoint, blobContainerName, blobName),
-            serviceVersion, accountName, blobContainerName, blobName, snapshot, customerProvidedKey, encryptionScope);
+            serviceVersion, accountName, blobContainerName, blobName, snapshot, customerProvidedKey, encryptionScope,
+            versionId);
     }
 
     /**
@@ -279,6 +281,7 @@ public final class BlobClientBuilder {
             this.containerName = parts.getBlobContainerName();
             this.blobName = Utility.urlEncode(parts.getBlobName());
             this.snapshot = parts.getSnapshot();
+            this.versionId = parts.getVersionId();
 
             String sasToken = parts.getCommonSasQueryParameters().encode();
             if (!CoreUtils.isNullOrEmpty(sasToken)) {
@@ -324,6 +327,17 @@ public final class BlobClientBuilder {
      */
     public BlobClientBuilder snapshot(String snapshot) {
         this.snapshot = snapshot;
+        return this;
+    }
+
+    /**
+     * Sets the version identifier of the blob.
+     *
+     * @param versionId Version identifier for the blob, pass {@code null} to interact with the latest blob version.
+     * @return the updated BlobClientBuilder object
+     */
+    public BlobClientBuilder versionId(String versionId) {
+        this.versionId = versionId;
         return this;
     }
 

@@ -57,7 +57,7 @@ public class StoredProcedureCrudTest extends TestSuiteBase {
         storedProcedureDef.setBody("function() {var x = 10;}");
         CosmosAsyncStoredProcedure storedProcedure = container.getScripts().createStoredProcedure(storedProcedureDef, new CosmosStoredProcedureRequestOptions()).block().getStoredProcedure();
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
         Mono<CosmosAsyncStoredProcedureResponse> readObservable = storedProcedure.read(null);
 
         CosmosResponseValidator<CosmosAsyncStoredProcedureResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncStoredProcedureResponse>()
@@ -85,7 +85,7 @@ public class StoredProcedureCrudTest extends TestSuiteBase {
 
         validateSuccess(deleteObservable, validator);
 
-        waitIfNeededForReplicasToCatchUp(this.clientBuilder());
+        waitIfNeededForReplicasToCatchUp(this.getClientBuilder());
 
         Mono<CosmosAsyncStoredProcedureResponse> readObservable = storedProcedure.read(null);
         FailureValidator notFoundValidator = new FailureValidator.Builder().resourceNotFound().build();
@@ -95,7 +95,7 @@ public class StoredProcedureCrudTest extends TestSuiteBase {
     @BeforeClass(groups = { "simple" }, timeOut = 10_000 * SETUP_TIMEOUT)
     public void before_StoredProcedureCrudTest() {
         assertThat(this.client).isNull();
-        this.client = clientBuilder().buildAsyncClient();
+        this.client = getClientBuilder().buildAsyncClient();
         this.container = getSharedMultiPartitionCosmosContainer(this.client);
     }
 

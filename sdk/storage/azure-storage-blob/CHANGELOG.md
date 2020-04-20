@@ -1,8 +1,16 @@
 # Release History
 
-## 12.6.0-beta.1 (Unreleased)
+## 12.7.0-beta.1 (Unreleased)
 - Added support for the 2019-12-12 service version.
 - Added support for blob tags. Added get/setTags method to Blob(Async)ClientBase. Added filterTags api to BlobServiceClient. Added ability to specify tags on all methods that create a blob. Tag count returned on getProperties/getBlob. Option to include returning tags on listing. 
+
+## 12.6.0 (2020-04-06)
+- Fixed a bug that would prevent client initialization against Azurite in some containerized environments.
+- Fixed a bug that would prevent progress from being reported when uploading small files.
+- Modified BlobOutputStream to wait on a condition variable until transfer is complete instead of polling.
+- Fixed a bug where the Date header wouldn't be updated with a new value on request retry.
+- Fixed a bug that ignored the timeout and context parameters on BlobClient.uploadWithResponse.
+- Added an overload to BlobOutputStream which accepts a context.
 
 ## 12.5.0 (2020-03-11)
 - Fixed a bug that was adding an invalid 'include' query-parameter for list blob item requests if no dataset-include options were specified.

@@ -321,7 +321,7 @@ public final class ChangeFeedProcessorOptions {
      * @return a value indicating whether on start of the host all existing leases should be deleted and the host
      * should start from scratch.
      */
-    public boolean getDiscardExistingLeases() {
+    public boolean isExistingLeasesDiscarded() {
         return this.discardExistingLeases;
     }
 
@@ -332,7 +332,7 @@ public final class ChangeFeedProcessorOptions {
      * @param discardExistingLeases Indicates whether to discard all existing leases if true
      * @return the current ChangeFeedProcessorOptions instance.
      */
-    public ChangeFeedProcessorOptions setDiscardExistingLeases(boolean discardExistingLeases) {
+    public ChangeFeedProcessorOptions setExistingLeasesDiscarded(boolean discardExistingLeases) {
         this.discardExistingLeases = discardExistingLeases;
         return this;
     }

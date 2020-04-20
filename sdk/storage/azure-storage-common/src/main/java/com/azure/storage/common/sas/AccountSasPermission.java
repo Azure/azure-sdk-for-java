@@ -33,6 +33,8 @@ public final class AccountSasPermission {
 
     private boolean deletePermission;
 
+    private boolean deleteVersionPermission;
+
     private boolean listPermission;
 
     private boolean updatePermission;
@@ -53,7 +55,7 @@ public final class AccountSasPermission {
      *
      * @return An {@link AccountSasPermission} object generated from the given {@link String}.
      *
-     * @throws IllegalArgumentException If {@code permString} contains a character other than r, w, d, l, a, c, u,
+     * @throws IllegalArgumentException If {@code permString} contains a character other than r, w, d, x, l, a, c, u,
      *     or p.
      */
     public static AccountSasPermission parse(String permString) {
@@ -70,6 +72,9 @@ public final class AccountSasPermission {
                     break;
                 case 'd':
                     permissions.deletePermission = true;
+                    break;
+                case 'x':
+                    permissions.deleteVersionPermission = true;
                     break;
                 case 'l':
                     permissions.listPermission = true;
@@ -191,6 +196,25 @@ public final class AccountSasPermission {
     }
 
     /**
+     * @return the delete version permission status
+     */
+    public boolean hasDeleteVersionPermission() {
+        return deleteVersionPermission;
+    }
+
+    /**
+     * Sets the delete version permission status.
+     *
+     * @param hasDeleteVersionPermission Permission status to set
+     *
+     * @return the updated AccountSasPermission object
+     */
+    public AccountSasPermission setDeleteVersionPermission(boolean hasDeleteVersionPermission) {
+        this.deleteVersionPermission = hasDeleteVersionPermission;
+        return this;
+    }
+
+    /**
      * @return the list permission status
      */
     public boolean hasListPermission() {
@@ -274,6 +298,10 @@ public final class AccountSasPermission {
 
         if (this.deletePermission) {
             builder.append('d');
+        }
+
+        if (this.deleteVersionPermission) {
+            builder.append('x');
         }
 
         if (this.listPermission) {

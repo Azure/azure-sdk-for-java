@@ -16,7 +16,6 @@ import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.models.StaticWebsite
 
-import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.blob.models.BlobStorageException
 
 import com.azure.storage.common.policy.RequestRetryOptions
@@ -26,7 +25,6 @@ import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
 
-import java.nio.charset.Charset
 import java.time.Duration
 import java.time.OffsetDateTime
 

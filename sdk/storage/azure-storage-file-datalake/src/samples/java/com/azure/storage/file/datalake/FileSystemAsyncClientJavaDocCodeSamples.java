@@ -174,13 +174,19 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
     }
 
     /**
-     * Code snippets for {@link DataLakeFileSystemAsyncClient#createFile(String)} and
+     * Code snippets for {@link DataLakeFileSystemAsyncClient#createFile(String)},
+     * {@link DataLakeFileSystemAsyncClient#createFile(String, boolean)} and
      * {@link DataLakeFileSystemAsyncClient#createFileWithResponse(String, String, String, PathHttpHeaders, Map, DataLakeRequestConditions)}
      */
     public void createFileCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFile#String
         Mono<DataLakeFileAsyncClient> fileClient = client.createFile(fileName);
         // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFile#String
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFile#String-boolean
+        boolean overwrite = false; /* Default value. */
+        Mono<DataLakeFileAsyncClient> fClient = client.createFile(fileName, overwrite);
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFile#String-boolean
 
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions
         PathHttpHeaders httpHeaders = new PathHttpHeaders()
@@ -215,13 +221,19 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
     }
 
     /**
-     * Code snippets for {@link DataLakeFileSystemAsyncClient#createDirectory(String)} and
+     * Code snippets for {@link DataLakeFileSystemAsyncClient#createDirectory(String)},
+     * {@link DataLakeFileSystemAsyncClient#createDirectory(String, boolean)} and
      * {@link DataLakeFileSystemAsyncClient#createDirectoryWithResponse(String, String, String, PathHttpHeaders, Map, DataLakeRequestConditions)}
      */
     public void createDirectoryCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectory#String
-        Mono<DataLakeDirectoryAsyncClient> directoryClient = client.createDirectory(fileName);
+        Mono<DataLakeDirectoryAsyncClient> directoryClient = client.createDirectory(directoryName);
         // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectory#String
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectory#String-boolean
+        boolean overwrite = false; /* Default value. */
+        Mono<DataLakeDirectoryAsyncClient> dClient = client.createDirectory(directoryName, overwrite);
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectory#String-boolean
 
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions
         PathHttpHeaders httpHeaders = new PathHttpHeaders()
@@ -231,8 +243,9 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
             .setLeaseId(leaseId);
         String permissions = "permissions";
         String umask = "umask";
-        Mono<Response<DataLakeDirectoryAsyncClient>> newDirectoryClient = client.createDirectoryWithResponse(fileName,
-            permissions, umask, httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions);
+        Mono<Response<DataLakeDirectoryAsyncClient>> newDirectoryClient = client.createDirectoryWithResponse(
+            directoryName, permissions, umask, httpHeaders, Collections.singletonMap("metadata", "value"),
+            requestConditions);
         // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions
     }
 

@@ -17,6 +17,7 @@ import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuilder;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
@@ -453,9 +454,8 @@ public class DataLakeFileSystemAsyncClient {
     }
 
     /**
-     * Creates a new file within a file system. If a file with the same name already exists, the file will be
-     * overwritten. For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     * Creates a new file within a file system. By default this method will not overwrite an existing file. For more
+     * information, see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -465,8 +465,29 @@ public class DataLakeFileSystemAsyncClient {
      * @return A {@link Mono} containing a {@link DataLakeFileAsyncClient} used to interact with the file created.
      */
     public Mono<DataLakeFileAsyncClient> createFile(String fileName) {
+        return createFile(fileName, false);
+    }
+
+    /**
+     * Creates a new file within a file system. For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFile#String-boolean}
+     *
+     * @param fileName Name of the file to create.
+     * @param overwrite Whether or not to overwrite, should a file exist.
+     * @return A {@link Mono} containing a {@link DataLakeFileAsyncClient} used to interact with the file created.
+     */
+    public Mono<DataLakeFileAsyncClient> createFile(String fileName, boolean overwrite) {
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions();
+        if (!overwrite) {
+            requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        }
         try {
-            return createFileWithResponse(fileName, null, null, null, null, null).flatMap(FluxUtil::toMono);
+            return createFileWithResponse(fileName, null, null, null, null, requestConditions)
+                .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -545,9 +566,8 @@ public class DataLakeFileSystemAsyncClient {
     }
 
     /**
-     * Creates a new directory within a file system. If a directory with the same name already exists, the directory
-     * will be overwritten. For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     * Creates a new directory within a file system. By default this method will not overwrite an existing directory.
+     * For more information, see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -558,8 +578,30 @@ public class DataLakeFileSystemAsyncClient {
      * created.
      */
     public Mono<DataLakeDirectoryAsyncClient> createDirectory(String directoryName) {
+        return createDirectory(directoryName, false);
+    }
+
+    /**
+     * Creates a new directory within a file system. For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectory#String-boolean}
+     *
+     * @param directoryName Name of the directory to create.
+     * @param overwrite Whether or not to overwrite, should a directory exist.
+     * @return A {@link Mono} containing a {@link DataLakeDirectoryAsyncClient} used to interact with the directory
+     * created.
+     */
+    public Mono<DataLakeDirectoryAsyncClient> createDirectory(String directoryName, boolean overwrite) {
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions();
+        if (!overwrite) {
+            requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        }
         try {
-            return createDirectoryWithResponse(directoryName, null, null, null, null, null).flatMap(FluxUtil::toMono);
+            return createDirectoryWithResponse(directoryName, null, null, null, null, requestConditions)
+                .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

@@ -13,7 +13,6 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
@@ -93,7 +92,7 @@ public class ProxySendTest extends IntegrationTestBase {
         final String messageId = UUID.randomUUID().toString();
         final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
         final EventHubProducerAsyncClient producer = builder.buildAsyncProducerClient();
-        final Flux<EventData> events = TestUtils.getEvents(NUMBER_OF_EVENTS, messageId);
+        final List<EventData> events = TestUtils.getEvents(NUMBER_OF_EVENTS, messageId);
         final PartitionProperties information = producer.getPartitionProperties(PARTITION_ID).block();
 
         Assertions.assertNotNull(information, "Should receive partition information.");

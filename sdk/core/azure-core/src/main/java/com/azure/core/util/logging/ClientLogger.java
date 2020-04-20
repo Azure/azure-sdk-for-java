@@ -6,11 +6,12 @@ package com.azure.core.util.logging;
 import com.azure.core.implementation.logging.DefaultLogger;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import java.util.Arrays;
-import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.NOPLogger;
+
+import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * This is a fluent logger helper class that wraps a pluggable {@link Logger}.
@@ -57,13 +58,30 @@ public class ClientLogger {
     }
 
     /**
-     * Logs a formattable message that uses {@code {}} as the placeholder at {@code verbose} log level.
+     * Logs a message at {@code verbose} log level.
      *
      * <p><strong>Code samples</strong></p>
      *
      * <p>Logging a message at verbose log level.</p>
      *
      * {@codesnippet com.azure.core.util.logging.clientlogger.verbose}
+     *
+     * @param message The message to log.
+     */
+    public void verbose(String message) {
+        if (logger.isDebugEnabled()) {
+            logger.debug(message);
+        }
+    }
+
+    /**
+     * Logs a formattable message that uses {@code {}} as the placeholder at {@code verbose} log level.
+     *
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Logging a message at verbose log level.</p>
+     *
+     * {@codesnippet com.azure.core.util.logging.clientlogger.verbose#string-object}
      *
      * @param format The formattable message to log.
      * @param args Arguments for the message. If an exception is being logged, the last argument should be the
@@ -76,13 +94,30 @@ public class ClientLogger {
     }
 
     /**
+     * Logs a message at {@code info} log level.
+     *
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Logging a message at verbose log level.</p>
+     *
+     * {@codesnippet com.azure.core.util.logging.clientlogger.info}
+     *
+     * @param message The message to log.
+     */
+    public void info(String message) {
+        if (logger.isInfoEnabled()) {
+            logger.info(message);
+        }
+    }
+
+    /**
      * Logs a formattable message that uses {@code {}} as the placeholder at {@code informational} log level.
      *
      * <p><strong>Code samples</strong></p>
      *
      * <p>Logging a message at informational log level.</p>
      *
-     * {@codesnippet com.azure.core.util.logging.clientlogger.info}
+     * {@codesnippet com.azure.core.util.logging.clientlogger.info#string-object}
      *
      * @param format The formattable message to log
      * @param args Arguments for the message. If an exception is being logged, the last argument should be the
@@ -95,13 +130,30 @@ public class ClientLogger {
     }
 
     /**
+     * Logs a message at {@code warning} log level.
+     *
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Logging a message at verbose log level.</p>
+     *
+     * {@codesnippet com.azure.core.util.logging.clientlogger.warning}
+     *
+     * @param message The message to log.
+     */
+    public void warning(String message) {
+        if (logger.isWarnEnabled()) {
+            logger.warn(message);
+        }
+    }
+
+    /**
      * Logs a formattable message that uses {@code {}} as the placeholder at {@code warning} log level.
      *
      * <p><strong>Code samples</strong></p>
      *
      * <p>Logging a message at warning log level.</p>
      *
-     * {@codesnippet com.azure.core.util.logging.clientlogger.warning}
+     * {@codesnippet com.azure.core.util.logging.clientlogger.warning#string-object}
      *
      * @param format The formattable message to log.
      * @param args Arguments for the message. If an exception is being logged, the last argument should be the
@@ -114,13 +166,30 @@ public class ClientLogger {
     }
 
     /**
+     * Logs a message at {@code error} log level.
+     *
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Logging a message at verbose log level.</p>
+     *
+     * {@codesnippet com.azure.core.util.logging.clientlogger.error}
+     *
+     * @param message The message to log.
+     */
+    public void error(String message) {
+        if (logger.isErrorEnabled()) {
+            logger.error(message);
+        }
+    }
+
+    /**
      * Logs a formattable message that uses {@code {}} as the placeholder at {@code error} log level.
      *
      * <p><strong>Code samples</strong></p>
      *
      * <p>Logging an error with stack trace.</p>
      *
-     * {@codesnippet com.azure.core.util.logging.clientlogger.error}
+     * {@codesnippet com.azure.core.util.logging.clientlogger.error#string-object}
      *
      * @param format The formattable message to log.
      * @param args Arguments for the message. If an exception is being logged, the last argument should be the
@@ -134,23 +203,46 @@ public class ClientLogger {
 
     /**
      * Logs the {@link RuntimeException} at the warning level and returns it to be thrown.
+     * <p>
+     * This API covers the cases where a runtime exception type needs to be thrown and logged. If a {@link Throwable} is
+     * being logged use {@link #logThowableAsWarning(Throwable)} instead.
      *
      * @param runtimeException RuntimeException to be logged and returned.
-     * @return The passed {@code RuntimeException}.
+     * @return The passed {@link RuntimeException}.
      * @throws NullPointerException If {@code runtimeException} is {@code null}.
      */
     public RuntimeException logExceptionAsWarning(RuntimeException runtimeException) {
         Objects.requireNonNull(runtimeException, "'runtimeException' cannot be null.");
+
+        return logThowableAsWarning(runtimeException);
+    }
+
+    /**
+     * Logs the {@link Throwable} at the warning level and returns it to be thrown.
+     * <p>
+     * This API covers the cases where a checked exception type needs to be thrown and logged. If a {@link
+     * RuntimeException} is being logged use {@link #logExceptionAsWarning(RuntimeException)} instead.
+     *
+     * @param throwable Throwable to be logged and returned.
+     * @param <T> Type of the Throwable being logged.
+     * @return The passed {@link Throwable}.
+     * @throws NullPointerException If {@code throwable} is {@code null}.
+     */
+    public <T extends Throwable> T logThowableAsWarning(T throwable) {
+        Objects.requireNonNull(throwable, "'throwable' cannot be null.");
         if (!logger.isWarnEnabled()) {
-            return runtimeException;
+            return throwable;
         }
 
-        performLogging(LogLevel.WARNING, true, runtimeException.getMessage(), runtimeException);
-        return runtimeException;
+        performLogging(LogLevel.WARNING, true, throwable.getMessage(), throwable);
+        return throwable;
     }
 
     /**
      * Logs the {@link RuntimeException} at the error level and returns it to be thrown.
+     * <p>
+     * This API covers the cases where a runtime exception type needs to be thrown and logged. If a {@link Throwable} is
+     * being logged use {@link #logThrowableAsError(Throwable)} instead.
      *
      * @param runtimeException RuntimeException to be logged and returned.
      * @return The passed {@code RuntimeException}.
@@ -158,13 +250,29 @@ public class ClientLogger {
      */
     public RuntimeException logExceptionAsError(RuntimeException runtimeException) {
         Objects.requireNonNull(runtimeException, "'runtimeException' cannot be null.");
+
+        return logThrowableAsError(runtimeException);
+    }
+
+    /**
+     * Logs the {@link Throwable} at the error level and returns it to be thrown.
+     * <p>
+     * This API covers the cases where a checked exception type needs to be thrown and logged. If a {@link
+     * RuntimeException} is being logged use {@link #logExceptionAsError(RuntimeException)} instead.
+     *
+     * @param throwable Throwable to be logged and returned.
+     * @param <T> Type of the Throwable being logged.
+     * @return The passed {@link Throwable}.
+     * @throws NullPointerException If {@code throwable} is {@code null}.
+     */
+    public <T extends Throwable> T logThrowableAsError(T throwable) {
+        Objects.requireNonNull(throwable, "'throwable' cannot be null.");
         if (!logger.isErrorEnabled()) {
-            return runtimeException;
+            return throwable;
         }
 
-        performLogging(LogLevel.VERBOSE, true, runtimeException.getMessage(), runtimeException);
-
-        return runtimeException;
+        performLogging(LogLevel.ERROR, true, throwable.getMessage(), throwable);
+        return throwable;
     }
 
     /*

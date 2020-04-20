@@ -396,7 +396,7 @@ class SASTest extends APISpec {
             .setContentLanguage(language)
             .setContentType(type)
 
-        def util = new BlobSasImplUtil(Transforms.toBlobSasValues(v), "fileSystemName", "pathName", null)
+        def util = new BlobSasImplUtil(Transforms.toBlobSasValues(v), "fileSystemName", "pathName", null, null)
         util.ensureState()
         def sasToken = util.stringToSign(util.getCanonicalName(primaryCredential.getAccountName()))
 
@@ -459,7 +459,7 @@ class SASTest extends APISpec {
             .setSignedVersion(keyVersion)
             .setValue(keyValue)
 
-        def util = new BlobSasImplUtil(Transforms.toBlobSasValues(v), "fileSystemName", "pathName", null)
+        def util = new BlobSasImplUtil(Transforms.toBlobSasValues(v), "fileSystemName", "pathName", null, null)
         util.ensureState()
         def sasToken = util.stringToSign(Transforms.toBlobUserDelegationKey(key), util.getCanonicalName(primaryCredential.getAccountName()))
 

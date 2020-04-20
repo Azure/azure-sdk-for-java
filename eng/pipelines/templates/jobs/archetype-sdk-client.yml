@@ -1,8 +1,10 @@
 parameters:
   SDKType: client
   ServiceDirectory: not-specified # Set a default that breaks in obvious ways.
+  Artifacts: []
+  AdditionalModules: []
   PreTestSteps: []
-  TestOptions: '$(DefaultOptions) -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true'
+  TestOptions: '$(DefaultOptions) -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true'
   TestGoals: verify
   TestMatrix:
     Linux - Java 8:
@@ -101,13 +103,18 @@ jobs:
           RootFolder: $(Build.SourcesDirectory)
           BuildSHA: $(Build.SourceVersion)
           RepoId: 'Azure/azure-sdk-for-java'
+        
+      - template: ../steps/generate-project-list.yml
+        parameters:
+          Artifacts: ${{parameters.Artifacts}}
+          AdditionalModules: ${{parameters.AdditionalModules}}
 
       - task: Maven@3
         displayName: 'Build and Package'
         inputs:
-          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
+          mavenPomFile: pom.xml
           goals: 'package'
-          options: '$(DefaultOptions) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests -Dgenerate-overview' # We include template-module so we ensure it always builds in CI
+          options: '$(DefaultOptions) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests -Dinject-codesnippets -Dgenerate-overview -pl $(ProjectList) -am' # We include template-module so we ensure it always builds in CI
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
@@ -155,31 +162,23 @@ jobs:
           Options: --batch-mode
           MavenOptions: $(MemoryOptions) $(LoggingOptions)
 
+      - template: ../steps/generate-project-list.yml
+        parameters:
+          Artifacts: ${{parameters.Artifacts}}
+          AdditionalModules: ${{parameters.AdditionalModules}}
+
       # maven dependency:tree needs to be able to resolve dependencies, so these should be installed.
       - task: Maven@3
         displayName: 'Build and Install'
         inputs:
-          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
+          mavenPomFile: pom.xml
           goals: 'install'
-          options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true'
+          options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
-
-      - pwsh: |
-          if ("${{parameters.SDKType}}" -ieq "client") {
-            $excludes = "^(microsoft|mgmt)"
-          } else {
-            $excludes = "^(azure|mgmt)"
-          }
-
-          $directory = "$(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}"
-
-          Write-Host "Directory: '$directory'. Excludes: '$excludes'"
-          $(Build.SourcesDirectory)/eng/Set-ComponentRegistrations.ps1 $directory -ExcludeRegex $excludes -Verbose
-        displayName: 'Generate cgmanifest.json'
 
       - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
         # ComponentGovernance is currently unable to run on pull requests of public projects. Running on non-PR
@@ -190,8 +189,8 @@ jobs:
       - task: Maven@3
         displayName: 'Run SpotBugs, Checkstyle, RevApi, and Javadoc'
         inputs:
-          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
-          options: '--no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme-windows'
+          mavenPomFile: pom.xml
+          options: '--no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme-windows -pl $(ProjectList)'
           mavenOptions: '$(MemoryOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
@@ -254,11 +253,16 @@ jobs:
         condition: and(succeeded(), eq(variables['ShouldRunSourceTests'],'true'))
         displayName: 'Update versions for source build'
 
+      - template: ../steps/generate-project-list.yml
+        parameters:
+          Artifacts: ${{parameters.Artifacts}}
+          AdditionalModules: ${{parameters.AdditionalModules}}
+
       - task: Maven@3
         displayName: 'Run tests'
         inputs:
-          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
-          options: ${{ parameters.TestOptions }}
+          mavenPomFile: pom.xml
+          options: ${{ parameters.TestOptions }} -pl $(ProjectList) -am
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
@@ -274,44 +278,3 @@ jobs:
         inputs:
           mergeTestResults: true
           testRunTitle: $(RunTitle)
-
-      # HACK: This has been disabled to unblock releases where aggregate code
-      #       coverage reporting was causing agent timeouts. We've got an issue
-      #       to discuss how to handle aggregate-style reporting across the repo
-      #       but at the moment this isn't going to work:
-      #
-      #         https://github.com/Azure/azure-sdk-for-java/issues/7271
-      #
-      #     # Generate JaCoCo code coverage report on Java 11, Linux builds if the build reason is not PR.
-      # - task: Maven@3
-      #   displayName: 'Generate aggregate code coverage report'
-      #   condition: and(eq(variables['OsName'], 'Linux'), eq(variables['JavaVersion'], '1.11'), ne(variables['Build.Reason'], 'PullRequest'))
-      #   inputs:
-      #       # Aggregate reports for non-PR builds will use pom.client.xml and include non-shipping modules
-      #       mavenPomFile: pom.client.xml
-      #       options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true'
-      #       mavenOptions: '-Xmx3072m $(LoggingOptions)'
-      #       javaHomeOption: 'JDKVersion'
-      #       jdkVersionOption: $(JavaVersion)
-      #       jdkArchitectureOption: 'x64'
-      #       publishJUnitResults: false
-      #       goals: 'verify'
-
-      #   # Azure DevOps only seems to respect the last code coverage result published, so only do this for Linux + Java LTS.
-      #   # Code coverage reporting is setup only for Track 2 modules.
-      # - task: PublishCodeCoverageResults@1
-      #   condition: and(eq(variables['OsName'], 'Linux'), eq(variables['JavaVersion'], '1.11'), ne(variables['Build.Reason'], 'PullRequest'))
-      #   inputs:
-      #       codeCoverageTool: JaCoCo
-      #       summaryFileLocation: eng/jacoco-test-coverage/target/site/test-coverage/jacoco.xml
-      #       reportDirectory: eng/jacoco-test-coverage/target/site/test-coverage/
-      #       failIfCoverageEmpty: true
-
-      #   # Publish code coverage to an artifact so it can be uploaded to the Maven site.
-      #   # Do this for track 2 modules only. Code coverage from previous step is only published for Linux + Java LTS.
-      # - task: PublishPipelineArtifact@0
-      #   displayName: 'Publish coverage artifact'
-      #   condition: and(eq(variables['OsName'], 'Linux'), eq(variables['JavaVersion'], '1.11'), ne(variables['Build.Reason'], 'PullRequest'))
-      #   inputs:
-      #       artifactName: coverage
-      #       targetPath: eng/jacoco-test-coverage/target/site/

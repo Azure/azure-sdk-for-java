@@ -52,7 +52,7 @@ public class AverageAggregator implements Aggregator {
 
         Object getAverage() {
             if (this.sum == null || this.count <= 0) {
-                return Undefined.Value();
+                return Undefined.value();
             }
             return this.sum / this.count;
         }

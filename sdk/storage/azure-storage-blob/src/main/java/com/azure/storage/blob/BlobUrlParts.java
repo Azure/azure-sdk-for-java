@@ -33,6 +33,7 @@ public final class BlobUrlParts {
     private String containerName;
     private String blobName;
     private String snapshot;
+    private String versionId;
     private String accountName;
     private boolean isIpUrl;
     private CommonSasQueryParameters commonSasQueryParameters;
@@ -102,7 +103,12 @@ public final class BlobUrlParts {
      */
     public BlobUrlParts setHost(String host) {
         this.host = host;
-        this.isIpUrl = ModelHelper.IP_V4_URL_PATTERN.matcher(host).find();
+        try {
+            this.isIpUrl = ModelHelper.determineAuthorityIsIpStyle(host);
+        } catch (MalformedURLException e) {
+            throw logger.logExceptionAsError(new IllegalStateException("Authority is malformed. Host: "
+                + host));
+        }
         return this;
     }
 
@@ -163,6 +169,26 @@ public final class BlobUrlParts {
      */
     public BlobUrlParts setSnapshot(String snapshot) {
         this.snapshot = snapshot;
+        return this;
+    }
+
+    /**
+     * Gets the version identifier that will be used as part of the query string if set.
+     *
+     * @return the version identifier.
+     */
+    public String getVersionId() {
+        return versionId;
+    }
+
+    /**
+     * Sets the version identifier that will be used as part of the query string if set.
+     *
+     * @param versionId The version identifier.
+     * @return the updated BlobUrlParts object.
+     */
+    public BlobUrlParts setVersionId(String versionId) {
+        this.versionId = versionId;
         return this;
     }
 
@@ -278,6 +304,9 @@ public final class BlobUrlParts {
         if (this.snapshot != null) {
             url.setQueryParameter(Constants.UrlConstants.SNAPSHOT_QUERY_PARAMETER, this.snapshot);
         }
+        if (this.versionId != null) {
+            url.setQueryParameter(Constants.UrlConstants.VERSIONID_QUERY_PARAMETER, this.versionId);
+        }
         if (this.commonSasQueryParameters != null) {
             String encodedSAS = this.commonSasQueryParameters.encode();
             if (encodedSAS.length() != 0) {
@@ -338,10 +367,15 @@ public final class BlobUrlParts {
     public static BlobUrlParts parse(URL url) {
         BlobUrlParts parts = new BlobUrlParts().setScheme(url.getProtocol());
 
-        if (ModelHelper.IP_V4_URL_PATTERN.matcher(url.getHost()).find()) {
-            parseIpUrl(url, parts);
-        } else {
-            parseNonIpUrl(url, parts);
+        try {
+            if (ModelHelper.determineAuthorityIsIpStyle(url.getAuthority())) {
+                parseIpUrl(url, parts);
+            } else {
+                parseNonIpUrl(url, parts);
+            }
+        } catch (MalformedURLException e) {
+            throw parts.logger.logExceptionAsError(new IllegalStateException("Authority is malformed. Host: "
+                + url.getAuthority()));
         }
 
         Map<String, String[]> queryParamsMap = parseQueryString(url.getQuery());
@@ -349,6 +383,11 @@ public final class BlobUrlParts {
         String[] snapshotArray = queryParamsMap.remove("snapshot");
         if (snapshotArray != null) {
             parts.setSnapshot(snapshotArray[0]);
+        }
+
+        String[] versionIdArray = queryParamsMap.remove("versionid");
+        if (versionIdArray != null) {
+            parts.setVersionId(versionIdArray[0]);
         }
 
         CommonSasQueryParameters commonSasQueryParameters = new CommonSasQueryParameters(queryParamsMap, true);

@@ -8,11 +8,11 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.PagedResponseBase;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
@@ -56,6 +56,8 @@ import java.util.stream.Stream;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * Client to a container. It may only be instantiated through a {@link BlobContainerClientBuilder} or via the method
@@ -127,9 +129,7 @@ public final class BlobContainerAsyncClient {
 
     /**
      * Creates a new BlobAsyncClient object by concatenating blobName to the end of ContainerAsyncClient's URL. The new
-     * BlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient. To change the pipeline, create
-     * the BlobAsyncClient and then call its WithPipeline method passing in the desired pipeline object. Or, call this
-     * package's getBlobAsyncClient instead of calling this object's getBlobAsyncClient method.
+     * BlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -144,9 +144,7 @@ public final class BlobContainerAsyncClient {
 
     /**
      * Creates a new BlobAsyncClient object by concatenating blobName to the end of ContainerAsyncClient's URL. The new
-     * BlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient. To change the pipeline, create
-     * the BlobAsyncClient and then call its WithPipeline method passing in the desired pipeline object. Or, call this
-     * package's getBlobAsyncClient instead of calling this object's getBlobAsyncClient method.
+     * BlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -160,6 +158,20 @@ public final class BlobContainerAsyncClient {
         return new BlobAsyncClient(getHttpPipeline(), StorageImplUtils.appendToUrlPath(getBlobContainerUrl(),
             Utility.urlEncode(Utility.urlDecode(blobName))).toString(), getServiceVersion(), getAccountName(),
             getBlobContainerName(), blobName, snapshot, getCustomerProvidedKey(), encryptionScope);
+    }
+
+    /**
+     * Creates a new BlobAsyncClient object by concatenating blobName to the end of ContainerAsyncClient's URL. The new
+     * BlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient.
+     *
+     * @param blobName A {@code String} representing the name of the blob.
+     * @param versionId the version identifier for the blob, pass {@code null} to interact with the latest blob version.
+     * @return A new {@link BlobAsyncClient} object which references the blob with the specified name in this container.
+     */
+    public BlobAsyncClient getBlobAsyncClientWithVersion(String blobName, String versionId) {
+        return new BlobAsyncClient(getHttpPipeline(), StorageImplUtils.appendToUrlPath(getBlobContainerUrl(),
+            Utility.urlEncode(Utility.urlDecode(blobName))).toString(), getServiceVersion(), getAccountName(),
+            getBlobContainerName(), blobName, null, getCustomerProvidedKey(), encryptionScope, versionId);
     }
 
     /**
@@ -326,8 +338,10 @@ public final class BlobContainerAsyncClient {
 
     Mono<Response<Void>> createWithResponse(Map<String, String> metadata, PublicAccessType accessType,
         Context context) {
+        context = context == null ? Context.NONE : context;
         return this.azureBlobStorage.containers().createWithRestResponseAsync(
-            null, null, metadata, accessType, null, blobContainerEncryptionScope, context)
+            null, null, metadata, accessType, null, blobContainerEncryptionScope,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -381,10 +395,12 @@ public final class BlobContainerAsyncClient {
             throw logger.logExceptionAsError(
                 new UnsupportedOperationException("ETag access conditions are not supported for this API."));
         }
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.containers().deleteWithRestResponseAsync(null, null,
             requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
-            requestConditions.getIfUnmodifiedSince(), null, context)
+            requestConditions.getIfUnmodifiedSince(), null,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -427,8 +443,11 @@ public final class BlobContainerAsyncClient {
     }
 
     Mono<Response<BlobContainerProperties>> getPropertiesWithResponse(String leaseId, Context context) {
+        context = context == null ? Context.NONE : context;
+
         return this.azureBlobStorage.containers()
-            .getPropertiesWithRestResponseAsync(null, null, leaseId, null, context)
+            .getPropertiesWithRestResponseAsync(null, null, leaseId, null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 ContainerGetPropertiesHeaders hd = rb.getDeserializedHeaders();
                 BlobContainerProperties properties = new BlobContainerProperties(hd.getMetadata(), hd.getETag(),
@@ -476,7 +495,8 @@ public final class BlobContainerAsyncClient {
     public Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata,
         BlobRequestConditions requestConditions) {
         try {
-            return withContext(context -> setMetadataWithResponse(metadata, requestConditions, context));
+            return withContext(context -> setMetadataWithResponse(metadata, requestConditions,
+                context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -484,6 +504,7 @@ public final class BlobContainerAsyncClient {
 
     Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata,
         BlobRequestConditions requestConditions, Context context) {
+        context = context == null ? Context.NONE : context;
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
         if (!validateNoETag(requestConditions) || requestConditions.getIfUnmodifiedSince() != null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
@@ -493,7 +514,8 @@ public final class BlobContainerAsyncClient {
         }
 
         return this.azureBlobStorage.containers().setMetadataWithRestResponseAsync(null, null,
-            requestConditions.getLeaseId(), metadata, requestConditions.getIfModifiedSince(), null, context)
+            requestConditions.getLeaseId(), metadata, requestConditions.getIfModifiedSince(), null,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -537,8 +559,10 @@ public final class BlobContainerAsyncClient {
     }
 
     Mono<Response<BlobContainerAccessPolicies>> getAccessPolicyWithResponse(String leaseId, Context context) {
+        context = context == null ? Context.NONE : context;
         return this.azureBlobStorage.containers().getAccessPolicyWithRestResponseAsync(
-            null, null, leaseId, null, context)
+            null, null, leaseId, null,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response,
                 new BlobContainerAccessPolicies(response.getDeserializedHeaders().getBlobPublicAccess(),
                 response.getValue())));
@@ -595,7 +619,8 @@ public final class BlobContainerAsyncClient {
         List<BlobSignedIdentifier> identifiers, BlobRequestConditions requestConditions) {
         try {
             return withContext(
-                context -> setAccessPolicyWithResponse(accessType, identifiers, requestConditions, context));
+                context -> setAccessPolicyWithResponse(accessType, identifiers, requestConditions,
+                    context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -630,10 +655,12 @@ public final class BlobContainerAsyncClient {
                 }
             }
         }
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.containers().setAccessPolicyWithRestResponseAsync(
             null, identifiers, null, requestConditions.getLeaseId(), accessType, requestConditions.getIfModifiedSince(),
-            requestConditions.getIfUnmodifiedSince(), null, context)
+            requestConditions.getIfUnmodifiedSince(), null,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -966,7 +993,9 @@ public final class BlobContainerAsyncClient {
     }
 
     Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse(Context context) {
-        return this.azureBlobStorage.containers().getAccountInfoWithRestResponseAsync(null, context)
+        context = context == null ? Context.NONE : context;
+        return this.azureBlobStorage.containers().getAccountInfoWithRestResponseAsync(null,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 ContainerGetAccountInfoHeaders hd = rb.getDeserializedHeaders();
                 return new SimpleResponse<>(rb, new StorageAccountInfo(hd.getSkuName(), hd.getAccountKind()));

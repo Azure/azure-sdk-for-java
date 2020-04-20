@@ -36,6 +36,7 @@ public final class BlobItem {
         this.properties = blobItemInternal.getProperties();
         this.metadata = blobItemInternal.getMetadata();
         this.versionId = blobItemInternal.getVersionId();
+        this.isCurrentVersion = blobItemInternal.isCurrentVersion();
         this.isPrefix = blobItemInternal.isPrefix();
 
         this.tags = new HashMap<>();
@@ -45,7 +46,6 @@ public final class BlobItem {
             }
         }
     }
-
 
     /*
      * The name property.
@@ -84,6 +84,8 @@ public final class BlobItem {
      */
     @JsonProperty(value = "VersionId", required = true)
     private String versionId;
+
+    private Boolean isCurrentVersion;
 
     /*
      * The isPrefix property.
@@ -217,6 +219,26 @@ public final class BlobItem {
      */
     public BlobItem setVersionId(String versionId) {
         this.versionId = versionId;
+        return this;
+    }
+
+    /**
+     * Get the isCurrentVersion property: The isCurrentVersion property.
+     *
+     * @return the isCurrentVersion value.
+     */
+    public Boolean isCurrentVersion() {
+        return this.isCurrentVersion;
+    }
+
+    /**
+     *  Set the isCurrentVersion property: The isCurrentVersion property.
+     *
+     * @param isCurrentVersion the isCurrentVersion value to set.
+     * @return the BlobItem object itself.
+     */
+    public BlobItem setIsCurrentVersion(Boolean isCurrentVersion) {
+        this.isCurrentVersion = isCurrentVersion;
         return this;
     }
 

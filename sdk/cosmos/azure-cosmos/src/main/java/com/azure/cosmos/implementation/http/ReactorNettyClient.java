@@ -4,7 +4,6 @@ package com.azure.cosmos.implementation.http;
 
 import com.azure.cosmos.implementation.Configs;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.logging.LogLevel;
@@ -137,8 +136,7 @@ class ReactorNettyClient implements HttpClient {
                 reactorNettyRequest.header(header.name(), header.value());
             }
             if (restRequest.body() != null) {
-                Flux<ByteBuf> nettyByteBufFlux = restRequest.body().map(Unpooled::wrappedBuffer);
-                return reactorNettyOutbound.send(nettyByteBufFlux);
+                return reactorNettyOutbound.send(restRequest.body());
             } else {
                 return reactorNettyOutbound;
             }

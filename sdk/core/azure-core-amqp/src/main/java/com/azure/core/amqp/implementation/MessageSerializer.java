@@ -5,6 +5,8 @@ package com.azure.core.amqp.implementation;
 
 import org.apache.qpid.proton.message.Message;
 
+import java.util.List;
+
 /**
  * Serializer to translate objects to and from proton-j {@link Message messages}.
  */
@@ -37,4 +39,14 @@ public interface MessageSerializer {
      * @return The deserialized object from an AMQP message or {@code null} if it cannot be deserialized.
      */
     <T> T deserialize(Message message, Class<T> clazz);
+
+    /**
+     * Deserializes an AMQP message into a list of concrete objects.
+     *
+     * @param message Message to deserialize.
+     * @param clazz Class to deserialize object into.
+     * @param <T> Type of the deserialized objects in the list.
+     * @return A list of the deserialized objects of {@code null} if it cannot be deserialized.
+     */
+    <T> List<T> deserializeList(Message message, Class<T> clazz);
 }
