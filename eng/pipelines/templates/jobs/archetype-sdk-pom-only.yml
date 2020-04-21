@@ -68,8 +68,8 @@ jobs:
           displayName: 'Prepare POM: ${{artifact.groupId}}:${{artifact.name}}'
           inputs:
             mavenPomFile: sdk/${{parameters.ServiceDirectory}}/${{artifact.name}}/pom.xml
-            goals: 'install'
-            options: '-pl ${{artifact.groupId}}:${{artifact.name}} -DlocalRepositoryPath=$(Build.ArtifactStagingDirectory) -Dgpg.skip'
+            goals: 'deploy'
+            options: '-pl ${{artifact.groupId}}:${{artifact.name}} -DaltDeploymentRepository=id::default::file://$(Build.ArtifactStagingDirectory) -Dgpg.skip'
             mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
             javaHomeOption: 'JDKVersion'
             jdkVersionOption: $(JavaVersion)
