@@ -35,6 +35,6 @@ class StorageSkusImpl implements StorageSkus {
 
     @Override
     public SkusInner inner() {
-        return this.inner();
+        return manager.inner().skus();
     }
 }

@@ -30,6 +30,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.management.resources.DeploymentWhatIf;
 import com.azure.management.resources.ScopedDeployment;
@@ -45,6 +46,8 @@ public final class DeploymentsInner
     implements InnerSupportsGet<DeploymentExtendedInner>,
         InnerSupportsListing<DeploymentExtendedInner>,
         InnerSupportsDelete<Void> {
+    private final ClientLogger logger = new ClientLogger(DeploymentsInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final DeploymentsService service;
 
@@ -908,7 +911,12 @@ public final class DeploymentsInner
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean checkExistenceAtScope(String scope, String deploymentName) {
-        return checkExistenceAtScopeAsync(scope, deploymentName).block();
+        Boolean value = checkExistenceAtScopeAsync(scope, deploymentName).block();
+        if (value != null) {
+            return value;
+        } else {
+            throw logger.logExceptionAsError(new NullPointerException());
+        }
     }
 
     /**
@@ -1450,7 +1458,12 @@ public final class DeploymentsInner
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean checkExistenceAtTenantScope(String deploymentName) {
-        return checkExistenceAtTenantScopeAsync(deploymentName).block();
+        Boolean value = checkExistenceAtTenantScopeAsync(deploymentName).block();
+        if (value != null) {
+            return value;
+        } else {
+            throw logger.logExceptionAsError(new NullPointerException());
+        }
     }
 
     /**
@@ -1966,7 +1979,12 @@ public final class DeploymentsInner
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean checkExistenceAtManagementGroupScope(String groupId, String deploymentName) {
-        return checkExistenceAtManagementGroupScopeAsync(groupId, deploymentName).block();
+        Boolean value = checkExistenceAtManagementGroupScopeAsync(groupId, deploymentName).block();
+        if (value != null) {
+            return value;
+        } else {
+            throw logger.logExceptionAsError(new NullPointerException());
+        }
     }
 
     /**
@@ -2524,7 +2542,12 @@ public final class DeploymentsInner
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean checkExistenceAtSubscriptionScope(String deploymentName) {
-        return checkExistenceAtSubscriptionScopeAsync(deploymentName).block();
+        Boolean value = checkExistenceAtSubscriptionScopeAsync(deploymentName).block();
+        if (value != null) {
+            return value;
+        } else {
+            throw logger.logExceptionAsError(new NullPointerException());
+        }
     }
 
     /**
@@ -3154,7 +3177,12 @@ public final class DeploymentsInner
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean checkExistence(String resourceGroupName, String deploymentName) {
-        return checkExistenceAsync(resourceGroupName, deploymentName).block();
+        Boolean value = checkExistenceAsync(resourceGroupName, deploymentName).block();
+        if (value != null) {
+            return value;
+        } else {
+            throw logger.logExceptionAsError(new NullPointerException());
+        }
     }
 
     /**

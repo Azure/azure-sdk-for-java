@@ -242,7 +242,7 @@ public final class RestClientBuilder {
     /**
      * @return new builder
      */
-    public RestClientBuilder clone() {
+    public RestClientBuilder newBuilder() {
         RestClientBuilder builder = new RestClientBuilder();
         builder.baseUrl = this.baseUrl;
         builder.credential = this.credential;

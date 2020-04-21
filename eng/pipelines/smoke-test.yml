@@ -85,7 +85,7 @@ jobs:
         inputs:
           mavenPomFile: $(PomFile)
           goals: 'versions:use-latest-versions'
-          options: '$(DefaultOptions) $(ProfileFlag) -DskipTests "-Dincludes=com.azure:*"'
+          options: '$(DefaultOptions) $(ProfileFlag) --no-transfer-progress -DskipTests "-Dincludes=com.azure:*"'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
           jdkArchitectureOption: 'x64'
@@ -111,7 +111,7 @@ jobs:
         inputs:
           mavenPomFile: $(PomFile)
           goals: 'dependency:tree'
-          options: '$(DefaultOptions) $(ProfileFlag) -DskipTests'
+          options: '$(DefaultOptions) $(ProfileFlag) --no-transfer-progress -DskipTests'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
           jdkArchitectureOption: 'x64'
@@ -122,7 +122,7 @@ jobs:
         inputs:
           mavenPomFile: $(PomFile)
           goals: 'package'
-          options: '$(DefaultOptions) $(ProfileFlag) -DskipTests'
+          options: '$(DefaultOptions) $(ProfileFlag) --no-transfer-progress -DskipTests'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
           jdkArchitectureOption: 'x64'

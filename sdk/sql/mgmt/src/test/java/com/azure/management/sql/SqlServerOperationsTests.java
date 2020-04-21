@@ -679,7 +679,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
                 .withActiveDirectoryAdministrator("DSEng", id)
                 .withoutAccessFromAzureServices()
                 .defineFirewallRule("somefirewallrule1")
-                .withIPAddress("0.0.0.1")
+                .withIpAddress("0.0.0.1")
                 .attach()
                 .withTag("tag1", "value1")
                 .create();
@@ -710,8 +710,8 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         SqlFirewallRule firewallRule =
             sqlServerManager.sqlServers().firewallRules().getBySqlServer(rgName, sqlServerName, "somefirewallrule1");
-        Assertions.assertEquals("0.0.0.1", firewallRule.startIPAddress());
-        Assertions.assertEquals("0.0.0.1", firewallRule.endIPAddress());
+        Assertions.assertEquals("0.0.0.1", firewallRule.startIpAddress());
+        Assertions.assertEquals("0.0.0.1", firewallRule.endIpAddress());
 
         validateResourceNotFound(
             () ->
@@ -726,8 +726,8 @@ public class SqlServerOperationsTests extends SqlServerTest {
                 .sqlServers()
                 .firewallRules()
                 .getBySqlServer(rgName, sqlServerName, "AllowAllWindowsAzureIps");
-        Assertions.assertEquals("0.0.0.0", firewallRule.startIPAddress());
-        Assertions.assertEquals("0.0.0.0", firewallRule.endIPAddress());
+        Assertions.assertEquals("0.0.0.0", firewallRule.startIpAddress());
+        Assertions.assertEquals("0.0.0.0", firewallRule.endIpAddress());
 
         sqlServer.update().withNewFirewallRule("0.0.0.2", "0.0.0.2", "newFirewallRule1").apply();
         sqlServer.firewallRules().delete("newFirewallRule2");
@@ -741,16 +741,16 @@ public class SqlServerOperationsTests extends SqlServerTest {
                 .firewallRules()
                 .define("newFirewallRule2")
                 .withExistingSqlServer(rgName, sqlServerName)
-                .withIPAddress("0.0.0.3")
+                .withIpAddress("0.0.0.3")
                 .create();
 
-        Assertions.assertEquals("0.0.0.3", firewallRule.startIPAddress());
-        Assertions.assertEquals("0.0.0.3", firewallRule.endIPAddress());
+        Assertions.assertEquals("0.0.0.3", firewallRule.startIpAddress());
+        Assertions.assertEquals("0.0.0.3", firewallRule.endIpAddress());
 
-        firewallRule = firewallRule.update().withStartIPAddress("0.0.0.1").apply();
+        firewallRule = firewallRule.update().withStartIpAddress("0.0.0.1").apply();
 
-        Assertions.assertEquals("0.0.0.1", firewallRule.startIPAddress());
-        Assertions.assertEquals("0.0.0.3", firewallRule.endIPAddress());
+        Assertions.assertEquals("0.0.0.1", firewallRule.startIpAddress());
+        Assertions.assertEquals("0.0.0.3", firewallRule.endIpAddress());
 
         sqlServer.firewallRules().delete("somefirewallrule1");
         validateResourceNotFound(
@@ -760,10 +760,10 @@ public class SqlServerOperationsTests extends SqlServerTest {
                     .firewallRules()
                     .getBySqlServer(rgName, sqlServerName, "somefirewallrule1"));
 
-        firewallRule = sqlServer.firewallRules().define("somefirewallrule2").withIPAddress("0.0.0.4").create();
+        firewallRule = sqlServer.firewallRules().define("somefirewallrule2").withIpAddress("0.0.0.4").create();
 
-        Assertions.assertEquals("0.0.0.4", firewallRule.startIPAddress());
-        Assertions.assertEquals("0.0.0.4", firewallRule.endIPAddress());
+        Assertions.assertEquals("0.0.0.4", firewallRule.startIpAddress());
+        Assertions.assertEquals("0.0.0.4", firewallRule.endIpAddress());
 
         firewallRule.delete();
     }
@@ -1321,7 +1321,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             sqlServer
                 .firewallRules()
                 .define(SQL_FIREWALLRULE_NAME)
-                .withIPAddressRange(START_IPADDRESS, END_IPADDRESS)
+                .withIpAddressRange(START_IPADDRESS, END_IPADDRESS)
                 .createAsync();
 
         SqlFirewallRule sqlFirewallRule = Utils.<SqlFirewallRule>rootResource(resourceStream.last()).block();
@@ -1331,14 +1331,14 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         String secondFirewallRuleName = "secondFireWallRule";
         SqlFirewallRule secondFirewallRule =
-            sqlServer.firewallRules().define(secondFirewallRuleName).withIPAddress(START_IPADDRESS).create();
+            sqlServer.firewallRules().define(secondFirewallRuleName).withIpAddress(START_IPADDRESS).create();
         Assertions.assertNotNull(secondFirewallRule);
 
         secondFirewallRule = sqlServer.firewallRules().get(secondFirewallRuleName);
         Assertions.assertNotNull(secondFirewallRule);
-        Assertions.assertEquals(START_IPADDRESS, secondFirewallRule.endIPAddress());
+        Assertions.assertEquals(START_IPADDRESS, secondFirewallRule.endIpAddress());
 
-        secondFirewallRule = secondFirewallRule.update().withEndIPAddress(END_IPADDRESS).apply();
+        secondFirewallRule = secondFirewallRule.update().withEndIpAddress(END_IPADDRESS).apply();
 
         validateSqlFirewallRule(secondFirewallRule, secondFirewallRuleName);
         sqlServer.firewallRules().delete(secondFirewallRuleName);
@@ -1352,9 +1352,9 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         // Update
         // Making start and end IP address same.
-        sqlFirewallRule.update().withEndIPAddress(START_IPADDRESS).apply();
+        sqlFirewallRule.update().withEndIpAddress(START_IPADDRESS).apply();
         sqlFirewallRule = sqlServer.firewallRules().get(SQL_FIREWALLRULE_NAME);
-        Assertions.assertEquals(sqlFirewallRule.endIPAddress(), START_IPADDRESS);
+        Assertions.assertEquals(sqlFirewallRule.endIpAddress(), START_IPADDRESS);
 
         // List
         validateListSqlFirewallRule(sqlServer.firewallRules().list());
@@ -1390,10 +1390,10 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         for (SqlFirewallRule firewall : firewalls) {
             if (!firewall.name().equalsIgnoreCase(SQL_FIREWALLRULE_NAME)) {
-                Assertions.assertEquals(firewall.startIPAddress(), START_IPADDRESS);
-                if (firewall.endIPAddress().equalsIgnoreCase(START_IPADDRESS)) {
+                Assertions.assertEquals(firewall.startIpAddress(), START_IPADDRESS);
+                if (firewall.endIpAddress().equalsIgnoreCase(START_IPADDRESS)) {
                     startIPAddress++;
-                } else if (firewall.endIPAddress().equalsIgnoreCase(END_IPADDRESS)) {
+                } else if (firewall.endIpAddress().equalsIgnoreCase(END_IPADDRESS)) {
                     endIPAddress++;
                 }
             }
@@ -1528,8 +1528,8 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Assertions.assertNotNull(sqlFirewallRule);
         Assertions.assertEquals(firewallName, sqlFirewallRule.name());
         Assertions.assertEquals(sqlServerName, sqlFirewallRule.sqlServerName());
-        Assertions.assertEquals(START_IPADDRESS, sqlFirewallRule.startIPAddress());
-        Assertions.assertEquals(END_IPADDRESS, sqlFirewallRule.endIPAddress());
+        Assertions.assertEquals(START_IPADDRESS, sqlFirewallRule.startIpAddress());
+        Assertions.assertEquals(END_IPADDRESS, sqlFirewallRule.endIpAddress());
         Assertions.assertEquals(rgName, sqlFirewallRule.resourceGroupName());
         Assertions.assertEquals(sqlServerName, sqlFirewallRule.sqlServerName());
         Assertions.assertEquals(Region.US_EAST, sqlFirewallRule.region());

@@ -270,7 +270,7 @@ public class FormTrainingAsyncClient {
      * @return {@link PagedFlux} of {@link CustomFormModelInfo}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<CustomFormModelInfo> listModels() {
+    public PagedFlux<CustomFormModelInfo> getModelInfos() {
         try {
             return new PagedFlux<>(() -> withContext(context -> listFirstPageModelInfo(context)),
                 continuationToken -> withContext(context -> listNextPageModelInfo(continuationToken, context)));
@@ -286,7 +286,7 @@ public class FormTrainingAsyncClient {
      *
      * @return {@link PagedFlux} of {@link CustomFormModelInfo}.
      */
-    PagedFlux<CustomFormModelInfo> listModels(Context context) {
+    PagedFlux<CustomFormModelInfo> getModelInfos(Context context) {
         return new PagedFlux<>(() -> listFirstPageModelInfo(context),
             continuationToken -> listNextPageModelInfo(continuationToken, context));
     }

@@ -63,6 +63,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -71,6 +72,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -125,7 +127,6 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
     private Map<String, Boolean> connectionStringStickiness;
     private WebAppSourceControlImpl<FluentT, FluentImplT> sourceControl;
     private boolean sourceControlToDelete;
-    private MSDeploy msDeploy;
     private WebAppAuthenticationImpl<FluentT, FluentImplT> authentication;
     private boolean authenticationToUpdate;
     private WebAppDiagnosticLogsImpl<FluentT, FluentImplT> diagnosticLogs;
@@ -549,7 +550,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
 
     @Override
     public OperatingSystem operatingSystem() {
-        if (inner().kind() != null && inner().kind().toLowerCase().contains("linux")) {
+        if (inner().kind() != null && inner().kind().toLowerCase(Locale.ROOT).contains("linux")) {
             return OperatingSystem.LINUX;
         } else {
             return OperatingSystem.WINDOWS;
@@ -650,7 +651,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
                 .subscribe(
                     s -> {
                         try {
-                            out.write(s.getBytes());
+                            out.write(s.getBytes(StandardCharsets.UTF_8));
                             out.write('\n');
                             out.flush();
                         } catch (IOException e) {
@@ -809,7 +810,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
         lastTaskItem = sequentialTask(lastTaskItem, context -> submitLogConfiguration());
         // MSI roles
         if (msiHandler != null) {
-            lastTaskItem = sequentialTask(lastTaskItem, msiHandler);
+            sequentialTask(lastTaskItem, msiHandler);
         }
 
         addPostRunDependent(rootTaskItem);
@@ -1113,9 +1114,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
 
     WebAppBaseImpl<FluentT, FluentImplT> withNewHostNameSslBinding(
         final HostNameSslBindingImpl<FluentT, FluentImplT> hostNameSslBinding) {
-        if (hostNameSslBinding.newCertificate() != null) {
-            sslBindingsToCreate.put(hostNameSslBinding.name(), hostNameSslBinding);
-        }
+        sslBindingsToCreate.put(hostNameSslBinding.name(), hostNameSslBinding);
         return this;
     }
 
