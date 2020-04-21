@@ -5,7 +5,7 @@ package com.azure.storage.blob.implementation.util;
 
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.models.ParallelTransferOptions;
-import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
+import com.azure.storage.common.implementation.Constants;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -16,6 +16,11 @@ import java.net.URL;
  * RESERVED FOR INTERNAL USE.
  */
 public class ModelHelper {
+
+    /**
+     * Indicates the default size above which the upload will be broken into blocks and parallelized.
+     */
+    private static final long BLOB_DEFAULT_MAX_SINGLE_UPLOAD_SIZE = 256L * Constants.MB;
 
     /**
      * Determines whether or not the passed authority is IP style, that is, it is of the format {@code <host>:<port>}.
@@ -50,7 +55,7 @@ public class ModelHelper {
 
         Long maxSingleUploadSize = other.getMaxSingleUploadSizeLong();
         if (maxSingleUploadSize == null) {
-            maxSingleUploadSize = BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES_LONG;
+            maxSingleUploadSize = BLOB_DEFAULT_MAX_SINGLE_UPLOAD_SIZE;
         }
 
         return new ParallelTransferOptions()

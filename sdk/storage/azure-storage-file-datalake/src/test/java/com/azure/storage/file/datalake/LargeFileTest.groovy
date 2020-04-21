@@ -2,26 +2,30 @@ package com.azure.storage.file.datalake
 
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
+import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy
 import com.azure.storage.file.datalake.models.DataLakeStorageException
+import org.reactivestreams.Publisher
+import org.reactivestreams.Subscriber
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Ignore
 import spock.lang.Requires
+import spock.lang.Unroll
 
 import java.nio.ByteBuffer
 import java.util.concurrent.atomic.AtomicLong
 import java.util.function.BiFunction
 
 class LargeFileTest extends APISpec{
-
+    static long defaultSingleUploadThreshold = 100L * Constants.MB
     long maxBlockSize =  4000L * Constants.MB
     boolean collectSize = true
-    List<Mono<Long>> appendPayloadSizes = Collections.synchronizedList(new ArrayList<>())
+    List<Long> appendPayloadSizes = Collections.synchronizedList(new ArrayList<>())
     AtomicLong count = new AtomicLong()
 
     DataLakeFileClient fc
@@ -74,7 +78,7 @@ class LargeFileTest extends APISpec{
         then:
         notThrown(DataLakeStorageException)
         count.get() == 1
-        appendPayloadSizes[0].block() == maxBlockSize
+        appendPayloadSizes[0] == maxBlockSize
     }
 
     @Requires({ liveMode() })
@@ -89,7 +93,7 @@ class LargeFileTest extends APISpec{
         then:
         notThrown(DataLakeStorageException)
         count.get() == 1
-        appendPayloadSizes[0].block() == maxBlockSize
+        appendPayloadSizes[0] == maxBlockSize
     }
 
     @Requires({ liveMode() })
@@ -148,6 +152,28 @@ class LargeFileTest extends APISpec{
         notThrown(DataLakeStorageException)
     }
 
+    @Unroll
+    @Requires({ liveMode() })
+    // This test does not send large payload over the wire
+    def "Should honor default single upload threshold"() {
+        given:
+        def data = createLargeBuffer(dataSize)
+        def transferOptions = new ParallelTransferOptions()
+            .setBlockSizeLong(10L * Constants.MB) // set this much lower than default single upload size to make it tempting.
+
+        when:
+        fcAsyncPayloadDropping.upload(data, transferOptions, true).block()
+
+        then:
+        notThrown(DataLakeStorageException)
+        count.get() == expectedAppendRequests
+
+        where:
+        dataSize                         | expectedAppendRequests
+        defaultSingleUploadThreshold     | 1
+        defaultSingleUploadThreshold + 1 | 11
+    }
+
     private Flux<ByteBuffer> createLargeBuffer(long size) {
         return createLargeBuffer(size, Constants.MB)
     }
@@ -155,9 +181,15 @@ class LargeFileTest extends APISpec{
     private Flux<ByteBuffer> createLargeBuffer(long size, int bufferSize) {
         def bytes = getRandomByteArray(bufferSize)
         long numberOfSubBuffers = (long) (size / bufferSize)
-        return Flux.just(ByteBuffer.wrap(bytes))
+        int remainder = (int) (size - numberOfSubBuffers * bufferSize)
+        Flux<ByteBuffer> result =  Flux.just(ByteBuffer.wrap(bytes))
             .map{buffer -> buffer.duplicate()}
             .repeat(numberOfSubBuffers - 1)
+        if (remainder > 0) {
+            def extraBytes = getRandomByteArray(remainder)
+            result = Flux.concat(result, Flux.just(ByteBuffer.wrap(extraBytes)))
+        }
+        return result
     }
 
     private InputStream createLargeInputStream(long size) {
@@ -192,29 +224,53 @@ class LargeFileTest extends APISpec{
         return file
     }
 
+    /**
+     * This class is intended for large payload test cases only and reports directly into this test class's
+     * state members.
+     */
     private class PayloadDroppingPolicy implements HttpPipelinePolicy {
         @Override
         Mono<HttpResponse> process(HttpPipelineCallContext httpPipelineCallContext, HttpPipelineNextPolicy httpPipelineNextPolicy) {
             def dummyBody = "dummyBody"
             def request = httpPipelineCallContext.httpRequest
+            def urlString = request.getUrl().toString()
             // Substitute large body for put block requests and collect size of original body
-            if (request.url.getQuery() != null && request.url.getQuery().contains("action=append")) {
-                if (collectSize) {
-                    def bytesReceived = request.getBody().reduce(0L, new BiFunction<Long, ByteBuffer, Long>() {
-                        @Override
-                        Long apply(Long a, ByteBuffer byteBuffer) {
-                            return a + byteBuffer.remaining()
-                        }
-                    })
-                    appendPayloadSizes.add(bytesReceived)
-                }
+            if (isAppendRequest(request)) {
                 count.incrementAndGet()
-                request.setBody(dummyBody)
-            } else if(request.url.getQuery() != null && request.url.getQuery().contains("action=flush")) {
-                def url = request.getUrl().toString()
-                request.setUrl(url.replaceAll("position=\\d+", "position=" + dummyBody.length()))
+                Mono<Long> count = interceptBody(request, dummyBody)
+                if (count != null) {
+                    return count.flatMap { bytes ->
+                        appendPayloadSizes.add(bytes)
+                        return httpPipelineNextPolicy.process()
+                    }
+                }
+            } else if(isFlushRequest(request)) {
+                request.setUrl(urlString.replaceAll("position=\\d+", "position=" + dummyBody.length()))
             }
             return httpPipelineNextPolicy.process()
+        }
+
+        private Mono<Long> interceptBody(HttpRequest request, String substitute) {
+            Mono<Long> result = null
+            if (collectSize) {
+                result = request.getBody().reduce(0L, new BiFunction<Long, ByteBuffer, Long>() {
+                    @Override
+                    Long apply(Long a, ByteBuffer byteBuffer) {
+                        return a + byteBuffer.remaining()
+                    }
+                })
+            }
+            request.setBody(substitute)
+
+            return result
+        }
+
+        private boolean isAppendRequest(HttpRequest request) {
+            return request.url.getQuery() != null && request.url.getQuery().contains("action=append")
+        }
+
+        private boolean isFlushRequest(HttpRequest request) {
+            return request.url.getQuery() != null && request.url.getQuery().contains("action=flush")
         }
     }
 }
