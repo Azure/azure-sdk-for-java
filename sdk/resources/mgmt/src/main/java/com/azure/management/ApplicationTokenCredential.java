@@ -70,7 +70,7 @@ public class ApplicationTokenCredential extends AzureTokenCredential {
         super(environment, domain);
         this.clientId = clientId;
         this.clientSecret = null;
-        this.clientCertificate = certificate;
+        this.clientCertificate = certificate.clone();
         this.clientCertificatePassword = password;
         this.clientSecretCredential = null;
     }

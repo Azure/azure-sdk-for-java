@@ -34,7 +34,7 @@ public abstract class ExternalChildResourcesCachedImpl<
         ParentT>
         extends ExternalChildResourceCollectionImpl<FluentModelTImpl, FluentModelT, InnerModelT, ParentImplT, ParentT> {
     private final ClientLogger logger = new ClientLogger(this.getClass());
-    private final String errorMessageFormat = "A child resource ('%s') with name (key) '%s (%s)' %s";
+    private static final String ERROR_MESSAGE_FORMAT = "A child resource ('%s') with name (key) '%s (%s)' %s";
     /**
      * Creates a new ExternalChildResourcesImpl.
      *
@@ -94,7 +94,7 @@ public abstract class ExternalChildResourcesCachedImpl<
      */
     protected final FluentModelTImpl prepareInlineDefine(String name, String key) {
         if (find(key) != null) {
-            String errorMessage = String.format(errorMessageFormat, childResourceName, name, key, "already exists");
+            String errorMessage = String.format(ERROR_MESSAGE_FORMAT, childResourceName, name, key, "already exists");
             throw logger.logExceptionAsError(new IllegalArgumentException(errorMessage));
         }
         FluentModelTImpl childResource = newChildResource(name);
@@ -123,11 +123,11 @@ public abstract class ExternalChildResourcesCachedImpl<
         FluentModelTImpl childResource = find(key);
         if (childResource == null
                 || childResource.pendingOperation() == ExternalChildResourceImpl.PendingOperation.ToBeCreated) {
-            String errorMessage = String.format(errorMessageFormat, childResourceName, name, key, "not found");
+            String errorMessage = String.format(ERROR_MESSAGE_FORMAT, childResourceName, name, key, "not found");
             throw logger.logExceptionAsError(new IllegalArgumentException(errorMessage));
         }
         if (childResource.pendingOperation() == ExternalChildResourceImpl.PendingOperation.ToBeRemoved) {
-            String errorMessage = String.format(errorMessageFormat,
+            String errorMessage = String.format(ERROR_MESSAGE_FORMAT,
                 childResourceName, name, key, "is marked for deletion");
             throw logger.logExceptionAsError(new IllegalArgumentException(errorMessage));
         }
@@ -154,7 +154,7 @@ public abstract class ExternalChildResourcesCachedImpl<
         FluentModelTImpl childResource = find(key);
         if (childResource == null
                 || childResource.pendingOperation() == ExternalChildResourceImpl.PendingOperation.ToBeCreated) {
-            String errorMessage = String.format(errorMessageFormat, childResourceName, name, key, "not found");
+            String errorMessage = String.format(ERROR_MESSAGE_FORMAT, childResourceName, name, key, "not found");
             throw logger.logExceptionAsError(new IllegalArgumentException(errorMessage));
         }
         childResource.setPendingOperation(ExternalChildResourceImpl.PendingOperation.ToBeRemoved);
