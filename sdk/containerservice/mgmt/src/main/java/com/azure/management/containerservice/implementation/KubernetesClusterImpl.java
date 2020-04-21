@@ -66,7 +66,7 @@ public class KubernetesClusterImpl
             this.adminKubeConfigContent =
                 this.manager().kubernetesClusters().getAdminKubeConfigContent(this.resourceGroupName(), this.name());
         }
-        return this.adminKubeConfigContent;
+        return this.adminKubeConfigContent.clone();
     }
 
     @Override
@@ -75,7 +75,7 @@ public class KubernetesClusterImpl
             this.userKubeConfigContent =
                 this.manager().kubernetesClusters().getUserKubeConfigContent(this.resourceGroupName(), this.name());
         }
-        return this.userKubeConfigContent;
+        return this.userKubeConfigContent.clone();
     }
 
     @Override
