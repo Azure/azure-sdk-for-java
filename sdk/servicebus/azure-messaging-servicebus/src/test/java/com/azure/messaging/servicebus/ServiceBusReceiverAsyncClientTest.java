@@ -269,8 +269,8 @@ class ServiceBusReceiverAsyncClientTest {
                 messageSink.next(message);
                 messageSink.next(message2);
             })
-            .expectNext(receivedMessage)
-            .expectNext(receivedMessage2)
+            .expectNext(receivedMessage, receivedMessage2)
+            .thenAwait(Duration.ofSeconds(5))
             .verifyComplete();
 
         logger.info("Verifying assertions.");
