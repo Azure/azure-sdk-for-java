@@ -34,6 +34,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -82,7 +83,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private final String sessionId;
     private final String linkName;
 
-    private volatile ServiceBusAsyncConsumer consumer;
+    private final AtomicReference<ServiceBusAsyncConsumer> consumer = new AtomicReference<>();
 
     /**
      * Creates a receiver that listens to a Service Bus resource.
@@ -503,7 +504,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
 
         logger.info("Removing receiver links.");
-        ServiceBusAsyncConsumer disposed = consumer;
+        ServiceBusAsyncConsumer disposed = consumer.get();
         if (disposed != null) {
             disposed.close();
         }
@@ -550,9 +551,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         final String lockToken = message.getLockToken();
         logger.info("{}: Update started. Disposition: {}. Lock: {}.", entityPath, dispositionStatus, lockToken);
 
-        final ServiceBusAsyncConsumer existingConsumer = consumer;
+        final ServiceBusAsyncConsumer existingConsumer = consumer.get();
         if (isManagementToken(lockToken) || existingConsumer == null) {
-            return connectionProcessor.flatMap(connection -> connection.getManagementNode(entityPath, entityType, sessionId))
+            return connectionProcessor
+                .flatMap(connection -> connection.getManagementNode(entityPath, entityType, sessionId))
                 .flatMap(node -> node.updateDisposition(lockToken, dispositionStatus, deadLetterReason,
                     deadLetterErrorDescription, propertiesToModify))
                 .then(Mono.fromRunnable(() -> {
@@ -570,8 +572,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     private synchronized ServiceBusAsyncConsumer getOrCreateConsumer(ReceiveAsyncOptions options) {
-        if (consumer != null) {
-            return consumer;
+        final ServiceBusAsyncConsumer existing = consumer.get();
+        if (existing != null) {
+            return existing;
         }
 
         logger.info("{}: Creating consumer for link '{}'", entityPath, linkName);
@@ -594,10 +597,12 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         final boolean isAutoLockRenewal = options.getMaxAutoRenewDuration() != null
             && !options.getMaxAutoRenewDuration().isZero();
 
-        consumer = new ServiceBusAsyncConsumer(linkMessageProcessor, messageSerializer,
+        final ServiceBusAsyncConsumer newConsumer = new ServiceBusAsyncConsumer(linkMessageProcessor, messageSerializer,
             options.isEnableAutoComplete(), isAutoLockRenewal, options.getMaxAutoRenewDuration(),
             connectionProcessor.getRetryOptions(), this::complete, this::abandon, this::renewMessageLock);
 
-        return consumer;
+        consumer.set(newConsumer);
+
+        return newConsumer;
     }
 }
