@@ -202,7 +202,12 @@ foreach ($packageDetail in $packageDetails) {
   $pomOption = "-DpomFile=$($pomAssociatedArtifact.File.FullName)"
   Write-Information "POM Option is: $pomOption"
 
-  $fileAssociatedArtifact = $packageDetails.AssociatedArtifacts | Where-Object { ($_.Classifier -eq $null) -and (($_.Type -eq "jar") -or ($_.Type -eq "aar")) }
+  if ($packageDetails.AssociatedArtifacts.Length -ne 1) {
+    $fileAssociatedArtifact = $packageDetails.AssociatedArtifacts | Where-Object { ($_.Classifier -eq $null) -and (($_.Type -eq "jar") -or ($_.Type -eq "aar")) }
+  } else {
+    $fileAssociatedArtifact - $packageDetails.File.FullName
+  }
+  
   $fileOption = "-Dfile=$($fileAssociatedArtifact.File.FullName)"
   Write-Information "File Option is: $fileOption"
 
@@ -216,7 +221,8 @@ foreach ($packageDetail in $packageDetails) {
 
   [AssociatedArtifact[]]$additionalAssociatedArtifacts = @()
   foreach ($additionalAssociatedArtifact in $packageDetail.AssociatedArtifacts) {
-    if (($additionalAssociatedArtifact -ne $fileAssociatedArtifact) -and
+    if (($additionalAssociatedArtifact -ne $pomAssociatedArtifact) -and
+        ($additionalAssociatedArtifact -ne $fileAssociatedArtifact) -and
         ($additionalAssociatedArtifact -ne $javadocAssociatedArtifact) -and
         ($additionalAssociatedArtifact -ne $sourcesAssociatedArtifact)) {
 
