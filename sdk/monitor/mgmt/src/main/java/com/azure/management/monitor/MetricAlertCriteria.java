@@ -60,7 +60,7 @@ public class MetricAlertCriteria {
     }
 
     @JsonAnySetter
-    private void withAdditionalProperties(String key, Object value) {
+    protected void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
             additionalProperties = new HashMap<>();
         }
