@@ -329,7 +329,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                 long currentOffset = tuple3.getT3() + fileOffset;
                 // Report progress as necessary.
                 Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(
-                    bufferAggregator.asFlux(), parallelTransferOptions.getProgressReceiver(), progressLock, totalProgress);
+                    bufferAggregator.asFlux(), parallelTransferOptions.getProgressReceiver(),
+                    progressLock, totalProgress);
                 return appendWithResponse(progressData, currentOffset, currentBufferLength, null,
                     requestConditions.getLeaseId())
                     .doFinally(x -> pool.returnBuffer(bufferAggregator))
