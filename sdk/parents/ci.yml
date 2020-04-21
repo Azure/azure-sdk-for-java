@@ -37,9 +37,6 @@ stages:
     parameters:
       ServiceDirectory: parents
       Artifacts:
-        - name: azure-arm-parent
-          groupId: com.microsoft.azure
-          safeName: azurearmparent
         - name: azure-client-sdk-parent
           groupId: com.azure
           safeName: azureclientsdkparent
