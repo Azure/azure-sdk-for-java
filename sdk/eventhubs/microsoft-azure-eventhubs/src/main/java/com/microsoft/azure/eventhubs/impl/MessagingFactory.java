@@ -314,12 +314,12 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
     private class WatchDog implements Runnable {
         @Override
         public void run() {
-            TRACE_LOGGER.info("watchdog run");
+            TRACE_LOGGER.debug("Watchdog run");
             if (MessagingFactory.this.getIsClosingOrClosed()) {
                 return;
             }
             if (MessagingFactory.this.watchdogTriggerSeconds <= EventHubClientOptions.WATCHDOG_OFF) {
-                // TODO log an error, should never get here
+                TRACE_LOGGER.warn("Watchdog should not run when trigger time is " + MessagingFactory.this.watchdogTriggerSeconds + " -- stopping");
                 return;
             }
 
@@ -333,7 +333,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
                         - MessagingFactory.this.watchdogTriggerSeconds;
 
                 for (MessageReceiver rcvr : copiedList) {
-                    TRACE_LOGGER.info("Watchdog checking receiver " + rcvr.getClientId() + " last: "
+                    TRACE_LOGGER.debug("Watchdog checking receiver " + rcvr.getClientId() + " last: "
                             + rcvr.getLastReceivedTime() + "  allowable: " + longestAgoAllowable);
                     if (!rcvr.getIsClosingOrClosed() && (rcvr.getLastReceivedTime() >= longestAgoAllowable)) {
                         anyReceiverIsAlive = true;
@@ -343,7 +343,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
                 }
 
                 if (!anyReceiverIsAlive && !MessagingFactory.this.getIsClosingOrClosed()) {
-                    TRACE_LOGGER.info("Watchdog forcing connection closed");
+                    TRACE_LOGGER.warn("Watchdog forcing connection closed");
                     ErrorCondition suspect = new ErrorCondition(ClientConstants.WATCHDOG_ERROR,
                             "receiver watchdog has fired, all receivers silent");
                     MessagingFactory.this.watchdogCleanupDone = false;
@@ -358,7 +358,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
                     } catch (InterruptedException e) {
                     }
                     if (!MessagingFactory.this.watchdogCleanupDone) {
-                        TRACE_LOGGER.info("Watchdog forcing cleanup");
+                        TRACE_LOGGER.warn("Watchdog forcing cleanup");
                         MessagingFactory.this.onConnectionError(suspect);
                     } else {
                         TRACE_LOGGER.info("Watchdog cleanup already in progress");
@@ -368,8 +368,10 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
 
             synchronized (MessagingFactory.this.watchdogSyncObject) {
                 if (!MessagingFactory.this.getIsClosingOrClosed() && !MessagingFactory.this.watchdogFuture.isCancelled()) {
-                    TRACE_LOGGER.info("Watchdog scheduling next run");
+                    TRACE_LOGGER.debug("Watchdog scheduling next run");
                     MessagingFactory.this.watchdogFuture = MessagingFactory.this.executor.schedule(this, MessagingFactory.this.watchdogScanSeconds, TimeUnit.SECONDS);
+                } else {
+                    TRACE_LOGGER.info("Watchdog stopping due to MessagingFactory close");
                 }
             }
         }
