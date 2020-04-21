@@ -286,9 +286,15 @@ class LargeBlobTest extends APISpec {
     private Flux<ByteBuffer> createLargeBuffer(long size, int bufferSize) {
         def bytes = getRandomByteArray(bufferSize)
         long numberOfSubBuffers = (long) (size / bufferSize)
-        return Flux.just(ByteBuffer.wrap(bytes))
+        int reminder = (int) (size - numberOfSubBuffers * bufferSize)
+        Flux<ByteBuffer> result =  Flux.just(ByteBuffer.wrap(bytes))
             .map{buffer -> buffer.duplicate()}
             .repeat(numberOfSubBuffers - 1)
+        if (reminder > 0) {
+            def extraBytes = getRandomByteArray(reminder)
+            result = Flux.concat(result, Flux.just(ByteBuffer.wrap(extraBytes)))
+        }
+        return result
     }
 
     File getRandomLargeFile(long size) {
