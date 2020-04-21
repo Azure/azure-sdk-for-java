@@ -93,12 +93,12 @@ stages:
                       workingDirectory: $(Pipeline.Workspace)
                       displayName: Stage artifacts
                       timeoutInMinutes: 5
-                    - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
-                      parameters:
-                        ArtifactLocation: $(Pipeline.Workspace)/${{artifact.safeName}}
-                        PackageRepository: Maven
-                        ReleaseSha: $(Build.SourceVersion)
-                        RepoId: Azure/azure-sdk-for-java
+                    # - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
+                    #   parameters:
+                    #     ArtifactLocation: $(Pipeline.Workspace)/${{artifact.safeName}}
+                    #     PackageRepository: Maven
+                    #     ReleaseSha: $(Build.SourceVersion)
+                    #     RepoId: Azure/azure-sdk-for-java
 
           - ${{if ne(artifact.options.skipPublishPackage, 'true')}}:
             - deployment: PublishPackage
@@ -207,12 +207,12 @@ stages:
                           python eng/versioning/update_versions.py --update-type library --build-type ${{ parameters.SDKType }} --avi --sr
                         displayName: Update pom files for new version of ${{ artifact.groupId }} ${{ artifact.name }}
 
-                      - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
-                        parameters:
-                          RepoName: azure-sdk-for-java
-                          PRBranchName: increment-package-version-${{ parameters.ServiceDirectory }}-$(Build.BuildId)
-                          CommitMsg: "Increment package version after release of ${{ artifact.groupId }} ${{ artifact.name }}"
-                          PRTitle: "Increment version for ${{ parameters.ServiceDirectory }} releases"
+                      # - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
+                      #   parameters:
+                      #     RepoName: azure-sdk-for-java
+                      #     PRBranchName: increment-package-version-${{ parameters.ServiceDirectory }}-$(Build.BuildId)
+                      #     CommitMsg: "Increment package version after release of ${{ artifact.groupId }} ${{ artifact.name }}"
+                      #     PRTitle: "Increment version for ${{ parameters.ServiceDirectory }} releases"
 
   - stage: Integration
     dependsOn: Signing
