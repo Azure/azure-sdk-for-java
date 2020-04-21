@@ -550,7 +550,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         final String lockToken = message.getLockToken();
         logger.info("{}: Update started. Disposition: {}. Lock: {}.", entityPath, dispositionStatus, lockToken);
 
-        if (isManagementToken(lockToken)) {
+        final ServiceBusAsyncConsumer existingConsumer = consumer;
+        if (isManagementToken(lockToken) || existingConsumer == null) {
             return connectionProcessor.flatMap(connection -> connection.getManagementNode(entityPath, entityType, sessionId))
                 .flatMap(node -> node.updateDisposition(lockToken, dispositionStatus, deadLetterReason,
                     deadLetterErrorDescription, propertiesToModify))
@@ -560,15 +561,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
                     managementNodeLocks.remove(lockToken);
                 }));
+        } else {
+            return existingConsumer.updateDisposition(lockToken, dispositionStatus, deadLetterReason,
+                deadLetterErrorDescription, propertiesToModify);
         }
-
-        final ServiceBusAsyncConsumer existingConsumer = consumer;
-        if (existingConsumer == null) {
-            return monoError(logger, new IllegalStateException("Cannot update disposition without an active receive link."));
-        }
-
-        return existingConsumer.updateDisposition(lockToken, dispositionStatus, deadLetterReason,
-            deadLetterErrorDescription, propertiesToModify);
     }
 
     private synchronized ServiceBusAsyncConsumer getOrCreateConsumer(ReceiveAsyncOptions options) {

@@ -90,6 +90,10 @@ public class ServiceBusReactorReceiver extends ReactorReceiver {
     }
 
     public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState) {
+        if (isDisposed.get()) {
+            return monoError(logger, new IllegalStateException("Cannot perform operations on a disposed receiver."));
+        }
+
         final Delivery unsettled = unsettledDeliveries.get(lockToken);
         if (unsettled == null) {
             logger.warning("entityPath[{}], linkName[{}], deliveryTag[{}]. Delivery not found to update disposition.",
@@ -123,6 +127,11 @@ public class ServiceBusReactorReceiver extends ReactorReceiver {
     public void dispose() {
         if (isDisposed.getAndSet(true)) {
             return;
+        }
+
+        if (!pendingUpdates.isEmpty()) {
+            UpdateDispositionWorkItem[] pending = pendingUpdates.values().toArray(new UpdateDispositionWorkItem[0]);
+
         }
 
         subscription.dispose();
@@ -219,8 +228,9 @@ public class ServiceBusReactorReceiver extends ReactorReceiver {
                 final Duration retry = retryPolicy.calculateRetryDelay(exception, workItem.incrementRetry());
                 if (retry == null) {
                     logger.info("deliveryTag[{}], state[{}]. Retry attempts exhausted.", lockToken, exception);
-                    workItem.getSink().error(exception);
+                    completeWorkItem(lockToken, delivery, workItem.getSink(), exception);
                 } else {
+                    workItem.setLastException(exception);
                     try {
                         provider.getReactorDispatcher().invoke(() -> delivery.disposition(workItem.getDeliveryState()));
                     } catch (IOException error) {
