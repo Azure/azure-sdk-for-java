@@ -277,7 +277,18 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                 recognizedReceipts.forEach(recognizedReceipt -> {
                     USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
                     System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
-                    System.out.printf("Merchant Name: %s%n", usReceipt.getMerchantName().getFieldValue());
+                    System.out.printf("Merchant Name: %s, confidence: %.2f%n",
+                        usReceipt.getMerchantName().getFieldValue(),
+                        usReceipt.getMerchantName().getConfidence());
+                    System.out.printf("Merchant Address: %s, confidence: %.2f%n",
+                        usReceipt.getMerchantAddress().getFieldValue(),
+                        usReceipt.getMerchantAddress().getConfidence());
+                    System.out.printf("Merchant Phone Number %s, confidence: %.2f%n",
+                        usReceipt.getMerchantPhoneNumber().getFieldValue(),
+                        usReceipt.getMerchantPhoneNumber().getConfidence());
+                    System.out.printf("Total: %.2f, confidence: %.2f%n",
+                        usReceipt.getTotal().getFieldValue(),
+                        usReceipt.getTotal().getConfidence());
                 }));
         });
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceiptsFromUrl#string
@@ -297,7 +308,18 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     recognizedReceipts.forEach(recognizedReceipt -> {
                         USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
                         System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
-                        System.out.printf("Merchant Name: %s%n", usReceipt.getMerchantName().getFieldValue());
+                        System.out.printf("Merchant Name: %s, confidence: %.2f%n",
+                            usReceipt.getMerchantName().getFieldValue(),
+                            usReceipt.getMerchantName().getConfidence());
+                        System.out.printf("Merchant Address: %s, confidence: %.2f%n",
+                            usReceipt.getMerchantAddress().getFieldValue(),
+                            usReceipt.getMerchantAddress().getConfidence());
+                        System.out.printf("Merchant Phone Number %s, confidence: %.2f%n",
+                            usReceipt.getMerchantPhoneNumber().getFieldValue(),
+                            usReceipt.getMerchantPhoneNumber().getConfidence());
+                        System.out.printf("Total: %.2f, confidence: %.2f%n",
+                            usReceipt.getTotal().getFieldValue(),
+                            usReceipt.getTotal().getConfidence());
                     }));
             });
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceiptsFromUrl#string-boolean-Duration
@@ -320,7 +342,18 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     recognizedReceipts.forEach(recognizedReceipt -> {
                         USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
                         System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
-                        System.out.printf("Merchant Name: %s%n", usReceipt.getMerchantName().getFieldValue());
+                        System.out.printf("Merchant Name: %s, confidence: %.2f%n",
+                            usReceipt.getMerchantName().getFieldValue(),
+                            usReceipt.getMerchantName().getConfidence());
+                        System.out.printf("Merchant Address: %s, confidence: %.2f%n",
+                            usReceipt.getMerchantAddress().getFieldValue(),
+                            usReceipt.getMerchantAddress().getConfidence());
+                        System.out.printf("Merchant Phone Number %s, confidence: %.2f%n",
+                            usReceipt.getMerchantPhoneNumber().getFieldValue(),
+                            usReceipt.getMerchantPhoneNumber().getConfidence());
+                        System.out.printf("Total: %.2f, confidence: %.2f%n",
+                            usReceipt.getTotal().getFieldValue(),
+                            usReceipt.getTotal().getConfidence());
                     }));
             });
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long-FormContentType
@@ -345,7 +378,18 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     recognizedReceipts.forEach(recognizedReceipt -> {
                         USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
                         System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
-                        System.out.printf("Merchant Name: %s%n", usReceipt.getMerchantName().getFieldValue());
+                        System.out.printf("Merchant Name: %s, confidence: %.2f%n",
+                            usReceipt.getMerchantName().getFieldValue(),
+                            usReceipt.getMerchantName().getConfidence());
+                        System.out.printf("Merchant Address: %s, confidence: %.2f%n",
+                            usReceipt.getMerchantAddress().getFieldValue(),
+                            usReceipt.getMerchantAddress().getConfidence());
+                        System.out.printf("Merchant Phone Number %s, confidence: %.2f%n",
+                            usReceipt.getMerchantPhoneNumber().getFieldValue(),
+                            usReceipt.getMerchantPhoneNumber().getConfidence());
+                        System.out.printf("Total: %.2f, confidence: %.2f%n",
+                            usReceipt.getTotal().getFieldValue(),
+                            usReceipt.getTotal().getConfidence());
                     }));
             });
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long-FormContentType-boolean-Duration

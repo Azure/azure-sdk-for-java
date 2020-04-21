@@ -97,6 +97,7 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.formrecognizer.FormTrainingAsyncClient.getCustomModelWithResponse#string
         String modelId = "{model_id}";
         formTrainingAsyncClient.getCustomModelWithResponse(modelId).subscribe(response -> {
+            System.out.printf("Response Status Code: %d.", response.getStatusCode());
             CustomFormModel customFormModel = response.getValue();
             System.out.printf("Model Id: %s%n", customFormModel.getModelId());
             System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
@@ -127,6 +128,7 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
     public void getAccountPropertiesWithResponse() {
         // BEGIN: com.azure.ai.formrecognizer.FormTrainingAsyncClient.getAccountPropertiesWithResponse
         formTrainingAsyncClient.getAccountPropertiesWithResponse().subscribe(response -> {
+            System.out.printf("Response Status Code: %d.", response.getStatusCode());
             AccountProperties accountProperties = response.getValue();
             System.out.printf("Max number of models that can be trained for this account: %s%n",
                 accountProperties.getLimit());
@@ -160,16 +162,16 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormTrainingAsyncClient#listModels}
+     * Code snippet for {@link FormTrainingAsyncClient#getModelInfos}
      */
-    public void listModels() {
-        // BEGIN: com.azure.ai.formrecognizer.FormTrainingAsyncClient.listModels
-        formTrainingAsyncClient.listModels().subscribe(result ->
+    public void getModelInfos() {
+        // BEGIN: com.azure.ai.formrecognizer.FormTrainingAsyncClient.getModelInfos
+        formTrainingAsyncClient.getModelInfos().subscribe(customModel ->
             System.out.printf("Model Id: %s, Model status: %s, Created on: %s, Last updated on: %s.%n",
-                result.getModelId(),
-                result.getStatus(),
-                result.getCreatedOn(),
-                result.getLastUpdatedOn()));
-        // END: com.azure.ai.formrecognizer.FormTrainingAsyncClient.listModels
+                customModel.getModelId(),
+                customModel.getStatus(),
+                customModel.getCreatedOn(),
+                customModel.getLastUpdatedOn()));
+        // END: com.azure.ai.formrecognizer.FormTrainingAsyncClient.getModelInfos
     }
 }

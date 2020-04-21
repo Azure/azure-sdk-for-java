@@ -200,7 +200,7 @@ public class FormTrainingClient {
      * List information for all models.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.listModels}
+     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.getModelInfos}
      *
      * @return {@link PagedIterable} of {@link CustomFormModelInfo} custom form model information.
      */
@@ -213,7 +213,7 @@ public class FormTrainingClient {
      * List information for all models with taking {@link Context}.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.listModels#Context}
+     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.getModelInfos#Context}
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link PagedIterable} of {@link CustomFormModelInfo} custom form model information.

@@ -265,7 +265,7 @@ public class FormTrainingAsyncClient {
      * List information for all models.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingAsyncClient.listModels}
+     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingAsyncClient.getModelInfos}
      *
      * @return {@link PagedFlux} of {@link CustomFormModelInfo}.
      */

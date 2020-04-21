@@ -89,8 +89,9 @@ public class FormTrainingClientJavaDocCodeSnippets {
     public void getCustomModelWithResponse() {
         // BEGIN: com.azure.ai.formrecognizer.FormTrainingClient.getCustomModelWithResponse#string-Context
         String modelId = "{model_id}";
-        CustomFormModel customFormModel = formTrainingClient.getCustomModelWithResponse(modelId, Context.NONE)
-            .getValue();
+        Response<CustomFormModel> response = formTrainingClient.getCustomModelWithResponse(modelId, Context.NONE);
+        System.out.printf("Response Status Code: %d.", response.getStatusCode());
+        CustomFormModel customFormModel = response.getValue();
         System.out.printf("Model Id: %s%n", customFormModel.getModelId());
         System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
         customFormModel.getSubModels().forEach(customFormSubModel ->
@@ -117,8 +118,9 @@ public class FormTrainingClientJavaDocCodeSnippets {
      */
     public void getAccountPropertiesWithResponse() {
         // BEGIN: com.azure.ai.formrecognizer.FormTrainingClient.getAccountPropertiesWithResponse#Context
-        AccountProperties accountProperties = formTrainingClient.getAccountPropertiesWithResponse(Context.NONE)
-            .getValue();
+        Response<AccountProperties> response = formTrainingClient.getAccountPropertiesWithResponse(Context.NONE);
+        System.out.printf("Response Status Code: %d.", response.getStatusCode());
+        AccountProperties accountProperties = response.getValue();
         System.out.printf("Max number of models that can be trained for this account: %s%n",
             accountProperties.getLimit());
         System.out.printf("Current count of trained custom models: %d%n", accountProperties.getCount());
@@ -149,32 +151,32 @@ public class FormTrainingClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormTrainingClient#listModels}
+     * Code snippet for {@link FormTrainingClient#getModelInfos}
      */
-    public void listModels() {
-        // BEGIN: com.azure.ai.formrecognizer.FormTrainingClient.listModels
-        formTrainingClient.listModels().forEach(result ->
+    public void getModelInfos() {
+        // BEGIN: com.azure.ai.formrecognizer.FormTrainingClient.getModelInfos
+        formTrainingClient.getModelInfos().forEach(customModel ->
             System.out.printf("Model Id: %s, Model status: %s, Created on: %s, Last updated on: %s.%n",
-                result.getModelId(),
-                result.getStatus(),
-                result.getCreatedOn(),
-                result.getLastUpdatedOn())
+                customModel.getModelId(),
+                customModel.getStatus(),
+                customModel.getCreatedOn(),
+                customModel.getLastUpdatedOn())
         );
-        // END: com.azure.ai.formrecognizer.FormTrainingClient.listModels
+        // END: com.azure.ai.formrecognizer.FormTrainingClient.getModelInfos
     }
 
     /**
-     * Code snippet for {@link FormTrainingClient#listModels(Context)}
+     * Code snippet for {@link FormTrainingClient#getModelInfos(Context)}
      */
-    public void listModelsWithContext() {
-        // BEGIN: com.azure.ai.formrecognizer.FormTrainingClient.listModels#Context
-        formTrainingClient.listModels(Context.NONE).forEach(result ->
+    public void getModelInfosWithContext() {
+        // BEGIN: com.azure.ai.formrecognizer.FormTrainingClient.getModelInfos#Context
+        formTrainingClient.getModelInfos(Context.NONE).forEach(customModel ->
             System.out.printf("Model Id: %s, Model status: %s, Created on: %s, Last updated on: %s.%n",
-                result.getModelId(),
-                result.getStatus(),
-                result.getCreatedOn(),
-                result.getLastUpdatedOn())
+                customModel.getModelId(),
+                customModel.getStatus(),
+                customModel.getCreatedOn(),
+                customModel.getLastUpdatedOn())
         );
-        // END: com.azure.ai.formrecognizer.FormTrainingClient.listModels#Context
+        // END: com.azure.ai.formrecognizer.FormTrainingClient.getModelInfos#Context
     }
 }
