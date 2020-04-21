@@ -312,7 +312,7 @@ public final class FormRecognizerClient {
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
      *
-     * <p><strong>Code sample</strong></p>*
+     * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceipts#InputStream-long-FormContentType-boolean-Duration}
      *
      * @param data The data of the document to be extract receipt information from.

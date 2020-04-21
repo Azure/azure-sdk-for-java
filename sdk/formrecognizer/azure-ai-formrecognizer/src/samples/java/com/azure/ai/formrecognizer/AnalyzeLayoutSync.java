@@ -65,7 +65,7 @@ public class AnalyzeLayoutSync {
                             if (recognizedTableCell.isHeader()) {
                                 System.out.println(recognizedTableCell.getText());
                             } else {
-                                System.out.printf("%s || ", recognizedTableCell.getText());
+                                System.out.printf("%s ", recognizedTableCell.getText());
                             }
                         }
                     }

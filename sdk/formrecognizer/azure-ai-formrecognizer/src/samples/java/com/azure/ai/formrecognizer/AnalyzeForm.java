@@ -53,6 +53,7 @@ public class AnalyzeForm {
                 System.out.printf("Page number: %s%n", fieldValue.getPageNumber());
                 System.out.printf("Field text: %s%n", fieldText);
                 System.out.printf("Field value: %s%n", fieldValue.getFieldValue());
+                System.out.printf("Confidence score: %.2f%n", fieldValue.getConfidence());
             });
 
             // Page Information

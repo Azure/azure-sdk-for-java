@@ -68,6 +68,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                     System.out.printf("Page number: %s%n", fieldValue.getPageNumber());
                     System.out.printf("Field text: %s%n", fieldText);
                     System.out.printf("Field value: %s%n", fieldValue.getFieldValue());
+                    System.out.printf("Confidence score: %.2f%n", fieldValue.getConfidence());
                 });
             });
         // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string
@@ -88,6 +89,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                     System.out.printf("Page number: %s%n", fieldValue.getPageNumber());
                     System.out.printf("Field text: %s%n", fieldText);
                     System.out.printf("Field value: %s%n", fieldValue.getFieldValue());
+                    System.out.printf("Confidence score: %.2f%n", fieldValue.getConfidence());
                 });
             });
         // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string-boolean-Duration
@@ -111,6 +113,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                     System.out.printf("Page number: %s%n", fieldValue.getPageNumber());
                     System.out.printf("Field text: %s%n", fieldText);
                     System.out.printf("Field value: %s%n", fieldValue.getFieldValue());
+                    System.out.printf("Confidence score: %.2f%n", fieldValue.getConfidence());
                 });
             });
         // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#InputStream-string-long-FormContentType
@@ -137,6 +140,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                         System.out.printf("Page number: %s%n", fieldValue.getPageNumber());
                         System.out.printf("Field text: %s%n", fieldText);
                         System.out.printf("Field value: %s%n", fieldValue.getFieldValue());
+                        System.out.printf("Confidence score: %.2f%n", fieldValue.getConfidence());
                     });
                 });
         // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#InputStream-string-long-FormContentType-boolean-Duration
@@ -157,7 +161,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                 System.out.println("Recognized Tables: ");
                 recognizedForm.getTables().forEach(formTable ->
                     formTable.getCells().forEach(recognizedTableCell ->
-                        System.out.printf("%s || ", recognizedTableCell.getText())));
+                        System.out.printf("%s ", recognizedTableCell.getText())));
             });
         // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContentFromUrl#string
     }
@@ -176,7 +180,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                 System.out.println("Recognized Tables: ");
                 recognizedForm.getTables().forEach(formTable ->
                     formTable.getCells().forEach(recognizedTableCell ->
-                        System.out.printf("%s || ", recognizedTableCell.getText())));
+                        System.out.printf("%s ", recognizedTableCell.getText())));
             });
         // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContentFromUrl#string-Duration
     }
@@ -200,7 +204,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                 System.out.println("Recognized Tables: ");
                 recognizedForm.getTables().forEach(formTable ->
                     formTable.getCells().forEach(recognizedTableCell ->
-                        System.out.printf("%s || ", recognizedTableCell.getText())));
+                        System.out.printf("%s ", recognizedTableCell.getText())));
             });
         // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContent#InputStream-long-FormContentType
     }
@@ -224,7 +228,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                 System.out.println("Recognized Tables: ");
                 recognizedForm.getTables().forEach(formTable ->
                     formTable.getCells().forEach(recognizedTableCell ->
-                        System.out.printf("%s || ", recognizedTableCell.getText())));
+                        System.out.printf("%s ", recognizedTableCell.getText())));
             });
         // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContent#InputStream-long-FormContentType-Duration
     }
@@ -240,12 +244,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
             .forEach(recognizedReceipt -> {
                 USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
                 System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
-                System.out.printf("Merchant Name %s%n", usReceipt.getMerchantName().getName());
-                System.out.printf("Merchant Name Value: %s%n", usReceipt.getMerchantName().getFieldValue());
-                System.out.printf("Merchant Address %s%n", usReceipt.getMerchantAddress().getName());
-                System.out.printf("Merchant Address Value: %s%n", usReceipt.getMerchantAddress().getFieldValue());
-                System.out.printf("Total: %s%n", usReceipt.getTotal().getName());
-                System.out.printf("Total Value: %s%n", usReceipt.getTotal().getFieldValue());
+                System.out.printf("Merchant Name: %s%n", usReceipt.getMerchantName().getFieldValue());
             });
         // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceiptsFromUrl#string
     }
@@ -262,12 +261,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
             .getFinalResult().forEach(recognizedReceipt -> {
                 USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
                 System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
-                System.out.printf("Merchant Name %s%n", usReceipt.getMerchantName().getName());
-                System.out.printf("Merchant Name Value: %s%n", usReceipt.getMerchantName().getFieldValue());
-                System.out.printf("Merchant Address %s%n", usReceipt.getMerchantAddress().getName());
-                System.out.printf("Merchant Address Value: %s%n", usReceipt.getMerchantAddress().getFieldValue());
-                System.out.printf("Total: %s%n", usReceipt.getTotal().getName());
-                System.out.printf("Total Value: %s%n", usReceipt.getTotal().getFieldValue());
+                System.out.printf("Merchant Name: %s%n", usReceipt.getMerchantName().getFieldValue());
             });
         // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceiptsFromUrl#string-boolean-Duration
     }
@@ -286,12 +280,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
             .getFinalResult().forEach(recognizedReceipt -> {
                 USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
                 System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
-                System.out.printf("Merchant Name %s%n", usReceipt.getMerchantName().getName());
-                System.out.printf("Merchant Name Value: %s%n", usReceipt.getMerchantName().getFieldValue());
-                System.out.printf("Merchant Address %s%n", usReceipt.getMerchantAddress().getName());
-                System.out.printf("Merchant Address Value: %s%n", usReceipt.getMerchantAddress().getFieldValue());
-                System.out.printf("Total: %s%n", usReceipt.getTotal().getName());
-                System.out.printf("Total Value: %s%n", usReceipt.getTotal().getFieldValue());
+                System.out.printf("Merchant Name: %s%n", usReceipt.getMerchantName().getFieldValue());
             });
         // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceipts#InputStream-long-FormContentType
 
@@ -312,12 +301,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
             includeTextDetails, Duration.ofSeconds(5)).getFinalResult().forEach(recognizedReceipt -> {
                 USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
                 System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
-                System.out.printf("Merchant Name %s%n", usReceipt.getMerchantName().getName());
-                System.out.printf("Merchant Name Value: %s%n", usReceipt.getMerchantName().getFieldValue());
-                System.out.printf("Merchant Address %s%n", usReceipt.getMerchantAddress().getName());
-                System.out.printf("Merchant Address Value: %s%n", usReceipt.getMerchantAddress().getFieldValue());
-                System.out.printf("Total: %s%n", usReceipt.getTotal().getName());
-                System.out.printf("Total Value: %s%n", usReceipt.getTotal().getFieldValue());
+                System.out.printf("Merchant Name: %s%n", usReceipt.getMerchantName().getFieldValue());
             });
         // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceipts#InputStream-long-FormContentType-boolean-Duration
     }

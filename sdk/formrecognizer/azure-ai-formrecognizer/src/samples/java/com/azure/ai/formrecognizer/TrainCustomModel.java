@@ -49,7 +49,7 @@ public class TrainCustomModel {
         System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
         customFormModel.getSubModels().forEach(customFormSubModel ->
             customFormSubModel.getFieldMap().forEach((key, customFormModelField) ->
-                System.out.printf("Model Type Id: %s Field Text: %s Field Accuracy: %s%n",
+                System.out.printf("Form Type: %s Field Text: %s Field Accuracy: %s%n",
                     key, customFormModelField.getName(), customFormModelField.getAccuracy())));
 
     }

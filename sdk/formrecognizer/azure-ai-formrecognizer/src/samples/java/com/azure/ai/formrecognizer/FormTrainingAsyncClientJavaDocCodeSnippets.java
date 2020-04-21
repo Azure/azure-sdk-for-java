@@ -33,9 +33,9 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
         String trainingSetSource = "{training-set-SAS-URL}";
         boolean useLabelFile = true;
         formTrainingAsyncClient.beginTraining(trainingSetSource, useLabelFile).subscribe(
-            trainingPollOperationResponse -> {
+            recognizePollingOperation -> {
                 // if training polling operation completed, retrieve the final result.
-                trainingPollOperationResponse.getFinalResult().subscribe(customFormModel -> {
+                recognizePollingOperation.getFinalResult().subscribe(customFormModel -> {
                     System.out.printf("Model Id: %s%n", customFormModel.getModelId());
                     System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
                     customFormModel.getSubModels().forEach(customFormSubModel ->
@@ -58,14 +58,14 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
         boolean useLabelFile = true;
 
         formTrainingAsyncClient.beginTraining(trainingSetSource, useLabelFile, isIncludeSubFolders, filePrefix,
-            Duration.ofSeconds(5)).subscribe(trainingPollOperationResponse -> {
+            Duration.ofSeconds(5)).subscribe(recognizePollingOperation -> {
                 // if training polling operation completed, retrieve the final result.
-                trainingPollOperationResponse.getFinalResult().subscribe(customFormModel -> {
+                recognizePollingOperation.getFinalResult().subscribe(customFormModel -> {
                     System.out.printf("Model Id: %s%n", customFormModel.getModelId());
                     System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
                     customFormModel.getSubModels().forEach(customFormSubModel ->
                         customFormSubModel.getFieldMap().forEach((key, customFormModelField) ->
-                            System.out.printf("Form Type Id: %s Field Text: %s Field Accuracy: %s%n",
+                            System.out.printf("Form Type: %s Field Text: %s Field Accuracy: %s%n",
                                 key, customFormModelField.getName(), customFormModelField.getAccuracy())));
                 });
             });
@@ -83,7 +83,7 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
             System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
             customFormModel.getSubModels().forEach(customFormSubModel ->
                 customFormSubModel.getFieldMap().forEach((key, customFormModelField) ->
-                    System.out.printf("Form Type Id: %s Field Text: %s Field Accuracy: %s%n",
+                    System.out.printf("Form Type: %s Field Text: %s Field Accuracy: %s%n",
                         key, customFormModelField.getName(), customFormModelField.getAccuracy())));
 
         });
@@ -102,7 +102,7 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
             System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
             customFormModel.getSubModels().forEach(customFormSubModel ->
                 customFormSubModel.getFieldMap().forEach((key, customFormModelField) ->
-                    System.out.printf("Form Type Id: %s Field Text: %s Field Accuracy: %s%n",
+                    System.out.printf("Form Type: %s Field Text: %s Field Accuracy: %s%n",
                         key, customFormModelField.getName(), customFormModelField.getAccuracy())));
         });
         // END: com.azure.ai.formrecognizer.FormTrainingAsyncClient.getCustomModelWithResponse#string
