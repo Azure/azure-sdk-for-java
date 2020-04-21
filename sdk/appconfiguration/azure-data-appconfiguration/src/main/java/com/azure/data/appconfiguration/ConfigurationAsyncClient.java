@@ -613,8 +613,7 @@ public final class ConfigurationAsyncClient {
     /**
      * Lists chronological/historical representation of {@link ConfigurationSetting} resource(s). Revisions are provided
      * in descending order from their {@link ConfigurationSetting#getLastModified() lastModified} date.
-     * Revisions expire after a period of time.
-     * <p>See <a href="https://azure.microsoft.com/en-us/pricing/details/app-configuration/">Pricing</a>
+     * Revisions expire after a period of time, see <a href="https://azure.microsoft.com/en-us/pricing/details/app-configuration/">Pricing</a>
      * for more information.</p>
      *
      * If {@code selector} is {@code null}, then all the {@link ConfigurationSetting ConfigurationSettings} are fetched
