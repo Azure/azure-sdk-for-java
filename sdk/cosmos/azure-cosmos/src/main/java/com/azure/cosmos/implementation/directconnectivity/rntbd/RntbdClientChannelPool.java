@@ -19,6 +19,8 @@ import io.netty.channel.pool.ChannelHealthChecker;
 import io.netty.channel.pool.ChannelPool;
 import io.netty.channel.pool.ChannelPoolHandler;
 import io.netty.util.AttributeKey;
+import io.netty.util.HashedWheelTimer;
+import io.netty.util.Timeout;
 import io.netty.util.concurrent.DefaultEventExecutor;
 import io.netty.util.concurrent.EventExecutor;
 import io.netty.util.concurrent.Future;
@@ -33,15 +35,16 @@ import java.net.SocketAddress;
 import java.nio.channels.ClosedChannelException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssueUnless;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -81,31 +84,35 @@ public final class RntbdClientChannelPool implements ChannelPool {
         true,
         Thread.NORM_PRIORITY));
 
+    private static final HashedWheelTimer acquisitionAndIdleEndpointDetectionTimer =
+        new HashedWheelTimer(new RntbdThreadFactory(
+            "channel-acquisition-timer",
+            true,
+            Thread.NORM_PRIORITY));
+
     private static final Logger logger = LoggerFactory.getLogger(RntbdClientChannelPool.class);
 
     private final long acquisitionTimeoutInNanos;
+    private final Runnable acquisitionTimeoutTask;
     private final PooledByteBufAllocatorMetric allocatorMetric;
     private final Bootstrap bootstrap;
     private final EventExecutor executor;
     private final ChannelHealthChecker healthChecker;
-    private final ScheduledFuture<?> idleStateDetectionScheduledFuture;
+    // private final ScheduledFuture<?> idleStateDetectionScheduledFuture;
     private final int maxChannels;
     private final int maxPendingAcquisitions;
     private final int maxRequestsPerChannel;
     private final ChannelPoolHandler poolHandler;
     private final boolean releaseHealthCheck;
 
-    // No need to worry about synchronization as everything that modified the queue or counts is done by this.executor
-
-    private final Queue<AcquireTask> pendingAcquisitionQueue = new ArrayDeque<>();
-    private final Runnable acquisitionTimeoutTask;
-
     // Because state from these fields can be requested on any thread...
 
+    private final AtomicReference<Timeout> acquisitionAndIdleEndpointDetectionTimeout = new AtomicReference<>();
     private final ConcurrentHashMap<Channel, Channel> acquiredChannels = new ConcurrentHashMap<>();
     private final Deque<Channel> availableChannels = new ConcurrentLinkedDeque<>();
     private final AtomicBoolean closed = new AtomicBoolean();
     private final AtomicBoolean connecting = new AtomicBoolean();
+    private final Queue<AcquireTask> pendingAcquisitions = new ConcurrentLinkedQueue<>();
 
     /**
      * Initializes a newly created {@link RntbdClientChannelPool} instance.
@@ -197,28 +204,27 @@ public final class RntbdClientChannelPool implements ChannelPool {
             }
         }
 
-        final long requestTimerResolutionInNanos = config.requestTimerResolutionInNanos();
-        final long idleEndpointTimeoutInNanos = config.idleEndpointTimeoutInNanos();
+        newTimeout(endpoint, config.idleEndpointTimeoutInNanos(), config.requestTimerResolutionInNanos());
 
-        this.idleStateDetectionScheduledFuture = this.executor.scheduleAtFixedRate(
-            () -> {
-                final long elapsedTimeInNanos = System.nanoTime() - endpoint.lastRequestNanoTime();
-
-                if (idleEndpointTimeoutInNanos - elapsedTimeInNanos <= 0) {
-                    if (logger.isDebugEnabled()) {
-                        logger.debug(
-                            "{} closing endpoint due to inactivity (elapsedTime: {} > idleEndpointTimeout: {})",
-                            endpoint,
-                            Duration.ofNanos(elapsedTimeInNanos),
-                            Duration.ofNanos(idleEndpointTimeoutInNanos));
-                    }
-                    endpoint.close();
-                    return;
-                }
-
-                this.runTasksInPendingAcquisitionQueue();
-
-            }, requestTimerResolutionInNanos, requestTimerResolutionInNanos, TimeUnit.NANOSECONDS);
+//        this.idleStateDetectionScheduledFuture = this.executor.scheduleAtFixedRate(
+//            () -> {
+//                final long elapsedTimeInNanos = System.nanoTime() - endpoint.lastRequestNanoTime();
+//
+//                if (idleEndpointTimeoutInNanos - elapsedTimeInNanos <= 0) {
+//                    if (logger.isDebugEnabled()) {
+//                        logger.debug(
+//                            "{} closing endpoint due to inactivity (elapsedTime: {} > idleEndpointTimeout: {})",
+//                            endpoint,
+//                            Duration.ofNanos(elapsedTimeInNanos),
+//                            Duration.ofNanos(idleEndpointTimeoutInNanos));
+//                    }
+//                    endpoint.close();
+//                    return;
+//                }
+//
+//                this.runTasksInPendingAcquisitionQueue();
+//
+//            }, requestTimerResolutionInNanos, requestTimerResolutionInNanos, TimeUnit.NANOSECONDS);
     }
 
     // region Accessors
@@ -307,7 +313,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
      * @return the number of pending channel acquisitions.
      */
     public int requestQueueLength() {
-        return this.pendingAcquisitionQueue.size();
+        return this.pendingAcquisitions.size();
     }
 
     public long usedDirectMemory() {
@@ -486,7 +492,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
      * Under these circumstances a request to acquire a channel will be satisfied by the
      * {@link #acquisitionTimeoutTask} which will:
      * <ul>
-     * <li>process items in the {@link #pendingAcquisitionQueue} on each call to {@link #acquire} or {@link #release},
+     * <li>process items in the {@link #pendingAcquisitions} on each call to {@link #acquire} or {@link #release},
      * and</li>
      * <li>each {@link #acquisitionTimeoutInNanos} nanoseconds
      * </ul>
@@ -518,10 +524,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 return;
             }
 
-            final int channelsAcquired = this.acquiredChannels.size();
             final int channelCount = this.channels();
 
-            if (channelCount < this.maxChannels && this.computeLoadFactor() > 0.90D) {
+            if (channelCount < this.maxChannels) {
 
                 if (this.connecting.compareAndSet(false, true)) {
 
@@ -539,9 +544,8 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
                     return;
                 }
-            }
 
-            if (channelsAcquired <= 0 && channelCount >= this.maxChannels) {
+            } else if (this.computeLoadFactor() > 0.90D) {
 
                 // All channels are swamped and we'll pick the one with the lowest pending request count
 
@@ -598,7 +602,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 this.requestQueueLength());
         }
 
-        if (this.pendingAcquisitionQueue.size() >= this.maxPendingAcquisitions) {
+        if (this.pendingAcquisitions.size() >= this.maxPendingAcquisitions) {
 
             promise.setFailure(TOO_MANY_PENDING_ACQUISITIONS);
 
@@ -606,7 +610,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
             final AcquireTask acquireTask = new AcquireTask(this, promise);
 
-            if (this.pendingAcquisitionQueue.offer(acquireTask)) {
+            if (this.pendingAcquisitions.offer(acquireTask)) {
                 if (this.acquisitionTimeoutTask != null) {
                     acquireTask.timeoutFuture = this.executor.schedule(
                         this.acquisitionTimeoutTask,
@@ -721,10 +725,20 @@ public final class RntbdClientChannelPool implements ChannelPool {
     private void doClose() {
 
         this.ensureInEventLoop();
-        this.idleStateDetectionScheduledFuture.cancel(true);
+
+        this.acquisitionAndIdleEndpointDetectionTimeout.getAndUpdate(timeout -> {
+            timeout.cancel();
+            return null;
+        });
+
+        // TODO (DANOBLE) this.idleStateDetectionScheduledFuture.cancel(true);
+
+        if (logger.isDebugEnabled()) {
+            logger.debug("{} closing with {} pending channel acquisitions", this, this.requestQueueLength());
+        }
 
         for (; ; ) {
-            final AcquireTask task = this.pendingAcquisitionQueue.poll();
+            final AcquireTask task = this.pendingAcquisitions.poll();
             if (task == null) {
                 break;
             }
@@ -735,7 +749,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
             task.promise.setFailure(new ClosedChannelException());
         }
 
-        // NOTE: we must dispatch this request on another Thread--the closer Thread--as this.doClose is called on
+        // NOTE: we must dispatch this request on another thread--the closer thread--as this.doClose is called on
         // this.executor and we need to ensure we will not block it.
 
         closer.submit(() -> {
@@ -754,7 +768,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
             assert this.acquiredChannels.isEmpty() && this.availableChannels.isEmpty();
 
         }).addListener(closed -> {
-
             if (!closed.isSuccess()) {
                 logger.error("[{}] close failed due to ", this, closed.cause());
             } else {
@@ -828,6 +841,40 @@ public final class RntbdClientChannelPool implements ChannelPool {
         anotherPromise.addListener(listener);
 
         return anotherPromise;
+    }
+
+    private void newTimeout(
+        final RntbdServiceEndpoint endpoint,
+        final long idleEndpointTimeoutInNanos,
+        final long requestTimerResolutionInNanos) {
+
+        this.acquisitionAndIdleEndpointDetectionTimeout.set(acquisitionAndIdleEndpointDetectionTimer.newTimeout(
+            (Timeout timeout) -> {
+                final long elapsedTimeInNanos = System.nanoTime() - endpoint.lastRequestNanoTime();
+
+                if (idleEndpointTimeoutInNanos - elapsedTimeInNanos <= 0) {
+                    if (logger.isDebugEnabled()) {
+                        logger.debug(
+                            "{} closing endpoint due to inactivity (elapsedTime: {} > idleEndpointTimeout: {})",
+                            endpoint,
+                            Duration.ofNanos(elapsedTimeInNanos),
+                            Duration.ofNanos(idleEndpointTimeoutInNanos));
+                    }
+                    endpoint.close();
+                    return;
+                }
+
+                if (this.requestQueueLength() <= 0) {
+                    this.newTimeout(endpoint, idleEndpointTimeoutInNanos, requestTimerResolutionInNanos);
+                    return;
+                }
+
+                this.executor.submit(this::runTasksInPendingAcquisitionQueue).addListener(future -> {
+                    reportIssueUnless(logger, future.isSuccess(), this, "failed due to ", future.cause());
+                    this.newTimeout(endpoint, idleEndpointTimeoutInNanos, requestTimerResolutionInNanos);
+                });
+
+            }, requestTimerResolutionInNanos, TimeUnit.NANOSECONDS));
     }
 
     private void notifyChannelConnect(final ChannelFuture future, final Promise<Channel> promise) {
@@ -1046,7 +1093,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
     /**
      * Runs tasks in the pending acquisition queue until it's empty.
      * <p>
-     * Tasks that run without being fulfilled will be added back to the {@link #pendingAcquisitionQueue} by a call to
+     * Tasks that run without being fulfilled will be added back to the {@link #pendingAcquisitions} by a call to
      * {@link #acquire}.
      */
     private void runTasksInPendingAcquisitionQueue() {
@@ -1056,7 +1103,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
         while (--channelsAvailable >= 0) {
 
-            final AcquireTask task = this.pendingAcquisitionQueue.poll();
+            final AcquireTask task = this.pendingAcquisitions.poll();
 
             if (task == null) {
                 break;
@@ -1227,7 +1274,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
         /**
          * Runs the {@link #onTimeout} method on each expired task in {@link #pool}'s {@link
-         * RntbdClientChannelPool#pendingAcquisitionQueue}.
+         * RntbdClientChannelPool#pendingAcquisitions}.
          */
         @Override
         public final void run() {
@@ -1235,7 +1282,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
             this.pool.ensureInEventLoop();
             final long nanoTime = System.nanoTime();
 
-            for (AcquireTask task : this.pool.pendingAcquisitionQueue) {
+            for (AcquireTask task : this.pool.pendingAcquisitions) {
                 // Compare nanoTime as described in the System.nanoTime documentation
                 // See:
                 // * https://docs.oracle.com/javase/7/docs/api/java/lang/System.html#nanoTime()
@@ -1243,7 +1290,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 if (nanoTime - task.expireNanoTime < 0) {
                     break;
                 }
-                this.pool.pendingAcquisitionQueue.remove();
+                this.pool.pendingAcquisitions.remove();
                 try {
                     this.onTimeout(task);
                 } catch (Throwable error) {
