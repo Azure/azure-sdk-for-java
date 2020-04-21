@@ -31,10 +31,13 @@ import reactor.core.publisher.MonoSink;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.messaging.servicebus.implementation.MessageUtils.LOCK_TOKEN_SIZE;
@@ -103,8 +106,9 @@ public class ServiceBusReactorReceiver extends ReactorReceiver {
                 "Delivery not on receive link.")));
         }
 
-        return Mono.create(sink -> {
-            final UpdateDispositionWorkItem workItem = new UpdateDispositionWorkItem(deliveryState, sink, timeout);
+        final UpdateDispositionWorkItem workItem = new UpdateDispositionWorkItem(deliveryState, timeout);
+        final Mono<Void> result = Mono.create(sink -> {
+            workItem.start(sink);
             try {
                 provider.getReactorDispatcher().invoke(() -> {
                     unsettled.disposition(deliveryState);
@@ -115,6 +119,10 @@ public class ServiceBusReactorReceiver extends ReactorReceiver {
                     error, handler.getErrorContext(receiver)));
             }
         });
+
+        workItem.setMono(result);
+
+        return result;
     }
 
     @Override
@@ -130,8 +138,12 @@ public class ServiceBusReactorReceiver extends ReactorReceiver {
         }
 
         if (!pendingUpdates.isEmpty()) {
-            UpdateDispositionWorkItem[] pending = pendingUpdates.values().toArray(new UpdateDispositionWorkItem[0]);
+            final List<Mono<Void>> pending = pendingUpdates.values().stream()
+                .map(UpdateDispositionWorkItem::getMono)
+                .collect(Collectors.toList());
 
+            logger.info("Waiting for pending updates to complete.");
+            Mono.when(pending).block(timeout);
         }
 
         subscription.dispose();
@@ -185,7 +197,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver {
     private void updateOutcome(String lockToken, Delivery delivery) {
         final DeliveryState remoteState = delivery.getRemoteState();
 
-        logger.verbose("entityPath[{}], linkName[{}], deliveryTag[{}], state[{}]. Received delivery.",
+        logger.info("entityPath[{}], linkName[{}], deliveryTag[{}], state[{}]. Received update disposition delivery.",
             getEntityPath(), getLinkName(), lockToken, remoteState);
 
         final Outcome remoteOutcome;
@@ -231,6 +243,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver {
                     completeWorkItem(lockToken, delivery, workItem.getSink(), exception);
                 } else {
                     workItem.setLastException(exception);
+                    workItem.resetStartTime();
                     try {
                         provider.getReactorDispatcher().invoke(() -> delivery.disposition(workItem.getDeliveryState()));
                     } catch (IOException error) {
@@ -287,22 +300,18 @@ public class ServiceBusReactorReceiver extends ReactorReceiver {
 
     private static final class UpdateDispositionWorkItem {
         private final DeliveryState state;
-        private final MonoSink<Void> sink;
         private final Duration timeout;
         private final AtomicInteger retryAttempts = new AtomicInteger();
         private final AtomicBoolean isDisposed = new AtomicBoolean();
-        private Instant expirationTime;
 
+        private Mono<Void> mono;
+        private Instant expirationTime;
+        private MonoSink<Void> sink;
         private Throwable throwable;
 
-        private UpdateDispositionWorkItem(DeliveryState state, MonoSink<Void> sink, Duration timeout) {
+        private UpdateDispositionWorkItem(DeliveryState state, Duration timeout) {
             this.state = state;
-            this.sink = sink;
             this.timeout = timeout;
-            this.sink.onDispose(() -> isDisposed.set(true));
-            this.sink.onCancel(() -> isDisposed.set(true));
-
-            resetStartTime();
         }
 
         private boolean hasTimedout() {
@@ -325,12 +334,28 @@ public class ServiceBusReactorReceiver extends ReactorReceiver {
             this.throwable = throwable;
         }
 
-        private DeliveryState getDeliveryState() {
-            return state;
+        private void setMono(Mono<Void> mono) {
+            this.mono = mono;
         }
 
-        public MonoSink<Void> getSink() {
+        private Mono<Void> getMono() {
+            return mono;
+        }
+
+        private MonoSink<Void> getSink() {
             return sink;
+        }
+
+        private void start(MonoSink<Void> sink) {
+            Objects.requireNonNull(sink, "'sink' cannot be null.");
+            this.sink = sink;
+            this.sink.onDispose(() -> isDisposed.set(true));
+            this.sink.onCancel(() -> isDisposed.set(true));
+            resetStartTime();
+        }
+
+        private DeliveryState getDeliveryState() {
+            return state;
         }
     }
 }

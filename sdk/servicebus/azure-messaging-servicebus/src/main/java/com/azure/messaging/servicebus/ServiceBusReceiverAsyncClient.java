@@ -563,7 +563,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 }));
         } else {
             return existingConsumer.updateDisposition(lockToken, dispositionStatus, deadLetterReason,
-                deadLetterErrorDescription, propertiesToModify);
+                deadLetterErrorDescription, propertiesToModify)
+                .then(Mono.fromRunnable(() -> logger.info("{}: Update completed. Disposition: {}. Lock: {}.",
+                    entityPath, dispositionStatus, lockToken)));
         }
     }
 
