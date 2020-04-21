@@ -1114,7 +1114,6 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
 
     WebAppBaseImpl<FluentT, FluentImplT> withNewHostNameSslBinding(
         final HostNameSslBindingImpl<FluentT, FluentImplT> hostNameSslBinding) {
-        hostNameSslBinding.newCertificate();
         sslBindingsToCreate.put(hostNameSslBinding.name(), hostNameSslBinding);
         return this;
     }
