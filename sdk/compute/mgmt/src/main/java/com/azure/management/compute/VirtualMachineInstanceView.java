@@ -5,12 +5,9 @@ package com.azure.management.compute;
 import com.azure.core.annotation.Fluent;
 import com.azure.management.compute.models.VirtualMachineInstanceViewInner;
 import com.azure.management.resources.fluentcore.model.HasInner;
-
 import java.util.List;
 
-/**
- * An immutable client-side representation of an Azure VM Instance View object.
- */
+/** An immutable client-side representation of an Azure VM Instance View object. */
 @Fluent
 public interface VirtualMachineInstanceView extends HasInner<VirtualMachineInstanceViewInner> {
     /**
@@ -26,7 +23,6 @@ public interface VirtualMachineInstanceView extends HasInner<VirtualMachineInsta
      * @return the platformFaultDomain value
      */
     int platformFaultDomain();
-
 
     /**
      * Get the computer name assigned to the virtual machine.
@@ -49,14 +45,12 @@ public interface VirtualMachineInstanceView extends HasInner<VirtualMachineInsta
      */
     String osVersion();
 
-
     /**
      * Get the Remote desktop certificate thumbprint.
      *
      * @return the rdpThumbPrint value
      */
     String rdpThumbPrint();
-
 
     /**
      * Get the VM Agent running on the virtual machine.
@@ -65,14 +59,12 @@ public interface VirtualMachineInstanceView extends HasInner<VirtualMachineInsta
      */
     VirtualMachineAgentInstanceView vmAgent();
 
-
     /**
      * Get the Maintenance Operation status on the virtual machine.
      *
      * @return the maintenanceRedeployStatus value
      */
     MaintenanceRedeployStatus maintenanceRedeployStatus();
-
 
     /**
      * Get the virtual machine disk information.
@@ -81,7 +73,6 @@ public interface VirtualMachineInstanceView extends HasInner<VirtualMachineInsta
      */
     List<DiskInstanceView> disks();
 
-
     /**
      * Get the extensions information.
      *
@@ -89,14 +80,14 @@ public interface VirtualMachineInstanceView extends HasInner<VirtualMachineInsta
      */
     List<VirtualMachineExtensionInstanceView> extensions();
 
-
     /**
-     * Get boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM status. &lt;br&gt;&lt;br&gt; You can easily view the output of your console log. &lt;br&gt;&lt;br&gt; Azure also enables you to see a screenshot of the VM from the hypervisor.
+     * Get boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM
+     * status. &lt;br&gt;&lt;br&gt; You can easily view the output of your console log. &lt;br&gt;&lt;br&gt; Azure also
+     * enables you to see a screenshot of the VM from the hypervisor.
      *
      * @return the bootDiagnostics value
      */
     BootDiagnosticsInstanceView bootDiagnostics();
-
 
     /**
      * Get the resource status information.

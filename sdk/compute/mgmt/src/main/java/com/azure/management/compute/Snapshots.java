@@ -19,12 +19,10 @@ import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
-/**
- * Entry point to managed snapshot management API in Azure.
- */
+/** Entry point to managed snapshot management API in Azure. */
 @Fluent
-public interface Snapshots extends
-        SupportsCreating<Snapshot.DefinitionStages.Blank>,
+public interface Snapshots
+    extends SupportsCreating<Snapshot.DefinitionStages.Blank>,
         SupportsListing<Snapshot>,
         SupportsListingByResourceGroup<Snapshot>,
         SupportsGettingByResourceGroup<Snapshot>,
@@ -44,10 +42,8 @@ public interface Snapshots extends
      * @param accessDuration access duration
      * @return a representation of the deferred computation of this call returning a read-only SAS URI to the snapshot
      */
-    Mono<String> grantAccessAsync(String resourceGroupName,
-                                  String snapshotName,
-                                  AccessLevel accessLevel,
-                                  int accessDuration);
+    Mono<String> grantAccessAsync(
+        String resourceGroupName, String snapshotName, AccessLevel accessLevel, int accessDuration);
 
     /**
      * Grants access to a snapshot.
@@ -58,10 +54,7 @@ public interface Snapshots extends
      * @param accessDuration access duration
      * @return the read-only SAS URI to the snapshot
      */
-    String grantAccess(String resourceGroupName,
-                       String snapshotName,
-                       AccessLevel accessLevel,
-                       int accessDuration);
+    String grantAccess(String resourceGroupName, String snapshotName, AccessLevel accessLevel, int accessDuration);
 
     /**
      * Revoke access granted to the snapshot asynchronously.

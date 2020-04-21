@@ -139,12 +139,10 @@ public class SqlEncryptionProtectorOperationsImpl
         List<SqlEncryptionProtector> encryptionProtectors = new ArrayList<>();
         PagedIterable<EncryptionProtectorInner> encryptionProtectorInners =
             this.sqlServerManager.inner().encryptionProtectors().listByServer(resourceGroupName, sqlServerName);
-        if (encryptionProtectorInners != null) {
-            for (EncryptionProtectorInner inner : encryptionProtectorInners) {
-                encryptionProtectors
-                    .add(
-                        new SqlEncryptionProtectorImpl(resourceGroupName, sqlServerName, inner, this.sqlServerManager));
-            }
+        for (EncryptionProtectorInner inner : encryptionProtectorInners) {
+            encryptionProtectors
+                .add(
+                    new SqlEncryptionProtectorImpl(resourceGroupName, sqlServerName, inner, this.sqlServerManager));
         }
         return Collections.unmodifiableList(encryptionProtectors);
     }
@@ -174,11 +172,9 @@ public class SqlEncryptionProtectorOperationsImpl
                 .inner()
                 .encryptionProtectors()
                 .listByServer(sqlServer.resourceGroupName(), sqlServer.name());
-        if (encryptionProtectorInners != null) {
-            for (EncryptionProtectorInner inner : encryptionProtectorInners) {
-                encryptionProtectors
-                    .add(new SqlEncryptionProtectorImpl((SqlServerImpl) sqlServer, inner, sqlServer.manager()));
-            }
+        for (EncryptionProtectorInner inner : encryptionProtectorInners) {
+            encryptionProtectors
+                .add(new SqlEncryptionProtectorImpl((SqlServerImpl) sqlServer, inner, sqlServer.manager()));
         }
         return Collections.unmodifiableList(encryptionProtectors);
     }

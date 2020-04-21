@@ -59,8 +59,8 @@ public final class BackupLongTermRetentionPoliciesInner {
     private interface BackupLongTermRetentionPoliciesService {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/backupLongTermRetentionPolicies/{policyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/databases/{databaseName}/backupLongTermRetentionPolicies/{policyName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<BackupLongTermRetentionPolicyInner>> get(
@@ -75,8 +75,8 @@ public final class BackupLongTermRetentionPoliciesInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/backupLongTermRetentionPolicies/{policyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/databases/{databaseName}/backupLongTermRetentionPolicies/{policyName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(
@@ -92,8 +92,8 @@ public final class BackupLongTermRetentionPoliciesInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/backupLongTermRetentionPolicies")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/databases/{databaseName}/backupLongTermRetentionPolicies")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<BackupLongTermRetentionPolicyInner>> listByDatabase(
@@ -107,8 +107,8 @@ public final class BackupLongTermRetentionPoliciesInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/backupLongTermRetentionPolicies/{policyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/databases/{databaseName}/backupLongTermRetentionPolicies/{policyName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<BackupLongTermRetentionPolicyInner>> beginCreateOrUpdate(

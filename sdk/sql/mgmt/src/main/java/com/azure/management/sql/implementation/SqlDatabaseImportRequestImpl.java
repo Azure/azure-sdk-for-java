@@ -100,7 +100,6 @@ public class SqlDatabaseImportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
         if (this.inner == null) {
             this.inner = new ImportExtensionRequest();
         }
-        final SqlDatabaseImportRequestImpl self = this;
         this
             .addDependency(
                 context -> getOrCreateStorageAccountContainer(storageAccount, containerName, fileName, context));

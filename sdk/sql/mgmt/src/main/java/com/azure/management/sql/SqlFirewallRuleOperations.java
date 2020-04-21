@@ -15,7 +15,7 @@ public interface SqlFirewallRuleOperations
     /** Container interface for all the definitions that need to be implemented. */
     interface SqlFirewallRuleOperationsDefinition
         extends SqlFirewallRuleOperations.DefinitionStages.WithSqlServer,
-            SqlFirewallRuleOperations.DefinitionStages.WithIPAddressRange,
+            SqlFirewallRuleOperations.DefinitionStages.WithIpAddressRange,
             SqlFirewallRuleOperations.DefinitionStages.WithCreate {
     }
 
@@ -30,7 +30,7 @@ public interface SqlFirewallRuleOperations
              * @param sqlServerName the parent SQL server name
              * @return The next stage of the definition.
              */
-            WithIPAddressRange withExistingSqlServer(String resourceGroupName, String sqlServerName);
+            WithIpAddressRange withExistingSqlServer(String resourceGroupName, String sqlServerName);
 
             /**
              * Sets the parent SQL server for the new Firewall rule.
@@ -38,7 +38,7 @@ public interface SqlFirewallRuleOperations
              * @param sqlServerId the parent SQL server ID
              * @return The next stage of the definition.
              */
-            WithIPAddressRange withExistingSqlServerId(String sqlServerId);
+            WithIpAddressRange withExistingSqlServerId(String sqlServerId);
 
             /**
              * Sets the parent SQL server for the new Firewall rule.
@@ -46,27 +46,27 @@ public interface SqlFirewallRuleOperations
              * @param sqlServer the parent SQL server
              * @return The next stage of the definition.
              */
-            WithIPAddressRange withExistingSqlServer(SqlServer sqlServer);
+            WithIpAddressRange withExistingSqlServer(SqlServer sqlServer);
         }
 
-        /** The SQL Firewall Rule definition to set the IP address range for the parent SQL Server. */
-        interface WithIPAddressRange {
+        /** The SQL Firewall Rule definition to set the Ip address range for the parent SQL Server. */
+        interface WithIpAddressRange {
             /**
-             * Sets the starting IP address of SQL server's firewall rule.
+             * Sets the starting Ip address of SQL server's firewall rule.
              *
-             * @param startIPAddress starting IP address in IPv4 format.
-             * @param endIPAddress starting IP address in IPv4 format.
+             * @param startIpAddress starting Ip address in Ipv4 format.
+             * @param endIpAddress starting Ip address in Ipv4 format.
              * @return The next stage of the definition.
              */
-            WithCreate withIPAddressRange(String startIPAddress, String endIPAddress);
+            WithCreate withIpAddressRange(String startIpAddress, String endIpAddress);
 
             /**
-             * Sets the ending IP address of SQL server's firewall rule.
+             * Sets the ending Ip address of SQL server's firewall rule.
              *
-             * @param ipAddress IP address in IPv4 format.
+             * @param ipAddress Ip address in Ipv4 format.
              * @return The next stage of the definition.
              */
-            WithCreate withIPAddress(String ipAddress);
+            WithCreate withIpAddress(String ipAddress);
         }
 
         /** The final stage of the SQL Firewall Rule definition. */
@@ -82,6 +82,6 @@ public interface SqlFirewallRuleOperations
          * @param firewallRuleName the name of the new SQL Firewall rule
          * @return the first stage of the new SQL Firewall rule definition
          */
-        SqlFirewallRuleOperations.DefinitionStages.WithIPAddressRange define(String firewallRuleName);
+        SqlFirewallRuleOperations.DefinitionStages.WithIpAddressRange define(String firewallRuleName);
     }
 }

@@ -54,7 +54,7 @@ class BlobContainersImpl extends WrapperImpl<BlobContainersInner> implements Blo
         return new ImmutabilityPolicyImpl(inner, manager());
     }
 
-    private Mono<ImmutabilityPolicyInner> getImmutabilityPolicyInnerUsingBlobContainersInnerAsync(String id) {
+    public Mono<ImmutabilityPolicyInner> getImmutabilityPolicyInnerUsingBlobContainersInnerAsync(String id) {
         String resourceGroupName = IdParsingUtils.getValueFromIdByName(id, "resourceGroups");
         String accountName = IdParsingUtils.getValueFromIdByName(id, "storageAccounts");
         String containerName = IdParsingUtils.getValueFromIdByName(id, "containers");
@@ -73,7 +73,7 @@ class BlobContainersImpl extends WrapperImpl<BlobContainersInner> implements Blo
         BlobContainersInner client = this.inner();
         return client
             .getAsync(resourceGroupName, accountName, containerName)
-            .map(inner -> new BlobContainerImpl(inner, manager()));
+            .map(this::wrapBlobContainerModel);
     }
 
     @Override
@@ -106,7 +106,7 @@ class BlobContainersImpl extends WrapperImpl<BlobContainersInner> implements Blo
         BlobContainersInner client = this.inner();
         return client
             .getImmutabilityPolicyAsync(resourceGroupName, accountName, containerName)
-            .map(inner -> wrapImmutabilityPolicyModel(inner));
+            .map(this::wrapImmutabilityPolicyModel);
     }
 
     @Override

@@ -5,31 +5,34 @@ package com.azure.management.compute.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.compute.models.GalleryInner;
 import com.azure.management.compute.Gallery;
 import com.azure.management.compute.GalleryImage;
+import com.azure.management.compute.models.GalleryInner;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import reactor.core.publisher.Mono;
 
-/**
- * The implementation for Gallery and its create and update interfaces.
- */
-class GalleryImpl
-        extends GroupableResourceImpl<Gallery, GalleryInner, GalleryImpl, ComputeManager>
-        implements Gallery, Gallery.Definition, Gallery.Update {
+/** The implementation for Gallery and its create and update interfaces. */
+class GalleryImpl extends GroupableResourceImpl<Gallery, GalleryInner, GalleryImpl, ComputeManager>
+    implements Gallery, Gallery.Definition, Gallery.Update {
     GalleryImpl(String name, GalleryInner inner, ComputeManager manager) {
         super(name, inner, manager);
     }
 
     @Override
     public Mono<Gallery> createResourceAsync() {
-        return manager().inner().galleries().createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+        return manager()
+            .inner()
+            .galleries()
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Mono<Gallery> updateResourceAsync() {
-        return manager().inner().galleries().createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+        return manager()
+            .inner()
+            .galleries()
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
     }
 

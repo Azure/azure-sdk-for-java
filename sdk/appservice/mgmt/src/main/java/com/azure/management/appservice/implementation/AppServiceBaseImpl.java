@@ -414,7 +414,12 @@ abstract class AppServiceBaseImpl<
                     appServicePlanCreatable.name(),
                     "");
         inner().withServerFarmId(id);
-        return withOperatingSystem(((AppServicePlanImpl) appServicePlanCreatable).operatingSystem());
+        if (appServicePlanCreatable instanceof AppServicePlanImpl) {
+            return withOperatingSystem(((AppServicePlanImpl) appServicePlanCreatable).operatingSystem());
+        } else {
+            throw logger.logExceptionAsError(
+                new IllegalStateException("Internal error, appServicePlanCreatable must be class AppServicePlanImpl"));
+        }
     }
 
     @SuppressWarnings("unchecked")

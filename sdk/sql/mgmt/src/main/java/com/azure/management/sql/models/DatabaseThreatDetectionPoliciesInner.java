@@ -56,8 +56,8 @@ public final class DatabaseThreatDetectionPoliciesInner {
     private interface DatabaseThreatDetectionPoliciesService {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/securityAlertPolicies/{securityAlertPolicyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/databases/{databaseName}/securityAlertPolicies/{securityAlertPolicyName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<DatabaseSecurityAlertPolicyInner>> get(
@@ -72,8 +72,8 @@ public final class DatabaseThreatDetectionPoliciesInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/securityAlertPolicies/{securityAlertPolicyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/databases/{databaseName}/securityAlertPolicies/{securityAlertPolicyName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<DatabaseSecurityAlertPolicyInner>> createOrUpdate(

@@ -67,8 +67,8 @@ public final class LongTermRetentionManagedInstanceBackupsInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}"
-                + "/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases/{databaseName}"
-                + "/longTermRetentionManagedInstanceBackups/{backupName}")
+                + "/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases"
+                + "/{databaseName}/longTermRetentionManagedInstanceBackups/{backupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<ManagedInstanceLongTermRetentionBackupInner>> get(
@@ -84,8 +84,8 @@ public final class LongTermRetentionManagedInstanceBackupsInner {
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}"
-                + "/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases/{databaseName}"
-                + "/longTermRetentionManagedInstanceBackups/{backupName}")
+                + "/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases"
+                + "/{databaseName}/longTermRetentionManagedInstanceBackups/{backupName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
@@ -101,8 +101,8 @@ public final class LongTermRetentionManagedInstanceBackupsInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}"
-                + "/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases/{databaseName}"
-                + "/longTermRetentionManagedInstanceBackups")
+                + "/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases"
+                + "/{databaseName}/longTermRetentionManagedInstanceBackups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<ManagedInstanceLongTermRetentionBackupListResultInner>> listByDatabase(
@@ -239,8 +239,8 @@ public final class LongTermRetentionManagedInstanceBackupsInner {
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}"
-                + "/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases/{databaseName}"
-                + "/longTermRetentionManagedInstanceBackups/{backupName}")
+                + "/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases"
+                + "/{databaseName}/longTermRetentionManagedInstanceBackups/{backupName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<Response<Void>> beginDelete(

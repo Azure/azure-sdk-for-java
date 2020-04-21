@@ -102,7 +102,7 @@ public final class ManageSqlDatabase {
             // Add new firewall rules.
             System.out.println("Creating a firewall rule for SQL Server");
             SqlFirewallRule firewallRule = sqlServer.firewallRules().define("myFirewallRule")
-                    .withIPAddress("10.10.10.10")
+                    .withIpAddress("10.10.10.10")
                     .create();
 
             Utils.print(firewallRule);
