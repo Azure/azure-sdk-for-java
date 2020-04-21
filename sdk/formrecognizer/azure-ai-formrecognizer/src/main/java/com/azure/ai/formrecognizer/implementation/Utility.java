@@ -4,10 +4,10 @@
 package com.azure.ai.formrecognizer.implementation;
 
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
-import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,46 +25,81 @@ public final class Utility {
     }
 
     /**
-     * Automatically detect byte buffer's content type if the {@code formContentType} is not given. Otherwise,
-     * use the given content type value as the result.
+     * Automatically detect byte buffer's content type.
      *
      * Given the source: <a href="https://en.wikipedia.org/wiki/Magic_number_(programming)#Magic_numbers_in_files"/>.
      *
      * @param buffer The byte buffer input.
-     * @param formContentType The user specified content type.
      *
-     * @return The {@link ContentType} content type.
+     * @return The {@link Mono} of {@link ContentType} content type.
      */
-    public static ContentType getContentType(ByteBuffer buffer, FormContentType formContentType) {
-        // if the form content type is given, use it as return result, otherwise, do the guessing based on the buffer
-        if (formContentType != null) {
-            return ContentType.fromString(formContentType.toString());
-        }
+    public static Mono<ContentType> detectContentType(Flux<ByteBuffer> buffer) {
+        byte[] header = new byte[4];
+        int[] written = new int[] {0};
+        ContentType[] contentType = { ContentType.fromString("none")};
+        return buffer.map(chunk -> {
+            final int len = chunk.remaining();
+            for (int i = 0; i < len; i++) {
+                header[written[0]] = chunk.get(i);
+                written[0]++;
 
-        final byte[] bytes = buffer.array();
-        if (bytes.length < 4) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Invalid input. Expect more than 4 bytes of data"));
-        }
+                if (written[0] == 4) {
+                    if (isJpeg(header)) {
+                        contentType[0] = ContentType.IMAGE_JPEG;
+                    } else if (isPdf(header)) {
+                        contentType[0] = ContentType.APPLICATION_PDF;
+                    } else if (isPng(header)) {
+                        contentType[0] = ContentType.IMAGE_PNG;
+                    } else if (isTiff(header)) {
+                        contentType[0] = ContentType.IMAGE_TIFF;
+                    }
+                    // Got a four bytes matching or not, either way no need to read more byte return false
+                    // so that takeWhile can cut the subscription on data
+                    return false;
+                }
+            }
+            // current chunk don't have enough bytes so return true to get next Chunk if there is one.
+            return true;
+        })
+        .takeWhile(doContinue -> doContinue)
+        .then(Mono.defer(() -> {
+            if (contentType[0] != null) {
+                return Mono.just(contentType[0]);
+            } else {
+                return Mono.error(new RuntimeException("Content type could not be detected. "
+                    + "Should use other overload API that takes content type."));
+            }
+        }));
+    }
 
-        if (bytes[0] == (byte) 0x25 && bytes[1] == (byte) 0x50 && bytes[2] == (byte) 0x44 && bytes[3] == (byte) 0x46) {
-            return ContentType.APPLICATION_PDF;
-        } else if (bytes[0] == (byte) 0xff && bytes[1] == (byte) 0xd8) {
-            return ContentType.IMAGE_JPEG;
-        } else if (bytes[0] == (byte) 0x89 &&  bytes[1] == (byte) 0x50 && bytes[2] == (byte) 0x4e
-            && bytes[3] == (byte) 0x47) {
-            return ContentType.IMAGE_PNG;
-        } else if (
-            // little-endian
-            (bytes[0] == (byte) 0x49 && bytes[1] == (byte) 0x49 && bytes[2] == (byte) 0x2a && bytes[3] == (byte) 0x0)
-                // big-endian
-                || (bytes[0] == (byte) 0x4d && bytes[1] == (byte) 0x4d && bytes[2] == (byte) 0x0
-                    && bytes[3] == (byte) 0x2a)) {
-            return ContentType.IMAGE_TIFF;
-        } else {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Content type could not be detected. Should use other overload API that takes content type."));
-        }
+    private static boolean isJpeg(byte[] header) {
+        return (header[0] == (byte) 0xff && header[1] == (byte) 0xd8);
+    }
+
+    private static boolean isPdf(byte[] header) {
+        return header[0] == (byte) 0x25
+            && header[1] == (byte) 0x50
+            && header[2] == (byte) 0x44
+            && header[3] == (byte) 0x46;
+    }
+
+    private static boolean isPng(byte[] header) {
+        return header[0] == (byte) 0x89
+            &&  header[1] == (byte) 0x50
+            && header[2] == (byte) 0x4e
+            && header[3] == (byte) 0x47;
+    }
+
+    private static boolean isTiff(byte[] header) {
+        return (header[0] == (byte) 0x49
+            && header[1] == (byte) 0x49
+            && header[2] == (byte) 0x2a
+            && header[3] == (byte) 0x0)
+            // big-endian
+            || (header[0] == (byte) 0x4d
+            && header[1] == (byte) 0x4d
+            && header[2] == (byte) 0x0
+            && header[3] == (byte) 0x2a);
     }
 
     /**

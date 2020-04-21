@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
+import com.azure.ai.formrecognizer.implementation.models.ContentType;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.implementation.models.SourcePath;
 import com.azure.ai.formrecognizer.models.ErrorInformation;
@@ -41,7 +42,7 @@ import static com.azure.ai.formrecognizer.FormRecognizerClientBuilder.DEFAULT_DU
 import static com.azure.ai.formrecognizer.Transforms.toReceipt;
 import static com.azure.ai.formrecognizer.Transforms.toRecognizedForm;
 import static com.azure.ai.formrecognizer.Transforms.toRecognizedLayout;
-import static com.azure.ai.formrecognizer.implementation.Utility.getContentType;
+import static com.azure.ai.formrecognizer.implementation.Utility.detectContentType;
 import static com.azure.ai.formrecognizer.implementation.Utility.parseModelId;
 import static com.azure.core.util.FluxUtil.monoError;
 
@@ -382,17 +383,22 @@ public final class FormRecognizerAsyncClient {
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> receiptStreamActivationOperation(
         Flux<ByteBuffer> data, long length, FormContentType formContentType, boolean includeTextDetails) {
         Objects.requireNonNull(data, "'data' is required and cannot be null.");
-
         return pollingContext -> {
-            try {
-                return data.next()
-                    .map(byteBuffer -> getContentType(byteBuffer, formContentType))
+            if (formContentType != null) {
+                try {
+                    return service.analyzeReceiptAsyncWithResponseAsync(
+                        ContentType.fromString(formContentType.toString()), data, length, includeTextDetails)
+                        .map(response -> new OperationResult(
+                            parseModelId(response.getDeserializedHeaders().getOperationLocation())));
+                } catch (RuntimeException ex) {
+                    return monoError(logger, ex);
+                }
+            } else {
+                return detectContentType(data)
                     .flatMap(contentType ->
                         service.analyzeReceiptAsyncWithResponseAsync(contentType, data, length, includeTextDetails)
                             .map(response -> new OperationResult(
                                 parseModelId(response.getDeserializedHeaders().getOperationLocation()))));
-            } catch (RuntimeException ex) {
-                return monoError(logger, ex);
             }
         };
     }
@@ -444,16 +450,22 @@ public final class FormRecognizerAsyncClient {
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> contentStreamActivationOperation(
         Flux<ByteBuffer> data, long length, FormContentType formContentType) {
         Objects.requireNonNull(data, "'data' is required and cannot be null.");
-
         return pollingContext -> {
-            try {
-                return data.next()
-                    .map(byteBuffer -> getContentType(byteBuffer, formContentType))
-                    .flatMap(contentType -> service.analyzeLayoutAsyncWithResponseAsync(contentType, data, length)
+            if (formContentType != null) {
+                try {
+                    return service.analyzeLayoutAsyncWithResponseAsync(
+                        ContentType.fromString(formContentType.toString()), data, length)
                         .map(response -> new OperationResult(parseModelId(
-                            response.getDeserializedHeaders().getOperationLocation()))));
-            } catch (RuntimeException ex) {
-                return monoError(logger, ex);
+                            response.getDeserializedHeaders().getOperationLocation())));
+                } catch (RuntimeException ex) {
+                    return monoError(logger, ex);
+                }
+            } else {
+                return detectContentType(data)
+                    .flatMap(contentType ->
+                        service.analyzeLayoutAsyncWithResponseAsync(contentType, data, length)
+                            .map(response -> new OperationResult(
+                                parseModelId(response.getDeserializedHeaders().getOperationLocation()))));
             }
         };
     }
@@ -560,17 +572,23 @@ public final class FormRecognizerAsyncClient {
         FormContentType formContentType, boolean includeTextDetails) {
         Objects.requireNonNull(data, "'data' is required and cannot be null.");
         Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
-
         return pollingContext -> {
-            try {
-                return data.next()
-                    .map(byteBuffer -> getContentType(byteBuffer, formContentType))
-                    .flatMap(contentType -> service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId),
-                        contentType, data, length, includeTextDetails)
-                        .map(response -> new OperationResult(
-                            parseModelId(response.getDeserializedHeaders().getOperationLocation()))));
-            } catch (RuntimeException ex) {
-                return monoError(logger, ex);
+            if (formContentType != null) {
+                try {
+                    return service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId),
+                        ContentType.fromString(formContentType.toString()), data, length, includeTextDetails)
+                        .map(response -> new OperationResult(parseModelId(
+                            response.getDeserializedHeaders().getOperationLocation())));
+                } catch (RuntimeException ex) {
+                    return monoError(logger, ex);
+                }
+            } else {
+                return detectContentType(data)
+                    .flatMap(contentType ->
+                        service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId), contentType, data,
+                            length, includeTextDetails)
+                            .map(response -> new OperationResult(
+                                parseModelId(response.getDeserializedHeaders().getOperationLocation()))));
             }
         };
     }
