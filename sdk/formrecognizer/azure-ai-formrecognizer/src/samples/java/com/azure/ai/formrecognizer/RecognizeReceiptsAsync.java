@@ -22,6 +22,8 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.concurrent.TimeUnit;
 
+import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
+
 /**
  * Async sample for recognizing US receipt information from a local file.
  */
@@ -45,7 +47,7 @@ public class RecognizeReceiptsAsync {
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
         PollerFlux<OperationResult, IterableStream<RecognizedReceipt>> analyzeReceiptPoller =
-            client.beginRecognizeReceipts(Utility.convertStreamToByteBuffer(targetStream),
+            client.beginRecognizeReceipts(toFluxByteBuffer(targetStream),
                 sourceFile.length(), FormContentType.IMAGE_JPEG);
 
         IterableStream<RecognizedReceipt> receiptPageResults = analyzeReceiptPoller

@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.concurrent.TimeUnit;
 
+import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
+
 /**
  * Async sample to show the differences in output that arise when RecognizeCustomForms
  * is called with custom models trained with labeled and unlabeled data.
@@ -43,9 +45,9 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
         byte[] fileContent = Files.readAllBytes(analyzeFile.toPath());
 
         PollerFlux<OperationResult, IterableStream<RecognizedForm>> labeledCustomFormPoller =
-            client.beginRecognizeCustomForms(Utility.convertStreamToByteBuffer(new ByteArrayInputStream(fileContent)), "{labeled_model_Id}", analyzeFile.length(), FormContentType.APPLICATION_PDF, true, null);
+            client.beginRecognizeCustomForms(toFluxByteBuffer(new ByteArrayInputStream(fileContent)), "{labeled_model_Id}", analyzeFile.length(), FormContentType.APPLICATION_PDF, true, null);
         PollerFlux<OperationResult, IterableStream<RecognizedForm>> unlabeledCustomFormPoller =
-            client.beginRecognizeCustomForms(Utility.convertStreamToByteBuffer(new ByteArrayInputStream(fileContent)), "{unlabeled_model_Id}", analyzeFile.length(), FormContentType.APPLICATION_PDF);
+            client.beginRecognizeCustomForms(toFluxByteBuffer(new ByteArrayInputStream(fileContent)), "{unlabeled_model_Id}", analyzeFile.length(), FormContentType.APPLICATION_PDF);
 
         Mono<IterableStream<RecognizedForm>> labeledDataResult = labeledCustomFormPoller
             .last()
