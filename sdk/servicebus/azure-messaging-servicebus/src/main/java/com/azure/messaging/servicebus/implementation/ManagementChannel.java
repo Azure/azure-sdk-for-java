@@ -416,7 +416,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
         applicationProperties.put(ManagementConstants.MANAGEMENT_OPERATION_KEY, operation);
         applicationProperties.put(ManagementConstants.SERVER_TIMEOUT, serverTimeout.toMillis());
 
-        if (associatedLinkName != null && !associatedLinkName.isEmpty()) {
+        if (!CoreUtils.isNullOrEmpty(associatedLinkName)) {
             applicationProperties.put(ManagementConstants.ASSOCIATED_LINK_NAME_KEY, associatedLinkName);
         }
 
