@@ -216,8 +216,7 @@ foreach ($packageDetail in $packageDetails) {
 
   [AssociatedArtifact[]]$additionalAssociatedArtifacts = @()
   foreach ($additionalAssociatedArtifact in $packageDetail.AssociatedArtifacts) {
-    if (($additionalAssociatedArtifact -ne $pomAssociatedArtifact) -and
-        ($additionalAssociatedArtifact -ne $fileAssociatedArtifact) -and
+    if (($additionalAssociatedArtifact -ne $fileAssociatedArtifact) -and
         ($additionalAssociatedArtifact -ne $javadocAssociatedArtifact) -and
         ($additionalAssociatedArtifact -ne $sourcesAssociatedArtifact)) {
 
