@@ -16,5 +16,6 @@
     <module>azure-core-http-jdk-httpclient</module>
     <module>azure-core-test</module>
     <module>azure-core-tracing-opentelemetry</module>
+    <module>azure-core-management</module>
   </modules>
 </project>
