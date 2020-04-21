@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.TestConfigurations;
@@ -16,12 +19,11 @@ public class AnalyticalStorageCodeSnippet {
             .buildAsyncClient();
 
         CosmosAsyncDatabaseResponse database = client.createDatabaseIfNotExists("testDB").block();
-        CosmosContainerProperties cosmosContainerProperties = new CosmosContainerProperties(Instant.now().toString(), "/id");
+        CosmosContainerProperties cosmosContainerProperties = new CosmosContainerProperties("testContainer", "/id");
         cosmosContainerProperties.setAnalyticalStorageTimeToLiveInSeconds(-1);
 
         database.getDatabase().createContainer(cosmosContainerProperties).block();
 
         client.close();
     }
-
 }

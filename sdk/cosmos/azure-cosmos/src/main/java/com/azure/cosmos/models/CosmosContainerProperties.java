@@ -229,6 +229,7 @@ public final class CosmosContainerProperties extends Resource {
      * time-to-live value.
      *
      * @param timeToLive the default time-to-live value in seconds.
+     * @return the CosmosContainerProperties.
      */
     public CosmosContainerProperties setDefaultTimeToLiveInSeconds(Integer timeToLive) {
         // a "null" value is represented as a missing element on the wire.
@@ -250,7 +251,7 @@ public final class CosmosContainerProperties extends Resource {
      * -1 means documents in analytical store never expire.
      * The unit of measurement is seconds. The maximum allowed value is 2147483647.
      *
-     * @param timeToLive
+     * @param timeToLive the analytical storage time to live in seconds.
      * @return the CosmosContainerProperties.
      */
     public CosmosContainerProperties setAnalyticalStorageTimeToLiveInSeconds(Integer timeToLive) {

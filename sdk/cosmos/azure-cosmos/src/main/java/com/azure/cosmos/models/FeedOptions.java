@@ -336,7 +336,8 @@ public final class FeedOptions {
      * Sets the option to allow empty result pages in feed response. Defaults to false
      * @param emptyPagesAllowed whether to allow empty pages in feed response
      */
-    public void setEmptyPagesAllowed(boolean emptyPagesAllowed) {
+    public FeedOptions setEmptyPagesAllowed(boolean emptyPagesAllowed) {
         this.emptyPagesAllowed = emptyPagesAllowed;
+        return this;
     }
 }

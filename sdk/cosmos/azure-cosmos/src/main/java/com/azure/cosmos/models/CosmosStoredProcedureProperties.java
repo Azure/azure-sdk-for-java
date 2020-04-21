@@ -70,10 +70,10 @@ public final class CosmosStoredProcedureProperties extends Resource {
      *
      * @param body the body of the stored procedure.
      */
-    public void setBody(String body) {
+    public CosmosStoredProcedureProperties setBody(String body) {
         super.set(Constants.Properties.BODY, body);
+        return this;
     }
-
 
     static List<CosmosStoredProcedureProperties> getFromV2Results(List<StoredProcedure> results) {
         return results.stream().map(sproc -> new CosmosStoredProcedureProperties(sproc.toJson()))
