@@ -20,7 +20,7 @@ public class SearchServiceSyncTests extends SearchServiceTestBase {
         SearchServiceClient serviceClient = getSearchServiceClientBuilder().buildClient();
 
         ServiceStatistics serviceStatistics = serviceClient.getServiceStatistics();
-        assertObjectEquals(serviceStatistics, getExpectedServiceStatistics(), true);
+        assertObjectEquals(getExpectedServiceStatistics(), serviceStatistics, true);
     }
 
     @Test
@@ -28,7 +28,7 @@ public class SearchServiceSyncTests extends SearchServiceTestBase {
         SearchServiceClient serviceClient = getSearchServiceClientBuilder().buildClient();
 
         ServiceStatistics serviceStatistics = serviceClient.getServiceStatisticsWithResponse(generateRequestOptions(), Context.NONE).getValue();
-        assertObjectEquals(serviceStatistics, getExpectedServiceStatistics(), true);
+        assertObjectEquals(getExpectedServiceStatistics(), serviceStatistics, true);
     }
 
     @Test
@@ -49,6 +49,6 @@ public class SearchServiceSyncTests extends SearchServiceTestBase {
 
         Assertions.assertNotNull(actualClientRequestId);
         Assertions.assertEquals(actualClientRequestId, actualRequestId);
-        assertObjectEquals(response.getValue(), getExpectedServiceStatistics(), true);
+        assertObjectEquals(getExpectedServiceStatistics(), response.getValue(), true);
     }
 }

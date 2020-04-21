@@ -1,26 +1,29 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://azs-sdk6518926636b.search.windows.net/indexes('thisindexdoesnotexist')?api-version=2019-05-06",
-    "Headers" : { },
+    "Uri" : "https://azsjavagetindexthrowsonnotfounda9382908809e4e1a37.search.windows.net/indexes('thisindexdoesnotexist')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "87dbcc96-515a-44a5-bb35-86f642180917"
+    },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "4d9364dc-e9b5-4e3f-80da-c086a51b92b7",
+      "request-id" : "87dbcc96-515a-44a5-bb35-86f642180917",
       "StatusCode" : "404",
-      "Date" : "Mon, 24 Feb 2020 19:40:37 GMT",
+      "Date" : "Tue, 21 Apr 2020 18:57:14 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "29",
+      "client-request-id" : "87dbcc96-515a-44a5-bb35-86f642180917",
+      "elapsed-time" : "28",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "127",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No index with the name 'thisindexdoesnotexist' was found in the service 'azs-sdk6518926636b'.\"}}",
+      "Content-Length" : "158",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No index with the name 'thisindexdoesnotexist' was found in the service 'azsjavagetindexthrowsonnotfounda9382908809e4e1a37'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   } ],
-  "variables" : [ "azs-sdk6518926636b" ]
+  "variables" : [ "azsjavagetindexthrowsonnotfounda9382908809e4e1a37" ]
 }

@@ -1,20 +1,21 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk5811634e96e.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
+    "Uri" : "https://azsjavacanmergedynamicdocuments41169933e9a245e374.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06-Preview",
     "Headers" : {
+      "x-ms-client-request-id" : "9f18415e-7b3e-41e9-bcad-bdc366001678",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "5974ffec-a50c-4355-9d5b-bd97978920d8",
+      "request-id" : "9f18415e-7b3e-41e9-bcad-bdc366001678",
       "StatusCode" : "200",
-      "Date" : "Fri, 13 Mar 2020 20:23:32 GMT",
+      "Date" : "Tue, 21 Apr 2020 18:55:58 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "5974ffec-a50c-4355-9d5b-bd97978920d8",
-      "elapsed-time" : "154",
+      "client-request-id" : "9f18415e-7b3e-41e9-bcad-bdc366001678",
+      "elapsed-time" : "180",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "74",
@@ -25,20 +26,21 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk5811634e96e.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
+    "Uri" : "https://azsjavacanmergedynamicdocuments41169933e9a245e374.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06-Preview",
     "Headers" : {
+      "x-ms-client-request-id" : "1ef39978-acb7-4f79-84f7-caec74978325",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "1044544c-d77d-4a9e-824d-28dd1bb1d0aa",
+      "request-id" : "1ef39978-acb7-4f79-84f7-caec74978325",
       "StatusCode" : "200",
-      "Date" : "Fri, 13 Mar 2020 20:23:34 GMT",
+      "Date" : "Tue, 21 Apr 2020 18:55:59 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "1044544c-d77d-4a9e-824d-28dd1bb1d0aa",
-      "elapsed-time" : "48",
+      "client-request-id" : "1ef39978-acb7-4f79-84f7-caec74978325",
+      "elapsed-time" : "47",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "74",
@@ -49,18 +51,20 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azs-sdk5811634e96e.search.windows.net/indexes('hotels')/docs('1')?api-version=2019-05-06",
-    "Headers" : { },
+    "Uri" : "https://azsjavacanmergedynamicdocuments41169933e9a245e374.search.windows.net/indexes('hotels')/docs('1')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "5eb52dc5-a7d4-45c0-83f3-ad7333d4abf1"
+    },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "ad1b1c02-b18d-4a49-a9a0-f3a291d42bf8",
+      "request-id" : "5eb52dc5-a7d4-45c0-83f3-ad7333d4abf1",
       "StatusCode" : "200",
-      "Date" : "Fri, 13 Mar 2020 20:23:36 GMT",
+      "Date" : "Tue, 21 Apr 2020 18:56:01 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "ad1b1c02-b18d-4a49-a9a0-f3a291d42bf8",
-      "elapsed-time" : "12",
+      "client-request-id" : "5eb52dc5-a7d4-45c0-83f3-ad7333d4abf1",
+      "elapsed-time" : "14",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "896",
@@ -71,20 +75,21 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk5811634e96e.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
+    "Uri" : "https://azsjavacanmergedynamicdocuments41169933e9a245e374.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06-Preview",
     "Headers" : {
+      "x-ms-client-request-id" : "0dc9f232-3889-442c-9259-5fae920f4b17",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "ede2db06-d8ab-4aaa-adf7-77b45c30b0d4",
+      "request-id" : "0dc9f232-3889-442c-9259-5fae920f4b17",
       "StatusCode" : "200",
-      "Date" : "Fri, 13 Mar 2020 20:23:36 GMT",
+      "Date" : "Tue, 21 Apr 2020 18:56:01 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "ede2db06-d8ab-4aaa-adf7-77b45c30b0d4",
-      "elapsed-time" : "48",
+      "client-request-id" : "0dc9f232-3889-442c-9259-5fae920f4b17",
+      "elapsed-time" : "47",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "74",
@@ -95,18 +100,20 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azs-sdk5811634e96e.search.windows.net/indexes('hotels')/docs('1')?api-version=2019-05-06",
-    "Headers" : { },
+    "Uri" : "https://azsjavacanmergedynamicdocuments41169933e9a245e374.search.windows.net/indexes('hotels')/docs('1')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "9f9205a4-3d9e-417a-933b-cc39d18136ad"
+    },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "1cbafc1c-740e-43f7-b742-f16024bbf528",
+      "request-id" : "9f9205a4-3d9e-417a-933b-cc39d18136ad",
       "StatusCode" : "200",
-      "Date" : "Fri, 13 Mar 2020 20:23:38 GMT",
+      "Date" : "Tue, 21 Apr 2020 18:56:04 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "1cbafc1c-740e-43f7-b742-f16024bbf528",
-      "elapsed-time" : "6",
+      "client-request-id" : "9f9205a4-3d9e-417a-933b-cc39d18136ad",
+      "elapsed-time" : "13",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "1667",
@@ -116,5 +123,5 @@
     },
     "Exception" : null
   } ],
-  "variables" : [ "azs-sdk5811634e96e" ]
+  "variables" : [ "azsjavacanmergedynamicdocuments41169933e9a245e374" ]
 }
