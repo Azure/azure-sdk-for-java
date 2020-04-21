@@ -5,6 +5,7 @@ package com.azure.management.appservice.implementation;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -21,13 +22,18 @@ import com.azure.management.appservice.KuduAuthenticationPolicy;
 import com.azure.management.appservice.WebAppBase;
 import com.fasterxml.jackson.core.JsonParseException;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousFileChannel;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -45,7 +51,9 @@ class KuduClient {
             throw logger.logExceptionAsError(
                 new UnsupportedOperationException("Cannot initialize kudu client before web app is created"));
         }
-        String host = webAppBase.defaultHostName().toLowerCase().replace("http://", "").replace("https://", "");
+        String host = webAppBase.defaultHostName().toLowerCase(Locale.ROOT)
+            .replace("http://", "")
+            .replace("https://", "");
         String[] parts = host.split("\\.", 2);
         host = parts[0] + ".scm." + parts[1];
         this.host = "https://" + host;
@@ -115,11 +123,34 @@ class KuduClient {
 
         @Headers({
             "Content-Type: application/octet-stream",
+            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps warDeploy",
+            "x-ms-body-logging: false"
+        })
+        @Post("api/wardeploy")
+        Mono<Void> warDeploy(
+            @HostParam("$host") String host,
+            @BodyParam("application/octet-stream") Flux<ByteBuffer> warFile,
+            @HeaderParam("content-length") long size,
+            @QueryParam("name") String appName);
+
+        @Headers({
+            "Content-Type: application/octet-stream",
             "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps zipDeploy",
             "x-ms-body-logging: false"
         })
         @Post("api/zipdeploy")
         Mono<Void> zipDeploy(@HostParam("$host") String host, @BodyParam("application/octet-stream") byte[] zipFile);
+
+        @Headers({
+            "Content-Type: application/octet-stream",
+            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps zipDeploy",
+            "x-ms-body-logging: false"
+        })
+        @Post("api/zipdeploy")
+        Mono<Void> zipDeploy(
+            @HostParam("$host") String host,
+            @BodyParam("application/octet-stream") Flux<ByteBuffer> zipFile,
+            @HeaderParam("content-length") long size);
     }
 
     Flux<String> streamApplicationLogsAsync() {
@@ -214,8 +245,32 @@ class KuduClient {
         return withRetry(service.warDeploy(host, byteArrayFromInputStream(warFile), appName));
     }
 
+    Mono<Void> warDeployAsync(File warFile, String appName) throws IOException {
+        AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(warFile.toPath(), StandardOpenOption.READ);
+        return withRetry(service.warDeploy(host, FluxUtil.readFile(fileChannel), fileChannel.size(), appName)
+                .doFinally(ignored -> {
+                    try {
+                        fileChannel.close();
+                    } catch (IOException e) {
+                        logger.error(e.getMessage(), e);
+                    }
+                }));
+    }
+
     Mono<Void> zipDeployAsync(InputStream zipFile) {
         return withRetry(service.zipDeploy(host, byteArrayFromInputStream(zipFile)));
+    }
+
+    Mono<Void> zipDeployAsync(File zipFile) throws IOException {
+        AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(zipFile.toPath(), StandardOpenOption.READ);
+        return withRetry(service.zipDeploy(host, FluxUtil.readFile(fileChannel), fileChannel.size())
+            .doFinally(ignored -> {
+                try {
+                    fileChannel.close();
+                } catch (IOException e) {
+                    logger.error(e.getMessage(), e);
+                }
+            }));
     }
 
     private byte[] byteArrayFromInputStream(InputStream inputStream) {
