@@ -53,6 +53,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -232,7 +233,7 @@ class ServiceBusReceiverAsyncClientTest {
      * Verifies that we can receive messages from the processor.
      */
     @Test
-    void receivesAndAutoCompletes() {
+    void receivesAndAutoCompletes() throws InterruptedException {
         // Arrange
         final ReceiverOptions options = new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, null);
         final ServiceBusReceiverAsyncClient consumer2 = new ServiceBusReceiverAsyncClient(
@@ -270,8 +271,9 @@ class ServiceBusReceiverAsyncClientTest {
                 messageSink.next(message2);
             })
             .expectNext(receivedMessage, receivedMessage2)
-            .thenAwait(Duration.ofSeconds(5))
             .verifyComplete();
+
+        TimeUnit.SECONDS.sleep(2);
 
         logger.info("Verifying assertions.");
         verify(amqpReceiveLink).updateDisposition(eq(lockToken1.toString()), any(Accepted.class));

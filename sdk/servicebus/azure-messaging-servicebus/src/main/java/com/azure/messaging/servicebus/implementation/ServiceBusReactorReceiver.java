@@ -176,7 +176,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver {
                 delivery.disposition(Accepted.getInstance());
                 delivery.settle();
             } else {
-                unsettledDeliveries.put(lockToken.toString(), delivery);
+                unsettledDeliveries.putIfAbsent(lockToken.toString(), delivery);
                 receiver.advance();
             }
             return new MessageWithLockToken(message, lockToken);
