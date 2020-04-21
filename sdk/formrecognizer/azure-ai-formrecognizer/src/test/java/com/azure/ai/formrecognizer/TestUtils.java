@@ -204,12 +204,13 @@ final class TestUtils {
     }
 
     static Mono<InputStream> getFileData(String localFileUrl) {
-            return Mono.defer(() -> {
-                try {
-                    return Mono.just(new FileInputStream(localFileUrl));
-                } catch (FileNotFoundException e) {
-                    return Mono.error(new RuntimeException("Local Receipt file not found.", e));                }
-            });
+        return Mono.defer(() -> {
+            try {
+                return Mono.just(new FileInputStream(localFileUrl));
+            } catch (FileNotFoundException e) {
+                return Mono.error(new RuntimeException("Local Receipt file not found.", e));
+            }
+        });
     }
 
     static Flux<ByteBuffer> getFileBufferData(Mono<InputStream> dataMono) {
