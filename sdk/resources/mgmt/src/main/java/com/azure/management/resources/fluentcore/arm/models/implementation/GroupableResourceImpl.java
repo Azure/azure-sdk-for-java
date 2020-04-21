@@ -69,6 +69,10 @@ public abstract class GroupableResourceImpl<
         }
     }
 
+    protected Creatable<ResourceGroup> creatableGroup() {
+        return this.creatableGroup;
+    }
+
     /****************************************
      * withGroup implementations.
      ****************************************/

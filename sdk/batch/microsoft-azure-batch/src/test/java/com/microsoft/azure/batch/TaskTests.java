@@ -27,8 +27,8 @@ public class TaskTests  extends BatchIntegrationTestBase {
         liveIaasPoolId = getStringIdWithUserNamePrefix("-testIaaSpool");
         try {
             if(isRecordMode()) {
-                createClient(AuthMode.SharedKey);
-                livePool = createIfNotExistPaaSPool(livePoolId);
+                createClient(AuthMode.AAD);
+                livePool = createIfNotExistIaaSPool(livePoolId);
                 liveIaaSPool = createIfNotExistIaaSPool(liveIaasPoolId);
                 Assert.assertNotNull(livePool);
             }
@@ -527,7 +527,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
         if(!isRecordMode()){
             return;
         }
-        createClient(AuthMode.SharedKey);
+        createClient(AuthMode.AAD);
         String jobId = getStringIdWithUserNamePrefix("-succeedWithRetry");
         String taskId = "mytask";
 

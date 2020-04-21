@@ -156,8 +156,8 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
      * Test for listing all models information.
      */
     @Test
-    void listModels() {
-        StepVerifier.create(client.listModels())
+    void getModelInfos() {
+        StepVerifier.create(client.getModelInfos())
             .thenConsumeWhile(customFormModelInfo ->
                 customFormModelInfo.getModelId() != null && customFormModelInfo.getCreatedOn() != null
                     && customFormModelInfo.getLastUpdatedOn() != null && customFormModelInfo.getStatus() != null)
@@ -168,8 +168,8 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
      * Test for listing all models information with {@link Context}.
      */
     @Test
-    void listModelsWithContext() {
-        StepVerifier.create(client.listModels(Context.NONE))
+    void getModelInfosWithContext() {
+        StepVerifier.create(client.getModelInfos(Context.NONE))
             .thenConsumeWhile(modelInfo ->
                 modelInfo.getModelId() != null && modelInfo.getCreatedOn() != null
                     && modelInfo.getLastUpdatedOn() != null && modelInfo.getStatus() != null)

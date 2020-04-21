@@ -68,7 +68,7 @@ public class GettingSqlServerMetrics {
                 .withAdministratorLogin(administratorLogin)
                 .withAdministratorPassword(administratorPassword)
                 .defineFirewallRule("allowAll")
-                    .withIPAddressRange("0.0.0.1", "255.255.255.255")
+                    .withIpAddressRange("0.0.0.1", "255.255.255.255")
                     .attach()
                 .defineElasticPool(epName)
                     .withStandardPool()

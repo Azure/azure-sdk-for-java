@@ -31,6 +31,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.management.resources.ExportTemplateRequest;
 import com.azure.management.resources.ResourceGroupPatchable;
@@ -40,6 +41,8 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ResourceGroups. */
 public final class ResourceGroupsInner {
+    private final ClientLogger logger = new ClientLogger(ResourceGroupsInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final ResourceGroupsService service;
 
@@ -233,7 +236,12 @@ public final class ResourceGroupsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean checkExistence(String resourceGroupName) {
-        return checkExistenceAsync(resourceGroupName).block();
+        Boolean value = checkExistenceAsync(resourceGroupName).block();
+        if (value != null) {
+            return value;
+        } else {
+            throw logger.logExceptionAsError(new NullPointerException());
+        }
     }
 
     /**
