@@ -134,6 +134,139 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             includeTextDetails);
     }
 
+    @Test
+    abstract void recognizeReceiptSourceUrl();
+
+    @Test
+    abstract void recognizeReceiptSourceUrlTextDetails();
+
+    @Test
+    abstract void recognizeReceiptData();
+
+    @Test
+    abstract void recognizeReceiptDataTextDetails();
+
+    @Test
+    abstract void recognizeLayoutData();
+
+    @Test
+    abstract void recognizeLayoutSourceUrl();
+
+    @Test
+    abstract void recognizeLayoutInvalidSourceUrl();
+
+    @Test
+    abstract void recognizeCustomFormLabeledData();
+
+    @Test
+    abstract void recognizeCustomFormUnlabeledData();
+
+    @Test
+    abstract void recognizeCustomFormInvalidSourceUrl();
+
+    void receiptSourceUrlRunner(Consumer<String> testRunner) {
+        testRunner.accept(TestUtils.RECEIPT_URL);
+    }
+
+    void receiptSourceUrlRunnerTextDetails(BiConsumer<String, Boolean> testRunner) {
+        testRunner.accept(TestUtils.RECEIPT_URL, true);
+    }
+
+    void receiptDataRunner(Consumer<InputStream> testRunner) {
+        testRunner.accept(getFileData(RECEIPT_LOCAL_URL));
+    }
+
+    void receiptDataRunnerTextDetails(BiConsumer<InputStream, Boolean> testRunner) {
+        testRunner.accept(getFileData(RECEIPT_LOCAL_URL), true);
+    }
+
+    void invalidSourceUrlRunner(Consumer<String> testRunner) {
+        testRunner.accept(TestUtils.INVALID_RECEIPT_URL);
+    }
+
+    void layoutDataRunner(Consumer<InputStream> testRunner) {
+        testRunner.accept(getFileData(LAYOUT_LOCAL_URL));
+    }
+
+    void layoutSourceUrlRunner(Consumer<String> testRunner) {
+        testRunner.accept(TestUtils.LAYOUT_URL);
+    }
+
+    void customFormLabeledDataRunner(Consumer<InputStream> testRunner) {
+        testRunner.accept(getFileData(TestUtils.FORM_LOCAL_URL));
+    }
+
+    void beginTrainingUnlabeledResultRunner(BiConsumer<String, Boolean> testRunner) {
+        testRunner.accept(createStorageAndGenerateSas("src/test/resources/sample_files/Train"), false);
+    }
+
+    void beginTrainingLabeledResultRunner(BiConsumer<String, Boolean> testRunner) {
+        testRunner.accept(createStorageAndGenerateSas("src/test/resources/sample_files/TrainLabeled"), true);
+    }
+
+    protected <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
+        // TODO: #9252 AAD not supported by service
+        // TokenCredential credential = null;
+        AzureKeyCredential credential = null;
+
+        if (!interceptorManager.isPlaybackMode()) {
+            credential = new AzureKeyCredential(getApiKey());
+        }
+
+        HttpClient httpClient;
+        Configuration buildConfiguration = Configuration.getGlobalConfiguration().clone();
+
+        // Closest to API goes first, closest to wire goes last.
+        final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
+            buildConfiguration));
+        policies.add(new RequestIdPolicy());
+        policies.add(new AddDatePolicy());
+
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        if (credential != null) {
+            policies.add(new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, credential));
+        }
+
+        policies.add(new RetryPolicy());
+
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
+        policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
+
+        if (interceptorManager.isPlaybackMode()) {
+            httpClient = interceptorManager.getPlaybackClient();
+        } else {
+            httpClient = new NettyAsyncHttpClientBuilder().wiretap(true).build();
+        }
+        policies.add(interceptorManager.getRecordPolicy());
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .build();
+
+        T client;
+        client = clientBuilder.apply(pipeline);
+
+        return Objects.requireNonNull(client);
+    }
+
+    /**
+     * Get the string of API key value based on what running mode is on.
+     *
+     * @return the API key string
+     */
+    String getApiKey() {
+        return interceptorManager.isPlaybackMode() ? "apiKeyInPlayback"
+            : Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_API_KEY);
+    }
+
+    protected String getEndpoint() {
+        return interceptorManager.isPlaybackMode()
+            ? "https://localhost:8080"
+            : Configuration.getGlobalConfiguration().get("AZURE_FORM_RECOGNIZER_ENDPOINT");
+    }
+
     private static void validateFormPage(FormPage expectedFormPage, FormPage actualFormPage) {
         assertEquals(expectedFormPage.getHeight(), actualFormPage.getHeight());
         assertEquals(expectedFormPage.getWidth(), actualFormPage.getWidth());
@@ -290,139 +423,6 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     private static void validatePageRange(PageRange expectedPageInfo, PageRange actualPageInfo) {
         assertEquals(expectedPageInfo.getStartPageNumber(), actualPageInfo.getStartPageNumber());
         assertEquals(expectedPageInfo.getEndPageNumber(), actualPageInfo.getEndPageNumber());
-    }
-
-    @Test
-    abstract void recognizeReceiptSourceUrl();
-
-    @Test
-    abstract void recognizeReceiptSourceUrlTextDetails();
-
-    @Test
-    abstract void recognizeReceiptData();
-
-    @Test
-    abstract void recognizeReceiptDataTextDetails();
-
-    @Test
-    abstract void recognizeLayoutData();
-
-    @Test
-    abstract void recognizeLayoutSourceUrl();
-
-    @Test
-    abstract void recognizeLayoutInvalidSourceUrl();
-
-    @Test
-    abstract void recognizeCustomFormLabeledData();
-
-    @Test
-    abstract void recognizeCustomFormUnlabeledData();
-
-    @Test
-    abstract void recognizeCustomFormInvalidSourceUrl();
-
-    void receiptSourceUrlRunner(Consumer<String> testRunner) {
-        testRunner.accept(TestUtils.RECEIPT_URL);
-    }
-
-    void receiptSourceUrlRunnerTextDetails(BiConsumer<String, Boolean> testRunner) {
-        testRunner.accept(TestUtils.RECEIPT_URL, true);
-    }
-
-    void receiptDataRunner(Consumer<InputStream> testRunner) {
-        testRunner.accept(getFileData(RECEIPT_LOCAL_URL));
-    }
-
-    void receiptDataRunnerTextDetails(BiConsumer<InputStream, Boolean> testRunner) {
-        testRunner.accept(getFileData(RECEIPT_LOCAL_URL), true);
-    }
-
-    void invalidSourceUrlRunner(Consumer<String> testRunner) {
-        testRunner.accept(TestUtils.INVALID_RECEIPT_URL);
-    }
-
-    void layoutDataRunner(Consumer<InputStream> testRunner) {
-        testRunner.accept(getFileData(LAYOUT_LOCAL_URL));
-    }
-
-    void layoutSourceUrlRunner(Consumer<String> testRunner) {
-        testRunner.accept(TestUtils.LAYOUT_URL);
-    }
-
-    void customFormLabeledDataRunner(Consumer<InputStream> testRunner) {
-        testRunner.accept(getFileData(TestUtils.FORM_LOCAL_URL));
-    }
-
-    void beginTrainingUnlabeledResultRunner(BiConsumer<String, Boolean> testRunner) {
-        testRunner.accept(createStorageAndGenerateSas("src/test/resources/sample_files/Train"), false);
-    }
-
-    void beginTrainingLabeledResultRunner(BiConsumer<String, Boolean> testRunner) {
-        testRunner.accept(createStorageAndGenerateSas("src/test/resources/sample_files/Train_Labeled"), true);
-    }
-
-    protected <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
-        // TODO: #9252 AAD not supported by service
-        // TokenCredential credential = null;
-        AzureKeyCredential credential = null;
-
-        if (!interceptorManager.isPlaybackMode()) {
-            credential = new AzureKeyCredential(getApiKey());
-        }
-
-        HttpClient httpClient;
-        Configuration buildConfiguration = Configuration.getGlobalConfiguration().clone();
-
-        // Closest to API goes first, closest to wire goes last.
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
-            buildConfiguration));
-        policies.add(new RequestIdPolicy());
-        policies.add(new AddDatePolicy());
-
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        if (credential != null) {
-            policies.add(new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, credential));
-        }
-
-        policies.add(new RetryPolicy());
-
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
-
-        if (interceptorManager.isPlaybackMode()) {
-            httpClient = interceptorManager.getPlaybackClient();
-        } else {
-            httpClient = new NettyAsyncHttpClientBuilder().wiretap(true).build();
-        }
-        policies.add(interceptorManager.getRecordPolicy());
-
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
-            .build();
-
-        T client;
-        client = clientBuilder.apply(pipeline);
-
-        return Objects.requireNonNull(client);
-    }
-
-    /**
-     * Get the string of API key value based on what running mode is on.
-     *
-     * @return the API key string
-     */
-    String getApiKey() {
-        return interceptorManager.isPlaybackMode() ? "apiKeyInPlayback"
-            : Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_API_KEY);
-    }
-
-    protected String getEndpoint() {
-        return interceptorManager.isPlaybackMode()
-            ? "https://localhost:8080"
-            : Configuration.getGlobalConfiguration().get("AZURE_FORM_RECOGNIZER_ENDPOINT");
     }
 
     private String createStorageAndGenerateSas(String folderPath) {

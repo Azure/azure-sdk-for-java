@@ -187,7 +187,7 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     }
 
     void beginTrainingLabeledResultRunner(BiConsumer<String, Boolean> testRunner) {
-        testRunner.accept(createStorageAndGenerateSas("src/test/resources/sample_files/Train_Labeled"), true);
+        testRunner.accept(createStorageAndGenerateSas("src/test/resources/sample_files/TrainLabeled"), true);
     }
 
     void beginTrainingUnlabeledResultRunner(BiConsumer<String, Boolean> testRunner) {
@@ -283,13 +283,13 @@ public abstract class FormTrainingClientTestBase extends TestBase {
                 blobClient = blobContainerClient.getBlobClient(listOfFile.getName()).getBlockBlobClient();
                 blobClient.upload(dataStream, listOfFile.length());
             }
-            BlobContainerSasPermission blob = new BlobContainerSasPermission()
+            BlobContainerSasPermission blobContainerSasPermission = new BlobContainerSasPermission()
                 .setAddPermission(true)
                 .setCreatePermission(true)
                 .setReadPermission(true)
                 .setListPermission(true);
             String sasToken = blobContainerClient.generateSas(
-                new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1), blob)
+                new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1), blobContainerSasPermission)
             );
             return blobContainerClient.getBlobContainerUrl() + "?" + sasToken;
         }
