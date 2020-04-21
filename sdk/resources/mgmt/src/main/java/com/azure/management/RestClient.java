@@ -68,6 +68,6 @@ public class RestClient {
      * @return a new rest client builder with same parameter
      */
     public RestClientBuilder newBuilder() {
-        return builder.clone();
+        return builder.newBuilder();
     }
 }

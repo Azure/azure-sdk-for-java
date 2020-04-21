@@ -86,7 +86,7 @@ public final class ManageSqlFirewallRules {
             // Add new firewall rules.
             System.out.println("Creating a firewall rule in existing SQL Server");
             SqlFirewallRule firewallRule = sqlServer.firewallRules().define(myFirewallName)
-                    .withIPAddress(myFirewallRuleIPAddress)
+                    .withIpAddress(myFirewallRuleIPAddress)
                     .create();
 
             Utils.print(firewallRule);
