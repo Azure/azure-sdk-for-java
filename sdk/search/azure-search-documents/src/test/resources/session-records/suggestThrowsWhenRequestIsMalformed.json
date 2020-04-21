@@ -1,28 +1,30 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk15652c888bd.search.windows.net/indexes('hotels')/docs/search.post.suggest?api-version=2019-05-06",
+    "Uri" : "https://azsjavasuggestthrowswhenrequestismalformed5c2076939c4a5.search.windows.net/indexes('hotels')/docs/search.post.suggest?api-version=2019-05-06-Preview",
     "Headers" : {
+      "x-ms-client-request-id" : "47e29b6e-8470-45f1-908b-aea94f5d6777",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "0c726413-2668-4061-bb19-2459e4236c7f",
+      "request-id" : "47e29b6e-8470-45f1-908b-aea94f5d6777",
       "StatusCode" : "400",
-      "Date" : "Mon, 24 Feb 2020 19:59:19 GMT",
+      "Date" : "Tue, 21 Apr 2020 19:12:35 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "81",
+      "client-request-id" : "47e29b6e-8470-45f1-908b-aea94f5d6777",
+      "elapsed-time" : "123",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "143",
       "Body" : "{\"error\":{\"code\":\"\",\"message\":\"Invalid expression: Syntax error at position 7 in 'This is not a valid orderby.'.\\r\\nParameter name: $orderby\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
-      "Content-Type" : "application/json; odata.metadata=minimal"
+      "Content-Type" : "application/json; odata.metadata=none"
     },
     "Exception" : null
   } ],
-  "variables" : [ "azs-sdk15652c888bd" ]
+  "variables" : [ "azsjavasuggestthrowswhenrequestismalformed5c2076939c4a5" ]
 }
