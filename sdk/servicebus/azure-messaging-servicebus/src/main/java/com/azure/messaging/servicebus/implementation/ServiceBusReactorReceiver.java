@@ -43,6 +43,7 @@ import static com.azure.messaging.servicebus.implementation.MessageUtils.LOCK_TO
  * A proton-j receiver for Service Bus.
  */
 public class ServiceBusReactorReceiver extends ReactorReceiver {
+    private static final Message EMPTY_MESSAGE = Proton.message();
     private final ClientLogger logger = new ClientLogger(ServiceBusReactorReceiver.class);
     private final ConcurrentHashMap<String, Delivery> unsettledDeliveries = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, UpdateDispositionWorkItem> pendingUpdates = new ConcurrentHashMap<>();
@@ -113,13 +114,23 @@ public class ServiceBusReactorReceiver extends ReactorReceiver {
     }
 
     @Override
-    protected Message decodeDelivery(Delivery delivery) {
-        final int messageSize = delivery.pending();
-        final byte[] buffer = new byte[messageSize];
-        final int read = receiver.recv(buffer, 0, messageSize);
-        final Message message = Proton.message();
-        message.decode(buffer, 0, read);
+    public Flux<Message> receive() {
+        // Remove empty update disposition messages. The deliveries themselves are ACKs with no message.
+        return super.receive().filter(message -> message != EMPTY_MESSAGE);
+    }
 
+    @Override
+    public void dispose() {
+        if (isDisposed.getAndSet(true)) {
+            return;
+        }
+
+        subscription.dispose();
+        super.dispose();
+    }
+
+    @Override
+    protected Message decodeDelivery(Delivery delivery) {
         final byte[] deliveryTag = delivery.getTag();
         final UUID lockToken;
         if (deliveryTag != null && deliveryTag.length == LOCK_TOKEN_SIZE) {
@@ -132,6 +143,12 @@ public class ServiceBusReactorReceiver extends ReactorReceiver {
 
         // There is no lock token associated with this delivery, or the lock token is not in the unsettledDeliveries.
         if (lockToken == MessageUtils.ZERO_LOCK_TOKEN || !unsettledDeliveries.containsKey(lockTokenString)) {
+            final int messageSize = delivery.pending();
+            final byte[] buffer = new byte[messageSize];
+            final int read = receiver.recv(buffer, 0, messageSize);
+            final Message message = Proton.message();
+            message.decode(buffer, 0, read);
+
             // The delivery was already settled from the message broker.
             // This occurs in the case of receive and delete.
             if (isSettled) {
@@ -141,11 +158,14 @@ public class ServiceBusReactorReceiver extends ReactorReceiver {
                 unsettledDeliveries.put(lockToken.toString(), delivery);
                 receiver.advance();
             }
+            return new MessageWithLockToken(message, lockToken);
         } else {
             updateOutcome(lockTokenString, delivery);
-        }
 
-        return new MessageWithLockToken(message, lockToken);
+            // Return empty update disposition messages. The deliveries themselves are ACKs. There is no actual message
+            // to propagate.
+            return EMPTY_MESSAGE;
+        }
     }
 
     /**
@@ -253,16 +273,6 @@ public class ServiceBusReactorReceiver extends ReactorReceiver {
             pendingUpdates.remove(lockToken);
             unsettledDeliveries.remove(lockToken);
         }
-    }
-
-    @Override
-    public void dispose() {
-        if (isDisposed.getAndSet(true)) {
-            return;
-        }
-
-        subscription.dispose();
-        super.dispose();
     }
 
     private static final class UpdateDispositionWorkItem {
