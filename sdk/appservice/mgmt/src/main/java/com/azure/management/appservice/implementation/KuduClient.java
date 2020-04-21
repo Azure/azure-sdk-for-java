@@ -252,7 +252,7 @@ class KuduClient {
                     try {
                         fileChannel.close();
                     } catch (IOException e) {
-                        logger.error(e.getMessage(), e);
+                        logger.logThrowableAsError(e);
                     }
                 }));
     }
@@ -268,7 +268,7 @@ class KuduClient {
                 try {
                     fileChannel.close();
                 } catch (IOException e) {
-                    logger.error(e.getMessage(), e);
+                    logger.logThrowableAsError(e);
                 }
             }));
     }
