@@ -31,6 +31,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.management.resources.ResourcesMoveInfo;
 import com.azure.management.resources.fluentcore.collection.InnerSupportsListing;
@@ -40,6 +41,8 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Resources. */
 public final class ResourcesInner implements InnerSupportsListing<GenericResourceExpandedInner> {
+    private final ClientLogger logger = new ClientLogger(ResourcesInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final ResourcesService service;
 
@@ -933,7 +936,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
         if (value != null) {
             return value;
         } else {
-            throw new NullPointerException();
+            throw logger.logExceptionAsError(new NullPointerException());
         }
     }
 
@@ -1458,7 +1461,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
         if (value != null) {
             return value;
         } else {
-            throw new NullPointerException();
+            throw logger.logExceptionAsError(new NullPointerException());
         }
     }
 

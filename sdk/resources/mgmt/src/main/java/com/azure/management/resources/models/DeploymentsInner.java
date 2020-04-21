@@ -30,6 +30,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.management.resources.DeploymentWhatIf;
 import com.azure.management.resources.ScopedDeployment;
@@ -45,6 +46,8 @@ public final class DeploymentsInner
     implements InnerSupportsGet<DeploymentExtendedInner>,
         InnerSupportsListing<DeploymentExtendedInner>,
         InnerSupportsDelete<Void> {
+    private final ClientLogger logger = new ClientLogger(DeploymentsInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final DeploymentsService service;
 
@@ -912,7 +915,7 @@ public final class DeploymentsInner
         if (value != null) {
             return value;
         } else {
-            throw new NullPointerException();
+            throw logger.logExceptionAsError(new NullPointerException());
         }
     }
 
@@ -1459,7 +1462,7 @@ public final class DeploymentsInner
         if (value != null) {
             return value;
         } else {
-            throw new NullPointerException();
+            throw logger.logExceptionAsError(new NullPointerException());
         }
     }
 
@@ -1980,7 +1983,7 @@ public final class DeploymentsInner
         if (value != null) {
             return value;
         } else {
-            throw new NullPointerException();
+            throw logger.logExceptionAsError(new NullPointerException());
         }
     }
 
@@ -2543,7 +2546,7 @@ public final class DeploymentsInner
         if (value != null) {
             return value;
         } else {
-            throw new NullPointerException();
+            throw logger.logExceptionAsError(new NullPointerException());
         }
     }
 
@@ -3178,7 +3181,7 @@ public final class DeploymentsInner
         if (value != null) {
             return value;
         } else {
-            throw new NullPointerException();
+            throw logger.logExceptionAsError(new NullPointerException());
         }
     }
 
