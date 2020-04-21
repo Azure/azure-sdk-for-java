@@ -4,6 +4,7 @@
 package com.azure.ai.formrecognizer.implementation;
 
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
+import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
@@ -24,14 +25,22 @@ public final class Utility {
     }
 
     /**
-     * Automatically detect byte buffer's content type.
+     * Automatically detect byte buffer's content type if the {@code formContentType} is not given. Otherwise,
+     * use the given content type value as the result.
+     *
      * Given the source: <a href="https://en.wikipedia.org/wiki/Magic_number_(programming)#Magic_numbers_in_files"/>.
      *
      * @param buffer The byte buffer input.
+     * @param formContentType The user specified content type.
      *
      * @return The {@link ContentType} content type.
      */
-    public static ContentType getContentType(ByteBuffer buffer) {
+    public static ContentType getContentType(ByteBuffer buffer, FormContentType formContentType) {
+        // if the form content type is given, use it as return result, otherwise, do the guessing based on the buffer
+        if (formContentType != null) {
+            return ContentType.fromString(formContentType.toString());
+        }
+
         final byte[] bytes = buffer.array();
         if (bytes.length < 4) {
             throw LOGGER.logExceptionAsError(

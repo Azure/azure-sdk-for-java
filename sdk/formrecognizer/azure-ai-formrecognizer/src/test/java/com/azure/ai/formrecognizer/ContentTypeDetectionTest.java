@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.implementation.Utility;
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
+import com.azure.ai.formrecognizer.models.FormContentType;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 
@@ -33,7 +34,7 @@ public class ContentTypeDetectionTest {
     public void jpgContentDetectionTest() throws IOException {
         File sourceFile = new File("src/test/resources/sample-files/contoso-allinone.jpg");
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
-        assertEquals(ContentType.IMAGE_JPEG, getContentType(buffer.blockFirst()));
+        assertEquals(ContentType.IMAGE_JPEG, getContentType(buffer.blockFirst(), FormContentType.IMAGE_JPEG));
     }
 
     /**
@@ -45,7 +46,7 @@ public class ContentTypeDetectionTest {
     public void pdfContentDetectionTest() throws IOException {
         File sourceFile = new File("src/test/resources/sample-files/sample.pdf");
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
-        assertEquals(ContentType.APPLICATION_PDF, getContentType(buffer.blockFirst()));
+        assertEquals(ContentType.APPLICATION_PDF, getContentType(buffer.blockFirst(), FormContentType.APPLICATION_PDF));
     }
 
     /**
@@ -57,7 +58,7 @@ public class ContentTypeDetectionTest {
     public void pngContentDetectionTest() throws IOException {
         File sourceFile = new File("src/test/resources/sample-files/pngFile.png");
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
-        assertEquals(ContentType.IMAGE_PNG, getContentType(buffer.blockFirst()));
+        assertEquals(ContentType.IMAGE_PNG, getContentType(buffer.blockFirst(), FormContentType.IMAGE_PNG));
     }
 
     /**
@@ -69,7 +70,7 @@ public class ContentTypeDetectionTest {
     public void tiffContentDetectionTest() throws IOException {
         File sourceFile = new File("src/test/resources/sample-files/cell.tif");
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
-        assertEquals(ContentType.IMAGE_TIFF, getContentType(buffer.blockFirst()));
+        assertEquals(ContentType.IMAGE_TIFF, getContentType(buffer.blockFirst(), FormContentType.IMAGE_TIFF));
     }
 
     /**
@@ -81,6 +82,6 @@ public class ContentTypeDetectionTest {
     public void notSupportContentDetectionTest() throws IOException {
         File sourceFile = new File("src/test/resources/sample-files/docFile.doc");
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
-        assertThrows(IllegalArgumentException.class, () -> getContentType(buffer.blockFirst()));
+        assertThrows(IllegalArgumentException.class, () -> getContentType(buffer.blockFirst(), null));
     }
 }

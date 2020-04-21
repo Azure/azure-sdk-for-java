@@ -5,7 +5,6 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
-import com.azure.ai.formrecognizer.implementation.models.ContentType;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.implementation.models.SourcePath;
 import com.azure.ai.formrecognizer.models.ErrorInformation;
@@ -384,19 +383,18 @@ public final class FormRecognizerAsyncClient {
         Flux<ByteBuffer> data, long length, FormContentType formContentType, boolean includeTextDetails) {
         Objects.requireNonNull(data, "'data' is required and cannot be null.");
 
-        if (formContentType != null) {
-            return (pollingContext) ->
-                service.analyzeReceiptAsyncWithResponseAsync(ContentType.fromString(formContentType.toString()),
-                    data, length, includeTextDetails).map(response -> new OperationResult(
-                    parseModelId(response.getDeserializedHeaders().getOperationLocation())));
-        } else {
-            return pollingContext -> data.next()
-                .map(byteBuffer -> getContentType(byteBuffer))
-                .flatMap(contentType ->
-                    service.analyzeReceiptAsyncWithResponseAsync(contentType, data, length, includeTextDetails)
-                    .map(response ->
-                        new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation()))));
-        }
+        return pollingContext -> {
+            try {
+                return data.next()
+                    .map(byteBuffer -> getContentType(byteBuffer, formContentType))
+                    .flatMap(contentType ->
+                        service.analyzeReceiptAsyncWithResponseAsync(contentType, data, length, includeTextDetails)
+                            .map(response -> new OperationResult(
+                                parseModelId(response.getDeserializedHeaders().getOperationLocation()))));
+            } catch (RuntimeException ex) {
+                return monoError(logger, ex);
+            }
+        };
     }
 
     private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
@@ -447,18 +445,17 @@ public final class FormRecognizerAsyncClient {
         Flux<ByteBuffer> data, long length, FormContentType formContentType) {
         Objects.requireNonNull(data, "'data' is required and cannot be null.");
 
-        if (formContentType != null) {
-            return (pollingContext) ->
-                service.analyzeLayoutAsyncWithResponseAsync(ContentType.fromString(formContentType.toString()),
-                    data, length).map(response -> new OperationResult(
-                    parseModelId(response.getDeserializedHeaders().getOperationLocation())));
-        } else {
-            return pollingContext -> data.next()
-                .map(byteBuffer -> getContentType(byteBuffer))
-                .flatMap(contentType -> service.analyzeLayoutAsyncWithResponseAsync(contentType, data, length)
-                    .map(response ->
-                        new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation()))));
-        }
+        return pollingContext -> {
+            try {
+                return data.next()
+                    .map(byteBuffer -> getContentType(byteBuffer, formContentType))
+                    .flatMap(contentType -> service.analyzeLayoutAsyncWithResponseAsync(contentType, data, length)
+                        .map(response -> new OperationResult(parseModelId(
+                            response.getDeserializedHeaders().getOperationLocation()))));
+            } catch (RuntimeException ex) {
+                return monoError(logger, ex);
+            }
+        };
     }
 
     private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
@@ -564,20 +561,18 @@ public final class FormRecognizerAsyncClient {
         Objects.requireNonNull(data, "'data' is required and cannot be null.");
         Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
 
-        if (formContentType != null) {
-            return (pollingContext) ->
-                service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId),
-                    ContentType.fromString(formContentType.toString()), data, length, includeTextDetails)
-                    .map(response -> new OperationResult(
-                    parseModelId(response.getDeserializedHeaders().getOperationLocation())));
-        } else {
-            return pollingContext -> data.next()
-                .map(byteBuffer -> getContentType(byteBuffer))
-                .flatMap(contentType -> service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId),
-                    contentType, data, length, includeTextDetails)
-                    .map(response ->
-                        new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation()))));
-        }
+        return pollingContext -> {
+            try {
+                return data.next()
+                    .map(byteBuffer -> getContentType(byteBuffer, formContentType))
+                    .flatMap(contentType -> service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId),
+                        contentType, data, length, includeTextDetails)
+                        .map(response -> new OperationResult(
+                            parseModelId(response.getDeserializedHeaders().getOperationLocation()))));
+            } catch (RuntimeException ex) {
+                return monoError(logger, ex);
+            }
+        };
     }
 
     private static Mono<PollResponse<OperationResult>> processAnalyzeModelResponse(
