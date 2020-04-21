@@ -404,7 +404,6 @@ abstract class AppServiceBaseImpl<
         return withNewAppServicePlan(appServicePlanName, operatingSystem(), pricingTier);
     }
 
-    @SuppressFBWarnings(value = "BC_UNCONFIRMED_CAST", justification = "Safe cast")
     public FluentImplT withNewAppServicePlan(Creatable<AppServicePlan> appServicePlanCreatable) {
         this.addDependency(appServicePlanCreatable);
         String id =
@@ -417,7 +416,12 @@ abstract class AppServiceBaseImpl<
                     appServicePlanCreatable.name(),
                     "");
         inner().withServerFarmId(id);
-        return withOperatingSystem(((AppServicePlanImpl) appServicePlanCreatable).operatingSystem());
+        if (appServicePlanCreatable instanceof AppServicePlanImpl) {
+            return withOperatingSystem(((AppServicePlanImpl) appServicePlanCreatable).operatingSystem());
+        } else {
+            throw logger.logExceptionAsError(
+                new IllegalStateException("Internal error, appServicePlanCreatable must be class AppServicePlanImpl"));
+        }
     }
 
     @SuppressWarnings("unchecked")
