@@ -20,7 +20,7 @@ public class SearchServiceSyncTests extends SearchServiceTestBase {
         SearchServiceClient serviceClient = getSearchServiceClientBuilder().buildClient();
 
         ServiceStatistics serviceStatistics = serviceClient.getServiceStatistics();
-        assertObjectEquals(getExpectedServiceStatistics(), serviceStatistics , true);
+        assertObjectEquals(getExpectedServiceStatistics(), serviceStatistics, true);
     }
 
     @Test
