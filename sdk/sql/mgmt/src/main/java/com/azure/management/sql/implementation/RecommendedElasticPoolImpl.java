@@ -110,10 +110,8 @@ class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElast
                 .inner()
                 .databases()
                 .listByElasticPool(this.sqlServer.resourceGroupName(), this.sqlServer.name(), this.name());
-        if (databaseInners != null) {
-            for (DatabaseInner inner : databaseInners) {
-                databasesList.add(new SqlDatabaseImpl(inner.getName(), this.sqlServer, inner, this.manager()));
-            }
+        for (DatabaseInner inner : databaseInners) {
+            databasesList.add(new SqlDatabaseImpl(inner.getName(), this.sqlServer, inner, this.manager()));
         }
         return Collections.unmodifiableList(databasesList);
     }
@@ -169,10 +167,8 @@ class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElast
                 .inner()
                 .recommendedElasticPools()
                 .listMetrics(this.resourceGroupName(), this.sqlServerName(), this.name());
-        if (recommendedElasticPoolMetricInners != null) {
-            for (RecommendedElasticPoolMetricInner inner : recommendedElasticPoolMetricInners) {
-                recommendedElasticPoolMetrics.add(new RecommendedElasticPoolMetricImpl(inner));
-            }
+        for (RecommendedElasticPoolMetricInner inner : recommendedElasticPoolMetricInners) {
+            recommendedElasticPoolMetrics.add(new RecommendedElasticPoolMetricImpl(inner));
         }
         return Collections.unmodifiableList(recommendedElasticPoolMetrics);
     }

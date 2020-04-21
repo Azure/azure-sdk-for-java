@@ -40,7 +40,7 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
     // The sdk clients
     private final ResourceManagementClientImpl resourceManagementClient;
     private final FeatureClientImpl featureClient;
-    private final SubscriptionClientImpl subscriptionClientClient;
+//    private final SubscriptionClientImpl subscriptionClientClient;
     private final PolicyClientImpl policyClient;
     // The collections
     private ResourceGroups resourceGroups;
@@ -200,10 +200,11 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
                 .subscriptionId(subscriptionId)
                 .buildClient();
 
-        this.subscriptionClientClient = new SubscriptionClientBuilder()
-                .pipeline(restClient.getHttpPipeline())
-                .host(restClient.getBaseUrl().toString())
-                .buildClient();
+        // Unread in spot bugs
+//        this.subscriptionClientClient = new SubscriptionClientBuilder()
+//                .pipeline(restClient.getHttpPipeline())
+//                .host(restClient.getBaseUrl().toString())
+//                .buildClient();
 
         this.policyClient = new PolicyClientBuilder()
                 .pipeline(restClient.getHttpPipeline())

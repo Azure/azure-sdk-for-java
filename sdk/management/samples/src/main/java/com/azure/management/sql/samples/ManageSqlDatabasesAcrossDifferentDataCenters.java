@@ -181,7 +181,7 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
 
             for (SqlServer sqlServer: sqlServers) {
                 for (Map.Entry<String, String> ipAddress: ipAddresses.entrySet()) {
-                    sqlServer.firewallRules().define(ipAddress.getKey()).withIPAddress(ipAddress.getValue()).create();
+                    sqlServer.firewallRules().define(ipAddress.getKey()).withIpAddress(ipAddress.getValue()).create();
                 }
             }
 

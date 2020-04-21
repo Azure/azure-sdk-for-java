@@ -24,10 +24,13 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DeploymentOperations. */
 public final class DeploymentOperationsInner {
+    private final ClientLogger logger = new ClientLogger(DeploymentOperationsInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final DeploymentOperationsService service;
 

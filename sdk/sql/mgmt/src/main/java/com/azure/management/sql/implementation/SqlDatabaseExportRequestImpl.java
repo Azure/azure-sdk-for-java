@@ -57,7 +57,7 @@ public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
                 this.sqlDatabase.sqlServerName,
                 this.sqlDatabase.name(),
                 this.inner())
-            .map(importExportResponseInner -> new SqlDatabaseImportExportResponseImpl(importExportResponseInner));
+            .map(SqlDatabaseImportExportResponseImpl::new);
     }
 
     @Override
@@ -113,7 +113,6 @@ public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
         if (this.inner == null) {
             this.inner = new ExportRequest();
         }
-        final SqlDatabaseExportRequestImpl self = this;
         this
             .addDependency(
                 context -> getOrCreateStorageAccountContainer(storageAccount, containerName, fileName, context));
