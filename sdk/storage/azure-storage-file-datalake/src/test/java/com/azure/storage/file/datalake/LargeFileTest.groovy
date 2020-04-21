@@ -181,12 +181,12 @@ class LargeFileTest extends APISpec{
     private Flux<ByteBuffer> createLargeBuffer(long size, int bufferSize) {
         def bytes = getRandomByteArray(bufferSize)
         long numberOfSubBuffers = (long) (size / bufferSize)
-        int reminder = (int) (size - numberOfSubBuffers * bufferSize)
+        int remainder = (int) (size - numberOfSubBuffers * bufferSize)
         Flux<ByteBuffer> result =  Flux.just(ByteBuffer.wrap(bytes))
             .map{buffer -> buffer.duplicate()}
             .repeat(numberOfSubBuffers - 1)
-        if (reminder > 0) {
-            def extraBytes = getRandomByteArray(reminder)
+        if (remainder > 0) {
+            def extraBytes = getRandomByteArray(remainder)
             result = Flux.concat(result, Flux.just(ByteBuffer.wrap(extraBytes)))
         }
         return result
@@ -224,6 +224,10 @@ class LargeFileTest extends APISpec{
         return file
     }
 
+    /**
+     * This class is intended for large payload test cases only and reports directly into this test class's
+     * state members.
+     */
     private class PayloadDroppingPolicy implements HttpPipelinePolicy {
         @Override
         Mono<HttpResponse> process(HttpPipelineCallContext httpPipelineCallContext, HttpPipelineNextPolicy httpPipelineNextPolicy) {
