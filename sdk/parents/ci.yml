@@ -31,16 +31,6 @@ pr:
   paths:
     include:
       - sdk/parents/
-<<<<<<< HEAD
-
-stages:
-  - stage: Placeholder
-    jobs:
-      - job: Placeholder
-        steps:
-          - script: |
-              echo Hello, world!
-=======
   
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-pom-only.yml
@@ -59,4 +49,3 @@ stages:
         - name: azure-sdk-parent
           groupId: com.azure
           safeName: azuresdkparent
->>>>>>> Revising POM-only pipeline.
