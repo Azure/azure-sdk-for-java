@@ -33,6 +33,8 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import reactor.core.publisher.Mono;
 
 /**
@@ -402,6 +404,7 @@ abstract class AppServiceBaseImpl<
         return withNewAppServicePlan(appServicePlanName, operatingSystem(), pricingTier);
     }
 
+    @SuppressFBWarnings(value = "BC_UNCONFIRMED_CAST", justification = "Safe cast")
     public FluentImplT withNewAppServicePlan(Creatable<AppServicePlan> appServicePlanCreatable) {
         this.addDependency(appServicePlanCreatable);
         String id =
