@@ -65,7 +65,7 @@ abstract class LinkHandler extends Handler {
 
     @Override
     public void onLinkFinal(Event event) {
-        logger.info("onLinkFinal clientName[{}],  linkName[{}]", getConnectionId(), event.getLink().getName());
+        logger.info("onLinkFinal connectionId[{}],  linkName[{}]", getConnectionId(), event.getLink().getName());
         close();
     }
 

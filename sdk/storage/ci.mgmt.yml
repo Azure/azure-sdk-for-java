@@ -15,9 +15,15 @@ trigger:
     include:
       - sdk/storage/
     exclude:
-      - sdk/storage/azure
-      - sdk/storage/microsoft-azure
-      - sdk/storage/ms-azure
+      - sdk/storage/azure-storage-blob
+      - sdk/storage/azure-storage-blob-batch
+      - sdk/storage/azure-storage-blob-cryptography
+      - sdk/storage/azure-storage-blob-nio
+      - sdk/storage/azure-storage-common
+      - sdk/storage/azure-storage-file-datalake
+      - sdk/storage/azure-storage-file-share
+      - sdk/storage/azure-storage-queue
+      - sdk/storage/perf-test
 
 pr:
   branches:
@@ -30,9 +36,15 @@ pr:
     include:
       - sdk/storage/
     exclude:
-      - sdk/storage/azure
-      - sdk/storage/microsoft-azure
-      - sdk/storage/ms-azure
+      - sdk/storage/azure-storage-blob
+      - sdk/storage/azure-storage-blob-batch
+      - sdk/storage/azure-storage-blob-cryptography
+      - sdk/storage/azure-storage-blob-nio
+      - sdk/storage/azure-storage-common
+      - sdk/storage/azure-storage-file-datalake
+      - sdk/storage/azure-storage-file-share
+      - sdk/storage/azure-storage-queue
+      - sdk/storage/perf-test
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

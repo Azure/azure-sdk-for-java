@@ -5,55 +5,59 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
+import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
-import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Sample demonstrates how to asynchronously analyze the sentiments of documents.
+ * Sample demonstrates how to asynchronously analyze the sentiments of {@link TextDocumentInput} documents.
  */
 public class AnalyzeSentimentBatchDocumentsAsync {
     /**
-     * Main method to invoke this demo about how to analyze the sentiments of documents.
+     * Main method to invoke this demo about how to analyze the sentiments of {@link TextDocumentInput} documents.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
+            .apiKey(new AzureKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
         // The texts that need be analyzed.
-        List<TextDocumentInput> inputs = Arrays.asList(
-            new TextDocumentInput("1", "The hotel was dark and unclean. The restaurant had amazing gnocchi.", "en"),
-            new TextDocumentInput("2", "The restaurant had amazing gnocchi. The hotel was dark and unclean.", "en")
+        List<TextDocumentInput> documents = Arrays.asList(
+            new TextDocumentInput("A", "The hotel was dark and unclean. I wouldn't recommend staying there.", "en"),
+            new TextDocumentInput("B", "The restaurant had amazing gnocchi! The waiters were excellent.", "en"),
+            new TextDocumentInput("C", "The hotel was dark and unclean. The restaurant had amazing gnocchi!", "en")
         );
 
         // Request options: show statistics and model version
-        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
+        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
 
-        // Analyzing batch sentiments
-        client.analyzeSentimentBatch(inputs, requestOptions).byPage().subscribe(
+        // Analyzing sentiment for each document in a batch of documents
+        client.analyzeSentimentBatch(documents, requestOptions).byPage().subscribe(
             pagedResponse -> {
-                System.out.printf("Model version: %s%n", pagedResponse.getModelVersion());
+                System.out.printf("Results of Azure Text Analytics \"Sentiment Analysis\" Model, version: %s%n", pagedResponse.getModelVersion());
 
                 // Batch statistics
-                final TextDocumentBatchStatistics batchStatistics = pagedResponse.getStatistics();
-                System.out.printf("Documents statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
+                TextDocumentBatchStatistics batchStatistics = pagedResponse.getStatistics();
+                System.out.printf("Documents statistics: document count = %s, erroneous document count = %s, transaction count = %s, valid document count = %s.%n",
                     batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(), batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-                // Analyzed sentiment for each of documents from documents
-                pagedResponse.getElements().forEach(analyzeSentimentResult -> {
-                    System.out.printf("%nDocument ID: %s%n", analyzeSentimentResult.getId());
+                // Analyzed sentiment for each document in a batch of documents
+                AtomicInteger counter = new AtomicInteger();
+                for (AnalyzeSentimentResult analyzeSentimentResult : pagedResponse.getElements()) {
+                    System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
                     if (analyzeSentimentResult.isError()) {
                         // Erroneous document
                         System.out.printf("Cannot analyze sentiment. Error: %s%n", analyzeSentimentResult.getError().getMessage());
@@ -66,11 +70,11 @@ public class AnalyzeSentimentBatchDocumentsAsync {
                         documentSentiment.getSentences().forEach(sentenceSentiment -> {
                             SentimentConfidenceScores sentenceScores = sentenceSentiment.getConfidenceScores();
                             System.out.printf(
-                                "Analyzed sentence sentiment: %s, positive score: %f, neutral score: %f, negative score: %f.%n",
+                                "\tAnalyzed sentence sentiment: %s, positive score: %f, neutral score: %f, negative score: %f.%n",
                                 sentenceSentiment.getSentiment(), sentenceScores.getPositive(), sentenceScores.getNeutral(), sentenceScores.getNegative());
                         });
                     }
-                });
+                }
             },
             error -> System.err.println("There was an error analyzing sentiment of the documents." + error),
             () -> System.out.println("Batch of sentiment analyzed."));

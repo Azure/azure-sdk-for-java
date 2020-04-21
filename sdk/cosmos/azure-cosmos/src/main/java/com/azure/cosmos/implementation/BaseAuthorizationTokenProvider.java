@@ -5,10 +5,10 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosKeyCredential;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.RequestVerb;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
@@ -139,13 +139,13 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
                 .append('\n');
 
         if (headers.containsKey(HttpConstants.HttpHeaders.X_DATE)) {
-            body.append(headers.get(HttpConstants.HttpHeaders.X_DATE).toLowerCase());
+            body.append(headers.get(HttpConstants.HttpHeaders.X_DATE).toLowerCase(Locale.ROOT));
         }
 
         body.append('\n');
 
         if (headers.containsKey(HttpConstants.HttpHeaders.HTTP_DATE)) {
-            body.append(headers.get(HttpConstants.HttpHeaders.HTTP_DATE).toLowerCase());
+            body.append(headers.get(HttpConstants.HttpHeaders.HTTP_DATE).toLowerCase(Locale.ROOT));
         }
 
         body.append('\n');
@@ -286,19 +286,19 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
 
         // for name based, it is case sensitive, we won't use the lower case
         if (!PathsHelper.isNameBased(resourceId)) {
-            resourceId = resourceId.toLowerCase();
+            resourceId = resourceId.toLowerCase(Locale.ROOT);
         }
 
         StringBuilder payload = new StringBuilder();
         payload.append(ModelBridgeInternal.toLower(verb))
                 .append('\n')
-                .append(resourceType.toLowerCase())
+                .append(resourceType.toLowerCase(Locale.ROOT))
                 .append('\n')
                 .append(resourceId)
                 .append('\n')
-                .append(xDate.toLowerCase())
+                .append(xDate.toLowerCase(Locale.ROOT))
                 .append('\n')
-                .append(StringUtils.isEmpty(xDate) ? date.toLowerCase() : "")
+                .append(StringUtils.isEmpty(xDate) ? date.toLowerCase(Locale.ROOT) : "")
                 .append('\n');
 
         return payload.toString();

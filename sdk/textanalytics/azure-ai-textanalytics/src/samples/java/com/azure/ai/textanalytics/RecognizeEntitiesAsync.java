@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
+import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.concurrent.TimeUnit;
 
@@ -19,14 +19,14 @@ public class RecognizeEntitiesAsync {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
+            .apiKey(new AzureKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
-        // The text that needs be analyzed.
-        String text = "Satya Nadella is the CEO of Microsoft";
+        // The document that needs be analyzed.
+        String document = "Satya Nadella is the CEO of Microsoft";
 
-        client.recognizeEntities(text).subscribe(
+        client.recognizeEntities(document).subscribe(
             entity -> System.out.printf(
                 "Recognized categorized entity: %s, entity category: %s, entity sub-category: %s, score: %f.%n",
                 entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getConfidenceScore()),

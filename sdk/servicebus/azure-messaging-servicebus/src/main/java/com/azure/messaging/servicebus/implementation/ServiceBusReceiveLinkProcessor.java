@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.message.Message;
@@ -15,6 +16,7 @@ import reactor.core.Disposables;
 import reactor.core.publisher.FluxProcessor;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
+import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -40,6 +42,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLin
     private final int prefetch;
     private final AmqpRetryPolicy retryPolicy;
     private Disposable parentConnection;
+    private final AmqpErrorContext errorContext;
 
     private volatile Subscription upstream;
     private volatile CoreSubscriber<? super Message> downstream;
@@ -59,9 +62,12 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLin
      * @throws NullPointerException if {@code retryPolicy} is null.
      * @throws IllegalArgumentException if {@code prefetch} is less than 0.
      */
-    public ServiceBusReceiveLinkProcessor(int prefetch, AmqpRetryPolicy retryPolicy, Disposable parentConnection) {
+    public ServiceBusReceiveLinkProcessor(int prefetch, AmqpRetryPolicy retryPolicy, Disposable parentConnection,
+        AmqpErrorContext errorContext) {
+
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
         this.parentConnection = Objects.requireNonNull(parentConnection, "'parentConnection' cannot be null.");
+        this.errorContext = errorContext;
 
         if (prefetch <= 0) {
             throw logger.logExceptionAsError(
@@ -69,6 +75,15 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLin
         }
 
         this.prefetch = prefetch;
+    }
+
+    /**
+     * Gets the error context associated with this link.
+     *
+     * @return the error context associated with this link.
+     */
+    public AmqpErrorContext getErrorContext() {
+        return errorContext;
     }
 
     /**
@@ -145,7 +160,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLin
             });
 
             currentLinkSubscriptions = Disposables.composite(
-                next.receive().subscribe(message -> {
+                next.receive().publishOn(Schedulers.boundedElastic()).subscribe(message -> {
                     logger.verbose("Pushing next message downstream.");
                     downstream.onNext(message);
                 }),

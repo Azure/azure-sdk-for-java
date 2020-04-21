@@ -1,7 +1,13 @@
 # Release History
 
-## 4.2.0-beta.1 (Unreleased)
+## 4.2.0-beta.2 (2020-04-09)
+- Update azure-core dependency to version 1.4.0.
+- Added `retryPolicy` setter in `SecretClientBuilder`
 
+## 4.2.0-beta.1 (2020-03-10)
+### Added
+- Added `recoverableDays` property to `SecretProperties`.
+- Added support for `7.1-Preview` service version
 
 ## 4.1.0 (2020-01-07)
 - Update azure-core dependency to version 1.2.0

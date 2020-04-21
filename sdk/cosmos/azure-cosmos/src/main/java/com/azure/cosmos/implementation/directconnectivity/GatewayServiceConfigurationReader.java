@@ -6,7 +6,6 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.ReplicationPolicy;
-import com.azure.cosmos.models.ModelBridgeInternal;
 
 import java.util.Map;
 
@@ -30,18 +29,18 @@ public class GatewayServiceConfigurationReader {
     }
 
     public ReplicationPolicy getUserReplicationPolicy() {
-        return ModelBridgeInternal.getReplicationPolicy(this.globalEndpointManager.getLatestDatabaseAccount());
+        return this.globalEndpointManager.getLatestDatabaseAccount().getReplicationPolicy();
     }
 
     public ReplicationPolicy getSystemReplicationPolicy() {
-        return ModelBridgeInternal.getSystemReplicationPolicy(this.globalEndpointManager.getLatestDatabaseAccount());
+        return this.globalEndpointManager.getLatestDatabaseAccount().getSystemReplicationPolicy();
     }
 
     public ConsistencyLevel getDefaultConsistencyLevel() {
-        return ModelBridgeInternal.getConsistencyPolicy(this.globalEndpointManager.getLatestDatabaseAccount()).getDefaultConsistencyLevel();
+        return this.globalEndpointManager.getLatestDatabaseAccount().getConsistencyPolicy().getDefaultConsistencyLevel();
     }
 
     public Map<String, Object> getQueryEngineConfiguration() {
-        return ModelBridgeInternal.getQueryEngineConfiuration(this.globalEndpointManager.getLatestDatabaseAccount());
+        return this.globalEndpointManager.getLatestDatabaseAccount().getQueryEngineConfiguration();
     }
 }

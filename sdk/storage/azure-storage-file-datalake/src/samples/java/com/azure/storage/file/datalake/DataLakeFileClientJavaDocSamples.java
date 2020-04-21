@@ -134,7 +134,7 @@ public class DataLakeFileClientJavaDocSamples {
         Set<OpenOption> openOptions = new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW,
             StandardOpenOption.WRITE, StandardOpenOption.READ)); // Default options
 
-        client.readToFileWithResponse(file, fileRange, new ParallelTransferOptions(4 * Constants.MB, null, null, null),
+        client.readToFileWithResponse(file, fileRange, new ParallelTransferOptions().setBlockSizeLong(4L * Constants.MB),
             downloadRetryOptions, null, false, openOptions, timeout, new Context(key2, value2));
         System.out.println("Completed download to file");
         // END: com.azure.storage.file.datalake.DataLakeFileClient.readToFileWithResponse#String-FileRange-ParallelTransferOptions-DownloadRetryOptions-DataLakeRequestConditions-boolean-Set-Duration-Context
@@ -174,8 +174,8 @@ public class DataLakeFileClientJavaDocSamples {
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
-        Integer blockSize = 100 * 1024 * 1024; // 100 MB;
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(blockSize, null, null, null);
+        Long blockSize = 100L * 1024L * 1024L; // 100 MB;
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize);
 
         try {
             client.uploadFromFile(filePath, parallelTransferOptions, headers, metadata, requestConditions, timeout);

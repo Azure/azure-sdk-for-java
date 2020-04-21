@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.ConnectionPolicy;
-import com.azure.cosmos.models.DatabaseAccount;
+import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseAccountManagerInternal;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -292,7 +292,9 @@ public class GlobalEndPointManagerTest {
         Field availableReadEndpointByLocationField = DatabaseAccountLocationsInfoClass.getDeclaredField("availableReadEndpointByLocation");
         availableReadEndpointByLocationField.setAccessible(true);
 
-        return (Map<String, URI>) availableWriteEndpointByLocationField.get(locationInfo);
+        @SuppressWarnings("unchecked")
+        Map<String, URI> map = (Map<String, URI>) availableWriteEndpointByLocationField.get(locationInfo);
+        return map;
     }
 
     private Map<String, URI> getAvailableReadEndpointByLocation(LocationCache locationCache) throws Exception {
@@ -304,7 +306,9 @@ public class GlobalEndPointManagerTest {
         Field availableReadEndpointByLocationField = DatabaseAccountLocationsInfoClass.getDeclaredField("availableReadEndpointByLocation");
         availableReadEndpointByLocationField.setAccessible(true);
 
-        return (Map<String, URI>) availableReadEndpointByLocationField.get(locationInfo);
+        @SuppressWarnings("unchecked")
+        Map<String, URI> map = (Map<String, URI>) availableReadEndpointByLocationField.get(locationInfo);
+        return map;
     }
 
     private AtomicBoolean getIsRefreshing(GlobalEndpointManager globalEndPointManager) throws Exception {

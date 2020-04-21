@@ -61,7 +61,7 @@ public class DataLakeFileClient extends DataLakePathClient {
     /**
      * Indicates the maximum number of bytes that can be sent in a call to upload.
      */
-    private static final int MAX_APPEND_FILE_BYTES = DataLakeFileAsyncClient.MAX_APPEND_FILE_BYTES;
+    private static final long MAX_APPEND_FILE_BYTES = DataLakeFileAsyncClient.MAX_APPEND_FILE_BYTES;
 
     private final ClientLogger logger = new ClientLogger(DataLakeFileClient.class);
 
@@ -217,7 +217,7 @@ public class DataLakeFileClient extends DataLakePathClient {
     /**
      * Appends data to the specified resource to later be flushed (written) by a call to flush
      *
-     * <p><strong>Code Samples>Code Samples</strong></p>
+     * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.append#InputStream-long-long}
      *
@@ -236,7 +236,7 @@ public class DataLakeFileClient extends DataLakePathClient {
     /**
      * Appends data to the specified resource to later be flushed (written) by a call to flush
      *
-     * <p><strong>Code Samples>Code Samples</strong></p>
+     * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.appendWithResponse#InputStream-long-long-byte-String-Duration-Context}
      *
@@ -277,7 +277,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * The previously uploaded data must be contiguous.
      * <p>By default this method will not overwrite existing data.</p>
      *
-     * <p><strong>Code Samples>Code Samples</strong></p>
+     * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.flush#long}
      *
@@ -297,7 +297,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * Flushes (writes) data previously appended to the file through a call to append.
      * The previously uploaded data must be contiguous.
      *
-     * <p><strong>Code Samples>Code Samples</strong></p>
+     * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.flush#long-boolean}
      *
@@ -322,7 +322,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * Flushes (writes) data previously appended to the file through a call to append.
      * The previously uploaded data must be contiguous.
      *
-     * <p><strong>Code Samples>Code Samples</strong></p>
+     * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.flushWithResponse#long-boolean-boolean-PathHttpHeaders-DataLakeRequestConditions-Duration-Context}
      *

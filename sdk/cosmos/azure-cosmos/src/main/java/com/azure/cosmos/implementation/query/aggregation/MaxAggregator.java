@@ -10,12 +10,12 @@ public class MaxAggregator implements Aggregator {
     private Object value;
 
     public MaxAggregator() {
-        this.value = Undefined.Value();
+        this.value = Undefined.value();
     }
 
     @Override
     public void aggregate(Object item) {
-        if (Undefined.Value().equals(this.value)) {
+        if (Undefined.value().equals(this.value)) {
             this.value = item;
         } else if (ItemComparator.getInstance().compare(item, this.value) > 0) {
             this.value = item;

@@ -1,6 +1,16 @@
 # Release History
 
-## 4.2.0-beta.2 (Unreleased)
+## 4.2.0-beta.3 (2020-04-09)
+- Added `LocalCryptographyClient`, `LocalCryptographyAsyncClient`, `LocalKeyEncryptionKeyClient` and `LocalKeyEncryptionKeyAsyncClient` to perform cryptography operations locally.
+- Added `retryPolicy` setter in `KeyClientBuilder`, `CryptographyClientBuilder` and `KeyEncryptionKeyClientBuilder`
+- Update azure-core dependency to version 1.4.0.
+
+
+## 4.2.0-beta.2 (2020-03-10)
+### Added
+- Added `recoverableDays` property to `KeyProperties`.
+- Added `Import` operation to `KeyOperation`.
+- Added support for `7.1-Preview` service version
 
 
 ## 4.2.0-beta.1

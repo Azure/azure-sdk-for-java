@@ -37,13 +37,13 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-client-runtime</artifactId>
-      <version>1.7.2</version> <!-- {x-version-update;com.microsoft.azure:azure-client-runtime;external_dependency} -->
+      <version>1.7.3</version> <!-- {x-version-update;com.microsoft.azure:azure-client-runtime;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>adal4j</artifactId>
-      <version>1.6.4</version> <!-- {x-version-update;com.microsoft.azure:adal4j;external_dependency} -->
+      <version>1.6.5</version> <!-- {x-version-update;com.microsoft.azure:adal4j;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -64,6 +64,14 @@
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-storage</artifactId>
       <version>8.0.0</version> <!-- {x-version-update;com.microsoft.azure:azure-storage;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Storage pulls in an old version of jackson-core; so we explicitly set it in test. -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>2.10.1</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -92,6 +100,40 @@
   </dependencies>
   <build>
     <plugins>
+
+      <plugin>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <version>9.3.22.v20171030</version> <!-- {x-version-update;org.eclipse.jetty:jetty-maven-plugin;external_dependency} -->
+        <configuration>
+          <scanIntervalSeconds>0</scanIntervalSeconds>
+          <stopPort>11079</stopPort>
+          <stopKey>stop-azure-batch</stopKey>
+          <stopWait>20</stopWait>
+          <waitForChild>false</waitForChild>
+          <jettyXml>../../../jetty.xml</jettyXml>
+        </configuration>
+        <executions>
+          <execution>
+            <id>start-jetty</id>
+            <phase>process-test-classes</phase>
+            <goals>
+              <goal>run-forked</goal>
+            </goals>
+            <configuration>
+             <scanIntervalSeconds>0</scanIntervalSeconds>
+             <daemon>true</daemon>
+            </configuration>
+          </execution>
+          <execution>
+            <id>stop-jetty</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>stop</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

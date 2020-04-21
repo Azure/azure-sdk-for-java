@@ -54,7 +54,7 @@ public class UserDefinedFunctionCrudTest extends TestSuiteBase {
         CosmosAsyncUserDefinedFunction readBackUdf = createdCollection.getScripts().createUserDefinedFunction(udf).block().getUserDefinedFunction();
 
         // read udf
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
         Mono<CosmosAsyncUserDefinedFunctionResponse> readObservable = readBackUdf.read();
 
         //validate udf read
@@ -86,7 +86,7 @@ public class UserDefinedFunctionCrudTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_UserDefinedFunctionCrudTest() {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
     }
 

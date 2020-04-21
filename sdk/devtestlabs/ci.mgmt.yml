@@ -14,10 +14,6 @@ trigger:
   paths:
     include:
       - sdk/devtestlabs/
-    exclude:
-      - sdk/devtestlabs/azure
-      - sdk/devtestlabs/microsoft-azure
-      - sdk/devtestlabs/ms-azure
 
 pr:
   branches:
@@ -29,10 +25,6 @@ pr:
   paths:
     include:
       - sdk/devtestlabs/
-    exclude:
-      - sdk/devtestlabs/azure
-      - sdk/devtestlabs/microsoft-azure
-      - sdk/devtestlabs/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

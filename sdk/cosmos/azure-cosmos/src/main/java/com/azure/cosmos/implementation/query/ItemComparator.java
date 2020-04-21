@@ -3,9 +3,12 @@
 
 package com.azure.cosmos.implementation.query;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
-public final class ItemComparator implements Comparator<Object> {
+public final class ItemComparator implements Comparator<Object>, Serializable {
+    private static final long serialVersionUID = 3597176477260908315L;
+
     private ItemComparator() {
     }
 

@@ -3,23 +3,14 @@
 > see https://aka.ms/autorest
 
 ### Setup
-```ps
-cd C:\work
-git clone --recursive https://github.com/Azure/autorest.java/
-cd autorest.java
-git checkout v3
-npm install
-cd ..
-git clone --recursive https://github.com/jianghaolu/autorest.modeler/
-cd autorest.modeler
-git checkout headerprefixfix
-npm install
-```
+
+Increase max memory if you're using Autorest older than 3. Set the environment variable `NODE_OPTIONS` to `--max-old-space-size=8192`.
 
 ### Generation
 ```ps
 cd <swagger-folder>
-autorest --use=C:/work/autorest.java --use=C:/work/autorest.modeler --version=2.0.4280
+# You may need to repeat this command few times if you're getting "TypeError: Cannot read property 'filename' of undefined" error
+autorest --use=@microsoft.azure/autorest.java@3.0.4 --use=jianghaolu/autorest.modeler#440af3935c504cea4410133e1fd940b78f6af749  --version=2.0.4280
 ```
 
 ### Code generation settings
@@ -1315,6 +1306,36 @@ directive:
     return $.replace('private Boolean encryptionScopeOverridePrevented;', 'private boolean encryptionScopeOverridePrevented;').
       replace('public Boolean isEncryptionScopeOverridePrevented() {', 'public boolean isEncryptionScopeOverridePrevented() {').
       replace('public BlobContainerItemProperties setEncryptionScopeOverridePrevented(Boolean encryptionScopeOverridePrevented) {', 'public BlobContainerItemProperties setEncryptionScopeOverridePrevented(boolean encryptionScopeOverridePrevented) {');
+```
+
+### Block size int to long transition
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.Block
+  transform: >
+    $.properties.Size["x-ms-client-name"] = "sizeLong";
+    $.properties.Size["format"] = "int64";
+    $.properties.SizeInt = { "type" : "integer" };
+    $.required.push("SizeInt");
+```
+
+``` yaml
+directive:
+- from: Block.java
+  where: $
+  transform: >
+    return $.replace('return this.sizeInt;', 'return (int) this.sizeLong;').
+      replace('this.sizeInt = sizeInt;', 'this.sizeLong = size;').
+      replace('public int getSizeInt() {', '@Deprecated  public int getSize() {').
+      replace('public Block setSizeInt(int sizeInt) {', '@Deprecated public Block setSize(int size) {').
+      replace('@JsonProperty(value = "SizeInt", required = true)', '').
+      replace('private int sizeInt;', '').
+      replace('@return the sizeInt value.', '@return the size value.\n     * @deprecated Use {@link #getSizeLong()}').
+      replace('@param sizeInt the sizeInt value to set.', '@param size the size value to set.\n     * @deprecated Use {@link #setSizeLong(long)}').
+      replace('sizeInt', 'size').replace('sizeInt', 'size').replace('sizeInt', 'size').replace('sizeInt', 'size').
+      replace('sizeInt', 'size').replace('sizeInt', 'size').replace('sizeInt', 'size').replace('sizeInt', 'size').
+      replace(/\/\*\s+\*\s+The size property.\s+\*\/\s+\/\*/gm, '/*')
 ```
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob%2Fswagger%2FREADME.png)

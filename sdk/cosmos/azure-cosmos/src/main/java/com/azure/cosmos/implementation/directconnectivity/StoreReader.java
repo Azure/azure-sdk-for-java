@@ -22,8 +22,8 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
@@ -385,8 +385,10 @@ public class StoreReader {
                                     // TODO: enforceSessionCheck is true, replace with true
                                     boolean enforceSessionCheck = true;
 
-                                    MutableVolatile<Boolean> hasGoneException = new MutableVolatile(false);
-                                    MutableVolatile<ReadReplicaResult> shortCircuitResult = new MutableVolatile();
+                                    MutableVolatile<Boolean> hasGoneException
+                                        = new MutableVolatile<>(false);
+                                    MutableVolatile<ReadReplicaResult> shortCircuitResult
+                                        = new MutableVolatile<>();
 
                                     return Flux.defer(() ->
                                                                     readFromReplicas(
@@ -872,7 +874,7 @@ public class StoreReader {
         return;
     }
 
-    private class ReadReplicaResult {
+    private static class ReadReplicaResult {
         public ReadReplicaResult(boolean retryWithForceRefresh, List<StoreResult> responses) {
             this.retryWithForceRefresh = retryWithForceRefresh;
             this.responses = responses;

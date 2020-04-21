@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 module azure.storage.blob.changefeed {
-    requires transitive com.azure.core;
     requires com.azure.storage.blob;
 
     exports com.azure.storage.blob.changefeed;

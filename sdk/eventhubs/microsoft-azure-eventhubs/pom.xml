@@ -25,20 +25,6 @@
       <id>azure-java-build-docs</id>
       <url>${site.url}/site/${project.artifactId}</url>
     </site>
-    <relocation>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-messaging-eventhubs</artifactId>
-      <message>
-        This library has been replaced by the following new Azure SDKs. You can read about the new Azure SDKs at https://aka.ms/azsdkvalueprop.
-
-        The latest libraries to interact with the Azure Event Hubs service are:
-
-        * https://search.maven.org/artifact/com.azure/azure-messaging-eventhubs
-        * http://search.maven.org/artifact/com.azure/azure-messaging-eventhubs-checkpointstore-blob
-
-        It is recommended that you move to the new package.
-      </message>
-    </relocation>
   </distributionManagement>
 
   <scm>
@@ -66,7 +52,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-client-authentication</artifactId>
-      <version>1.7.2</version> <!-- {x-version-update;com.microsoft.azure:azure-client-authentication;external_dependency} -->
+      <version>1.7.3</version> <!-- {x-version-update;com.microsoft.azure:azure-client-authentication;external_dependency} -->
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -96,7 +82,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>adal4j</artifactId>
-      <version>1.6.4</version> <!-- {x-version-update;com.microsoft.azure:adal4j;external_dependency} -->
+      <version>1.6.5</version> <!-- {x-version-update;com.microsoft.azure:adal4j;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
