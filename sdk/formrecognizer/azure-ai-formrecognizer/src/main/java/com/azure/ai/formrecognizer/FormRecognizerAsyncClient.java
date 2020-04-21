@@ -22,6 +22,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -36,6 +37,7 @@ import java.time.Duration;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Queue;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
@@ -386,48 +388,19 @@ public final class FormRecognizerAsyncClient {
         Flux<ByteBuffer> data, long length, FormContentType formContentType, boolean includeTextDetails) {
         Objects.requireNonNull(data, "'data' is required and cannot be null.");
 
-        // Size of buffered data, it used to collect all data from input Flux<ByteBuffer>
-        final long[] bufferedDataSize = {0};
-        // Cached byte buffer
-        final List<ByteBuffer> cachedBuffers = new LinkedList<>();
-        // A boolean value that only used once for guessing content type on input data
-        final AtomicBoolean[] isGuessed = {new AtomicBoolean(true)};
-        // Content type on input data
-        final ContentType[] contentType = new ContentType[1];
-
-        return pollingContext -> data.filter(ByteBuffer::hasRemaining)
-            .windowUntil(buffer -> {
-
-                if (bufferedDataSize[0] >= length) {
-                    return false;
-                }
-                bufferedDataSize[0] += buffer.remaining();
-
-                // if content type is not given, do guessing the content type.
-                if (formContentType == null && isGuessed[0].get() && bufferedDataSize[0] >= 4) {
-                    byte[] bytes = buffer.array();
-                    contentType[0] = getContentType(ByteBuffer.wrap(bytes));
-                    isGuessed[0].compareAndSet(true, false);
-                }
-                // Cache the data to a list of byte buffers
-                ByteBuffer cachedBuffer = ByteBuffer.allocate(buffer.remaining()).put(buffer);
-                cachedBuffer.flip();
-                cachedBuffers.add(cachedBuffer);
-
-                if (bufferedDataSize[0] >= length) {
-                    return true;
-                }
-                return false;
-            }, true, Integer.MAX_VALUE)
-            .next()
-            .flatMap(newData -> {
-                // if content type is not given, do guessing the content type.
-                final ContentType contentTypeFinal = formContentType == null ? contentType[0]
-                    : ContentType.fromString(formContentType.toString());
-                return service.analyzeReceiptAsyncWithResponseAsync(contentTypeFinal, Flux.fromIterable(cachedBuffers),
-                    length, includeTextDetails).map(response -> new OperationResult(
-                        parseModelId(response.getDeserializedHeaders().getOperationLocation())));
-            });
+        if (formContentType != null) {
+            return (pollingContext) ->
+                service.analyzeReceiptAsyncWithResponseAsync(ContentType.fromString(formContentType.toString()),
+                    data, length, includeTextDetails).map(response -> new OperationResult(
+                    parseModelId(response.getDeserializedHeaders().getOperationLocation())));
+        } else {
+            return pollingContext -> data.next()
+                .map(byteBuffer -> getContentType(byteBuffer))
+                .flatMap(contentType ->
+                    service.analyzeReceiptAsyncWithResponseAsync(contentType, data, length, includeTextDetails)
+                    .map(response ->
+                        new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation()))));
+        }
     }
 
     private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
@@ -478,49 +451,18 @@ public final class FormRecognizerAsyncClient {
         Flux<ByteBuffer> data, long length, FormContentType formContentType) {
         Objects.requireNonNull(data, "'data' is required and cannot be null.");
 
-        // Size of buffered data, it used to collect all data from input Flux<ByteBuffer>
-        final long[] bufferedDataSize = {0};
-        // Cached byte buffer
-        final List<ByteBuffer> cachedBuffers = new LinkedList<>();
-        // A boolean value that only used once for guessing content type on input data
-        final AtomicBoolean[] isGuessed = {new AtomicBoolean(true)};
-        // Content type on input data
-        final ContentType[] contentType = new ContentType[1];
-
-        return pollingContext -> data.filter(ByteBuffer::hasRemaining)
-            .windowUntil(buffer -> {
-
-                if (bufferedDataSize[0] >= length) {
-                    return false;
-                }
-                bufferedDataSize[0] += buffer.remaining();
-
-                // if content type is not given, do guessing the content type.
-                if (formContentType == null && isGuessed[0].get() && bufferedDataSize[0] >= 4) {
-                    byte[] bytes = buffer.array();
-                    contentType[0] = getContentType(ByteBuffer.wrap(bytes));
-                    isGuessed[0].compareAndSet(true, false);
-                }
-                // Cache the data to a list of byte buffers
-                ByteBuffer cachedBuffer = ByteBuffer.allocate(buffer.remaining()).put(buffer);
-                cachedBuffer.flip();
-                cachedBuffers.add(cachedBuffer);
-
-                if (bufferedDataSize[0] >= length) {
-                    return true;
-                }
-                return false;
-            }, true, Integer.MAX_VALUE)
-            .next()
-            .flatMap(newData -> {
-                // if content type is not given, do guessing the content type.
-                final ContentType contentTypeFinal = formContentType == null ? contentType[0]
-                    : ContentType.fromString(formContentType.toString());
-
-                return service.analyzeLayoutAsyncWithResponseAsync(contentTypeFinal, Flux.fromIterable(cachedBuffers),
-                    length).map(response -> new OperationResult(
-                        parseModelId(response.getDeserializedHeaders().getOperationLocation())));
-            });
+        if (formContentType != null) {
+            return (pollingContext) ->
+                service.analyzeLayoutAsyncWithResponseAsync(ContentType.fromString(formContentType.toString()),
+                    data, length).map(response -> new OperationResult(
+                    parseModelId(response.getDeserializedHeaders().getOperationLocation())));
+        } else {
+            return pollingContext -> data.next()
+                .map(byteBuffer -> getContentType(byteBuffer))
+                .flatMap(contentType -> service.analyzeLayoutAsyncWithResponseAsync(contentType, data, length)
+                    .map(response ->
+                        new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation()))));
+        }
     }
 
     private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
@@ -626,50 +568,20 @@ public final class FormRecognizerAsyncClient {
         Objects.requireNonNull(data, "'data' is required and cannot be null.");
         Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
 
-        // Size of buffered data, it used to collect all data from input Flux<ByteBuffer>
-        final long[] bufferedDataSize = {0};
-        // Cached byte buffer
-        final List<ByteBuffer> cachedBuffers = new LinkedList<>();
-        // A boolean value that only used once for guessing content type on input data
-        final AtomicBoolean[] isGuessed = {new AtomicBoolean(true)};
-        // Content type on input data
-        final ContentType[] contentType = new ContentType[1];
-
-        return pollingContext -> data.filter(ByteBuffer::hasRemaining)
-            .windowUntil(buffer -> {
-
-                if (bufferedDataSize[0] >= length) {
-                    return false;
-                }
-                bufferedDataSize[0] += buffer.remaining();
-
-                // if content type is not given, do guessing the content type.
-                if (formContentType == null && isGuessed[0].get() && bufferedDataSize[0] >= 4) {
-                    byte[] bytes = buffer.array();
-                    contentType[0] = getContentType(ByteBuffer.wrap(bytes));
-                    isGuessed[0].compareAndSet(true, false);
-                }
-                // Cache the data to a list of byte buffers
-                ByteBuffer cachedBuffer = ByteBuffer.allocate(buffer.remaining()).put(buffer);
-                cachedBuffer.flip();
-                cachedBuffers.add(cachedBuffer);
-
-                if (bufferedDataSize[0] >= length) {
-                    return true;
-                }
-                return false;
-            }, true, Integer.MAX_VALUE)
-            .next()
-            .flatMap(newData -> {
-                // if content type is not given, do guessing the content type.
-                final ContentType contentTypeFinal = formContentType == null ? contentType[0]
-                    : ContentType.fromString(formContentType.toString());
-
-                return service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId),
-                    contentTypeFinal, Flux.fromIterable(cachedBuffers), length, includeTextDetails)
+        if (formContentType != null) {
+            return (pollingContext) ->
+                service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId),
+                    ContentType.fromString(formContentType.toString()), data, length, includeTextDetails)
+                    .map(response -> new OperationResult(
+                    parseModelId(response.getDeserializedHeaders().getOperationLocation())));
+        } else {
+            return pollingContext -> data.next()
+                .map(byteBuffer -> getContentType(byteBuffer))
+                .flatMap(contentType -> service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId),
+                    contentType, data, length, includeTextDetails)
                     .map(response ->
-                        new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation())));
-            });
+                        new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation()))));
+        }
     }
 
     private static Mono<PollResponse<OperationResult>> processAnalyzeModelResponse(

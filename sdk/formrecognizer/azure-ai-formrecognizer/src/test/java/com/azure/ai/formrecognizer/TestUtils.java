@@ -26,6 +26,7 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -41,6 +42,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -201,16 +203,22 @@ final class TestUtils {
         return new AccountProperties(14, 5000);
     }
 
-    static InputStream getFileData(String localFileUrl) {
-        try {
-            return new FileInputStream(localFileUrl);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException("Local Receipt file not found.", e);
-        }
+    static Mono<InputStream> getFileData(String localFileUrl) {
+            return Mono.defer(() -> {
+                try {
+                    return Mono.just(new FileInputStream(localFileUrl));
+                } catch (FileNotFoundException e) {
+                    return Mono.error(new RuntimeException("Local Receipt file not found.", e));                }
+            });
     }
 
-    static Flux<ByteBuffer> getFileBufferData(InputStream data) {
-        return Utility.toFluxByteBuffer(data);
+    static Flux<ByteBuffer> getFileBufferData(Mono<InputStream> dataMono) {
+        return dataMono.flatMapMany(new Function<InputStream, Flux<ByteBuffer>>() {
+            @Override
+            public Flux<ByteBuffer> apply(InputStream inputStream) {
+                return Utility.toFluxByteBuffer(inputStream);
+            }
+        });
     }
 
     private static SerializerAdapter getSerializerAdapter() {

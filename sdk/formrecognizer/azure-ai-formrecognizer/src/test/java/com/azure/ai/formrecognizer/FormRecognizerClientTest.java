@@ -70,7 +70,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     void extractReceiptData() {
         receiptDataRunner((data) -> {
             SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
-                client.beginRecognizeReceipts(data, RECEIPT_FILE_LENGTH, FormContentType.IMAGE_JPEG, false, null);
+                client.beginRecognizeReceipts(data.block(), RECEIPT_FILE_LENGTH, FormContentType.IMAGE_JPEG, false, null);
             syncPoller.waitForCompletion();
             validateReceiptResult(false, getExpectedReceipts(false), syncPoller.getFinalResult());
         });
@@ -84,7 +84,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     void extractReceiptDataWithContentTypeAutoDetection() {
         receiptDataRunner((data) -> {
             SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
-                client.beginRecognizeReceipts(data, RECEIPT_FILE_LENGTH, null, false, null);
+                client.beginRecognizeReceipts(data.block(), RECEIPT_FILE_LENGTH, null, false, null);
             syncPoller.waitForCompletion();
             validateReceiptResult(false, getExpectedReceipts(false), syncPoller.getFinalResult());
         });
@@ -97,7 +97,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     void extractReceiptDataTextDetails() {
         receiptDataRunnerTextDetails((data, includeTextDetails) -> {
             SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
-                client.beginRecognizeReceipts(data, RECEIPT_FILE_LENGTH, FormContentType.IMAGE_PNG, includeTextDetails, null);
+                client.beginRecognizeReceipts(data.block(), RECEIPT_FILE_LENGTH, FormContentType.IMAGE_PNG, includeTextDetails, null);
             syncPoller.waitForCompletion();
             validateReceiptResult(false, getExpectedReceipts(includeTextDetails), syncPoller.getFinalResult());
         });
@@ -110,7 +110,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     void extractLayoutValidSourceUrl() {
         layoutValidSourceUrlRunner((data) -> {
             SyncPoller<OperationResult, IterableStream<FormPage>> syncPoller =
-                client.beginRecognizeContent(data, RECEIPT_FILE_LENGTH, FormContentType.IMAGE_PNG, null);
+                client.beginRecognizeContent(data.block(), RECEIPT_FILE_LENGTH, FormContentType.IMAGE_PNG, null);
             syncPoller.waitForCompletion();
             validateLayoutResult(getExpectedFormPages(), syncPoller.getFinalResult());
         });
@@ -132,7 +132,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     void extractCustomFormValidSourceUrl() {
         customFormValidSourceUrlRunner((data, validModelId) -> {
             SyncPoller<OperationResult, IterableStream<RecognizedForm>> syncPoller
-                = client.beginRecognizeCustomForms(data, validModelId,
+                = client.beginRecognizeCustomForms(data.block(), validModelId,
                 CUSTOM_FORM_FILE_LENGTH, FormContentType.APPLICATION_PDF);
             syncPoller.waitForCompletion();
             validateRecognizedFormResult(getExpectedRecognizedForms(), syncPoller.getFinalResult());
@@ -158,7 +158,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     void extractCustomFormLabeledData() {
         customFormLabeledDataRunner((data, validModelId) -> {
             SyncPoller<OperationResult, IterableStream<RecognizedForm>> syncPoller
-                = client.beginRecognizeCustomForms(data, validModelId,
+                = client.beginRecognizeCustomForms(data.block(), validModelId,
                 CUSTOM_FORM_FILE_LENGTH, FormContentType.APPLICATION_PDF, true, null);
             syncPoller.waitForCompletion();
             validateRecognizedFormResult(getExpectedRecognizedLabeledForms(), syncPoller.getFinalResult());
@@ -173,7 +173,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     void extractCustomFormLabeledDataWithContentTypeAutoDetection() {
         customFormLabeledDataRunner((data, validModelId) -> {
             SyncPoller<OperationResult, IterableStream<RecognizedForm>> syncPoller
-                = client.beginRecognizeCustomForms(data, validModelId,
+                = client.beginRecognizeCustomForms(data.block(), validModelId,
                 CUSTOM_FORM_FILE_LENGTH, null, true, null);
             syncPoller.waitForCompletion();
             validateRecognizedFormResult(getExpectedRecognizedLabeledForms(), syncPoller.getFinalResult());

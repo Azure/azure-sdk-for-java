@@ -38,6 +38,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -149,11 +150,11 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         testRunner.accept(TestUtils.RECEIPT_URL, true);
     }
 
-    void receiptDataRunner(Consumer<InputStream> testRunner) {
+    void receiptDataRunner(Consumer<Mono<InputStream>> testRunner) {
         testRunner.accept(getFileData(RECEIPT_LOCAL_URL));
     }
 
-    void receiptDataRunnerTextDetails(BiConsumer<InputStream, Boolean> testRunner) {
+    void receiptDataRunnerTextDetails(BiConsumer<Mono<InputStream>, Boolean> testRunner) {
         testRunner.accept(getFileData(RECEIPT_LOCAL_URL), true);
     }
 
@@ -161,15 +162,15 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         testRunner.accept(TestUtils.INVALID_RECEIPT_URL);
     }
 
-    void layoutValidSourceUrlRunner(Consumer<InputStream> testRunner) {
+    void layoutValidSourceUrlRunner(Consumer<Mono<InputStream>> testRunner) {
         testRunner.accept(getFileData(LAYOUT_LOCAL_URL));
     }
 
-    void customFormValidSourceUrlRunner(BiConsumer<InputStream, String> testRunner) {
+    void customFormValidSourceUrlRunner(BiConsumer<Mono<InputStream>, String> testRunner) {
         testRunner.accept(getFileData(TestUtils.FORM_LOCAL_URL), VALID_MODEL_ID);
     }
 
-    void customFormLabeledDataRunner(BiConsumer<InputStream, String> testRunner) {
+    void customFormLabeledDataRunner(BiConsumer<Mono<InputStream>, String> testRunner) {
         testRunner.accept(getFileData(TestUtils.FORM_LOCAL_URL), LABELED_MODEL_ID);
     }
 

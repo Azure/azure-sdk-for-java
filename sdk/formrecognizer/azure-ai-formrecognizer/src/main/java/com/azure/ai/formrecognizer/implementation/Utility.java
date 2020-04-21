@@ -33,24 +33,24 @@ public final class Utility {
      */
     public static ContentType getContentType(ByteBuffer buffer) {
         final byte[] bytes = buffer.array();
-        if (bytes.length < 2) {
+        if (bytes.length < 4) {
             throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Invalid input. Expect more than 2 bytes of data"));
+                new IllegalArgumentException("Invalid input. Expect more than 4 bytes of data"));
         }
 
-        final byte[] firstFourBytesArray = new byte[] {bytes[0], bytes[1], bytes[2], bytes[3]};
-
-        if (isEqual(firstFourBytesArray, new int[] {0x25, 0x50, 0x44, 0x46})) {
+        if (bytes[0] == (byte) 0x25 && bytes[1] == (byte) 0x50 && bytes[2] == (byte) 0x44 && bytes[3] == (byte) 0x46) {
             return ContentType.APPLICATION_PDF;
         } else if (bytes[0] == (byte) 0xff && bytes[1] == (byte) 0xd8) {
             return ContentType.IMAGE_JPEG;
-        } else if (isEqual(firstFourBytesArray, new int[] {0x89, 0x50, 0x4e, 0x47})) {
+        } else if (bytes[0] == (byte) 0x89 &&  bytes[1] == (byte) 0x50 && bytes[2] == (byte) 0x4e
+            && bytes[3] == (byte) 0x47) {
             return ContentType.IMAGE_PNG;
         } else if (
             // little-endian
-            (isEqual(firstFourBytesArray, new int[] {0x49, 0x49, 0x2a, 0x0}))
+            (bytes[0] == (byte) 0x49 && bytes[1] == (byte) 0x49 && bytes[2] == (byte) 0x2a && bytes[3] == (byte) 0x0)
                 // big-endian
-                || (isEqual(firstFourBytesArray, new int[] {0x4d, 0x4d, 0x0, 0x2a}))) {
+                || (bytes[0] == (byte) 0x4d && bytes[1] == (byte) 0x4d && bytes[2] == (byte) 0x0
+                    && bytes[3] == (byte) 0x2a)) {
             return ContentType.IMAGE_TIFF;
         } else {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -108,30 +108,6 @@ public final class Utility {
             this.readBytes = cnt;
             return this;
         }
-    }
-
-    /**
-     * Compare if a byte value equals to a hex type value.
-     *
-     * @param byteValueList An array of byte type values.
-     * @param hexValueList An array of hex type values.
-     * @return true if two type's values are equal in unsigned int comparision, otherwise return false.
-     */
-    private static boolean isEqual(byte[] byteValueList, int[] hexValueList) {
-        int byteListSize = byteValueList.length;
-        int hexListSize = hexValueList.length;
-        if (byteListSize != hexListSize) {
-            LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "'byteValueList' has size of %d but 'hexValueList' has size of %d", byteListSize, hexListSize)));
-        }
-
-        for (int i = 0; i < byteListSize; i++) {
-            if (byteValueList[i] != (byte) hexValueList[i]) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     /**
