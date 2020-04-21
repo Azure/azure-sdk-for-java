@@ -202,12 +202,12 @@ foreach ($packageDetail in $packageDetails) {
   $pomOption = "-DpomFile=$($pomAssociatedArtifact.File.FullName)"
   Write-Information "POM Option is: $pomOption"
 
-  if ($packageDetails.AssociatedArtifacts.Length -ne 1) {
-    $fileAssociatedArtifact = $packageDetails.AssociatedArtifacts | Where-Object { ($_.Classifier -eq $null) -and (($_.Type -eq "jar") -or ($_.Type -eq "aar")) }
+  if ($packageDetail.AssociatedArtifacts.Length -ne 1) {
+    $fileAssociatedArtifact = $packageDetail.AssociatedArtifacts | Where-Object { ($_.Classifier -eq $null) -and (($_.Type -eq "jar") -or ($_.Type -eq "aar")) }
   } else {
-    $fileAssociatedArtifact - $packageDetails.File.FullName
+    $fileAssociatedArtifact - $packageDetail.File.FullName
   }
-  
+
   $fileOption = "-Dfile=$($fileAssociatedArtifact.File.FullName)"
   Write-Information "File Option is: $fileOption"
 
