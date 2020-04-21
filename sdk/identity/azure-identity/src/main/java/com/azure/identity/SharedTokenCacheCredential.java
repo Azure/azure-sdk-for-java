@@ -7,6 +7,7 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.msalextensions.PersistentTokenCacheAccessAspect;
 import com.microsoft.aad.msal4j.IAccount;
@@ -21,7 +22,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 
 /**
  * A credential provider that provides token credentials from the MSAL shared token cache.
@@ -86,7 +86,8 @@ public class SharedTokenCacheCredential implements TokenCredential {
                     .setTokenCacheAccessAspect(accessAspect)
                     .build();
             } catch (Exception e) {
-                return Mono.error(e);
+                return Mono.error(new CredentialUnavailableException("SharedTokenCacheCredential authentication "
+                                                                         + "unavailable." +  e.getMessage(), e));
             }
         }
 
@@ -104,28 +105,32 @@ public class SharedTokenCacheCredential implements TokenCredential {
                     }
                 }
 
-                if (accounts.size() == 0) {
-                    if (username == null) {
-                        return Mono.error(new RuntimeException("No accounts were discovered in the shared token cache."
-                            + " To fix, authenticate through tooling supporting azure developer sign on."));
-                    } else {
-                        return Mono.error(new RuntimeException(String.format("User account '%s' was not found in the "
-                            + "shared token cache. Discovered Accounts: [ '%s' ]", username, set.stream()
-                            .map(IAccount::username).distinct().collect(Collectors.joining(", ")))));
-                    }
-                } else if (accounts.size() > 1) {
-                    if (username == null) {
-                        return Mono.error(new RuntimeException("Multiple accounts were discovered in the shared token "
-                            + "cache. To fix, set the AZURE_USERNAME and AZURE_TENANT_ID environment variable to the "
-                            + "preferred username, or specify it when constructing SharedTokenCacheCredential."));
-                    } else {
-                        return Mono.error(new RuntimeException("Multiple entries for the user account " + username
-                            + " were found in the shared token cache. This is not currently supported by the"
-                            + " SharedTokenCacheCredential."));
-                    }
-                } else {
-                    requestedAccount = accounts.values().iterator().next();
+                if (set.size() == 0) {
+                    return Mono.error(new CredentialUnavailableException("SharedTokenCacheCredential authentication "
+                             + "unavailable. No accounts were found in the cache."));
                 }
+
+                if (CoreUtils.isNullOrEmpty(username)) {
+                    return Mono.error(new CredentialUnavailableException("SharedTokenCacheCredential authentication "
+                             + "unavailable. Multiple accounts were found in the cache. Use username and tenant id "
+                             + "to disambiguate."));
+                }
+
+                if (accounts.size() != 1) {
+                    if (accounts.size() == 0) {
+                        return Mono.error(new CredentialUnavailableException(
+                            String.format("SharedTokenCacheCredential authentication "
+                             + "unavailable. No account matching the specified username %s was found in "
+                             + "the cache.", username)));
+                    } else {
+                        return Mono.error(new CredentialUnavailableException(String.format("SharedTokenCacheCredential"
+                             + " authentication unavailable. Multiple accounts matching the specified username %s were "
+                             + "found in the cache.", username)));
+                    }
+                }
+
+                requestedAccount = accounts.values().iterator().next();
+
 
                 // if it does, then request the token
                 SilentParameters params = SilentParameters.builder(
