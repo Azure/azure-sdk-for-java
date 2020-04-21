@@ -91,15 +91,18 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLin
 
     public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState) {
         if (isDisposed()) {
-            return monoError(logger, new IllegalStateException("lockToken[%s]. state[%s]. Cannot update disposition on closed processor."));
+            return monoError(logger, new IllegalStateException(String.format(
+                "lockToken[%s]. state[%s]. Cannot update disposition on closed processor.", lockToken, deliveryState)));
         }
 
         final AmqpReceiveLink link = currentLink;
         if (link == null) {
-            return monoError(logger, new IllegalStateException(
-                "lockToken[%s]. state[%s]. Cannot update disposition with no link."));
+            return monoError(logger, new IllegalStateException(String.format(
+                "lockToken[%s]. state[%s]. Cannot update disposition with no link.", lockToken, deliveryState)));
         } else if (!(link instanceof ServiceBusReactorReceiver)) {
-            return monoError(logger, new IllegalStateException("lockToken[%s]. state[%s]. Cannot update disposition with non Service Bus receive link."));
+            return monoError(logger, new IllegalStateException(String.format(
+                "lockToken[%s]. state[%s]. Cannot update disposition with non Service Bus receive link.",
+                lockToken, deliveryState)));
         }
 
         return ((ServiceBusReactorReceiver) link).updateDisposition(lockToken, deliveryState);

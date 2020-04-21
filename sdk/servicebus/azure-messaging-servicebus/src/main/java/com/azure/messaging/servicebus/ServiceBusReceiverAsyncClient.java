@@ -408,7 +408,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     public Mono<ServiceBusReceivedMessage> receiveDeferredMessage(long sequenceNumber) {
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType, sessionId))
-            .flatMap(node -> node.receiveDeferredMessage(receiveMode, sequenceNumber))
+            .flatMap(node -> {
+                return node.receiveDeferredMessage(receiveMode, sequenceNumber);
+            })
             .map(receivedMessage -> {
                 if (receiveMode == ReceiveMode.PEEK_LOCK && !CoreUtils.isNullOrEmpty(receivedMessage.getLockToken())) {
                     receivedMessage.setLockedUntil(managementNodeLocks.addOrUpdate(receivedMessage.getLockToken(),
@@ -434,7 +436,14 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType, sessionId))
-            .flatMapMany(node -> node.receiveDeferredMessageBatch(receiveMode, sequenceNumbers));
+            .flatMapMany(node -> node.receiveDeferredMessageBatch(receiveMode, sequenceNumbers))
+            .map(receivedMessage -> {
+                if (receiveMode == ReceiveMode.PEEK_LOCK && !CoreUtils.isNullOrEmpty(receivedMessage.getLockToken())) {
+                    receivedMessage.setLockedUntil(managementNodeLocks.addOrUpdate(receivedMessage.getLockToken(),
+                        receivedMessage.getLockedUntil()));
+                }
+                return receivedMessage;
+            });
     }
 
     /**
