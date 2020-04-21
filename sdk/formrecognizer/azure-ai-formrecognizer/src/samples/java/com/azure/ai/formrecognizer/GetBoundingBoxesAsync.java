@@ -15,9 +15,10 @@ import reactor.core.publisher.Mono;
 import java.util.concurrent.TimeUnit;
 
 /*
- * Async sample to output the information that will help with manually validating your output from recognize custom forms.
+ * Async sample to get detailed information to visualize the outlines of form content and fields,
+ * which can be used for manual validation and drawing UI as part of an application.
  */
-public class AdvancedManualValidationInfoAsync {
+public class GetBoundingBoxesAsync {
 
     /**
      * Main method to invoke this demo.
@@ -78,14 +79,16 @@ public class AdvancedManualValidationInfoAsync {
                         formTableCell.getElements().forEach(formContent -> {
                             if (formContent.getTextContentType().equals(TextContentType.WORD)) {
                                 FormWord formWordElement = (FormWord) (formContent);
-                                StringBuilder boundingBoxStr = new StringBuilder();
+                                final StringBuilder boundingBoxStr = new StringBuilder();
                                 if (formWordElement.getBoundingBox() != null) {
                                     formWordElement.getBoundingBox().getPoints().forEach(point -> {
-                                        boundingBoxStr.append(String.format("[%.2f, %.2f]", point.getX(), point.getY()));
+                                        boundingBoxStr.append(String.format("[%.2f, %.2f]", point.getX(),
+                                            point.getY()));
                                     });
                                 }
                                 System.out.printf("Word '%s' within bounding box %s with a confidence of %.2f.%n",
-                                    formWordElement.getText(), boundingBoxStr, formWordElement.getConfidence());
+                                    formWordElement.getText(), boundingBoxStr,
+                                    formWordElement.getConfidence());
                             }
                         });
                     });

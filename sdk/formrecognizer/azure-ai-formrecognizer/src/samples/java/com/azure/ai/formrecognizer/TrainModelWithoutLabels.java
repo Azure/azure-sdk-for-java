@@ -11,7 +11,7 @@ import com.azure.core.util.polling.SyncPoller;
 /**
  * Sample to train a model with unlabeled data. See RecognizeCustomFormsAsync to recognize forms with your custom model.
  */
-public class TrainUnlabeledModel {
+public class TrainModelWithoutLabels {
 
     /**
      * Main method to invoke this demo about how to train a custom model.

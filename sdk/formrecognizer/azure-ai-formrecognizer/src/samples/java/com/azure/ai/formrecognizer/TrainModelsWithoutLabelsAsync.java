@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  * Async sample to train a model with unlabeled data. See RecognizeCustomFormsAsync to recognize forms with your
  * created custom model.
  */
-public class TrainUnlabeledModelAsync {
+public class TrainModelsWithoutLabelsAsync {
 
     /**
      * Main method to invoke this demo.

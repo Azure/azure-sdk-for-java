@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Async sample for demonstrating to perform common custom model management operations on your account.
- * To learn how to train your own models, look at TrainUnlabeledModel.java and TrainLabeledModel.java.
+ * To learn how to train your own models, look at TrainModelWithoutLabels.java and TrainModelWithLabels.java.
  */
 public class ManageCustomModelsAsync {
 

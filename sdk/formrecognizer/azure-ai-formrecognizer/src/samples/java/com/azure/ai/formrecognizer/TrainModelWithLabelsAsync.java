@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  * Async sample to train a model with labeled data. See RecognizeCustomFormsAsync to recognize forms with your
  * custom model.
  */
-public class TrainLabeledModelAsync {
+public class TrainModelWithLabelsAsync {
 
     /**
      * Main method to invoke this demo.

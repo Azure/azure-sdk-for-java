@@ -11,7 +11,7 @@ import com.azure.core.util.polling.SyncPoller;
 /**
  * Sample to train a model with labeled data. See RecognizeCustomFormsAsync to recognize forms with your custom model.
  */
-public class TrainLabeledModel {
+public class TrainModelWithLabels {
 
     /**
      * Main method to invoke this demo.

@@ -37,12 +37,12 @@ public class RecognizeReceipts {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
-        File sourceFile = new File("../src/test/resources/sample-files/contoso-allinone.jpg");
+        File sourceFile = new File("/sample-forms/receipts/contoso-allinone.jpg");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
         SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> analyzeReceiptPoller =
-            client.beginRecognizeReceipts(targetStream, sourceFile.length(), FormContentType.APPLICATION_PDF);
+            client.beginRecognizeReceipts(targetStream, sourceFile.length(), FormContentType.IMAGE_JPEG);
 
         IterableStream<RecognizedReceipt> receiptPageResults = analyzeReceiptPoller.getFinalResult();
 

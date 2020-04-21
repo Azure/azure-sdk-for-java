@@ -12,9 +12,10 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.SyncPoller;
 
 /*
- * Sample to output the information that will help with manually validating your output from recognize custom forms.
+ * Sample to get detailed information to visualize the outlines of form content and fields,
+ * which can be used for manual validation and drawing UI as part of an application.
  */
-public class AdvancedManualValidationInfo {
+public class GetBoundingBoxes {
 
     /**
      * Main method to invoke this demo.
@@ -41,7 +42,8 @@ public class AdvancedManualValidationInfo {
             // each field is of type FormField
             //     The value of the field can also be a FormField, or a list of FormFields
             //     In our sample, it is not.
-            recognizedForm.getFields().forEach((fieldText, fieldValue) -> System.out.printf("Field %s has value %s based on %s with a confidence score "
+            recognizedForm.getFields().forEach((fieldText, fieldValue) -> System.out.printf("Field %s has value %s "
+                    + "based on %s with a confidence score "
                     + "of %.2f.%n",
                 fieldText, fieldValue.getFieldValue(), fieldValue.getValueText().getText(),
                 fieldValue.getConfidence()));
@@ -63,14 +65,15 @@ public class AdvancedManualValidationInfo {
                         formTableCell.getElements().forEach(formContent -> {
                             if (formContent.getTextContentType().equals(TextContentType.WORD)) {
                                 FormWord formWordElement = (FormWord) (formContent);
-                                StringBuilder str = new StringBuilder();
+                                StringBuilder boundingBoxStr = new StringBuilder();
                                 if (formWordElement.getBoundingBox() != null) {
                                     formWordElement.getBoundingBox().getPoints().forEach(point -> {
-                                        str.append(String.format("[%.2f, %.2f]", point.getX(), point.getY()));
+                                        boundingBoxStr.append(String.format("[%.2f, %.2f]", point.getX(),
+                                            point.getY()));
                                     });
                                 }
                                 System.out.printf("Word '%s' within bounding box %s with a confidence of %.2f.%n",
-                                    formWordElement.getText(), str, formWordElement.getConfidence());
+                                    formWordElement.getText(), boundingBoxStr, formWordElement.getConfidence());
                             }
                         });
                     });

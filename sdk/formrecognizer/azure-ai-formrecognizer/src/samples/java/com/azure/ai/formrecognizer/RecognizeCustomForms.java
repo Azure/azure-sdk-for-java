@@ -11,7 +11,7 @@ import com.azure.core.util.polling.SyncPoller;
 
 /**
  * Sample to analyze a form from a document with a custom trained model. To learn how to train your own models,
- * look at TrainUnlabeledModel.java and TrainLabeledModel.java.
+ * look at TrainModelWithoutLabels.java and TrainModelWithLabels.java.
  */
 public class RecognizeCustomForms {
 

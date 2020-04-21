@@ -39,7 +39,7 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
-        File analyzeFile = new File("../../test/resources/sample-files/Invoice_1.pdf");
+        File analyzeFile = new File("/sample-forms/forms/Invoice_6.pdf");
         byte[] fileContent = Files.readAllBytes(analyzeFile.toPath());
 
         PollerFlux<OperationResult, IterableStream<RecognizedForm>> labeledCustomFormPoller =
@@ -75,7 +75,18 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
         // The form recognized with a labeled model will have the labels it was trained with,
         // the unlabeled one will be denoted with indices
         System.out.println("--------Recognizing forms with labeled custom model--------");
-        labeledDataResult.subscribe(formsWithLabeledModel -> printFieldData(formsWithLabeledModel));
+        labeledDataResult.subscribe(formsWithLabeledModel -> formsWithLabeledModel.forEach(labeledForm ->
+            labeledForm.getFields().forEach((label, formField) -> {
+                final StringBuilder boundingBoxStr = new StringBuilder();
+                if (formField.getValueText().getBoundingBox() != null) {
+                    formField.getValueText().getBoundingBox().getPoints().forEach(point ->
+                        boundingBoxStr.append(String.format("[%.2f, %.2f]", point.getX(), point.getY())));
+                }
+                System.out.printf("Field %s has value %s based on %s within bounding box %s with a confidence score "
+                        + "of %.2f.%n",
+                    label, formField.getFieldValue(), formField.getValueText().getText(), boundingBoxStr,
+                    formField.getConfidence());
+            })));
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
         // the thread so the program does not end before the send operation is complete. Using .block() instead of
@@ -89,7 +100,28 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
         System.out.println("-----------------------------------------------------------");
 
         System.out.println("-------Recognizing forms with unlabeled custom model-------");
-        unlabeledDataResult.subscribe(formsWithUnlabeledModel -> printFieldData(formsWithUnlabeledModel));
+        unlabeledDataResult.subscribe(recognizedForms -> recognizedForms.forEach(unLabeledForm ->
+            unLabeledForm.getFields().forEach((label, formField) -> {
+                final StringBuilder boundingBoxStr = new StringBuilder();
+                if (formField.getValueText().getBoundingBox() != null) {
+                    formField.getValueText().getBoundingBox().getPoints().forEach(point ->
+                        boundingBoxStr.append(String.format("[%.2f, %.2f]", point.getX(), point.getY())));
+                }
+
+                final StringBuilder boundingBoxLabelStr = new StringBuilder();
+                if (formField.getLabelText() != null && formField.getLabelText().getBoundingBox() != null) {
+                    formField.getLabelText().getBoundingBox().getPoints().forEach(point ->
+                        boundingBoxLabelStr.append(String.format("[%.2f, %.2f]", point.getX(), point.getY())));
+                }
+                System.out.printf("Field %s has label %s  within bounding box %s with a confidence score "
+                        + "of %.2f.%n",
+                    label, formField.getLabelText().getText(), boundingBoxLabelStr, formField.getConfidence());
+
+                System.out.printf("Field %s has value %s based on %s within bounding box %s with a confidence score "
+                        + "of %.2f.%n",
+                    label, formField.getFieldValue(), formField.getValueText().getText(), boundingBoxStr,
+                    formField.getConfidence());
+            })));
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
         // the thread so the program does not end before the send operation is complete. Using .block() instead of

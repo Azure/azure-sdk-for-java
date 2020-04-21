@@ -39,10 +39,11 @@ The following sections provide code samples covering common scenario operations 
 Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
 
 ## Next steps
-See [Next steps][SDK_README_NEXT_STEPS].
+Check out the [API reference documentation][java_fr_ref_docs] to learn more about
+what you can do with the Azure Form Recognizer client library.
 Following section provides code samples for some of the advanced scenarios in Form Recognizer Client library:
-- Get info to help with manually validating the output of the `FormRecognizer` client
-  - [AdvancedManualValidationInfo][get_manual_validation_info] and [AdvancedManualValidationInfoAsync][get_manual_validation_info_async]
+- Get info to visualize the outlines of form content and fields, which can be used for manual validation
+  - [GetBoundingBoxes][get_bounding_boxes] and [GetBoundingBoxesAsync][get_bounding_boxes_async]
 - See the differences in output when using a custom model trained with labeled data and one trained with unlabeled data
   - [AdvancedDiffCustomFormsLabeledUnlabeledData][differentiate_custom_forms_with_labeled_and_unlabeled_models] and [AdvancedDiffCustomFormsLabeledUnlabeledDataAsync][differentiate_custom_forms_with_labeled_and_unlabeled_models_async]
 
@@ -57,11 +58,12 @@ Guidelines][SDK_README_CONTRIBUTING] for more information.
 [SDK_README_KEY_CONCEPTS]: ../../README.md#key-concepts
 [SDK_README_DEPENDENCY]: ../../README.md#include-the-package
 [SDK_README_NEXT_STEPS]: ../../README.md#next-steps
+[java_fr_ref_docs]: https://aka.ms/azsdk-java-formrecognizer-ref-docs
 
 [differentiate_custom_forms_with_labeled_and_unlabeled_models]: java/com/azure/ai/formrecognizer/AdvancedDiffLabeledUnlabeledData.java
 [differentiate_custom_forms_with_labeled_and_unlabeled_models_async]: java/com/azure/ai/formrecognizer/AdvancedDiffLabeledUnlabeledDataAsync.java
-[get_manual_validation_info]: java/com/azure/ai/formrecognizer/AdvancedManualValidationInfo.java
-[get_manual_validation_info_async]: java/com/azure/ai/formrecognizer/AdvancedManualValidationInfoAsync.java
+[get_bounding_boxes]: java/com/azure/ai/formrecognizer/GetBoundingBoxes.java
+[get_bounding_boxes_async]: java/com/azure/ai/formrecognizer/GetBoundingBoxesAsync.java
 [manage_custom_models]: java/com/azure/ai/formrecognizer/ManageCustomModels.java
 [manage_custom_models_async]: java/com/azure/ai/formrecognizer/ManageCustomModelsAsync.java
 [recognize_receipts]: java/com/azure/ai/formrecognizer/RecognizeReceipts.java

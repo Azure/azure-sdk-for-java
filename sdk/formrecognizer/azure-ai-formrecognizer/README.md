@@ -96,14 +96,26 @@ credential.update("{new_api_key}");
 ## Key concepts
 ### FormRecognizerClient
 The [FormRecognizerClient][form_recognizer_sync_client] and [FormRecognizerAsyncClient][form_recognizer_async_client]
-provide both synchronous and asynchronous operations to recognize data from forms using custom trained models, 
-recognizing content from forms, and analyzing receipts.
-
+provide both synchronous and asynchronous operations 
+ - Recognizing form fields and content using custom models trained to recognize your custom forms. 
+ These values are returned in a collection of `RecognizedForm` objects.
+ - Recognizing form content, including tables, lines and words, without the need to train a model. 
+ Form content is returned in a collection of `FormPage` objects.
+ - Recognizing common fields from US receipts, using a pre-trained receipt model on the Form Recognizer service. 
+ These fields and meta-data are returned in a collection of `USReceipt` objects.
+ 
 ### FormTrainingClient
 The [FormTrainingClient][form_training_sync_client] and 
-[FormTrainingAsyncClient][form_training_async_client] provide both synchronous and asynchronous operations for 
-for training custom models, retrieving and deleting models, as well as understanding how close you are to 
-reaching subscription limits for the number of models you can train.
+[FormTrainingAsyncClient][form_training_async_client] provide both synchronous and asynchronous operations 
+- Training custom models to recognize all fields and values found in your custom forms.
+ A `CustomFormModel` is returned indicating the form types the model will recognize, and the fields it will extract for
+  each form type. See the [service's documents][fr_train_without_labels] for a more detailed explanation.
+- Training custom models to recognize specific fields and values you specify by labeling your custom forms. 
+A `CustomFormModel` is returned indicating the fields the model will extract, as well as the estimated accuracy for 
+each field. See the [service's documents][fr_train_with_labels] for a more detailed explanation.
+- Managing models created in your account.
+
+Please note that models can also be trained using a graphical user interface such as the [Form Recognizer Labeling Tool][fr_labeling_tool].
 
 ### Long-Running Operations
 Long-running operations are operations which consist of an initial request sent to the service to start an operation,
@@ -115,22 +127,6 @@ a `begin<method-name>` method that returns a `SyncPoller` or `PollerFlux` instan
 Callers should wait for the operation to completed by calling `getFinalResult()` on the returned operation from the
 `begin<method-name>` method. Sample code snippets are provided to illustrate using long-running operations
 [below](#Examples).
-
-### Training models
-Using the `FormTrainingClient`, you can train a machine-learned model on your own form type. The resulting model will
-be able to recognize values from the types of forms it was trained on.
-You have the following options when you train custom models: [training with labeled data][service_doc_train_labeled]
-and [train without labeled data][service_doc_train_labeled].
-
-### Recognizing values from forms
-Using the `FormRecognizerClient`, you can use your own trained models to recognize field values and locations, as well as
-table data, from forms of the type you trained your models on. The output of models trained with and without labels
-differs as shown in this [sample][differentiate_custom_forms_with_labeled_and_unlabeled_models].
-
-### Managing Custom Models
-Using the `FormTrainingClient`, you can get, list, and delete the custom models you've trained.
-You can also view the count of models you've trained and the maximum number of models your subscription will
-allow you to store.
 
 ## Examples
 
@@ -195,7 +191,7 @@ layoutPageResults.forEach(formPage -> {
 ```
 
 ### Recognize receipts
-Recognize data from USA sales receipts using a prebuilt model.
+Recognize data from a USA sales receipts using a prebuilt model.
 <!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L101-L118 -->
 ```java
 String receiptSourceUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media"
@@ -322,8 +318,8 @@ The async versions of the samples show asynchronous operations with Form Recogni
 * Recognize receipts from a URL: [RecognizeReceiptsFromUrl][recognize_receipts_from_url], ([async][recognize_receipts_from_url_async])
 * Recognize content: [RecognizeContent][recognize_content], ([async][recognize_content_async])
 * Recognize custom forms: [RecognizeCustomForms][recognize_custom_forms], ([async][recognize_custom_forms_async])
-* Train a model without labels: [TrainUnlabeledModel][train_unlabeled_model], ([async][train_unlabeled_model_async])
-* Train a model with labels: [TrainLabeledModel][train_labeled_model], ([async][train_labeled_model_async])
+* Train a model without labels: [TrainModelWithoutLabels][train_unlabeled_model], ([async][train_unlabeled_model_async])
+* Train a model with labels: [TrainModelWithLabels][train_labeled_model], ([async][train_labeled_model_async])
 * Manage custom models: [ManageCustomModels][manage_custom_models], ([async_version][manage_custom_models_async])
 
 ### Additional documentation
@@ -359,6 +355,9 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [form_training_async_client]: src/main/java/com/azure/ai/formrecognizer/FormTrainingAsyncClient.java
 [form_training_sync_client]: src/main/java/com/azure/ai/formrecognizer/FormTrainingClient.java
 [http_clients_wiki]: https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients
+[fr_labeling_tool]: https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/quickstarts/label-tool
+[fr_train_without_labels]: https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/overview#train-without-labels
+[fr_train_with_labels]: https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/overview#train-with-labels
 [error_response_exception]: src/main/java/com/azure/ai/formrecognizer/models/ErrorResponseException.java
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [package]: https://mvnrepository.com/artifact/com.azure/azure-ai-formrecognizer
@@ -375,10 +374,10 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [recognize_receipts_from_url_async]: src/samples/java/com/azure/ai/formrecognizer/RecognizeReceiptsFromUrlAsync.java
 [recognize_custom_forms]: src/samples/java/com/azure/ai/formrecognizer/RecognizeCustomForms.java
 [recognize_custom_forms_async]: src/samples/java/com/azure/ai/formrecognizer/RecognizeCustomFormsAsync.java
-[train_unlabeled_model]: src/samples/java/com/azure/ai/formrecognizer/TrainUnlabeledCustomModel.java
-[train_unlabeled_model_async]: src/samples/java/com/azure/ai/formrecognizer/TrainUnlabeledCustomModelAsync.java
-[train_labeled_model]: src/samples/java/com/azure/ai/formrecognizer/TrainLabeledCustomModel.java
-[train_labeled_model_async]: src/samples/java/com/azure/ai/formrecognizer/TrainLabeledCustomModelAsync.java
+[train_unlabeled_model]: src/samples/java/com/azure/ai/formrecognizer/TrainModelWithoutLabels.java
+[train_unlabeled_model_async]: src/samples/java/com/azure/ai/formrecognizer/TrainModelWithoutLabelsAsync.java
+[train_labeled_model]: src/samples/java/com/azure/ai/formrecognizer/TrainModelWithLabels.java
+[train_labeled_model_async]: src/samples/java/com/azure/ai/formrecognizer/TrainModelWithLabelsAsync.java
 [service_access]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
 [service_doc_train_unlabeled]: https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/overview#train-without-labels
 [service_doc_train_labeled]: https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/overview#train-with-labels

@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Sample for demonstrating common custom model management operations.
- * To learn how to train your own models, look at TrainUnlabeledModel.java and TrainLabeledModel.java.
+ * To learn how to train your own models, look at TrainModelWithoutLabels.java and TrainModelWithLabels.java.
  */
 public class ManageCustomModels {
 
