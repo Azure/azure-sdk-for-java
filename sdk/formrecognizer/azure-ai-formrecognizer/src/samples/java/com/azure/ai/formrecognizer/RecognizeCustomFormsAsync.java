@@ -3,7 +3,6 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.implementation.Utility;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
@@ -18,6 +17,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.concurrent.TimeUnit;
+
+import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
 
 /**
  * Async sample to analyze a form from a document with a custom trained model. To learn how to train your own models,
@@ -46,7 +47,7 @@ public class RecognizeCustomFormsAsync {
         String modelId = "{modelId}";
 
         PollerFlux<OperationResult, IterableStream<RecognizedForm>> recognizeFormPoller =
-            client.beginRecognizeCustomForms(Utility.convertStreamToByteBuffer(targetStream), modelId,
+            client.beginRecognizeCustomForms(toFluxByteBuffer(targetStream), modelId,
                 sourceFile.length(),
                 FormContentType.APPLICATION_PDF);
 
