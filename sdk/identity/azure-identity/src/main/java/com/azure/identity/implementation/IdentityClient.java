@@ -34,6 +34,8 @@ import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.SilentParameters;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 import com.microsoft.aad.msal4jextensions.PersistenceTokenCacheAccessAspect;
+import com.microsoft.aad.msal4jextensions.persistence.linux.KeyRingAccessException;
+import com.microsoft.aad.msal4jextensions.persistence.mac.KeyChainAccessException;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -117,7 +119,7 @@ public class IdentityClient {
         this.options = options;
     }
 
-    private PublicClientApplication getPublicClientApplication() {
+    private PublicClientApplication getPublicClientApplication(boolean requirePersistence) {
         if (publicClientApplication != null) {
             return publicClientApplication;
         } else if (clientId == null) {
@@ -159,8 +161,14 @@ public class IdentityClient {
                 try {
                     publicClientApplicationBuilder.setTokenCacheAccessAspect(
                             new PersistenceTokenCacheAccessAspect(options.getPersistenceSettings()));
-                } catch (IOException e) {
-                    throw logger.logExceptionAsWarning(new IllegalStateException(e));
+                } catch (IOException | KeyChainAccessException | KeyRingAccessException e) {
+                    CredentialUnavailableException cue = new CredentialUnavailableException(
+                            "Shared token cache is unavailable on this platform.", e);
+                    if (requirePersistence) {
+                        throw logger.logExceptionAsWarning(cue);
+                    } else {
+                        logger.logExceptionAsWarning(cue);
+                    }
                 }
             }
             this.publicClientApplication = publicClientApplicationBuilder.build();
@@ -400,7 +408,7 @@ public class IdentityClient {
      */
     public Mono<MsalToken> authenticateWithUsernamePassword(TokenRequestContext request,
                                                             String username, String password) {
-        return Mono.fromFuture(() -> getPublicClientApplication().acquireToken(
+        return Mono.fromFuture(() -> getPublicClientApplication(false).acquireToken(
             UserNamePasswordParameters.builder(new HashSet<>(request.getScopes()), username, password.toCharArray())
                 .build()))
             .map(ar -> new MsalToken(ar, options));
@@ -425,12 +433,12 @@ public class IdentityClient {
         }
         return Mono.defer(() -> {
             try {
-                return Mono.fromFuture(getPublicClientApplication().acquireTokenSilently(parameters))
+                return Mono.fromFuture(getPublicClientApplication(false).acquireTokenSilently(parameters))
                         .map(ar -> new MsalToken(ar, options))
                         .filter(t -> !t.isExpired())
                         .switchIfEmpty(Mono.defer(() -> Mono.fromFuture(() -> {
                                 try {
-                                    return getPublicClientApplication().acquireTokenSilently(forceParameters);
+                                    return getPublicClientApplication(false).acquireTokenSilently(forceParameters);
                                 } catch (MalformedURLException e) {
                                     throw logger.logExceptionAsWarning(new RuntimeException(e));
                                 }
@@ -458,7 +466,7 @@ public class IdentityClient {
             DeviceCodeFlowParameters parameters = DeviceCodeFlowParameters.builder(new HashSet<>(request.getScopes()),
                 dc -> deviceCodeConsumer.accept(new DeviceCodeInfo(dc.userCode(), dc.deviceCode(),
                     dc.verificationUri(), OffsetDateTime.now().plusSeconds(dc.expiresIn()), dc.message()))).build();
-            return getPublicClientApplication().acquireToken(parameters);
+            return getPublicClientApplication(false).acquireToken(parameters);
         }).map(ar -> new MsalToken(ar, options));
     }
 
@@ -472,7 +480,7 @@ public class IdentityClient {
      */
     public Mono<MsalToken> authenticateWithAuthorizationCode(TokenRequestContext request, String authorizationCode,
                                                              URI redirectUrl) {
-        return Mono.fromFuture(() -> getPublicClientApplication().acquireToken(
+        return Mono.fromFuture(() -> getPublicClientApplication(false).acquireToken(
             AuthorizationCodeParameters.builder(authorizationCode, redirectUrl)
                 .scopes(new HashSet<>(request.getScopes()))
                 .build()))
@@ -529,7 +537,7 @@ public class IdentityClient {
     public Mono<AccessToken> authenticateWithSharedTokenCache(TokenRequestContext request, String username) {
         String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId + "/";
         // find if the Public Client app with the requested username exists
-        return Mono.fromFuture(() -> getPublicClientApplication().getAccounts())
+        return Mono.fromFuture(() -> getPublicClientApplication(true).getAccounts())
                 .onErrorResume(t -> Mono.error(new CredentialUnavailableException(
                         "Cannot get accounts from token cache. Error: " + t.getMessage(), t)))
                 .flatMap(set -> {
@@ -583,13 +591,13 @@ public class IdentityClient {
 
                     CompletableFuture<IAuthenticationResult> future;
                     try {
-                        future = getPublicClientApplication().acquireTokenSilently(params);
+                        future = getPublicClientApplication(false).acquireTokenSilently(params);
                         return Mono.fromFuture(() -> future).map(result ->
                                     new MsalToken(result, options))
                                 .filter(t -> !t.isExpired())
                                 .switchIfEmpty(Mono.defer(() -> Mono.fromFuture(() -> {
                                         try {
-                                            return getPublicClientApplication().acquireTokenSilently(forceParams);
+                                            return getPublicClientApplication(false).acquireTokenSilently(forceParams);
                                         } catch (MalformedURLException e) {
                                             throw logger.logExceptionAsWarning(new RuntimeException(e));
                                         }
