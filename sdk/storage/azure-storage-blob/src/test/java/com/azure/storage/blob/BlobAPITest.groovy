@@ -926,6 +926,34 @@ class BlobAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
+    /*
+    This test requires two accounts that are configured in a very specific way. It is not feasible to setup that
+    relationship programmatically, so we have recorded a successful interaction and only test recordings.
+     */
+    //@Requires( {playbackMode()})
+    def "Get properties ORS"() {
+        setup:
+        def blobName = generateBlobName()
+        def sourceBlob = primaryBlobServiceClient.getBlobContainerClient("test1").getBlobClient("javablobgetpropertiesors2blobapitestgetpropertiesors57d93407b")
+        def destBlob = alternateBlobServiceClient.getBlobContainerClient("test2").getBlobClient("javablobgetpropertiesors2blobapitestgetpropertiesors57d93407b")
+
+        //sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
+
+        //Thread.sleep(1000* 60 * 5)
+
+        when:
+        def sourceProperties = sourceBlob.getProperties()
+        def destProperties = destBlob.getProperties()
+
+        then:
+        sourceProperties.getMetadata()
+        destProperties.getCopySource()
+        // Call get properties
+        // Check properties on destination (ors policy id and copy source both must be present)
+    }
+
+    // Test getting the properties from a listing
+
     def "Get properties error"() {
         setup:
         bc = cc.getBlobClient(generateBlobName())
