@@ -27,6 +27,7 @@
     <module>common/perf-test-core</module>
     <module>sdk/search</module>
     <module>sdk/servicebus</module>
+    <module>sdk/signalr</module>
     <module>sdk/storage</module>
     <module>sdk/template</module>
     <module>sdk/textanalytics</module>

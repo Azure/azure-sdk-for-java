@@ -1469,6 +1469,7 @@
     <module>../../keyvault/azure-security-keyvault-secrets</module>
     <module>../../search/azure-search-documents</module>
     <module>../../servicebus/azure-messaging-servicebus</module>
+    <module>../../signalr/azure-messaging-signalr</module>
     <module>../../storage/azure-storage-blob</module>
     <module>../../storage/azure-storage-blob-batch</module>
     <module>../../storage/azure-storage-blob-cryptography</module>
