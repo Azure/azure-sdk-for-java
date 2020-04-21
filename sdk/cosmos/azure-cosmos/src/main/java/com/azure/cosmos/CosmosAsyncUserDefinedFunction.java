@@ -3,8 +3,6 @@
 package com.azure.cosmos;
 
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.tracing.ProcessKind;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.UserDefinedFunction;
@@ -12,11 +10,9 @@ import com.azure.cosmos.models.CosmosAsyncUserDefinedFunctionResponse;
 import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.Signal;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -150,37 +146,14 @@ public class CosmosAsyncUserDefinedFunction {
             put(TracerProvider.DB_STATEMENT, spanName);
         }};
 
-        return container.getDatabase().getDocClientWrapper().readUserDefinedFunction(getLink(), null)
-            .map(response -> ModelBridgeInternal.createCosmosAsyncUserDefinedFunctionResponse(response, container)).single()
-            .doOnSubscribe(ignoredValue -> {
-                if (isTracingEnabled) {
-                    reactor.util.context.Context reactorContext = FluxUtil.toReactorContext(context);
-                    Objects.requireNonNull(reactorContext.hasKey(TracerProvider.MASTER_CALL));
-                    Optional<Object> callerFunc = reactorContext.getOrEmpty(TracerProvider.NESTED_CALL);
-                    if (!callerFunc.isPresent()) {
-                        parentContext.set(this.container.getDatabase().getClient().getTracerProvider().startSpan(spanName,
-                            context.addData(TracerProvider.ATTRIBUTE_MAP, tracingAttributes), ProcessKind.DATABASE));
-                    }
-                }
-            }).doOnSuccess(response -> {
-                if (isTracingEnabled) {
-                    this.container.getDatabase().getClient().getTracerProvider().endSpan(parentContext.get(),
-                        Signal.complete(), response.getStatusCode());
-                }
-            }).doOnError(throwable -> {
-                if (isTracingEnabled) {
-                    this.container.getDatabase().getClient().getTracerProvider().endSpan(parentContext.get(),
-                        Signal.error(throwable), 0);
-                }
-            });
+        Mono<CosmosAsyncUserDefinedFunctionResponse> responseMono =
+            container.getDatabase().getDocClientWrapper().readUserDefinedFunction(getLink(), null)
+            .map(response -> ModelBridgeInternal.createCosmosAsyncUserDefinedFunctionResponse(response, container)).single();
+        return this.container.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, tracingAttributes, context, spanName);
     }
 
     private Mono<CosmosAsyncUserDefinedFunctionResponse> replace(CosmosUserDefinedFunctionProperties udfSettings,
                                                                  Context context) {
-        final boolean isTracingEnabled = this.container.getDatabase().getClient().getTracerProvider().isEnabled();
-        final AtomicReference<Context> parentContext = isTracingEnabled
-            ? new AtomicReference<>(Context.NONE)
-            : null;
         String spanName = "replaceUDF." + container.getId();
         Map<String, String> tracingAttributes = new HashMap<String, String>() {{
             put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
@@ -189,39 +162,15 @@ public class CosmosAsyncUserDefinedFunction {
             put(TracerProvider.DB_STATEMENT, spanName);
         }};
 
-        return container.getDatabase()
+        Mono<CosmosAsyncUserDefinedFunctionResponse> responseMono = container.getDatabase()
             .getDocClientWrapper()
             .replaceUserDefinedFunction(new UserDefinedFunction(ModelBridgeInternal.toJsonFromJsonSerializable(udfSettings)), null)
             .map(response -> ModelBridgeInternal.createCosmosAsyncUserDefinedFunctionResponse(response, container))
-            .single()
-            .doOnSubscribe(ignoredValue -> {
-                if (isTracingEnabled) {
-                    reactor.util.context.Context reactorContext = FluxUtil.toReactorContext(context);
-                    Objects.requireNonNull(reactorContext.hasKey(TracerProvider.MASTER_CALL));
-                    Optional<Object> callerFunc = reactorContext.getOrEmpty(TracerProvider.NESTED_CALL);
-                    if (!callerFunc.isPresent()) {
-                        parentContext.set(this.container.getDatabase().getClient().getTracerProvider().startSpan(spanName,
-                            context.addData(TracerProvider.ATTRIBUTE_MAP, tracingAttributes), ProcessKind.DATABASE));
-                    }
-                }
-            }).doOnSuccess(response -> {
-                if (isTracingEnabled) {
-                    this.container.getDatabase().getClient().getTracerProvider().endSpan(parentContext.get(),
-                        Signal.complete(), response.getStatusCode());
-                }
-            }).doOnError(throwable -> {
-                if (isTracingEnabled) {
-                    this.container.getDatabase().getClient().getTracerProvider().endSpan(parentContext.get(),
-                        Signal.error(throwable), 0);
-                }
-            });
+            .single();
+        return this.container.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, tracingAttributes, context, spanName);
     }
 
     private Mono<CosmosAsyncUserDefinedFunctionResponse> delete(Context context) {
-        final boolean isTracingEnabled = this.container.getDatabase().getClient().getTracerProvider().isEnabled();
-        final AtomicReference<Context> parentContext = isTracingEnabled
-            ? new AtomicReference<>(Context.NONE)
-            : null;
         String spanName = "deleteUDF." + container.getId();
         Map<String, String> tracingAttributes = new HashMap<String, String>() {{
             put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
@@ -230,31 +179,11 @@ public class CosmosAsyncUserDefinedFunction {
             put(TracerProvider.DB_STATEMENT, spanName);
         }};
 
-        return container.getDatabase()
+        Mono<CosmosAsyncUserDefinedFunctionResponse> responseMono = container.getDatabase()
             .getDocClientWrapper()
             .deleteUserDefinedFunction(this.getLink(), null)
             .map(response -> ModelBridgeInternal.createCosmosAsyncUserDefinedFunctionResponse(response, container))
-            .single()
-            .doOnSubscribe(ignoredValue -> {
-                if (isTracingEnabled) {
-                    reactor.util.context.Context reactorContext = FluxUtil.toReactorContext(context);
-                    Objects.requireNonNull(reactorContext.hasKey(TracerProvider.MASTER_CALL));
-                    Optional<Object> callerFunc = reactorContext.getOrEmpty(TracerProvider.NESTED_CALL);
-                    if (!callerFunc.isPresent()) {
-                        parentContext.set(this.container.getDatabase().getClient().getTracerProvider().startSpan(spanName,
-                            context.addData(TracerProvider.ATTRIBUTE_MAP, tracingAttributes), ProcessKind.DATABASE));
-                    }
-                }
-            }).doOnSuccess(response -> {
-                if (isTracingEnabled) {
-                    this.container.getDatabase().getClient().getTracerProvider().endSpan(parentContext.get(),
-                        Signal.complete(), response.getStatusCode());
-                }
-            }).doOnError(throwable -> {
-                if (isTracingEnabled) {
-                    this.container.getDatabase().getClient().getTracerProvider().endSpan(parentContext.get(),
-                        Signal.error(throwable), 0);
-                }
-            });
+            .single();
+        return this.container.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, tracingAttributes, context, spanName);
     }
 }

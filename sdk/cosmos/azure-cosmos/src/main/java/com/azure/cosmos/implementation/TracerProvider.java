@@ -3,21 +3,24 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
+import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.models.CosmosResponse;
+import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class TracerProvider {
     private final ClientLogger logger = new ClientLogger(TracerProvider.class);
@@ -47,7 +50,7 @@ public class TracerProvider {
 
     /**
      * For each tracer plugged into the SDK a new tracing span is created.
-     *
+     * <p>
      * The {@code context} will be checked for containing information about a parent span. If a parent span is found the
      * new span will be added as a child, otherwise the span will be created and added to the context and any downstream
      * start calls will use the created span as the parent.
@@ -69,8 +72,9 @@ public class TracerProvider {
     /**
      * Given a context containing the current tracing span the span is marked completed with status info from
      * {@link Signal}.  For each tracer plugged into the SDK the current tracing span is marked as completed.
+     *
      * @param context Additional metadata that is passed through the call stack.
-     * @param signal The signal indicates the status and contains the metadata we need to end the tracing span.
+     * @param signal  The signal indicates the status and contains the metadata we need to end the tracing span.
      */
     public void endSpan(Context context, Signal<CosmosResponse> signal, int statusCode) {
         Objects.requireNonNull(context, "'context' cannot be null.");
@@ -100,14 +104,104 @@ public class TracerProvider {
         }
     }
 
+    public <T extends CosmosResponse> Mono<T> traceEnabledCosmosResponsePublisher(Mono<T> resultPublisher,
+                                                                                  Map<String, String> tracingAttributes,
+                                                                                  Context context,
+                                                                                  String spanName) {
+        final boolean isTracingEnabled = this.isEnabled();
+        final AtomicReference<Context> parentContext = isTracingEnabled
+            ? new AtomicReference<>(Context.NONE)
+            : null;
+        return resultPublisher
+            .doOnSubscribe(ignoredValue -> {
+                if (isTracingEnabled) {
+                    reactor.util.context.Context reactorContext = FluxUtil.toReactorContext(context);
+                    Objects.requireNonNull(reactorContext.hasKey(TracerProvider.MASTER_CALL));
+                    Optional<Object> callerFunc = reactorContext.getOrEmpty(TracerProvider.NESTED_CALL);
+                    if (!callerFunc.isPresent()) {
+                        parentContext.set(this.startSpan(spanName,
+                            context.addData(TracerProvider.ATTRIBUTE_MAP, tracingAttributes), ProcessKind.DATABASE));
+                    }
+                }
+            }).doOnSuccess(response -> {
+                if (isTracingEnabled) {
+                    this.endSpan(parentContext.get(), Signal.complete(), response.getStatusCode());
+                }
+            }).doOnError(throwable -> {
+                if (isTracingEnabled) {
+                    this.endSpan(parentContext.get(), Signal.error(throwable), 0);
+                }
+            });
+    }
+
+    public <T> Mono<T> traceEnabledNonCosmosResponsePublisher(Mono<T> resultPublisher,
+                                                              Map<String, String> tracingAttributes,
+                                                              Context context,
+                                                              String spanName) {
+        final boolean isTracingEnabled = this.isEnabled();
+        final AtomicReference<Context> parentContext = isTracingEnabled
+            ? new AtomicReference<>(Context.NONE)
+            : null;
+        return resultPublisher
+            .doOnSubscribe(ignoredValue -> {
+                if (isTracingEnabled) {
+                    reactor.util.context.Context reactorContext = FluxUtil.toReactorContext(context);
+                    Objects.requireNonNull(reactorContext.hasKey(TracerProvider.MASTER_CALL));
+                    Optional<Object> callerFunc = reactorContext.getOrEmpty(TracerProvider.NESTED_CALL);
+                    if (!callerFunc.isPresent()) {
+                        parentContext.set(this.startSpan(spanName,
+                            context.addData(TracerProvider.ATTRIBUTE_MAP, tracingAttributes), ProcessKind.DATABASE));
+                    }
+                }
+            }).doOnSuccess(response -> {
+                if (isTracingEnabled) {
+                    this.endSpan(parentContext.get(), Signal.complete(), 200);
+                }
+            }).doOnError(throwable -> {
+                if (isTracingEnabled) {
+                    this.endSpan(parentContext.get(), Signal.error(throwable), 0);
+                }
+            });
+    }
+
+    public <T> Mono<CosmosAsyncItemResponse<T>> traceEnabledCosmosItemResponsePublisher(Mono<CosmosAsyncItemResponse<T>> resultPublisher,
+                                                                                        Map<String, String> tracingAttributes,
+                                                                                        Context context,
+                                                                                        String spanName) {
+        final boolean isTracingEnabled = this.isEnabled();
+        final AtomicReference<Context> parentContext = isTracingEnabled
+            ? new AtomicReference<>(Context.NONE)
+            : null;
+        return resultPublisher
+            .doOnSubscribe(ignoredValue -> {
+                if (isTracingEnabled) {
+                    reactor.util.context.Context reactorContext = FluxUtil.toReactorContext(context);
+                    Objects.requireNonNull(reactorContext.hasKey(TracerProvider.MASTER_CALL));
+                    Optional<Object> callerFunc = reactorContext.getOrEmpty(TracerProvider.NESTED_CALL);
+                    if (!callerFunc.isPresent()) {
+                        parentContext.set(this.startSpan(spanName,
+                            context.addData(TracerProvider.ATTRIBUTE_MAP, tracingAttributes), ProcessKind.DATABASE));
+                    }
+                }
+            }).doOnSuccess(response -> {
+                if (isTracingEnabled) {
+                    this.endSpan(parentContext.get(), Signal.complete(), response.getStatusCode());
+                }
+            }).doOnError(throwable -> {
+                if (isTracingEnabled) {
+                    this.endSpan(parentContext.get(), Signal.error(throwable), 0);
+                }
+            });
+    }
+
     private void end(int statusCode, Throwable throwable, Context context) {
         for (Tracer tracer : tracers) {
-            if(throwable != null) {
-                tracer.setAttribute(TracerProvider.ERROR_MSG,  throwable.getMessage(), context);
-                tracer.setAttribute(TracerProvider.ERROR_TYPE,  throwable.getClass().getName(), context);
+            if (throwable != null) {
+                tracer.setAttribute(TracerProvider.ERROR_MSG, throwable.getMessage(), context);
+                tracer.setAttribute(TracerProvider.ERROR_TYPE, throwable.getClass().getName(), context);
                 StringWriter errorStack = new StringWriter();
                 throwable.printStackTrace(new PrintWriter(errorStack));
-                tracer.setAttribute(TracerProvider.ERROR_STACK,  errorStack.toString(), context);
+                tracer.setAttribute(TracerProvider.ERROR_STACK, errorStack.toString(), context);
             }
             tracer.end(statusCode, throwable, context);
         }

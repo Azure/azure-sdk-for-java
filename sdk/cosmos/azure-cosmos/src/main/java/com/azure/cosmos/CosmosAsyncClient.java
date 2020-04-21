@@ -4,8 +4,6 @@ package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.tracing.ProcessKind;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Database;
@@ -24,15 +22,12 @@ import com.azure.cosmos.util.UtilBridgeInternal;
 import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.Signal;
 
 import java.io.Closeable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
@@ -438,19 +433,14 @@ public final class CosmosAsyncClient implements Closeable {
 
     private Mono<CosmosAsyncDatabaseResponse> createDatabaseIfNotExistsInternal(CosmosAsyncDatabase database,
                                                                                 Context context) {
-        final boolean isTracingEnabled = tracerProvider.isEnabled();
-        final AtomicReference<Context> parentContext = isTracingEnabled
-            ? new AtomicReference<>(Context.NONE)
-            : null;
         String spanName = "createDatabaseIfNotExistsInternal." + database.getId();
-        Map<String, String> tracingAttributes = new HashMap<String, String>() {{
+        Map<String, String> tracingAttributes = new HashMap() {{
             put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
             put(TracerProvider.DB_INSTANCE, database.getId());
             put(TracerProvider.DB_URL, serviceEndpoint);
             put(TracerProvider.DB_STATEMENT, spanName);
         }};
-
-        return database.read().onErrorResume(exception -> {
+        Mono<CosmosAsyncDatabaseResponse> responseMono = database.read().onErrorResume(exception -> {
             final Throwable unwrappedException = Exceptions.unwrap(exception);
             if (unwrappedException instanceof CosmosClientException) {
                 final CosmosClientException cosmosClientException = (CosmosClientException) unwrappedException;
@@ -460,32 +450,11 @@ public final class CosmosAsyncClient implements Closeable {
                 }
             }
             return Mono.error(unwrappedException);
-        }).doOnSubscribe(ignoredValue -> {
-            if (isTracingEnabled) {
-                reactor.util.context.Context reactorContext = FluxUtil.toReactorContext(context);
-                Objects.requireNonNull(reactorContext.hasKey(TracerProvider.MASTER_CALL));
-                Optional<Object> callerFunc = reactorContext.getOrEmpty(TracerProvider.NESTED_CALL);
-                if (!callerFunc.isPresent()) {
-                    parentContext.set(tracerProvider.startSpan(spanName,
-                        context.addData(TracerProvider.ATTRIBUTE_MAP, tracingAttributes), ProcessKind.DATABASE));
-                }
-            }
-        }).doOnSuccess(response -> {
-            if (isTracingEnabled) {
-                tracerProvider.endSpan(parentContext.get(), Signal.complete(), response.getStatusCode());
-            }
-        }).doOnError(throwable -> {
-            if (isTracingEnabled) {
-                tracerProvider.endSpan(parentContext.get(), Signal.error(throwable), 0);
-            }
         });
+        return tracerProvider.traceEnabledCosmosResponsePublisher(responseMono, tracingAttributes, context, spanName);
     }
 
     private Mono<CosmosAsyncDatabaseResponse> createDatabase(Database database, CosmosDatabaseRequestOptions options, Context context){
-        final boolean isTracingEnabled = tracerProvider.isEnabled();
-        final AtomicReference<Context> parentContext = isTracingEnabled
-            ? new AtomicReference<>(Context.NONE)
-            : null;
         String spanName = "createDatabase." + database.getId();
         Map<String, String> tracingAttributes = new HashMap<String, String>() {{
             put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
@@ -494,28 +463,10 @@ public final class CosmosAsyncClient implements Closeable {
             put(TracerProvider.DB_STATEMENT, spanName);
         }};
 
-        return asyncDocumentClient.createDatabase(database, ModelBridgeInternal.toRequestOptions(options))
+        Mono<CosmosAsyncDatabaseResponse> responseMono = asyncDocumentClient.createDatabase(database, ModelBridgeInternal.toRequestOptions(options))
             .map(databaseResourceResponse -> ModelBridgeInternal.createCosmosAsyncDatabaseResponse(databaseResourceResponse,
                 this))
-            .single()
-            .doOnSubscribe(ignoredValue -> {
-                if (isTracingEnabled) {
-                    reactor.util.context.Context reactorContext = FluxUtil.toReactorContext(context);
-                    Objects.requireNonNull(reactorContext.hasKey(TracerProvider.MASTER_CALL));
-                    Optional<Object> callerFunc = reactorContext.getOrEmpty(TracerProvider.NESTED_CALL);
-                    if (!callerFunc.isPresent()) {
-                        parentContext.set(tracerProvider.startSpan(spanName,
-                            context.addData(TracerProvider.ATTRIBUTE_MAP, tracingAttributes), ProcessKind.DATABASE));
-                    }
-                }
-            }).doOnSuccess(response -> {
-                if (isTracingEnabled) {
-                    tracerProvider.endSpan(parentContext.get(), Signal.complete(), response.getStatusCode());
-                }
-            }).doOnError(throwable -> {
-                if (isTracingEnabled) {
-                    tracerProvider.endSpan(parentContext.get(), Signal.error(throwable), 0);
-                }
-            });
+            .single();
+        return tracerProvider.traceEnabledCosmosResponsePublisher(responseMono, tracingAttributes, context, spanName);
     }
 }
