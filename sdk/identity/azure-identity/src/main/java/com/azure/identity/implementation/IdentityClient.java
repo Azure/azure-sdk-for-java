@@ -34,8 +34,6 @@ import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.SilentParameters;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 import com.microsoft.aad.msal4jextensions.PersistenceTokenCacheAccessAspect;
-import com.microsoft.aad.msal4jextensions.persistence.linux.KeyRingAccessException;
-import com.microsoft.aad.msal4jextensions.persistence.mac.KeyChainAccessException;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -161,9 +159,9 @@ public class IdentityClient {
                 try {
                     publicClientApplicationBuilder.setTokenCacheAccessAspect(
                             new PersistenceTokenCacheAccessAspect(options.getPersistenceSettings()));
-                } catch (IOException | KeyChainAccessException | KeyRingAccessException e) {
+                } catch (Throwable t) {
                     CredentialUnavailableException cue = new CredentialUnavailableException(
-                            "Shared token cache is unavailable on this platform.", e);
+                            "Shared token cache is unavailable on this platform.", t);
                     if (requirePersistence) {
                         throw logger.logExceptionAsWarning(cue);
                     } else {
