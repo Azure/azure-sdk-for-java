@@ -23,6 +23,7 @@ public class ReceiveMessageAndSettleAsyncSample {
      * Queue
      *
      * @param args Unused arguments to the program.
+     * @throws InterruptedException If the program is unable to sleep while waiting for the operations to complete.
      */
     public static void main(String[] args) throws InterruptedException {
 

@@ -15,6 +15,7 @@ public class SendMessageAsyncSample {
      * Main method to invoke this demo on how to send an {@link ServiceBusMessageBatch} to an Azure Service Bus.
      *
      * @param args Unused arguments to the program.
+     * @throws InterruptedException If the program is unable to sleep while waiting for the operations to complete.
      */
     public static void main(String[] args) throws InterruptedException {
         // The connection string value can be obtained by:

@@ -19,6 +19,7 @@ public class SendScheduledMessageAndCancelAsyncSample {
      * Main method to invoke this demo on how to schedule and then cancel a message to an Azure Service Bus queue.
      *
      * @param args Unused arguments to the program.
+     * @throws InterruptedException If the program is unable to sleep while waiting for the operations to complete.
      */
     public static void main(String[] args) throws InterruptedException {
         // The connection string value can be obtained by:
@@ -47,13 +48,14 @@ public class SendScheduledMessageAndCancelAsyncSample {
             .subscribe(sequenceNumber -> {
                 System.out.printf("Sequence number of scheduled message: %s%n", sequenceNumber);
                 messageSequenceNumber.set(sequenceNumber);
-            }, error -> {
-                System.err.println("Error occurred while scheduling message. " + error);
-                completedSemaphore.release();
-            }, () -> {
-                System.out.println("Completed scheduling message.");
-                completedSemaphore.release();
-            });
+            },
+                error -> {
+                    System.err.println("Error occurred while scheduling message. " + error);
+                    completedSemaphore.release();
+                }, () -> {
+                    System.out.println("Completed scheduling message.");
+                    completedSemaphore.release();
+                });
 
         // Waiting until the scheduling operation completes so we can move on.
         if (!completedSemaphore.tryAcquire(20, TimeUnit.SECONDS)) {

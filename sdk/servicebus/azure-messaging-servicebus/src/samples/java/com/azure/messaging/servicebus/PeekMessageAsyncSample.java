@@ -13,6 +13,7 @@ public class PeekMessageAsyncSample {
      * Main method to invoke this demo on how to peek at a message within a Service Bus Queue.
      *
      * @param args Unused arguments to the program.
+     * @throws InterruptedException If the program is unable to sleep while waiting for the receive to complete.
      */
     public static void main(String[] args) throws InterruptedException {
         // The connection string value can be obtained by:

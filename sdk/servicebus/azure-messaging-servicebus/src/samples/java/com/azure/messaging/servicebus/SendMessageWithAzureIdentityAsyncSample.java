@@ -20,6 +20,7 @@ public class SendMessageWithAzureIdentityAsyncSample {
      * Main method to invoke this demo on how to send an {@link ServiceBusMessage} to an Azure Service bus Queue.
      *
      * @param args Unused arguments to the program.
+     * @throws InterruptedException If the program is unable to sleep while waiting for the operations to complete.
      */
     public static void main(String[] args) throws InterruptedException {
         ServiceBusMessage guestCheckInEvent = new ServiceBusMessage("Microsoft HQ is at Redmond.".getBytes(UTF_8))
