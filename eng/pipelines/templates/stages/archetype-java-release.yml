@@ -60,14 +60,14 @@ stages:
                 inputs:
                   versionSpec: '3.6'
 
-              # - script: |
-              #     python --version
-              #     python eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --vv --ai ${{artifact.name}} --gi ${{artifact.groupId}}
-              #   displayName: 'Verify version for release'
+              - script: |
+                  python --version
+                  python eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --vv --ai ${{artifact.name}} --gi ${{artifact.groupId}}
+                displayName: 'Verify version for release'
 
-              # - pwsh: |
-              #     $(Build.SourcesDirectory)/eng/versioning/scan_for_unreleased_dependencies.ps1 ${{artifact.groupId}} ${{artifact.name}} $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
-              #   displayName: "Verify no unreleased dependencies"
+              - pwsh: |
+                  $(Build.SourcesDirectory)/eng/versioning/scan_for_unreleased_dependencies.ps1 ${{artifact.groupId}} ${{artifact.name}} $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
+                displayName: "Verify no unreleased dependencies"
 
 
           - deployment: TagRepository
@@ -93,12 +93,12 @@ stages:
                       workingDirectory: $(Pipeline.Workspace)
                       displayName: Stage artifacts
                       timeoutInMinutes: 5
-                    # - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
-                    #   parameters:
-                    #     ArtifactLocation: $(Pipeline.Workspace)/${{artifact.safeName}}
-                    #     PackageRepository: Maven
-                    #     ReleaseSha: $(Build.SourceVersion)
-                    #     RepoId: Azure/azure-sdk-for-java
+                    - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
+                      parameters:
+                        ArtifactLocation: $(Pipeline.Workspace)/${{artifact.safeName}}
+                        PackageRepository: Maven
+                        ReleaseSha: $(Build.SourceVersion)
+                        RepoId: Azure/azure-sdk-for-java
 
           - ${{if ne(artifact.options.skipPublishPackage, 'true')}}:
             - deployment: PublishPackage
@@ -165,15 +165,15 @@ stages:
                           Get-ChildItem -Recurse $(Pipeline.Workspace)/${{artifact.safeName}}
                         workingDirectory: $(Pipeline.Workspace)
                         displayName: Output Visible Artifacts
-                      # - template: /eng/common/pipelines/templates/steps/publish-blobs.yml
-                      #   parameters:
-                      #     FolderForUpload: '$(Pipeline.Workspace)/${{artifact.safeName}}'
-                      #     BlobSASKey: '$(azure-sdk-docs-prod-sas)'
-                      #     BlobName: '$(azure-sdk-docs-prod-blob-name)'
-                      #     TargetLanguage: 'java'
+                      - template: /eng/common/pipelines/templates/steps/publish-blobs.yml
+                        parameters:
+                          FolderForUpload: '$(Pipeline.Workspace)/${{artifact.safeName}}'
+                          BlobSASKey: '$(azure-sdk-docs-prod-sas)'
+                          BlobName: '$(azure-sdk-docs-prod-blob-name)'
+                          TargetLanguage: 'java'
 
-                      #     # we override the regular script path because we have cloned the build tools repo as a separate artifact.
-                      #     ScriptPath: 'eng/common/scripts/copy-docs-to-blobstorage.ps1'
+                          # we override the regular script path because we have cloned the build tools repo as a separate artifact.
+                          ScriptPath: 'eng/common/scripts/copy-docs-to-blobstorage.ps1'
 
           - ${{if ne(artifact.options.skipUpdatePackageVersion, 'true')}}:
             - deployment: UpdatePackageVersion
@@ -207,12 +207,12 @@ stages:
                           python eng/versioning/update_versions.py --update-type library --build-type ${{ parameters.SDKType }} --avi --sr
                         displayName: Update pom files for new version of ${{ artifact.groupId }} ${{ artifact.name }}
 
-                      # - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
-                      #   parameters:
-                      #     RepoName: azure-sdk-for-java
-                      #     PRBranchName: increment-package-version-${{ parameters.ServiceDirectory }}-$(Build.BuildId)
-                      #     CommitMsg: "Increment package version after release of ${{ artifact.groupId }} ${{ artifact.name }}"
-                      #     PRTitle: "Increment version for ${{ parameters.ServiceDirectory }} releases"
+                      - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
+                        parameters:
+                          RepoName: azure-sdk-for-java
+                          PRBranchName: increment-package-version-${{ parameters.ServiceDirectory }}-$(Build.BuildId)
+                          CommitMsg: "Increment package version after release of ${{ artifact.groupId }} ${{ artifact.name }}"
+                          PRTitle: "Increment version for ${{ parameters.ServiceDirectory }} releases"
 
   - stage: Integration
     dependsOn: Signing
