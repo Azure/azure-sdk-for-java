@@ -39,6 +39,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static com.azure.core.util.FluxUtil.monoError;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -191,20 +192,18 @@ public class RequestResponseChannel implements Disposable {
      */
     public Mono<Message> sendWithAck(final Message message) {
         if (isDisposed()) {
-            return Mono.error(logger.logExceptionAsError(new IllegalStateException(
-                "Cannot send a message when request response channel is disposed.")));
+            return monoError(logger, new IllegalStateException(
+                "Cannot send a message when request response channel is disposed."));
         }
 
         if (message == null) {
-            return Mono.error(logger.logExceptionAsError(new NullPointerException("message cannot be null")));
+            return monoError(logger, new NullPointerException("message cannot be null"));
         }
         if (message.getMessageId() != null) {
-            return Mono.error(logger.logExceptionAsError(
-                new IllegalArgumentException("message.getMessageId() should be null")));
+            return monoError(logger, new IllegalArgumentException("message.getMessageId() should be null"));
         }
         if (message.getReplyTo() != null) {
-            return Mono.error(logger.logExceptionAsError(
-                new IllegalArgumentException("message.getReplyTo() should be null")));
+            return monoError(logger, new IllegalArgumentException("message.getReplyTo() should be null"));
         }
 
         final UnsignedLong messageId = UnsignedLong.valueOf(requestId.incrementAndGet());

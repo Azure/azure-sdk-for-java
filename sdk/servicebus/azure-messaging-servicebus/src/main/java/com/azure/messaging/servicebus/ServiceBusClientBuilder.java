@@ -634,8 +634,8 @@ public final class ServiceBusClientBuilder {
                 sessionId);
 
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
-                entityType, receiverOptions, connectionProcessor, tracerProvider, messageSerializer,
-                ServiceBusClientBuilder.this::onClientClose);
+                entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
+                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose);
         }
 
         /**

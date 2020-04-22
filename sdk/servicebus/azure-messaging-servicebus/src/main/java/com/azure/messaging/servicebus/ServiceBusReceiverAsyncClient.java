@@ -98,7 +98,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @param onClientClose Operation to run when the client completes.
      */
     ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
-        ReceiverOptions receiverOptions, ServiceBusConnectionProcessor connectionProcessor,
+        ReceiverOptions receiverOptions, ServiceBusConnectionProcessor connectionProcessor, Duration cleanupInterval,
         TracerProvider tracerProvider, MessageSerializer messageSerializer, Runnable onClientClose) {
 
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
@@ -115,7 +115,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         this.onClientClose = onClientClose;
 
         this.linkName = StringUtil.getRandomString(entityPath);
-        this.managementNodeLocks = new MessageLockContainer(Duration.ofSeconds(30));
+        this.managementNodeLocks = new MessageLockContainer(cleanupInterval);
         this.defaultReceiveOptions = new ReceiveAsyncOptions()
             .setEnableAutoComplete(true)
             .setMaxAutoRenewDuration(connectionProcessor.getRetryOptions().getTryTimeout());

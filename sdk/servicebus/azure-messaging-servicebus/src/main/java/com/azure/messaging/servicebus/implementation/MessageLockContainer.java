@@ -28,14 +28,15 @@ public class MessageLockContainer implements AutoCloseable {
             }
 
             final Instant now = Instant.now();
-            final boolean removed = lockTokens.entrySet().removeIf(entry -> {
+            lockTokens.entrySet().removeIf(entry -> {
                 final Instant expiration = entry.getValue();
-                return expiration != null && expiration.isBefore(now);
+                final boolean isExpired = expiration != null && expiration.isBefore(now);
+                if (isExpired) {
+                    logger.info("lockToken[{}]. expiration[{}]. Removing expired entry. ",
+                        entry.getKey(), expiration, e);
+                }
+                return isExpired;
             });
-
-            if (removed) {
-                logger.verbose("{}: Removed expired entries.", e);
-            }
         });
     }
 
