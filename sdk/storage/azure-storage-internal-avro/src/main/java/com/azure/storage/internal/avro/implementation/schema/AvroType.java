@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static com.azure.storage.internal.avro.implementation.AvroConstants.Types.ARRAY;
@@ -355,7 +356,7 @@ public class AvroType {
      */
     private static List<AvroType> getUnionTypes(JsonNode parent) {
         /* Example: ["null","string"] */
-        List<AvroType> types = new ArrayList<>();
+        List<AvroType> types = new LinkedList<>();
         /* Get the type of each JsonNode in parent. */
         for (JsonNode child : parent) {
             AvroType type = getType(child);
@@ -372,7 +373,7 @@ public class AvroType {
      */
     private static List<String> getEnumSymbols(JsonNode parent) {
         /* Example: ["A", "B", "C", "D"] */
-        List<String> symbols = new ArrayList<>();
+        List<String> symbols = new LinkedList<>();
         for (JsonNode child : parent) {
             symbols.add(child.asText());
         }
@@ -387,7 +388,7 @@ public class AvroType {
      */
     private static List<AvroRecordField> getRecordFields(JsonNode parent) {
         /* Example: [ {"name": "a", "type": "long"}, {"name": "b", "type": "string"} ] */
-        List<AvroRecordField> fields = new ArrayList<>();
+        List<AvroRecordField> fields = new LinkedList<>();
         /* Get the name and type of each JsonNode in parent. */
         for (JsonNode child : parent) {
             String name = child.get("name").asText();

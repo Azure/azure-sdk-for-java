@@ -103,18 +103,23 @@ class AvroParserTest extends Specification {
         0        | { o -> o instanceof AvroNullSchema.Null } // Null
         1        | { o -> (Boolean) o } // Boolean
         2        | { o -> ((String) o).equals("adsfasdf09809dsf-=adsf") } // String
-        3        | { o -> Arrays.equals(AvroUtils.getBytes(o as List<?>), '12345abcd'.getBytes()) } // Bytes
+        3        | { o -> this.&bytesEqual(o, '12345abcd'.getBytes()) } // Bytes
         4        | { o -> ((Integer) o).equals(1234) } // Integer
         5        | { o -> ((Long) o).equals(1234L) } // Long
         6        | { o -> ((Float) o).equals(1234.0 as Float) } // Float
         7        | { o -> ((Double) o).equals(1234.0 as Double) } // Double
-        8        | { o -> Arrays.equals(AvroUtils.getBytes(o as List<?>), 'B'.getBytes()) } // Fixed
+        8        | { o -> this.&bytesEqual(o, 'B'.getBytes()) } // Fixed
         9        | { o -> ((String) o).equals("B") } // Enum
         10       | { o -> ((List) o).equals([1, 3, 2]) } // Array
         11       | { o -> ((Map) o).equals(['a': 1, 'b': 3, 'c': 2])} // Map
         12       | { o -> o instanceof AvroNullSchema.Null } // Union
         13       | { o -> ((Map) o).equals(['$record': 'Test', 'f': 5]) } // Record
         /* TODO (gapra) : Not necessary for QQ or CF but case 14 tests the ability to reference named types as a type in a record. */
+    }
+
+    boolean bytesEqual(Object actual, byte[] expected) {
+        List<?> buff = (List<?>) actual
+        return Arrays.equals(AvroUtils.getBytes(buff), expected)
     }
 
     /* TODO (gapra) : Once this is in the same branch as QQ and CF, add network tests for both of them. */
