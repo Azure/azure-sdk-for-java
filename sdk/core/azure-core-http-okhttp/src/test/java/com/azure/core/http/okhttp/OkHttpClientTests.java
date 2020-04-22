@@ -13,7 +13,6 @@ import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -65,40 +64,27 @@ public class OkHttpClientTests {
     }
 
     @Test
-    public void testFlowableResponseShortBodyAsByteArrayAsync() {
+    public void testFluxResponseShortBodyAsByteArrayAsync() {
         checkBodyReceived(SHORT_BODY, "/short");
     }
 
     @Test
-    public void testFlowableResponseLongBodyAsByteArrayAsync() {
+    public void testFluxResponseLongBodyAsByteArrayAsync() {
         checkBodyReceived(LONG_BODY, "/long");
     }
 
     @Test
-    @Disabled("This tests behaviour of reactor netty's ByteBufFlux, not applicable for OkHttp")
-    public void testMultipleSubscriptionsEmitsError() {
-        HttpResponse response = getResponse("/short");
-        // Subscription:1
-        response.getBodyAsByteArray().block();
-        // Subscription:2
-        StepVerifier.create(response.getBodyAsByteArray())
-            .expectNextCount(0) // TODO: Check with smaldini, what is the verifier operator equivalent to .awaitDone(20, TimeUnit.SECONDS)
-            .verifyError(IllegalStateException.class);
-
-    }
-
-    @Test
-    public void testFlowableWhenServerReturnsBodyAndNoErrorsWhenHttp500Returned() {
+    public void testFluxWhenServerReturnsBodyAndNoErrorsWhenHttp500Returned() {
         HttpResponse response = getResponse("/error");
         StepVerifier.create(response.getBodyAsString())
-            .expectNext("error") // TODO: .awaitDone(20, TimeUnit.SECONDS) [See previous todo]
-            .verifyComplete();
+            .expectNext("error")
+            .expectComplete()
+            .verify(Duration.ofSeconds(20));
         assertEquals(500, response.getStatusCode());
     }
 
-    @Disabled("Not working accurately at present")
     @Test
-    public void testFlowableBackpressure() {
+    public void testFluxBackpressure() {
         HttpResponse response = getResponse("/long");
         //
         StepVerifierOptions stepVerifierOptions = StepVerifierOptions.create();
@@ -110,14 +96,14 @@ public class OkHttpClientTests {
             .expectNextCount(1)
             .thenRequest(3)
             .expectNextCount(3)
-            .thenRequest(Long.MAX_VALUE)// TODO: Check with smaldini, what is the verifier operator to ignore all next emissions
-            .expectNextCount(1507)
+            .thenRequest(Long.MAX_VALUE)
+            .thenConsumeWhile(ByteBuffer::hasRemaining)
             .verifyComplete();
     }
 
     @Test
     public void testRequestBodyIsErrorShouldPropagateToResponse() {
-        HttpClient client = HttpClient.createDefault();
+        HttpClient client = new OkHttpAsyncHttpClientBuilder().build();
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
             .setHeader("Content-Length", "123")
             .setBody(Flux.error(new RuntimeException("boo")));
@@ -129,7 +115,7 @@ public class OkHttpClientTests {
 
     @Test
     public void testRequestBodyEndsInErrorShouldPropagateToResponse() {
-        HttpClient client = HttpClient.createDefault();
+        HttpClient client = new OkHttpAsyncHttpClientBuilder().build();
         String contentChunk = "abcdefgh";
         int repetitions = 1000;
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
@@ -145,7 +131,7 @@ public class OkHttpClientTests {
     }
 
     @Test
-    public void testServerShutsDownSocketShouldPushErrorToContentFlowable() {
+    public void testServerShutsDownSocketShouldPushErrorToContentFlux() {
         Assertions.assertTimeout(Duration.ofMillis(5000), () -> {
             CountDownLatch latch = new CountDownLatch(1);
             try (ServerSocket ss = new ServerSocket(0)) {
@@ -189,12 +175,11 @@ public class OkHttpClientTests {
         });
     }
 
-    @Disabled("This flakey test fails often on MacOS. https://github.com/Azure/azure-sdk-for-java/issues/4357.")
     @Test
     public void testConcurrentRequests() throws NoSuchAlgorithmException {
         int numRequests = 100; // 100 = 1GB of data read
-        HttpClient client = HttpClient.createDefault();
-        byte[] expectedDigest = digest(LONG_BODY);
+        HttpClient client = new OkHttpAsyncHttpClientBuilder().build();
+        byte[] expectedDigest = digest();
 
         Mono<Long> numBytesMono = Flux.range(1, numRequests)
             .parallel(10)
@@ -204,28 +189,18 @@ public class OkHttpClientTests {
                 return response.getBody()
                     .doOnNext(md::update)
                     .map(bb -> new NumberedByteBuffer(n, bb))
-//                          .doOnComplete(() -> System.out.println("completed " + n))
                     .doOnComplete(() -> Assertions.assertArrayEquals(expectedDigest,
                         md.digest(), "wrong digest!"));
             }))
             .sequential()
-            // enable the doOnNext call to see request numbers and thread names
-            // .doOnNext(g -> System.out.println(g.n + " " +
-            // Thread.currentThread().getName()))
             .map(nbb -> (long) nbb.bb.limit())
             .reduce(Long::sum)
             .subscribeOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
             .publishOn(reactor.core.scheduler.Schedulers.newElastic("io", 30));
 
         StepVerifier.create(numBytesMono)
-//              .awaitDone(timeoutSeconds, TimeUnit.SECONDS)
             .expectNext((long) (numRequests * LONG_BODY.getBytes(StandardCharsets.UTF_8).length))
             .verifyComplete();
-//
-//        long numBytes = numBytesMono.block();
-//        t = System.currentTimeMillis() - t;
-//        System.out.println("totalBytesRead=" + numBytes / 1024 / 1024 + "MB in " + t / 1000.0 + "s");
-//        assertEquals(numRequests * LONG_BODY.getBytes(StandardCharsets.UTF_8).length, numBytes);
     }
 
     private static MessageDigest md5Digest() {
@@ -236,9 +211,9 @@ public class OkHttpClientTests {
         }
     }
 
-    private static byte[] digest(String s) throws NoSuchAlgorithmException {
+    private static byte[] digest() throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("MD5");
-        md.update(s.getBytes(StandardCharsets.UTF_8));
+        md.update(OkHttpClientTests.LONG_BODY.getBytes(StandardCharsets.UTF_8));
         return md.digest();
     }
 
