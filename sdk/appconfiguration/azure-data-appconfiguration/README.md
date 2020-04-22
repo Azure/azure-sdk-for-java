@@ -12,7 +12,7 @@ Use the client library for App Configuration to create and manage application co
 
 ### Prerequisites
 
-- [Java Development Kit (JDK)][azure_jdk] with version 8 or above
+- Java Development Kit (JDK) with version 8 or above
 - [Azure Subscription][azure_subscription]
 - [App Configuration Store][app_config_store]
 
@@ -409,7 +409,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [azconfig_docs]: https://docs.microsoft.com/azure/azure-app-configuration
 [azure_cli]: https://docs.microsoft.com/cli/azure
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity
-[azure_jdk]: https://docs.microsoft.com/en-us/java/azure/jdk/?view=azure-java-stable
 [azure_subscription]: https://azure.microsoft.com/free
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
