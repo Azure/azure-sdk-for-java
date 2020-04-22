@@ -25,9 +25,22 @@ public class AzureException extends RuntimeException {
      * Initializes a new instance of the AzureException class.
      *
      * @param message The exception message.
-     * @param cause The Throwable which caused the creation of this AzureException.
+     * @param cause The {@link Throwable} which caused the creation of this AzureException.
      */
     public AzureException(final String message, final Throwable cause) {
         super(message, cause);
+    }
+
+    /**
+     * Initializes a new instance of the AzureException class.
+     *
+     * @param message The exception message.
+     * @param cause The {@link Throwable} which caused the creation of this AzureException.
+     * @param enableSuppression Whether suppression is enabled or disabled.
+     * @param writableStackTrace Whether the exception stack trace will be filled in.
+     */
+    public AzureException(final String message, final Throwable cause, final boolean enableSuppression,
+        final boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
     }
 }
