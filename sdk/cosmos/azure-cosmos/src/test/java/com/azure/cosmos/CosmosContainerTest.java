@@ -86,8 +86,9 @@ public class CosmosContainerTest extends TestSuiteBase {
         };
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "analyticalTTLProvider")
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "analyticalTTLProvider", enabled = false)
     public void createContainer_withAnalyticalTTL(Integer analyticalTTL) throws Exception {
+        // not working with emulator yet. TODO: enable when emulator has support for this.
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = new CosmosContainerProperties(collectionName, "/id");
 

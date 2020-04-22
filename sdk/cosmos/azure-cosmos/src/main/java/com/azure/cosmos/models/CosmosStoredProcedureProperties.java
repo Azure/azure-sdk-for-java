@@ -60,6 +60,7 @@ public final class CosmosStoredProcedureProperties extends Resource {
      * Get the body of the stored procedure.
      *
      * @return the body of the stored procedure.
+     * @return return the Cosmos stored procedure properties.
      */
     public String getBody() {
         return super.getString(Constants.Properties.BODY);
