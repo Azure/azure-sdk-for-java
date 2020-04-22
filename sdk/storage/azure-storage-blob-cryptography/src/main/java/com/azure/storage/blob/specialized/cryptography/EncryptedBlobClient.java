@@ -131,7 +131,7 @@ public class EncryptedBlobClient extends BlobClient {
         BlobRequestConditions requestConditions) {
 
         return BlobOutputStream.blockBlobOutputStream(encryptedBlobAsyncClient, parallelTransferOptions, headers,
-            metadata, tags, tier, requestConditions);
+            metadata, tags, tier, requestConditions, null);
     }
 
     /**
