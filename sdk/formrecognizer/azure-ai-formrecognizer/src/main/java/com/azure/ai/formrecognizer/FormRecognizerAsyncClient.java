@@ -424,21 +424,21 @@ public final class FormRecognizerAsyncClient {
         Flux<ByteBuffer> data, long length, FormContentType formContentType, boolean includeTextDetails) {
         Objects.requireNonNull(data, "'data' is required and cannot be null.");
         return pollingContext -> {
-            if (formContentType != null) {
-                try {
+            try {
+                if (formContentType != null) {
                     return service.analyzeReceiptAsyncWithResponseAsync(
                         ContentType.fromString(formContentType.toString()), data, length, includeTextDetails)
                         .map(response -> new OperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation())));
-                } catch (RuntimeException ex) {
-                    return monoError(logger, ex);
+                } else {
+                    return detectContentType(data)
+                        .flatMap(contentType ->
+                            service.analyzeReceiptAsyncWithResponseAsync(contentType, data, length, includeTextDetails)
+                                .map(response -> new OperationResult(
+                                    parseModelId(response.getDeserializedHeaders().getOperationLocation()))));
                 }
-            } else {
-                return detectContentType(data)
-                    .flatMap(contentType ->
-                        service.analyzeReceiptAsyncWithResponseAsync(contentType, data, length, includeTextDetails)
-                            .map(response -> new OperationResult(
-                                parseModelId(response.getDeserializedHeaders().getOperationLocation()))));
+            } catch (RuntimeException ex) {
+                return monoError(logger, ex);
             }
         };
     }
@@ -463,13 +463,17 @@ public final class FormRecognizerAsyncClient {
     private Function<PollingContext<OperationResult>, Mono<IterableStream<RecognizedReceipt>>>
         fetchExtractReceiptResult(boolean includeTextDetails) {
         return (pollingContext) -> {
-            final UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
-            return service.getAnalyzeReceiptResultWithResponseAsync(resultUid)
-                .map(modelSimpleResponse -> {
-                    throwIfAnalyzeStatusInvalid(modelSimpleResponse);
-                    return toReceipt(modelSimpleResponse.getValue().getAnalyzeResult(),
-                        includeTextDetails);
-                });
+            try {
+                final UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
+                return service.getAnalyzeReceiptResultWithResponseAsync(resultUid)
+                    .map(modelSimpleResponse -> {
+                        throwIfAnalyzeStatusInvalid(modelSimpleResponse);
+                        return toReceipt(modelSimpleResponse.getValue().getAnalyzeResult(),
+                            includeTextDetails);
+                    });
+            } catch (RuntimeException ex) {
+                return monoError(logger, ex);
+            }
         };
     }
 
@@ -489,23 +493,23 @@ public final class FormRecognizerAsyncClient {
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> contentStreamActivationOperation(
         Flux<ByteBuffer> data, long length, FormContentType formContentType) {
-        Objects.requireNonNull(data, "'data' is required and cannot be null.");
         return pollingContext -> {
-            if (formContentType != null) {
-                try {
+            try {
+                Objects.requireNonNull(data, "'data' is required and cannot be null.");
+                if (formContentType != null) {
                     return service.analyzeLayoutAsyncWithResponseAsync(
                         ContentType.fromString(formContentType.toString()), data, length)
                         .map(response -> new OperationResult(parseModelId(
                             response.getDeserializedHeaders().getOperationLocation())));
-                } catch (RuntimeException ex) {
-                    return monoError(logger, ex);
+                } else {
+                    return detectContentType(data)
+                        .flatMap(contentType ->
+                            service.analyzeLayoutAsyncWithResponseAsync(contentType, data, length)
+                                .map(response -> new OperationResult(
+                                    parseModelId(response.getDeserializedHeaders().getOperationLocation()))));
                 }
-            } else {
-                return detectContentType(data)
-                    .flatMap(contentType ->
-                        service.analyzeLayoutAsyncWithResponseAsync(contentType, data, length)
-                            .map(response -> new OperationResult(
-                                parseModelId(response.getDeserializedHeaders().getOperationLocation()))));
+            } catch (RuntimeException ex) {
+                return monoError(logger, ex);
             }
         };
     }
@@ -530,28 +534,36 @@ public final class FormRecognizerAsyncClient {
     private Function<PollingContext<OperationResult>, Mono<IterableStream<FormPage>>>
         fetchExtractContentResult() {
         return (pollingContext) -> {
-            final UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
-            return service.getAnalyzeLayoutResultWithResponseAsync(resultUid)
-                .map(modelSimpleResponse -> {
-                    throwIfAnalyzeStatusInvalid(modelSimpleResponse);
-                    return new IterableStream<>(
-                        toRecognizedLayout(modelSimpleResponse.getValue().getAnalyzeResult(), true));
-                });
+            try {
+                final UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
+                return service.getAnalyzeLayoutResultWithResponseAsync(resultUid)
+                    .map(modelSimpleResponse -> {
+                        throwIfAnalyzeStatusInvalid(modelSimpleResponse);
+                        return new IterableStream<>(
+                            toRecognizedLayout(modelSimpleResponse.getValue().getAnalyzeResult(), true));
+                    });
+            } catch (RuntimeException ex) {
+                return monoError(logger, ex);
+            }
         };
     }
 
     private Function<PollingContext<OperationResult>, Mono<IterableStream<RecognizedForm>>>
         fetchAnalyzeFormResultOperation(String modelId, boolean includeTextDetails) {
         return (pollingContext) -> {
-            Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
-            UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
-            UUID modelUid = UUID.fromString(modelId);
-            return service.getAnalyzeFormResultWithResponseAsync(modelUid, resultUid)
-                .map(modelSimpleResponse -> {
-                    throwIfAnalyzeStatusInvalid(modelSimpleResponse);
-                    return new IterableStream<>(toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
-                        includeTextDetails));
-                });
+            try {
+                Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
+                UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
+                UUID modelUid = UUID.fromString(modelId);
+                return service.getAnalyzeFormResultWithResponseAsync(modelUid, resultUid)
+                    .map(modelSimpleResponse -> {
+                        throwIfAnalyzeStatusInvalid(modelSimpleResponse);
+                        return new IterableStream<>(toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
+                            includeTextDetails));
+                    });
+            } catch (RuntimeException ex) {
+                return monoError(logger, ex);
+            }
         };
     }
 
@@ -610,25 +622,26 @@ public final class FormRecognizerAsyncClient {
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> analyzeFormStreamActivationOperation(
         Flux<ByteBuffer> data, String modelId, long length,
         FormContentType formContentType, boolean includeTextDetails) {
-        Objects.requireNonNull(data, "'data' is required and cannot be null.");
-        Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
+
         return pollingContext -> {
-            if (formContentType != null) {
-                try {
+            try {
+                Objects.requireNonNull(data, "'data' is required and cannot be null.");
+                Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
+                if (formContentType != null) {
                     return service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId),
                         ContentType.fromString(formContentType.toString()), data, length, includeTextDetails)
                         .map(response -> new OperationResult(parseModelId(
                             response.getDeserializedHeaders().getOperationLocation())));
-                } catch (RuntimeException ex) {
-                    return monoError(logger, ex);
+                } else {
+                    return detectContentType(data)
+                        .flatMap(contentType ->
+                            service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId), contentType, data,
+                                length, includeTextDetails)
+                                .map(response -> new OperationResult(
+                                    parseModelId(response.getDeserializedHeaders().getOperationLocation()))));
                 }
-            } else {
-                return detectContentType(data)
-                    .flatMap(contentType ->
-                        service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId), contentType, data,
-                            length, includeTextDetails)
-                            .map(response -> new OperationResult(
-                                parseModelId(response.getDeserializedHeaders().getOperationLocation()))));
+            } catch (RuntimeException ex) {
+                return monoError(logger, ex);
             }
         };
     }

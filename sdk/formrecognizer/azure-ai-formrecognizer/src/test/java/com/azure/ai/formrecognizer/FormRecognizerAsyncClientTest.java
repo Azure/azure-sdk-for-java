@@ -96,6 +96,16 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     }
 
     /**
+     * Verifies an exception thrown for a document using null data value.
+     */
+    @Test
+    void beginRecognizeReceiptsWithNullData() {
+        assertThrows(RuntimeException.class, () ->
+            client.beginRecognizeReceipts(null, RECEIPT_FILE_LENGTH, FormContentType.IMAGE_JPEG, false, null)
+                .getSyncPoller());
+    }
+
+    /**
      * Verifies receipt data from a document using file data as source.
      * And the content type is not given. The content will be auto detected.
      */
@@ -224,6 +234,24 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 .getSyncPoller();
             syncPoller.waitForCompletion();
             validateRecognizedFormResult(getExpectedRecognizedLabeledForms(), syncPoller.getFinalResult());
+        });
+    }
+
+    /**
+     * Verifies an exception thrown for a document using null data value or null model id.
+     */
+    @Test
+    void beginRecognizeCustomFormsWithNullValues() {
+        customFormLabeledDataRunner((data, validModelId) -> {
+            assertThrows(RuntimeException.class, () ->
+                client.beginRecognizeCustomForms(null, validModelId, CUSTOM_FORM_FILE_LENGTH,
+                    FormContentType.APPLICATION_PDF, true, null)
+                    .getSyncPoller());
+
+            assertThrows(RuntimeException.class, () ->
+                client.beginRecognizeCustomForms(getFileBufferData(data), null, CUSTOM_FORM_FILE_LENGTH,
+                    FormContentType.APPLICATION_PDF, true, null)
+                    .getSyncPoller());
         });
     }
 

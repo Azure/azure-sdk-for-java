@@ -128,7 +128,8 @@ public final class Utility {
             })
             .takeUntil(p -> p.readBytes() == -1)
             .filter(p -> p.readBytes() > 0)
-            .map(Pair::buffer);
+            .map(Pair::buffer)
+            .cache();
     }
 
     private static class Pair {

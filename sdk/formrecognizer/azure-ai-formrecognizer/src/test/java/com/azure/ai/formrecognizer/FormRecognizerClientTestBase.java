@@ -125,6 +125,12 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     abstract void extractReceiptData();
 
     @Test
+    abstract void beginRecognizeReceiptsWithNullData();
+
+    @Test
+    abstract void extractReceiptDataWithContentTypeAutoDetection();
+
+    @Test
     abstract void extractReceiptDataTextDetails();
 
     @Test
@@ -138,6 +144,12 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
     @Test
     abstract void extractCustomFormLabeledData();
+
+    @Test
+    abstract void beginRecognizeCustomFormsWithNullValues();
+
+    @Test
+    abstract void extractCustomFormLabeledDataWithContentTypeAutoDetection();
 
     @Test
     abstract void extractCustomFormInValidSourceUrl();
