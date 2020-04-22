@@ -263,8 +263,9 @@ class ApplicationGatewayRequestRoutingRuleImpl
             listenerByName = (ApplicationGatewayListenerImpl) this.parent().listeners().get(name);
         }
 
-        int needToCreate = this.parent().needToCreate(listenerByName, listenerByPort, name);
-        if (needToCreate > 0) {
+        ApplicationGatewayImpl.CreationState needToCreate =
+            this.parent().needToCreate(listenerByName, listenerByPort, name);
+        if (needToCreate == ApplicationGatewayImpl.CreationState.NeedToCreate) {
             // If no listener exists for the requested port number yet and the name, create one
             if (name == null) {
                 name = this.parent().manager().getSdkContext().randomResourceName("listener", 13);
