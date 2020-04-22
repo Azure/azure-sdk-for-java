@@ -118,8 +118,8 @@ public final class ServiceBusClientBuilder {
     /**
      * Sets the configuration store that is used during construction of the service client.
      *
-     * If not specified, the default configuration store is used to configure Service Bus clients. Use
-     * {@link Configuration#NONE} to bypass using configuration settings during construction.
+     * If not specified, the default configuration store is used to configure Service Bus clients. Use {@link
+     * Configuration#NONE} to bypass using configuration settings during construction.
      *
      * @param configuration The configuration store used to configure Service Bus clients.
      *
@@ -497,6 +497,8 @@ public final class ServiceBusClientBuilder {
         // Using 0 pre-fetch count for both receive modes, to avoid message lock lost exceptions in application
         // receiving messages at a slow rate. Applications can set it to a higher value if they need better performance.
         private static final int DEFAULT_PREFETCH_COUNT = 1;
+        // By default, this is -1, saying that we don't want a sessionful receiver.
+        private static final int DEFAULT_CONCURRENT_SESSIONS = Integer.MIN_VALUE;
         private static final String SUBSCRIPTION_ENTITY_PATH_FORMAT = "%s/subscriptions/%s";
 
         private int prefetchCount = DEFAULT_PREFETCH_COUNT;
@@ -504,6 +506,7 @@ public final class ServiceBusClientBuilder {
         private String subscriptionName;
         private String topicName;
         private String sessionId;
+        private int maxConcurrentSessions = DEFAULT_CONCURRENT_SESSIONS;
         private ReceiveMode receiveMode = ReceiveMode.PEEK_LOCK;
 
         private ServiceBusReceiverClientBuilder() {
@@ -588,6 +591,18 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
+         * Max number of concurrent sessions processed at any given time.
+         *
+         * @param maxConcurrentSessions Max number of concurrent sessions to process at one time.
+         *
+         * @return The modified {@link ServiceBusReceiverClientBuilder} object.
+         */
+        public ServiceBusReceiverClientBuilder maxConcurrentSessions(int maxConcurrentSessions) {
+            this.maxConcurrentSessions = maxConcurrentSessions;
+            return this;
+        }
+
+        /**
          * Creates an <b>asynchronous</b> Service Bus receiver responsible for reading {@link ServiceBusMessage
          * messages} from a specific queue or topic.
          *
@@ -629,9 +644,10 @@ public final class ServiceBusClientBuilder {
                     "prefetchCount (%s) cannot be less than 1.", prefetchCount)));
             }
 
+            final boolean isRollingSessionReceiver = isRollingSessionReceiver();
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
-                sessionId);
+                sessionId, isRollingSessionReceiver, maxConcurrentSessions);
 
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
                 entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
@@ -652,7 +668,31 @@ public final class ServiceBusClientBuilder {
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         public ServiceBusReceiverClient buildClient() {
+            if (isRollingSessionReceiver()) {
+                throw logger.logExceptionAsError(
+                    new IllegalStateException("Cannot create rolling session receiver with synchronous client."));
+            }
+
             return new ServiceBusReceiverClient(buildAsyncClient(), retryOptions.getTryTimeout());
+        }
+
+        /**
+         * This is a rolling session receiver only if maxConcurrentSessions is > 0 AND sessionId is null or empty.
+         * If there is a sessionId, this is going to be a single, named session receiver.
+         *
+         * @return {@code true} if this is an unnamed rolling session receiver; {@code false} otherwise.
+         */
+        private boolean isRollingSessionReceiver() {
+            if (maxConcurrentSessions == DEFAULT_CONCURRENT_SESSIONS) {
+                return false;
+            }
+
+            if (maxConcurrentSessions < 1) {
+                throw logger.logExceptionAsError(
+                    new IllegalArgumentException("Maximum number of concurrent sessions must be positive."));
+            }
+
+            return CoreUtils.isNullOrEmpty(sessionId);
         }
     }
 }
