@@ -23,7 +23,6 @@ import static com.azure.ai.formrecognizer.TestUtils.getExpectedFormPages;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedReceipts;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedRecognizedForms;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedRecognizedLabeledForms;
-import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 

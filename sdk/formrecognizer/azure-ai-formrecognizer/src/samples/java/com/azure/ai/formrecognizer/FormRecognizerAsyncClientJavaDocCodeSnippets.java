@@ -244,7 +244,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginRecognizeContentWithOptions() throws IOException {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-FormContentType-long-Duration
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-long-FormContentType-Duration
         File sourceFile = new File("{file_source_url}");
         Flux<ByteBuffer> buffer = toFluxByteBuffer(
             new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
@@ -262,7 +262,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                                 System.out.printf("%s ", recognizedTableCell.getText())));
                     })
                 ));
-        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-FormContentType-long-Duration
+        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-long-FormContentType-Duration
     }
 
     // Recognize Receipts
