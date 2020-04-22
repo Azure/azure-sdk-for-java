@@ -268,7 +268,7 @@ public final class FormRecognizerAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, IterableStream<FormPage>> beginRecognizeContent(
         Flux<ByteBuffer> data, long length, FormContentType formContentType) {
-        return beginRecognizeContent(data, formContentType, length, null);
+        return beginRecognizeContent(data, length, formContentType, null);
     }
 
     /**
@@ -281,8 +281,8 @@ public final class FormRecognizerAsyncClient {
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-FormContentType-long-Duration}
      *
      * @param data The data of the document to be extract receipt information from.
-     * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
      * @param length The exact length of the data. Size of the file must be less than 50 MB.
+     * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
      *
@@ -291,7 +291,7 @@ public final class FormRecognizerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, IterableStream<FormPage>> beginRecognizeContent(
-        Flux<ByteBuffer> data, FormContentType formContentType, long length, Duration pollInterval) {
+        Flux<ByteBuffer> data, long length, FormContentType formContentType, Duration pollInterval) {
         return new PollerFlux<>(
             pollInterval != null ? pollInterval : DEFAULT_DURATION,
             contentStreamActivationOperation(data, length, formContentType),

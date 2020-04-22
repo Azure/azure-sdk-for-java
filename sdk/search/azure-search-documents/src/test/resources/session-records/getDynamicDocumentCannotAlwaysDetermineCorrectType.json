@@ -1,20 +1,21 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk512018a5c83.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
+    "Uri" : "https://azsjava35652d6b33891c3374830bdcabb39.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06-Preview",
     "Headers" : {
+      "x-ms-client-request-id" : "e201fe6b-5096-4f23-b49a-eac50e013b99",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "0addf23e-c4aa-487a-bb94-03fdd39e2237",
+      "request-id" : "e201fe6b-5096-4f23-b49a-eac50e013b99",
       "StatusCode" : "200",
-      "Date" : "Fri, 13 Mar 2020 19:31:36 GMT",
+      "Date" : "Tue, 21 Apr 2020 18:59:19 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "0addf23e-c4aa-487a-bb94-03fdd39e2237",
-      "elapsed-time" : "204",
+      "client-request-id" : "e201fe6b-5096-4f23-b49a-eac50e013b99",
+      "elapsed-time" : "192",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "74",
@@ -25,18 +26,20 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azs-sdk512018a5c83.search.windows.net/indexes('hotels')/docs('1')?$select=HotelId%2cHotelName%2cLocation%2cRooms/BaseRate&api-version=2019-05-06",
-    "Headers" : { },
+    "Uri" : "https://azsjava35652d6b33891c3374830bdcabb39.search.windows.net/indexes('hotels')/docs('1')?$select=HotelId%2cHotelName%2cLocation%2cRooms/BaseRate&api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "4edca3ad-fdf4-4ac2-8a0f-549df038dcef"
+    },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "190f292b-ed98-448b-bceb-015303ca3345",
+      "request-id" : "4edca3ad-fdf4-4ac2-8a0f-549df038dcef",
       "StatusCode" : "200",
-      "Date" : "Fri, 13 Mar 2020 19:31:36 GMT",
+      "Date" : "Tue, 21 Apr 2020 18:59:19 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "190f292b-ed98-448b-bceb-015303ca3345",
-      "elapsed-time" : "23",
+      "client-request-id" : "4edca3ad-fdf4-4ac2-8a0f-549df038dcef",
+      "elapsed-time" : "21",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "200",
@@ -46,5 +49,5 @@
     },
     "Exception" : null
   } ],
-  "variables" : [ "azs-sdk512018a5c83" ]
+  "variables" : [ "azsjava35652d6b33891c3374830bdcabb39" ]
 }

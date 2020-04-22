@@ -1,21 +1,24 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdk95940d04d20.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06",
-    "Headers" : { },
+    "Uri" : "https://azsjavadeleteskillsetisidempotent5a1097048fa144a6b.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "01720182-5fef-4ea2-8300-74aad68b0f14"
+    },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "bc7b3746-5e1f-4e80-9e8b-8edd5c85b22c",
+      "request-id" : "01720182-5fef-4ea2-8300-74aad68b0f14",
       "StatusCode" : "404",
-      "Date" : "Mon, 24 Feb 2020 19:56:11 GMT",
+      "Date" : "Tue, 21 Apr 2020 19:10:26 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "30",
+      "client-request-id" : "01720182-5fef-4ea2-8300-74aad68b0f14",
+      "elapsed-time" : "44",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "125",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No skillset with the name 'ocr-skillset' was found in a service named 'azs-sdk95940d04d20'.\"}}",
+      "Content-Length" : "157",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No skillset with the name 'ocr-skillset' was found in a service named 'azsjavadeleteskillsetisidempotent5a1097048fa144a6b'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"
@@ -23,67 +26,75 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk95940d04d20.search.windows.net/skillsets?api-version=2019-05-06",
+    "Uri" : "https://azsjavadeleteskillsetisidempotent5a1097048fa144a6b.search.windows.net/skillsets?api-version=2019-05-06-Preview",
     "Headers" : {
+      "x-ms-client-request-id" : "ad712982-0a8c-44b2-907f-3302b5871a51",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "4fa32e0a-2a85-4399-9268-16c6cc419223",
+      "request-id" : "ad712982-0a8c-44b2-907f-3302b5871a51",
       "StatusCode" : "201",
-      "Date" : "Mon, 24 Feb 2020 19:56:11 GMT",
+      "Date" : "Tue, 21 Apr 2020 19:10:27 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D7B96398CD80B7\"",
-      "elapsed-time" : "43",
+      "client-request-id" : "ad712982-0a8c-44b2-907f-3302b5871a51",
+      "ETag" : "W/\"0x8D7E627A6ACDCAB\"",
+      "elapsed-time" : "45",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "696",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk95940d04d20.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7B96398CD80B7\\\"\",\"name\":\"ocr-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":null,\"lineEnding\":null,\"defaultLanguageCode\":null,\"detectOrientation\":false,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]}],\"cognitiveServices\":null}",
+      "Content-Length" : "750",
+      "Body" : "{\"@odata.context\":\"https://azsjavadeleteskillsetisidempotent5a1097048fa144a6b.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7E627A6ACDCAB\\\"\",\"name\":\"ocr-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":null,\"lineEnding\":null,\"defaultLanguageCode\":null,\"detectOrientation\":false,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk95940d04d20.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06"
+      "Location" : "https://azsjavadeleteskillsetisidempotent5a1097048fa144a6b.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06-Preview"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdk95940d04d20.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06",
-    "Headers" : { },
+    "Uri" : "https://azsjavadeleteskillsetisidempotent5a1097048fa144a6b.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "8a8f7991-b84c-4b76-a9ac-6969ca0c9784"
+    },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "41",
+      "client-request-id" : "8a8f7991-b84c-4b76-a9ac-6969ca0c9784",
+      "elapsed-time" : "55",
       "Expires" : "-1",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "9b2d664e-9033-4228-8cce-e53623153042",
+      "request-id" : "8a8f7991-b84c-4b76-a9ac-6969ca0c9784",
       "StatusCode" : "204",
-      "Date" : "Mon, 24 Feb 2020 19:56:11 GMT"
+      "Date" : "Tue, 21 Apr 2020 19:10:27 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdk95940d04d20.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06",
-    "Headers" : { },
+    "Uri" : "https://azsjavadeleteskillsetisidempotent5a1097048fa144a6b.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "a147ea5a-169e-4211-896b-37125068994b"
+    },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "8dcc78c4-4990-468a-a92c-e644d60ed42b",
+      "request-id" : "a147ea5a-169e-4211-896b-37125068994b",
       "StatusCode" : "404",
-      "Date" : "Mon, 24 Feb 2020 19:56:11 GMT",
+      "Date" : "Tue, 21 Apr 2020 19:10:27 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "13",
+      "client-request-id" : "a147ea5a-169e-4211-896b-37125068994b",
+      "elapsed-time" : "10",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "125",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No skillset with the name 'ocr-skillset' was found in a service named 'azs-sdk95940d04d20'.\"}}",
+      "Content-Length" : "157",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No skillset with the name 'ocr-skillset' was found in a service named 'azsjavadeleteskillsetisidempotent5a1097048fa144a6b'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   } ],
-  "variables" : [ "azs-sdk95940d04d20" ]
+  "variables" : [ "azsjavadeleteskillsetisidempotent5a1097048fa144a6b" ]
 }

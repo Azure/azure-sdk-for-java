@@ -1,0 +1,56 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://javaformrecognizertestresource.cognitiveservices.azure.com/formrecognizer/v2.0-preview//prebuilt/receipt/analyze?includeTextDetails=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "3de04277-f87f-4b38-8d45-760935c0747f",
+      "Content-Type" : "image/jpeg"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "java.lang.NullPointerException",
+      "ErrorMessage" : null
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://javaformrecognizertestresource.cognitiveservices.azure.com/formrecognizer/v2.0-preview//prebuilt/receipt/analyze?includeTextDetails=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "3de04277-f87f-4b38-8d45-760935c0747f",
+      "Content-Type" : "image/jpeg"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "java.lang.NullPointerException",
+      "ErrorMessage" : null
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://javaformrecognizertestresource.cognitiveservices.azure.com/formrecognizer/v2.0-preview//prebuilt/receipt/analyze?includeTextDetails=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "3de04277-f87f-4b38-8d45-760935c0747f",
+      "Content-Type" : "image/jpeg"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "java.lang.NullPointerException",
+      "ErrorMessage" : null
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://javaformrecognizertestresource.cognitiveservices.azure.com/formrecognizer/v2.0-preview//prebuilt/receipt/analyze?includeTextDetails=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "3de04277-f87f-4b38-8d45-760935c0747f",
+      "Content-Type" : "image/jpeg"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "java.lang.NullPointerException",
+      "ErrorMessage" : null
+    }
+  } ],
+  "variables" : [ ]
+}

@@ -1,120 +1,131 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk37765a10393.search.windows.net/skillsets?api-version=2019-05-06",
+    "Uri" : "https://azsjava04559b263b837d45d401bbac8d004.search.windows.net/skillsets?api-version=2019-05-06-Preview",
     "Headers" : {
+      "x-ms-client-request-id" : "7da12e2e-b65a-4f8d-ade6-e30d0eacc183",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "32062030-7cb6-4076-9db1-dedcd334050b",
+      "request-id" : "7da12e2e-b65a-4f8d-ade6-e30d0eacc183",
       "StatusCode" : "201",
-      "Date" : "Mon, 24 Feb 2020 19:56:16 GMT",
+      "Date" : "Tue, 21 Apr 2020 19:10:30 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D7B9639BAA9AAC\"",
-      "elapsed-time" : "78",
+      "client-request-id" : "7da12e2e-b65a-4f8d-ade6-e30d0eacc183",
+      "ETag" : "W/\"0x8D7E627A8F5860F\"",
+      "elapsed-time" : "76",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "1039",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk37765a10393.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7B9639BAA9AAC\\\"\",\"name\":\"ocr-split-text-skillset\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":\"printed\",\"lineEnding\":null,\"defaultLanguageCode\":\"en\",\"detectOrientation\":null,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]},{\"@odata.type\":\"#Microsoft.Skills.Text.SplitSkill\",\"name\":\"mysplit\",\"description\":\"Tested Split skill\",\"context\":\"/document\",\"defaultLanguageCode\":\"en\",\"textSplitMode\":\"pages\",\"maximumPageLength\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"textItems\",\"targetName\":\"myTextItems\"}]}],\"cognitiveServices\":null}",
+      "Content-Length" : "1079",
+      "Body" : "{\"@odata.context\":\"https://azsjava04559b263b837d45d401bbac8d004.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7E627A8F5860F\\\"\",\"name\":\"ocr-split-text-skillset\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":\"printed\",\"lineEnding\":null,\"defaultLanguageCode\":\"en\",\"detectOrientation\":null,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]},{\"@odata.type\":\"#Microsoft.Skills.Text.SplitSkill\",\"name\":\"mysplit\",\"description\":\"Tested Split skill\",\"context\":\"/document\",\"defaultLanguageCode\":\"en\",\"textSplitMode\":\"pages\",\"maximumPageLength\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"textItems\",\"targetName\":\"myTextItems\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk37765a10393.search.windows.net/skillsets('ocr-split-text-skillset')?api-version=2019-05-06"
+      "Location" : "https://azsjava04559b263b837d45d401bbac8d004.search.windows.net/skillsets('ocr-split-text-skillset')?api-version=2019-05-06-Preview"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk37765a10393.search.windows.net/skillsets?api-version=2019-05-06",
+    "Uri" : "https://azsjava04559b263b837d45d401bbac8d004.search.windows.net/skillsets?api-version=2019-05-06-Preview",
     "Headers" : {
+      "x-ms-client-request-id" : "06b70b08-7f80-4a7e-8bdf-acbb74f3cb6d",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "c7921475-65f1-4ea2-835b-2036a3bc6cf7",
+      "request-id" : "06b70b08-7f80-4a7e-8bdf-acbb74f3cb6d",
       "StatusCode" : "201",
-      "Date" : "Mon, 24 Feb 2020 19:56:16 GMT",
+      "Date" : "Tue, 21 Apr 2020 19:10:30 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D7B9639BB34EDD\"",
-      "elapsed-time" : "51",
+      "client-request-id" : "06b70b08-7f80-4a7e-8bdf-acbb74f3cb6d",
+      "ETag" : "W/\"0x8D7E627A902F6D9\"",
+      "elapsed-time" : "36",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "1029",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk37765a10393.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7B9639BB34EDD\\\"\",\"name\":\"testskillset1\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":\"printed\",\"lineEnding\":null,\"defaultLanguageCode\":\"fr\",\"detectOrientation\":null,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]},{\"@odata.type\":\"#Microsoft.Skills.Text.SplitSkill\",\"name\":\"mysplit\",\"description\":\"Tested Split skill\",\"context\":\"/document\",\"defaultLanguageCode\":\"fr\",\"textSplitMode\":\"pages\",\"maximumPageLength\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"textItems\",\"targetName\":\"myTextItems\"}]}],\"cognitiveServices\":null}",
+      "Content-Length" : "1069",
+      "Body" : "{\"@odata.context\":\"https://azsjava04559b263b837d45d401bbac8d004.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7E627A902F6D9\\\"\",\"name\":\"testskillset1\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":\"printed\",\"lineEnding\":null,\"defaultLanguageCode\":\"fr\",\"detectOrientation\":null,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]},{\"@odata.type\":\"#Microsoft.Skills.Text.SplitSkill\",\"name\":\"mysplit\",\"description\":\"Tested Split skill\",\"context\":\"/document\",\"defaultLanguageCode\":\"fr\",\"textSplitMode\":\"pages\",\"maximumPageLength\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"textItems\",\"targetName\":\"myTextItems\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk37765a10393.search.windows.net/skillsets('testskillset1')?api-version=2019-05-06"
+      "Location" : "https://azsjava04559b263b837d45d401bbac8d004.search.windows.net/skillsets('testskillset1')?api-version=2019-05-06-Preview"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk37765a10393.search.windows.net/skillsets?api-version=2019-05-06",
+    "Uri" : "https://azsjava04559b263b837d45d401bbac8d004.search.windows.net/skillsets?api-version=2019-05-06-Preview",
     "Headers" : {
+      "x-ms-client-request-id" : "e06ba124-3add-4809-9f8c-855db308b402",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "79dab5f4-9141-441b-9316-81e30baf2dc3",
+      "request-id" : "e06ba124-3add-4809-9f8c-855db308b402",
       "StatusCode" : "201",
-      "Date" : "Mon, 24 Feb 2020 19:56:16 GMT",
+      "Date" : "Tue, 21 Apr 2020 19:10:30 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D7B9639BBC9F63\"",
-      "elapsed-time" : "47",
+      "client-request-id" : "e06ba124-3add-4809-9f8c-855db308b402",
+      "ETag" : "W/\"0x8D7E627A90F07B6\"",
+      "elapsed-time" : "55",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "1033",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk37765a10393.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7B9639BBC9F63\\\"\",\"name\":\"testskillset2\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":\"printed\",\"lineEnding\":null,\"defaultLanguageCode\":\"fi\",\"detectOrientation\":null,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]},{\"@odata.type\":\"#Microsoft.Skills.Text.SplitSkill\",\"name\":\"mysplit\",\"description\":\"Tested Split skill\",\"context\":\"/document\",\"defaultLanguageCode\":\"fi\",\"textSplitMode\":\"sentences\",\"maximumPageLength\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"textItems\",\"targetName\":\"myTextItems\"}]}],\"cognitiveServices\":null}",
+      "Content-Length" : "1073",
+      "Body" : "{\"@odata.context\":\"https://azsjava04559b263b837d45d401bbac8d004.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7E627A90F07B6\\\"\",\"name\":\"testskillset2\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":\"printed\",\"lineEnding\":null,\"defaultLanguageCode\":\"fi\",\"detectOrientation\":null,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]},{\"@odata.type\":\"#Microsoft.Skills.Text.SplitSkill\",\"name\":\"mysplit\",\"description\":\"Tested Split skill\",\"context\":\"/document\",\"defaultLanguageCode\":\"fi\",\"textSplitMode\":\"sentences\",\"maximumPageLength\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"textItems\",\"targetName\":\"myTextItems\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk37765a10393.search.windows.net/skillsets('testskillset2')?api-version=2019-05-06"
+      "Location" : "https://azsjava04559b263b837d45d401bbac8d004.search.windows.net/skillsets('testskillset2')?api-version=2019-05-06-Preview"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdk37765a10393.search.windows.net/skillsets('testskillset2')?api-version=2019-05-06",
-    "Headers" : { },
+    "Uri" : "https://azsjava04559b263b837d45d401bbac8d004.search.windows.net/skillsets('testskillset2')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "b82585c5-e83b-4fb4-a966-9ad37b69842c"
+    },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "81",
+      "client-request-id" : "b82585c5-e83b-4fb4-a966-9ad37b69842c",
+      "elapsed-time" : "30",
       "Expires" : "-1",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "0f96257b-09bb-445c-8bef-09939c9a7fd2",
+      "request-id" : "b82585c5-e83b-4fb4-a966-9ad37b69842c",
       "StatusCode" : "204",
-      "Date" : "Mon, 24 Feb 2020 19:56:16 GMT"
+      "Date" : "Tue, 21 Apr 2020 19:10:30 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk37765a10393.search.windows.net/skillsets?api-version=2019-05-06",
+    "Uri" : "https://azsjava04559b263b837d45d401bbac8d004.search.windows.net/skillsets?api-version=2019-05-06-Preview",
     "Headers" : {
+      "x-ms-client-request-id" : "345df3dd-227b-4b9d-b96c-51a3330108e4",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "e9725eb8-0d7e-43fd-ac34-fd2eebe8009a",
+      "request-id" : "345df3dd-227b-4b9d-b96c-51a3330108e4",
       "StatusCode" : "201",
-      "Date" : "Mon, 24 Feb 2020 19:56:16 GMT",
+      "Date" : "Tue, 21 Apr 2020 19:10:30 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D7B9639BD2EA9C\"",
-      "elapsed-time" : "46",
+      "client-request-id" : "345df3dd-227b-4b9d-b96c-51a3330108e4",
+      "ETag" : "W/\"0x8D7E627A922BB92\"",
+      "elapsed-time" : "37",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "1033",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk37765a10393.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7B9639BD2EA9C\\\"\",\"name\":\"testskillset3\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":\"printed\",\"lineEnding\":null,\"defaultLanguageCode\":\"da\",\"detectOrientation\":null,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]},{\"@odata.type\":\"#Microsoft.Skills.Text.SplitSkill\",\"name\":\"mysplit\",\"description\":\"Tested Split skill\",\"context\":\"/document\",\"defaultLanguageCode\":\"da\",\"textSplitMode\":\"sentences\",\"maximumPageLength\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"textItems\",\"targetName\":\"myTextItems\"}]}],\"cognitiveServices\":null}",
+      "Content-Length" : "1073",
+      "Body" : "{\"@odata.context\":\"https://azsjava04559b263b837d45d401bbac8d004.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7E627A922BB92\\\"\",\"name\":\"testskillset3\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":\"printed\",\"lineEnding\":null,\"defaultLanguageCode\":\"da\",\"detectOrientation\":null,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]},{\"@odata.type\":\"#Microsoft.Skills.Text.SplitSkill\",\"name\":\"mysplit\",\"description\":\"Tested Split skill\",\"context\":\"/document\",\"defaultLanguageCode\":\"da\",\"textSplitMode\":\"sentences\",\"maximumPageLength\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"textItems\",\"targetName\":\"myTextItems\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk37765a10393.search.windows.net/skillsets('testskillset3')?api-version=2019-05-06"
+      "Location" : "https://azsjava04559b263b837d45d401bbac8d004.search.windows.net/skillsets('testskillset3')?api-version=2019-05-06-Preview"
     },
     "Exception" : null
   } ],
-  "variables" : [ "azs-sdk37765a10393" ]
+  "variables" : [ "azsjava04559b263b837d45d401bbac8d004" ]
 }

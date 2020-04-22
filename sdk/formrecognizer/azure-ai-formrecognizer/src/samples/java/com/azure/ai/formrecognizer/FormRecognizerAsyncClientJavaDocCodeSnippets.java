@@ -249,8 +249,8 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         Flux<ByteBuffer> buffer = toFluxByteBuffer(
             new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
 
-        formRecognizerAsyncClient.beginRecognizeContent(buffer, FormContentType.APPLICATION_PDF, sourceFile.length(),
-            Duration.ofSeconds(5)).subscribe(recognizePollingOperation ->
+        formRecognizerAsyncClient.beginRecognizeContent(buffer, sourceFile.length(), FormContentType.APPLICATION_PDF,
+                Duration.ofSeconds(5)).subscribe(recognizePollingOperation ->
                 recognizePollingOperation.getFinalResult().subscribe(layoutPageResults ->
                     layoutPageResults.forEach(recognizedForm -> {
                         System.out.printf("Page Angle: %s%n", recognizedForm.getTextAngle());

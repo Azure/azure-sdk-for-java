@@ -237,7 +237,7 @@ public final class FormRecognizerClient {
         beginRecognizeContent(InputStream data, long length, FormContentType formContentType, Duration pollInterval) {
         // TODO: #9248 should be able to infer form content type
         Flux<ByteBuffer> buffer = Utility.toFluxByteBuffer(data);
-        return client.beginRecognizeContent(buffer, formContentType, length, pollInterval)
+        return client.beginRecognizeContent(buffer, length, formContentType, pollInterval)
             .getSyncPoller();
     }
 
@@ -329,7 +329,6 @@ public final class FormRecognizerClient {
     public SyncPoller<OperationResult, IterableStream<RecognizedReceipt>>
         beginRecognizeReceipts(InputStream data, long length, FormContentType formContentType,
         boolean includeTextDetails, Duration pollInterval) {
-        // TODO: #9248 should be able to infer form content type
         Flux<ByteBuffer> buffer = Utility.toFluxByteBuffer(data);
         return client.beginRecognizeReceipts(buffer, length, formContentType, includeTextDetails, pollInterval)
             .getSyncPoller();
