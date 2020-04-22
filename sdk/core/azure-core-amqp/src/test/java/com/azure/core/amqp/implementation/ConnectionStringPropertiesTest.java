@@ -50,28 +50,35 @@ public class ConnectionStringPropertiesTest {
         // Arrange
         final String connectionString = getConnectionString(HOSTNAME_URI, EVENT_HUB, SAS_KEY, null);
 
-        // Act
+        // Act & Assert
         assertThrows(IllegalArgumentException.class, () -> new ConnectionStringProperties(connectionString));
     }
 
     @Test
-    public void invalidEndpointScheme() {
+    public void differentEndpointScheme() {
         // Arrange
-        final String connectionString = getConnectionString("http://" + HOST, EVENT_HUB, SAS_KEY, null);
+        final String connectionString = getConnectionString("http://" + HOST, EVENT_HUB, SAS_KEY, SAS_VALUE);
 
         // Act
-        assertThrows(IllegalArgumentException.class, () -> new ConnectionStringProperties(connectionString));
+        ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
+
+        // Assert
+        Assertions.assertEquals(HOST, properties.getEndpoint().getHost());
+        Assertions.assertEquals(SAS_KEY, properties.getSharedAccessKeyName());
+        Assertions.assertEquals(SAS_VALUE, properties.getSharedAccessKey());
+        Assertions.assertEquals(EVENT_HUB, properties.getEntityPath());
     }
 
     /**
      * Verifies we can create ConnectionStringProperties even if there is an extraneous component.
      */
     @Test
-    public void extraneousComponent() {
+    public void invalidExtraneousComponent() {
         // Arrange
-        final String connectionString = getConnectionString(HOSTNAME_URI, null, SAS_KEY, SAS_VALUE)
+        final String connectionString = getConnectionString(HOSTNAME_URI, EVENT_HUB, SAS_KEY, SAS_VALUE)
             + "FakeKey=FakeValue";
 
+        // Act & Assert
         assertThrows(IllegalArgumentException.class, () -> new ConnectionStringProperties(connectionString));
     }
 
