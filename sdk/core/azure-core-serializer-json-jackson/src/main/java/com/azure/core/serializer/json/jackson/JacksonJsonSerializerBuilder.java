@@ -30,7 +30,7 @@ public class JacksonJsonSerializerBuilder {
      * @param objectMapper {@link ObjectMapper} that will be used during serialization.
      * @return The updated JacksonJsonSerializerBuilder class.
      */
-    public JacksonJsonSerializerBuilder objectMapper(ObjectMapper objectMapper) {
+    public JacksonJsonSerializerBuilder serializer(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
         return this;
     }

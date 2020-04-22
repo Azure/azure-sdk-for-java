@@ -7,8 +7,8 @@ import com.azure.core.serializer.JsonSerializer;
 import com.azure.core.util.CoreUtils;
 import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
@@ -28,19 +28,44 @@ public final class GsonJsonSerializer implements JsonSerializer {
     }
 
     @Override
-    public <T> T read(byte[] input, Class<T> clazz) {
+    public <T> T deserialize(byte[] input, Class<T> clazz) {
         return gson.fromJson(CoreUtils.bomAwareToString(input, null), clazz);
     }
 
     @Override
-    public byte[] write(Object value) {
+    public byte[] serialize(Object value) {
         return gson.toJson(value).getBytes(StandardCharsets.UTF_8);
     }
 
     @Override
-    public void write(Object value, OutputStream stream) {
+    public void serialize(Object value, OutputStream stream) {
         Objects.requireNonNull(stream, "'stream' cannot be null.");
 
-        gson.toJson(value, new OutputStreamWriter(stream, StandardCharsets.UTF_8));
+        gson.toJson(value, new StreamWrappingAppendable(stream));
+    }
+
+    private static final class StreamWrappingAppendable implements Appendable {
+        private final OutputStream stream;
+
+        private StreamWrappingAppendable(OutputStream stream) {
+            this.stream = stream;
+        }
+
+        @Override
+        public Appendable append(CharSequence csq) throws IOException {
+            stream.write(csq.toString().getBytes(StandardCharsets.UTF_8));
+            return this;
+        }
+
+        @Override
+        public Appendable append(CharSequence csq, int start, int end) throws IOException {
+            return append(csq.subSequence(start, end));
+        }
+
+        @Override
+        public Appendable append(char c) throws IOException {
+            stream.write(String.valueOf(c).getBytes(StandardCharsets.UTF_8));
+            return this;
+        }
     }
 }

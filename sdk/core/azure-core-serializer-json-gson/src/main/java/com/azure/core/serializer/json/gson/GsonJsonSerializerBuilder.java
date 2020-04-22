@@ -30,7 +30,7 @@ public class GsonJsonSerializerBuilder {
      * @param gson {@link Gson} that will be used during serialization.
      * @return The updated GsonJsonSerializerBuilder class.
      */
-    public GsonJsonSerializerBuilder gson(Gson gson) {
+    public GsonJsonSerializerBuilder serializer(Gson gson) {
         this.gson = gson;
         return this;
     }

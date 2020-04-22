@@ -30,7 +30,7 @@ public final class JacksonJsonSerializer implements JsonSerializer {
     }
 
     @Override
-    public <T> T read(byte[] input, Class<T> clazz) {
+    public <T> T deserialize(byte[] input, Class<T> clazz) {
         if (input == null) {
             return null;
         }
@@ -43,7 +43,7 @@ public final class JacksonJsonSerializer implements JsonSerializer {
     }
 
     @Override
-    public byte[] write(Object value) {
+    public byte[] serialize(Object value) {
         try {
             return mapper.writeValueAsBytes(value);
         } catch (IOException ex) {
@@ -52,7 +52,7 @@ public final class JacksonJsonSerializer implements JsonSerializer {
     }
 
     @Override
-    public void write(Object value, OutputStream stream) {
+    public void serialize(Object value, OutputStream stream) {
         Objects.requireNonNull(stream, "'stream' cannot be null.");
 
         try {
