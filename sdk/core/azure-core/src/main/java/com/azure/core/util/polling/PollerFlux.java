@@ -162,6 +162,22 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
         this.syncActivationOperation = cxt -> activationOperation.apply(cxt).block();
     }
 
+    /**
+     * Creates a poller flux instance that returns an error on subscription.
+     *
+     * @param ex The exception to be returned on subscription of this {@link PollerFlux}.
+     * @param <T> The type of poll response value.
+     * @param <U> The type of the final result of long running operation.
+     * @return A poller flux instance that returns an error without emitting any data.
+     *
+     * @see {@link Mono#error(Throwable)}
+     * @see {@link Flux#error(Throwable)}
+     */
+    public static <T, U> PollerFlux<T, U> error(Exception ex) {
+        return new PollerFlux<>(Duration.ofMillis(1L), context -> Mono.error(ex), context -> Mono.error(ex),
+            (context, response) -> Mono.error(ex), context -> Mono.error(ex));
+    }
+
     @Override
     public void subscribe(CoreSubscriber<? super AsyncPollResponse<T, U>> actual) {
         this.oneTimeActivationMono
