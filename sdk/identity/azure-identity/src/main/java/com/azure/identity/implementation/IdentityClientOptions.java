@@ -32,7 +32,7 @@ public final class IdentityClientOptions {
     private static final String DEFAULT_KEYCHAIN_SERVICE = "Microsoft.Developer.IdentityService";
     private static final String DEFAULT_KEYCHAIN_ACCOUNT = "MSALCache";
     private static final String DEFAULT_KEYRING_NAME = "default";
-    private static final KeyringItemSchema DEFAULT_KEYRING_SCHEMA = KeyringItemSchema.GENERIC_SECRET;
+    private static final KeyringItemSchema DEFAULT_KEYRING_SCHEMA = KeyringItemSchema.MSAL_CACHE;
     private static final String DEFAULT_KEYRING_ITEM_NAME = DEFAULT_KEYCHAIN_ACCOUNT;
     private static final String DEFAULT_KEYRING_ATTR_NAME = "MsalClientID";
     private static final String DEFAULT_KEYRING_ATTR_VALUE = "Microsoft.Developer.IdentityService";
@@ -195,7 +195,7 @@ public final class IdentityClientOptions {
     public ExecutorService getExecutorService() {
         return executorService;
     }
-  
+
     /**
      * @return how long before the actual token expiry to refresh the token.
      */

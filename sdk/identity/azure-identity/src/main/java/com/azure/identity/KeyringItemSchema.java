@@ -11,6 +11,7 @@ public final class KeyringItemSchema {
     public static final KeyringItemSchema NETWORK_PASSWORD = new KeyringItemSchema(
             "org.gnome.keyring.NetworkPassword");
     public static final KeyringItemSchema NOTE = new KeyringItemSchema("org.gnome.keyring.Note");
+    public static final KeyringItemSchema MSAL_CACHE = new KeyringItemSchema("msal.cache");
 
     private final String value;
 
