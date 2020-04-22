@@ -11,6 +11,7 @@ import spock.lang.Unroll
 import java.nio.ByteBuffer
 import java.nio.channels.AsynchronousFileChannel
 import java.nio.file.Path
+import java.nio.file.Paths
 import java.nio.file.StandardOpenOption
 import java.util.function.Predicate
 
@@ -87,7 +88,7 @@ class AvroParserTest extends Specification {
     def "Parse"() {
         setup:
         AvroParser parser = new AvroParser()
-        Path path = Path.of(getTestCasePath(testCase))
+        Path path = Paths.get(getTestCasePath(testCase))
         Flux<ByteBuffer> file = FluxUtil.readFile(AsynchronousFileChannel.open(path, StandardOpenOption.READ))
 
         when:
