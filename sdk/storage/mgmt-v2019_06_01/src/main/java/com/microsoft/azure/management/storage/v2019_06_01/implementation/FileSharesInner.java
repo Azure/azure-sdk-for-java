@@ -13,6 +13,9 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.storage.v2019_06_01.DeletedShare;
+import com.microsoft.azure.management.storage.v2019_06_01.GetShareExpand;
+import com.microsoft.azure.management.storage.v2019_06_01.ListSharesExpand;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
@@ -21,7 +24,6 @@ import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -30,6 +32,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.HTTP;
 import retrofit2.http.PATCH;
 import retrofit2.http.Path;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
@@ -65,23 +68,27 @@ public class FileSharesInner {
     interface FileSharesService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_06_01.FileShares list" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/fileServices/default/shares")
-        Observable<Response<ResponseBody>> list(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$maxpagesize") String maxpagesize, @Query("$filter") String filter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$maxpagesize") String maxpagesize, @Query("$filter") String filter, @Query("$expand") ListSharesExpand expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_06_01.FileShares create" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/fileServices/default/shares/{shareName}")
-        Observable<Response<ResponseBody>> create(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("shareName") String shareName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body FileShareInner fileShare, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> create(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("shareName") String shareName, @Path("subscriptionId") String subscriptionId, @Body FileShareInner fileShare, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_06_01.FileShares update" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/fileServices/default/shares/{shareName}")
-        Observable<Response<ResponseBody>> update(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("shareName") String shareName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body FileShareInner fileShare, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> update(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("shareName") String shareName, @Path("subscriptionId") String subscriptionId, @Body FileShareInner fileShare, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_06_01.FileShares get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/fileServices/default/shares/{shareName}")
-        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("shareName") String shareName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("shareName") String shareName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$expand") GetShareExpand expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_06_01.FileShares delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/fileServices/default/shares/{shareName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("shareName") String shareName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_06_01.FileShares restore" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/fileServices/default/shares/{shareName}/restore")
+        Observable<Response<ResponseBody>> restore(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("shareName") String shareName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body DeletedShare deletedShare, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_06_01.FileShares listNext" })
         @GET
@@ -193,7 +200,8 @@ public class FileSharesInner {
         }
         final String maxpagesize = null;
         final String filter = null;
-        return service.list(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), maxpagesize, filter, this.client.acceptLanguage(), this.client.userAgent())
+        final ListSharesExpand expand = null;
+        return service.list(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), maxpagesize, filter, expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<FileShareItemInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<FileShareItemInner>>> call(Response<ResponseBody> response) {
@@ -214,13 +222,14 @@ public class FileSharesInner {
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param maxpagesize Optional. Specified maximum number of shares that can be included in the list.
      * @param filter Optional. When specified, only share names starting with the filter will be listed.
+     * @param expand Optional, used to expand the properties within share's properties. Possible values include: 'deleted'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;FileShareItemInner&gt; object if successful.
      */
-    public PagedList<FileShareItemInner> list(final String resourceGroupName, final String accountName, final String maxpagesize, final String filter) {
-        ServiceResponse<Page<FileShareItemInner>> response = listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter).toBlocking().single();
+    public PagedList<FileShareItemInner> list(final String resourceGroupName, final String accountName, final String maxpagesize, final String filter, final ListSharesExpand expand) {
+        ServiceResponse<Page<FileShareItemInner>> response = listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter, expand).toBlocking().single();
         return new PagedList<FileShareItemInner>(response.body()) {
             @Override
             public Page<FileShareItemInner> nextPage(String nextPageLink) {
@@ -236,13 +245,14 @@ public class FileSharesInner {
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param maxpagesize Optional. Specified maximum number of shares that can be included in the list.
      * @param filter Optional. When specified, only share names starting with the filter will be listed.
+     * @param expand Optional, used to expand the properties within share's properties. Possible values include: 'deleted'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<FileShareItemInner>> listAsync(final String resourceGroupName, final String accountName, final String maxpagesize, final String filter, final ListOperationCallback<FileShareItemInner> serviceCallback) {
+    public ServiceFuture<List<FileShareItemInner>> listAsync(final String resourceGroupName, final String accountName, final String maxpagesize, final String filter, final ListSharesExpand expand, final ListOperationCallback<FileShareItemInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter),
+            listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter, expand),
             new Func1<String, Observable<ServiceResponse<Page<FileShareItemInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<FileShareItemInner>>> call(String nextPageLink) {
@@ -259,11 +269,12 @@ public class FileSharesInner {
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param maxpagesize Optional. Specified maximum number of shares that can be included in the list.
      * @param filter Optional. When specified, only share names starting with the filter will be listed.
+     * @param expand Optional, used to expand the properties within share's properties. Possible values include: 'deleted'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;FileShareItemInner&gt; object
      */
-    public Observable<Page<FileShareItemInner>> listAsync(final String resourceGroupName, final String accountName, final String maxpagesize, final String filter) {
-        return listWithServiceResponseAsync(resourceGroupName, accountName, maxpagesize, filter)
+    public Observable<Page<FileShareItemInner>> listAsync(final String resourceGroupName, final String accountName, final String maxpagesize, final String filter, final ListSharesExpand expand) {
+        return listWithServiceResponseAsync(resourceGroupName, accountName, maxpagesize, filter, expand)
             .map(new Func1<ServiceResponse<Page<FileShareItemInner>>, Page<FileShareItemInner>>() {
                 @Override
                 public Page<FileShareItemInner> call(ServiceResponse<Page<FileShareItemInner>> response) {
@@ -279,11 +290,12 @@ public class FileSharesInner {
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param maxpagesize Optional. Specified maximum number of shares that can be included in the list.
      * @param filter Optional. When specified, only share names starting with the filter will be listed.
+     * @param expand Optional, used to expand the properties within share's properties. Possible values include: 'deleted'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;FileShareItemInner&gt; object
      */
-    public Observable<ServiceResponse<Page<FileShareItemInner>>> listWithServiceResponseAsync(final String resourceGroupName, final String accountName, final String maxpagesize, final String filter) {
-        return listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter)
+    public Observable<ServiceResponse<Page<FileShareItemInner>>> listWithServiceResponseAsync(final String resourceGroupName, final String accountName, final String maxpagesize, final String filter, final ListSharesExpand expand) {
+        return listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter, expand)
             .concatMap(new Func1<ServiceResponse<Page<FileShareItemInner>>, Observable<ServiceResponse<Page<FileShareItemInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<FileShareItemInner>>> call(ServiceResponse<Page<FileShareItemInner>> page) {
@@ -303,10 +315,11 @@ public class FileSharesInner {
     ServiceResponse<PageImpl1<FileShareItemInner>> * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
     ServiceResponse<PageImpl1<FileShareItemInner>> * @param maxpagesize Optional. Specified maximum number of shares that can be included in the list.
     ServiceResponse<PageImpl1<FileShareItemInner>> * @param filter Optional. When specified, only share names starting with the filter will be listed.
+    ServiceResponse<PageImpl1<FileShareItemInner>> * @param expand Optional, used to expand the properties within share's properties. Possible values include: 'deleted'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;FileShareItemInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<FileShareItemInner>>> listSinglePageAsync(final String resourceGroupName, final String accountName, final String maxpagesize, final String filter) {
+    public Observable<ServiceResponse<Page<FileShareItemInner>>> listSinglePageAsync(final String resourceGroupName, final String accountName, final String maxpagesize, final String filter, final ListSharesExpand expand) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -319,7 +332,7 @@ public class FileSharesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.list(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), maxpagesize, filter, this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), maxpagesize, filter, expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<FileShareItemInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<FileShareItemInner>>> call(Response<ResponseBody> response) {
@@ -346,13 +359,14 @@ public class FileSharesInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param shareName The name of the file share within the specified storage account. File share names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param fileShare Properties of the file share to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the FileShareInner object if successful.
      */
-    public FileShareInner create(String resourceGroupName, String accountName, String shareName) {
-        return createWithServiceResponseAsync(resourceGroupName, accountName, shareName).toBlocking().single().body();
+    public FileShareInner create(String resourceGroupName, String accountName, String shareName, FileShareInner fileShare) {
+        return createWithServiceResponseAsync(resourceGroupName, accountName, shareName, fileShare).toBlocking().single().body();
     }
 
     /**
@@ -361,12 +375,13 @@ public class FileSharesInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param shareName The name of the file share within the specified storage account. File share names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param fileShare Properties of the file share to create.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<FileShareInner> createAsync(String resourceGroupName, String accountName, String shareName, final ServiceCallback<FileShareInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, accountName, shareName), serviceCallback);
+    public ServiceFuture<FileShareInner> createAsync(String resourceGroupName, String accountName, String shareName, FileShareInner fileShare, final ServiceCallback<FileShareInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, accountName, shareName, fileShare), serviceCallback);
     }
 
     /**
@@ -375,11 +390,12 @@ public class FileSharesInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param shareName The name of the file share within the specified storage account. File share names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param fileShare Properties of the file share to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the FileShareInner object
      */
-    public Observable<FileShareInner> createAsync(String resourceGroupName, String accountName, String shareName) {
-        return createWithServiceResponseAsync(resourceGroupName, accountName, shareName).map(new Func1<ServiceResponse<FileShareInner>, FileShareInner>() {
+    public Observable<FileShareInner> createAsync(String resourceGroupName, String accountName, String shareName, FileShareInner fileShare) {
+        return createWithServiceResponseAsync(resourceGroupName, accountName, shareName, fileShare).map(new Func1<ServiceResponse<FileShareInner>, FileShareInner>() {
             @Override
             public FileShareInner call(ServiceResponse<FileShareInner> response) {
                 return response.body();
@@ -393,10 +409,11 @@ public class FileSharesInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param shareName The name of the file share within the specified storage account. File share names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param fileShare Properties of the file share to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the FileShareInner object
      */
-    public Observable<ServiceResponse<FileShareInner>> createWithServiceResponseAsync(String resourceGroupName, String accountName, String shareName) {
+    public Observable<ServiceResponse<FileShareInner>> createWithServiceResponseAsync(String resourceGroupName, String accountName, String shareName, FileShareInner fileShare) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -409,113 +426,14 @@ public class FileSharesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final Map<String, String> metadata = null;
-        final Integer shareQuota = null;
-        FileShareInner fileShare = new FileShareInner();
-        fileShare.withMetadata(null);
-        fileShare.withShareQuota(null);
-        return service.create(resourceGroupName, accountName, shareName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), fileShare, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<FileShareInner>>>() {
-                @Override
-                public Observable<ServiceResponse<FileShareInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<FileShareInner> clientResponse = createDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Creates a new share under the specified account as described by request body. The share resource includes metadata and properties for that share. It does not include a list of the files contained by the share.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param shareName The name of the file share within the specified storage account. File share names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param metadata A name-value pair to associate with the share as metadata.
-     * @param shareQuota The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120). For Large File Shares, the maximum size is 102400.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the FileShareInner object if successful.
-     */
-    public FileShareInner create(String resourceGroupName, String accountName, String shareName, Map<String, String> metadata, Integer shareQuota) {
-        return createWithServiceResponseAsync(resourceGroupName, accountName, shareName, metadata, shareQuota).toBlocking().single().body();
-    }
-
-    /**
-     * Creates a new share under the specified account as described by request body. The share resource includes metadata and properties for that share. It does not include a list of the files contained by the share.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param shareName The name of the file share within the specified storage account. File share names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param metadata A name-value pair to associate with the share as metadata.
-     * @param shareQuota The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120). For Large File Shares, the maximum size is 102400.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<FileShareInner> createAsync(String resourceGroupName, String accountName, String shareName, Map<String, String> metadata, Integer shareQuota, final ServiceCallback<FileShareInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, accountName, shareName, metadata, shareQuota), serviceCallback);
-    }
-
-    /**
-     * Creates a new share under the specified account as described by request body. The share resource includes metadata and properties for that share. It does not include a list of the files contained by the share.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param shareName The name of the file share within the specified storage account. File share names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param metadata A name-value pair to associate with the share as metadata.
-     * @param shareQuota The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120). For Large File Shares, the maximum size is 102400.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the FileShareInner object
-     */
-    public Observable<FileShareInner> createAsync(String resourceGroupName, String accountName, String shareName, Map<String, String> metadata, Integer shareQuota) {
-        return createWithServiceResponseAsync(resourceGroupName, accountName, shareName, metadata, shareQuota).map(new Func1<ServiceResponse<FileShareInner>, FileShareInner>() {
-            @Override
-            public FileShareInner call(ServiceResponse<FileShareInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Creates a new share under the specified account as described by request body. The share resource includes metadata and properties for that share. It does not include a list of the files contained by the share.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param shareName The name of the file share within the specified storage account. File share names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param metadata A name-value pair to associate with the share as metadata.
-     * @param shareQuota The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120). For Large File Shares, the maximum size is 102400.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the FileShareInner object
-     */
-    public Observable<ServiceResponse<FileShareInner>> createWithServiceResponseAsync(String resourceGroupName, String accountName, String shareName, Map<String, String> metadata, Integer shareQuota) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (accountName == null) {
-            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
-        }
-        if (shareName == null) {
-            throw new IllegalArgumentException("Parameter shareName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        if (fileShare == null) {
+            throw new IllegalArgumentException("Parameter fileShare is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(metadata);
-        FileShareInner fileShare = new FileShareInner();
-        fileShare.withMetadata(metadata);
-        fileShare.withShareQuota(shareQuota);
-        return service.create(resourceGroupName, accountName, shareName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), fileShare, this.client.userAgent())
+        Validator.validate(fileShare);
+        return service.create(resourceGroupName, accountName, shareName, this.client.subscriptionId(), fileShare, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<FileShareInner>>>() {
                 @Override
                 public Observable<ServiceResponse<FileShareInner>> call(Response<ResponseBody> response) {
@@ -543,13 +461,14 @@ public class FileSharesInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param shareName The name of the file share within the specified storage account. File share names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param fileShare Properties to update for the file share.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the FileShareInner object if successful.
      */
-    public FileShareInner update(String resourceGroupName, String accountName, String shareName) {
-        return updateWithServiceResponseAsync(resourceGroupName, accountName, shareName).toBlocking().single().body();
+    public FileShareInner update(String resourceGroupName, String accountName, String shareName, FileShareInner fileShare) {
+        return updateWithServiceResponseAsync(resourceGroupName, accountName, shareName, fileShare).toBlocking().single().body();
     }
 
     /**
@@ -558,12 +477,13 @@ public class FileSharesInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param shareName The name of the file share within the specified storage account. File share names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param fileShare Properties to update for the file share.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<FileShareInner> updateAsync(String resourceGroupName, String accountName, String shareName, final ServiceCallback<FileShareInner> serviceCallback) {
-        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, accountName, shareName), serviceCallback);
+    public ServiceFuture<FileShareInner> updateAsync(String resourceGroupName, String accountName, String shareName, FileShareInner fileShare, final ServiceCallback<FileShareInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, accountName, shareName, fileShare), serviceCallback);
     }
 
     /**
@@ -572,11 +492,12 @@ public class FileSharesInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param shareName The name of the file share within the specified storage account. File share names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param fileShare Properties to update for the file share.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the FileShareInner object
      */
-    public Observable<FileShareInner> updateAsync(String resourceGroupName, String accountName, String shareName) {
-        return updateWithServiceResponseAsync(resourceGroupName, accountName, shareName).map(new Func1<ServiceResponse<FileShareInner>, FileShareInner>() {
+    public Observable<FileShareInner> updateAsync(String resourceGroupName, String accountName, String shareName, FileShareInner fileShare) {
+        return updateWithServiceResponseAsync(resourceGroupName, accountName, shareName, fileShare).map(new Func1<ServiceResponse<FileShareInner>, FileShareInner>() {
             @Override
             public FileShareInner call(ServiceResponse<FileShareInner> response) {
                 return response.body();
@@ -590,10 +511,11 @@ public class FileSharesInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param shareName The name of the file share within the specified storage account. File share names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param fileShare Properties to update for the file share.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the FileShareInner object
      */
-    public Observable<ServiceResponse<FileShareInner>> updateWithServiceResponseAsync(String resourceGroupName, String accountName, String shareName) {
+    public Observable<ServiceResponse<FileShareInner>> updateWithServiceResponseAsync(String resourceGroupName, String accountName, String shareName, FileShareInner fileShare) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -606,113 +528,14 @@ public class FileSharesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final Map<String, String> metadata = null;
-        final Integer shareQuota = null;
-        FileShareInner fileShare = new FileShareInner();
-        fileShare.withMetadata(null);
-        fileShare.withShareQuota(null);
-        return service.update(resourceGroupName, accountName, shareName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), fileShare, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<FileShareInner>>>() {
-                @Override
-                public Observable<ServiceResponse<FileShareInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<FileShareInner> clientResponse = updateDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Updates share properties as specified in request body. Properties not mentioned in the request will not be changed. Update fails if the specified share does not already exist.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param shareName The name of the file share within the specified storage account. File share names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param metadata A name-value pair to associate with the share as metadata.
-     * @param shareQuota The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120). For Large File Shares, the maximum size is 102400.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the FileShareInner object if successful.
-     */
-    public FileShareInner update(String resourceGroupName, String accountName, String shareName, Map<String, String> metadata, Integer shareQuota) {
-        return updateWithServiceResponseAsync(resourceGroupName, accountName, shareName, metadata, shareQuota).toBlocking().single().body();
-    }
-
-    /**
-     * Updates share properties as specified in request body. Properties not mentioned in the request will not be changed. Update fails if the specified share does not already exist.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param shareName The name of the file share within the specified storage account. File share names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param metadata A name-value pair to associate with the share as metadata.
-     * @param shareQuota The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120). For Large File Shares, the maximum size is 102400.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<FileShareInner> updateAsync(String resourceGroupName, String accountName, String shareName, Map<String, String> metadata, Integer shareQuota, final ServiceCallback<FileShareInner> serviceCallback) {
-        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, accountName, shareName, metadata, shareQuota), serviceCallback);
-    }
-
-    /**
-     * Updates share properties as specified in request body. Properties not mentioned in the request will not be changed. Update fails if the specified share does not already exist.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param shareName The name of the file share within the specified storage account. File share names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param metadata A name-value pair to associate with the share as metadata.
-     * @param shareQuota The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120). For Large File Shares, the maximum size is 102400.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the FileShareInner object
-     */
-    public Observable<FileShareInner> updateAsync(String resourceGroupName, String accountName, String shareName, Map<String, String> metadata, Integer shareQuota) {
-        return updateWithServiceResponseAsync(resourceGroupName, accountName, shareName, metadata, shareQuota).map(new Func1<ServiceResponse<FileShareInner>, FileShareInner>() {
-            @Override
-            public FileShareInner call(ServiceResponse<FileShareInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Updates share properties as specified in request body. Properties not mentioned in the request will not be changed. Update fails if the specified share does not already exist.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param shareName The name of the file share within the specified storage account. File share names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param metadata A name-value pair to associate with the share as metadata.
-     * @param shareQuota The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120). For Large File Shares, the maximum size is 102400.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the FileShareInner object
-     */
-    public Observable<ServiceResponse<FileShareInner>> updateWithServiceResponseAsync(String resourceGroupName, String accountName, String shareName, Map<String, String> metadata, Integer shareQuota) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (accountName == null) {
-            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
-        }
-        if (shareName == null) {
-            throw new IllegalArgumentException("Parameter shareName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        if (fileShare == null) {
+            throw new IllegalArgumentException("Parameter fileShare is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(metadata);
-        FileShareInner fileShare = new FileShareInner();
-        fileShare.withMetadata(metadata);
-        fileShare.withShareQuota(shareQuota);
-        return service.update(resourceGroupName, accountName, shareName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), fileShare, this.client.userAgent())
+        Validator.validate(fileShare);
+        return service.update(resourceGroupName, accountName, shareName, this.client.subscriptionId(), fileShare, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<FileShareInner>>>() {
                 @Override
                 public Observable<ServiceResponse<FileShareInner>> call(Response<ResponseBody> response) {
@@ -805,7 +628,98 @@ public class FileSharesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.get(resourceGroupName, accountName, shareName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final GetShareExpand expand = null;
+        return service.get(resourceGroupName, accountName, shareName, this.client.subscriptionId(), this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<FileShareInner>>>() {
+                @Override
+                public Observable<ServiceResponse<FileShareInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<FileShareInner> clientResponse = getDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Gets properties of a specified share.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param shareName The name of the file share within the specified storage account. File share names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param expand Optional, used to expand the properties within share's properties. Possible values include: 'stats'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the FileShareInner object if successful.
+     */
+    public FileShareInner get(String resourceGroupName, String accountName, String shareName, GetShareExpand expand) {
+        return getWithServiceResponseAsync(resourceGroupName, accountName, shareName, expand).toBlocking().single().body();
+    }
+
+    /**
+     * Gets properties of a specified share.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param shareName The name of the file share within the specified storage account. File share names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param expand Optional, used to expand the properties within share's properties. Possible values include: 'stats'
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<FileShareInner> getAsync(String resourceGroupName, String accountName, String shareName, GetShareExpand expand, final ServiceCallback<FileShareInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, accountName, shareName, expand), serviceCallback);
+    }
+
+    /**
+     * Gets properties of a specified share.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param shareName The name of the file share within the specified storage account. File share names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param expand Optional, used to expand the properties within share's properties. Possible values include: 'stats'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the FileShareInner object
+     */
+    public Observable<FileShareInner> getAsync(String resourceGroupName, String accountName, String shareName, GetShareExpand expand) {
+        return getWithServiceResponseAsync(resourceGroupName, accountName, shareName, expand).map(new Func1<ServiceResponse<FileShareInner>, FileShareInner>() {
+            @Override
+            public FileShareInner call(ServiceResponse<FileShareInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets properties of a specified share.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param shareName The name of the file share within the specified storage account. File share names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param expand Optional, used to expand the properties within share's properties. Possible values include: 'stats'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the FileShareInner object
+     */
+    public Observable<ServiceResponse<FileShareInner>> getWithServiceResponseAsync(String resourceGroupName, String accountName, String shareName, GetShareExpand expand) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (shareName == null) {
+            throw new IllegalArgumentException("Parameter shareName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.get(resourceGroupName, accountName, shareName, this.client.subscriptionId(), this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<FileShareInner>>>() {
                 @Override
                 public Observable<ServiceResponse<FileShareInner>> call(Response<ResponseBody> response) {
@@ -915,6 +829,115 @@ public class FileSharesInner {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Restore a file share within a valid retention days if share soft delete is enabled.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param shareName The name of the file share within the specified storage account. File share names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param deletedShareName Required. Identify the name of the deleted share that will be restored.
+     * @param deletedShareVersion Required. Identify the version of the deleted share that will be restored.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void restore(String resourceGroupName, String accountName, String shareName, String deletedShareName, String deletedShareVersion) {
+        restoreWithServiceResponseAsync(resourceGroupName, accountName, shareName, deletedShareName, deletedShareVersion).toBlocking().single().body();
+    }
+
+    /**
+     * Restore a file share within a valid retention days if share soft delete is enabled.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param shareName The name of the file share within the specified storage account. File share names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param deletedShareName Required. Identify the name of the deleted share that will be restored.
+     * @param deletedShareVersion Required. Identify the version of the deleted share that will be restored.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> restoreAsync(String resourceGroupName, String accountName, String shareName, String deletedShareName, String deletedShareVersion, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(restoreWithServiceResponseAsync(resourceGroupName, accountName, shareName, deletedShareName, deletedShareVersion), serviceCallback);
+    }
+
+    /**
+     * Restore a file share within a valid retention days if share soft delete is enabled.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param shareName The name of the file share within the specified storage account. File share names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param deletedShareName Required. Identify the name of the deleted share that will be restored.
+     * @param deletedShareVersion Required. Identify the version of the deleted share that will be restored.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> restoreAsync(String resourceGroupName, String accountName, String shareName, String deletedShareName, String deletedShareVersion) {
+        return restoreWithServiceResponseAsync(resourceGroupName, accountName, shareName, deletedShareName, deletedShareVersion).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Restore a file share within a valid retention days if share soft delete is enabled.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param shareName The name of the file share within the specified storage account. File share names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param deletedShareName Required. Identify the name of the deleted share that will be restored.
+     * @param deletedShareVersion Required. Identify the version of the deleted share that will be restored.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> restoreWithServiceResponseAsync(String resourceGroupName, String accountName, String shareName, String deletedShareName, String deletedShareVersion) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (shareName == null) {
+            throw new IllegalArgumentException("Parameter shareName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (deletedShareName == null) {
+            throw new IllegalArgumentException("Parameter deletedShareName is required and cannot be null.");
+        }
+        if (deletedShareVersion == null) {
+            throw new IllegalArgumentException("Parameter deletedShareVersion is required and cannot be null.");
+        }
+        DeletedShare deletedShare = new DeletedShare();
+        deletedShare.withDeletedShareName(deletedShareName);
+        deletedShare.withDeletedShareVersion(deletedShareVersion);
+        return service.restore(resourceGroupName, accountName, shareName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), deletedShare, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = restoreDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> restoreDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
