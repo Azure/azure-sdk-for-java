@@ -39,10 +39,12 @@ public class ReceiveMessageAsyncSample {
 
         Disposable subscription = receiverAsyncClient.receive()
             .subscribe(message -> {
-                    System.out.println("Received Message Id:" + message.getMessageId());
-                    System.out.println("Received Message:" + new String(message.getBody()));
-                    // By default, the message will be auto completed.
-                }, error -> System.err.println("Error occurred while receiving message: " + error),
+                System.out.println("Received Message Id:" + message.getMessageId());
+                System.out.println("Received Message:" + new String(message.getBody()));
+                // By default, the message will be auto completed.
+
+            },
+                error -> System.err.println("Error occurred while receiving message: " + error),
                 () -> System.out.println("Receiving complete."));
 
         // Receiving messages from the queue for a duration of 20 seconds.
