@@ -10,8 +10,12 @@
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
     <module>azure-spring-boot</module>
+    <module>azure-spring-boot-bom</module>
     <module>azure-spring-boot-starter</module>
     <module>azure-spring-boot-starter-active-directory</module>
+<!--    <module>azure-spring-boot-starter-keyvault-secrets</module>-->
+    <module>azure-spring-boot-samples</module>
+<!--    <module>azure-spring-boot-tests</module>-->
   </modules>
 
 </project>
