@@ -8,7 +8,6 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.exception.SessionErrorContext;
-import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
 import com.azure.core.amqp.implementation.RequestResponseUtils;
@@ -20,9 +19,11 @@ import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
+import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.UnsignedInteger;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -86,19 +87,12 @@ public class ManagementChannel implements ServiceBusManagementNode {
         return isAuthorized(ManagementConstants.OPERATION_CANCEL_SCHEDULED_MESSAGE)
             .then(createChannel.flatMap(channel -> {
                 final Message requestMessage = createManagementMessage(
-                    ManagementConstants.OPERATION_CANCEL_SCHEDULED_MESSAGE, channel.getReceiveLinkName());
+                    ManagementConstants.OPERATION_CANCEL_SCHEDULED_MESSAGE, null);
 
                 requestMessage.setBody(new AmqpValue(Collections.singletonMap(ManagementConstants.SEQUENCE_NUMBERS,
                     new Long[]{sequenceNumber})));
-                return channel.sendWithAck(requestMessage);
-            }).map(responseMessage -> {
-                int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
 
-                if (statusCode == AmqpResponseCode.OK.getValue()) {
-                    return Mono.empty();
-                }
-                return Mono.error(new AmqpException(false, "Could not cancel scheduled message with sequence number "
-                    + sequenceNumber, getErrorContext()));
+                return sendWithVerify(channel, requestMessage);
             })).then();
     }
 
@@ -124,7 +118,6 @@ public class ManagementChannel implements ServiceBusManagementNode {
      */
     @Override
     public Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages) {
-
         return peek(this.lastPeekedSequenceNumber.get() + 1, maxMessages);
     }
 
@@ -133,7 +126,6 @@ public class ManagementChannel implements ServiceBusManagementNode {
      */
     @Override
     public Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages, long fromSequenceNumber) {
-
         return peek(fromSequenceNumber, maxMessages);
     }
 
@@ -156,7 +148,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
         return isAuthorized(ManagementConstants.OPERATION_RECEIVE_BY_SEQUENCE_NUMBER)
             .thenMany(createChannel.flatMap(channel -> {
                 final Message message = createManagementMessage(
-                    ManagementConstants.OPERATION_RECEIVE_BY_SEQUENCE_NUMBER, channel.getReceiveLinkName());
+                    ManagementConstants.OPERATION_RECEIVE_BY_SEQUENCE_NUMBER, null);
 
                 // set mandatory properties on AMQP message body
                 final HashMap<String, Object> requestBodyMap = new HashMap<>();
@@ -173,7 +165,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
                 message.setBody(new AmqpValue(requestBodyMap));
 
-                return channel.sendWithAck(message);
+                return sendWithVerify(channel, message);
             }).flatMapMany(amqpMessage -> {
                 final List<ServiceBusReceivedMessage> messageList =
                     messageSerializer.deserializeList(amqpMessage, ServiceBusReceivedMessage.class);
@@ -189,7 +181,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
     public Mono<Instant> renewMessageLock(UUID lockToken) {
         return isAuthorized(ManagementConstants.OPERATION_PEEK).then(createChannel.flatMap(channel -> {
             final Message requestMessage = createManagementMessage(ManagementConstants.OPERATION_RENEW_LOCK,
-                channel.getReceiveLinkName());
+                null);
             final Map<String, Object> requestBody = new HashMap<>();
 
             requestBody.put(ManagementConstants.LOCK_TOKENS_KEY, new UUID[]{lockToken});
@@ -200,16 +192,9 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
             requestMessage.setBody(new AmqpValue(requestBody));
 
-            return channel.sendWithAck(requestMessage);
+            return sendWithVerify(channel, requestMessage);
         }).map(responseMessage -> {
-            int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
-            if (statusCode != AmqpResponseCode.OK.getValue()) {
-
-                throw logger.logExceptionAsError(Exceptions.propagate(new AmqpException(false,
-                    String.format("Could not renew the lock for lock token: '%s'.", lockToken.toString()),
-                    getErrorContext())));
-            }
-            List<Instant> renewTimeList = messageSerializer.deserializeList(responseMessage, Instant.class);
+            final List<Instant> renewTimeList = messageSerializer.deserializeList(responseMessage, Instant.class);
             if (CoreUtils.isNullOrEmpty(renewTimeList)) {
                 throw logger.logExceptionAsError(Exceptions.propagate(new AmqpException(false, String.format(
                     "Service bus response empty. Could not renew message with lock token: '%s'.", lockToken),
@@ -273,19 +258,12 @@ public class ManagementChannel implements ServiceBusManagementNode {
             requestBodyMap.put(ManagementConstants.MESSAGES, messageList);
 
             final Message requestMessage = createManagementMessage(ManagementConstants.OPERATION_SCHEDULE_MESSAGE,
-                channel.getReceiveLinkName());
+                null);
 
             requestMessage.setBody(new AmqpValue(requestBodyMap));
 
-            return channel.sendWithAck(requestMessage);
+            return sendWithVerify(channel, requestMessage);
         }).map(responseMessage -> {
-            final int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
-
-            if (statusCode != AmqpResponseCode.OK.getValue()) {
-                throw logger.logExceptionAsError(Exceptions.propagate(new AmqpException(false, String.format(
-                    "Could not schedule message with message id: '%s'.", message.getMessageId()), getErrorContext())));
-            }
-
             final List<Long> sequenceNumbers = messageSerializer.deserializeList(responseMessage, Long.class);
             if (CoreUtils.isNullOrEmpty(sequenceNumbers)) {
                 throw logger.logExceptionAsError(Exceptions.propagate(new AmqpException(false, String.format(
@@ -304,18 +282,30 @@ public class ManagementChannel implements ServiceBusManagementNode {
         final UUID token = UUID.fromString(lockToken);
         return isAuthorized(ManagementConstants.OPERATION_UPDATE_DISPOSITION).then(createChannel.flatMap(channel -> {
             final Message message = createDispositionMessage(new UUID[]{token}, dispositionStatus,
-                deadLetterReason, deadLetterErrorDescription, propertiesToModify, channel.getReceiveLinkName());
+                deadLetterReason, deadLetterErrorDescription, propertiesToModify, null);
 
-            return channel.sendWithAck(message);
-        }).flatMap(response -> {
-            final int statusCode = RequestResponseUtils.getResponseStatusCode(response);
-            final AmqpResponseCode responseCode = AmqpResponseCode.fromValue(statusCode);
-            if (responseCode == AmqpResponseCode.OK) {
-                return Mono.empty();
-            } else {
-                return Mono.error(ExceptionUtil.amqpResponseCodeToException(statusCode, "", getErrorContext()));
-            }
-        }));
+            return sendWithVerify(channel, message);
+        })).then();
+    }
+
+    private Mono<Message> sendWithVerify(RequestResponseChannel channel, Message message) {
+        return channel.sendWithAck(message)
+            .map(response -> {
+                if (RequestResponseUtils.isSuccessful(response)) {
+                    return response;
+                }
+
+                final AmqpResponseCode statusCode = RequestResponseUtils.getStatusCode(response);
+                final String statusDescription = RequestResponseUtils.getStatusDescription(response);
+                final String errorCondition = RequestResponseUtils.getErrorCondition(response);
+                final Throwable throwable = MessageUtils.toException(
+                    new ErrorCondition(Symbol.getSymbol(errorCondition), statusDescription), channel.getErrorContext());
+
+                logger.warning("status[{}] description[{}] condition[{}] Operation not successful",
+                    statusCode, statusDescription, errorCondition);
+
+                throw logger.logExceptionAsError(Exceptions.propagate(throwable));
+            });
     }
 
     /**
@@ -334,7 +324,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
     private Flux<ServiceBusReceivedMessage> peek(long fromSequenceNumber, int maxMessages) {
         return isAuthorized(ManagementConstants.OPERATION_PEEK).thenMany(createChannel.flatMap(channel -> {
             final Message message = createManagementMessage(ManagementConstants.OPERATION_PEEK,
-                channel.getReceiveLinkName());
+                null);
 
             // set mandatory properties on AMQP message body
             final HashMap<String, Object> requestBodyMap = new HashMap<>();
@@ -347,7 +337,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
             message.setBody(new AmqpValue(requestBodyMap));
 
-            return channel.sendWithAck(message);
+            return sendWithVerify(channel, message);
         }).flatMapMany(amqpMessage -> {
             final List<ServiceBusReceivedMessage> messageList =
                 messageSerializer.deserializeList(amqpMessage, ServiceBusReceivedMessage.class);
@@ -381,12 +371,12 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
     private Message createDispositionMessage(UUID[] lockTokens, DispositionStatus dispositionStatus,
         String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify,
-        String linkName) {
-
+        String associatedLinkName) {
         logger.verbose("Update disposition of deliveries '{}' to '{}' on entity '{}', session '{}'",
             Arrays.toString(lockTokens), dispositionStatus, entityPath, "n/a");
 
-        final Message message = createManagementMessage(ManagementConstants.OPERATION_UPDATE_DISPOSITION, linkName);
+        final Message message = createManagementMessage(ManagementConstants.OPERATION_UPDATE_DISPOSITION,
+            associatedLinkName);
 
         final Map<String, Object> requestBody = new HashMap<>();
         requestBody.put(ManagementConstants.LOCK_TOKENS_KEY, lockTokens);
@@ -417,17 +407,18 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * Creates an AMQP message with the required application properties.
      *
      * @param operation Management operation to perform (ie. peek, update-disposition, etc.)
-     * @param linkName Name of receiver link associated with operation.
+     * @param associatedLinkName Name of the open receive link that first received the message.
+     *
      * @return An AMQP message with the required headers.
      */
-    private Message createManagementMessage(String operation, String linkName) {
+    private Message createManagementMessage(String operation, String associatedLinkName) {
         final Duration serverTimeout = MessageUtils.adjustServerTimeout(operationTimeout);
         final Map<String, Object> applicationProperties = new HashMap<>();
         applicationProperties.put(ManagementConstants.MANAGEMENT_OPERATION_KEY, operation);
         applicationProperties.put(ManagementConstants.SERVER_TIMEOUT, serverTimeout.toMillis());
 
-        if (linkName != null && !linkName.isEmpty()) {
-            applicationProperties.put(ManagementConstants.ASSOCIATED_LINK_NAME_KEY, linkName);
+        if (!CoreUtils.isNullOrEmpty(associatedLinkName)) {
+            applicationProperties.put(ManagementConstants.ASSOCIATED_LINK_NAME_KEY, associatedLinkName);
         }
 
         final Message message = Proton.message();

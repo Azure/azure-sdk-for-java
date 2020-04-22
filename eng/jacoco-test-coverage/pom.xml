@@ -192,12 +192,12 @@
         <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <executions>
           <execution>
-            <phase>prepare-package</phase>
+            <id>report-aggregate</id>
+            <phase>verify</phase>
             <goals>
               <goal>report-aggregate</goal>
             </goals>
             <configuration>
-              <!-- Sets the output directory for the code coverage report. -->
               <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
             </configuration>
           </execution>
