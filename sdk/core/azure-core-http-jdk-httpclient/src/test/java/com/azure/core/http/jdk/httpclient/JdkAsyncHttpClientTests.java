@@ -94,6 +94,7 @@ public class JdkAsyncHttpClientTests {
             .expectNextCount(1)
             .thenRequest(3)
             .expectNextCount(3)
+            .thenRequest(Long.MAX_VALUE)
             .thenConsumeWhile(ByteBuffer::hasRemaining)
             .verifyComplete();
     }
