@@ -158,11 +158,16 @@ public class IdentityClient {
 
     public Mono<MsalToken> authenticateWithIntelliJ(TokenRequestContext request) {
         try {
-
-            AuthMethodDetails authType = determineIntelliJAuthType();
-
-            if (authType.getAuthMethod().equals("SP")) {
-                HashMap<String, String> spDetails = parseIntelliJCredentialFile(authType.getCredFilePath());
+            IntelliJCacheAccessor cacheAccessor = new IntelliJCacheAccessor(options.getKeepPassDatabasePath());
+            AuthMethodDetails authDetails = cacheAccessor.getIntelliJAuthDetails();
+            String authType = authDetails.getAuthMethod();
+            if (CoreUtils.isNullOrEmpty(authType)) {
+                throw new RuntimeException("IntelliJ Authentication not available."
+                    + " Plese login with Azure Tools for IntelliJ plugin in the IDE.");
+            }
+            if (authType.equals("SP")) {
+                HashMap<String, String> spDetails = cacheAccessor
+                    .getIntellijServicePrincipalDetails(authDetails.getCredFilePath());
                 String authorityUrl = spDetails.get("authURL") + tenantId;
                 try {
                     ConfidentialClientApplication.Builder applicationBuilder =
@@ -189,153 +194,28 @@ public class IdentityClient {
                 } catch (MalformedURLException e) {
                     return Mono.error(e);
                 }
-            } else {
-
-                JsonNode intelliJCredentials = getIntelliJCredentials();
+            } else if (authType.equals("DC")) {
+                JsonNode intelliJCredentials = cacheAccessor.getDeviceCodeCredentials();
                 String refreshToken = intelliJCredentials.get("refreshToken").textValue();
-                long expiresOnDate = intelliJCredentials.get("expiresOnDate").longValue();
-
-
-                OffsetDateTime expires = OffsetDateTime.ofInstant(Instant.ofEpochMilli(expiresOnDate),
-                    ZoneOffset.UTC);
 
                 RefreshTokenParameters parameters = RefreshTokenParameters
                                                         .builder(new HashSet<>(request.getScopes()), refreshToken)
                                                         .build();
 
                 return Mono.defer(() -> {
-                    try {
                         return Mono.fromFuture(publicClientApplication.acquireToken(parameters))
                                    .map(ar -> new MsalToken(ar, options));
-                    } catch (Exception e) {
-                        return Mono.error(e);
-                    }
                 });
 
+            } else {
+                throw new RuntimeException("IntelliJ Authentication not available."
+                    + " Plese login with Azure Tools for IntelliJ plugin in the IDE.");
             }
-        } catch(Exception e){
-                throw logger.logExceptionAsError(new RuntimeException("Credential is not available", e));
-            }
-    }
-
-    private HashMap<String, String> parseIntelliJCredentialFile(String credFilePath) {
-        BufferedReader reader;
-        HashMap<String, String> servicePrincipalDetails = new HashMap<>(8);
-        try {
-            reader = new BufferedReader(new FileReader(credFilePath));
-            String line = reader.readLine();
-            while (line != null) {
-                System.out.println(line);
-                String[] split = line.split("=");
-                split[1] = split[1].replace("\\", "");
-                servicePrincipalDetails.put(split[0], split[1]);
-                // read next line
-                line = reader.readLine();
-            }
-            reader.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            return Mono.error(e);
         }
-        return servicePrincipalDetails;
     }
 
-    private AuthMethodDetails determineIntelliJAuthType() throws IOException {
-        String os = System.getProperty("os.name").toLowerCase(Locale.ROOT);
-
-        String homeDir = System.getProperty("user.home");
-        String a = homeDir + String.format("%sAzureToolsForIntelliJ%sAuthMethodDetails.json",
-            File.separator, File.separator);
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        File file = new File(a);
-
-        return objectMapper.readValue(file, AuthMethodDetails.class);
-    }
-
-    private JsonNode getIntelliJCredentials() throws Exception {
-        String os = System.getProperty("os.name").toLowerCase(Locale.ROOT);
-
-        if (os.contains("mac")) {
-            KeyChainAccessor accessor = new KeyChainAccessor(null, "ADAuthManager",
-                "cachedAuthResult");
-
-            String  jsonCred  = new String(accessor.read());
-
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.readTree(jsonCred);
-
-        } else if (os.contains("nix") || os.contains("nux")) {
-            KeyRingAccessor accessor = new KeyRingAccessor(null, null,
-                null, null, "service", "ADAuthManager",
-                "account", "cachedAuthResult");
-
-            String  jsonCred  = new String(accessor.read());
-
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.readTree(jsonCred);
-
-        } else if (os.contains("win")) {
-
-            String database = options.getKeepPassDatabasePath();
-            String pwd = new File(options.getKeepPassDatabasePath()).getParent() + "\\" + "c.pwd";
-            String extractedpwd = "";
-
-            byte[] cryptoKey = new byte[] { 0x50, 0x72, 0x6f, 0x78, 0x79, 0x20, 0x43, 0x6f, 0x6e, 0x66,
-                0x69, 0x67, 0x20, 0x53, 0x65, 0x63};
-
-            SecretKeySpec key = new SecretKeySpec(cryptoKey, "AES");
-
-            BufferedReader reader;
-            try {
-                reader = new BufferedReader(new FileReader(pwd));
-                String line = reader.readLine();
-
-                while (line != null) {
-                    if (line.contains("value")) {
-                        System.out.println(line);
-                        String[] tokens = line.split(" ");
-                        if (tokens.length == 3) {
-                            extractedpwd = tokens[2];
-                        }
-                        // read next line
-                    }
-                    line = reader.readLine();
-                }
-                reader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-
-
-            byte[] dataToDecrypt = Crypt32Util.cryptUnprotectData(Base64.getDecoder().decode(extractedpwd));
-
-            ByteBuffer df = ByteBuffer.wrap(dataToDecrypt);
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-
-            int ivLen = df.getInt();
-            cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(dataToDecrypt, df.position(), ivLen));
-
-            int dataOffset = df.position() + ivLen;
-
-            byte[] decrypted = cipher.doFinal(dataToDecrypt, dataOffset, dataToDecrypt.length - dataOffset);
-
-            String password = new String(decrypted);
-
-            KdbxCreds creds = new KdbxCreds(password.getBytes());
-            InputStream inputStream = new FileInputStream(new File("C:\\Users\\uxjava\\.IdeaIC2019.1\\config\\c.kdbx"));
-
-            Database database3 = SimpleDatabase.load(creds, inputStream);
-
-            List<Entry> bcv = database3.findEntries("ADAuthManager");
-
-            bcv.get(0).getPassword();
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.readTree(bcv.get(0).getPassword());
-
-        }
-        return null;
-    }
     /**
      * Asynchronously acquire a token from Active Directory with Azure CLI.
      *
