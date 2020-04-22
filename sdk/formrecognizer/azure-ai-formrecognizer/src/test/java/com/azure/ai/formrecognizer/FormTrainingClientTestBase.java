@@ -178,10 +178,6 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     @Test
     abstract void beginTrainingUnlabeledResult();
 
-    void getCustomModelInvalidStatusModelRunner(Consumer<String> testRunner) {
-        testRunner.accept(TestUtils.INVALID_STATUS_MODEL_ID);
-    }
-
     void getCustomModelInvalidModelIdRunner(Consumer<String> testRunner) {
         testRunner.accept(TestUtils.INVALID_MODEL_ID);
     }

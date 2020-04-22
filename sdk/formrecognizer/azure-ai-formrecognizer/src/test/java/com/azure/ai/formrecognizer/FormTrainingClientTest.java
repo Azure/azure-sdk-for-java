@@ -14,6 +14,8 @@ import com.azure.core.util.polling.SyncPoller;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.CountDownLatch;
+
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID_ERROR;
 import static com.azure.ai.formrecognizer.TestUtils.NULL_SOURCE_URL_ERROR;
@@ -27,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class FormTrainingClientTest extends FormTrainingClientTestBase {
 
     private FormTrainingClient client;
+    private CountDownLatch countDownLatch;
 
     @Override
     protected void beforeTest() {
@@ -81,8 +84,8 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
             SyncPoller<OperationResult, CustomFormModel> syncPoller = client.beginTraining(unLabeledContainerSasUrl,
                 useLabelFile);
             syncPoller.waitForCompletion();
-            CustomFormModel customFormModel = syncPoller.getFinalResult();
-            validateCustomModel(customFormModel, client.getCustomModel(customFormModel.getModelId()));
+            CustomFormModel trainedUnlabeledModel = syncPoller.getFinalResult();
+            validateCustomModel(trainedUnlabeledModel, client.getCustomModel(trainedUnlabeledModel.getModelId()));
         });
     }
 

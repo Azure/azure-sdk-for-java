@@ -73,9 +73,9 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     void recognizeReceiptData() {
         receiptDataRunner((data) -> {
             SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
-                client.beginRecognizeReceipts(data.block(), RECEIPT_FILE_LENGTH, FormContentType.IMAGE_JPEG, false, null);
+                client.beginRecognizeReceipts(data, RECEIPT_FILE_LENGTH, FormContentType.IMAGE_JPEG, false, null);
             syncPoller.waitForCompletion();
-            validateReceiptResult(false, getExpectedReceipts(false), syncPoller.getFinalResult());
+            validateReceiptResult(getExpectedReceipts(false), syncPoller.getFinalResult());
         });
     }
 
@@ -84,10 +84,10 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      * And the content type is not given. The content will be auto detected.
      */
     @Test
-    void extractReceiptDataWithContentTypeAutoDetection() {
+    void recognizeReceiptDataWithContentTypeAutoDetection() {
         receiptDataRunner((data) -> {
             SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
-                client.beginRecognizeReceipts(data.block(), RECEIPT_FILE_LENGTH, null, false, null);
+                client.beginRecognizeReceipts(data, RECEIPT_FILE_LENGTH, null, false, null);
             syncPoller.waitForCompletion();
             validateReceiptResult(getExpectedReceipts(false), syncPoller.getFinalResult());
         });
@@ -157,18 +157,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
             assertEquals(httpResponseException.getMessage(), (INVALID_SOURCE_URL_ERROR));
         });
-    }
-
-    /**
-     * Verifies that an exception is thrown for invalid training data source.
-     */
-    @Test
-    void extractCustomFormInValidSourceUrl() {
-        ErrorResponseException httpResponseException = assertThrows(
-            ErrorResponseException.class,
-            () -> client.beginRecognizeCustomFormsFromUrl(INVALID_URL, VALID_MODEL_ID).getFinalResult());
-
-        assertEquals(httpResponseException.getMessage(), (INVALID_SOURCE_URL_ERROR));
     }
 
     /**

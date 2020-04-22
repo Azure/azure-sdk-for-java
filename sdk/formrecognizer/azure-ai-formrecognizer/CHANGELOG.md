@@ -8,10 +8,10 @@ our efforts can be found in the [Azure SDK Design Guidelines for Java](https://a
 For more information about this, and preview releases of other Azure SDK libraries, please visit
 https://azure.github.io/azure-sdk/releases/latest/java.html.
 
-- It uses the Form recognizer service `v2.0-preview.1` API.
+- It uses the Form Recognizer service `v2.0-preview.1` API.
 - Two client design:
-    - FormRecognizerClient to analyze fields/values on custom forms, receipts, and form content/layout
-    - FormTrainingClient to train custom models (with/without labels), and manage the custom models on your account
+    - `FormRecognizerClient` to analyze fields/values on custom forms, receipts, and form content/layout
+    - `FormTrainingClient` to train custom models (with/without labels), and manage the custom models on your account
 - Different analyze methods based on input type: file stream or URL.
     - URL input should use the method with suffix `fromUrl`
     - Stream methods will automatically detect content-type of the input file if not provided.

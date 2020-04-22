@@ -54,14 +54,12 @@ import static com.azure.ai.formrecognizer.Transforms.toRecognizedForm;
  */
 final class TestUtils {
     static final String INVALID_MODEL_ID = "a0a3998a-4c4affe66b7";
-    static final String INVALID_STATUS_MODEL_ID = "22138c4e-c4b0-4901-a0e1-6c5beb73fc1d";
     static final String INVALID_RECEIPT_URL = "https://invalid.blob.core.windows.net/fr/contoso-allinone.jpg";
     static final String INVALID_SOURCE_URL_ERROR = "Status code 400, \"{\"error\":{\"code\":\"1003\","
         + "\"message\":\"Parameter 'Source' is not a valid Uri.\"}}\"";
     static final String INVALID_MODEL_ID_ERROR = "Invalid UUID string: " + INVALID_MODEL_ID;
     static final String NULL_SOURCE_URL_ERROR = "'fileSourceUrl' cannot be null.";
     static final String INVALID_URL = "htttttttps://localhost:8080";
-    static final String LABELED_MODEL_ID = "a0a3998a-b3c0-4075-aa6b-c4c4affe66b7";
     static final String VALID_HTTPS_LOCALHOST = "https://localhost:8080";
     static final String RECEIPT_LOCAL_URL = "src/test/resources/sample_files/Test/contoso-allinone.jpg";
     static final String LAYOUT_LOCAL_URL = "src/test/resources/sample_files/Test/layout1.jpg";
@@ -190,8 +188,8 @@ final class TestUtils {
                 put("InvoiceVatId", new CustomFormModelField(null, "InvoiceVatId", 1.0f));
             }
         };
-        CustomFormSubModel customFormSubModel = new CustomFormSubModel(0.92f, fieldMap, "form-" + LABELED_MODEL_ID);
-        return new CustomFormModel(LABELED_MODEL_ID, CustomFormModelStatus.READY,
+        CustomFormSubModel customFormSubModel = new CustomFormSubModel(0.92f, fieldMap, "form-" + "{labeled_model_Id}");
+        return new CustomFormModel("{labeled_model_Id}", CustomFormModelStatus.READY,
             OffsetDateTime.parse("2020-04-09T18:24:49Z"),
             OffsetDateTime.parse("2020-04-09T18:24:56Z"),
             new IterableStream<>(Collections.singletonList(customFormSubModel)),
@@ -202,17 +200,22 @@ final class TestUtils {
         return new AccountProperties(14, 5000);
     }
 
-    static Mono<InputStream> getFileData(String localFileUrl) {
-        return Mono.defer(() -> {
+    static InputStream getFileData(String localFileUrl) {
+        try {
+            return new FileInputStream(localFileUrl);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("Local file not found.", e);
+        }
+    }
+
+    static Flux<ByteBuffer> getReplayableBufferData(String localFileUrl) {
+        Mono<InputStream> dataMono = Mono.defer(() -> {
             try {
                 return Mono.just(new FileInputStream(localFileUrl));
             } catch (FileNotFoundException e) {
-                return Mono.error(new RuntimeException("Local Receipt file not found.", e));
+                return Mono.error(new RuntimeException("Local file not found.", e));
             }
         });
-    }
-
-    static Flux<ByteBuffer> getFileBufferData(Mono<InputStream> dataMono) {
         return dataMono.flatMapMany(new Function<InputStream, Flux<ByteBuffer>>() {
             @Override
             public Flux<ByteBuffer> apply(InputStream inputStream) {

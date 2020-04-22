@@ -34,7 +34,7 @@
       "apim-request-id" : "fdb979e3-4c9c-4afa-a063-699ee38e0b4b",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"c96618e2-9a4d-4b6d-9998-2cebad0cae5c\",\"status\":\"creating\",\"createdDateTime\":\"2020-04-18T19:56:06Z\",\"lastUpdatedDateTime\":\"2020-04-18T19:56:06Z\"}}",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"c96618e2-9a4d-4b6d-9998-2cebad0cae5c\",\"status\":\"ready\",\"createdDateTime\":\"2020-04-18T19:56:06Z\",\"lastUpdatedDateTime\":\"2020-04-18T19:56:13Z\"},\"keys\":{\"clusters\":{\"0\":[\"Address:\",\"Charges\",\"Invoice Date\",\"Invoice Due Date\",\"Invoice For:\",\"Invoice Number\",\"Microsoft\",\"Page\",\"VAT ID\"]}},\"trainResult\":{\"trainingDocuments\":[{\"documentName\":\"Invoice_1.pdf\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Invoice_2.pdf\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Invoice_3.pdf\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Invoice_4.pdf\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Invoice_5.pdf\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"}],\"errors\":[]}}",
       "Date" : "Sat, 18 Apr 2020 19:56:11 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
