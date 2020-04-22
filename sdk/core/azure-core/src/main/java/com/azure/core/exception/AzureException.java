@@ -4,7 +4,7 @@
 package com.azure.core.exception;
 
 /**
- * The base exception type for all Azure-related exceptions.
+ * The base Azure exception.
  *
  * @see HttpRequestException
  * @see ServiceResponseException
@@ -14,11 +14,27 @@ public class AzureException extends RuntimeException {
 
     /**
      * Initializes a new instance of the AzureException class.
+     */
+    public AzureException() {
+        super();
+    }
+
+    /**
+     * Initializes a new instance of the AzureException class.
      *
      * @param message The exception message.
      */
     public AzureException(final String message) {
         super(message);
+    }
+
+    /**
+     * Initializes a new instance of the AzureException class.
+     *
+     * @param cause The {@link Throwable} which caused the creation of this AzureException.
+     */
+    public AzureException(final Throwable cause) {
+        super(cause);
     }
 
     /**
