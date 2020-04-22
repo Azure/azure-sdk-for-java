@@ -138,7 +138,7 @@ public final class RntbdTransportClient extends TransportClient {
             if (response != null) {
                 RequestTimeline timeline = record.takeTimelineSnapshot();
                 if (record.lifetime().toMillis() > 10_000L) {
-                    logger.warn("{} request took {} to complete: {}", record, record.lifetime(), timeline);
+                    logger.warn("{} request took {} to complete", record, record.lifetime());
                 }
                 response.setRequestTimeline(timeline);
             }
