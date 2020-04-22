@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core;
+package com.azure.core.util;
 
-import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -13,29 +12,30 @@ import java.util.stream.Stream;
 
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_TRACING_DISABLED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests the configuration API.
  */
 public class ConfigurationTests {
-    private final String runtimeConfigurationName = "configurationAPIRuntimeFound";
-    private final String runtimeConfiguration = "runtimeConfiguration";
-
-    private final String environmentConfigurationName = "configurationAPIEnvironmentFound";
-    private final String environmentConfiguration = "environmentConfiguration";
-
-    private final String runtimeOverEnvironmentName = "configurationAPIUseRuntimeFirst";
-    private final String defaultConfiguration = "defaultConfiguration";
+    private static final String MY_CONFIGURATION = "myConfigurationABC123";
+    private static final String EXPECTED_VALUE = "aConfigurationValueAbc123";
+    private static final String UNEXPECTED_VALUE = "notMyConfigurationValueDef456";
+    private static final String DEFAULT_VALUE = "theDefaultValueGhi789";
 
     /**
      * Verifies that a runtime parameter is able to be retrieved.
      */
     @Test
     public void runtimeConfigurationFound() {
-        assertNotNull(Configuration.getGlobalConfiguration().get(runtimeConfigurationName));
+        Configuration configuration = spy(Configuration.class);
+        when(configuration.loadFromProperties(MY_CONFIGURATION)).thenReturn(EXPECTED_VALUE);
+        when(configuration.loadFromEnvironment(MY_CONFIGURATION)).thenReturn(null);
+
+        assertEquals(EXPECTED_VALUE, configuration.get(MY_CONFIGURATION));
     }
 
     /**
@@ -43,7 +43,11 @@ public class ConfigurationTests {
      */
     @Test
     public void environmentConfigurationFound() {
-        assertNotNull(Configuration.getGlobalConfiguration().get(environmentConfigurationName));
+        Configuration configuration = spy(Configuration.class);
+        when(configuration.loadFromProperties(MY_CONFIGURATION)).thenReturn(null);
+        when(configuration.loadFromEnvironment(MY_CONFIGURATION)).thenReturn(EXPECTED_VALUE);
+
+        assertEquals(EXPECTED_VALUE, configuration.get(MY_CONFIGURATION));
     }
 
     /**
@@ -51,7 +55,8 @@ public class ConfigurationTests {
      */
     @Test
     public void configurationNotFound() {
-        assertNull(Configuration.getGlobalConfiguration().get("invalidConfiguration"));
+        Configuration configuration = new Configuration();
+        assertNull(configuration.get(MY_CONFIGURATION));
     }
 
     /**
@@ -59,8 +64,11 @@ public class ConfigurationTests {
      */
     @Test
     public void runtimeConfigurationPreferredOverEnvironmentConfiguration() {
-        String configurationValue = Configuration.getGlobalConfiguration().get(runtimeOverEnvironmentName);
-        assertEquals(runtimeConfiguration, configurationValue);
+        Configuration configuration = spy(Configuration.class);
+        when(configuration.loadFromProperties(MY_CONFIGURATION)).thenReturn(EXPECTED_VALUE);
+        when(configuration.loadFromEnvironment(MY_CONFIGURATION)).thenReturn(UNEXPECTED_VALUE);
+
+        assertEquals(EXPECTED_VALUE, configuration.get(MY_CONFIGURATION));
     }
 
     /**
@@ -68,10 +76,10 @@ public class ConfigurationTests {
      */
     @Test
     public void foundConfigurationPreferredOverDefault() {
-        String configurationValue = Configuration.getGlobalConfiguration()
-            .get(environmentConfigurationName, defaultConfiguration);
+        Configuration configuration = spy(Configuration.class);
+        when(configuration.loadFromEnvironment(MY_CONFIGURATION)).thenReturn(EXPECTED_VALUE);
 
-        assertEquals(environmentConfiguration, configurationValue);
+        assertEquals(EXPECTED_VALUE, configuration.get(MY_CONFIGURATION, DEFAULT_VALUE));
     }
 
     /**
@@ -79,10 +87,9 @@ public class ConfigurationTests {
      */
     @Test
     public void fallbackToDefaultConfiguration() {
-        String configurationValue = Configuration.getGlobalConfiguration()
-            .get("invalidConfiguration", defaultConfiguration);
+        Configuration configuration = new Configuration();
 
-        assertEquals(defaultConfiguration, configurationValue);
+        assertEquals(DEFAULT_VALUE, configuration.get(MY_CONFIGURATION, DEFAULT_VALUE));
     }
 
     /**
@@ -90,10 +97,10 @@ public class ConfigurationTests {
      */
     @Test
     public void foundConfigurationIsConverted() {
-        String configurationValue = Configuration.getGlobalConfiguration()
-            .get(runtimeConfigurationName, String::toUpperCase);
+        Configuration configuration = spy(Configuration.class);
+        when(configuration.loadFromProperties(MY_CONFIGURATION)).thenReturn(EXPECTED_VALUE);
 
-        assertEquals(runtimeConfiguration.toUpperCase(), configurationValue);
+        assertEquals(EXPECTED_VALUE.toUpperCase(), configuration.get(MY_CONFIGURATION, String::toUpperCase));
     }
 
     /**
@@ -101,7 +108,7 @@ public class ConfigurationTests {
      */
     @Test
     public void notFoundConfigurationIsConvertedToNull() {
-        assertNull(new Configuration().get("invalidConfiguration", String::toUpperCase));
+        assertNull(new Configuration().get(MY_CONFIGURATION, String::toUpperCase));
     }
 
     @Test
