@@ -25,7 +25,7 @@ import com.azure.storage.blob.implementation.models.BlobGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.BlobGetPropertiesHeaders;
 import com.azure.storage.blob.implementation.models.BlobStartCopyFromURLHeaders;
 import com.azure.storage.blob.implementation.models.BlobTag;
-import com.azure.storage.blob.implementation.models.BlobsGetTagsResponse;
+import com.azure.storage.blob.implementation.models.BlobTags;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.implementation.util.ModelHelper;
@@ -39,7 +39,6 @@ import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.models.BlobTags;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
@@ -1318,8 +1317,8 @@ public class BlobAsyncClientBase {
                     hd.isIncrementalCopy(), hd.getDestinationSnapshot(), AccessTier.fromString(hd.getAccessTier()),
                     hd.isAccessTierInferred(), ArchiveStatus.fromString(hd.getArchiveStatus()),
                     hd.getEncryptionKeySha256(), hd.getEncryptionScope(), hd.getAccessTierChangeTime(),
-                        hd.getMetadata(), hd.getBlobCommittedBlockCount(), hd.getVersionId(), hd.isCurrentVersion(),
-                        hd.getTagCount());
+                    hd.getMetadata(), hd.getBlobCommittedBlockCount(), hd.getVersionId(), hd.isCurrentVersion(),
+                    hd.getTagCount());
                 return new SimpleResponse<>(rb, properties);
             });
     }
@@ -1478,7 +1477,7 @@ public class BlobAsyncClientBase {
 
     Mono<Response<Map<String, String>>> getTagsWithResponse(Context context) {
         return this.azureBlobStorage.blobs().getTagsWithRestResponseAsync(null, null, null, null, snapshot,
-            null /* versionId */, context)
+            versionId, context)
             .map(response -> {
                 Map<String, String> tags = new HashMap<>();
                 for(BlobTag tag : response.getValue().getBlobTagSet()) {
@@ -1537,8 +1536,8 @@ public class BlobAsyncClientBase {
             }
         }
         BlobTags t = new BlobTags().setBlobTagSet(tagList);
-        return this.azureBlobStorage.blobs().setTagsWithRestResponseAsync(null, null, null, snapshot,
-            null /* versionId */, null, null, null, t, context)
+        return this.azureBlobStorage.blobs().setTagsWithRestResponseAsync(null, null, null, versionId, null, null, null,
+            t, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 

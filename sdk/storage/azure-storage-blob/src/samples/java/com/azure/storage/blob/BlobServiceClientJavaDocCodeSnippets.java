@@ -9,6 +9,7 @@ import com.azure.storage.blob.models.BlobContainerListDetails;
 import com.azure.storage.blob.models.BlobMetrics;
 import com.azure.storage.blob.models.BlobRetentionPolicy;
 import com.azure.storage.blob.models.BlobServiceProperties;
+import com.azure.storage.blob.models.FindBlobsOptions;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
@@ -109,17 +110,17 @@ public class BlobServiceClientJavaDocCodeSnippets {
 
     /**
      * Code snippets for {@link BlobServiceClient#findBlobsByTags(String)} and
-     * {@link BlobServiceClient#findBlobsByTags(String, Integer, Duration)}
+     * {@link BlobServiceClient#findBlobsByTags(String, com.azure.storage.blob.models.FindBlobsOptions, Duration)}
      */
-    public void filterBlobs() {
-        // BEGIN: com.azure.storage.blob.BlobServiceClient.filterBlobs#String
+    public void findBlobsByTag() {
+        // BEGIN: com.azure.storage.blob.BlobServiceClient.findBlobsByTag#String
         client.findBlobsByTags("where=tag=value").forEach(blob -> System.out.printf("Name: %s%n", blob.getName()));
-        // END: com.azure.storage.blob.BlobServiceClient.filterBlobs#String
+        // END: com.azure.storage.blob.BlobServiceClient.findBlobsByTag#String
 
-        // BEGIN: com.azure.storage.blob.BlobServiceClient.filterBlobs#String-Integer-Duration
-        client.findBlobsByTags("where=tag=value", 10, timeout)
+        // BEGIN: com.azure.storage.blob.BlobServiceClient.findBlobsByTag#String-FindBlobsOptions-Duration
+        client.findBlobsByTags("where=tag=value", new FindBlobsOptions().setMaxResultsPerPage(10), timeout)
             .forEach(blob -> System.out.printf("Name: %s%n", blob.getName()));
-        // END: com.azure.storage.blob.BlobServiceClient.filterBlobs#String-Integer-Duration
+        // END: com.azure.storage.blob.BlobServiceClient.findBlobsByTag#String-FindBlobsOptions-Duration
     }
 
     /**

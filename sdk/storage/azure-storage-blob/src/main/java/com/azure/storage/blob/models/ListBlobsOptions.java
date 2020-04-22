@@ -91,6 +91,4 @@ public final class ListBlobsOptions {
         this.maxResultsPerPage = maxResultsPerPage;
         return this;
     }
-
-
 }

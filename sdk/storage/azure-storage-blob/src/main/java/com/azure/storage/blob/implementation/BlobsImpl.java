@@ -48,6 +48,7 @@ import com.azure.storage.blob.implementation.models.BlobsSetTagsResponse;
 import com.azure.storage.blob.implementation.models.BlobsSetTierResponse;
 import com.azure.storage.blob.implementation.models.BlobsStartCopyFromURLResponse;
 import com.azure.storage.blob.implementation.models.BlobsUndeleteResponse;
+import com.azure.storage.blob.implementation.models.BlobTags;
 import com.azure.storage.blob.implementation.models.DataLakeStorageErrorException;
 import com.azure.storage.blob.implementation.models.DirectoryHttpHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
@@ -55,7 +56,6 @@ import com.azure.storage.blob.implementation.models.QueryRequest;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
-import com.azure.storage.blob.models.BlobTags;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.EncryptionAlgorithmType;
@@ -211,7 +211,7 @@ public final class BlobsImpl {
         @Put("{containerName}/{blob}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<BlobsSetTagsResponse> setTags(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @HeaderParam("x-ms-version") String version, @QueryParam("timeout") Integer timeout, @QueryParam("snapshot") String snapshot, @QueryParam("versionid") String versionId, @HeaderParam("Content-MD5") String transactionalContentMD5, @HeaderParam("x-ms-content-crc64") String transactionalContentCrc64, @HeaderParam("x-ms-client-request-id") String requestId, @BodyParam("application/xml; charset=utf-8") BlobTags tags, @QueryParam("comp") String comp, Context context);
+        Mono<BlobsSetTagsResponse> setTags(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @HeaderParam("x-ms-version") String version, @QueryParam("timeout") Integer timeout, @QueryParam("versionid") String versionId, @HeaderParam("Content-MD5") String transactionalContentMD5, @HeaderParam("x-ms-content-crc64") String transactionalContentCrc64, @HeaderParam("x-ms-client-request-id") String requestId, @BodyParam("application/xml; charset=utf-8") BlobTags tags, @QueryParam("comp") String comp, Context context);
     }
 
     /**
@@ -1417,14 +1417,13 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobsSetTagsResponse> setTagsWithRestResponseAsync(String containerName, String blob, Context context) {
         final Integer timeout = null;
-        final String snapshot = null;
         final String versionId = null;
         final String requestId = null;
         final BlobTags tags = null;
         final String comp = "tags";
         String transactionalContentMD5Converted = null;
         String transactionalContentCrc64Converted = null;
-        return service.setTags(containerName, blob, this.client.getUrl(), this.client.getVersion(), timeout, snapshot, versionId, transactionalContentMD5Converted, transactionalContentCrc64Converted, requestId, tags, comp, context);
+        return service.setTags(containerName, blob, this.client.getUrl(), this.client.getVersion(), timeout, versionId, transactionalContentMD5Converted, transactionalContentCrc64Converted, requestId, tags, comp, context);
     }
 
     /**
@@ -1433,7 +1432,6 @@ public final class BlobsImpl {
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob snapshot to retrieve. For more information on working with blob snapshots, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating a Snapshot of a Blob.&lt;/a&gt;.
      * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
@@ -1444,10 +1442,10 @@ public final class BlobsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlobsSetTagsResponse> setTagsWithRestResponseAsync(String containerName, String blob, Integer timeout, String snapshot, String versionId, byte[] transactionalContentMD5, byte[] transactionalContentCrc64, String requestId, BlobTags tags, Context context) {
+    public Mono<BlobsSetTagsResponse> setTagsWithRestResponseAsync(String containerName, String blob, Integer timeout, String versionId, byte[] transactionalContentMD5, byte[] transactionalContentCrc64, String requestId, BlobTags tags, Context context) {
         final String comp = "tags";
         String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
         String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
-        return service.setTags(containerName, blob, this.client.getUrl(), this.client.getVersion(), timeout, snapshot, versionId, transactionalContentMD5Converted, transactionalContentCrc64Converted, requestId, tags, comp, context);
+        return service.setTags(containerName, blob, this.client.getUrl(), this.client.getVersion(), timeout, versionId, transactionalContentMD5Converted, transactionalContentCrc64Converted, requestId, tags, comp, context);
     }
 }

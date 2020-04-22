@@ -5,7 +5,6 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.storage.blob.models.BlobItemInternal;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;

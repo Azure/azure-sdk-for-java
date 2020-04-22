@@ -14,6 +14,7 @@ import com.azure.storage.blob.models.FilterBlobItem;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobServiceStatistics;
+import com.azure.storage.blob.models.FindBlobsOptions;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
@@ -201,7 +202,7 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.filterBlobs#String}
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.findBlobsByTag#String}
      *
      * @param query Filters the results to return only blobs whose tags match the specified expression.
      * @return The list of blobs.
@@ -217,15 +218,15 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.filterBlobs#String-Integer-Duration}
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.findBlobsByTag#String-FindBlobsOptions-Duration}
      *
      * @param query Filters the results to return only blobs whose tags match the specified expression.
-     * @param maxResultsPerPage The maximum number of results to return in a given page.
+     * @param options {@link FindBlobsOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The list of blobs.
      */
-    public PagedIterable<FilterBlobItem> findBlobsByTags(String query, Integer maxResultsPerPage, Duration timeout) {
-        return new PagedIterable<>(blobServiceAsyncClient.findBlobsByTags(query, maxResultsPerPage, timeout));
+    public PagedIterable<FilterBlobItem> findBlobsByTags(String query, FindBlobsOptions options, Duration timeout) {
+        return new PagedIterable<>(blobServiceAsyncClient.findBlobsByTags(query, options, timeout));
     }
 
     /**

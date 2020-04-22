@@ -26,7 +26,6 @@ import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.blob.models.BlobItem;
-import com.azure.storage.blob.models.BlobItemInternal;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.BlobStorageException;
@@ -47,6 +46,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -778,7 +778,7 @@ public final class BlobContainerAsyncClient {
             marker -> listBlobsFlatSegment(marker, options, timeout)
                 .map(response -> {
                     List<BlobItem> value = response.getValue().getSegment() == null
-                        ? new ArrayList<>(0)
+                        ? Collections.emptyList()
                         : response.getValue().getSegment().getBlobItems().stream()
                         .map(BlobItem::new)
                         .collect(Collectors.toList());
@@ -919,7 +919,7 @@ public final class BlobContainerAsyncClient {
             marker -> listBlobsHierarchySegment(marker, delimiter, options, timeout)
                 .map(response -> {
                     List<BlobItem> value = response.getValue().getSegment() == null
-                        ? new ArrayList<>(0)
+                        ? Collections.emptyList()
                         : Stream.concat(
                         response.getValue().getSegment().getBlobItems().stream().map(BlobItem::new),
                         response.getValue().getSegment().getBlobPrefixes().stream()

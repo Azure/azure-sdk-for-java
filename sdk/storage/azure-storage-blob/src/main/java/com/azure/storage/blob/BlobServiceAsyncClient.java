@@ -29,6 +29,7 @@ import com.azure.storage.blob.models.BlobRetentionPolicy;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobServiceStatistics;
 import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.blob.models.FindBlobsOptions;
 import com.azure.storage.blob.models.KeyInfo;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
@@ -45,6 +46,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -338,7 +340,7 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.filterBlobs#String}
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.findBlobsByTag#String}
      *
      * @param query Filters the results to return only blobs whose tags match the specified expression.
      * @return A reactive response emitting the list of blobs.
@@ -353,29 +355,28 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncServiceClient.filterBlobs#String-Integer}
+     * {@codesnippet com.azure.storage.blob.BlobAsyncServiceClient.findBlobsByTag#String-FindBlobsOptions}
      *
      * @param query Filters the results to return only blobs whose tags match the specified expression.
-     * @param maxResultsPerPage The maximum number of results to return in a given page.
+     * @param options {@link FindBlobsOptions}
      * @return A reactive response emitting the list of blobs.
      */
-    public PagedFlux<FilterBlobItem> findBlobsByTags(String query, Integer maxResultsPerPage) {
+    public PagedFlux<FilterBlobItem> findBlobsByTags(String query, FindBlobsOptions options) {
         try {
-            return findBlobsByTags(query, maxResultsPerPage, null);
+            return findBlobsByTags(query, options, null);
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
     }
 
-    // TODO: options instead of maxResults?
     // TODO: Return type?
-    PagedFlux<FilterBlobItem> findBlobsByTags(String query, Integer maxResults, Duration timeout) {
+    PagedFlux<FilterBlobItem> findBlobsByTags(String query, FindBlobsOptions options, Duration timeout) {
         throwOnAnonymousAccess();
         Function<String, Mono<PagedResponse<FilterBlobItem>>> func =
-            marker -> findBlobsByTags(query, marker, maxResults, timeout)
+            marker -> findBlobsByTags(query, marker, options.getMaxResultsPerPage(), timeout)
                 .map(response -> {
                     List<FilterBlobItem> value = response.getValue().getBlobs() == null
-                        ? new ArrayList<>(0)
+                        ? Collections.emptyList()
                         : response.getValue().getBlobs();
 
                     return new PagedResponseBase<>(

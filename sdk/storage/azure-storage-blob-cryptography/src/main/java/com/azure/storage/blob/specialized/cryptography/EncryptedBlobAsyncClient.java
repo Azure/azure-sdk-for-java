@@ -36,6 +36,7 @@ import java.nio.ByteBuffer;
 import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -285,8 +286,8 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers, Map<String, String> metadata,
         Map<String, String> tags, AccessTier tier, BlobRequestConditions requestConditions) {
         try {
-            final Map<String, String> metadataFinal = metadata == null ? new HashMap<>() : metadata;
-            final Map<String, String> tagsFinal = tags == null ? new HashMap<>() : tags;
+            final Map<String, String> metadataFinal = metadata == null ? Collections.emptyMap() : metadata;
+            final Map<String, String> tagsFinal = tags == null ? Collections.emptyMap() : tags;
             Mono<Flux<ByteBuffer>> dataFinal = prepareToSendEncryptedRequest(data, metadataFinal);
             return dataFinal.flatMap(df -> super.uploadWithResponse(df, parallelTransferOptions, headers, metadataFinal,
                 tagsFinal, tier, requestConditions));

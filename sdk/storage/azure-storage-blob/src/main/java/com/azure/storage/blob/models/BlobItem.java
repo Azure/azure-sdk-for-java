@@ -5,6 +5,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.storage.blob.implementation.models.BlobItemInternal;
 import com.azure.storage.blob.implementation.models.BlobTag;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -18,7 +19,6 @@ import java.util.Map;
 @JacksonXmlRootElement(localName = "Blob")
 @Fluent
 public final class BlobItem {
-
 
     public BlobItem() {
 

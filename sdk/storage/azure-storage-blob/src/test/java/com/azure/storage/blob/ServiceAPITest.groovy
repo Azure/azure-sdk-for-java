@@ -13,6 +13,7 @@ import com.azure.storage.blob.models.BlobMetrics
 import com.azure.storage.blob.models.BlobRetentionPolicy
 import com.azure.storage.blob.models.BlobServiceProperties
 import com.azure.storage.blob.models.CustomerProvidedKey
+import com.azure.storage.blob.models.FindBlobsOptions
 import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.models.StaticWebsite
 
@@ -227,12 +228,14 @@ class ServiceAPITest extends APISpec {
                 null, null, tags, null, null, null, null)
         }
 
-        def firstPage = primaryBlobServiceClient.findBlobsByTags("\"tag\"='value'", 5, null)
+        def firstPage = primaryBlobServiceClient.findBlobsByTags("\"tag\"='value'",
+            new FindBlobsOptions().setMaxResultsPerPage(5), null)
             .iterableByPage().iterator().next()
         def marker = firstPage.getContinuationToken()
         def firstBlobName = firstPage.getValue().first().getName()
 
-        def secondPage = primaryBlobServiceClient.findBlobsByTags("\"tag\"='value'", 5, null)
+        def secondPage = primaryBlobServiceClient.findBlobsByTags("\"tag\"='value'",
+            new FindBlobsOptions().setMaxResultsPerPage(5), null)
             .iterableByPage(marker).iterator().next()
 
         expect:
@@ -257,7 +260,8 @@ class ServiceAPITest extends APISpec {
 
         expect:
         for (ContinuablePage page :
-            primaryBlobServiceClient.findBlobsByTags("\"tag\"='value'", PAGE_RESULTS, null).iterableByPage()) {
+            primaryBlobServiceClient.findBlobsByTags("\"tag\"='value'",
+                new FindBlobsOptions().setMaxResultsPerPage(PAGE_RESULTS), null).iterableByPage()) {
             assert page.iterator().size() <= PAGE_RESULTS
         }
 
@@ -295,7 +299,8 @@ class ServiceAPITest extends APISpec {
         }
 
         when: "Consume results by page"
-        primaryBlobServiceClient.findBlobsByTags("\"tag\"='value'", PAGE_RESULTS, Duration.ofSeconds(10))
+        primaryBlobServiceClient.findBlobsByTags("\"tag\"='value'",
+            new FindBlobsOptions().setMaxResultsPerPage(PAGE_RESULTS), Duration.ofSeconds(10))
             .streamByPage().count()
 
         then: "Still have paging functionality"

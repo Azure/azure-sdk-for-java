@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob.implementation.models;
 
-import com.azure.storage.blob.models.BlobItemInternal;
 import com.azure.storage.blob.models.BlobPrefix;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;

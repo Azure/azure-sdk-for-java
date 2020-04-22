@@ -295,7 +295,7 @@ public class BlobClient extends BlobClientBase {
     public void uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions,
         Duration timeout) {
-
+        this.uploadFromFile(filePath, parallelTransferOptions, headers, metadata, null, tier, requestConditions, null);
     }
 
     /**
