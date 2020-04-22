@@ -316,12 +316,17 @@
         </executions>
       </plugin>
 
-      <!-- Performs test coverage analysis -->
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <executions>
+          <execution>
+            <id>prepare-agent</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
           <execution>
             <id>default-instrument</id>
             <goals>
@@ -335,54 +340,46 @@
             </goals>
           </execution>
           <execution>
-            <!-- This generates the unit test reports for individual modules.
-              jacoco-test-coverage generates aggregate reports for all modules -->
-            <id>post-unit-test</id>
-            <goals>
-              <goal>report</goal>
-            </goals>
-            <configuration>
-              <!-- Sets the output directory for the code coverage report. -->
-              <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
-              <excludes>
-                <exclude>**/com/azure/cosmos/implementation/apachecommons/**/*</exclude>
-                <exclude>**/com/azure/cosmos/implementation/guava25/**/*</exclude>
-                <exclude>**/com/azure/cosmos/implementation/guava27/**/*</exclude>
-              </excludes>
+            <id>post-unit-test</id>	
+            <goals>	
+              <goal>report</goal>	
+            </goals>	
+            <configuration>	
+              <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>	
+              <excludes>	
+                <exclude>**/com/azure/cosmos/implementation/apachecommons/**/*</exclude>	
+                <exclude>**/com/azure/cosmos/implementation/guava25/**/*</exclude>	
+                <exclude>**/com/azure/cosmos/implementation/guava27/**/*</exclude>	
+              </excludes>     
             </configuration>
           </execution>
-          <execution>
-            <id>check</id>
+          <execution>	
+            <id>check</id>	
             <goals>
-              <goal>check</goal>
+              <goal>check</goal>	        
             </goals>
-            <configuration>
-              <rules>
+            <configuration>	
+              <rules>	
                 <rule>
-                  <element>BUNDLE</element>
-                  <limits>
-                    <limit>
-                      <counter>LINE</counter>
-                      <value>COVEREDRATIO</value>
-                      <minimum>${jacoco.min.linecoverage}</minimum>
-                    </limit>
-                    <limit>
-                      <counter>BRANCH</counter>
-                      <value>COVEREDRATIO</value>
-                      <minimum>${jacoco.min.branchcoverage}</minimum>
-                    </limit>
-                  </limits>
-                </rule>
+                  <element>BUNDLE</element>	
+                  <limits>	
+                    <limit>	
+                      <counter>LINE</counter>	
+                      <value>COVEREDRATIO</value>	
+                      <minimum>${jacoco.min.linecoverage}</minimum>	
+                    </limit>	
+                    <limit>	
+                      <counter>BRANCH</counter>	
+                      <value>COVEREDRATIO</value>	
+                      <minimum>${jacoco.min.branchcoverage}</minimum>	
+                    </limit>	
+                  </limits>	
+                </rule>	
               </rules>
-              <excludes>
-                <exclude>**/com/azure/cosmos/implementation/apachecommons/**/*</exclude>
-                <exclude>**/com/azure/cosmos/implementation/guava25/**/*</exclude>
-                <exclude>**/com/azure/cosmos/implementation/guava27/**/*</exclude>
-              </excludes>
             </configuration>
           </execution>
-        </executions>
-      </plugin>
+      </executions>
+    </plugin>
 
       <!-- Allows the sample sources to be built during test-compile phase. -->
       <plugin>
@@ -709,12 +706,9 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.0.0-M4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+          <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
           <configuration>
             <useSystemClassLoader>false</useSystemClassLoader>
-            <statelessTestsetReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5Xml30StatelessReporter">
-              <usePhrasedTestCaseMethodName>true</usePhrasedTestCaseMethodName>
-            </statelessTestsetReporter>
           </configuration>
         </plugin>
       </plugins>
@@ -1047,7 +1041,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <argLine>
                 <!-- KeyVault tests fail without these exports. -->

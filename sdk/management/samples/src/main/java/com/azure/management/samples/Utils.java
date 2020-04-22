@@ -3077,7 +3077,7 @@ public final class Utils {
 
     @Host("{$host}")
     @ServiceInterface(name = "WebAppTestClient")
-    private interface WebAppTestClient {
+    protected interface WebAppTestClient {
         @Get("{path}")
         @ExpectedResponses({200, 400, 404})
         Mono<SimpleResponse<Flux<ByteBuffer>>> getString(@HostParam("$host") String host, @PathParam(value = "path", encoded = true) String path);

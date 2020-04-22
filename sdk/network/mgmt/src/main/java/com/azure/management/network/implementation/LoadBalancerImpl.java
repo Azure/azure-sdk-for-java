@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
@@ -521,7 +522,7 @@ class LoadBalancerImpl
         if (backendName != null) {
             this.defineBackend(backendName).attach();
             if (vm.primaryNetworkInterfaceId() != null) {
-                this.nicsInBackends.put(vm.primaryNetworkInterfaceId(), backendName.toLowerCase());
+                this.nicsInBackends.put(vm.primaryNetworkInterfaceId(), backendName.toLowerCase(Locale.ROOT));
             }
         }
         return this;
