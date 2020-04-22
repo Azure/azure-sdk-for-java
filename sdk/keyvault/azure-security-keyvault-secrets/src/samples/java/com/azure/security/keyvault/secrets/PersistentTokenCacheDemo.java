@@ -3,11 +3,9 @@
 
 package com.azure.security.keyvault.secrets;
 
-import com.azure.identity.DefaultAzureCredential;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
-
-import java.time.Duration;
+import com.azure.identity.SharedTokenCacheCredential;
+import com.azure.identity.SharedTokenCacheCredentialBuilder;
 
 /**
  * Sample showing how to authenticate to key vault with a shared token cache credential.
@@ -21,8 +19,9 @@ public class PersistentTokenCacheDemo {
     public static void main(String[] args) {
 
         // Wrote to AZURE_USERNAME env variable
-        DefaultAzureCredential defaultCredential = new DefaultAzureCredentialBuilder()
-                .tokenRefreshOffset(Duration.ofMinutes(60)).build();
+        SharedTokenCacheCredential defaultCredential = new SharedTokenCacheCredentialBuilder()
+            .clientId("04b07795-8ddb-461a-bbee-02f9e1bf7b46")
+            .build();
 
         SecretClient client = new SecretClientBuilder()
             .vaultUrl("https://persistentcachedemo.vault.azure.net")
