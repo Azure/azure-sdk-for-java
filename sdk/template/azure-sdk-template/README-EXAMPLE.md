@@ -51,7 +51,7 @@ Otherwise use the standalone dependency include.
 
 ### Authenticate the client
 
-This section is option, it is only required if the library needs to authenticate with Azure.
+This section is optional, it is only required if the library needs to authenticate with Azure.
 
 ## Key concepts
 
