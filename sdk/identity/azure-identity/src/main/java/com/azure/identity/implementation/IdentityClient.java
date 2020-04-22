@@ -552,24 +552,25 @@ public class IdentityClient {
 
                     if (accounts.size() == 0) {
                         if (username == null) {
-                            return Mono.error(new CredentialUnavailableException("No accounts were discovered in the shared token "
-                                    + "cache. To fix, authenticate through tooling supporting azure developer sign "
-                                    + "on."));
+                            return Mono.error(new CredentialUnavailableException("No accounts were discovered in the "
+                                    + "shared token cache. To fix, authenticate through tooling supporting azure "
+                                    + "developer sign on."));
                         } else {
-                            return Mono.error(new CredentialUnavailableException(String.format("User account '%s' was not found in "
-                                    + "the shared token cache. Discovered Accounts: [ '%s' ]", username, set.stream()
-                                    .map(IAccount::username).distinct().collect(Collectors.joining(", ")))));
+                            return Mono.error(new CredentialUnavailableException(String.format("User account '%s' was "
+                                    + "not found in the shared token cache. Discovered Accounts: [ '%s' ]", username,
+                                    set.stream().map(IAccount::username).distinct()
+                                            .collect(Collectors.joining(", ")))));
                         }
                     } else if (accounts.size() > 1) {
                         if (username == null) {
-                            return Mono.error(new CredentialUnavailableException("Multiple accounts were discovered in the shared "
-                                    + "token cache. To fix, set the AZURE_USERNAME and AZURE_TENANT_ID environment "
-                                    + "variable to the preferred username, or specify it when constructing "
-                                    + "SharedTokenCacheCredential."));
+                            return Mono.error(new CredentialUnavailableException("Multiple accounts were discovered "
+                                    + "in the shared token cache. To fix, set the AZURE_USERNAME and AZURE_TENANT_ID "
+                                    + "environment variable to the preferred username, or specify it when "
+                                    + "constructing SharedTokenCacheCredential."));
                         } else {
-                            return Mono.error(new CredentialUnavailableException("Multiple entries for the user account " + username
-                                    + " were found in the shared token cache. This is not currently supported by the"
-                                    + " SharedTokenCacheCredential."));
+                            return Mono.error(new CredentialUnavailableException("Multiple entries for the user "
+                                    + "account " + username + " were found in the shared token cache. This is not "
+                                    + "currently supported by the SharedTokenCacheCredential."));
                         }
                     } else {
                         requestedAccount = accounts.values().iterator().next();
