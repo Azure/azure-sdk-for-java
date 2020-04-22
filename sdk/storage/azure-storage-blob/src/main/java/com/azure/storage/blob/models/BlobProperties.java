@@ -7,7 +7,10 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
 
 import java.time.OffsetDateTime;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * This class contains the response information returned from the service when getting blob properties.
@@ -47,6 +50,8 @@ public final class BlobProperties {
     private final Integer committedBlockCount;
     private final String versionId;
     private final Boolean isCurrentVersion;
+    private final Map<String, ObjectReplicationPolicy> objectReplicationSourcePolicies;
+    private final String objectReplicationDestinationPolicyId;
 
     /**
      * Constructs a {@link BlobProperties}.
@@ -101,7 +106,7 @@ public final class BlobProperties {
              contentLanguage, cacheControl, blobSequenceNumber, blobType, leaseStatus, leaseState, leaseDuration,
             copyId, copyStatus, copySource, copyProgress, copyCompletionTime, copyStatusDescription, isServerEncrypted,
             isIncrementalCopy, copyDestinationSnapshot, accessTier, isAccessTierInferred, archiveStatus,
-            encryptionKeySha256, accessTierChangeTime, metadata, committedBlockCount, null, null);
+            encryptionKeySha256, accessTierChangeTime, metadata, committedBlockCount, null, null, null);
     }
 
     /**
@@ -145,19 +150,18 @@ public final class BlobProperties {
      * @param isCurrentVersion Flag indicating if version identifier points to current version of the blob.
      */
     public BlobProperties(final OffsetDateTime creationTime, final OffsetDateTime lastModified, final String eTag,
-                          final long blobSize, final String contentType, final byte[] contentMd5,
-                          final String contentEncoding, final String contentDisposition, final String contentLanguage,
-                          final String cacheControl, final Long blobSequenceNumber, final BlobType blobType,
-                          final LeaseStatusType leaseStatus, final LeaseStateType leaseState,
-                          final LeaseDurationType leaseDuration, final String copyId,
-                          final CopyStatusType copyStatus, final String copySource, final String copyProgress,
-                          final OffsetDateTime copyCompletionTime, final String copyStatusDescription,
-                          final Boolean isServerEncrypted, final Boolean isIncrementalCopy,
-                          final String copyDestinationSnapshot, final AccessTier accessTier,
-                          final Boolean isAccessTierInferred, final ArchiveStatus archiveStatus,
-                          final String encryptionKeySha256, final OffsetDateTime accessTierChangeTime,
-                          final Map<String, String> metadata, final Integer committedBlockCount,
-                          final String versionId, final Boolean isCurrentVersion) {
+        final long blobSize, final String contentType, final byte[] contentMd5, final String contentEncoding,
+        final String contentDisposition, final String contentLanguage, final String cacheControl,
+        final Long blobSequenceNumber, final BlobType blobType, final LeaseStatusType leaseStatus,
+        final LeaseStateType leaseState, final LeaseDurationType leaseDuration, final String copyId,
+        final CopyStatusType copyStatus, final String copySource, final String copyProgress,
+        final OffsetDateTime copyCompletionTime, final String copyStatusDescription, final Boolean isServerEncrypted,
+        final Boolean isIncrementalCopy, final String copyDestinationSnapshot, final AccessTier accessTier,
+        final Boolean isAccessTierInferred, final ArchiveStatus archiveStatus, final String encryptionKeySha256,
+        final OffsetDateTime accessTierChangeTime, final Map<String, String> metadata,
+        final Integer committedBlockCount, final String versionId, final Boolean isCurrentVersion,
+        Map<String, String> objectReplicationStatus) {
+
         this.creationTime = creationTime;
         this.lastModified = lastModified;
         this.eTag = eTag;
@@ -191,6 +195,24 @@ public final class BlobProperties {
         this.committedBlockCount = committedBlockCount;
         this.versionId = versionId;
         this.isCurrentVersion = isCurrentVersion;
+
+        this.objectReplicationSourcePolicies = new HashMap<>();
+        this.objectReplicationDestinationPolicyId = objectReplicationStatus.getOrDefault("policy-id", null);
+        if (objectReplicationDestinationPolicyId == null) {
+            for (String str : objectReplicationStatus.keySet()) {
+                String[] split = str.split("_");
+                String policyId = split[0];
+                String ruleId = split[1];
+                if (objectReplicationSourcePolicies.containsKey(policyId)) {
+                    objectReplicationSourcePolicies.get(policyId)
+                        .putRuleAndStatus(ruleId, objectReplicationStatus.get(str));
+                } else {
+                    ObjectReplicationPolicy policy = new ObjectReplicationPolicy(policyId);
+                    policy.putRuleAndStatus(ruleId, objectReplicationStatus.get(str));
+                    objectReplicationSourcePolicies.put(policyId, policy);
+                }
+            }
+        }
     }
 
     /**
@@ -433,5 +455,22 @@ public final class BlobProperties {
      */
     public Boolean isCurrentVersion() {
         return isCurrentVersion;
+    }
+
+    /**
+     * @return a {@link Map} that contains information on the object replication policies associated with this blob
+     * and the status of the replication for each policy. Only available when the blob is the source of object
+     * replication.
+     */
+    public Map<String, ObjectReplicationPolicy> getObjectReplicationSourcePolicies() {
+        return this.objectReplicationSourcePolicies;
+    }
+
+    /**
+     * @return a {@code String} that identifies the Object Replication Policy which made this blob the destination of a
+     * copy.
+     */
+    public String getObjectReplicationDestinationPolicyId() {
+        return this.objectReplicationDestinationPolicyId;
     }
 }

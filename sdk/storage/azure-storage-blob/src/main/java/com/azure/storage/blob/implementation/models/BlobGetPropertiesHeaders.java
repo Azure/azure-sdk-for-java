@@ -338,7 +338,7 @@ public final class BlobGetPropertiesHeaders {
 
     /*
      * The value of this header indicates whether version of this blob is a
-     * current version, see also x-ms-version-id header
+     * current version, see also x-ms-version-id header.
      */
     @JsonProperty(value = "x-ms-is-current-version")
     private Boolean isCurrentVersion;
