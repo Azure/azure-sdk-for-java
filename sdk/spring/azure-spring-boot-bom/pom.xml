@@ -67,51 +67,52 @@
         <artifactId>azure-active-directory-spring-boot-starter</artifactId>
         <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-active-directory-spring-boot-starter;current} -->
       </dependency>
+      <!--
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
-        <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot-starter-active-directory-b2c;current} -->
+        <version>2.2.5-beta.1</version> &lt;!&ndash; {x-version-update;com.microsoft.azure:azure-spring-boot-starter-active-directory-b2c;current} &ndash;&gt;
       </dependency>
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-spring-boot-starter-cosmosdb</artifactId>
-        <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot-starter-cosmosdb;current} -->
+        <version>2.2.5-beta.1</version> &lt;!&ndash; {x-version-update;com.microsoft.azure:azure-spring-boot-starter-cosmosdb;current} &ndash;&gt;
       </dependency>
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-spring-boot-starter-data-gremlin</artifactId>
-        <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot-starter-data-gremlin;current} -->
+        <version>2.2.5-beta.1</version> &lt;!&ndash; {x-version-update;com.microsoft.azure:azure-spring-boot-starter-data-gremlin;current} &ndash;&gt;
       </dependency>
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-keyvault-secrets-spring-boot-starter</artifactId>
-        <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-keyvault-secrets-spring-boot-starter;current} -->
+        <version>2.2.5-beta.1</version> &lt;!&ndash; {x-version-update;com.microsoft.azure:azure-keyvault-secrets-spring-boot-starter;current} &ndash;&gt;
       </dependency>
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-spring-boot-starter-mediaservices</artifactId>
-        <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot-starter-mediaservices;current} -->
+        <version>2.2.5-beta.1</version> &lt;!&ndash; {x-version-update;com.microsoft.azure:azure-spring-boot-starter-mediaservices;current} &ndash;&gt;
       </dependency>
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-spring-boot-starter-metrics</artifactId>
-        <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot-starter-metrics;current} -->
+        <version>2.2.5-beta.1</version> &lt;!&ndash; {x-version-update;com.microsoft.azure:azure-spring-boot-starter-metrics;current} &ndash;&gt;
       </dependency>
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-spring-boot-starter-servicebus</artifactId>
-        <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot-starter-servicebus;current} -->
+        <version>2.2.5-beta.1</version> &lt;!&ndash; {x-version-update;com.microsoft.azure:azure-spring-boot-starter-servicebus;current} &ndash;&gt;
       </dependency>
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-spring-boot-starter-servicebus-jms</artifactId>
-        <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot-starter-servicebus-jms;current} -->
+        <version>2.2.5-beta.1</version> &lt;!&ndash; {x-version-update;com.microsoft.azure:azure-spring-boot-starter-servicebus-jms;current} &ndash;&gt;
       </dependency>
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-spring-boot-starter-storage</artifactId>
-        <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot-starter-storage;current} -->
-      </dependency>
+        <version>2.2.5-beta.1</version> &lt;!&ndash; {x-version-update;com.microsoft.azure:azure-spring-boot-starter-storage;current} &ndash;&gt;
+      </dependency>-->
     </dependencies>
   </dependencyManagement>
 </project>

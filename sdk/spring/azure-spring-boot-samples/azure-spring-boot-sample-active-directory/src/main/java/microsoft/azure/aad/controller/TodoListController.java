@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package microsoft.azure.aad.controller;
 
 import com.microsoft.azure.spring.autoconfigure.aad.UserGroup;
@@ -10,16 +11,24 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
-public class TodolistController {
+public class TodoListController {
     private final List<TodoItem> todoList = new ArrayList<>();
 
-    public TodolistController() {
+    public TodoListController() {
         todoList.add(0, new TodoItem(2398, "anything", "whoever"));
     }
 
@@ -38,7 +47,8 @@ public class TodolistController {
             method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> getTodoItem(@PathVariable("index") int index) {
         if (index > todoList.size() - 1) {
-            return new ResponseEntity<>(new TodoItem(-1, "index out of range", null), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new TodoItem(-1, "index out of range", null),
+                HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(todoList.get(index), HttpStatus.OK);
     }

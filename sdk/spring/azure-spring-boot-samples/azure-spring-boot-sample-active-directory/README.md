@@ -26,14 +26,14 @@ To run this sample, you'll need:
 - A Windows machine (necessary if you want to run the app on Windows)
 - An OS X machine (necessary if you want to run the app on Mac)
 - A Linux machine (necessary if you want to run the app on Linux)
-- An Azure Active Directory (Azure AD) tenant. For more information on how to get an Azure AD tenant, see [How to get an Azure AD tenant](https://azure.microsoft.com/en-us/documentation/articles/active-directory-howto-tenant/)
+- An Azure Active Directory (Azure AD) tenant. For more information on how to get an Azure AD tenant, see [How to get an Azure AD tenant](https://azure.microsoft.com/documentation/articles/active-directory-howto-tenant/)
 - A user account in your Azure AD tenant. This sample will not work with a Personal Microsoft account (formerly Windows Live account). Therefore, if you signed in to the [Azure portal](https://portal.azure.com) with a Microsoft account and have never created a user account in your directory before, you need to do that now.
-- A [client secret](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal#create-a-new-application-secret) for the registered application.
-- Configure groups in your Azure AD tenant with your users in that groups, see [how to create groups](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-groups-create-azure-portal)
+- A [client secret](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#create-a-new-application-secret) for the registered application.
+- Configure groups in your Azure AD tenant with your users in that groups, see [how to create groups](https://docs.microsoft.com/azure/active-directory/fundamentals/active-directory-groups-create-azure-portal)
 - The sample retrieves user's group membership using Azure AD graph API which requires the registered app to have `Direcory.AccessAsUser.All` "Access the directory as the signed-in user" under `Delegated Permissions`. You need AAD admin privilege to be able to grant the permission in API ACCESS -> Required permission.
 
 #### Note
-- If you are not the admin, you need consent from your admin for the the `Directory.AccessAsUser.All` permission. For details see [Directory Permissions](https://docs.microsoft.com/en-us/graph/permissions-reference#directory-permissions)
+- If you are not the admin, you need consent from your admin for the the `Directory.AccessAsUser.All` permission. For details see [Directory Permissions](https://docs.microsoft.com/graph/permissions-reference#directory-permissions)
 
 
 
@@ -48,7 +48,7 @@ or download and extract the repository .zip file, and navigate to `azure-active-
 
 ### Step 2:  Register the sample with your Azure Active Directory tenant
 
-To register it follow the steps below or follow the guide [here](https://docs.microsoft.com/en-us/azure/active-directory/develop/v1-protocols-oauth-code#register-your-application-with-your-ad-tenant).
+To register it follow the steps below or follow the guide [here](https://docs.microsoft.com/azure/active-directory/develop/v1-protocols-oauth-code#register-your-application-with-your-ad-tenant).
 
 #### Choose the Azure AD tenant where you want to create your applications
 
@@ -95,7 +95,7 @@ In the steps below, "ClientID" is the same as "Application ID" or "AppId".
 Open application.properties in your project to configure
 
 #### Configure Application Properties
-1. If your azure account follows format xxx@xxx.partner.onmschina.cn, configure property `azure.activedirectory.environment=cn` to use [Azure China](https://docs.microsoft.com/en-us/azure/china/china-welcome), the default value is `global`.
+1. If your azure account follows format xxx@xxx.partner.onmschina.cn, configure property `azure.activedirectory.environment=cn` to use [Azure China](https://docs.microsoft.com/azure/china/china-welcome), the default value is `global`.
 1. Put Application ID and client-secret in `client-id` and `client-secret` respectively e.g.
  `azure.activedirectory.client-id=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`
  `azure.activedirectory.client-secret=ABCDEFGHIJKLMNOOPQRSTUVWXYZABCDEFGHIJKLMNOPQ`

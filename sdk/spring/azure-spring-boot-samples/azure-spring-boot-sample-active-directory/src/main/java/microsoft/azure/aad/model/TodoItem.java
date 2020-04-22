@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package microsoft.azure.aad.model;
 
 import com.fasterxml.jackson.annotation.*;

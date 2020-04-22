@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package microsoft.azure.aad.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;

@@ -42,7 +42,7 @@ Refer to different samples for different authentication ways.
 
 ##### Authenticate in backend
 
-Please refer to [azure-spring-boot-sample-active-directory-backend](../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend/README-a.md) for authenticate in backend.
+Please refer to [azure-spring-boot-sample-active-directory-backend](../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend/README.md) for authenticate in backend.
 
 Configure application.properties:
 ```properties
@@ -76,7 +76,7 @@ public class AADOAuth2LoginConfigSample extends WebSecurityConfigurerAdapter {
 
 ##### Authenticate in frontend
 
-Please refer to [azure-active-directory-spring-boot-sample](../azure-spring-boot-samples/azure-spring-boot-sample-active-directory/README-a.md) for how to integrate Spring Security and Azure AD for authentication and authorization in a Single Page Application (SPA) scenario.
+Please refer to [azure-active-directory-spring-boot-sample](../azure-spring-boot-samples/azure-spring-boot-sample-active-directory/README.md) for how to integrate Spring Security and Azure AD for authentication and authorization in a Single Page Application (SPA) scenario.
 
 Configure application.properties:
 ```properties
@@ -181,9 +181,9 @@ If you're using [Azure China](https://docs.microsoft.com/azure/china/china-welco
 azure.activedirectory.environment=cn-v2-graph
 ```
 
-Please refer to [azure-spring-boot-sample-active-directory-backend-v2](../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend-v2/) to see a sample configured to use the Microsoft Graph API.
+Please refer to [azure-spring-boot-sample-active-directory-backend-v2](../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend-v2/README.md) to see a sample configured to use the Microsoft Graph API.
 ### Using Microsoft identity platform endpoints
-If you want to use v2 version endpoints to do authorization and authentication, please pay attention to the attributes of claims, because there are some attributes exits in v1 version id-token by default but not in v2 version id-token, if you have to get that attribute, please make sure to add it into your scope.
+If you want to use v2 version endpoints to do authorization and authentication, please pay attention to the attributes of claims, because there are some attributes exists in v1 version id-token by default but not in v2 version id-token, if you have to get that attribute, please make sure to add it into your scope.
 There is the doc [Difference between v1 and v2](https://docs.microsoft.com/azure/active-directory/develop/azure-ad-endpoint-comparison), For example, the name attribute doesn't exist in v2 token, if you want it, you need add `profile` to your scope, like this:
 ```properties
 spring.security.oauth2.client.registration.azure.scope=openid, https://graph.microsoft.com/user.read, profile
