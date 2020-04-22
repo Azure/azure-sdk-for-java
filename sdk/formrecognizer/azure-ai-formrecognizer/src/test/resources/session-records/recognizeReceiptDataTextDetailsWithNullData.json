@@ -3,8 +3,8 @@
     "Method" : "POST",
     "Uri" : "https://javaformrecognizertestresource.cognitiveservices.azure.com/formrecognizer/v2.0-preview//prebuilt/receipt/analyze?includeTextDetails=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "3de04277-f87f-4b38-8d45-760935c0747f",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.1 (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "5d200f66-1269-4c1f-aab2-e4bc23b4a7e4",
       "Content-Type" : "image/jpeg"
     },
     "Response" : null,
@@ -16,8 +16,8 @@
     "Method" : "POST",
     "Uri" : "https://javaformrecognizertestresource.cognitiveservices.azure.com/formrecognizer/v2.0-preview//prebuilt/receipt/analyze?includeTextDetails=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "3de04277-f87f-4b38-8d45-760935c0747f",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.1 (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "5d200f66-1269-4c1f-aab2-e4bc23b4a7e4",
       "Content-Type" : "image/jpeg"
     },
     "Response" : null,
@@ -29,8 +29,8 @@
     "Method" : "POST",
     "Uri" : "https://javaformrecognizertestresource.cognitiveservices.azure.com/formrecognizer/v2.0-preview//prebuilt/receipt/analyze?includeTextDetails=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "3de04277-f87f-4b38-8d45-760935c0747f",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.1 (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "5d200f66-1269-4c1f-aab2-e4bc23b4a7e4",
       "Content-Type" : "image/jpeg"
     },
     "Response" : null,
@@ -42,8 +42,8 @@
     "Method" : "POST",
     "Uri" : "https://javaformrecognizertestresource.cognitiveservices.azure.com/formrecognizer/v2.0-preview//prebuilt/receipt/analyze?includeTextDetails=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "3de04277-f87f-4b38-8d45-760935c0747f",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.1 (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "5d200f66-1269-4c1f-aab2-e4bc23b4a7e4",
       "Content-Type" : "image/jpeg"
     },
     "Response" : null,

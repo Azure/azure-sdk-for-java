@@ -177,6 +177,7 @@ public class FormTrainingClient {
      *
      * @param modelId The UUID string format model identifier.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteModel(String modelId) {
         deleteModelWithResponse(modelId, Context.NONE);
     }
@@ -192,6 +193,7 @@ public class FormTrainingClient {
      *
      * @return A {@link Mono} containing containing status code and HTTP headers
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteModelWithResponse(String modelId, Context context) {
         return client.deleteModelWithResponse(modelId, context).block();
     }
