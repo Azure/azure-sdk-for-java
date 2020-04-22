@@ -3,7 +3,6 @@
 
 package com.azure.core.amqp.implementation;
 
-import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.message.Message;
@@ -17,7 +16,7 @@ import java.util.function.Function;
 public class RequestResponseUtils {
     public static final AmqpResponseCode UNDEFINED_STATUS_CODE = AmqpResponseCode.UNUSED;
     public static final String UNDEFINED_STATUS_DESCRIPTION = "";
-    public static final AmqpErrorCondition UNDEFINED_ERROR_CONDITION = AmqpErrorCondition.INTERNAL_ERROR;
+    public static final String UNDEFINED_ERROR_CONDITION = "";
 
     private static final String STATUS_CODE = "statusCode";
     private static final String STATUS_DESCRIPTION = "statusDescription";
@@ -84,10 +83,9 @@ public class RequestResponseUtils {
      *
      * @param message AMQP message to extract error condition from.
      *
-     * @return The corresponding error condition or {@link #UNDEFINED_ERROR_CONDITION} if none can be found or there is
-     *     no matching condition.
+     * @return The corresponding error condition or an empty string if none can be found in the response.
      */
-    public static AmqpErrorCondition getErrorCondition(Message message) {
+    public static String getErrorCondition(Message message) {
         final Map<String, Object> properties = message.getApplicationProperties().getValue();
         final Function<Object, String> getCondition = errorCondition -> {
             if (errorCondition instanceof Symbol) {
@@ -100,16 +98,12 @@ public class RequestResponseUtils {
             return UNDEFINED_ERROR_CONDITION;
         }
 
-        final String value;
         if (properties.containsKey(ERROR_CONDITION)) {
-            value = getCondition.apply(properties.get(ERROR_CONDITION));
+            return getCondition.apply(properties.get(ERROR_CONDITION));
         } else if (properties.containsKey(LEGACY_ERROR_CONDITION)) {
-            value = getCondition.apply(properties.get(LEGACY_ERROR_CONDITION));
+            return getCondition.apply(properties.get(LEGACY_ERROR_CONDITION));
         } else {
             return UNDEFINED_ERROR_CONDITION;
         }
-
-        final AmqpErrorCondition returned = AmqpErrorCondition.fromString(value);
-        return returned != null ? returned : UNDEFINED_ERROR_CONDITION;
     }
 }

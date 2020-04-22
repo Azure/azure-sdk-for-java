@@ -88,10 +88,10 @@ class RequestResponseUtilsTest {
         message.setApplicationProperties(new ApplicationProperties(properties));
 
         // Act
-        final AmqpErrorCondition actual = RequestResponseUtils.getErrorCondition(message);
+        final String actual = RequestResponseUtils.getErrorCondition(message);
 
         // Assert
-        Assertions.assertEquals(expected, actual);
+        Assertions.assertEquals(expected.getErrorCondition(), actual);
     }
 
     /**
@@ -110,7 +110,7 @@ class RequestResponseUtilsTest {
         // Act
         final AmqpResponseCode actual = RequestResponseUtils.getStatusCode(message);
         final String description = RequestResponseUtils.getStatusDescription(message);
-        final AmqpErrorCondition errorCondition = RequestResponseUtils.getErrorCondition(message);
+        final String errorCondition = RequestResponseUtils.getErrorCondition(message);
 
         // Assert
         Assertions.assertEquals(UNDEFINED_STATUS_CODE, actual);
@@ -130,9 +130,9 @@ class RequestResponseUtilsTest {
         message.setApplicationProperties(new ApplicationProperties(properties));
 
         // Act
-        final AmqpErrorCondition actual = RequestResponseUtils.getErrorCondition(message);
+        final String actual = RequestResponseUtils.getErrorCondition(message);
 
         // Assert
-        Assertions.assertEquals(expected, actual);
+        Assertions.assertEquals(expected.getErrorCondition(), actual);
     }
 }

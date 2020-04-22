@@ -20,9 +20,11 @@ import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
+import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.UnsignedInteger;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -290,20 +292,20 @@ public class ManagementChannel implements ServiceBusManagementNode {
     private Mono<Message> sendWithVerify(RequestResponseChannel channel, Message message) {
         return channel.sendWithAck(message)
             .map(response -> {
-                if (RequestResponseUtils.isSuccessful(message)) {
+                if (RequestResponseUtils.isSuccessful(response)) {
                     return response;
                 }
 
-                final AmqpResponseCode statusCode = RequestResponseUtils.getStatusCode(message);
-                final String statusDescription = RequestResponseUtils.getStatusDescription(message);
-                final AmqpErrorCondition errorCondition = RequestResponseUtils.getErrorCondition(message);
+                final AmqpResponseCode statusCode = RequestResponseUtils.getStatusCode(response);
+                final String statusDescription = RequestResponseUtils.getStatusDescription(response);
+                final String errorCondition = RequestResponseUtils.getErrorCondition(response);
+                final Throwable throwable = MessageUtils.toException(
+                    new ErrorCondition(Symbol.getSymbol(errorCondition), statusDescription), channel.getErrorContext());
 
                 logger.warning("status[{}] description[{}] condition[{}] Operation not successful",
                     statusCode, statusDescription, errorCondition);
-                final Throwable error = ExceptionUtil.toException(errorCondition.getErrorCondition(),
-                    statusDescription, channel.getErrorContext());
 
-                throw logger.logExceptionAsError(Exceptions.propagate(error));
+                throw logger.logExceptionAsError(Exceptions.propagate(throwable));
             });
     }
 
