@@ -70,10 +70,10 @@ final class TestUtils {
 
     static final String RECEIPT_URL = "https://raw.githubusercontent"
         + ".com/Azure/azure-sdk-for-java/master/sdk/formrecognizer/azure-ai-formrecognizer/src/test/resources"
-        + "/sample-files/contoso-allinone.jpg";
+        + "/sample_files/Test/contoso-allinone.jpg";
     static final String LAYOUT_URL = "https://raw.githubusercontent"
         + ".com/Azure/azure-sdk-for-java/master/sdk/formrecognizer/azure-ai-formrecognizer/src/test/resources"
-        + "/sample-files/layout1.jpg";
+        + "/sample_files/Test/layout1.jpg";
 
     private static final String CUSTOM_FORM_LABELED_DATA = "src/test/resources/sample_files/Content"
         + "/customFormLabeledContent.json";
