@@ -446,10 +446,9 @@ public final class FormRecognizerAsyncClient {
     private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
         extractReceiptPollOperation() {
         return (pollingContext) -> {
-            PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
-            String modelId = operationResultPollResponse.getValue().getResultId();
             try {
-                UUID resultUid = UUID.fromString(modelId);
+                PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
+                UUID resultUid = UUID.fromString(operationResultPollResponse.getValue().getResultId());
                 return service.getAnalyzeReceiptResultWithResponseAsync(resultUid)
                     .flatMap(modelSimpleResponse -> processAnalyzeModelResponse(modelSimpleResponse,
                         operationResultPollResponse));
@@ -517,10 +516,9 @@ public final class FormRecognizerAsyncClient {
     private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
         extractContentPollOperation() {
         return (pollingContext) -> {
-            PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
-            String modelId = operationResultPollResponse.getValue().getResultId();
             try {
-                UUID resultUid = UUID.fromString(modelId);
+                PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
+                UUID resultUid = UUID.fromString(operationResultPollResponse.getValue().getResultId());
                 return service.getAnalyzeLayoutResultWithResponseAsync(resultUid)
                     .flatMap(modelSimpleResponse -> processAnalyzeModelResponse(modelSimpleResponse,
                         operationResultPollResponse));
@@ -587,11 +585,10 @@ public final class FormRecognizerAsyncClient {
     private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
         createAnalyzeFormPollOperation(String modelId) {
         return (pollingContext) -> {
-            PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
-            String resultId = operationResultPollResponse.getValue().getResultId();
             try {
+                PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
                 Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
-                UUID resultUid = UUID.fromString(resultId);
+                UUID resultUid = UUID.fromString(operationResultPollResponse.getValue().getResultId());
                 UUID modelUid = UUID.fromString(modelId);
                 return service.getAnalyzeFormResultWithResponseAsync(modelUid, resultUid)
                     .flatMap(modelSimpleResponse -> processAnalyzeModelResponse(modelSimpleResponse,
