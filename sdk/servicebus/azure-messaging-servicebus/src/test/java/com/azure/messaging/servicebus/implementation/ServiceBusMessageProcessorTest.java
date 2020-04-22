@@ -28,7 +28,7 @@ import java.util.function.Function;
 
 import static com.azure.messaging.servicebus.TestUtils.createMessageSink;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
@@ -108,7 +108,7 @@ class ServiceBusMessageProcessorTest {
         final String lock1 = UUID.randomUUID().toString();
         final String lock2 = UUID.randomUUID().toString();
         when(message1.getLockToken()).thenReturn(lock1);
-        when(message1.getLockedUntil()).thenAnswer(invocationOnMock -> Instant.now().plusSeconds(1));
+        when(message1.getLockedUntil()).thenAnswer(invocationOnMock -> Instant.now().plusSeconds(3));
 
         when(message2.getLockToken()).thenReturn(lock2);
         when(message2.getLockedUntil()).thenAnswer(invocationOnMock -> Instant.now().plusSeconds(5));
@@ -134,7 +134,7 @@ class ServiceBusMessageProcessorTest {
             .expectNext(message2)
             .verifyComplete();
 
-        verify(onRenewLock, times(3)).apply(message1);
+        verify(onRenewLock, atLeast(3)).apply(message1);
 
         verify(onComplete).apply(message1);
         verify(onComplete).apply(message2);
@@ -168,7 +168,7 @@ class ServiceBusMessageProcessorTest {
         final String lock1 = UUID.randomUUID().toString();
         final String lock2 = UUID.randomUUID().toString();
         when(message1.getLockToken()).thenReturn(lock1);
-        when(message1.getLockedUntil()).thenAnswer(invocationOnMock -> Instant.now().plusSeconds(1));
+        when(message1.getLockedUntil()).thenAnswer(invocationOnMock -> Instant.now().plusSeconds(3));
 
         when(message2.getLockToken()).thenReturn(lock2);
         when(message2.getLockedUntil()).thenAnswer(invocationOnMock -> Instant.now().plusSeconds(5));
@@ -214,7 +214,7 @@ class ServiceBusMessageProcessorTest {
         final String lock1 = UUID.randomUUID().toString();
         final String lock2 = UUID.randomUUID().toString();
         when(message1.getLockToken()).thenReturn(lock1);
-        when(message1.getLockedUntil()).thenAnswer(invocationOnMock -> Instant.now().plusSeconds(1));
+        when(message1.getLockedUntil()).thenAnswer(invocationOnMock -> Instant.now().plusSeconds(3));
 
         when(message2.getLockToken()).thenReturn(lock2);
         when(message2.getLockedUntil()).thenAnswer(invocationOnMock -> Instant.now().plusSeconds(5));
@@ -259,7 +259,7 @@ class ServiceBusMessageProcessorTest {
         final String lock1 = UUID.randomUUID().toString();
         final String lock2 = UUID.randomUUID().toString();
         when(message1.getLockToken()).thenReturn(lock1);
-        when(message1.getLockedUntil()).thenAnswer(invocationOnMock -> Instant.now().plusSeconds(1));
+        when(message1.getLockedUntil()).thenAnswer(invocationOnMock -> Instant.now().plusSeconds(3));
 
         when(message2.getLockToken()).thenReturn(lock2);
         when(message2.getLockedUntil()).thenAnswer(invocationOnMock -> Instant.now().plusSeconds(5));
