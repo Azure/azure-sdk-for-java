@@ -13,7 +13,6 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
-import com.microsoft.azure.management.appplatform.v2019_05_01_preview.AppResourceProperties;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
@@ -66,11 +65,15 @@ public class AppsInner {
     interface AppsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appplatform.v2019_05_01_preview.Apps get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}")
-        Observable<Response<ResponseBody>> get(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serviceName") String serviceName, @Path("appName") String appName, @Query("syncStatus") String syncStatus, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> get(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serviceName") String serviceName, @Path("appName") String appName, @Query("api-version") String apiVersion, @Query("syncStatus") String syncStatus, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appplatform.v2019_05_01_preview.Apps createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}")
-        Observable<Response<ResponseBody>> createOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serviceName") String serviceName, @Path("appName") String appName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body AppResourceInner appResource, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serviceName") String serviceName, @Path("appName") String appName, @Query("api-version") String apiVersion, @Body AppResourceInner appResource, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appplatform.v2019_05_01_preview.Apps beginCreateOrUpdate" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}")
+        Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serviceName") String serviceName, @Path("appName") String appName, @Query("api-version") String apiVersion, @Body AppResourceInner appResource, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appplatform.v2019_05_01_preview.Apps delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}", method = "DELETE", hasBody = true)
@@ -78,7 +81,11 @@ public class AppsInner {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appplatform.v2019_05_01_preview.Apps update" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}")
-        Observable<Response<ResponseBody>> update(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serviceName") String serviceName, @Path("appName") String appName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body AppResourceInner appResource, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> update(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serviceName") String serviceName, @Path("appName") String appName, @Query("api-version") String apiVersion, @Body AppResourceInner appResource, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appplatform.v2019_05_01_preview.Apps beginUpdate" })
+        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}")
+        Observable<Response<ResponseBody>> beginUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serviceName") String serviceName, @Path("appName") String appName, @Query("api-version") String apiVersion, @Body AppResourceInner appResource, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appplatform.v2019_05_01_preview.Apps list" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps")
@@ -164,7 +171,7 @@ public class AppsInner {
             throw new IllegalArgumentException("Parameter appName is required and cannot be null.");
         }
         final String syncStatus = null;
-        return service.get(this.client.subscriptionId(), resourceGroupName, serviceName, appName, syncStatus, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.get(this.client.subscriptionId(), resourceGroupName, serviceName, appName, this.client.apiVersion(), syncStatus, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppResourceInner>>>() {
                 @Override
                 public Observable<ServiceResponse<AppResourceInner>> call(Response<ResponseBody> response) {
@@ -251,7 +258,7 @@ public class AppsInner {
         if (appName == null) {
             throw new IllegalArgumentException("Parameter appName is required and cannot be null.");
         }
-        return service.get(this.client.subscriptionId(), resourceGroupName, serviceName, appName, syncStatus, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.get(this.client.subscriptionId(), resourceGroupName, serviceName, appName, this.client.apiVersion(), syncStatus, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppResourceInner>>>() {
                 @Override
                 public Observable<ServiceResponse<AppResourceInner>> call(Response<ResponseBody> response) {
@@ -278,13 +285,14 @@ public class AppsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
+     * @param appResource Parameters for the create or update operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AppResourceInner object if successful.
      */
-    public AppResourceInner createOrUpdate(String resourceGroupName, String serviceName, String appName) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceName, appName).toBlocking().single().body();
+    public AppResourceInner createOrUpdate(String resourceGroupName, String serviceName, String appName, AppResourceInner appResource) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceName, appName, appResource).toBlocking().last().body();
     }
 
     /**
@@ -293,12 +301,13 @@ public class AppsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
+     * @param appResource Parameters for the create or update operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<AppResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName, String appName, final ServiceCallback<AppResourceInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceName, appName), serviceCallback);
+    public ServiceFuture<AppResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName, String appName, AppResourceInner appResource, final ServiceCallback<AppResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceName, appName, appResource), serviceCallback);
     }
 
     /**
@@ -307,11 +316,12 @@ public class AppsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
+     * @param appResource Parameters for the create or update operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the AppResourceInner object
+     * @return the observable for the request
      */
-    public Observable<AppResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName, String appName) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceName, appName).map(new Func1<ServiceResponse<AppResourceInner>, AppResourceInner>() {
+    public Observable<AppResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName, String appName, AppResourceInner appResource) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceName, appName, appResource).map(new Func1<ServiceResponse<AppResourceInner>, AppResourceInner>() {
             @Override
             public AppResourceInner call(ServiceResponse<AppResourceInner> response) {
                 return response.body();
@@ -325,10 +335,11 @@ public class AppsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
+     * @param appResource Parameters for the create or update operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the AppResourceInner object
+     * @return the observable for the request
      */
-    public Observable<ServiceResponse<AppResourceInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String serviceName, String appName) {
+    public Observable<ServiceResponse<AppResourceInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String serviceName, String appName, AppResourceInner appResource) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -341,21 +352,12 @@ public class AppsInner {
         if (appName == null) {
             throw new IllegalArgumentException("Parameter appName is required and cannot be null.");
         }
-        final AppResourceProperties properties = null;
-        AppResourceInner appResource = new AppResourceInner();
-        appResource.withProperties(null);
-        return service.createOrUpdate(this.client.subscriptionId(), resourceGroupName, serviceName, appName, this.client.apiVersion(), this.client.acceptLanguage(), appResource, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppResourceInner>>>() {
-                @Override
-                public Observable<ServiceResponse<AppResourceInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<AppResourceInner> clientResponse = createOrUpdateDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        if (appResource == null) {
+            throw new IllegalArgumentException("Parameter appResource is required and cannot be null.");
+        }
+        Validator.validate(appResource);
+        Observable<Response<ResponseBody>> observable = service.createOrUpdate(this.client.subscriptionId(), resourceGroupName, serviceName, appName, this.client.apiVersion(), appResource, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<AppResourceInner>() { }.getType());
     }
 
     /**
@@ -364,14 +366,14 @@ public class AppsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param properties Properties of the App resource
+     * @param appResource Parameters for the create or update operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AppResourceInner object if successful.
      */
-    public AppResourceInner createOrUpdate(String resourceGroupName, String serviceName, String appName, AppResourceProperties properties) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceName, appName, properties).toBlocking().single().body();
+    public AppResourceInner beginCreateOrUpdate(String resourceGroupName, String serviceName, String appName, AppResourceInner appResource) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, serviceName, appName, appResource).toBlocking().single().body();
     }
 
     /**
@@ -380,13 +382,13 @@ public class AppsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param properties Properties of the App resource
+     * @param appResource Parameters for the create or update operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<AppResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName, String appName, AppResourceProperties properties, final ServiceCallback<AppResourceInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceName, appName, properties), serviceCallback);
+    public ServiceFuture<AppResourceInner> beginCreateOrUpdateAsync(String resourceGroupName, String serviceName, String appName, AppResourceInner appResource, final ServiceCallback<AppResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, serviceName, appName, appResource), serviceCallback);
     }
 
     /**
@@ -395,12 +397,12 @@ public class AppsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param properties Properties of the App resource
+     * @param appResource Parameters for the create or update operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AppResourceInner object
      */
-    public Observable<AppResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName, String appName, AppResourceProperties properties) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceName, appName, properties).map(new Func1<ServiceResponse<AppResourceInner>, AppResourceInner>() {
+    public Observable<AppResourceInner> beginCreateOrUpdateAsync(String resourceGroupName, String serviceName, String appName, AppResourceInner appResource) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, serviceName, appName, appResource).map(new Func1<ServiceResponse<AppResourceInner>, AppResourceInner>() {
             @Override
             public AppResourceInner call(ServiceResponse<AppResourceInner> response) {
                 return response.body();
@@ -414,11 +416,11 @@ public class AppsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param properties Properties of the App resource
+     * @param appResource Parameters for the create or update operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AppResourceInner object
      */
-    public Observable<ServiceResponse<AppResourceInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String serviceName, String appName, AppResourceProperties properties) {
+    public Observable<ServiceResponse<AppResourceInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String serviceName, String appName, AppResourceInner appResource) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -431,18 +433,16 @@ public class AppsInner {
         if (appName == null) {
             throw new IllegalArgumentException("Parameter appName is required and cannot be null.");
         }
-        Validator.validate(properties);
-        AppResourceInner appResource = null;
-        if (properties != null) {
-            appResource = new AppResourceInner();
-            appResource.withProperties(properties);
+        if (appResource == null) {
+            throw new IllegalArgumentException("Parameter appResource is required and cannot be null.");
         }
-        return service.createOrUpdate(this.client.subscriptionId(), resourceGroupName, serviceName, appName, this.client.apiVersion(), this.client.acceptLanguage(), appResource, this.client.userAgent())
+        Validator.validate(appResource);
+        return service.beginCreateOrUpdate(this.client.subscriptionId(), resourceGroupName, serviceName, appName, this.client.apiVersion(), appResource, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppResourceInner>>>() {
                 @Override
                 public Observable<ServiceResponse<AppResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<AppResourceInner> clientResponse = createOrUpdateDelegate(response);
+                        ServiceResponse<AppResourceInner> clientResponse = beginCreateOrUpdateDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -451,9 +451,10 @@ public class AppsInner {
             });
     }
 
-    private ServiceResponse<AppResourceInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<AppResourceInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<AppResourceInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AppResourceInner>() { }.getType())
+                .register(201, new TypeToken<AppResourceInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -554,13 +555,14 @@ public class AppsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
+     * @param appResource Parameters for the update operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AppResourceInner object if successful.
      */
-    public AppResourceInner update(String resourceGroupName, String serviceName, String appName) {
-        return updateWithServiceResponseAsync(resourceGroupName, serviceName, appName).toBlocking().single().body();
+    public AppResourceInner update(String resourceGroupName, String serviceName, String appName, AppResourceInner appResource) {
+        return updateWithServiceResponseAsync(resourceGroupName, serviceName, appName, appResource).toBlocking().last().body();
     }
 
     /**
@@ -569,12 +571,13 @@ public class AppsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
+     * @param appResource Parameters for the update operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<AppResourceInner> updateAsync(String resourceGroupName, String serviceName, String appName, final ServiceCallback<AppResourceInner> serviceCallback) {
-        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, serviceName, appName), serviceCallback);
+    public ServiceFuture<AppResourceInner> updateAsync(String resourceGroupName, String serviceName, String appName, AppResourceInner appResource, final ServiceCallback<AppResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, serviceName, appName, appResource), serviceCallback);
     }
 
     /**
@@ -583,11 +586,12 @@ public class AppsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
+     * @param appResource Parameters for the update operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the AppResourceInner object
+     * @return the observable for the request
      */
-    public Observable<AppResourceInner> updateAsync(String resourceGroupName, String serviceName, String appName) {
-        return updateWithServiceResponseAsync(resourceGroupName, serviceName, appName).map(new Func1<ServiceResponse<AppResourceInner>, AppResourceInner>() {
+    public Observable<AppResourceInner> updateAsync(String resourceGroupName, String serviceName, String appName, AppResourceInner appResource) {
+        return updateWithServiceResponseAsync(resourceGroupName, serviceName, appName, appResource).map(new Func1<ServiceResponse<AppResourceInner>, AppResourceInner>() {
             @Override
             public AppResourceInner call(ServiceResponse<AppResourceInner> response) {
                 return response.body();
@@ -601,10 +605,11 @@ public class AppsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
+     * @param appResource Parameters for the update operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the AppResourceInner object
+     * @return the observable for the request
      */
-    public Observable<ServiceResponse<AppResourceInner>> updateWithServiceResponseAsync(String resourceGroupName, String serviceName, String appName) {
+    public Observable<ServiceResponse<AppResourceInner>> updateWithServiceResponseAsync(String resourceGroupName, String serviceName, String appName, AppResourceInner appResource) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -617,21 +622,12 @@ public class AppsInner {
         if (appName == null) {
             throw new IllegalArgumentException("Parameter appName is required and cannot be null.");
         }
-        final AppResourceProperties properties = null;
-        AppResourceInner appResource = new AppResourceInner();
-        appResource.withProperties(null);
-        return service.update(this.client.subscriptionId(), resourceGroupName, serviceName, appName, this.client.apiVersion(), this.client.acceptLanguage(), appResource, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppResourceInner>>>() {
-                @Override
-                public Observable<ServiceResponse<AppResourceInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<AppResourceInner> clientResponse = updateDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        if (appResource == null) {
+            throw new IllegalArgumentException("Parameter appResource is required and cannot be null.");
+        }
+        Validator.validate(appResource);
+        Observable<Response<ResponseBody>> observable = service.update(this.client.subscriptionId(), resourceGroupName, serviceName, appName, this.client.apiVersion(), appResource, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<AppResourceInner>() { }.getType());
     }
 
     /**
@@ -640,14 +636,14 @@ public class AppsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param properties Properties of the App resource
+     * @param appResource Parameters for the update operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AppResourceInner object if successful.
      */
-    public AppResourceInner update(String resourceGroupName, String serviceName, String appName, AppResourceProperties properties) {
-        return updateWithServiceResponseAsync(resourceGroupName, serviceName, appName, properties).toBlocking().single().body();
+    public AppResourceInner beginUpdate(String resourceGroupName, String serviceName, String appName, AppResourceInner appResource) {
+        return beginUpdateWithServiceResponseAsync(resourceGroupName, serviceName, appName, appResource).toBlocking().single().body();
     }
 
     /**
@@ -656,13 +652,13 @@ public class AppsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param properties Properties of the App resource
+     * @param appResource Parameters for the update operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<AppResourceInner> updateAsync(String resourceGroupName, String serviceName, String appName, AppResourceProperties properties, final ServiceCallback<AppResourceInner> serviceCallback) {
-        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, serviceName, appName, properties), serviceCallback);
+    public ServiceFuture<AppResourceInner> beginUpdateAsync(String resourceGroupName, String serviceName, String appName, AppResourceInner appResource, final ServiceCallback<AppResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginUpdateWithServiceResponseAsync(resourceGroupName, serviceName, appName, appResource), serviceCallback);
     }
 
     /**
@@ -671,12 +667,12 @@ public class AppsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param properties Properties of the App resource
+     * @param appResource Parameters for the update operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AppResourceInner object
      */
-    public Observable<AppResourceInner> updateAsync(String resourceGroupName, String serviceName, String appName, AppResourceProperties properties) {
-        return updateWithServiceResponseAsync(resourceGroupName, serviceName, appName, properties).map(new Func1<ServiceResponse<AppResourceInner>, AppResourceInner>() {
+    public Observable<AppResourceInner> beginUpdateAsync(String resourceGroupName, String serviceName, String appName, AppResourceInner appResource) {
+        return beginUpdateWithServiceResponseAsync(resourceGroupName, serviceName, appName, appResource).map(new Func1<ServiceResponse<AppResourceInner>, AppResourceInner>() {
             @Override
             public AppResourceInner call(ServiceResponse<AppResourceInner> response) {
                 return response.body();
@@ -690,11 +686,11 @@ public class AppsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param properties Properties of the App resource
+     * @param appResource Parameters for the update operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AppResourceInner object
      */
-    public Observable<ServiceResponse<AppResourceInner>> updateWithServiceResponseAsync(String resourceGroupName, String serviceName, String appName, AppResourceProperties properties) {
+    public Observable<ServiceResponse<AppResourceInner>> beginUpdateWithServiceResponseAsync(String resourceGroupName, String serviceName, String appName, AppResourceInner appResource) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -707,18 +703,16 @@ public class AppsInner {
         if (appName == null) {
             throw new IllegalArgumentException("Parameter appName is required and cannot be null.");
         }
-        Validator.validate(properties);
-        AppResourceInner appResource = null;
-        if (properties != null) {
-            appResource = new AppResourceInner();
-            appResource.withProperties(properties);
+        if (appResource == null) {
+            throw new IllegalArgumentException("Parameter appResource is required and cannot be null.");
         }
-        return service.update(this.client.subscriptionId(), resourceGroupName, serviceName, appName, this.client.apiVersion(), this.client.acceptLanguage(), appResource, this.client.userAgent())
+        Validator.validate(appResource);
+        return service.beginUpdate(this.client.subscriptionId(), resourceGroupName, serviceName, appName, this.client.apiVersion(), appResource, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppResourceInner>>>() {
                 @Override
                 public Observable<ServiceResponse<AppResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<AppResourceInner> clientResponse = updateDelegate(response);
+                        ServiceResponse<AppResourceInner> clientResponse = beginUpdateDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -727,9 +721,10 @@ public class AppsInner {
             });
     }
 
-    private ServiceResponse<AppResourceInner> updateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<AppResourceInner> beginUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<AppResourceInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AppResourceInner>() { }.getType())
+                .register(202, new TypeToken<AppResourceInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

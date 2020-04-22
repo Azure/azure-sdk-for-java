@@ -25,8 +25,8 @@ public class OperationDetailInner {
     /**
      * Indicates whether the operation is a data action.
      */
-    @JsonProperty(value = "dataAction")
-    private Boolean dataAction;
+    @JsonProperty(value = "isDataAction")
+    private Boolean isDataAction;
 
     /**
      * Display of the operation.
@@ -69,20 +69,20 @@ public class OperationDetailInner {
     /**
      * Get indicates whether the operation is a data action.
      *
-     * @return the dataAction value
+     * @return the isDataAction value
      */
-    public Boolean dataAction() {
-        return this.dataAction;
+    public Boolean isDataAction() {
+        return this.isDataAction;
     }
 
     /**
      * Set indicates whether the operation is a data action.
      *
-     * @param dataAction the dataAction value to set
+     * @param isDataAction the isDataAction value to set
      * @return the OperationDetailInner object itself.
      */
-    public OperationDetailInner withDataAction(Boolean dataAction) {
-        this.dataAction = dataAction;
+    public OperationDetailInner withIsDataAction(Boolean isDataAction) {
+        this.isDataAction = isDataAction;
         return this;
     }
 
