@@ -5,20 +5,20 @@ package com.azure.messaging.servicebus;
 
 import reactor.core.Disposable;
 
-import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrates how to receive an {@link ServiceBusReceivedMessage} from an Azure Service Bus Queue using
+ * Sample demonstrates how to receive {@link ServiceBusReceivedMessage messages} from an Azure Service Bus Queue using
  * connection string.
  */
 public class ReceiveMessageAsyncSample {
     /**
-     * Main method to invoke this demo on how to receive an {@link ServiceBusMessage} from an Azure Service Bus
-     * Queue
+     * Main method to invoke this demo on how to receive {@link ServiceBusReceivedMessage messages} from an Azure
+     * Service Bus Queue.
      *
      * @param args Unused arguments to the program.
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         // The connection string value can be obtained by:
         // 1. Going to your Service Bus namespace in Azure Portal.
@@ -39,18 +39,15 @@ public class ReceiveMessageAsyncSample {
 
         Disposable subscription = receiverAsyncClient.receive()
             .subscribe(message -> {
-                System.out.println("Received Message Id:" + message.getMessageId());
-                System.out.println("Received Message:" + new String(message.getBody()));
-                // Buy default, the message will be auto completed.
-            }, error -> System.err.println("Error occurred while receiving message: " + error),
+                    System.out.println("Received Message Id:" + message.getMessageId());
+                    System.out.println("Received Message:" + new String(message.getBody()));
+                    // By default, the message will be auto completed.
+                }, error -> System.err.println("Error occurred while receiving message: " + error),
                 () -> System.out.println("Receiving complete."));
 
         // Receiving messages from the queue for a duration of 20 seconds.
         // Subscribe is not a blocking call so we sleep here so the program does not end.
-        try {
-            Thread.sleep(Duration.ofSeconds(20).toMillis());
-        } catch (InterruptedException ignored) {
-        }
+        TimeUnit.SECONDS.sleep(20);
 
         // Disposing of the subscription will cancel the receive() operation.
         subscription.dispose();

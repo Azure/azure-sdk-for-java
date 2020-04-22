@@ -3,7 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
-import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Sample example showing how peek would work.
@@ -14,7 +14,7 @@ public class PeekMessageAsyncSample {
      *
      * @param args Unused arguments to the program.
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         // The connection string value can be obtained by:
         // 1. Going to your Service Bus namespace in Azure Portal.
         // 2. Go to "Shared access policies"
@@ -41,10 +41,7 @@ public class PeekMessageAsyncSample {
 
         // Subscribe is not a blocking call so we sleep here so the program does not end while finishing
         // the peek operation.
-        try {
-            Thread.sleep(Duration.ofSeconds(20).toMillis());
-        } catch (InterruptedException ignored) {
-        }
+        TimeUnit.SECONDS.sleep(10);
 
         // Close the receiver.
         receiver.close();
