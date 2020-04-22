@@ -8,9 +8,10 @@ import com.azure.management.network.RouteTable;
 import com.azure.management.network.RouteTables;
 import com.azure.management.network.Subnet;
 import com.azure.management.resources.fluentcore.arm.Region;
+import org.junit.jupiter.api.Assertions;
+
 import java.util.List;
 import java.util.Map;
-import org.junit.jupiter.api.Assertions;
 
 /** Test of virtual network management. */
 public class TestRouteTables {
@@ -56,13 +57,13 @@ public class TestRouteTables {
             Assertions.assertTrue(routeTable.routes().containsKey(route1Name));
             Route route1 = routeTable.routes().get(route1Name);
             Assertions.assertTrue(route1.destinationAddressPrefix().equalsIgnoreCase(route1AddressPrefix));
-            Assertions.assertTrue(route1.nextHopIPAddress().equalsIgnoreCase(virtualApplianceIp));
+            Assertions.assertTrue(route1.nextHopIpAddress().equalsIgnoreCase(virtualApplianceIp));
             Assertions.assertTrue(route1.nextHopType().equals(RouteNextHopType.VIRTUAL_APPLIANCE));
 
             Assertions.assertTrue(routeTable.routes().containsKey(route2Name));
             Route route2 = routeTable.routes().get(route2Name);
             Assertions.assertTrue(route2.destinationAddressPrefix().equalsIgnoreCase(route2AddressPrefix));
-            Assertions.assertTrue(route2.nextHopIPAddress() == null);
+            Assertions.assertTrue(route2.nextHopIpAddress() == null);
             Assertions.assertTrue(route2.nextHopType().equals(hopType));
 
             Assertions.assertTrue(routeTable.isBgpRoutePropagationDisabled());
@@ -170,7 +171,7 @@ public class TestRouteTables {
                 .append("\n\t\t\tNext hop type: ")
                 .append(route.nextHopType().toString())
                 .append("\n\t\t\tNext hop IP address: ")
-                .append(route.nextHopIPAddress());
+                .append(route.nextHopIpAddress());
         }
 
         // Output associated subnets

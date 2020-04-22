@@ -10,7 +10,6 @@ import com.azure.management.network.NetworkPeeringGatewayUse;
 import com.azure.management.network.VirtualNetworkPeeringState;
 import com.azure.management.network.models.VirtualNetworkPeeringInner;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
-import com.azure.management.resources.fluentcore.arm.models.IndependentChild;
 import com.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildImpl;
 import com.azure.management.resources.fluentcore.model.Indexable;
 import com.azure.management.resources.fluentcore.utils.Utils;

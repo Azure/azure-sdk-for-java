@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.management.network.implementation;
 
-import com.azure.management.network.ExpressRouteCircuit;
 import com.azure.management.network.ExpressRouteCircuitPeering;
 import com.azure.management.network.ExpressRouteCircuitPeeringConfig;
 import com.azure.management.network.ExpressRoutePeeringState;
@@ -19,7 +18,7 @@ import reactor.core.publisher.Mono;
 
 interface ExpressRouteCircuitPeeringParent<ModelT, InnerT>
     extends GroupableResource<NetworkManager, InnerT>,
-    Refreshable<ModelT> {}
+    Refreshable<ModelT> { }
 
 class ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT>
     extends CreatableUpdatableImpl<
