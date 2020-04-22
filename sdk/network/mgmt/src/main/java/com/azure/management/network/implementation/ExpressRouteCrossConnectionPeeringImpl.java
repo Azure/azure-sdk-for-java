@@ -68,8 +68,8 @@ class ExpressRouteCrossConnectionPeeringImpl
     }
 
     @Override
-    public ExpressRouteCrossConnectionPeeringImpl withPeerAsn(long peerAsn) {
-        inner().withPeerASN(peerAsn);
+    public ExpressRouteCrossConnectionPeeringImpl withPeerASN(long peerASN) {
+        inner().withPeerASN(peerASN);
         return this;
     }
 

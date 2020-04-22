@@ -22,7 +22,8 @@ import reactor.core.publisher.Mono;
 class ExpressRouteCircuitImpl
     extends GroupableParentResourceWithTagsImpl<
         ExpressRouteCircuit, ExpressRouteCircuitInner, ExpressRouteCircuitImpl, NetworkManager>
-    implements ExpressRouteCircuit, ExpressRouteCircuit.Definition, ExpressRouteCircuit.Update {
+    implements ExpressRouteCircuit, ExpressRouteCircuit.Definition, ExpressRouteCircuit.Update,
+        ExpressRouteCircuitPeeringParent<ExpressRouteCircuit, ExpressRouteCircuitInner> {
     private ExpressRouteCircuitPeeringsImpl peerings;
     private Map<String, ExpressRouteCircuitPeering> expressRouteCircuitPeerings;
 

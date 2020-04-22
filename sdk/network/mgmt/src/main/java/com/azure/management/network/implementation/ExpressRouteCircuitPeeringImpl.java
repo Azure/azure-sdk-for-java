@@ -10,21 +10,28 @@ import com.azure.management.network.ExpressRoutePeeringType;
 import com.azure.management.network.Ipv6ExpressRouteCircuitPeeringConfig;
 import com.azure.management.network.models.ExpressRouteCircuitPeeringInner;
 import com.azure.management.network.models.ExpressRouteCircuitPeeringsInner;
+import com.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.azure.management.resources.fluentcore.model.Refreshable;
 import com.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
 import java.util.Arrays;
 import reactor.core.publisher.Mono;
 
-class ExpressRouteCircuitPeeringImpl
+interface ExpressRouteCircuitPeeringParent<ModelT, InnerT>
+    extends GroupableResource<NetworkManager, InnerT>,
+    Refreshable<ModelT> {}
+
+class ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT>
     extends CreatableUpdatableImpl<
-        ExpressRouteCircuitPeering, ExpressRouteCircuitPeeringInner, ExpressRouteCircuitPeeringImpl>
+        ExpressRouteCircuitPeering, ExpressRouteCircuitPeeringInner,
+        ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT>>
     implements ExpressRouteCircuitPeering, ExpressRouteCircuitPeering.Definition, ExpressRouteCircuitPeering.Update {
     private final ExpressRouteCircuitPeeringsInner client;
-    private final ExpressRouteCircuit parent;
+    private final ExpressRouteCircuitPeeringParent<ParentModelT, ParentInnerT> parent;
     private ExpressRouteCircuitStatsImpl stats;
 
     ExpressRouteCircuitPeeringImpl(
-        ExpressRouteCircuitImpl parent,
+        ExpressRouteCircuitPeeringParent<ParentModelT, ParentInnerT> parent,
         ExpressRouteCircuitPeeringInner innerObject,
         ExpressRouteCircuitPeeringsInner client,
         ExpressRoutePeeringType type) {
@@ -67,8 +74,8 @@ class ExpressRouteCircuitPeeringImpl
     }
 
     @Override
-    public ExpressRouteCircuitPeeringImpl withPeerAsn(long peerAsn) {
-        inner().withPeerASN(peerAsn);
+    public ExpressRouteCircuitPeeringImpl withPeerASN(long peerASN) {
+        inner().withPeerASN(peerASN);
         return this;
     }
 
@@ -113,12 +120,12 @@ class ExpressRouteCircuitPeeringImpl
     }
 
     @Override
-    public int azureAsn() {
+    public int azureASN() {
         return Utils.toPrimitiveInt(inner().azureASN());
     }
 
     @Override
-    public long peerAsn() {
+    public long peerASN() {
         return Utils.toPrimitiveLong(inner().peerASN());
     }
 

@@ -393,7 +393,7 @@ class VirtualNetworkGatewayImpl
         // Determine if a default public frontend PIP should be created
         final VirtualNetworkGatewayIPConfigurationImpl defaultIPConfig = ensureDefaultIPConfig();
         final Mono<Resource> pipObservable;
-        if (defaultIPConfig != null && defaultIPConfig.publicIPAddressId() == null) {
+        if (defaultIPConfig.publicIPAddressId() == null) {
             // If public ip not specified, then create a default PIP
             pipObservable =
                 Utils
@@ -414,6 +414,7 @@ class VirtualNetworkGatewayImpl
             // ...and no need to create VNet
             networkObservable = Mono.empty(); // ...and don't create another VNet
         } else {
+            assert creatableNetwork != null;
             // But if default IP config does not have a subnet specified, then create a VNet
             networkObservable =
                 Utils

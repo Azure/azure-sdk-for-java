@@ -24,8 +24,7 @@ class NetworkPeeringImpl
         NetworkPeering, Network, VirtualNetworkPeeringInner, NetworkPeeringImpl, NetworkManager>
     implements NetworkPeering,
         NetworkPeering.Definition,
-        NetworkPeering.Update,
-        IndependentChild.DefinitionStages.WithParentResource<NetworkPeering, Network> {
+        NetworkPeering.Update {
 
     private NetworkImpl parent;
     private Network remoteNetwork;

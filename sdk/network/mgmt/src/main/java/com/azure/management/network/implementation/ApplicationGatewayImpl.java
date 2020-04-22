@@ -578,30 +578,30 @@ class ApplicationGatewayImpl
      * @param byName object found by name
      * @param byPort object found by port
      * @param name the desired name of the object
-     * @return true if already found, false if ok to create, null if conflict
+     * @return positive if already found, 0 if ok to create, negative if conflict
      */
-    <T> Boolean needToCreate(T byName, T byPort, String name) {
+    <T> int needToCreate(T byName, T byPort, String name) {
         if (byName != null && byPort != null) {
             // If objects with this name and/or port already exist...
             if (byName == byPort) {
                 // ...and it is the same object, then do nothing
-                return false;
+                return 0;
             } else {
                 // ...but if they are inconsistent, then fail fast
-                return null;
+                return -1;
             }
         } else if (byPort != null) {
             // If no object with the requested name, but the port number is found...
             if (name == null) {
                 // ...and no name is requested, then do nothing, because the object already exists
-                return false;
+                return 0;
             } else {
                 // ...but if a clashing name is requested, then fail fast
-                return null;
+                return -1;
             }
         } else {
             // Ok to create the object
-            return true;
+            return 1;
         }
     }
 
@@ -1031,8 +1031,8 @@ class ApplicationGatewayImpl
             }
         }
 
-        Boolean needToCreate = this.needToCreate(frontendPortByName, frontendPortByNumber, name);
-        if (Boolean.TRUE.equals(needToCreate)) {
+        int needToCreate = this.needToCreate(frontendPortByName, frontendPortByNumber, name);
+        if (needToCreate > 0) {
             // If no conflict, create a new port
             if (name == null) {
                 // No name specified, so auto-name it
@@ -1042,7 +1042,7 @@ class ApplicationGatewayImpl
             frontendPortByName = new ApplicationGatewayFrontendPort().withName(name).withPort(portNumber);
             frontendPorts.add(frontendPortByName);
             return this;
-        } else if (Boolean.FALSE.equals(needToCreate)) {
+        } else if (needToCreate == 0) {
             // If found matching port, then nothing needs to happen
             return this;
         } else {

@@ -7,6 +7,7 @@ import com.azure.management.network.ExpressRouteCircuitPeering;
 import com.azure.management.network.RouteFilter;
 import com.azure.management.network.RouteFilterRule;
 import com.azure.management.network.RouteFilterRuleType;
+import com.azure.management.network.models.ExpressRouteCircuitPeeringInner;
 import com.azure.management.network.models.RouteFilterInner;
 import com.azure.management.network.models.RouteFilterRuleInner;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
@@ -14,12 +15,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
+
 import reactor.core.publisher.Mono;
 
 /** Implementation for RouteFilter and its create and update interfaces. */
 class RouteFilterImpl
     extends GroupableParentResourceImpl<RouteFilter, RouteFilterInner, RouteFilterImpl, NetworkManager>
-    implements RouteFilter, RouteFilter.Definition, RouteFilter.Update {
+    implements RouteFilter, RouteFilter.Definition, RouteFilter.Update,
+        ExpressRouteCircuitPeeringParent<RouteFilter, RouteFilterInner> {
     private static final String RULE_TYPE = "Community";
 
     private Map<String, RouteFilterRule> rules;
@@ -38,11 +42,14 @@ class RouteFilterImpl
     protected void initializeChildrenFromInner() {
         this.rules = new TreeMap<>();
         List<RouteFilterRuleInner> inners = this.inner().rules();
-        if (inners != null) {
-            for (RouteFilterRuleInner inner : inners) {
-                this.rules.put(inner.name(), new RouteFilterRuleImpl(inner, this));
-            }
+        for (RouteFilterRuleInner inner : inners) {
+            this.rules.put(inner.name(), new RouteFilterRuleImpl(inner, this));
         }
+        this.peerings = this.inner().peerings().stream().collect(Collectors.toMap(
+            ExpressRouteCircuitPeeringInner::name,
+            peering -> new ExpressRouteCircuitPeeringImpl(this, peering,
+                manager().inner().expressRouteCircuitPeerings(), peering.peeringType())
+        ));
     }
 
     @Override
