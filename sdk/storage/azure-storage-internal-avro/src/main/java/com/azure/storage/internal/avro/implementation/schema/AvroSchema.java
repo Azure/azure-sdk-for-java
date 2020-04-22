@@ -123,28 +123,58 @@ public abstract class AvroSchema {
             case STRING:
                 return new AvroStringSchema(state, onResult);
             case RECORD: {
-                AvroType.AvroRecordType recordType = (AvroType.AvroRecordType) type;
-                return new AvroRecordSchema(recordType.getName(), recordType.getFields(), state, onResult);
+                if (type instanceof AvroType.AvroRecordType) {
+                    AvroType.AvroRecordType recordType = (AvroType.AvroRecordType) type;
+                    return new AvroRecordSchema(recordType.getName(), recordType.getFields(), state, onResult);
+                } else {
+                    throw new IllegalArgumentException(String.format("Expected 'type' to be of type %s.",
+                        AvroType.AvroRecordType.class.getSimpleName()));
+                }
             }
             case ENUM: {
-                AvroType.AvroEnumType enumType = (AvroType.AvroEnumType) type;
-                return new AvroEnumSchema(enumType.getSymbols(), state, onResult);
+                if (type instanceof AvroType.AvroEnumType) {
+                    AvroType.AvroEnumType enumType = (AvroType.AvroEnumType) type;
+                    return new AvroEnumSchema(enumType.getSymbols(), state, onResult);
+                } else {
+                    throw new IllegalArgumentException(String.format("Expected 'type' to be of type %s.",
+                        AvroType.AvroEnumType.class.getSimpleName()));
+                }
             }
             case ARRAY: {
-                AvroType.AvroArrayType arrayType = (AvroType.AvroArrayType) type;
-                return new AvroArraySchema(arrayType.getItemType(), state, onResult);
+                if (type instanceof AvroType.AvroArrayType) {
+                    AvroType.AvroArrayType arrayType = (AvroType.AvroArrayType) type;
+                    return new AvroArraySchema(arrayType.getItemType(), state, onResult);
+                } else {
+                    throw new IllegalArgumentException(String.format("Expected 'type' to be of type %s.",
+                        AvroType.AvroArrayType.class.getSimpleName()));
+                }
             }
             case MAP: {
-                AvroType.AvroMapType mapType = (AvroType.AvroMapType) type;
-                return new AvroMapSchema(mapType.getValueType(), state, onResult);
+                if (type instanceof AvroType.AvroMapType) {
+                    AvroType.AvroMapType mapType = (AvroType.AvroMapType) type;
+                    return new AvroMapSchema(mapType.getValueType(), state, onResult);
+                } else {
+                    throw new IllegalArgumentException(String.format("Expected 'type' to be of type %s.",
+                        AvroType.AvroMapType.class.getSimpleName()));
+                }
             }
             case UNION: {
-                AvroType.AvroUnionType unionType = (AvroType.AvroUnionType) type;
-                return new AvroUnionSchema(unionType.getTypes(), state, onResult);
+                if (type instanceof AvroType.AvroUnionType) {
+                    AvroType.AvroUnionType unionType = (AvroType.AvroUnionType) type;
+                    return new AvroUnionSchema(unionType.getTypes(), state, onResult);
+                } else {
+                    throw new IllegalArgumentException(String.format("Expected 'type' to be of type %s.",
+                        AvroType.AvroUnionType.class.getSimpleName()));
+                }
             }
             case FIXED: {
-                AvroType.AvroFixedType fixedType = (AvroType.AvroFixedType) type;
-                return new AvroFixedSchema(fixedType.getSize(), state, onResult);
+                if (type instanceof AvroType.AvroFixedType) {
+                    AvroType.AvroFixedType fixedType = (AvroType.AvroFixedType) type;
+                    return new AvroFixedSchema(fixedType.getSize(), state, onResult);
+                } else {
+                    throw new IllegalArgumentException(String.format("Expected 'type' to be of type %s.",
+                        AvroType.AvroFixedType.class.getSimpleName()));
+                }
             }
             default:
                 throw new RuntimeException("Unsupported type " + type.getType());
