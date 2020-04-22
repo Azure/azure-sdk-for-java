@@ -60,6 +60,7 @@ import reactor.util.function.Tuple3;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -552,10 +553,14 @@ public class BlobAsyncClientBase {
         }
         StringBuilder sb = new StringBuilder();
         for (String key : tags.keySet()) {
-            sb.append(URLEncoder.encode(key, Charset.defaultCharset()));
-            sb.append("=");
-            sb.append(URLEncoder.encode(tags.get(key), Charset.defaultCharset()));
-            sb.append("&");
+            try {
+                sb.append(URLEncoder.encode(key, Charset.defaultCharset().toString()));
+                sb.append("=");
+                sb.append(URLEncoder.encode(tags.get(key), Charset.defaultCharset().toString()));
+                sb.append("&");
+            } catch (UnsupportedEncodingException e) {
+                throw logger.logExceptionAsError(new IllegalStateException(e));
+            }
         }
 
         sb.deleteCharAt(sb.length()-1); // Remove the last '&'
