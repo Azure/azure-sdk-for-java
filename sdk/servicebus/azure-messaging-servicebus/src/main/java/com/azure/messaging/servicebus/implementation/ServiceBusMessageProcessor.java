@@ -387,14 +387,14 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
                 "Cannot renew lock token without a value for 'message.getLockedUntil()'"));
         }
 
-        final Instant initialRefreshDuration = initialLockedUntil.minus(Duration.ofMillis(500));
+        final Instant initialRefreshDuration = initialLockedUntil.minus(Duration.ofMillis(1000));
         Duration initialInterval = Duration.between(Instant.now(), initialRefreshDuration);
         if (initialInterval.isNegative()) {
             logger.info("Duration was negative. Moving to refresh immediately: {}", initialInterval.toMillis());
             initialInterval = Duration.ZERO;
         }
 
-        logger.info("lock[{}]. lockedUntil[{}]. firstInterval[{}]. interval[{}]", lockToken, initialLockedUntil,
+        logger.info("lockToken[{}]. lockedUntil[{}]. firstInterval[{}]. interval[{}]", lockToken, initialLockedUntil,
             initialRefreshDuration, initialInterval);
 
         final EmitterProcessor<Duration> emitterProcessor = EmitterProcessor.create();
@@ -413,17 +413,20 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
             });
 
         final Disposable renewLockSubscription = Flux.switchOnNext(emitterProcessor.map(i -> Flux.interval(i)))
-            .flatMap(delay -> onRenewLock.apply(message))
+            .flatMap(delay -> {
+                logger.info("lockToken[{}]. now[{}]. Starting lock renewal.", lockToken, Instant.now());
+                return onRenewLock.apply(message);
+            })
             .map(instant -> {
                 final Duration next = Duration.between(Instant.now(), instant);
-                logger.info("lockToken[{}]. given[{}]. Next renewal: [{}]",
+                logger.info("lockToken[{}]. nextExpiration[{}]. Next renewal: [{}]",
                     lockToken, instant, next);
 
                 sink.next(MessageUtils.adjustServerTimeout(next));
                 return instant;
             })
             .subscribe(lockedUntil -> {
-                logger.verbose("seq[{}]. lockToken[{}]. lockedUntil[{}]. Lock renewal successful.",
+                logger.verbose("lockToken[{}]. lockedUntil[{}]. Lock renewal successful.",
                     sequenceNumber, lockToken, lockedUntil);
             },
                 error -> {

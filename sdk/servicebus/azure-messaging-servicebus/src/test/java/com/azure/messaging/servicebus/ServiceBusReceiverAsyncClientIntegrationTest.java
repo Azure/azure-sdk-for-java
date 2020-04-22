@@ -409,8 +409,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 assertNotNull(received.getLockedUntil());
                 assertNotNull(received.getLockToken());
 
-                logger.info("{}: now: [{}]. lockId[{}]. lockedUntil[{}]", received.getSequenceNumber(), Instant.now(),
-                    received.getLockToken(), received.getLockedUntil());
+                logger.info("{}: lockToken[{}]. lockedUntil[{}]. now[{}]", received.getSequenceNumber(),
+                    received.getLockToken(), received.getLockedUntil(), Instant.now());
 
                 final Instant initial = received.getLockedUntil();
                 final Instant timeToStop = initial.plusSeconds(5);
@@ -419,7 +419,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 // Simulate some sort of long processing.
                 final AtomicInteger iteration = new AtomicInteger();
                 while (Instant.now().isBefore(timeToStop)) {
-                    logger.info("Iteration: {}", iteration.incrementAndGet());
+                    logger.info("Iteration {}: {}", iteration.incrementAndGet(), Instant.now());
 
                     try {
                         TimeUnit.SECONDS.sleep(15);
