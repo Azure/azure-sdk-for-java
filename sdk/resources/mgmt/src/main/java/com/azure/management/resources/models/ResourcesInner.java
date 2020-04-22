@@ -31,6 +31,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.management.resources.ResourcesMoveInfo;
 import com.azure.management.resources.fluentcore.collection.InnerSupportsListing;
@@ -40,6 +41,8 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Resources. */
 public final class ResourcesInner implements InnerSupportsListing<GenericResourceExpandedInner> {
+    private final ClientLogger logger = new ClientLogger(ResourcesInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final ResourcesService service;
 
@@ -921,14 +924,20 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
         String resourceType,
         String resourceName,
         String apiVersion) {
-        return checkExistenceAsync(
-                resourceGroupName,
-                resourceProviderNamespace,
-                parentResourcePath,
-                resourceType,
-                resourceName,
-                apiVersion)
-            .block();
+        Boolean value =
+            checkExistenceAsync(
+                    resourceGroupName,
+                    resourceProviderNamespace,
+                    parentResourcePath,
+                    resourceType,
+                    resourceName,
+                    apiVersion)
+                .block();
+        if (value != null) {
+            return value;
+        } else {
+            throw logger.logExceptionAsError(new NullPointerException());
+        }
     }
 
     /**
@@ -1448,7 +1457,12 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean checkExistenceById(String resourceId, String apiVersion) {
-        return checkExistenceByIdAsync(resourceId, apiVersion).block();
+        Boolean value = checkExistenceByIdAsync(resourceId, apiVersion).block();
+        if (value != null) {
+            return value;
+        } else {
+            throw logger.logExceptionAsError(new NullPointerException());
+        }
     }
 
     /**

@@ -18,7 +18,6 @@ public class AzureTestWatcher implements BeforeTestExecutionCallback, AfterTestE
     @Override
     public void beforeTestExecution(ExtensionContext extensionContext) {
         String displayName = extensionContext.getDisplayName();
-        getStore(extensionContext).put(extensionContext.getRequiredTestMethod(), System.currentTimeMillis());
 
         String testName = "";
         String fullyQualifiedTestName = "";
@@ -28,23 +27,41 @@ public class AzureTestWatcher implements BeforeTestExecutionCallback, AfterTestE
             fullyQualifiedTestName = method.getDeclaringClass().getName() + "." + testName;
         }
 
+        StringBuilder logPrefixBuilder = new StringBuilder("Starting test ")
+            .append(fullyQualifiedTestName);
+
         if (!Objects.equals(displayName, testName)) {
-            System.out.printf("Starting test %s (%s), ", fullyQualifiedTestName, displayName);
-        } else {
-            System.out.printf("Starting test %s, ", fullyQualifiedTestName);
+            logPrefixBuilder.append("(")
+                .append(displayName)
+                .append(")");
         }
+
+        logPrefixBuilder.append(",");
+
+        getStore(extensionContext).put(extensionContext.getRequiredTestMethod(),
+            new TestInformation(logPrefixBuilder.toString(), System.currentTimeMillis()));
     }
 
     @Override
     public void afterTestExecution(ExtensionContext context) {
-        Method testMethod = context.getRequiredTestMethod();
-        long start = getStore(context).remove(testMethod, long.class);
-        long duration = System.currentTimeMillis() - start;
+        TestInformation testInformation = getStore(context)
+            .remove(context.getRequiredTestMethod(), TestInformation.class);
+        long duration = System.currentTimeMillis() - testInformation.startMillis;
 
-        System.out.printf("completed in %d ms.%n", duration);
+        System.out.printf("%s completed in %d ms.%n", testInformation.logPrefix, duration);
     }
 
-    private ExtensionContext.Store getStore(ExtensionContext context) {
-        return context.getStore(ExtensionContext.Namespace.create(getClass(), context));
+    private static ExtensionContext.Store getStore(ExtensionContext context) {
+        return context.getStore(ExtensionContext.Namespace.create(AzureTestWatcher.class, context));
+    }
+
+    private static final class TestInformation {
+        private final String logPrefix;
+        private final long startMillis;
+
+        private TestInformation(String logPrefix, long startMillis) {
+            this.logPrefix = logPrefix;
+            this.startMillis = startMillis;
+        }
     }
 }

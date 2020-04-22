@@ -5,6 +5,7 @@ package com.azure.management.network;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /** Defines values for LoadBalancerSkuType. */
@@ -35,7 +36,7 @@ public final class LoadBalancerSkuType {
     private LoadBalancerSkuType(LoadBalancerSkuName skuName) {
         this.skuName = skuName;
         if (skuName != null) {
-            VALUES_BY_NAME.put(skuName.toString().toLowerCase(), this);
+            VALUES_BY_NAME.put(skuName.toString().toLowerCase(Locale.ROOT), this);
         }
     }
 
@@ -53,7 +54,7 @@ public final class LoadBalancerSkuType {
         if (lbSku.name() == null) {
             return null;
         }
-        LoadBalancerSkuType result = VALUES_BY_NAME.get(lbSku.name().toString().toLowerCase());
+        LoadBalancerSkuType result = VALUES_BY_NAME.get(lbSku.name().toString().toLowerCase(Locale.ROOT));
         if (result != null) {
             return result;
         } else {

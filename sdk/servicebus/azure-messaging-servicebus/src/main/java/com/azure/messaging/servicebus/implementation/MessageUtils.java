@@ -3,15 +3,21 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.core.amqp.exception.AmqpErrorContext;
+import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.implementation.ExceptionUtil;
+import org.apache.qpid.proton.amqp.Symbol;
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
+
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.UUID;
 
 /**
- * Contains helper methods for message conversions.
+ * Contains helper methods for message conversions and reading status codes.
  */
 final class MessageUtils {
-    public static final UUID ZERO_LOCK_TOKEN = new UUID(0L, 0L);
+    static final UUID ZERO_LOCK_TOKEN = new UUID(0L, 0L);
     static final int LOCK_TOKEN_SIZE = 16;
 
     private static final int GUID_SIZE = 16;
@@ -39,6 +45,40 @@ final class MessageUtils {
         final long mostSignificantBits = buffer.getLong();
         final long leastSignificantBits = buffer.getLong();
         return new UUID(mostSignificantBits, leastSignificantBits);
+    }
+
+    // Pass little less than client timeout to the server so client doesn't time out before server times out
+    static Duration adjustServerTimeout(Duration clientTimeout) {
+        return clientTimeout.minusMillis(1000);
+    }
+
+    /**
+     * Creates an exception given the error condition and context.
+     *
+     * @param errorCondition Error condition for the AMQP exception.
+     * @param errorContext AMQP context it occurred in.
+     *
+     * @return Corresponding {@link Throwable} for the error condition.
+     */
+    static Throwable toException(ErrorCondition errorCondition, AmqpErrorContext errorContext) {
+        final Symbol condition = errorCondition.getCondition();
+        final String description = errorCondition.getDescription();
+
+        try {
+            return ExceptionUtil.toException(condition.toString(), description, errorContext);
+        } catch (IllegalArgumentException ignored) {
+            final ServiceBusErrorCondition error = ServiceBusErrorCondition.fromString(condition.toString());
+
+            return toException(error, description, errorContext);
+        }
+    }
+
+    static Throwable toException(ServiceBusErrorCondition errorCondition, String description,
+        AmqpErrorContext errorContext) {
+
+        final boolean isTransient = errorCondition.isTransient();
+        final String message = String.format("condition[%s]: %s", errorCondition.toString(), description);
+        return new AmqpException(isTransient, message, errorContext);
     }
 
     private static byte[] reorderBytes(byte[] javaBytes) {
@@ -78,10 +118,5 @@ final class MessageUtils {
         }
 
         return reorderedBytes;
-    }
-
-    // Pass little less than client timeout to the server so client doesn't time out before server times out
-    public static Duration adjustServerTimeout(Duration clientTimeout) {
-        return clientTimeout.minusMillis(200);
     }
 }

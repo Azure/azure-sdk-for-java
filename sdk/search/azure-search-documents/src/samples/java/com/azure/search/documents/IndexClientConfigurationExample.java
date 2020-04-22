@@ -50,7 +50,7 @@ public class IndexClientConfigurationExample {
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
             .indexName("hotels")
-            .serviceVersion(SearchServiceVersion.V2019_05_06)
+            .serviceVersion(SearchServiceVersion.V2019_05_06_Preview)
             .addPolicy(new RetryPolicy())
             .httpClient(
                 new NettyAsyncHttpClientBuilder()

@@ -177,7 +177,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             return (T) deserializeMessage(message);
         } else {
             throw logger.logExceptionAsError(new IllegalArgumentException(
-                "Deserialization only supports ServiceBusReceivedMessage."));
+                String.format(Messages.CLASS_NOT_A_SUPPORTED_TYPE, clazz)));
         }
     }
 
@@ -192,7 +192,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             return (List<T>) deserializeListOfLong(message);
         } else {
             throw logger.logExceptionAsError(new IllegalArgumentException(
-                "Deserialization only supports ServiceBusReceivedMessage."));
+                String.format(Messages.CLASS_NOT_A_SUPPORTED_TYPE, clazz)));
         }
     }
 
@@ -236,9 +236,9 @@ class ServiceBusMessageSerializer implements MessageSerializer {
     @SuppressWarnings("rawtypes")
     private List<ServiceBusReceivedMessage> deserializeListOfMessages(Message amqpMessage) {
         final List<ServiceBusReceivedMessage> messageList = new ArrayList<>();
-        final int statusCode = RequestResponseUtils.getResponseStatusCode(amqpMessage);
+        final AmqpResponseCode statusCode = RequestResponseUtils.getStatusCode(amqpMessage);
 
-        if (AmqpResponseCode.fromValue(statusCode) != AmqpResponseCode.OK) {
+        if (statusCode != AmqpResponseCode.OK) {
             logger.warning("AMQP response did not contain OK status code. Actual: {}", statusCode);
             return Collections.emptyList();
         }

@@ -76,7 +76,7 @@ public interface ExpressRouteCrossConnectionPeering
             DefinitionStages.WithPrimaryPeerAddressPrefix,
             DefinitionStages.WithSecondaryPeerAddressPrefix,
             DefinitionStages.WithVlanId,
-            DefinitionStages.WithPeerAsn,
+            DefinitionStages.WithPeerASN,
             DefinitionStages.WithCreate {
     }
 
@@ -144,16 +144,16 @@ public interface ExpressRouteCrossConnectionPeering
              *     same VLAN ID
              * @return next stage of definition
              */
-            WithPeerAsn withVlanId(int vlanId);
+            WithPeerASN withVlanId(int vlanId);
         }
 
         /** The stage of Express Route Cross Connection Peering definition allowing to specify AS number for peering. */
-        interface WithPeerAsn {
+        interface WithPeerASN {
             /**
-             * @param peerAsn AS number for peering. Both 2-byte and 4-byte AS numbers can be used
+             * @param peerASN AS number for peering. Both 2-byte and 4-byte AS numbers can be used
              * @return next stage of definition
              */
-            WithCreate withPeerAsn(long peerAsn);
+            WithCreate withPeerASN(long peerASN);
         }
 
         interface WithSharedKey {
@@ -194,7 +194,7 @@ public interface ExpressRouteCrossConnectionPeering
             UpdateStages.WithPrimaryPeerAddressPrefix,
             UpdateStages.WithSecondaryPeerAddressPrefix,
             UpdateStages.WithVlanId,
-            UpdateStages.WithPeerAsn,
+            UpdateStages.WithPeerASN,
             UpdateStages.WithIpv6PeeringConfig,
             UpdateStages.WithState {
     }
@@ -259,14 +259,14 @@ public interface ExpressRouteCrossConnectionPeering
         }
 
         /** The stage of Express Route Cross Connection Peering update allowing to specify AS number for peering. */
-        interface WithPeerAsn {
+        interface WithPeerASN {
             /**
              * Sets peer ASN.
              *
-             * @param peerAsn the AS number for peering
+             * @param peerASN the AS number for peering
              * @return the next stage of the update
              */
-            Update withPeerAsn(long peerAsn);
+            Update withPeerASN(long peerASN);
         }
 
         /** Specifies IPv6 configuration. */

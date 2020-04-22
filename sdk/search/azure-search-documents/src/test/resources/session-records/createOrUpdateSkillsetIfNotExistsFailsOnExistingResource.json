@@ -1,44 +1,48 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azs-sdk64651eec9b1.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06",
+    "Uri" : "https://azsjava5816288c8f31f626945bd88e1ab24.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06-Preview",
     "Headers" : {
+      "x-ms-client-request-id" : "ef615305-cd83-4d5a-b8e1-a3f45dbb35d4",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "ed4f42cf-bc9a-4a5d-b262-6e3b26f1bfbb",
+      "request-id" : "ef615305-cd83-4d5a-b8e1-a3f45dbb35d4",
       "StatusCode" : "201",
-      "Date" : "Mon, 24 Feb 2020 19:59:02 GMT",
+      "Date" : "Tue, 21 Apr 2020 19:12:20 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D7B963FEE22A66\"",
-      "elapsed-time" : "62",
+      "client-request-id" : "ef615305-cd83-4d5a-b8e1-a3f45dbb35d4",
+      "ETag" : "W/\"0x8D7E627EAF57337\"",
+      "elapsed-time" : "130",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "696",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk64651eec9b1.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7B963FEE22A66\\\"\",\"name\":\"ocr-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":null,\"lineEnding\":null,\"defaultLanguageCode\":null,\"detectOrientation\":false,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]}],\"cognitiveServices\":null}",
+      "Content-Length" : "736",
+      "Body" : "{\"@odata.context\":\"https://azsjava5816288c8f31f626945bd88e1ab24.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7E627EAF57337\\\"\",\"name\":\"ocr-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":null,\"lineEnding\":null,\"defaultLanguageCode\":null,\"detectOrientation\":false,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk64651eec9b1.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06"
+      "Location" : "https://azsjava5816288c8f31f626945bd88e1ab24.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06-Preview"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azs-sdk64651eec9b1.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06",
+    "Uri" : "https://azsjava5816288c8f31f626945bd88e1ab24.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06-Preview",
     "Headers" : {
+      "x-ms-client-request-id" : "25860bba-0f13-4a7b-82af-7f6ec38c4c23",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "068f5603-6c42-45e0-aa9a-c5454606d567",
+      "request-id" : "25860bba-0f13-4a7b-82af-7f6ec38c4c23",
       "StatusCode" : "412",
-      "Date" : "Mon, 24 Feb 2020 19:59:02 GMT",
+      "Date" : "Tue, 21 Apr 2020 19:12:20 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "39",
+      "client-request-id" : "25860bba-0f13-4a7b-82af-7f6ec38c4c23",
+      "elapsed-time" : "33",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "160",
@@ -49,5 +53,5 @@
     },
     "Exception" : null
   } ],
-  "variables" : [ "azs-sdk64651eec9b1" ]
+  "variables" : [ "azsjava5816288c8f31f626945bd88e1ab24" ]
 }
