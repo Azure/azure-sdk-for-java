@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -132,10 +133,10 @@ abstract class NicIPConfigurationBaseImpl<ParentImplT extends ParentT, ParentT e
         final List<LoadBalancerBackend> backends = new ArrayList<>();
         for (BackendAddressPoolInner backendRef : backendRefs) {
             String loadBalancerId = ResourceUtils.parentResourceIdFromResourceId(backendRef.getId());
-            LoadBalancer loadBalancer = loadBalancers.get(loadBalancerId.toLowerCase());
+            LoadBalancer loadBalancer = loadBalancers.get(loadBalancerId.toLowerCase(Locale.ROOT));
             if (loadBalancer == null) {
                 loadBalancer = this.networkManager.loadBalancers().getById(loadBalancerId);
-                loadBalancers.put(loadBalancerId.toLowerCase(), loadBalancer);
+                loadBalancers.put(loadBalancerId.toLowerCase(Locale.ROOT), loadBalancer);
             }
             String backendName = ResourceUtils.nameFromResourceId(backendRef.getId());
             backends.add(loadBalancer.backends().get(backendName));
@@ -153,10 +154,10 @@ abstract class NicIPConfigurationBaseImpl<ParentImplT extends ParentT, ParentT e
         final List<LoadBalancerInboundNatRule> rules = new ArrayList<>();
         for (InboundNatRuleInner ref : inboundNatPoolRefs) {
             String loadBalancerId = ResourceUtils.parentResourceIdFromResourceId(ref.getId());
-            LoadBalancer loadBalancer = loadBalancers.get(loadBalancerId.toLowerCase());
+            LoadBalancer loadBalancer = loadBalancers.get(loadBalancerId.toLowerCase(Locale.ROOT));
             if (loadBalancer == null) {
                 loadBalancer = this.networkManager.loadBalancers().getById(loadBalancerId);
-                loadBalancers.put(loadBalancerId.toLowerCase(), loadBalancer);
+                loadBalancers.put(loadBalancerId.toLowerCase(Locale.ROOT), loadBalancer);
             }
             String ruleName = ResourceUtils.nameFromResourceId(ref.getId());
             rules.add(loadBalancer.inboundNatRules().get(ruleName));

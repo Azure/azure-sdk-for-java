@@ -36,7 +36,7 @@ class RouteImpl extends ChildResourceImpl<RouteInner, RouteTableImpl, RouteTable
     }
 
     @Override
-    public String nextHopIPAddress() {
+    public String nextHopIpAddress() {
         return this.inner().nextHopIpAddress();
     }
 

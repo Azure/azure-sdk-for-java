@@ -4,6 +4,7 @@ package com.azure.management.network;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /** Express route circuit sku type. */
@@ -63,7 +64,7 @@ public class ExpressRouteCircuitSkuType {
         this.sku = createCopy(sku);
 
         this.value = this.sku.name();
-        VALUES_BY_NAME.put(this.value.toLowerCase(), this);
+        VALUES_BY_NAME.put(this.value.toLowerCase(Locale.ROOT), this);
     }
 
     /**
@@ -80,7 +81,7 @@ public class ExpressRouteCircuitSkuType {
 
         String nameToLookFor = sku.name();
 
-        ExpressRouteCircuitSkuType result = VALUES_BY_NAME.get(nameToLookFor.toLowerCase());
+        ExpressRouteCircuitSkuType result = VALUES_BY_NAME.get(nameToLookFor.toLowerCase(Locale.ROOT));
         if (result != null) {
             return result;
         } else {
@@ -108,7 +109,6 @@ public class ExpressRouteCircuitSkuType {
 
     @Override
     public boolean equals(Object obj) {
-        String value = this.toString();
         if (!(obj instanceof ExpressRouteCircuitSkuType)) {
             return false;
         } else if (obj == this) {
@@ -116,7 +116,7 @@ public class ExpressRouteCircuitSkuType {
         } else if (value == null) {
             return ((ExpressRouteCircuitSkuType) obj).value == null;
         } else {
-            return value.equalsIgnoreCase(((ExpressRouteCircuitSkuType) obj).value.toLowerCase());
+            return value.equalsIgnoreCase(((ExpressRouteCircuitSkuType) obj).value.toLowerCase(Locale.ROOT));
         }
     }
 

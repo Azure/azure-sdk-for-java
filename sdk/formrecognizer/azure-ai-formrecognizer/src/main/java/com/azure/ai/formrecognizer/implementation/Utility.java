@@ -27,7 +27,7 @@ public final class Utility {
     /**
      * Automatically detect byte buffer's content type.
      *
-     * Given the source: <a href="https://en.wikipedia.org/wiki/Magic_number_(programming)#Magic_numbers_in_files"/>.
+     * Given the source: <a href="https://en.wikipedia.org/wiki/Magic_number_(programming)#Magic_numbers_in_files"></a>.
      *
      * @param buffer The byte buffer input.
      *
@@ -128,7 +128,8 @@ public final class Utility {
             })
             .takeUntil(p -> p.readBytes() == -1)
             .filter(p -> p.readBytes() > 0)
-            .map(Pair::buffer);
+            .map(Pair::buffer)
+            .cache();
     }
 
     private static class Pair {
