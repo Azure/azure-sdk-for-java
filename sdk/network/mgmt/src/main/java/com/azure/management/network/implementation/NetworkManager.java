@@ -44,6 +44,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /** Entry point to Azure network management. */
@@ -299,10 +300,10 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
         if (subnetRefs != null) {
             for (SubnetInner subnetRef : subnetRefs) {
                 String networkId = ResourceUtils.parentResourceIdFromResourceId(subnetRef.getId());
-                Network network = networks.get(networkId.toLowerCase());
+                Network network = networks.get(networkId.toLowerCase(Locale.ROOT));
                 if (network == null) {
                     network = this.networks().getById(networkId);
-                    networks.put(networkId.toLowerCase(), network);
+                    networks.put(networkId.toLowerCase(Locale.ROOT), network);
                 }
 
                 String subnetName = ResourceUtils.nameFromResourceId(subnetRef.getId());
@@ -322,10 +323,10 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
         if (backendRefs != null) {
             for (ApplicationGatewayBackendAddressPool backendRef : backendRefs) {
                 String appGatewayId = ResourceUtils.parentResourceIdFromResourceId(backendRef.getId());
-                ApplicationGateway appGateway = appGateways.get(appGatewayId.toLowerCase());
+                ApplicationGateway appGateway = appGateways.get(appGatewayId.toLowerCase(Locale.ROOT));
                 if (appGateway == null) {
                     appGateway = this.applicationGateways().getById(appGatewayId);
-                    appGateways.put(appGatewayId.toLowerCase(), appGateway);
+                    appGateways.put(appGatewayId.toLowerCase(Locale.ROOT), appGateway);
                 }
 
                 String backendName = ResourceUtils.nameFromResourceId(backendRef.getId());
