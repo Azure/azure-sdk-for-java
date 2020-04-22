@@ -1,6 +1,6 @@
 # Azure Template client library for Java
 
-This is a template README for Azure Java libraries, this is used as a template for new libraries added into this repository.
+This is a template README for Azure Java libraries, it should be used as a starting point for new libraries added into this repository.
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_documentation]| [Product documentation][search_docs] | [Samples][samples]
 
