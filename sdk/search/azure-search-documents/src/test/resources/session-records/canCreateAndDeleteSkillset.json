@@ -1,58 +1,66 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk288876db8a8.search.windows.net/skillsets?api-version=2019-05-06",
+    "Uri" : "https://azsjavacancreateanddeleteskillset3a58256069266d988.search.windows.net/skillsets?api-version=2019-05-06-Preview",
     "Headers" : {
+      "x-ms-client-request-id" : "ab31de17-9b47-4fb8-add2-a2f69eb94d50",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "5d4e7bce-f5ec-4702-98f4-ae92958e95bb",
+      "request-id" : "ab31de17-9b47-4fb8-add2-a2f69eb94d50",
       "StatusCode" : "201",
-      "Date" : "Mon, 24 Feb 2020 19:57:35 GMT",
+      "Date" : "Tue, 21 Apr 2020 19:11:25 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D7B963CB60E227\"",
-      "elapsed-time" : "88",
+      "client-request-id" : "ab31de17-9b47-4fb8-add2-a2f69eb94d50",
+      "ETag" : "W/\"0x8D7E627C996F203\"",
+      "elapsed-time" : "52",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "696",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk288876db8a8.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7B963CB60E227\\\"\",\"name\":\"ocr-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":null,\"lineEnding\":null,\"defaultLanguageCode\":null,\"detectOrientation\":false,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]}],\"cognitiveServices\":null}",
+      "Content-Length" : "750",
+      "Body" : "{\"@odata.context\":\"https://azsjavacancreateanddeleteskillset3a58256069266d988.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7E627C996F203\\\"\",\"name\":\"ocr-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":null,\"lineEnding\":null,\"defaultLanguageCode\":null,\"detectOrientation\":false,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk288876db8a8.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06"
+      "Location" : "https://azsjavacancreateanddeleteskillset3a58256069266d988.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06-Preview"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdk288876db8a8.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06",
-    "Headers" : { },
+    "Uri" : "https://azsjavacancreateanddeleteskillset3a58256069266d988.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "6bfe0f86-f3f5-4267-87f6-50fb42fc32e2"
+    },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "47",
+      "client-request-id" : "6bfe0f86-f3f5-4267-87f6-50fb42fc32e2",
+      "elapsed-time" : "30",
       "Expires" : "-1",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "2ecfdb4e-5061-435a-b1f5-56a364681e50",
+      "request-id" : "6bfe0f86-f3f5-4267-87f6-50fb42fc32e2",
       "StatusCode" : "204",
-      "Date" : "Mon, 24 Feb 2020 19:57:35 GMT"
+      "Date" : "Tue, 21 Apr 2020 19:11:25 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azs-sdk288876db8a8.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06",
-    "Headers" : { },
+    "Uri" : "https://azsjavacancreateanddeleteskillset3a58256069266d988.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "86720f7a-1573-4153-9b17-05d79747bc29"
+    },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "b5aad8ed-4d47-4ad8-84c4-83936ea194f9",
+      "request-id" : "86720f7a-1573-4153-9b17-05d79747bc29",
       "StatusCode" : "404",
-      "Date" : "Mon, 24 Feb 2020 19:57:35 GMT",
+      "Date" : "Tue, 21 Apr 2020 19:11:25 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "12",
+      "client-request-id" : "86720f7a-1573-4153-9b17-05d79747bc29",
+      "elapsed-time" : "14",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "154",
@@ -63,5 +71,5 @@
     },
     "Exception" : null
   } ],
-  "variables" : [ "azs-sdk288876db8a8" ]
+  "variables" : [ "azsjavacancreateanddeleteskillset3a58256069266d988" ]
 }

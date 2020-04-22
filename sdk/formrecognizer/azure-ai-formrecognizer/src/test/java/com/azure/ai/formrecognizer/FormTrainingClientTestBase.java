@@ -82,10 +82,10 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     abstract void deleteModelValidModelIdWithResponse();
 
     @Test
-    abstract void listModels();
+    abstract void getModelInfos();
 
     @Test
-    abstract void listModelsWithContext();
+    abstract void getModelInfosWithContext();
 
     @Test
     abstract void beginTrainingNullInput();
