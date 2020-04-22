@@ -67,8 +67,8 @@ public final class BlobItemProperties {
         this.encryptionScope = blobItemPropertiesInternal.getEncryptionScope();
         this.accessTierChangeTime = blobItemPropertiesInternal.getAccessTierChangeTime();
 
-        Map<String, String> objectReplicationStatus = blobItemPropertiesInternal.get
-        this.objectReplicationSourcePolicies = new HashMap<>();
+        // TODO: (rickle-msft) Uncomment when these properties are returned on lists.
+        /*this.objectReplicationSourcePolicies = new HashMap<>();
         this.objectReplicationDestinationPolicyId = objectReplicationStatus.getOrDefault("policy-id", null);
         if (objectReplicationDestinationPolicyId == null) {
             for (String str : objectReplicationStatus.keySet()) {
@@ -84,7 +84,7 @@ public final class BlobItemProperties {
                     objectReplicationSourcePolicies.put(policyId, policy);
                 }
             }
-        }
+        }*/
     }
 
     /*
