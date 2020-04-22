@@ -25,7 +25,7 @@ sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
-custom-types: BlobAccessPolicy,AccessTier,AccountKind,ArchiveStatus,BlobDownloadHeaders,BlobHttpHeaders,BlobContainerItem,BlobItem,BlobContainerItemProperties,BlobContainerEncryptionScope,BlobItemProperties,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,BlobPrefix,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberActionType,BlobSignedIdentifier,SkuName,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey
+custom-types: BlobAccessPolicy,AccessTier,AccountKind,ArchiveStatus,BlobDownloadHeaders,BlobHttpHeaders,BlobContainerItem,BlobContainerItemProperties,BlobContainerEncryptionScope,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,BlobPrefix,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberActionType,BlobSignedIdentifier,SkuName,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey
 custom-types-subpackage: models
 ```
 
@@ -654,11 +654,11 @@ directive:
     }
 ```
 
-### BlobItem
+### BlobItemInternal
 ``` yaml
 directive:
 - from: swagger-document
-  where: $.definitions.BlobItem
+  where: $.definitions.BlobItemInternal
   transform: >
     if (!$.required.includes("VersionId")) {
       $.required.push("VersionId");
@@ -670,7 +670,7 @@ directive:
     $.properties.IsPrefix = { "type": "boolean" };
 ```
 
-### BlobItemProperties and ContainerItemProperties
+### BlobItemPropertiesInternal and ContainerItemProperties
 ``` yaml
 directive:
 - from: swagger-document
@@ -693,21 +693,20 @@ directive:
         $.BlobContainerItem.properties.Properties.$ref = path;
         delete $.ContainerItem;
     }
-    if (!$.BlobItemProperties) {
-        $.BlobItemProperties = $.BlobPropertiesInternal;
+    if (!$.BlobItemPropertiesInternal) {
+        $.BlobItemPropertiesInternal = $.BlobPropertiesInternal;
         delete $.BlobPropertiesInternal;
-        $.BlobItemProperties.properties.CustomerProvidedKeySha256 = { "type": "string" }
-        $.BlobItemProperties.properties["Content-MD5"]["x-ms-client-name"] = "contentMd5";
-        //
-        const etag = $.BlobItemProperties.properties.Etag;
+        $.BlobItemPropertiesInternal.properties.CustomerProvidedKeySha256 = { "type": "string" }
+        $.BlobItemPropertiesInternal.properties["Content-MD5"]["x-ms-client-name"] = "contentMd5";
+        const etag = $.BlobItemPropertiesInternal.properties.Etag;
         if (etag && !etag["x-ms-client-name"]) {
             etag["x-ms-client-name"] = "eTag";
-            $.BlobItemProperties.properties.Etag = etag;
+            $.BlobItemPropertiesInternal.properties.Etag = etag;
         }
     }
-    if ($.BlobItem) {
-        const path = $.BlobItem.properties.Properties.$ref.replace(/[#].*$/, "#/definitions/BlobItemProperties");
-        $.BlobItem.properties.Properties.$ref = path;
+    if ($.BlobItemInternal) {
+        const path = $.BlobItemInternal.properties.Properties.$ref.replace(/[#].*$/, "#/definitions/BlobItemPropertiesInternal");
+        $.BlobItemInternal.properties.Properties.$ref = path;
     }
 ```
 
