@@ -14,11 +14,16 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.messaging.servicebus.implementation.MessagingEntityType;
+import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.params.provider.Arguments;
 import org.mockito.Mockito;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
@@ -26,10 +31,16 @@ import reactor.test.StepVerifier;
 import java.io.Closeable;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 import static com.azure.core.amqp.ProxyOptions.PROXY_PASSWORD;
 import static com.azure.core.amqp.ProxyOptions.PROXY_USERNAME;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public abstract class IntegrationTestBase extends TestBase {
     protected static final Duration TIMEOUT = Duration.ofSeconds(75);
@@ -49,6 +60,9 @@ public abstract class IntegrationTestBase extends TestBase {
     private ConnectionStringProperties properties;
     private String testName;
     private final Scheduler scheduler = Schedulers.parallel();
+
+    static final byte[] CONTENTS_BYTES = "Some-contents".getBytes(StandardCharsets.UTF_8);
+    String sessionId;
 
     protected IntegrationTestBase(ClientLogger logger) {
         this.logger = logger;
@@ -222,6 +236,40 @@ public abstract class IntegrationTestBase extends TestBase {
                 logger.error(String.format("[%s]: %s didn't close properly.", testName,
                     closeable.getClass().getSimpleName()), error);
             }
+        }
+    }
+
+    static Stream<Arguments> messagingEntityProvider() {
+        return Stream.of(
+            Arguments.of(MessagingEntityType.QUEUE),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION)
+        );
+    }
+
+    static Stream<Arguments> messagingEntityWithSessions() {
+        return Stream.of(
+            Arguments.of(MessagingEntityType.QUEUE, false),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, false),
+            Arguments.of(MessagingEntityType.QUEUE, true),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, true)
+        );
+    }
+
+    protected ServiceBusMessage getMessage(String messageId, boolean isSessionEnabled) {
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId);
+
+        return isSessionEnabled ? message.setSessionId(sessionId) : message;
+    }
+
+    protected void assertMessageEquals(ServiceBusReceivedMessage message, String messageId, boolean isSessionEnabled) {
+        assertArrayEquals(CONTENTS_BYTES, message.getBody());
+
+        // Disabling message ID assertion. Since we do multiple operations on the same queue/topic, it's possible
+        // the queue or topic contains messages from previous test cases.
+        // assertEquals(messageId, message.getMessageId());
+
+        if (isSessionEnabled) {
+            assertEquals(sessionId, message.getSessionId());
         }
     }
 }
