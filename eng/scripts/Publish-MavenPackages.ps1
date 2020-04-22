@@ -198,14 +198,14 @@ foreach ($packageDetail in $packageDetails) {
   $localRepositoryDirectoryUri = $([Uri]$localRepositoryDirectory.FullName).AbsoluteUri
   Write-Information "Local Repository Directory URI is: $localRepositoryDirectoryUri"
 
-  $pomAssociatedArtifact = $packageDetails.AssociatedArtifacts | Where-Object { ($_.Classifier -eq $null) -and ($_.Type -eq "pom") }
+  $pomAssociatedArtifact = $packageDetail.AssociatedArtifacts | Where-Object { ($_.Classifier -eq $null) -and ($_.Type -eq "pom") }
   $pomOption = "-DpomFile=$($pomAssociatedArtifact.File.FullName)"
   Write-Information "POM Option is: $pomOption"
 
   if ($packageDetail.AssociatedArtifacts.Length -ne 1) {
     $fileAssociatedArtifact = $packageDetail.AssociatedArtifacts | Where-Object { ($_.Classifier -eq $null) -and (($_.Type -eq "jar") -or ($_.Type -eq "aar")) }
   } else {
-    $fileAssociatedArtifact - $packageDetail.File.FullName
+    $fileAssociatedArtifact = $packageDetail.File.FullName
   }
 
   $fileOption = "-Dfile=$($fileAssociatedArtifact.File.FullName)"
