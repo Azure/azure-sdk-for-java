@@ -59,7 +59,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void afterTest() {
-        if (messagesPending.get() == 0) {
+        final int pending = messagesPending.get();
+        if (pending < 1) {
             dispose(receiver, sender, receiveAndDeleteReceiver);
             return;
         }
@@ -67,7 +68,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // In the case that this test failed... we're going to drain the queue or subscription.
         try {
             receiveAndDeleteReceiver.receive(new ReceiveAsyncOptions().setEnableAutoComplete(false))
-                .take(messagesPending.get())
+                .take(pending)
                 .map(message -> {
                     logger.info("Message received: {}", message.getSequenceNumber());
                     return message;

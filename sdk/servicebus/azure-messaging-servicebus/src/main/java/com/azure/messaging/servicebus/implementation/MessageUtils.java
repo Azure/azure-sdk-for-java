@@ -49,7 +49,7 @@ final class MessageUtils {
 
     // Pass little less than client timeout to the server so client doesn't time out before server times out
     static Duration adjustServerTimeout(Duration clientTimeout) {
-        return clientTimeout.minusMillis(200);
+        return clientTimeout.minusMillis(1000);
     }
 
     /**

@@ -387,7 +387,7 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
                 "Cannot renew lock token without a value for 'message.getLockedUntil()'"));
         }
 
-        final Instant initialRefreshDuration = initialLockedUntil.minus(Duration.ofMillis(1000));
+        final Instant initialRefreshDuration = initialLockedUntil.minus(Duration.ofMillis(2000));
         Duration initialInterval = Duration.between(Instant.now(), initialRefreshDuration);
         if (initialInterval.isNegative()) {
             logger.info("Duration was negative. Moving to refresh immediately: {}", initialInterval.toMillis());
