@@ -100,6 +100,29 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     }
 
     /**
+     * Verifies an exception thrown for a document using null data value.
+     */
+    @Test
+    void recognizeReceiptDataTextDetailsWithNullData() {
+        assertThrows(RuntimeException.class, () ->
+            client.beginRecognizeReceipts(null, RECEIPT_FILE_LENGTH, FormContentType.IMAGE_JPEG, false, null)
+                .getSyncPoller());
+    }
+
+    /**
+     * Verifies receipt data from a document using file data as source.
+     * And the content type is not given. The content type will be auto detected.
+     */
+    @Test
+    void recognizeReceiptDataWithContentTypeAutoDetection() {
+        SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
+            client.beginRecognizeReceipts(getReplayableBufferData(RECEIPT_LOCAL_URL), RECEIPT_FILE_LENGTH, null,
+                false, null).getSyncPoller();
+        syncPoller.waitForCompletion();
+        validateReceiptResult(getExpectedReceipts(false), syncPoller.getFinalResult());
+    }
+
+    /**
      * Verifies receipt data from a document using file data as source and including text content details.
      */
     @Test
@@ -141,19 +164,6 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     }
 
     /**
-     * Verifies receipt data from a document using file data as source.
-     * And the content type is not given. The content will be auto detected.
-     */
-    @Test
-    void recognizeReceiptDataWithContentTypeAutoDetection() {
-        SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
-            client.beginRecognizeReceipts(getReplayableBufferData(RECEIPT_LOCAL_URL), RECEIPT_FILE_LENGTH, null,
-                false, null).getSyncPoller();
-        syncPoller.waitForCompletion();
-        validateReceiptResult(getExpectedReceipts(false), syncPoller.getFinalResult());
-    }
-
-    /**
      * Verifies layout data for a document using source as input stream data.
      */
     @Test
@@ -161,7 +171,39 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         layoutDataRunner((data) -> {
             SyncPoller<OperationResult, IterableStream<FormPage>> syncPoller
                 = client.beginRecognizeContent(toFluxByteBuffer(data),
-                FormContentType.IMAGE_JPEG, LAYOUT_FILE_LENGTH, null).getSyncPoller();
+                LAYOUT_FILE_LENGTH, FormContentType.IMAGE_JPEG, null).getSyncPoller();
+            syncPoller.waitForCompletion();
+            validateLayoutResult(getExpectedFormPages(), syncPoller.getFinalResult());
+        });
+    }
+
+    /**
+     * Verifies an exception thrown for a document using null data value.
+     */
+    @Test
+    void recognizeLayoutDataWithNullData() {
+        layoutDataRunner((data) -> {
+            SyncPoller<OperationResult, IterableStream<FormPage>> syncPoller
+                = client.beginRecognizeContent(toFluxByteBuffer(data),
+                LAYOUT_FILE_LENGTH, FormContentType.IMAGE_JPEG, null).getSyncPoller();
+            syncPoller.waitForCompletion();
+
+            assertThrows(RuntimeException.class, () ->
+                client.beginRecognizeContent(null, LAYOUT_FILE_LENGTH, FormContentType.IMAGE_JPEG, null)
+                    .getSyncPoller());
+        });
+    }
+
+    /**
+     * Verifies layout data for a document using source as input stream data.
+     * And the content type is not given. The content type will be auto detected.
+     */
+    @Test
+    void recognizeLayoutDataWithContentTypeAutoDetection() {
+        layoutDataRunner((data) -> {
+            SyncPoller<OperationResult, IterableStream<FormPage>> syncPoller
+                = client.beginRecognizeContent(toFluxByteBuffer(data),
+                LAYOUT_FILE_LENGTH, null, null).getSyncPoller();
             syncPoller.waitForCompletion();
             validateLayoutResult(getExpectedFormPages(), syncPoller.getFinalResult());
         });
@@ -220,6 +262,51 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                     = client.beginRecognizeCustomForms(toFluxByteBuffer(data),
                     syncPoller.getFinalResult().getModelId(),
                     CUSTOM_FORM_FILE_LENGTH, FormContentType.APPLICATION_PDF, true, null)
+                    .getSyncPoller();
+                syncPoller.waitForCompletion();
+                validateRecognizedFormResult(getExpectedRecognizedLabeledForms(), syncPollers.getFinalResult());
+            }));
+    }
+
+    /**
+     * Verifies an exception thrown for a document using null data value or null model id.
+     */
+    @Test
+    void recognizeCustomFormLabeledDataWithNullValues() {
+        customFormLabeledDataRunner(data ->
+            beginTrainingLabeledResultRunner((storageSASUrl, useLabelFile) -> {
+                SyncPoller<OperationResult, CustomFormModel> syncPoller =
+                    client.getFormTrainingAsyncClient().beginTraining(storageSASUrl, useLabelFile).getSyncPoller();
+                syncPoller.waitForCompletion();
+
+                assertThrows(RuntimeException.class, () ->
+                    client.beginRecognizeCustomForms(null, syncPoller.getFinalResult().getModelId(),
+                        CUSTOM_FORM_FILE_LENGTH, FormContentType.APPLICATION_PDF, true, null)
+                        .getSyncPoller());
+
+                assertThrows(RuntimeException.class, () ->
+                    client.beginRecognizeCustomForms(toFluxByteBuffer(data), null,
+                        CUSTOM_FORM_FILE_LENGTH, FormContentType.APPLICATION_PDF, true, null)
+                        .getSyncPoller());
+            }));
+    }
+
+    /**
+     * Verifies custom form data for a document using source as input stream data and valid labeled model Id.
+     * And the content type is not given. The content type will be auto detected.
+     */
+    @Test
+    void recognizeCustomFormLabeledDataWithContentTypeAutoDetection() {
+        customFormLabeledDataRunner(data ->
+            beginTrainingLabeledResultRunner((storageSASUrl, useLabelFile) -> {
+                SyncPoller<OperationResult, CustomFormModel> syncPoller =
+                    client.getFormTrainingAsyncClient().beginTraining(storageSASUrl, useLabelFile).getSyncPoller();
+                syncPoller.waitForCompletion();
+
+                SyncPoller<OperationResult, IterableStream<RecognizedForm>> syncPollers
+                    = client.beginRecognizeCustomForms(toFluxByteBuffer(data),
+                    syncPoller.getFinalResult().getModelId(),
+                    CUSTOM_FORM_FILE_LENGTH, null, true, null)
                     .getSyncPoller();
                 syncPoller.waitForCompletion();
                 validateRecognizedFormResult(getExpectedRecognizedLabeledForms(), syncPollers.getFinalResult());
