@@ -4,11 +4,11 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.storage.blob.implementation.models.BlobItem
-
 import com.azure.core.annotation.Fluent;
+import com.azure.storage.blob.implementation.models.BlobItemInternal;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import java.util.Map;
 
 /**
@@ -17,6 +17,30 @@ import java.util.Map;
 @JacksonXmlRootElement(localName = "Blob")
 @Fluent
 public final class BlobItem {
+
+    /**
+     * Initializes a new BlobItem.
+     */
+    public BlobItem() {
+
+    }
+
+    /**
+     * Initializes a new blob item.
+     *
+     * @param blobItemInternal The internal structure from which to pull state.
+     */
+    public BlobItem(BlobItemInternal blobItemInternal) {
+        this.name = blobItemInternal.getName();
+        this.deleted = blobItemInternal.isDeleted();
+        this.snapshot = blobItemInternal.getSnapshot();
+        this.properties = new BlobItemProperties(blobItemInternal.getProperties());
+        this.metadata = blobItemInternal.getMetadata();
+        this.versionId = blobItemInternal.getVersionId();
+        this.isCurrentVersion = blobItemInternal.isCurrentVersion();
+        this.isPrefix = blobItemInternal.isPrefix();
+    }
+
     /*
      * The name property.
      */
@@ -51,7 +75,7 @@ public final class BlobItem {
      * The properties property.
      */
     @JsonProperty(value = "Properties", required = true)
-    private BlobItemPropertiesInternal properties;
+    private BlobItemProperties properties;
 
     /*
      * The metadata property.
@@ -182,7 +206,7 @@ public final class BlobItem {
      *
      * @return the properties value.
      */
-    public BlobItemPropertiesInternal getProperties() {
+    public BlobItemProperties getProperties() {
         return this.properties;
     }
 
@@ -192,7 +216,7 @@ public final class BlobItem {
      * @param properties the properties value to set.
      * @return the BlobItem object itself.
      */
-    public BlobItem setProperties(BlobItemPropertiesInternal properties) {
+    public BlobItem setProperties(BlobItemProperties properties) {
         this.properties = properties;
         return this;
     }
