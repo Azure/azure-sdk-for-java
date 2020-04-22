@@ -1,10 +1,11 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.internal.avro.implementation.schema.complex;
 
 import com.azure.storage.internal.avro.implementation.AvroParserState;
 import com.azure.storage.internal.avro.implementation.schema.AvroSchema;
 
-import java.nio.ByteBuffer;
-import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -15,7 +16,7 @@ import java.util.function.Consumer;
  *
  * FixedBytes
  */
-public class AvroFixedSchema extends AvroSchema<List<ByteBuffer>> {
+public class AvroFixedSchema extends AvroSchema {
 
     private final long size;
 
@@ -26,7 +27,7 @@ public class AvroFixedSchema extends AvroSchema<List<ByteBuffer>> {
      * @param state The state of the parser.
      * @param onResult The result handler.
      */
-    public AvroFixedSchema(long size, AvroParserState state, Consumer<List<ByteBuffer>> onResult) {
+    public AvroFixedSchema(long size, AvroParserState state, Consumer<Object> onResult) {
         super(state, onResult);
         this.size = size;
     }

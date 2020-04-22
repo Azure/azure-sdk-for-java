@@ -1,11 +1,13 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.internal.avro.implementation.schema.primitive;
 
-import com.azure.storage.internal.avro.implementation.schema.complex.AvroFixedSchema;
 import com.azure.storage.internal.avro.implementation.AvroParserState;
 import com.azure.storage.internal.avro.implementation.schema.AvroSchema;
+import com.azure.storage.internal.avro.implementation.schema.complex.AvroFixedSchema;
+import com.azure.storage.internal.avro.implementation.util.AvroUtils;
 
-import java.nio.ByteBuffer;
-import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -17,7 +19,7 @@ import java.util.function.Consumer;
  *
  * Integer FixedBytes
  */
-public class AvroBytesSchema extends AvroSchema<List<ByteBuffer>> {
+public class AvroBytesSchema extends AvroSchema {
 
     /**
      * Constructs a new AvroBytesSchema.
@@ -25,7 +27,7 @@ public class AvroBytesSchema extends AvroSchema<List<ByteBuffer>> {
      * @param state The state of the parser.
      * @param onResult The result handler.
      */
-    public AvroBytesSchema(AvroParserState state, Consumer<List<ByteBuffer>> onResult) {
+    public AvroBytesSchema(AvroParserState state, Consumer<Object> onResult) {
         super(state, onResult);
     }
 
@@ -48,10 +50,11 @@ public class AvroBytesSchema extends AvroSchema<List<ByteBuffer>> {
      *
      * @param length The number of bytes to read.
      */
-    private void onLength(Long length) {
+    private void onLength(Object length) {
+        AvroUtils.checkLong("'length'", length);
         /* Read length number of bytes, call onBytes. */
         AvroFixedSchema bytesSchema = new AvroFixedSchema(
-            length,
+            (Long) length,
             this.state,
             this::onBytes
         );
@@ -63,7 +66,8 @@ public class AvroBytesSchema extends AvroSchema<List<ByteBuffer>> {
      *
      * @param bytes The bytes.
      */
-    private void onBytes(List<ByteBuffer> bytes) {
+    private void onBytes(Object bytes) {
+        AvroUtils.checkList("'bytes'", bytes);
         /* We're done. */
         this.result = bytes;
         this.done = true;

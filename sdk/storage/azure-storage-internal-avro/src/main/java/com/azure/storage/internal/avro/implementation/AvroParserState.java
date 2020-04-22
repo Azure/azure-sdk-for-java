@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.internal.avro.implementation;
 
 import com.azure.storage.internal.avro.implementation.schema.AvroSchema;
@@ -92,7 +95,7 @@ public class AvroParserState {
         long needed = size;
         while (needed > 0) {
             ByteBuffer current = bufferIterator.next();
-            /* Buffer can wholly satisfy this request. */
+            /* Buffer can entirely be used to satisfy at least part of this request. */
             if (current.remaining() <= needed) {
                 result.add(current);
                 bufferIterator.remove();

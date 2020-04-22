@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.internal.avro.implementation.schema;
 
 import com.azure.storage.internal.avro.implementation.AvroParser;
@@ -36,27 +39,26 @@ import static com.azure.storage.internal.avro.implementation.AvroConstants.Types
 import static com.azure.storage.internal.avro.implementation.AvroConstants.Types.UNION;
 
 /**
- * An abstract class that represents an Avro schema that can return a generic result.
+ * An abstract class that represents an Avro schema that can return an Object result.
  * AvroSchemas get placed on the AvroParserState stack and the AvroParser makes progress parsing the schemas on the
  * stack as it is able to.
  *
- * @param <T> The result type of the schema.
  * @see AvroParser#parse(ByteBuffer)
  */
-public abstract class AvroSchema<T> {
+public abstract class AvroSchema {
 
     protected final AvroParserState state;
-    private final Consumer<T> onResult;
+    private final Consumer<Object> onResult;
     protected boolean done = false;
-    protected T result;
+    protected Object result;
 
     /**
      * Constructs a new Schema.
      *
-     * @param state The state of the parser.
+     * @param state    The state of the parser.
      * @param onResult The result handler.
      */
-    public AvroSchema(AvroParserState state, Consumer<T> onResult) {
+    public AvroSchema(AvroParserState state, Consumer<Object> onResult) {
         this.state = state;
         this.onResult = onResult;
     }
@@ -96,14 +98,13 @@ public abstract class AvroSchema<T> {
     /**
      * Gets the schema associated with the type.
      *
-     * @param type The {@link AvroType type} that defines the schema.
-     * @param state {@link AvroParserState}
+     * @param type     The {@link AvroType type} that defines the schema.
+     * @param state    {@link AvroParserState}
      * @param onResult {@link Consumer}
      * @return {@link AvroSchema}
-     *
      * @see AvroType
      */
-    public static AvroSchema getSchema(AvroType type, AvroParserState state, Consumer onResult) {
+    public static AvroSchema getSchema(AvroType type, AvroParserState state, Consumer<Object> onResult) {
         switch (type.getType()) {
             case NULL:
                 return new AvroNullSchema(state, onResult);
@@ -149,5 +150,4 @@ public abstract class AvroSchema<T> {
                 throw new RuntimeException("Unsupported type " + type.getType());
         }
     }
-
 }

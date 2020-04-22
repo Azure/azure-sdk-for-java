@@ -1,14 +1,17 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.internal.avro.implementation.schema.file;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.internal.avro.implementation.AvroConstants;
 import com.azure.storage.internal.avro.implementation.AvroParserState;
-import com.azure.storage.internal.avro.implementation.schema.complex.AvroFixedSchema;
-import com.azure.storage.internal.avro.implementation.schema.primitive.AvroLongSchema;
 import com.azure.storage.internal.avro.implementation.schema.AvroSchema;
 import com.azure.storage.internal.avro.implementation.schema.AvroType;
+import com.azure.storage.internal.avro.implementation.schema.complex.AvroFixedSchema;
+import com.azure.storage.internal.avro.implementation.schema.primitive.AvroLongSchema;
 import com.azure.storage.internal.avro.implementation.util.AvroUtils;
 
-import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
@@ -22,7 +25,9 @@ import java.util.function.Consumer;
  *
  * Long Long Object Object Object .... SyncMarker
  */
-public class AvroBlockSchema extends AvroSchema<Object> {
+public class AvroBlockSchema extends AvroSchema {
+
+    private final ClientLogger logger = new ClientLogger(AvroBlockSchema.class);
 
     private final Consumer<Object> onAvroObject;
     private final AvroType objectType;
@@ -43,7 +48,7 @@ public class AvroBlockSchema extends AvroSchema<Object> {
         super(state, onResult);
         this.objectType = objectType;
         this.onAvroObject = onAvroObject;
-        this.syncMarker = syncMarker;
+        this.syncMarker = syncMarker.clone();
     }
 
     @Override
@@ -63,8 +68,9 @@ public class AvroBlockSchema extends AvroSchema<Object> {
      *
      * @param blockCount The number of elements in the block.
      */
-    private void onBlockCount(Long blockCount) {
-        this.blockCount = blockCount;
+    private void onBlockCount(Object blockCount) {
+        AvroUtils.checkLong("'blockCount'", blockCount);
+        this.blockCount = (Long) blockCount;
         /* Read the block size, call onBlockSize. */
         AvroLongSchema blockSizeSchema = new AvroLongSchema(
             this.state,
@@ -76,9 +82,10 @@ public class AvroBlockSchema extends AvroSchema<Object> {
     /**
      * Block size handler.
      * On reading the block size, ignore it and read an object.
-     * @param ignore The block size.
+     * @param blockSize The block size.
      */
-    private void onBlockSize(Long ignore) {
+    private void onBlockSize(Object blockSize) {
+        AvroUtils.checkLong("'blockSize'", blockSize);
         /* TODO (gapra) : Use this in case we want to skip through blocks. */
         /* Read the object, call onObject. */
         AvroSchema objectSchema = AvroSchema.getSchema(
@@ -124,14 +131,15 @@ public class AvroBlockSchema extends AvroSchema<Object> {
      *
      * @param sync The sync marker.
      */
-    private void validateSync(List<ByteBuffer> sync) {
+    private void validateSync(Object sync) {
+        AvroUtils.checkList("'sync'", sync);
         /* Validate the sync marker, then we're done. */
-        byte[] syncBytes = AvroUtils.getBytes(sync);
+        byte[] syncBytes = AvroUtils.getBytes((List<?>) sync);
         if (Arrays.equals(syncBytes, syncMarker)) {
             this.done = true;
             this.result = null;
         } else {
-            throw new IllegalArgumentException("Sync marker validation failed.");
+            throw logger.logExceptionAsError(new IllegalStateException("Sync marker validation failed."));
         }
     }
 

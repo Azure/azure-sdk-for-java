@@ -1,9 +1,14 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.internal.avro.implementation.schema.complex;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.internal.avro.implementation.AvroParserState;
-import com.azure.storage.internal.avro.implementation.schema.primitive.AvroIntegerSchema;
 import com.azure.storage.internal.avro.implementation.schema.AvroSchema;
 import com.azure.storage.internal.avro.implementation.schema.AvroType;
+import com.azure.storage.internal.avro.implementation.schema.primitive.AvroIntegerSchema;
+import com.azure.storage.internal.avro.implementation.util.AvroUtils;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -16,7 +21,9 @@ import java.util.function.Consumer;
  *
  * Integer TypeSchema
  */
-public class AvroUnionSchema extends AvroSchema<Object> {
+public class AvroUnionSchema extends AvroSchema {
+
+    private final ClientLogger logger = new ClientLogger(AvroUnionSchema.class);
 
     private final List<AvroType> types;
 
@@ -46,16 +53,17 @@ public class AvroUnionSchema extends AvroSchema<Object> {
 
     /**
      * Index handler.
-     * Once we read the index, we can figure out what type to read by indexing into the values, then we can
-     * add the appropriate schema.
+     *
      * @param index The index.
      */
-    private void onIndex(Integer index) {
-        if (index <= 0 || index >= this.types.size()) {
-            throw new RuntimeException("Invalid index to parse union");
+    private void onIndex(Object index) {
+        AvroUtils.checkInteger("'index'", index);
+        Integer i = (Integer) index;
+        if (i <= 0 || i >= this.types.size()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Invalid index to parse union"));
         }
         /* Using the zero-based index, get the appropriate type. */
-        AvroType type = this.types.get(index);
+        AvroType type = this.types.get(i);
 
         /* Read the type, call onType. */
         AvroSchema typeSchema = getSchema(

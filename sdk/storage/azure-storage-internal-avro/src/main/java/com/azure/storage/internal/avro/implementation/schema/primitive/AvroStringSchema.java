@@ -1,10 +1,12 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.internal.avro.implementation.schema.primitive;
 
 import com.azure.storage.internal.avro.implementation.AvroParserState;
 import com.azure.storage.internal.avro.implementation.schema.AvroSchema;
 import com.azure.storage.internal.avro.implementation.util.AvroUtils;
 
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.function.Consumer;
@@ -17,7 +19,7 @@ import java.util.function.Consumer;
  *
  * Bytes
  */
-public class AvroStringSchema extends AvroSchema<String> {
+public class AvroStringSchema extends AvroSchema {
 
     /**
      * Constructs a new AvroStringSchema.
@@ -25,7 +27,7 @@ public class AvroStringSchema extends AvroSchema<String> {
      * @param state The state of the parser.
      * @param onResult The result handler.
      */
-    public AvroStringSchema(AvroParserState state, Consumer<String> onResult) {
+    public AvroStringSchema(AvroParserState state, Consumer<Object> onResult) {
         super(state, onResult);
     }
 
@@ -46,9 +48,10 @@ public class AvroStringSchema extends AvroSchema<String> {
      *
      * @param bytes The bytes.
      */
-    private void onBytes(List<ByteBuffer> bytes) {
+    private void onBytes(Object bytes) {
+        AvroUtils.checkList("'bytes'", bytes);
         /* UTF_8 decode the bytes, then we're done. */
-        byte[] str = AvroUtils.getBytes(bytes);
+        byte[] str = AvroUtils.getBytes((List<?>) bytes);
         this.result = new String(str, StandardCharsets.UTF_8);
         this.done = true;
     }

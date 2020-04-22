@@ -671,6 +671,16 @@
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
 
+  <!-- Internal Avro Parser does read the blockCount field. Seems to have caught a false positive.  -->
+  <Match>
+    <Or>
+      <Class name="com.azure.storage.internal.avro.implementation.schema.complex.AvroArraySchema"/>
+      <Class name="com.azure.storage.internal.avro.implementation.schema.complex.AvroMapSchema"/>
+      <Class name="com.azure.storage.internal.avro.implementation.schema.file.AvroBlockSchema"/>
+    </Or>
+    <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
+  </Match>
+
 
   <!-- Azure search has generated code mixed with hand-written in these packages -->
   <Match>
@@ -1951,7 +1961,7 @@
     CI_CONFUSED_INHERITANCE,
     MS_SHOULD_BE_FINAL"/>
   </Match>
-    
+
   <!-- Empty byte array is returned as null to reactor. Reactor transform null from Callable to downstream onComplete  -->
   <Match>
     <Class name="~com\.azure\.core\.http\.okhttp\.OkHttpAsyncHttpClient\$OkHttpResponse(.*)"/>

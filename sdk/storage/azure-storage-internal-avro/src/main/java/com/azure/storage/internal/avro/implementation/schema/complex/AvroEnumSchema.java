@@ -1,8 +1,13 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.internal.avro.implementation.schema.complex;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.internal.avro.implementation.AvroParserState;
 import com.azure.storage.internal.avro.implementation.schema.primitive.AvroIntegerSchema;
 import com.azure.storage.internal.avro.implementation.schema.AvroSchema;
+import com.azure.storage.internal.avro.implementation.util.AvroUtils;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -14,7 +19,9 @@ import java.util.function.Consumer;
  *
  * Integer
  */
-public class AvroEnumSchema extends AvroSchema<String> {
+public class AvroEnumSchema extends AvroSchema {
+
+    private final ClientLogger logger = new ClientLogger(AvroEnumSchema.class);
 
     private final List<String> values;
 
@@ -25,7 +32,7 @@ public class AvroEnumSchema extends AvroSchema<String> {
      * @param state The state of the parser.
      * @param onResult The result handler.
      */
-    public AvroEnumSchema(List<String> symbols, AvroParserState state, Consumer<String> onResult) {
+    public AvroEnumSchema(List<String> symbols, AvroParserState state, Consumer<Object> onResult) {
         super(state, onResult);
         this.values = symbols;
     }
@@ -46,12 +53,14 @@ public class AvroEnumSchema extends AvroSchema<String> {
      *
      * @param index The index.
      */
-    private void onIndex(Integer index) {
-        if (index <= 0 || index >= this.values.size()) {
-            throw new RuntimeException("Invalid index to parse enum");
+    private void onIndex(Object index) {
+        AvroUtils.checkInteger("'index'", index);
+        Integer i = (Integer) index;
+        if (i <= 0 || i >= this.values.size()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Invalid index to parse enum"));
         }
         /* Using the zero-based index, get the appropriate symbol, then we're done. */
-        this.result = this.values.get(index);
+        this.result = this.values.get(i);
         this.done = true;
     }
 

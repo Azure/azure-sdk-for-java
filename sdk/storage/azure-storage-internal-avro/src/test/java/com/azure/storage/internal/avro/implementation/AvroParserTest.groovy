@@ -109,10 +109,10 @@ class AvroParserTest extends Specification {
         7        | { o -> ((Double) o).equals(1234.0 as Double) } // Double
         8        | { o -> Arrays.equals(AvroUtils.getBytes((List) o), 'B'.getBytes()) } // Fixed
         9        | { o -> ((String) o).equals("B") } // Enum
-        10       | { o -> ((List) o).equals(List.of(1, 3, 2)) } // Array
-        11       | { o -> ((Map) o).equals(Map.of('a', 1, 'b', 3, 'c', 2)) } // Map
+        10       | { o -> ((List) o).equals([1, 3, 2]) } // Array
+        11       | { o -> ((Map) o).equals(['a': 1, 'b': 3, 'c': 2])} // Map
         12       | { o -> o instanceof AvroNullSchema.Null } // Union
-        13       | { o -> ((Map) o).equals(Map.of('$record', 'Test', 'f', 5)) } // Record
+        13       | { o -> ((Map) o).equals(['$record': 'Test', 'f': 5]) } // Record
         /* TODO (gapra) : Not necessary for QQ or CF but case 14 tests the ability to reference named types as a type in a record. */
     }
 

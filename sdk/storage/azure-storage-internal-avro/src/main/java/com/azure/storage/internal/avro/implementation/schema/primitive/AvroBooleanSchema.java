@@ -1,5 +1,9 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.internal.avro.implementation.schema.primitive;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.internal.avro.implementation.AvroConstants;
 import com.azure.storage.internal.avro.implementation.AvroParserState;
 import com.azure.storage.internal.avro.implementation.schema.AvroSchema;
@@ -11,7 +15,9 @@ import java.util.function.Consumer;
  *
  *  Byte
  */
-public class AvroBooleanSchema extends AvroSchema<Boolean> {
+public class AvroBooleanSchema extends AvroSchema {
+
+    private final ClientLogger logger = new ClientLogger(AvroBooleanSchema.class);
 
     /**
      * Constructs a new AvroBooleanSchema.
@@ -19,7 +25,7 @@ public class AvroBooleanSchema extends AvroSchema<Boolean> {
      * @param state The state of the parser.
      * @param onResult The result handler.
      */
-    public AvroBooleanSchema(AvroParserState state, Consumer<Boolean> onResult) {
+    public AvroBooleanSchema(AvroParserState state, Consumer<Object> onResult) {
         super(state, onResult);
     }
 
@@ -37,7 +43,8 @@ public class AvroBooleanSchema extends AvroSchema<Boolean> {
         } else if (b == (byte) 1) {
             this.result = true;
         } else {
-            throw new IllegalStateException(String.format("Boolean value expected, instead got %b", b));
+            throw logger.logExceptionAsError(new IllegalStateException(String.format(
+                "Boolean value expected, instead got %b", b)));
         }
         this.done = true;
     }

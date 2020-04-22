@@ -1,7 +1,11 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.internal.avro.implementation.schema.primitive;
 
 import com.azure.storage.internal.avro.implementation.AvroParserState;
 import com.azure.storage.internal.avro.implementation.schema.AvroSchema;
+import com.azure.storage.internal.avro.implementation.util.AvroUtils;
 
 import java.util.function.Consumer;
 
@@ -10,7 +14,7 @@ import java.util.function.Consumer;
  *
  * Since longs and ints share the same encoding, just add a LongSchema and convert the result into an Integer.
  */
-public class AvroIntegerSchema extends AvroSchema<Integer> {
+public class AvroIntegerSchema extends AvroSchema {
 
     /**
      * Constructs a new AvroIntegerSchema.
@@ -18,7 +22,7 @@ public class AvroIntegerSchema extends AvroSchema<Integer> {
      * @param state The state of the parser.
      * @param onResult The result handler.
      */
-    public AvroIntegerSchema(AvroParserState state, Consumer<Integer> onResult){
+    public AvroIntegerSchema(AvroParserState state, Consumer<Object> onResult) {
         super(state, onResult);
     }
 
@@ -36,11 +40,12 @@ public class AvroIntegerSchema extends AvroSchema<Integer> {
     /**
      * Number handler
      *
-     * @param n The Long to convert.
+     * @param number The Long to convert.
      */
-    private void onNumber(Long n) {
+    private void onNumber(Object number) {
+        AvroUtils.checkLong("'number'", number);
         /* Convert the Long into an Integer, then we're done. */
-        this.result = Math.toIntExact(n);
+        this.result = Math.toIntExact((Long) number);
         this.done = true;
     }
 

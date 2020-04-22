@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.internal.avro.implementation.schema;
 
 import com.azure.storage.internal.avro.implementation.AvroConstants;
@@ -235,78 +238,109 @@ public class AvroType {
         JsonNodeType nodeType = jsonSchema.getNodeType();
         switch (nodeType) {
             /* Primitive Avro Types. */
-            case STRING: {
-                /* TODO (gapra): This could also be another named type. Not required for QQ/CF. */
-                /* Example: "long" */
-                String type = jsonSchema.asText();
-                if (PRIMITIVE_TYPES.contains(type)) {
-                    return new AvroPrimitiveType(type);
-                }
-            }
+            case STRING:
+                return getJsonStringType(jsonSchema);
             /* Union Avro Types. */
-            case ARRAY: {
-                /* Example: ["null","string"] */
-                List<AvroType> types = getUnionTypes(jsonSchema);
-                return new AvroUnionType(types);
-            }
+            case ARRAY:
+                return getJsonArrayType(jsonSchema);
             /* Complex Avro Types. */
-            case OBJECT: {
-                String type = jsonSchema.get("type").asText();
-                switch (type) {
-                    /* Primitive Types. */
-                    case NULL:
-                    case BOOLEAN:
-                    case INT:
-                    case LONG:
-                    case FLOAT:
-                    case DOUBLE:
-                    case BYTES:
-                    case STRING:
-                        /* Example: {"type": "string"} */
-                        return new AvroPrimitiveType(type);
-                    case RECORD:{
-                        /* Example: { "type": "record",
-                                      "name": "test",
-                                      "fields" : [
-                                                  {"name": "a", "type": "long"},
-                                                  {"name": "b", "type": "string"}
-                                                 ]
-                                    } */
-                        if (jsonSchema.get("aliases") != null) {
-                            throw new IllegalArgumentException("Unexpected aliases in schema.");
-                        }
-                        String name = jsonSchema.get("name").asText();
-                        List<AvroRecordField> fields = getRecordFields(jsonSchema.withArray("fields"));
-                        return new AvroRecordType(name, fields);
-                    }
-                    case ENUM: {
-                        /* Example: { "type": "enum",
-                                      "name": "Suit",
-                                      "symbols" : ["SPADES", "HEARTS", "DIAMONDS", "CLUBS"]
-                                    } */
-                        if (jsonSchema.get("aliases") != null) {
-                            throw new IllegalArgumentException("Unexpected aliases in schema.");
-                        }
-                        String name = jsonSchema.get("name").asText();
-                        List<String> symbols = getEnumSymbols(jsonSchema.withArray("symbols"));
-                        return new AvroEnumType(name, symbols);
-                    }
-                    case ARRAY: {
-                        /* Example: {"type": "array", "items": "string"} */
-                        AvroType items = getType(jsonSchema.get("items"));
-                        return new AvroArrayType(items);
-                    }
-                    case MAP: {
-                        /* Example: {"type": "map", "values": "long"} */
-                        AvroType values = getType(jsonSchema.get("values"));
-                        return new AvroMapType(values);
-                    }
-                    case FIXED: {
-                        /* Example: {"type": "fixed", "size": 16, "name": "md5"} */
-                        Long size = jsonSchema.get("size").asLong();
-                        return new AvroFixedType(size);
-                    }
+            case OBJECT:
+                return getJsonObjectType(jsonSchema);
+            default:
+                throw new RuntimeException("Unsupported type");
+        }
+    }
+
+    /**
+     * Gets the AvroType specified by a String JsonNode.
+     *
+     * @param jsonSchema the json node that specifies the schema.
+     * @return {@link AvroType}
+     */
+    private static AvroType getJsonStringType(JsonNode jsonSchema) {
+        /* TODO (gapra): This could also be another named type. Not required for QQ/CF. */
+        /* Example: "long" */
+        String type = jsonSchema.asText();
+        if (PRIMITIVE_TYPES.contains(type)) {
+            return new AvroPrimitiveType(type);
+        } else {
+            throw new RuntimeException("Unsupported type");
+        }
+    }
+
+    /**
+     * Gets the AvroType specified by an Array JsonNode.
+     *
+     * @param jsonSchema the json node that specifies the schema.
+     * @return {@link AvroType}
+     */
+    private static AvroType getJsonArrayType(JsonNode jsonSchema) {
+        /* Example: ["null","string"] */
+        List<AvroType> types = getUnionTypes(jsonSchema);
+        return new AvroUnionType(types);
+    }
+
+    /**
+     * Gets the AvroType specified by an Object JsonNode.
+     *
+     * @param jsonSchema the json node that specifies the schema.
+     * @return {@link AvroType}
+     */
+    private static AvroType getJsonObjectType(JsonNode jsonSchema) {
+        String type = jsonSchema.get("type").asText();
+        switch (type) {
+            /* Primitive Types. */
+            case NULL:
+            case BOOLEAN:
+            case INT:
+            case LONG:
+            case FLOAT:
+            case DOUBLE:
+            case BYTES:
+            case STRING:
+                /* Example: {"type": "string"} */
+                return new AvroPrimitiveType(type);
+            case RECORD: {
+                /* Example: { "type": "record",
+                              "name": "test",
+                              "fields" : [
+                                           {"name": "a", "type": "long"},
+                                           {"name": "b", "type": "string"}
+                                         ]
+                            } */
+                if (jsonSchema.get("aliases") != null) {
+                    throw new IllegalArgumentException("Unexpected aliases in schema.");
                 }
+                String name = jsonSchema.get("name").asText();
+                List<AvroRecordField> fields = getRecordFields(jsonSchema.withArray("fields"));
+                return new AvroRecordType(name, fields);
+            }
+            case ENUM: {
+                /* Example: { "type": "enum",
+                              "name": "Suit",
+                              "symbols" : ["SPADES", "HEARTS", "DIAMONDS", "CLUBS"]
+                             } */
+                if (jsonSchema.get("aliases") != null) {
+                    throw new IllegalArgumentException("Unexpected aliases in schema.");
+                }
+                String name = jsonSchema.get("name").asText();
+                List<String> symbols = getEnumSymbols(jsonSchema.withArray("symbols"));
+                return new AvroEnumType(name, symbols);
+            }
+            case ARRAY: {
+                /* Example: {"type": "array", "items": "string"} */
+                AvroType items = getType(jsonSchema.get("items"));
+                return new AvroArrayType(items);
+            }
+            case MAP: {
+                /* Example: {"type": "map", "values": "long"} */
+                AvroType values = getType(jsonSchema.get("values"));
+                return new AvroMapType(values);
+            }
+            case FIXED: {
+                /* Example: {"type": "fixed", "size": 16, "name": "md5"} */
+                Long size = jsonSchema.get("size").asLong();
+                return new AvroFixedType(size);
             }
             default:
                 throw new RuntimeException("Unsupported type");

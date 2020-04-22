@@ -1,5 +1,9 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.internal.avro.implementation.schema.file;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.internal.avro.implementation.AvroConstants;
 import com.azure.storage.internal.avro.implementation.AvroParserState;
 import com.azure.storage.internal.avro.implementation.schema.AvroSchema;
@@ -11,8 +15,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.nio.ByteBuffer;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -28,7 +30,9 @@ import java.util.function.Consumer;
  *
  * Magic MapStringString SyncMarker
  */
-public class AvroHeaderSchema extends AvroSchema<Object> {
+public class AvroHeaderSchema extends AvroSchema {
+
+    private final ClientLogger logger = new ClientLogger(AvroHeaderSchema.class);
 
     private final Consumer<AvroType> onParsingSchema;
     private final Consumer<byte[]> onSync;
@@ -54,7 +58,7 @@ public class AvroHeaderSchema extends AvroSchema<Object> {
 
         /* Read the magic bytes, call validateMagic. */
         AvroFixedSchema fixedSchema = new AvroFixedSchema(
-            AvroConstants.MAGIC_BYTES.length,
+            AvroConstants.MAGIC_BYTES.size(),
             this.state,
             this::validateMagic
         );
@@ -66,10 +70,15 @@ public class AvroHeaderSchema extends AvroSchema<Object> {
      *
      * @param magic The magic bytes.
      */
-    private void validateMagic(List<ByteBuffer> magic) {
+    private void validateMagic(Object magic) {
+        AvroUtils.checkList("'magic'", magic);
         /* Validate the magic bytes. */
-        byte[] init = AvroUtils.getBytes(magic);
-        if (Arrays.equals(init, AvroConstants.MAGIC_BYTES)) {
+        byte[] init = AvroUtils.getBytes((List<?>) magic);
+        boolean match = true;
+        for (int i = 0; i < AvroConstants.MAGIC_BYTES.size(); i++) {
+            match &= AvroConstants.MAGIC_BYTES.get(i).equals(init[i]);
+        }
+        if (match) {
             /* Read the metadata, then call onMetadata. */
             AvroMapSchema metadataSchema = new AvroMapSchema(
                 new AvroType.AvroPrimitiveType("string"),
@@ -78,7 +87,7 @@ public class AvroHeaderSchema extends AvroSchema<Object> {
             );
             metadataSchema.add();
         } else {
-            throw new IllegalArgumentException("Invalid Avro file.");
+            throw logger.logExceptionAsError(new IllegalArgumentException("Invalid Avro file."));
         }
     }
 
@@ -88,19 +97,21 @@ public class AvroHeaderSchema extends AvroSchema<Object> {
      * @param metadata The metadata
      * @see AvroType#getType(JsonNode)
      */
-    private void onMetadata(Map<String, Object> metadata) {
+    private void onMetadata(Object metadata) {
+        AvroUtils.checkMap("'metadata'", metadata);
+        Map<?, ?> m = (Map<?, ?>) metadata;
         /* We do not support codec. */
-        Object codecString = metadata.get(AvroConstants.CODEC_KEY);
+        Object codecString = m.get(AvroConstants.CODEC_KEY);
         if (codecString != null && codecString.equals(AvroConstants.DEFLATE_CODEC)) {
-            throw new RuntimeException("Deflate codec is not supported");
+            throw logger.logExceptionAsError(new IllegalArgumentException("Deflate codec is not supported"));
         }
         /* Get the schema and parse it, call the onParsingSchema handler. */
-        String schemaString = metadata.get(AvroConstants.SCHEMA_KEY).toString();
+        String schemaString = m.get(AvroConstants.SCHEMA_KEY).toString();
         JsonNode schemaJson;
         try {
             schemaJson = new ObjectMapper().readTree(schemaString);
         } catch (JsonProcessingException e) {
-            throw new IllegalStateException(e.getMessage());
+            throw logger.logExceptionAsError(new IllegalStateException(e.getMessage()));
         }
         AvroType objectType = AvroType.getType(schemaJson);
         this.onParsingSchema.accept(objectType);
@@ -117,12 +128,13 @@ public class AvroHeaderSchema extends AvroSchema<Object> {
     /**
      * Sync maker handler.
      *
-     * @param buffers The buffers that consist of the sync marker.
+     * @param sync The buffers that consist of the sync marker.
      */
-    private void onSyncMarker(List<ByteBuffer> buffers) {
+    private void onSyncMarker(Object sync) {
+        AvroUtils.checkList("'sync'", sync);
         /* Call the sync marker handler, then we're done. */
-        byte[] sync = AvroUtils.getBytes(buffers);
-        this.onSync.accept(sync);
+        byte[] syncBytes = AvroUtils.getBytes((List<?>) sync);
+        this.onSync.accept(syncBytes);
         this.done = true;
         this.result = null;
     }

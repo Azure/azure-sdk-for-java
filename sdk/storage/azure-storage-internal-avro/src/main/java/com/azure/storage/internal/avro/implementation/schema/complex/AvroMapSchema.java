@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.internal.avro.implementation.schema.complex;
 
 import com.azure.storage.internal.avro.implementation.AvroParserState;
@@ -5,6 +8,7 @@ import com.azure.storage.internal.avro.implementation.schema.primitive.AvroLongS
 import com.azure.storage.internal.avro.implementation.schema.AvroSchema;
 import com.azure.storage.internal.avro.implementation.schema.AvroType;
 import com.azure.storage.internal.avro.implementation.schema.primitive.AvroStringSchema;
+import com.azure.storage.internal.avro.implementation.util.AvroUtils;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -21,13 +25,14 @@ import java.util.function.Consumer;
  * If initial Long parsed is negative, it can look like
  * Long(negative) Long Key Value Key Value Key Value ....
  */
-public class AvroMapSchema extends AvroSchema<Map<String, Object>> {
-    /* TODO : Look into possibly reducing duplicate code between MapSchema and ArraySchema.
+public class AvroMapSchema extends AvroSchema {
+    /* TODO (gapra): Look into possibly reducing duplicate code between MapSchema and ArraySchema.
     This may add a little more complexity to the AvroTypes. */
 
     private final AvroType valueType;
     private Long blockCount;
     private String key;
+    private Map<String, Object> ret;
 
     /**
      * Constructs a new AvroMapSchema.
@@ -36,9 +41,9 @@ public class AvroMapSchema extends AvroSchema<Map<String, Object>> {
      * @param state The state of the parser.
      * @param onResult The result handler.
      */
-    public AvroMapSchema(AvroType valueType, AvroParserState state, Consumer<Map<String, Object>> onResult) {
+    public AvroMapSchema(AvroType valueType, AvroParserState state, Consumer<Object> onResult) {
         super(state, onResult);
-        this.result = new LinkedHashMap<>();
+        this.ret = new LinkedHashMap<>();
         this.valueType = valueType;
     }
 
@@ -58,13 +63,16 @@ public class AvroMapSchema extends AvroSchema<Map<String, Object>> {
      *
      * @param blockCount The number of elements in the block.
      */
-    private void onBlockCount(Long blockCount) {
+    private void onBlockCount(Object blockCount) {
+        AvroUtils.checkLong("'blockCount'", blockCount);
+        Long bc = (Long) blockCount;
         /* If blockCount = 0 then we're done.*/
-        if (blockCount == 0) {
+        if (bc == 0) {
+            this.result = this.ret;
             this.done = true;
         /* If blockCount > 0, read the key, call onKey. */
-        } else if (blockCount > 0) {
-            this.blockCount = blockCount;
+        } else if (bc > 0) {
+            this.blockCount = bc;
             AvroStringSchema keySchema = new AvroStringSchema(
                 this.state,
                 this::onKey
@@ -72,7 +80,7 @@ public class AvroMapSchema extends AvroSchema<Map<String, Object>> {
             keySchema.add();
         /* If blockCount < 0, use absolute value, read the byteCount, call onByteCount. */
         } else {
-            this.blockCount = -blockCount;
+            this.blockCount = -bc;
             AvroLongSchema byteCountSchema = new AvroLongSchema(
                 this.state,
                 this::onByteCount
@@ -84,9 +92,10 @@ public class AvroMapSchema extends AvroSchema<Map<String, Object>> {
     /**
      * Byte count handler.
      *
-     * @param ignore The number of bytes in the block.
+     * @param byteCount The number of bytes in the block.
      */
-    private void onByteCount(Long ignore) {
+    private void onByteCount(Object byteCount) {
+        AvroUtils.checkLong("'byteCount'", byteCount);
         /* TODO (gapra) : Use this in case we want to skip through the array in the future. Not required for now. */
         /* Read the key, call onKey. */
         AvroStringSchema keySchema = new AvroStringSchema(
@@ -101,9 +110,10 @@ public class AvroMapSchema extends AvroSchema<Map<String, Object>> {
      *
      * @param key The key.
      */
-    private void onKey(String key) {
+    private void onKey(Object key) {
+        AvroUtils.checkString("'key'", key);
         /* Store the key, read the value, call onValue. */
-        this.key = key;
+        this.key = (String) key;
         AvroSchema valueSchema = getSchema(
             this.valueType,
             this.state,
@@ -115,15 +125,11 @@ public class AvroMapSchema extends AvroSchema<Map<String, Object>> {
     /**
      * Value handler
      *
-     * Once we read the value, add the key value pair into the map, decrement the blockCount.
-     * If the blockCount is 0, read the blockCount,
-     * otherwise read another key.
-     * @param value
+     * @param value The value.
      */
     private void onValue(Object value) {
         /* Add the key value pair into the map. */
-        this.result.put(this.key, value);
-        this.key = null;
+        this.ret.put(this.key, value);
 
         /* Decrement the block count. */
         this.blockCount--;

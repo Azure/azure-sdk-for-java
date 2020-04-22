@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.internal.avro.implementation.schema.primitive;
 
 import com.azure.storage.internal.avro.implementation.AvroParserState;
@@ -21,7 +24,7 @@ import java.util.function.Consumer;
  * long value = next;
  * return (n >> 1) ^ -(n & 1);
  */
-public class AvroLongSchema extends AvroSchema<Long> {
+public class AvroLongSchema extends AvroSchema {
 
     private long n; /* Keeps track of the number so far. */
     private long shift = 7; /* The current shift value. */
@@ -35,7 +38,7 @@ public class AvroLongSchema extends AvroSchema<Long> {
      * @param state The state of the parser.
      * @param onResult The result handler.
      */
-    public AvroLongSchema(AvroParserState state, Consumer<Long> onResult){
+    public AvroLongSchema(AvroParserState state, Consumer<Object> onResult) {
         super(state, onResult);
     }
 
@@ -73,8 +76,8 @@ public class AvroLongSchema extends AvroSchema<Long> {
                 return;
             } else {
                 n = (n >> 1) ^ -(n & 1);
-                this.done = true;
                 this.result = n;
+                this.done = true;
             }
         } else {
             /* Keep making progress on parsing the long. */

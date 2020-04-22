@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.internal.avro.implementation.schema.primitive;
 
 import com.azure.storage.internal.avro.implementation.AvroParserState;
@@ -8,7 +11,7 @@ import java.util.function.Consumer;
 /**
  * A null is written as zero bytes.
  */
-public class AvroNullSchema extends AvroSchema<AvroNullSchema.Null> {
+public class AvroNullSchema extends AvroSchema {
 
     /**
      * Constructs a new AvroNullSchema.
@@ -16,7 +19,7 @@ public class AvroNullSchema extends AvroSchema<AvroNullSchema.Null> {
      * @param state The state of the parser.
      * @param onResult The result handler.
      */
-    public AvroNullSchema(AvroParserState state, Consumer<Null> onResult) {
+    public AvroNullSchema(AvroParserState state, Consumer<Object> onResult) {
         super(state, onResult);
     }
 

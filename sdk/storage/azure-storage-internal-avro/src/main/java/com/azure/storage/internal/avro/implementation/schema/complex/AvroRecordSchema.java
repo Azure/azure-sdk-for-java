@@ -1,9 +1,11 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.internal.avro.implementation.schema.complex;
 
 import com.azure.storage.internal.avro.implementation.AvroConstants;
-import com.azure.storage.internal.avro.implementation.schema.AvroRecordField;
 import com.azure.storage.internal.avro.implementation.AvroParserState;
-import com.azure.storage.internal.avro.implementation.schema.AvroType;
+import com.azure.storage.internal.avro.implementation.schema.AvroRecordField;
 import com.azure.storage.internal.avro.implementation.schema.AvroSchema;
 
 import java.util.Iterator;
@@ -22,11 +24,12 @@ import java.util.function.Consumer;
  *
  * Field1 Field2 Field3 ....
  */
-public class AvroRecordSchema extends AvroSchema<Map<String, Object>> {
+public class AvroRecordSchema extends AvroSchema {
 
     private final List<AvroRecordField> fields;
     private Iterator<AvroRecordField> fieldIterator;
     private AvroRecordField currentField;
+    private Map<String, Object> ret;
 
     /**
      * Constructs a new AvroRecordSchema.
@@ -37,13 +40,15 @@ public class AvroRecordSchema extends AvroSchema<Map<String, Object>> {
      * @param onResult The result handler.
      */
     public AvroRecordSchema(String name, List<AvroRecordField> fields, AvroParserState state,
-        Consumer<Map<String, Object>> onResult) {
+        Consumer<Object> onResult) {
         super(state, onResult);
         this.fields = fields;
-        this.result = new LinkedHashMap<>();
+        this.ret = new LinkedHashMap<>();
+        this.fieldIterator = null;
+        this.currentField = null;
 
         /* Add $record:name to the name so we can determine what type of record this is downstream. */
-        this.result.put(AvroConstants.RECORD, name);
+        this.ret.put(AvroConstants.RECORD, name);
     }
 
     @Override
@@ -72,7 +77,7 @@ public class AvroRecordSchema extends AvroSchema<Map<String, Object>> {
      */
     private void onField(Object result) {
         /* Add the name, result pair to the map. */
-        this.result.put(this.currentField.getName(), result);
+        this.ret.put(this.currentField.getName(), result);
 
         /* If there are more fields to be read, read the next field and call onField. */
         if (this.fieldIterator.hasNext()) {
@@ -85,6 +90,7 @@ public class AvroRecordSchema extends AvroSchema<Map<String, Object>> {
             fieldSchema.add();
         /* If there are no more fields, then we're done. */
         } else {
+            this.result = this.ret;
             this.done = true;
         }
     }

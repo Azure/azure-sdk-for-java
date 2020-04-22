@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.internal.avro.implementation.schema.primitive;
 
 import com.azure.storage.internal.avro.implementation.AvroConstants;
@@ -16,7 +19,7 @@ import java.util.function.Consumer;
  *
  * Byte Byte Byte Byte
  */
-public class AvroFloatSchema extends AvroSchema<Float> {
+public class AvroFloatSchema extends AvroSchema {
 
     /**
      * Constructs a new AvroFloatSchema.
@@ -24,7 +27,7 @@ public class AvroFloatSchema extends AvroSchema<Float> {
      * @param state The state of the parser.
      * @param onResult The result handler.
      */
-    public AvroFloatSchema(AvroParserState state, Consumer<Float> onResult) {
+    public AvroFloatSchema(AvroParserState state, Consumer<Object> onResult) {
         super(state, onResult);
     }
 

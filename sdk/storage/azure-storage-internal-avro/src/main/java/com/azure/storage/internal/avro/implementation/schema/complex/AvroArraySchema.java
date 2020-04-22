@@ -1,9 +1,13 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.internal.avro.implementation.schema.complex;
 
 import com.azure.storage.internal.avro.implementation.AvroParserState;
 import com.azure.storage.internal.avro.implementation.schema.primitive.AvroLongSchema;
 import com.azure.storage.internal.avro.implementation.schema.AvroSchema;
 import com.azure.storage.internal.avro.implementation.schema.AvroType;
+import com.azure.storage.internal.avro.implementation.util.AvroUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,10 +25,11 @@ import java.util.function.Consumer;
  */
 /* TODO (gapra) : Look into possibly reducing duplicate code between MapSchema and ArraySchema.
     This may add a little more complexity to the AvroTypes, so I'm putting it off for now. */
-public class AvroArraySchema extends AvroSchema<List<Object>> {
+public class AvroArraySchema extends AvroSchema {
 
     private final AvroType itemType;
     private Long blockCount;
+    private List<Object> ret;
 
     /**
      * Constructs a new AvroArraySchema.
@@ -33,9 +38,9 @@ public class AvroArraySchema extends AvroSchema<List<Object>> {
      * @param state The state of the parser.
      * @param onResult The result handler.
      */
-    public AvroArraySchema(AvroType itemType, AvroParserState state, Consumer<List<Object>> onResult) {
+    public AvroArraySchema(AvroType itemType, AvroParserState state, Consumer<Object> onResult) {
         super(state, onResult);
-        this.result = new ArrayList<>();
+        this.ret = new ArrayList<>();
         this.itemType = itemType;
     }
 
@@ -55,13 +60,16 @@ public class AvroArraySchema extends AvroSchema<List<Object>> {
      *
      * @param blockCount The number of elements in the block.
      */
-    private void onBlockCount(Long blockCount) {
+    private void onBlockCount(Object blockCount) {
+        AvroUtils.checkLong("'blockCount'", blockCount);
+        Long bc = (Long) blockCount;
         /* If blockCount = 0, then we're done.*/
-        if (blockCount == 0) {
+        if (bc == 0) {
+            this.result = this.ret;
             this.done = true;
         /* If blockCount > 0, read the item, call onItem. */
-        } else if (blockCount > 0) {
-            this.blockCount = blockCount;
+        } else if (bc > 0) {
+            this.blockCount = bc;
             AvroSchema itemSchema = getSchema(
                 this.itemType,
                 this.state,
@@ -70,7 +78,7 @@ public class AvroArraySchema extends AvroSchema<List<Object>> {
             itemSchema.add();
         /* If blockCount < 0, use absolute value, read the byteCount, call onByteCount. */
         } else {
-            this.blockCount = -blockCount;
+            this.blockCount = -bc;
             AvroLongSchema byteCountSchema = new AvroLongSchema(
                 this.state,
                 this::onByteCount
@@ -82,10 +90,11 @@ public class AvroArraySchema extends AvroSchema<List<Object>> {
     /**
      * Byte count handler.
      *
-     * @param ignore The number of bytes in the block.
+     * @param byteCount The number of bytes in the block.
      */
-    private void onByteCount(Long ignore) {
+    private void onByteCount(Object byteCount) {
         /* TODO (gapra) : Use this in case we want to skip through the array in the future. Not required for now. */
+        AvroUtils.checkLong("'byteCount'", byteCount);
         /* Read the item, call onItem. */
         AvroSchema itemSchema = getSchema(
             this.itemType,
@@ -102,13 +111,13 @@ public class AvroArraySchema extends AvroSchema<List<Object>> {
      */
     private void onItem(Object item) {
         /* Add the item to the list. */
-        this.result.add(item);
+        this.ret.add(item);
 
         /* Decrement the block count. */
         this.blockCount--;
 
         /* If blockCount = 0, there are no more items in the block, read another blockCount and call onBlockCount. */
-        if (blockCount == 0) {
+        if (this.blockCount == 0) {
             AvroLongSchema blockCountSchema = new AvroLongSchema(
                 this.state,
                 this::onBlockCount
