@@ -80,8 +80,17 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     }
 
     /**
+     * Verifies an exception thrown for a document using null data value.
+     */
+    @Test
+    void recognizeReceiptDataTextDetailsWithNullData() {
+        assertThrows(RuntimeException.class, () ->
+            client.beginRecognizeReceipts(null, RECEIPT_FILE_LENGTH, FormContentType.IMAGE_JPEG, false, null));
+    }
+
+    /**
      * Verifies receipt data for a document using source as input stream data.
-     * And the content type is not given. The content will be auto detected.
+     * And the content type is not given. The content type will be auto detected.
      */
     @Test
     void recognizeReceiptDataWithContentTypeAutoDetection() {
@@ -116,6 +125,35 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         layoutDataRunner((data) -> {
             SyncPoller<OperationResult, IterableStream<FormPage>> syncPoller =
                 client.beginRecognizeContent(data, LAYOUT_FILE_LENGTH, FormContentType.IMAGE_PNG, null);
+            syncPoller.waitForCompletion();
+            validateLayoutResult(getExpectedFormPages(), syncPoller.getFinalResult());
+        });
+    }
+
+    /**
+     * Verifies an exception thrown for a document using null data value.
+     */
+    @Test
+    void recognizeLayoutDataWithNullData() {
+        layoutDataRunner((data) -> {
+            SyncPoller<OperationResult, IterableStream<FormPage>> syncPoller =
+                client.beginRecognizeContent(data, LAYOUT_FILE_LENGTH, FormContentType.IMAGE_PNG, null);
+            syncPoller.waitForCompletion();
+
+            assertThrows(RuntimeException.class, () ->
+                client.beginRecognizeContent(null, LAYOUT_FILE_LENGTH, FormContentType.IMAGE_JPEG, null));
+        });
+    }
+
+    /**
+     * Verifies layout data for a document using source as input stream data.
+     * And the content type is not given. The content type will be auto detected.
+     */
+    @Test
+    void recognizeLayoutDataWithContentTypeAutoDetection() {
+        layoutDataRunner((data) -> {
+            SyncPoller<OperationResult, IterableStream<FormPage>> syncPoller =
+                client.beginRecognizeContent(data, LAYOUT_FILE_LENGTH, null, null);
             syncPoller.waitForCompletion();
             validateLayoutResult(getExpectedFormPages(), syncPoller.getFinalResult());
         });
@@ -173,6 +211,47 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 SyncPoller<OperationResult, IterableStream<RecognizedForm>> syncPollers
                     = client.beginRecognizeCustomForms(data, syncPoller.getFinalResult().getModelId(),
                     CUSTOM_FORM_FILE_LENGTH, FormContentType.APPLICATION_PDF, true, null);
+                syncPoller.waitForCompletion();
+                validateRecognizedFormResult(getExpectedRecognizedLabeledForms(), syncPollers.getFinalResult());
+            }));
+    }
+
+    /**
+     * Verifies an exception thrown for a document using null data value or null model id.
+     */
+    @Test
+    void recognizeCustomFormLabeledDataWithNullValues() {
+        customFormLabeledDataRunner(data ->
+            beginTrainingLabeledResultRunner((storageSASUrl, useLabelFile) -> {
+                SyncPoller<OperationResult, CustomFormModel> syncPoller =
+                    client.getFormTrainingClient().beginTraining(storageSASUrl, useLabelFile);
+                syncPoller.waitForCompletion();
+
+                assertThrows(RuntimeException.class, () ->
+                    client.beginRecognizeCustomForms(null, syncPoller.getFinalResult().getModelId(),
+                        CUSTOM_FORM_FILE_LENGTH, FormContentType.APPLICATION_PDF, true, null));
+                assertThrows(RuntimeException.class, () ->
+                    client.beginRecognizeCustomForms(data, null,
+                        CUSTOM_FORM_FILE_LENGTH, FormContentType.APPLICATION_PDF, true, null));
+            })
+        );
+    }
+
+    /**
+     * Verifies custom form data for a document using source as input stream data and valid labeled model Id.
+     * And the content type is not given. The content type will be auto detected.
+     */
+    @Test
+    void recognizeCustomFormLabeledDataWithContentTypeAutoDetection() {
+        customFormLabeledDataRunner(data ->
+            beginTrainingLabeledResultRunner((storageSASUrl, useLabelFile) -> {
+                SyncPoller<OperationResult, CustomFormModel> syncPoller =
+                    client.getFormTrainingClient().beginTraining(storageSASUrl, useLabelFile);
+                syncPoller.waitForCompletion();
+
+                SyncPoller<OperationResult, IterableStream<RecognizedForm>> syncPollers
+                    = client.beginRecognizeCustomForms(data, syncPoller.getFinalResult().getModelId(),
+                    CUSTOM_FORM_FILE_LENGTH, null, true, null);
                 syncPoller.waitForCompletion();
                 validateRecognizedFormResult(getExpectedRecognizedLabeledForms(), syncPollers.getFinalResult());
             }));
