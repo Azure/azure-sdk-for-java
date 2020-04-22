@@ -39,7 +39,7 @@ public class AvroDoubleSchema extends AvroSchema {
     @Override
     public void progress() {
         /* Consume 8 bytes. */
-        List<ByteBuffer> buffers = this.state.consume(AvroConstants.DOUBLE_SIZE);
+        List<ByteBuffer> buffers = this.state.read(AvroConstants.DOUBLE_SIZE);
         byte[] doubleBytes = AvroUtils.getBytes(buffers);
 
         /* Long encoded in little endian format. */

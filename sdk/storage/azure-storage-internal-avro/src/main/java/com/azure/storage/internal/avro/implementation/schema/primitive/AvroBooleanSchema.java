@@ -37,7 +37,7 @@ public class AvroBooleanSchema extends AvroSchema {
     @Override
     public void progress() {
         /* Consume a byte, and determine what it represents. */
-        byte b = this.state.consume();
+        byte b = this.state.read();
         if (b == (byte) 0) {
             this.result = false;
         } else if (b == (byte) 1) {

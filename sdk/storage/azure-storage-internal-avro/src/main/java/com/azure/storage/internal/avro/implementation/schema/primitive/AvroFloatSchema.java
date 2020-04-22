@@ -39,7 +39,7 @@ public class AvroFloatSchema extends AvroSchema {
     @Override
     public void progress() {
         /* Consume 4 bytes. */
-        List<ByteBuffer> buffers = this.state.consume(AvroConstants.FLOAT_SIZE);
+        List<ByteBuffer> buffers = this.state.read(AvroConstants.FLOAT_SIZE);
         byte[] floatBytes = AvroUtils.getBytes(buffers);
 
         /* Integer encoded in little endian format. */

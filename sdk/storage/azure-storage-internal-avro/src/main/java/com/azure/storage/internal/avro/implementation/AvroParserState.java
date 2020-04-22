@@ -89,7 +89,7 @@ public class AvroParserState {
      * @param size The number of bytes to consume.
      * @return A List of ByteBuffers with the number of bytes requested.
      */
-    public List<ByteBuffer> consume(Long size) {
+    public List<ByteBuffer> read(Long size) {
         List<ByteBuffer> result = new LinkedList<>();
         Iterator<ByteBuffer> bufferIterator = this.cache.iterator();
         long needed = size;
@@ -120,7 +120,7 @@ public class AvroParserState {
      *
      * @return The byte requested.
      */
-    public byte consume() {
+    public byte read() {
         Iterator<ByteBuffer> iterator = this.cache.iterator();
         ByteBuffer buffer = iterator.next();
         byte b = buffer.get();

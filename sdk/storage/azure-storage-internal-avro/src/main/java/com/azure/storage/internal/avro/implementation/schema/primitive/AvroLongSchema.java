@@ -62,7 +62,7 @@ public class AvroLongSchema extends AvroSchema {
         }
 
         /* Consume a byte. */
-        int b = this.state.consume() & 0xff;
+        int b = this.state.read() & 0xff;
 
         /* If this is the first byte, initialize some values. (This is equivalent to the code before the while loop.) */
         if (first) {

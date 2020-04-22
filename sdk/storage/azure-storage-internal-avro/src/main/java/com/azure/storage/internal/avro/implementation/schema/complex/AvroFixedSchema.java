@@ -40,7 +40,7 @@ public class AvroFixedSchema extends AvroSchema {
     @Override
     public void progress() {
         /* Consume size bytes, then we're done. */
-        this.result = this.state.consume(size);
+        this.result = this.state.read(size);
         this.done = true;
     }
 
