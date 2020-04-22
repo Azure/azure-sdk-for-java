@@ -11,13 +11,14 @@ import com.azure.management.network.models.ExpressRouteCircuitPeeringInner;
 import com.azure.management.network.models.RouteFilterInner;
 import com.azure.management.network.models.RouteFilterRuleInner;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
+import reactor.core.publisher.Mono;
+
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
-
-import reactor.core.publisher.Mono;
 
 /** Implementation for RouteFilter and its create and update interfaces. */
 class RouteFilterImpl
@@ -42,14 +43,21 @@ class RouteFilterImpl
     protected void initializeChildrenFromInner() {
         this.rules = new TreeMap<>();
         List<RouteFilterRuleInner> inners = this.inner().rules();
-        for (RouteFilterRuleInner inner : inners) {
-            this.rules.put(inner.name(), new RouteFilterRuleImpl(inner, this));
+        if (inners != null) {
+            for (RouteFilterRuleInner inner : inners) {
+                this.rules.put(inner.name(), new RouteFilterRuleImpl(inner, this));
+            }
         }
-        this.peerings = this.inner().peerings().stream().collect(Collectors.toMap(
-            ExpressRouteCircuitPeeringInner::name,
-            peering -> new ExpressRouteCircuitPeeringImpl(this, peering,
-                manager().inner().expressRouteCircuitPeerings(), peering.peeringType())
-        ));
+
+        if (this.inner().peerings() != null) {
+            this.peerings = this.inner().peerings().stream().collect(Collectors.toMap(
+                ExpressRouteCircuitPeeringInner::name,
+                peering -> new ExpressRouteCircuitPeeringImpl(this, peering,
+                    manager().inner().expressRouteCircuitPeerings(), peering.peeringType())
+            ));
+        } else {
+            this.peerings = new HashMap<>();
+        }
     }
 
     @Override
