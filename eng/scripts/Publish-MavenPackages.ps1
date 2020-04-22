@@ -205,7 +205,7 @@ foreach ($packageDetail in $packageDetails) {
   if ($packageDetail.AssociatedArtifacts.Length -ne 1) {
     $fileAssociatedArtifact = $packageDetail.AssociatedArtifacts | Where-Object { ($_.Classifier -eq $null) -and (($_.Type -eq "jar") -or ($_.Type -eq "aar")) }
   } else {
-    $fileAssociatedArtifact = $packageDetail.File.FullName
+    $fileAssociatedArtifact = $packageDetail.AssociatedArtifacts[0]
   }
 
   $fileOption = "-Dfile=$($fileAssociatedArtifact.File.FullName)"
@@ -266,7 +266,7 @@ foreach ($packageDetail in $packageDetails) {
 
   if ($RepositoryUrl -like "https://pkgs.dev.azure.com/azure-sdk/public/*") {
     Write-Information "GPG Signing and deploying package in one step to: $RepositoryUrl"
-    #mvn gpg:sign-and-deploy-file "--batch-mode" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$filesOption" $classifiersOption "$typesOption" "-Durl=$RepositoryUrl" "$gpgexeOption" "-DrepositoryId=target-repo" "-Drepo.password=$RepositoryPassword" "--settings=$PSScriptRoot\..\maven.publish.settings.xml"
+    # mvn gpg:sign-and-deploy-file "--batch-mode" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$filesOption" $classifiersOption "$typesOption" "-Durl=$RepositoryUrl" "$gpgexeOption" "-DrepositoryId=target-repo" "-Drepo.password=$RepositoryPassword" "--settings=$PSScriptRoot\..\maven.publish.settings.xml"
   }
   elseif ($RepositoryUrl -like "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
     Write-Information "Signing and deploying package to $localRepositoryDirectoryUri"
