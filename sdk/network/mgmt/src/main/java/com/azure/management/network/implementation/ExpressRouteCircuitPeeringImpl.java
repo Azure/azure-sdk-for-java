@@ -13,24 +13,23 @@ import com.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.management.resources.fluentcore.model.Refreshable;
 import com.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
-import java.util.Arrays;
 import reactor.core.publisher.Mono;
 
-interface ExpressRouteCircuitPeeringParent<ModelT, InnerT>
-    extends GroupableResource<NetworkManager, InnerT>,
-    Refreshable<ModelT> { }
+import java.util.Arrays;
 
-class ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT>
+class ExpressRouteCircuitPeeringImpl
+    <ParentModelT, ParentInnerT,
+        ParentT extends GroupableResource<NetworkManager, ParentInnerT> & Refreshable<ParentModelT>>
     extends CreatableUpdatableImpl<
         ExpressRouteCircuitPeering, ExpressRouteCircuitPeeringInner,
-        ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT>>
+        ExpressRouteCircuitPeeringImpl< ParentModelT, ParentInnerT, ParentT>>
     implements ExpressRouteCircuitPeering, ExpressRouteCircuitPeering.Definition, ExpressRouteCircuitPeering.Update {
     private final ExpressRouteCircuitPeeringsInner client;
-    private final ExpressRouteCircuitPeeringParent<ParentModelT, ParentInnerT> parent;
+    private final ParentT parent;
     private ExpressRouteCircuitStatsImpl stats;
 
     ExpressRouteCircuitPeeringImpl(
-        ExpressRouteCircuitPeeringParent<ParentModelT, ParentInnerT> parent,
+        ParentT parent,
         ExpressRouteCircuitPeeringInner innerObject,
         ExpressRouteCircuitPeeringsInner client,
         ExpressRoutePeeringType type) {

@@ -23,8 +23,7 @@ import java.util.stream.Collectors;
 /** Implementation for RouteFilter and its create and update interfaces. */
 class RouteFilterImpl
     extends GroupableParentResourceImpl<RouteFilter, RouteFilterInner, RouteFilterImpl, NetworkManager>
-    implements RouteFilter, RouteFilter.Definition, RouteFilter.Update,
-        ExpressRouteCircuitPeeringParent<RouteFilter, RouteFilterInner> {
+    implements RouteFilter, RouteFilter.Definition, RouteFilter.Update {
     private static final String RULE_TYPE = "Community";
 
     private Map<String, RouteFilterRule> rules;
