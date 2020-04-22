@@ -422,9 +422,9 @@ public final class FormRecognizerAsyncClient {
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> receiptStreamActivationOperation(
         Flux<ByteBuffer> data, long length, FormContentType formContentType, boolean includeTextDetails) {
-        Objects.requireNonNull(data, "'data' is required and cannot be null.");
         return pollingContext -> {
             try {
+                Objects.requireNonNull(data, "'data' is required and cannot be null.");
                 if (formContentType != null) {
                     return service.analyzeReceiptAsyncWithResponseAsync(
                         ContentType.fromString(formContentType.toString()), data, length, includeTextDetails)
