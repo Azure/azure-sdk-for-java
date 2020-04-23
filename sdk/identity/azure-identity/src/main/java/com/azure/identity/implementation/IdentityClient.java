@@ -603,7 +603,6 @@ public class IdentityClient {
                                     }
                                 ).map(result -> new MsalToken(result, options))));
                     } catch (MalformedURLException e) {
-                        e.printStackTrace();
                         return Mono.error(new RuntimeException("Token was not found"));
                     }
                 });

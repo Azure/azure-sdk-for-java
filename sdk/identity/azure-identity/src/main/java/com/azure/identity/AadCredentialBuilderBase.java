@@ -77,7 +77,7 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
      *
      * @param useUnprotectedFileOnLinux whether to use an unprotected file for cache storage.
      *
-     * @return The updated T object.
+     * @return An updated instance of this builder with the unprotected token cache setting set as specified.
      */
     @SuppressWarnings("unchecked")
     public T useUnprotectedTokenCacheFileOnLinux(boolean useUnprotectedFileOnLinux) {
@@ -90,7 +90,7 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
      *
      * @param disabled whether to disable using the shared token cache.
      *
-     * @return The updated identity client options.
+     * @return An updated instance of this builder with if the shared token cache disabled specified.
      */
     @SuppressWarnings("unchecked")
     public T disableSharedTokenCache(boolean disabled) {
