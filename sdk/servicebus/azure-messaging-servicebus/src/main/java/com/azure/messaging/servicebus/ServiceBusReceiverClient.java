@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -32,6 +33,9 @@ public class ServiceBusReceiverClient implements AutoCloseable {
     private final AtomicInteger idGenerator = new AtomicInteger();
     private final ServiceBusReceiverAsyncClient asyncClient;
     private final Duration operationTimeout;
+    private static final ReceiveAsyncOptions DEFAULT_RECEIVE_OPTIONS = new ReceiveAsyncOptions()
+        .setEnableAutoComplete(false)
+        .setMaxAutoRenewDuration(Duration.ZERO);
 
     /**
      * Creates a synchronous receiver given its asynchronous counterpart.
@@ -360,6 +364,6 @@ public class ServiceBusReceiverClient implements AutoCloseable {
         final SynchronousMessageSubscriber syncSubscriber = new SynchronousMessageSubscriber(work);
 
         logger.info("[{}]: Started synchronous message subscriber.", id);
-        asyncClient.receive().subscribeWith(syncSubscriber);
+        asyncClient.receive(DEFAULT_RECEIVE_OPTIONS).subscribeWith(syncSubscriber);
     }
 }

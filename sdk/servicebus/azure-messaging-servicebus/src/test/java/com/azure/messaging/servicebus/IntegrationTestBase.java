@@ -14,6 +14,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.AfterEach;
@@ -73,6 +74,8 @@ public abstract class IntegrationTestBase extends TestBase {
         logger.info("========= SET-UP [{}] =========", testInfo.getDisplayName());
 
         testName = testInfo.getDisplayName();
+        TestMode mode = getTestMode();
+        boolean isRecord =  getTestMode() == TestMode.RECORD;
         Assumptions.assumeTrue(getTestMode() == TestMode.RECORD);
 
         properties = new ConnectionStringProperties(getConnectionString());
@@ -271,5 +274,16 @@ public abstract class IntegrationTestBase extends TestBase {
         if (isSessionEnabled) {
             assertEquals(sessionId, message.getSessionId());
         }
+    }
+
+    static Stream<Arguments> receiveDeferredMessageBySequenceNumber() {
+        return Stream.of(
+            Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.ABANDONED),
+            Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.SUSPENDED),
+            Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.COMPLETED),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.ABANDONED),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.SUSPENDED),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.COMPLETED)
+        );
     }
 }
