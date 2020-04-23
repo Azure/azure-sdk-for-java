@@ -94,8 +94,8 @@ public class GetSetAccessControlExample {
 
         // Set access control list
         PathAccessControlEntry pathAccessControlEntry = new PathAccessControlEntry()
-            .entityID("entityId")
-            .permissions(new RolePermissions().setReadPermission(true));
+            .setEntityId("entityId")
+            .setPermissions(new RolePermissions().setReadPermission(true));
         List<PathAccessControlEntry> pathAccessControlEntries = new ArrayList<>();
         pathAccessControlEntries.add(pathAccessControlEntry);
 

@@ -26,6 +26,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.Closeable;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -36,6 +37,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.MESSAGE_ENQUEUED_TIME;
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -143,7 +145,6 @@ public class EventProcessorClientTest {
             () -> testPartitionProcessor, checkpointStore, false, tracerProvider, ec -> { }, new HashMap<>());
         eventProcessorClient.start();
         TimeUnit.SECONDS.sleep(10);
-        eventProcessorClient.stop();
 
         // Assert
         assertNotNull(eventProcessorClient.getIdentifier());
@@ -168,6 +169,18 @@ public class EventProcessorClientTest {
         verify(consumer1, atLeastOnce()).receiveFromPartition(anyString(), any(EventPosition.class),
             any(ReceiveOptions.class));
         verify(consumer1, atLeastOnce()).close();
+        eventProcessorClient.stop();
+        StepVerifier.create(checkpointStore.listOwnership("test-ns", "test-eh", "test-consumer"))
+            .assertNext(partitionOwnership -> {
+                assertEquals("1", partitionOwnership.getPartitionId(), "Partition");
+                assertEquals("test-consumer", partitionOwnership.getConsumerGroup(), "Consumer");
+                assertEquals("test-eh", partitionOwnership.getEventHubName(), "EventHub name");
+                assertEquals("", partitionOwnership.getOwnerId(), "Owner Id");
+                assertTrue(partitionOwnership.getLastModifiedTime() >= beforeTest, "LastModifiedTime");
+                assertTrue(partitionOwnership.getLastModifiedTime() <= System.currentTimeMillis(), "LastModifiedTime");
+                assertNotNull(partitionOwnership.getETag());
+            }).verifyComplete();
+
     }
 
     /**
@@ -189,9 +202,9 @@ public class EventProcessorClientTest {
             .createConsumer(anyString(), anyInt()))
             .thenReturn(consumer1);
         when(eventData1.getSequenceNumber()).thenReturn(1L);
-        when(eventData2.getSequenceNumber()).thenReturn(2L);
         when(eventData1.getOffset()).thenReturn(1L);
-        when(eventData2.getOffset()).thenReturn(100L);
+        when(eventData1.getOffset()).thenReturn(100L);
+        when(eventData1.getEnqueuedTime()).thenReturn(Instant.ofEpochSecond(1560639208));
 
         String diagnosticId = "00-08ee063508037b1719dddcbf248e30e2-1365c684eb25daed-01";
         Map<String, Object> properties = new HashMap<>();
@@ -208,6 +221,7 @@ public class EventProcessorClientTest {
         when(tracer1.start(eq("EventHubs.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
+                assertTrue(passed.getData(MESSAGE_ENQUEUED_TIME).isPresent());
                 return passed.addData(SPAN_CONTEXT_KEY, "value1").addData("scope", (Closeable) () -> {
                     return;
                 }).addData(PARENT_SPAN_KEY, "value2");

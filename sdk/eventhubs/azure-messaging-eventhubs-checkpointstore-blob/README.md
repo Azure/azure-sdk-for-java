@@ -27,7 +27,7 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -63,6 +63,7 @@ sequence number and the timestamp of when it was enqueued.
 ## Examples
 - [Create an instance of Storage Container client][sample_container_client]
 - [Consume events from all Event Hub partitions][sample_event_processor]
+- [Specify storage version to create checkpoint store][sample_checkpointstore_custom_storage_version]
 
 ### Create an instance of Storage container with SAS token
 
@@ -153,6 +154,7 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [sample_container_client]: ./src/samples/java/com/azure/messaging/eventhubs/checkpointstore/blob/BlobCheckpointStoreSample.java
 [sample_event_hubs]: ./src/samples/java/com/azure/messaging/eventhubs
 [sample_event_processor]: ./src/samples/java/com/azure/messaging/eventhubs/checkpointstore/blob/EventProcessorBlobCheckpointStoreSample.java
+[sample_checkpointstore_custom_storage_version]: ./src/samples/java/com/azure/messaging/eventhubs/checkpointstore/blob/EventProcessorWithCustomStorageVersion.java
 [sample_examples]: ./src/samples/java/com/azure/messaging/eventhubs/checkpointstore/blob
 [sas_token]: https://docs.microsoft.com/azure/storage/common/storage-dotnet-shared-access-signature-part-1
 [source_code]: ./

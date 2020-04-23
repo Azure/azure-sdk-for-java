@@ -6,84 +6,77 @@ package com.azure.ai.textanalytics.batch;
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
-import com.azure.ai.textanalytics.models.DocumentResultCollection;
+import com.azure.ai.textanalytics.models.DocumentSentiment;
+import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.models.TextSentiment;
+import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Sample demonstrates how to asynchronously analyze the sentiments of a batch input text.
+ * Sample demonstrates how to asynchronously analyze the sentiments of {@link TextDocumentInput} documents.
  */
 public class AnalyzeSentimentBatchDocumentsAsync {
     /**
-     * Main method to invoke this demo about how to analyze the sentiments of a batch input text.
+     * Main method to invoke this demo about how to analyze the sentiments of {@link TextDocumentInput} documents.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("{subscription_key}")
-            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
+            .apiKey(new AzureKeyCredential("{api_key}"))
+            .endpoint("{endpoint}")
             .buildAsyncClient();
 
-        // The texts that need be analysed.
-        List<TextDocumentInput> inputs = Arrays.asList(
-            new TextDocumentInput("1", "The hotel was dark and unclean. The restaurant had amazing gnocchi.", "en"),
-            new TextDocumentInput("2", "The restaurant had amazing gnocchi. The hotel was dark and unclean.", "en")
+        // The texts that need be analyzed.
+        List<TextDocumentInput> documents = Arrays.asList(
+            new TextDocumentInput("A", "The hotel was dark and unclean. I wouldn't recommend staying there.", "en"),
+            new TextDocumentInput("B", "The restaurant had amazing gnocchi! The waiters were excellent.", "en"),
+            new TextDocumentInput("C", "The hotel was dark and unclean. The restaurant had amazing gnocchi!", "en")
         );
 
         // Request options: show statistics and model version
-        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
+        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
 
-        // Analyzing batch sentiments
-        client.analyzeBatchSentimentWithResponse(inputs, requestOptions).subscribe(
-            result -> {
-                DocumentResultCollection<AnalyzeSentimentResult> analyzedBatchResult = result.getValue();
-                System.out.printf("Model version: %s%n", analyzedBatchResult.getModelVersion());
+        // Analyzing sentiment for each document in a batch of documents
+        client.analyzeSentimentBatch(documents, requestOptions).byPage().subscribe(
+            pagedResponse -> {
+                System.out.printf("Results of Azure Text Analytics \"Sentiment Analysis\" Model, version: %s%n", pagedResponse.getModelVersion());
 
                 // Batch statistics
-                final TextDocumentBatchStatistics batchStatistics = analyzedBatchResult.getStatistics();
-                System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
-                    batchStatistics.getDocumentCount(),
-                    batchStatistics.getErroneousDocumentCount(),
-                    batchStatistics.getTransactionCount(),
-                    batchStatistics.getValidDocumentCount());
+                TextDocumentBatchStatistics batchStatistics = pagedResponse.getStatistics();
+                System.out.printf("Documents statistics: document count = %s, erroneous document count = %s, transaction count = %s, valid document count = %s.%n",
+                    batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(), batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-                // Analyzed sentiment for each of document from a batch of documents
-                for (AnalyzeSentimentResult analyzeSentimentResult : analyzedBatchResult) {
-                    System.out.printf("Document ID: %s%n", analyzeSentimentResult.getId());
-                    // Erroneous document
+                // Analyzed sentiment for each document in a batch of documents
+                AtomicInteger counter = new AtomicInteger();
+                for (AnalyzeSentimentResult analyzeSentimentResult : pagedResponse.getElements()) {
+                    System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
                     if (analyzeSentimentResult.isError()) {
+                        // Erroneous document
                         System.out.printf("Cannot analyze sentiment. Error: %s%n", analyzeSentimentResult.getError().getMessage());
-                        continue;
-                    }
-                    // Valid document
-                    final TextSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
-                    System.out.printf("Analyzed document sentiment: %s, positive score: %s, neutral score: %s, negative score: %s, length of sentence: %s, offset of sentence: %s.%n",
-                        documentSentiment.getTextSentimentClass(),
-                        documentSentiment.getPositiveScore(),
-                        documentSentiment.getNeutralScore(),
-                        documentSentiment.getNegativeScore(),
-                        documentSentiment.getLength(),
-                        documentSentiment.getOffset());
-                    for (TextSentiment sentenceSentiment : analyzeSentimentResult.getSentenceSentiments()) {
-                        System.out.printf("Analyzed sentence sentiment: %s, positive score: %s, neutral score: %s, negative score: %s, length of sentence: %s, offset of sentence: %s.%n",
-                            sentenceSentiment.getTextSentimentClass(),
-                            sentenceSentiment.getPositiveScore(),
-                            sentenceSentiment.getNeutralScore(),
-                            sentenceSentiment.getNegativeScore(),
-                            sentenceSentiment.getLength(),
-                            sentenceSentiment.getOffset());
+                    } else {
+                        // Valid document
+                        DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
+                        SentimentConfidenceScores scores = documentSentiment.getConfidenceScores();
+                        System.out.printf("Analyzed document sentiment: %s, positive score: %f, neutral score: %f, negative score: %f.%n",
+                            documentSentiment.getSentiment(), scores.getPositive(), scores.getNeutral(), scores.getNegative());
+                        documentSentiment.getSentences().forEach(sentenceSentiment -> {
+                            SentimentConfidenceScores sentenceScores = sentenceSentiment.getConfidenceScores();
+                            System.out.printf(
+                                "\tAnalyzed sentence sentiment: %s, positive score: %f, neutral score: %f, negative score: %f.%n",
+                                sentenceSentiment.getSentiment(), sentenceScores.getPositive(), sentenceScores.getNeutral(), sentenceScores.getNegative());
+                        });
                     }
                 }
             },
-            error -> System.err.println("There was an error analyzing sentiment of the text inputs." + error),
+            error -> System.err.println("There was an error analyzing sentiment of the documents." + error),
             () -> System.out.println("Batch of sentiment analyzed."));
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep

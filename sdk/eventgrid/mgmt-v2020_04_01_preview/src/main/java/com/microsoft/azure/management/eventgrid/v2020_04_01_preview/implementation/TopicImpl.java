@@ -11,28 +11,51 @@ package com.microsoft.azure.management.eventgrid.v2020_04_01_preview.implementat
 import com.microsoft.azure.arm.resources.models.implementation.GroupableResourceCoreImpl;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.Topic;
 import rx.Observable;
+import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.TopicUpdateParameters;
+import java.util.List;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.TopicProvisioningState;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.InputSchema;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.InputSchemaMapping;
-import java.util.List;
+import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.PublicNetworkAccess;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.InboundIpRule;
+import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.ResourceSku;
+import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.IdentityInfo;
+import java.util.ArrayList;
+import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.PrivateEndpointConnection;
+import rx.functions.Func1;
 
 class TopicImpl extends GroupableResourceCoreImpl<Topic, TopicInner, TopicImpl, EventGridManager> implements Topic, Topic.Definition, Topic.Update {
+    private TopicUpdateParameters updateParameter;
     TopicImpl(String name, TopicInner inner, EventGridManager manager) {
         super(name, inner, manager);
+        this.updateParameter = new TopicUpdateParameters();
     }
 
     @Override
     public Observable<Topic> createResourceAsync() {
         TopicsInner client = this.manager().inner().topics();
         return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+            .map(new Func1<TopicInner, TopicInner>() {
+               @Override
+               public TopicInner call(TopicInner resource) {
+                   resetCreateUpdateParameters();
+                   return resource;
+               }
+            })
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Observable<Topic> updateResourceAsync() {
         TopicsInner client = this.manager().inner().topics();
-        return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+        return client.updateAsync(this.resourceGroupName(), this.name(), this.updateParameter)
+            .map(new Func1<TopicInner, TopicInner>() {
+               @Override
+               public TopicInner call(TopicInner resource) {
+                   resetCreateUpdateParameters();
+                   return resource;
+               }
+            })
             .map(innerToFluentMap(this));
     }
 
@@ -47,15 +70,18 @@ class TopicImpl extends GroupableResourceCoreImpl<Topic, TopicInner, TopicImpl, 
         return this.inner().id() == null;
     }
 
-
-    @Override
-    public Boolean allowTrafficFromAllIPs() {
-        return this.inner().allowTrafficFromAllIPs();
+    private void resetCreateUpdateParameters() {
+        this.updateParameter = new TopicUpdateParameters();
     }
 
     @Override
     public String endpoint() {
         return this.inner().endpoint();
+    }
+
+    @Override
+    public IdentityInfo identity() {
+        return this.inner().identity();
     }
 
     @Override
@@ -79,20 +105,29 @@ class TopicImpl extends GroupableResourceCoreImpl<Topic, TopicInner, TopicImpl, 
     }
 
     @Override
+    public List<PrivateEndpointConnection> privateEndpointConnections() {
+        List<PrivateEndpointConnection> lst = new ArrayList<PrivateEndpointConnection>();
+        if (this.inner().privateEndpointConnections() != null) {
+            for (PrivateEndpointConnectionInner inner : this.inner().privateEndpointConnections()) {
+                lst.add( new PrivateEndpointConnectionImpl(inner, manager()));
+            }
+        }
+        return lst;
+    }
+
+    @Override
     public TopicProvisioningState provisioningState() {
         return this.inner().provisioningState();
     }
 
     @Override
-    public TopicImpl withAllowTrafficFromAllIPs(Boolean allowTrafficFromAllIPs) {
-        this.inner().withAllowTrafficFromAllIPs(allowTrafficFromAllIPs);
-        return this;
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.inner().publicNetworkAccess();
     }
 
     @Override
-    public TopicImpl withInboundIpRules(List<InboundIpRule> inboundIpRules) {
-        this.inner().withInboundIpRules(inboundIpRules);
-        return this;
+    public ResourceSku sku() {
+        return this.inner().sku();
     }
 
     @Override
@@ -108,8 +143,48 @@ class TopicImpl extends GroupableResourceCoreImpl<Topic, TopicInner, TopicImpl, 
     }
 
     @Override
-    public TopicImpl withMetricResourceId(String metricResourceId) {
-        this.inner().withMetricResourceId(metricResourceId);
+    public TopicImpl withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
+        this.inner().withPrivateEndpointConnections(privateEndpointConnections);
+        return this;
+    }
+
+    @Override
+    public TopicImpl withIdentity(IdentityInfo identity) {
+        if (isInCreateMode()) {
+            this.inner().withIdentity(identity);
+        } else {
+            this.updateParameter.withIdentity(identity);
+        }
+        return this;
+    }
+
+    @Override
+    public TopicImpl withInboundIpRules(List<InboundIpRule> inboundIpRules) {
+        if (isInCreateMode()) {
+            this.inner().withInboundIpRules(inboundIpRules);
+        } else {
+            this.updateParameter.withInboundIpRules(inboundIpRules);
+        }
+        return this;
+    }
+
+    @Override
+    public TopicImpl withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (isInCreateMode()) {
+            this.inner().withPublicNetworkAccess(publicNetworkAccess);
+        } else {
+            this.updateParameter.withPublicNetworkAccess(publicNetworkAccess);
+        }
+        return this;
+    }
+
+    @Override
+    public TopicImpl withSku(ResourceSku sku) {
+        if (isInCreateMode()) {
+            this.inner().withSku(sku);
+        } else {
+            this.updateParameter.withSku(sku);
+        }
         return this;
     }
 

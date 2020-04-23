@@ -27,7 +27,7 @@ public class CognitiveServicesAccountKeysInner {
     private String key2;
 
     /**
-     * Get the key1 value.
+     * Get gets the value of key 1.
      *
      * @return the key1 value
      */
@@ -36,7 +36,7 @@ public class CognitiveServicesAccountKeysInner {
     }
 
     /**
-     * Set the key1 value.
+     * Set gets the value of key 1.
      *
      * @param key1 the key1 value to set
      * @return the CognitiveServicesAccountKeysInner object itself.
@@ -47,7 +47,7 @@ public class CognitiveServicesAccountKeysInner {
     }
 
     /**
-     * Get the key2 value.
+     * Get gets the value of key 2.
      *
      * @return the key2 value
      */
@@ -56,7 +56,7 @@ public class CognitiveServicesAccountKeysInner {
     }
 
     /**
-     * Set the key2 value.
+     * Set gets the value of key 2.
      *
      * @param key2 the key2 value to set
      * @return the CognitiveServicesAccountKeysInner object itself.

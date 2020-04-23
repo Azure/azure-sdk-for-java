@@ -1,25 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueaysncapitestssetmetadataqueueerror811430ab980e3?comp=metadata",
+    "Uri" : "https://gapradev.queue.core.windows.net/queueaysncapitestssetmetadataqueueerror443559e5b2c5b?comp=metadata",
     "Headers" : {
-      "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "c4eec9be-ff80-47bc-898a-9dedff9b8c00"
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "53c84480-bdfb-4eb1-bf45-f942c92d96f6"
     },
     "Response" : {
-      "x-ms-version" : "2018-03-28",
+      "x-ms-version" : "2019-07-07",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "2f7e8e51-f003-0082-218d-839126000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:2f7e8e51-f003-0082-218d-839126000000\nTime:2019-10-15T19:19:48.2789335Z</Message></Error>",
-      "Date" : "Tue, 15 Oct 2019 19:19:47 GMT",
+      "x-ms-request-id" : "d25b82d3-f003-0012-7571-e0e9eb000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:d25b82d3-f003-0012-7571-e0e9eb000000\nTime:2020-02-11T00:24:53.4464239Z</Message></Error>",
+      "Date" : "Tue, 11 Feb 2020 00:24:53 GMT",
+      "x-ms-client-request-id" : "53c84480-bdfb-4eb1-bf45-f942c92d96f6",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueaysncapitestssetmetadataqueueerror811430ab980e3" ]
+  "variables" : [ "queueaysncapitestssetmetadataqueueerror443559e5b2c5b" ]
 }

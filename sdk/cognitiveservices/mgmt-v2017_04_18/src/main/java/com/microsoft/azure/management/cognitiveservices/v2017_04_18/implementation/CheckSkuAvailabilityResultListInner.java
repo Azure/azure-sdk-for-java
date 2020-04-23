@@ -23,7 +23,7 @@ public class CheckSkuAvailabilityResultListInner {
     private List<CheckSkuAvailabilityResult> value;
 
     /**
-     * Get the value value.
+     * Get check SKU availability result list.
      *
      * @return the value value
      */
@@ -32,7 +32,7 @@ public class CheckSkuAvailabilityResultListInner {
     }
 
     /**
-     * Set the value value.
+     * Set check SKU availability result list.
      *
      * @param value the value value to set
      * @return the CheckSkuAvailabilityResultListInner object itself.

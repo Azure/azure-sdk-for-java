@@ -1,25 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueserviceapitestsdeletequeueerror80596eaf10aec7",
+    "Uri" : "https://gapradev.queue.core.windows.net/queueserviceapitestsdeletequeueerror99181f9b5563b0",
     "Headers" : {
-      "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "2679e3f0-2068-4398-b40e-556fab154b7c"
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "92d1075e-6b3d-465d-8b61-35bf02d4e71b"
     },
     "Response" : {
-      "x-ms-version" : "2018-03-28",
+      "x-ms-version" : "2019-07-07",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "2f7e9f82-f003-0082-6b8d-839126000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:2f7e9f82-f003-0082-6b8d-839126000000\nTime:2019-10-15T19:19:59.5098528Z</Message></Error>",
-      "Date" : "Tue, 15 Oct 2019 19:19:58 GMT",
+      "x-ms-request-id" : "bf1280b9-7003-000c-5e71-e00533000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:bf1280b9-7003-000c-5e71-e00533000000\nTime:2020-02-11T00:26:17.6170522Z</Message></Error>",
+      "Date" : "Tue, 11 Feb 2020 00:26:17 GMT",
+      "x-ms-client-request-id" : "92d1075e-6b3d-465d-8b61-35bf02d4e71b",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueserviceapitestsdeletequeueerror80596eaf10aec7" ]
+  "variables" : [ "queueserviceapitestsdeletequeueerror99181f9b5563b0" ]
 }

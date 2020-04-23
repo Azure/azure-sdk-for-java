@@ -4,90 +4,42 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
 /**
- * The TextSentiment model.
+ * Defines values for {@link TextSentiment}.
  */
 @Immutable
-public final class TextSentiment {
-    private final double negativeScore;
-    private final double neutralScore;
-    private final double positiveScore;
-    private final int length;
-    private final int offset;
-    private final TextSentimentClass textSentimentClass;
+public final class TextSentiment extends ExpandableStringEnum<TextSentiment> {
+    /**
+     * Static value Positive for {@link TextSentiment}.
+     */
+    public static final TextSentiment POSITIVE = fromString("positive");
 
     /**
-     * Creates a {@code TextSentiment}  model that describes the sentiment analysis of text
-     *
-     * @param textSentimentClass text sentiment class of text
-     * @param negativeScore negative score value, range in between 0 and 1.0
-     * @param neutralScore neutral score value, range in between 0 and 1.0
-     * @param positiveScore positive score value, range in between 0 and 1.0
-     * @param length length of the text
-     * @param offset the offset from the start of the document
+     * Static value Neutral for {@link TextSentiment}.
      */
-    public TextSentiment(TextSentimentClass textSentimentClass, double negativeScore, double neutralScore,
-                         double positiveScore, int length, int offset) {
-        this.negativeScore = negativeScore;
-        this.neutralScore = neutralScore;
-        this.positiveScore = positiveScore;
-        this.length = length;
-        this.offset = offset;
-        this.textSentimentClass = textSentimentClass;
-    }
+    public static final TextSentiment NEUTRAL = fromString("neutral");
 
     /**
-     * Get the length of the text by Unicode standard.
-     *
-     * @return the length of the text by Unicode standard
+     * Static value Negative for {@link TextSentiment}.
      */
-    public int getLength() {
-        return length;
-    }
+    public static final TextSentiment NEGATIVE = fromString("negative");
 
     /**
-     * Get the score of negative sentiment.
-     *
-     * @return the score of negative sentiment
+     * Static value Mixed for {@link TextSentiment}.
      */
-    public double getNegativeScore() {
-        return negativeScore;
-    }
+    public static final TextSentiment MIXED = fromString("mixed");
 
     /**
-     * Get the score of neutral sentiment.
+     * Creates or finds a {@link TextSentiment} from its string representation.
      *
-     * @return the score of neutral sentiment
+     * @param name A name to look for.
+     * @return The corresponding {@link TextSentiment}.
      */
-    public double getNeutralScore() {
-        return neutralScore;
-    }
-
-    /**
-     * Get the score of positive sentiment.
-     *
-     * @return the score of positive sentiment
-     */
-    public double getPositiveScore() {
-        return positiveScore;
-    }
-
-    /**
-     * Get the offset of the text sentiment.
-     *
-     * @return the offset of text sentiment
-     */
-    public int getOffset() {
-        return offset;
-    }
-
-    /**
-     * Get the text sentiment enum class: POSITIVE, NEGATIVE, NEUTRAL, MIXED.
-     *
-     * @return the TextSentimentClass
-     */
-    public TextSentimentClass getTextSentimentClass() {
-        return textSentimentClass;
+    @JsonCreator
+    public static TextSentiment fromString(String name) {
+        return fromString(name, TextSentiment.class);
     }
 }

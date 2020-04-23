@@ -36,9 +36,7 @@ stages:
     - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
       parameters:
           ServiceDirectory: textanalytics
-          SDKType: client
           Artifacts:
               - name: azure-ai-textanalytics
                 groupId: com.azure
                 safeName: azureaitextanalytics
-                stagingProfileId: 88192f04117501

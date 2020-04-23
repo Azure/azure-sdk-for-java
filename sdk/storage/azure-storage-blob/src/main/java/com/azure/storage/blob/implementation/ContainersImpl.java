@@ -18,11 +18,11 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.util.serializer.CollectionFormat;
-import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.Context;
+import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.serializer.CollectionFormat;
+import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.storage.blob.implementation.models.ContainersAcquireLeaseResponse;
 import com.azure.storage.blob.implementation.models.ContainersBreakLeaseResponse;
 import com.azure.storage.blob.implementation.models.ContainersChangeLeaseResponse;
@@ -38,6 +38,7 @@ import com.azure.storage.blob.implementation.models.ContainersRenewLeaseResponse
 import com.azure.storage.blob.implementation.models.ContainersSetAccessPolicyResponse;
 import com.azure.storage.blob.implementation.models.ContainersSetMetadataResponse;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.ListBlobsIncludeItem;
 import com.azure.storage.blob.models.PublicAccessType;
@@ -81,7 +82,7 @@ public final class ContainersImpl {
         @Put("{containerName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<ContainersCreateResponse> create(@PathParam("containerName") String containerName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-blob-public-access") PublicAccessType access, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, Context context);
+        Mono<ContainersCreateResponse> create(@PathParam("containerName") String containerName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-blob-public-access") PublicAccessType access, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @HeaderParam("x-ms-default-encryption-scope") String defaultEncryptionScope, @HeaderParam("x-ms-deny-encryption-scope-override") Boolean encryptionScopeOverridePrevented, Context context);
 
         @Get("{containerName}")
         @ExpectedResponses({200})
@@ -164,7 +165,9 @@ public final class ContainersImpl {
         final PublicAccessType access = null;
         final String requestId = null;
         final String restype = "container";
-        return service.create(containerName, this.client.getUrl(), timeout, metadata, access, this.client.getVersion(), requestId, restype, context);
+        final String defaultEncryptionScope = null;
+        final Boolean encryptionScopeOverridePrevented = null;
+        return service.create(containerName, this.client.getUrl(), timeout, metadata, access, this.client.getVersion(), requestId, restype, defaultEncryptionScope, encryptionScopeOverridePrevented, context);
     }
 
     /**
@@ -175,14 +178,23 @@ public final class ContainersImpl {
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata for more information.
      * @param access Specifies whether data in the container may be accessed publicly and the level of access. Possible values include: 'container', 'blob'.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param blobContainerEncryptionScope Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ContainersCreateResponse> createWithRestResponseAsync(String containerName, Integer timeout, Map<String, String> metadata, PublicAccessType access, String requestId, Context context) {
+    public Mono<ContainersCreateResponse> createWithRestResponseAsync(String containerName, Integer timeout, Map<String, String> metadata, PublicAccessType access, String requestId, BlobContainerEncryptionScope blobContainerEncryptionScope, Context context) {
         final String restype = "container";
-        return service.create(containerName, this.client.getUrl(), timeout, metadata, access, this.client.getVersion(), requestId, restype, context);
+        String defaultEncryptionScope = null;
+        if (blobContainerEncryptionScope != null) {
+            defaultEncryptionScope = blobContainerEncryptionScope.getDefaultEncryptionScope();
+        }
+        Boolean encryptionScopeOverridePrevented = null;
+        if (blobContainerEncryptionScope != null) {
+            encryptionScopeOverridePrevented = blobContainerEncryptionScope.isEncryptionScopeOverridePrevented();
+        }
+        return service.create(containerName, this.client.getUrl(), timeout, metadata, access, this.client.getVersion(), requestId, restype, defaultEncryptionScope, encryptionScopeOverridePrevented, context);
     }
 
     /**

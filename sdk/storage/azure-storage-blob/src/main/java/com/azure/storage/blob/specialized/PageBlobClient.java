@@ -380,9 +380,10 @@ public final class PageBlobClient extends BlobClientBase {
     }
 
     /**
-     * Gets the collection of page ranges that differ between a specified snapshot and this page blob. For more
+     * This API only works for managed disk accounts.
+     * <p>Gets the collection of page ranges that differ between a specified snapshot and this page blob. For more
      * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/get-page-ranges">Azure
-     * Docs</a>.
+     * Docs</a>.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -400,7 +401,57 @@ public final class PageBlobClient extends BlobClientBase {
     public Response<PageList> getPageRangesDiffWithResponse(BlobRange blobRange, String prevSnapshot,
         BlobRequestConditions requestConditions, Duration timeout, Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(pageBlobAsyncClient
-            .getPageRangesDiffWithResponse(blobRange, prevSnapshot, requestConditions, context), timeout);
+                .getPageRangesDiffWithResponse(blobRange, prevSnapshot, null, requestConditions, context),
+            timeout);
+    }
+
+    /**
+     * This API only works for managed disk accounts.
+     * <p>Gets the collection of page ranges that differ between a specified snapshot and this page blob. For more
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/get-page-ranges">Azure
+     * Docs</a>.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.getManagedDiskPageRangesDiff#BlobRange-String}
+     *
+     * @param blobRange {@link BlobRange}
+     * @param prevSnapshotUrl Specifies the URL of a previous snapshot of the target blob. Specifies that the
+     * response will contain only pages that were changed between target blob and previous snapshot. Changed pages
+     * include both updated and cleared pages. The target blob may be a snapshot, as long as the snapshot specified by
+     * prevsnapshot is the older of the two.
+     * @return All the different page ranges.
+     */
+    public PageList getManagedDiskPageRangesDiff(BlobRange blobRange, String prevSnapshotUrl) {
+        return getManagedDiskPageRangesDiffWithResponse(blobRange, prevSnapshotUrl, null, null, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * This API only works for managed disk accounts.
+     * <p>Gets the collection of page ranges that differ between a specified snapshot and this page blob. For more
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/get-page-ranges">Azure
+     * Docs</a>.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.getManagedDiskPageRangesDiffWithResponse#BlobRange-String-BlobRequestConditions-Duration-Context}
+     *
+     * @param blobRange {@link BlobRange}
+     * @param prevSnapshotUrl Specifies the URL of a previous snapshot of the target blob. Specifies that the
+     * response will contain only pages that were changed between target blob and previous snapshot. Changed pages
+     * include both updated and cleared pages. The target blob may be a snapshot, as long as the snapshot specified by
+     * prevsnapshot is the older of the two.
+     * @param requestConditions {@link BlobRequestConditions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return All the different page ranges.
+     */
+    public Response<PageList> getManagedDiskPageRangesDiffWithResponse(BlobRange blobRange, String prevSnapshotUrl,
+        BlobRequestConditions requestConditions, Duration timeout, Context context) {
+        return StorageImplUtils.blockWithOptionalTimeout(pageBlobAsyncClient
+                .getPageRangesDiffWithResponse(blobRange, null, prevSnapshotUrl, requestConditions, context),
+            timeout);
     }
 
     /**

@@ -14,9 +14,9 @@ import com.microsoft.azure.arm.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.iotcentral.v2018_09_01.AppPatch;
-import com.microsoft.azure.management.iotcentral.v2018_09_01.ErrorDetailsException;
 import com.microsoft.azure.management.iotcentral.v2018_09_01.OperationInputs;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
@@ -136,7 +136,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      * @param resourceGroupName The name of the resource group that contains the IoT Central application.
      * @param resourceName The ARM resource name of the IoT Central application.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AppInner object if successful.
      */
@@ -209,10 +209,10 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
             });
     }
 
-    private ServiceResponse<AppInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<AppInner, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<AppInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AppInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AppInner>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -223,7 +223,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      * @param resourceName The ARM resource name of the IoT Central application.
      * @param app The IoT Central application metadata and security metadata.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AppInner object if successful.
      */
@@ -300,7 +300,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      * @param resourceName The ARM resource name of the IoT Central application.
      * @param app The IoT Central application metadata and security metadata.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AppInner object if successful.
      */
@@ -380,12 +380,12 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
             });
     }
 
-    private ServiceResponse<AppInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<AppInner, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<AppInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AppInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AppInner>() { }.getType())
                 .register(201, new TypeToken<AppInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -396,7 +396,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      * @param resourceName The ARM resource name of the IoT Central application.
      * @param appPatch The IoT Central application metadata and security metadata.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AppInner object if successful.
      */
@@ -473,7 +473,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      * @param resourceName The ARM resource name of the IoT Central application.
      * @param appPatch The IoT Central application metadata and security metadata.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AppInner object if successful.
      */
@@ -553,11 +553,11 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
             });
     }
 
-    private ServiceResponse<AppInner> beginUpdateDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<AppInner, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<AppInner> beginUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AppInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AppInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -567,7 +567,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      * @param resourceGroupName The name of the resource group that contains the IoT Central application.
      * @param resourceName The ARM resource name of the IoT Central application.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String resourceName) {
@@ -635,7 +635,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      * @param resourceGroupName The name of the resource group that contains the IoT Central application.
      * @param resourceName The ARM resource name of the IoT Central application.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginDelete(String resourceGroupName, String resourceName) {
@@ -707,12 +707,12 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
             });
     }
 
-    private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -720,7 +720,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      * Get all IoT Central Applications in a subscription.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;AppInner&gt; object if successful.
      */
@@ -816,10 +816,10 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
             });
     }
 
-    private ServiceResponse<PageImpl<AppInner>> listDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<AppInner>, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<AppInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppInner>>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -828,7 +828,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      *
      * @param resourceGroupName The name of the resource group that contains the IoT Central application.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;AppInner&gt; object if successful.
      */
@@ -931,10 +931,10 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
             });
     }
 
-    private ServiceResponse<PageImpl<AppInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<AppInner>, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<AppInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppInner>>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -943,7 +943,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      *
      * @param operationInputs Set the name parameter in the OperationInputs structure to the name of the IoT Central application to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AppAvailabilityInfoInner object if successful.
      */
@@ -1011,10 +1011,10 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
             });
     }
 
-    private ServiceResponse<AppAvailabilityInfoInner> checkNameAvailabilityDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<AppAvailabilityInfoInner, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<AppAvailabilityInfoInner> checkNameAvailabilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AppAvailabilityInfoInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AppAvailabilityInfoInner>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -1023,7 +1023,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      *
      * @param operationInputs Set the name parameter in the OperationInputs structure to the subdomain of the IoT Central application to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AppAvailabilityInfoInner object if successful.
      */
@@ -1091,10 +1091,10 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
             });
     }
 
-    private ServiceResponse<AppAvailabilityInfoInner> checkSubdomainAvailabilityDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<AppAvailabilityInfoInner, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<AppAvailabilityInfoInner> checkSubdomainAvailabilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AppAvailabilityInfoInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AppAvailabilityInfoInner>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -1102,7 +1102,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      * Get all available application templates.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;AppTemplateInner&gt; object if successful.
      */
@@ -1198,10 +1198,10 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
             });
     }
 
-    private ServiceResponse<PageImpl<AppTemplateInner>> listTemplatesDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<AppTemplateInner>, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<AppTemplateInner>> listTemplatesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppTemplateInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppTemplateInner>>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -1210,7 +1210,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;AppInner&gt; object if successful.
      */
@@ -1309,10 +1309,10 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
             });
     }
 
-    private ServiceResponse<PageImpl<AppInner>> listNextDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<AppInner>, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<AppInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppInner>>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -1321,7 +1321,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;AppInner&gt; object if successful.
      */
@@ -1420,10 +1420,10 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
             });
     }
 
-    private ServiceResponse<PageImpl<AppInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<AppInner>, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<AppInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppInner>>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -1432,7 +1432,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;AppTemplateInner&gt; object if successful.
      */
@@ -1531,10 +1531,10 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
             });
     }
 
-    private ServiceResponse<PageImpl<AppTemplateInner>> listTemplatesNextDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<AppTemplateInner>, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<AppTemplateInner>> listTemplatesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppTemplateInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppTemplateInner>>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 

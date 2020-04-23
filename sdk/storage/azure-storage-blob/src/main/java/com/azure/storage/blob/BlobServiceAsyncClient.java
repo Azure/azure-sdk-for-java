@@ -8,17 +8,19 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.PagedResponseBase;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.ServiceGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.ServicesListBlobContainersSegmentResponse;
+import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobCorsRule;
 import com.azure.storage.blob.models.BlobRetentionPolicy;
@@ -48,6 +50,8 @@ import java.util.function.Function;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 /**
  * Client to a storage account. It may only be instantiated through a {@link BlobServiceClientBuilder}. This class does
@@ -77,7 +81,10 @@ public final class BlobServiceAsyncClient {
 
     private final String accountName;
     private final BlobServiceVersion serviceVersion;
-    private final CpkInfo customerProvidedKey;
+    private final CpkInfo customerProvidedKey; // only used to pass down to blob clients
+    private final EncryptionScope encryptionScope; // only used to pass down to blob clients
+    private final BlobContainerEncryptionScope blobContainerEncryptionScope; // only used to pass down to container
+    // clients
     private final boolean anonymousAccess;
 
     /**
@@ -89,10 +96,13 @@ public final class BlobServiceAsyncClient {
      * @param accountName The storage account name.
      * @param customerProvidedKey Customer provided key used during encryption of the blob's data on the server, pass
      * {@code null} to allow the service to use its own encryption.
+     * @param encryptionScope Encryption scope used during encryption of the blob's data on the server, pass
+     * {@code null} to allow the service to use its own encryption.
      * @param anonymousAccess Whether or not the client was built with anonymousAccess
      */
     BlobServiceAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
-        CpkInfo customerProvidedKey, boolean anonymousAccess) {
+        CpkInfo customerProvidedKey, EncryptionScope encryptionScope,
+        BlobContainerEncryptionScope blobContainerEncryptionScope, boolean anonymousAccess) {
         this.azureBlobStorage = new AzureBlobStorageBuilder()
             .pipeline(pipeline)
             .url(url)
@@ -102,6 +112,8 @@ public final class BlobServiceAsyncClient {
 
         this.accountName = accountName;
         this.customerProvidedKey = customerProvidedKey;
+        this.encryptionScope = encryptionScope;
+        this.blobContainerEncryptionScope = blobContainerEncryptionScope;
         this.anonymousAccess = anonymousAccess;
     }
 
@@ -125,7 +137,7 @@ public final class BlobServiceAsyncClient {
 
         return new BlobContainerAsyncClient(getHttpPipeline(),
             StorageImplUtils.appendToUrlPath(getAccountUrl(), containerName).toString(), getServiceVersion(),
-            getAccountName(), containerName, customerProvidedKey);
+            getAccountName(), containerName, customerProvidedKey, encryptionScope, blobContainerEncryptionScope);
     }
 
     /**
@@ -185,8 +197,8 @@ public final class BlobServiceAsyncClient {
     public Mono<Response<BlobContainerAsyncClient>> createBlobContainerWithResponse(String containerName,
         Map<String, String> metadata, PublicAccessType accessType) {
         try {
-            return withContext(
-                context -> createBlobContainerWithResponse(containerName, metadata, accessType, context));
+            return withContext(context -> createBlobContainerWithResponse(containerName, metadata, accessType,
+                context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -355,8 +367,10 @@ public final class BlobServiceAsyncClient {
     }
 
     Mono<Response<BlobServiceProperties>> getPropertiesWithResponse(Context context) {
+        context = context == null ? Context.NONE : context;
         throwOnAnonymousAccess();
-        return this.azureBlobStorage.services().getPropertiesWithRestResponseAsync(null, null, context)
+        return this.azureBlobStorage.services().getPropertiesWithRestResponseAsync(null, null,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 
@@ -463,8 +477,10 @@ public final class BlobServiceAsyncClient {
             finalProperties.setStaticWebsite(properties.getStaticWebsite());
 
         }
+        context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.services().setPropertiesWithRestResponseAsync(finalProperties, null, null, context)
+        return this.azureBlobStorage.services().setPropertiesWithRestResponseAsync(finalProperties, null, null,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -555,12 +571,14 @@ public final class BlobServiceAsyncClient {
                 new IllegalArgumentException("`start` must be null or a datetime before `expiry`."));
         }
         throwOnAnonymousAccess();
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.services().getUserDelegationKeyWithRestResponseAsync(
                 new KeyInfo()
                     .setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
                     .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry)),
-                null, null, context).map(rb -> new SimpleResponse<>(rb, rb.getValue()));
+                null, null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 
     /**
@@ -606,7 +624,10 @@ public final class BlobServiceAsyncClient {
 
     Mono<Response<BlobServiceStatistics>> getStatisticsWithResponse(Context context) {
         throwOnAnonymousAccess();
-        return this.azureBlobStorage.services().getStatisticsWithRestResponseAsync(null, null, context)
+        context = context == null ? Context.NONE : context;
+
+        return this.azureBlobStorage.services().getStatisticsWithRestResponseAsync(null, null,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 

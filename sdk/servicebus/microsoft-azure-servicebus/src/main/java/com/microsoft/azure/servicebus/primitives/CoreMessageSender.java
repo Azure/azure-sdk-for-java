@@ -326,7 +326,16 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
         // proton-j doesn't support multiple dataSections to be part of AmqpMessage
         // here's the alternate approach provided by them: https://github.com/apache/qpid-proton/pull/54
         Message batchMessage = Proton.message();
+        
+        // Set partition identifier properties of the first message on batch message
         batchMessage.setMessageAnnotations(firstMessage.getMessageAnnotations());
+        if (StringUtil.isNullOrWhiteSpace((String)firstMessage.getMessageId())) {
+        	batchMessage.setMessageId(firstMessage.getMessageId());
+        }
+        
+        if (StringUtil.isNullOrWhiteSpace(firstMessage.getGroupId())) {
+        	batchMessage.setGroupId(firstMessage.getGroupId());
+        }        
 
         byte[] bytes = null;
         int byteArrayOffset = 0;

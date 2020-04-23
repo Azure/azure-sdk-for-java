@@ -1,6 +1,12 @@
 # Release History
 
-## 1.0.1 (2020-01-07)
+## 1.0.3 (2020-03-10)
+- Fix bug where processor would hang after a reconnect due to being unable to load balance partitions.
+
+## 1.0.2 (2020-02-12)
+- Dependency fixed so `EventProcessor` consumers can use blocking method calls in their code.
+
+## 1.0.1 (2020-02-11)
 
 ## 1.0.0-beta.4 (2019-12-02)
 - Artifact name changed from `preview` to `beta`.

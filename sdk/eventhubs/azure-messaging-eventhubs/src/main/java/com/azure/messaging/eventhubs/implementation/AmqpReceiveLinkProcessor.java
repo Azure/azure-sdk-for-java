@@ -13,14 +13,18 @@ import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
+import reactor.core.Exceptions;
 import reactor.core.publisher.FluxProcessor;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
 
 import java.time.Duration;
+import java.util.Deque;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 
 /**
  * Processes AMQP receive links into a stream of AMQP messages.
@@ -35,8 +39,8 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     private final AtomicBoolean isTerminated = new AtomicBoolean();
     private final AtomicBoolean hasDownstream = new AtomicBoolean();
     private final AtomicInteger retryAttempts = new AtomicInteger();
-    private final AtomicBoolean isRequested = new AtomicBoolean();
     private final AtomicInteger linkCreditRequest = new AtomicInteger(1);
+    private final Deque<Message> messageQueue = new ConcurrentLinkedDeque<>();
 
     private final int prefetch;
     private final AmqpRetryPolicy retryPolicy;
@@ -44,11 +48,16 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
     private volatile Subscription upstream;
     private volatile CoreSubscriber<? super Message> downstream;
+    private volatile boolean isCancelled;
 
     private volatile Throwable lastError;
     private volatile AmqpReceiveLink currentLink;
     private volatile Disposable currentLinkSubscriptions;
     private volatile Disposable retrySubscription;
+
+    volatile int wip;
+    static final AtomicIntegerFieldUpdater<AmqpReceiveLinkProcessor> WIP =
+        AtomicIntegerFieldUpdater.newUpdater(AmqpReceiveLinkProcessor.class, "wip");
 
     /**
      * Creates an instance of {@link AmqpReceiveLinkProcessor}.
@@ -88,7 +97,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
      */
     @Override
     public boolean isTerminated() {
-        return isTerminated.get();
+        return isTerminated.get() || isCancelled;
     }
 
     /**
@@ -104,12 +113,8 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             return;
         }
 
-        logger.verbose("Subscribing to upstream.");
-
         this.upstream = subscription;
-
-        // Don't request from upstream until there is a downstream subscriber.
-        subscription.request(0);
+        requestUpstream();
     }
 
     /**
@@ -122,12 +127,15 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         Objects.requireNonNull(next, "'next' cannot be null.");
 
         if (isTerminated()) {
-            logger.warning("Got another link when we have already terminated processor. Link: {}",
-                next.getEntityPath());
+            logger.warning("linkName[{}] entityPath[{}]. Got another link when we have already terminated processor.",
+                next.getLinkName(), next.getEntityPath());
             return;
         }
 
-        logger.info("Setting next AMQP receive link.");
+        final String linkName = next.getLinkName();
+        final String entityPath = next.getEntityPath();
+
+        logger.info("linkName[{}] entityPath[{}]. Setting next AMQP receive link.", linkName, entityPath);
 
         final AmqpReceiveLink oldChannel;
         final Disposable oldSubscription;
@@ -142,7 +150,9 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                 if (hasDownstream.get()) {
                     return linkCreditRequest.get();
                 } else {
-                    logger.verbose("Emitter has no downstream subscribers. Not adding credits.");
+                    logger.verbose("linkName[{}] entityPath[{}]. Emitter has no downstream subscribers."
+                        + " Not adding credits.", linkName, entityPath);
+
                     return 0;
                 }
             });
@@ -157,15 +167,19 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                     },
                     error -> {
                         currentLink = null;
+                        logger.warning("linkName[{}] entityPath[{}]. Error occurred in in link.", linkName, entityPath);
                         onError(error);
                     },
                     () -> {
                         if (parentConnection.isDisposed()) {
-                            logger.info("Parent connection is disposed.");
+                            logger.info("linkName[{}] entityPath[{}]. Parent connection is disposed.",
+                                linkName, entityPath);
                         } else if (isTerminated()) {
-                            logger.info("Processor is disposed.");
+                            logger.info("linkName[{}] entityPath[{}]. Processor is disposed.", linkName, entityPath);
                         } else {
-                            logger.info("Receive link endpoint states are closed.");
+                            logger.info("linkName[{}] entityPath[{}]. Receive link endpoint states are closed.",
+                                linkName, entityPath);
+
                             final AmqpReceiveLink existing = currentLink;
                             currentLink = null;
 
@@ -177,8 +191,8 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                         }
                     }),
                 next.receive().subscribe(message -> {
-                    logger.verbose("Pushing next message downstream.");
-                    downstream.onNext(message);
+                    messageQueue.add(message);
+                    drain();
                 }));
         }
 
@@ -189,8 +203,6 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         if (oldSubscription != null) {
             oldSubscription.dispose();
         }
-
-        isRequested.set(false);
     }
 
     /**
@@ -205,7 +217,14 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         Objects.requireNonNull(actual, "'actual' cannot be null.");
 
         if (isTerminated()) {
-            logger.info("AmqpReceiveLink is already terminated.");
+            final String linkName;
+            final String entityPath;
+            synchronized (lock) {
+                linkName = currentLink != null ? currentLink.getLinkName() : "n/a";
+                entityPath = currentLink != null ? currentLink.getEntityPath() : "n/a";
+            }
+
+            logger.info("linkName[{}] entityPath[{}]. AmqpReceiveLink is already terminated.", linkName, entityPath);
 
             actual.onSubscribe(Operators.emptySubscription());
 
@@ -221,7 +240,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         if (!hasDownstream.getAndSet(true)) {
             this.downstream = actual;
             actual.onSubscribe(this);
-            requestUpstream();
+            drain();
         } else {
             Operators.error(actual, logger.logExceptionAsError(new IllegalStateException(
                 "There is already one downstream subscriber.'")));
@@ -238,21 +257,29 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     public void onError(Throwable throwable) {
         Objects.requireNonNull(throwable, "'throwable' is required.");
 
-        if (isTerminated()) {
+        if (isTerminated() || isCancelled) {
             logger.info("AmqpReceiveLinkProcessor is terminated. Not reopening on error.");
+            Operators.onErrorDropped(throwable, currentContext());
             return;
         }
+
+        drain();
 
         final int attempt = retryAttempts.incrementAndGet();
         final Duration retryInterval = retryPolicy.calculateRetryDelay(throwable, attempt);
 
-        if (retryInterval != null && !parentConnection.isDisposed()) {
-            logger.warning("Transient error occurred. Attempt: {}. Retrying after {} ms.",
-                attempt, retryInterval.toMillis(), throwable);
+        final String linkName;
+        final String entityPath;
+        synchronized (lock) {
+            linkName = currentLink != null ? currentLink.getLinkName() : "n/a";
+            entityPath = currentLink != null ? currentLink.getEntityPath() : "n/a";
+        }
 
-            retrySubscription = Mono.delay(retryInterval).subscribe(i -> {
-                requestUpstream();
-            });
+        if (retryInterval != null && !parentConnection.isDisposed()) {
+            logger.warning("linkName[{}] entityPath[{}]. Transient error occurred. Attempt: {}. Retrying after {} ms.",
+                linkName, entityPath, attempt, retryInterval.toMillis(), throwable);
+
+            retrySubscription = Mono.delay(retryInterval).subscribe(i -> requestUpstream());
 
             return;
         }
@@ -261,7 +288,9 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             logger.info("Parent connection is disposed. Not reopening on error.");
         }
 
-        logger.warning("Non-retryable error occurred in AMQP receive link.", throwable);
+        logger.warning("linkName[{}] entityPath[{}] Non-retryable error occurred in AMQP receive link.",
+            linkName, entityPath, throwable);
+
         lastError = throwable;
 
         isTerminated.set(true);
@@ -272,11 +301,11 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             }
         }
 
-        terminate();
+        onDispose();
     }
 
     /**
-     * Terminates the
+     * When the upstream publisher has no more items to emit.
      */
     @Override
     public void onComplete() {
@@ -284,11 +313,18 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             return;
         }
 
-        if (hasDownstream.get()) {
-            downstream.onComplete();
+        drain();
+        onDispose();
+    }
+
+    @Override
+    public void dispose() {
+        if (isTerminated.getAndSet(true)) {
+            return;
         }
 
-        terminate();
+        drain();
+        onDispose();
     }
 
     /**
@@ -311,9 +347,9 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             ? MAXIMUM_REQUEST
             : (int) request;
 
-        logger.verbose("Back pressure request. Old value: {}. New value: {}", linkCreditRequest.get(),
-            newRequest);
+        logger.verbose("Back pressure request. Old value: {}. New value: {}", linkCreditRequest.get(), newRequest);
         linkCreditRequest.set(newRequest);
+        drain();
     }
 
     /**
@@ -321,15 +357,12 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
      */
     @Override
     public void cancel() {
-        if (isTerminated.getAndSet(true)) {
+        if (isCancelled) {
             return;
         }
 
-        if (hasDownstream.get()) {
-            downstream.onComplete();
-        }
-
-        terminate();
+        isCancelled = true;
+        drain();
     }
 
     private void requestUpstream() {
@@ -348,16 +381,11 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             }
         }
 
-        // subscribe(CoreSubscriber) may have requested a subscriber already.
-        if (!isRequested.getAndSet(true)) {
-            logger.info("AmqpReceiveLink not requested, yet. Requesting one.");
-            upstream.request(1);
-        } else {
-            logger.info("AmqpRecieveLink already requested.");
-        }
+        logger.info("Requesting for a new AmqpReceiveLink from upstream.");
+        upstream.request(1);
     }
 
-    private void terminate() {
+    private void onDispose() {
         if (retrySubscription != null && !retrySubscription.isDisposed()) {
             retrySubscription.dispose();
         }
@@ -370,6 +398,84 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
         if (currentLinkSubscriptions != null) {
             currentLinkSubscriptions.dispose();
+        }
+    }
+
+    private void drain() {
+        // If someone is already in this loop, then we are already clearing the queue.
+        if (!WIP.compareAndSet(this, 0, 1)) {
+            return;
+        }
+
+        try {
+            drainQueue();
+        } finally {
+            if (WIP.decrementAndGet(this) != 0) {
+                logger.warning("There is another worker in drainLoop. But there should only be 1 worker.");
+            }
+        }
+    }
+
+    private void drainQueue() {
+        if (downstream == null) {
+            return;
+        }
+
+        final Message lastMessage = messageQueue.peekLast();
+        if (lastMessage == null) {
+            if (isTerminated() || isCancelled) {
+                downstream.onComplete();
+
+                if (currentLink != null) {
+                    currentLink.dispose();
+                }
+            }
+
+            return;
+        }
+
+        Message message = messageQueue.poll();
+        while (message != lastMessage) {
+            if (message == null) {
+                logger.warning("The last message is not null, but the head node is null. lastMessage: {}", lastMessage);
+                message = messageQueue.poll();
+                continue;
+            }
+
+            if (isCancelled) {
+                Operators.onDiscard(message, downstream.currentContext());
+                Operators.onDiscardQueueWithClear(messageQueue, downstream.currentContext(), null);
+                return;
+            }
+
+            next(message);
+
+            message = messageQueue.poll();
+        }
+
+        // Emit the message which is equal to lastMessage.
+        next(message);
+
+        if (isTerminated() || isCancelled) {
+            if (lastError != null) {
+                downstream.onError(lastError);
+            } else if (messageQueue.peekLast() == null) {
+                downstream.onComplete();
+            }
+
+            if (currentLink != null) {
+                currentLink.dispose();
+            }
+        }
+    }
+
+    private void next(Message message) {
+        try {
+            downstream.onNext(message);
+        } catch (Exception e) {
+            logger.error("Exception occurred while handling downstream onNext operation.", e);
+            throw logger.logExceptionAsError(Exceptions.propagate(
+                Operators.onOperatorError(upstream, e, message, downstream.currentContext())));
         }
     }
 }

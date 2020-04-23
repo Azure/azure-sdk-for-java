@@ -1,0 +1,29 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://azs-sdk57262b6f586.search.windows.net/skillsets?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "f695f661-7a0c-4157-ac36-320aa710129c",
+      "StatusCode" : "201",
+      "Date" : "Mon, 24 Feb 2020 19:56:06 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D7B96396317391\"",
+      "elapsed-time" : "59",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "619",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk57262b6f586.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7B96396317391\\\"\",\"name\":\"key-phrase-extraction-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.KeyPhraseExtractionSkill\",\"name\":\"mykeyphrases\",\"description\":\"Tested Key Phrase skill\",\"context\":\"/document\",\"defaultLanguageCode\":null,\"maxKeyPhraseCount\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/myText\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"keyPhrases\",\"targetName\":\"myKeyPhrases\"}]}],\"cognitiveServices\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://azs-sdk57262b6f586.search.windows.net/skillsets('key-phrase-extraction-skillset')?api-version=2019-05-06"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "azs-sdk57262b6f586" ]
+}

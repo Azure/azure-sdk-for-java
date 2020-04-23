@@ -7,6 +7,7 @@ import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
+import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.models.NtfsFileAttributes
 import reactor.test.StepVerifier
@@ -368,6 +369,7 @@ class DirectoryAsyncAPITests extends APISpec {
         StepVerifier.create(primaryDirectoryAsyncClient.forceCloseHandle("1"))
             .assertNext {
                 assert it.getClosedHandles() == 0
+                assert it.getFailedHandles() == 0
             }.verifyComplete()
     }
 
@@ -386,8 +388,10 @@ class DirectoryAsyncAPITests extends APISpec {
 
         expect:
         StepVerifier.create(primaryDirectoryAsyncClient.forceCloseAllHandles(false))
-            .assertNext({ it.getClosedHandles() == 0 })
-            .verifyComplete()
+            .assertNext {
+                assert it.getClosedHandles() == 0
+                assert it.getFailedHandles() == 0
+            }.verifyComplete()
     }
 
     def "Create sub directory"() {
@@ -541,7 +545,28 @@ class DirectoryAsyncAPITests extends APISpec {
         "fileName"  | -1      | null                                                  | testMetadata                          | ShareErrorCode.OUT_OF_RANGE_INPUT
         "fileName"  | 1024    | new ShareFileHttpHeaders().setContentMd5(new byte[0]) | testMetadata                          | ShareErrorCode.INVALID_HEADER_VALUE
         "fileName"  | 1024    | null                                                  | Collections.singletonMap("", "value") | ShareErrorCode.EMPTY_METADATA_KEY
+    }
 
+    def "Create file lease"() {
+        given:
+        primaryDirectoryAsyncClient.create().block()
+        primaryDirectoryAsyncClient.getFileClient("testCreateFile").create(512).block()
+        def leaseId = createLeaseClient(primaryDirectoryAsyncClient.getFileClient("testCreateFile")).acquireLease().block()
+
+        expect:
+        StepVerifier.create(primaryDirectoryAsyncClient.createFileWithResponse("testCreateFile", 1024, null, null, null,
+            null, new ShareRequestConditions().setLeaseId(leaseId))).expectNextCount(1).verifyComplete()
+    }
+
+    def "Create file lease fail"() {
+        given:
+        primaryDirectoryAsyncClient.create().block()
+        primaryDirectoryAsyncClient.getFileClient("testCreateFile").create(512).block()
+        createLeaseClient(primaryDirectoryAsyncClient.getFileClient("testCreateFile")).acquireLease().block()
+
+        expect:
+        StepVerifier.create(primaryDirectoryAsyncClient.createFileWithResponse("testCreateFile", 1024, null, null, null,
+            null, new ShareRequestConditions().setLeaseId(getRandomUUID()))).verifyError(ShareStorageException)
     }
 
     def "Delete file"() {
@@ -556,15 +581,30 @@ class DirectoryAsyncAPITests extends APISpec {
             }.verifyComplete()
     }
 
-    def "Delete file error"() {
+    def "Delete file lease"() {
         given:
+        def fileName = "testCreateFile"
         primaryDirectoryAsyncClient.create().block()
-        when:
-        def deleteFileErrorVerifier = StepVerifier.create(primaryDirectoryAsyncClient.deleteFileWithResponse("testfile"))
-        then:
-        deleteFileErrorVerifier.verifyErrorSatisfies {
-            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
-        }
+        primaryDirectoryAsyncClient.createFile(fileName, 1024).block()
+        def leaseId = createLeaseClient(primaryDirectoryAsyncClient.getFileClient(fileName)).acquireLease().block()
+
+        expect:
+        StepVerifier.create(primaryDirectoryAsyncClient.deleteFileWithResponse(fileName,
+        new ShareRequestConditions().setLeaseId(leaseId)))
+            .expectNextCount(1).verifyComplete()
+    }
+
+    def "Delete file lease fail"() {
+        given:
+        def fileName = "testCreateFile"
+        primaryDirectoryAsyncClient.create().block()
+        primaryDirectoryAsyncClient.createFile(fileName, 1024).block()
+        createLeaseClient(primaryDirectoryAsyncClient.getFileClient(fileName)).acquireLease().block()
+
+        expect:
+        StepVerifier.create(primaryDirectoryAsyncClient.deleteFileWithResponse(fileName,
+            new ShareRequestConditions().setLeaseId(getRandomUUID())))
+            .verifyError(ShareStorageException)
     }
 
     def "Get snapshot id"() {

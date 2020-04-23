@@ -8,8 +8,8 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
@@ -18,11 +18,12 @@ import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.implementation.models.AppendBlobAppendBlockFromUrlHeaders;
 import com.azure.storage.blob.implementation.models.AppendBlobAppendBlockHeaders;
 import com.azure.storage.blob.implementation.models.AppendBlobCreateHeaders;
+import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.AppendBlobItem;
-import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
@@ -35,6 +36,8 @@ import java.util.Map;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 /**
  * Client to an append blob. It may only be instantiated through a
@@ -82,10 +85,14 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * @param snapshot The snapshot identifier for the blob, pass {@code null} to interact with the blob directly.
      * @param customerProvidedKey Customer provided key used during encryption of the blob's data on the server, pass
      * {@code null} to allow the service to use its own encryption.
+     * @param encryptionScope Encryption scope used during encryption of the blob's data on the server, pass
+     * {@code null} to allow the service to use its own encryption.
      */
     AppendBlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
-        String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey) {
-        super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey);
+        String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
+        EncryptionScope encryptionScope) {
+        super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
+            encryptionScope);
     }
 
     /**
@@ -156,15 +163,17 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     Mono<Response<AppendBlobItem>> createWithResponse(BlobHttpHeaders headers, Map<String, String> metadata,
         BlobRequestConditions requestConditions, Context context) {
         requestConditions = (requestConditions == null) ? new BlobRequestConditions() : requestConditions;
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.appendBlobs().createWithRestResponseAsync(null, null, 0, null, metadata,
             requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), null, headers, getCustomerProvidedKey(), context)
+            requestConditions.getIfNoneMatch(), null, headers, getCustomerProvidedKey(), encryptionScope,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 AppendBlobCreateHeaders hd = rb.getDeserializedHeaders();
                 AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-                    hd.isServerEncrypted(), hd.getEncryptionKeySha256(), null, null);
+                    hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getEncryptionScope(), null, null);
                 return new SimpleResponse<>(rb, item);
             });
     }
@@ -218,8 +227,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuffer> data, long length, byte[] contentMd5,
         AppendBlobRequestConditions appendBlobRequestConditions) {
         try {
-            return withContext(context -> appendBlockWithResponse(data, length, contentMd5, appendBlobRequestConditions,
-                context));
+            return withContext(context ->
+                appendBlockWithResponse(data, length, contentMd5, appendBlobRequestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -229,18 +238,20 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         AppendBlobRequestConditions appendBlobRequestConditions, Context context) {
         appendBlobRequestConditions = appendBlobRequestConditions == null ? new AppendBlobRequestConditions()
             : appendBlobRequestConditions;
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.appendBlobs().appendBlockWithRestResponseAsync(
             null, null, data, length, null, contentMd5, null, appendBlobRequestConditions.getLeaseId(),
             appendBlobRequestConditions.getMaxSize(), appendBlobRequestConditions.getAppendPosition(),
             appendBlobRequestConditions.getIfModifiedSince(), appendBlobRequestConditions.getIfUnmodifiedSince(),
             appendBlobRequestConditions.getIfMatch(), appendBlobRequestConditions.getIfNoneMatch(), null,
-            getCustomerProvidedKey(), context)
+            getCustomerProvidedKey(), encryptionScope,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 AppendBlobAppendBlockHeaders hd = rb.getDeserializedHeaders();
                 AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-                    hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getBlobAppendOffset(),
-                    hd.getBlobCommittedBlockCount());
+                    hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getEncryptionScope(),
+                    hd.getBlobAppendOffset(), hd.getBlobCommittedBlockCount());
                 return new SimpleResponse<>(rb, item);
             });
     }
@@ -290,8 +301,9 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         byte[] sourceContentMD5, AppendBlobRequestConditions destRequestConditions,
         BlobRequestConditions sourceRequestConditions) {
         try {
-            return withContext(context -> appendBlockFromUrlWithResponse(sourceUrl, sourceRange, sourceContentMD5,
-                destRequestConditions, sourceRequestConditions, context));
+            return withContext(context ->
+                appendBlockFromUrlWithResponse(sourceUrl, sourceRange, sourceContentMD5,
+                    destRequestConditions, sourceRequestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -312,6 +324,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
         }
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.appendBlobs().appendBlockFromUrlWithRestResponseAsync(null, null, url, 0,
             sourceRange.toString(), sourceContentMD5, null, null, null, destRequestConditions.getLeaseId(),
@@ -320,12 +333,13 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             destRequestConditions.getIfMatch(), destRequestConditions.getIfNoneMatch(),
             sourceRequestConditions.getIfModifiedSince(), sourceRequestConditions.getIfUnmodifiedSince(),
             sourceRequestConditions.getIfMatch(), sourceRequestConditions.getIfNoneMatch(), null,
-            getCustomerProvidedKey(), context)
+            getCustomerProvidedKey(), encryptionScope,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 AppendBlobAppendBlockFromUrlHeaders hd = rb.getDeserializedHeaders();
                 AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-                    hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getBlobAppendOffset(),
-                    hd.getBlobCommittedBlockCount());
+                    hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getEncryptionScope(),
+                    hd.getBlobAppendOffset(), hd.getBlobCommittedBlockCount());
                 return new SimpleResponse<>(rb, item);
             });
     }

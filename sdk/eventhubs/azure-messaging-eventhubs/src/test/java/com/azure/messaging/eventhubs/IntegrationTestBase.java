@@ -41,7 +41,7 @@ import static com.azure.core.amqp.ProxyOptions.PROXY_USERNAME;
  * Test base for running integration tests.
  */
 public abstract class IntegrationTestBase extends TestBase {
-    protected static final Duration TIMEOUT = Duration.ofSeconds(30);
+    protected static final Duration TIMEOUT = Duration.ofSeconds(60);
     protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
     protected final ClientLogger logger;
 
@@ -53,7 +53,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
     private ConnectionStringProperties properties;
     private String testName;
-    private final Scheduler scheduler = Schedulers.parallel();
+    private final Scheduler scheduler = Schedulers.newParallel("eh-integration");
 
     protected IntegrationTestBase(ClientLogger logger) {
         this.logger = logger;
@@ -61,7 +61,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
     @BeforeEach
     public void setupTest(TestInfo testInfo) {
-        logger.info("[{}]: Performing integration test set-up.", testInfo.getDisplayName());
+        System.out.printf("[%s]: Performing integration test set-up.%n", testInfo.getDisplayName());
 
         testName = testInfo.getDisplayName();
         skipIfNotRecordMode();
@@ -77,7 +77,8 @@ public abstract class IntegrationTestBase extends TestBase {
     @Override
     @AfterEach
     public void teardownTest(TestInfo testInfo) {
-        logger.info("[{}]: Performing test clean-up.", testInfo.getDisplayName());
+        System.out.printf("[%s]: Performing test clean-up.%n", testInfo.getDisplayName());
+        scheduler.dispose();
         StepVerifier.resetDefaultTimeout();
         afterTest();
 
@@ -201,7 +202,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
         logger.info("Pushing events to partition. Message tracking value: {}", messageId);
 
-        final List<EventData> events = TestUtils.getEvents(numberOfEvents, messageId).collectList().block();
+        final List<EventData> events = TestUtils.getEvents(numberOfEvents, messageId);
         final Instant datePushed = Instant.now();
 
         try {
@@ -222,7 +223,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
         logger.info("Pushing events to partition. Message tracking value: {}", messageId);
 
-        final List<EventData> events = TestUtils.getEvents(numberOfEvents, messageId).collectList().block();
+        final List<EventData> events = TestUtils.getEvents(numberOfEvents, messageId);
         final Instant datePushed = Instant.now();
 
         try {

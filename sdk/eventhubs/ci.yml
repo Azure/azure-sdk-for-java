@@ -42,13 +42,10 @@ stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
     parameters:
       ServiceDirectory: eventhubs
-      SDKType: client
       Artifacts:
         - name: azure-messaging-eventhubs
           groupId: com.azure
           safeName: azuremessagingeventhubs
-          stagingProfileId: 88192f04117501
         - name: azure-messaging-eventhubs-checkpointstore-blob
           groupId: com.azure
           safeName: azuremessagingeventhubscheckpointstoreblob
-          stagingProfileId: 88192f04117501

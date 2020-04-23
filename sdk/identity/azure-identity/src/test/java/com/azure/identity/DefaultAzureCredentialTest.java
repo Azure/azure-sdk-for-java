@@ -119,7 +119,11 @@ public class DefaultAzureCredentialTest {
         PowerMockito.whenNew(SharedTokenCacheCredential.class).withAnyArguments().thenReturn(sharedTokenCacheCredential);
 
         AzureCliCredential azureCliCredential = PowerMockito.mock(AzureCliCredential.class);
+<<<<<<< HEAD
         when(azureCliCredential.getToken(request)).thenReturn(Mono.error(new RuntimeException("authentication unavailable. Cannot get token from Azure CLI credential")));
+=======
+        when(azureCliCredential.getToken(request)).thenReturn(Mono.error(new RuntimeException("Cannot get token from Azure CLI credential")));
+>>>>>>> 19d0ededf1d6793437a7df4005a40ed504e65e10
         PowerMockito.whenNew(AzureCliCredential.class).withAnyArguments().thenReturn(azureCliCredential);
 
 
@@ -127,6 +131,7 @@ public class DefaultAzureCredentialTest {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         StepVerifier.create(credential.getToken(request))
             .expectErrorMatches(t -> t instanceof RuntimeException && t.getMessage()
+<<<<<<< HEAD
                                       .startsWith("DefaultAzureCredential failed to retrieve a token "
                                                    + "from the included credentials."))
             .verify();
@@ -205,6 +210,11 @@ public class DefaultAzureCredentialTest {
             .expectErrorMatches(t -> t instanceof RuntimeException && t.getMessage()
                                      .startsWith("DefaultAzureCredential failed to retrieve a token "
                                                    + "from the included credentials."))
+=======
+                                      .matches("Tried EnvironmentCredential, ManagedIdentityCredential, "
+                                                   + "SharedTokenCacheCredential"
+                                                   + "[\\$\\w]+\\$\\d*,\\s+AzureCliCredential[\\$\\w\\s\\.]+"))
+>>>>>>> 19d0ededf1d6793437a7df4005a40ed504e65e10
             .verify();
     }
 }

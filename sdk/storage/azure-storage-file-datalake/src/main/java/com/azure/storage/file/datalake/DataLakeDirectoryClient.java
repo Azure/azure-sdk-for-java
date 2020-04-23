@@ -29,7 +29,9 @@ import java.util.Objects;
  * {@link DataLakeFileSystemClient#getDirectoryClient(String) getDirectoryClient}.
  *
  * <p>
- * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json>Azure
+ * Please refer to the
+ *
+ * <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json">Azure
  * Docs</a> for more information.
  */
 public class DataLakeDirectoryClient extends DataLakePathClient {
@@ -87,7 +89,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * Docs</a></p>
      */
     public void delete() {
-        deleteWithResponse(false, null, null, null).getValue();
+        deleteWithResponse(false, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -150,7 +152,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * @return A {@link DataLakeFileClient} used to interact with the file created.
      */
     public DataLakeFileClient createFile(String fileName) {
-        return createFileWithResponse(fileName, null, null, null, null, null, null, null).getValue();
+        return createFileWithResponse(fileName, null, null, null, null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -195,7 +197,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * @param fileName Name of the file to delete.
      */
     public void deleteFile(String fileName) {
-        deleteFileWithResponse(fileName, null, null, null);
+        deleteFileWithResponse(fileName, null, null, Context.NONE);
     }
 
     /**
@@ -252,7 +254,8 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * @return A {@link DataLakeDirectoryClient} used to interact with the sub-directory created.
      */
     public DataLakeDirectoryClient createSubdirectory(String subdirectoryName) {
-        return createSubdirectoryWithResponse(subdirectoryName, null, null, null, null, null, null, null).getValue();
+        return createSubdirectoryWithResponse(subdirectoryName, null, null, null,
+            null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -299,7 +302,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * @param subdirectoryName Name of the sub-directory to delete.
      */
     public void deleteSubdirectory(String subdirectoryName) {
-        deleteSubdirectoryWithResponse(subdirectoryName, false, null, null, null);
+        deleteSubdirectoryWithResponse(subdirectoryName, false, null, null, Context.NONE);
     }
 
     /**
@@ -333,15 +336,17 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.rename#String}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.rename#String-String}
      *
+     * @param destinationFileSystem The file system of the destination within the account.
+     * {@code null} for the current file system.
      * @param destinationPath Relative path from the file system to rename the directory to, excludes the file system
      * name. For example if you want to move a directory with fileSystem = "myfilesystem", path = "mydir/mysubdir" to
      * another path in myfilesystem (ex: newdir) then set the destinationPath = "newdir"
      * @return A {@link DataLakeDirectoryClient} used to interact with the new directory created.
      */
-    public DataLakeDirectoryClient rename(String destinationPath) {
-        return renameWithResponse(destinationPath, null, null, null, null).getValue();
+    public DataLakeDirectoryClient rename(String destinationFileSystem, String destinationPath) {
+        return renameWithResponse(destinationFileSystem, destinationPath, null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -351,8 +356,10 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.renameWithResponse#String-DataLakeRequestConditions-DataLakeRequestConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.renameWithResponse#String-String-DataLakeRequestConditions-DataLakeRequestConditions-Duration-Context}
      *
+     * @param destinationFileSystem The file system of the destination within the account.
+     * {@code null} for the current file system.
      * @param destinationPath Relative path from the file system to rename the directory to, excludes the file system
      * name. For example if you want to move a directory with fileSystem = "myfilesystem", path = "mydir/mysubdir" to
      * another path in myfilesystem (ex: newdir) then set the destinationPath = "newdir"
@@ -364,12 +371,12 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * @return A {@link Response} whose {@link Response#getValue() value} that contains a
      * {@link DataLakeDirectoryClient} used to interact with the directory created.
      */
-    public Response<DataLakeDirectoryClient> renameWithResponse(String destinationPath,
+    public Response<DataLakeDirectoryClient> renameWithResponse(String destinationFileSystem, String destinationPath,
         DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destinationRequestConditions,
         Duration timeout, Context context) {
 
-        Mono<Response<DataLakePathClient>> response = renameWithResponse(destinationPath, sourceRequestConditions,
-            destinationRequestConditions, context);
+        Mono<Response<DataLakePathClient>> response = renameWithResponse(destinationFileSystem, destinationPath,
+            sourceRequestConditions, destinationRequestConditions, context);
 
         Response<DataLakePathClient> resp = StorageImplUtils.blockWithOptionalTimeout(response, timeout);
         return new SimpleResponse<>(resp, new DataLakeDirectoryClient(resp.getValue()));

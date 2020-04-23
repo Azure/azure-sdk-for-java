@@ -83,6 +83,10 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
         @GET("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/policyAssignments")
         Observable<Response<ResponseBody>> listForResource(@Path("resourceGroupName") String resourceGroupName, @Path("resourceProviderNamespace") String resourceProviderNamespace, @Path(value = "parentResourcePath", encoded = true) String parentResourcePath, @Path(value = "resourceType", encoded = true) String resourceType, @Path("resourceName") String resourceName, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.policy.v2019_09_01.PolicyAssignments listForManagementGroup" })
+        @GET("providers/Microsoft.Management/managementgroups/{managementGroupId}/providers/Microsoft.Authorization/policyAssignments")
+        Observable<Response<ResponseBody>> listForManagementGroup(@Path("managementGroupId") String managementGroupId, @Query(value = "$filter", encoded = true) String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.policy.v2019_09_01.PolicyAssignments list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyAssignments")
         Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -106,6 +110,10 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.policy.v2019_09_01.PolicyAssignments listForResourceNext" })
         @GET
         Observable<Response<ResponseBody>> listForResourceNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.policy.v2019_09_01.PolicyAssignments listForManagementGroupNext" })
+        @GET
+        Observable<Response<ResponseBody>> listForManagementGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.policy.v2019_09_01.PolicyAssignments listNext" })
         @GET
@@ -926,6 +934,131 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
     }
 
     /**
+     * Retrieves all policy assignments that apply to a management group.
+     * This operation retrieves the list of all policy assignments applicable to the management group that match the given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter=atScope() is provided, the returned list includes all policy assignments that are assigned to the management group or the management group's ancestors. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments of the policy definition whose id is {value} that apply to the management group.
+     *
+     * @param managementGroupId The ID of the management group.
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. A filter is required when listing policy assignments at management group scope.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;PolicyAssignmentInner&gt; object if successful.
+     */
+    public PagedList<PolicyAssignmentInner> listForManagementGroup(final String managementGroupId, final String filter) {
+        ServiceResponse<Page<PolicyAssignmentInner>> response = listForManagementGroupSinglePageAsync(managementGroupId, filter).toBlocking().single();
+        return new PagedList<PolicyAssignmentInner>(response.body()) {
+            @Override
+            public Page<PolicyAssignmentInner> nextPage(String nextPageLink) {
+                return listForManagementGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Retrieves all policy assignments that apply to a management group.
+     * This operation retrieves the list of all policy assignments applicable to the management group that match the given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter=atScope() is provided, the returned list includes all policy assignments that are assigned to the management group or the management group's ancestors. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments of the policy definition whose id is {value} that apply to the management group.
+     *
+     * @param managementGroupId The ID of the management group.
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. A filter is required when listing policy assignments at management group scope.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<PolicyAssignmentInner>> listForManagementGroupAsync(final String managementGroupId, final String filter, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listForManagementGroupSinglePageAsync(managementGroupId, filter),
+            new Func1<String, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(String nextPageLink) {
+                    return listForManagementGroupNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Retrieves all policy assignments that apply to a management group.
+     * This operation retrieves the list of all policy assignments applicable to the management group that match the given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter=atScope() is provided, the returned list includes all policy assignments that are assigned to the management group or the management group's ancestors. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments of the policy definition whose id is {value} that apply to the management group.
+     *
+     * @param managementGroupId The ID of the management group.
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. A filter is required when listing policy assignments at management group scope.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
+     */
+    public Observable<Page<PolicyAssignmentInner>> listForManagementGroupAsync(final String managementGroupId, final String filter) {
+        return listForManagementGroupWithServiceResponseAsync(managementGroupId, filter)
+            .map(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Page<PolicyAssignmentInner>>() {
+                @Override
+                public Page<PolicyAssignmentInner> call(ServiceResponse<Page<PolicyAssignmentInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Retrieves all policy assignments that apply to a management group.
+     * This operation retrieves the list of all policy assignments applicable to the management group that match the given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter=atScope() is provided, the returned list includes all policy assignments that are assigned to the management group or the management group's ancestors. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments of the policy definition whose id is {value} that apply to the management group.
+     *
+     * @param managementGroupId The ID of the management group.
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. A filter is required when listing policy assignments at management group scope.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listForManagementGroupWithServiceResponseAsync(final String managementGroupId, final String filter) {
+        return listForManagementGroupSinglePageAsync(managementGroupId, filter)
+            .concatMap(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(ServiceResponse<Page<PolicyAssignmentInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listForManagementGroupNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Retrieves all policy assignments that apply to a management group.
+     * This operation retrieves the list of all policy assignments applicable to the management group that match the given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter=atScope() is provided, the returned list includes all policy assignments that are assigned to the management group or the management group's ancestors. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments of the policy definition whose id is {value} that apply to the management group.
+     *
+    ServiceResponse<PageImpl<PolicyAssignmentInner>> * @param managementGroupId The ID of the management group.
+    ServiceResponse<PageImpl<PolicyAssignmentInner>> * @param filter The filter to apply on the operation. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. A filter is required when listing policy assignments at management group scope.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PolicyAssignmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listForManagementGroupSinglePageAsync(final String managementGroupId, final String filter) {
+        if (managementGroupId == null) {
+            throw new IllegalArgumentException("Parameter managementGroupId is required and cannot be null.");
+        }
+        if (filter == null) {
+            throw new IllegalArgumentException("Parameter filter is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listForManagementGroup(managementGroupId, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<PolicyAssignmentInner>> result = listForManagementGroupDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PolicyAssignmentInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<PolicyAssignmentInner>> listForManagementGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<PolicyAssignmentInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<PolicyAssignmentInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
      * Retrieves all policy assignments that apply to a subscription.
      * This operation retrieves the list of all policy assignments associated with the given subscription that match the optional given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy assignments associated with the subscription, including those that apply directly or from management groups that contain the given subscription, as well as any applied to objects contained within the subscription. If $filter=atScope() is provided, the returned list includes all policy assignments that apply to the subscription, which is everything in the unfiltered list except those applied to objects contained within the subscription. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments of the policy definition whose id is {value}.
      *
@@ -1623,6 +1756,122 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
     }
 
     private ServiceResponse<PageImpl<PolicyAssignmentInner>> listForResourceNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<PolicyAssignmentInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<PolicyAssignmentInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Retrieves all policy assignments that apply to a management group.
+     * This operation retrieves the list of all policy assignments applicable to the management group that match the given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter=atScope() is provided, the returned list includes all policy assignments that are assigned to the management group or the management group's ancestors. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments of the policy definition whose id is {value} that apply to the management group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;PolicyAssignmentInner&gt; object if successful.
+     */
+    public PagedList<PolicyAssignmentInner> listForManagementGroupNext(final String nextPageLink) {
+        ServiceResponse<Page<PolicyAssignmentInner>> response = listForManagementGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<PolicyAssignmentInner>(response.body()) {
+            @Override
+            public Page<PolicyAssignmentInner> nextPage(String nextPageLink) {
+                return listForManagementGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Retrieves all policy assignments that apply to a management group.
+     * This operation retrieves the list of all policy assignments applicable to the management group that match the given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter=atScope() is provided, the returned list includes all policy assignments that are assigned to the management group or the management group's ancestors. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments of the policy definition whose id is {value} that apply to the management group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<PolicyAssignmentInner>> listForManagementGroupNextAsync(final String nextPageLink, final ServiceFuture<List<PolicyAssignmentInner>> serviceFuture, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listForManagementGroupNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(String nextPageLink) {
+                    return listForManagementGroupNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Retrieves all policy assignments that apply to a management group.
+     * This operation retrieves the list of all policy assignments applicable to the management group that match the given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter=atScope() is provided, the returned list includes all policy assignments that are assigned to the management group or the management group's ancestors. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments of the policy definition whose id is {value} that apply to the management group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
+     */
+    public Observable<Page<PolicyAssignmentInner>> listForManagementGroupNextAsync(final String nextPageLink) {
+        return listForManagementGroupNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Page<PolicyAssignmentInner>>() {
+                @Override
+                public Page<PolicyAssignmentInner> call(ServiceResponse<Page<PolicyAssignmentInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Retrieves all policy assignments that apply to a management group.
+     * This operation retrieves the list of all policy assignments applicable to the management group that match the given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter=atScope() is provided, the returned list includes all policy assignments that are assigned to the management group or the management group's ancestors. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments of the policy definition whose id is {value} that apply to the management group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listForManagementGroupNextWithServiceResponseAsync(final String nextPageLink) {
+        return listForManagementGroupNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(ServiceResponse<Page<PolicyAssignmentInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listForManagementGroupNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Retrieves all policy assignments that apply to a management group.
+     * This operation retrieves the list of all policy assignments applicable to the management group that match the given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter=atScope() is provided, the returned list includes all policy assignments that are assigned to the management group or the management group's ancestors. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments of the policy definition whose id is {value} that apply to the management group.
+     *
+    ServiceResponse<PageImpl<PolicyAssignmentInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PolicyAssignmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listForManagementGroupNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listForManagementGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<PolicyAssignmentInner>> result = listForManagementGroupNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PolicyAssignmentInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<PolicyAssignmentInner>> listForManagementGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<PolicyAssignmentInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<PolicyAssignmentInner>>() { }.getType())
                 .registerError(CloudException.class)
