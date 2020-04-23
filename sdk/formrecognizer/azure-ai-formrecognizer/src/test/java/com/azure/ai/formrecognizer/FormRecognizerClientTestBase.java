@@ -146,7 +146,19 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     abstract void recognizeReceiptDataTextDetails();
 
     @Test
+    abstract void recognizeReceiptDataTextDetailsWithNullData();
+
+    @Test
+    abstract void recognizeReceiptDataWithContentTypeAutoDetection();
+
+    @Test
     abstract void recognizeLayoutData();
+
+    @Test
+    abstract void recognizeLayoutDataWithNullData();
+
+    @Test
+    abstract void recognizeLayoutDataWithContentTypeAutoDetection();
 
     @Test
     abstract void recognizeLayoutSourceUrl();
@@ -159,6 +171,12 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
     @Test
     abstract void recognizeCustomFormUnlabeledData();
+
+    @Test
+    abstract void recognizeCustomFormLabeledDataWithNullValues();
+
+    @Test
+    abstract void recognizeCustomFormLabeledDataWithContentTypeAutoDetection();
 
     @Test
     abstract void recognizeCustomFormInvalidSourceUrl();

@@ -33,7 +33,8 @@ public class AdvancedDiffLabeledUnlabeledData {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
-        File analyzeFile = new File("sample-forms/forms/Invoice_6.pdf");
+        File analyzeFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/"
+            + "forms/Invoice_6.pdf");
 
         IterableStream<RecognizedForm> formsWithLabeledModel =
             client.beginRecognizeCustomForms(new FileInputStream(analyzeFile), "{labeled_model_Id}",
