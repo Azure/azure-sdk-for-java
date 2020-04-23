@@ -54,10 +54,14 @@ class ProactiveDetectionConfigurationsImpl extends WrapperImpl<ProactiveDetectio
     public Observable<ApplicationInsightsComponentProactiveDetectionConfiguration> getAsync(String resourceGroupName, String resourceName, String configurationId) {
         ProactiveDetectionConfigurationsInner client = this.inner();
         return client.getAsync(resourceGroupName, resourceName, configurationId)
-        .map(new Func1<ApplicationInsightsComponentProactiveDetectionConfigurationInner, ApplicationInsightsComponentProactiveDetectionConfiguration>() {
+        .flatMap(new Func1<ApplicationInsightsComponentProactiveDetectionConfigurationInner, Observable<ApplicationInsightsComponentProactiveDetectionConfiguration>>() {
             @Override
-            public ApplicationInsightsComponentProactiveDetectionConfiguration call(ApplicationInsightsComponentProactiveDetectionConfigurationInner inner) {
-                return wrapModel(inner);
+            public Observable<ApplicationInsightsComponentProactiveDetectionConfiguration> call(ApplicationInsightsComponentProactiveDetectionConfigurationInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ApplicationInsightsComponentProactiveDetectionConfiguration)wrapModel(inner));
+                }
             }
        });
     }
