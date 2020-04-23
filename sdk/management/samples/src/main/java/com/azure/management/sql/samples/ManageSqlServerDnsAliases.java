@@ -81,23 +81,20 @@ public class ManageSqlServerDnsAliases {
                 administratorPassword);
 
             // Establish the connection.
-            Connection conTest = DriverManager.getConnection(connectionToSqlTestUrl);
+            try (Connection conTest = DriverManager.getConnection(connectionToSqlTestUrl);
+                 Statement stmt = conTest.createStatement();) {
 
 
-            // ============================================================
-            // Create a new table into the "test" SQL Server database and insert one value.
-            System.out.println("Creating a new table into the \"test\" SQL Server database and insert one value");
+                // ============================================================
+                // Create a new table into the "test" SQL Server database and insert one value.
+                System.out.println("Creating a new table into the \"test\" SQL Server database and insert one value");
 
-            Statement stmt = conTest.createStatement();
+                String sqlCommand = "CREATE TABLE [Dns_Alias_Sample_Test] ([Name] [varchar](30) NOT NULL)";
+                stmt.execute(sqlCommand);
 
-            String sqlCommand = "CREATE TABLE [Dns_Alias_Sample_Test] ([Name] [varchar](30) NOT NULL)";
-            stmt.execute(sqlCommand);
-
-            sqlCommand = "INSERT Dns_Alias_Sample_Test VALUES ('Test')";
-            stmt.execute(sqlCommand);
-
-            // Close the connection to the "test" database
-            conTest.close();
+                sqlCommand = "INSERT Dns_Alias_Sample_Test VALUES ('Test')";
+                stmt.execute(sqlCommand);
+            }
 
 
             // ============================================================
@@ -130,23 +127,21 @@ public class ManageSqlServerDnsAliases {
                 administratorPassword);
 
             // Establish the connection.
-            Connection conProd = DriverManager.getConnection(connectionToSqlProdUrl);
+            try (Connection conProd = DriverManager.getConnection(connectionToSqlProdUrl);
+                 Statement stmt1 = conProd.createStatement();) {
 
 
-            // ============================================================
-            // Create a new table into the "production" SQL Server database and insert one value.
-            System.out.println("Creating a new table into the \"production\" SQL Server database and insert one value");
+                // ============================================================
+                // Create a new table into the "production" SQL Server database and insert one value.
+                System.out.println("Creating a new table into the \"production\" SQL Server database and insert one value");
 
-            stmt = conProd.createStatement();
 
-            sqlCommand = "CREATE TABLE [Dns_Alias_Sample_Prod] ([Name] [varchar](30) NOT NULL)";
-            stmt.execute(sqlCommand);
+                String sqlCommand = "CREATE TABLE [Dns_Alias_Sample_Prod] ([Name] [varchar](30) NOT NULL)";
+                stmt1.execute(sqlCommand);
 
-            sqlCommand = "INSERT Dns_Alias_Sample_Prod VALUES ('Production')";
-            stmt.execute(sqlCommand);
-
-            // Close the connection to the "production" database
-            conProd.close();
+                sqlCommand = "INSERT Dns_Alias_Sample_Prod VALUES ('Production')";
+                stmt1.execute(sqlCommand);
+            }
 
 
             // ============================================================
@@ -165,17 +160,18 @@ public class ManageSqlServerDnsAliases {
                 administratorPassword);
 
             // Establish the connection.
-            Connection conDnsAlias = DriverManager.getConnection(connectionUrl);
+            try (Connection conDnsAlias = DriverManager.getConnection(connectionUrl);
+                 Statement stmt2 = conDnsAlias.createStatement();) {
 
-            stmt = conDnsAlias.createStatement();
-            sqlCommand = "SELECT * FROM Dns_Alias_Sample_Test;";
-            ResultSet resultSet = stmt.executeQuery(sqlCommand);
-            // Print results from select statement
-            System.out.println("SELECT * FROM Dns_Alias_Sample_Test");
-            while (resultSet.next()) {
-                System.out.format("\t%s\n", resultSet.getString(1));
+                String sqlCommand = "SELECT * FROM Dns_Alias_Sample_Test;";
+                try (ResultSet resultSet = stmt2.executeQuery(sqlCommand);) {
+                    // Print results from select statement
+                    System.out.println("SELECT * FROM Dns_Alias_Sample_Test");
+                    while (resultSet.next()) {
+                        System.out.format("\t%s%n", resultSet.getString(1));
+                    }
+                }
             }
-            conDnsAlias.close();
 
 
             // ============================================================
@@ -188,18 +184,18 @@ public class ManageSqlServerDnsAliases {
             SdkContext.sleep(10 * 60 * 1000);
 
             // Re-establish the connection.
-            conDnsAlias = DriverManager.getConnection(connectionUrl);
+            try (Connection conDnsAlias = DriverManager.getConnection(connectionUrl);
+                 Statement stmt = conDnsAlias.createStatement();) {
 
-            stmt = conDnsAlias.createStatement();
-            sqlCommand = "SELECT * FROM Dns_Alias_Sample_Prod;";
-            resultSet = stmt.executeQuery(sqlCommand);
-            // Print results from select statement
-            System.out.println("SELECT * FROM Dns_Alias_Sample_Prod");
-            while (resultSet.next()) {
-                System.out.format("\t%s\n", resultSet.getString(1));
+                String sqlCommand = "SELECT * FROM Dns_Alias_Sample_Prod;";
+                try (ResultSet resultSet = stmt.executeQuery(sqlCommand);) {
+                    // Print results from select statement
+                    System.out.println("SELECT * FROM Dns_Alias_Sample_Prod");
+                    while (resultSet.next()) {
+                        System.out.format("\t%s%n", resultSet.getString(1));
+                    }
+                }
             }
-
-            conDnsAlias.close();
 
             // Delete the SQL Servers.
             System.out.println("Deleting the Sql Servers");

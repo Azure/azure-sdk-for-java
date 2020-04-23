@@ -94,7 +94,7 @@ public class ManageLinuxWebAppWithContainerRegistry {
             System.out.println("List local Docker images:");
             List<Image> images = dockerClient.listImagesCmd().withShowAll(true).exec();
             for (Image image : images) {
-                System.out.format("\tFound Docker image %s (%s)\n", image.getRepoTags()[0], image.getId());
+                System.out.format("\tFound Docker image %s (%s)%n", image.getRepoTags()[0], image.getId());
             }
 
             CreateContainerResponse dockerContainerInstance = dockerClient.createContainerCmd(dockerImageName + ":" + dockerImageTag)
@@ -105,9 +105,9 @@ public class ManageLinuxWebAppWithContainerRegistry {
             // Commit the new container
 
             String privateRepoUrl = azureRegistry.loginServerUrl() + "/samples/" + dockerContainerName;
-            String dockerImageId = dockerClient.commitCmd(dockerContainerInstance.getId())
-                    .withRepository(privateRepoUrl)
-                    .withTag("latest").exec();
+            dockerClient.commitCmd(dockerContainerInstance.getId())
+                .withRepository(privateRepoUrl)
+                .withTag("latest").exec();
 
             // We can now remove the temporary container instance
             dockerClient.removeContainerCmd(dockerContainerInstance.getId())

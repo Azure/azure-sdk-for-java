@@ -36,7 +36,6 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.time.Period;
 import java.util.List;
 
 /**
@@ -101,68 +100,72 @@ public class GettingSqlServerMetrics {
                 administratorPassword);
 
             // Establish the connection.
-            Connection connection = DriverManager.getConnection(connectionToSqlTestUrl);
+            try (Connection connection = DriverManager.getConnection(connectionToSqlTestUrl);
+                 Statement statement = connection.createStatement();) {
 
-            // ============================================================
-            // Create and execute a "select" SQL statement on the sample database.
-            System.out.println("Creating and executing a \"SELECT\" SQL statement on the sample database");
+                // ============================================================
+                // Create and execute a "select" SQL statement on the sample database.
+                System.out.println("Creating and executing a \"SELECT\" SQL statement on the sample database");
 
-            String selectSql = "SELECT TOP 10 Title, FirstName, LastName from SalesLT.Customer";
-            Statement statement = connection.createStatement();
-            System.out.println("SELECT TOP 10 Title, FirstName, LastName from SalesLT.Customer");
-            ResultSet resultSet = statement.executeQuery(selectSql);
+                String selectSql = "SELECT TOP 10 Title, FirstName, LastName from SalesLT.Customer";
 
-            // Print results from select statement
-            while (resultSet.next()) {
-                System.out.println(resultSet.getString(2) + " "
-                    + resultSet.getString(3));
+                System.out.println("SELECT TOP 10 Title, FirstName, LastName from SalesLT.Customer");
+                try (ResultSet resultSet = statement.executeQuery(selectSql);) {
+
+                    // Print results from select statement
+                    while (resultSet.next()) {
+                        System.out.println(resultSet.getString(2) + " "
+                            + resultSet.getString(3));
+                    }
+                }
+
+                // ============================================================
+                // Create and execute an "INSERT" SQL statement on the sample database.
+                System.out.println("Creating and executing an \"INSERT\" SQL statement on the sample database");
+                // Create and execute an INSERT SQL prepared statement.
+                String insertSql = "INSERT INTO SalesLT.Product (Name, ProductNumber, Color, StandardCost, ListPrice, SellStartDate) VALUES "
+                    + "('Bike', 'B1', 'Blue', 50, 120, '2016-01-01');";
+
+                try (PreparedStatement prepsInsertProduct = connection.prepareStatement(
+                    insertSql,
+                    Statement.RETURN_GENERATED_KEYS);) {
+                    prepsInsertProduct.execute();
+
+                    // Retrieve the generated key from the insert.
+                    try (ResultSet resultSet2 = prepsInsertProduct.getGeneratedKeys();) {
+                        // Print the ID of the inserted row.
+                        while (resultSet2.next()) {
+                            System.out.println("Generated: " + resultSet2.getString(1));
+                        }
+                    }
+                }
+
+                // ============================================================
+                // Create a new table into the SQL Server database and insert one value.
+                System.out.println("Creating a new table into the SQL Server database and insert one value");
+
+                try (Statement stmt = connection.createStatement();) {
+
+                    String sqlCommand = "CREATE TABLE [Sample_Test] ([Name] [varchar](30) NOT NULL)";
+                    stmt.execute(sqlCommand);
+
+                    sqlCommand = "INSERT Sample_Test VALUES ('Test')";
+                    stmt.execute(sqlCommand);
+
+                    // ============================================================
+                    // Run a "select" query for the new table.
+                    System.out.println("Running a \"SELECT\" query for the new table");
+
+                    sqlCommand = "SELECT * FROM Sample_Test;";
+                    try (ResultSet resultSet = stmt.executeQuery(sqlCommand);) {
+                        // Print results from select statement
+                        System.out.println("SELECT * FROM Sample_Test");
+                        while (resultSet.next()) {
+                            System.out.format("\t%s%n", resultSet.getString(1));
+                        }
+                    }
+                }
             }
-
-            // ============================================================
-            // Create and execute an "INSERT" SQL statement on the sample database.
-            System.out.println("Creating and executing an \"INSERT\" SQL statement on the sample database");
-            // Create and execute an INSERT SQL prepared statement.
-            String insertSql = "INSERT INTO SalesLT.Product (Name, ProductNumber, Color, StandardCost, ListPrice, SellStartDate) VALUES "
-                + "('Bike', 'B1', 'Blue', 50, 120, '2016-01-01');";
-
-            PreparedStatement prepsInsertProduct = connection.prepareStatement(
-                insertSql,
-                Statement.RETURN_GENERATED_KEYS);
-            prepsInsertProduct.execute();
-
-            // Retrieve the generated key from the insert.
-            ResultSet resultSet2 = prepsInsertProduct.getGeneratedKeys();
-            // Print the ID of the inserted row.
-            while (resultSet2.next()) {
-                System.out.println("Generated: " + resultSet2.getString(1));
-            }
-
-            // ============================================================
-            // Create a new table into the SQL Server database and insert one value.
-            System.out.println("Creating a new table into the SQL Server database and insert one value");
-
-            Statement stmt = connection.createStatement();
-
-            String sqlCommand = "CREATE TABLE [Sample_Test] ([Name] [varchar](30) NOT NULL)";
-            stmt.execute(sqlCommand);
-
-            sqlCommand = "INSERT Sample_Test VALUES ('Test')";
-            stmt.execute(sqlCommand);
-
-            // ============================================================
-            // Run a "select" query for the new table.
-            System.out.println("Running a \"SELECT\" query for the new table");
-
-            sqlCommand = "SELECT * FROM Sample_Test;";
-            resultSet = stmt.executeQuery(sqlCommand);
-            // Print results from select statement
-            System.out.println("SELECT * FROM Sample_Test");
-            while (resultSet.next()) {
-                System.out.format("\t%s%n", resultSet.getString(1));
-            }
-
-            // Close the connection to the "test" database
-            connection.close();
 
             SdkContext.sleep(6 * 60 * 1000);
 
