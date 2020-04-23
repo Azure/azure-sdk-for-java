@@ -26,6 +26,12 @@ public final class DocumentLanguage {
     private List<DetectedLanguage> detectedLanguages;
 
     /*
+     * Warnings encountered while processing document.
+     */
+    @JsonProperty(value = "warnings", required = true)
+    private List<TextAnalyticsWarning> warnings;
+
+    /*
      * if showStats=true was specified in the request this field will contain
      * information about the document payload.
      */
@@ -34,7 +40,7 @@ public final class DocumentLanguage {
 
     /**
      * Get the id property: Unique, non-empty document identifier.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -43,7 +49,7 @@ public final class DocumentLanguage {
 
     /**
      * Set the id property: Unique, non-empty document identifier.
-     *
+     * 
      * @param id the id value to set.
      * @return the DocumentLanguage object itself.
      */
@@ -54,7 +60,7 @@ public final class DocumentLanguage {
 
     /**
      * Get the detectedLanguages property: A list of extracted languages.
-     *
+     * 
      * @return the detectedLanguages value.
      */
     public List<DetectedLanguage> getDetectedLanguages() {
@@ -63,7 +69,7 @@ public final class DocumentLanguage {
 
     /**
      * Set the detectedLanguages property: A list of extracted languages.
-     *
+     * 
      * @param detectedLanguages the detectedLanguages value to set.
      * @return the DocumentLanguage object itself.
      */
@@ -73,9 +79,31 @@ public final class DocumentLanguage {
     }
 
     /**
+     * Get the warnings property: Warnings encountered while processing
+     * document.
+     * 
+     * @return the warnings value.
+     */
+    public List<TextAnalyticsWarning> getWarnings() {
+        return this.warnings;
+    }
+
+    /**
+     * Set the warnings property: Warnings encountered while processing
+     * document.
+     * 
+     * @param warnings the warnings value to set.
+     * @return the DocumentLanguage object itself.
+     */
+    public DocumentLanguage setWarnings(List<TextAnalyticsWarning> warnings) {
+        this.warnings = warnings;
+        return this;
+    }
+
+    /**
      * Get the statistics property: if showStats=true was specified in the
      * request this field will contain information about the document payload.
-     *
+     * 
      * @return the statistics value.
      */
     public DocumentStatistics getStatistics() {
@@ -85,7 +113,7 @@ public final class DocumentLanguage {
     /**
      * Set the statistics property: if showStats=true was specified in the
      * request this field will contain information about the document payload.
-     *
+     * 
      * @param statistics the statistics value to set.
      * @return the DocumentLanguage object itself.
      */

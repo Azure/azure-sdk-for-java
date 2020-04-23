@@ -8,43 +8,38 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for SentenceSentimentValue.
+ * Defines values for WarningCodeValue.
  */
-public enum SentenceSentimentValue {
+public enum WarningCodeValue {
     /**
-     * Enum value positive.
+     * Enum value LongWordsInDocument.
      */
-    POSITIVE("positive"),
+    LONG_WORDS_IN_DOCUMENT("LongWordsInDocument"),
 
     /**
-     * Enum value neutral.
+     * Enum value DocumentTruncated.
      */
-    NEUTRAL("neutral"),
+    DOCUMENT_TRUNCATED("DocumentTruncated");
 
     /**
-     * Enum value negative.
-     */
-    NEGATIVE("negative");
-
-    /**
-     * The actual serialized value for a SentenceSentimentValue instance.
+     * The actual serialized value for a WarningCodeValue instance.
      */
     private final String value;
 
-    SentenceSentimentValue(String value) {
+    WarningCodeValue(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a SentenceSentimentValue instance.
+     * Parses a serialized value to a WarningCodeValue instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed SentenceSentimentValue object, or null if unable to parse.
+     * @return the parsed WarningCodeValue object, or null if unable to parse.
      */
     @JsonCreator
-    public static SentenceSentimentValue fromString(String value) {
-        SentenceSentimentValue[] items = SentenceSentimentValue.values();
-        for (SentenceSentimentValue item : items) {
+    public static WarningCodeValue fromString(String value) {
+        WarningCodeValue[] items = WarningCodeValue.values();
+        for (WarningCodeValue item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
