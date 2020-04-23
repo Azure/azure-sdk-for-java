@@ -14,7 +14,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
-import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 
@@ -177,6 +176,7 @@ public class FormTrainingClient {
      *
      * @param modelId The UUID string format model identifier.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteModel(String modelId) {
         deleteModelWithResponse(modelId, Context.NONE);
     }
@@ -190,8 +190,9 @@ public class FormTrainingClient {
      * @param modelId The UUID string format model identifier.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A {@link Mono} containing containing status code and HTTP headers
+     * @return A {@link Response} containing containing status code and HTTP headers
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteModelWithResponse(String modelId, Context context) {
         return client.deleteModelWithResponse(modelId, context).block();
     }
