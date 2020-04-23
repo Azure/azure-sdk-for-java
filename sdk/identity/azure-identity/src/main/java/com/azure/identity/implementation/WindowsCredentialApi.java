@@ -41,7 +41,7 @@ public interface WindowsCredentialApi extends StdCallLibrary {
         public static class ByReference extends CREDENTIAL_ATTRIBUTE implements Structure.ByReference { }
 
         @Override
-        protected List getFieldOrder() {
+        protected List<String> getFieldOrder() {
             return Arrays.asList("Keyword",
                     "Flags",
                     "ValueSize",
@@ -234,7 +234,7 @@ public interface WindowsCredentialApi extends StdCallLibrary {
     class PCREDENTIAL extends Structure {
 
         @Override
-        protected List getFieldOrder() {
+        protected List<String> getFieldOrder() {
             return Collections.singletonList("credential");
         }
 
