@@ -117,7 +117,7 @@ class DisasterRecoveryConfigsImpl extends WrapperImpl<DisasterRecoveryConfigsInn
         String resourceGroupName = IdParsingUtils.getValueFromIdByName(id, "resourceGroups");
         String namespaceName = IdParsingUtils.getValueFromIdByName(id, "namespaces");
         String alias = IdParsingUtils.getValueFromIdByName(id, "disasterRecoveryConfigs");
-        String authorizationRuleName = IdParsingUtils.getValueFromIdByName(id, "AuthorizationRules");
+        String authorizationRuleName = IdParsingUtils.getValueFromIdByName(id, "authorizationRules");
         DisasterRecoveryConfigsInner client = this.inner();
         return client.getAuthorizationRuleAsync(resourceGroupName, namespaceName, alias, authorizationRuleName);
     }

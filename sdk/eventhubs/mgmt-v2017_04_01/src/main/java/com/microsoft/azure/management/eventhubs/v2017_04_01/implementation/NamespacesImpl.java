@@ -185,7 +185,7 @@ class NamespacesImpl extends GroupableResourcesCoreImpl<EHNamespace, EHNamespace
     private Observable<AuthorizationRuleInner> getAuthorizationRuleInnerUsingNamespacesInnerAsync(String id) {
         String resourceGroupName = IdParsingUtils.getValueFromIdByName(id, "resourceGroups");
         String namespaceName = IdParsingUtils.getValueFromIdByName(id, "namespaces");
-        String authorizationRuleName = IdParsingUtils.getValueFromIdByName(id, "AuthorizationRules");
+        String authorizationRuleName = IdParsingUtils.getValueFromIdByName(id, "authorizationRules");
         NamespacesInner client = this.inner();
         return client.getAuthorizationRuleAsync(resourceGroupName, namespaceName, authorizationRuleName);
     }
