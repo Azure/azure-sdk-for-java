@@ -25,7 +25,6 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -360,67 +359,7 @@ public class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase
 
     }
 
-    static Stream<Arguments> receiveDeferredMessageBySequenceNumber() {
-        return Stream.of(
-            Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.ABANDONED),
-            Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.SUSPENDED),
-            Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.COMPLETED),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.ABANDONED),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.SUSPENDED),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.COMPLETED)
-        );
-    }
 
-    /**
-     * Test we can receive a deferred message via sequence number and then perform abandon, suspend, or complete on it.
-     */
-   /* @MethodSource
-    @ParameterizedTest
-    void receiveDeferredMessageBySequenceNumber(MessagingEntityType entityType, DispositionStatus dispositionStatus) {
-        // Arrange
-        setSenderAndReceiver(entityType, false);
-
-        final String messageId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = getMessage(messageId, false);
-
-        sendMessage(message);
-
-        final IterableStream<ServiceBusReceivedMessage> messageIte = receiveAndDeleteReceiver.receive(1, TIMEOUT);
-        Assertions.assertNotNull(messageIte);
-
-        final List<ServiceBusReceivedMessage> asList = messageIte.stream().collect(Collectors.toList());
-        ServiceBusReceivedMessage receivedMessage = asList.get(0);
-        Assertions.assertNotNull(receivedMessage);
-
-        receiver.defer(receivedMessage);
-
-        // Assert & Act
-        final ServiceBusReceivedMessage receivedDeferredMessage = receiver.receiveDeferredMessage(
-            receivedMessage.getSequenceNumber());
-
-        assertNotNull(receivedDeferredMessage);
-        assertEquals(receivedMessage.getSequenceNumber(), receivedDeferredMessage.getSequenceNumber());
-
-        switch (dispositionStatus) {
-            case ABANDONED:
-                receiver.abandon(receivedDeferredMessage);
-                break;
-            case SUSPENDED:
-                receiver.deadLetter(receivedDeferredMessage);
-                break;
-            case COMPLETED:
-                receiver.complete(receivedDeferredMessage);
-                break;
-            default:
-                throw logger.logExceptionAsError(new IllegalArgumentException(
-                    "Disposition status not recognized for this test case: " + dispositionStatus));
-        }
-
-        if (dispositionStatus == DispositionStatus.ABANDONED || dispositionStatus == DispositionStatus.COMPLETED) {
-            messagesPending.decrementAndGet();
-        }
-    }
-*/
     @MethodSource("messagingEntityWithSessions")
     @ParameterizedTest
     void sendReceiveMessageWithVariousPropertyTypes(MessagingEntityType entityType, boolean isSessionEnabled) {
@@ -429,7 +368,6 @@ public class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage messageToSend = getMessage(messageId, isSessionEnabled);
-        final ReceiveAsyncOptions options = new ReceiveAsyncOptions().setEnableAutoComplete(false);
 
         Map<String, Object> sentProperties = messageToSend.getProperties();
         sentProperties.put("NullProperty", null);
