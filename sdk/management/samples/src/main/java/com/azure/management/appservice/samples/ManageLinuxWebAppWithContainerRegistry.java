@@ -16,9 +16,15 @@ import com.azure.management.samples.DockerUtils;
 import com.azure.management.samples.Utils;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerResponse;
+import com.github.dockerjava.api.command.PullImageResultCallback;
+import com.github.dockerjava.api.exception.NotFoundException;
+import com.github.dockerjava.api.model.AuthConfig;
+import com.github.dockerjava.api.model.Image;
 import com.github.dockerjava.core.command.PushImageResultCallback;
 
 import java.io.File;
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -82,8 +88,9 @@ public class ManageLinuxWebAppWithContainerRegistry {
 
             dockerClient.pullImageCmd(dockerImageName)
                     .withTag(dockerImageTag)
+                    .withAuthConfig(new AuthConfig())
                     .exec(new PullImageResultCallback())
-                    .awaitSuccess();
+                    .awaitCompletion();
             System.out.println("List local Docker images:");
             List<Image> images = dockerClient.listImagesCmd().withShowAll(true).exec();
             for (Image image : images) {
@@ -140,10 +147,10 @@ public class ManageLinuxWebAppWithContainerRegistry {
 
             // warm up
             System.out.println("Warming up " + appUrl + "...");
-            curl("http://" + appUrl);
+            Utils.get("http://" + appUrl);
             SdkContext.sleep(5000);
             System.out.println("CURLing " + appUrl + "...");
-            System.out.println(curl("http://" + appUrl));
+            System.out.println(Utils.get("http://" + appUrl));
 
             return true;
         } catch (Exception f) {
