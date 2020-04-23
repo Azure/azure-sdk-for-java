@@ -124,7 +124,7 @@ public final class DeployUsingARMTemplateWithProgress {
         final String hostingPlanName = azure.sdkContext().randomResourceName("hpRSAT", 24);
         final String webappName = azure.sdkContext().randomResourceName("wnRSAT", 24);
 
-        try (final InputStream embeddedTemplate = DeployUsingARMTemplateWithProgress.class.getResourceAsStream("/templateValue.json")) {
+        try (InputStream embeddedTemplate = DeployUsingARMTemplateWithProgress.class.getResourceAsStream("/templateValue.json")) {
 
             final ObjectMapper mapper = new ObjectMapper();
             final JsonNode tmp = mapper.readTree(embeddedTemplate);

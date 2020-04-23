@@ -124,7 +124,7 @@ public class DeployVirtualMachineUsingARMTemplate {
         final String adminPassword = "12NewPA$$w0rd!";
         final String osDiskName = azure.sdkContext().randomResourceName("osdisk-", 24);
 
-        try (final InputStream embeddedTemplate = DeployUsingARMTemplateWithProgress.class.getResourceAsStream("/templateValue.json")) {
+        try (InputStream embeddedTemplate = DeployUsingARMTemplateWithProgress.class.getResourceAsStream("/templateValue.json")) {
 
             final ObjectMapper mapper = new ObjectMapper();
             final JsonNode tmp = mapper.readTree(embeddedTemplate);
