@@ -23,6 +23,11 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.text.ParseException;
 
+/**
+ * The filter injects UserPrincipal object that is associated with the thread of the current user request.
+ * User's AAD membership info, along with token claims set, JWS object etc. are accessible from the object which can be
+ * used for role based authorization.
+ */
 public class AADAuthenticationFilter extends OncePerRequestFilter {
     private static final Logger LOGGER = LoggerFactory.getLogger(AADAuthenticationFilter.class);
 

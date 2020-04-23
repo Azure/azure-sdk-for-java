@@ -48,13 +48,17 @@ Configure application.properties:
 ```properties
 spring.security.oauth2.client.registration.azure.client-id=xxxxxx-your-client-id-xxxxxx
 spring.security.oauth2.client.registration.azure.client-secret=xxxxxx-your-client-secret-xxxxxx
-
 azure.activedirectory.tenant-id=xxxxxx-your-tenant-id-xxxxxx
 azure.activedirectory.active-directory-groups=group1, group2
 ```
 
 Autowire `OAuth2UserService` bean in `WebSecurityConfigurerAdapter`:
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/AADOAuth2LoginConfigSample.java#L22-L38 -->
 ```java
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class AADOAuth2LoginConfigSample extends WebSecurityConfigurerAdapter {
+    
     @Autowired
     private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService;
 
@@ -67,6 +71,7 @@ Autowire `OAuth2UserService` bean in `WebSecurityConfigurerAdapter`:
             .userInfoEndpoint()
             .oidcUserService(oidcUserService);
     }
+}
 ```
 
 ##### Authenticate in frontend
@@ -86,10 +91,15 @@ azure.activedirectory.environment=cn
 ```
 
 * Autowire `AADAuthenticationFilter` in `WebSecurityConfig.java` file
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/AADAuthenticationFilterConfigSample.java#L18-L24 -->
+```java
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
+public class AADAuthenticationFilterConfigSample extends WebSecurityConfigurerAdapter {
 
-```
-@Autowired
-private AADAuthenticationFilter aadAuthFilter;
+    @Autowired
+    private AADAuthenticationFilter aadAuthFilter;
+
+}
 ```
 
 * Role-based Authorization with annotation `@PreAuthorize("hasRole('GROUP_NAME')")`
@@ -127,18 +137,24 @@ Define your roles in your application registration manifest:
 ```
 
 Autowire the auth filter and attach it to the filter chain:
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/AADAppRoleStatelessAuthenticationFilterConfigSample.java#L22-L37 -->
 ```java
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class AADAppRoleStatelessAuthenticationFilterConfigSample extends WebSecurityConfigurerAdapter {
+
     @Autowired
     private AADAppRoleStatelessAuthenticationFilter appRoleAuthFilter;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        [...]
         http.csrf().disable()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .addFilterBefore(appRoleAuthFilter, UsernamePasswordAuthenticationFilter.class);
     }
+
+}
 ```
 
 * Role-based Authorization with annotation `@PreAuthorize("hasRole('MY_ROLE')")`
@@ -176,10 +192,12 @@ You can see more details in this link: [details](https://docs.microsoft.com/azur
 
 ### AAD Conditional Access Policy
 Now azure-active-directory-spring-boot-starter has supported AAD conditional access policy, if you are using this policy, you need add **AADOAuth2AuthorizationRequestResolver** and **AADAuthenticationFailureHandler** to your WebSecurityConfigurerAdapter.
-```
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/AADOAuth2LoginConditionalPolicyConfigSample.java#L26-L53 -->
+```java
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class AADOAuth2LoginSecurityConfig extends WebSecurityConfigurerAdapter {
+public class AADOAuth2LoginConfigSample extends WebSecurityConfigurerAdapter {
+
     @Autowired
     private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService;
 
@@ -189,7 +207,8 @@ public class AADOAuth2LoginSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         final ClientRegistrationRepository clientRegistrationRepository =
-                applicationContext.getBean(ClientRegistrationRepository.class);
+            applicationContext.getBean(ClientRegistrationRepository.class);
+
         http.authorizeRequests()
             .anyRequest().authenticated()
             .and()

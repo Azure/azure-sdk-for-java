@@ -29,7 +29,7 @@ public class UserGroup implements Serializable {
         if (o == this) {
             return true;
         }
-        if (o == null || !(o instanceof UserGroup)) {
+        if (!(o instanceof UserGroup)) {
             return false;
         }
         final UserGroup group = (UserGroup) o;
