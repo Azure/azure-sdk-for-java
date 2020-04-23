@@ -7,7 +7,7 @@ parameters:
   TestMatrix:
     Linux - Java 8:
       OSName: 'Linux'
-      OSVmImage: 'ubuntu-16.04'
+      OSVmImage: 'ubuntu-18.04'
       JavaVersion: '1.8'
       RunTitle: 'Linux on Java 1.8'
     macOS - Java 8:
@@ -22,7 +22,7 @@ parameters:
       RunTitle: 'Windows on Java 1.8'
     Linux - Java 11:
       OSName: 'Linux'
-      OSVmImage: 'ubuntu-16.04'
+      OSVmImage: 'ubuntu-18.04'
       JavaVersion: '1.11'
       RunTitle: 'Linux on Java 1.11'
     macOS - Java 11:
@@ -43,7 +43,7 @@ jobs:
       - template: ../variables/globals.yml
 
     pool:
-      vmImage: 'ubuntu-16.04'
+      vmImage: 'ubuntu-18.04'
 
     strategy:
       matrix:
@@ -123,7 +123,7 @@ jobs:
       - template: ../variables/globals.yml
 
     pool:
-      vmImage: 'ubuntu-16.04'
+      vmImage: 'ubuntu-18.04'
 
     steps:
       - pwsh: |
