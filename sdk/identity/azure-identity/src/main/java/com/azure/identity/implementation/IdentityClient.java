@@ -444,7 +444,6 @@ public class IdentityClient {
 
         String tenant = tenantId;
         String cloud = "Azure";
-        String clientId = "aebc6443-996d-45c2-90f0-388ff96faa56";
 
         if (!userSettings.isNull()) {
             if (userSettings.has("azure.tenant")) {
@@ -483,9 +482,6 @@ public class IdentityClient {
             return Mono.fromFuture(() -> application.acquireToken(
                 authorizationCodeParameters))
                 .map(ar -> new MsalToken(ar, options));
-
-
-
         } catch (JsonProcessingException e) {
             // Move below to try auth with refresh token.
         } catch (URISyntaxException e) {
@@ -498,17 +494,16 @@ public class IdentityClient {
             PublicClientApplication clientApplication =  publicClientApplicationBuilder
                                                              .authority(authority)
                                                              .build();
+
+            RefreshTokenParameters parameters = RefreshTokenParameters
+                                                    .builder(new HashSet<>(request.getScopes()), credential)
+                                                    .build();
+
+            return Mono.defer(() -> Mono.fromFuture(clientApplication.acquireToken(parameters))
+                                        .map(ar -> new MsalToken(ar, options)));
         } catch (MalformedURLException e) {
             return Mono.error(logger.logExceptionAsError(new IllegalStateException(e)));
         }
-
-        RefreshTokenParameters parameters = RefreshTokenParameters
-            .builder(new HashSet<>(request.getScopes()), credential)
-            .build();
-
-        return Mono.defer(() -> Mono.fromFuture(publicClientApplication.acquireToken(parameters))
-                           .map(ar -> new MsalToken(ar, options)));
-
     }
 
     /**
