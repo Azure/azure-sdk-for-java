@@ -778,7 +778,8 @@ public final class BlobContainerAsyncClient {
                 .map(response -> {
                     List<BlobItem> value = response.getValue().getSegment() == null
                         ? new ArrayList<>(0)
-                        : response.getValue().getSegment().getBlobItems();
+                        : response.getValue().getSegment().getBlobItems().stream()
+                        .map(BlobItem::new).collect(Collectors.toUnmodifiableList());
 
                     return new PagedResponseBase<>(
                         response.getRequest(),
@@ -918,7 +919,7 @@ public final class BlobContainerAsyncClient {
                     List<BlobItem> value = response.getValue().getSegment() == null
                         ? new ArrayList<>(0)
                         : Stream.concat(
-                        response.getValue().getSegment().getBlobItems().stream(),
+                        response.getValue().getSegment().getBlobItems().stream().map(BlobItem::new),
                         response.getValue().getSegment().getBlobPrefixes().stream()
                             .map(blobPrefix -> new BlobItem().setName(blobPrefix.getName()).setIsPrefix(true))
                     ).collect(Collectors.toList());
