@@ -7,7 +7,6 @@ import com.azure.storage.internal.avro.implementation.AvroConstants;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 

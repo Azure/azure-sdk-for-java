@@ -13,6 +13,7 @@ import java.nio.channels.AsynchronousFileChannel
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.nio.file.StandardOpenOption
+import java.util.concurrent.atomic.AtomicInteger
 import java.util.function.Predicate
 
 class AvroParserTest extends Specification {
@@ -118,8 +119,19 @@ class AvroParserTest extends Specification {
     }
 
     boolean bytesEqual(Object actual, byte[] expected) {
-        List<?> buff = (List<?>) actual
-        return Arrays.equals(AvroUtils.getBytes(buff), expected)
+        Iterator<ByteBuffer> bytes = ((LinkedList<ByteBuffer>) actual).iterator()
+
+        boolean match = true
+        int index = 0;
+        while (bytes.hasNext()) {
+            ByteBuffer b = bytes.next()
+            while (b.hasRemaining()) {
+                match &= b.get() == expected[index]
+                index++;
+            }
+        }
+
+        return match
     }
 
     /* TODO (gapra) : Once this is in the same branch as QQ and CF, add network tests for both of them. */
