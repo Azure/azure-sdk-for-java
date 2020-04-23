@@ -65,7 +65,9 @@ public class SharedTokenCacheCredential implements TokenCredential {
                     .setTokenCacheAccessAspect(accessAspect)
                     .build();
             } catch (Exception e) {
-                return Mono.error(e);
+                return Mono.error((new RuntimeException(
+                    "SharedTokenCacheCredential authentication unavailable. No client id were discovered.",
+                    e)));
             }
         }
 
@@ -85,18 +87,19 @@ public class SharedTokenCacheCredential implements TokenCredential {
 
                 if (accounts.size() == 0) {
                     if (username == null) {
-                        return Mono.error(new RuntimeException("SharedTokenCacheCredential authentication unavailable. No accounts were discovered in the cache."));
+                        return Mono.error(new RuntimeException(
+                                "SharedTokenCacheCredential authentication unavailable. No accounts were discovered in the cache."));
                     } else {
-                        return Mono.error(new RuntimeException(String.format("SharedTokenCacheCredential authentication unavailable. No account "
-                            + "matching the specified %s was found in the cache.", username)));
+                        return Mono.error(new RuntimeException(String.format("SharedTokenCacheCredential authentication unavailable."
+                            + " No account matching the specified %s was found in the cache.", username)));
                     }
                 } else if (accounts.size() > 1) {
                     if (username == null) {
                         return Mono.error(new RuntimeException("SharedTokenCacheCredential authentication unavailable. "
                             + "Multiple accounts were found in the cache. Use username and tenant id to disambiguate."));
                     } else {
-                        return Mono.error(new RuntimeException(String.format("SharedTokenCacheCredential authentication unavailable. Multiple accounts matching the specified "
-                            + " %s were found in the cache.", username)));
+                        return Mono.error(new RuntimeException(String.format("SharedTokenCacheCredential authentication unavailable."
+                            + "Multiple accounts matching the specified  %s were found in the cache.", username)));
                     }
                 } else {
                     requestedAccount = accounts.values().iterator().next();
