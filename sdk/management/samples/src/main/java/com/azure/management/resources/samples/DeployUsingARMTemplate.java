@@ -138,18 +138,19 @@ public final class DeployUsingARMTemplate {
     private static String getTemplate(Azure azure) throws IllegalAccessException, JsonProcessingException, IOException {
         final String hostingPlanName = azure.sdkContext().randomResourceName("hpRSAT", 24);
         final String webappName = azure.sdkContext().randomResourceName("wnRSAT", 24);
-        final InputStream embeddedTemplate;
-        embeddedTemplate = DeployUsingARMTemplate.class.getResourceAsStream("/templateValue.json");
 
-        final ObjectMapper mapper = new ObjectMapper();
-        final JsonNode tmp = mapper.readTree(embeddedTemplate);
+        try (final InputStream embeddedTemplate = DeployUsingARMTemplate.class.getResourceAsStream("/templateValue.json")) {
 
-        DeployUsingARMTemplate.validateAndAddFieldValue("string", hostingPlanName, "hostingPlanName", null, tmp);
-        DeployUsingARMTemplate.validateAndAddFieldValue("string", webappName, "webSiteName", null, tmp);
-        DeployUsingARMTemplate.validateAndAddFieldValue("string", "F1", "skuName", null, tmp);
-        DeployUsingARMTemplate.validateAndAddFieldValue("int", "1", "skuCapacity", null, tmp);
+            final ObjectMapper mapper = new ObjectMapper();
+            final JsonNode tmp = mapper.readTree(embeddedTemplate);
 
-        return tmp.toString();
+            DeployUsingARMTemplate.validateAndAddFieldValue("string", hostingPlanName, "hostingPlanName", null, tmp);
+            DeployUsingARMTemplate.validateAndAddFieldValue("string", webappName, "webSiteName", null, tmp);
+            DeployUsingARMTemplate.validateAndAddFieldValue("string", "F1", "skuName", null, tmp);
+            DeployUsingARMTemplate.validateAndAddFieldValue("int", "1", "skuCapacity", null, tmp);
+
+            return tmp.toString();
+        }
     }
 
     private static void validateAndAddFieldValue(String type, String fieldValue, String fieldName, String errorMessage,

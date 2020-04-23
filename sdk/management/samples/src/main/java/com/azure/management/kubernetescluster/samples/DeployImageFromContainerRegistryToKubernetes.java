@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.management.kubernetescluster.samples;
 
-
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.management.Azure;
 import com.azure.management.containerregistry.AccessKeyType;
@@ -17,6 +16,11 @@ import com.azure.management.samples.SSHShell;
 import com.azure.management.samples.Utils;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerResponse;
+import com.github.dockerjava.api.command.PullImageResultCallback;
+import com.github.dockerjava.api.exception.NotFoundException;
+import com.github.dockerjava.api.model.AuthConfig;
+import com.github.dockerjava.api.model.Container;
+import com.github.dockerjava.api.model.Image;
 import com.github.dockerjava.core.command.PushImageResultCallback;
 import io.fabric8.kubernetes.api.model.LoadBalancerIngress;
 import io.fabric8.kubernetes.api.model.Namespace;
@@ -24,16 +28,20 @@ import io.fabric8.kubernetes.api.model.NamespaceBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
+import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.api.model.SecretBuilder;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import org.apache.commons.codec.binary.Base64;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Date;
@@ -109,8 +117,8 @@ public class DeployImageFromContainerRegistryToKubernetes {
             System.out.println("Creating an SSH private and public key pair");
 
             SSHShell.SshPublicPrivateKey sshKeys = SSHShell.generateSSHKeys("", "ACS");
-            System.out.println("SSH private key value: \n" + sshKeys.getSshPrivateKey());
-            System.out.println("SSH public key value: \n" + sshKeys.getSshPublicKey());
+            System.out.println("SSH private key value: %n" + sshKeys.getSshPrivateKey());
+            System.out.println("SSH public key value: %n" + sshKeys.getSshPublicKey());
 
 
             //=============================================================
@@ -173,12 +181,13 @@ public class DeployImageFromContainerRegistryToKubernetes {
 
             dockerClient.pullImageCmd(dockerImageName)
                 .withTag(dockerImageTag)
+                .withAuthConfig(new AuthConfig())
                 .exec(new PullImageResultCallback())
-                .awaitSuccess();
+                .awaitCompletion();
             System.out.println("List local Docker images:");
             List<Image> images = dockerClient.listImagesCmd().withShowAll(true).exec();
             for (Image image : images) {
-                System.out.format("\tFound Docker image %s (%s)\n", image.getRepoTags()[0], image.getId());
+                System.out.format("\tFound Docker image %s (%s)%n", image.getRepoTags()[0], image.getId());
             }
 
             CreateContainerResponse dockerContainerInstance = dockerClient.createContainerCmd(dockerImageName + ":" + dockerImageTag)
@@ -190,7 +199,7 @@ public class DeployImageFromContainerRegistryToKubernetes {
                 .withShowAll(true)
                 .exec();
             for (Container container : dockerContainers) {
-                System.out.format("\tFound Docker container %s (%s)\n", container.getImage(), container.getId());
+                System.out.format("\tFound Docker container %s (%s)%n", container.getImage(), container.getId());
             }
 
 
@@ -198,7 +207,7 @@ public class DeployImageFromContainerRegistryToKubernetes {
             // Commit the new container
 
             String privateRepoUrl = azureRegistry.loginServerUrl() + "/samples/" + dockerContainerName;
-            String dockerImageId = dockerClient.commitCmd(dockerContainerInstance.getId())
+            dockerClient.commitCmd(dockerContainerInstance.getId())
                 .withRepository(privateRepoUrl)
                 .withTag("latest").exec();
 
@@ -228,15 +237,15 @@ public class DeployImageFromContainerRegistryToKubernetes {
 
             dockerClient.pullImageCmd(privateRepoUrl)
                 .withAuthConfig(dockerClient.authConfig())
-                .exec(new PullImageResultCallback()).awaitSuccess();
+                .exec(new PullImageResultCallback()).awaitCompletion();
             System.out.println("List local Docker images after pulling sample image from the Azure Container Registry:");
             images = dockerClient.listImagesCmd()
                 .withShowAll(true)
                 .exec();
             for (Image image : images) {
-                System.out.format("\tFound Docker image %s (%s)\n", image.getRepoTags()[0], image.getId());
+                System.out.format("\tFound Docker image %s (%s)%n", image.getRepoTags()[0], image.getId());
             }
-            dockerContainerInstance = dockerClient.createContainerCmd(privateRepoUrl)
+            dockerClient.createContainerCmd(privateRepoUrl)
                 .withName(dockerContainerName + "-private")
                 .withCmd("/hello").exec();
             System.out.println("List Docker containers after instantiating container from the Azure Container Registry sample image:");
@@ -244,7 +253,7 @@ public class DeployImageFromContainerRegistryToKubernetes {
                 .withShowAll(true)
                 .exec();
             for (Container container : dockerContainers) {
-                System.out.format("\tFound Docker container %s (%s)\n", container.getImage(), container.getId());
+                System.out.format("\tFound Docker container %s (%s)%n", container.getImage(), container.getId());
             }
 
 
@@ -259,9 +268,9 @@ public class DeployImageFromContainerRegistryToKubernetes {
             byte[] kubeConfigContent = kubernetesCluster.adminKubeConfigContent();
             File tempKubeConfigFile = File.createTempFile("kube", ".config", new File(System.getProperty("java.io.tmpdir")));
             tempKubeConfigFile.deleteOnExit();
-            BufferedWriter buffOut = new BufferedWriter(new FileWriter(tempKubeConfigFile));
-            buffOut.write(new String(kubeConfigContent));
-            buffOut.close();
+            try (BufferedWriter buffOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(tempKubeConfigFile), StandardCharsets.UTF_8))) {
+                buffOut.write(new String(kubeConfigContent, StandardCharsets.UTF_8));
+            }
 
             System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, tempKubeConfigFile.getPath());
             Config config = new Config();
@@ -298,7 +307,7 @@ public class DeployImageFromContainerRegistryToKubernetes {
             // Create a secret of type "docker-repository" that will be used for downloading the container image from
             //     our Azure private container repo
 
-            String basicAuth = new String(Base64.encodeBase64((acrCredentials.username() + ":" + acrCredentials.accessKeys().get(AccessKeyType.PRIMARY)).getBytes()));
+            String basicAuth = new String(Base64.encodeBase64((acrCredentials.username() + ":" + acrCredentials.accessKeys().get(AccessKeyType.PRIMARY)).getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8);
             HashMap<String, String> secretData = new HashMap<>(1);
             String dockerCfg = String.format("{ \"%s\": { \"auth\": \"%s\", \"email\": \"%s\" } }",
                 azureRegistry.loginServerUrl(),

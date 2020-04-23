@@ -4,15 +4,19 @@ package com.azure.management.sql.samples;
 
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.management.ApplicationTokenCredential;
 import com.azure.management.Azure;
 import com.azure.management.RestClient;
 import com.azure.management.RestClientBuilder;
+import com.azure.management.monitor.Metric;
 import com.azure.management.monitor.MetricCollection;
 import com.azure.management.monitor.MetricDefinition;
+import com.azure.management.monitor.MetricValue;
 import com.azure.management.monitor.TimeSeriesElement;
+import com.azure.management.monitor.models.MetadataValueInner;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.samples.Utils;
@@ -30,6 +34,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.Period;
 import java.util.List;
@@ -153,7 +158,7 @@ public class GettingSqlServerMetrics {
             // Print results from select statement
             System.out.println("SELECT * FROM Sample_Test");
             while (resultSet.next()) {
-                System.out.format("\t%s\n", resultSet.getString(1));
+                System.out.format("\t%s%n", resultSet.getString(1));
             }
 
             // Close the connection to the "test" database
@@ -213,7 +218,7 @@ public class GettingSqlServerMetrics {
             // Use Monitor Service to list the SQL server metrics.
 
             System.out.println("Using Monitor Service to list the SQL server metrics");
-            List<MetricDefinition> metricDefinitions = azure.metricDefinitions().listByResource(sqlServer.id());
+            PagedIterable<MetricDefinition> metricDefinitions = azure.metricDefinitions().listByResource(sqlServer.id());
 
             SqlElasticPool ep = sqlServer.elasticPools().get(epName);
 
@@ -226,11 +231,11 @@ public class GettingSqlServerMetrics {
                         .startingFrom(startTime)
                         .endsBefore(endTime)
                         .withAggregation("Average")
-                        .withInterval(Period.minutes(5))
+                        .withInterval(Duration.ofMinutes(5))
                         .withOdataFilter(String.format("ElasticPoolResourceId eq '%s'", ep.id()))
                         .execute();
 
-                    System.out.format("SQL server \"%s\" %s metrics\n", sqlServer.name(), metricDefinition.name().localizedValue());
+                    System.out.format("SQL server \"%s\" %s metrics%n", sqlServer.name(), metricDefinition.name().localizedValue());
                     System.out.println("\tNamespace: " + metricCollection.namespace());
                     System.out.println("\tQuery time: " + metricCollection.timespan());
                     System.out.println("\tTime Grain: " + metricCollection.interval());
@@ -243,7 +248,7 @@ public class GettingSqlServerMetrics {
                         System.out.println("\tTime Series: ");
                         for (TimeSeriesElement timeElement : metric.timeseries()) {
                             System.out.println("\t\tMetadata: ");
-                            for (MetadataValue metadata : timeElement.metadatavalues()) {
+                            for (MetadataValueInner metadata : timeElement.metadatavalues()) {
                                 System.out.println("\t\t\t" + metadata.name().localizedValue() + ": " + metadata.value());
                             }
                             System.out.println("\t\tData: ");
@@ -290,7 +295,7 @@ public class GettingSqlServerMetrics {
                         System.out.println("\tTime Series: ");
                         for (TimeSeriesElement timeElement : metric.timeseries()) {
                             System.out.println("\t\tMetadata: ");
-                            for (MetadataValue metadata : timeElement.metadatavalues()) {
+                            for (MetadataValueInner metadata : timeElement.metadatavalues()) {
                                 System.out.println("\t\t\t" + metadata.name().localizedValue() + ": " + metadata.value());
                             }
                             System.out.println("\t\tData: ");
@@ -307,7 +312,6 @@ public class GettingSqlServerMetrics {
                     break;
                 }
             }
-
 
             // Delete the SQL Servers.
             System.out.println("Deleting the Sql Server");

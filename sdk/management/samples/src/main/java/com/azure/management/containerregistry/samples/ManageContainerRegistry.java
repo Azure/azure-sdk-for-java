@@ -89,7 +89,7 @@ public class ManageContainerRegistry {
             System.out.println("List local Docker images:");
             List<Image> images = dockerClient.listImagesCmd().withShowAll(true).exec();
             for (Image image : images) {
-                System.out.format("\tFound Docker image %s (%s)\n", image.getRepoTags()[0], image.getId());
+                System.out.format("\tFound Docker image %s (%s)%n", image.getRepoTags()[0], image.getId());
             }
 
             CreateContainerResponse dockerContainerInstance = dockerClient.createContainerCmd(dockerImageName + ":" + dockerImageTag)
@@ -101,16 +101,16 @@ public class ManageContainerRegistry {
                     .withShowAll(true)
                     .exec();
             for (Container container : dockerContainers) {
-                System.out.format("\tFound Docker container %s (%s)\n", container.getImage(), container.getId());
+                System.out.format("\tFound Docker container %s (%s)%n", container.getImage(), container.getId());
             }
 
             //=============================================================
             // Commit the new container
 
             String privateRepoUrl = azureRegistry.loginServerUrl() + "/samples/" + dockerContainerName;
-            String dockerImageId = dockerClient.commitCmd(dockerContainerInstance.getId())
-                    .withRepository(privateRepoUrl)
-                    .withTag("latest").exec();
+            dockerClient.commitCmd(dockerContainerInstance.getId())
+                .withRepository(privateRepoUrl)
+                .withTag("latest").exec();
 
             // We can now remove the temporary container instance
             dockerClient.removeContainerCmd(dockerContainerInstance.getId())
@@ -141,17 +141,17 @@ public class ManageContainerRegistry {
                     .withShowAll(true)
                     .exec();
             for (Image image : images) {
-                System.out.format("\tFound Docker image %s (%s)\n", image.getRepoTags()[0], image.getId());
+                System.out.format("\tFound Docker image %s (%s)%n", image.getRepoTags()[0], image.getId());
             }
-            dockerContainerInstance = dockerClient.createContainerCmd(privateRepoUrl)
-                    .withName(dockerContainerName + "-private")
-                    .withCmd("/hello").exec();
+            dockerClient.createContainerCmd(privateRepoUrl)
+                .withName(dockerContainerName + "-private")
+                .withCmd("/hello").exec();
             System.out.println("List Docker containers after instantiating container from the Azure Container Registry sample image:");
             dockerContainers = dockerClient.listContainersCmd()
                     .withShowAll(true)
                     .exec();
             for (Container container : dockerContainers) {
-                System.out.format("\tFound Docker container %s (%s)\n", container.getImage(), container.getId());
+                System.out.format("\tFound Docker container %s (%s)%n", container.getImage(), container.getId());
             }
 
             return true;
