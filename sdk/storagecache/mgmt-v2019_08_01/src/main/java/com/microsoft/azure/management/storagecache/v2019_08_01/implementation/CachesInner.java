@@ -48,7 +48,7 @@ public class CachesInner implements InnerSupportsGet<CacheInner>, InnerSupportsD
     /** The Retrofit service to perform REST calls. */
     private CachesService service;
     /** The service client containing this operation class. */
-    private StorageCacheMgmtClientImpl client;
+    private StorageCacheManagementClientImpl client;
 
     /**
      * Initializes an instance of CachesInner.
@@ -56,7 +56,7 @@ public class CachesInner implements InnerSupportsGet<CacheInner>, InnerSupportsD
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public CachesInner(Retrofit retrofit, StorageCacheMgmtClientImpl client) {
+    public CachesInner(Retrofit retrofit, StorageCacheManagementClientImpl client) {
         this.service = retrofit.create(CachesService.class);
         this.client = client;
     }
