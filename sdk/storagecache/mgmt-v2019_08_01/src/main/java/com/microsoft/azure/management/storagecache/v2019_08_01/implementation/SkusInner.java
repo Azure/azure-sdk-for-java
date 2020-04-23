@@ -38,7 +38,7 @@ public class SkusInner {
     /** The Retrofit service to perform REST calls. */
     private SkusService service;
     /** The service client containing this operation class. */
-    private StorageCacheMgmtClientImpl client;
+    private StorageCacheManagementClientImpl client;
 
     /**
      * Initializes an instance of SkusInner.
@@ -46,7 +46,7 @@ public class SkusInner {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public SkusInner(Retrofit retrofit, StorageCacheMgmtClientImpl client) {
+    public SkusInner(Retrofit retrofit, StorageCacheManagementClientImpl client) {
         this.service = retrofit.create(SkusService.class);
         this.client = client;
     }
