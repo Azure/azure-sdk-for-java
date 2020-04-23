@@ -294,7 +294,8 @@ public class DeployImageFromContainerRegistryToKubernetes {
                 .build();
             try {
                 System.out.println("Created namespace" + kubernetesClient.namespaces().create(ns));
-            } catch (Exception ignored) {
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
             }
 
             SdkContext.sleep(5000);

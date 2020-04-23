@@ -208,7 +208,8 @@ public final class SSHShell {
             }
             try {
                 Thread.sleep(100);
-            } catch (Exception ee) {
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
             }
         }
         channel.disconnect();
@@ -259,7 +260,8 @@ public final class SSHShell {
             path.append("/" + dir);
             try {
                 channel.mkdir(path.toString());
-            } catch (Exception ee) {
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
             }
         }
         channel.cd(absolutePath);

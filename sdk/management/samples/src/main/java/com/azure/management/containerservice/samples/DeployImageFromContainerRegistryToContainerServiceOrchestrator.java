@@ -306,6 +306,7 @@ public class DeployImageFromContainerRegistryToContainerServiceOrchestrator {
             try {
                 System.out.println("Created namespace" + kubernetesClient.namespaces().create(ns));
             } catch (Exception e) {
+                System.err.println(e.getMessage());
             }
 
             SdkContext.sleep(5000);
@@ -325,7 +326,7 @@ public class DeployImageFromContainerRegistryToContainerServiceOrchestrator {
                     basicAuth,
                     "acrsample@azure.com");
 
-            dockerCfg = new String(Base64.encodeBase64(dockerCfg.getBytes("UTF-8")), "UTF-8");
+            dockerCfg = new String(Base64.encodeBase64(dockerCfg.getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8);
             secretData.put(".dockercfg", dockerCfg);
             SecretBuilder secretBuilder = new SecretBuilder()
                     .withNewMetadata()
