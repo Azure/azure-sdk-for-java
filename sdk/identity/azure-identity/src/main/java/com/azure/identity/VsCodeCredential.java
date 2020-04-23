@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.identity;
 
 import com.azure.core.credential.AccessToken;
@@ -11,18 +14,23 @@ import reactor.core.publisher.Mono;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * Enables authentication to Azure Active Directory using data from Visual Studio Code
+ */
 public class VsCodeCredential implements TokenCredential {
     private final IdentityClient identityClient;
     private final AtomicReference<MsalToken> cachedToken;
 
     /**
-     * Creates a DeviceCodeCredential with the given identity client options.
+     * Creates a public class VsCodeCredential implements TokenCredential with the given tenant and
+     * identity client options.
      *
+     * @param tenantId the tenant ID of the application
      * @param identityClientOptions the options for configuring the identity client
      */
-    VsCodeCredential(IdentityClientOptions identityClientOptions) {
+    VsCodeCredential(String tenantId, IdentityClientOptions identityClientOptions) {
         identityClient = new IdentityClientBuilder()
-                             .tenantId("common")
+                             .tenantId(tenantId)
                              .identityClientOptions(identityClientOptions)
                              .build();
         this.cachedToken = new AtomicReference<>();

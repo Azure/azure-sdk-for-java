@@ -251,6 +251,9 @@
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
             files="com.azure.endtoend.identity.WebJobsIdentityTest.java"/>
 
+  <suppress checks="MethodName|MemberName|VisibilityModifier"
+            files="com.azure.identity.implementation.WindowsCredentialApi.java"/>
+
   <!-- Use the logger in a Utility static method. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
             files="com.azure.ai.textanalytics.Transforms.java"/>

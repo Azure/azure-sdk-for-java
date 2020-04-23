@@ -23,6 +23,9 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.identity.DeviceCodeInfo;
 import com.azure.identity.KnownAuthorityHosts;
 import com.azure.identity.implementation.util.CertificateUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ClientCredentialParameters;
@@ -32,8 +35,6 @@ import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.RefreshTokenParameters;
 import com.microsoft.aad.msal4j.SilentParameters;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
-import com.microsoft.aad.msal4jextensions.persistence.linux.KeyRingAccessor;
-import com.microsoft.aad.msal4jextensions.persistence.mac.KeyChainAccessor;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -437,52 +438,76 @@ public class IdentityClient {
      */
     public Mono<MsalToken> authenticateWithVsCodeCredential(TokenRequestContext request) {
 
-        String os = System.getProperty("os.name").toLowerCase(Locale.ROOT);
-        String refreshToken = "";
-        if (os.contains("nix") || os.contains("nux")) {
+        VisualStudioCacheAccessor accessor = new VisualStudioCacheAccessor();
 
-            KeyRingAccessor keyRingAccessor = new KeyRingAccessor(null, null,
-                null, null, "service", "VS Code Azure",
-                "account", "Azure");
+        JsonNode userSettings = accessor.getUserSettings();
 
-            byte[] readCreds = keyRingAccessor.read();
-            refreshToken= new String(readCreds);
+        String tenant = tenantId;
+        String cloud = "Azure";
+        String clientId = "aebc6443-996d-45c2-90f0-388ff96faa56";
 
-        } else if (os.contains("mac")) {
+        if (!userSettings.isNull()) {
+            if (userSettings.has("azure.tenant")) {
+                tenant = userSettings.get("azure.tenant").asText();
+            }
 
-            KeyChainAccessor keyChainAccessor = new KeyChainAccessor(null,
-                "VS Code Azure", "Azure");
-
-            byte[] readCreds = keyChainAccessor.read();
-            refreshToken= new String(readCreds);
-
-        } else {
-            new RuntimeException("Platform could not be determined for VsCode Credential authentication.");
+            if (userSettings.has("azure.cloud")) {
+                cloud = userSettings.get("azure.cloud").asText();
+            }
         }
 
+        String credential = accessor.getCredentials("VS Code Azure", cloud);
 
-        String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/organizations/" + tenantId;
+        String authority = KnownAuthorityHosts.AZURE_CLOUD.replaceAll("/+$", "")
+            + "/organizations/" + tenantId;
         PublicClientApplication.Builder publicClientApplicationBuilder = PublicClientApplication.builder(clientId);
-        RefreshTokenParameters parameters = RefreshTokenParameters
-                                                .builder(new HashSet<>(request.getScopes()), refreshToken)
-                                                .build();
+        if (httpPipelineAdapter != null) {
+            publicClientApplicationBuilder.httpClient(httpPipelineAdapter);
+        } else if (options.getProxyOptions() != null) {
+            publicClientApplicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
+        }
+
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode parsedCredentials = mapper.readTree(credential);
+            String redirectUri = parsedCredentials.get("redirectionUrl").asText();
+            String authorizationCode = parsedCredentials.get("code").asText();
+
+            AuthorizationCodeParameters authorizationCodeParameters = AuthorizationCodeParameters
+                .builder(authorizationCode, new URI(redirectUri))
+                .scopes(new HashSet<>(request.getScopes()))
+                .build();
+
+            PublicClientApplication application = publicClientApplicationBuilder.authority(authority).build();
+
+            return Mono.fromFuture(() -> application.acquireToken(
+                authorizationCodeParameters))
+                .map(ar -> new MsalToken(ar, options));
+
+
+
+        } catch (JsonProcessingException e) {
+            // Move below to try auth with refresh token.
+        } catch (URISyntaxException e) {
+            return Mono.error(logger.logExceptionAsError(new RuntimeException(e)));
+        } catch (MalformedURLException e) {
+            return Mono.error(logger.logExceptionAsError(new IllegalStateException(e)));
+        }
 
         try {
             PublicClientApplication clientApplication =  publicClientApplicationBuilder
-                                                             .authority(authorityUrl)
+                                                             .authority(authority)
                                                              .build();
         } catch (MalformedURLException e) {
-            return Mono.error(e);
+            return Mono.error(logger.logExceptionAsError(new IllegalStateException(e)));
         }
 
-        return Mono.defer(() -> {
-            try {
-                return Mono.fromFuture(publicClientApplication.acquireToken(parameters))
-                           .map(ar -> new MsalToken(ar, options));
-            } catch (Exception e) {
-                return Mono.error(e);
-            }
-        });
+        RefreshTokenParameters parameters = RefreshTokenParameters
+            .builder(new HashSet<>(request.getScopes()), credential)
+            .build();
+
+        return Mono.defer(() -> Mono.fromFuture(publicClientApplication.acquireToken(parameters))
+                           .map(ar -> new MsalToken(ar, options)));
 
     }
 
