@@ -9,8 +9,8 @@
 package com.microsoft.azure.management.eventhubs.v2018_01_01_preview.implementation;
 
 import com.microsoft.azure.management.eventhubs.v2018_01_01_preview.Sku;
-import org.joda.time.DateTime;
 import com.microsoft.azure.management.eventhubs.v2018_01_01_preview.Identity;
+import org.joda.time.DateTime;
 import com.microsoft.azure.management.eventhubs.v2018_01_01_preview.Encryption;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -28,6 +28,12 @@ public class EHNamespaceInner extends Resource {
      */
     @JsonProperty(value = "sku")
     private Sku sku;
+
+    /**
+     * Properties of BYOK Identity description.
+     */
+    @JsonProperty(value = "identity")
+    private Identity identity;
 
     /**
      * Provisioning state of the Namespace.
@@ -94,12 +100,6 @@ public class EHNamespaceInner extends Resource {
     private Boolean zoneRedundant;
 
     /**
-     * Properties of BYOK Identity description.
-     */
-    @JsonProperty(value = "properties.identity")
-    private Identity identity;
-
-    /**
      * Properties of BYOK Encryption description.
      */
     @JsonProperty(value = "properties.encryption")
@@ -122,6 +122,26 @@ public class EHNamespaceInner extends Resource {
      */
     public EHNamespaceInner withSku(Sku sku) {
         this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get properties of BYOK Identity description.
+     *
+     * @return the identity value
+     */
+    public Identity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set properties of BYOK Identity description.
+     *
+     * @param identity the identity value to set
+     * @return the EHNamespaceInner object itself.
+     */
+    public EHNamespaceInner withIdentity(Identity identity) {
+        this.identity = identity;
         return this;
     }
 
@@ -267,26 +287,6 @@ public class EHNamespaceInner extends Resource {
      */
     public EHNamespaceInner withZoneRedundant(Boolean zoneRedundant) {
         this.zoneRedundant = zoneRedundant;
-        return this;
-    }
-
-    /**
-     * Get properties of BYOK Identity description.
-     *
-     * @return the identity value
-     */
-    public Identity identity() {
-        return this.identity;
-    }
-
-    /**
-     * Set properties of BYOK Identity description.
-     *
-     * @param identity the identity value to set
-     * @return the EHNamespaceInner object itself.
-     */
-    public EHNamespaceInner withIdentity(Identity identity) {
-        this.identity = identity;
         return this;
     }
 

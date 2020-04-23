@@ -12,8 +12,8 @@ import com.microsoft.azure.arm.resources.models.implementation.GroupableResource
 import com.microsoft.azure.management.eventhubs.v2018_01_01_preview.EHNamespace;
 import rx.Observable;
 import com.microsoft.azure.management.eventhubs.v2018_01_01_preview.Sku;
-import org.joda.time.DateTime;
 import com.microsoft.azure.management.eventhubs.v2018_01_01_preview.Identity;
+import org.joda.time.DateTime;
 import com.microsoft.azure.management.eventhubs.v2018_01_01_preview.Encryption;
 
 class EHNamespaceImpl extends GroupableResourceCoreImpl<EHNamespace, EHNamespaceInner, EHNamespaceImpl, EventHubsManager> implements EHNamespace, EHNamespace.Definition, EHNamespace.Update {
