@@ -30,7 +30,7 @@ public abstract class TestBase implements BeforeEachCallback {
     private static final String AZURE_TEST_MODE = "AZURE_TEST_MODE";
     private static final String AZURE_TEST_HTTP_CLIENTS = "AZURE_TEST_HTTP_CLIENTS";
     public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_ALL = "ALL";
-    public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY = "NettyAsyncHttpClient";
+    public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY = "netty";
     public static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
 
     private static TestMode testMode;
@@ -164,7 +164,7 @@ public abstract class TestBase implements BeforeEachCallback {
     public static boolean shouldClientBeTested(HttpClient client) {
         String configuredHttpClientToTest = Configuration.getGlobalConfiguration().get(AZURE_TEST_HTTP_CLIENTS);
         if (CoreUtils.isNullOrEmpty(configuredHttpClientToTest)) {
-            return client.getClass().getSimpleName().equals(AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY);
+            return client.getClass().getSimpleName().toLowerCase().contains(AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY);
         }
         if (configuredHttpClientToTest.equalsIgnoreCase(AZURE_TEST_HTTP_CLIENTS_VALUE_ALL)) {
             return true;
