@@ -34,11 +34,11 @@ connection string value can be obtained by:
 - [Send messages using Azure Identity][SendMessageWithAzureIdentityAsyncSample]
 - [Send message batches synchronously][SendMessageBatchSyncSample]
 - [Schedule and cancel a message][MessageCancelScheduleAsyncSample]
-- [Peek at a message][PeekMessageAsyncSample]
 - [Receive and auto-complete messages][ReceiveMessageAsyncSample]
 - [Receive messages using Azure Identity][ReceiveMessageAzureIdentityAsyncSample]
 - [Receive and settle messages via complete or abandon][ReceiveMessageAndSettleAsyncSample]
 - [Receive messages synchronously][ReceiveMessageSyncSample]
+- [Peek at a message][PeekMessageAsyncSample]
 
 ## Troubleshooting
 See [Troubleshooting][sdk_readme_troubleshooting].
