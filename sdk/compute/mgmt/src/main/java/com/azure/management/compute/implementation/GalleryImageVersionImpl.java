@@ -361,7 +361,7 @@ class GalleryImageVersionImpl
         Iterator<String> itr = iterable.iterator();
         while (itr.hasNext()) {
             String part = itr.next();
-            if (part != null && !part.trim().equals("")) {
+            if (part != null && !part.trim().isEmpty()) {
                 if (part.equalsIgnoreCase(name)) {
                     if (itr.hasNext()) {
                         return itr.next();
