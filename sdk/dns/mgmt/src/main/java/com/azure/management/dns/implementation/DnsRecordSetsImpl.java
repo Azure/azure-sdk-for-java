@@ -11,7 +11,7 @@ import com.azure.management.resources.fluentcore.arm.collection.implementation.E
 class DnsRecordSetsImpl
     extends ExternalChildResourcesNonCachedImpl<DnsRecordSetImpl, DnsRecordSet, RecordSetInner, DnsZoneImpl, DnsZone> {
     /** The default record set ttl in seconds. */
-    private final long defaultTtlInSeconds = 3600;
+    private static final long DEFAULT_TTL_IN_SECONDS = 3600;
 
     /**
      * Creates new DnsRecordSetsImpl.
@@ -33,7 +33,7 @@ class DnsRecordSetsImpl
     void withCNameRecordSet(String name, String alias) {
         CNameRecordSetImpl recordSet = CNameRecordSetImpl.newRecordSet(name, this.getParent());
         recordSet.inner().cnameRecord().withCname(alias);
-        setDefaults(prepareInlineDefine(recordSet.withTimeToLive(defaultTtlInSeconds)));
+        setDefaults(prepareInlineDefine(recordSet.withTimeToLive(DEFAULT_TTL_IN_SECONDS)));
     }
 
     DnsRecordSetImpl defineCaaRecordSet(String name) {
@@ -141,6 +141,6 @@ class DnsRecordSetsImpl
     }
 
     private DnsRecordSetImpl setDefaults(DnsRecordSetImpl recordSet) {
-        return recordSet.withTimeToLive(defaultTtlInSeconds);
+        return recordSet.withTimeToLive(DEFAULT_TTL_IN_SECONDS);
     }
 }

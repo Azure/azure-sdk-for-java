@@ -43,6 +43,10 @@ import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.storage.SkuName;
 import com.azure.management.storage.StorageAccount;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Arrays;
@@ -50,9 +54,6 @@ import java.util.Collection;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 
 public class AzureTests extends TestBase {
     private Azure azure;
@@ -1074,12 +1075,6 @@ public class AzureTests extends TestBase {
     @Test
     public void testResourceStreaming() throws Exception {
         new TestResourceStreaming(azure.storageAccounts()).runTest(azure.virtualMachines(), azure.resourceGroups());
-    }
-
-    @Test
-    @Disabled("Container service will be deprecated")
-    public void testContainerService() throws Exception {
-        new TestContainerService().runTest(azure.containerServices(), azure.resourceGroups());
     }
 
     @Test
