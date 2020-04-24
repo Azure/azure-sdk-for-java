@@ -4,7 +4,6 @@
 package com.azure.search.documents;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.search.documents.models.DataContainer;
@@ -89,9 +88,9 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
         DataSource dataSource2 = createTestSqlDataSourceObject();
 
         client.createOrUpdateDataSourceWithResponse(
-            dataSource1, null, new RequestOptions(), Context.NONE);
+            dataSource1, false, new RequestOptions(), Context.NONE);
         client.createOrUpdateDataSourceWithResponse(
-            dataSource2, null, new RequestOptions(), Context.NONE);
+            dataSource2, false, new RequestOptions(), Context.NONE);
 
         Iterator<DataSource> results = client.listDataSources("name", new RequestOptions(), Context.NONE).iterator();
 

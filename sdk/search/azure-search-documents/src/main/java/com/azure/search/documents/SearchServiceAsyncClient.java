@@ -4,7 +4,6 @@ package com.azure.search.documents;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
@@ -374,7 +373,7 @@ public final class SearchServiceAsyncClient {
 
     Mono<Response<Indexer>> createOrUpdateIndexerWithResponse(Indexer indexer, boolean onlyIfUnchanged,
         RequestOptions requestOptions, Context context) {
-        Objects.requireNonNull(indexer, "'DataSource' cannot be 'null'");
+        Objects.requireNonNull(indexer, "'Indexer' cannot be 'null'");
         String ifMatch = onlyIfUnchanged ? indexer.getETag() : null;
         try {
             return restClient.indexers()
@@ -470,7 +469,7 @@ public final class SearchServiceAsyncClient {
      * @return a response signalling completion.
      */
     public Mono<Void> deleteIndexer(String indexerName) {
-        return withContext(context -> deleteIndexerWithResponse(indexerName, null, null , context)
+        return withContext(context -> deleteIndexerWithResponse(indexerName, null, null, context)
             .flatMap(FluxUtil::toMono));
     }
 

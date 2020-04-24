@@ -3,7 +3,6 @@
 package com.azure.search.documents;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -153,7 +152,7 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
             .setName(initial.getName())
             .setSynonyms("newword1,newword2");
 
-        SynonymMap updatedActual = client.createOrUpdateSynonymMapWithResponse(updatedExpected, null,
+        SynonymMap updatedActual = client.createOrUpdateSynonymMapWithResponse(updatedExpected, false,
             generateRequestOptions(), Context.NONE).getValue();
         assertSynonymMapsEqual(updatedExpected, updatedActual);
 
@@ -174,7 +173,7 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
         SynonymMap expected = createTestSynonymMap();
 
         Response<SynonymMap> createOrUpdateResponse = client.createOrUpdateSynonymMapWithResponse(
-            expected, null, generateRequestOptions(), Context.NONE);
+            expected, false, generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.CREATED.code(), createOrUpdateResponse.getStatusCode());
         assertSynonymMapsEqual(expected, createOrUpdateResponse.getValue());
     }
@@ -217,7 +216,7 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
     @Test
     public void deleteSynonymMapIsIdempotent() {
         SynonymMap synonymMap = createTestSynonymMap();
-        Response<Void> deleteResponse = client.deleteSynonymMapWithResponse(synonymMap, null, generateRequestOptions(),
+        Response<Void> deleteResponse = client.deleteSynonymMapWithResponse(synonymMap, false, generateRequestOptions(),
             Context.NONE);
         assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
 
@@ -225,10 +224,10 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
             generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.CREATED.code(), createResponse.getStatusCode());
 
-        deleteResponse = client.deleteSynonymMapWithResponse(synonymMap, null, generateRequestOptions(), Context.NONE);
+        deleteResponse = client.deleteSynonymMapWithResponse(synonymMap, false, generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.NO_CONTENT.code(), deleteResponse.getStatusCode());
 
-        deleteResponse = client.deleteSynonymMapWithResponse(synonymMap, null, generateRequestOptions(), Context.NONE);
+        deleteResponse = client.deleteSynonymMapWithResponse(synonymMap, false, generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
     }
 

@@ -90,7 +90,7 @@ public class AccessConditionTests {
         String resourceName) {
         // Create a new resource (Indexer, SynonymMap, etc...)
         T newResource = newResourceDefinition.get();
-        AccessOptions accessOptions = new AccessOptions(null);
+        AccessOptions accessOptions = new AccessOptions(false);
 
         // Create it on the search service
         createOrUpdateDefinition.apply(newResource, accessOptions);
@@ -122,7 +122,7 @@ public class AccessConditionTests {
 
         // Create a new resource (Indexer, SynonymMap, etc...)
         T staleResource = newResourceDefinition.get();
-        AccessOptions accessOptions = new AccessOptions(null);
+        AccessOptions accessOptions = new AccessOptions(false);
 
         // Create the resource in the search service
         staleResource = createOrUpdateDefinition.apply(staleResource, accessOptions);
@@ -187,7 +187,7 @@ public class AccessConditionTests {
         T newResource = newResourceDefinition.get();
 
         // Create the resource on the search service
-        AccessOptions accessOptions = new AccessOptions(null);
+        AccessOptions accessOptions = new AccessOptions(false);
         newResource = createOrUpdateDefinition.apply(newResource, accessOptions);
 
         // get the original eTag
@@ -222,7 +222,7 @@ public class AccessConditionTests {
         T newResource = newResourceDefinition.get();
 
         // Create the resource on the search service
-        AccessOptions accessOptions = new AccessOptions(null);
+        AccessOptions accessOptions = new AccessOptions(false);
         newResource = createOrUpdateDefinition.apply(newResource, accessOptions);
         String originalETag = TestHelpers.getETag(newResource);
 
@@ -265,7 +265,7 @@ public class AccessConditionTests {
         T newResource = newResourceDefinition.get();
 
         // Create the resource on the search service
-        AccessOptions accessOptions = new AccessOptions(null);
+        AccessOptions accessOptions = new AccessOptions(false);
         newResource = createOrUpdateDefinition.apply(newResource, accessOptions);
         String originalETag = TestHelpers.getETag(newResource);
 

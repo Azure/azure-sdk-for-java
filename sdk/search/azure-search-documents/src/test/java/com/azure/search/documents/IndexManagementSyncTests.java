@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.search.documents;
 
-import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -167,7 +166,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
     @Test
     public void deleteIndexIfNotChangedWorksOnlyOnCurrentResource() {
         Index indexToCreate = createTestIndex();
-        AccessOptions accessOptions = new AccessOptions(null);
+        AccessOptions accessOptions = new AccessOptions(false);
 
         // Create the resource in the search service
         Index originalIndex = createOrUpdateIndexFunc.apply(indexToCreate, accessOptions);
@@ -212,17 +211,17 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
                     .setType(DataType.EDM_STRING)
                     .setKey(true)
             ));
-        Response<Void> deleteResponse = client.deleteIndexWithResponse(index, null, generateRequestOptions(), Context.NONE);
+        Response<Void> deleteResponse = client.deleteIndexWithResponse(index, false, generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
 
         Response<Index> createResponse = client.createIndexWithResponse(index, generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.CREATED.code(), createResponse.getStatusCode());
 
         // Delete the same index twice
-        deleteResponse = client.deleteIndexWithResponse(index, null, generateRequestOptions(), Context.NONE);
+        deleteResponse = client.deleteIndexWithResponse(index, false, generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.NO_CONTENT.code(), deleteResponse.getStatusCode());
 
-        deleteResponse = client.deleteIndexWithResponse(index, null, generateRequestOptions(), Context.NONE);
+        deleteResponse = client.deleteIndexWithResponse(index, false, generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
     }
 
@@ -328,7 +327,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         hotelNameField.setSynonymMaps(Collections.emptyList());
 
         Index updatedIndex = client.createOrUpdateIndexWithResponse(existingIndex,
-            true, null, generateRequestOptions(), Context.NONE).getValue();
+            true, false, generateRequestOptions(), Context.NONE).getValue();
         assertObjectEquals(existingIndex, updatedIndex, true, "etag", "@odata.etag");
     }
 
@@ -381,7 +380,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         hotelNameField.setHidden(true);
 
         updatedIndex = client.createOrUpdateIndexWithResponse(existingIndex,
-            true, null, generateRequestOptions(), Context.NONE).getValue();
+            true, false, generateRequestOptions(), Context.NONE).getValue();
 
         assertObjectEquals(existingIndex, updatedIndex, true, "etag", "@odata.etag");
     }
@@ -406,7 +405,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         ));
 
         Index updatedIndex = client.createOrUpdateIndexWithResponse(existingIndex,
-            true, null, generateRequestOptions(), Context.NONE).getValue();
+            true, false, generateRequestOptions(), Context.NONE).getValue();
         assertObjectEquals(existingIndex, updatedIndex, true, "etag", "@odata.etag");
     }
 
@@ -449,16 +448,16 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
     public void createOrUpdateIndexCreatesWhenIndexDoesNotExistWithResponse() {
         Index expected = createTestIndex();
 
-        Index actual = client.createOrUpdateIndexWithResponse(expected, false, null,
+        Index actual = client.createOrUpdateIndexWithResponse(expected, false, false,
             generateRequestOptions(), Context.NONE).getValue();
         assertObjectEquals(expected, actual, true, "etag");
 
         actual = client.createOrUpdateIndexWithResponse(expected.setName("hotel1"),
-            false, null, generateRequestOptions(), Context.NONE).getValue();
+            false, false, generateRequestOptions(), Context.NONE).getValue();
         assertObjectEquals(expected, actual, true, "etag");
 
         Response<Index> createOrUpdateResponse = client.createOrUpdateIndexWithResponse(expected.setName("hotel2"),
-            false, null, generateRequestOptions(), Context.NONE);
+            false, false, generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.CREATED.code(), createOrUpdateResponse.getStatusCode());
     }
 

@@ -4,7 +4,6 @@ package com.azure.search.documents;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -19,8 +18,6 @@ import com.azure.search.documents.models.ServiceStatistics;
 import com.azure.search.documents.models.Skillset;
 import com.azure.search.documents.models.SynonymMap;
 import com.azure.search.documents.models.TokenInfo;
-
-import java.util.Objects;
 
 /**
  * Synchronous Client to manage and query indexes, as well as manage other resources, on a Cognitive Search service

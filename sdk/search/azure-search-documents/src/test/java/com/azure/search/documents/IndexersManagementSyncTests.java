@@ -3,7 +3,6 @@
 package com.azure.search.documents;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.MatchConditions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -464,7 +463,7 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         indexer.setDataSourceName(SQL_DATASOURCE_NAME);
         client.createIndexerWithResponse(indexer, new RequestOptions(), Context.NONE);
 
-        client.deleteIndexerWithResponse(indexer, null, new RequestOptions(), Context.NONE);
+        client.deleteIndexerWithResponse(indexer, false, new RequestOptions(), Context.NONE);
         assertThrows(HttpResponseException.class, () -> client.getIndexer(indexer.getName()));
     }
 
@@ -479,17 +478,17 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
 
         // Try delete before the indexer even exists.
         Response<Void> result = client.deleteIndexerWithResponse(
-            indexer, null, generateRequestOptions(), Context.NONE);
+            indexer, false, generateRequestOptions(), Context.NONE);
         assertEquals(HttpURLConnection.HTTP_NOT_FOUND, result.getStatusCode());
 
         // Actually create the indexer
         client.createIndexer(indexer);
 
         // Now delete twice.
-        result = client.deleteIndexerWithResponse(indexer, null, generateRequestOptions(), Context.NONE);
+        result = client.deleteIndexerWithResponse(indexer, false, generateRequestOptions(), Context.NONE);
         assertEquals(HttpURLConnection.HTTP_NO_CONTENT, result.getStatusCode());
 
-        result = client.deleteIndexerWithResponse(indexer, null, generateRequestOptions(), Context.NONE);
+        result = client.deleteIndexerWithResponse(indexer, false, generateRequestOptions(), Context.NONE);
         assertEquals(HttpURLConnection.HTTP_NOT_FOUND, result.getStatusCode());
     }
 
