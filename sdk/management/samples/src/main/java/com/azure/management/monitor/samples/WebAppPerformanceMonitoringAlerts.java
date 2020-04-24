@@ -41,7 +41,7 @@ public final class WebAppPerformanceMonitoringAlerts {
             System.out.println("Creating App Service plan");
 
             AppServicePlan servicePlan = azure.appServicePlans().define("HighlyAvailableWebApps")
-                    .withRegion(Region.US_EAST2)
+                    .withRegion(Region.US_SOUTH_CENTRAL)
                     .withNewResourceGroup(rgName)
                     .withPricingTier(PricingTier.PREMIUM_P1)
                     .withOperatingSystem(OperatingSystem.WINDOWS)

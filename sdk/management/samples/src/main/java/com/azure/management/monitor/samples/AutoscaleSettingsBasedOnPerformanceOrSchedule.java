@@ -17,11 +17,8 @@ import com.azure.management.monitor.TimeAggregationType;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.samples.Utils;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 
 import java.io.File;
-import java.io.IOException;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
@@ -34,8 +31,6 @@ import java.util.concurrent.TimeUnit;
  *  - Clean up your resources
  */
 public final class AutoscaleSettingsBasedOnPerformanceOrSchedule {
-
-    private static OkHttpClient httpClient;
 
     /**
      * Main function which runs the actual sample.
@@ -107,7 +102,7 @@ public final class AutoscaleSettingsBasedOnPerformanceOrSchedule {
             // Trigger scale-out action
             for (int i = 0; i < 11; i++) {
                 SdkContext.sleep(5000);
-                curl(deployedWebAppUrl);
+                Utils.curl(deployedWebAppUrl);
             }
 
             // Now you can browse the history of autoscale form the azure portal
@@ -156,19 +151,6 @@ public final class AutoscaleSettingsBasedOnPerformanceOrSchedule {
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
-        }
-    }
-
-    static {
-        httpClient = new OkHttpClient.Builder().readTimeout(1, TimeUnit.MINUTES).build();
-    }
-
-    private static void curl(String url) {
-        Request request = new Request.Builder().url(url).get().build();
-        try {
-            System.out.println("Browse URL >> '" + url + "'");
-            System.out.println("Server Response << '" + httpClient.newCall(request).execute().body().string() + "'");
-        } catch (IOException e) {
         }
     }
 }
