@@ -278,12 +278,12 @@ public abstract class IntegrationTestBase extends TestBase {
 
     static Stream<Arguments> receiveDeferredMessageBySequenceNumber() {
         return Stream.of(
+            Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.COMPLETED),
             Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.ABANDONED),
             Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.SUSPENDED),
-            Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.COMPLETED),
             Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.ABANDONED),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.SUSPENDED),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.COMPLETED)
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.COMPLETED),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.SUSPENDED)
         );
     }
 }

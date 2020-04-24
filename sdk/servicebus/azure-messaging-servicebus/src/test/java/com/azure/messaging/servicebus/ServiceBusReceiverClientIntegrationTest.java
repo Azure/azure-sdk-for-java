@@ -13,8 +13,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -69,7 +69,19 @@ public class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase
 
     @Override
     protected void afterTest() {
-        dispose(sender);
+        final int pending = messagesPending.get();
+        if (pending < 1) {
+            dispose(receiver, sender, receiveAndDeleteReceiver);
+            return;
+        }
+        // In the case that this test failed... we're going to drain the queue or subscription.
+        try {
+            receiveAndDeleteReceiver.receive(pending);
+        } catch (Exception e) {
+            logger.warning("Error occurred when draining queue.", e);
+        } finally {
+            dispose(receiver, sender, receiveAndDeleteReceiver);
+        }
     }
 
     /**
@@ -332,6 +344,55 @@ public class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase
 
         // Assert & Act
         receiver.abandon(receivedMessage);
+    }
+
+    /**
+     * Test we can receive a deferred message via sequence number and then perform abandon, suspend, or complete on it.
+     */
+    @MethodSource
+    @ParameterizedTest
+    void receiveDeferredMessageBySequenceNumber(MessagingEntityType entityType, DispositionStatus dispositionStatus) {
+        // Arrange
+        setSenderAndReceiver(entityType, false);
+
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = getMessage(messageId, false);
+        sendMessage(message);
+        final IterableStream<ServiceBusReceivedMessage> messageIte = receiver.receive(1, TIMEOUT);
+        Assertions.assertNotNull(messageIte);
+
+        final List<ServiceBusReceivedMessage> asList = messageIte.stream().collect(Collectors.toList());
+        ServiceBusReceivedMessage receivedMessage = asList.get(0);
+        Assertions.assertNotNull(receivedMessage);
+
+        assertNotNull(receivedMessage);
+
+        receiver.defer(receivedMessage);
+        final ServiceBusReceivedMessage receivedDeferredMessage = receiver
+            .receiveDeferredMessage(receivedMessage.getSequenceNumber());
+
+        assertNotNull(receivedDeferredMessage);
+        assertEquals(receivedMessage.getSequenceNumber(), receivedDeferredMessage.getSequenceNumber());
+
+        // Assert & Act
+        switch (dispositionStatus) {
+            case ABANDONED:
+                receiver.abandon(receivedDeferredMessage);
+                break;
+            case SUSPENDED:
+                receiver.deadLetter(receivedDeferredMessage);
+                break;
+            case COMPLETED:
+                receiver.complete(receivedDeferredMessage);
+                break;
+            default:
+                throw logger.logExceptionAsError(new IllegalArgumentException(
+                    "Disposition status not recognized for this test case: " + dispositionStatus));
+        }
+
+        if (dispositionStatus == DispositionStatus.ABANDONED || dispositionStatus == DispositionStatus.COMPLETED) {
+            messagesPending.decrementAndGet();
+        }
     }
 
     @MethodSource("messagingEntityWithSessions")
