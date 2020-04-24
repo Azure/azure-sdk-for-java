@@ -368,7 +368,9 @@ class LargeBlobTest extends APISpec {
         }
 
         private boolean isPutBlockRequest(HttpRequest request) {
-            return request.url.getQuery() != null && request.url.getQuery().contains("comp=block");
+            return request.url.getQuery() != null &&
+                request.url.getQuery().contains("comp=block") &&
+                !request.url.getQuery().contains("comp=blocklist")
         }
 
         private boolean isSinglePutBlobRequest(HttpRequest request) {
