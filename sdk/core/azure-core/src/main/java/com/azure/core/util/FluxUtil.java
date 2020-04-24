@@ -34,8 +34,6 @@ import java.util.stream.Collectors;
  * Utility type exposing methods to deal with {@link Flux}.
  */
 public final class FluxUtil {
-    private static final ByteBuffer EMPTY_BUFFER = ByteBuffer.wrap(new byte[0]);
-
     /**
      * Checks if a type is Flux&lt;ByteBuffer&gt;.
      *
@@ -114,7 +112,7 @@ public final class FluxUtil {
      */
     public static Flux<ByteBuffer> toFluxByteBuffer(InputStream inputStream, int chunkSize) {
         if (chunkSize <= 0) {
-            throw new IllegalArgumentException("'chunkSize' must be greater than 0.");
+            return Flux.error(new IllegalArgumentException("'chunkSize' must be greater than 0."));
         }
 
         if (inputStream == null) {

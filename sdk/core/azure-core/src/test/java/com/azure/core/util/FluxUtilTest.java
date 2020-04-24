@@ -40,7 +40,6 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FluxUtilTest {
@@ -245,8 +244,11 @@ public class FluxUtilTest {
 
     @Test
     public void illegalToFluxByteBufferChunkSize() {
-        assertThrows(IllegalArgumentException.class, () -> FluxUtil.toFluxByteBuffer(null, 0));
-        assertThrows(IllegalArgumentException.class, () -> FluxUtil.toFluxByteBuffer(null, -1));
+        StepVerifier.create(FluxUtil.toFluxByteBuffer(null, 0))
+            .verifyError(IllegalArgumentException.class);
+
+        StepVerifier.create(FluxUtil.toFluxByteBuffer(null, -1))
+            .verifyError(IllegalArgumentException.class);
     }
 
     @Test
