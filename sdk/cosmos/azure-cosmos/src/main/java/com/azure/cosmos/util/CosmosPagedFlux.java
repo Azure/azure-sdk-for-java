@@ -101,7 +101,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                         context, pagedFluxOptions.getTracingAttributes()));
                 }
             }
-        }).doOnEach(responseSignal -> {
+        }).doOnComplete(() -> {
             if (pagedFluxOptions.getTracerProvider().isEnabled()) {
                 pagedFluxOptions.getTracerProvider().endSpan(parentContext.get(), Signal.complete(), 200);
             }
