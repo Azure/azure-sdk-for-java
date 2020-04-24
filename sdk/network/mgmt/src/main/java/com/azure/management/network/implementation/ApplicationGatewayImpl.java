@@ -52,6 +52,9 @@ import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.Resource;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.utils.Utils;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -63,8 +66,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /** Implementation of the ApplicationGateway interface. */
 class ApplicationGatewayImpl
@@ -578,31 +579,37 @@ class ApplicationGatewayImpl
      * @param byName object found by name
      * @param byPort object found by port
      * @param name the desired name of the object
-     * @return true if already found, false if ok to create, null if conflict
+     * @return CreationState
      */
-    <T> Boolean needToCreate(T byName, T byPort, String name) {
+    <T> CreationState needToCreate(T byName, T byPort, String name) {
         if (byName != null && byPort != null) {
             // If objects with this name and/or port already exist...
             if (byName == byPort) {
                 // ...and it is the same object, then do nothing
-                return false;
+                return CreationState.Found;
             } else {
                 // ...but if they are inconsistent, then fail fast
-                return null;
+                return CreationState.InvalidState;
             }
         } else if (byPort != null) {
             // If no object with the requested name, but the port number is found...
             if (name == null) {
                 // ...and no name is requested, then do nothing, because the object already exists
-                return false;
+                return CreationState.Found;
             } else {
                 // ...but if a clashing name is requested, then fail fast
-                return null;
+                return CreationState.InvalidState;
             }
         } else {
             // Ok to create the object
-            return true;
+            return CreationState.NeedToCreate;
         }
+    }
+
+    enum CreationState {
+        Found,
+        NeedToCreate,
+        InvalidState,
     }
 
     String futureResourceId() {
@@ -1031,8 +1038,8 @@ class ApplicationGatewayImpl
             }
         }
 
-        Boolean needToCreate = this.needToCreate(frontendPortByName, frontendPortByNumber, name);
-        if (Boolean.TRUE.equals(needToCreate)) {
+        CreationState needToCreate = this.needToCreate(frontendPortByName, frontendPortByNumber, name);
+        if (needToCreate == CreationState.NeedToCreate) {
             // If no conflict, create a new port
             if (name == null) {
                 // No name specified, so auto-name it
@@ -1042,7 +1049,7 @@ class ApplicationGatewayImpl
             frontendPortByName = new ApplicationGatewayFrontendPort().withName(name).withPort(portNumber);
             frontendPorts.add(frontendPortByName);
             return this;
-        } else if (Boolean.FALSE.equals(needToCreate)) {
+        } else if (needToCreate == CreationState.Found) {
             // If found matching port, then nothing needs to happen
             return this;
         } else {

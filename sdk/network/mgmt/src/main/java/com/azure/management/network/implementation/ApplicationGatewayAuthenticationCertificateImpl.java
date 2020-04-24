@@ -8,6 +8,7 @@ import com.azure.management.network.models.ApplicationGatewayAuthenticationCerti
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Base64;
 
@@ -50,7 +51,7 @@ class ApplicationGatewayAuthenticationCertificateImpl
 
     @Override
     public ApplicationGatewayAuthenticationCertificateImpl fromBytes(byte[] data) {
-        String encoded = new String(Base64.getEncoder().encode(data));
+        String encoded = new String(Base64.getEncoder().encode(data), StandardCharsets.UTF_8);
         return this.fromBase64(encoded);
     }
 
@@ -61,7 +62,7 @@ class ApplicationGatewayAuthenticationCertificateImpl
         }
 
         byte[] content = Files.readAllBytes(certificateFile.toPath());
-        return (content != null) ? this.fromBytes(content) : null;
+        return this.fromBytes(content);
     }
 
     @Override

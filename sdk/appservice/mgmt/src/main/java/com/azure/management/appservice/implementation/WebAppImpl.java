@@ -17,7 +17,6 @@ import com.azure.management.appservice.models.StringDictionaryInner;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.Indexable;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -182,7 +181,7 @@ class WebAppImpl extends AppServiceBaseImpl<WebApp, WebAppImpl, WebApp.Definitio
     @Override
     public Mono<Void> warDeployAsync(File warFile, String appName) {
         try {
-            return warDeployAsync(new FileInputStream(warFile), appName);
+            return kuduClient.warDeployAsync(warFile, appName);
         } catch (IOException e) {
             return Mono.error(e);
         }
@@ -206,7 +205,7 @@ class WebAppImpl extends AppServiceBaseImpl<WebApp, WebAppImpl, WebApp.Definitio
     @Override
     public Mono<Void> zipDeployAsync(File zipFile) {
         try {
-            return zipDeployAsync(new FileInputStream(zipFile));
+            return kuduClient.zipDeployAsync(zipFile);
         } catch (IOException e) {
             return Mono.error(e);
         }

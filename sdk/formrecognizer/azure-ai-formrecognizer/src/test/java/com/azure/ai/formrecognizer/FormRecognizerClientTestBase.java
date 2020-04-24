@@ -37,11 +37,24 @@ import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.blob.sas.BlobContainerSasPermission;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
+import com.azure.storage.blob.specialized.BlockBlobClient;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiConsumer;
@@ -50,10 +63,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.formrecognizer.FormRecognizerClientBuilder.OCP_APIM_SUBSCRIPTION_KEY;
-import static com.azure.ai.formrecognizer.TestUtils.LABELED_MODEL_ID;
 import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_LOCAL_URL;
 import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_LOCAL_URL;
-import static com.azure.ai.formrecognizer.TestUtils.VALID_MODEL_ID;
 import static com.azure.ai.formrecognizer.TestUtils.getFileData;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -78,17 +89,18 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         }
     }
 
-    static void validateReceiptResult(boolean includeTextDetails, IterableStream<RecognizedReceipt> expectedReceipts,
+    static void validateReceiptResult(IterableStream<RecognizedReceipt> expectedReceipts,
         IterableStream<RecognizedReceipt> actualResult) {
         List<RecognizedReceipt> expectedReceiptList = expectedReceipts.stream().collect(Collectors.toList());
         List<RecognizedReceipt> actualReceiptList = actualResult.stream().collect(Collectors.toList());
         assertEquals(expectedReceiptList.size(), actualReceiptList.size());
         for (int i = 0; i < actualReceiptList.size(); i++) {
-            validateReceipt(expectedReceiptList.get(i), actualReceiptList.get(i), includeTextDetails);
+            validateReceipt(expectedReceiptList.get(i), actualReceiptList.get(i));
         }
     }
 
-    static void validateRecognizedFormResult(IterableStream<RecognizedForm> expectedForms, IterableStream<RecognizedForm> actualForms) {
+    static void validateRecognizedFormResult(IterableStream<RecognizedForm> expectedForms,
+        IterableStream<RecognizedForm> actualForms) {
         List<RecognizedForm> expectedFormList = expectedForms.stream().collect(Collectors.toList());
         List<RecognizedForm> actualFormList = actualForms.stream().collect(Collectors.toList());
 
@@ -101,45 +113,73 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     static void validateUSReceipt(USReceipt expectedReceipt, USReceipt actualRecognizedReceipt,
         boolean includeTextDetails) {
         assertEquals(expectedReceipt.getReceiptType().getType(), actualRecognizedReceipt.getReceiptType().getType());
-        assertEquals(expectedReceipt.getReceiptType().getConfidence(), actualRecognizedReceipt.getReceiptType().getConfidence());
-        validateFieldValue(expectedReceipt.getMerchantName(), actualRecognizedReceipt.getMerchantName(), includeTextDetails);
-        validateFieldValue(expectedReceipt.getMerchantPhoneNumber(), actualRecognizedReceipt.getMerchantPhoneNumber(), includeTextDetails);
-        validateFieldValue(expectedReceipt.getMerchantAddress(), actualRecognizedReceipt.getMerchantAddress(), includeTextDetails);
+        assertEquals(expectedReceipt.getReceiptType().getConfidence(),
+            actualRecognizedReceipt.getReceiptType().getConfidence());
+        validateFieldValue(expectedReceipt.getMerchantName(), actualRecognizedReceipt.getMerchantName(),
+            includeTextDetails);
+        validateFieldValue(expectedReceipt.getMerchantPhoneNumber(), actualRecognizedReceipt.getMerchantPhoneNumber(),
+            includeTextDetails);
+        validateFieldValue(expectedReceipt.getMerchantAddress(), actualRecognizedReceipt.getMerchantAddress(),
+            includeTextDetails);
         validateFieldValue(expectedReceipt.getTotal(), actualRecognizedReceipt.getTotal(), includeTextDetails);
         validateFieldValue(expectedReceipt.getSubtotal(), actualRecognizedReceipt.getSubtotal(), includeTextDetails);
         validateFieldValue(expectedReceipt.getTax(), actualRecognizedReceipt.getTax(), includeTextDetails);
         validateFieldValue(expectedReceipt.getTip(), actualRecognizedReceipt.getTip(), includeTextDetails);
-        validateFieldValue(expectedReceipt.getTransactionDate(), actualRecognizedReceipt.getTransactionDate(), includeTextDetails);
-        validateFieldValue(expectedReceipt.getTransactionTime(), actualRecognizedReceipt.getTransactionTime(), includeTextDetails);
-        validateReceiptItems(expectedReceipt.getReceiptItems(), actualRecognizedReceipt.getReceiptItems(), includeTextDetails);
+        validateFieldValue(expectedReceipt.getTransactionDate(), actualRecognizedReceipt.getTransactionDate(),
+            includeTextDetails);
+        validateFieldValue(expectedReceipt.getTransactionTime(), actualRecognizedReceipt.getTransactionTime(),
+            includeTextDetails);
+        validateReceiptItems(expectedReceipt.getReceiptItems(), actualRecognizedReceipt.getReceiptItems(),
+            includeTextDetails);
     }
 
     @Test
-    abstract void extractReceiptSourceUrl();
+    abstract void recognizeReceiptSourceUrl();
 
     @Test
-    abstract void extractReceiptSourceUrlTextDetails();
+    abstract void recognizeReceiptSourceUrlTextDetails();
 
     @Test
-    abstract void extractReceiptData();
+    abstract void recognizeReceiptData();
 
     @Test
-    abstract void extractReceiptDataTextDetails();
+    abstract void recognizeReceiptDataTextDetails();
 
     @Test
-    abstract void extractLayoutValidSourceUrl();
+    abstract void recognizeReceiptDataTextDetailsWithNullData();
 
     @Test
-    abstract void extractLayoutInValidSourceUrl();
+    abstract void recognizeReceiptDataWithContentTypeAutoDetection();
 
     @Test
-    abstract void extractCustomFormValidSourceUrl();
+    abstract void recognizeLayoutData();
 
     @Test
-    abstract void extractCustomFormLabeledData();
+    abstract void recognizeLayoutDataWithNullData();
 
     @Test
-    abstract void extractCustomFormInValidSourceUrl();
+    abstract void recognizeLayoutDataWithContentTypeAutoDetection();
+
+    @Test
+    abstract void recognizeLayoutSourceUrl();
+
+    @Test
+    abstract void recognizeLayoutInvalidSourceUrl();
+
+    @Test
+    abstract void recognizeCustomFormLabeledData();
+
+    @Test
+    abstract void recognizeCustomFormUnlabeledData();
+
+    @Test
+    abstract void recognizeCustomFormLabeledDataWithNullValues();
+
+    @Test
+    abstract void recognizeCustomFormLabeledDataWithContentTypeAutoDetection();
+
+    @Test
+    abstract void recognizeCustomFormInvalidSourceUrl();
 
     void receiptSourceUrlRunner(Consumer<String> testRunner) {
         testRunner.accept(TestUtils.RECEIPT_URL);
@@ -161,16 +201,24 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         testRunner.accept(TestUtils.INVALID_RECEIPT_URL);
     }
 
-    void layoutValidSourceUrlRunner(Consumer<InputStream> testRunner) {
+    void layoutDataRunner(Consumer<InputStream> testRunner) {
         testRunner.accept(getFileData(LAYOUT_LOCAL_URL));
     }
 
-    void customFormValidSourceUrlRunner(BiConsumer<InputStream, String> testRunner) {
-        testRunner.accept(getFileData(TestUtils.FORM_LOCAL_URL), VALID_MODEL_ID);
+    void layoutSourceUrlRunner(Consumer<String> testRunner) {
+        testRunner.accept(TestUtils.LAYOUT_URL);
     }
 
-    void customFormLabeledDataRunner(BiConsumer<InputStream, String> testRunner) {
-        testRunner.accept(getFileData(TestUtils.FORM_LOCAL_URL), LABELED_MODEL_ID);
+    void customFormLabeledDataRunner(Consumer<InputStream> testRunner) {
+        testRunner.accept(getFileData(TestUtils.FORM_LOCAL_URL));
+    }
+
+    void beginTrainingUnlabeledResultRunner(BiConsumer<String, Boolean> testRunner) {
+        testRunner.accept(createStorageAndGenerateSas("src/test/resources/sample_files/Train"), false);
+    }
+
+    void beginTrainingLabeledResultRunner(BiConsumer<String, Boolean> testRunner) {
+        testRunner.accept(createStorageAndGenerateSas("src/test/resources/sample_files/TrainLabeled"), true);
     }
 
     protected <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
@@ -187,7 +235,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, buildConfiguration));
+        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
+            buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
 
@@ -244,7 +293,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         validateFormTable(expectedFormPage.getTables(), actualFormPage.getTables());
     }
 
-    private static void validateFormTable(IterableStream<FormTable> expectedFormTables, IterableStream<FormTable> actualFormTables) {
+    private static void validateFormTable(IterableStream<FormTable> expectedFormTables,
+        IterableStream<FormTable> actualFormTables) {
         List<FormTable> expectedFormTable = expectedFormTables.stream().collect(Collectors.toList());
         List<FormTable> actualFormTable = actualFormTables.stream().collect(Collectors.toList());
         assertEquals(expectedFormTable.size(), actualFormTable.size());
@@ -257,12 +307,13 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         }
     }
 
-    private static void validateReceipt(RecognizedReceipt expectedReceipt, RecognizedReceipt actualReceipt, boolean includeTextDetails) {
+    private static void validateReceipt(RecognizedReceipt expectedReceipt, RecognizedReceipt actualReceipt) {
         assertEquals(expectedReceipt.getReceiptLocale(), actualReceipt.getReceiptLocale());
         validateRecognizedForm(expectedReceipt.getRecognizedForm(), actualReceipt.getRecognizedForm());
     }
 
-    private static void validateCells(IterableStream<FormTableCell> expectedTableCells, IterableStream<FormTableCell> actualTableCells) {
+    private static void validateCells(IterableStream<FormTableCell> expectedTableCells,
+        IterableStream<FormTableCell> actualTableCells) {
         List<FormTableCell> expectedTableCellList = expectedTableCells.stream().collect(Collectors.toList());
         List<FormTableCell> actualTableCellList = actualTableCells.stream().collect(Collectors.toList());
         assertEquals(expectedTableCellList.size(), actualTableCellList.size());
@@ -277,7 +328,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         }
     }
 
-    private static void validateFormLine(IterableStream<FormLine> expectedFormLines, IterableStream<FormLine> actualFormLines) {
+    private static void validateFormLine(IterableStream<FormLine> expectedFormLines,
+        IterableStream<FormLine> actualFormLines) {
         List<FormLine> expectedLineList = expectedFormLines.stream().collect(Collectors.toList());
         List<FormLine> actualLineList = actualFormLines.stream().collect(Collectors.toList());
         assertEquals(expectedLineList.size(), actualLineList.size());
@@ -291,7 +343,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         }
     }
 
-    private static void validateFormWord(IterableStream<FormWord> expectedFormWords, IterableStream<FormWord> actualFormWords) {
+    private static void validateFormWord(IterableStream<FormWord> expectedFormWords,
+        IterableStream<FormWord> actualFormWords) {
         List<FormWord> expectedFormWordList = expectedFormWords.stream().collect(Collectors.toList());
         List<FormWord> actualFormWordList = actualFormWords.stream().collect(Collectors.toList());
         assertEquals(expectedFormWordList.size(), actualFormWordList.size());
@@ -313,13 +366,15 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         validateFieldMap(expectedForm.getFields(), actualForm.getFields());
     }
 
-    private static void validateFieldMap(Map<String, FormField<?>> expectedFieldMap, Map<String, FormField<?>> actualFieldMap) {
+    private static void validateFieldMap(Map<String, FormField<?>> expectedFieldMap,
+        Map<String, FormField<?>> actualFieldMap) {
         assertEquals(expectedFieldMap.size(), actualFieldMap.size());
         expectedFieldMap.entrySet().stream()
             .allMatch(e -> e.getValue().equals(actualFieldMap.get(e.getKey())));
     }
 
-    private static void validateReceiptItems(List<USReceiptItem> expectedReceiptItems, List<USReceiptItem> actualReceiptItems, boolean includeTextDetails) {
+    private static void validateReceiptItems(List<USReceiptItem> expectedReceiptItems,
+        List<USReceiptItem> actualReceiptItems, boolean includeTextDetails) {
         List<USReceiptItem> expectedReceiptItemList = expectedReceiptItems.stream().collect(Collectors.toList());
         List<USReceiptItem> actualReceiptItemList = actualReceiptItems.stream().collect(Collectors.toList());
         assertEquals(expectedReceiptItemList.size(), actualReceiptItemList.size());
@@ -328,23 +383,28 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             USReceiptItem actualReceiptItem = actualReceiptItemList.get(i);
             validateFieldValue(expectedReceiptItem.getName(), actualReceiptItem.getName(), includeTextDetails);
             validateFieldValue(expectedReceiptItem.getQuantity(), actualReceiptItem.getQuantity(), includeTextDetails);
-            validateFieldValue(expectedReceiptItem.getTotalPrice(), actualReceiptItem.getTotalPrice(), includeTextDetails);
+            validateFieldValue(expectedReceiptItem.getTotalPrice(), actualReceiptItem.getTotalPrice(),
+                includeTextDetails);
         }
     }
 
-    private static void validateFieldValue(FormField<?> actualFieldValue, FormField<?> expectedFieldValue, boolean includeTextDetails) {
+    private static void validateFieldValue(FormField<?> actualFieldValue, FormField<?> expectedFieldValue,
+        boolean includeTextDetails) {
         assertEquals(expectedFieldValue.getFieldValue(), actualFieldValue.getFieldValue());
         assertEquals(expectedFieldValue.getName(), actualFieldValue.getName());
         if (includeTextDetails) {
             if (expectedFieldValue.getLabelText() != null && actualFieldValue.getLabelText() != null) {
-                validateReferenceElements(expectedFieldValue.getLabelText().getTextContent(), actualFieldValue.getLabelText().getTextContent());
+                validateReferenceElements(expectedFieldValue.getLabelText().getTextContent(),
+                    actualFieldValue.getLabelText().getTextContent());
             }
-            validateReferenceElements(expectedFieldValue.getValueText().getTextContent(), actualFieldValue.getValueText().getTextContent());
+            validateReferenceElements(expectedFieldValue.getValueText().getTextContent(),
+                actualFieldValue.getValueText().getTextContent());
 
         }
     }
 
-    private static void validateReferenceElements(IterableStream<FormContent> expectedElementStream, IterableStream<FormContent> actualElementStream) {
+    private static void validateReferenceElements(IterableStream<FormContent> expectedElementStream,
+        IterableStream<FormContent> actualElementStream) {
         if (expectedElementStream != null && actualElementStream != null) {
             List<FormContent> expectedFormContentList = expectedElementStream.stream().collect(Collectors.toList());
             List<FormContent> actualFormContentList = actualElementStream.stream().collect(Collectors.toList());
@@ -380,5 +440,43 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     private static void validatePageRange(PageRange expectedPageInfo, PageRange actualPageInfo) {
         assertEquals(expectedPageInfo.getStartPageNumber(), actualPageInfo.getStartPageNumber());
         assertEquals(expectedPageInfo.getEndPageNumber(), actualPageInfo.getEndPageNumber());
+    }
+
+    private String createStorageAndGenerateSas(String folderPath) {
+        if (interceptorManager.isPlaybackMode()) {
+            return "https://isPlaybackmode";
+        } else {
+            String accountName = Configuration.getGlobalConfiguration().get("PRIMARY_STORAGE_ACCOUNT_NAME");
+            String accountKey = Configuration.getGlobalConfiguration().get("PRIMARY_STORAGE_ACCOUNT_KEY");
+            StorageSharedKeyCredential credential = new StorageSharedKeyCredential(accountName, accountKey);
+            String endpoint = String.format(Locale.ROOT, "https://%s.blob.core.windows.net", accountName);
+            BlobServiceClient storageClient =
+                new BlobServiceClientBuilder().endpoint(endpoint).credential(credential).buildClient();
+            BlobContainerClient blobContainerClient =
+                storageClient.getBlobContainerClient(this.testResourceNamer.randomName("testFR", 16));
+            blobContainerClient.create();
+            BlockBlobClient blobClient;
+            File folder = new File(folderPath);
+            File[] listOfFiles = folder.listFiles();
+            for (File listOfFile : listOfFiles) {
+                InputStream dataStream = null;
+                try {
+                    dataStream = new ByteArrayInputStream(Files.readAllBytes(listOfFile.toPath()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                blobClient = blobContainerClient.getBlobClient(listOfFile.getName()).getBlockBlobClient();
+                blobClient.upload(dataStream, listOfFile.length());
+            }
+            BlobContainerSasPermission blobContainerSasPermission = new BlobContainerSasPermission()
+                .setAddPermission(true)
+                .setCreatePermission(true)
+                .setReadPermission(true)
+                .setListPermission(true);
+            String sasToken = blobContainerClient.generateSas(
+                new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1), blobContainerSasPermission)
+            );
+            return blobContainerClient.getBlobContainerUrl() + "?" + sasToken;
+        }
     }
 }

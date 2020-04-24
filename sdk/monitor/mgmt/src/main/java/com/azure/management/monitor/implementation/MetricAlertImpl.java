@@ -8,6 +8,7 @@ import com.azure.management.monitor.DynamicMetricCriteria;
 import com.azure.management.monitor.MetricAlert;
 import com.azure.management.monitor.MetricAlertAction;
 import com.azure.management.monitor.MetricAlertCondition;
+import com.azure.management.monitor.MetricAlertCriteria;
 import com.azure.management.monitor.MetricAlertMultipleResourceMultipleMetricCriteria;
 import com.azure.management.monitor.MetricAlertSingleResourceMultipleMetricCriteria;
 import com.azure.management.monitor.MetricCriteria;
@@ -51,22 +52,23 @@ class MetricAlertImpl
         this.conditions = new TreeMap<>();
         this.dynamicConditions = new TreeMap<>();
         if (innerModel.criteria() != null) {
-            if (innerModel.criteria() instanceof MetricAlertSingleResourceMultipleMetricCriteria) {
+            MetricAlertCriteria innerCriteria = innerModel.criteria();
+            if (innerCriteria instanceof MetricAlertSingleResourceMultipleMetricCriteria) {
                 multipleResource = false;
                 // single resource with multiple static criteria
                 MetricAlertSingleResourceMultipleMetricCriteria crits =
-                    (MetricAlertSingleResourceMultipleMetricCriteria) innerModel.criteria();
+                    (MetricAlertSingleResourceMultipleMetricCriteria) innerCriteria;
                 List<MetricCriteria> criteria = crits.allOf();
                 if (criteria != null) {
                     for (MetricCriteria crit : criteria) {
                         this.conditions.put(crit.name(), new MetricAlertConditionImpl(crit.name(), crit, this));
                     }
                 }
-            } else if (innerModel.criteria() instanceof MetricAlertMultipleResourceMultipleMetricCriteria) {
+            } else if (innerCriteria instanceof MetricAlertMultipleResourceMultipleMetricCriteria) {
                 multipleResource = true;
                 // multiple resource with either multiple static criteria, or (currently single) dynamic criteria
                 MetricAlertMultipleResourceMultipleMetricCriteria crits =
-                    (MetricAlertMultipleResourceMultipleMetricCriteria) innerModel.criteria();
+                    (MetricAlertMultipleResourceMultipleMetricCriteria) innerCriteria;
                 List<MultiMetricCriteria> criteria = crits.allOf();
                 if (criteria != null) {
                     for (MultiMetricCriteria crit : criteria) {
