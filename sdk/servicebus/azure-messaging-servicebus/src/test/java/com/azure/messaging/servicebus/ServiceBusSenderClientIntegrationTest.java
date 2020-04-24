@@ -115,7 +115,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         setSenderAndReceiver(entityType);
 
-        final Instant scheduledEnqueueTime = Instant.now().plusSeconds(15);
+        final Instant scheduledEnqueueTime = Instant.now().plusSeconds(10);
         final String messageId = UUID.randomUUID().toString();
         final String contents = "Some-contents";
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(contents, messageId);
@@ -124,7 +124,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
         long sequenceNumber = sender.scheduleMessage(message, scheduledEnqueueTime);
 
         // Assert
-        Assertions.assertTrue(sequenceNumber > 0 );
+        Assertions.assertTrue(sequenceNumber > 0);
 
         messagesPending.incrementAndGet();
     }
@@ -145,7 +145,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
 
         // Assert & Act
         long sequenceNumber = sender.scheduleMessage(message, scheduledEnqueueTime);
-        Assertions.assertTrue(sequenceNumber > 0 );
+        Assertions.assertTrue(sequenceNumber > 0);
 
         sender.cancelScheduledMessage(sequenceNumber);
     }
