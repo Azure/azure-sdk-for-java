@@ -8,10 +8,13 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.Configuration;
+import com.azure.management.AuthenticationPolicy;
+import com.azure.management.UserAgentPolicy;
 import com.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.management.resources.fluentcore.utils.HttpPipelineProvider;
 
@@ -140,13 +143,19 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
 
     protected HttpPipeline buildHttpPipeline(TokenCredential credential) {
         Objects.requireNonNull(credential);
-        return HttpPipelineProvider.buildHttpPipeline(this.policies,
-            credential,
-            this.scopes,
-            this.httpLogOptions,
-            this.configuration,
-            this.retryPolicy,
-            this.httpClient,
-            this.environment);
+
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+        policies.add(new UserAgentPolicy(httpLogOptions, configuration));
+
+        List<HttpPipelinePolicy> retryPolicies = new ArrayList<>();
+        retryPolicies.add(retryPolicy);
+        retryPolicies.add(new AuthenticationPolicy(credential, environment, scopes()));
+        retryPolicies.add(new HttpLoggingPolicy(httpLogOptions));
+        retryPolicies.addAll(this.policies);
+        return HttpPipelineProvider.buildHttpPipeline(policies, retryPolicies, httpClient);
+    }
+
+    private String[] scopes() {
+        return scopes.isEmpty() ? null : scopes.toArray(new String[0]);
     }
 }

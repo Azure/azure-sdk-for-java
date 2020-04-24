@@ -100,11 +100,35 @@ public interface AzureConfigurable<T extends AzureConfigurable<T>> {
      */
     T withProxy(Proxy proxy);
 
+    /**
+     * Sets the credential scope.
+     *
+     * @param scope the credential scope
+     * @return the configurable object itself for chaining
+     */
     T withScope(String scope);
 
+    /**
+     * Sets the http client.
+     *
+     * @param httpClient the http client
+     * @return the configurable object itself for chaining
+     */
     T withHttpClient(HttpClient httpClient);
 
+    /**
+     * Sets the configuration.
+     *
+     * @param configuration the proxy to use
+     * @return the configurable object itself for chaining
+     */
     T withConfiguration(Configuration configuration);
 
+    /**
+     * Sets the Azure environment.
+     *
+     * @param environment the Azure environment
+     * @return the configurable object itself for chaining
+     */
     T withEnvironment(AzureEnvironment environment);
 }

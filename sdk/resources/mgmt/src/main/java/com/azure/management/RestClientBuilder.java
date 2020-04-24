@@ -1,5 +1,5 @@
-//// Copyright (c) Microsoft Corporation. All rights reserved.
-//// Licensed under the MIT License.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 //
 //package com.azure.management;
 //
@@ -99,7 +99,8 @@
 //        try {
 //            this.baseUrl = new URL(baseUrl);
 //        } catch (MalformedURLException e) {
-//            throw logger.logExceptionAsError(new IllegalArgumentException("The Azure Key Vault url is malformed.", e));
+//            throw logger.logExceptionAsError(
+//            new IllegalArgumentException("The Azure Key Vault url is malformed.", e));
 //        }
 //        return this;
 //    }
@@ -113,7 +114,8 @@
 //        try {
 //            this.baseUrl = new URL(environment.url(endpoint));
 //        } catch (MalformedURLException e) {
-//            throw logger.logExceptionAsError(new IllegalArgumentException("The Azure Key Vault url is malformed.", e));
+//            throw logger.logExceptionAsError(
+//            new IllegalArgumentException("The Azure Key Vault url is malformed.", e));
 //        }
 //        return this;
 //    }

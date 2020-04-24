@@ -44,7 +44,6 @@ public class AuthenticationPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        System.out.println("start auth");
         if ("http".equals(context.getHttpRequest().getUrl().getProtocol().toLowerCase(Locale.ROOT))) {
             return Mono.error(new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
         }
@@ -59,7 +58,6 @@ public class AuthenticationPolicy implements HttpPipelinePolicy {
 
         return tokenResult
                 .flatMap(accessToken -> {
-                    System.out.println("accessToken:" + accessToken.getToken().substring(0, 5));
                     context.getHttpRequest().getHeaders().put(AUTHORIZATION_HEADER_KEY,
                         String.format(AUTHORIZATION_HEADER_VALUE_FORMAT, accessToken.getToken()));
                     return next.process();

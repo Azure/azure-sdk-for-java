@@ -145,6 +145,10 @@ final class AuthFile {
         return this.tenantId;
     }
 
+    AzureEnvironment environment() {
+        return this.environment;
+    }
+
     /**
      * Contains the keys of the settings in a Properties file to read credentials from.
      */

@@ -37,6 +37,7 @@ public class AuxiliaryAuthenticationPolicy implements HttpPipelinePolicy {
     /**
      * Initialize an auxiliary authentication policy with the list of AzureTokenCredentials.
      *
+     * @param environment the Azure environment
      * @param credentials the AzureTokenCredentials list
      */
     public AuxiliaryAuthenticationPolicy(AzureEnvironment environment, TokenCredential... credentials) {
