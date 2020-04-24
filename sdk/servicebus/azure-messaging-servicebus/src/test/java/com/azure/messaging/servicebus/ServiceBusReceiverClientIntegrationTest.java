@@ -7,14 +7,12 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
-import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -103,7 +101,7 @@ public class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase
         // Assert & Act
         Iterable<ServiceBusReceivedMessage> iterableMessages = receiver.receive(howManyMessage, TIMEOUT);
 
-        for(ServiceBusReceivedMessage receivedMessage: iterableMessages) {
+        for (ServiceBusReceivedMessage receivedMessage: iterableMessages) {
             assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
         }
 
@@ -129,7 +127,7 @@ public class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase
         // Assert & Act
         Iterable<ServiceBusReceivedMessage> iterableMessages = receiver.receive(howManyMessage, TIMEOUT);
 
-        for(ServiceBusReceivedMessage receivedMessage: iterableMessages) {
+        for (ServiceBusReceivedMessage receivedMessage: iterableMessages) {
             assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
         }
 
@@ -154,7 +152,6 @@ public class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase
         // Assert & Act
         ServiceBusReceivedMessage receivedMessage = receiver.peek();
         assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-
     }
 
     /**
@@ -182,7 +179,6 @@ public class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase
         // Assert & Act
         ServiceBusReceivedMessage receivedPeekMessage = receiver.peekAt(receivedMessage.getSequenceNumber());
         assertMessageEquals(receivedPeekMessage, messageId, isSessionEnabled);
-
     }
 
     /**
@@ -417,7 +413,6 @@ public class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase
 
         // Act & Assert
         receiver.defer(receivedMessage);
-
     }
 
 
@@ -534,5 +529,4 @@ public class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase
         int number = messagesPending.incrementAndGet();
         logger.info("Number sent: {}", number);
     }
-
 }
