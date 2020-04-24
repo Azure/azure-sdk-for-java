@@ -3,7 +3,7 @@
 
 package com.azure.core.serializer.json.gson;
 
-import com.azure.core.serializer.JsonSerializer;
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.CoreUtils;
 import com.google.gson.Gson;
 
