@@ -16,8 +16,12 @@ import reactor.core.publisher.Mono;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * A credential provider that provides token credentials based on Azure CLI
- * command.
+ * A credential provider that provides token credentials from Azure Tools for IntelliJ plugin credential cache.
+ *
+ * <p> If the developer has authenticated successfully with Azure Tools for IntelliJ plugin in the IntelliJ IDE then
+ * this credential can be used in the development code to reuse the cached plugin credentials.</p>
+ *
+ * @see IntelliJCredentialBuilder
  */
 @Immutable
 public class IntelliJCredential implements TokenCredential {
@@ -25,7 +29,7 @@ public class IntelliJCredential implements TokenCredential {
     private final AtomicReference<MsalToken> cachedToken;
 
     /**
-     * Creates an AzureCliSecretCredential with default identity client options.
+     * Creates an {@link IntelliJCredential} with default identity client options.
      * @param identityClientOptions the options to configure the identity client
      */
     IntelliJCredential(IdentityClientOptions identityClientOptions) {

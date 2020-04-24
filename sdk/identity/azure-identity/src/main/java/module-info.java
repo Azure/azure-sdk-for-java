@@ -12,7 +12,6 @@ module com.azure.identity {
     requires msal4j.persistence.extension;
     requires org.linguafranca.pwdb.database;
     requires org.linguafranca.pwdb.kdbx;
-    requires org.linguafranca.pwdb.Credentials;
     requires org.linguafranca.pwdb.kdbx.simple;
 
     exports com.azure.identity;

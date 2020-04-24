@@ -18,6 +18,10 @@ public class IntelliJCredentialBuilder extends CredentialBuilderBase<IntelliJCre
      * Specifies the keep pass database path to read IntelliJ credentials on windows platform. This is required
      * on windows platform.
      *
+     * <p>This path can be located in the IntelliJ IDE.
+     * Windows:
+     * </p>
+     *
      * @param databasePath the path to the keep pass database.
      * @throws IllegalArgumentException if {@code databasePath is either not specified or is empty}
      * @return An updated instance of this builder with the keep pass database path set as specified.
