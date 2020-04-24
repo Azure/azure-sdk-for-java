@@ -97,7 +97,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>msal4j-persistence-extension</artifactId>
-      <version>0.1</version> <!-- {x-include-update;com.microsoft.azure:msal4j-persistence-extension;external_dependency} -->
+      <version>0.1</version> <!-- {x-version-update;com.microsoft.azure:msal4j-persistence-extension;external_dependency} -->
     </dependency>
   </dependencies>
 
