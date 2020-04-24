@@ -56,6 +56,7 @@ import java.util.function.Supplier;
  * as asynchronous Single objects that resolve to a deserialized Java object.
  */
 public final class RestProxy implements InvocationHandler {
+    private static final ByteBuffer VALIDATION_BUFFER = ByteBuffer.allocate(0);
     private static final String BODY_TOO_LARGE = "Request body emitted %d bytes, more than the expected %d bytes.";
     private static final String BODY_TOO_SMALL = "Request body emitted %d bytes, less than the expected %d bytes.";
 
@@ -142,14 +143,13 @@ public final class RestProxy implements InvocationHandler {
 
         long expectedLength = Long.parseLong(request.getHeaders().getValue("Content-Length"));
         final long[] currentTotalLength = new long[1];
-        ByteBuffer validationBuffer = ByteBuffer.allocate(0);
 
-        return Flux.concat(bbFlux, Flux.just(validationBuffer)).handle((buffer, sink) -> {
+        return Flux.concat(bbFlux, Flux.just(VALIDATION_BUFFER)).handle((buffer, sink) -> {
             if (buffer == null) {
                 return;
             }
 
-            if (buffer == validationBuffer) {
+            if (buffer == VALIDATION_BUFFER) {
                 if (expectedLength != currentTotalLength[0]) {
                     sink.error(new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
                         currentTotalLength[0], expectedLength), currentTotalLength[0], expectedLength));
