@@ -301,8 +301,14 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * @param sequenceNumber of the scheduled message to cancel.
      *
      * @return The {@link Mono} that finishes this operation on service bus resource.
+     *
+     * @throws IllegalArgumentException if {@code sequenceNumber} is negative.
      */
     public Mono<Void> cancelScheduledMessage(long sequenceNumber) {
+        if (sequenceNumber < 0) {
+            return monoError(logger, new IllegalArgumentException("'sequenceNumber' cannot be negative."));
+        }
+
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityName, entityType))
             .flatMap(managementNode -> managementNode.cancelScheduledMessage(sequenceNumber));
