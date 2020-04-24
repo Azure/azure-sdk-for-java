@@ -64,7 +64,7 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
     // commonly used lambda definitions
     private BiFunction<Indexer, AccessOptions, Indexer> createOrUpdateIndexerFunc =
         (Indexer indexer, AccessOptions ac) ->
-            createOrUpdateIndexer(indexer, ac.getAccessCondition(), ac.getRequestOptions());
+            createOrUpdateIndexer(indexer, ac.getOnlyIfUnchanged(), ac.getRequestOptions());
 
     private Supplier<Indexer> newIndexerFunc =
         () -> createBaseTestIndexerObject("name").setDataSourceName(SQL_DATASOURCE_NAME);
@@ -74,7 +74,8 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
 
     private BiConsumer<String, AccessOptions> deleteIndexerFunc =
         (String name, AccessOptions ac) ->
-            client.deleteIndexerWithResponse(name, ac.getAccessCondition(), ac.getRequestOptions(), Context.NONE);
+            client.deleteIndexerWithResponse(new Indexer().setName(name), ac.getOnlyIfUnchanged(),
+                ac.getRequestOptions(), Context.NONE);
 
 
     private void createDataSourceAndIndex() {
@@ -164,10 +165,10 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         client = getSearchServiceClientBuilder().buildClient();
     }
 
-    private Indexer createOrUpdateIndexer(Indexer indexer, MatchConditions accessCondition,
+    private Indexer createOrUpdateIndexer(Indexer indexer, Boolean onlyIfUnchanged,
         RequestOptions requestOptions) {
         return client.createOrUpdateIndexerWithResponse(
-            indexer, accessCondition, requestOptions, Context.NONE)
+            indexer, onlyIfUnchanged, requestOptions, Context.NONE)
             .getValue();
     }
 
@@ -463,7 +464,7 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         indexer.setDataSourceName(SQL_DATASOURCE_NAME);
         client.createIndexerWithResponse(indexer, new RequestOptions(), Context.NONE);
 
-        client.deleteIndexerWithResponse(indexer.getName(), new MatchConditions(), new RequestOptions(), Context.NONE);
+        client.deleteIndexerWithResponse(indexer, null, new RequestOptions(), Context.NONE);
         assertThrows(HttpResponseException.class, () -> client.getIndexer(indexer.getName()));
     }
 
@@ -478,19 +479,17 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
 
         // Try delete before the indexer even exists.
         Response<Void> result = client.deleteIndexerWithResponse(
-            indexer.getName(), new MatchConditions(), generateRequestOptions(), Context.NONE);
+            indexer, null, generateRequestOptions(), Context.NONE);
         assertEquals(HttpURLConnection.HTTP_NOT_FOUND, result.getStatusCode());
 
         // Actually create the indexer
         client.createIndexer(indexer);
 
         // Now delete twice.
-        result = client.deleteIndexerWithResponse(
-            indexer.getName(), new MatchConditions(), generateRequestOptions(), Context.NONE);
+        result = client.deleteIndexerWithResponse(indexer, null, generateRequestOptions(), Context.NONE);
         assertEquals(HttpURLConnection.HTTP_NO_CONTENT, result.getStatusCode());
 
-        result = client.deleteIndexerWithResponse(
-            indexer.getName(), new MatchConditions(), generateRequestOptions(), Context.NONE);
+        result = client.deleteIndexerWithResponse(indexer, null, generateRequestOptions(), Context.NONE);
         assertEquals(HttpURLConnection.HTTP_NOT_FOUND, result.getStatusCode());
     }
 

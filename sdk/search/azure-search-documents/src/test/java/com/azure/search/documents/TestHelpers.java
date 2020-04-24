@@ -67,37 +67,37 @@ public final class TestHelpers {
             }
         }
     }
+//
+//    /**
+//     * Constructs an access condition such that an operation will be performed only if the resource does not exist.
+//     *
+//     * @return an AccessCondition object that represents a condition where a resource does not exist
+//     */
+//    public static MatchConditions generateIfNotExistsAccessCondition() {
+//        // Setting this access condition modifies the request to include the HTTP If-None-Match conditional header set to "*"
+//        return new MatchConditions().setIfNoneMatch("*");
+//    }
+//
+//    /**
+//     * Constructs an access condition such that an operation will be performed only if the resource exists.
+//     *
+//     * @return an AccessCondition object that represents a condition where a resource exists
+//     */
+//    public static MatchConditions generateIfExistsAccessCondition() {
+//
+//        return new MatchConditions().setIfMatch("*");
+//    }
 
-    /**
-     * Constructs an access condition such that an operation will be performed only if the resource does not exist.
-     *
-     * @return an AccessCondition object that represents a condition where a resource does not exist
-     */
-    public static MatchConditions generateIfNotExistsAccessCondition() {
-        // Setting this access condition modifies the request to include the HTTP If-None-Match conditional header set to "*"
-        return new MatchConditions().setIfNoneMatch("*");
-    }
-
-    /**
-     * Constructs an access condition such that an operation will be performed only if the resource exists.
-     *
-     * @return an AccessCondition object that represents a condition where a resource exists
-     */
-    public static MatchConditions generateIfExistsAccessCondition() {
-
-        return new MatchConditions().setIfMatch("*");
-    }
-
-    /**
-     * Constructs an access condition such that an operation will be performed only if the resource's current ETag value
-     * matches the specified ETag value.
-     *
-     * @param eTag the ETag value to check against the resource's ETag
-     * @return An AccessCondition object that represents the If-Match condition
-     */
-    public static MatchConditions generateIfNotChangedAccessCondition(String eTag) {
-        return new MatchConditions().setIfMatch(eTag);
-    }
+//    /**
+//     * Constructs an access condition such that an operation will be performed only if the resource's current ETag value
+//     * matches the specified ETag value.
+//     *
+//     * @param eTag the ETag value to check against the resource's ETag
+//     * @return An AccessCondition object that represents the If-Match condition
+//     */
+//    public static MatchConditions generateIfNotChangedAccessCondition(String eTag) {
+//        return new MatchConditions().setIfMatch(eTag);
+//    }
 
     /**
      * Assert whether two objects are equal.

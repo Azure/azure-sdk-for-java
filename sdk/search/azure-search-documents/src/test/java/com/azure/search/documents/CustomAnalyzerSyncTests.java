@@ -276,7 +276,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
 
         addAnalyzerToIndex(index, new StopAnalyzer().setName("a2"));
         Index updatedIndex = searchServiceClient.createOrUpdateIndexWithResponse(index,
-            true, new MatchConditions(), generateRequestOptions(), Context.NONE).getValue();
+            true, null, generateRequestOptions(), Context.NONE).getValue();
 
         assertAnalysisComponentsEqual(index, updatedIndex);
     }

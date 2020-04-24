@@ -66,7 +66,7 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
     // commonly used lambda definitions
     private BiFunction<Skillset, AccessOptions, Skillset> createOrUpdateSkillsetFunc =
         (Skillset skillset, AccessOptions ac) ->
-            createSkillset(skillset, ac.getAccessCondition(), ac.getRequestOptions());
+            createSkillset(skillset, ac.getOnlyIfUnchanged(), ac.getRequestOptions());
 
     private Supplier<Skillset> newSkillsetFunc =
         () -> createSkillsetWithOcrDefaultSettings(false);
@@ -74,10 +74,11 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
     private Function<Skillset, Skillset> mutateSkillsetFunc = this::mutateSkillsInSkillset;
 
     private BiConsumer<String, AccessOptions> deleteSkillsetFunc = (String name, AccessOptions ac) ->
-        client.deleteSkillsetWithResponse(name, ac.getAccessCondition(), ac.getRequestOptions(), Context.NONE);
+        client.deleteSkillsetWithResponse(new Skillset().setName(name), ac.getOnlyIfUnchanged(), ac.getRequestOptions(),
+            Context.NONE);
 
-    private Skillset createSkillset(Skillset skillset, MatchConditions accessCondition, RequestOptions requestOptions) {
-        return client.createOrUpdateSkillsetWithResponse(skillset, accessCondition, requestOptions, Context.NONE)
+    private Skillset createSkillset(Skillset skillset, Boolean onlyIfUnchanged, RequestOptions requestOptions) {
+        return client.createOrUpdateSkillsetWithResponse(skillset, onlyIfUnchanged, requestOptions, Context.NONE)
             .getValue();
     }
 
@@ -359,19 +360,17 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
     public void deleteSkillsetIsIdempotent() {
         Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
 
-        Response<Void> deleteResponse = client.deleteSkillsetWithResponse(skillset.getName(), new MatchConditions(),
+        Response<Void> deleteResponse = client.deleteSkillsetWithResponse(skillset, null,
             generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
 
         client.createSkillset(skillset);
 
         // Delete the same skillset twice
-        deleteResponse = client.deleteSkillsetWithResponse(skillset.getName(), new MatchConditions(),
-            generateRequestOptions(), Context.NONE);
+        deleteResponse = client.deleteSkillsetWithResponse(skillset, null, generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.NO_CONTENT.code(), deleteResponse.getStatusCode());
 
-        deleteResponse = client.deleteSkillsetWithResponse(skillset.getName(), new MatchConditions(),
-            generateRequestOptions(), Context.NONE);
+        deleteResponse = client.deleteSkillsetWithResponse(skillset, null, generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
     }
 
@@ -397,7 +396,7 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         Skillset expected = createTestOcrSkillSet(1, TextExtractionAlgorithm.PRINTED);
 
         Response<Skillset> createOrUpdateResponse = client.createOrUpdateSkillsetWithResponse(expected,
-            new MatchConditions(), generateRequestOptions(), Context.NONE);
+            null, generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.CREATED.code(), createOrUpdateResponse.getStatusCode());
     }
 
@@ -405,13 +404,13 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
     public void createOrUpdateUpdatesWhenSkillsetExists() {
         Skillset skillset = createTestOcrSkillSet(1, TextExtractionAlgorithm.HANDWRITTEN);
 
-        Response<Skillset> createOrUpdateResponse = client.createOrUpdateSkillsetWithResponse(skillset,
-            new MatchConditions(), generateRequestOptions(), Context.NONE);
+        Response<Skillset> createOrUpdateResponse = client.createOrUpdateSkillsetWithResponse(skillset, null,
+            generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.CREATED.code(), createOrUpdateResponse.getStatusCode());
 
         skillset = createTestOcrSkillSet(2, TextExtractionAlgorithm.PRINTED);
-        createOrUpdateResponse = client.createOrUpdateSkillsetWithResponse(skillset, new MatchConditions(),
-            generateRequestOptions(), Context.NONE);
+        createOrUpdateResponse = client.createOrUpdateSkillsetWithResponse(skillset, null, generateRequestOptions(),
+            Context.NONE);
         assertEquals(HttpResponseStatus.OK.code(), createOrUpdateResponse.getStatusCode());
     }
 

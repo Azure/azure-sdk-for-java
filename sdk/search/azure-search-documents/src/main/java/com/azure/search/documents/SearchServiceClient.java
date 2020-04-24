@@ -20,6 +20,8 @@ import com.azure.search.documents.models.Skillset;
 import com.azure.search.documents.models.SynonymMap;
 import com.azure.search.documents.models.TokenInfo;
 
+import java.util.Objects;
+
 /**
  * Synchronous Client to manage and query indexes, as well as manage other resources, on a Cognitive Search service
  */
@@ -83,15 +85,18 @@ public final class SearchServiceClient {
      * Creates a new Azure Cognitive Search data source or updates a data source if it already exists.
      *
      * @param dataSource the definition of the data source to create or update
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * @param onlyIfUnchanged the condition where the operation will be performed if the ETag on the server matches or
      * doesn't match specified values
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing data source that was created or updated.
      */
-    public Response<DataSource> createOrUpdateDataSourceWithResponse(DataSource dataSource,
-        MatchConditions accessCondition, RequestOptions requestOptions, Context context) {
+    public Response<DataSource> createOrUpdateDataSourceWithResponse(DataSource dataSource, Boolean onlyIfUnchanged,
+        RequestOptions requestOptions, Context context) {
+        MatchConditions accessCondition = new MatchConditions();
+        accessCondition = onlyIfUnchanged != null && onlyIfUnchanged ?
+            accessCondition.setIfMatch(dataSource.getETag()) : accessCondition;
         return asyncClient.createOrUpdateDataSourceWithResponse(dataSource, accessCondition, requestOptions, context)
             .block();
     }
@@ -173,23 +178,28 @@ public final class SearchServiceClient {
      * @param dataSourceName the name of the data source to be deleted
      */
     public void deleteDataSource(String dataSourceName) {
-        deleteDataSourceWithResponse(dataSourceName, null, null, Context.NONE);
+        deleteDataSourceWithResponse(new DataSource().setName(dataSourceName), null, null, Context.NONE);
     }
 
     /**
      * Delete a DataSource with Response
      *
-     * @param dataSourceName the name of the data source to be deleted
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * @param dataSource the {@link DataSource} to be deleted
+     * @param onlyIfUnchanged the condition where the operation will be performed if the ETag on the server matches or
      * doesn't match specified values
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return an empty response
      */
-    public Response<Void> deleteDataSourceWithResponse(String dataSourceName, MatchConditions accessCondition,
+    public Response<Void> deleteDataSourceWithResponse(DataSource dataSource, Boolean onlyIfUnchanged,
         RequestOptions requestOptions, Context context) {
-        return asyncClient.deleteDataSourceWithResponse(dataSourceName, accessCondition, requestOptions, context)
+        Objects.requireNonNull(dataSource, "DataSource cannot be 'null'.");
+        MatchConditions accessCondition = new MatchConditions();
+
+        accessCondition = onlyIfUnchanged != null && onlyIfUnchanged? accessCondition.setIfMatch(dataSource.getETag())
+            : accessCondition;
+        return asyncClient.deleteDataSourceWithResponse(dataSource.getName(), accessCondition, requestOptions, context)
             .block();
     }
 
@@ -231,15 +241,18 @@ public final class SearchServiceClient {
      * Creates a new Azure Cognitive Search indexer or updates an indexer if it already exists.
      *
      * @param indexer The definition of the indexer to create or update.
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * @param onlyIfUnchanged the condition where the operation will be performed if the ETag on the server matches or
      * doesn't match specified values
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return A response object containing the Indexer.
      */
-    public Response<Indexer> createOrUpdateIndexerWithResponse(Indexer indexer, MatchConditions accessCondition,
+    public Response<Indexer> createOrUpdateIndexerWithResponse(Indexer indexer, Boolean onlyIfUnchanged,
         RequestOptions requestOptions, Context context) {
+        MatchConditions accessCondition = new MatchConditions();
+        accessCondition = onlyIfUnchanged != null && onlyIfUnchanged ? accessCondition.setIfMatch(indexer.getETag())
+            : accessCondition;
         return asyncClient.createOrUpdateIndexerWithResponse(indexer, accessCondition, requestOptions, context).block();
     }
 
@@ -295,23 +308,29 @@ public final class SearchServiceClient {
      * @param indexerName the name of the indexer to delete
      */
     public void deleteIndexer(String indexerName) {
-        deleteIndexerWithResponse(indexerName, null, null, Context.NONE);
+        deleteIndexerWithResponse(new Indexer().setName(indexerName), null, null, Context.NONE);
     }
 
     /**
      * Deletes an Azure Cognitive Search indexer.
      *
-     * @param indexerName the name of the indexer to delete
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * @param indexer the search {@link Indexer}
+     * @param onlyIfUnchanged the condition where the operation will be performed if the ETag on the server matches or
      * doesn't match specified values
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context the context
      * @return a response signalling completion.
      */
-    public Response<Void> deleteIndexerWithResponse(String indexerName, MatchConditions accessCondition,
+    public Response<Void> deleteIndexerWithResponse(Indexer indexer, Boolean onlyIfUnchanged,
         RequestOptions requestOptions, Context context) {
-        return asyncClient.deleteIndexerWithResponse(indexerName, accessCondition, requestOptions, context).block();
+        Objects.requireNonNull(indexer, "Indexer cannot be 'null'.");
+        MatchConditions accessCondition = new MatchConditions();
+
+        accessCondition = onlyIfUnchanged != null && onlyIfUnchanged? accessCondition.setIfMatch(indexer.getETag())
+            : accessCondition;
+        return asyncClient.deleteIndexerWithResponse(indexer.getName(), accessCondition, requestOptions, context)
+            .block();
     }
 
     /**
@@ -493,7 +512,7 @@ public final class SearchServiceClient {
      * index by taking the index offline for at least a few seconds. This temporarily causes indexing and query requests
      * to fail. Performance and write availability of the index can be impaired for several minutes after the index is
      * updated, or longer for very large indexes.
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * @param onlyIfUnchanged the condition where the operation will be performed if the ETag on the server matches or
      * doesn't match specified values
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
@@ -501,7 +520,10 @@ public final class SearchServiceClient {
      * @return a response containing the Index that was created or updated.
      */
     public Response<Index> createOrUpdateIndexWithResponse(Index index, boolean allowIndexDowntime,
-        MatchConditions accessCondition, RequestOptions requestOptions, Context context) {
+        Boolean onlyIfUnchanged, RequestOptions requestOptions, Context context) {
+        MatchConditions accessCondition = new MatchConditions();
+        accessCondition = onlyIfUnchanged != null && onlyIfUnchanged ? accessCondition.setIfMatch(index.getETag())
+            : accessCondition;
         return asyncClient.createOrUpdateIndexWithResponse(index, allowIndexDowntime, accessCondition, requestOptions,
             context).block();
     }
@@ -512,23 +534,27 @@ public final class SearchServiceClient {
      * @param indexName the name of the index to delete
      */
     public void deleteIndex(String indexName) {
-        deleteIndexWithResponse(indexName, null, null, Context.NONE);
+        deleteIndexWithResponse(new Index().setName(indexName), null, null, Context.NONE);
     }
 
     /**
      * Deletes an Azure Cognitive Search index and all the documents it contains.
      *
-     * @param indexName the name of the index to delete
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * @param index the Search {@link Index}.
+     * @param onlyIfUnchanged the condition where the operation will be performed if the ETag on the server matches or
      * doesn't match specified values
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return a response signalling completion.
      */
-    public Response<Void> deleteIndexWithResponse(String indexName, MatchConditions accessCondition,
+    public Response<Void> deleteIndexWithResponse(Index index, Boolean onlyIfUnchanged,
         RequestOptions requestOptions, Context context) {
-        return asyncClient.deleteIndexWithResponse(indexName, accessCondition, requestOptions, context).block();
+        Objects.requireNonNull(index);
+        MatchConditions accessCondition = new MatchConditions();
+        accessCondition = onlyIfUnchanged != null && onlyIfUnchanged!= null ?
+            accessCondition.setIfMatch(index.getETag()) : accessCondition;
+        return asyncClient.deleteIndexWithResponse(index.getName(), accessCondition, requestOptions, context).block();
     }
 
     /**
@@ -642,15 +668,18 @@ public final class SearchServiceClient {
      * Creates a new Azure Cognitive Search skillset or updates a skillset if it already exists.
      *
      * @param skillset the definition of the skillset to create or update
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * @param onlyIfUnchanged the condition where the operation will be performed if the ETag on the server matches or
      * doesn't match specified values
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the skillset that was created or updated.
      */
-    public Response<Skillset> createOrUpdateSkillsetWithResponse(Skillset skillset, MatchConditions accessCondition,
+    public Response<Skillset> createOrUpdateSkillsetWithResponse(Skillset skillset, Boolean onlyIfUnchanged,
         RequestOptions requestOptions, Context context) {
+        MatchConditions accessCondition = new MatchConditions();
+        accessCondition = onlyIfUnchanged != null && onlyIfUnchanged ?
+            accessCondition.setIfMatch(skillset.getETag()) : accessCondition;
         return asyncClient.createOrUpdateSkillsetWithResponse(skillset, accessCondition, requestOptions, context)
             .block();
     }
@@ -661,23 +690,27 @@ public final class SearchServiceClient {
      * @param skillsetName the name of the skillset to delete
      */
     public void deleteSkillset(String skillsetName) {
-        deleteSkillsetWithResponse(skillsetName, null, null, Context.NONE);
+        deleteSkillsetWithResponse(new Skillset().setName(skillsetName), null, null, Context.NONE);
     }
 
     /**
      * Deletes a cognitive skillset in an Azure Cognitive Search service.
      *
-     * @param skillsetName the name of the skillset to delete
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * @param skillset the {@link Skillset}.
+     * @param onlyIfUnchanged the condition where the operation will be performed if the ETag on the server matches or
      * doesn't match specified values
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response signalling completion.
      */
-    public Response<Void> deleteSkillsetWithResponse(String skillsetName, MatchConditions accessCondition,
+    public Response<Void> deleteSkillsetWithResponse(Skillset skillset, Boolean onlyIfUnchanged,
         RequestOptions requestOptions, Context context) {
-        return asyncClient.deleteSkillsetWithResponse(skillsetName, accessCondition, requestOptions, context).block();
+        Objects.requireNonNull(skillset);
+        MatchConditions accessCondition = new MatchConditions();
+        accessCondition = onlyIfUnchanged != null && onlyIfUnchanged!= null ?
+            accessCondition.setIfMatch(skillset.getETag()) : accessCondition;
+        return asyncClient.deleteSkillsetWithResponse(skillset.getName(), accessCondition, requestOptions, context).block();
     }
 
     /**
@@ -765,7 +798,7 @@ public final class SearchServiceClient {
      * Creates a new Azure Cognitive Search synonym map or updates a synonym map if it already exists.
      *
      * @param synonymMap the definition of the synonym map to create or update
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * @param onlyIfUnchanged the condition where the operation will be performed if the ETag on the server matches or
      * doesn't match specified values
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
@@ -773,7 +806,10 @@ public final class SearchServiceClient {
      * @return a response containing the synonym map that was created or updated.
      */
     public Response<SynonymMap> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap,
-        MatchConditions accessCondition, RequestOptions requestOptions, Context context) {
+        Boolean onlyIfUnchanged, RequestOptions requestOptions, Context context) {
+        MatchConditions accessCondition = new MatchConditions();
+        accessCondition = onlyIfUnchanged != null && onlyIfUnchanged ? accessCondition.setIfMatch(synonymMap.getETag())
+            : accessCondition;
         return asyncClient.createOrUpdateSynonymMapWithResponse(synonymMap, accessCondition, requestOptions, context)
             .block();
     }
@@ -784,23 +820,27 @@ public final class SearchServiceClient {
      * @param synonymMapName the name of the synonym map to delete
      */
     public void deleteSynonymMap(String synonymMapName) {
-        deleteSynonymMapWithResponse(synonymMapName, null, null, Context.NONE);
+        deleteSynonymMapWithResponse(new SynonymMap().setName(synonymMapName), null, null, Context.NONE);
     }
 
     /**
      * Deletes an Azure Cognitive Search synonym map.
      *
-     * @param synonymMapName the name of the synonym map to delete
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * @param synonymMap the {@link SynonymMap}
+     * @param onlyIfUnchanged the condition where the operation will be performed if the ETag on the server matches or
      * doesn't match specified values
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return a response signalling completion.
      */
-    public Response<Void> deleteSynonymMapWithResponse(String synonymMapName, MatchConditions accessCondition,
+    public Response<Void> deleteSynonymMapWithResponse(SynonymMap synonymMap, Boolean onlyIfUnchanged,
         RequestOptions requestOptions, Context context) {
-        return asyncClient.deleteSynonymMapWithResponse(synonymMapName, accessCondition, requestOptions, context)
+        Objects.requireNonNull(synonymMap);
+        MatchConditions accessCondition = new MatchConditions();
+        accessCondition = onlyIfUnchanged != null && onlyIfUnchanged ? accessCondition.setIfMatch(synonymMap.getETag())
+            : accessCondition;
+        return asyncClient.deleteSynonymMapWithResponse(synonymMap.getName(), accessCondition, requestOptions, context)
             .block();
     }
 

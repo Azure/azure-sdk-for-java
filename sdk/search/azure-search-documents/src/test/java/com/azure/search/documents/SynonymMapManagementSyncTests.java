@@ -32,18 +32,19 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
     // commonly used lambda definitions
     private BiFunction<SynonymMap, AccessOptions, SynonymMap> createOrUpdateSynonymMapFunc =
         (SynonymMap synonymMap, AccessOptions accessOptions) ->
-            createOrUpdateSynonymMap(synonymMap, accessOptions.getAccessCondition(), accessOptions.getRequestOptions());
+            createOrUpdateSynonymMap(synonymMap, accessOptions.getOnlyIfUnchanged(), accessOptions.getRequestOptions());
 
     private Supplier<SynonymMap> newSynonymMapFunc = this::createTestSynonymMap;
 
     private Function<SynonymMap, SynonymMap> mutateSynonymMapFunc = this::mutateSynonymsInSynonymMap;
 
     private BiConsumer<String, AccessOptions> deleteSynonymMapFunc = (String name, AccessOptions ac) ->
-            client.deleteSynonymMapWithResponse(name, ac.getAccessCondition(), ac.getRequestOptions(), Context.NONE);
+            client.deleteSynonymMapWithResponse(new SynonymMap().setName(name), ac.getOnlyIfUnchanged(),
+                ac.getRequestOptions(), Context.NONE);
 
     private SynonymMap createOrUpdateSynonymMap(
-        SynonymMap sm, MatchConditions ac, RequestOptions ro) {
-        return client.createOrUpdateSynonymMapWithResponse(sm, ac, ro, Context.NONE).getValue();
+        SynonymMap sm, Boolean onlyIfUnchanged, RequestOptions ro) {
+        return client.createOrUpdateSynonymMapWithResponse(sm, onlyIfUnchanged, ro, Context.NONE).getValue();
     }
 
     @Override
@@ -152,7 +153,7 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
             .setName(initial.getName())
             .setSynonyms("newword1,newword2");
 
-        SynonymMap updatedActual = client.createOrUpdateSynonymMapWithResponse(updatedExpected, new MatchConditions(),
+        SynonymMap updatedActual = client.createOrUpdateSynonymMapWithResponse(updatedExpected, null,
             generateRequestOptions(), Context.NONE).getValue();
         assertSynonymMapsEqual(updatedExpected, updatedActual);
 
@@ -173,7 +174,7 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
         SynonymMap expected = createTestSynonymMap();
 
         Response<SynonymMap> createOrUpdateResponse = client.createOrUpdateSynonymMapWithResponse(
-            expected, new MatchConditions(), generateRequestOptions(), Context.NONE);
+            expected, null, generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.CREATED.code(), createOrUpdateResponse.getStatusCode());
         assertSynonymMapsEqual(expected, createOrUpdateResponse.getValue());
     }
@@ -216,20 +217,18 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
     @Test
     public void deleteSynonymMapIsIdempotent() {
         SynonymMap synonymMap = createTestSynonymMap();
-        Response<Void> deleteResponse = client.deleteSynonymMapWithResponse(synonymMap.getName(),
-            new MatchConditions(), generateRequestOptions(), Context.NONE);
+        Response<Void> deleteResponse = client.deleteSynonymMapWithResponse(synonymMap, null, generateRequestOptions(),
+            Context.NONE);
         assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
 
         Response<SynonymMap> createResponse = client.createSynonymMapWithResponse(synonymMap,
             generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.CREATED.code(), createResponse.getStatusCode());
 
-        deleteResponse = client.deleteSynonymMapWithResponse(synonymMap.getName(),
-            new MatchConditions(), generateRequestOptions(), Context.NONE);
+        deleteResponse = client.deleteSynonymMapWithResponse(synonymMap, null, generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.NO_CONTENT.code(), deleteResponse.getStatusCode());
 
-        deleteResponse = client.deleteSynonymMapWithResponse(synonymMap.getName(),
-            new MatchConditions(), generateRequestOptions(), Context.NONE);
+        deleteResponse = client.deleteSynonymMapWithResponse(synonymMap, null, generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
     }
 
