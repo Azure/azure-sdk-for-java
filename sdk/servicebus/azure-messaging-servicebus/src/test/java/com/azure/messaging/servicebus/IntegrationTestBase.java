@@ -60,7 +60,7 @@ public abstract class IntegrationTestBase extends TestBase {
     private final Scheduler scheduler = Schedulers.parallel();
 
     private static final byte[] CONTENTS_BYTES = "Some-contents".getBytes(StandardCharsets.UTF_8);
-    String sessionId;
+    protected String sessionId;
 
     protected IntegrationTestBase(ClientLogger logger) {
         this.logger = logger;
@@ -71,8 +71,6 @@ public abstract class IntegrationTestBase extends TestBase {
         logger.info("========= SET-UP [{}] =========", testInfo.getDisplayName());
 
         testName = testInfo.getDisplayName();
-        TestMode mode = getTestMode();
-        boolean isRecord =  getTestMode() == TestMode.RECORD;
         Assumptions.assumeTrue(getTestMode() == TestMode.RECORD);
 
         properties = new ConnectionStringProperties(getConnectionString());
@@ -91,7 +89,6 @@ public abstract class IntegrationTestBase extends TestBase {
     static void afterAll() {
         StepVerifier.resetDefaultTimeout();
     }
-
 
     // These are overridden because we don't use the Interceptor Manager.
     @Override
@@ -250,14 +247,14 @@ public abstract class IntegrationTestBase extends TestBase {
         }
     }
 
-    static Stream<Arguments> messagingEntityProvider() {
+    protected static Stream<Arguments> messagingEntityProvider() {
         return Stream.of(
             Arguments.of(MessagingEntityType.QUEUE),
             Arguments.of(MessagingEntityType.SUBSCRIPTION)
         );
     }
 
-    static Stream<Arguments> messagingEntityWithSessions() {
+    protected static Stream<Arguments> messagingEntityWithSessions() {
         return Stream.of(
             Arguments.of(MessagingEntityType.QUEUE, false),
             Arguments.of(MessagingEntityType.SUBSCRIPTION, false),
@@ -284,7 +281,7 @@ public abstract class IntegrationTestBase extends TestBase {
         }
     }
 
-    static Stream<Arguments> receiveDeferredMessageBySequenceNumber() {
+    protected static Stream<Arguments> receiveDeferredMessageBySequenceNumber() {
         return Stream.of(
             Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.COMPLETED),
             Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.ABANDONED),
