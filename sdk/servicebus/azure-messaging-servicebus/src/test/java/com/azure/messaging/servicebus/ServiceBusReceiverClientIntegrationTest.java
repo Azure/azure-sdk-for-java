@@ -88,11 +88,38 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
                 logger.warning("Error occurred when draining deferred messages Entity: {} ", receiver.getEntityPath(), e);
             }
 
-            // set empty list
-            messagesDeferred.set(new ArrayList<>());
         }
 
         dispose(receiver, sender, receiveAndDeleteReceiver);
+    }
+
+    /**
+     * Verifies that we can only call receive() once only.
+     */
+    @MethodSource("messagingEntityWithSessions")
+    @ParameterizedTest
+    void receiveByTwoSubscriber(MessagingEntityType entityType, boolean isSessionEnabled) {
+        // Arrange
+        setSenderAndReceiver(entityType, isSessionEnabled);
+        final int maxMessages = 1;
+        final Duration shortTimeOut = Duration.ofSeconds(5);
+
+        // Act & Assert
+        IterableStream<ServiceBusReceivedMessage> messages = receiver.receive(maxMessages, shortTimeOut);
+
+        int receivedMessages = messages.stream().collect(Collectors.toList()).size();
+        assertEquals(0, receivedMessages);
+
+        // Second time user try to receive, it should throw exception.
+        try {
+            messages = receiver.receive(maxMessages, shortTimeOut);
+            messages.stream().collect(Collectors.toList()).size();
+
+            //We can not have second subscriber.
+            assertTrue(false, "Should have thrown IllegalStateException.");
+        } catch (Exception ex) {
+            assertTrue(ex instanceof IllegalStateException);
+        }
     }
 
     /**
@@ -115,14 +142,15 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         IterableStream<ServiceBusReceivedMessage> messages = receiver.receive(maxMessages, TIMEOUT);
 
         // Assert
-        final List<ServiceBusReceivedMessage> asList = messages.stream().collect(Collectors.toList());
-        assertEquals(maxMessages, asList.size());
-
-        for (ServiceBusReceivedMessage receivedMessage : asList) {
+        int receivedMessageCount = 0;
+        for (ServiceBusReceivedMessage receivedMessage : messages) {
             assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
             receiver.complete(receivedMessage);
             messagesPending.decrementAndGet();
+            ++receivedMessageCount;
         }
+
+        assertEquals(maxMessages, receivedMessageCount);
 
     }
 
@@ -164,14 +192,15 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         IterableStream<ServiceBusReceivedMessage> messages = receiver.receive(maxMessages, TIMEOUT);
 
         // Assert
-        final List<ServiceBusReceivedMessage> asList = messages.stream().collect(Collectors.toList());
-        assertEquals(maxMessages, asList.size());
 
-        for (ServiceBusReceivedMessage receivedMessage : asList) {
+        int receivedMessageCount = 0;
+        for (ServiceBusReceivedMessage receivedMessage : messages) {
             assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
             receiver.complete(receivedMessage);
             messagesPending.decrementAndGet();
+            ++receivedMessageCount;
         }
+        assertEquals(maxMessages, receivedMessageCount);
 
     }
 
