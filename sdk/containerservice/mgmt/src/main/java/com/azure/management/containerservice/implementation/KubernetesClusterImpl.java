@@ -64,7 +64,7 @@ public class KubernetesClusterImpl
     }
 
     @Override
-    public List<CredentialResult> adminKubeConfigList() {
+    public List<CredentialResult> adminKubeConfigs() {
         if (this.adminKubeConfigs == null || this.adminKubeConfigs.size() == 0) {
             this.adminKubeConfigs =
                 this.manager().kubernetesClusters().listAdminKubeConfigContent(this.resourceGroupName(), this.name());
@@ -73,7 +73,7 @@ public class KubernetesClusterImpl
     }
 
     @Override
-    public List<CredentialResult> userKubeConfigList() {
+    public List<CredentialResult> userKubeConfigs() {
         if (this.userKubeConfigs == null || this.userKubeConfigs.size() == 0) {
             this.userKubeConfigs =
                 this.manager().kubernetesClusters().listUserKubeConfigContent(this.resourceGroupName(), this.name());
@@ -83,7 +83,7 @@ public class KubernetesClusterImpl
 
     @Override
     public byte[] adminKubeConfigContent() {
-        for (CredentialResult config : adminKubeConfigList()) {
+        for (CredentialResult config : adminKubeConfigs()) {
             return config.value();
         }
         return new byte[0];
@@ -91,7 +91,7 @@ public class KubernetesClusterImpl
 
     @Override
     public byte[] userKubeConfigContent() {
-        for (CredentialResult config : userKubeConfigList()) {
+        for (CredentialResult config : userKubeConfigs()) {
             return config.value();
         }
         return new byte[0];

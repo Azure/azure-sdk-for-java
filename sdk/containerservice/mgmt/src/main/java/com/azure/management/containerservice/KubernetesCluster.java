@@ -43,10 +43,10 @@ public interface KubernetesCluster
     byte[] userKubeConfigContent();
 
     /** @return the Kubernetes credentials with administrative privileges to the cluster */
-    List<CredentialResult> adminKubeConfigList();
+    List<CredentialResult> adminKubeConfigs();
 
     /** @return the Kubernetes credentials with user-level privileges to the cluster */
-    List<CredentialResult> userKubeConfigList();
+    List<CredentialResult> userKubeConfigs();
 
     /** @return the service principal client ID */
     String servicePrincipalClientId();
