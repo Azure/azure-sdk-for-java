@@ -8,7 +8,6 @@ import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.management.AzureTokenCredential;
 import com.azure.management.RestClient;
 import com.azure.management.RestClientBuilder;
-import com.azure.management.containerservice.ContainerServices;
 import com.azure.management.containerservice.KubernetesClusters;
 import com.azure.management.containerservice.models.ContainerServiceManagementClientBuilder;
 import com.azure.management.containerservice.models.ContainerServiceManagementClientImpl;
@@ -23,7 +22,6 @@ import com.azure.management.resources.fluentcore.utils.SdkContext;
 public final class ContainerServiceManager
     extends Manager<ContainerServiceManager, ContainerServiceManagementClientImpl> {
     // The service managers
-    private ContainerServicesImpl containerServices;
     private KubernetesClustersImpl kubernetesClusters;
 
     /**
@@ -110,14 +108,6 @@ public final class ContainerServiceManager
                 .subscriptionId(subscriptionId)
                 .buildClient(),
             sdkContext);
-    }
-
-    /** @return the Azure Container services resource management API entry point */
-    public ContainerServices containerServices() {
-        if (this.containerServices == null) {
-            this.containerServices = new ContainerServicesImpl(this);
-        }
-        return this.containerServices;
     }
 
     /** @return the Azure Kubernetes cluster resource management API entry point */

@@ -31,7 +31,6 @@ import com.azure.management.containerregistry.Registries;
 import com.azure.management.containerregistry.RegistryTaskRuns;
 import com.azure.management.containerregistry.RegistryTasks;
 import com.azure.management.containerregistry.implementation.ContainerRegistryManager;
-import com.azure.management.containerservice.ContainerServices;
 import com.azure.management.containerservice.KubernetesClusters;
 import com.azure.management.containerservice.implementation.ContainerServiceManager;
 import com.azure.management.cosmosdb.CosmosDBAccounts;
@@ -736,17 +735,12 @@ public final class Azure {
     // public ServiceBusOperations serviceBusOperations() {
     //    return serviceBusManager.operations();
     // }
-    //
-    /** @return entry point to managing Container Services. */
-    public ContainerServices containerServices() {
-        return containerServiceManager.containerServices();
-    }
 
     /** @return entry point to managing Kubernetes clusters. */
     public KubernetesClusters kubernetesClusters() {
         return containerServiceManager.kubernetesClusters();
     }
-    //
+
     //    /**
     //     * @return entry point to managing Azure Container Instances.
     //     */
