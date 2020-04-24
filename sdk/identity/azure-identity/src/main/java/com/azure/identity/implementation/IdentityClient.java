@@ -458,7 +458,7 @@ public class IdentityClient {
         String credential = accessor.getCredentials("VS Code Azure", cloud);
 
         String authority = KnownAuthorityHosts.AZURE_CLOUD.replaceAll("/+$", "")
-            + "/organizations/" + tenantId;
+            + "/organizations/" + tenant;
         PublicClientApplication.Builder publicClientApplicationBuilder = PublicClientApplication.builder(clientId);
         if (httpPipelineAdapter != null) {
             publicClientApplicationBuilder.httpClient(httpPipelineAdapter);

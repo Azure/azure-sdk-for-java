@@ -10,6 +10,7 @@ import com.microsoft.aad.msal4jextensions.persistence.mac.KeyChainAccessor;
 import com.sun.jna.Platform;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 
 /**
@@ -68,7 +69,7 @@ public class VisualStudioCacheAccessor {
                     serviceName, accountName);
 
             byte[] readCreds = keyChainAccessor.read();
-            return new String(readCreds);
+            return new String(readCreds, StandardCharsets.UTF_8);
         } else if (Platform.isLinux()) {
 
             LinuxKeyRingAccessor keyRingAccessor = new LinuxKeyRingAccessor(
@@ -76,7 +77,7 @@ public class VisualStudioCacheAccessor {
                     serviceName, "account", accountName);
 
             byte[] readCreds = keyRingAccessor.read();
-            return new String(readCreds);
+            return new String(readCreds, StandardCharsets.UTF_8);
         } else {
             throw logger.logExceptionAsError(
                 new RuntimeException("Platform could not be determined for VsCode Credential authentication."));

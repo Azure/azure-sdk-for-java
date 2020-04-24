@@ -8,6 +8,7 @@ import com.microsoft.aad.msal4jextensions.persistence.linux.ISecurityLibrary;
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class LinuxKeyRingAccessor {
                 + err.domain + " code:" + err.code + " message:" + err.message));
         } else {
             if (secret != null && !secret.isEmpty()) {
-                data = secret.getBytes();
+                data = secret.getBytes(StandardCharsets.UTF_8);
             }
             return data;
         }
@@ -82,7 +83,7 @@ public class LinuxKeyRingAccessor {
         return this.libSecretSchema;
     }
 
-    class GError extends Structure {
+    static class GError extends Structure {
         int domain;
         int code;
         String message;

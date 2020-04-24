@@ -10,6 +10,8 @@ import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.Kernel32Util;
 import com.sun.jna.win32.W32APIOptions;
 
+import java.nio.charset.StandardCharsets;
+
 /**
  * This class allows access to windows credentials via JNA.
  */
@@ -52,7 +54,7 @@ public class WindowsCredentialAccessor {
                     new WindowsCredentialApi.CREDENTIAL(pcredential.credential);
 
             byte[] secretBytes = credential.CredentialBlob.getByteArray(0, credential.CredentialBlobSize);
-            final String secret = new String(secretBytes);
+            final String secret = new String(secretBytes, StandardCharsets.UTF_8);
             return secret;
         } catch (LastErrorException e) {
             int errorCode = e.getErrorCode();
