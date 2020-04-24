@@ -31,6 +31,7 @@ import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import org.apache.commons.io.IOUtils;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -75,7 +76,7 @@ public final class QueryMetricsAndActivityLogs {
             Utils.print(storageAccount);
 
             List<StorageAccountKey> storageAccountKeys = storageAccount.getKeys();
-            final String storageConnectionString = String.format("DefaultEndpointsProtocol=http;AccountName=%s;AccountKey=%s",
+            final String storageConnectionString = String.format("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s",
                     storageAccount.name(),
                     storageAccountKeys.get(0).value());
 
@@ -192,12 +193,13 @@ public final class QueryMetricsAndActivityLogs {
     private static void addBlobTransactions(String storageConnectionString) throws IOException {
         // Get the script to upload
         //
-        try (InputStream scriptFileAsStream = QueryMetricsAndActivityLogs.class
-            .getResourceAsStream("/install_apache.sh")) {
+        try (InputStream scriptFileAsStream = QueryMetricsAndActivityLogs.class.getResourceAsStream("/install_apache.sh")) {
 
             // Get the size of the stream
             //
-            int fileSize = IOUtils.toByteArray(scriptFileAsStream).length;
+            byte[] scriptFileBytes = IOUtils.toByteArray(scriptFileAsStream);
+            ByteArrayInputStream scriptFileStream = new ByteArrayInputStream(scriptFileBytes);
+            int fileSize = scriptFileBytes.length;
 
             // Upload the script file as block blob
             //
@@ -218,14 +220,18 @@ public final class QueryMetricsAndActivityLogs {
             BlobAnalyticsLogging logProps = new BlobAnalyticsLogging()
                 .setRead(true)
                 .setWrite(true)
-                .setRetentionPolicy(new BlobRetentionPolicy().setDays(2))
+                .setRetentionPolicy(new BlobRetentionPolicy()
+                    .setEnabled(true)
+                    .setDays(2))
                 .setVersion("1.0");
             serviceProps.setLogging(logProps);
 
             BlobMetrics metricProps = new BlobMetrics()
                 .setEnabled(true)
                 .setIncludeApis(true)
-                .setRetentionPolicy(new BlobRetentionPolicy().setDays(2))
+                .setRetentionPolicy(new BlobRetentionPolicy()
+                    .setEnabled(true)
+                    .setDays(2))
                 .setVersion("1.0");
             serviceProps.setHourMetrics(metricProps);
             serviceProps.setMinuteMetrics(metricProps);
@@ -238,7 +244,7 @@ public final class QueryMetricsAndActivityLogs {
 
             BlobClient blobClient = blobContainerClient.getBlobClient("install_apache.sh");
             BlockBlobClient blockBlobClient = blobClient.getBlockBlobClient();
-            blockBlobClient.upload(scriptFileAsStream, fileSize);
+            blockBlobClient.upload(scriptFileStream, fileSize);
 
             // give sometime for the infrastructure to process the records and fit into time grain.
             SdkContext.sleep(6 * 60000);

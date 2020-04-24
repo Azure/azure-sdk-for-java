@@ -20,7 +20,6 @@ import com.azure.management.samples.Utils;
 
 import java.io.File;
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 
 /**
  * This sample shows how to programmatically implement scenario described <a href="https://docs.microsoft.com/en-us/azure/monitoring-and-diagnostics/monitor-tutorial-autoscale-performance-schedule">here</a>.
