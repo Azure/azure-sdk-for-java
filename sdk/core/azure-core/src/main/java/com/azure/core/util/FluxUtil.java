@@ -545,7 +545,7 @@ public final class FluxUtil {
                     doRead();
                 }
                 int missed = 1;
-                for (; ; ) {
+                while (true) {
                     if (cancelled) {
                         return;
                     }
