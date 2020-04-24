@@ -29,6 +29,7 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure) {
+        System.out.println("removed later");
         return true;
 //        // New resources
 //        final Region region         = Region.US_WEST;

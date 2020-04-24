@@ -14,10 +14,12 @@ import com.azure.management.graphrbac.implementation.RoleAssignmentHelper;
 import com.azure.management.msi.Identity;
 import com.azure.management.resources.fluentcore.dag.TaskGroup;
 import com.azure.management.resources.fluentcore.model.Creatable;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -196,14 +198,14 @@ class VirtualMachineScaleSetMsiHandler extends RoleAssignmentHelper {
                 VirtualMachineScaleSetIdentity currentIdentity = this.scaleSet.inner().identity();
                 if (currentIdentity != null && currentIdentity.userAssignedIdentities() != null) {
                     for (String id : currentIdentity.userAssignedIdentities().keySet()) {
-                        currentIds.add(id.toLowerCase());
+                        currentIds.add(id.toLowerCase(Locale.ROOT));
                     }
                 }
                 Set<String> removeIds = new HashSet<>();
                 for (Map.Entry<String, VirtualMachineScaleSetIdentityUserAssignedIdentities> entrySet
                     : this.userAssignedIdentities.entrySet()) {
                     if (entrySet.getValue() == null) {
-                        removeIds.add(entrySet.getKey().toLowerCase());
+                        removeIds.add(entrySet.getKey().toLowerCase(Locale.ROOT));
                     }
                 }
                 // If so check user want to remove all the identities

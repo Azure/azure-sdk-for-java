@@ -3,7 +3,6 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.implementation.Utility;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
@@ -17,6 +16,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.concurrent.TimeUnit;
+
+import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
 
 /**
  * Async sample to show the differences in output that arise when RecognizeCustomForms
@@ -39,13 +40,14 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
-        File analyzeFile = new File("/sample-forms/forms/Invoice_6.pdf");
+        File analyzeFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/"
+            + "forms/Invoice_6.pdf");
         byte[] fileContent = Files.readAllBytes(analyzeFile.toPath());
 
         PollerFlux<OperationResult, IterableStream<RecognizedForm>> labeledCustomFormPoller =
-            client.beginRecognizeCustomForms(Utility.convertStreamToByteBuffer(new ByteArrayInputStream(fileContent)), "{labeled_model_Id}", analyzeFile.length(), FormContentType.APPLICATION_PDF, true, null);
+            client.beginRecognizeCustomForms(toFluxByteBuffer(new ByteArrayInputStream(fileContent)), "{labeled_model_Id}", analyzeFile.length(), FormContentType.APPLICATION_PDF, true, null);
         PollerFlux<OperationResult, IterableStream<RecognizedForm>> unlabeledCustomFormPoller =
-            client.beginRecognizeCustomForms(Utility.convertStreamToByteBuffer(new ByteArrayInputStream(fileContent)), "{unlabeled_model_Id}", analyzeFile.length(), FormContentType.APPLICATION_PDF);
+            client.beginRecognizeCustomForms(toFluxByteBuffer(new ByteArrayInputStream(fileContent)), "{unlabeled_model_Id}", analyzeFile.length(), FormContentType.APPLICATION_PDF);
 
         Mono<IterableStream<RecognizedForm>> labeledDataResult = labeledCustomFormPoller
             .last()

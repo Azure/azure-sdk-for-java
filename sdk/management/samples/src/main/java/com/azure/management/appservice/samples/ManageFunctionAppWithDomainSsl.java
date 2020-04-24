@@ -3,6 +3,7 @@
 
 package com.azure.management.appservice.samples;
 
+import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.management.Azure;
 import com.azure.management.appservice.AppServiceDomain;
 import com.azure.management.appservice.CustomHostNameDnsRecordType;
@@ -11,8 +12,9 @@ import com.azure.management.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.management.resources.fluentcore.arm.CountryPhoneCode;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.samples.Utils;
+
 import java.io.File;
-import com.azure.core.http.policy.HttpLogDetailLevel;
+import java.util.Locale;
 
 
 /**
@@ -111,8 +113,8 @@ public final class ManageFunctionAppWithDomainSsl {
             //============================================================
             // Create a self-singed SSL certificate
 
-            String pfxPath = ManageFunctionAppWithDomainSsl.class.getResource("/").getPath() + "webapp_" + ManageFunctionAppWithDomainSsl.class.getSimpleName().toLowerCase() + ".pfx";
-            String cerPath = ManageFunctionAppWithDomainSsl.class.getResource("/").getPath() + "webapp_" + ManageFunctionAppWithDomainSsl.class.getSimpleName().toLowerCase() + ".cer";
+            String pfxPath = ManageFunctionAppWithDomainSsl.class.getResource("/").getPath() + "webapp_" + ManageFunctionAppWithDomainSsl.class.getSimpleName().toLowerCase(Locale.ROOT) + ".pfx";
+            String cerPath = ManageFunctionAppWithDomainSsl.class.getResource("/").getPath() + "webapp_" + ManageFunctionAppWithDomainSsl.class.getSimpleName().toLowerCase(Locale.ROOT) + ".cer";
 
             System.out.println("Creating a self-signed certificate " + pfxPath + "...");
 

@@ -48,7 +48,11 @@ import static com.azure.core.util.FluxUtil.withContext;
  * Operations allowed by the client are, to creating, training of custom models, delete models, list models and get
  * subscription account information.
  *
+ * <p><strong>Instantiating an asynchronous Form Training Client</strong></p>
+ * {@codesnippet com.azure.ai.formrecognizer.FormTrainingAsyncClient.initialization}
+ *
  * @see FormRecognizerClientBuilder
+ * @see FormRecognizerAsyncClient
  */
 @ServiceClient(builder = FormRecognizerClientBuilder.class, isAsync = true)
 public class FormTrainingAsyncClient {
@@ -86,6 +90,9 @@ public class FormTrainingAsyncClient {
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingAsyncClient.beginTraining#string-boolean}
+     *
      * @param fileSourceUrl source URL parameter that is either an externally accessible Azure
      * storage blob container Uri (preferably a Shared Access Signature Uri).
      * @param useLabelFile Boolean to specify the use of labeled files for training the model.
@@ -106,6 +113,9 @@ public class FormTrainingAsyncClient {
      * </p>
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingAsyncClient.beginTraining#string-boolean-boolean-string-Duration}
      *
      * @param fileSourceUrl source URL parameter that is either an externally accessible Azure
      * storage blob container Uri (preferably a Shared Access Signature Uri).
@@ -136,6 +146,9 @@ public class FormTrainingAsyncClient {
     /**
      * Get detailed information for a specified custom model id.
      *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingAsyncClient.getCustomModel#string}
+     *
      * @param modelId The UUID string format model identifier.
      *
      * @return The detailed information for the specified model.
@@ -147,6 +160,9 @@ public class FormTrainingAsyncClient {
 
     /**
      * Get detailed information for a specified custom model id with Http response
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingAsyncClient.getCustomModelWithResponse#string}
      *
      * @param modelId The UUID string format model identifier.
      *
@@ -170,6 +186,9 @@ public class FormTrainingAsyncClient {
     /**
      * Get account information for all custom models.
      *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingAsyncClient.getAccountProperties}
+     *
      * @return The account information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -179,6 +198,9 @@ public class FormTrainingAsyncClient {
 
     /**
      * Get account information.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingAsyncClient.getAccountPropertiesWithResponse}
      *
      * @return A {@link Response} containing the requested account information details.
      */
@@ -201,6 +223,9 @@ public class FormTrainingAsyncClient {
     /**
      * Deletes the specified custom model.
      *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingAsyncClient.deleteModel#string}
+     *
      * @param modelId The UUID string format model identifier.
      *
      * @return An empty Mono.
@@ -212,6 +237,9 @@ public class FormTrainingAsyncClient {
 
     /**
      * Deletes the specified custom model.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingAsyncClient.deleteModelWithResponse#string}
      *
      * @param modelId The UUID string format model identifier.
      *
@@ -235,6 +263,9 @@ public class FormTrainingAsyncClient {
 
     /**
      * List information for all models.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingAsyncClient.getModelInfos}
      *
      * @return {@link PagedFlux} of {@link CustomFormModelInfo}.
      */
@@ -294,17 +325,21 @@ public class FormTrainingAsyncClient {
 
     private Function<PollingContext<OperationResult>, Mono<CustomFormModel>> fetchTrainingModelResultOperation() {
         return (pollingContext) -> {
-            final UUID modelUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
-            return service.getCustomModelWithResponseAsync(modelUid, true)
-                .map(modelSimpleResponse -> toCustomFormModel(modelSimpleResponse.getValue()));
+            try {
+                final UUID modelUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
+                return service.getCustomModelWithResponseAsync(modelUid, true)
+                    .map(modelSimpleResponse -> toCustomFormModel(modelSimpleResponse.getValue()));
+            } catch (RuntimeException ex) {
+                return monoError(logger, ex);
+            }
         };
     }
 
     private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
         createTrainingPollOperation() {
         return (pollingContext) -> {
-            PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
             try {
+                PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
                 UUID modelUid = UUID.fromString(operationResultPollResponse.getValue().getResultId());
                 return service.getCustomModelWithResponseAsync(modelUid, true)
                     .flatMap(modelSimpleResponse ->

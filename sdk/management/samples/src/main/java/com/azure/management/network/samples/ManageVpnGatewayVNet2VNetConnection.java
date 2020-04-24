@@ -4,7 +4,6 @@
 package com.azure.management.network.samples;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.Azure;
 import com.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.azure.management.compute.VirtualMachine;
@@ -167,7 +166,9 @@ public final class ManageVpnGatewayVNet2VNetConnection {
 
             //============================================================
             // List VPN Gateway connections for particular gateway
-            PagedIterable<VirtualNetworkGatewayConnection> connections = vngw1.listConnections();
+            System.out.println("List connections...");
+            vngw1.listConnections().forEach(connection1 -> System.out.println(connection1.name()));
+            System.out.println();
 
             //============================================================
             // Create 2 virtual machines, each one in its network and verify connectivity between them

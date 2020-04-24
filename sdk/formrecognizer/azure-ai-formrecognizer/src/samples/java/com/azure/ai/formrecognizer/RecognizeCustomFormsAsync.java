@@ -3,7 +3,6 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.implementation.Utility;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
@@ -18,6 +17,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.concurrent.TimeUnit;
+
+import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
 
 /**
  * Async sample to analyze a form from a document with a custom trained model. To learn how to train your own models,
@@ -40,13 +41,14 @@ public class RecognizeCustomFormsAsync {
             .buildAsyncClient();
 
         // The form you are recognizing must be of the same type as the forms the custom model was trained on
-        File sourceFile = new File("../../test/resources/sample-files/Invoice_6.pdf");
+        File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/"
+            + "forms/Invoice_6.pdf");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);
         String modelId = "{modelId}";
 
         PollerFlux<OperationResult, IterableStream<RecognizedForm>> recognizeFormPoller =
-            client.beginRecognizeCustomForms(Utility.convertStreamToByteBuffer(targetStream), modelId,
+            client.beginRecognizeCustomForms(toFluxByteBuffer(targetStream), modelId,
                 sourceFile.length(),
                 FormContentType.APPLICATION_PDF);
 
@@ -67,7 +69,7 @@ public class RecognizeCustomFormsAsync {
                 System.out.println("----------- Recognized Form -----------");
                 System.out.printf("Form type: %s%n", form.getFormType());
                 form.getFields().forEach((label, formField) -> {
-                    System.out.printf("Field %s has value %s with confidence score of .%2f.%n", label,
+                    System.out.printf("Field %s has value %s with confidence score of %.2f.%n", label,
                         formField.getFieldValue(),
                         formField.getConfidence());
                 });

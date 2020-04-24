@@ -16,12 +16,12 @@ module com.azure.cosmos {
     requires io.netty.transport.epoll;
     requires io.netty.handler.proxy;
     requires reactor.netty;
-    requires org.slf4j;
     requires com.codahale.metrics;
     requires com.fasterxml.jackson.module.afterburner;
     requires java.management;
     requires jdk.management;
     requires micrometer.core;
+    //  This is only required by guava shaded libraries
     requires java.logging;
     requires reactor.core;
     requires org.reactivestreams;

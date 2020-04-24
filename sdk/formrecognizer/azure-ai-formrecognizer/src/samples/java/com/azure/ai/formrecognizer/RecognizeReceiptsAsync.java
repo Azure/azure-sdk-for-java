@@ -5,7 +5,6 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.implementation.Utility;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedReceipt;
@@ -21,6 +20,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.concurrent.TimeUnit;
+
+import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
 
 /**
  * Async sample for recognizing US receipt information from a local file.
@@ -40,12 +41,13 @@ public class RecognizeReceiptsAsync {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
-        File sourceFile = new File("/sample-forms/receipts/contoso-allinone.jpg");
+        File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/"
+            + "receipts/contoso-allinone.jpg");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
         PollerFlux<OperationResult, IterableStream<RecognizedReceipt>> analyzeReceiptPoller =
-            client.beginRecognizeReceipts(Utility.convertStreamToByteBuffer(targetStream),
+            client.beginRecognizeReceipts(toFluxByteBuffer(targetStream),
                 sourceFile.length(), FormContentType.IMAGE_JPEG);
 
         IterableStream<RecognizedReceipt> receiptPageResults = analyzeReceiptPoller

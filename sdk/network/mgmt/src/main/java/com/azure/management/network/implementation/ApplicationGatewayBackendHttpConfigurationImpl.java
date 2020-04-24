@@ -16,6 +16,7 @@ import com.azure.management.resources.fluentcore.arm.models.implementation.Child
 import com.azure.management.resources.fluentcore.utils.Utils;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -250,7 +251,7 @@ class ApplicationGatewayBackendHttpConfigurationImpl
             return this;
         }
 
-        String encoded = new String(Base64.getEncoder().encode(derData));
+        String encoded = new String(Base64.getEncoder().encode(derData), StandardCharsets.UTF_8);
         return this.withAuthenticationCertificateFromBase64(encoded);
     }
 
