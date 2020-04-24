@@ -3,6 +3,9 @@
 
 package com.azure.identity.implementation;
 
+/**
+ * Represents Azure Tools for IntelliJ IDE Plugin's authentication method details.
+ */
 public class IntelliJAuthMethodDetails {
 
     private String accountEmail;
@@ -10,18 +13,37 @@ public class IntelliJAuthMethodDetails {
     private String authMethod;
     private String azureEnv;
 
+    /**
+     * Get the account email.
+     *
+     * @return the account email.
+     */
     public String getAccountEmail() {
         return accountEmail;
     }
 
+    /**
+     * Get the service principal cred file path.
+     * @return the cred file path.
+     */
     public String getCredFilePath() {
         return credFilePath;
     }
 
+    /**
+     * Get the auth method used by Azure Tools for IntelliJ plugin.
+     *
+     * @return the auth method used.
+     */
     public String getAuthMethod() {
         return authMethod;
     }
 
+    /**
+     * Get the azure env used.
+     *
+     * @return the Azure env used.
+     */
     public String getAzureEnv() {
         return azureEnv;
     }

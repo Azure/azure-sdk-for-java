@@ -8,6 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.aad.msal4jextensions.persistence.mac.KeyChainAccessor;
+import com.sun.jna.Platform;
 import com.sun.jna.platform.win32.Crypt32Util;
 import org.linguafranca.pwdb.Database;
 import org.linguafranca.pwdb.Entry;
@@ -27,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.FileInputStream;
 import java.nio.ByteBuffer;
+import java.nio.file.Paths;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -52,7 +54,7 @@ public class IntelliJCacheAccessor {
     }
 
     private String getAzureToolsforIntelliJPluginConfigPath() {
-        return System.getProperty("user.home") + String.format("%sAzureToolsForIntelliJ", File.separator);
+        return Paths.get(System.getProperty("user.home"), "sAzureToolsForIntelliJ").toString();
     }
 
     /**
@@ -62,8 +64,8 @@ public class IntelliJCacheAccessor {
      * @throws IOException if an error is encountered while reading the auth details file.
      */
     public IntelliJAuthMethodDetails getIntelliJAuthDetails() throws IOException {
-        StringBuilder authMethodDetailsPath = new StringBuilder(getAzureToolsforIntelliJPluginConfigPath());
-        authMethodDetailsPath.append(String.format("%sAuthMethodDetails.json", File.separator));
+        String authMethodDetailsPath =
+                Paths.get(getAzureToolsforIntelliJPluginConfigPath(),"AuthMethodDetails.json").toString();
         ObjectMapper objectMapper = new ObjectMapper();
         File file = new File(authMethodDetailsPath.toString());
         return objectMapper.readValue(file, IntelliJAuthMethodDetails.class);
@@ -76,9 +78,7 @@ public class IntelliJCacheAccessor {
      * @throws IOException
      */
     public JsonNode getDeviceCodeCredentials() throws IOException {
-        String os = System.getProperty("os.name").toLowerCase(Locale.ROOT);
-
-        if (os.contains("mac")) {
+        if (Platform.isMac()) {
             KeyChainAccessor accessor = new KeyChainAccessor(null, "ADAuthManager",
                 "cachedAuthResult");
 
@@ -87,7 +87,7 @@ public class IntelliJCacheAccessor {
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readTree(jsonCred);
 
-        } else if (os.contains("nix") || os.contains("nux")) {
+        } else if (Platform.isLinux()) {
             LinuxKeyRingAccessor accessor = new LinuxKeyRingAccessor(
                 "com.intellij.credentialStore.Credential",
                 "service", "ADAuthManager",
@@ -101,10 +101,11 @@ public class IntelliJCacheAccessor {
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readTree(jsonCred);
 
-        } else if (os.contains("win")) {
+        } else if (Platform.isWindows()) {
             return getCredentialFromKdbx();
         } else {
-            throw logger.logExceptionAsError(new RuntimeException(String.format("OS %s Platform not supported.", os)));
+            throw logger.logExceptionAsError(new RuntimeException(String.format("OS %s Platform not supported.",
+                    Platform.getOSType())));
         }
     }
 

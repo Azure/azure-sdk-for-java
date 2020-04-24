@@ -19,7 +19,7 @@ public class IntelliJCredentialBuilder extends CredentialBuilderBase<IntelliJCre
      * on windows platform.
      *
      * <p>This path can be located in the IntelliJ IDE.
-     * Windows: File -&gt; Settings -&gt; Appearance & Behavior -&gt; System Settings -&gt; Passwords </p>
+     * Windows: File -&gt; Settings -&gt; Appearance &amp; Behavior -&gt; System Settings -&gt; Passwords </p>
      *
      * @param databasePath the path to the keep pass database.
      * @throws IllegalArgumentException if {@code databasePath is either not specified or is empty}
