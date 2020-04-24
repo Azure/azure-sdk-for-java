@@ -949,10 +949,14 @@ class BlobAPITest extends APISpec {
         then:
         sourceProperties.getObjectReplicationSourcePolicies().get("fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80")
             .getRules().get("105f9aad-f39b-4064-8e47-ccd7937295ca") == "complete"
-        sourceDownloadHeaders.ge
+        sourceDownloadHeaders.getDeserializedHeaders().getObjectReplicationSourcePolicies()
+            .get("fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80")
+            .getRules().get("105f9aad-f39b-4064-8e47-ccd7937295ca") == "complete"
         // There is a sas token attached at the end. Only check that the path is the same.
         destProperties.getCopySource().contains(new URL(sourceBlob.getBlobUrl()).getPath())
         destProperties.getObjectReplicationDestinationPolicyId() == "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80"
+        destDownloadHeaders.getDeserializedHeaders().getObjectReplicationDestinationPolicyId() ==
+            "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80"
     }
 
     // Test getting the properties from a listing

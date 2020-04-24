@@ -15,7 +15,7 @@ autorest --use=@microsoft.azure/autorest.java@3.0.4 --use=jianghaolu/autorest.mo
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.BlobStorage/preview/2019-12-12/blob.json
+input-file: C:\Users\frley\Documents\azure-rest-api-specs\specification\storage\data-plane\Microsoft.BlobStorage\preview\2019-12-12\blob.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.blob
@@ -1337,18 +1337,50 @@ directive:
       replace(/\/\*\s+\*\s+The size property.\s+\*\/\s+\/\*/gm, '/*')
 ```
 
-### BlobDownloadHeaders
+### BlobDownloadHeaders for ORS
 ``` yaml
 directive:
-- from: swagger-document
-  where: $.definitions
+- from: BlobDownloadHeaders.java
+  where: $
+  transform: >-
+    return $
+    .replace(/(public Map<String, String> getObjectReplicationRuleStatus\(\) {\s+return this.objectReplicationRuleStatus;\s+})/g, "public Map<String, ObjectReplicationPolicy> getObjectReplicationSourcePolicies() {\n        Map<String, ObjectReplicationPolicy> objectReplicationSourcePolicies = new HashMap<>();\n        this.objectReplicationDestinationPolicyId = this.objectReplicationRuleStatus.getOrDefault(\"policy-id\", null);\n        if (objectReplicationDestinationPolicyId == null) {\n            for (String str : this.objectReplicationRuleStatus.keySet()) {\n                String[] split = str.split(\"_\");\n                String policyId = split[0];\n                String ruleId = split[1];\n                if (objectReplicationSourcePolicies.containsKey(policyId)) {\n                    objectReplicationSourcePolicies.get(policyId)\n                        .putRuleAndStatus(ruleId, this.objectReplicationRuleStatus.get(str));\n                } else {\n                    ObjectReplicationPolicy policy = new ObjectReplicationPolicy(policyId);\n                    policy.putRuleAndStatus(ruleId, objectReplicationRuleStatus.get(str));\n                    objectReplicationSourcePolicies.put(policyId, policy);\n                }\n            }\n        }\n        return objectReplicationSourcePolicies;    }")
+```
+
+``` yaml
+directive:
+- from: BlobDownloadHeaders.java
+  where: $
+  transform: >-
+    return $
+    .replace(/(public String getObjectReplicationDestinationPolicyId\(\) {\s+return this.objectReplicationDestinationPolicyId;\s+})/g, "public String getObjectReplicationDestinationPolicyId() {\n        return this.objectReplicationRuleStatus.getOrDefault(\"policy-id\", null);\n    }")
+```
+
+``` yaml
+directive:
+- from: BlobDownloadHeaders.java
+  where: $
   transform: >
-    if (!$.BlobSignedIdentifier) {
-      $.BlobSignedIdentifier = $.SignedIdentifier;
-      delete $.SignedIdentifier;
-      $.BlobSignedIdentifier.xml = {"name": "SignedIdentifier"};
-      $.SignedIdentifiers.items["$ref"] = "#/definitions/BlobSignedIdentifier";
-    }
+    return $.
+      replace(
+        "import java.util.Map;",
+        "import java.util.Map;\nimport java.util.HashMap;")
+```
+
+``` yaml
+directive:	
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}/{blob}"].get
+  transform: >	
+    $.responses["200"].headers["x-ms-or-policy-id"]["x-ms-client-name"] = "ObjectReplicationDestinationPolicyId"
+```
+
+``` yaml
+directive:	
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}/{blob}"].get
+  transform: >	
+    $.responses["206"].headers["x-ms-or-policy-id"]["x-ms-client-name"] = "ObjectReplicationDestinationPolicyId"
 ```
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob%2Fswagger%2FREADME.png)

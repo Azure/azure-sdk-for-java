@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 import java.util.Map;
+import java.util.HashMap;
 
 /**
  * Defines headers for Download operation.
@@ -38,7 +39,7 @@ public final class BlobDownloadHeaders {
      * container and on the destination blob of the replication.
      */
     @JsonProperty(value = "x-ms-or-policy-id")
-    private String objectReplicationPolicyId;
+    private String objectReplicationDestinationPolicyId;
 
     /*
      * The objectReplicationRuleStatus property.
@@ -364,27 +365,27 @@ public final class BlobDownloadHeaders {
     }
 
     /**
-     * Get the objectReplicationPolicyId property: Optional. Only valid when
-     * Object Replication is enabled for the storage container and on the
-     * destination blob of the replication.
+     * Get the objectReplicationDestinationPolicyId property: Optional. Only
+     * valid when Object Replication is enabled for the storage container and
+     * on the destination blob of the replication.
      *
-     * @return the objectReplicationPolicyId value.
+     * @return the objectReplicationDestinationPolicyId value.
      */
-    public String getObjectReplicationPolicyId() {
-        return this.objectReplicationPolicyId;
+    public String getObjectReplicationDestinationPolicyId() {
+        return this.objectReplicationRuleStatus.getOrDefault("policy-id", null);
     }
 
     /**
-     * Set the objectReplicationPolicyId property: Optional. Only valid when
-     * Object Replication is enabled for the storage container and on the
-     * destination blob of the replication.
+     * Set the objectReplicationDestinationPolicyId property: Optional. Only
+     * valid when Object Replication is enabled for the storage container and
+     * on the destination blob of the replication.
      *
-     * @param objectReplicationPolicyId the objectReplicationPolicyId value to
-     * set.
+     * @param objectReplicationDestinationPolicyId the
+     * objectReplicationDestinationPolicyId value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders setObjectReplicationPolicyId(String objectReplicationPolicyId) {
-        this.objectReplicationPolicyId = objectReplicationPolicyId;
+    public BlobDownloadHeaders setObjectReplicationDestinationPolicyId(String objectReplicationDestinationPolicyId) {
+        this.objectReplicationDestinationPolicyId = objectReplicationDestinationPolicyId;
         return this;
     }
 
@@ -394,9 +395,25 @@ public final class BlobDownloadHeaders {
      *
      * @return the objectReplicationRuleStatus value.
      */
-    public Map<String, String> getObjectReplicationRuleStatus() {
-        return this.objectReplicationRuleStatus;
-    }
+    public Map<String, ObjectReplicationPolicy> getObjectReplicationSourcePolicies() {
+        Map<String, ObjectReplicationPolicy> objectReplicationSourcePolicies = new HashMap<>();
+        this.objectReplicationDestinationPolicyId = this.objectReplicationRuleStatus.getOrDefault("policy-id", null);
+        if (objectReplicationDestinationPolicyId == null) {
+            for (String str : this.objectReplicationRuleStatus.keySet()) {
+                String[] split = str.split("_");
+                String policyId = split[0];
+                String ruleId = split[1];
+                if (objectReplicationSourcePolicies.containsKey(policyId)) {
+                    objectReplicationSourcePolicies.get(policyId)
+                        .putRuleAndStatus(ruleId, this.objectReplicationRuleStatus.get(str));
+                } else {
+                    ObjectReplicationPolicy policy = new ObjectReplicationPolicy(policyId);
+                    policy.putRuleAndStatus(ruleId, objectReplicationRuleStatus.get(str));
+                    objectReplicationSourcePolicies.put(policyId, policy);
+                }
+            }
+        }
+        return objectReplicationSourcePolicies;    }
 
     /**
      * Set the objectReplicationRuleStatus property: The
