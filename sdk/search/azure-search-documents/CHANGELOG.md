@@ -1,8 +1,7 @@
 # Release History
 
 ## 1.0.0-beta.3 (Unreleased)
-- Combined `MatchConditions` and `SearchRequestOptions` into `SearchConditionalOptions`.
-- `ETag` properties have been redefined from `string` to `Azure.ETag?` consistent with other packages.
+- Change `createOrUpdate*` and `delete*` APIs in SearchServiceClient to use `onlyIfUnchanged` bool instead of `MatchConditioans`.
 
 ## 1.0.0-beta.2 (2020-04-06)
 
