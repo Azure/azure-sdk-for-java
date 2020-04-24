@@ -940,11 +940,16 @@ class BlobAPITest extends APISpec {
 
         when:
         def sourceProperties = sourceBlob.getProperties()
+        def sourceDownloadHeaders = sourceBlob.downloadWithResponse(new ByteArrayOutputStream(), null, null, null,
+            false, null, null)
         def destProperties = destBlob.getProperties()
+        def destDownloadHeaders = destBlob.downloadWithResponse(new ByteArrayOutputStream(), null, null, null,
+            false, null, null)
 
         then:
         sourceProperties.getObjectReplicationSourcePolicies().get("fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80")
             .getRules().get("105f9aad-f39b-4064-8e47-ccd7937295ca") == "complete"
+        sourceDownloadHeaders.ge
         // There is a sas token attached at the end. Only check that the path is the same.
         destProperties.getCopySource().contains(new URL(sourceBlob.getBlobUrl()).getPath())
         destProperties.getObjectReplicationDestinationPolicyId() == "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80"

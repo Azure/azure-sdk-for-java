@@ -1337,4 +1337,18 @@ directive:
       replace(/\/\*\s+\*\s+The size property.\s+\*\/\s+\/\*/gm, '/*')
 ```
 
+### BlobDownloadHeaders
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    if (!$.BlobSignedIdentifier) {
+      $.BlobSignedIdentifier = $.SignedIdentifier;
+      delete $.SignedIdentifier;
+      $.BlobSignedIdentifier.xml = {"name": "SignedIdentifier"};
+      $.SignedIdentifiers.items["$ref"] = "#/definitions/BlobSignedIdentifier";
+    }
+```
+
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob%2Fswagger%2FREADME.png)
