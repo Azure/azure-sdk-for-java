@@ -5,7 +5,6 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.messaging.servicebus.models.CreateBatchOptions;
-import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -83,7 +82,7 @@ public class ServiceBusSenderClient implements AutoCloseable {
      *
      * @throws NullPointerException if {@code message} or {@code scheduledEnqueueTime} is {@code null}.
      */
-    public long scheduleMessage(ServiceBusMessage message, Instant scheduledEnqueueTime) {
+    public Long scheduleMessage(ServiceBusMessage message, Instant scheduledEnqueueTime) {
         return asyncClient.scheduleMessage(message, scheduledEnqueueTime).block(tryTimeout);
     }
 
@@ -92,7 +91,7 @@ public class ServiceBusSenderClient implements AutoCloseable {
      *
      * @param sequenceNumber of the scheduled message to cancel.
      *
-     * @return The {@link Mono} that finishes this operation on Service Bus resource.
+     * @throws IllegalArgumentException if {@code sequenceNumber} is negative.
      */
     public void cancelScheduledMessage(long sequenceNumber) {
         asyncClient.cancelScheduledMessage(sequenceNumber).block(tryTimeout);
