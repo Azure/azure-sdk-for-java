@@ -56,6 +56,9 @@ import java.util.function.Supplier;
  * as asynchronous Single objects that resolve to a deserialized Java object.
  */
 public final class RestProxy implements InvocationHandler {
+    private static final String BODY_TOO_LARGE = "Request body emitted %d bytes, more than the expected %d bytes.";
+    private static final String BODY_TOO_SMALL = "Request body emitted %d bytes, less than the expected %d bytes.";
+
     private final ClientLogger logger = new ClientLogger(RestProxy.class);
     private final HttpPipeline httpPipeline;
     private final SerializerAdapter serializer;
@@ -137,27 +140,33 @@ public final class RestProxy implements InvocationHandler {
             return Flux.empty();
         }
 
-        return Flux.defer(() -> {
-            Long expectedLength = Long.valueOf(request.getHeaders().getValue("Content-Length"));
-            final long[] currentTotalLength = new long[1];
-            return bbFlux.doOnEach(s -> {
-                if (s.isOnNext()) {
-                    ByteBuffer byteBuffer = s.get();
-                    int currentLength = (byteBuffer == null) ? 0 : byteBuffer.remaining();
-                    currentTotalLength[0] += currentLength;
-                    if (currentTotalLength[0] > expectedLength) {
-                        throw logger.logExceptionAsError(new UnexpectedLengthException(
-                            String.format("Request body emitted %d bytes more than the expected %d bytes.",
-                                currentTotalLength[0], expectedLength), currentTotalLength[0], expectedLength));
-                    }
-                } else if (s.isOnComplete()) {
-                    if (expectedLength.compareTo(currentTotalLength[0]) != 0) {
-                        throw logger.logExceptionAsError(new UnexpectedLengthException(
-                            String.format("Request body emitted %d bytes less than the expected %d bytes.",
-                                currentTotalLength[0], expectedLength), currentTotalLength[0], expectedLength));
-                    }
+        long expectedLength = Long.parseLong(request.getHeaders().getValue("Content-Length"));
+        final long[] currentTotalLength = new long[1];
+        ByteBuffer validationBuffer = ByteBuffer.allocate(0);
+
+        return Flux.concat(bbFlux, Flux.just(validationBuffer)).handle((buffer, sink) -> {
+            if (buffer == null) {
+                return;
+            }
+
+            if (buffer == validationBuffer) {
+                if (expectedLength != currentTotalLength[0]) {
+                    sink.error(new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
+                        currentTotalLength[0], expectedLength), currentTotalLength[0], expectedLength));
+                } else {
+                    sink.complete();
                 }
-            });
+                return;
+            }
+
+            currentTotalLength[0] += buffer.remaining();
+            if (currentTotalLength[0] > expectedLength) {
+                sink.error(new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
+                    currentTotalLength[0], expectedLength), currentTotalLength[0], expectedLength));
+                return;
+            }
+
+            sink.next(buffer);
         });
     }
 
