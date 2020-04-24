@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -372,7 +373,7 @@ class ServiceBusReceiverClientTest {
                 sink.complete();
             });
         });
-        when(asyncClient.receive()).thenReturn(messageSink);
+        when(asyncClient.receive(any(ReceiveAsyncOptions.class))).thenReturn(messageSink);
 
         // Act
         final IterableStream<ServiceBusReceivedMessage> actual = client.receive(maxMessages, receiveTimeout);
@@ -417,7 +418,8 @@ class ServiceBusReceiverClientTest {
                 sink.complete();
             });
         });
-        when(asyncClient.receive()).thenReturn(messageSink);
+
+        when(asyncClient.receive(any(ReceiveAsyncOptions.class))).thenReturn(messageSink);
 
         // Act
         final IterableStream<ServiceBusReceivedMessage> actual = client.receive(maxMessages);
@@ -462,7 +464,7 @@ class ServiceBusReceiverClientTest {
                 sink.complete();
             });
         });
-        when(asyncClient.receive()).thenReturn(messageSink);
+        when(asyncClient.receive(any(ReceiveAsyncOptions.class))).thenReturn(messageSink);
 
         // Act
         final IterableStream<ServiceBusReceivedMessage> actual = client.receive(maxMessages);

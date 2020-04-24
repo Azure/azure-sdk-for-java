@@ -43,7 +43,6 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     private ServiceBusReceiverClient receiver;
     private ServiceBusSenderClient sender;
 
-
     /**
      * Receiver used to clean up resources in {@link #afterTest()}.
      */
@@ -71,7 +70,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
                 IterableStream<ServiceBusReceivedMessage> removedMessage = receiveAndDeleteReceiver.receive(
                     pending + BUFFER_MESSAGES_TO_REMOVE);
                 removedMessage.stream().forEach(receivedMessage -> {
-                    System.out.println("Removed Message sequence : " + receivedMessage.getSequenceNumber());
+                    logger.info("Removed Message Seq: {} ", receivedMessage.getSequenceNumber());
                 });
             } catch (Exception e) {
                 logger.warning("Error occurred when draining queue.", e);
@@ -86,7 +85,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
                     receiver.complete(deferredMessages);
                 }
             } catch (Exception e) {
-                logger.warning("Error occurred when draining deferred messages Entity : " + receiver.getEntityPath(), e);
+                logger.warning("Error occurred when draining deferred messages Entity: {} ", receiver.getEntityPath(), e);
             }
 
             // set empty list
@@ -101,10 +100,10 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
      */
     @MethodSource("messagingEntityWithSessions")
     @ParameterizedTest
-    void receiveTwoMessagesAutoComplete(MessagingEntityType entityType, boolean isSessionEnabled) {
+    void receiveTwoMessagesAndComplete(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSenderAndReceiver(entityType, isSessionEnabled);
-        int howManyMessage = 2;
+        int maxMessages = 2;
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
@@ -113,15 +112,18 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         sendMessage(message);
 
         // Act
-        Iterable<ServiceBusReceivedMessage> iterableMessages = receiver.receive(howManyMessage, TIMEOUT);
+        IterableStream<ServiceBusReceivedMessage> messages = receiver.receive(maxMessages, TIMEOUT);
 
         // Assert
-        for (ServiceBusReceivedMessage receivedMessage : iterableMessages) {
+        final List<ServiceBusReceivedMessage> asList = messages.stream().collect(Collectors.toList());
+        assertEquals(maxMessages, asList.size());
+
+        for (ServiceBusReceivedMessage receivedMessage : asList) {
             assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+            receiver.complete(receivedMessage);
+            messagesPending.decrementAndGet();
         }
 
-        messagesPending.decrementAndGet();
-        messagesPending.decrementAndGet();
     }
 
     /**
@@ -148,10 +150,10 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
      */
     @MethodSource("messagingEntityWithSessions")
     @ParameterizedTest
-    void receiveMessageAutoComplete(MessagingEntityType entityType, boolean isSessionEnabled) {
+    void receiveMessageAndComplete(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSenderAndReceiver(entityType, isSessionEnabled);
-        int howManyMessage = 1;
+        int maxMessages = 1;
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
@@ -159,15 +161,18 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         sendMessage(message);
 
         // Act
-        Iterable<ServiceBusReceivedMessage> iterableMessages = receiver.receive(howManyMessage, TIMEOUT);
+        IterableStream<ServiceBusReceivedMessage> messages = receiver.receive(maxMessages, TIMEOUT);
 
         // Assert
-        for (ServiceBusReceivedMessage receivedMessage : iterableMessages) {
+        final List<ServiceBusReceivedMessage> asList = messages.stream().collect(Collectors.toList());
+        assertEquals(maxMessages, asList.size());
+
+        for (ServiceBusReceivedMessage receivedMessage : asList) {
             assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+            receiver.complete(receivedMessage);
+            messagesPending.decrementAndGet();
         }
 
-        messagesPending.decrementAndGet();
-        messagesPending.decrementAndGet();
     }
 
     /**
