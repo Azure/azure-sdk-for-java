@@ -9,6 +9,8 @@ import com.azure.core.util.polling.LongRunningOperationStatus
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.ArchiveStatus
+import com.azure.storage.blob.models.BlobBeginCopyOptions
+import com.azure.storage.blob.models.BlobCopyFromUrlOptions
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
@@ -1429,7 +1431,8 @@ class BlobAPITest extends APISpec {
         }
 
         when:
-        def poller = bu2.beginCopy(bc.getBlobUrl(), null, tags, null, null, null, null, Duration.ofSeconds(1))
+        def poller = bu2.beginCopy(bc.getBlobUrl(), new BlobBeginCopyOptions().setTags(tags)
+            .setPollInterval(Duration.ofSeconds(1)))
         poller.blockLast()
 
         then:
@@ -1743,7 +1746,7 @@ class BlobAPITest extends APISpec {
         }
 
         when:
-        bu2.copyFromUrlWithResponse(bc.getBlobUrl(), null, tags, null, null, null, null, null)
+        bu2.copyFromUrlWithResponse(bc.getBlobUrl(), new BlobCopyFromUrlOptions().setTags(tags), null, null)
 
         then:
         bu2.getTags() == tags

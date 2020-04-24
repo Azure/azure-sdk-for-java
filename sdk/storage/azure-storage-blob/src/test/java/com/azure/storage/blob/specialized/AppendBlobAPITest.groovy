@@ -6,6 +6,7 @@ package com.azure.storage.blob.specialized
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.util.Context
 import com.azure.storage.blob.APISpec
+import com.azure.storage.blob.models.AppendBlobCreateOptions
 import com.azure.storage.blob.models.AppendBlobRequestConditions
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
@@ -113,7 +114,7 @@ class AppendBlobAPITest extends APISpec {
         }
 
         when:
-        bc.createWithResponse(null, null, tags, null, null, Context.NONE)
+        bc.createWithResponse(new AppendBlobCreateOptions().setTags(tags), null, Context.NONE)
         def response = bc.getTagsWithResponse(null, null)
 
         then:

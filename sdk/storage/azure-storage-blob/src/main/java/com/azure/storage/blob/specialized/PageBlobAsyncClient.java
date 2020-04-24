@@ -26,6 +26,7 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.blob.models.PageBlobCreateOptions;
 import com.azure.storage.blob.models.PageBlobItem;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageList;
@@ -186,7 +187,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Response<PageBlobItem>> createWithResponse(long size, Long sequenceNumber, BlobHttpHeaders headers,
         Map<String, String> metadata, BlobRequestConditions requestConditions) {
-        return this.createWithResponse(size, sequenceNumber, headers, metadata, null, requestConditions);
+        return this.createWithResponse(size, new PageBlobCreateOptions().setSequenceNumber(sequenceNumber)
+            .setHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions));
     }
 
     /**
@@ -198,35 +200,29 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.createWithResponse#long-Long-BlobHttpHeaders-Map-Map-BlobRequestConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.createWithResponse#long-PageBlobCreateOptions}
      *
      * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
      * 512-byte boundary.
-     * @param sequenceNumber A user-controlled value that you can use to track requests. The value of the sequence
-     * number must be between 0 and 2^63 - 1.The default value is 0.
-     * @param headers {@link BlobHttpHeaders}
-     * @param metadata Metadata to associate with the blob.
-     * @param tags Tags to associate with the blob.
-     * @param requestConditions {@link BlobRequestConditions}
+     * @param options {@link PageBlobCreateOptions}
      * @return A reactive response containing the information of the created page blob.
      *
      * @throws IllegalArgumentException If {@code size} isn't a multiple of {@link PageBlobAsyncClient#PAGE_BYTES} or
      * {@code sequenceNumber} isn't null and is less than 0.
      */
-    public Mono<Response<PageBlobItem>> createWithResponse(long size, Long sequenceNumber, BlobHttpHeaders headers,
-        Map<String, String> metadata, Map<String, String> tags, BlobRequestConditions requestConditions) {
+    public Mono<Response<PageBlobItem>> createWithResponse(long size, PageBlobCreateOptions options) {
         try {
             return withContext(context ->
-                createWithResponse(size, sequenceNumber, headers, metadata, tags, requestConditions, context));
+                createWithResponse(size, options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<PageBlobItem>> createWithResponse(long size, Long sequenceNumber, BlobHttpHeaders headers,
-        Map<String, String> metadata, Map<String, String> tags, BlobRequestConditions requestConditions,
-        Context context) {
-        requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+    Mono<Response<PageBlobItem>> createWithResponse(long size, PageBlobCreateOptions options, Context context) {
+        options = options == null ? new PageBlobCreateOptions() : options;
+        BlobRequestConditions requestConditions = options.getRequestConditions() == null ? new BlobRequestConditions()
+            : options.getRequestConditions();
 
         if (size % PAGE_BYTES != 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
@@ -234,7 +230,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("size must be a multiple of PageBlobAsyncClient.PAGE_BYTES."));
         }
-        if (sequenceNumber != null && sequenceNumber < 0) {
+        if (options.getSequenceNumber() != null && options.getSequenceNumber() < 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
             throw logger.logExceptionAsError(
@@ -242,11 +238,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         }
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.pageBlobs().createWithRestResponseAsync(null, null, 0, size, null, null, metadata,
-            requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
+        return this.azureBlobStorage.pageBlobs().createWithRestResponseAsync(null, null, 0, size, null, null,
+            options.getMetadata(), requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), sequenceNumber, null, tagsToString(tags), headers,
-            getCustomerProvidedKey(), encryptionScope,
+            requestConditions.getIfNoneMatch(), options.getSequenceNumber(), null, tagsToString(options.getTags()),
+            options.getHeaders(), getCustomerProvidedKey(), encryptionScope,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 PageBlobCreateHeaders hd = rb.getDeserializedHeaders();

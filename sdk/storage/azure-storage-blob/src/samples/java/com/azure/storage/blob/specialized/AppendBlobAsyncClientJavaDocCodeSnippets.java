@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.specialized;
 
+import com.azure.storage.blob.models.AppendBlobCreateOptions;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
@@ -70,10 +71,10 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link AppendBlobAsyncClient#createWithResponse(BlobHttpHeaders, Map, Map, BlobRequestConditions)}
+     * Code snippet for {@link AppendBlobAsyncClient#createWithResponse(AppendBlobCreateOptions)}
      */
     public void create3() {
-        // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#BlobHttpHeaders-Map-Map-BlobRequestConditions
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#AppendBlobCreateConditions
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setContentType("binary")
             .setContentLanguage("en-US");
@@ -82,9 +83,10 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
         BlobRequestConditions requestConditions = new BlobRequestConditions().setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
-        client.createWithResponse(headers, metadata, tags, requestConditions).subscribe(response ->
+        client.createWithResponse(new AppendBlobCreateOptions().setHeaders(headers).setMetadata(metadata)
+            .setTags(tags).setRequestConditions(requestConditions)).subscribe(response ->
             System.out.printf("Created AppendBlob at %s%n", response.getValue().getLastModified()));
-        // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#BlobHttpHeaders-Map-Map-BlobRequestConditions
+        // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#AppendBlobCreateConditions
     }
 
     /**

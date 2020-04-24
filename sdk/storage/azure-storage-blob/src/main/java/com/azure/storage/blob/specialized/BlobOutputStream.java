@@ -9,8 +9,10 @@ import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobParallelUploadOptions;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.BlockBlobOutputStreamOptions;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.ParallelTransferOptions;
@@ -74,28 +76,24 @@ public abstract class BlobOutputStream extends StorageOutputStream {
         final ParallelTransferOptions parallelTransferOptions, final BlobHttpHeaders headers,
         final Map<String, String> metadata, final AccessTier tier,
         final BlobRequestConditions requestConditions, Context context) {
-        return blockBlobOutputStream(client, parallelTransferOptions, headers, metadata, null, tier, requestConditions,
+        return blockBlobOutputStream(client, new BlockBlobOutputStreamOptions()
+                .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
+                .setTier(tier).setRequestConditions(requestConditions),
             context);
     }
 
     /**
      * Creates a block blob output stream from a BlobAsyncClient
      * @param client {@link BlobAsyncClient} The blob client.
-     * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
-     * @param headers {@link BlobHttpHeaders}
-     * @param metadata Metadata to associate with the blob.
-     * @param tags Tags to associate with the destination blob.
-     * @param tier {@link AccessTier} for the destination blob.
-     * @param requestConditions {@link BlobRequestConditions}
+     * @param options {@link BlockBlobOutputStreamOptions}
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link BlobOutputStream} associated with the blob.
      */
     public static BlobOutputStream blockBlobOutputStream(final BlobAsyncClient client,
-        final ParallelTransferOptions parallelTransferOptions, final BlobHttpHeaders headers,
-        final Map<String, String> metadata, Map<String, String> tags, final AccessTier tier,
-        final BlobRequestConditions requestConditions, Context context) {
-        return new BlockBlobOutputStream(client, parallelTransferOptions, headers, metadata, tags, tier,
-            requestConditions, context);
+        BlockBlobOutputStreamOptions options, Context context) {
+        options = options == null ? new BlockBlobOutputStreamOptions() : options;
+        return new BlockBlobOutputStream(client, options.getParallelTransferOptions(), options.getHeaders(),
+            options.getMetadata(), options.getTags(), options.getTier(), options.getRequestConditions(), context);
     }
 
     static BlobOutputStream pageBlobOutputStream(final PageBlobAsyncClient client, final PageRange pageRange,
@@ -222,7 +220,9 @@ public abstract class BlobOutputStream extends StorageOutputStream {
              subscribe. */
             fbb.subscribe();
 
-            client.uploadWithResponse(fbb, parallelTransferOptions, headers, metadata, tags, tier, requestConditions)
+            client.uploadWithResponse(fbb, new BlobParallelUploadOptions().
+                setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
+                .setTags(tags).setTier(tier).setRequestConditions(requestConditions))
                 // This allows the operation to continue while maintaining the error that occurred.
                 .onErrorResume(BlobStorageException.class, e -> {
                     this.lastError = new IOException(e);

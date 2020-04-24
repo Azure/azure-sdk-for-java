@@ -20,9 +20,13 @@ import com.azure.storage.blob.ProgressReceiver
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
+import com.azure.storage.blob.models.BlobParallelUploadOptions
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
+import com.azure.storage.blob.models.BlobUploadFromFileOptions
+import com.azure.storage.blob.models.BlockBlobCommitBlockListOptions
+import com.azure.storage.blob.models.BlockBlobSimpleUploadOptions
 import com.azure.storage.blob.models.BlockListType
 import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.ParallelTransferOptions
@@ -469,7 +473,8 @@ class BlockBlobAPITest extends APISpec {
         }
 
         when:
-        blockBlobClient.commitBlockListWithResponse(null, null, null, tags, null, null, null, null)
+        blockBlobClient.commitBlockListWithResponse(null, new BlockBlobCommitBlockListOptions().setTags(tags), null,
+            null)
         def response = blockBlobClient.getTagsWithResponse(null, null)
 
         then:
@@ -568,7 +573,7 @@ class BlockBlobAPITest extends APISpec {
         blockList.getUncommittedBlocks().collect { it.getName() } as Set == uncommittedBlocks as Set
 
         (blockList.getCommittedBlocks() + blockList.getUncommittedBlocks())
-            .each { assert it.getSize() == defaultDataSize }
+            .each { assert it.getSizeLong() == defaultDataSize }
     }
 
     def "Get block list min"() {
@@ -728,7 +733,7 @@ class BlockBlobAPITest extends APISpec {
         def outStream = new ByteArrayOutputStream()
 
         when:
-        blobClient.uploadFromFile(file.getAbsolutePath(), null, null, null, tags, null, null, null)
+        blobClient.uploadFromFile(file.getAbsolutePath(), new BlobUploadFromFileOptions().setTags(tags), null)
 
         then:
         tags == blockBlobClient.getTags()
@@ -1001,8 +1006,8 @@ class BlockBlobAPITest extends APISpec {
         }
 
         when:
-        blockBlobClient.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, tags, null, null,
-            null, null, null)
+        blockBlobClient.uploadWithResponse(defaultInputStream.get(), defaultDataSize, new BlockBlobSimpleUploadOptions()
+            .setTags(tags), null, null)
         def response = blockBlobClient.getTagsWithResponse(null, null)
 
         then:
@@ -1305,7 +1310,8 @@ class BlockBlobAPITest extends APISpec {
         setup:
         def dataList = [] as List<ByteBuffer>
         dataSizeList.each { size -> dataList.add(getRandomData(size)) }
-        def uploadOperation = blobAsyncClient.upload(Flux.fromIterable(dataList).publish().autoConnect(), new ParallelTransferOptions((Long)null, null, null, 4 * Constants.MB), true)
+        def uploadOperation = blobAsyncClient.upload(Flux.fromIterable(dataList).publish().autoConnect(),
+            new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * Constants.MB), true)
 
         expect:
         StepVerifier.create(uploadOperation.then(collectBytesInBuffer(blockBlobAsyncClient.download())))
@@ -1458,7 +1464,7 @@ class BlockBlobAPITest extends APISpec {
         when:
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(10, 10, null)
         def uploadOperation = blobAsyncClient.uploadWithResponse(Flux.just(getRandomData(10)),
-            parallelTransferOptions, null, null, tags, null, null)
+            new BlobParallelUploadOptions().setParallelTransferOptions(parallelTransferOptions).setTags(tags))
 
         then:
         StepVerifier.create(uploadOperation.then(blobAsyncClient.getTagsWithResponse(null)))

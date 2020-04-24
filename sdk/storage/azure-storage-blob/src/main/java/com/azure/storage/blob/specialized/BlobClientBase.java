@@ -13,6 +13,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.models.BlobBeginCopyOptions;
+import com.azure.storage.blob.models.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.AccessTier;
@@ -306,8 +308,9 @@ public class BlobClientBase {
     public SyncPoller<BlobCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata, AccessTier tier,
             RehydratePriority priority, RequestConditions sourceModifiedRequestConditions,
             BlobRequestConditions destRequestConditions, Duration pollInterval) {
-        return this.beginCopy(sourceUrl, metadata, null, tier, priority, sourceModifiedRequestConditions,
-            destRequestConditions, pollInterval);
+        return this.beginCopy(sourceUrl, new BlobBeginCopyOptions().setMetadata(metadata).setTier(tier)
+            .setRehydratePriority(priority).setSourceRequestConditions(sourceModifiedRequestConditions)
+            .setDestinationRequestConditions(destRequestConditions).setPollInterval(pollInterval));
     }
 
     /**
@@ -315,32 +318,18 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.beginCopy#String-Map-Map-AccessTier-RehydratePriority-RequestConditions-BlobRequestConditions-Duration}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.beginCopy#String-BlobBeginCopyOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a></p>
      *
      * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
-     * @param metadata Metadata to associate with the destination blob.
-     * @param tags Tags to associate with the destination blob.
-     * @param tier {@link AccessTier} for the destination blob.
-     * @param priority {@link RehydratePriority} for rehydrating the blob.
-     * @param sourceModifiedRequestConditions {@link RequestConditions} against the source. Standard HTTP Access
-     * conditions related to the modification of data. ETag and LastModifiedTime are used to construct conditions
-     * related to when the blob was changed relative to the given request. The request will fail if the specified
-     * condition is not satisfied.
-     * @param destRequestConditions {@link BlobRequestConditions} against the destination.
-     * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
-     * is used.
+     * @param options {@link BlobBeginCopyOptions}
      * @return A {@link SyncPoller} to poll the progress of blob copy operation.
      */
-    public SyncPoller<BlobCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata,
-        Map<String, String> tags, AccessTier tier, RehydratePriority priority,
-        RequestConditions sourceModifiedRequestConditions, BlobRequestConditions destRequestConditions,
-        Duration pollInterval) {
+    public SyncPoller<BlobCopyInfo, Void> beginCopy(String sourceUrl, BlobBeginCopyOptions options) {
 
-        return client.beginCopy(sourceUrl, metadata, tags, tier, priority, sourceModifiedRequestConditions,
-                destRequestConditions, pollInterval).getSyncPoller();
+        return client.beginCopy(sourceUrl, options).getSyncPoller();
     }
 
 
@@ -426,8 +415,9 @@ public class BlobClientBase {
     public Response<String> copyFromUrlWithResponse(String copySource, Map<String, String> metadata, AccessTier tier,
             RequestConditions sourceModifiedRequestConditions, BlobRequestConditions destRequestConditions,
             Duration timeout, Context context) {
-        return this.copyFromUrlWithResponse(copySource, metadata, null, tier, sourceModifiedRequestConditions,
-            destRequestConditions, timeout, context);
+        return this.copyFromUrlWithResponse(copySource, new BlobCopyFromUrlOptions().setMetadata(metadata)
+            .setTier(tier).setSourceRequestConditions(sourceModifiedRequestConditions)
+            .setDestinationRequestConditions(destRequestConditions), timeout, context);
     }
 
     /**
@@ -435,31 +425,22 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.copyFromUrlWithResponse#String-Map-Map-AccessTier-RequestConditions-BlobRequestConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.copyFromUrlWithResponse#String-BlobCopyFromUrlOptions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob-from-url">Azure Docs</a></p>
      *
      * @param copySource The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
-     * @param metadata Metadata to associate with the destination blob.
-     * @param tags Tags to associate with the destination blob.
-     * @param tier {@link AccessTier} for the destination blob.
-     * @param sourceModifiedRequestConditions {@link RequestConditions} against the source. Standard HTTP Access
-     * conditions related to the modification of data. ETag and LastModifiedTime are used to construct conditions
-     * related to when the blob was changed relative to the given request. The request will fail if the specified
-     * condition is not satisfied.
-     * @param destRequestConditions {@link BlobRequestConditions} against the destination.
+     * @param options {@link BlobCopyFromUrlOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The copy ID for the long running operation.
      * @throws IllegalArgumentException If {@code copySource} is a malformed {@link URL}.
      */
-    public Response<String> copyFromUrlWithResponse(String copySource, Map<String, String> metadata,
-        Map<String, String> tags, AccessTier tier, RequestConditions sourceModifiedRequestConditions,
-        BlobRequestConditions destRequestConditions, Duration timeout, Context context) {
+    public Response<String> copyFromUrlWithResponse(String copySource, BlobCopyFromUrlOptions options, Duration timeout,
+        Context context) {
         Mono<Response<String>> response = client
-            .copyFromUrlWithResponse(copySource, metadata, tags, tier, sourceModifiedRequestConditions,
-                destRequestConditions, context);
+            .copyFromUrlWithResponse(copySource, options, context);
 
         return blockWithOptionalTimeout(response, timeout);
     }

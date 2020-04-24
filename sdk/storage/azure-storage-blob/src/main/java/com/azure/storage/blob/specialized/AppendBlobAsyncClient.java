@@ -19,6 +19,7 @@ import com.azure.storage.blob.implementation.models.AppendBlobAppendBlockFromUrl
 import com.azure.storage.blob.implementation.models.AppendBlobAppendBlockHeaders;
 import com.azure.storage.blob.implementation.models.AppendBlobCreateHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
+import com.azure.storage.blob.models.AppendBlobCreateOptions;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -154,7 +155,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Response<AppendBlobItem>> createWithResponse(BlobHttpHeaders headers, Map<String, String> metadata,
         BlobRequestConditions requestConditions) {
-        return this.createWithResponse(headers, metadata, null, requestConditions);
+        return this.createWithResponse(new AppendBlobCreateOptions().setHeaders(headers).setMetadata(metadata)
+            .setRequestConditions(requestConditions));
     }
 
     /**
@@ -164,34 +166,33 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#BlobHttpHeaders-Map-Map-BlobRequestConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#AppendBlobCreateOptions}
      *
-     * @param headers {@link BlobHttpHeaders}
-     * @param metadata Metadata to associate with the blob.
-     * @param tags Tags to associate with the blob.
-     * @param requestConditions {@link BlobRequestConditions}
+     * @param options {@link AppendBlobCreateOptions}
      * @return A {@link Mono} containing {@link Response} whose {@link Response#getValue() value} contains the created
      * appended blob.
      */
-    public Mono<Response<AppendBlobItem>> createWithResponse(BlobHttpHeaders headers, Map<String, String> metadata,
-        Map<String, String> tags, BlobRequestConditions requestConditions) {
+    public Mono<Response<AppendBlobItem>> createWithResponse(AppendBlobCreateOptions options) {
         try {
-            return withContext(context -> createWithResponse(headers, metadata, tags, requestConditions, context));
+            return withContext(context -> createWithResponse(options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<AppendBlobItem>> createWithResponse(BlobHttpHeaders headers, Map<String, String> metadata,
-        Map<String, String> tags, BlobRequestConditions requestConditions, Context context) {
+    Mono<Response<AppendBlobItem>> createWithResponse(AppendBlobCreateOptions options, Context context) {
+        options = (options == null) ? new AppendBlobCreateOptions() : options;
+
+        BlobRequestConditions requestConditions = options.getRequestConditions();
         requestConditions = (requestConditions == null) ? new BlobRequestConditions() : requestConditions;
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.appendBlobs().createWithRestResponseAsync(null, null, 0, null, metadata,
-            requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
+        return this.azureBlobStorage.appendBlobs().createWithRestResponseAsync(null, null, 0, null,
+            options.getMetadata(), requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), null, tagsToString(tags), headers, getCustomerProvidedKey(),
-            encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            requestConditions.getIfNoneMatch(), null, tagsToString(options.getTags()), options.getHeaders(),
+            getCustomerProvidedKey(), encryptionScope,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 AppendBlobCreateHeaders hd = rb.getDeserializedHeaders();
                 AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),

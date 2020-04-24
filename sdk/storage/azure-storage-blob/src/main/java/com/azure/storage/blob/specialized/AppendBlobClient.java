@@ -11,6 +11,7 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.models.AppendBlobCreateOptions;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -142,7 +143,8 @@ public final class AppendBlobClient extends BlobClientBase {
      */
     public Response<AppendBlobItem> createWithResponse(BlobHttpHeaders headers, Map<String, String> metadata,
         BlobRequestConditions requestConditions, Duration timeout, Context context) {
-        return this.createWithResponse(headers, metadata, null, requestConditions, timeout, context);
+        return this.createWithResponse(new AppendBlobCreateOptions().setHeaders(headers).setMetadata(metadata)
+            .setRequestConditions(requestConditions), timeout, context);
     }
 
     /**
@@ -152,20 +154,17 @@ public final class AppendBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#BlobHttpHeaders-Map-Map-BlobRequestConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#AppendBlobCreateOptions-Duration-Context}
      *
-     * @param headers {@link BlobHttpHeaders}
-     * @param metadata Metadata to associate with the blob.
-     * @param tags Tags to associate with the destination blob.
-     * @param requestConditions {@link BlobRequestConditions}
+     * @param options {@link AppendBlobCreateOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the created appended blob.
      */
-    public Response<AppendBlobItem> createWithResponse(BlobHttpHeaders headers, Map<String, String> metadata,
-        Map<String, String> tags, BlobRequestConditions requestConditions, Duration timeout, Context context) {
+    public Response<AppendBlobItem> createWithResponse(AppendBlobCreateOptions options, Duration timeout,
+        Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(appendBlobAsyncClient.
-            createWithResponse(headers, metadata, tags, requestConditions, context), timeout);
+            createWithResponse(options, context), timeout);
     }
 
     /**
