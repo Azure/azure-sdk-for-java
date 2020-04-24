@@ -8,12 +8,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.ReceiveMode;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -40,6 +37,10 @@ public class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase
 
     private ServiceBusReceiverClient receiver;
     private ServiceBusSenderClient sender;
+
+    /* Sometime not all the messages are cleaned-up. This is buffer to ensure all the messages are cleaned-up.*/
+    private static final int BUFFER_MESSAGES_TO_REMOVE = 10;
+
     /**
      * Receiver used to clean up resources in {@link #afterTest()}.
      */
@@ -68,21 +69,20 @@ public class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase
         // In the case that this test failed... we're going to drain the queue or subscription.
         if (pending > 0) {
             try {
-                IterableStream<ServiceBusReceivedMessage> removedMessage = receiveAndDeleteReceiver.receive(pending + 10);
+                IterableStream<ServiceBusReceivedMessage> removedMessage = receiveAndDeleteReceiver.receive(
+                    pending + BUFFER_MESSAGES_TO_REMOVE);
                 removedMessage.stream().forEach(receivedMessage -> {
                     System.out.println("Removed Message sequence : " +  receivedMessage.getSequenceNumber());
                 });
             } catch (Exception e) {
                 logger.warning("Error occurred when draining queue.", e);
-            } finally {
-
             }
         }
 
         if (messagesDeferred.get().size() > 0) {
             try {
                 List<Long> listOfDeferredMessages =  messagesDeferred.get();
-                for(Long seqNumber : listOfDeferredMessages) {
+                for (Long seqNumber : listOfDeferredMessages) {
                     ServiceBusReceivedMessage deferredMessages = receiver.receiveDeferredMessage(seqNumber);
                     receiver.complete(deferredMessages);
                 }
