@@ -4,7 +4,6 @@
 module com.azure.identity {
     requires transitive com.azure.core;
 
-    requires osx-keychain-java;
     requires msal4j;
     requires com.sun.jna;
     requires com.sun.jna.platform;
@@ -13,6 +12,7 @@ module com.azure.identity {
     requires msal4j.persistence.extension;
     requires org.linguafranca.pwdb.database;
     requires org.linguafranca.pwdb.kdbx;
+    requires org.linguafranca.pwdb.Credentials;
     requires org.linguafranca.pwdb.kdbx.simple;
 
     exports com.azure.identity;

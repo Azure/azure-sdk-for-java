@@ -1,5 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.identity.implementation;
 
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.aad.msal4jextensions.persistence.mac.KeyChainAccessor;
@@ -15,7 +20,12 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.FileInputStream;
 import java.nio.ByteBuffer;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -25,17 +35,32 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * This class accesses IntelliJ Azure Tools credentials cache via JNA.
+ */
 public class IntelliJCacheAccessor {
+    private final ClientLogger logger = new ClientLogger(IntelliJCacheAccessor.class);
     private String keepPassDatabasePath;
 
+    /**
+     * Creates an instance of {@link IntelliJCacheAccessor}
+     *
+     * @param keepPassDatabasePath the keep pass database path.
+     */
     public IntelliJCacheAccessor(String keepPassDatabasePath) {
         this.keepPassDatabasePath = keepPassDatabasePath;
     }
 
-    private String getAzureToolsforIntelliJPluginConfigPath(){
+    private String getAzureToolsforIntelliJPluginConfigPath() {
         return System.getProperty("user.home") + String.format("%sAzureToolsForIntelliJ", File.separator);
     }
 
+    /**
+     * Get the current authentication method details of Azure Tools plugin in IntelliJ IDE.
+     *
+     * @return the {@link IntelliJAuthMethodDetails}
+     * @throws IOException if an error is encountered while reading the auth details file.
+     */
     public IntelliJAuthMethodDetails getIntelliJAuthDetails() throws IOException {
         StringBuilder authMethodDetailsPath = new StringBuilder(getAzureToolsforIntelliJPluginConfigPath());
         authMethodDetailsPath.append(String.format("%sAuthMethodDetails.json", File.separator));
@@ -44,6 +69,12 @@ public class IntelliJCacheAccessor {
         return objectMapper.readValue(file, IntelliJAuthMethodDetails.class);
     }
 
+    /**
+     * Get the Device Code credential details of Azure Tools plugin in the IntelliJ IDE.
+     *
+     * @return the {@link JsonNode} holding the authentication details.
+     * @throws IOException
+     */
     public JsonNode getDeviceCodeCredentials() throws IOException {
         String os = System.getProperty("os.name").toLowerCase(Locale.ROOT);
 
@@ -73,10 +104,17 @@ public class IntelliJCacheAccessor {
         } else if (os.contains("win")) {
             return getCredentialFromKdbx();
         } else {
-            throw new RuntimeException(String.format("OS %s Platform not supported.", os));
+            throw logger.logExceptionAsError(new RuntimeException(String.format("OS %s Platform not supported.", os)));
         }
     }
 
+    /**
+     * Get the Service Principal credential details of Azure Tools plugin in the IntelliJ IDE.
+     *
+     * @param credFilePath the file path holding authentication details
+     * @return the {@link HashMap} holding auth details.
+     * @throws IOException if an error is countered while reading the credential file.
+     */
     public HashMap<String, String> getIntellijServicePrincipalDetails(String credFilePath) throws IOException {
         BufferedReader reader = null;
         HashMap<String, String> servicePrincipalDetails = new HashMap<>(8);
@@ -84,7 +122,6 @@ public class IntelliJCacheAccessor {
             reader = new BufferedReader(new FileReader(credFilePath));
             String line = reader.readLine();
             while (line != null) {
-                System.out.println(line);
                 String[] split = line.split("=");
                 split[1] = split[1].replace("\\", "");
                 servicePrincipalDetails.put(split[0], split[1]);
@@ -99,11 +136,12 @@ public class IntelliJCacheAccessor {
         return servicePrincipalDetails;
     }
 
-    public JsonNode getCredentialFromKdbx() throws IOException {
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private JsonNode getCredentialFromKdbx() throws IOException {
         String extractedpwd = getKdbxPassword();
 
         byte[] cryptoKey = new byte[]{0x50, 0x72, 0x6f, 0x78, 0x79, 0x20, 0x43, 0x6f, 0x6e, 0x66,
-                0x69, 0x67, 0x20, 0x53, 0x65, 0x63};
+            0x69, 0x67, 0x20, 0x53, 0x65, 0x63};
 
         SecretKeySpec key = new SecretKeySpec(cryptoKey, "AES");
         String password = "";
@@ -121,7 +159,7 @@ public class IntelliJCacheAccessor {
             password = new String(decrypted);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException
                 | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
-            throw new RuntimeException("Unable to access cache.", e);
+            throw logger.logExceptionAsError(new RuntimeException("Unable to access cache.", e));
         }
 
         try {
@@ -131,18 +169,22 @@ public class IntelliJCacheAccessor {
 
             List<Entry> entries = database.findEntries("ADAuthManager");
             if (entries.size() == 0) {
-                throw new RuntimeException("No credentials found in the cache. Please login with IntelliJ"
-                        + " Azure Tools plugin in the IDE.");
+                throw logger.logExceptionAsError(new RuntimeException("No credentials found in the cache."
+                        + " Please login with IntelliJ Azure Tools plugin in the IDE."));
             }
 
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readTree(entries.get(0).getPassword());
         } catch (Exception e) {
-            throw new RuntimeException("Failed to read database.", e);
+            throw logger.logExceptionAsError(new RuntimeException("Failed to read keep pass database.", e));
         }
     }
 
     private String getKdbxPassword() throws IOException {
+        if (CoreUtils.isNullOrEmpty(keepPassDatabasePath)) {
+            throw new IllegalArgumentException("The windows keep pass database path is either empty or not configured."
+                                                   + " Please configure it on the IntelliJ Credential builder.");
+        }
         String passwordFilePath = new File(keepPassDatabasePath).getParent() + "\\" + "c.pwd";
         String extractedpwd = "";
 
@@ -153,13 +195,12 @@ public class IntelliJCacheAccessor {
 
             while (line != null) {
                 if (line.contains("value")) {
-                    System.out.println(line);
                     String[] tokens = line.split(" ");
                     if (tokens.length == 3) {
                         extractedpwd = tokens[2];
                         break;
                     } else {
-                        throw new RuntimeException("Password not found in the file.");
+                        throw logger.logExceptionAsError(new RuntimeException("Password not found in the file."));
                     }
                 }
                 line = reader.readLine();

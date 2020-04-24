@@ -17,7 +17,7 @@ import java.util.List;
  * via JNA.
  */
 public class LinuxKeyRingAccessor {
-    private final ClientLogger logger = new ClientLogger(com.azure.identity.implementation.LinuxKeyRingAccessor.class);
+    private final ClientLogger logger = new ClientLogger(LinuxKeyRingAccessor.class);
     private String keyringSchemaName;
     private String attributeKey1;
     private String attributeValue1;
@@ -26,7 +26,8 @@ public class LinuxKeyRingAccessor {
     private Pointer libSecretSchema;
 
     /**
-     * Creates an instance of the {@link com.azure.identity.implementation.LinuxKeyRingAccessor} with specified attributes and schema.
+     * Creates an instance of the {@link com.azure.identity.implementation.LinuxKeyRingAccessor} with
+     * specified attributes and schema.
      *
      * @param keyringSchemaName the key ring schema to access.
      * @param attributeKey1 the key value of the attribute to lookup

@@ -158,10 +158,10 @@ public class IdentityClient {
             IntelliJAuthMethodDetails authDetails = cacheAccessor.getIntelliJAuthDetails();
             String authType = authDetails.getAuthMethod();
             if (CoreUtils.isNullOrEmpty(authType)) {
-                throw new RuntimeException("IntelliJ Authentication not available."
-                    + " Plese login with Azure Tools for IntelliJ plugin in the IDE.");
+                throw logger.logExceptionAsError(new RuntimeException("IntelliJ Authentication not available."
+                    + " Plese login with Azure Tools for IntelliJ plugin in the IDE."));
             }
-            if (authType.equals("SP")) {
+            if (authType.equalsIgnoreCase("SP")) {
                 HashMap<String, String> spDetails = cacheAccessor
                     .getIntellijServicePrincipalDetails(authDetails.getCredFilePath());
                 String authorityUrl = spDetails.get("authURL") + spDetails.get("tenant");
@@ -190,7 +190,7 @@ public class IdentityClient {
                 } catch (MalformedURLException e) {
                     return Mono.error(e);
                 }
-            } else if (authType.equals("DC")) {
+            } else if (authType.equalsIgnoreCase("DC")) {
                 JsonNode intelliJCredentials = cacheAccessor.getDeviceCodeCredentials();
                 String refreshToken = intelliJCredentials.get("refreshToken").textValue();
 
@@ -198,14 +198,12 @@ public class IdentityClient {
                                                         .builder(new HashSet<>(request.getScopes()), refreshToken)
                                                         .build();
 
-                return Mono.defer(() -> {
-                        return Mono.fromFuture(publicClientApplication.acquireToken(parameters))
-                                   .map(ar -> new MsalToken(ar, options));
-                });
+                return Mono.defer(() -> Mono.fromFuture(publicClientApplication.acquireToken(parameters))
+                                    .map(ar -> new MsalToken(ar, options)));
 
             } else {
-                throw new RuntimeException("IntelliJ Authentication not available."
-                    + " Plese login with Azure Tools for IntelliJ plugin in the IDE.");
+                throw logger.logExceptionAsError(new RuntimeException("IntelliJ Authentication not available."
+                    + " Plese login with Azure Tools for IntelliJ plugin in the IDE."));
             }
         } catch (IOException e) {
             return Mono.error(e);
