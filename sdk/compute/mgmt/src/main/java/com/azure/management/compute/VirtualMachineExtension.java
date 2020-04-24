@@ -2,43 +2,36 @@
 // Licensed under the MIT License.
 
 package com.azure.management.compute;
+
 import com.azure.core.annotation.Fluent;
 import com.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
 import com.azure.management.resources.fluentcore.model.Attachable;
 import com.azure.management.resources.fluentcore.model.Settable;
-import reactor.core.publisher.Mono;
-
 import java.util.HashMap;
 import java.util.Map;
+import reactor.core.publisher.Mono;
 
-/**
- * An immutable client-side representation of an Azure virtual machine extension.
- */
+/** An immutable client-side representation of an Azure virtual machine extension. */
 @Fluent
-public interface VirtualMachineExtension extends
-        VirtualMachineExtensionBase,
-        ExternalChildResource<VirtualMachineExtension, VirtualMachine> {
+public interface VirtualMachineExtension
+    extends VirtualMachineExtensionBase, ExternalChildResource<VirtualMachineExtension, VirtualMachine> {
     /**
-     * @return a representation of the deferred computation of this call returning the virtual machine extension instance view
+     * @return a representation of the deferred computation of this call returning the virtual machine extension
+     *     instance view
      */
     Mono<VirtualMachineExtensionInstanceView> getInstanceViewAsync();
 
-    /**
-     * @return the instance view of the virtual machine extension
-     */
+    /** @return the instance view of the virtual machine extension */
     VirtualMachineExtensionInstanceView getInstanceView();
 
-    /**
-     * Grouping of virtual machine extension definition stages as a part of parent virtual machine definition.
-     */
+    /** Grouping of virtual machine extension definition stages as a part of parent virtual machine definition. */
     interface DefinitionStages {
         /**
          * The first stage of a virtual machine extension definition.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface Blank<ParentT>
-                extends WithImageOrPublisher<ParentT> {
+        interface Blank<ParentT> extends WithImageOrPublisher<ParentT> {
         }
 
         /**
@@ -47,8 +40,7 @@ public interface VirtualMachineExtension extends
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithImageOrPublisher<ParentT>
-                extends WithPublisher<ParentT> {
+        interface WithImageOrPublisher<ParentT> extends WithPublisher<ParentT> {
             /**
              * Specifies the virtual machine extension image to use.
              *
@@ -59,8 +51,8 @@ public interface VirtualMachineExtension extends
         }
 
         /**
-         * The stage of the virtual machine extension definition allowing to specify the publisher of the
-         * virtual machine extension image this extension is based on.
+         * The stage of the virtual machine extension definition allowing to specify the publisher of the virtual
+         * machine extension image this extension is based on.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
@@ -106,11 +98,13 @@ public interface VirtualMachineExtension extends
             WithAttach<ParentT> withVersion(String extensionImageVersionName);
         }
 
-        /** The final stage of the virtual machine extension definition.
+        /**
+         * The final stage of the virtual machine extension definition.
+         *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAttach<ParentT> extends
-                Attachable.InDefinition<ParentT>,
+        interface WithAttach<ParentT>
+            extends Attachable.InDefinition<ParentT>,
                 WithAutoUpgradeMinorVersion<ParentT>,
                 WithSettings<ParentT>,
                 WithTags<ParentT> {
@@ -187,6 +181,7 @@ public interface VirtualMachineExtension extends
         interface WithTags<ParentT> {
             /**
              * Specifies tags for the virtual machine extension.
+             *
              * @param tags the tags to associate
              * @return the next stage of the definition
              */
@@ -194,6 +189,7 @@ public interface VirtualMachineExtension extends
 
             /**
              * Adds a tag to the virtual machine extension.
+             *
              * @param key the key for the tag
              * @param value the value for the tag
              * @return the next stage of the definition
@@ -207,8 +203,8 @@ public interface VirtualMachineExtension extends
      *
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
-    interface Definition<ParentT> extends
-            DefinitionStages.Blank<ParentT>,
+    interface Definition<ParentT>
+        extends DefinitionStages.Blank<ParentT>,
             DefinitionStages.WithImageOrPublisher<ParentT>,
             DefinitionStages.WithPublisher<ParentT>,
             DefinitionStages.WithType<ParentT>,
@@ -216,27 +212,23 @@ public interface VirtualMachineExtension extends
             DefinitionStages.WithAttach<ParentT> {
     }
 
-    /**
-     * Grouping of virtual machine extension definition stages as part of parent virtual machine update.
-     */
+    /** Grouping of virtual machine extension definition stages as part of parent virtual machine update. */
     interface UpdateDefinitionStages {
         /**
          * The first stage of a virtual machine extension definition.
          *
          * @param <ParentT> the stage of the parent update to return to after attaching this definition
          */
-        interface Blank<ParentT>
-                extends WithImageOrPublisher<ParentT> {
+        interface Blank<ParentT> extends WithImageOrPublisher<ParentT> {
         }
 
         /**
-         * The stage of the virtual machine extension allowing to specify extension image or specify name of the
-         * virtual machine extension publisher.
+         * The stage of the virtual machine extension allowing to specify extension image or specify name of the virtual
+         * machine extension publisher.
          *
          * @param <ParentT> the stage of the parent update to return to after attaching this definition
          */
-        interface WithImageOrPublisher<ParentT>
-                extends WithPublisher<ParentT> {
+        interface WithImageOrPublisher<ParentT> extends WithPublisher<ParentT> {
             /**
              * Specifies the virtual machine extension image to use.
              *
@@ -247,8 +239,8 @@ public interface VirtualMachineExtension extends
         }
 
         /**
-         * The stage of the virtual machine extension definition allowing to specify the publisher of the
-         * virtual machine extension image this extension is based on.
+         * The stage of the virtual machine extension definition allowing to specify the publisher of the virtual
+         * machine extension image this extension is based on.
          *
          * @param <ParentT> the stage of the parent update to return to after attaching this definition
          */
@@ -294,11 +286,13 @@ public interface VirtualMachineExtension extends
             WithAttach<ParentT> withVersion(String extensionImageVersionName);
         }
 
-        /** The final stage of the virtual machine extension definition.
+        /**
+         * The final stage of the virtual machine extension definition.
+         *
          * @param <ParentT> the stage of the parent update to return to after attaching this definition
          */
-        interface WithAttach<ParentT> extends
-                Attachable.InUpdate<ParentT>,
+        interface WithAttach<ParentT>
+            extends Attachable.InUpdate<ParentT>,
                 WithAutoUpgradeMinorVersion<ParentT>,
                 WithSettings<ParentT>,
                 WithTags<ParentT> {
@@ -375,6 +369,7 @@ public interface VirtualMachineExtension extends
         interface WithTags<ParentT> {
             /**
              * Specifies tags for the resource.
+             *
              * @param tags tags to associate with the resource
              * @return the next stage of the definition
              */
@@ -382,6 +377,7 @@ public interface VirtualMachineExtension extends
 
             /**
              * Adds a tag to the resource.
+             *
              * @param key the key for the tag
              * @param value the value for the tag
              * @return the next stage of the definition
@@ -392,10 +388,11 @@ public interface VirtualMachineExtension extends
 
     /**
      * The entirety of a virtual machine extension definition as a part of parent update.
+     *
      * @param <ParentT> the stage of the parent update to return to after attaching this definition
      */
-    interface UpdateDefinition<ParentT> extends
-            UpdateDefinitionStages.Blank<ParentT>,
+    interface UpdateDefinition<ParentT>
+        extends UpdateDefinitionStages.Blank<ParentT>,
             UpdateDefinitionStages.WithImageOrPublisher<ParentT>,
             UpdateDefinitionStages.WithPublisher<ParentT>,
             UpdateDefinitionStages.WithType<ParentT>,
@@ -403,13 +400,11 @@ public interface VirtualMachineExtension extends
             UpdateDefinitionStages.WithAttach<ParentT> {
     }
 
-    /**
-     * Grouping of virtual machine extension update stages.
-     */
+    /** Grouping of virtual machine extension update stages. */
     interface UpdateStages {
         /**
-         * The stage of the virtual machine extension update allowing to enable or disable auto upgrade of the
-         * extension when when a new minor version of virtual machine extension image gets published.
+         * The stage of the virtual machine extension update allowing to enable or disable auto upgrade of the extension
+         * when when a new minor version of virtual machine extension image gets published.
          */
         interface WithAutoUpgradeMinorVersion {
             /**
@@ -427,9 +422,7 @@ public interface VirtualMachineExtension extends
             Update withoutMinorVersionAutoUpgrade();
         }
 
-        /**
-         * The stage of the virtual machine extension update allowing to add or update public and private settings.
-         */
+        /** The stage of the virtual machine extension update allowing to add or update public and private settings. */
         interface WithSettings {
             /**
              * Specifies a public settings entry.
@@ -466,12 +459,11 @@ public interface VirtualMachineExtension extends
             Update withProtectedSettings(HashMap<String, Object> settings);
         }
 
-        /**
-         * The stage of the virtual machine extension update allowing to add or update tags.
-         */
+        /** The stage of the virtual machine extension update allowing to add or update tags. */
         interface WithTags {
             /**
              * Specifies tags for the virtual machine extension.
+             *
              * @param tags tags indexed by name
              * @return the next stage of the update
              */
@@ -479,6 +471,7 @@ public interface VirtualMachineExtension extends
 
             /**
              * Adds a tag to the virtual machine extension.
+             *
              * @param key the key for the tag
              * @param value the value for the tag
              * @return the next stage of the update
@@ -487,6 +480,7 @@ public interface VirtualMachineExtension extends
 
             /**
              * Removes a tag from the virtual machine extension.
+             *
              * @param key the key of the tag to remove
              * @return the next stage of the update
              */
@@ -494,14 +488,11 @@ public interface VirtualMachineExtension extends
         }
     }
 
-    /**
-     * The entirety of virtual machine extension update as a part of parent virtual machine update.
-     */
-    interface Update extends
-            Settable<VirtualMachine.Update>,
+    /** The entirety of virtual machine extension update as a part of parent virtual machine update. */
+    interface Update
+        extends Settable<VirtualMachine.Update>,
             UpdateStages.WithAutoUpgradeMinorVersion,
             UpdateStages.WithSettings,
             UpdateStages.WithTags {
-
     }
 }

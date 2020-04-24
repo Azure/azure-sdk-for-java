@@ -55,7 +55,8 @@ public final class ManagedDatabaseRestoreDetailsInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/databases/{databaseName}/restoreDetails/{restoreDetailsName}")
+                + "/managedInstances/{managedInstanceName}/databases/{databaseName}/restoreDetails"
+                + "/{restoreDetailsName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<ManagedDatabaseRestoreDetailsResultInner>> get(

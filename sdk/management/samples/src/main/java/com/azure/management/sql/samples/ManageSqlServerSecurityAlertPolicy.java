@@ -95,7 +95,7 @@ public class ManageSqlServerSecurityAlertPolicy {
             // ============================================================
             // Update the Server Security Alert Policy.
             System.out.println("Updating the Server Security Alert Policy");
-            sqlSecurityAlertPolicy = sqlSecurityAlertPolicy.update()
+            sqlSecurityAlertPolicy.update()
                 .withoutEmailAccountAdmins()
                 .withEmailAddresses("testSecurityAlert@contoso.com")
                 .withRetentionDays(1)

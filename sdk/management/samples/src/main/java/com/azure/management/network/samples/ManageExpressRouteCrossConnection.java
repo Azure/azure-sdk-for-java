@@ -4,7 +4,6 @@ package com.azure.management.network.samples;
 
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.Azure;
 import com.azure.management.network.ExpressRouteCrossConnection;
 
@@ -32,7 +31,10 @@ public final class ManageExpressRouteCrossConnection {
         try {
             //============================================================
             // list Express Route Cross Connections
-            PagedIterable<ExpressRouteCrossConnection> connections = azure.expressRouteCrossConnections().list();
+            System.out.println("List express route cross connection...");
+            azure.expressRouteCrossConnections().list().forEach(expressRouteCrossConnection ->
+                System.out.println(expressRouteCrossConnection.name()));
+            System.out.println();
 
             //============================================================
             // get Express Route Cross Connection by id
@@ -45,7 +47,7 @@ public final class ManageExpressRouteCrossConnection {
                     .withPrimaryPeerAddressPrefix("10.0.0.0/30")
                     .withSecondaryPeerAddressPrefix("10.0.0.4/30")
                     .withVlanId(100)
-                    .withPeerAsn(500)
+                    .withPeerASN(500)
                     .withSharedKey("A1B2C3D4")
                     .create();
 
@@ -59,7 +61,7 @@ public final class ManageExpressRouteCrossConnection {
                     .withPrimaryPeerAddressPrefix("10.0.0.0/30")
                     .withSecondaryPeerAddressPrefix("10.0.0.4/30")
                     .withVlanId(600)
-                    .withPeerAsn(500)
+                    .withPeerASN(500)
                     .withSharedKey("A1B2C3D4")
                     .defineIpv6Config()
                     .withAdvertisedPublicPrefix("3FFE:FFFF:0:CD31::/120")

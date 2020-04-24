@@ -228,7 +228,7 @@ public class SwaggerMethodParserTests {
             Arguments.of(substitution, sub1RawHost, null, "{sub1}.host.com"),
             Arguments.of(substitution, sub2RawHost, toObjectArray("raw"), "{sub2}.host.com"),
             Arguments.of(encodingSubstitution, sub1RawHost, toObjectArray("raw"), "raw.host.com"),
-            Arguments.of(encodingSubstitution, sub1RawHost, toObjectArray("{sub1}"), "%7bsub1%7d.host.com"),
+            Arguments.of(encodingSubstitution, sub1RawHost, toObjectArray("{sub1}"), "%7Bsub1%7D.host.com"),
             Arguments.of(encodingSubstitution, sub1RawHost, toObjectArray((String) null), ".host.com"),
             Arguments.of(substitution, sub1RawHost, null, "{sub1}.host.com"),
             Arguments.of(encodingSubstitution, sub2RawHost, toObjectArray("raw"), "{sub2}.host.com")
@@ -260,7 +260,7 @@ public class SwaggerMethodParserTests {
             Arguments.of(substitution, sub1RawHost, null, "{sub1}"),
             Arguments.of(substitution, sub2RawHost, toObjectArray("raw"), "{sub2}"),
             Arguments.of(encodingSubstitution, sub1RawHost, toObjectArray("raw"), "raw"),
-            Arguments.of(encodingSubstitution, sub1RawHost, toObjectArray("{sub1}"), "%7bsub1%7d"),
+            Arguments.of(encodingSubstitution, sub1RawHost, toObjectArray("{sub1}"), "%7Bsub1%7D"),
             Arguments.of(encodingSubstitution, sub1RawHost, toObjectArray((String) null), ""),
             Arguments.of(substitution, sub1RawHost, null, "{sub1}"),
             Arguments.of(encodingSubstitution, sub2RawHost, toObjectArray("raw"), "{sub2}")
@@ -297,7 +297,7 @@ public class SwaggerMethodParserTests {
             Arguments.of(encodedSubstitution, toObjectArray("{sub1}"), "{sub1}"),
             Arguments.of(encodedSubstitution, toObjectArray((String) null), ""),
             Arguments.of(substitution, toObjectArray("path"), "path"),
-            Arguments.of(substitution, toObjectArray("{sub1}"), "%7bsub1%7d"),
+            Arguments.of(substitution, toObjectArray("{sub1}"), "%7Bsub1%7D"),
             Arguments.of(substitution, toObjectArray((String) null), "")
         );
     }
@@ -331,7 +331,7 @@ public class SwaggerMethodParserTests {
             Arguments.of(substitution, null, null),
             Arguments.of(substitution, toObjectArray("raw", true), createExpectedParameters("raw", true)),
             Arguments.of(substitution, toObjectArray(null, true), createExpectedParameters(null, true)),
-            Arguments.of(substitution, toObjectArray("{sub1}", false), createExpectedParameters("%7bsub1%7d", false)),
+            Arguments.of(substitution, toObjectArray("{sub1}", false), createExpectedParameters("%7Bsub1%7D", false)),
             Arguments.of(encodedSubstitution, null, null),
             Arguments.of(encodedSubstitution, toObjectArray("raw", true), createExpectedParameters("raw", true)),
             Arguments.of(encodedSubstitution, toObjectArray(null, true), createExpectedParameters(null, true)),
@@ -439,22 +439,22 @@ public class SwaggerMethodParserTests {
                 "{name:John Doe,age:40,dob:01-01-1980}"),
             Arguments.of(formBody, null, APPLICATION_X_WWW_FORM_URLENCODED, null),
             Arguments.of(formBody, toObjectArray("John Doe", null, dob, null), APPLICATION_X_WWW_FORM_URLENCODED,
-                "name=John+Doe&dob=1980-01-01T00%3a00%3a00Z"),
+                "name=John+Doe&dob=1980-01-01T00%3A00%3A00Z"),
             Arguments.of(formBody, toObjectArray("John Doe", 40, null, favoriteColors),
                 APPLICATION_X_WWW_FORM_URLENCODED, "name=John+Doe&age=40&favoriteColors=blue&favoriteColors=green"),
             Arguments.of(formBody, toObjectArray("John Doe", 40, null, badFavoriteColors),
                 APPLICATION_X_WWW_FORM_URLENCODED, "name=John+Doe&age=40&favoriteColors=green"),
             Arguments.of(encodedFormBody, null, APPLICATION_X_WWW_FORM_URLENCODED, null),
             Arguments.of(encodedFormBody, toObjectArray("John Doe", null, dob, null), APPLICATION_X_WWW_FORM_URLENCODED,
-                "name=John Doe&dob=1980-01-01T00%3a00%3a00Z"),
+                "name=John Doe&dob=1980-01-01T00%3A00%3A00Z"),
             Arguments.of(encodedFormBody, toObjectArray("John Doe", 40, null, favoriteColors),
                 APPLICATION_X_WWW_FORM_URLENCODED, "name=John Doe&age=40&favoriteColors=blue&favoriteColors=green"),
             Arguments.of(encodedFormBody, toObjectArray("John Doe", 40, null, badFavoriteColors),
                 APPLICATION_X_WWW_FORM_URLENCODED, "name=John Doe&age=40&favoriteColors=green"),
             Arguments.of(encodedFormKey, toObjectArray("value"), APPLICATION_X_WWW_FORM_URLENCODED,
-                "x%3ams%3avalue=value"),
+                "x%3Ams%3Avalue=value"),
             Arguments.of(encodedFormKey2, toObjectArray("value"), APPLICATION_X_WWW_FORM_URLENCODED,
-                "x%3ams%3avalue=value")
+                "x%3Ams%3Avalue=value")
         );
     }
 

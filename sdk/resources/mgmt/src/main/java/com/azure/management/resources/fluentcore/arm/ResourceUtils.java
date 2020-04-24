@@ -6,6 +6,7 @@ package com.azure.management.resources.fluentcore.arm;
 import com.azure.management.resources.Provider;
 import com.azure.management.resources.ProviderResourceType;
 
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -69,7 +70,7 @@ public final class ResourceUtils {
             return null;
         }
         ResourceId resourceId = ResourceId.fromString(id);
-        if (resourceId != null && resourceId.parent() != null) {
+        if (resourceId.parent() != null) {
             return ResourceId.fromString(id).parent().id();
         }
 
@@ -155,7 +156,7 @@ public final class ResourceUtils {
      * @return the default api version to use
      */
     public static String defaultApiVersion(String id, Provider provider) {
-        String resourceType = resourceTypeFromResourceId(id).toLowerCase();
+        String resourceType = resourceTypeFromResourceId(id).toLowerCase(Locale.ROOT);
         // Exact match
         for (ProviderResourceType prt : provider.resourceTypes()) {
             if (prt.resourceType().equalsIgnoreCase(resourceType)) {
@@ -164,7 +165,7 @@ public final class ResourceUtils {
         }
         // child resource, e.g. sites/config
         for (ProviderResourceType prt : provider.resourceTypes()) {
-            if (prt.resourceType().toLowerCase().contains("/" + resourceType)) {
+            if (prt.resourceType().toLowerCase(Locale.ROOT).contains("/" + resourceType)) {
                 return prt.apiVersions().get(0);
             }
         }

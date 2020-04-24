@@ -4,6 +4,7 @@ package com.azure.cosmos.rx;
 
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Database;
@@ -48,7 +49,7 @@ public class ReadFeedOffersTest extends TestSuiteBase {
     public void readOffers() throws Exception {
 
         FeedOptions options = new FeedOptions();
-        options.setMaxItemCount(2);
+        ModelBridgeInternal.setFeedOptionsMaxItemCount(options, 2);
 
         Flux<FeedResponse<Offer>> feedObservable = client.readOffers(options);
 

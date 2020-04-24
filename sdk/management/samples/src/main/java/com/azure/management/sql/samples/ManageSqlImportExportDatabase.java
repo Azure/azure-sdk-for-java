@@ -16,7 +16,6 @@ import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.samples.Utils;
 import com.azure.management.sql.SampleName;
 import com.azure.management.sql.SqlDatabase;
-import com.azure.management.sql.SqlDatabaseImportExportResponse;
 import com.azure.management.sql.SqlServer;
 import com.azure.management.storage.StorageAccount;
 
@@ -68,7 +67,6 @@ public final class ManageSqlImportExportDatabase {
             // Export a database from a SQL server created above to a new storage account within the same resource group.
             System.out.println("Exporting a database from a SQL server created above to a new storage account within the same resource group.");
 
-            SqlDatabaseImportExportResponse exportedDB;
             StorageAccount storageAccount = azure.storageAccounts().getByResourceGroup(sqlServer.resourceGroupName(), storageName);
             if (storageAccount == null) {
                 Creatable<StorageAccount> storageAccountCreatable = azure.storageAccounts()
@@ -76,12 +74,12 @@ public final class ManageSqlImportExportDatabase {
                     .withRegion(sqlServer.regionName())
                     .withExistingResourceGroup(sqlServer.resourceGroupName());
 
-                exportedDB = dbFromSample.exportTo(storageAccountCreatable, "container-name", "dbfromsample.bacpac")
+                dbFromSample.exportTo(storageAccountCreatable, "container-name", "dbfromsample.bacpac")
                     .withSqlAdministratorLoginAndPassword(administratorLogin, administratorPassword)
                     .execute();
                 storageAccount = azure.storageAccounts().getByResourceGroup(sqlServer.resourceGroupName(), storageName);
             } else {
-                exportedDB = dbFromSample.exportTo(storageAccount, "container-name", "dbfromsample.bacpac")
+                dbFromSample.exportTo(storageAccount, "container-name", "dbfromsample.bacpac")
                     .withSqlAdministratorLoginAndPassword(administratorLogin, administratorPassword)
                     .execute();
             }

@@ -17,6 +17,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -166,7 +167,7 @@ public final class DeployUsingARMTemplateAsync {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return new String(content);
+        return new String(content, StandardCharsets.UTF_8);
     }
 
     private DeployUsingARMTemplateAsync() {

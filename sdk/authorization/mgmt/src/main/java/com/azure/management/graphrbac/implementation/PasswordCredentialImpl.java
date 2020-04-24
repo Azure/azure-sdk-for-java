@@ -8,12 +8,14 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.graphrbac.PasswordCredential;
 import com.azure.management.graphrbac.models.PasswordCredentialInner;
 import com.azure.management.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
+import reactor.core.publisher.Mono;
+
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Base64;
-import reactor.core.publisher.Mono;
 
 /** Implementation for ServicePrincipal and its parent interfaces. */
 class PasswordCredentialImpl<T> extends IndexableRefreshableWrapperImpl<PasswordCredential, PasswordCredentialInner>
@@ -28,7 +30,10 @@ class PasswordCredentialImpl<T> extends IndexableRefreshableWrapperImpl<Password
     PasswordCredentialImpl(PasswordCredentialInner passwordCredential) {
         super(passwordCredential);
         if (passwordCredential.customKeyIdentifier() != null && passwordCredential.customKeyIdentifier().length > 0) {
-            this.name = new String(Base64.getDecoder().decode(new String(passwordCredential.customKeyIdentifier())));
+            this.name = new String(
+                Base64.getDecoder().decode(
+                    new String(passwordCredential.customKeyIdentifier(), StandardCharsets.UTF_8)),
+                StandardCharsets.UTF_8);
         } else {
             this.name = passwordCredential.keyId();
         }
@@ -37,7 +42,7 @@ class PasswordCredentialImpl<T> extends IndexableRefreshableWrapperImpl<Password
     PasswordCredentialImpl(String name, HasCredential<?> parent) {
         super(
             new PasswordCredentialInner()
-                .withCustomKeyIdentifier(Base64.getEncoder().encode(name.getBytes()))
+                .withCustomKeyIdentifier(Base64.getEncoder().encode(name.getBytes(StandardCharsets.UTF_8)))
                 .withStartDate(OffsetDateTime.now())
                 .withEndDate(OffsetDateTime.now().plusYears(1)));
         this.name = name;
@@ -141,7 +146,7 @@ class PasswordCredentialImpl<T> extends IndexableRefreshableWrapperImpl<Password
             .append("\n");
         builder.append("}");
         try {
-            authFile.write(builder.toString().getBytes());
+            authFile.write(builder.toString().getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
             throw logger.logExceptionAsError(new RuntimeException(e));
         }

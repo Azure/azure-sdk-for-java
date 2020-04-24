@@ -58,8 +58,8 @@ public final class DatabaseBlobAuditingPoliciesInner {
     private interface DatabaseBlobAuditingPoliciesService {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/auditingSettings/{blobAuditingPolicyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/databases/{databaseName}/auditingSettings/{blobAuditingPolicyName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<DatabaseBlobAuditingPolicyInner>> get(
@@ -74,8 +74,8 @@ public final class DatabaseBlobAuditingPoliciesInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/auditingSettings/{blobAuditingPolicyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/databases/{databaseName}/auditingSettings/{blobAuditingPolicyName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<DatabaseBlobAuditingPolicyInner>> createOrUpdate(
@@ -91,8 +91,8 @@ public final class DatabaseBlobAuditingPoliciesInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/auditingSettings")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/databases/{databaseName}/auditingSettings")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<DatabaseBlobAuditingPolicyListResultInner>> listByDatabase(

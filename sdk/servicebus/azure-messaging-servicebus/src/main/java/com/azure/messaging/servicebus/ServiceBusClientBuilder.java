@@ -24,7 +24,6 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
-import com.azure.messaging.servicebus.implementation.MessageLockContainer;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
@@ -44,6 +43,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.ServiceLoader;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Pattern;
 
 /**
  * The builder to create {@link ServiceBusReceiverAsyncClient} and {@link ServiceBusSenderAsyncClient}.
@@ -59,6 +59,7 @@ public final class ServiceBusClientBuilder {
     private static final String NAME_KEY = "name";
     private static final String VERSION_KEY = "version";
     private static final String UNKNOWN = "UNKNOWN";
+    private static final Pattern HOST_PORT_PATTERN = Pattern.compile("^[^:]+:\\d+");
 
     private final Object connectionLock = new Object();
     private final ClientLogger logger = new ClientLogger(ServiceBusClientBuilder.class);
@@ -112,6 +113,21 @@ public final class ServiceBusClientBuilder {
         }
 
         return credential(properties.getEndpoint().getHost(), tokenCredential);
+    }
+
+    /**
+     * Sets the configuration store that is used during construction of the service client.
+     *
+     * If not specified, the default configuration store is used to configure Service Bus clients. Use
+     * {@link Configuration#NONE} to bypass using configuration settings during construction.
+     *
+     * @param configuration The configuration store used to configure Service Bus clients.
+     *
+     * @return The updated {@link ServiceBusClientBuilder} object.
+     */
+    public ServiceBusClientBuilder configuration(Configuration configuration) {
+        this.configuration = configuration;
+        return this;
     }
 
     /**
@@ -319,18 +335,26 @@ public final class ServiceBusClientBuilder {
             return ProxyOptions.SYSTEM_DEFAULTS;
         }
 
-        final String[] hostPort = proxyAddress.split(":");
-        if (hostPort.length < 2) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("HTTP_PROXY cannot be parsed into a proxy"));
+        return getProxyOptions(authentication, proxyAddress);
+    }
+
+    private ProxyOptions getProxyOptions(ProxyAuthenticationType authentication, String proxyAddress) {
+        String host;
+        int port;
+        if (HOST_PORT_PATTERN.matcher(proxyAddress.trim()).find()) {
+            final String[] hostPort = proxyAddress.split(":");
+            host = hostPort[0];
+            port = Integer.parseInt(hostPort[1]);
+            final Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
+            final String username = configuration.get(ProxyOptions.PROXY_USERNAME);
+            final String password = configuration.get(ProxyOptions.PROXY_PASSWORD);
+            return new ProxyOptions(authentication, proxy, username, password);
+        } else {
+            com.azure.core.http.ProxyOptions coreProxyOptions = com.azure.core.http.ProxyOptions
+                .fromConfiguration(configuration);
+            return new ProxyOptions(authentication, new Proxy(coreProxyOptions.getType().toProxyType(),
+                coreProxyOptions.getAddress()), coreProxyOptions.getUsername(), coreProxyOptions.getPassword());
         }
-
-        final String host = hostPort[0];
-        final int port = Integer.parseInt(hostPort[1]);
-        final Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
-        final String username = configuration.get(ProxyOptions.PROXY_USERNAME);
-        final String password = configuration.get(ProxyOptions.PROXY_PASSWORD);
-
-        return new ProxyOptions(authentication, proxy, username, password);
     }
 
     private static boolean isNullOrEmpty(String item) {
@@ -605,14 +629,13 @@ public final class ServiceBusClientBuilder {
                     "prefetchCount (%s) cannot be less than 1.", prefetchCount)));
             }
 
-            final MessageLockContainer messageLockContainer = new MessageLockContainer();
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
                 sessionId);
 
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
-                entityType, receiverOptions, connectionProcessor,
-                tracerProvider, messageSerializer, messageLockContainer, ServiceBusClientBuilder.this::onClientClose);
+                entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
+                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose);
         }
 
         /**

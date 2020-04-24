@@ -50,4 +50,17 @@ public interface FileShares extends SupportsCreating<FileShare.DefinitionStages.
      */
     Completable deleteAsync(String resourceGroupName, String accountName, String shareName);
 
+    /**
+     * Restore a file share within a valid retention days if share soft delete is enabled.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param shareName The name of the file share within the specified storage account. File share names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param deletedShareName Required. Identify the name of the deleted share that will be restored.
+     * @param deletedShareVersion Required. Identify the version of the deleted share that will be restored.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable restoreAsync(String resourceGroupName, String accountName, String shareName, String deletedShareName, String deletedShareVersion);
+
 }

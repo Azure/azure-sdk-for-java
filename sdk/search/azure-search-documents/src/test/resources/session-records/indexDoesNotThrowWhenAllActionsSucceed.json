@@ -1,39 +1,44 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk11642aa4642.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
+    "Uri" : "https://azsjavaindexdoesnotthrowwhenallactionssucceeddb076279b8f.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06-Preview",
     "Headers" : {
+      "x-ms-client-request-id" : "1aab765e-cc6c-4306-aa9d-83d7d63f3891",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "ff7af9d7-76ff-4247-8014-9f7b14bb93c3",
+      "request-id" : "1aab765e-cc6c-4306-aa9d-83d7d63f3891",
       "StatusCode" : "200",
-      "Date" : "Mon, 24 Feb 2020 19:38:38 GMT",
+      "Date" : "Tue, 21 Apr 2020 18:55:27 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "174",
+      "client-request-id" : "1aab765e-cc6c-4306-aa9d-83d7d63f3891",
+      "elapsed-time" : "116",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "226",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk11642aa4642.search.windows.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"1\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
+      "Content-Length" : "74",
+      "Body" : "{\"value\":[{\"key\":\"1\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "Content-Type" : "application/json; odata.metadata=minimal"
+      "Content-Type" : "application/json; odata.metadata=none"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azs-sdk11642aa4642.search.windows.net/indexes('hotels')/docs/$count?api-version=2019-05-06",
-    "Headers" : { },
+    "Uri" : "https://azsjavaindexdoesnotthrowwhenallactionssucceeddb076279b8f.search.windows.net/indexes('hotels')/docs/$count?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "8d2f2875-e1ab-4e3c-b9cc-dece3f3aa8b0"
+    },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "80bad1aa-14c9-46ca-9ac1-cb279e83dedc",
+      "request-id" : "8d2f2875-e1ab-4e3c-b9cc-dece3f3aa8b0",
       "StatusCode" : "200",
-      "Date" : "Mon, 24 Feb 2020 19:38:40 GMT",
+      "Date" : "Tue, 21 Apr 2020 18:55:29 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
+      "client-request-id" : "8d2f2875-e1ab-4e3c-b9cc-dece3f3aa8b0",
       "elapsed-time" : "4",
       "OData-Version" : "4.0",
       "Expires" : "-1",
@@ -44,5 +49,5 @@
     },
     "Exception" : null
   } ],
-  "variables" : [ "azs-sdk11642aa4642" ]
+  "variables" : [ "azsjavaindexdoesnotthrowwhenallactionssucceeddb076279b8f" ]
 }

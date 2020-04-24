@@ -8,7 +8,6 @@ import com.azure.management.network.NetworkSecurityGroups;
 import com.azure.management.network.models.NetworkSecurityGroupInner;
 import com.azure.management.network.models.NetworkSecurityGroupsInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
-import java.util.Set;
 import reactor.core.publisher.Mono;
 
 /** Implementation for NetworkSecurityGroups. */
@@ -30,17 +29,14 @@ class NetworkSecurityGroupsImpl
         // Clear NIC references if any
         NetworkSecurityGroupImpl nsg = (NetworkSecurityGroupImpl) getByResourceGroup(groupName, name);
         if (nsg != null) {
-            Set<String> nicIds = nsg.networkInterfaceIds();
-            if (nicIds != null) {
-                for (String nicRef : nsg.networkInterfaceIds()) {
-                    NetworkInterface nic = this.manager().networkInterfaces().getById(nicRef);
-                    if (nic == null) {
-                        continue;
-                    } else if (!nsg.id().equalsIgnoreCase(nic.networkSecurityGroupId())) {
-                        continue;
-                    } else {
-                        nic.update().withoutNetworkSecurityGroup().apply();
-                    }
+            for (String nicRef : nsg.networkInterfaceIds()) {
+                NetworkInterface nic = this.manager().networkInterfaces().getById(nicRef);
+                if (nic == null) {
+                    continue;
+                } else if (!nsg.id().equalsIgnoreCase(nic.networkSecurityGroupId())) {
+                    continue;
+                } else {
+                    nic.update().withoutNetworkSecurityGroup().apply();
                 }
             }
         }

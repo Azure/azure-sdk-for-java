@@ -1,19 +1,21 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azs-sdk69501020fa5.search.windows.net/indexers('name')?api-version=2019-05-06",
+    "Uri" : "https://azsjavaupdateindexerifexistsfailsonnoresourcec4a845567b0.search.windows.net/indexers('name')?api-version=2019-05-06-Preview",
     "Headers" : {
+      "x-ms-client-request-id" : "44c46e34-3e13-407d-b159-77e9b473335c",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "75461308-f394-4714-9693-ae8d1f2ad74d",
+      "request-id" : "44c46e34-3e13-407d-b159-77e9b473335c",
       "StatusCode" : "412",
-      "Date" : "Mon, 24 Feb 2020 19:34:25 GMT",
+      "Date" : "Tue, 21 Apr 2020 18:52:44 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "22",
+      "client-request-id" : "44c46e34-3e13-407d-b159-77e9b473335c",
+      "elapsed-time" : "33",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "160",
@@ -24,5 +26,5 @@
     },
     "Exception" : null
   } ],
-  "variables" : [ "azs-sdk69501020fa5" ]
+  "variables" : [ "azsjavaupdateindexerifexistsfailsonnoresourcec4a845567b0" ]
 }

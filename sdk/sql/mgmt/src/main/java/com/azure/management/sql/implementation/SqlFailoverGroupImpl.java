@@ -102,6 +102,10 @@ public class SqlFailoverGroupImpl
         }
     }
 
+    protected String sqlServerLocation() {
+        return this.sqlServerLocation;
+    }
+
     @Override
     public String resourceGroupName() {
         return this.resourceGroupName;

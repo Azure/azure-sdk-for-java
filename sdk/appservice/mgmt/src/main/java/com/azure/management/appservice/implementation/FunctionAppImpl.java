@@ -40,7 +40,6 @@ import com.azure.management.storage.StorageAccountKey;
 import com.azure.management.storage.StorageAccountSkuType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -48,6 +47,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -595,7 +595,7 @@ class FunctionAppImpl
     @Override
     public Mono<Void> zipDeployAsync(File zipFile) {
         try {
-            return zipDeployAsync(new FileInputStream(zipFile));
+            return kuduClient.zipDeployAsync(zipFile);
         } catch (IOException e) {
             return Mono.error(e);
         }
