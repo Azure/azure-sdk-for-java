@@ -1,6 +1,6 @@
 package com.azure.identity.implementation;
 
-public class AuthMethodDetails {
+public class IntelliJAuthMethodDetails {
 
     private String accountEmail;
     private String credFilePath;

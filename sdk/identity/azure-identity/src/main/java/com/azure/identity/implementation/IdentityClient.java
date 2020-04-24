@@ -22,9 +22,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.identity.DeviceCodeInfo;
 import com.azure.identity.implementation.util.CertificateUtil;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ClientCredentialParameters;
@@ -34,22 +32,9 @@ import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.RefreshTokenParameters;
 import com.microsoft.aad.msal4j.SilentParameters;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
-import com.microsoft.aad.msal4jextensions.persistence.linux.KeyRingAccessor;
-import com.microsoft.aad.msal4jextensions.persistence.mac.KeyChainAccessor;
-import com.sun.jna.platform.win32.Crypt32Util;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
-import org.linguafranca.pwdb.Database;
-import org.linguafranca.pwdb.Entry;
-import org.linguafranca.pwdb.kdbx.KdbxCreds;
-import org.linguafranca.pwdb.kdbx.simple.SimpleDatabase;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -59,15 +44,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
@@ -159,7 +139,7 @@ public class IdentityClient {
     public Mono<MsalToken> authenticateWithIntelliJ(TokenRequestContext request) {
         try {
             IntelliJCacheAccessor cacheAccessor = new IntelliJCacheAccessor(options.getKeepPassDatabasePath());
-            AuthMethodDetails authDetails = cacheAccessor.getIntelliJAuthDetails();
+            IntelliJAuthMethodDetails authDetails = cacheAccessor.getIntelliJAuthDetails();
             String authType = authDetails.getAuthMethod();
             if (CoreUtils.isNullOrEmpty(authType)) {
                 throw new RuntimeException("IntelliJ Authentication not available."
@@ -168,10 +148,10 @@ public class IdentityClient {
             if (authType.equals("SP")) {
                 HashMap<String, String> spDetails = cacheAccessor
                     .getIntellijServicePrincipalDetails(authDetails.getCredFilePath());
-                String authorityUrl = spDetails.get("authURL") + tenantId;
+                String authorityUrl = spDetails.get("authURL") + spDetails.get("tenant");
                 try {
                     ConfidentialClientApplication.Builder applicationBuilder =
-                        ConfidentialClientApplication.builder(clientId,
+                        ConfidentialClientApplication.builder(spDetails.get("client"),
                             ClientCredentialFactory.createFromSecret(spDetails.get("key")))
                             .authority(authorityUrl);
 

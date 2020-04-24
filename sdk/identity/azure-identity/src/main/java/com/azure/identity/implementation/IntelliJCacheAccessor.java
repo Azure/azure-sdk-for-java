@@ -36,12 +36,12 @@ public class IntelliJCacheAccessor {
         return System.getProperty("user.home") + String.format("%sAzureToolsForIntelliJ", File.separator);
     }
 
-    public AuthMethodDetails getIntelliJAuthDetails() throws IOException {
+    public IntelliJAuthMethodDetails getIntelliJAuthDetails() throws IOException {
         StringBuilder authMethodDetailsPath = new StringBuilder(getAzureToolsforIntelliJPluginConfigPath());
         authMethodDetailsPath.append(String.format("%sAuthMethodDetails.json", File.separator));
         ObjectMapper objectMapper = new ObjectMapper();
         File file = new File(authMethodDetailsPath.toString());
-        return objectMapper.readValue(file, AuthMethodDetails.class);
+        return objectMapper.readValue(file, IntelliJAuthMethodDetails.class);
     }
 
     public JsonNode getDeviceCodeCredentials() throws IOException {

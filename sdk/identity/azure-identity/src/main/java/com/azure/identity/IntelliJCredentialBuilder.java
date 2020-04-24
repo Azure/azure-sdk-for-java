@@ -3,11 +3,6 @@
 
 package com.azure.identity;
 
-import com.azure.identity.implementation.util.ValidationUtil;
-
-import java.util.HashMap;
-import java.util.function.Consumer;
-
 /**
  * Fluent credential builder for instantiating a {@link IntelliJCredential}.
  *
@@ -18,6 +13,7 @@ public class IntelliJCredentialBuilder extends CredentialBuilderBase<IntelliJCre
 
     public IntelliJCredentialBuilder windowsKeepPassDatabasePath(String databasePath) {
         this.identityClientOptions.setKeepPassDatabasePath(databasePath);
+        return this;
     }
 
     /**
