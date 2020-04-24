@@ -151,7 +151,7 @@ public final class RestProxy implements InvocationHandler {
 
             if (buffer == VALIDATION_BUFFER) {
                 if (expectedLength != currentTotalLength[0]) {
-                    sink.error(new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
+                    sink.error(new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
                         currentTotalLength[0], expectedLength), currentTotalLength[0], expectedLength));
                 } else {
                     sink.complete();
@@ -161,7 +161,7 @@ public final class RestProxy implements InvocationHandler {
 
             currentTotalLength[0] += buffer.remaining();
             if (currentTotalLength[0] > expectedLength) {
-                sink.error(new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
+                sink.error(new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
                     currentTotalLength[0], expectedLength), currentTotalLength[0], expectedLength));
                 return;
             }
