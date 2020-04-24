@@ -1304,9 +1304,9 @@ public final class Utils {
      */
     public static String getSecondaryServicePrincipalClientID(String envSecondaryServicePrincipal) throws Exception {
         Properties authSettings = new Properties();
-        FileInputStream credentialsFileStream = new FileInputStream(new File(envSecondaryServicePrincipal));
-        authSettings.load(credentialsFileStream);
-        credentialsFileStream.close();
+        try (FileInputStream credentialsFileStream = new FileInputStream(new File(envSecondaryServicePrincipal))) {
+            authSettings.load(credentialsFileStream);
+        }
 
         return authSettings.getProperty("client");
     }
@@ -1320,9 +1320,9 @@ public final class Utils {
      */
     public static String getSecondaryServicePrincipalSecret(String envSecondaryServicePrincipal) throws Exception {
         Properties authSettings = new Properties();
-        FileInputStream credentialsFileStream = new FileInputStream(new File(envSecondaryServicePrincipal));
-        authSettings.load(credentialsFileStream);
-        credentialsFileStream.close();
+        try (FileInputStream credentialsFileStream = new FileInputStream(new File(envSecondaryServicePrincipal))) {
+            authSettings.load(credentialsFileStream);
+        }
 
         return authSettings.getProperty("key");
     }
@@ -1414,18 +1414,16 @@ public final class Utils {
                                        boolean ignoreErrorStream) throws Exception {
         String result = "";
         String error = "";
-        InputStream inputStream = null;
-        InputStream errorStream = null;
-        BufferedReader br = null;
-        BufferedReader ebr = null;
-        try {
-            Process process = new ProcessBuilder(command).start();
-            inputStream = process.getInputStream();
-            errorStream = process.getErrorStream();
-            br = new BufferedReader(new InputStreamReader(inputStream));
+
+        Process process = new ProcessBuilder(command).start();
+        try (
+            InputStream inputStream = process.getInputStream();
+            InputStream errorStream = process.getErrorStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+            BufferedReader ebr = new BufferedReader(new InputStreamReader(errorStream, StandardCharsets.UTF_8));
+        ) {
             result = br.readLine();
             process.waitFor();
-            ebr = new BufferedReader(new InputStreamReader(errorStream));
             error = ebr.readLine();
             if (error != null && (!error.equals(""))) {
                 // To do - Log error message
@@ -1436,19 +1434,6 @@ public final class Utils {
             }
         } catch (Exception e) {
             throw new Exception("Exception occurred while invoking command", e);
-        } finally {
-            if (inputStream != null) {
-                inputStream.close();
-            }
-            if (errorStream != null) {
-                errorStream.close();
-            }
-            if (br != null) {
-                br.close();
-            }
-            if (ebr != null) {
-                ebr.close();
-            }
         }
         return result;
     }
@@ -3032,7 +3017,12 @@ public final class Utils {
 
     public static String get(String urlString) {
         try {
-            return stringResponse(httpClient.getString(getHost(urlString), getPathAndQuery(urlString))).block().getValue();
+            SimpleResponse<String> response = stringResponse(httpClient.getString(getHost(urlString), getPathAndQuery(urlString))).block();
+            if (response != null) {
+                return response.getValue();
+            } else {
+                return null;
+            }
         } catch (Exception e) {
             return null;
         }
@@ -3040,7 +3030,12 @@ public final class Utils {
 
     public static String post(String urlString, String body) {
         try {
-            return stringResponse(httpClient.postString(getHost(urlString), getPathAndQuery(urlString), body)).block().getValue();
+            SimpleResponse<String> response = stringResponse(httpClient.postString(getHost(urlString), getPathAndQuery(urlString), body)).block();
+            if (response != null) {
+                return response.getValue();
+            } else {
+                return null;
+            }
         } catch (Exception e) {
             return null;
         }
@@ -3069,7 +3064,7 @@ public final class Utils {
         return path;
     }
 
-    protected static WebAppTestClient httpClient = RestProxy.create(
+    private static WebAppTestClient httpClient = RestProxy.create(
             WebAppTestClient.class,
             new HttpPipelineBuilder()
                     .policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC)), new RetryPolicy())
@@ -3077,7 +3072,7 @@ public final class Utils {
 
     @Host("{$host}")
     @ServiceInterface(name = "WebAppTestClient")
-    protected interface WebAppTestClient {
+    private interface WebAppTestClient {
         @Get("{path}")
         @ExpectedResponses({200, 400, 404})
         Mono<SimpleResponse<Flux<ByteBuffer>>> getString(@HostParam("$host") String host, @PathParam(value = "path", encoded = true) String path);
