@@ -17,10 +17,12 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -36,28 +38,19 @@ public class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase
 
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverClientIntegrationTest.class);
 
-    ServiceBusReceiverClient receiver;
-    ServiceBusSenderClient sender;
+    private ServiceBusReceiverClient receiver;
+    private ServiceBusSenderClient sender;
     /**
      * Receiver used to clean up resources in {@link #afterTest()}.
      */
-    ServiceBusReceiverClient receiveAndDeleteReceiver;
+    private ServiceBusReceiverClient receiveAndDeleteReceiver;
 
     final AtomicInteger messagesPending = new AtomicInteger();
+    final AtomicReference<List<Long>>  messagesDeferred = new AtomicReference<>(new ArrayList<>());
 
 
     protected ServiceBusReceiverClientIntegrationTest() {
         super(new ClientLogger(ServiceBusReceiverClientIntegrationTest.class));
-    }
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
     }
 
     @Override
@@ -68,18 +61,40 @@ public class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase
     @Override
     protected void afterTest() {
         final int pending = messagesPending.get();
-        if (pending < 1) {
+        if (pending < 1 && messagesDeferred.get().size() < 1) {
             dispose(receiver, sender, receiveAndDeleteReceiver);
             return;
         }
         // In the case that this test failed... we're going to drain the queue or subscription.
-        try {
-            receiveAndDeleteReceiver.receive(pending);
-        } catch (Exception e) {
-            logger.warning("Error occurred when draining queue.", e);
-        } finally {
-            dispose(receiver, sender, receiveAndDeleteReceiver);
+        if (pending > 0) {
+            try {
+                IterableStream<ServiceBusReceivedMessage> removedMessage = receiveAndDeleteReceiver.receive(pending + 10);
+                removedMessage.stream().forEach(receivedMessage -> {
+                    System.out.println("Removed Message sequence : " +  receivedMessage.getSequenceNumber());
+                });
+            } catch (Exception e) {
+                logger.warning("Error occurred when draining queue.", e);
+            } finally {
+
+            }
         }
+
+        if (messagesDeferred.get().size() > 0) {
+            try {
+                List<Long> listOfDeferredMessages =  messagesDeferred.get();
+                for(Long seqNumber : listOfDeferredMessages) {
+                    ServiceBusReceivedMessage deferredMessages = receiver.receiveDeferredMessage(seqNumber);
+                    receiver.complete(deferredMessages);
+                }
+            } catch (Exception e) {
+                logger.warning("Error occurred when draining deferred messages Entity : " + receiver.getEntityPath(), e);
+            }
+
+            // set empty list
+            messagesDeferred.set(new ArrayList<>());
+        }
+
+        dispose(receiver, sender, receiveAndDeleteReceiver);
     }
 
     /**
@@ -98,15 +113,35 @@ public class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase
         sendMessage(message);
         sendMessage(message);
 
-        // Assert & Act
+        // Act
         Iterable<ServiceBusReceivedMessage> iterableMessages = receiver.receive(howManyMessage, TIMEOUT);
 
+        // Assert
         for (ServiceBusReceivedMessage receivedMessage: iterableMessages) {
             assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
         }
 
         messagesPending.decrementAndGet();
         messagesPending.decrementAndGet();
+    }
+
+    /**
+     * Verifies that we do not receive any message in given timeout.
+     */
+    @MethodSource("messagingEntityWithSessions")
+    @ParameterizedTest
+    void receiveNoMessage(MessagingEntityType entityType, boolean isSessionEnabled) {
+        // Arrange
+        setSenderAndReceiver(entityType, isSessionEnabled);
+        int howManyMessage = 2;
+        int noMessages = 0;
+
+        // Act
+        IterableStream<ServiceBusReceivedMessage> iterableMessages = receiver.receive(howManyMessage, Duration.ofSeconds(15));
+
+        // Assert
+        final int receivedMessages = iterableMessages.stream().collect(Collectors.toList()).size();
+        assertEquals(noMessages, receivedMessages);
     }
 
     /**
@@ -124,9 +159,10 @@ public class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase
 
         sendMessage(message);
 
-        // Assert & Act
+        // Act
         Iterable<ServiceBusReceivedMessage> iterableMessages = receiver.receive(howManyMessage, TIMEOUT);
 
+        // Assert
         for (ServiceBusReceivedMessage receivedMessage: iterableMessages) {
             assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
         }
@@ -149,8 +185,10 @@ public class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase
 
         sendMessage(message);
 
-        // Assert & Act
+        // Act
         ServiceBusReceivedMessage receivedMessage = receiver.peek();
+
+        // Assert
         assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
     }
 
@@ -176,8 +214,10 @@ public class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase
 
         assertNotNull(receivedMessage);
 
-        // Assert & Act
+        // Act
         ServiceBusReceivedMessage receivedPeekMessage = receiver.peekAt(receivedMessage.getSequenceNumber());
+
+        // Assert
         assertMessageEquals(receivedPeekMessage, messageId, isSessionEnabled);
     }
 
@@ -197,8 +237,10 @@ public class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase
         sendMessage(message);
         sendMessage(message);
 
-        // Assert & Act
+        // Act
         IterableStream<ServiceBusReceivedMessage> iterableMessages = receiver.peekBatch(maxMessages);
+
+        // Assert
         Assertions.assertEquals(maxMessages, iterableMessages.stream().collect(Collectors.toList()).size());
     }
 
@@ -219,8 +261,10 @@ public class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase
         sendMessage(message);
         sendMessage(message);
 
-        // Assert & Act
+        // Act
         IterableStream<ServiceBusReceivedMessage> iterableMessages = receiver.peekBatchAt(maxMessages, fromSequenceNumber);
+
+        // Assert
         Assertions.assertEquals(maxMessages, iterableMessages.stream().collect(Collectors.toList()).size());
     }
 
@@ -364,6 +408,7 @@ public class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase
         assertNotNull(receivedMessage);
 
         receiver.defer(receivedMessage);
+
         final ServiceBusReceivedMessage receivedDeferredMessage = receiver
             .receiveDeferredMessage(receivedMessage.getSequenceNumber());
 
@@ -374,6 +419,7 @@ public class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase
         switch (dispositionStatus) {
             case ABANDONED:
                 receiver.abandon(receivedDeferredMessage);
+                messagesDeferred.get().add(receivedMessage.getSequenceNumber());
                 break;
             case SUSPENDED:
                 receiver.deadLetter(receivedDeferredMessage);
@@ -386,7 +432,7 @@ public class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase
                     "Disposition status not recognized for this test case: " + dispositionStatus));
         }
 
-        if (dispositionStatus == DispositionStatus.ABANDONED || dispositionStatus == DispositionStatus.COMPLETED) {
+        if (dispositionStatus == DispositionStatus.SUSPENDED || dispositionStatus == DispositionStatus.COMPLETED) {
             messagesPending.decrementAndGet();
         }
     }
@@ -413,8 +459,8 @@ public class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase
 
         // Act & Assert
         receiver.defer(receivedMessage);
-    }
 
+    }
 
     @MethodSource("messagingEntityWithSessions")
     @ParameterizedTest
@@ -474,7 +520,7 @@ public class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase
     }
 
     private void setSenderAndReceiver(MessagingEntityType entityType, boolean isSessionEnabled,
-                                      Function<ServiceBusClientBuilder.ServiceBusReceiverClientBuilder, ServiceBusClientBuilder.ServiceBusReceiverClientBuilder> onReceiverCreate) {
+        Function<ServiceBusClientBuilder.ServiceBusReceiverClientBuilder, ServiceBusClientBuilder.ServiceBusReceiverClientBuilder> onReceiverCreate) {
 
         switch (entityType) {
             case QUEUE:

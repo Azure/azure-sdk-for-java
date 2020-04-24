@@ -16,8 +16,10 @@ import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.provider.Arguments;
@@ -57,7 +59,7 @@ public abstract class IntegrationTestBase extends TestBase {
     private String testName;
     private final Scheduler scheduler = Schedulers.parallel();
 
-    static final byte[] CONTENTS_BYTES = "Some-contents".getBytes(StandardCharsets.UTF_8);
+    private static final byte[] CONTENTS_BYTES = "Some-contents".getBytes(StandardCharsets.UTF_8);
     String sessionId;
 
     protected IntegrationTestBase(ClientLogger logger) {
@@ -79,6 +81,17 @@ public abstract class IntegrationTestBase extends TestBase {
 
         beforeTest();
     }
+
+    @BeforeAll
+    static void beforeAll() {
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
+    }
+
+    @AfterAll
+    static void afterAll() {
+        StepVerifier.resetDefaultTimeout();
+    }
+
 
     // These are overridden because we don't use the Interceptor Manager.
     @Override
