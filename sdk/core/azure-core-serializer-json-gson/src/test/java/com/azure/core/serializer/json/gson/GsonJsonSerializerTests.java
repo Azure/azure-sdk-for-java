@@ -4,6 +4,7 @@
 package com.azure.core.serializer.json.gson;
 
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
@@ -18,6 +19,7 @@ import java.util.Objects;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link GsonJsonSerializer}.
@@ -42,6 +44,15 @@ public class GsonJsonSerializerTests {
         Person expected = new Person("John Doe", 50);
 
         assertEquals(expected, CUSTOM_SERIALIZER.deserialize(json.getBytes(StandardCharsets.UTF_8), Person.class));
+    }
+
+    @Test
+    public void deserializeWithDefaultSerializerToJsonObject() {
+        String json = "{\"name\":null,\"age\":50}";
+
+        JsonObject jsonObject = DEFAULT_SERIALIZER.deserialize(json.getBytes(StandardCharsets.UTF_8), JsonObject.class);
+        assertEquals(50, jsonObject.get("age").getAsInt());
+        assertTrue(jsonObject.get("name").isJsonNull());
     }
 
     @Test

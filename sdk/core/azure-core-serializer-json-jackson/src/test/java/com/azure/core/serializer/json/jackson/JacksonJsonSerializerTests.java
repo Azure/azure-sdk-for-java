@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -22,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link JacksonJsonSerializer}.
@@ -53,6 +55,15 @@ public class JacksonJsonSerializerTests {
         Person expected = new Person().setName("John Doe").setAge(50);
 
         assertEquals(expected, CUSTOM_SERIALIZER.deserialize(json.getBytes(StandardCharsets.UTF_8), Person.class));
+    }
+
+    @Test
+    public void deserializeWithDefaultSerializerToObjectNode() {
+        String json = "{\"name\":null,\"age\":50}";
+
+        ObjectNode objectNode = DEFAULT_SERIALIZER.deserialize(json.getBytes(StandardCharsets.UTF_8), ObjectNode.class);
+        assertEquals(50, objectNode.get("age").asInt());
+        assertTrue(objectNode.get("name").isNull());
     }
 
     @Test
