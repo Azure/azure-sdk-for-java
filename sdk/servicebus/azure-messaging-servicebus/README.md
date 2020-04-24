@@ -13,7 +13,7 @@ have to be online at the same time.
 - Topics and subscriptions: Enable 1:n relationships between publishers and subscribers.
 - Message sessions. Implement work-flows that require message ordering or message deferral.
 
-[Source code][source_code] | [API reference documentation][api_documentation] | [Samples][sample_examples]
+[Source code][source_code] | [API reference documentation][api_documentation] | [Samples][sample_readme]
 
 ## Table of contents
 
@@ -99,6 +99,7 @@ ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
     .queueName("<<queue-name>>")
     .buildAsyncClient();
 ```
+
 ##### Service Bus Roles
 
 When using Azure Active Directory, your principal must be assigned a role which allows access to Service Bus, such
@@ -124,6 +125,7 @@ receaves a copy of each message sent to the topic.
 ## Examples
 
 ### Create a sender or receiver using connection string
+
 The easiest means for doing so is to use a connection string, which is created automatically when creating an Service Bus
 namespace. If you aren't familiar with shared access policies in Azure, you may wish to follow the step-by-step guide to
 [get an Service Bus connection string][service_bus_connection_string].
@@ -238,6 +240,7 @@ If a transient AMQP exception occurs, the client library retries the operation a
 user.
 
 ### Default SSL library
+
 All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL
 operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides
 better performance compared to the default SSL implementation within the JDK. For more information, including how to
@@ -272,7 +275,7 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [qpid_proton_j_apache]: http://qpid.apache.org/proton/
 [queue_concept]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview#queues
 [RetryOptions]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/AmqpRetryOptions.java
-[sample_examples]: ./src/samples/java/com/azure/messaging/servicebus/
+[sample_readme]: ./src/samples/README.md
 [sample-receive-async-aad-message]: ./src/samples/java/com/azure/messaging/servicebus/ReceiveMessageAzureIdentityAsyncSample.java
 [sample-receive-async-message]: ./src/samples/java/com/azure/messaging/servicebus/ReceiveMessageAsyncSample.java
 [sample-receive-message-and-settle]: ./src/samples/java/com/azure/messaging/servicebus/ReceiveMessageAndSettleAsyncSample.java
@@ -280,7 +283,6 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [sample-send-async-aad-message]: ./src/samples/java/com/azure/messaging/servicebus/SendMessageWithAzureIdentityAsyncSample.java
 [sample-send-async-message]: ./src/samples/java/com/azure/messaging/servicebus/SendMessageAsyncSample.java
 [sample-send-batch-messages]: ./src/samples/java/com/azure/messaging/servicebus/SendMessageBatchSyncSample.java
-[samples_readme]: ./src/samples/README.md
 [service_bus_connection_string]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-create-namespace-portal#get-the-connection-string
 [servicebus_roles]: https://docs.microsoft.com/azure/service-bus-messaging/authenticate-application#built-in-rbac-roles-for-azure-service-bus
 [ServiceBusReceiverAsyncClient]: ./src/main/java/com/azure/messaging/servicebus/ServiceBusReceiverAsyncClient.java
