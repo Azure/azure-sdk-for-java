@@ -63,7 +63,7 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
         }
 
         if (configuration == null) {
-            this.configuration = Configuration.getGlobalConfiguration();
+            this.configuration = Configuration.getGlobalConfiguration().clone();
         } else {
             this.configuration = configuration;
         }

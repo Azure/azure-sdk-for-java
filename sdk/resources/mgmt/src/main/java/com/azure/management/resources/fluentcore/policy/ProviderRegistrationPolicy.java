@@ -3,6 +3,7 @@
 
 package com.azure.management.resources.fluentcore.policy;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
@@ -12,9 +13,6 @@ import com.azure.core.management.CloudError;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.management.AzureTokenCredential;
-import com.azure.management.RestClient;
-import com.azure.management.RestClientBuilder;
 import com.azure.management.resources.Provider;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
@@ -31,14 +29,14 @@ import java.util.regex.Pattern;
  */
 public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
     private static final String MISSING_SUBSCRIPTION_REGISTRATION = "MissingSubscriptionRegistration";
-    private final AzureTokenCredential credential;
+    private final TokenCredential credential;
 
     /**
      * Initialize a provider registration policy with a credential that's authorized
      * to register the provider.
      * @param credential the credential for provider registration
      */
-    public ProviderRegistrationPolicy(AzureTokenCredential credential) {
+    public ProviderRegistrationPolicy(TokenCredential credential) {
         this.credential = credential;
     }
 
@@ -69,13 +67,8 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
                             if (cloudError != null && MISSING_SUBSCRIPTION_REGISTRATION.equals(cloudError.getCode())) {
                                 String subscriptionId = ResourceUtils.extractFromResourceId(
                                     request.getUrl().getPath(), "subscriptions");
-                                RestClient restClient = new RestClientBuilder()
-                                        .withBaseUrl(String.format("%s://%s",
-                                            request.getUrl().getProtocol(), request.getUrl().getHost()))
-                                        .withCredential(credential)
-                                        .withSerializerAdapter(jacksonAdapter).buildClient();
                                 // TODO: add proxy in rest client
-                                ResourceManager resourceManager = ResourceManager.authenticate(restClient)
+                                ResourceManager resourceManager = ResourceManager.authenticate(credential)
                                         .withSubscription(subscriptionId);
                                 Pattern providerPattern = Pattern.compile(".*'(.*)'");
                                 Matcher providerMatcher = providerPattern.matcher(cloudError.getMessage());

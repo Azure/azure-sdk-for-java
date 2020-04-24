@@ -3,10 +3,13 @@
 
 package com.azure.management.resources.fluentcore.arm;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.management.AzureTokenCredential;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.core.util.Configuration;
 
 import java.net.Proxy;
 import java.util.concurrent.TimeUnit;
@@ -51,7 +54,7 @@ public interface AzureConfigurable<T extends AzureConfigurable<T>> {
      * @param tokens the AzureTokenCredential list
      * @return the configurable object itself
      */
-    T withAuxiliaryCredentials(AzureTokenCredential... tokens);
+    T withAuxiliaryCredentials(TokenCredential... tokens);
 
     /**
      * Specify the user agent header.
@@ -96,4 +99,12 @@ public interface AzureConfigurable<T extends AzureConfigurable<T>> {
      * @return the configurable object itself for chaining
      */
     T withProxy(Proxy proxy);
+
+    T withScope(String scope);
+
+    T withHttpClient(HttpClient httpClient);
+
+    T withConfiguration(Configuration configuration);
+
+    T withEnvironment(AzureEnvironment environment);
 }

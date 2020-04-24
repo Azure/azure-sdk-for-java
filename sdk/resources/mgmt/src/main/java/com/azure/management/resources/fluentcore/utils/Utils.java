@@ -8,16 +8,11 @@ import com.azure.core.annotation.PathParam;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.management.AzureEnvironment;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.management.AzureTokenCredential;
-import com.azure.management.RestClient;
 import com.azure.management.resources.fluentcore.arm.ResourceId;
 import com.azure.management.resources.fluentcore.model.Indexable;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Defines a few utilities.
@@ -193,34 +188,34 @@ public final class Utils {
         }
     }
 
-    /**
-     * Try to extract the environment the client is authenticated to based
-     * on the information on the rest client.
-     *
-     * @param restClient the RestClient instance
-     * @return the non-null AzureEnvironment
-     */
-    public static AzureEnvironment extractAzureEnvironment(RestClient restClient) {
-        AzureEnvironment environment = null;
-        if (restClient.getCredential() instanceof AzureTokenCredential) {
-            environment = ((AzureTokenCredential) restClient.getCredential()).getEnvironment();
-        } else {
-            String baseUrl = restClient.getBaseUrl().toString();
-            for (AzureEnvironment env : AzureEnvironment.knownEnvironments()) {
-                if (env.getResourceManagerEndpoint().toLowerCase(Locale.ROOT)
-                        .contains(baseUrl.toLowerCase(Locale.ROOT))) {
-                    environment = env;
-                    break;
-                }
-            }
-            if (environment == null) {
-                ClientLogger logger = new ClientLogger(Utils.class);
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Unknown resource manager endpoint " + baseUrl));
-            }
-        }
-        return environment;
-    }
+//    /**
+//     * Try to extract the environment the client is authenticated to based
+//     * on the information on the rest client.
+//     *
+//     * @param restClient the RestClient instance
+//     * @return the non-null AzureEnvironment
+//     */
+//    public static AzureEnvironment extractAzureEnvironment(RestClient restClient) {
+//        AzureEnvironment environment = null;
+//        if (restClient.getCredential() instanceof AzureTokenCredential) {
+//            environment = ((AzureTokenCredential) restClient.getCredential()).getEnvironment();
+//        } else {
+//            String baseUrl = restClient.getBaseUrl().toString();
+//            for (AzureEnvironment env : AzureEnvironment.knownEnvironments()) {
+//                if (env.getResourceManagerEndpoint().toLowerCase(Locale.ROOT)
+//                        .contains(baseUrl.toLowerCase(Locale.ROOT))) {
+//                    environment = env;
+//                    break;
+//                }
+//            }
+//            if (environment == null) {
+//                ClientLogger logger = new ClientLogger(Utils.class);
+//                throw logger.logExceptionAsError(
+//                    new IllegalArgumentException("Unknown resource manager endpoint " + baseUrl));
+//            }
+//        }
+//        return environment;
+//    }
 
     /**
      * @param id resource id

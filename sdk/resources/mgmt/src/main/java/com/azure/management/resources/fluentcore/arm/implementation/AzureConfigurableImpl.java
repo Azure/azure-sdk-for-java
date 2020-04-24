@@ -3,17 +3,22 @@
 
 package com.azure.management.resources.fluentcore.arm.implementation;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.management.serializer.AzureJacksonAdapter;
-import com.azure.management.AzureTokenCredential;
-import com.azure.management.RestClient;
-import com.azure.management.RestClientBuilder;
+import com.azure.core.util.Configuration;
 import com.azure.management.resources.fluentcore.arm.AzureConfigurable;
+import com.azure.management.resources.fluentcore.utils.HttpPipelineProvider;
 
 import java.net.Proxy;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -24,33 +29,46 @@ import java.util.concurrent.TimeUnit;
  */
 public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
         implements AzureConfigurable<T> {
-    protected RestClientBuilder restClientBuilder;
+    private HttpClient httpClient;
+    private HttpLogOptions httpLogOptions;
+    private HttpLogDetailLevel httpLogDetailLevel;
+    private List<HttpPipelinePolicy> policies;
+    private List<String> scopes;
+    private RetryPolicy retryPolicy;
+    private Configuration configuration;
+    private AzureEnvironment environment;
 
     protected AzureConfigurableImpl() {
-        this.restClientBuilder = new RestClientBuilder()
-                .withSerializerAdapter(new AzureJacksonAdapter());
+        policies = new ArrayList<>();
+        scopes = new ArrayList<>();
+        retryPolicy = new RetryPolicy();
+        httpLogOptions = new HttpLogOptions().setLogLevel(HttpLogDetailLevel.NONE);
+        environment = AzureEnvironment.AZURE;
     }
 
     @Override
-    public T withLogOptions(HttpLogOptions level) {
-        this.restClientBuilder = this.restClientBuilder.withHttpLogOptions(level);
+    public T withLogOptions(HttpLogOptions httpLogOptions) {
+        Objects.requireNonNull(httpLogOptions);
+        this.httpLogOptions = httpLogOptions;
         return (T) this;
     }
 
     @Override
     public T withLogLevel(HttpLogDetailLevel logLevel) {
-        this.restClientBuilder = this.restClientBuilder.withLogLevel(logLevel);
+        Objects.requireNonNull(logLevel);
+        this.httpLogOptions = httpLogOptions.setLogLevel(logLevel);
         return (T) this;
     }
 
     @Override
     public T withPolicy(HttpPipelinePolicy policy) {
-        this.restClientBuilder = this.restClientBuilder.withPolicy(policy);
+        Objects.requireNonNull(policy);
+        policies.add(policy);
         return (T) this;
     }
 
     @Override
-    public T withAuxiliaryCredentials(AzureTokenCredential... tokens) {
+    public T withAuxiliaryCredentials(TokenCredential... tokens) {
         return null;
     }
 
@@ -68,7 +86,7 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
 
     @Override
     public T withUserAgent(String userAgent) {
-        this.restClientBuilder = this.restClientBuilder.withUserAgent(userAgent);
+        // TODO: pending
         return (T) this;
     }
 
@@ -92,21 +110,43 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
         return null;
     }
 
-    protected RestClient buildRestClient(AzureTokenCredential credential, AzureEnvironment.Endpoint endpoint) {
-        RestClient client = restClientBuilder
-                .withBaseUrl(credential.getEnvironment(), endpoint)
-                .withCredential(credential)
-//                .withPolicy(new ProviderRegistrationPolicy())
-//                .withPolicy(new ResourceManagerThrottlingPolicy())
-                .buildClient();
-        // TODO: Add proxy support
-//        if (client.httpClient().proxy() != null) {
-//            credentials.withProxy(client.httpClient().proxy());
-//        }
-        return client;
+    @Override
+    public T withScope(String scope) {
+        Objects.requireNonNull(scope);
+        this.scopes.add(scope);
+        return (T) this;
     }
 
-    protected RestClient buildRestClient(AzureTokenCredential credential) {
-        return buildRestClient(credential, AzureEnvironment.Endpoint.RESOURCE_MANAGER);
+    @Override
+    public T withHttpClient(HttpClient httpClient) {
+        Objects.requireNonNull(httpClient);
+        this.httpClient = httpClient;
+        return (T) this;
+    }
+
+    @Override
+    public T withConfiguration(Configuration configuration) {
+        Objects.requireNonNull(configuration);
+        this.configuration = configuration;
+        return (T) this;
+    }
+
+    @Override
+    public T withEnvironment(AzureEnvironment environment) {
+        Objects.requireNonNull(environment);
+        this.environment = environment;
+        return (T) this;
+    }
+
+    protected HttpPipeline buildHttpPipeline(TokenCredential credential) {
+        Objects.requireNonNull(credential);
+        return HttpPipelineProvider.buildHttpPipeline(this.policies,
+            credential,
+            this.scopes,
+            this.httpLogOptions,
+            this.configuration,
+            this.retryPolicy,
+            this.httpClient,
+            this.environment);
     }
 }
