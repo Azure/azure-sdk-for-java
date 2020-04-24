@@ -15,8 +15,10 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
@@ -102,6 +104,50 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
         for (int i = 0; i < messages.size(); i++) {
             messagesPending.incrementAndGet();
         }
+    }
+
+    /**
+     * Verifies that we can schedule a message to a non-session entity.
+     */
+    @MethodSource("receiverTypesProvider")
+    @ParameterizedTest
+    void nonSessionScheduleMessage(MessagingEntityType entityType) {
+        // Arrange
+        setSenderAndReceiver(entityType);
+
+        final Instant scheduledEnqueueTime = Instant.now().plusSeconds(15);
+        final String messageId = UUID.randomUUID().toString();
+        final String contents = "Some-contents";
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(contents, messageId);
+
+        // Act
+        long sequenceNumber = sender.scheduleMessage(message, scheduledEnqueueTime);
+
+        // Assert
+        Assertions.assertTrue(sequenceNumber > 0 );
+
+        messagesPending.incrementAndGet();
+    }
+
+    /**
+     * Verifies that we can cancel a scheduled a message to a non-session entity.
+     */
+    @MethodSource("receiverTypesProvider")
+    @ParameterizedTest
+    void nonSessionCancelScheduleMessage(MessagingEntityType entityType) {
+        // Arrange
+        setSenderAndReceiver(entityType);
+
+        final Instant scheduledEnqueueTime = Instant.now().plusSeconds(20);
+        final String messageId = UUID.randomUUID().toString();
+        final String contents = "Some-contents";
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(contents, messageId);
+
+        // Assert & Act
+        long sequenceNumber = sender.scheduleMessage(message, scheduledEnqueueTime);
+        Assertions.assertTrue(sequenceNumber > 0 );
+
+        sender.cancelScheduledMessage(sequenceNumber);
     }
 
     void setSenderAndReceiver(MessagingEntityType entityType) {
