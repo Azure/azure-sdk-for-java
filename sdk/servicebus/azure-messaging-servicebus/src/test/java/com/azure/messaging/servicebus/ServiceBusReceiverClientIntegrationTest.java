@@ -136,10 +136,10 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         int noMessages = 0;
 
         // Act
-        IterableStream<ServiceBusReceivedMessage> iterableMessages = receiver.receive(howManyMessage, Duration.ofSeconds(15));
+        IterableStream<ServiceBusReceivedMessage> messages = receiver.receive(howManyMessage, Duration.ofSeconds(15));
 
         // Assert
-        final int receivedMessages = iterableMessages.stream().collect(Collectors.toList()).size();
+        final int receivedMessages = messages.stream().collect(Collectors.toList()).size();
         assertEquals(noMessages, receivedMessages);
     }
 
