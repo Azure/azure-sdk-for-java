@@ -41,8 +41,6 @@ import com.azure.management.compute.VirtualMachineExtension;
 import com.azure.management.containerregistry.AccessKeyType;
 import com.azure.management.containerregistry.Registry;
 import com.azure.management.containerregistry.RegistryCredentials;
-import com.azure.management.containerservice.ContainerService;
-import com.azure.management.containerservice.ContainerServiceOrchestratorTypes;
 import com.azure.management.containerservice.KubernetesCluster;
 import com.azure.management.cosmosdb.CosmosDBAccount;
 import com.azure.management.cosmosdb.DatabaseAccountListKeysResult;
@@ -1211,34 +1209,6 @@ public final class Utils {
                 .append("\n\tUser: ").append(acrCredentials.username())
                 .append("\n\tFirst Password: ").append(acrCredentials.accessKeys().get(AccessKeyType.PRIMARY))
                 .append("\n\tSecond Password: ").append(acrCredentials.accessKeys().get(AccessKeyType.SECONDARY));
-        System.out.println(info.toString());
-    }
-
-    /**
-     * Print an Azure Container Service.
-     *
-     * @param containerService an Azure Container Service
-     */
-    public static void print(ContainerService containerService) {
-        StringBuilder info = new StringBuilder();
-
-        info.append("Azure Container Service: ").append(containerService.id())
-                .append("\n\tName: ").append(containerService.name())
-                .append("\n\tWith orchestration: ").append(containerService.orchestratorType().toString())
-                .append("\n\tMaster FQDN: ").append(containerService.masterFqdn())
-                .append("\n\tMaster node count: ").append(containerService.masterNodeCount())
-                .append("\n\tMaster domain label prefix: ").append(containerService.masterDnsPrefix())
-                .append("\n\t\tWith Agent pool name: ").append(new ArrayList<>(containerService.agentPools().keySet()).get(0))
-                .append("\n\t\tAgent pool count: ").append(new ArrayList<>(containerService.agentPools().values()).get(0).count())
-                .append("\n\t\tAgent pool VM size: ").append(new ArrayList<>(containerService.agentPools().values()).get(0).vmSize().toString())
-                .append("\n\t\tAgent pool FQDN: ").append(new ArrayList<>(containerService.agentPools().values()).get(0).fqdn())
-                .append("\n\t\tAgent pool domain label prefix: ").append(new ArrayList<>(containerService.agentPools().values()).get(0).dnsPrefix())
-                .append("\n\tLinux user name: ").append(containerService.linuxRootUsername())
-                .append("\n\tSSH key: ").append(containerService.sshKey());
-        if (containerService.orchestratorType() == ContainerServiceOrchestratorTypes.KUBERNETES) {
-            info.append("\n\tName: ").append(containerService.servicePrincipalClientId());
-        }
-
         System.out.println(info.toString());
     }
 
