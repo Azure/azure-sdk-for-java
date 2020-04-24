@@ -3,16 +3,14 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
+import com.azure.core.exception.AzureException;
 import com.azure.cosmos.implementation.apachecommons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MessageFormatter;
 
 import java.io.File;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.net.URL;
-import java.util.Objects;
 
 public final class RntbdReporter {
 
@@ -61,7 +59,7 @@ public final class RntbdReporter {
         final Object[] arguments) {
 
         final FormattingTuple formattingTuple = MessageFormatter.arrayFormat(format, arguments);
-        final Exception exception = new Exception();
+        final Exception exception = new AzureException(null);
         final Throwable throwable = formattingTuple.getThrowable();
         final StackTraceElement[] stackTrace = exception.getStackTrace();
 

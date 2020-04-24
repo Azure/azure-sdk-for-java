@@ -46,7 +46,7 @@ public class Main {
 
     private static void syncBenchmark(Configuration cfg) throws Exception {
         LOGGER.info("Sync benchmark ...");
-        SyncBenchmark benchmark = null;
+        SyncBenchmark<?> benchmark = null;
         try {
             switch (cfg.getOperationType()) {
                 case ReadThroughput:
@@ -69,7 +69,7 @@ public class Main {
 
     private static void asyncBenchmark(Configuration cfg) throws Exception {
         LOGGER.info("Async benchmark ...");
-        AsyncBenchmark benchmark = null;
+        AsyncBenchmark<?> benchmark = null;
         try {
             switch (cfg.getOperationType()) {
                 case WriteThroughput:
@@ -120,9 +120,9 @@ public class Main {
 
     private static void asyncMultiClientBenchmark(Configuration cfg) throws Exception {
         LOGGER.info("Async multi client benchmark ...");
-        AsynReadWithMultipleClients benchmark = null;
+        AsynReadWithMultipleClients<?> benchmark = null;
         try {
-            benchmark = new AsynReadWithMultipleClients(cfg);
+            benchmark = new AsynReadWithMultipleClients<>(cfg);
             LOGGER.info("Starting {}", cfg.getOperationType());
             benchmark.run();
         } finally {

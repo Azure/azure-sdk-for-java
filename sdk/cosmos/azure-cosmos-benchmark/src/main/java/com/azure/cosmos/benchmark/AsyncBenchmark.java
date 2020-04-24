@@ -11,6 +11,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.codahale.metrics.ConsoleReporter;
+import com.codahale.metrics.CsvReporter;
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricFilter;
 import com.codahale.metrics.MetricRegistry;
@@ -130,16 +131,25 @@ abstract class AsyncBenchmark<T> {
         }
 
         if (configuration.getGraphiteEndpoint() != null) {
-            final Graphite graphite = new Graphite(new InetSocketAddress(configuration.getGraphiteEndpoint(), configuration.getGraphiteEndpointPort()));
+            final Graphite graphite = new Graphite(new InetSocketAddress(
+                    configuration.getGraphiteEndpoint(),
+                    configuration.getGraphiteEndpointPort()));
             reporter = GraphiteReporter.forRegistry(metricsRegistry)
-                                       .prefixedWith(configuration.getOperationType().name())
-                                       .convertRatesTo(TimeUnit.SECONDS)
-                                       .convertDurationsTo(TimeUnit.MILLISECONDS)
-                                       .filter(MetricFilter.ALL)
-                                       .build(graphite);
+                .prefixedWith(configuration.getOperationType().name())
+                .convertDurationsTo(TimeUnit.MILLISECONDS)
+                .convertRatesTo(TimeUnit.SECONDS)
+                .filter(MetricFilter.ALL)
+                .build(graphite);
+        } else if (configuration.getReportingDirectory() != null) {
+            reporter = CsvReporter.forRegistry(metricsRegistry)
+                .convertDurationsTo(TimeUnit.MILLISECONDS)
+                .convertRatesTo(TimeUnit.SECONDS)
+                .build(configuration.getReportingDirectory());
         } else {
-            reporter = ConsoleReporter.forRegistry(metricsRegistry).convertRatesTo(TimeUnit.SECONDS)
-                                      .convertDurationsTo(TimeUnit.MILLISECONDS).build();
+            reporter = ConsoleReporter.forRegistry(metricsRegistry)
+                .convertDurationsTo(TimeUnit.MILLISECONDS)
+                .convertRatesTo(TimeUnit.SECONDS)
+                .build();
         }
 
         MeterRegistry registry = configuration.getAzureMonitorMeterRegistry();
