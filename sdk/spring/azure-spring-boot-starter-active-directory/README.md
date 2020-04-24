@@ -58,7 +58,7 @@ Autowire `OAuth2UserService` bean in `WebSecurityConfigurerAdapter`:
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class AADOAuth2LoginConfigSample extends WebSecurityConfigurerAdapter {
-    
+
     @Autowired
     private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService;
 
