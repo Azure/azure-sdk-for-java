@@ -21,7 +21,7 @@
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <properties>
-    <jacoco.min.branchcoverage>0.23</jacoco.min.branchcoverage>
+    <jacoco.min.branchcoverage>0.22</jacoco.min.branchcoverage>
   </properties>
 
   <dependencies>

@@ -196,7 +196,7 @@ Now azure-active-directory-spring-boot-starter has supported AAD conditional acc
 ```java
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class AADOAuth2LoginConfigSample extends WebSecurityConfigurerAdapter {
+public class AADOAuth2LoginConditionalPolicyConfigSample extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService;
