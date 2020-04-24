@@ -13,6 +13,8 @@ import com.azure.management.compute.VirtualMachineCustomImage;
 import com.azure.management.compute.models.GalleryImageVersionInner;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import reactor.core.publisher.Mono;
+
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,7 +22,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import reactor.core.publisher.Mono;
 
 /** The implementation for GalleryImageVersion and its create and update interfaces. */
 class GalleryImageVersionImpl
@@ -360,7 +361,7 @@ class GalleryImageVersionImpl
         Iterator<String> itr = iterable.iterator();
         while (itr.hasNext()) {
             String part = itr.next();
-            if (part != null && part.trim() != "") {
+            if (part != null && !part.trim().equals("")) {
                 if (part.equalsIgnoreCase(name)) {
                     if (itr.hasNext()) {
                         return itr.next();
