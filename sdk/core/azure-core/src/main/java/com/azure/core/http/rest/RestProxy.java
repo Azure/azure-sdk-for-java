@@ -23,6 +23,7 @@ import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.implementation.serializer.HttpResponseDecoder.HttpDecodedResponse;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
@@ -236,49 +237,35 @@ public final class RestProxy implements InvocationHandler {
         final Object bodyContentObject = methodParser.setBody(args);
         if (bodyContentObject == null) {
             request.getHeaders().put("Content-Length", "0");
+            return request;
+        }
+
+        String contentType = methodParser.getBodyContentType();
+
+        // If no 'Content-Type' is set the default is 'application/octet-stream'.
+        if (CoreUtils.isNullOrEmpty(contentType)) {
+            contentType = ContentType.APPLICATION_OCTET_STREAM;
+        }
+
+        request.getHeaders().put("Content-Type", contentType);
+
+        if (FluxUtil.isFluxByteBuffer(methodParser.getBodyJavaType())) {
+            // Content-Length or Transfer-Encoding: chunked must be provided by a user-specified header when a
+            // Flux<byte[]> is given for the body.
+            request.setBody((Flux<ByteBuffer>) bodyContentObject);
+        } else if (bodyContentObject instanceof byte[]) {
+            request.setBody((byte[]) bodyContentObject);
+        } else if (bodyContentObject instanceof String) {
+            final String bodyContentString = (String) bodyContentObject;
+            if (!bodyContentString.isEmpty()) {
+                request.setBody(bodyContentString);
+            }
+        } else if (bodyContentObject instanceof ByteBuffer) {
+            request.setBody(Flux.just((ByteBuffer) bodyContentObject));
         } else {
-            String contentType = methodParser.getBodyContentType();
-            if (contentType == null || contentType.isEmpty()) {
-                if (bodyContentObject instanceof byte[] || bodyContentObject instanceof String) {
-                    contentType = ContentType.APPLICATION_OCTET_STREAM;
-                } else {
-                    contentType = ContentType.APPLICATION_JSON;
-                }
-            }
-
-            request.getHeaders().put("Content-Type", contentType);
-
-            boolean isJson = false;
-            final String[] contentTypeParts = contentType.split(";");
-            for (String contentTypePart : contentTypeParts) {
-                if (contentTypePart.trim().equalsIgnoreCase(ContentType.APPLICATION_JSON)) {
-                    isJson = true;
-                    break;
-                }
-            }
-
-            if (isJson) {
-                final String bodyContentString = serializer.serialize(bodyContentObject, SerializerEncoding.JSON);
-                request.setBody(bodyContentString);
-            } else if (FluxUtil.isFluxByteBuffer(methodParser.getBodyJavaType())) {
-                // Content-Length or Transfer-Encoding: chunked must be provided by a user-specified header when a
-                // Flowable<byte[]> is given for the body.
-                //noinspection ConstantConditions
-                request.setBody((Flux<ByteBuffer>) bodyContentObject);
-            } else if (bodyContentObject instanceof byte[]) {
-                request.setBody((byte[]) bodyContentObject);
-            } else if (bodyContentObject instanceof String) {
-                final String bodyContentString = (String) bodyContentObject;
-                if (!bodyContentString.isEmpty()) {
-                    request.setBody(bodyContentString);
-                }
-            } else if (bodyContentObject instanceof ByteBuffer) {
-                request.setBody(Flux.just((ByteBuffer) bodyContentObject));
-            } else {
-                final String bodyContentString =
-                    serializer.serialize(bodyContentObject, SerializerEncoding.fromHeaders(request.getHeaders()));
-                request.setBody(bodyContentString);
-            }
+            final String bodyContentString =
+                serializer.serialize(bodyContentObject, SerializerEncoding.fromHeaders(request.getHeaders()));
+            request.setBody(bodyContentString);
         }
 
         return request;
@@ -413,9 +400,9 @@ public final class RestProxy implements InvocationHandler {
         // 'RestResponseBase' class instead.
         Class<? extends Response<?>> cls = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
         if (cls.equals(Response.class)) {
-            cls = (Class<? extends Response<?>>) (Object) ResponseBase.class;
+            cls = (Class<? extends Response<?>>) ResponseBase.class;
         } else if (cls.equals(PagedResponse.class)) {
-            cls = (Class<? extends Response<?>>) (Object) PagedResponseBase.class;
+            cls = (Class<? extends Response<?>>) PagedResponseBase.class;
 
             if (bodyAsObject != null && !TypeUtil.isTypeOrSubTypeOf(bodyAsObject.getClass(), Page.class)) {
                 throw logger.logExceptionAsError(new RuntimeException(
@@ -564,23 +551,10 @@ public final class RestProxy implements InvocationHandler {
      * @return the default HttpPipeline
      */
     private static HttpPipeline createDefaultPipeline() {
-        return createDefaultPipeline((HttpPipelinePolicy) null);
-    }
-
-    /**
-     * Create the default HttpPipeline.
-     *
-     * @param credentialsPolicy the credentials policy factory to use to apply authentication to the pipeline
-     * @return the default HttpPipeline
-     */
-    private static HttpPipeline createDefaultPipeline(HttpPipelinePolicy credentialsPolicy) {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new UserAgentPolicy());
         policies.add(new RetryPolicy());
         policies.add(new CookiePolicy());
-        if (credentialsPolicy != null) {
-            policies.add(credentialsPolicy);
-        }
 
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))

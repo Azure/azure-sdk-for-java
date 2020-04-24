@@ -23,7 +23,6 @@ import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -115,14 +114,14 @@ public class JacksonAdapter implements SerializerAdapter {
         if (object == null) {
             return null;
         }
-        StringWriter writer = new StringWriter();
-        if (encoding == SerializerEncoding.XML) {
-            xmlMapper.writeValue(writer, object);
-        } else {
-            serializer().writeValue(writer, object);
-        }
 
-        return writer.toString();
+        if (encoding == SerializerEncoding.XML) {
+            return xmlMapper.writeValueAsString(object);
+        } else if (encoding == SerializerEncoding.TEXT) {
+            return String.valueOf(object);
+        } else {
+            return serializer().writeValueAsString(object);
+        }
     }
 
     @Override
@@ -162,6 +161,8 @@ public class JacksonAdapter implements SerializerAdapter {
         try {
             if (encoding == SerializerEncoding.XML) {
                 return (T) xmlMapper.readValue(value, javaType);
+            } else if (encoding == SerializerEncoding.TEXT) {
+                return (T) javaType.getRawClass().cast(value);
             } else {
                 return (T) serializer().readValue(value, javaType);
             }
