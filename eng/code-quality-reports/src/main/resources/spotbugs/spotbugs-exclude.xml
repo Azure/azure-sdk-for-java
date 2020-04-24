@@ -1967,7 +1967,7 @@
 
   <!-- Exclude REC_CATCH_EXCEPTION for management samples. All samples in management catch Exception instead of throw it. -->
   <Match>
-    <Class name="~com\.azure\.management(\.[^.]+)*\.samples(\.[^.]+)*"/>
+    <Package name="~com\.azure\.management(\.[^.]+)*\.samples(\.[^.]+)*"/>
     <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
 
