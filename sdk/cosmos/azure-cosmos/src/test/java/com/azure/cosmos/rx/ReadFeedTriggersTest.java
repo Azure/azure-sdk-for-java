@@ -5,7 +5,7 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosPagedFlux;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.models.CosmosTriggerProperties;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.TriggerOperation;
@@ -36,13 +36,11 @@ public class ReadFeedTriggersTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = FEED_TIMEOUT)
     public void readTriggers() throws Exception {
-
         FeedOptions options = new FeedOptions();
-        options.setMaxItemCount(2);
 
         CosmosPagedFlux<CosmosTriggerProperties> feedObservable = createdCollection.getScripts().readAllTriggers(options);
         int maxItemCount = 2;
-        int expectedPageSize = (createdTriggers.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
+        int expectedPageSize = (createdTriggers.size() + maxItemCount - 1) / maxItemCount;
 
         FeedResponseListValidator<CosmosTriggerProperties> validator = new FeedResponseListValidator.Builder<CosmosTriggerProperties>()
                 .totalSize(createdTriggers.size())
@@ -57,7 +55,7 @@ public class ReadFeedTriggersTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_ReadFeedTriggersTest() {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
 
@@ -65,7 +63,7 @@ public class ReadFeedTriggersTest extends TestSuiteBase {
             this.createdTriggers.add(this.createTriggers(createdCollection));
         }
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

@@ -6,20 +6,21 @@ package com.azure.identity.implementation;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.http.ProxyOptions;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.DeviceCodeInfo;
 import com.azure.identity.implementation.util.CertificateUtil;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -35,11 +36,17 @@ import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.Proxy.Type;
+import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -53,7 +60,16 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Random;
+import java.util.Scanner;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 /**
@@ -252,15 +268,21 @@ public class IdentityClient {
                 }
                 if (line.startsWith(WINDOWS_PROCESS_ERROR_MESSAGE) || line.matches(LINUX_MAC_PROCESS_ERROR_MESSAGE)) {
                     throw logger.logExceptionAsError(
-                        new ClientAuthenticationException("Azure CLI not installed", null));
+                        new CredentialUnavailableException("Azure CLI not installed"));
                 }
                 output.append(line);
             }
             String processOutput = output.toString();
 
+            process.waitFor(10, TimeUnit.SECONDS);
+
             if (process.exitValue() != 0) {
                 if (processOutput.length() > 0) {
                     String redactedOutput = redactInfo("\"accessToken\": \"(.*?)(\"|$)", processOutput);
+                    if (redactedOutput.contains("az login") || redactedOutput.contains("az account set")) {
+                        throw logger.logExceptionAsError(
+                            new CredentialUnavailableException("Please run 'az login' to set up account"));
+                    }
                     throw logger.logExceptionAsError(new ClientAuthenticationException(redactedOutput, null));
                 } else {
                     throw logger.logExceptionAsError(
@@ -277,7 +299,7 @@ public class IdentityClient {
                                            .atZone(ZoneId.systemDefault())
                                            .toOffsetDateTime().withOffsetSameInstant(ZoneOffset.UTC);
             token = new IdentityToken(accessToken, expiresOn, options);
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             throw logger.logExceptionAsError(new IllegalStateException(e));
         } catch (RuntimeException e) {
             return Mono.error(logger.logExceptionAsError(e));
@@ -687,6 +709,10 @@ public class IdentityClient {
                 connection.setRequestMethod("GET");
                 connection.setConnectTimeout(500);
                 connection.connect();
+            } catch (ConnectException | SecurityException | SocketTimeoutException e) {
+                throw logger.logExceptionAsError(
+                    new CredentialUnavailableException("Connection to IMDS endpoint cannot be established. "
+                                                             + e.getMessage(), e));
             } finally {
                 if (connection != null) {
                     connection.disconnect();

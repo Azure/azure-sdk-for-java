@@ -1,0 +1,31 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azsjava063792fbf6b3c071c4d89b1d35c3d.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "8f5adbde-9d38-472f-948d-76bf7c51aac0",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "8f5adbde-9d38-472f-948d-76bf7c51aac0",
+      "StatusCode" : "201",
+      "Date" : "Tue, 21 Apr 2020 19:10:56 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "8f5adbde-9d38-472f-948d-76bf7c51aac0",
+      "ETag" : "W/\"0x8D7E627B8F31252\"",
+      "elapsed-time" : "56",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "736",
+      "Body" : "{\"@odata.context\":\"https://azsjava063792fbf6b3c071c4d89b1d35c3d.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7E627B8F31252\\\"\",\"name\":\"ocr-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":null,\"lineEnding\":null,\"defaultLanguageCode\":null,\"detectOrientation\":false,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://azsjava063792fbf6b3c071c4d89b1d35c3d.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06-Preview"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "azsjava063792fbf6b3c071c4d89b1d35c3d" ]
+}

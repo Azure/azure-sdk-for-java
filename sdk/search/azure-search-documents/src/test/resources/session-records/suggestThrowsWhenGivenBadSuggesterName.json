@@ -1,0 +1,30 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://azsjavasuggestthrowswhengivenbadsuggestername04272067c34.search.windows.net/indexes('hotels')/docs/search.post.suggest?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "0ff824d4-7754-4d37-b6b7-ca51314ff61b",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "0ff824d4-7754-4d37-b6b7-ca51314ff61b",
+      "StatusCode" : "400",
+      "Date" : "Tue, 21 Apr 2020 19:12:46 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "0ff824d4-7754-4d37-b6b7-ca51314ff61b",
+      "elapsed-time" : "61",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "154",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"The specified suggester name 'Suggester does not exist' does not exist in this index definition.\\r\\nParameter name: name\"}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; odata.metadata=none"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "azsjavasuggestthrowswhengivenbadsuggestername04272067c34" ]
+}

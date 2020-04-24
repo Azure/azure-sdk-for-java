@@ -3,13 +3,14 @@
 
 package com.azure.cosmos;
 
+import com.azure.core.exception.AzureException;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.models.CosmosError;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -31,7 +32,7 @@ import java.util.Map;
  * When a transport level error happens that request is not able to reach the
  * service, an IllegalStateException is thrown instead of CosmosClientException.
  */
-public class CosmosClientException extends RuntimeException {
+public class CosmosClientException extends AzureException {
     private static final long serialVersionUID = 1L;
 
     private final int statusCode;
@@ -244,11 +245,11 @@ public class CosmosClientException extends RuntimeException {
      *
      * @return Cosmos Response Diagnostic Statistics associated with this exception.
      */
-    public CosmosResponseDiagnostics getCosmosResponseDiagnostics() {
+    public CosmosResponseDiagnostics getResponseDiagnostics() {
         return cosmosResponseDiagnostics;
     }
 
-    CosmosClientException setCosmosResponseDiagnostics(CosmosResponseDiagnostics cosmosResponseDiagnostics) {
+    CosmosClientException setResponseDiagnostics(CosmosResponseDiagnostics cosmosResponseDiagnostics) {
         this.cosmosResponseDiagnostics = cosmosResponseDiagnostics;
         return this;
     }
@@ -266,7 +267,7 @@ public class CosmosClientException extends RuntimeException {
         if (cosmosError != null) {
             innerErrorMessage = cosmosError.getMessage();
             if (innerErrorMessage == null) {
-                innerErrorMessage = String.valueOf(cosmosError.get("Errors"));
+                innerErrorMessage = String.valueOf(ModelBridgeInternal.getObjectFromJsonSerializable(cosmosError, "Errors"));
             }
         }
         return innerErrorMessage;

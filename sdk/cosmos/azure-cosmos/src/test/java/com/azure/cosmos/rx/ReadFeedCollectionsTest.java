@@ -8,7 +8,7 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
-import com.azure.cosmos.CosmosPagedFlux;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.PartitionKeyDefinition;
@@ -67,7 +67,7 @@ public class ReadFeedCollectionsTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_ReadFeedCollectionsTest() {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         createdDatabase = createDatabase(client, databaseId);
 
         for(int i = 0; i < 3; i++) {

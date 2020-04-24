@@ -1,0 +1,30 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://azsjavasearchthrowswhenrequestismalformed5156136954934.search.windows.net/indexes('hotels')/docs/search.post.search?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "22c15c26-8498-43b4-9fbc-e556d9c4e846",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "22c15c26-8498-43b4-9fbc-e556d9c4e846",
+      "StatusCode" : "400",
+      "Date" : "Tue, 21 Apr 2020 19:05:38 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "22c15c26-8498-43b4-9fbc-e556d9c4e846",
+      "elapsed-time" : "200",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "141",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"Invalid expression: Syntax error at position 7 in 'This is not a valid filter.'.\\r\\nParameter name: $filter\"}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; odata.metadata=none"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "azsjavasearchthrowswhenrequestismalformed5156136954934" ]
+}

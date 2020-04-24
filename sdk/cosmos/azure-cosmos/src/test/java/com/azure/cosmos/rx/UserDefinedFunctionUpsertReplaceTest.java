@@ -40,7 +40,7 @@ public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
             readBackUdf = createdCollection.getScripts().createUserDefinedFunction(udf).block().getProperties();
 
         // read udf to validate creation
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
         Mono<CosmosAsyncUserDefinedFunctionResponse> readObservable = createdCollection.getScripts().getUserDefinedFunction(readBackUdf.getId()).read();
 
         // validate udf creation
@@ -69,7 +69,7 @@ public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
     //  see https://github.com/Azure/azure-sdk-for-java/issues/6383
     @BeforeClass(groups = { "simple" }, timeOut = 4 * SETUP_TIMEOUT)
     public void before_UserDefinedFunctionUpsertReplaceTest() {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
     }

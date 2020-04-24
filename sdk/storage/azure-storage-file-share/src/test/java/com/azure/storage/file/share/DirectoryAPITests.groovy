@@ -164,6 +164,29 @@ class DirectoryAPITests extends APISpec {
         resp.getValue().getSmbProperties().getFileId()
     }
 
+    def "Create directory with ntfs attributes"() {
+        setup:
+        def filePermissionKey = shareClient.createPermission(filePermission)
+        def attributes = EnumSet.of(NtfsFileAttributes.HIDDEN, NtfsFileAttributes.DIRECTORY)
+        smbProperties.setFileCreationTime(getUTCNow())
+            .setFileLastWriteTime(getUTCNow())
+            .setFilePermissionKey(filePermissionKey)
+            .setNtfsFileAttributes(attributes)
+        when:
+        def resp = primaryDirectoryClient.createWithResponse(smbProperties, null, null, null, null)
+
+        then:
+        FileTestHelper.assertResponseStatusCode(resp, 201)
+        resp.getValue().getSmbProperties()
+        resp.getValue().getSmbProperties().getFilePermissionKey()
+        resp.getValue().getSmbProperties().getNtfsFileAttributes()
+        resp.getValue().getSmbProperties().getFileLastWriteTime()
+        resp.getValue().getSmbProperties().getFileCreationTime()
+        resp.getValue().getSmbProperties().getFileChangeTime()
+        resp.getValue().getSmbProperties().getParentId()
+        resp.getValue().getSmbProperties().getFileId()
+    }
+
     @Unroll
     def "Create directory permission and key error"() {
         when:

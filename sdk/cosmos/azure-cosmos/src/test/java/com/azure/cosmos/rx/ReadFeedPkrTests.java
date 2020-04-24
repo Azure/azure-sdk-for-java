@@ -12,6 +12,7 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -35,7 +36,7 @@ public class ReadFeedPkrTests extends TestSuiteBase {
     public void readPartitionKeyRanges() throws Exception {
 
         FeedOptions options = new FeedOptions();
-        options.setMaxItemCount(2);
+        ModelBridgeInternal.setFeedOptionsMaxItemCount(options, 2);
 
         Flux<FeedResponse<PartitionKeyRange>> feedObservable = client.readPartitionKeyRanges(getCollectionLink(), options);
 
@@ -48,8 +49,8 @@ public class ReadFeedPkrTests extends TestSuiteBase {
 
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void before_ReadFeedPkrTests() {
-        client = CosmosBridgeInternal.getAsyncDocumentClient(clientBuilder().buildAsyncClient());
-        createdDatabase = getSharedCosmosDatabase(clientBuilder().buildAsyncClient());
+        client = CosmosBridgeInternal.getAsyncDocumentClient(getClientBuilder().buildAsyncClient());
+        createdDatabase = getSharedCosmosDatabase(getClientBuilder().buildAsyncClient());
         createdCollection = createCollection(createdDatabase,
                                              getCollectionDefinition(),
                                              new CosmosContainerRequestOptions());

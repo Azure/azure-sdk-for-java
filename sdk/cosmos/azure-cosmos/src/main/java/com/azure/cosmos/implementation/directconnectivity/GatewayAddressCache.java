@@ -12,6 +12,9 @@ import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.JavaStreamUtils;
+import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
+import com.azure.cosmos.implementation.MetadataDiagnosticsContext.MetadataDiagnostics;
+import com.azure.cosmos.implementation.MetadataDiagnosticsContext.MetadataType;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
@@ -23,6 +26,8 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
@@ -31,8 +36,6 @@ import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.models.RequestVerb;
 import io.netty.handler.codec.http.HttpMethod;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -44,6 +47,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -295,6 +300,7 @@ public class GatewayAddressCache implements IAddressCache {
             httpHeaders.set(entry.getKey(), entry.getValue());
         }
 
+        ZonedDateTime addressCallStartTime = ZonedDateTime.now(ZoneOffset.UTC);
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), httpHeaders);
 
         Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
@@ -302,6 +308,15 @@ public class GatewayAddressCache implements IAddressCache {
         Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(httpResponseMono, httpRequest);
         return dsrObs.map(
                 dsr -> {
+                    MetadataDiagnosticsContext metadataDiagnosticsContext = BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosResponseDiagnostics);
+                    if (metadataDiagnosticsContext != null) {
+                        ZonedDateTime addressCallEndTime = ZonedDateTime.now(ZoneOffset.UTC);
+                        MetadataDiagnostics metaDataDiagnostic = new MetadataDiagnostics(addressCallStartTime,
+                            addressCallEndTime,
+                            MetadataType.SERVER_ADDRESS_LOOKUP);
+                        metadataDiagnosticsContext.addMetaDataDiagnostic(metaDataDiagnostic);
+                    }
+
                     if (logger.isDebugEnabled()) {
                         logger.debug("getServerAddressesViaGatewayAsync deserializes result");
                     }
@@ -474,12 +489,21 @@ public class GatewayAddressCache implements IAddressCache {
 
         HttpRequest httpRequest;
         httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), defaultHttpHeaders);
-
+        ZonedDateTime addressCallStartTime = ZonedDateTime.now(ZoneOffset.UTC);
         Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
         Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(httpResponseMono, httpRequest);
 
         return dsrObs.map(
                 dsr -> {
+                    MetadataDiagnosticsContext metadataDiagnosticsContext = BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosResponseDiagnostics);
+                    if (metadataDiagnosticsContext != null) {
+                        ZonedDateTime addressCallEndTime = ZonedDateTime.now(ZoneOffset.UTC);
+                        MetadataDiagnostics metaDataDiagnostic = new MetadataDiagnostics(addressCallStartTime,
+                            addressCallEndTime,
+                            MetadataType.MASTER_ADDRESS_LOOK_UP);
+                        metadataDiagnosticsContext.addMetaDataDiagnostic(metaDataDiagnostic);
+                    }
+
                     logAddressResolutionEnd(request, identifier);
                     return dsr.getQueryResponse(Address.class);
                 });

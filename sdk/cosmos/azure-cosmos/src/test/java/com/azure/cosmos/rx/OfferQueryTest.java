@@ -4,6 +4,7 @@ package com.azure.cosmos.rx;
 
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
@@ -54,7 +55,7 @@ public class OfferQueryTest extends TestSuiteBase {
         String query = String.format("SELECT * from c where c.offerResourceId = '%s'", collectionResourceId);
 
         FeedOptions options = new FeedOptions();
-        options.setMaxItemCount(2);
+        ModelBridgeInternal.setFeedOptionsMaxItemCount(options, 2);
         Flux<FeedResponse<Offer>> queryObservable = client.queryOffers(query, null);
 
         List<Offer> allOffers = client.readOffers(null).flatMap(f -> Flux.fromIterable(f.getResults())).collectList().single().block();
@@ -83,7 +84,7 @@ public class OfferQueryTest extends TestSuiteBase {
                 Strings.join(collectionResourceIds.stream().map(s -> "'" + s + "'").collect(Collectors.toList())).with(","));
 
         FeedOptions options = new FeedOptions();
-        options.setMaxItemCount(1);
+        ModelBridgeInternal.setFeedOptionsMaxItemCount(options, 1);
         Flux<FeedResponse<Offer>> queryObservable = client.queryOffers(query, options);
 
         List<Offer> expectedOffers = client.readOffers(null).flatMap(f -> Flux.fromIterable(f.getResults()))

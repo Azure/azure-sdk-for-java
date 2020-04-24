@@ -3,26 +3,31 @@
 package com.azure.cosmos.implementation.changefeed;
 
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.Constants;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
+import java.io.IOException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-//import com.azure.cosmos.internal.changefeed.internal.Constants;
-
 /**
  * Document service lease.
  */
+@JsonSerialize(using = ServiceItemLease.ServiceItemLeaseJsonSerializer.class)
 public class ServiceItemLease implements Lease {
     private static final ZonedDateTime UNIX_START_TIME = ZonedDateTime.parse("1970-01-01T00:00:00.0Z[UTC]");
+    private static final String PROPERTY_NAME_LEASE_TOKEN = "LeaseToken";
+    private static final String PROPERTY_NAME_CONTINUATION_TOKEN = "ContinuationToken";
+    private static final String PROPERTY_NAME_TIMESTAMP = "timestamp";
+    private static final String PROPERTY_NAME_OWNER = "Owner";
 
-    // TODO: add JSON annotations and rename the item.
     private String id;
     private String _etag;
     private String LeaseToken;
@@ -62,7 +67,6 @@ public class ServiceItemLease implements Lease {
         return this;
     }
 
-    @JsonIgnore
     public String getETag() {
         return this._etag;
     }
@@ -72,7 +76,6 @@ public class ServiceItemLease implements Lease {
         return this;
     }
 
-    @JsonProperty("LeaseToken")
     public String getLeaseToken() {
         return this.LeaseToken;
     }
@@ -82,7 +85,6 @@ public class ServiceItemLease implements Lease {
         return this;
     }
 
-    @JsonProperty("Owner")
     @Override
     public String getOwner() {
         return this.Owner;
@@ -93,7 +95,6 @@ public class ServiceItemLease implements Lease {
         return this;
     }
 
-    @JsonProperty("ContinuationToken")
     @Override
     public String getContinuationToken() {
         return this.ContinuationToken;
@@ -132,6 +133,10 @@ public class ServiceItemLease implements Lease {
         this.withTimestamp(date.toInstant().atZone(zoneId));
     }
 
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
     @Override
     public void setId(String id) {
         this.withId(id);
@@ -156,7 +161,6 @@ public class ServiceItemLease implements Lease {
         return this;
     }
 
-    @JsonIgnore
     public String getTs() {
         return this._ts;
     }
@@ -166,7 +170,6 @@ public class ServiceItemLease implements Lease {
         return this;
     }
 
-    @JsonProperty("timestamp")
     @Override
     public String getTimestamp() {
         if (this.timestamp == null) {
@@ -180,27 +183,25 @@ public class ServiceItemLease implements Lease {
         return this;
     }
 
-    @JsonIgnore
     public String getExplicitTimestamp() {
         return this.timestamp;
     }
 
-    @JsonIgnore
     @Override
     public String getConcurrencyToken() {
         return this.getETag();
     }
 
-    public static ServiceItemLease fromDocument(Document document) {
+    public static ServiceItemLease fromDocument(CosmosItemProperties document) {
         ServiceItemLease lease = new ServiceItemLease()
             .withId(document.getId())
             .withETag(document.getETag())
-            .withTs(document.getString(Constants.Properties.LAST_MODIFIED))
-            .withOwner(document.getString("Owner"))
-            .withLeaseToken(document.getString("LeaseToken"))
-            .withContinuationToken(document.getString("ContinuationToken"));
+            .withTs(ModelBridgeInternal.getStringFromJsonSerializable(document, Constants.Properties.LAST_MODIFIED))
+            .withOwner(ModelBridgeInternal.getStringFromJsonSerializable(document,PROPERTY_NAME_OWNER))
+            .withLeaseToken(ModelBridgeInternal.getStringFromJsonSerializable(document,PROPERTY_NAME_LEASE_TOKEN))
+            .withContinuationToken(ModelBridgeInternal.getStringFromJsonSerializable(document,PROPERTY_NAME_CONTINUATION_TOKEN));
 
-        String leaseTimestamp = document.getString("timestamp");
+        String leaseTimestamp = ModelBridgeInternal.getStringFromJsonSerializable(document,PROPERTY_NAME_TIMESTAMP);
         if (leaseTimestamp != null) {
             return lease.withTimestamp(ZonedDateTime.parse(leaseTimestamp));
         } else {
@@ -208,20 +209,18 @@ public class ServiceItemLease implements Lease {
         }
     }
 
-    public static ServiceItemLease fromDocument(CosmosItemProperties document) {
-        ServiceItemLease lease = new ServiceItemLease()
-            .withId(document.getId())
-            .withETag(document.getETag())
-            .withTs(document.getString(Constants.Properties.LAST_MODIFIED))
-            .withOwner(document.getString("Owner"))
-            .withLeaseToken(document.getString("LeaseToken"))
-            .withContinuationToken(document.getString("ContinuationToken"));
+    public void setServiceItemLease(Lease lease) {
+        this.setId(lease.getId());
+        this.setConcurrencyToken(lease.getConcurrencyToken());
+        this.setOwner(lease.getOwner());
+        this.withLeaseToken(lease.getLeaseToken());
+        this.setContinuationToken(getContinuationToken());
 
-        String leaseTimestamp = document.getString("timestamp");
+        String leaseTimestamp = lease.getTimestamp();
         if (leaseTimestamp != null) {
-            return lease.withTimestamp(ZonedDateTime.parse(leaseTimestamp));
+           this.setTimestamp(ZonedDateTime.parse(leaseTimestamp));
         } else {
-            return lease;
+            this.setTimestamp(lease.getTimestamp());
         }
     }
 
@@ -234,5 +233,33 @@ public class ServiceItemLease implements Lease {
             this.getContinuationToken(),
             this.getTimestamp(),
             UNIX_START_TIME.plusSeconds(Long.parseLong(this.getTs())));
+    }
+
+    @SuppressWarnings("serial")
+    static final class ServiceItemLeaseJsonSerializer extends StdSerializer<ServiceItemLease> {
+        // this value should be incremented if changes are made to the ServiceItemLease class members
+        private static final long serialVersionUID = 1L;
+
+        protected ServiceItemLeaseJsonSerializer() { this(null); }
+
+        protected ServiceItemLeaseJsonSerializer(Class<ServiceItemLease> t) {
+            super(t);
+        }
+
+        @Override
+        public void serialize(ServiceItemLease lease, JsonGenerator writer, SerializerProvider serializerProvider) {
+            try {
+                writer.writeStartObject();
+                writer.writeStringField(Constants.Properties.ID, lease.getId());
+                writer.writeStringField(Constants.Properties.E_TAG, lease.getETag());
+                writer.writeStringField(PROPERTY_NAME_LEASE_TOKEN, lease.getLeaseToken());
+                writer.writeStringField(PROPERTY_NAME_CONTINUATION_TOKEN, lease.getContinuationToken());
+                writer.writeStringField(PROPERTY_NAME_TIMESTAMP, lease.getTimestamp());
+                writer.writeStringField(PROPERTY_NAME_OWNER, lease.getOwner());
+                writer.writeEndObject();
+            } catch (IOException e) {
+                throw new IllegalStateException(e);
+            }
+        }
     }
 }

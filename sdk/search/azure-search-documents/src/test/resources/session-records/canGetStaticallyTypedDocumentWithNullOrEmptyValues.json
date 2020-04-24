@@ -1,0 +1,53 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://azsjava1855248dbd7014d3c4b98af6dd761.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "f84ae355-215f-43c9-af92-9c8241ccb0b3",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "f84ae355-215f-43c9-af92-9c8241ccb0b3",
+      "StatusCode" : "200",
+      "Date" : "Tue, 21 Apr 2020 19:00:04 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "f84ae355-215f-43c9-af92-9c8241ccb0b3",
+      "elapsed-time" : "108",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "74",
+      "Body" : "{\"value\":[{\"key\":\"1\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=none"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azsjava1855248dbd7014d3c4b98af6dd761.search.windows.net/indexes('hotels')/docs('1')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "7d114474-e6e3-428c-98cc-92c58c341ed1"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "7d114474-e6e3-428c-98cc-92c58c341ed1",
+      "StatusCode" : "200",
+      "Date" : "Tue, 21 Apr 2020 19:00:05 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "7d114474-e6e3-428c-98cc-92c58c341ed1",
+      "elapsed-time" : "8",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "365",
+      "Body" : "{\"HotelId\":\"1\",\"HotelName\":null,\"Description\":null,\"Description_fr\":null,\"Category\":null,\"Tags\":[],\"ParkingIncluded\":null,\"SmokingAllowed\":null,\"LastRenovationDate\":null,\"Rating\":null,\"Location\":null,\"Address\":null,\"Rooms\":[{\"Description\":null,\"Description_fr\":null,\"Type\":null,\"BaseRate\":null,\"BedOptions\":null,\"SleepsCount\":null,\"SmokingAllowed\":null,\"Tags\":[]}]}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=none"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "azsjava1855248dbd7014d3c4b98af6dd761" ]
+}

@@ -122,10 +122,12 @@ public class ReadmeSamples {
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
             .buildAsyncConsumerClient();
 
-        // Receive events from partition with id "0", only getting events that are newly added to the partition.
+        // Receive newly added events from partition with id "0". EventPosition specifies the position
+        // within the Event Hub partition to begin consuming events.
         consumer.receiveFromPartition("0", EventPosition.latest()).subscribe(event -> {
             // Process each event as it arrives.
         });
+        // add sleep or System.in.read() to receive events before exiting the process.
     }
 
     /**
@@ -155,7 +157,7 @@ public class ReadmeSamples {
         EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
             .consumerGroup("<< CONSUMER GROUP NAME >>")
             .connectionString("<< EVENT HUB CONNECTION STRING >>")
-            .checkpointStore(new InMemoryCheckpointStore())
+            .checkpointStore(new SampleCheckpointStore())
             .processEvent(eventContext -> {
                 System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
                     + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());

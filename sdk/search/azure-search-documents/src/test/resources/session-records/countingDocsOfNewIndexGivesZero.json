@@ -1,0 +1,28 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://azsjavacountingdocsofnewindexgiveszero13510354a4fbf36.search.windows.net/indexes('hotels')/docs/$count?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "3c323e30-d825-4bf1-b1d5-11d967ed7748"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "3c323e30-d825-4bf1-b1d5-11d967ed7748",
+      "StatusCode" : "200",
+      "Date" : "Tue, 21 Apr 2020 18:54:14 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "3c323e30-d825-4bf1-b1d5-11d967ed7748",
+      "elapsed-time" : "62",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "4",
+      "Body" : "﻿0",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "text/plain"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "azsjavacountingdocsofnewindexgiveszero13510354a4fbf36" ]
+}

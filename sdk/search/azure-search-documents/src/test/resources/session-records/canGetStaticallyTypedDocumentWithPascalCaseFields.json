@@ -1,0 +1,53 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://azsjava26842bc83aae2cc804efb9fad1bfe.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "c50b349b-61a2-4d3b-adb4-62b705a65246",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "c50b349b-61a2-4d3b-adb4-62b705a65246",
+      "StatusCode" : "200",
+      "Date" : "Tue, 21 Apr 2020 18:59:00 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "c50b349b-61a2-4d3b-adb4-62b705a65246",
+      "elapsed-time" : "232",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "76",
+      "Body" : "{\"value\":[{\"key\":\"123\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=none"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azsjava26842bc83aae2cc804efb9fad1bfe.search.windows.net/indexes('hotels')/docs('123')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "d44eaffa-1168-4f6e-abc1-3b8eca2bb848"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "d44eaffa-1168-4f6e-abc1-3b8eca2bb848",
+      "StatusCode" : "200",
+      "Date" : "Tue, 21 Apr 2020 18:59:02 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "d44eaffa-1168-4f6e-abc1-3b8eca2bb848",
+      "elapsed-time" : "8",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "251",
+      "Body" : "{\"HotelId\":\"123\",\"HotelName\":\"Lord of the Rings\",\"Description\":\"J.R.R\",\"Description_fr\":\"Tolkien\",\"Category\":null,\"Tags\":[],\"ParkingIncluded\":null,\"SmokingAllowed\":null,\"LastRenovationDate\":null,\"Rating\":null,\"Location\":null,\"Address\":null,\"Rooms\":[]}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=none"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "azsjava26842bc83aae2cc804efb9fad1bfe" ]
+}

@@ -5,15 +5,13 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosKeyCredential;
-import com.azure.cosmos.models.DatabaseAccount;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.Permission;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.CosmosAuthorizationTokenResolver;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

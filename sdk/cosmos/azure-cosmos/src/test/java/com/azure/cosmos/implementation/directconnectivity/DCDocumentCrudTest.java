@@ -8,6 +8,7 @@ import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
 import com.azure.cosmos.implementation.Configs;
@@ -221,7 +222,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         options.setMaxDegreeOfParallelism(-1);
-        options.setMaxItemCount(100);
+        ModelBridgeInternal.setFeedOptionsMaxItemCount(options, 100);
 
         Flux<FeedResponse<Document>> results = client.queryDocuments(getCollectionLink(), "SELECT * FROM r", options);
 

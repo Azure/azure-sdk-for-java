@@ -1,0 +1,82 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://azsjavacancreateandlistsynonymmapse0a78882ce9eca0ca.search.windows.net/synonymmaps?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "1136dd3e-4d7b-4a98-bd40-a261231dc843",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "1136dd3e-4d7b-4a98-bd40-a261231dc843",
+      "StatusCode" : "201",
+      "Date" : "Tue, 21 Apr 2020 19:15:08 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "1136dd3e-4d7b-4a98-bd40-a261231dc843",
+      "ETag" : "W/\"0x8D7E6284ECE545B\"",
+      "elapsed-time" : "35",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "251",
+      "Body" : "{\"@odata.context\":\"https://azsjavacancreateandlistsynonymmapse0a78882ce9eca0ca.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D7E6284ECE545B\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"word1,word2\",\"encryptionKey\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://azsjavacancreateandlistsynonymmapse0a78882ce9eca0ca.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06-Preview"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://azsjavacancreateandlistsynonymmapse0a78882ce9eca0ca.search.windows.net/synonymmaps?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "eea37ead-2cd0-463e-92d5-02b2c2af10af",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "eea37ead-2cd0-463e-92d5-02b2c2af10af",
+      "StatusCode" : "201",
+      "Date" : "Tue, 21 Apr 2020 19:15:08 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "eea37ead-2cd0-463e-92d5-02b2c2af10af",
+      "ETag" : "W/\"0x8D7E6284ED5A91D\"",
+      "elapsed-time" : "16",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "252",
+      "Body" : "{\"@odata.context\":\"https://azsjavacancreateandlistsynonymmapse0a78882ce9eca0ca.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D7E6284ED5A91D\\\"\",\"name\":\"test-synonym1\",\"format\":\"solr\",\"synonyms\":\"word1,word2\",\"encryptionKey\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://azsjavacancreateandlistsynonymmapse0a78882ce9eca0ca.search.windows.net/synonymmaps('test-synonym1')?api-version=2019-05-06-Preview"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azsjavacancreateandlistsynonymmapse0a78882ce9eca0ca.search.windows.net/synonymmaps?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "884019f4-0665-4212-9fe5-06f183fc4601"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "884019f4-0665-4212-9fe5-06f183fc4601",
+      "StatusCode" : "200",
+      "Date" : "Tue, 21 Apr 2020 19:15:08 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "884019f4-0665-4212-9fe5-06f183fc4601",
+      "elapsed-time" : "18",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "380",
+      "Body" : "{\"@odata.context\":\"https://azsjavacancreateandlistsynonymmapse0a78882ce9eca0ca.search.windows.net/$metadata#synonymmaps\",\"value\":[{\"@odata.etag\":\"\\\"0x8D7E6284ECE545B\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"word1,word2\",\"encryptionKey\":null},{\"@odata.etag\":\"\\\"0x8D7E6284ED5A91D\\\"\",\"name\":\"test-synonym1\",\"format\":\"solr\",\"synonyms\":\"word1,word2\",\"encryptionKey\":null}]}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "azsjavacancreateandlistsynonymmapse0a78882ce9eca0ca" ]
+}

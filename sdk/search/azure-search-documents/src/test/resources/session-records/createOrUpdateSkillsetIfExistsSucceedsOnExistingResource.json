@@ -1,0 +1,57 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azsjava03379c3f94cde708f4bdcbe7066ab.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "466a7fc9-20e7-4835-bae7-08b5e9451e9c",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "466a7fc9-20e7-4835-bae7-08b5e9451e9c",
+      "StatusCode" : "201",
+      "Date" : "Tue, 21 Apr 2020 19:10:45 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "466a7fc9-20e7-4835-bae7-08b5e9451e9c",
+      "ETag" : "W/\"0x8D7E627B216CB97\"",
+      "elapsed-time" : "69",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "736",
+      "Body" : "{\"@odata.context\":\"https://azsjava03379c3f94cde708f4bdcbe7066ab.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7E627B216CB97\\\"\",\"name\":\"ocr-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":null,\"lineEnding\":null,\"defaultLanguageCode\":null,\"detectOrientation\":false,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://azsjava03379c3f94cde708f4bdcbe7066ab.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06-Preview"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azsjava03379c3f94cde708f4bdcbe7066ab.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "3e423212-ab9f-4922-becf-f2df6782b1f3",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "3e423212-ab9f-4922-becf-f2df6782b1f3",
+      "StatusCode" : "200",
+      "Date" : "Tue, 21 Apr 2020 19:10:45 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "3e423212-ab9f-4922-becf-f2df6782b1f3",
+      "ETag" : "W/\"0x8D7E627B221A3AC\"",
+      "elapsed-time" : "41",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "657",
+      "Body" : "{\"@odata.context\":\"https://azsjava03379c3f94cde708f4bdcbe7066ab.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7E627B221A3AC\\\"\",\"name\":\"ocr-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.KeyPhraseExtractionSkill\",\"name\":\"mykeyphrases\",\"description\":\"Tested Key Phrase skill\",\"context\":\"/document\",\"defaultLanguageCode\":\"en\",\"maxKeyPhraseCount\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mydescription/*/Tags/*\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"keyPhrases\",\"targetName\":\"myKeyPhrases\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "azsjava03379c3f94cde708f4bdcbe7066ab" ]
+}

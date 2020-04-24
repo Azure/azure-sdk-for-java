@@ -105,7 +105,7 @@ public class PermissionCrudTest extends TestSuiteBase {
                 .build();
         validateSuccess(deleteObservable, validator);
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
 
         // attempt to read the getPermission which was deleted
         Mono<CosmosAsyncPermissionResponse> readObservable = readBackPermission.getPermission()
@@ -201,7 +201,7 @@ public class PermissionCrudTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_PermissionCrudTest() {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         createdDatabase = createDatabase(client, databaseId);
     }
 

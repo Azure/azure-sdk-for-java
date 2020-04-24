@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClientException;
@@ -19,7 +20,7 @@ public class RequestHelper {
         String requestConsistencyLevelHeaderValue = request.getHeaders().get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
 
         if (!Strings.isNullOrEmpty(requestConsistencyLevelHeaderValue)) {
-            ConsistencyLevel requestConsistencyLevel = ConsistencyLevel.fromServiceSerializedFormat(requestConsistencyLevelHeaderValue);
+            ConsistencyLevel requestConsistencyLevel = BridgeInternal.fromServiceSerializedFormat(requestConsistencyLevelHeaderValue);
             if (requestConsistencyLevel == null) {
                 throw new BadRequestException(
                         String.format(

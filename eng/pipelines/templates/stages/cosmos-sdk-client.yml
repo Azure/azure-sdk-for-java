@@ -9,11 +9,12 @@ stages:
       parameters:
         ServiceDirectory: ${{parameters.ServiceDirectory}}
         Artifacts: ${{ parameters.Artifacts }}
+        AdditionalModules: ${{ parameters.AdditionalModules }}
         SDKType: ${{parameters.SDKType}}
         TestMatrix:
           Linux - Java 8:
             OSName: 'Linux'
-            OSVmImage: 'ubuntu-16.04'
+            OSVmImage: 'ubuntu-18.04'
             JavaVersion: '1.8'
             RunTitle: 'Linux on Java 1.8'
             ProfileFlag: '-Punit'
@@ -31,7 +32,7 @@ stages:
             ProfileFlag: '-Punit'
           Linux - Java 11:
             OSName: 'Linux'
-            OSVmImage: 'ubuntu-16.04'
+            OSVmImage: 'ubuntu-18.04'
             JavaVersion: '1.11'
             RunTitle: 'Linux on Java 1.11'
             ProfileFlag: '-Punit'
@@ -63,6 +64,7 @@ stages:
         DisableAzureResourceCreation: true
         ServiceDirectory: cosmos
         Artifacts: ${{ parameters.Artifacts }}
+        AdditionalModules: ${{ parameters.AdditionalModules }}
         Matrix:
           Tcp_Integration_Tests_Java8:
             OSVmImage: 'windows-2019'
@@ -88,7 +90,7 @@ stages:
 
         TestStepMavenInputs:
           goals: 'verify'
-          options: '$(ProfileFlag) -Dgpg.skip -DargLine="-DACCOUNT_HOST=https://localhost:8081/"'
+          options: '$(ProfileFlag) -Dgpg.skip -DargLine="-DACCOUNT_HOST=https://localhost:8081/" -pl $(ProjectList)'
           mavenAuthenticateFeed: true
           jdkVersionOption: $(JavaVersion)
 

@@ -1,0 +1,102 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://azsjavacandeletebatchbykeysb68980142c031d732d35.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "8a73a979-60ab-4d64-8396-28f847d72db3",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "8a73a979-60ab-4d64-8396-28f847d72db3",
+      "StatusCode" : "200",
+      "Date" : "Tue, 21 Apr 2020 18:54:19 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "8a73a979-60ab-4d64-8396-28f847d72db3",
+      "elapsed-time" : "167",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "137",
+      "Body" : "{\"value\":[{\"key\":\"1\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"2\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=none"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azsjavacandeletebatchbykeysb68980142c031d732d35.search.windows.net/indexes('hotels')/docs/$count?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "f743bae9-88a4-47ba-90ab-cdb451814e89"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "f743bae9-88a4-47ba-90ab-cdb451814e89",
+      "StatusCode" : "200",
+      "Date" : "Tue, 21 Apr 2020 18:54:21 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "f743bae9-88a4-47ba-90ab-cdb451814e89",
+      "elapsed-time" : "22",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "4",
+      "Body" : "﻿2",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "text/plain"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://azsjavacandeletebatchbykeysb68980142c031d732d35.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "50b3a21b-2e5f-4b02-8e08-0fd717d193ae",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "50b3a21b-2e5f-4b02-8e08-0fd717d193ae",
+      "StatusCode" : "200",
+      "Date" : "Tue, 21 Apr 2020 18:54:21 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "50b3a21b-2e5f-4b02-8e08-0fd717d193ae",
+      "elapsed-time" : "47",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "137",
+      "Body" : "{\"value\":[{\"key\":\"1\",\"status\":true,\"errorMessage\":null,\"statusCode\":200},{\"key\":\"2\",\"status\":true,\"errorMessage\":null,\"statusCode\":200}]}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=none"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azsjavacandeletebatchbykeysb68980142c031d732d35.search.windows.net/indexes('hotels')/docs/$count?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "5547225b-a52b-47f2-b992-17e23f314dc0"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "5547225b-a52b-47f2-b992-17e23f314dc0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 21 Apr 2020 18:54:23 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "5547225b-a52b-47f2-b992-17e23f314dc0",
+      "elapsed-time" : "4",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "4",
+      "Body" : "﻿0",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "text/plain"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "azsjavacandeletebatchbykeysb68980142c031d732d35" ]
+}

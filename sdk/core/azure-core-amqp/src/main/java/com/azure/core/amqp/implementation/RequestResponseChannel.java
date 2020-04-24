@@ -6,8 +6,7 @@ package com.azure.core.amqp.implementation;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
-import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.AmqpResponseCode;
+import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.util.logging.ClientLogger;
@@ -40,6 +39,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static com.azure.core.util.FluxUtil.monoError;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -47,15 +47,14 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * broker and receive the associated response.
  */
 public class RequestResponseChannel implements Disposable {
-    private static final String STATUS_DESCRIPTION = "status-description";
-
     private final ConcurrentSkipListMap<UnsignedLong, MonoSink<Message>> unconfirmedSends =
         new ConcurrentSkipListMap<>();
-    private final ClientLogger logger = new ClientLogger(RequestResponseChannel.class);
+    private final AtomicBoolean hasError = new AtomicBoolean();
     private final ReplayProcessor<AmqpEndpointState> endpointStates =
         ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED);
     private final FluxSink<AmqpEndpointState> endpointStatesSink =
         endpointStates.sink(FluxSink.OverflowStrategy.BUFFER);
+    private final ClientLogger logger;
 
     private final Sender sendLink;
     private final Receiver receiveLink;
@@ -64,7 +63,6 @@ public class RequestResponseChannel implements Disposable {
     private final ReactorProvider provider;
     private final Duration operationTimeout;
     private final AtomicBoolean isDisposed = new AtomicBoolean();
-    private final AtomicBoolean hasOpened = new AtomicBoolean();
     private final AtomicLong requestId = new AtomicLong(0);
     private final SendLinkHandler sendLinkHandler;
     private final ReceiveLinkHandler receiveLinkHandler;
@@ -73,8 +71,8 @@ public class RequestResponseChannel implements Disposable {
     private final SenderSettleMode senderSettleMode;
 
     /**
-     * Creates a new instance of {@link RequestResponseChannel} to send and receive responses from the
-     * {@code entityPath} in the message broker.
+     * Creates a new instance of {@link RequestResponseChannel} to send and receive responses from the {@code
+     * entityPath} in the message broker.
      *
      * @param connectionId Identifier of the connection.
      * @param fullyQualifiedNamespace Fully qualified namespace for the the host.
@@ -86,12 +84,12 @@ public class RequestResponseChannel implements Disposable {
      * @param provider The reactor provider that the request will be sent with.
      * @param senderSettleMode to set as {@link SenderSettleMode} on sender.
      * @param receiverSettleMode to set as {@link ReceiverSettleMode} on receiver.
-
      */
     protected RequestResponseChannel(String connectionId, String fullyQualifiedNamespace, String linkName,
-            String entityPath, Session session, AmqpRetryOptions retryOptions, ReactorHandlerProvider handlerProvider,
-            ReactorProvider provider, MessageSerializer messageSerializer,
-            SenderSettleMode senderSettleMode, ReceiverSettleMode receiverSettleMode) {
+        String entityPath, Session session, AmqpRetryOptions retryOptions, ReactorHandlerProvider handlerProvider,
+        ReactorProvider provider, MessageSerializer messageSerializer,
+        SenderSettleMode senderSettleMode, ReceiverSettleMode receiverSettleMode) {
+        this.logger = new ClientLogger(String.format("%s<%s>", RequestResponseChannel.class, linkName));
         this.provider = provider;
         this.operationTimeout = retryOptions.getTryTimeout();
         this.retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
@@ -126,36 +124,38 @@ public class RequestResponseChannel implements Disposable {
             linkName, entityPath);
         BaseHandler.setHandler(this.receiveLink, receiveLinkHandler);
 
+        //@formatter:off
         this.subscriptions = Disposables.composite(
             receiveLinkHandler.getDeliveredMessages()
                 .map(this::decodeDelivery)
                 .subscribe(message -> {
                     logger.verbose("Settling message: {}", message.getCorrelationId());
                     settleMessage(message);
-                }, this::handleException),
+                }),
 
-            receiveLinkHandler.getEndpointStates().subscribe(state -> {
-                endpointStatesSink.next(AmqpEndpointStateUtil.getConnectionState(state));
-            }, error -> {
-                    endpointStatesSink.error(error);
-                    dispose();
-                }, () -> dispose()),
-            receiveLinkHandler.getErrors().subscribe(error -> {
-                endpointStatesSink.error(error);
-                dispose();
-            }),
+            receiveLinkHandler.getEndpointStates().subscribe(
+                state -> endpointStatesSink.next(AmqpEndpointStateUtil.getConnectionState(state)),
+                this::handleError, this::dispose),
+            receiveLinkHandler.getErrors().subscribe(this::handleError),
 
-            sendLinkHandler.getEndpointStates().subscribe(state -> {
-                endpointStatesSink.next(AmqpEndpointStateUtil.getConnectionState(state));
-            }, error -> {
-                    endpointStatesSink.error(error);
-                    dispose();
-                }, () -> dispose()),
-            sendLinkHandler.getErrors().subscribe(error -> {
-                endpointStatesSink.error(error);
-                dispose();
-            })
+            sendLinkHandler.getEndpointStates().subscribe(state ->
+                endpointStatesSink.next(AmqpEndpointStateUtil.getConnectionState(state)),
+                this::handleError, this::dispose),
+            sendLinkHandler.getErrors().subscribe(this::handleError)
         );
+
+        //@formatter:on
+
+        // If we try to do proton-j API calls such as opening/closing/sending on AMQP links, it may
+        // encounter a race condition. So, we are forced to use the dispatcher.
+        try {
+            provider.getReactorDispatcher().invoke(() -> {
+                sendLink.open();
+                receiveLink.open();
+            });
+        } catch (IOException e) {
+            throw logger.logExceptionAsError(new RuntimeException("Unable to open send and receive link.", e));
+        }
     }
 
     /**
@@ -164,16 +164,7 @@ public class RequestResponseChannel implements Disposable {
      * @return The endpoint states for the request/response channel.
      */
     public Flux<AmqpEndpointState> getEndpointStates() {
-        return endpointStates.distinct();
-    }
-
-    /**
-     * Gets the name of the receiver link.
-     *
-     * @return The name of the receiver link.
-     */
-    public String getReceiveLinkName() {
-        return receiveLink.getName();
+        return endpointStates;
     }
 
     @Override
@@ -201,34 +192,18 @@ public class RequestResponseChannel implements Disposable {
      */
     public Mono<Message> sendWithAck(final Message message) {
         if (isDisposed()) {
-            return Mono.error(logger.logExceptionAsError(new IllegalStateException(
-                "Cannot send a message when request response channel is disposed.")));
-        }
-
-        if (!hasOpened.getAndSet(true)) {
-            // If we try to do proton-j API calls such as opening/closing/sending on AMQP links, it may
-            // encounter a race condition. So, we are forced to use the dispatcher.
-            try {
-                provider.getReactorDispatcher().invoke(() -> {
-                    sendLink.open();
-                    receiveLink.open();
-                });
-            } catch (IOException e) {
-                return Mono.error(new RuntimeException("Unable to open send and receive link.", e));
-            }
+            return monoError(logger, new IllegalStateException(
+                "Cannot send a message when request response channel is disposed."));
         }
 
         if (message == null) {
-            return Mono.error(logger.logExceptionAsError(
-                new IllegalArgumentException("message cannot be null")));
+            return monoError(logger, new NullPointerException("message cannot be null"));
         }
         if (message.getMessageId() != null) {
-            return Mono.error(logger.logExceptionAsError(
-                new IllegalArgumentException("message.getMessageId() should be null")));
+            return monoError(logger, new IllegalArgumentException("message.getMessageId() should be null"));
         }
         if (message.getReplyTo() != null) {
-            return Mono.error(logger.logExceptionAsError(
-                new IllegalArgumentException("message.getReplyTo() should be null")));
+            return monoError(logger, new IllegalArgumentException("message.getReplyTo() should be null"));
         }
 
         final UnsignedLong messageId = UnsignedLong.valueOf(requestId.incrementAndGet());
@@ -265,6 +240,15 @@ public class RequestResponseChannel implements Disposable {
                 }));
     }
 
+    /**
+     * Gets the error context for the channel.
+     *
+     * @return The error context for the channel.
+     */
+    public AmqpErrorContext getErrorContext() {
+        return receiveLinkHandler.getErrorContext(receiveLink);
+    }
+
     private Message decodeDelivery(Delivery delivery) {
         final Message response = Proton.message();
         final int msgSize = delivery.pending();
@@ -292,31 +276,19 @@ public class RequestResponseChannel implements Disposable {
             return;
         }
 
-        final int statusCode = RequestResponseUtils.getResponseStatusCode(message);
-
-        if (statusCode != AmqpResponseCode.ACCEPTED.getValue() && statusCode != AmqpResponseCode.OK.getValue()) {
-            final String statusDescription =
-                (String) message.getApplicationProperties().getValue().get(STATUS_DESCRIPTION);
-
-            sink.error(ExceptionUtil.amqpResponseCodeToException(statusCode, statusDescription,
-                receiveLinkHandler.getErrorContext(receiveLink)));
-        } else {
-            sink.success(message);
-        }
+        sink.success(message);
     }
 
-    private void handleException(Throwable error) {
-        if (error instanceof AmqpException) {
-            AmqpException exception = (AmqpException) error;
-
-            if (!exception.isTransient()) {
-                logger.error("Exception encountered. Closing channel and clearing unconfirmed sends.", exception);
-                dispose();
-
-                unconfirmedSends.forEach((key, value) -> {
-                    value.error(error);
-                });
-            }
+    private void handleError(Throwable error) {
+        if (hasError.getAndSet(true)) {
+            return;
         }
+
+        endpointStatesSink.error(error);
+        logger.error("Exception in RequestResponse links. Disposing and clearing unconfirmed sends.", error);
+        dispose();
+
+        unconfirmedSends.forEach((key, value) -> value.error(error));
+        unconfirmedSends.clear();
     }
 }

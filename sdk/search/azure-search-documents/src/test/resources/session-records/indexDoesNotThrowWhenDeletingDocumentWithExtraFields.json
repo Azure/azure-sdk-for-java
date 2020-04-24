@@ -1,0 +1,102 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://azsjava94929a058384c0bc74c98ba41d072.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "68f4a485-6d66-4233-b1b6-239e0e369bab",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "68f4a485-6d66-4233-b1b6-239e0e369bab",
+      "StatusCode" : "200",
+      "Date" : "Tue, 21 Apr 2020 18:55:18 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "68f4a485-6d66-4233-b1b6-239e0e369bab",
+      "elapsed-time" : "138",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "74",
+      "Body" : "{\"value\":[{\"key\":\"1\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=none"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azsjava94929a058384c0bc74c98ba41d072.search.windows.net/indexes('hotels')/docs/$count?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "e6b3e036-df0e-456e-8527-bf3b45985352"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "e6b3e036-df0e-456e-8527-bf3b45985352",
+      "StatusCode" : "200",
+      "Date" : "Tue, 21 Apr 2020 18:55:20 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "e6b3e036-df0e-456e-8527-bf3b45985352",
+      "elapsed-time" : "3",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "4",
+      "Body" : "﻿1",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "text/plain"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://azsjava94929a058384c0bc74c98ba41d072.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "22277d1b-6d3c-43ad-aaf4-b7dcef0a9c32",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "22277d1b-6d3c-43ad-aaf4-b7dcef0a9c32",
+      "StatusCode" : "200",
+      "Date" : "Tue, 21 Apr 2020 18:55:20 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "22277d1b-6d3c-43ad-aaf4-b7dcef0a9c32",
+      "elapsed-time" : "52",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "74",
+      "Body" : "{\"value\":[{\"key\":\"1\",\"status\":true,\"errorMessage\":null,\"statusCode\":200}]}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=none"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azsjava94929a058384c0bc74c98ba41d072.search.windows.net/indexes('hotels')/docs/$count?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "59865c45-4df8-47ca-a173-26458dba84c1"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "59865c45-4df8-47ca-a173-26458dba84c1",
+      "StatusCode" : "200",
+      "Date" : "Tue, 21 Apr 2020 18:55:23 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "59865c45-4df8-47ca-a173-26458dba84c1",
+      "elapsed-time" : "3",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "4",
+      "Body" : "﻿0",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "text/plain"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "azsjava94929a058384c0bc74c98ba41d072" ]
+}

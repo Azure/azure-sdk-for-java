@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.Resource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -88,7 +88,7 @@ public class CosmosItemProperties extends Resource {
             return ((com.azure.cosmos.implementation.CosmosItemProperties) cosmosItem).serializeJsonToByteBuffer();
         } else {
             if (cosmosItem instanceof Document) {
-                return BridgeInternal.serializeJsonToByteBuffer((Document) cosmosItem, objectMapper);
+                return ModelBridgeInternal.serializeJsonToByteBuffer((Document) cosmosItem);
             }
 
             return Utils.serializeJsonToByteBuffer(objectMapper, cosmosItem);
@@ -96,7 +96,7 @@ public class CosmosItemProperties extends Resource {
     }
 
     static <T> List<T> getTypedResultsFromV2Results(List<Document> results, Class<T> klass) {
-        return results.stream().map(document -> document.toObject(klass))
+        return results.stream().map(document -> ModelBridgeInternal.toObjectFromJsonSerializable(document, klass))
                    .collect(Collectors.toList());
     }
 

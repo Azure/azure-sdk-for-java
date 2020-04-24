@@ -12,8 +12,8 @@ import com.azure.cosmos.DocumentClientTest;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.models.SqlParameterList;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -131,7 +131,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
     public void queryDocuments_Async() throws Exception {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.setMaxItemCount(requestPageSize);
+        ModelBridgeInternal.setFeedOptionsMaxItemCount(options, requestPageSize);
 
         Flux<FeedResponse<Document>> documentQueryObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
@@ -176,7 +176,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
     public void queryDocuments_Async_withoutLambda() throws Exception {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.setMaxItemCount(requestPageSize);
+        ModelBridgeInternal.setFeedOptionsMaxItemCount(options, requestPageSize);
 
         Flux<FeedResponse<Document>> documentQueryObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
@@ -224,7 +224,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
     public void queryDocuments_findTotalRequestCharge() throws Exception {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.setMaxItemCount(requestPageSize);
+        ModelBridgeInternal.setFeedOptionsMaxItemCount(options, requestPageSize);
 
         Flux<Double> totalChargeObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options)
@@ -248,7 +248,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
     public void queryDocuments_unsubscribeAfterFirstPage() throws Exception {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.setMaxItemCount(requestPageSize);
+        ModelBridgeInternal.setFeedOptionsMaxItemCount(options, requestPageSize);
 
         Flux<FeedResponse<Document>> requestChargeObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
@@ -284,7 +284,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
     public void queryDocuments_filterFetchedResults() throws Exception {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.setMaxItemCount(requestPageSize);
+        ModelBridgeInternal.setFeedOptionsMaxItemCount(options, requestPageSize);
 
         Predicate<Document> isPrimeNumber = new Predicate<Document>() {
 
@@ -345,7 +345,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         // Query for documents
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.setMaxItemCount(requestPageSize);
+        ModelBridgeInternal.setFeedOptionsMaxItemCount(options, requestPageSize);
 
         Flux<FeedResponse<Document>> documentQueryObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
@@ -392,9 +392,9 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         }
 
         // Query for the documents order by the prop field
-        SqlQuerySpec query = new SqlQuerySpec("SELECT r.id FROM r ORDER BY r.prop", new SqlParameterList());
+        SqlQuerySpec query = new SqlQuerySpec("SELECT r.id FROM r ORDER BY r.prop", new ArrayList<>());
         FeedOptions options = new FeedOptions();
-        options.setMaxItemCount(5);
+        ModelBridgeInternal.setFeedOptionsMaxItemCount(options, 5);
 
         // Max degree of parallelism determines the number of partitions that
         // the SDK establishes simultaneous connections to.
@@ -430,7 +430,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
     public void transformObservableToCompletableFuture() throws Exception {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.setMaxItemCount(requestPageSize);
+        ModelBridgeInternal.setFeedOptionsMaxItemCount(options, requestPageSize);
 
         Flux<FeedResponse<Document>> documentQueryObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);

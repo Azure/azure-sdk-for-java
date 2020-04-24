@@ -510,11 +510,11 @@ public class RestProxyWithMockTests extends RestProxyTests {
      * Non-conforming page because it does not implement the Page interface and instead of a Page.items(), has
      * badItems(), which would result in different JSON.
      */
-    static class NonComformingPage<T> {
+    static class NonConformingPage<T> {
         private List<T> badItems;
         private String continuationToken;
 
-        NonComformingPage(List<T> items, String continuationToken) {
+        NonConformingPage(List<T> items, String continuationToken) {
             this.badItems = items;
             this.continuationToken = continuationToken;
         }
@@ -546,7 +546,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
         @ExpectedResponses({200})
         @ReturnValueWireType(Page.class)
         Mono<PagedResponse<KeyValue>> getPageAsyncSerializes(
-            @BodyParam(ContentType.APPLICATION_JSON) NonComformingPage<KeyValue> values);
+            @BodyParam(ContentType.APPLICATION_JSON) NonConformingPage<KeyValue> values);
     }
 
     /**
@@ -615,7 +615,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
         array.add(key1);
         array.add(key2);
         array.add(key3);
-        NonComformingPage<KeyValue> page = new NonComformingPage<>(array, "A next link!");
+        NonConformingPage<KeyValue> page = new NonConformingPage<>(array, "A next link!");
 
         StepVerifier.create(createService(Service2.class).getPageAsyncSerializes(page))
             .assertNext(response -> {

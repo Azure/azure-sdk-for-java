@@ -108,8 +108,8 @@ public class CosmosItemResponse<T> {
      *
      * @return diagnostics information for the current request to Azure Cosmos DB service.
      */
-    public CosmosResponseDiagnostics getCosmosResponseDiagnostics() {
-        return responseWrapper.getCosmosResponseDiagnostics();
+    public CosmosResponseDiagnostics getResponseDiagnostics() {
+        return responseWrapper.getResponseDiagnostics();
     }
 
     /**

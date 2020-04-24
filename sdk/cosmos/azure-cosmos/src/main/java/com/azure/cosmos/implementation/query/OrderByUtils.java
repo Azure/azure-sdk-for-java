@@ -6,13 +6,14 @@ import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.RequestChargeTracker;
 import com.azure.cosmos.implementation.ResourceId;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import org.apache.commons.lang3.tuple.Pair;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
@@ -95,7 +96,7 @@ class OrderByUtils {
                                 // Once we do that we need to seek to the correct _rid within the term,
                                 // since there might be many documents with the same order by value we left off on.
                                 List<QueryItem> queryItems = new ArrayList<QueryItem>();
-                                ArrayNode arrayNode = (ArrayNode) tOrderByRowResult.get("orderByItems");
+                                ArrayNode arrayNode = (ArrayNode)ModelBridgeInternal.getObjectFromJsonSerializable(tOrderByRowResult, "orderByItems");
                                 for (JsonNode jsonNode : arrayNode) {
                                     QueryItem queryItem = new QueryItem(jsonNode.toString());
                                     queryItems.add(queryItem);
@@ -137,7 +138,7 @@ class OrderByUtils {
 
                 return x.map(r -> new OrderByRowResult<T>(
                         klass,
-                        r.toJson(),
+                        ModelBridgeInternal.toJsonFromJsonSerializable(r),
                         documentProducerFeedResponse.sourcePartitionKeyRange,
                         documentProducerFeedResponse.pageResult.getContinuationToken()));
             }, 1);

@@ -1,0 +1,82 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azsjavacancreateandlistdatasourcesdde081840703244aa.search.windows.net/datasources('azs-java-test-blob')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "59cbc11c-585b-4550-ad6a-933209c37965",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "59cbc11c-585b-4550-ad6a-933209c37965",
+      "StatusCode" : "201",
+      "Date" : "Tue, 21 Apr 2020 18:49:03 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "59cbc11c-585b-4550-ad6a-933209c37965",
+      "ETag" : "W/\"0x8D7E624A98CA401\"",
+      "elapsed-time" : "73",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "430",
+      "Body" : "{\"@odata.context\":\"https://azsjavacancreateandlistdatasourcesdde081840703244aa.search.windows.net/$metadata#datasources/$entity\",\"@odata.etag\":\"\\\"0x8D7E624A98CA401\\\"\",\"name\":\"azs-java-test-blob\",\"description\":\"Some data source\",\"type\":\"azureblob\",\"subtype\":null,\"credentials\":{\"connectionString\":null},\"container\":{\"name\":\"fakecontainer\",\"query\":\"/fakefolder/\"},\"dataChangeDetectionPolicy\":null,\"dataDeletionDetectionPolicy\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://azsjavacancreateandlistdatasourcesdde081840703244aa.search.windows.net/datasources('azs-java-test-blob')?api-version=2019-05-06-Preview"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azsjavacancreateandlistdatasourcesdde081840703244aa.search.windows.net/datasources('azs-java-test-sql')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "9f14d0ff-9273-42c6-9bcb-90c0b748b6a9",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "9f14d0ff-9273-42c6-9bcb-90c0b748b6a9",
+      "StatusCode" : "201",
+      "Date" : "Tue, 21 Apr 2020 18:49:03 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "9f14d0ff-9273-42c6-9bcb-90c0b748b6a9",
+      "ETag" : "W/\"0x8D7E624A999030E\"",
+      "elapsed-time" : "29",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "415",
+      "Body" : "{\"@odata.context\":\"https://azsjavacancreateandlistdatasourcesdde081840703244aa.search.windows.net/$metadata#datasources/$entity\",\"@odata.etag\":\"\\\"0x8D7E624A999030E\\\"\",\"name\":\"azs-java-test-sql\",\"description\":\"Some data source\",\"type\":\"azuresql\",\"subtype\":null,\"credentials\":{\"connectionString\":null},\"container\":{\"name\":\"GeoNamesRI\",\"query\":null},\"dataChangeDetectionPolicy\":null,\"dataDeletionDetectionPolicy\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://azsjavacancreateandlistdatasourcesdde081840703244aa.search.windows.net/datasources('azs-java-test-sql')?api-version=2019-05-06-Preview"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azsjavacancreateandlistdatasourcesdde081840703244aa.search.windows.net/datasources?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "c54aa11f-2e57-4404-938f-fdace675ed46"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "c54aa11f-2e57-4404-938f-fdace675ed46",
+      "StatusCode" : "200",
+      "Date" : "Tue, 21 Apr 2020 18:49:03 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "c54aa11f-2e57-4404-938f-fdace675ed46",
+      "elapsed-time" : "21",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "722",
+      "Body" : "{\"@odata.context\":\"https://azsjavacancreateandlistdatasourcesdde081840703244aa.search.windows.net/$metadata#datasources\",\"value\":[{\"@odata.etag\":\"\\\"0x8D7E624A98CA401\\\"\",\"name\":\"azs-java-test-blob\",\"description\":\"Some data source\",\"type\":\"azureblob\",\"subtype\":null,\"credentials\":{\"connectionString\":null},\"container\":{\"name\":\"fakecontainer\",\"query\":\"/fakefolder/\"},\"dataChangeDetectionPolicy\":null,\"dataDeletionDetectionPolicy\":null},{\"@odata.etag\":\"\\\"0x8D7E624A999030E\\\"\",\"name\":\"azs-java-test-sql\",\"description\":\"Some data source\",\"type\":\"azuresql\",\"subtype\":null,\"credentials\":{\"connectionString\":null},\"container\":{\"name\":\"GeoNamesRI\",\"query\":null},\"dataChangeDetectionPolicy\":null,\"dataDeletionDetectionPolicy\":null}]}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "azsjavacancreateandlistdatasourcesdde081840703244aa" ]
+}

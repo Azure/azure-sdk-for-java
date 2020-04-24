@@ -1,0 +1,24 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://azsjavagetdocumentthrowswhendocumentnotfound3d62691580d8.search.windows.net/indexes('hotels')/docs('1000000001')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "f47ef835-4e21-4303-b0f7-4dbd40137d15"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "f47ef835-4e21-4303-b0f7-4dbd40137d15",
+      "elapsed-time" : "63",
+      "Expires" : "-1",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "request-id" : "f47ef835-4e21-4303-b0f7-4dbd40137d15",
+      "StatusCode" : "404",
+      "Date" : "Tue, 21 Apr 2020 19:04:22 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "azsjavagetdocumentthrowswhendocumentnotfound3d62691580d8" ]
+}

@@ -8,19 +8,21 @@ import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
+import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
-import org.apache.commons.collections4.list.UnmodifiableList;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.testng.annotations.BeforeClass;
@@ -90,7 +92,7 @@ public class GlobalAddressResolverTest {
         DocumentCollection collectionDefinition = new DocumentCollection();
         collectionDefinition.setId(UUID.randomUUID().toString());
         collectionCache = Mockito.mock(RxCollectionCache.class);
-        Mockito.when(collectionCache.resolveCollectionAsync(Matchers.any(RxDocumentServiceRequest.class))).thenReturn(Mono.just(new Utils.ValueHolder<>(collectionDefinition)));
+        Mockito.when(collectionCache.resolveCollectionAsync(Matchers.any(MetadataDiagnosticsContext.class), Matchers.any(RxDocumentServiceRequest.class))).thenReturn(Mono.just(new Utils.ValueHolder<>(collectionDefinition)));
         routingMapProvider = Mockito.mock(RxPartitionKeyRangeCache.class);
         userAgentContainer = Mockito.mock(UserAgentContainer.class);
         serviceConfigReader = Mockito.mock(GatewayServiceConfigurationReader.class);
@@ -140,7 +142,7 @@ public class GlobalAddressResolverTest {
 
         DocumentCollection documentCollection = new DocumentCollection();
         documentCollection.setId("TestColl");
-        documentCollection.setResourceId("IXYFAOHEBPM=");
+        ModelBridgeInternal.setResourceId(documentCollection, "IXYFAOHEBPM=");
         CollectionRoutingMap collectionRoutingMap = Mockito.mock(CollectionRoutingMap.class);
         PartitionKeyRange range = new PartitionKeyRange("0", PartitionKeyInternalHelper.MinimumInclusiveEffectivePartitionKey,
                 PartitionKeyInternalHelper.MaximumExclusiveEffectivePartitionKey);
@@ -148,7 +150,7 @@ public class GlobalAddressResolverTest {
         partitionKeyRanges.add(range);
         Mockito.when(collectionRoutingMap.getOrderedPartitionKeyRanges()).thenReturn(partitionKeyRanges);
         Mono<Utils.ValueHolder<CollectionRoutingMap>> collectionRoutingMapSingle = Mono.just(new Utils.ValueHolder<>(collectionRoutingMap));
-        Mockito.when(routingMapProvider.tryLookupAsync(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(collectionRoutingMapSingle);
+        Mockito.when(routingMapProvider.tryLookupAsync(Mockito.any(MetadataDiagnosticsContext.class), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(collectionRoutingMapSingle);
 
         List<PartitionKeyRangeIdentity> ranges = new ArrayList<>();
         for (PartitionKeyRange partitionKeyRange : collectionRoutingMap.getOrderedPartitionKeyRanges()) {

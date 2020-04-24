@@ -2,27 +2,26 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.models.AccessConditionType;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.models.CosmosResourceType;
-import com.azure.cosmos.models.DatabaseAccount;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.JsonSerializable;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.models.Permission;
 import com.azure.cosmos.models.RequestVerb;
 import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.SqlParameter;
-import com.azure.cosmos.models.SqlParameterList;
 import com.azure.cosmos.CosmosAuthorizationTokenResolver;
+import com.azure.cosmos.CosmosKeyCredential;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
@@ -42,10 +41,9 @@ import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyAndResourceTokenPair;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
+import com.azure.cosmos.models.AccessConditionType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -56,6 +54,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -73,7 +73,7 @@ import static com.azure.cosmos.BridgeInternal.getAltLink;
 import static com.azure.cosmos.BridgeInternal.toFeedResponsePage;
 import static com.azure.cosmos.BridgeInternal.toResourceResponse;
 import static com.azure.cosmos.BridgeInternal.toStoredProcedureResponse;
-import static com.azure.cosmos.BridgeInternal.serializeJsonToByteBuffer;
+import static com.azure.cosmos.models.ModelBridgeInternal.serializeJsonToByteBuffer;
 import static com.azure.cosmos.models.ModelBridgeInternal.toDatabaseAccount;
 
 /**
@@ -421,12 +421,25 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             validateResource(database);
 
             Map<String, String> requestHeaders = this.getRequestHeaders(options);
+            ZonedDateTime serializationStartTimeUTC = ZonedDateTime.now(ZoneOffset.UTC);
+            ByteBuffer byteBuffer = ModelBridgeInternal.serializeJsonToByteBuffer(database);
+            ZonedDateTime serializationEndTimeUTC = ZonedDateTime.now(ZoneOffset.UTC);
+            SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
+                serializationStartTimeUTC,
+                serializationEndTimeUTC,
+                SerializationDiagnosticsContext.SerializationType.DATABASE_SERIALIZATION);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Create,
-                ResourceType.Database, Paths.DATABASES_ROOT, database, requestHeaders, options);
+                ResourceType.Database, Paths.DATABASES_ROOT, byteBuffer, requestHeaders, options);
 
             if (retryPolicyInstance != null) {
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
+
+            SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosResponseDiagnostics);
+            if (serializationDiagnosticsContext != null) {
+                serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
+            }
+
             return this.create(request, retryPolicyInstance).map(response -> toResourceResponse(response, Database.class));
         } catch (Exception e) {
             logger.debug("Failure in creating a database. due to [{}]", e.getMessage(), e);
@@ -585,11 +598,24 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             String path = Utils.joinPath(databaseLink, Paths.COLLECTIONS_PATH_SEGMENT);
             Map<String, String> requestHeaders = this.getRequestHeaders(options);
+
+            ZonedDateTime serializationStartTimeUTC = ZonedDateTime.now(ZoneOffset.UTC);
+            ByteBuffer byteBuffer = ModelBridgeInternal.serializeJsonToByteBuffer(collection);
+            ZonedDateTime serializationEndTimeUTC = ZonedDateTime.now(ZoneOffset.UTC);
+            SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
+                serializationStartTimeUTC,
+                serializationEndTimeUTC,
+                SerializationDiagnosticsContext.SerializationType.CONTAINER_SERIALIZATION);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Create,
-                ResourceType.DocumentCollection, path, collection, requestHeaders, options);
+                ResourceType.DocumentCollection, path, byteBuffer, requestHeaders, options);
 
             if (retryPolicyInstance != null){
                 retryPolicyInstance.onBeforeSendRequest(request);
+            }
+
+            SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosResponseDiagnostics);
+            if (serializationDiagnosticsContext != null) {
+                serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
             }
 
             return this.create(request, retryPolicyInstance).map(response -> toResourceResponse(response, DocumentCollection.class))
@@ -624,14 +650,25 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             String path = Utils.joinPath(collection.getSelfLink(), null);
             Map<String, String> requestHeaders = this.getRequestHeaders(options);
-
+            ZonedDateTime serializationStartTimeUTC = ZonedDateTime.now(ZoneOffset.UTC);
+            ByteBuffer byteBuffer = ModelBridgeInternal.serializeJsonToByteBuffer(collection);
+            ZonedDateTime serializationEndTimeUTC = ZonedDateTime.now(ZoneOffset.UTC);
+            SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
+                serializationStartTimeUTC,
+                serializationEndTimeUTC,
+                SerializationDiagnosticsContext.SerializationType.CONTAINER_SERIALIZATION);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Replace,
-                ResourceType.DocumentCollection, path, collection, requestHeaders, options);
+                ResourceType.DocumentCollection, path, byteBuffer, requestHeaders, options);
 
             // TODO: .Net has some logic for updating session token which we don't
             // have here
             if (retryPolicyInstance != null){
                 retryPolicyInstance.onBeforeSendRequest(request);
+            }
+
+            SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosResponseDiagnostics);
+            if (serializationDiagnosticsContext != null) {
+                serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
             }
 
             return this.replace(request, retryPolicyInstance).map(response -> toResourceResponse(response, DocumentCollection.class))
@@ -782,7 +819,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         for (int i = 0; i < objectArray.length; ++i) {
             Object object = objectArray[i];
             if (object instanceof JsonSerializable) {
-                stringArray[i] = ((JsonSerializable) object).toJson();
+                stringArray[i] = ModelBridgeInternal.toJsonFromJsonSerializable((JsonSerializable) object);
             } else {
 
                 // POJO, ObjectNode, number, STRING or Boolean
@@ -887,7 +924,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                                       Document document,
                                                                       RequestOptions options) {
 
-        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(request);
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosResponseDiagnostics), request);
         return collectionObs
                 .map(collectionValueHolder -> {
                     addPartitionKeyInformation(request, contentAsByteBuffer, document, options, collectionValueHolder.v);
@@ -931,7 +968,19 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 cosmosItemProperties = new CosmosItemProperties(contentAsByteBuffer);
             }
 
-            partitionKeyInternal = extractPartitionKeyValueFromDocument(cosmosItemProperties, partitionKeyDefinition);
+            ZonedDateTime serializationStartTime = ZonedDateTime.now(ZoneOffset.UTC);
+            partitionKeyInternal =  extractPartitionKeyValueFromDocument(cosmosItemProperties, partitionKeyDefinition);
+            ZonedDateTime serializationEndTime = ZonedDateTime.now(ZoneOffset.UTC);
+            SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
+                serializationStartTime,
+                serializationEndTime,
+                SerializationDiagnosticsContext.SerializationType.PARTITION_KEY_FETCH_SERIALIZATION
+            );
+            SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosResponseDiagnostics);
+            if (serializationDiagnosticsContext != null) {
+                serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
+            }
+
         } else {
             throw new UnsupportedOperationException("PartitionKey value must be supplied for this operation.");
         }
@@ -947,7 +996,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             String path = partitionKeyDefinition.getPaths().iterator().next();
             List<String> parts = PathParser.getPathParts(path);
             if (parts.size() >= 1) {
-                Object value = document.getObjectByPath(parts);
+                Object value = ModelBridgeInternal.getObjectByPathFromJsonSerializable(document, parts);
                 if (value == null || value.getClass() == ObjectNode.class) {
                     value = ModelBridgeInternal.getNonePartitionKey(partitionKeyDefinition);
                 }
@@ -963,8 +1012,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return null;
     }
 
-    private Mono<RxDocumentServiceRequest> getCreateDocumentRequest(String documentCollectionLink, Object document,
-                                                                      RequestOptions options, boolean disableAutomaticIdGeneration, OperationType operationType) {
+    private Mono<RxDocumentServiceRequest> getCreateDocumentRequest(DocumentClientRetryPolicy requestRetryPolicy,
+                                                                    String documentCollectionLink,
+                                                                    Object document,
+                                                                    RequestOptions options,
+                                                                    boolean disableAutomaticIdGeneration,
+                                                                    OperationType operationType) {
 
         if (StringUtils.isEmpty(documentCollectionLink)) {
             throw new IllegalArgumentException("documentCollectionLink");
@@ -973,15 +1026,29 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             throw new IllegalArgumentException("document");
         }
 
-        ByteBuffer content = serializeJsonToByteBuffer(document, mapper);
+        ZonedDateTime serializationStartTimeUTC = ZonedDateTime.now(ZoneOffset.UTC);
+        ByteBuffer content = BridgeInternal.serializeJsonToByteBuffer(document, mapper);
+        ZonedDateTime serializationEndTimeUTC = ZonedDateTime.now(ZoneOffset.UTC);
+        SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
+            serializationStartTimeUTC,
+            serializationEndTimeUTC,
+            SerializationDiagnosticsContext.SerializationType.ITEM_SERIALIZATION);
 
         String path = Utils.joinPath(documentCollectionLink, Paths.DOCUMENTS_PATH_SEGMENT);
         Map<String, String> requestHeaders = this.getRequestHeaders(options);
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(operationType, ResourceType.Document, path,
                                                                            requestHeaders, options, content);
+        if (requestRetryPolicy != null) {
+            requestRetryPolicy.onBeforeSendRequest(request);
+        }
 
-        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(request);
+        SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosResponseDiagnostics);
+        if (serializationDiagnosticsContext != null) {
+            serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
+        }
+
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosResponseDiagnostics), request);
         return addPartitionKeyInformation(request, content, document, options, collectionObs);
     }
 
@@ -1038,11 +1105,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private CosmosResourceType resolveCosmosResourceType(ResourceType resourceType) {
-        try {
-            return CosmosResourceType.valueOf(resourceType.toString());
-        } catch (IllegalArgumentException e) {
-            return CosmosResourceType.System;
+        CosmosResourceType cosmosResourceType =
+            ModelBridgeInternal.fromServiceSerializedFormat(resourceType.toString());
+        if (cosmosResourceType == null) {
+            return CosmosResourceType.SYSTEM;
         }
+        return cosmosResourceType;
     }
 
     void captureSessionToken(RxDocumentServiceRequest request, RxDocumentServiceResponse response) {
@@ -1110,14 +1178,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         try {
             logger.debug("Creating a Document. collectionLink: [{}]", collectionLink);
 
-            Mono<RxDocumentServiceRequest> requestObs = getCreateDocumentRequest(collectionLink, document,
+            Mono<RxDocumentServiceRequest> requestObs = getCreateDocumentRequest(requestRetryPolicy, collectionLink, document,
                 options, disableAutomaticIdGeneration, OperationType.Create);
 
             Mono<RxDocumentServiceResponse> responseObservable = requestObs.flatMap(request -> {
-                if (requestRetryPolicy != null) {
-                    requestRetryPolicy.onBeforeSendRequest(request);
-                }
-
                 return create(request, requestRetryPolicy);
             });
 
@@ -1146,14 +1210,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         try {
             logger.debug("Upserting a Document. collectionLink: [{}]", collectionLink);
 
-            Mono<RxDocumentServiceRequest> reqObs = getCreateDocumentRequest(collectionLink, document,
+            Mono<RxDocumentServiceRequest> reqObs = getCreateDocumentRequest(retryPolicyInstance, collectionLink, document,
                 options, disableAutomaticIdGeneration, OperationType.Upsert);
 
             Mono<RxDocumentServiceResponse> responseObservable = reqObs.flatMap(request -> {
-                if (retryPolicyInstance != null) {
-                    retryPolicyInstance.onBeforeSendRequest(request);
-                }
-
                 return upsert(request, retryPolicyInstance);
             });
 
@@ -1237,19 +1297,29 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         logger.debug("Replacing a Document. documentLink: [{}]", documentLink);
         final String path = Utils.joinPath(documentLink, null);
         final Map<String, String> requestHeaders = getRequestHeaders(options);
-
-        ByteBuffer content = serializeJsonToByteBuffer(document, mapper);
+        ZonedDateTime serializationStartTimeUTC = ZonedDateTime.now(ZoneOffset.UTC);
+        ByteBuffer content = serializeJsonToByteBuffer(document);
+        ZonedDateTime serializationEndTime = ZonedDateTime.now(ZoneOffset.UTC);
+        SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
+            serializationStartTimeUTC,
+            serializationEndTime,
+            SerializationDiagnosticsContext.SerializationType.ITEM_SERIALIZATION);
 
         final RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Replace,
             ResourceType.Document, path, requestHeaders, options, content);
+        if (retryPolicyInstance != null) {
+            retryPolicyInstance.onBeforeSendRequest(request);
+        }
 
-        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(request);
+        SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosResponseDiagnostics);
+        if (serializationDiagnosticsContext != null) {
+            serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
+        }
+
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosResponseDiagnostics), request);
         Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, content, document, options, collectionObs);
 
         return requestObs.flatMap(req -> {
-            if (retryPolicyInstance != null) {
-                retryPolicyInstance.onBeforeSendRequest(request);
-            }
             return replace(request, retryPolicyInstance)
                 .map(resp -> toResourceResponse(resp, Document.class));} );
     }
@@ -1272,15 +1342,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Map<String, String> requestHeaders = this.getRequestHeaders(options);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Delete,
                 ResourceType.Document, path, requestHeaders, options);
+            if (retryPolicyInstance != null) {
+                retryPolicyInstance.onBeforeSendRequest(request);
+            }
 
-            Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(request);
+            Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosResponseDiagnostics), request);
 
             Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs);
 
             return requestObs.flatMap(req -> {
-                if (retryPolicyInstance != null) {
-                    retryPolicyInstance.onBeforeSendRequest(req);
-                }
                 return this.delete(req, retryPolicyInstance)
                     .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));});
 
@@ -1308,8 +1378,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Map<String, String> requestHeaders = this.getRequestHeaders(options);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
                 ResourceType.Document, path, requestHeaders, options);
+            if (retryPolicyInstance != null) {
+                retryPolicyInstance.onBeforeSendRequest(request);
+            }
 
-            Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(request);
+            Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosResponseDiagnostics), request);
 
             Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs);
 
@@ -1348,7 +1421,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             ResourceType.Document,
             collectionLink, null
         ); // This should not got to backend
-        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(request);
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(null, request);
 
         return collectionObs
                    .flatMap(documentCollectionResourceResponse -> {
@@ -1358,8 +1431,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 }
 
                                 Mono<Utils.ValueHolder<CollectionRoutingMap>> valueHolderMono = partitionKeyRangeCache
-                                                                                                    .tryLookupAsync(collection
-                                                                                                                        .getResourceId(),
+                                                                                                    .tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosResponseDiagnostics),
+                                                                                                        collection.getResourceId(),
                                                                                                                     null,
                                                                                                                     null);
                                 return valueHolderMono.flatMap(collectionRoutingMapValueHolder -> {
@@ -1428,7 +1501,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                    for (FeedResponse<Document> page : feedList) {
                                                        requestCharge += page.getRequestCharge();
                                                        // TODO: this does double serialization: FIXME
-                                                       finalList.addAll(page.getResults().stream().map(document -> document.toObject(klass)).collect(Collectors.toList()));
+                                                       finalList.addAll(page.getResults().stream().map(document ->
+                                                           ModelBridgeInternal.toObjectFromJsonSerializable(document, klass)).collect(Collectors.toList()));
                                                    }
                                                    headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double
                                                                                                              .toString(requestCharge));
@@ -1468,7 +1542,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private SqlQuerySpec createReadManyQuerySpecPartitionKeyIdSame(List<Pair<String, PartitionKey>> idPartitionKeyPairList, String partitionKeySelector) {
         StringBuilder queryStringBuilder = new StringBuilder();
-        SqlParameterList parameters = new SqlParameterList();
+        List<SqlParameter> parameters = new ArrayList<>();
 
         queryStringBuilder.append("SELECT * FROM c WHERE c.id IN ( ");
         for (int i = 0; i < idPartitionKeyPairList.size(); i++) {
@@ -1499,7 +1573,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private SqlQuerySpec createReadManyQuerySpec(List<Pair<String, PartitionKey>> idPartitionKeyPairList, String partitionKeySelector) {
         StringBuilder queryStringBuilder = new StringBuilder();
-        SqlParameterList parameters = new SqlParameterList();
+        List<SqlParameter> parameters = new ArrayList<>();
 
         queryStringBuilder.append("SELECT * FROM c WHERE ( ");
         for (int i = 0; i < idPartitionKeyPairList.size(); i++) {

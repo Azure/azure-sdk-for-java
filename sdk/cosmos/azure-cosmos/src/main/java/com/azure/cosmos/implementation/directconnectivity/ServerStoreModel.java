@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -29,7 +30,7 @@ public class ServerStoreModel implements RxStoreModel {
         if (!Strings.isNullOrEmpty(requestConsistencyLevelHeaderValue)) {
             ConsistencyLevel requestConsistencyLevel;
             
-                if ((requestConsistencyLevel = ConsistencyLevel.fromServiceSerializedFormat(requestConsistencyLevelHeaderValue)) == null) {
+                if ((requestConsistencyLevel = BridgeInternal.fromServiceSerializedFormat(requestConsistencyLevelHeaderValue)) == null) {
                 return Mono.error(new BadRequestException(
                     String.format(
                         RMResources.InvalidHeaderValue,

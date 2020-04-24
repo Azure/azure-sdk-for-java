@@ -18,19 +18,20 @@
 /sdk/core/azure-core-tracing-opentelemetry/         @samvaity @alzimmermsft
 /sdk/cosmos/                                        @moderakh @kushagraThapar @David-Noble-at-work @kirankumarkolli @mbhaskar
 /sdk/eventhubs/                                     @conniey @srnagar @mssfang
+/sdk/formrecognizer/                                @samvaity @mssfang
 /sdk/identity/                                      @schaabs @g2vinay @jianghaolu
-/sdk/keyvault/                                      @g2vinay @samvaity
-/sdk/search/                                        @alzimmermsft @sima-zhu
+/sdk/keyvault/                                      @g2vinay @vcolin7 @samvaity
+/sdk/search/                                        @alzimmermsft @sima-zhu @mssfang @samvaity @conniey
 /sdk/servicebus/                                    @yvgopal @nemakam @hemanttanwar @conniey
-/sdk/storage/                                       @rickle-msft @jaschrep-msft @gapra-msft @alzimmermsft @sima-zhu
+/sdk/storage/                                       @amishra-dev @rickle-msft @jaschrep-msft @gapra-msft @alzimmermsft @sima-zhu
 /sdk/textanalytics/                                 @samvaity @mssfang
 
 # end to end tests
 /sdk/e2e/                                           @jianghaolu @g2vinay
 
 # Management Plane
-/**/resource-manager/                               @yaohaizh
-/sdk/**/azure-mgmt-*/                               @yaohaizh
+/sdk/management/                                    @ChenTanyi @weidongxu-microsoft @yungezz @xccc-msft
+/sdk/**/mgmt*/                                      @ChenTanyi @weidongxu-microsoft @yungezz @xccc-msft
 
 ###########
 # Eng Sys

@@ -41,7 +41,7 @@ public class TriggerUpsertReplaceTest extends TestSuiteBase {
         CosmosTriggerProperties readBackTrigger = createdCollection.getScripts().createTrigger(trigger).block().getProperties();
 
         // read trigger to validate creation
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
         Mono<CosmosAsyncTriggerResponse> readObservable = createdCollection.getScripts().getTrigger(readBackTrigger.getId()).read();
 
         // validate trigger creation
@@ -70,7 +70,7 @@ public class TriggerUpsertReplaceTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_TriggerUpsertReplaceTest() {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
     }

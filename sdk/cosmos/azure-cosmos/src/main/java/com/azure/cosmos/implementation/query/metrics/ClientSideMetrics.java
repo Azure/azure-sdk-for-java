@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query.metrics;
 
-import org.apache.commons.lang3.tuple.ImmutablePair;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 
 import java.util.ArrayList;
 import java.util.Collection;

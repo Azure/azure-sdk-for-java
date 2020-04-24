@@ -4,8 +4,9 @@ package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.models.Permission;
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.implementation.Permission;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.models.CosmosPermissionProperties;
 
 import java.util.List;
 
@@ -17,11 +18,11 @@ import java.util.List;
  * {@code
  * ConnectionPolicy connectionPolicy = new ConnectionPolicy();
  * getConnectionPolicy.getConnectionMode(ConnectionMode.DIRECT);
- * CosmosAsyncClient client = new CosmosAsyncClient.cosmosClientBuilder()
- *         .setEndpoint(serviceEndpoint)
- *         .setKey(key)
- *         .setConnectionPolicy(connectionPolicy)
- *         .setConsistencyLevel(ConsistencyLevel.SESSION)
+ * CosmosAsyncClient client = new CosmosClientBuilder()
+ *         .endpoint(serviceEndpoint)
+ *         .key(key)
+ *         .connectionPolicy(connectionPolicy)
+ *         .consistencyLevel(ConsistencyLevel.SESSION)
  *         .buildAsyncClient();
  * }
  * </pre>
@@ -33,7 +34,7 @@ public class CosmosClientBuilder {
     private String keyOrResourceToken;
     private ConnectionPolicy connectionPolicy;
     private ConsistencyLevel desiredConsistencyLevel;
-    private List<Permission> permissions;
+    private List<CosmosPermissionProperties> permissions;
     private CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
     private CosmosKeyCredential cosmosKeyCredential;
     private boolean sessionCapturingOverrideEnabled;
@@ -54,7 +55,7 @@ public class CosmosClientBuilder {
      * @param sessionCapturingOverrideEnabled session capturing override
      * @return current cosmosClientBuilder
      */
-    public CosmosClientBuilder setSessionCapturingOverrideEnabled(boolean sessionCapturingOverrideEnabled) {
+    public CosmosClientBuilder sessionCapturingOverrideEnabled(boolean sessionCapturingOverrideEnabled) {
         this.sessionCapturingOverrideEnabled = sessionCapturingOverrideEnabled;
         return this;
     }
@@ -65,7 +66,7 @@ public class CosmosClientBuilder {
      *
      * @return the session capturing override
      */
-    public boolean isSessionCapturingOverrideEnabled() {
+    boolean isSessionCapturingOverrideEnabled() {
         return this.sessionCapturingOverrideEnabled;
     }
 
@@ -77,20 +78,20 @@ public class CosmosClientBuilder {
      * {@code
      * ConnectionPolicy connectionPolicy = new ConnectionPolicy();
      * getConnectionPolicy.getConnectionMode(ConnectionMode.DIRECT);
-     * CosmosAsyncClient client1 = new CosmosAsyncClient.cosmosClientBuilder()
-     *         .setEndpoint(serviceEndpoint1)
-     *         .setKey(key1)
-     *         .setConnectionPolicy(connectionPolicy)
-     *         .setConsistencyLevel(ConsistencyLevel.SESSION)
-     *         .setConnectionSharingAcrossClientsEnabled(true)
+     * CosmosAsyncClient client1 = new CosmosClientBuilder()
+     *         .endpoint(serviceEndpoint1)
+     *         .key(key1)
+     *         .connectionPolicy(connectionPolicy)
+     *         .consistencyLevel(ConsistencyLevel.SESSION)
+     *         .connectionReuseAcrossClientsEnabled(true)
      *         .buildAsyncClient();
      *
-     * CosmosAsyncClient client2 = new CosmosAsyncClient.cosmosClientBuilder()
-     *         .setEndpoint(serviceEndpoint2)
-     *         .setKey(key2)
-     *         .setConnectionPolicy(connectionPolicy)
-     *         .setConsistencyLevel(ConsistencyLevel.SESSION)
-     *         .setConnectionSharingAcrossClientsEnabled(true)
+     * CosmosAsyncClient client2 = new CosmosClientBuilder()
+     *         .endpoint(serviceEndpoint2)
+     *         .key(key2)
+     *         .connectionPolicy(connectionPolicy)
+     *         .consistencyLevel(ConsistencyLevel.SESSION)
+     *         .connectionReuseAcrossClientsEnabled(true)
      *         .buildAsyncClient();
      *
      * // when configured this way client1 and client2 will share connections when possible.
@@ -106,7 +107,7 @@ public class CosmosClientBuilder {
      * @param connectionReuseAcrossClientsEnabled connection sharing
      * @return current cosmosClientBuilder
      */
-    public CosmosClientBuilder setConnectionReuseAcrossClientsEnabled(boolean connectionReuseAcrossClientsEnabled) {
+    public CosmosClientBuilder connectionReuseAcrossClientsEnabled(boolean connectionReuseAcrossClientsEnabled) {
         this.connectionReuseAcrossClientsEnabled = true;
         return this;
     }
@@ -119,7 +120,7 @@ public class CosmosClientBuilder {
      *
      * @return the connection sharing across multiple clients
      */
-    public boolean isConnectionReuseAcrossClientsEnabled() {
+    boolean isConnectionReuseAcrossClientsEnabled() {
         return this.connectionReuseAcrossClientsEnabled;
     }
 
@@ -128,7 +129,7 @@ public class CosmosClientBuilder {
      *
      * @return the token resolver
      */
-    public CosmosAuthorizationTokenResolver getCosmosAuthorizationTokenResolver() {
+    CosmosAuthorizationTokenResolver getAuthorizationTokenResolver() {
         return cosmosAuthorizationTokenResolver;
     }
 
@@ -138,7 +139,7 @@ public class CosmosClientBuilder {
      * @param cosmosAuthorizationTokenResolver the token resolver
      * @return current cosmosClientBuilder
      */
-    public CosmosClientBuilder setCosmosAuthorizationTokenResolver(
+    public CosmosClientBuilder authorizationTokenResolver(
         CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver) {
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
         return this;
@@ -149,7 +150,7 @@ public class CosmosClientBuilder {
      *
      * @return the endpoint
      */
-    public String getEndpoint() {
+    String getEndpoint() {
         return serviceEndpoint;
     }
 
@@ -159,7 +160,7 @@ public class CosmosClientBuilder {
      * @param endpoint the service endpoint
      * @return current Builder
      */
-    public CosmosClientBuilder setEndpoint(String endpoint) {
+    public CosmosClientBuilder endpoint(String endpoint) {
         this.serviceEndpoint = endpoint;
         return this;
     }
@@ -170,7 +171,7 @@ public class CosmosClientBuilder {
      *
      * @return the key
      */
-    public String getKey() {
+    String getKey() {
         return keyOrResourceToken;
     }
 
@@ -181,7 +182,7 @@ public class CosmosClientBuilder {
      * @param key master or readonly key
      * @return current Builder.
      */
-    public CosmosClientBuilder setKey(String key) {
+    public CosmosClientBuilder key(String key) {
         this.keyOrResourceToken = key;
         return this;
     }
@@ -192,7 +193,7 @@ public class CosmosClientBuilder {
      *
      * @return the resourceToken
      */
-    public String getResourceToken() {
+    String getResourceToken() {
         return keyOrResourceToken;
     }
 
@@ -203,7 +204,7 @@ public class CosmosClientBuilder {
      * @param resourceToken resourceToken for authentication
      * @return current Builder.
      */
-    public CosmosClientBuilder setResourceToken(String resourceToken) {
+    public CosmosClientBuilder resourceToken(String resourceToken) {
         this.keyOrResourceToken = resourceToken;
         return this;
     }
@@ -214,7 +215,7 @@ public class CosmosClientBuilder {
      *
      * @return the permission list
      */
-    public List<Permission> getPermissions() {
+    List<CosmosPermissionProperties> getPermissions() {
         return permissions;
     }
 
@@ -225,7 +226,7 @@ public class CosmosClientBuilder {
      * @param permissions Permission list for authentication.
      * @return current Builder.
      */
-    public CosmosClientBuilder setPermissions(List<Permission> permissions) {
+    public CosmosClientBuilder permissions(List<CosmosPermissionProperties> permissions) {
         this.permissions = permissions;
         return this;
     }
@@ -235,7 +236,7 @@ public class CosmosClientBuilder {
      *
      * @return the consistency level
      */
-    public ConsistencyLevel getConsistencyLevel() {
+    ConsistencyLevel getConsistencyLevel() {
         return this.desiredConsistencyLevel;
     }
 
@@ -245,7 +246,7 @@ public class CosmosClientBuilder {
      * @param desiredConsistencyLevel {@link ConsistencyLevel}
      * @return current Builder
      */
-    public CosmosClientBuilder setConsistencyLevel(ConsistencyLevel desiredConsistencyLevel) {
+    public CosmosClientBuilder consistencyLevel(ConsistencyLevel desiredConsistencyLevel) {
         this.desiredConsistencyLevel = desiredConsistencyLevel;
         return this;
     }
@@ -255,7 +256,7 @@ public class CosmosClientBuilder {
      *
      * @return the connection policy
      */
-    public ConnectionPolicy getConnectionPolicy() {
+    ConnectionPolicy getConnectionPolicy() {
         return connectionPolicy;
     }
 
@@ -265,7 +266,7 @@ public class CosmosClientBuilder {
      * @param connectionPolicy {@link ConnectionPolicy}
      * @return current Builder
      */
-    public CosmosClientBuilder setConnectionPolicy(ConnectionPolicy connectionPolicy) {
+    public CosmosClientBuilder connectionPolicy(ConnectionPolicy connectionPolicy) {
         this.connectionPolicy = connectionPolicy;
         return this;
     }
@@ -275,7 +276,7 @@ public class CosmosClientBuilder {
      *
      * @return cosmosKeyCredential
      */
-    public CosmosKeyCredential getCosmosKeyCredential() {
+    CosmosKeyCredential getKeyCredential() {
         return cosmosKeyCredential;
     }
 
@@ -285,7 +286,7 @@ public class CosmosClientBuilder {
      * @param cosmosKeyCredential {@link CosmosKeyCredential}
      * @return current cosmosClientBuilder
      */
-    public CosmosClientBuilder setCosmosKeyCredential(CosmosKeyCredential cosmosKeyCredential) {
+    public CosmosClientBuilder keyCredential(CosmosKeyCredential cosmosKeyCredential) {
         this.cosmosKeyCredential = cosmosKeyCredential;
         return this;
     }

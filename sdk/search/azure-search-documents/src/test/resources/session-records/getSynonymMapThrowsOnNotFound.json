@@ -1,0 +1,29 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://azsjavagetsynonymmapthrowsonnotfoundcb784417a23b0f8a.search.windows.net/synonymmaps('thisSynonymMapDoesNotExist')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "5a4d2c63-7b5d-4132-8e95-ddf69fb06ace"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "5a4d2c63-7b5d-4132-8e95-ddf69fb06ace",
+      "StatusCode" : "404",
+      "Date" : "Tue, 21 Apr 2020 19:14:15 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "5a4d2c63-7b5d-4132-8e95-ddf69fb06ace",
+      "elapsed-time" : "19",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "168",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No synonym map with the name 'thisSynonymMapDoesNotExist' was found in service 'azsjavagetsynonymmapthrowsonnotfoundcb784417a23b0f8a'.\"}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "azsjavagetsynonymmapthrowsonnotfoundcb784417a23b0f8a" ]
+}

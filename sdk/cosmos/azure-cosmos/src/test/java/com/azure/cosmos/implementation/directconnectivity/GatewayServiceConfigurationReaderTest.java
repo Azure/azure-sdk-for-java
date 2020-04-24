@@ -6,7 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.models.DatabaseAccount;
+import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
 import com.azure.cosmos.implementation.BaseAuthorizationTokenProvider;
@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseAccountManagerInternal;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.TestSuiteBase;
@@ -22,6 +23,7 @@ import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Factory;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 
@@ -98,5 +100,6 @@ public class GatewayServiceConfigurationReaderTest extends TestSuiteBase {
         assertThat((boolean) configurationReader.getQueryEngineConfiguration().get("enableSpatialIndexing")).isTrue();
         assertThat(configurationReader.getSystemReplicationPolicy().getMaxReplicaSetSize()).isEqualTo(4);
         assertThat(configurationReader.getUserReplicationPolicy().getMaxReplicaSetSize()).isEqualTo(4);
+        LifeCycleUtils.closeQuietly(globalEndpointManager);
     }
 }

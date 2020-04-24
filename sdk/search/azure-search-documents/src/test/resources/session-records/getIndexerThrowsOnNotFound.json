@@ -1,0 +1,29 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://azsjavagetindexerthrowsonnotfound3c102943797c87b7b.search.windows.net/indexers('thisindexerdoesnotexist')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "9846745d-c010-45b4-a07e-6670cd264eff"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "9846745d-c010-45b4-a07e-6670cd264eff",
+      "StatusCode" : "404",
+      "Date" : "Tue, 21 Apr 2020 18:51:08 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "9846745d-c010-45b4-a07e-6670cd264eff",
+      "elapsed-time" : "69",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "146",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"Indexer 'thisindexerdoesnotexist' was not found in service 'azsjavagetindexerthrowsonnotfound3c102943797c87b7b'.\"}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "azsjavagetindexerthrowsonnotfound3c102943797c87b7b" ]
+}

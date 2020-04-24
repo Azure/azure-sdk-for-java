@@ -5,8 +5,10 @@ package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.util.logging.ClientLogger;
+import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
@@ -21,6 +23,8 @@ import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * Processes AMQP receive links into a stream of AMQP messages.
@@ -41,6 +45,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLin
     private final int prefetch;
     private final AmqpRetryPolicy retryPolicy;
     private Disposable parentConnection;
+    private final AmqpErrorContext errorContext;
 
     private volatile Subscription upstream;
     private volatile CoreSubscriber<? super Message> downstream;
@@ -60,9 +65,12 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLin
      * @throws NullPointerException if {@code retryPolicy} is null.
      * @throws IllegalArgumentException if {@code prefetch} is less than 0.
      */
-    public ServiceBusReceiveLinkProcessor(int prefetch, AmqpRetryPolicy retryPolicy, Disposable parentConnection) {
+    public ServiceBusReceiveLinkProcessor(int prefetch, AmqpRetryPolicy retryPolicy, Disposable parentConnection,
+        AmqpErrorContext errorContext) {
+
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
         this.parentConnection = Objects.requireNonNull(parentConnection, "'parentConnection' cannot be null.");
+        this.errorContext = errorContext;
 
         if (prefetch <= 0) {
             throw logger.logExceptionAsError(
@@ -70,6 +78,34 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLin
         }
 
         this.prefetch = prefetch;
+    }
+
+    /**
+     * Gets the error context associated with this link.
+     *
+     * @return the error context associated with this link.
+     */
+    public AmqpErrorContext getErrorContext() {
+        return errorContext;
+    }
+
+    public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState) {
+        if (isDisposed()) {
+            return monoError(logger, new IllegalStateException(String.format(
+                "lockToken[%s]. state[%s]. Cannot update disposition on closed processor.", lockToken, deliveryState)));
+        }
+
+        final AmqpReceiveLink link = currentLink;
+        if (link == null) {
+            return monoError(logger, new IllegalStateException(String.format(
+                "lockToken[%s]. state[%s]. Cannot update disposition with no link.", lockToken, deliveryState)));
+        } else if (!(link instanceof ServiceBusReactorReceiver)) {
+            return monoError(logger, new IllegalStateException(String.format(
+                "lockToken[%s]. state[%s]. Cannot update disposition with non Service Bus receive link.",
+                lockToken, deliveryState)));
+        }
+
+        return ((ServiceBusReactorReceiver) link).updateDisposition(lockToken, deliveryState);
     }
 
     /**

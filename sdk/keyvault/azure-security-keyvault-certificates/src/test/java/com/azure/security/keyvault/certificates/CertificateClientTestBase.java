@@ -618,7 +618,7 @@ public abstract class CertificateClientTestBase extends TestBase {
             .forEach(httpClient -> {
                 Arrays.stream(CertificateServiceVersion.values()).filter(
                     CertificateClientTestBase::shouldServiceVersionBeTested)
-                    .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
+                    .forEach(serviceVersion -> { argumentsList.add(Arguments.of(httpClient, serviceVersion)); });
             });
         return argumentsList.stream();
     }

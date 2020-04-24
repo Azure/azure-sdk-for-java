@@ -9,7 +9,7 @@ import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.CosmosPagedFlux;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
@@ -32,8 +32,8 @@ public class BasicDemo {
     private void start() {
         // Get client
         client = new CosmosClientBuilder()
-                     .setEndpoint(AccountSettings.HOST)
-                     .setKey(AccountSettings.MASTER_KEY)
+                     .endpoint(AccountSettings.HOST)
+                     .key(AccountSettings.MASTER_KEY)
                      .buildAsyncClient();
 
         //CREATE a database and a container
@@ -130,12 +130,10 @@ public class BasicDemo {
         String query = "SELECT * from root r ";
         FeedOptions options = new FeedOptions();
         options.setPopulateQueryMetrics(true);
-        options.setMaxItemCount(1);
         String continuation = null;
         do {
-            options.setRequestContinuation(continuation);
             CosmosPagedFlux<TestObject> queryFlux = container.queryItems(query, options, TestObject.class);
-            FeedResponse<TestObject> page = queryFlux.byPage().blockFirst();
+            FeedResponse<TestObject> page = queryFlux.byPage(continuation, 1).blockFirst();
             assert page != null;
             log(page.getResults());
             continuation = page.getContinuationToken();

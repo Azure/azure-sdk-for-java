@@ -2,9 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import io.netty.handler.timeout.ReadTimeoutException;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
@@ -94,9 +96,9 @@ public class RenameCollectionAwareClientRetryPolicyTest {
                 Integer.toString(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE));
 
         DocumentCollection documentCollection = new DocumentCollection();
-        documentCollection.setResourceId("rid_1");
+        ModelBridgeInternal.setResourceId(documentCollection, "rid_1");
 
-        Mockito.when(rxClientCollectionCache.resolveCollectionAsync(request)).thenReturn(Mono.just(new Utils.ValueHolder<>(documentCollection)));
+        Mockito.when(rxClientCollectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosResponseDiagnostics), request)).thenReturn(Mono.just(new Utils.ValueHolder<>(documentCollection)));
 
         Mono<IRetryPolicy.ShouldRetryResult> singleShouldRetry = renameCollectionAwareClientRetryPolicy
                 .shouldRetry(notFoundException);

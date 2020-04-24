@@ -1,0 +1,30 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://azsjavacreateindexfailswithusefulmessageonusererror6ac17293.search.windows.net/indexes?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "45cfd1fe-ce98-4460-a8d4-4c5355af867f",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "45cfd1fe-ce98-4460-a8d4-4c5355af867f",
+      "StatusCode" : "400",
+      "Date" : "Tue, 21 Apr 2020 18:57:56 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "45cfd1fe-ce98-4460-a8d4-4c5355af867f",
+      "elapsed-time" : "23",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "160",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"The request is invalid. Details: index : Found 0 key fields in index 'hotels'. Each index must have exactly one key field.\\r\\n\"}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "azsjavacreateindexfailswithusefulmessageonusererror6ac17293" ]
+}

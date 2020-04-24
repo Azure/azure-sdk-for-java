@@ -119,8 +119,8 @@ public class CosmosResponse<T extends Resource> {
      *
      * @return diagnostics information for the current request to Azure Cosmos DB service.
      */
-    public CosmosResponseDiagnostics getCosmosResponseDiagnostics() {
-        return resourceResponseWrapper.getCosmosResponseDiagnostics();
+    public CosmosResponseDiagnostics getResponseDiagnostics() {
+        return resourceResponseWrapper.getResponseDiagnostics();
     }
 
     /**

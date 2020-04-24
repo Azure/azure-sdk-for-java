@@ -16,6 +16,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_LOG_LEVEL;
@@ -63,11 +64,26 @@ public class ClientLoggerTests {
      */
     @ParameterizedTest
     @MethodSource("singleLevelCheckSupplier")
-    public void log(LogLevel logLevelToConfigure, LogLevel logLevelToUse, boolean logContainsMessage) {
+    public void logSimpleMessage(LogLevel logLevelToConfigure, LogLevel logLevelToUse, boolean logContainsMessage) {
         String logMessage = "This is a test";
 
         String originalLogLevel = setupLogLevel(logLevelToConfigure.getLogLevel());
         logMessage(new ClientLogger(ClientLoggerTests.class), logLevelToUse, logMessage);
+
+        setPropertyToOriginalOrClear(originalLogLevel);
+
+        String logValues = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
+        assertEquals(logContainsMessage, logValues.contains(logMessage));
+    }
+
+    @ParameterizedTest
+    @MethodSource("singleLevelCheckSupplier")
+    public void logFormattedMessage(LogLevel logLevelToConfigure, LogLevel logLevelToUse, boolean logContainsMessage) {
+        String logMessage = "This is a test";
+        String logFormat = "{} is a {}";
+
+        String originalLogLevel = setupLogLevel(logLevelToConfigure.getLogLevel());
+        logMessage(new ClientLogger(ClientLoggerTests.class), logLevelToUse, logFormat, "This", "test");
 
         setPropertyToOriginalOrClear(originalLogLevel);
 
@@ -133,7 +149,7 @@ public class ClientLoggerTests {
 
         String originalLogLevel = setupLogLevel(logLevelToConfigure.getLogLevel());
         try {
-            throw new ClientLogger(ClientLoggerTests.class).logThowableAsWarning(ioException);
+            throw new ClientLogger(ClientLoggerTests.class).logThrowableAsWarning(ioException);
         } catch (Throwable throwable) {
             assertTrue(throwable instanceof IOException);
         }
@@ -232,19 +248,27 @@ public class ClientLoggerTests {
 
         switch (logLevel) {
             case VERBOSE:
-                logger.verbose(logFormat, arguments);
+                logHelper(() -> logger.verbose(logFormat), (args) -> logger.verbose(logFormat, args), arguments);
                 break;
             case INFORMATIONAL:
-                logger.info(logFormat, arguments);
+                logHelper(() -> logger.info(logFormat), (args) -> logger.info(logFormat, args), arguments);
                 break;
             case WARNING:
-                logger.warning(logFormat, arguments);
+                logHelper(() -> logger.warning(logFormat), (args) -> logger.warning(logFormat, args), arguments);
                 break;
             case ERROR:
-                logger.error(logFormat, arguments);
+                logHelper(() -> logger.error(logFormat), (args) -> logger.error(logFormat, args), arguments);
                 break;
             default:
                 break;
+        }
+    }
+
+    private static void logHelper(Runnable simpleLog, Consumer<Object[]> formatLog, Object... args) {
+        if (CoreUtils.isNullOrEmpty(args)) {
+            simpleLog.run();
+        } else {
+            formatLog.accept(args);
         }
     }
 

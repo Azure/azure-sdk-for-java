@@ -8,13 +8,12 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.LinkedEntity;
-import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
-import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedIterable;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.util.Context;
@@ -40,7 +39,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             .build();
 
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
+            .apiKey(new AzureKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .pipeline(pipeline)
             .buildClient();
@@ -53,7 +52,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     public void createTextAnalyticsClient() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.instantiation
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
+            .apiKey(new AzureKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildClient();
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.instantiation
@@ -325,140 +324,6 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                             }));
                     });
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntitiesBatch#Iterable-TextAnalyticsRequestOptions-Context
-    }
-
-    // Personally Identifiable Information Entity
-
-    /**
-     * Code snippet for {@link TextAnalyticsClient#recognizePiiEntities(String)}
-     */
-    public void recognizePiiEntities() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String
-        for (PiiEntity entity : textAnalyticsClient.recognizePiiEntities("My SSN is 555-55-5555")) {
-            System.out.printf(
-                "Recognized Personally Identifiable Information entity: %s, entity category: %s, score: %f.%n",
-                entity.getText(), entity.getCategory(), entity.getConfidenceScore());
-        }
-        // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String
-    }
-
-    /**
-     * Code snippet for {@link TextAnalyticsClient#recognizePiiEntities(String, String)}
-     */
-    public void recognizePiiEntitiesWithLanguage() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String-String-Context
-        textAnalyticsClient.recognizePiiEntities("My SSN is 555-55-5555", "en").forEach(piiEntity ->
-            System.out.printf(
-                "Recognized Personally Identifiable Information entity: %s, entity category: %s, score: %f.%n",
-                piiEntity.getText(), piiEntity.getCategory(), piiEntity.getConfidenceScore()));
-        // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String-String-Context
-    }
-
-    /**
-     * Code snippet for {@link TextAnalyticsClient#recognizePiiEntitiesBatch(Iterable)}
-     */
-    public void recognizePiiEntitiesStringList() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable
-        final List<String> documents = Arrays.asList("My SSN is 555-55-5555", "Visa card 4111 1111 1111 1111");
-
-        textAnalyticsClient.recognizePiiEntitiesBatch(documents).iterableByPage().forEach(response -> {
-            // Batch statistics
-            final TextDocumentBatchStatistics batchStatistics = response.getStatistics();
-            System.out.printf("A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
-                batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
-
-            response.getElements().forEach(recognizePiiEntitiesResult ->
-                recognizePiiEntitiesResult.getEntities().forEach(piiEntity -> {
-                    System.out.printf("Recognized Personally Identifiable Information entity: %s, entity category: %s,"
-                            + " score: %f.%n",
-                        piiEntity.getText(), piiEntity.getCategory(), piiEntity.getConfidenceScore());
-                })
-            );
-        });
-        // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable
-    }
-
-    /**
-     * Code snippet for {@link TextAnalyticsClient#recognizePiiEntitiesBatch(Iterable, String)}
-     */
-    public void recognizePiiEntitiesStringListWithLanguageCode() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-String
-        List<String> documents = Arrays.asList(
-            "My SSN is 555-55-5555",
-            "Visa card 4111 1111 1111 1111"
-        );
-
-        textAnalyticsClient.recognizePiiEntitiesBatch(documents, "en").iterableByPage()
-            .forEach(response -> {
-                // Batch statistics
-                TextDocumentBatchStatistics batchStatistics = response.getStatistics();
-                System.out.printf("A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
-                    batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
-
-                response.getElements().forEach(recognizePiiEntitiesResult ->
-                    recognizePiiEntitiesResult.getEntities().forEach(piiEntity -> {
-                        System.out.printf("Recognized Personally Identifiable Information entity: %s,"
-                            + " entity category: %s, score: %f.%n",
-                            piiEntity.getText(), piiEntity.getCategory(), piiEntity.getConfidenceScore());
-                    }));
-            });
-        // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-String
-    }
-
-    /**
-     * Code snippet for {@link TextAnalyticsClient#recognizePiiEntitiesBatch(Iterable, String, TextAnalyticsRequestOptions)}
-     */
-    public void recognizePiiEntitiesStringListWithOptions() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions
-        List<String> documents = Arrays.asList(
-            "My SSN is 555-55-5555",
-            "Visa card 4111 1111 1111 1111"
-        );
-
-        textAnalyticsClient.recognizePiiEntitiesBatch(documents, "en", null).iterableByPage()
-            .forEach(response -> {
-                // Batch statistics
-                TextDocumentBatchStatistics batchStatistics = response.getStatistics();
-                System.out.printf("A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
-                    batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
-
-                response.getElements().forEach(recognizePiiEntitiesResult ->
-                    recognizePiiEntitiesResult.getEntities().forEach(piiEntity -> {
-                        System.out.printf("Recognized Personally Identifiable Information entity: %s,"
-                            + " entity category: %s, score: %f.%n",
-                            piiEntity.getText(), piiEntity.getCategory(), piiEntity.getConfidenceScore());
-                    }));
-            });
-        // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions
-    }
-
-    /**
-     * Code snippet for {@link TextAnalyticsClient#recognizePiiEntitiesBatch(Iterable, TextAnalyticsRequestOptions, Context)}
-     */
-    public void recognizeBatchPiiEntitiesMaxOverload() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-TextAnalyticsRequestOptions-Context
-        List<TextDocumentInput> textDocumentInputs = Arrays.asList(
-            new TextDocumentInput("0", "My SSN is 555-55-5555"),
-            new TextDocumentInput("1", "Visa card 4111 1111 1111 1111")
-        );
-
-        textAnalyticsClient.recognizePiiEntitiesBatch(textDocumentInputs,
-            new TextAnalyticsRequestOptions().setIncludeStatistics(true), Context.NONE).iterableByPage().forEach(
-                response -> {
-                    // Batch statistics
-                    TextDocumentBatchStatistics batchStatistics = response.getStatistics();
-                    System.out.printf(
-                        "A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
-                        batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
-
-                    response.getElements().forEach(recognizePiiEntitiesResult ->
-                        recognizePiiEntitiesResult.getEntities().forEach(piiEntity -> {
-                            System.out.printf("Recognized Personally Identifiable Information entity: %s,"
-                                + " entity category: %s, score: %f.%n",
-                                piiEntity.getText(), piiEntity.getCategory(), piiEntity.getConfidenceScore());
-                        }));
-                });
-        // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-TextAnalyticsRequestOptions-Context
     }
 
     // Linked Entity

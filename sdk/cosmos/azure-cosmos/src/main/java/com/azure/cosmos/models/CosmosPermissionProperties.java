@@ -4,7 +4,9 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.Constants;
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.implementation.Permission;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import java.util.List;
 import java.util.Locale;
@@ -89,22 +91,21 @@ public final class CosmosPermissionProperties extends Resource {
         return this;
     }
 
-    //TODO: need value from JsonSerializable
-//    /**
-//     * Gets the resource partition key associated with this permission object.
-//     *
-//     * @return the partition key.
-//     */
-//    public PartitionKey getResourcePartitionKey() {
-//        PartitionKey key = null;
-//        Object value = super.get(Constants.Properties.RESOURCE_PARTITION_KEY);
-//        if (value != null) {
-//            ArrayNode arrayValue = (ArrayNode) value;
-//            key = new PartitionKey(value(arrayValue.get(0)));
-//        }
-//
-//        return key;
-//    }
+    /**
+     * Gets the resource partition key associated with this permission object.
+     *
+     * @return the partition key.
+     */
+    public PartitionKey getResourcePartitionKey() {
+        PartitionKey key = null;
+        Object value = super.get(Constants.Properties.RESOURCE_PARTITION_KEY);
+        if (value != null) {
+            ArrayNode arrayValue = (ArrayNode) value;
+            key = new PartitionKey(JsonSerializable.getValue(arrayValue.get(0)));
+        }
+
+        return key;
+    }
 
     /**
      * Sets the resource partition key associated with this permission object.

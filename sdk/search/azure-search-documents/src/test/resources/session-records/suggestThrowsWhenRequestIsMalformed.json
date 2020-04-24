@@ -1,0 +1,30 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://azsjavasuggestthrowswhenrequestismalformed5c2076939c4a5.search.windows.net/indexes('hotels')/docs/search.post.suggest?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "47e29b6e-8470-45f1-908b-aea94f5d6777",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "47e29b6e-8470-45f1-908b-aea94f5d6777",
+      "StatusCode" : "400",
+      "Date" : "Tue, 21 Apr 2020 19:12:35 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "47e29b6e-8470-45f1-908b-aea94f5d6777",
+      "elapsed-time" : "123",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "143",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"Invalid expression: Syntax error at position 7 in 'This is not a valid orderby.'.\\r\\nParameter name: $orderby\"}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; odata.metadata=none"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "azsjavasuggestthrowswhenrequestismalformed5c2076939c4a5" ]
+}
