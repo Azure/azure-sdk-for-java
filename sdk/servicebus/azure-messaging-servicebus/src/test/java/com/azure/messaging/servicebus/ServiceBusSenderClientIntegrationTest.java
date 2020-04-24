@@ -124,7 +124,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
         long sequenceNumber = sender.scheduleMessage(message, scheduledEnqueueTime);
 
         // Assert
-        Assertions.assertTrue(sequenceNumber > 0);
+        Assertions.assertTrue(sequenceNumber >= 0);
 
         messagesPending.incrementAndGet();
     }
@@ -145,9 +145,11 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
 
         // Assert & Act
         long sequenceNumber = sender.scheduleMessage(message, scheduledEnqueueTime);
-        Assertions.assertTrue(sequenceNumber > 0);
+        Assertions.assertTrue(sequenceNumber >= 0);
 
         sender.cancelScheduledMessage(sequenceNumber);
+
+        messagesPending.incrementAndGet();
     }
 
     void setSenderAndReceiver(MessagingEntityType entityType) {

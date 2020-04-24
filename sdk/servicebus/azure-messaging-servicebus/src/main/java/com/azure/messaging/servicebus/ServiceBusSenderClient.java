@@ -76,7 +76,7 @@ public class ServiceBusSenderClient implements AutoCloseable {
      * Sends a scheduled message to the Azure Service Bus entity this sender is connected to. A scheduled message is
      * enqueued and made available to receivers only at the scheduled enqueue time.
      *
-     * @param message Message to be sent to the Service Bus Queue.
+     * @param message Message to be sent to the Service Bus Queue or Topic.
      * @param scheduledEnqueueTime Instant at which the message should appear in the Service Bus queue or topic.
      *
      * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
@@ -92,7 +92,7 @@ public class ServiceBusSenderClient implements AutoCloseable {
      *
      * @param sequenceNumber of the scheduled message to cancel.
      *
-     * @return The {@link Mono} that finishes this operation on service bus resource.
+     * @return The {@link Mono} that finishes this operation on Service Bus resource.
      */
     public void cancelScheduledMessage(long sequenceNumber) {
         asyncClient.cancelScheduledMessage(sequenceNumber).block(tryTimeout);
