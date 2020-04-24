@@ -1033,8 +1033,8 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withCapacity(int capacity) {
-        this.inner().sku().withCapacity((long) capacity);
+    public VirtualMachineScaleSetImpl withCapacity(long capacity) {
+        this.inner().sku().withCapacity(capacity);
         return this;
     }
 
