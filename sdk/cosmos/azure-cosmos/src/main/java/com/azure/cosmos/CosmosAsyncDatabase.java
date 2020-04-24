@@ -26,7 +26,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
@@ -84,16 +83,8 @@ public class CosmosAsyncDatabase {
             options = new CosmosDatabaseRequestOptions();
         }
         final CosmosDatabaseRequestOptions  requestOptions = options;
-        return withContext(context -> read(requestOptions, context)).subscriberContext(reactorContext -> {
-            Optional<String> master = reactorContext.getOrEmpty(TracerProvider.MASTER_CALL);
-            if (master.isPresent()) {
-                reactorContext = reactorContext.put(TracerProvider.NESTED_CALL, true);
-            }
-            return reactorContext.put(TracerProvider.MASTER_CALL, true);
-        });
+        return withContext(context -> read(requestOptions, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
     }
-
-
 
     /**
      * Deletes a database.
@@ -124,13 +115,7 @@ public class CosmosAsyncDatabase {
         }
 
         final CosmosDatabaseRequestOptions requestOptions = options;
-        return withContext(context -> delete(requestOptions, context)).subscriberContext(reactorContext -> {
-            Optional<String> master = reactorContext.getOrEmpty(TracerProvider.MASTER_CALL);
-            if (master.isPresent()) {
-                reactorContext = reactorContext.put(TracerProvider.NESTED_CALL, true);
-            }
-            return reactorContext.put(TracerProvider.MASTER_CALL, true);
-        });
+        return withContext(context -> delete(requestOptions, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
     }
 
     /* CosmosAsyncContainer operations */
@@ -201,13 +186,7 @@ public class CosmosAsyncDatabase {
         }
 
         final  CosmosContainerRequestOptions requestOptions =  options;
-        return withContext(context -> createContainer(containerProperties, requestOptions, context)).subscriberContext(reactorContext -> {
-            Optional<String> master = reactorContext.getOrEmpty(TracerProvider.MASTER_CALL);
-            if (master.isPresent()) {
-                reactorContext = reactorContext.put(TracerProvider.NESTED_CALL, true);
-            }
-            return reactorContext.put(TracerProvider.MASTER_CALL, true);
-        });
+        return withContext(context -> createContainer(containerProperties, requestOptions, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
     }
 
 
@@ -357,13 +336,7 @@ public class CosmosAsyncDatabase {
     private Mono<CosmosAsyncContainerResponse> createContainerIfNotExistsInternal(
         CosmosContainerProperties containerProperties, CosmosAsyncContainer container,
         CosmosContainerRequestOptions options) {
-        return withContext(context -> createContainerIfNotExistsInternal(containerProperties, container, options, context)).subscriberContext(reactorContext -> {
-            Optional<String> master = reactorContext.getOrEmpty(TracerProvider.MASTER_CALL);
-            if (master.isPresent()) {
-                reactorContext = reactorContext.put(TracerProvider.NESTED_CALL, true);
-            }
-            return reactorContext.put(TracerProvider.MASTER_CALL, true);
-        });
+        return withContext(context -> createContainerIfNotExistsInternal(containerProperties, container, options, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
     }
 
     /**
@@ -381,7 +354,7 @@ public class CosmosAsyncDatabase {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             String spanName = "readAllContainers." + this.getId();
             pagedFluxOptions.setTracerInformation(this.getClient().getTracerProvider(), spanName,
-                this.getClient().getServiceEndpoint());
+                this.getClient().getServiceEndpoint(), getId());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().readCollections(getLink(), options)
                        .map(response -> BridgeInternal.createFeedResponse(
@@ -466,7 +439,7 @@ public class CosmosAsyncDatabase {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             String spanName = "queryContainers." + this.getId() + "." + querySpec.getQueryText();
             pagedFluxOptions.setTracerInformation(this.getClient().getTracerProvider(), spanName,
-                this.getClient().getServiceEndpoint());
+                this.getClient().getServiceEndpoint(), getId());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryCollections(getLink(), querySpec, options)
                        .map(response -> BridgeInternal.createFeedResponse(
@@ -548,7 +521,7 @@ public class CosmosAsyncDatabase {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             String spanName = "readAllUsers." + this.getId();
             pagedFluxOptions.setTracerInformation(this.getClient().getTracerProvider(), spanName,
-                this.getClient().getServiceEndpoint());
+                this.getClient().getServiceEndpoint(), getId());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().readUsers(getLink(), options)
                        .map(response -> BridgeInternal.createFeedResponse(
@@ -619,7 +592,7 @@ public class CosmosAsyncDatabase {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             String spanName = "queryUsers." + this.getId() + "." + querySpec.getQueryText();
             pagedFluxOptions.setTracerInformation(this.getClient().getTracerProvider(), spanName,
-                this.getClient().getServiceEndpoint());
+                this.getClient().getServiceEndpoint(), getId());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryUsers(getLink(), querySpec, options)
                        .map(response -> BridgeInternal.createFeedResponseWithQueryMetrics(
@@ -644,13 +617,7 @@ public class CosmosAsyncDatabase {
      * @return a {@link Mono} containing throughput or an error.
      */
     public Mono<Integer> readProvisionedThroughput() {
-        return withContext(context -> readProvisionedThroughput(context)).subscriberContext(reactorContext -> {
-            Optional<String> master = reactorContext.getOrEmpty(TracerProvider.MASTER_CALL);
-            if (master.isPresent()) {
-                reactorContext = reactorContext.put(TracerProvider.NESTED_CALL, true);
-            }
-            return reactorContext.put(TracerProvider.MASTER_CALL, true);
-        });
+        return withContext(context -> readProvisionedThroughput(context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
     }
 
     /**
@@ -662,13 +629,7 @@ public class CosmosAsyncDatabase {
      * @return a {@link Mono} containing throughput or an error.
      */
     public Mono<Integer> replaceProvisionedThroughput(int requestUnitsPerSecond) {
-        return withContext(context -> replaceProvisionedThroughput(requestUnitsPerSecond, context)).subscriberContext(reactorContext -> {
-            Optional<String> master = reactorContext.getOrEmpty(TracerProvider.MASTER_CALL);
-            if (master.isPresent()) {
-                reactorContext = reactorContext.put(TracerProvider.NESTED_CALL, true);
-            }
-            return reactorContext.put(TracerProvider.MASTER_CALL, true);
-        });
+        return withContext(context -> replaceProvisionedThroughput(requestUnitsPerSecond, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
     }
 
     CosmosAsyncClient getClient() {
@@ -697,13 +658,8 @@ public class CosmosAsyncDatabase {
         CosmosContainerRequestOptions options,
         Context context) {
         String spanName = "createContainerIfNotExistsInternal." + containerProperties.getId();
-        Map<String, String> tracingAttributes = new HashMap<String, String>() {{
-            put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
-            put(TracerProvider.DB_INSTANCE, getId());
-            put(TracerProvider.DB_URL, client.getServiceEndpoint());
-            put(TracerProvider.DB_STATEMENT, spanName);
-        }};
-
+        Map<String, String> tracingAttributes = TracerProvider.createTracingMap(getId(),
+            getClient().getServiceEndpoint(), spanName);
         Mono<CosmosAsyncContainerResponse> responseMono = container.read(options).onErrorResume(exception -> {
             final Throwable unwrappedException = Exceptions.unwrap(exception);
             if (unwrappedException instanceof CosmosClientException) {
@@ -723,13 +679,8 @@ public class CosmosAsyncDatabase {
         CosmosContainerRequestOptions options,
         Context context) {
         String spanName = "createContainer." + containerProperties.getId();
-        Map<String, String> tracingAttributes = new HashMap<String, String>() {{
-            put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
-            put(TracerProvider.DB_INSTANCE, getId());
-            put(TracerProvider.DB_URL, client.getServiceEndpoint());
-            put(TracerProvider.DB_STATEMENT, spanName);
-        }};
-
+        Map<String, String> tracingAttributes = TracerProvider.createTracingMap(getId(),
+            getClient().getServiceEndpoint(), spanName);
         Mono<CosmosAsyncContainerResponse> responseMono = getDocClientWrapper()
             .createCollection(this.getLink(), ModelBridgeInternal.getV2Collection(containerProperties),
                 ModelBridgeInternal.toRequestOptions(options))
@@ -740,13 +691,8 @@ public class CosmosAsyncDatabase {
 
     private Mono<CosmosAsyncDatabaseResponse> read(CosmosDatabaseRequestOptions options, Context context) {
         String spanName = "readDatabase." + this.getId();
-        Map<String, String> tracingAttributes = new HashMap<String, String>() {{
-            put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
-            put(TracerProvider.DB_INSTANCE, getId());
-            put(TracerProvider.DB_URL, client.getServiceEndpoint());
-            put(TracerProvider.DB_STATEMENT, spanName);
-        }};
-
+        Map<String, String> tracingAttributes = TracerProvider.createTracingMap(getId(),
+            getClient().getServiceEndpoint(), spanName);
         Mono<CosmosAsyncDatabaseResponse> responseMono = getDocClientWrapper().readDatabase(getLink(),
             ModelBridgeInternal.toRequestOptions(options))
             .map(response -> ModelBridgeInternal.createCosmosAsyncDatabaseResponse(response, getClient())).single();
@@ -756,13 +702,8 @@ public class CosmosAsyncDatabase {
 
     private Mono<CosmosAsyncDatabaseResponse> delete(CosmosDatabaseRequestOptions options, Context context) {
         String spanName = "deleteDatabase." + this.getId();
-        Map<String, String> tracingAttributes = new HashMap<String, String>() {{
-            put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
-            put(TracerProvider.DB_INSTANCE, getId());
-            put(TracerProvider.DB_URL, client.getServiceEndpoint());
-            put(TracerProvider.DB_STATEMENT, spanName);
-        }};
-
+        Map<String, String> tracingAttributes = TracerProvider.createTracingMap(getId(),
+            getClient().getServiceEndpoint(), spanName);
         Mono<CosmosAsyncDatabaseResponse> responseMono = getDocClientWrapper().deleteDatabase(getLink(),
             ModelBridgeInternal.toRequestOptions(options))
             .map(response -> ModelBridgeInternal.createCosmosAsyncDatabaseResponse(response, getClient())).single();
@@ -772,13 +713,8 @@ public class CosmosAsyncDatabase {
 
     private Mono<Integer> replaceProvisionedThroughput(int requestUnitsPerSecond, Context context) {
         String spanName = "replaceOffer." + this.getId();
-        Map<String, String> tracingAttributes = new HashMap<String, String>() {{
-            put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
-            put(TracerProvider.DB_INSTANCE, getId());
-            put(TracerProvider.DB_URL, client.getServiceEndpoint());
-            put(TracerProvider.DB_STATEMENT, spanName);
-        }};
-
+        Map<String, String> tracingAttributes = TracerProvider.createTracingMap(getId(),
+            getClient().getServiceEndpoint(), spanName);
         Mono<Integer> responseMono = this.read()
             .flatMap(cosmosDatabaseResponse -> this.getDocClientWrapper()
                 .queryOffers("select * from c where c.offerResourceId = '"
@@ -806,13 +742,8 @@ public class CosmosAsyncDatabase {
 
     private Mono<Integer> readProvisionedThroughput(Context context) {
         String spanName = "readProvisionedThroughput." + this.getId();
-        Map<String, String> tracingAttributes = new HashMap<String, String>() {{
-            put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
-            put(TracerProvider.DB_INSTANCE, getId());
-            put(TracerProvider.DB_URL, client.getServiceEndpoint());
-            put(TracerProvider.DB_STATEMENT, spanName);
-        }};
-
+        Map<String, String> tracingAttributes = TracerProvider.createTracingMap(getId(),
+            getClient().getServiceEndpoint(), spanName);
         Mono<Integer> responseMono = this.read()
             .flatMap(cosmosDatabaseResponse -> getDocClientWrapper()
                 .queryOffers("select * from c where c.offerResourceId = '"

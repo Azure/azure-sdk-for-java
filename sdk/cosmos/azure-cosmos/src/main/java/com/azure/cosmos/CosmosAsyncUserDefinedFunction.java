@@ -11,9 +11,7 @@ import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Mono;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.core.util.FluxUtil.withContext;
@@ -63,13 +61,7 @@ public class CosmosAsyncUserDefinedFunction {
      * @return an {@link Mono} containing the single resource response for the read user defined function or an error.
      */
     public Mono<CosmosAsyncUserDefinedFunctionResponse> read() {
-        return withContext(context -> read(context)).subscriberContext(reactorContext -> {
-            Optional<String> master = reactorContext.getOrEmpty(TracerProvider.MASTER_CALL);
-            if (master.isPresent()) {
-                reactorContext = reactorContext.put(TracerProvider.NESTED_CALL, true);
-            }
-            return reactorContext.put(TracerProvider.MASTER_CALL, true);
-        });
+        return withContext(context -> read(context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
     }
 
     /**
@@ -85,13 +77,7 @@ public class CosmosAsyncUserDefinedFunction {
      * or an error.
      */
     public Mono<CosmosAsyncUserDefinedFunctionResponse> replace(CosmosUserDefinedFunctionProperties udfSettings) {
-        return withContext(context -> replace(udfSettings, context)).subscriberContext(reactorContext -> {
-            Optional<String> master = reactorContext.getOrEmpty(TracerProvider.MASTER_CALL);
-            if (master.isPresent()) {
-                reactorContext = reactorContext.put(TracerProvider.NESTED_CALL, true);
-            }
-            return reactorContext.put(TracerProvider.MASTER_CALL, true);
-        });
+        return withContext(context -> replace(udfSettings, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
     }
 
     /**
@@ -106,13 +92,7 @@ public class CosmosAsyncUserDefinedFunction {
      * an error.
      */
     public Mono<CosmosAsyncUserDefinedFunctionResponse> delete() {
-        return withContext(context -> delete(context)).subscriberContext(reactorContext -> {
-            Optional<String> master = reactorContext.getOrEmpty(TracerProvider.MASTER_CALL);
-            if (master.isPresent()) {
-                reactorContext = reactorContext.put(TracerProvider.NESTED_CALL, true);
-            }
-            return reactorContext.put(TracerProvider.MASTER_CALL, true);
-        });
+        return withContext(context -> delete(context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
     }
 
     String getURIPathSegment() {
@@ -139,13 +119,8 @@ public class CosmosAsyncUserDefinedFunction {
             ? new AtomicReference<>(Context.NONE)
             : null;
         String spanName = "readUDF." + container.getId();
-        Map<String, String> tracingAttributes = new HashMap<String, String>() {{
-            put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
-            put(TracerProvider.DB_INSTANCE, container.getDatabase().getId());
-            put(TracerProvider.DB_URL, container.getDatabase().getClient().getServiceEndpoint());
-            put(TracerProvider.DB_STATEMENT, spanName);
-        }};
-
+        Map<String, String> tracingAttributes = TracerProvider.createTracingMap(container.getDatabase().getId(),
+            container.getDatabase().getClient().getServiceEndpoint(), spanName);
         Mono<CosmosAsyncUserDefinedFunctionResponse> responseMono =
             container.getDatabase().getDocClientWrapper().readUserDefinedFunction(getLink(), null)
             .map(response -> ModelBridgeInternal.createCosmosAsyncUserDefinedFunctionResponse(response, container)).single();
@@ -155,13 +130,8 @@ public class CosmosAsyncUserDefinedFunction {
     private Mono<CosmosAsyncUserDefinedFunctionResponse> replace(CosmosUserDefinedFunctionProperties udfSettings,
                                                                  Context context) {
         String spanName = "replaceUDF." + container.getId();
-        Map<String, String> tracingAttributes = new HashMap<String, String>() {{
-            put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
-            put(TracerProvider.DB_INSTANCE, container.getDatabase().getId());
-            put(TracerProvider.DB_URL, container.getDatabase().getClient().getServiceEndpoint());
-            put(TracerProvider.DB_STATEMENT, spanName);
-        }};
-
+        Map<String, String> tracingAttributes = TracerProvider.createTracingMap(container.getDatabase().getId(),
+            container.getDatabase().getClient().getServiceEndpoint(), spanName);
         Mono<CosmosAsyncUserDefinedFunctionResponse> responseMono = container.getDatabase()
             .getDocClientWrapper()
             .replaceUserDefinedFunction(new UserDefinedFunction(ModelBridgeInternal.toJsonFromJsonSerializable(udfSettings)), null)
@@ -172,13 +142,8 @@ public class CosmosAsyncUserDefinedFunction {
 
     private Mono<CosmosAsyncUserDefinedFunctionResponse> delete(Context context) {
         String spanName = "deleteUDF." + container.getId();
-        Map<String, String> tracingAttributes = new HashMap<String, String>() {{
-            put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
-            put(TracerProvider.DB_INSTANCE, container.getDatabase().getId());
-            put(TracerProvider.DB_URL, container.getDatabase().getClient().getServiceEndpoint());
-            put(TracerProvider.DB_STATEMENT, spanName);
-        }};
-
+        Map<String, String> tracingAttributes = TracerProvider.createTracingMap(container.getDatabase().getId(),
+            container.getDatabase().getClient().getServiceEndpoint(), spanName);
         Mono<CosmosAsyncUserDefinedFunctionResponse> responseMono = container.getDatabase()
             .getDocClientWrapper()
             .deleteUserDefinedFunction(this.getLink(), null)

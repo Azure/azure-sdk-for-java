@@ -24,10 +24,8 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
@@ -217,13 +215,7 @@ public final class CosmosAsyncClient implements Closeable {
         Database wrappedDatabase = new Database();
         wrappedDatabase.setId(databaseSettings.getId());
         final CosmosDatabaseRequestOptions requestOptions = options;
-        return withContext(context -> createDatabase(wrappedDatabase, requestOptions, context)).subscriberContext(reactorContext -> {
-            Optional<String> master = reactorContext.getOrEmpty(TracerProvider.MASTER_CALL);
-            if (master.isPresent()) {
-                reactorContext = reactorContext.put(TracerProvider.NESTED_CALL, true);
-            }
-            return reactorContext.put(TracerProvider.MASTER_CALL, true);
-        });
+        return withContext(context -> createDatabase(wrappedDatabase, requestOptions, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
     }
 
     /**
@@ -279,13 +271,7 @@ public final class CosmosAsyncClient implements Closeable {
         Database wrappedDatabase = new Database();
         wrappedDatabase.setId(databaseSettings.getId());
         final CosmosDatabaseRequestOptions requestOptions = options;
-        return withContext(context -> createDatabase(wrappedDatabase, requestOptions, context)).subscriberContext(reactorContext -> {
-            Optional<String> master = reactorContext.getOrEmpty(TracerProvider.MASTER_CALL);
-            if (master.isPresent()) {
-                reactorContext = reactorContext.put(TracerProvider.NESTED_CALL, true);
-            }
-            return reactorContext.put(TracerProvider.MASTER_CALL, true);
-        });
+        return withContext(context -> createDatabase(wrappedDatabase, requestOptions, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
     }
 
     /**
@@ -337,7 +323,7 @@ public final class CosmosAsyncClient implements Closeable {
     public CosmosPagedFlux<CosmosDatabaseProperties> readAllDatabases(FeedOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             String spanName = "readAllDatabases";
-            pagedFluxOptions.setTracerInformation(this.tracerProvider, spanName, this.serviceEndpoint);
+            pagedFluxOptions.setTracerInformation(this.tracerProvider, spanName, this.serviceEndpoint, null);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().readDatabases(options)
                                         .map(response ->
@@ -390,7 +376,7 @@ public final class CosmosAsyncClient implements Closeable {
     public CosmosPagedFlux<CosmosDatabaseProperties> queryDatabases(SqlQuerySpec querySpec, FeedOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             String spanName = "queryDatabases." + querySpec.getQueryText();
-            pagedFluxOptions.setTracerInformation(this.tracerProvider, spanName, this.serviceEndpoint);
+            pagedFluxOptions.setTracerInformation(this.tracerProvider, spanName, this.serviceEndpoint, null);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryDatabases(querySpec, options)
                                         .map(response -> BridgeInternal.createFeedResponse(
@@ -422,24 +408,13 @@ public final class CosmosAsyncClient implements Closeable {
     }
 
     private Mono<CosmosAsyncDatabaseResponse> createDatabaseIfNotExistsInternal(CosmosAsyncDatabase database) {
-        return withContext(context -> createDatabaseIfNotExistsInternal(database, context)).subscriberContext(reactorContext -> {
-            Optional<String> master = reactorContext.getOrEmpty(TracerProvider.MASTER_CALL);
-            if (master.isPresent()) {
-                reactorContext = reactorContext.put(TracerProvider.NESTED_CALL, true);
-            }
-            return reactorContext.put(TracerProvider.MASTER_CALL, true);
-        });
+        return withContext(context -> createDatabaseIfNotExistsInternal(database, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
     }
 
     private Mono<CosmosAsyncDatabaseResponse> createDatabaseIfNotExistsInternal(CosmosAsyncDatabase database,
                                                                                 Context context) {
         String spanName = "createDatabaseIfNotExistsInternal." + database.getId();
-        Map<String, String> tracingAttributes = new HashMap() {{
-            put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
-            put(TracerProvider.DB_INSTANCE, database.getId());
-            put(TracerProvider.DB_URL, serviceEndpoint);
-            put(TracerProvider.DB_STATEMENT, spanName);
-        }};
+        Map<String, String> tracingAttributes = TracerProvider.createTracingMap(database.getId(), this.serviceEndpoint, spanName);
         Mono<CosmosAsyncDatabaseResponse> responseMono = database.read().onErrorResume(exception -> {
             final Throwable unwrappedException = Exceptions.unwrap(exception);
             if (unwrappedException instanceof CosmosClientException) {
@@ -454,14 +429,11 @@ public final class CosmosAsyncClient implements Closeable {
         return tracerProvider.traceEnabledCosmosResponsePublisher(responseMono, tracingAttributes, context, spanName);
     }
 
-    private Mono<CosmosAsyncDatabaseResponse> createDatabase(Database database, CosmosDatabaseRequestOptions options, Context context){
+    private Mono<CosmosAsyncDatabaseResponse> createDatabase(Database database, CosmosDatabaseRequestOptions options,
+                                                             Context context) {
         String spanName = "createDatabase." + database.getId();
-        Map<String, String> tracingAttributes = new HashMap<String, String>() {{
-            put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
-            put(TracerProvider.DB_INSTANCE, database.getId());
-            put(TracerProvider.DB_URL, serviceEndpoint);
-            put(TracerProvider.DB_STATEMENT, spanName);
-        }};
+        Map<String, String> tracingAttributes = TracerProvider.createTracingMap(database.getId(),
+            this.serviceEndpoint, spanName);
 
         Mono<CosmosAsyncDatabaseResponse> responseMono = asyncDocumentClient.createDatabase(database, ModelBridgeInternal.toRequestOptions(options))
             .map(databaseResourceResponse -> ModelBridgeInternal.createCosmosAsyncDatabaseResponse(databaseResourceResponse,

@@ -11,9 +11,7 @@ import com.azure.cosmos.models.CosmosTriggerProperties;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Mono;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import static com.azure.core.util.FluxUtil.withContext;
 
@@ -60,13 +58,7 @@ public class CosmosAsyncTrigger {
      * @return an {@link Mono} containing the single resource response for the read cosmos trigger or an error.
      */
     public Mono<CosmosAsyncTriggerResponse> read() {
-        return withContext(context -> read(context)).subscriberContext(reactorContext -> {
-            Optional<String> master = reactorContext.getOrEmpty(TracerProvider.MASTER_CALL);
-            if (master.isPresent()) {
-                reactorContext = reactorContext.put(TracerProvider.NESTED_CALL, true);
-            }
-            return reactorContext.put(TracerProvider.MASTER_CALL, true);
-        });
+        return withContext(context -> read(context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
     }
 
     /**
@@ -80,13 +72,7 @@ public class CosmosAsyncTrigger {
      * @return an {@link Mono} containing the single resource response with the replaced cosmos trigger or an error.
      */
     public Mono<CosmosAsyncTriggerResponse> replace(CosmosTriggerProperties triggerSettings) {
-        return withContext(context -> replace(triggerSettings, context)).subscriberContext(reactorContext -> {
-            Optional<String> master = reactorContext.getOrEmpty(TracerProvider.MASTER_CALL);
-            if (master.isPresent()) {
-                reactorContext = reactorContext.put(TracerProvider.NESTED_CALL, true);
-            }
-            return reactorContext.put(TracerProvider.MASTER_CALL, true);
-        });
+        return withContext(context -> replace(triggerSettings, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
     }
 
     /**
@@ -99,13 +85,7 @@ public class CosmosAsyncTrigger {
      * @return an {@link Mono} containing the single resource response for the deleted cosmos trigger or an error.
      */
     public Mono<CosmosAsyncTriggerResponse> delete() {
-        return withContext(context -> delete(context)).subscriberContext(reactorContext -> {
-            Optional<String> master = reactorContext.getOrEmpty(TracerProvider.MASTER_CALL);
-            if (master.isPresent()) {
-                reactorContext = reactorContext.put(TracerProvider.NESTED_CALL, true);
-            }
-            return reactorContext.put(TracerProvider.MASTER_CALL, true);
-        });
+        return withContext(context -> delete(context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
     }
 
     String getURIPathSegment() {
@@ -128,12 +108,8 @@ public class CosmosAsyncTrigger {
 
     private Mono<CosmosAsyncTriggerResponse> read(Context context) {
         String spanName = "readTrigger." + container.getId();
-        Map<String, String> tracingAttributes = new HashMap<String, String>() {{
-            put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
-            put(TracerProvider.DB_INSTANCE, container.getDatabase().getId());
-            put(TracerProvider.DB_URL, container.getDatabase().getClient().getServiceEndpoint());
-            put(TracerProvider.DB_STATEMENT, spanName);
-        }};
+        Map<String, String> tracingAttributes = TracerProvider.createTracingMap(container.getDatabase().getId(),
+            container.getDatabase().getClient().getServiceEndpoint(), spanName);
 
         Mono<CosmosAsyncTriggerResponse> responseMono = container.getDatabase()
             .getDocClientWrapper()
@@ -145,13 +121,8 @@ public class CosmosAsyncTrigger {
 
     private Mono<CosmosAsyncTriggerResponse> replace(CosmosTriggerProperties triggerSettings, Context context) {
         String spanName = "replaceTrigger." + container.getId();
-        Map<String, String> tracingAttributes = new HashMap<String, String>() {{
-            put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
-            put(TracerProvider.DB_INSTANCE, container.getDatabase().getId());
-            put(TracerProvider.DB_URL, container.getDatabase().getClient().getServiceEndpoint());
-            put(TracerProvider.DB_STATEMENT, spanName);
-        }};
-
+        Map<String, String> tracingAttributes = TracerProvider.createTracingMap(container.getDatabase().getId(),
+            container.getDatabase().getClient().getServiceEndpoint(), spanName);
         Mono<CosmosAsyncTriggerResponse> responseMono = container.getDatabase()
             .getDocClientWrapper()
             .replaceTrigger(new Trigger(ModelBridgeInternal.toJsonFromJsonSerializable(triggerSettings)), null)
@@ -162,13 +133,8 @@ public class CosmosAsyncTrigger {
 
     private Mono<CosmosAsyncTriggerResponse> delete(Context context) {
         String spanName = "deleteTrigger." + container.getId();
-        Map<String, String> tracingAttributes = new HashMap<String, String>() {{
-            put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
-            put(TracerProvider.DB_INSTANCE, container.getDatabase().getId());
-            put(TracerProvider.DB_URL, container.getDatabase().getClient().getServiceEndpoint());
-            put(TracerProvider.DB_STATEMENT, spanName);
-        }};
-
+        Map<String, String> tracingAttributes = TracerProvider.createTracingMap(container.getDatabase().getId(),
+            container.getDatabase().getClient().getServiceEndpoint(), spanName);
         Mono<CosmosAsyncTriggerResponse> responseMono = container.getDatabase()
             .getDocClientWrapper()
             .deleteTrigger(getLink(), null)

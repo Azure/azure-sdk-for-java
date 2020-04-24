@@ -149,7 +149,8 @@ public class CosmosAsyncUser {
             String spanName = "readAllPermissions." + this.getId();
             pagedFluxOptions.setTracerInformation(this.getDatabase().getClient().getTracerProvider(),
                 spanName,
-                this.getDatabase().getClient().getServiceEndpoint());
+                this.getDatabase().getClient().getServiceEndpoint(),
+                this.getDatabase().getId());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDatabase().getDocClientWrapper()
                        .readPermissions(getLink(), options)
@@ -191,7 +192,8 @@ public class CosmosAsyncUser {
             String spanName = "queryPermissions." + this.getId() + "." + query;
             pagedFluxOptions.setTracerInformation(this.getDatabase().getClient().getTracerProvider(),
                 spanName,
-                this.getDatabase().getClient().getServiceEndpoint());
+                this.getDatabase().getClient().getServiceEndpoint(),
+                this.getDatabase().getId());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDatabase().getDocClientWrapper()
                        .queryPermissions(getLink(), query, options)

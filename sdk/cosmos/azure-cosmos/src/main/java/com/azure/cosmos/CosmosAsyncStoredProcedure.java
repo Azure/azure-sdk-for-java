@@ -14,7 +14,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import static com.azure.core.util.FluxUtil.withContext;
 
@@ -78,13 +77,7 @@ public class CosmosAsyncStoredProcedure {
      * @return an {@link Mono} containing the single resource response with the read stored procedure or an error.
      */
     public Mono<CosmosAsyncStoredProcedureResponse> read(CosmosStoredProcedureRequestOptions options) {
-        return withContext(context -> read(options, context)).subscriberContext(reactorContext -> {
-            Optional<String> master = reactorContext.getOrEmpty(TracerProvider.MASTER_CALL);
-            if (master.isPresent()) {
-                reactorContext = reactorContext.put(TracerProvider.NESTED_CALL, true);
-            }
-            return reactorContext.put(TracerProvider.MASTER_CALL, true);
-        });
+        return withContext(context -> read(options, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
     }
 
     /**
@@ -113,13 +106,7 @@ public class CosmosAsyncStoredProcedure {
      * @return an {@link Mono} containing the single resource response for the deleted stored procedure or an error.
      */
     public Mono<CosmosAsyncStoredProcedureResponse> delete(CosmosStoredProcedureRequestOptions options) {
-        return withContext(context -> delete(options, context)).subscriberContext(reactorContext -> {
-            Optional<String> master = reactorContext.getOrEmpty(TracerProvider.MASTER_CALL);
-            if (master.isPresent()) {
-                reactorContext = reactorContext.put(TracerProvider.NESTED_CALL, true);
-            }
-            return reactorContext.put(TracerProvider.MASTER_CALL, true);
-        });
+        return withContext(context -> delete(options, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
     }
 
     /**
@@ -136,13 +123,7 @@ public class CosmosAsyncStoredProcedure {
      */
     public Mono<CosmosAsyncStoredProcedureResponse> execute(Object[] procedureParams,
                                                             CosmosStoredProcedureRequestOptions options) {
-        return withContext(context -> execute(procedureParams, options, context)).subscriberContext(reactorContext -> {
-            Optional<String> master = reactorContext.getOrEmpty(TracerProvider.MASTER_CALL);
-            if (master.isPresent()) {
-                reactorContext = reactorContext.put(TracerProvider.NESTED_CALL, true);
-            }
-            return reactorContext.put(TracerProvider.MASTER_CALL, true);
-        });
+        return withContext(context -> execute(procedureParams, options, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
     }
 
     /**
@@ -174,13 +155,7 @@ public class CosmosAsyncStoredProcedure {
      */
     public Mono<CosmosAsyncStoredProcedureResponse> replace(CosmosStoredProcedureProperties storedProcedureSettings,
                                                             CosmosStoredProcedureRequestOptions options) {
-        return withContext(context -> replace(storedProcedureSettings, options, context)).subscriberContext(reactorContext -> {
-            Optional<String> master = reactorContext.getOrEmpty(TracerProvider.MASTER_CALL);
-            if (master.isPresent()) {
-                reactorContext = reactorContext.put(TracerProvider.NESTED_CALL, true);
-            }
-            return reactorContext.put(TracerProvider.MASTER_CALL, true);
-        });
+        return withContext(context -> replace(storedProcedureSettings, options, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
     }
 
     String getURIPathSegment() {
@@ -204,13 +179,8 @@ public class CosmosAsyncStoredProcedure {
     private Mono<CosmosAsyncStoredProcedureResponse> read(CosmosStoredProcedureRequestOptions options,
                                                           Context context) {
         String spanName = "readStoredProcedure." + cosmosContainer.getId();
-        Map<String, String> tracingAttributes = new HashMap<String, String>() {{
-            put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
-            put(TracerProvider.DB_INSTANCE, cosmosContainer.getDatabase().getId());
-            put(TracerProvider.DB_URL, cosmosContainer.getDatabase().getClient().getServiceEndpoint());
-            put(TracerProvider.DB_STATEMENT, spanName);
-        }};
-
+        Map<String, String> tracingAttributes = TracerProvider.createTracingMap(cosmosContainer.getDatabase().getId(),
+            cosmosContainer.getDatabase().getClient().getServiceEndpoint(), spanName);
         if (options == null) {
             options = new CosmosStoredProcedureRequestOptions();
         }
@@ -224,13 +194,8 @@ public class CosmosAsyncStoredProcedure {
     private Mono<CosmosAsyncStoredProcedureResponse> delete(CosmosStoredProcedureRequestOptions options,
                                                             Context context) {
         String spanName = "deleteStoredProcedure." + cosmosContainer.getId();
-        Map<String, String> tracingAttributes = new HashMap<String, String>() {{
-            put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
-            put(TracerProvider.DB_INSTANCE, cosmosContainer.getDatabase().getId());
-            put(TracerProvider.DB_URL, cosmosContainer.getDatabase().getClient().getServiceEndpoint());
-            put(TracerProvider.DB_STATEMENT, spanName);
-        }};
-
+        Map<String, String> tracingAttributes = TracerProvider.createTracingMap(cosmosContainer.getDatabase().getId(),
+            cosmosContainer.getDatabase().getClient().getServiceEndpoint(), spanName);
         if (options == null) {
             options = new CosmosStoredProcedureRequestOptions();
         }
@@ -249,13 +214,8 @@ public class CosmosAsyncStoredProcedure {
                                                              CosmosStoredProcedureRequestOptions options,
                                                              Context context) {
         String spanName = "executeStoredProcedure." + cosmosContainer.getId();
-        Map<String, String> tracingAttributes = new HashMap<String, String>() {{
-            put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
-            put(TracerProvider.DB_INSTANCE, cosmosContainer.getDatabase().getId());
-            put(TracerProvider.DB_URL, cosmosContainer.getDatabase().getClient().getServiceEndpoint());
-            put(TracerProvider.DB_STATEMENT, spanName);
-        }};
-
+        Map<String, String> tracingAttributes = TracerProvider.createTracingMap(cosmosContainer.getDatabase().getId(),
+            cosmosContainer.getDatabase().getClient().getServiceEndpoint(), spanName);
         if (options == null) {
             options = new CosmosStoredProcedureRequestOptions();
         }
@@ -272,13 +232,8 @@ public class CosmosAsyncStoredProcedure {
                                                              CosmosStoredProcedureRequestOptions options,
                                                              Context context) {
         String spanName = "replaceStoredProcedure." + cosmosContainer.getId();
-        Map<String, String> tracingAttributes = new HashMap<String, String>() {{
-            put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
-            put(TracerProvider.DB_INSTANCE, cosmosContainer.getDatabase().getId());
-            put(TracerProvider.DB_URL, cosmosContainer.getDatabase().getClient().getServiceEndpoint());
-            put(TracerProvider.DB_STATEMENT, spanName);
-        }};
-
+        Map<String, String> tracingAttributes = TracerProvider.createTracingMap(cosmosContainer.getDatabase().getId(),
+            cosmosContainer.getDatabase().getClient().getServiceEndpoint(), spanName);
         if (options == null) {
             options = new CosmosStoredProcedureRequestOptions();
         }

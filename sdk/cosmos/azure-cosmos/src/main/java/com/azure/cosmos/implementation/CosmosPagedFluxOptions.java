@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.util.CosmosPagedFlux;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -89,12 +88,8 @@ public class CosmosPagedFluxOptions {
         return tracerSpanName;
     }
 
-    public void setTracerInformation(TracerProvider tracerProvider, String tracerSpanName, String serviceUrl) {
-        this.tracingAttributes = new HashMap<String, String>() {{
-            put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
-            put(TracerProvider.DB_URL, serviceUrl);
-            put(TracerProvider.DB_STATEMENT, tracerSpanName);
-        }};
+    public void setTracerInformation(TracerProvider tracerProvider, String tracerSpanName, String serviceUrl, String databaseId) {
+        this.tracingAttributes = TracerProvider.createTracingMap(databaseId, serviceUrl, tracerSpanName);
         this.tracerSpanName = tracerSpanName;
         this.tracerProvider = tracerProvider;
     }

@@ -1,7 +1,6 @@
 package com.azure.cosmos;
 
 import com.azure.core.util.Context;
-import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.LifeCycleUtils;
@@ -54,21 +53,21 @@ public class CosmosTracerTest extends TestSuiteBase {
         CosmosAsyncDatabaseResponse databaseResponse =
             client.createDatabaseIfNotExists(cosmosAsyncDatabase.getId()).block();
         Mockito.verify(tracer, Mockito.times(1)).startSpan(Matchers.anyString(), Matchers.any(Context.class),
-            Matchers.any(ProcessKind.class));
+            Matchers.anyMap());
         Mockito.verify(tracer, Mockito.times(2)).endSpan(Matchers.any(Context.class), Matchers.any(Signal.class),
             Matchers.anyInt()); //endSpan invocation is 1 greater than startSpan, because createDatabaseIfNotExists
         // uses public read api
 
         client.readAllDatabases(new FeedOptions()).byPage().single().block();
         Mockito.verify(tracer, Mockito.times(2)).startSpan(Matchers.anyString(), Matchers.any(Context.class),
-            Matchers.any(ProcessKind.class));
+            Matchers.anyMap());
         Mockito.verify(tracer, Mockito.atLeast(4)).endSpan(Matchers.any(Context.class), Matchers.any(Signal.class),
             Matchers.anyInt()); //We used atLeast in endSpan because for query we are calling endSpan on every doOnEach
 
         String query = "select * from c where c.id = '" + cosmosAsyncDatabase.getId() + "'";
         client.queryDatabases(query, new FeedOptions()).byPage().single().block();
         Mockito.verify(tracer, Mockito.times(3)).startSpan(Matchers.anyString(), Matchers.any(Context.class),
-            Matchers.any(ProcessKind.class));
+            Matchers.anyMap());
         Mockito.verify(tracer, Mockito.atLeast(6)).endSpan(Matchers.any(Context.class), Matchers.any(Signal.class),
             Matchers.anyInt()); //We used atLeast in endSpan because for query we are calling endSpan on every doOnEach
     }
@@ -82,7 +81,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             cosmosAsyncDatabase.createContainerIfNotExists(cosmosAsyncContainer.getId(),
                 "/pk", 5000).block();
         Mockito.verify(tracer, Mockito.times(1)).startSpan(Matchers.anyString(), Matchers.any(Context.class),
-            Matchers.any(ProcessKind.class));
+            Matchers.anyMap());
 
         try {
             cosmosAsyncDatabase.readProvisionedThroughput().block();
@@ -91,15 +90,15 @@ public class CosmosTracerTest extends TestSuiteBase {
         }
 
         Mockito.verify(tracer, Mockito.times(2)).startSpan(Matchers.anyString(), Matchers.any(Context.class),
-            Matchers.any(ProcessKind.class));
+            Matchers.anyMap());
 
         cosmosAsyncDatabase.readAllUsers().byPage().single().block();
         Mockito.verify(tracer, Mockito.times(3)).startSpan(Matchers.anyString(), Matchers.any(Context.class),
-            Matchers.any(ProcessKind.class));
+            Matchers.anyMap());
 
         cosmosAsyncDatabase.readAllContainers().byPage().single().block();
         Mockito.verify(tracer, Mockito.times(4)).startSpan(Matchers.anyString(), Matchers.any(Context.class),
-            Matchers.any(ProcessKind.class));
+            Matchers.anyMap());
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
@@ -109,7 +108,7 @@ public class CosmosTracerTest extends TestSuiteBase {
 
         cosmosAsyncContainer.read().block();
         Mockito.verify(tracer, Mockito.times(1)).startSpan(Matchers.anyString(), Matchers.any(Context.class),
-            Matchers.any(ProcessKind.class));
+            Matchers.anyMap());
 
         try {
             cosmosAsyncContainer.readProvisionedThroughput().block();
@@ -117,36 +116,36 @@ public class CosmosTracerTest extends TestSuiteBase {
             //do nothing
         }
         Mockito.verify(tracer, Mockito.times(2)).startSpan(Matchers.anyString(), Matchers.any(Context.class),
-            Matchers.any(ProcessKind.class));
+            Matchers.anyMap());
 
         CosmosItemProperties properties = new CosmosItemProperties();
         properties.setId(ITEM_ID);
         cosmosAsyncContainer.createItem(properties).block();
         Mockito.verify(tracer, Mockito.times(3)).startSpan(Matchers.anyString(), Matchers.any(Context.class),
-            Matchers.any(ProcessKind.class));
+            Matchers.anyMap());
 
         cosmosAsyncContainer.upsertItem(properties,
             new CosmosItemRequestOptions()).block();
         Mockito.verify(tracer, Mockito.times(4)).startSpan(Matchers.anyString(), Matchers.any(Context.class),
-            Matchers.any(ProcessKind.class));
+            Matchers.anyMap());
 
         cosmosAsyncContainer.readItem(ITEM_ID, PartitionKey.NONE,
             CosmosItemProperties.class).block();
         Mockito.verify(tracer, Mockito.times(5)).startSpan(Matchers.anyString(), Matchers.any(Context.class),
-            Matchers.any(ProcessKind.class));
+            Matchers.anyMap());
 
         cosmosAsyncContainer.deleteItem(ITEM_ID, PartitionKey.NONE).block();
         Mockito.verify(tracer, Mockito.times(6)).startSpan(Matchers.anyString(), Matchers.any(Context.class),
-            Matchers.any(ProcessKind.class));
+            Matchers.anyMap());
 
         cosmosAsyncContainer.readAllItems(new FeedOptions(), CosmosItemRequestOptions.class).byPage().single().block();
         Mockito.verify(tracer, Mockito.times(7)).startSpan(Matchers.anyString(), Matchers.any(Context.class),
-            Matchers.any(ProcessKind.class));
+            Matchers.anyMap());
 
         String query = "select * from c where c.id = '" + ITEM_ID + "'";
         cosmosAsyncContainer.queryItems(query, new FeedOptions(), CosmosItemRequestOptions.class).byPage().single().block();
         Mockito.verify(tracer, Mockito.times(8)).startSpan(Matchers.anyString(), Matchers.any(Context.class),
-            Matchers.any(ProcessKind.class));
+            Matchers.anyMap());
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
@@ -156,83 +155,81 @@ public class CosmosTracerTest extends TestSuiteBase {
 
         cosmosAsyncContainer.getScripts().readAllStoredProcedures(new FeedOptions()).byPage().single().block();
         Mockito.verify(tracer, Mockito.times(1)).startSpan(Matchers.anyString(), Matchers.any(Context.class),
-            Matchers.any(ProcessKind.class));
+            Matchers.anyMap());
 
         cosmosAsyncContainer.getScripts().readAllTriggers(new FeedOptions()).byPage().single().block();
         Mockito.verify(tracer, Mockito.times(2)).startSpan(Matchers.anyString(), Matchers.any(Context.class),
-            Matchers.any(ProcessKind.class));
+            Matchers.anyMap());
 
         cosmosAsyncContainer.getScripts().readAllUserDefinedFunctions(new FeedOptions()).byPage().single().block();
         Mockito.verify(tracer, Mockito.times(3)).startSpan(Matchers.anyString(), Matchers.any(Context.class),
-            Matchers.any(ProcessKind.class));
+            Matchers.anyMap());
 
         CosmosUserDefinedFunctionProperties cosmosUserDefinedFunctionProperties =
             getCosmosUserDefinedFunctionProperties();
         CosmosUserDefinedFunctionProperties resultUdf =
             cosmosAsyncContainer.getScripts().createUserDefinedFunction(cosmosUserDefinedFunctionProperties).block().getProperties();
         Mockito.verify(tracer, Mockito.times(4)).startSpan(Matchers.anyString(), Matchers.any(Context.class),
-            Matchers.any(ProcessKind.class));
+            Matchers.anyMap());
 
         cosmosAsyncContainer.getScripts().getUserDefinedFunction(cosmosUserDefinedFunctionProperties.getId()).read().block();
         Mockito.verify(tracer, Mockito.times(5)).startSpan(Matchers.anyString(), Matchers.any(Context.class),
-            Matchers.any(ProcessKind.class));
+            Matchers.anyMap());
 
         cosmosUserDefinedFunctionProperties.setBody("function() {var x = 15;}");
         cosmosAsyncContainer.getScripts().getUserDefinedFunction(resultUdf.getId()).replace(resultUdf).block();
         Mockito.verify(tracer, Mockito.times(6)).startSpan(Matchers.anyString(), Matchers.any(Context.class),
-            Matchers.any(ProcessKind.class));
+            Matchers.anyMap());
 
         cosmosAsyncContainer.getScripts().readAllUserDefinedFunctions(new FeedOptions()).byPage().single().block();
         Mockito.verify(tracer, Mockito.times(7)).startSpan(Matchers.anyString(), Matchers.any(Context.class),
-            Matchers.any(ProcessKind.class));
+            Matchers.anyMap());
 
         cosmosAsyncContainer.getScripts().getUserDefinedFunction(cosmosUserDefinedFunctionProperties.getId()).delete().block();
         Mockito.verify(tracer, Mockito.times(8)).startSpan(Matchers.anyString(), Matchers.any(Context.class),
-            Matchers.any(ProcessKind.class));
+            Matchers.anyMap());
 
         CosmosTriggerProperties cosmosTriggerProperties = getCosmosTriggerProperties();
         CosmosTriggerProperties resultTrigger =
             cosmosAsyncContainer.getScripts().createTrigger(cosmosTriggerProperties).block().getProperties();
         Mockito.verify(tracer, Mockito.times(9)).startSpan(Matchers.anyString(), Matchers.any(Context.class),
-            Matchers.any(ProcessKind.class));
+            Matchers.anyMap());
 
         cosmosAsyncContainer.getScripts().getTrigger(cosmosTriggerProperties.getId()).read().block();
         Mockito.verify(tracer, Mockito.times(10)).startSpan(Matchers.anyString(), Matchers.any(Context.class),
-            Matchers.any(ProcessKind.class));
+            Matchers.anyMap());
 
         cosmosAsyncContainer.getScripts().getTrigger(cosmosTriggerProperties.getId()).replace(resultTrigger).block();
         Mockito.verify(tracer, Mockito.times(11)).startSpan(Matchers.anyString(), Matchers.any(Context.class),
-            Matchers.any(ProcessKind.class));
+            Matchers.anyMap());
 
         cosmosAsyncContainer.getScripts().readAllTriggers(new FeedOptions()).byPage().single().block();
         Mockito.verify(tracer, Mockito.times(12)).startSpan(Matchers.anyString(), Matchers.any(Context.class),
-            Matchers.any(ProcessKind.class));
+            Matchers.anyMap());
 
         cosmosAsyncContainer.getScripts().getTrigger(cosmosTriggerProperties.getId()).delete().block();
         Mockito.verify(tracer, Mockito.times(13)).startSpan(Matchers.anyString(), Matchers.any(Context.class),
-            Matchers.any(ProcessKind.class));
+            Matchers.anyMap());
 
         CosmosStoredProcedureProperties procedureProperties = getCosmosStoredProcedureProperties();
         CosmosStoredProcedureProperties resultSproc =
             cosmosAsyncContainer.getScripts().createStoredProcedure(procedureProperties).block().getProperties();
         Mockito.verify(tracer, Mockito.times(14)).startSpan(Matchers.anyString(), Matchers.any(Context.class),
-            Matchers.any(ProcessKind.class));
+            Matchers.anyMap());
 
         cosmosAsyncContainer.getScripts().getStoredProcedure(procedureProperties.getId()).read().block();
         Mockito.verify(tracer, Mockito.times(15)).startSpan(Matchers.anyString(), Matchers.any(Context.class),
-            Matchers.any(ProcessKind.class));
+            Matchers.anyMap());
 
         cosmosAsyncContainer.getScripts().getStoredProcedure(procedureProperties.getId()).replace(resultSproc).block();
         Mockito.verify(tracer, Mockito.times(16)).startSpan(Matchers.anyString(), Matchers.any(Context.class),
-            Matchers.any(ProcessKind.class));
+            Matchers.anyMap());
 
         cosmosAsyncContainer.getScripts().readAllStoredProcedures(new FeedOptions()).byPage().single().block();
-        Mockito.verify(tracer, Mockito.times(17)).startSpan(Matchers.anyString(), Matchers.any(Context.class),
-            Matchers.any(ProcessKind.class));
 
         cosmosAsyncContainer.getScripts().getStoredProcedure(procedureProperties.getId()).delete().block();
         Mockito.verify(tracer, Mockito.times(18)).startSpan(Matchers.anyString(), Matchers.any(Context.class),
-            Matchers.any(ProcessKind.class));
+            Matchers.anyMap());
     }
 
     @AfterClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)

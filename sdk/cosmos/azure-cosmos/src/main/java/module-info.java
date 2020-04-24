@@ -3,7 +3,8 @@
 
 module com.azure.cosmos {
 
-    requires transitive azure.core;
+    requires transitive com.azure.core;
+
     requires com.fasterxml.jackson.datatype.jsr310;
     requires io.netty.transport;
     requires io.netty.handler;
@@ -26,6 +27,7 @@ module com.azure.cosmos {
     requires reactor.core;
     requires org.reactivestreams;
     requires com.fasterxml.jackson.databind;
+    requires org.slf4j;
 
     // public API surface area
     exports com.azure.cosmos;

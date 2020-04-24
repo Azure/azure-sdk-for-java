@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.models.CosmosAsyncItemResponse;
@@ -16,11 +15,14 @@ import reactor.core.publisher.Signal;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
+
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 public class TracerProvider {
     private final ClientLogger logger = new ClientLogger(TracerProvider.class);
@@ -33,11 +35,35 @@ public class TracerProvider {
     public static final String ERROR_MSG = "error.msg";
     public static final String ERROR_TYPE = "error.type";
     public static final String ERROR_STACK = "error.stack";
-    public static final String MASTER_CALL = "masterCall";
-    public static final String NESTED_CALL = "nestedCall";
+    public static final String COSMOS_CALL_DEPTH = "cosmosCallDepth";
+    public static final String MICROSOFT_DOCOMENTDB = "Microsoft.DocumentDB";
 
     public static final Object ATTRIBUTE_MAP = "span-attributes";
 
+    public static Function<reactor.util.context.Context, reactor.util.context.Context> callDepthAttributeFunc = (
+        reactor.util.context.Context reactorContext) -> {
+        CallDepth callDepth = reactorContext.getOrDefault(COSMOS_CALL_DEPTH, CallDepth.ZERO);
+        if (callDepth.equals(CallDepth.ZERO)) {
+            return reactorContext.put(COSMOS_CALL_DEPTH, CallDepth.ONE);
+        } else if (callDepth.equals(CallDepth.ONE)) {
+            return reactorContext.put(COSMOS_CALL_DEPTH, CallDepth.TWO_OR_MORE);
+        } else {
+            return reactorContext;
+        }
+    };
+
+    public static Map<String, String> createTracingMap(String databaseId, String serviceEndpoint, String spanName) {
+        return new HashMap() {{
+            if (databaseId != null) {
+                put(TracerProvider.DB_INSTANCE, databaseId);
+            }
+
+            put(AZ_TRACING_NAMESPACE_KEY, MICROSOFT_DOCOMENTDB);
+            put(TracerProvider.DB_TYPE, DB_TYPE_VALUE);
+            put(TracerProvider.DB_URL, serviceEndpoint);
+            put(TracerProvider.DB_STATEMENT, spanName);
+        }};
+    }
 
     public TracerProvider(Iterable<Tracer> tracers) {
         Objects.requireNonNull(tracers, "'tracers' cannot be null.");
@@ -58,12 +84,14 @@ public class TracerProvider {
      * @param context Additional metadata that is passed through the call stack.
      * @return An updated context object.
      */
-    public Context startSpan(String methodName, Context context, ProcessKind processKind) {
+    public Context startSpan(String methodName, Context context,  Map<String, String> attributeMap) {
         Context local = Objects.requireNonNull(context, "'context' cannot be null.");
-        Objects.requireNonNull(processKind, "'processKind' cannot be null.");
-
         for (Tracer tracer : tracers) {
-            local = tracer.start(methodName, local, processKind);
+            local = tracer.start(methodName, local); // start the span and return the started span
+            Context lambdaContext = local;
+            attributeMap.forEach((key, value) -> {
+                tracer.setAttribute(key, value, lambdaContext); // set attrs on the span
+            });
         }
 
         return local;
@@ -108,66 +136,30 @@ public class TracerProvider {
                                                                                   Map<String, String> tracingAttributes,
                                                                                   Context context,
                                                                                   String spanName) {
-        final boolean isTracingEnabled = this.isEnabled();
-        final AtomicReference<Context> parentContext = isTracingEnabled
-            ? new AtomicReference<>(Context.NONE)
-            : null;
-        return resultPublisher
-            .doOnSubscribe(ignoredValue -> {
-                if (isTracingEnabled) {
-                    reactor.util.context.Context reactorContext = FluxUtil.toReactorContext(context);
-                    Objects.requireNonNull(reactorContext.hasKey(TracerProvider.MASTER_CALL));
-                    Optional<Object> callerFunc = reactorContext.getOrEmpty(TracerProvider.NESTED_CALL);
-                    if (!callerFunc.isPresent()) {
-                        parentContext.set(this.startSpan(spanName,
-                            context.addData(TracerProvider.ATTRIBUTE_MAP, tracingAttributes), ProcessKind.DATABASE));
-                    }
-                }
-            }).doOnSuccess(response -> {
-                if (isTracingEnabled) {
-                    this.endSpan(parentContext.get(), Signal.complete(), response.getStatusCode());
-                }
-            }).doOnError(throwable -> {
-                if (isTracingEnabled) {
-                    this.endSpan(parentContext.get(), Signal.error(throwable), 0);
-                }
-            });
+        return traceEnabledPublisher(resultPublisher, tracingAttributes, context, spanName,
+            (T response) -> response.getStatusCode());
     }
 
     public <T> Mono<T> traceEnabledNonCosmosResponsePublisher(Mono<T> resultPublisher,
                                                               Map<String, String> tracingAttributes,
                                                               Context context,
                                                               String spanName) {
-        final boolean isTracingEnabled = this.isEnabled();
-        final AtomicReference<Context> parentContext = isTracingEnabled
-            ? new AtomicReference<>(Context.NONE)
-            : null;
-        return resultPublisher
-            .doOnSubscribe(ignoredValue -> {
-                if (isTracingEnabled) {
-                    reactor.util.context.Context reactorContext = FluxUtil.toReactorContext(context);
-                    Objects.requireNonNull(reactorContext.hasKey(TracerProvider.MASTER_CALL));
-                    Optional<Object> callerFunc = reactorContext.getOrEmpty(TracerProvider.NESTED_CALL);
-                    if (!callerFunc.isPresent()) {
-                        parentContext.set(this.startSpan(spanName,
-                            context.addData(TracerProvider.ATTRIBUTE_MAP, tracingAttributes), ProcessKind.DATABASE));
-                    }
-                }
-            }).doOnSuccess(response -> {
-                if (isTracingEnabled) {
-                    this.endSpan(parentContext.get(), Signal.complete(), 200);
-                }
-            }).doOnError(throwable -> {
-                if (isTracingEnabled) {
-                    this.endSpan(parentContext.get(), Signal.error(throwable), 0);
-                }
-            });
+        return traceEnabledPublisher(resultPublisher, tracingAttributes, context, spanName, (T response) -> 200);
     }
 
     public <T> Mono<CosmosAsyncItemResponse<T>> traceEnabledCosmosItemResponsePublisher(Mono<CosmosAsyncItemResponse<T>> resultPublisher,
                                                                                         Map<String, String> tracingAttributes,
                                                                                         Context context,
                                                                                         String spanName) {
+        return traceEnabledPublisher(resultPublisher, tracingAttributes, context, spanName,
+            (CosmosAsyncItemResponse<T> response) -> response.getStatusCode());
+    }
+
+    public <T> Mono<T> traceEnabledPublisher(Mono<T> resultPublisher,
+                                             Map<String, String> tracingAttributes,
+                                             Context context,
+                                             String spanName,
+                                             Function<T, Integer> statusCodeFunc) {
         final boolean isTracingEnabled = this.isEnabled();
         final AtomicReference<Context> parentContext = isTracingEnabled
             ? new AtomicReference<>(Context.NONE)
@@ -175,17 +167,16 @@ public class TracerProvider {
         return resultPublisher
             .doOnSubscribe(ignoredValue -> {
                 if (isTracingEnabled) {
-                    reactor.util.context.Context reactorContext = FluxUtil.toReactorContext(context);
-                    Objects.requireNonNull(reactorContext.hasKey(TracerProvider.MASTER_CALL));
-                    Optional<Object> callerFunc = reactorContext.getOrEmpty(TracerProvider.NESTED_CALL);
-                    if (!callerFunc.isPresent()) {
+                    CallDepth callDepth = FluxUtil.toReactorContext(context).getOrDefault(COSMOS_CALL_DEPTH,
+                        CallDepth.ZERO);
+                    if (!callDepth.equals(CallDepth.TWO_OR_MORE)) {
                         parentContext.set(this.startSpan(spanName,
-                            context.addData(TracerProvider.ATTRIBUTE_MAP, tracingAttributes), ProcessKind.DATABASE));
+                            context, tracingAttributes));
                     }
                 }
             }).doOnSuccess(response -> {
                 if (isTracingEnabled) {
-                    this.endSpan(parentContext.get(), Signal.complete(), response.getStatusCode());
+                    this.endSpan(parentContext.get(), Signal.complete(), statusCodeFunc.apply(response));
                 }
             }).doOnError(throwable -> {
                 if (isTracingEnabled) {
@@ -205,5 +196,11 @@ public class TracerProvider {
             }
             tracer.end(statusCode, throwable, context);
         }
+    }
+
+    public enum CallDepth {
+        ZERO,
+        ONE,
+        TWO_OR_MORE,
     }
 }
