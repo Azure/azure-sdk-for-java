@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 /**
  * A helper Field model to build a simple search field.
  */
-public class ComplexSearchField {
+public class ComplexField {
     private String name;
     private ComplexDataType dataType;
     private List<Field> fieldList;
@@ -18,7 +18,7 @@ public class ComplexSearchField {
         return name;
     }
 
-    public ComplexSearchField setName(String name) {
+    public ComplexField setName(String name) {
         this.name = name;
         return this;
     }
@@ -27,7 +27,7 @@ public class ComplexSearchField {
         return dataType;
     }
 
-    public ComplexSearchField setDataType(ComplexDataType dataType) {
+    public ComplexField setDataType(ComplexDataType dataType) {
         this.dataType = dataType;
         return this;
     }
@@ -36,13 +36,13 @@ public class ComplexSearchField {
         return fieldList;
     }
 
-    public ComplexSearchField setSimpleFieldList(List<SimpleSearchField> fieldList) {
-        this.fieldList = fieldList.stream().map(SimpleSearchField::build).collect(Collectors.toList());
+    public ComplexField setSimpleFieldList(List<SimpleField> fieldList) {
+        this.fieldList = fieldList.stream().map(SimpleField::build).collect(Collectors.toList());
         return this;
     }
 
-    public ComplexSearchField setComplexFieldList(List<ComplexSearchField> fieldList) {
-        this.fieldList = fieldList.stream().map(ComplexSearchField::build).collect(Collectors.toList());
+    public ComplexField setComplexFieldList(List<ComplexField> fieldList) {
+        this.fieldList = fieldList.stream().map(ComplexField::build).collect(Collectors.toList());
         return this;
     }
 
