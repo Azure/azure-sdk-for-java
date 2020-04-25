@@ -6,12 +6,12 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 import com.azure.cosmos.implementation.guava27.Strings;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 import io.micrometer.core.instrument.Tag;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.AdaptiveRecvByteBufAllocator;
@@ -22,6 +22,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.ssl.SslContext;
 import io.netty.util.concurrent.DefaultThreadFactory;
+import io.netty.util.concurrent.Future;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -229,43 +230,54 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     private RntbdRequestRecord write(final RntbdRequestArgs requestArgs) {
 
         final RntbdRequestRecord requestRecord = new RntbdRequestRecord(requestArgs, this.requestTimer);
-        logger.debug("\n  [{}]\n  {}\n  WRITE", this, requestArgs);
+        final Future<Channel> connectedChannel = this.channelPool.acquire();
 
-        this.channelPool.acquire().addListener(connected -> {
+        logger.debug("\n  [{}]\n  {}\n  WRITE WHEN CONNECTED {}", this, requestArgs, connectedChannel);
 
-            if (connected.isSuccess()) {
+        if (connectedChannel.isDone()) {
+            return writeWhenConnected(requestRecord, connectedChannel);
+        } else {
+            connectedChannel.addListener(ignored -> writeWhenConnected(requestRecord, connectedChannel));
+        }
 
-                requestArgs.traceOperation(logger, null, "write");
-                final Channel channel = (Channel) connected.get();
-                this.releaseToPool(channel);
-                channel.write(requestRecord.stage(RntbdRequestRecord.Stage.PIPELINED));
-                return;
-            }
+        return requestRecord;
+    }
 
-            final UUID activityId = requestArgs.activityId();
-            final Throwable cause = connected.cause();
+    private RntbdRequestRecord writeWhenConnected(
+        final RntbdRequestRecord requestRecord, final Future<? super Channel> connected) {
 
-            if (connected.isCancelled()) {
+        if (connected.isSuccess()) {
+            final Channel channel = (Channel) connected.getNow();
+            assert channel != null : "impossible";
+            this.releaseToPool(channel);
+            channel.write(requestRecord.stage(RntbdRequestRecord.Stage.PIPELINED));
+            return requestRecord;
+        }
 
-                logger.debug("\n  [{}]\n  {}\n  write cancelled: {}", this, requestArgs, cause);
-                requestRecord.cancel(true);
+        final RntbdRequestArgs requestArgs = requestRecord.args();
+        final UUID activityId = requestArgs.activityId();
+        final Throwable cause = connected.cause();
 
-            } else {
+        if (connected.isCancelled()) {
 
-                logger.debug("\n  [{}]\n  {}\n  write failed due to {} ", this, requestArgs, cause);
-                final String reason = cause.getMessage();
+            logger.debug("\n  [{}]\n  {}\n  write cancelled: {}", this, requestArgs, cause);
+            requestRecord.cancel(true);
 
-                final GoneException goneException = new GoneException(
-                    Strings.lenientFormat("failed to establish connection to %s: %s", this.remoteAddress, reason),
-                    cause instanceof Exception ? (Exception)cause : new IOException(reason, cause),
-                    ImmutableMap.of(HttpHeaders.ACTIVITY_ID, activityId.toString()),
-                    requestArgs.replicaPath()
-                );
+        } else {
 
-                BridgeInternal.setRequestHeaders(goneException, requestArgs.serviceRequest().getHeaders());
-                requestRecord.completeExceptionally(goneException);
-            }
-        });
+            logger.debug("\n  [{}]\n  {}\n  write failed due to {} ", this, requestArgs, cause);
+            final String reason = cause.getMessage();
+
+            final GoneException goneException = new GoneException(
+                Strings.lenientFormat("failed to establish connection to %s: %s", this.remoteAddress, reason),
+                cause instanceof Exception ? (Exception)cause : new IOException(reason, cause),
+                ImmutableMap.of(HttpHeaders.ACTIVITY_ID, activityId.toString()),
+                requestArgs.replicaPath()
+            );
+
+            BridgeInternal.setRequestHeaders(goneException, requestArgs.serviceRequest().getHeaders());
+            requestRecord.completeExceptionally(goneException);
+        }
 
         return requestRecord;
     }
