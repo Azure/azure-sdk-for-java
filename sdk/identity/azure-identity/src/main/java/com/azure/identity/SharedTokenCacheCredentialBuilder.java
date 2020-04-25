@@ -11,7 +11,6 @@ package com.azure.identity;
 public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<SharedTokenCacheCredentialBuilder> {
     private String username;
 
-
     /**
      * Sets the username for the account.
      *

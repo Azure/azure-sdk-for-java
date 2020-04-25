@@ -7,8 +7,13 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
+import com.azure.identity.KeyringItemSchema;
 import com.azure.identity.KnownAuthorityHosts;
+import com.microsoft.aad.msal4jextensions.PersistenceSettings;
+import com.sun.jna.Platform;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
@@ -20,6 +25,17 @@ import java.util.function.Function;
  */
 public final class IdentityClientOptions {
     private static final int MAX_RETRY_DEFAULT_LIMIT = 3;
+    private static final String DEFAULT_CACHE_FILE_NAME = "msal.cache";
+    private static final Path DEFAULT_CACHE_FILE_PATH = Platform.isWindows()
+            ? Paths.get(System.getProperty("user.home"), "AppData", "Local", ".IdentityService")
+            : Paths.get(System.getProperty("user.home"), ".IdentityService");
+    private static final String DEFAULT_KEYCHAIN_SERVICE = "Microsoft.Developer.IdentityService";
+    private static final String DEFAULT_KEYCHAIN_ACCOUNT = "MSALCache";
+    private static final String DEFAULT_KEYRING_NAME = "default";
+    private static final KeyringItemSchema DEFAULT_KEYRING_SCHEMA = KeyringItemSchema.MSAL_CACHE;
+    private static final String DEFAULT_KEYRING_ITEM_NAME = DEFAULT_KEYCHAIN_ACCOUNT;
+    private static final String DEFAULT_KEYRING_ATTR_NAME = "MsalClientID";
+    private static final String DEFAULT_KEYRING_ATTR_VALUE = "Microsoft.Developer.IdentityService";
 
     private String authorityHost;
     private int maxRetry;
@@ -29,6 +45,16 @@ public final class IdentityClientOptions {
     private ExecutorService executorService;
     private Duration tokenRefreshOffset = Duration.ofMinutes(2);
     private HttpClient httpClient;
+    private Path cacheFileDirectory;
+    private String cacheFileName;
+    private String keychainService;
+    private String keychainAccount;
+    private String keyringName;
+    private KeyringItemSchema keyringItemSchema;
+    private String keyringItemName;
+    private final String[] attributes; // preserve order
+    private boolean useUnprotectedFileOnLinux;
+    private boolean sharedTokenCacheDisabled;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -38,6 +64,16 @@ public final class IdentityClientOptions {
         authorityHost = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, KnownAuthorityHosts.AZURE_CLOUD);
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
         retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
+        cacheFileDirectory = DEFAULT_CACHE_FILE_PATH;
+        cacheFileName = DEFAULT_CACHE_FILE_NAME;
+        keychainService = DEFAULT_KEYCHAIN_SERVICE;
+        keychainAccount = DEFAULT_KEYCHAIN_ACCOUNT;
+        keyringName = DEFAULT_KEYRING_NAME;
+        keyringItemSchema = DEFAULT_KEYRING_SCHEMA;
+        keyringItemName = DEFAULT_KEYRING_ITEM_NAME;
+        attributes = new String[] { DEFAULT_KEYRING_ATTR_NAME, DEFAULT_KEYRING_ATTR_VALUE };
+        useUnprotectedFileOnLinux = false;
+        sharedTokenCacheDisabled = false;
     }
 
     /**
@@ -159,7 +195,7 @@ public final class IdentityClientOptions {
     public ExecutorService getExecutorService() {
         return executorService;
     }
-  
+
     /**
      * @return how long before the actual token expiry to refresh the token.
      */
@@ -192,6 +228,48 @@ public final class IdentityClientOptions {
      */
     public IdentityClientOptions setHttpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
+        return this;
+    }
+
+    PersistenceSettings getPersistenceSettings() {
+        return PersistenceSettings.builder(cacheFileName, cacheFileDirectory)
+                .setMacKeychain(keychainService, keychainAccount)
+                .setLinuxKeyring(keyringName, keyringItemSchema.toString(), keyringItemName,
+                        attributes[0], attributes[1], null, null)
+                .setLinuxUseUnprotectedFileAsCacheStorage(useUnprotectedFileOnLinux)
+                .build();
+    }
+
+    /**
+     * Sets whether to use an unprotected file specified by <code>cacheFileLocation()</code> instead of
+     * Gnome keyring on Linux. This is false by default.
+     *
+     * @param useUnprotectedFileOnLinux whether to use an unprotected file for cache storage.
+     *
+     * @return The updated identity client options.
+     */
+    public IdentityClientOptions setUseUnprotectedTokenCacheFileOnLinux(boolean useUnprotectedFileOnLinux) {
+        this.useUnprotectedFileOnLinux = useUnprotectedFileOnLinux;
+        return this;
+    }
+
+    /**
+     * Gets if the shared token cache is disabled.
+     * @return if the shared token cache is disabled.
+     */
+    public boolean isSharedTokenCacheDisabled() {
+        return this.sharedTokenCacheDisabled;
+    }
+
+    /**
+     * Disable using the shared token cache.
+     *
+     * @param disabled whether to disable using the shared token cache.
+     *
+     * @return The updated identity client options.
+     */
+    public IdentityClientOptions disableSharedTokenCache(boolean disabled) {
+        this.sharedTokenCacheDisabled = disabled;
         return this;
     }
 }
