@@ -6,6 +6,7 @@ package com.azure.search.documents.test.environment.setup;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.microsoft.azure.AzureEnvironment;
@@ -22,6 +23,11 @@ import com.microsoft.azure.management.storage.StorageAccountKey;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.security.SecureRandom;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Objects;
@@ -190,10 +196,12 @@ public class AzureSearchResources {
             resourceGroup = azure.resourceGroups()
                 .getByName(resourceGroupName);
         } else {
+            String deleteTime = OffsetDateTime.now().plusHours(12).format(DateTimeFormatter.ISO_INSTANT);
             System.out.println("Creating Resource Group: " + resourceGroupName);
             resourceGroup = azure.resourceGroups()
                 .define(resourceGroupName)
                 .withRegion(location)
+                .withTag("DeleteAfter", deleteTime)
                 .create();
         }
     }
