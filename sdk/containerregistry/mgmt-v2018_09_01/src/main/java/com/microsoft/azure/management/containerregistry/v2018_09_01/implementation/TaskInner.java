@@ -15,13 +15,14 @@ import com.microsoft.azure.management.containerregistry.v2018_09_01.PlatformProp
 import com.microsoft.azure.management.containerregistry.v2018_09_01.AgentProperties;
 import com.microsoft.azure.management.containerregistry.v2018_09_01.TaskStepProperties;
 import com.microsoft.azure.management.containerregistry.v2018_09_01.TriggerProperties;
+import com.microsoft.azure.management.containerregistry.v2018_09_01.Credentials;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
  * The task that has the ARM resource and task properties.
- * The  task will have all information to schedule a run against it.
+ * The task will have all information to schedule a run against it.
  */
 @JsonFlatten
 public class TaskInner extends Resource {
@@ -74,6 +75,13 @@ public class TaskInner extends Resource {
      */
     @JsonProperty(value = "properties.trigger")
     private TriggerProperties trigger;
+
+    /**
+     * The properties that describes a set of credentials that will be used
+     * when this run is invoked.
+     */
+    @JsonProperty(value = "properties.credentials")
+    private Credentials credentials;
 
     /**
      * Get the provisioning state of the task. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'.
@@ -210,6 +218,26 @@ public class TaskInner extends Resource {
      */
     public TaskInner withTrigger(TriggerProperties trigger) {
         this.trigger = trigger;
+        return this;
+    }
+
+    /**
+     * Get the properties that describes a set of credentials that will be used when this run is invoked.
+     *
+     * @return the credentials value
+     */
+    public Credentials credentials() {
+        return this.credentials;
+    }
+
+    /**
+     * Set the properties that describes a set of credentials that will be used when this run is invoked.
+     *
+     * @param credentials the credentials value to set
+     * @return the TaskInner object itself.
+     */
+    public TaskInner withCredentials(Credentials credentials) {
+        this.credentials = credentials;
         return this;
     }
 
