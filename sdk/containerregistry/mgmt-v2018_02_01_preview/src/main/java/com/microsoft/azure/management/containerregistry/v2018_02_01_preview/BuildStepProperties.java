@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Base properties for any build step.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = BuildStepProperties.class)
 @JsonTypeName("BuildStepProperties")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Docker", value = DockerBuildStep.class)

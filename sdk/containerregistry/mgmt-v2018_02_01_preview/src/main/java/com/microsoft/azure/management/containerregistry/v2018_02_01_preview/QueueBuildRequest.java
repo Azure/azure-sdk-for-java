@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * The queue build request parameters.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = QueueBuildRequest.class)
 @JsonTypeName("QueueBuildRequest")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "BuildTask", value = BuildTaskBuildRequest.class),
