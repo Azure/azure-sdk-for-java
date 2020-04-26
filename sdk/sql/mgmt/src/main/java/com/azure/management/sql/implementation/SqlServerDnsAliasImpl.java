@@ -9,19 +9,13 @@ import com.azure.management.sql.SqlServer;
 import com.azure.management.sql.SqlServerDnsAlias;
 import com.azure.management.sql.SqlServerDnsAliasOperations;
 import com.azure.management.sql.models.ServerDnsAliasInner;
+import java.util.Objects;
 import reactor.core.publisher.Mono;
 
-import java.util.Objects;
-
-/**
- * Implementation for SqlServerDnsAlias.
- */
+/** Implementation for SqlServerDnsAlias. */
 public class SqlServerDnsAliasImpl
-    extends
-        ExternalChildResourceImpl<SqlServerDnsAlias, ServerDnsAliasInner, SqlServerImpl, SqlServer>
-    implements
-        SqlServerDnsAlias,
-        SqlServerDnsAliasOperations.SqlServerDnsAliasOperationsDefinition {
+    extends ExternalChildResourceImpl<SqlServerDnsAlias, ServerDnsAliasInner, SqlServerImpl, SqlServer>
+    implements SqlServerDnsAlias, SqlServerDnsAliasOperations.SqlServerDnsAliasOperationsDefinition {
 
     private SqlServerManager sqlServerManager;
     private String resourceGroupName;
@@ -30,12 +24,13 @@ public class SqlServerDnsAliasImpl
     /**
      * Creates an instance of external child resource in-memory.
      *
-     * @param name        the name of this external child resource
-     * @param parent      reference to the parent of this external child resource
+     * @param name the name of this external child resource
+     * @param parent reference to the parent of this external child resource
      * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses DNS alias operations
      */
-    SqlServerDnsAliasImpl(String name, SqlServerImpl parent, ServerDnsAliasInner innerObject, SqlServerManager sqlServerManager) {
+    SqlServerDnsAliasImpl(
+        String name, SqlServerImpl parent, ServerDnsAliasInner innerObject, SqlServerManager sqlServerManager) {
         super(name, parent, innerObject);
 
         Objects.requireNonNull(parent);
@@ -49,12 +44,17 @@ public class SqlServerDnsAliasImpl
      * Creates an instance of external child resource in-memory.
      *
      * @param resourceGroupName the resource group name
-     * @param sqlServerName     the parent SQL server name
-     * @param name              the name of this external child resource
-     * @param innerObject       reference to the inner object representing this external child resource
-     * @param sqlServerManager  reference to the SQL server manager that accesses DNS alias operations
+     * @param sqlServerName the parent SQL server name
+     * @param name the name of this external child resource
+     * @param innerObject reference to the inner object representing this external child resource
+     * @param sqlServerManager reference to the SQL server manager that accesses DNS alias operations
      */
-    SqlServerDnsAliasImpl(String resourceGroupName, String sqlServerName, String name, ServerDnsAliasInner innerObject, SqlServerManager sqlServerManager) {
+    SqlServerDnsAliasImpl(
+        String resourceGroupName,
+        String sqlServerName,
+        String name,
+        ServerDnsAliasInner innerObject,
+        SqlServerManager sqlServerManager) {
         super(name, null, innerObject);
         Objects.requireNonNull(sqlServerManager);
         this.sqlServerManager = sqlServerManager;
@@ -65,8 +65,8 @@ public class SqlServerDnsAliasImpl
     /**
      * Creates an instance of external child resource in-memory.
      *
-     * @param name             the name of this external child resource
-     * @param innerObject      reference to the inner object representing this external child resource
+     * @param name the name of this external child resource
+     * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses DNS alias operations
      */
     SqlServerDnsAliasImpl(String name, ServerDnsAliasInner innerObject, SqlServerManager sqlServerManager) {
@@ -110,7 +110,10 @@ public class SqlServerDnsAliasImpl
 
     @Override
     public void delete() {
-        this.sqlServerManager.inner().serverDnsAliases()
+        this
+            .sqlServerManager
+            .inner()
+            .serverDnsAliases()
             .delete(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
@@ -146,12 +149,16 @@ public class SqlServerDnsAliasImpl
     @Override
     public Mono<SqlServerDnsAlias> createResourceAsync() {
         final SqlServerDnsAliasImpl self = this;
-        return this.sqlServerManager.inner().serverDnsAliases()
+        return this
+            .sqlServerManager
+            .inner()
+            .serverDnsAliases()
             .createOrUpdateAsync(self.resourceGroupName, self.sqlServerName, self.name())
-            .map(serverDnsAliasInner -> {
-                self.setInner(serverDnsAliasInner);
-                return self;
-            });
+            .map(
+                serverDnsAliasInner -> {
+                    self.setInner(serverDnsAliasInner);
+                    return self;
+                });
     }
 
     @Override
@@ -161,13 +168,19 @@ public class SqlServerDnsAliasImpl
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return this.sqlServerManager.inner().serverDnsAliases()
+        return this
+            .sqlServerManager
+            .inner()
+            .serverDnsAliases()
             .deleteAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
     @Override
     protected Mono<ServerDnsAliasInner> getInnerAsync() {
-        return this.sqlServerManager.inner().serverDnsAliases()
+        return this
+            .sqlServerManager
+            .inner()
+            .serverDnsAliases()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 }

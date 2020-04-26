@@ -31,7 +31,8 @@ class ResourceGroupImpl extends
 
     private final ResourceGroupsInner client;
 
-    protected ResourceGroupImpl(final ResourceGroupInner innerModel, String name, final ResourceManagementClientImpl serviceClient) {
+    protected ResourceGroupImpl(final ResourceGroupInner innerModel, String name,
+            final ResourceManagementClientImpl serviceClient) {
         super(name, innerModel);
         this.client = serviceClient.resourceGroups();
     }
@@ -80,7 +81,8 @@ class ResourceGroupImpl extends
         ExportTemplateRequest inner = new ExportTemplateRequest()
                 .withResources(Arrays.asList("*"))
                 .withOptions(options.toString());
-        return client.exportTemplateAsync(name(), inner).map(resourceGroupExportResultInner -> new ResourceGroupExportResultImpl(resourceGroupExportResultInner));
+        return client.exportTemplateAsync(name(), inner).map(resourceGroupExportResultInner ->
+            new ResourceGroupExportResultImpl(resourceGroupExportResultInner));
     }
 
     @Override

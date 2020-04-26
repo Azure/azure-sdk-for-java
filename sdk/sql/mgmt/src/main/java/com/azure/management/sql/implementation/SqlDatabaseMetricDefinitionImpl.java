@@ -9,15 +9,13 @@ import com.azure.management.sql.SqlDatabaseMetricAvailability;
 import com.azure.management.sql.SqlDatabaseMetricDefinition;
 import com.azure.management.sql.UnitDefinitionType;
 import com.azure.management.sql.models.MetricDefinitionInner;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Response containing the SQL database metric definitions.
- */
-public class SqlDatabaseMetricDefinitionImpl extends WrapperImpl<MetricDefinitionInner> implements SqlDatabaseMetricDefinition {
+/** Response containing the SQL database metric definitions. */
+public class SqlDatabaseMetricDefinitionImpl extends WrapperImpl<MetricDefinitionInner>
+    implements SqlDatabaseMetricDefinition {
     protected SqlDatabaseMetricDefinitionImpl(MetricDefinitionInner innerObject) {
         super(innerObject);
     }

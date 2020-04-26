@@ -7,9 +7,7 @@ package com.azure.management.storage;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Endpoints model.
- */
+/** The Endpoints model. */
 @Fluent
 public final class Endpoints {
     /*
@@ -62,7 +60,7 @@ public final class Endpoints {
 
     /**
      * Get the blob property: Gets the blob endpoint.
-     * 
+     *
      * @return the blob value.
      */
     public String blob() {
@@ -71,7 +69,7 @@ public final class Endpoints {
 
     /**
      * Get the queue property: Gets the queue endpoint.
-     * 
+     *
      * @return the queue value.
      */
     public String queue() {
@@ -80,7 +78,7 @@ public final class Endpoints {
 
     /**
      * Get the table property: Gets the table endpoint.
-     * 
+     *
      * @return the table value.
      */
     public String table() {
@@ -89,7 +87,7 @@ public final class Endpoints {
 
     /**
      * Get the file property: Gets the file endpoint.
-     * 
+     *
      * @return the file value.
      */
     public String file() {
@@ -98,7 +96,7 @@ public final class Endpoints {
 
     /**
      * Get the web property: Gets the web endpoint.
-     * 
+     *
      * @return the web value.
      */
     public String web() {
@@ -107,7 +105,7 @@ public final class Endpoints {
 
     /**
      * Get the dfs property: Gets the dfs endpoint.
-     * 
+     *
      * @return the dfs value.
      */
     public String dfs() {
@@ -115,9 +113,8 @@ public final class Endpoints {
     }
 
     /**
-     * Get the microsoftEndpoints property: Gets the microsoft routing storage
-     * endpoints.
-     * 
+     * Get the microsoftEndpoints property: Gets the microsoft routing storage endpoints.
+     *
      * @return the microsoftEndpoints value.
      */
     public StorageAccountMicrosoftEndpoints microsoftEndpoints() {
@@ -125,9 +122,8 @@ public final class Endpoints {
     }
 
     /**
-     * Set the microsoftEndpoints property: Gets the microsoft routing storage
-     * endpoints.
-     * 
+     * Set the microsoftEndpoints property: Gets the microsoft routing storage endpoints.
+     *
      * @param microsoftEndpoints the microsoftEndpoints value to set.
      * @return the Endpoints object itself.
      */
@@ -137,9 +133,8 @@ public final class Endpoints {
     }
 
     /**
-     * Get the internetEndpoints property: Gets the internet routing storage
-     * endpoints.
-     * 
+     * Get the internetEndpoints property: Gets the internet routing storage endpoints.
+     *
      * @return the internetEndpoints value.
      */
     public StorageAccountInternetEndpoints internetEndpoints() {
@@ -147,9 +142,8 @@ public final class Endpoints {
     }
 
     /**
-     * Set the internetEndpoints property: Gets the internet routing storage
-     * endpoints.
-     * 
+     * Set the internetEndpoints property: Gets the internet routing storage endpoints.
+     *
      * @param internetEndpoints the internetEndpoints value to set.
      * @return the Endpoints object itself.
      */

@@ -3,20 +3,15 @@
 
 package com.azure.management.network.samples;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.Azure;
 import com.azure.management.network.LocalNetworkGateway;
 import com.azure.management.network.Network;
 import com.azure.management.network.VirtualNetworkGateway;
-import com.azure.management.network.VirtualNetworkGatewayConnection;
 import com.azure.management.network.VirtualNetworkGatewaySkuName;
 import com.azure.management.resources.fluentcore.arm.Region;
-import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.samples.Utils;
 
 import java.io.File;
-import java.util.List;
 
 /**
  * Azure Network sample for managing virtual network gateway.
@@ -94,7 +89,9 @@ public final class ManageVpnGatewaySite2SiteConnection {
 
             //============================================================
             // List VPN Gateway connections for particular gateway
-            PagedIterable<VirtualNetworkGatewayConnection> connections = vngw.listConnections();
+            System.out.println("List connections...");
+            vngw.listConnections().forEach(connection -> System.out.println(connection.name()));
+            System.out.println();
 
             //============================================================
             // Reset virtual network gateway
@@ -129,7 +126,7 @@ public final class ManageVpnGatewaySite2SiteConnection {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure.configure()
-                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY))
+                    .withLogLevel(HttpLogDetailLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 

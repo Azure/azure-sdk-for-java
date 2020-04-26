@@ -3,6 +3,8 @@
 
 package com.azure.management.resources.fluentcore.dag;
 
+import com.azure.core.util.logging.ClientLogger;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -29,12 +31,14 @@ public class Node<DataT, NodeT extends Node<DataT, NodeT>> {
     /**
      * the collection of child node keys.
      */
-    private List<String> children;
+    private final List<String> children;
+
+    private final ClientLogger logger = new ClientLogger(this.getClass());
 
     /**
      * Creates a graph node.
      *
-     * @param key  unique id of the node
+     * @param key unique id of the node
      * @param data data to be stored in the node
      */
     public Node(final String key, final DataT data) {
@@ -92,7 +96,7 @@ public class Node<DataT, NodeT extends Node<DataT, NodeT>> {
      */
     public void setOwner(Graph<DataT, NodeT> ownerGraph) {
         if (this.ownerGraph != null) {
-            throw new RuntimeException("Changing owner graph is not allowed");
+            throw logger.logExceptionAsError(new RuntimeException("Changing owner graph is not allowed"));
         }
         this.ownerGraph = ownerGraph;
     }
@@ -102,7 +106,7 @@ public class Node<DataT, NodeT extends Node<DataT, NodeT>> {
      */
     public Graph<DataT, NodeT> owner() {
         if (this.ownerGraph == null) {
-            throw new RuntimeException("Required owner graph is not set");
+            throw logger.logExceptionAsError(new RuntimeException("Required owner graph is not set"));
         }
         return this.ownerGraph;
     }

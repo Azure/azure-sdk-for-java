@@ -32,7 +32,7 @@ class RestErrorCodeStrings {
     private static synchronized void loadProperties() {
         if (errorStrings == null) {
             try (InputStream fileInputStream =
-                         RestErrorCodeStrings.class.getClassLoader().getResource((ERROR_STRINGS_FILE_NAME)).openStream()) {
+                    RestErrorCodeStrings.class.getClassLoader().getResource((ERROR_STRINGS_FILE_NAME)).openStream()) {
                 errorStrings = new Properties();
                 errorStrings.load(fileInputStream);
             } catch (IOException ex) {

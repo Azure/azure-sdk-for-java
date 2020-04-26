@@ -12,17 +12,12 @@ import com.azure.management.sql.SqlDatabaseImportExportResponse;
 import com.azure.management.sql.SqlDatabaseImportRequest;
 import com.azure.management.sql.StorageKeyType;
 import com.azure.management.storage.StorageAccount;
+import java.util.Objects;
 import reactor.core.publisher.Mono;
 
-import java.util.Objects;
-
-/**
- * Implementation for SqlDatabaseImportRequest.
- */
+/** Implementation for SqlDatabaseImportRequest. */
 public class SqlDatabaseImportRequestImpl extends ExecutableImpl<SqlDatabaseImportExportResponse>
-    implements
-        SqlDatabaseImportRequest,
-    SqlDatabaseImportRequest.SqlDatabaseImportRequestDefinition {
+    implements SqlDatabaseImportRequest, SqlDatabaseImportRequest.SqlDatabaseImportRequestDefinition {
 
     private final SqlDatabaseImpl sqlDatabase;
     private final SqlServerManager sqlServerManager;
@@ -47,23 +42,44 @@ public class SqlDatabaseImportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
     @Override
     public Mono<SqlDatabaseImportExportResponse> executeWorkAsync() {
         final SqlDatabaseImportRequestImpl self = this;
-        return this.sqlServerManager.inner().databases()
-            .createImportOperationAsync(this.sqlDatabase.resourceGroupName, this.sqlDatabase.sqlServerName, this.sqlDatabase.name(), this.inner())
-            .flatMap(importExportResponseInner -> self.sqlDatabase
-                .refreshAsync()
-                .map(sqlDatabase -> new SqlDatabaseImportExportResponseImpl(importExportResponseInner)));
+        return this
+            .sqlServerManager
+            .inner()
+            .databases()
+            .createImportOperationAsync(
+                this.sqlDatabase.resourceGroupName,
+                this.sqlDatabase.sqlServerName,
+                this.sqlDatabase.name(),
+                this.inner())
+            .flatMap(
+                importExportResponseInner ->
+                    self
+                        .sqlDatabase
+                        .refreshAsync()
+                        .map(sqlDatabase -> new SqlDatabaseImportExportResponseImpl(importExportResponseInner)));
     }
 
-    private Mono<Indexable> getOrCreateStorageAccountContainer(final StorageAccount storageAccount, final String containerName, final String fileName, final FunctionalTaskItem.Context context) {
+    private Mono<Indexable> getOrCreateStorageAccountContainer(
+        final StorageAccount storageAccount,
+        final String containerName,
+        final String fileName,
+        final FunctionalTaskItem.Context context) {
         final SqlDatabaseImportRequestImpl self = this;
-        return storageAccount.getKeysAsync()
+        return storageAccount
+            .getKeysAsync()
             .flatMap(storageAccountKeys -> Mono.justOrEmpty(storageAccountKeys.stream().findFirst()))
-            .flatMap(storageAccountKey -> {
-                    self.inner.withStorageUri(String.format("%s%s/%s", storageAccount.endPoints().primary().blob(), containerName, fileName));
+            .flatMap(
+                storageAccountKey -> {
+                    self
+                        .inner
+                        .withStorageUri(
+                            String
+                                .format(
+                                    "%s%s/%s", storageAccount.endPoints().primary().blob(), containerName, fileName));
                     self.inner.withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY);
                     self.inner.withStorageKey(storageAccountKey.value());
                     return context.voidMono();
-            });
+                });
     }
 
     @Override
@@ -76,15 +92,17 @@ public class SqlDatabaseImportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
     }
 
     @Override
-    public SqlDatabaseImportRequestImpl importFrom(final StorageAccount storageAccount, final String containerName, final String fileName) {
+    public SqlDatabaseImportRequestImpl importFrom(
+        final StorageAccount storageAccount, final String containerName, final String fileName) {
         Objects.requireNonNull(storageAccount);
         Objects.requireNonNull(containerName);
         Objects.requireNonNull(fileName);
         if (this.inner == null) {
             this.inner = new ImportExtensionRequest();
         }
-        final SqlDatabaseImportRequestImpl self = this;
-        this.addDependency(context -> getOrCreateStorageAccountContainer(storageAccount, containerName, fileName, context));
+        this
+            .addDependency(
+                context -> getOrCreateStorageAccountContainer(storageAccount, containerName, fileName, context));
         return this;
     }
 
@@ -103,13 +121,15 @@ public class SqlDatabaseImportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
     }
 
     @Override
-    public SqlDatabaseImportRequestImpl withSqlAdministratorLoginAndPassword(String administratorLogin, String administratorPassword) {
+    public SqlDatabaseImportRequestImpl withSqlAdministratorLoginAndPassword(
+        String administratorLogin, String administratorPassword) {
         this.inner.withAuthenticationType(AuthenticationType.SQL);
         return this.withLoginAndPassword(administratorLogin, administratorPassword);
     }
 
     @Override
-    public SqlDatabaseImportRequestImpl withActiveDirectoryLoginAndPassword(String administratorLogin, String administratorPassword) {
+    public SqlDatabaseImportRequestImpl withActiveDirectoryLoginAndPassword(
+        String administratorLogin, String administratorPassword) {
         this.inner.withAuthenticationType(AuthenticationType.ADPASSWORD);
         return this.withLoginAndPassword(administratorLogin, administratorPassword);
     }

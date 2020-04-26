@@ -17,7 +17,7 @@ public interface InnerSupportsGet<InnerT> {
      * Returns the specific resource.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param resourceName      The name of the resource within specified resource group.
+     * @param resourceName The name of the resource within specified resource group.
      * @return specific resource.
      */
     InnerT getByResourceGroup(String resourceGroupName, String resourceName);
@@ -26,7 +26,7 @@ public interface InnerSupportsGet<InnerT> {
      * Returns the specific resource asynchronously.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param resourceName      The name of the resource within specified resource group.
+     * @param resourceName The name of the resource within specified resource group.
      * @return a {@link Mono} emits the found resource asynchronously.
      */
     Mono<InnerT> getByResourceGroupAsync(String resourceGroupName, String resourceName);

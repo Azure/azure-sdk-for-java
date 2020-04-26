@@ -18,14 +18,13 @@ import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.Set;
 
-/**
- *  Entry point to managed Kubernetes service management API.
- */
+/** Entry point to managed Kubernetes service management API. */
 @Fluent()
-public interface KubernetesClusters extends
-        HasManager<ContainerServiceManager>,
+public interface KubernetesClusters
+    extends HasManager<ContainerServiceManager>,
         HasInner<ManagedClustersInner>,
         SupportsCreating<KubernetesCluster.DefinitionStages.Blank>,
         SupportsBatchCreation<KubernetesCluster>,
@@ -48,7 +47,8 @@ public interface KubernetesClusters extends
      * Returns the list of available Kubernetes versions available for the given Azure region.
      *
      * @param region the Azure region to query into
-     * @return a future representation of a set of Kubernetes versions which can be used when creating a service in this region
+     * @return a future representation of a set of Kubernetes versions which can be used when creating a service in this
+     *     region
      */
     Mono<Set<String>> listKubernetesVersionsAsync(Region region);
 
@@ -59,7 +59,7 @@ public interface KubernetesClusters extends
      * @param kubernetesClusterName the managed cluster name
      * @return the Kube.config content which can be used with a Kubernetes client
      */
-    byte[] getAdminKubeConfigContent(String resourceGroupName, String kubernetesClusterName);
+    List<CredentialResult> listAdminKubeConfigContent(String resourceGroupName, String kubernetesClusterName);
 
     /**
      * Returns asynchronously the admin Kube.config content which can be used with a Kubernetes client.
@@ -68,7 +68,8 @@ public interface KubernetesClusters extends
      * @param kubernetesClusterName the managed cluster name
      * @return a future representation of the Kube.config content which can be used with a Kubernetes client
      */
-    Mono<byte[]> getAdminKubeConfigContentAsync(String resourceGroupName, String kubernetesClusterName);
+    Mono<List<CredentialResult>> listAdminKubeConfigContentAsync(
+        String resourceGroupName, String kubernetesClusterName);
 
     /**
      * Returns the user Kube.config content which can be used with a Kubernetes client.
@@ -77,7 +78,7 @@ public interface KubernetesClusters extends
      * @param kubernetesClusterName the managed cluster name
      * @return the Kube.config content which can be used with a Kubernetes client
      */
-    byte[] getUserKubeConfigContent(String resourceGroupName, String kubernetesClusterName);
+    List<CredentialResult> listUserKubeConfigContent(String resourceGroupName, String kubernetesClusterName);
 
     /**
      * Returns asynchronously the user Kube.config content which can be used with a Kubernetes client.
@@ -86,5 +87,5 @@ public interface KubernetesClusters extends
      * @param kubernetesClusterName the managed cluster name
      * @return a future representation of the Kube.config content which can be used with a Kubernetes client
      */
-    Mono<byte[]> getUserKubeConfigContentAsync(String resourceGroupName, String kubernetesClusterName);
+    Mono<List<CredentialResult>> listUserKubeConfigContentAsync(String resourceGroupName, String kubernetesClusterName);
 }

@@ -8,9 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The Incident model.
- */
+/** The Incident model. */
 @Immutable
 public final class IncidentInner {
     /*
@@ -46,7 +44,7 @@ public final class IncidentInner {
 
     /**
      * Get the name property: Incident name.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -54,9 +52,8 @@ public final class IncidentInner {
     }
 
     /**
-     * Get the ruleName property: Rule name that is associated with the
-     * incident.
-     * 
+     * Get the ruleName property: Rule name that is associated with the incident.
+     *
      * @return the ruleName value.
      */
     public String ruleName() {
@@ -64,9 +61,8 @@ public final class IncidentInner {
     }
 
     /**
-     * Get the isActive property: A boolean to indicate whether the incident is
-     * active or resolved.
-     * 
+     * Get the isActive property: A boolean to indicate whether the incident is active or resolved.
+     *
      * @return the isActive value.
      */
     public Boolean isActive() {
@@ -74,9 +70,8 @@ public final class IncidentInner {
     }
 
     /**
-     * Get the activatedTime property: The time at which the incident was
-     * activated in ISO8601 format.
-     * 
+     * Get the activatedTime property: The time at which the incident was activated in ISO8601 format.
+     *
      * @return the activatedTime value.
      */
     public OffsetDateTime activatedTime() {
@@ -84,10 +79,9 @@ public final class IncidentInner {
     }
 
     /**
-     * Get the resolvedTime property: The time at which the incident was
-     * resolved in ISO8601 format. If null, it means the incident is still
-     * active.
-     * 
+     * Get the resolvedTime property: The time at which the incident was resolved in ISO8601 format. If null, it means
+     * the incident is still active.
+     *
      * @return the resolvedTime value.
      */
     public OffsetDateTime resolvedTime() {

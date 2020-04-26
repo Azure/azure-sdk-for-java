@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * The ReplicationUpdateParameters model.
- */
+/** The ReplicationUpdateParameters model. */
 @Fluent
 public final class ReplicationUpdateParameters {
     /*
@@ -21,7 +19,7 @@ public final class ReplicationUpdateParameters {
 
     /**
      * Get the tags property: The tags for the replication.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -30,7 +28,7 @@ public final class ReplicationUpdateParameters {
 
     /**
      * Set the tags property: The tags for the replication.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the ReplicationUpdateParameters object itself.
      */

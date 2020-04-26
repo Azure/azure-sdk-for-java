@@ -10,20 +10,17 @@ import com.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-
-/**
- * Entry point to virtual machine scale set network interface management API.
- */
+/** Entry point to virtual machine scale set network interface management API. */
 @Fluent
-public interface VirtualMachineScaleSetNetworkInterfaces extends
-        SupportsListing<VirtualMachineScaleSetNetworkInterface>,
+public interface VirtualMachineScaleSetNetworkInterfaces
+    extends SupportsListing<VirtualMachineScaleSetNetworkInterface>,
         HasInner<NetworkInterfacesInner>,
         HasManager<NetworkManager> {
     /**
      * Gets a network interface associated with a virtual machine scale set instance.
      *
      * @param instanceId the virtual machine scale set vm instance id
-     * @param name       the network interface name
+     * @param name the network interface name
      * @return the network interface
      */
     VirtualMachineScaleSetNetworkInterface getByVirtualMachineInstanceId(String instanceId, String name);

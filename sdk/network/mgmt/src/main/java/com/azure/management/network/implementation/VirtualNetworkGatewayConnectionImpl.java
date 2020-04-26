@@ -15,26 +15,25 @@ import com.azure.management.network.models.AppliableWithTags;
 import com.azure.management.network.models.VirtualNetworkGatewayConnectionInner;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
-import reactor.core.publisher.Mono;
-
 import java.util.Collection;
 import java.util.Collections;
+import reactor.core.publisher.Mono;
 
-
-/**
- * Implementation for VirtualNetworkGatewayConnection and its create and update interfaces.
- */
+/** Implementation for VirtualNetworkGatewayConnection and its create and update interfaces. */
 public class VirtualNetworkGatewayConnectionImpl
-        extends GroupableResourceImpl<VirtualNetworkGatewayConnection, VirtualNetworkGatewayConnectionInner, VirtualNetworkGatewayConnectionImpl, NetworkManager>
-        implements VirtualNetworkGatewayConnection,
+    extends GroupableResourceImpl<
+        VirtualNetworkGatewayConnection,
+        VirtualNetworkGatewayConnectionInner,
+        VirtualNetworkGatewayConnectionImpl,
+        NetworkManager>
+    implements VirtualNetworkGatewayConnection,
         VirtualNetworkGatewayConnection.Definition,
         VirtualNetworkGatewayConnection.Update,
         AppliableWithTags<VirtualNetworkGatewayConnection> {
     private final VirtualNetworkGateway parent;
 
-    VirtualNetworkGatewayConnectionImpl(String name,
-                                        VirtualNetworkGatewayImpl parent,
-                                        VirtualNetworkGatewayConnectionInner inner) {
+    VirtualNetworkGatewayConnectionImpl(
+        String name, VirtualNetworkGatewayImpl parent, VirtualNetworkGatewayConnectionInner inner) {
         super(name, inner, parent.manager());
         this.parent = parent;
     }
@@ -164,7 +163,8 @@ public class VirtualNetworkGatewayConnectionImpl
     }
 
     @Override
-    public VirtualNetworkGatewayConnectionImpl withSecondVirtualNetworkGateway(VirtualNetworkGateway virtualNetworkGateway2) {
+    public VirtualNetworkGatewayConnectionImpl withSecondVirtualNetworkGateway(
+        VirtualNetworkGateway virtualNetworkGateway2) {
         inner().withVirtualNetworkGateway2(virtualNetworkGateway2.inner());
         return this;
     }
@@ -195,15 +195,20 @@ public class VirtualNetworkGatewayConnectionImpl
 
     @Override
     protected Mono<VirtualNetworkGatewayConnectionInner> getInnerAsync() {
-        return myManager.inner().virtualNetworkGatewayConnections().getByResourceGroupAsync(resourceGroupName(), name());
+        return myManager
+            .inner()
+            .virtualNetworkGatewayConnections()
+            .getByResourceGroupAsync(resourceGroupName(), name());
     }
 
     @Override
     public Mono<VirtualNetworkGatewayConnection> createResourceAsync() {
         beforeCreating();
-        return myManager.inner().virtualNetworkGatewayConnections().createOrUpdateAsync(
-                this.resourceGroupName(), this.name(), this.inner())
-                .map(innerToFluentMap(this));
+        return myManager
+            .inner()
+            .virtualNetworkGatewayConnections()
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+            .map(innerToFluentMap(this));
     }
 
     private void beforeCreating() {
@@ -222,7 +227,11 @@ public class VirtualNetworkGatewayConnectionImpl
 
     @Override
     public Mono<VirtualNetworkGatewayConnection> applyTagsAsync() {
-        return this.manager().inner().virtualNetworkGatewayConnections().updateTagsAsync(resourceGroupName(), name(), inner().getTags())
-                .flatMap(inner -> refreshAsync());
+        return this
+            .manager()
+            .inner()
+            .virtualNetworkGatewayConnections()
+            .updateTagsAsync(resourceGroupName(), name(), inner().getTags())
+            .flatMap(inner -> refreshAsync());
     }
 }

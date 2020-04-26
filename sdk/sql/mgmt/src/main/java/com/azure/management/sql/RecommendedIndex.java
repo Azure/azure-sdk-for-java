@@ -11,9 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/**
- * The RecommendedIndex model.
- */
+/** The RecommendedIndex model. */
 @JsonFlatten
 @Immutable
 public class RecommendedIndex extends ProxyResource {
@@ -94,10 +92,9 @@ public class RecommendedIndex extends ProxyResource {
     private List<OperationImpact> reportedImpact;
 
     /**
-     * Get the action property: The proposed index action. You can create a
-     * missing index, drop an unused index, or rebuild an existing index to
-     * improve its performance.
-     * 
+     * Get the action property: The proposed index action. You can create a missing index, drop an unused index, or
+     * rebuild an existing index to improve its performance.
+     *
      * @return the action value.
      */
     public RecommendedIndexAction action() {
@@ -106,7 +103,7 @@ public class RecommendedIndex extends ProxyResource {
 
     /**
      * Get the state property: The current recommendation state.
-     * 
+     *
      * @return the state value.
      */
     public RecommendedIndexState state() {
@@ -114,9 +111,8 @@ public class RecommendedIndex extends ProxyResource {
     }
 
     /**
-     * Get the created property: The UTC datetime showing when this resource
-     * was created (ISO8601 format).
-     * 
+     * Get the created property: The UTC datetime showing when this resource was created (ISO8601 format).
+     *
      * @return the created value.
      */
     public OffsetDateTime created() {
@@ -124,9 +120,8 @@ public class RecommendedIndex extends ProxyResource {
     }
 
     /**
-     * Get the lastModified property: The UTC datetime of when was this
-     * resource last changed (ISO8601 format).
-     * 
+     * Get the lastModified property: The UTC datetime of when was this resource last changed (ISO8601 format).
+     *
      * @return the lastModified value.
      */
     public OffsetDateTime lastModified() {
@@ -134,9 +129,8 @@ public class RecommendedIndex extends ProxyResource {
     }
 
     /**
-     * Get the indexType property: The type of index (CLUSTERED, NONCLUSTERED,
-     * COLUMNSTORE, CLUSTERED COLUMNSTORE).
-     * 
+     * Get the indexType property: The type of index (CLUSTERED, NONCLUSTERED, COLUMNSTORE, CLUSTERED COLUMNSTORE).
+     *
      * @return the indexType value.
      */
     public RecommendedIndexType indexType() {
@@ -144,9 +138,8 @@ public class RecommendedIndex extends ProxyResource {
     }
 
     /**
-     * Get the schema property: The schema where table to build index over
-     * resides.
-     * 
+     * Get the schema property: The schema where table to build index over resides.
+     *
      * @return the schema value.
      */
     public String schema() {
@@ -155,7 +148,7 @@ public class RecommendedIndex extends ProxyResource {
 
     /**
      * Get the table property: The table on which to build index.
-     * 
+     *
      * @return the table value.
      */
     public String table() {
@@ -164,7 +157,7 @@ public class RecommendedIndex extends ProxyResource {
 
     /**
      * Get the columns property: Columns over which to build index.
-     * 
+     *
      * @return the columns value.
      */
     public List<String> columns() {
@@ -172,9 +165,8 @@ public class RecommendedIndex extends ProxyResource {
     }
 
     /**
-     * Get the includedColumns property: The list of column names to be
-     * included in the index.
-     * 
+     * Get the includedColumns property: The list of column names to be included in the index.
+     *
      * @return the includedColumns value.
      */
     public List<String> includedColumns() {
@@ -183,7 +175,7 @@ public class RecommendedIndex extends ProxyResource {
 
     /**
      * Get the indexScript property: The full build index script.
-     * 
+     *
      * @return the indexScript value.
      */
     public String indexScript() {
@@ -191,9 +183,8 @@ public class RecommendedIndex extends ProxyResource {
     }
 
     /**
-     * Get the estimatedImpact property: The estimated impact of doing
-     * recommended index action.
-     * 
+     * Get the estimatedImpact property: The estimated impact of doing recommended index action.
+     *
      * @return the estimatedImpact value.
      */
     public List<OperationImpact> estimatedImpact() {
@@ -201,9 +192,8 @@ public class RecommendedIndex extends ProxyResource {
     }
 
     /**
-     * Get the reportedImpact property: The values reported after index action
-     * is complete.
-     * 
+     * Get the reportedImpact property: The values reported after index action is complete.
+     *
      * @return the reportedImpact value.
      */
     public List<OperationImpact> reportedImpact() {

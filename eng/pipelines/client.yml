@@ -19,7 +19,7 @@ jobs:
   - job: 'Build'
 
     pool:
-      vmImage: 'ubuntu-16.04'
+      vmImage: 'ubuntu-18.04'
 
     strategy:
       matrix:
@@ -54,7 +54,7 @@ jobs:
   - job: 'Analyze'
 
     pool:
-      vmImage: 'ubuntu-16.04'
+      vmImage: 'ubuntu-18.04'
 
     steps:
       - task: UsePythonVersion@0
@@ -165,7 +165,7 @@ jobs:
       matrix:
         Linux - Java 8:
           OSName: 'Linux'
-          OSVmImage: 'ubuntu-16.04'
+          OSVmImage: 'ubuntu-18.04'
           JavaVersion: '1.8'
         macOS - Java 8:
           OSName: 'macOS'
@@ -177,7 +177,7 @@ jobs:
           JavaVersion: '1.8'
         Linux - Java 11:
           OSName: 'Linux'
-          OSVmImage: 'ubuntu-16.04'
+          OSVmImage: 'ubuntu-18.04'
           JavaVersion: '1.11'
         macOS - Java 11:
           OSName: 'macOS'

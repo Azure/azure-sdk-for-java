@@ -13,44 +13,44 @@ import com.azure.management.graphrbac.models.ApplicationsInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
 import com.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.azure.management.resources.fluentcore.model.HasInner;
+import java.util.UUID;
 import reactor.core.publisher.Mono;
 
-import java.util.UUID;
-
-/**
- * The implementation of Applications and its parent interfaces.
- */
-
+/** The implementation of Applications and its parent interfaces. */
 class ActiveDirectoryApplicationsImpl
-        extends CreatableResourcesImpl<ActiveDirectoryApplication, ActiveDirectoryApplicationImpl, ApplicationInner>
-        implements ActiveDirectoryApplications,
-            HasManager<GraphRbacManager>,
-            HasInner<ApplicationsInner> {
+    extends CreatableResourcesImpl<ActiveDirectoryApplication, ActiveDirectoryApplicationImpl, ApplicationInner>
+    implements ActiveDirectoryApplications, HasManager<GraphRbacManager>, HasInner<ApplicationsInner> {
     private ApplicationsInner innerCollection;
     private GraphRbacManager manager;
 
-    ActiveDirectoryApplicationsImpl(
-            final ApplicationsInner client,
-            final GraphRbacManager graphRbacManager) {
+    ActiveDirectoryApplicationsImpl(final ApplicationsInner client, final GraphRbacManager graphRbacManager) {
         this.innerCollection = client;
         this.manager = graphRbacManager;
     }
 
     @Override
     public PagedIterable<ActiveDirectoryApplication> list() {
-        return this.innerCollection.list(null).mapPage(inner -> {
-            ActiveDirectoryApplicationImpl application = wrapModel(inner);
-            return application.refreshCredentialsAsync().block();
-        });
+        return this
+            .innerCollection
+            .list(null)
+            .mapPage(
+                inner -> {
+                    ActiveDirectoryApplicationImpl application = wrapModel(inner);
+                    return application.refreshCredentialsAsync().block();
+                });
     }
 
     @Override
     public PagedFlux<ActiveDirectoryApplication> listAsync() {
-        return this.innerCollection.listAsync(null).mapPage(inner -> {
-            ActiveDirectoryApplicationImpl application = wrapModel(inner);
-            application.refreshCredentialsAsync();
-            return application;
-        });
+        return this
+            .innerCollection
+            .listAsync(null)
+            .mapPage(
+                inner -> {
+                    ActiveDirectoryApplicationImpl application = wrapModel(inner);
+                    application.refreshCredentialsAsync();
+                    return application;
+                });
     }
 
     @Override
@@ -68,10 +68,12 @@ class ActiveDirectoryApplicationsImpl
 
     @Override
     public Mono<ActiveDirectoryApplication> getByIdAsync(String id) {
-        return innerCollection.getAsync(id)
-                .onErrorResume(GraphErrorException.class, e -> Mono.empty())
-                .flatMap(applicationInner -> new ActiveDirectoryApplicationImpl(applicationInner, manager())
-                        .refreshCredentialsAsync());
+        return innerCollection
+            .getAsync(id)
+            .onErrorResume(GraphErrorException.class, e -> Mono.empty())
+            .flatMap(
+                applicationInner ->
+                    new ActiveDirectoryApplicationImpl(applicationInner, manager()).refreshCredentialsAsync());
     }
 
     @Override
@@ -82,14 +84,19 @@ class ActiveDirectoryApplicationsImpl
     @Override
     public Mono<ActiveDirectoryApplication> getByNameAsync(String name) {
         final String trimmed = name.replaceFirst("^'+", "").replaceAll("'+$", "");
-        return inner().listAsync(String.format("displayName eq '%s'", trimmed)).singleOrEmpty()
-                .switchIfEmpty(Mono.defer(() -> {
-                    UUID.fromString(trimmed);
-                    return inner().listAsync(String.format("appId eq '%s'", trimmed)).singleOrEmpty();
-                }))
-                .onErrorResume(IllegalArgumentException.class, e -> Mono.empty())
-                .map(applicationInner -> new ActiveDirectoryApplicationImpl(applicationInner, manager()))
-                .flatMap(activeDirectoryApplication -> activeDirectoryApplication.refreshCredentialsAsync());
+        return inner()
+            .listAsync(String.format("displayName eq '%s'", trimmed))
+            .singleOrEmpty()
+            .switchIfEmpty(
+                Mono
+                    .defer(
+                        () -> {
+                            UUID.fromString(trimmed);
+                            return inner().listAsync(String.format("appId eq '%s'", trimmed)).singleOrEmpty();
+                        }))
+            .onErrorResume(IllegalArgumentException.class, e -> Mono.empty())
+            .map(applicationInner -> new ActiveDirectoryApplicationImpl(applicationInner, manager()))
+            .flatMap(activeDirectoryApplication -> activeDirectoryApplication.refreshCredentialsAsync());
     }
 
     @Override

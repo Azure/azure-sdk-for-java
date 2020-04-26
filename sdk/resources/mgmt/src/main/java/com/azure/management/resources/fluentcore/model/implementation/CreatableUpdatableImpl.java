@@ -21,8 +21,8 @@ import java.util.function.Function;
 /**
  * The base class for all creatable and updatable model.
  *
- * @param <FluentModelT>     the fluent model type
- * @param <InnerModelT>      the inner model type that the fluent model wraps
+ * @param <FluentModelT> the fluent model type
+ * @param <InnerModelT> the inner model type that the fluent model wraps
  * @param <FluentModelImplT> the implementation type of the fluent model
  */
 public abstract class CreatableUpdatableImpl<
@@ -47,7 +47,7 @@ public abstract class CreatableUpdatableImpl<
     /**
      * Creates CreatableUpdatableImpl.
      *
-     * @param name        the name of the model
+     * @param name the name of the model
      * @param innerObject the inner model object
      */
     protected CreatableUpdatableImpl(String name, InnerModelT innerObject) {
@@ -57,8 +57,8 @@ public abstract class CreatableUpdatableImpl<
     /**
      * Creates CreatableUpdatableImpl.
      *
-     * @param name        the name of the model
-     * @param key         task group key for the creator updater of this model
+     * @param name the name of the model
+     * @param key task group key for the creator updater of this model
      * @param innerObject the inner model object
      */
     protected CreatableUpdatableImpl(String name, String key, InnerModelT innerObject) {

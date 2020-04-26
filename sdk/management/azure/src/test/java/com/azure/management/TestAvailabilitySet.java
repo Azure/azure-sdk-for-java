@@ -14,7 +14,9 @@ public class TestAvailabilitySet extends TestTemplate<AvailabilitySet, Availabil
     @Override
     public AvailabilitySet createResource(AvailabilitySets availabilitySets) throws Exception {
         final String newName = availabilitySets.manager().getSdkContext().randomResourceName("as", 10);
-        AvailabilitySet aset = availabilitySets.define(newName)
+        AvailabilitySet aset =
+            availabilitySets
+                .define(newName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup()
                 .withFaultDomainCount(2)
@@ -32,11 +34,7 @@ public class TestAvailabilitySet extends TestTemplate<AvailabilitySet, Availabil
     @Override
     public AvailabilitySet updateResource(AvailabilitySet resource) throws Exception {
         // Modify existing availability set
-        resource = resource.update()
-                .withTag("tag2", "value2")
-                .withTag("tag3", "value3")
-                .withoutTag("tag1")
-                .apply();
+        resource = resource.update().withTag("tag2", "value2").withTag("tag3", "value3").withoutTag("tag1").apply();
         Assertions.assertTrue(resource.tags().containsKey("tag2"));
         Assertions.assertTrue(!resource.tags().containsKey("tag1"));
         return resource;
@@ -44,13 +42,24 @@ public class TestAvailabilitySet extends TestTemplate<AvailabilitySet, Availabil
 
     @Override
     public void print(AvailabilitySet resource) {
-        System.out.println(new StringBuilder().append("Availability Set: ").append(resource.id())
-                .append("Name: ").append(resource.name())
-                .append("\n\tResource group: ").append(resource.resourceGroupName())
-                .append("\n\tRegion: ").append(resource.region())
-                .append("\n\tTags: ").append(resource.tags())
-                .append("\n\tFault domain count: ").append(resource.faultDomainCount())
-                .append("\n\tUpdate domain count: ").append(resource.updateDomainCount())
-                .toString());
+        System
+            .out
+            .println(
+                new StringBuilder()
+                    .append("Availability Set: ")
+                    .append(resource.id())
+                    .append("Name: ")
+                    .append(resource.name())
+                    .append("\n\tResource group: ")
+                    .append(resource.resourceGroupName())
+                    .append("\n\tRegion: ")
+                    .append(resource.region())
+                    .append("\n\tTags: ")
+                    .append(resource.tags())
+                    .append("\n\tFault domain count: ")
+                    .append(resource.faultDomainCount())
+                    .append("\n\tUpdate domain count: ")
+                    .append(resource.updateDomainCount())
+                    .toString());
     }
 }

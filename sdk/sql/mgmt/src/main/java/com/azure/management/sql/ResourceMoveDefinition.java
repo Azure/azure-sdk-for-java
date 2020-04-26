@@ -7,9 +7,7 @@ package com.azure.management.sql;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ResourceMoveDefinition model.
- */
+/** The ResourceMoveDefinition model. */
 @Fluent
 public final class ResourceMoveDefinition {
     /*
@@ -20,7 +18,7 @@ public final class ResourceMoveDefinition {
 
     /**
      * Get the id property: The target ID for the resource.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -29,7 +27,7 @@ public final class ResourceMoveDefinition {
 
     /**
      * Set the id property: The target ID for the resource.
-     * 
+     *
      * @param id the id value to set.
      * @return the ResourceMoveDefinition object itself.
      */

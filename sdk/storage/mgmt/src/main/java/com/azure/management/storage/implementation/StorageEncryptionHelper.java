@@ -14,13 +14,10 @@ import com.azure.management.storage.StorageAccountEncryptionStatus;
 import com.azure.management.storage.StorageAccountUpdateParameters;
 import com.azure.management.storage.StorageService;
 import com.azure.management.storage.models.StorageAccountInner;
-
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Helper to operate on storage account encryption {@link StorageAccountInner#encryption} property.
- */
+/** Helper to operate on storage account encryption {@link StorageAccountInner#encryption} property. */
 final class StorageEncryptionHelper {
     private final boolean isInCreateMode;
     private final StorageAccountInner inner;
@@ -43,7 +40,7 @@ final class StorageEncryptionHelper {
      * Creates StorageEncryptionHelper.
      *
      * @param updateParameters the model representing payload for storage account update
-     * @param inner            the current state of storage account
+     * @param inner the current state of storage account
      */
     StorageEncryptionHelper(StorageAccountUpdateParameters updateParameters, final StorageAccountInner inner) {
         this.isInCreateMode = false;
@@ -59,8 +56,7 @@ final class StorageEncryptionHelper {
      * @return the encryption key source type
      */
     static StorageAccountEncryptionKeySource encryptionKeySource(StorageAccountInner inner) {
-        if (inner.encryption() == null
-                || inner.encryption().keySource() == null) {
+        if (inner.encryption() == null || inner.encryption().keySource() == null) {
             return null;
         }
         return StorageAccountEncryptionKeySource.fromString(inner.encryption().keySource().toString());
@@ -137,10 +133,9 @@ final class StorageEncryptionHelper {
     StorageEncryptionHelper withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion) {
         Encryption encryption = getEncryptionConfig(true);
         encryption.withKeySource(KeySource.MICROSOFT_KEYVAULT);
-        encryption.withKeyVaultProperties(new KeyVaultProperties()
-                .withKeyVaultUri(keyVaultUri)
-                .withKeyName(keyName)
-                .withKeyVersion(keyVersion));
+        encryption
+            .withKeyVaultProperties(
+                new KeyVaultProperties().withKeyVaultUri(keyVaultUri).withKeyName(keyName).withKeyVersion(keyVersion));
         return this;
     }
 
@@ -219,31 +214,27 @@ final class StorageEncryptionHelper {
                     clonedEncryption.withKeySource(this.inner.encryption().keySource());
                     if (this.inner.encryption().keyVaultProperties() != null) {
                         clonedEncryption.withKeyVaultProperties(new KeyVaultProperties());
-                        clonedEncryption.keyVaultProperties()
-                                .withKeyName(this.inner
-                                        .encryption()
-                                        .keyVaultProperties()
-                                        .keyName())
-                                .withKeyVaultUri(this.inner
-                                        .encryption()
-                                        .keyVaultProperties()
-                                        .keyVaultUri())
-                                .withKeyVersion(this.inner
-                                        .encryption()
-                                        .keyVaultProperties()
-                                        .keyVersion());
+                        clonedEncryption
+                            .keyVaultProperties()
+                            .withKeyName(this.inner.encryption().keyVaultProperties().keyName())
+                            .withKeyVaultUri(this.inner.encryption().keyVaultProperties().keyVaultUri())
+                            .withKeyVersion(this.inner.encryption().keyVaultProperties().keyVersion());
                     }
                     if (this.inner.encryption().services() != null) {
                         clonedEncryption.withServices(new EncryptionServices());
                         if (this.inner.encryption().services().blob() != null) {
                             clonedEncryption.services().withBlob(new EncryptionService());
-                            clonedEncryption.services().blob()
-                                    .withEnabled(this.inner.encryption().services().blob().enabled());
+                            clonedEncryption
+                                .services()
+                                .blob()
+                                .withEnabled(this.inner.encryption().services().blob().enabled());
                         }
                         if (this.inner.encryption().services().file() != null) {
                             clonedEncryption.services().withFile(new EncryptionService());
-                            clonedEncryption.services().file()
-                                    .withEnabled(this.inner.encryption().services().file().enabled());
+                            clonedEncryption
+                                .services()
+                                .file()
+                                .withEnabled(this.inner.encryption().services().file().enabled());
                         }
                     }
                     this.updateParameters.withEncryption(clonedEncryption);

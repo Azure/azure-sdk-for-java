@@ -3,31 +3,13 @@
 
 package com.azure.management.appservice.samples;
 
-import com.azure.management.ApplicationTokenCredential;
-import com.github.dockerjava.api.DockerClient;
-import com.github.dockerjava.core.command.BuildImageResultCallback;
-import com.github.dockerjava.core.command.PushImageResultCallback;
 import com.azure.management.Azure;
-import com.azure.management.appservice.PricingTier;
-import com.azure.management.appservice.WebApp;
 //import com.azure.management.containerregistry.AccessKeyType;
 //import com.azure.management.containerregistry.Registry;
 //import com.azure.management.containerregistry.RegistryCredentials;
-import com.azure.management.cosmosdb.CosmosDBAccount;
-import com.azure.management.cosmosdb.DatabaseAccountKind;
-import com.azure.management.graphrbac.ServicePrincipal;
-import com.azure.management.keyvault.SecretPermissions;
-import com.azure.management.keyvault.Vault;
-import com.azure.management.resources.fluentcore.arm.Region;
-import com.azure.management.resources.fluentcore.utils.SdkContext;
-import com.azure.management.samples.DockerUtils;
-import com.azure.management.samples.Utils;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.Date;
 
 
 /**
@@ -47,6 +29,7 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure) {
+        System.out.println("removed later");
         return true;
 //        // New resources
 //        final Region region         = Region.US_WEST;
@@ -214,7 +197,7 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
 
             Azure azure = Azure
                     .configure()
-                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                    .withLogLevel(HttpLogDetailLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 

@@ -9,19 +9,15 @@ import com.azure.management.containerregistry.RegistryFileTaskRunRequest;
 import com.azure.management.containerregistry.SetValue;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.fluentcore.utils.Utils;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-class RegistryFileTaskRunRequestImpl implements
-        RegistryFileTaskRunRequest,
-        RegistryFileTaskRunRequest.Definition,
-        HasInner<FileTaskRunRequest> {
+class RegistryFileTaskRunRequestImpl
+    implements RegistryFileTaskRunRequest, RegistryFileTaskRunRequest.Definition, HasInner<FileTaskRunRequest> {
 
     private FileTaskRunRequest inner;
     private RegistryTaskRunImpl registryTaskRunImpl;
-
 
     @Override
     public int timeout() {
@@ -85,7 +81,6 @@ class RegistryFileTaskRunRequestImpl implements
             value.withValue(entry.getValue().value());
             value.withIsSecret(entry.getValue().isSecret());
             overridingValuesList.add(value);
-
         }
         this.inner.withValues(overridingValuesList);
         return this;

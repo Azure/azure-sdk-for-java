@@ -4,7 +4,6 @@
 package com.azure.management.resources.samples;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.management.Azure;
 import com.azure.management.resources.Deployment;
 import com.azure.management.resources.DeploymentMode;
@@ -18,6 +17,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ public final class DeployUsingARMTemplateWithDeploymentOperations {
     /**
      * Main function which runs the actual sample.
      *
-     * @param azure                  instance of the azure client
+     * @param azure instance of the azure client
      * @param defaultPollingInterval polling interval in seconds
      * @return true if sample runs successfully
      */
@@ -183,7 +183,7 @@ public final class DeployUsingARMTemplateWithDeploymentOperations {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure.configure()
-                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.NONE))
+                    .withLogLevel(HttpLogDetailLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 
@@ -202,7 +202,7 @@ public final class DeployUsingARMTemplateWithDeploymentOperations {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return new String(content);
+        return new String(content, StandardCharsets.UTF_8);
     }
 
     private DeployUsingARMTemplateWithDeploymentOperations() {

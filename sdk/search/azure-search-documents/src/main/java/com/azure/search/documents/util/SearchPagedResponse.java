@@ -4,17 +4,13 @@
 package com.azure.search.documents.util;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.Page;
-import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.CoreUtils;
-import com.azure.core.util.IterableStream;
-import com.azure.core.util.paging.ContinuablePage;
+import com.azure.search.documents.SearchServiceVersion;
+import com.azure.search.documents.implementation.models.SearchContinuationToken;
 import com.azure.search.documents.implementation.models.SearchDocumentsResult;
 import com.azure.search.documents.models.FacetResult;
-import com.azure.search.documents.models.SearchRequest;
 import com.azure.search.documents.models.SearchResult;
 
 import java.util.List;
@@ -27,14 +23,9 @@ import java.util.Map;
  * to true coverage - coverage value.
  */
 @Immutable
-public final class SearchPagedResponse implements ContinuablePage<SearchRequest, SearchResult>,
-    Response<List<SearchResult>> {
-    private final int statusCode;
-    private final HttpHeaders headers;
-    private final HttpRequest request;
+public final class SearchPagedResponse extends PagedResponseBase<Void, SearchResult> {
     private final List<SearchResult> value;
 
-    private final SearchRequest nextPageParameters;
     private final Map<String, List<FacetResult>> facets;
     private final Long count;
     private final Double coverage;
@@ -42,30 +33,33 @@ public final class SearchPagedResponse implements ContinuablePage<SearchRequest,
     /**
      * Constructor
      *
-     * @param documentSearchResponse an http response with the results
+     * @param documentSearchResponse An http response with the results.
+     * @param serviceVersion The api version to build into continuation token.
      */
-    public SearchPagedResponse(SimpleResponse<SearchDocumentsResult> documentSearchResponse) {
-        this.statusCode = documentSearchResponse.getStatusCode();
-        this.headers = documentSearchResponse.getHeaders();
-        this.request = documentSearchResponse.getRequest();
+    public SearchPagedResponse(SimpleResponse<SearchDocumentsResult> documentSearchResponse,
+        SearchServiceVersion serviceVersion) {
+        super(documentSearchResponse.getRequest(),
+            documentSearchResponse.getStatusCode(),
+            documentSearchResponse.getHeaders(),
+            documentSearchResponse.getValue().getResults(),
+            createContinuationToken(documentSearchResponse, serviceVersion),
+            null);
 
         SearchDocumentsResult documentsResult = documentSearchResponse.getValue();
         this.value = documentsResult.getResults();
         this.facets = documentsResult.getFacets();
         this.count = documentsResult.getCount();
         this.coverage = documentsResult.getCoverage();
-
-        this.nextPageParameters = getNextPageParameters(documentsResult);
     }
 
-    private static SearchRequest getNextPageParameters(SearchDocumentsResult result) {
-        if (CoreUtils.isNullOrEmpty(result.getNextLink())
-            || result.getNextPageParameters() == null
-            || result.getNextPageParameters().getSkip() == null) {
+    private static String createContinuationToken(SimpleResponse<SearchDocumentsResult> documentSearchResponse,
+        SearchServiceVersion serviceVersion) {
+        SearchDocumentsResult documentsResult = documentSearchResponse.getValue();
+        if (documentsResult == null) {
             return null;
         }
-
-        return result.getNextPageParameters();
+        return SearchContinuationToken.serializeToken(serviceVersion.getVersion(), documentsResult.getNextLink(),
+            documentsResult.getNextPageParameters());
     }
 
     /**
@@ -104,32 +98,7 @@ public final class SearchPagedResponse implements ContinuablePage<SearchRequest,
     }
 
     @Override
-    public int getStatusCode() {
-        return statusCode;
-    }
-
-    @Override
-    public HttpHeaders getHeaders() {
-        return headers;
-    }
-
-    @Override
-    public HttpRequest getRequest() {
-        return request;
-    }
-
-    @Override
     public List<SearchResult> getValue() {
         return value;
-    }
-
-    @Override
-    public IterableStream<SearchResult> getElements() {
-        return new IterableStream<>(value);
-    }
-
-    @Override
-    public SearchRequest getContinuationToken() {
-        return nextPageParameters;
     }
 }

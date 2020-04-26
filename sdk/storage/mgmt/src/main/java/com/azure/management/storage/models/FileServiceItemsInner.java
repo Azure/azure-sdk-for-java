@@ -8,9 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The FileServiceItems model.
- */
+/** The FileServiceItems model. */
 @Immutable
 public final class FileServiceItemsInner {
     /*
@@ -21,7 +19,7 @@ public final class FileServiceItemsInner {
 
     /**
      * Get the value property: List of file services returned.
-     * 
+     *
      * @return the value value.
      */
     public List<FileServicePropertiesInner> value() {

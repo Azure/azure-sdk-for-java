@@ -13,7 +13,7 @@ omitted_paths:
 language: java
 root_check_enabled: True
 required_readme_sections:
-  - "Azure .+ client library for Java"
+  - "Azure .+ (client|plugin|shared) library for Java"
   - ^Getting started$
   - ^Key concepts$
   - ^Examples$
@@ -110,11 +110,6 @@ known_presence_issues:
   - ['sdk/keyvault/microsoft-azure-keyvault-complete/CHANGELOG.md', '#2847']
 
 known_content_issues:
-  - ['cosmosdb/data-plane/benchmark/README.md', '#3113']
-  - ['cosmosdb/data-plane/changelog/README.md', '#3113']
-  - ['cosmosdb/data-plane/faq/README.md', '#3113']
-  - ['cosmosdb/data-plane/README.md', '#3113']
-  - ['eventhubs/data-plane/azure-eventhubs-eph/Readme.md', '#3113']
   - ['README.md', '#3113']
   - ['sdk/applicationinsights/microsoft-azure-applicationinsights-query/README.md', '#3113']
   - ['sdk/authorization/microsoft-azure-authentication-msi-token-provider/README.md', '#3113']
@@ -130,24 +125,25 @@ known_content_issues:
   - ['sdk/eventgrid/microsoft-azure-eventgrid/README.md', '#3113']
   - ['sdk/eventhubs/microsoft-azure-eventhubs-eph/README.md', '#3113']
   - ['sdk/eventhubs/README.md', '#3113']
+  - ['sdk/formrecognizer/azure-ai-formrecognizer/swagger/README.md', '#3113']
   - ['sdk/keyvault/README.md', '#3113']
   - ['sdk/loganalytics/microsoft-azure-loganalytics/README.md', '#3113']
   - ['sdk/search/azure-search-documents/swagger/readme.md', '#3113']
-  - ['sdk/servicebus/README.md', '#3113']
+  - ['sdk/search/azure-search-documents/src/test/README.md', '#3113']
+  - ['sdk/search/open-api/readme.md', '#3113']
+  - ['sdk/servicebus/microsoft-azure-servicebus/README.md', '#3113']
   - ['sdk/storage/azure-storage-blob/swagger/README.md', '#3113']
+  - ['sdk/storage/azure-storage-blob-nio/README.md', '#3113']
   - ['sdk/storage/azure-storage-common/README.md', '#3113']
   - ['sdk/storage/azure-storage-file/swagger/README.md', '#3113']
   - ['sdk/storage/azure-storage-file-datalake/swagger/README.md', '#3113']
+  - ['sdk/storage/azure-storage-file-share/swagger/README.md','has other required sections']
   - ['sdk/storage/azure-storage-queue/swagger/README.md', '#3113']
   - ['sdk/storage/microsoft-azure-storage-blob/README.md', '#3113']
   - ['sdk/storage/microsoft-azure-storage-blob/swagger/README.md', '#3113']
-  - ['sdk/storage/azure-storage-blob-nio/README.md', '#3113']
   - ['sdk/storage/README.md', '#3113']
   - ['sdk/textanalytics/azure-ai-textanalytics/swagger/README.md', '#3113']
   - ['sdk/template/azure-sdk-template/README.md','has other required sections']
-  - ['sdk/storage/azure-storage-file-share/swagger/README.md','has other required sections']
-  - ['sdk/search/azure-search-documents/src/test/README.md', '#3113']
-  - ['sdk/search/open-api/readme.md', '#3113']
 
 package_indexing_exclusion_list:
   - azure-loganalytics-sample

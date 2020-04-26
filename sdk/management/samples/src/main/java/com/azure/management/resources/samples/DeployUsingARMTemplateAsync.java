@@ -4,7 +4,7 @@
 package com.azure.management.resources.samples;
 
 
-import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.management.Azure;
 import com.azure.management.resources.Deployment;
 import com.azure.management.resources.DeploymentMode;
@@ -17,6 +17,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -147,7 +148,7 @@ public final class DeployUsingARMTemplateAsync {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure.configure()
-                    .withLogOptions(new HttpLogOptions())
+                    .withLogLevel(HttpLogDetailLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 
@@ -166,7 +167,7 @@ public final class DeployUsingARMTemplateAsync {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return new String(content);
+        return new String(content, StandardCharsets.UTF_8);
     }
 
     private DeployUsingARMTemplateAsync() {

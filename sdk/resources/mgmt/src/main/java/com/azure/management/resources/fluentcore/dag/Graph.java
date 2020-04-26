@@ -3,6 +3,8 @@
 
 package com.azure.management.resources.fluentcore.dag;
 
+import com.azure.core.util.logging.ClientLogger;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,7 +28,7 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
     /**
      * to track the already visited node while performing DFS.
      */
-    private Set<String> visited;
+    private final Set<String> visited;
     /**
      * to generate node entry and exit time while performing DFS.
      */
@@ -34,19 +36,21 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
     /**
      * to track the entry time to each node while performing DFS.
      */
-    private Map<String, Integer> entryTime;
+    private final Map<String, Integer> entryTime;
     /**
      * to track the exit time from each node while performing DFS.
      */
-    private Map<String, Integer> exitTime;
+    private final Map<String, Integer> exitTime;
     /**
      * to track the immediate parent node of each node while performing DFS.
      */
-    private Map<String, String> parent;
+    private final Map<String, String> parent;
     /**
      * to track already processed node while performing DFS.
      */
-    private Set<String> processed;
+    private final Set<String> processed;
+
+    private final ClientLogger logger = new ClientLogger(this.getClass());
 
     /**
      * Creates a directed graph.
@@ -105,8 +109,7 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
 
         String fromKey = node.key();
         visited.add(fromKey);
-        time++;
-        entryTime.put(fromKey, time);
+        entryTime.put(fromKey, ++time);
         for (String toKey : node.children()) {
             if (!visited.contains(toKey)) {
                 parent.put(toKey, fromKey);
@@ -116,8 +119,7 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
                 visitor.visitEdge(fromKey, toKey, edgeType(fromKey, toKey));
             }
         }
-        time++;
-        exitTime.put(fromKey, time);
+        exitTime.put(fromKey, ++time);
         processed.add(fromKey);
     }
 
@@ -140,14 +142,16 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
             }
         }
 
-        throw new IllegalStateException("Internal Error: Unable to locate the edge type {" + fromKey + ", " + toKey + "}");
+        throw logger.logExceptionAsError(
+            new IllegalStateException("Internal Error: Unable to locate the edge type {" + fromKey + ", " + toKey + "}")
+        );
     }
 
     /**
      * Find the path.
      *
      * @param start key of first node in the path
-     * @param end   key of last node in the path
+     * @param end key of last node in the path
      * @return string containing the nodes keys in the path separated by arrow symbol
      */
     protected String findPath(String start, String end) {
@@ -161,7 +165,7 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
     /**
      * The edge types in a graph.
      */
-    enum EdgeType {
+    protected enum EdgeType {
         /**
          * An edge (u, v) is a tree edge if v is visited the first time.
          */
@@ -186,7 +190,7 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
      *
      * @param <U> the type of the node
      */
-    interface Visitor<U> {
+    protected interface Visitor<U> {
         /**
          * visit a node.
          *
@@ -197,8 +201,8 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
         /**
          * visit an edge.
          *
-         * @param fromKey  key of the from node
-         * @param toKey    key of the to node
+         * @param fromKey key of the from node
+         * @param toKey key of the to node
          * @param edgeType the edge type
          */
         void visitEdge(String fromKey, String toKey, EdgeType edgeType);

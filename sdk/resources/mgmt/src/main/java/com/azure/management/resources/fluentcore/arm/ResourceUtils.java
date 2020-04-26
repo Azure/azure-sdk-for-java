@@ -6,6 +6,7 @@ package com.azure.management.resources.fluentcore.arm;
 import com.azure.management.resources.Provider;
 import com.azure.management.resources.ProviderResourceType;
 
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -69,7 +70,7 @@ public final class ResourceUtils {
             return null;
         }
         ResourceId resourceId = ResourceId.fromString(id);
-        if (resourceId != null && resourceId.parent() != null) {
+        if (resourceId.parent() != null) {
             return ResourceId.fromString(id).parent().id();
         }
 
@@ -119,7 +120,7 @@ public final class ResourceUtils {
      * Extract information from a resource ID string with the resource type
      * as the identifier.
      *
-     * @param id         the resource ID
+     * @param id the resource ID
      * @param identifier the identifier to match, e.g. "resourceGroups", "storageAccounts"
      * @return the information extracted from the identifier
      */
@@ -150,12 +151,12 @@ public final class ResourceUtils {
      * Find out the default api version to make a REST request with from
      * the resource provider.
      *
-     * @param id       the resource ID
+     * @param id the resource ID
      * @param provider the resource provider
      * @return the default api version to use
      */
     public static String defaultApiVersion(String id, Provider provider) {
-        String resourceType = resourceTypeFromResourceId(id).toLowerCase();
+        String resourceType = resourceTypeFromResourceId(id).toLowerCase(Locale.ROOT);
         // Exact match
         for (ProviderResourceType prt : provider.resourceTypes()) {
             if (prt.resourceType().equalsIgnoreCase(resourceType)) {
@@ -164,7 +165,7 @@ public final class ResourceUtils {
         }
         // child resource, e.g. sites/config
         for (ProviderResourceType prt : provider.resourceTypes()) {
-            if (prt.resourceType().toLowerCase().contains("/" + resourceType)) {
+            if (prt.resourceType().toLowerCase(Locale.ROOT).contains("/" + resourceType)) {
                 return prt.apiVersions().get(0);
             }
         }
@@ -181,12 +182,12 @@ public final class ResourceUtils {
     /**
      * Creates a resource ID from information of a generic resource.
      *
-     * @param subscriptionId            the subscription UUID
-     * @param resourceGroupName         the resource group name
+     * @param subscriptionId the subscription UUID
+     * @param resourceGroupName the resource group name
      * @param resourceProviderNamespace the resource provider namespace
-     * @param resourceType              the type of the resource or nested resource
-     * @param resourceName              name of the resource or nested resource
-     * @param parentResourcePath        parent resource's relative path to the provider,
+     * @param resourceType the type of the resource or nested resource
+     * @param resourceName name of the resource or nested resource
+     * @param parentResourcePath parent resource's relative path to the provider,
      *                                  if the resource is a generic resource
      * @return the resource ID string
      */

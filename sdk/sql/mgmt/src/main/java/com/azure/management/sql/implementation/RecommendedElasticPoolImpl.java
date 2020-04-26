@@ -14,19 +14,15 @@ import com.azure.management.sql.TrackedResource;
 import com.azure.management.sql.models.DatabaseInner;
 import com.azure.management.sql.models.RecommendedElasticPoolInner;
 import com.azure.management.sql.models.RecommendedElasticPoolMetricInner;
-import reactor.core.publisher.Mono;
-
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for RecommendedElasticPool and its parent interfaces.
- */
-class RecommendedElasticPoolImpl
-        extends RefreshableWrapperImpl<RecommendedElasticPoolInner, RecommendedElasticPool>
-        implements RecommendedElasticPool {
+/** Implementation for RecommendedElasticPool and its parent interfaces. */
+class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElasticPoolInner, RecommendedElasticPool>
+    implements RecommendedElasticPool {
 
     private final SqlServerImpl sqlServer;
 
@@ -37,8 +33,11 @@ class RecommendedElasticPoolImpl
 
     @Override
     protected Mono<RecommendedElasticPoolInner> getInnerAsync() {
-        return this.manager().inner().recommendedElasticPools().getAsync(
-                this.resourceGroupName(), this.sqlServerName(), this.name());
+        return this
+            .manager()
+            .inner()
+            .recommendedElasticPools()
+            .getAsync(this.resourceGroupName(), this.sqlServerName(), this.name());
     }
 
     @Override
@@ -104,14 +103,15 @@ class RecommendedElasticPoolImpl
     @Override
     public List<SqlDatabase> listDatabases() {
         List<SqlDatabase> databasesList = new ArrayList<>();
-        PagedIterable<DatabaseInner> databaseInners = this.sqlServer.manager().inner().databases().listByElasticPool(
-            this.sqlServer.resourceGroupName(),
-            this.sqlServer.name(),
-            this.name());
-        if (databaseInners != null) {
-            for (DatabaseInner inner : databaseInners) {
-                databasesList.add(new SqlDatabaseImpl(inner.getName(), this.sqlServer, inner, this.manager()));
-            }
+        PagedIterable<DatabaseInner> databaseInners =
+            this
+                .sqlServer
+                .manager()
+                .inner()
+                .databases()
+                .listByElasticPool(this.sqlServer.resourceGroupName(), this.sqlServer.name(), this.name());
+        for (DatabaseInner inner : databaseInners) {
+            databasesList.add(new SqlDatabaseImpl(inner.getName(), this.sqlServer, inner, this.manager()));
         }
         return Collections.unmodifiableList(databasesList);
     }
@@ -119,19 +119,26 @@ class RecommendedElasticPoolImpl
     @Override
     public PagedFlux<SqlDatabase> listDatabasesAsync() {
         final RecommendedElasticPoolImpl self = this;
-        return this.sqlServer.manager().inner().databases().listByElasticPoolAsync(
-            this.sqlServer.resourceGroupName(),
-            this.sqlServer.name(),
-            this.name())
-            .mapPage(databaseInner -> new SqlDatabaseImpl(databaseInner.getName(), self.sqlServer, databaseInner, self.manager()));
+        return this
+            .sqlServer
+            .manager()
+            .inner()
+            .databases()
+            .listByElasticPoolAsync(this.sqlServer.resourceGroupName(), this.sqlServer.name(), this.name())
+            .mapPage(
+                databaseInner ->
+                    new SqlDatabaseImpl(databaseInner.getName(), self.sqlServer, databaseInner, self.manager()));
     }
 
     @Override
     public SqlDatabase getDatabase(String databaseName) {
-        DatabaseInner databaseInner = this.sqlServer.manager().inner().databases().get(
-            this.sqlServer.resourceGroupName(),
-            this.sqlServer.name(),
-            databaseName);
+        DatabaseInner databaseInner =
+            this
+                .sqlServer
+                .manager()
+                .inner()
+                .databases()
+                .get(this.sqlServer.resourceGroupName(), this.sqlServer.name(), databaseName);
 
         return new SqlDatabaseImpl(databaseInner.getName(), this.sqlServer, databaseInner, this.manager());
     }
@@ -139,25 +146,29 @@ class RecommendedElasticPoolImpl
     @Override
     public Mono<SqlDatabase> getDatabaseAsync(String databaseName) {
         final RecommendedElasticPoolImpl self = this;
-        return this.sqlServer.manager().inner().databases().getAsync(
-                this.sqlServer.resourceGroupName(),
-                this.sqlServer.name(),
-                databaseName)
-            .map(databaseInner -> new SqlDatabaseImpl(databaseInner.getName(), self.sqlServer, databaseInner, self.manager()));
+        return this
+            .sqlServer
+            .manager()
+            .inner()
+            .databases()
+            .getAsync(this.sqlServer.resourceGroupName(), this.sqlServer.name(), databaseName)
+            .map(
+                databaseInner ->
+                    new SqlDatabaseImpl(databaseInner.getName(), self.sqlServer, databaseInner, self.manager()));
     }
 
     @Override
     public List<RecommendedElasticPoolMetric> listMetrics() {
         List<RecommendedElasticPoolMetric> recommendedElasticPoolMetrics = new ArrayList<>();
-        PagedIterable<RecommendedElasticPoolMetricInner> recommendedElasticPoolMetricInners = this.sqlServer.manager().inner()
-            .recommendedElasticPools().listMetrics(
-                        this.resourceGroupName(),
-                        this.sqlServerName(),
-                        this.name());
-        if (recommendedElasticPoolMetricInners != null) {
-            for (RecommendedElasticPoolMetricInner inner : recommendedElasticPoolMetricInners) {
-                recommendedElasticPoolMetrics.add(new RecommendedElasticPoolMetricImpl(inner));
-            }
+        PagedIterable<RecommendedElasticPoolMetricInner> recommendedElasticPoolMetricInners =
+            this
+                .sqlServer
+                .manager()
+                .inner()
+                .recommendedElasticPools()
+                .listMetrics(this.resourceGroupName(), this.sqlServerName(), this.name());
+        for (RecommendedElasticPoolMetricInner inner : recommendedElasticPoolMetricInners) {
+            recommendedElasticPoolMetrics.add(new RecommendedElasticPoolMetricImpl(inner));
         }
         return Collections.unmodifiableList(recommendedElasticPoolMetrics);
     }

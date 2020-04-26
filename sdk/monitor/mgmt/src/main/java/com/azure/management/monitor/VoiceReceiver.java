@@ -7,9 +7,7 @@ package com.azure.management.monitor;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The VoiceReceiver model.
- */
+/** The VoiceReceiver model. */
 @Fluent
 public final class VoiceReceiver {
     /*
@@ -32,9 +30,9 @@ public final class VoiceReceiver {
     private String phoneNumber;
 
     /**
-     * Get the name property: The name of the voice receiver. Names must be
-     * unique across all receivers within an action group.
-     * 
+     * Get the name property: The name of the voice receiver. Names must be unique across all receivers within an action
+     * group.
+     *
      * @return the name value.
      */
     public String name() {
@@ -42,9 +40,9 @@ public final class VoiceReceiver {
     }
 
     /**
-     * Set the name property: The name of the voice receiver. Names must be
-     * unique across all receivers within an action group.
-     * 
+     * Set the name property: The name of the voice receiver. Names must be unique across all receivers within an action
+     * group.
+     *
      * @param name the name value to set.
      * @return the VoiceReceiver object itself.
      */
@@ -55,7 +53,7 @@ public final class VoiceReceiver {
 
     /**
      * Get the countryCode property: The country code of the voice receiver.
-     * 
+     *
      * @return the countryCode value.
      */
     public String countryCode() {
@@ -64,7 +62,7 @@ public final class VoiceReceiver {
 
     /**
      * Set the countryCode property: The country code of the voice receiver.
-     * 
+     *
      * @param countryCode the countryCode value to set.
      * @return the VoiceReceiver object itself.
      */
@@ -75,7 +73,7 @@ public final class VoiceReceiver {
 
     /**
      * Get the phoneNumber property: The phone number of the voice receiver.
-     * 
+     *
      * @return the phoneNumber value.
      */
     public String phoneNumber() {
@@ -84,7 +82,7 @@ public final class VoiceReceiver {
 
     /**
      * Set the phoneNumber property: The phone number of the voice receiver.
-     * 
+     *
      * @param phoneNumber the phoneNumber value to set.
      * @return the VoiceReceiver object itself.
      */

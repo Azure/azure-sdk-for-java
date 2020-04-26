@@ -22,6 +22,7 @@ import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -39,13 +40,13 @@ public final class SSHShell {
     /**
      * Creates SSHShell.
      *
-     * @param host     the host name
-     * @param port     the ssh port
+     * @param host the host name
+     * @param port the ssh port
      * @param userName the ssh user name
      * @param password the ssh password
      * @return the shell
-     * @throws JSchException
-     * @throws IOException
+     * @throws JSchException the JSchException
+     * @throws IOException the IOException
      */
     private SSHShell(String host, int port, String userName, String password)
             throws JSchException, IOException {
@@ -73,13 +74,13 @@ public final class SSHShell {
     /**
      * Creates SSHShell.
      *
-     * @param host          the host name
-     * @param port          the ssh port
-     * @param userName      the ssh user name
+     * @param host the host name
+     * @param port the ssh port
+     * @param userName the ssh user name
      * @param sshPrivateKey the ssh password
      * @return the shell
-     * @throws JSchException
-     * @throws IOException
+     * @throws JSchException the JSchException
+     * @throws IOException the IOException
      */
     private SSHShell(String host, int port, String userName, byte[] sshPrivateKey)
             throws JSchException, IOException {
@@ -107,13 +108,13 @@ public final class SSHShell {
     /**
      * Opens a SSH shell.
      *
-     * @param host     the host name
-     * @param port     the ssh port
+     * @param host the host name
+     * @param port the ssh port
      * @param userName the ssh user name
      * @param password the ssh password
      * @return the shell
      * @throws JSchException exception thrown
-     * @throws IOException   IO exception thrown
+     * @throws IOException IO exception thrown
      */
     public static SSHShell open(String host, int port, String userName, String password)
             throws JSchException, IOException {
@@ -123,13 +124,13 @@ public final class SSHShell {
     /**
      * Opens a SSH shell.
      *
-     * @param host          the host name
-     * @param port          the ssh port
-     * @param userName      the ssh user name
+     * @param host the host name
+     * @param port the ssh port
+     * @param userName the ssh user name
      * @param sshPrivateKey the ssh private key
      * @return the shell
      * @throws JSchException exception thrown
-     * @throws IOException   IO exception thrown
+     * @throws IOException IO exception thrown
      */
     public static SSHShell open(String host, int port, String userName, byte[] sshPrivateKey)
             throws JSchException, IOException {
@@ -162,15 +163,15 @@ public final class SSHShell {
     /**
      * Executes a command on the remote host.
      *
-     * @param command       the command to be executed
+     * @param command the command to be executed
      * @param getExitStatus return the exit status captured in the stdout
-     * @param withErr       capture the stderr as part of the output
+     * @param withErr capture the stderr as part of the output
      * @return the content of the remote output from executing the command
      * @throws Exception exception thrown
      */
     public String executeCommand(String command, Boolean getExitStatus, Boolean withErr) throws Exception {
-        String result = "";
-        String resultErr = "";
+        StringBuilder result = new StringBuilder();
+        StringBuilder resultErr = new StringBuilder();
 
         Channel channel = this.session.openChannel("exec");
         ((ChannelExec) channel).setCommand(command);
@@ -184,42 +185,43 @@ public final class SSHShell {
                 if (i < 0) {
                     break;
                 }
-                result += new String(tmp, 0, i);
+                result.append(new String(tmp, 0, i, StandardCharsets.UTF_8));
             }
             while (commandErr.available() > 0) {
                 int i = commandErr.read(tmp, 0, 4096);
                 if (i < 0) {
                     break;
                 }
-                resultErr += new String(tmp, 0, i);
+                resultErr.append(new String(tmp, 0, i, StandardCharsets.UTF_8));
             }
             if (channel.isClosed()) {
                 if (commandOutput.available() > 0) {
                     continue;
                 }
                 if (getExitStatus) {
-                    result += "exit-status: " + channel.getExitStatus();
+                    result.append("exit-status: ").append(channel.getExitStatus());
                     if (withErr) {
-                        result += "\n With error:\n" + resultErr;
+                        result.append("\n With error:\n").append(resultErr);
                     }
                 }
                 break;
             }
             try {
                 Thread.sleep(100);
-            } catch (Exception ee) {
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
             }
         }
         channel.disconnect();
 
-        return result;
+        return result.toString();
     }
 
     /**
      * Downloads the content of a file from the remote host as a String.
      *
-     * @param fileName        the name of the file for which the content will be downloaded
-     * @param fromPath        the path of the file for which the content will be downloaded
+     * @param fileName the name of the file for which the content will be downloaded
+     * @param fromPath the path of the file for which the content will be downloaded
      * @param isUserHomeBased true if the path of the file is relative to the user's home directory
      * @return the content of the file
      * @throws Exception exception thrown
@@ -235,17 +237,17 @@ public final class SSHShell {
 
         channel.disconnect();
 
-        return outputStream.toString();
+        return outputStream.toString("UTF-8");
     }
 
     /**
      * Creates a new file on the remote host using the input content.
      *
-     * @param from            the byte array content to be uploaded
-     * @param fileName        the name of the file for which the content will be saved into
-     * @param toPath          the path of the file for which the content will be saved into
+     * @param from the byte array content to be uploaded
+     * @param fileName the name of the file for which the content will be saved into
+     * @param toPath the path of the file for which the content will be saved into
      * @param isUserHomeBased true if the path of the file is relative to the user's home directory
-     * @param filePerm        file permissions to be set
+     * @param filePerm file permissions to be set
      * @throws Exception exception thrown
      */
     public void upload(InputStream from, String fileName, String toPath, boolean isUserHomeBased, String filePerm) throws Exception {
@@ -253,12 +255,13 @@ public final class SSHShell {
         channel.connect();
         String absolutePath = isUserHomeBased ? channel.getHome() + "/" + toPath : toPath;
 
-        String path = "";
+        StringBuilder path = new StringBuilder();
         for (String dir : absolutePath.split("/")) {
-            path = path + "/" + dir;
+            path.append("/" + dir);
             try {
-                channel.mkdir(path);
-            } catch (Exception ee) {
+                channel.mkdir(path.toString());
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
             }
         }
         channel.cd(absolutePath);
@@ -287,6 +290,9 @@ public final class SSHShell {
 
     private Closure getExpectClosure() {
         return new Closure() {
+            /**
+             * @throws Exception thrown Exception
+             */
             public void run(ExpectState expectState) throws Exception {
                 String outputBuffer = expectState.getBuffer();
                 System.out.println(outputBuffer);
@@ -300,7 +306,7 @@ public final class SSHShell {
      * Automatically generate SSH keys.
      *
      * @param passPhrase the byte array content to be uploaded
-     * @param comment    the name of the file for which the content will be saved into
+     * @param comment the name of the file for which the content will be saved into
      * @return SSH public and private key
      * @throws Exception exception thrown
      */
@@ -315,10 +321,10 @@ public final class SSHShell {
         if (passPhrase == null || passPhrase.isEmpty()) {
             keyPair.writePrivateKey(privateKeyBuff);
         } else {
-            keyPair.writePrivateKey(privateKeyBuff, passPhrase.getBytes());
+            keyPair.writePrivateKey(privateKeyBuff, passPhrase.getBytes(StandardCharsets.UTF_8));
         }
 
-        return new SshPublicPrivateKey(privateKeyBuff.toString(), publicKeyBuff.toString());
+        return new SshPublicPrivateKey(privateKeyBuff.toString("UTF-8"), publicKeyBuff.toString("UTF-8"));
     }
 
     /**
@@ -332,7 +338,7 @@ public final class SSHShell {
          * Constructor.
          *
          * @param sshPrivateKey SSH private key
-         * @param sshPublicKey  SSH public key
+         * @param sshPublicKey SSH public key
          */
         public SshPublicPrivateKey(String sshPrivateKey, String sshPublicKey) {
             this.sshPrivateKey = sshPrivateKey;

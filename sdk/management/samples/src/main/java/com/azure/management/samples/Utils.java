@@ -41,8 +41,6 @@ import com.azure.management.compute.VirtualMachineExtension;
 import com.azure.management.containerregistry.AccessKeyType;
 import com.azure.management.containerregistry.Registry;
 import com.azure.management.containerregistry.RegistryCredentials;
-import com.azure.management.containerservice.ContainerService;
-import com.azure.management.containerservice.ContainerServiceOrchestratorTypes;
 import com.azure.management.containerservice.KubernetesCluster;
 import com.azure.management.cosmosdb.CosmosDBAccount;
 import com.azure.management.cosmosdb.DatabaseAccountListKeysResult;
@@ -59,6 +57,23 @@ import com.azure.management.keyvault.AccessPolicy;
 import com.azure.management.keyvault.KeyPermissions;
 import com.azure.management.keyvault.SecretPermissions;
 import com.azure.management.keyvault.Vault;
+import com.azure.management.monitor.ActionGroup;
+import com.azure.management.monitor.ActivityLogAlert;
+import com.azure.management.monitor.AutomationRunbookReceiver;
+import com.azure.management.monitor.AzureAppPushReceiver;
+import com.azure.management.monitor.AzureFunctionReceiver;
+import com.azure.management.monitor.DiagnosticSetting;
+import com.azure.management.monitor.EmailReceiver;
+import com.azure.management.monitor.ItsmReceiver;
+import com.azure.management.monitor.LogSettings;
+import com.azure.management.monitor.LogicAppReceiver;
+import com.azure.management.monitor.MetricAlert;
+import com.azure.management.monitor.MetricAlertCondition;
+import com.azure.management.monitor.MetricDimension;
+import com.azure.management.monitor.MetricSettings;
+import com.azure.management.monitor.SmsReceiver;
+import com.azure.management.monitor.VoiceReceiver;
+import com.azure.management.monitor.WebhookReceiver;
 import com.azure.management.msi.Identity;
 import com.azure.management.network.ApplicationGateway;
 import com.azure.management.network.ApplicationGatewayBackend;
@@ -1215,34 +1230,6 @@ public final class Utils {
     }
 
     /**
-     * Print an Azure Container Service.
-     *
-     * @param containerService an Azure Container Service
-     */
-    public static void print(ContainerService containerService) {
-        StringBuilder info = new StringBuilder();
-
-        info.append("Azure Container Service: ").append(containerService.id())
-                .append("\n\tName: ").append(containerService.name())
-                .append("\n\tWith orchestration: ").append(containerService.orchestratorType().toString())
-                .append("\n\tMaster FQDN: ").append(containerService.masterFqdn())
-                .append("\n\tMaster node count: ").append(containerService.masterNodeCount())
-                .append("\n\tMaster domain label prefix: ").append(containerService.masterDnsPrefix())
-                .append("\n\t\tWith Agent pool name: ").append(new ArrayList<>(containerService.agentPools().keySet()).get(0))
-                .append("\n\t\tAgent pool count: ").append(new ArrayList<>(containerService.agentPools().values()).get(0).count())
-                .append("\n\t\tAgent pool VM size: ").append(new ArrayList<>(containerService.agentPools().values()).get(0).vmSize().toString())
-                .append("\n\t\tAgent pool FQDN: ").append(new ArrayList<>(containerService.agentPools().values()).get(0).fqdn())
-                .append("\n\t\tAgent pool domain label prefix: ").append(new ArrayList<>(containerService.agentPools().values()).get(0).dnsPrefix())
-                .append("\n\tLinux user name: ").append(containerService.linuxRootUsername())
-                .append("\n\tSSH key: ").append(containerService.sshKey());
-        if (containerService.orchestratorType() == ContainerServiceOrchestratorTypes.KUBERNETES) {
-            info.append("\n\tName: ").append(containerService.servicePrincipalClientId());
-        }
-
-        System.out.println(info.toString());
-    }
-
-    /**
      * Print an Azure Container Service (AKS).
      *
      * @param kubernetesCluster a managed container service
@@ -1304,9 +1291,9 @@ public final class Utils {
      */
     public static String getSecondaryServicePrincipalClientID(String envSecondaryServicePrincipal) throws Exception {
         Properties authSettings = new Properties();
-        FileInputStream credentialsFileStream = new FileInputStream(new File(envSecondaryServicePrincipal));
-        authSettings.load(credentialsFileStream);
-        credentialsFileStream.close();
+        try (FileInputStream credentialsFileStream = new FileInputStream(new File(envSecondaryServicePrincipal))) {
+            authSettings.load(credentialsFileStream);
+        }
 
         return authSettings.getProperty("client");
     }
@@ -1320,9 +1307,9 @@ public final class Utils {
      */
     public static String getSecondaryServicePrincipalSecret(String envSecondaryServicePrincipal) throws Exception {
         Properties authSettings = new Properties();
-        FileInputStream credentialsFileStream = new FileInputStream(new File(envSecondaryServicePrincipal));
-        authSettings.load(credentialsFileStream);
-        credentialsFileStream.close();
+        try (FileInputStream credentialsFileStream = new FileInputStream(new File(envSecondaryServicePrincipal))) {
+            authSettings.load(credentialsFileStream);
+        }
 
         return authSettings.getProperty("key");
     }
@@ -1341,11 +1328,12 @@ public final class Utils {
      * This method creates a certificate for given password.
      *
      * @param certPath location of certificate file
-     * @param pfxPath  location of pfx file
-     * @param alias    User alias
+     * @param pfxPath location of pfx file
+     * @param alias User alias
      * @param password alias password
-     * @param cnName   domain name
+     * @param cnName domain name
      * @throws Exception exceptions from the creation
+     * @throws IOException IO Exception
      */
     public static void createCertificate(String certPath, String pfxPath,
                                          String alias, String password, String cnName) throws Exception {
@@ -1371,17 +1359,17 @@ public final class Utils {
 
         // Create Pfx file
         String[] commandArgs = {command, "-genkey", "-alias", alias,
-                "-keystore", pfxPath, "-storepass", password, "-validity",
-                validityInDays, "-keyalg", keyAlg, "-sigalg", sigAlg, "-keysize", keySize,
-                "-storetype", storeType, "-dname", "CN=" + cnName, "-ext", "EKU=1.3.6.1.5.5.7.3.1"};
+            "-keystore", pfxPath, "-storepass", password, "-validity",
+            validityInDays, "-keyalg", keyAlg, "-sigalg", sigAlg, "-keysize", keySize,
+            "-storetype", storeType, "-dname", "CN=" + cnName, "-ext", "EKU=1.3.6.1.5.5.7.3.1"};
         Utils.cmdInvocation(commandArgs, true);
 
         // Create cer file i.e. extract public key from pfx
         File pfxFile = new File(pfxPath);
         if (pfxFile.exists()) {
             String[] certCommandArgs = {command, "-export", "-alias", alias,
-                    "-storetype", storeType, "-keystore", pfxPath,
-                    "-storepass", password, "-rfc", "-file", certPath};
+                "-storetype", storeType, "-keystore", pfxPath,
+                "-storepass", password, "-rfc", "-file", certPath};
             // output of keytool export command is going to error stream
             // although command is
             // executed successfully, hence ignoring error stream in this case
@@ -1403,7 +1391,7 @@ public final class Utils {
     /**
      * This method is used for invoking native commands.
      *
-     * @param command           :- command to invoke.
+     * @param command :- command to invoke.
      * @param ignoreErrorStream : Boolean which controls whether to throw exception or not
      *                          based on error stream.
      * @return result :- depending on the method invocation.
@@ -1413,18 +1401,16 @@ public final class Utils {
                                        boolean ignoreErrorStream) throws Exception {
         String result = "";
         String error = "";
-        InputStream inputStream = null;
-        InputStream errorStream = null;
-        BufferedReader br = null;
-        BufferedReader ebr = null;
-        try {
-            Process process = new ProcessBuilder(command).start();
-            inputStream = process.getInputStream();
-            errorStream = process.getErrorStream();
-            br = new BufferedReader(new InputStreamReader(inputStream));
+
+        Process process = new ProcessBuilder(command).start();
+        try (
+            InputStream inputStream = process.getInputStream();
+            InputStream errorStream = process.getErrorStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+            BufferedReader ebr = new BufferedReader(new InputStreamReader(errorStream, StandardCharsets.UTF_8));
+        ) {
             result = br.readLine();
             process.waitFor();
-            ebr = new BufferedReader(new InputStreamReader(errorStream));
             error = ebr.readLine();
             if (error != null && (!error.equals(""))) {
                 // To do - Log error message
@@ -1435,19 +1421,6 @@ public final class Utils {
             }
         } catch (Exception e) {
             throw new Exception("Exception occurred while invoking command", e);
-        } finally {
-            if (inputStream != null) {
-                inputStream.close();
-            }
-            if (errorStream != null) {
-                errorStream.close();
-            }
-            if (br != null) {
-                br.close();
-            }
-            if (ebr != null) {
-                ebr.close();
-            }
         }
         return result;
     }
@@ -1502,8 +1475,8 @@ public final class Utils {
                 .append("\n\tResource group: ").append(firewallRule.resourceGroupName())
                 .append("\n\tRegion: ").append(firewallRule.region())
                 .append("\n\tSqlServer Name: ").append(firewallRule.sqlServerName())
-                .append("\n\tStart IP Address of the firewall rule: ").append(firewallRule.startIPAddress())
-                .append("\n\tEnd IP Address of the firewall rule: ").append(firewallRule.endIPAddress());
+                .append("\n\tStart IP Address of the firewall rule: ").append(firewallRule.startIpAddress())
+                .append("\n\tEnd IP Address of the firewall rule: ").append(firewallRule.endIpAddress());
 
         System.out.println(builder.toString());
     }
@@ -1959,9 +1932,9 @@ public final class Utils {
     /**
      * Uploads a file to an Azure web app.
      *
-     * @param profile  the publishing profile for the web app.
+     * @param profile the publishing profile for the web app.
      * @param fileName the name of the file on server
-     * @param file     the local file
+     * @param file the local file
      */
     public static void uploadFileToWebApp(PublishingProfile profile, String fileName, InputStream file) {
         FTPClient ftpClient = new FTPClient();
@@ -1993,9 +1966,9 @@ public final class Utils {
     /**
      * Uploads a file to an Azure function app.
      *
-     * @param profile  the publishing profile for the web app.
+     * @param profile the publishing profile for the web app.
      * @param fileName the name of the file on server
-     * @param file     the local file
+     * @param file the local file
      */
     public static void uploadFileToFunctionApp(PublishingProfile profile, String fileName, InputStream file) {
         FTPClient ftpClient = new FTPClient();
@@ -2027,9 +2000,9 @@ public final class Utils {
     /**
      * Uploads a file to an Azure web app.
      *
-     * @param profile  the publishing profile for the web app.
+     * @param profile the publishing profile for the web app.
      * @param fileName the name of the file on server
-     * @param file     the local file
+     * @param file the local file
      */
     public static void uploadFileToWebAppWwwRoot(PublishingProfile profile, String fileName, InputStream file) {
         FTPClient ftpClient = new FTPClient();
@@ -2782,244 +2755,244 @@ public final class Utils {
 //    }
 
 
-//    /**
-//     * Print Diagnostic Setting.
-//     *
-//     * @param resource Diagnostic Setting instance
-//     */
-//    public static void print(DiagnosticSetting resource) {
-//        StringBuilder info = new StringBuilder("Diagnostic Setting: ")
-//                .append("\n\tId: ").append(resource.id())
-//                .append("\n\tAssociated resource Id: ").append(resource.resourceId())
-//                .append("\n\tName: ").append(resource.name())
-//                .append("\n\tStorage Account Id: ").append(resource.storageAccountId())
-//                .append("\n\tEventHub Namespace Autorization Rule Id: ").append(resource.eventHubAuthorizationRuleId())
-//                .append("\n\tEventHub name: ").append(resource.eventHubName())
-//                .append("\n\tLog Analytics workspace Id: ").append(resource.workspaceId());
-//        if (resource.logs() != null && !resource.logs().isEmpty()) {
-//            info.append("\n\tLog Settings: ");
-//            for (LogSettings ls : resource.logs()) {
-//                info.append("\n\t\tCategory: ").append(ls.category());
-//                info.append("\n\t\tRetention policy: ");
-//                if (ls.retentionPolicy() != null) {
-//                    info.append(ls.retentionPolicy().days() + " days");
-//                } else {
-//                    info.append("NONE");
-//                }
-//            }
-//        }
-//        if (resource.metrics() != null && !resource.metrics().isEmpty()) {
-//            info.append("\n\tMetric Settings: ");
-//            for (MetricSettings ls : resource.metrics()) {
-//                info.append("\n\t\tCategory: ").append(ls.category());
-//                info.append("\n\t\tTimegrain: ").append(ls.timeGrain());
-//                info.append("\n\t\tRetention policy: ");
-//                if (ls.retentionPolicy() != null) {
-//                    info.append(ls.retentionPolicy().days() + " days");
-//                } else {
-//                    info.append("NONE");
-//                }
-//            }
-//        }
-//        System.out.println(info.toString());
-//    }
+    /**
+     * Print Diagnostic Setting.
+     *
+     * @param resource Diagnostic Setting instance
+     */
+    public static void print(DiagnosticSetting resource) {
+        StringBuilder info = new StringBuilder("Diagnostic Setting: ")
+                .append("\n\tId: ").append(resource.id())
+                .append("\n\tAssociated resource Id: ").append(resource.resourceId())
+                .append("\n\tName: ").append(resource.name())
+                .append("\n\tStorage Account Id: ").append(resource.storageAccountId())
+                .append("\n\tEventHub Namespace Autorization Rule Id: ").append(resource.eventHubAuthorizationRuleId())
+                .append("\n\tEventHub name: ").append(resource.eventHubName())
+                .append("\n\tLog Analytics workspace Id: ").append(resource.workspaceId());
+        if (resource.logs() != null && !resource.logs().isEmpty()) {
+            info.append("\n\tLog Settings: ");
+            for (LogSettings ls : resource.logs()) {
+                info.append("\n\t\tCategory: ").append(ls.category());
+                info.append("\n\t\tRetention policy: ");
+                if (ls.retentionPolicy() != null) {
+                    info.append(ls.retentionPolicy().days() + " days");
+                } else {
+                    info.append("NONE");
+                }
+            }
+        }
+        if (resource.metrics() != null && !resource.metrics().isEmpty()) {
+            info.append("\n\tMetric Settings: ");
+            for (MetricSettings ls : resource.metrics()) {
+                info.append("\n\t\tCategory: ").append(ls.category());
+                info.append("\n\t\tTimegrain: ").append(ls.timeGrain());
+                info.append("\n\t\tRetention policy: ");
+                if (ls.retentionPolicy() != null) {
+                    info.append(ls.retentionPolicy().days() + " days");
+                } else {
+                    info.append("NONE");
+                }
+            }
+        }
+        System.out.println(info.toString());
+    }
 
-//    /**
-//     * Print Action group settings.
-//     *
-//     * @param actionGroup action group instance
-//     */
-//    public static void print(ActionGroup actionGroup) {
-//        StringBuilder info = new StringBuilder("Action Group: ")
-//                .append("\n\tId: ").append(actionGroup.id())
-//                .append("\n\tName: ").append(actionGroup.name())
-//                .append("\n\tShort Name: ").append(actionGroup.shortName());
-//
-//        if (actionGroup.emailReceivers() != null && !actionGroup.emailReceivers().isEmpty()) {
-//            info.append("\n\tEmail receivers: ");
-//            for (EmailReceiver er : actionGroup.emailReceivers()) {
-//                info.append("\n\t\tName: ").append(er.name());
-//                info.append("\n\t\tEMail: ").append(er.emailAddress());
-//                info.append("\n\t\tStatus: ").append(er.status());
-//                info.append("\n\t\t===");
-//            }
-//        }
-//
-//        if (actionGroup.smsReceivers() != null && !actionGroup.smsReceivers().isEmpty()) {
-//            info.append("\n\tSMS text message receivers: ");
-//            for (SmsReceiver er : actionGroup.smsReceivers()) {
-//                info.append("\n\t\tName: ").append(er.name());
-//                info.append("\n\t\tPhone: ").append(er.countryCode() + er.phoneNumber());
-//                info.append("\n\t\tStatus: ").append(er.status());
-//                info.append("\n\t\t===");
-//            }
-//        }
-//
-//        if (actionGroup.webhookReceivers() != null && !actionGroup.webhookReceivers().isEmpty()) {
-//            info.append("\n\tWebhook receivers: ");
-//            for (WebhookReceiver er : actionGroup.webhookReceivers()) {
-//                info.append("\n\t\tName: ").append(er.name());
-//                info.append("\n\t\tURI: ").append(er.serviceUri());
-//                info.append("\n\t\t===");
-//            }
-//        }
-//
-//        if (actionGroup.pushNotificationReceivers() != null && !actionGroup.pushNotificationReceivers().isEmpty()) {
-//            info.append("\n\tApp Push Notification receivers: ");
-//            for (AzureAppPushReceiver er : actionGroup.pushNotificationReceivers()) {
-//                info.append("\n\t\tName: ").append(er.name());
-//                info.append("\n\t\tEmail: ").append(er.emailAddress());
-//                info.append("\n\t\t===");
-//            }
-//        }
-//
-//        if (actionGroup.voiceReceivers() != null && !actionGroup.voiceReceivers().isEmpty()) {
-//            info.append("\n\tVoice Message receivers: ");
-//            for (VoiceReceiver er : actionGroup.voiceReceivers()) {
-//                info.append("\n\t\tName: ").append(er.name());
-//                info.append("\n\t\tPhone: ").append(er.countryCode() + er.phoneNumber());
-//                info.append("\n\t\t===");
-//            }
-//        }
-//
-//        if (actionGroup.automationRunbookReceivers() != null && !actionGroup.automationRunbookReceivers().isEmpty()) {
-//            info.append("\n\tAutomation Runbook receivers: ");
-//            for (AutomationRunbookReceiver er : actionGroup.automationRunbookReceivers()) {
-//                info.append("\n\t\tName: ").append(er.name());
-//                info.append("\n\t\tRunbook Name: ").append(er.runbookName());
-//                info.append("\n\t\tAccount Id: ").append(er.automationAccountId());
-//                info.append("\n\t\tIs Global: ").append(er.isGlobalRunbook());
-//                info.append("\n\t\tService URI: ").append(er.serviceUri());
-//                info.append("\n\t\tWebhook resource Id: ").append(er.webhookResourceId());
-//                info.append("\n\t\t===");
-//            }
-//        }
-//
-//        if (actionGroup.azureFunctionReceivers() != null && !actionGroup.azureFunctionReceivers().isEmpty()) {
-//            info.append("\n\tAzure Functions receivers: ");
-//            for (AzureFunctionReceiver er : actionGroup.azureFunctionReceivers()) {
-//                info.append("\n\t\tName: ").append(er.name());
-//                info.append("\n\t\tFunction Name: ").append(er.functionName());
-//                info.append("\n\t\tFunction App Resource Id: ").append(er.functionAppResourceId());
-//                info.append("\n\t\tFunction Trigger URI: ").append(er.httpTriggerUrl());
-//                info.append("\n\t\t===");
-//            }
-//        }
-//
-//        if (actionGroup.logicAppReceivers() != null && !actionGroup.logicAppReceivers().isEmpty()) {
-//            info.append("\n\tLogic App receivers: ");
-//            for (LogicAppReceiver er : actionGroup.logicAppReceivers()) {
-//                info.append("\n\t\tName: ").append(er.name());
-//                info.append("\n\t\tResource Id: ").append(er.resourceId());
-//                info.append("\n\t\tCallback URL: ").append(er.callbackUrl());
-//                info.append("\n\t\t===");
-//            }
-//        }
-//
-//        if (actionGroup.itsmReceivers() != null && !actionGroup.itsmReceivers().isEmpty()) {
-//            info.append("\n\tITSM receivers: ");
-//            for (ItsmReceiver er : actionGroup.itsmReceivers()) {
-//                info.append("\n\t\tName: ").append(er.name());
-//                info.append("\n\t\tWorkspace Id: ").append(er.workspaceId());
-//                info.append("\n\t\tConnection Id: ").append(er.connectionId());
-//                info.append("\n\t\tRegion: ").append(er.region());
-//                info.append("\n\t\tTicket Configuration: ").append(er.ticketConfiguration());
-//                info.append("\n\t\t===");
-//            }
-//        }
-//        System.out.println(info.toString());
-//    }
+    /**
+     * Print Action group settings.
+     *
+     * @param actionGroup action group instance
+     */
+    public static void print(ActionGroup actionGroup) {
+        StringBuilder info = new StringBuilder("Action Group: ")
+                .append("\n\tId: ").append(actionGroup.id())
+                .append("\n\tName: ").append(actionGroup.name())
+                .append("\n\tShort Name: ").append(actionGroup.shortName());
 
-//    /**
-//     * Print activity log alert settings.
-//     *
-//     * @param activityLogAlert activity log instance
-//     */
-//    public static void print(ActivityLogAlert activityLogAlert) {
-//
-//        StringBuilder info = new StringBuilder("Activity Log Alert: ")
-//                .append("\n\tId: ").append(activityLogAlert.id())
-//                .append("\n\tName: ").append(activityLogAlert.name())
-//                .append("\n\tDescription: ").append(activityLogAlert.description())
-//                .append("\n\tIs Enabled: ").append(activityLogAlert.enabled());
-//
-//        if (activityLogAlert.scopes() != null && !activityLogAlert.scopes().isEmpty()) {
-//            info.append("\n\tScopes: ");
-//            for (String er : activityLogAlert.scopes()) {
-//                info.append("\n\t\tId: ").append(er);
-//            }
-//        }
-//
-//        if (activityLogAlert.actionGroupIds() != null && !activityLogAlert.actionGroupIds().isEmpty()) {
-//            info.append("\n\tAction Groups: ");
-//            for (String er : activityLogAlert.actionGroupIds()) {
-//                info.append("\n\t\tAction Group Id: ").append(er);
-//            }
-//        }
-//
-//        if (activityLogAlert.equalsConditions() != null && !activityLogAlert.equalsConditions().isEmpty()) {
-//            info.append("\n\tAlert conditions (when all of is true): ");
-//            for (Map.Entry<String, String> er : activityLogAlert.equalsConditions().entrySet()) {
-//                info.append("\n\t\t'").append(er.getKey()).append("' equals '").append(er.getValue()).append("'");
-//            }
-//        }
-//        System.out.println(info.toString());
-//    }
+        if (actionGroup.emailReceivers() != null && !actionGroup.emailReceivers().isEmpty()) {
+            info.append("\n\tEmail receivers: ");
+            for (EmailReceiver er : actionGroup.emailReceivers()) {
+                info.append("\n\t\tName: ").append(er.name());
+                info.append("\n\t\tEMail: ").append(er.emailAddress());
+                info.append("\n\t\tStatus: ").append(er.status());
+                info.append("\n\t\t===");
+            }
+        }
 
-//    /**
-//     * Print metric alert settings.
-//     *
-//     * @param metricAlert metric alert instance
-//     */
-//    public static void print(MetricAlert metricAlert) {
-//
-//        StringBuilder info = new StringBuilder("Metric Alert: ")
-//                .append("\n\tId: ").append(metricAlert.id())
-//                .append("\n\tName: ").append(metricAlert.name())
-//                .append("\n\tDescription: ").append(metricAlert.description())
-//                .append("\n\tIs Enabled: ").append(metricAlert.enabled())
-//                .append("\n\tIs Auto Mitigated: ").append(metricAlert.autoMitigate())
-//                .append("\n\tSeverity: ").append(metricAlert.severity())
-//                .append("\n\tWindow Size: ").append(metricAlert.windowSize())
-//                .append("\n\tEvaluation Frequency: ").append(metricAlert.evaluationFrequency());
-//
-//        if (metricAlert.scopes() != null && !metricAlert.scopes().isEmpty()) {
-//            info.append("\n\tScopes: ");
-//            for (String er : metricAlert.scopes()) {
-//                info.append("\n\t\tId: ").append(er);
-//            }
-//        }
-//
-//        if (metricAlert.actionGroupIds() != null && !metricAlert.actionGroupIds().isEmpty()) {
-//            info.append("\n\tAction Groups: ");
-//            for (String er : metricAlert.actionGroupIds()) {
-//                info.append("\n\t\tAction Group Id: ").append(er);
-//            }
-//        }
-//
-//        if (metricAlert.alertCriterias() != null && !metricAlert.alertCriterias().isEmpty()) {
-//            info.append("\n\tAlert conditions (when all of is true): ");
-//            for (Map.Entry<String, MetricAlertCondition> er : metricAlert.alertCriterias().entrySet()) {
-//                MetricAlertCondition alertCondition = er.getValue();
-//                info.append("\n\t\tCondition name: ").append(er.getKey())
-//                        .append("\n\t\tSignal name: ").append(alertCondition.metricName())
-//                        .append("\n\t\tMetric Namespace: ").append(alertCondition.metricNamespace())
-//                        .append("\n\t\tOperator: ").append(alertCondition.condition())
-//                        .append("\n\t\tThreshold: ").append(alertCondition.threshold())
-//                        .append("\n\t\tTime Aggregation: ").append(alertCondition.timeAggregation());
-//                if (alertCondition.dimensions() != null && !alertCondition.dimensions().isEmpty()) {
-//                    for (MetricDimension dimon : alertCondition.dimensions()) {
-//                        info.append("\n\t\tDimension Filter: ").append("Name [").append(dimon.name()).append("] operator [Include] values[");
-//                        for (String vals : dimon.values()) {
-//                            info.append(vals).append(", ");
-//                        }
-//                        info.append("]");
-//                    }
-//                }
-//            }
-//        }
-//        System.out.println(info.toString());
-//    }
+        if (actionGroup.smsReceivers() != null && !actionGroup.smsReceivers().isEmpty()) {
+            info.append("\n\tSMS text message receivers: ");
+            for (SmsReceiver er : actionGroup.smsReceivers()) {
+                info.append("\n\t\tName: ").append(er.name());
+                info.append("\n\t\tPhone: ").append(er.countryCode() + er.phoneNumber());
+                info.append("\n\t\tStatus: ").append(er.status());
+                info.append("\n\t\t===");
+            }
+        }
+
+        if (actionGroup.webhookReceivers() != null && !actionGroup.webhookReceivers().isEmpty()) {
+            info.append("\n\tWebhook receivers: ");
+            for (WebhookReceiver er : actionGroup.webhookReceivers()) {
+                info.append("\n\t\tName: ").append(er.name());
+                info.append("\n\t\tURI: ").append(er.serviceUri());
+                info.append("\n\t\t===");
+            }
+        }
+
+        if (actionGroup.pushNotificationReceivers() != null && !actionGroup.pushNotificationReceivers().isEmpty()) {
+            info.append("\n\tApp Push Notification receivers: ");
+            for (AzureAppPushReceiver er : actionGroup.pushNotificationReceivers()) {
+                info.append("\n\t\tName: ").append(er.name());
+                info.append("\n\t\tEmail: ").append(er.emailAddress());
+                info.append("\n\t\t===");
+            }
+        }
+
+        if (actionGroup.voiceReceivers() != null && !actionGroup.voiceReceivers().isEmpty()) {
+            info.append("\n\tVoice Message receivers: ");
+            for (VoiceReceiver er : actionGroup.voiceReceivers()) {
+                info.append("\n\t\tName: ").append(er.name());
+                info.append("\n\t\tPhone: ").append(er.countryCode() + er.phoneNumber());
+                info.append("\n\t\t===");
+            }
+        }
+
+        if (actionGroup.automationRunbookReceivers() != null && !actionGroup.automationRunbookReceivers().isEmpty()) {
+            info.append("\n\tAutomation Runbook receivers: ");
+            for (AutomationRunbookReceiver er : actionGroup.automationRunbookReceivers()) {
+                info.append("\n\t\tName: ").append(er.name());
+                info.append("\n\t\tRunbook Name: ").append(er.runbookName());
+                info.append("\n\t\tAccount Id: ").append(er.automationAccountId());
+                info.append("\n\t\tIs Global: ").append(er.isGlobalRunbook());
+                info.append("\n\t\tService URI: ").append(er.serviceUri());
+                info.append("\n\t\tWebhook resource Id: ").append(er.webhookResourceId());
+                info.append("\n\t\t===");
+            }
+        }
+
+        if (actionGroup.azureFunctionReceivers() != null && !actionGroup.azureFunctionReceivers().isEmpty()) {
+            info.append("\n\tAzure Functions receivers: ");
+            for (AzureFunctionReceiver er : actionGroup.azureFunctionReceivers()) {
+                info.append("\n\t\tName: ").append(er.name());
+                info.append("\n\t\tFunction Name: ").append(er.functionName());
+                info.append("\n\t\tFunction App Resource Id: ").append(er.functionAppResourceId());
+                info.append("\n\t\tFunction Trigger URI: ").append(er.httpTriggerUrl());
+                info.append("\n\t\t===");
+            }
+        }
+
+        if (actionGroup.logicAppReceivers() != null && !actionGroup.logicAppReceivers().isEmpty()) {
+            info.append("\n\tLogic App receivers: ");
+            for (LogicAppReceiver er : actionGroup.logicAppReceivers()) {
+                info.append("\n\t\tName: ").append(er.name());
+                info.append("\n\t\tResource Id: ").append(er.resourceId());
+                info.append("\n\t\tCallback URL: ").append(er.callbackUrl());
+                info.append("\n\t\t===");
+            }
+        }
+
+        if (actionGroup.itsmReceivers() != null && !actionGroup.itsmReceivers().isEmpty()) {
+            info.append("\n\tITSM receivers: ");
+            for (ItsmReceiver er : actionGroup.itsmReceivers()) {
+                info.append("\n\t\tName: ").append(er.name());
+                info.append("\n\t\tWorkspace Id: ").append(er.workspaceId());
+                info.append("\n\t\tConnection Id: ").append(er.connectionId());
+                info.append("\n\t\tRegion: ").append(er.region());
+                info.append("\n\t\tTicket Configuration: ").append(er.ticketConfiguration());
+                info.append("\n\t\t===");
+            }
+        }
+        System.out.println(info.toString());
+    }
+
+    /**
+     * Print activity log alert settings.
+     *
+     * @param activityLogAlert activity log instance
+     */
+    public static void print(ActivityLogAlert activityLogAlert) {
+
+        StringBuilder info = new StringBuilder("Activity Log Alert: ")
+                .append("\n\tId: ").append(activityLogAlert.id())
+                .append("\n\tName: ").append(activityLogAlert.name())
+                .append("\n\tDescription: ").append(activityLogAlert.description())
+                .append("\n\tIs Enabled: ").append(activityLogAlert.enabled());
+
+        if (activityLogAlert.scopes() != null && !activityLogAlert.scopes().isEmpty()) {
+            info.append("\n\tScopes: ");
+            for (String er : activityLogAlert.scopes()) {
+                info.append("\n\t\tId: ").append(er);
+            }
+        }
+
+        if (activityLogAlert.actionGroupIds() != null && !activityLogAlert.actionGroupIds().isEmpty()) {
+            info.append("\n\tAction Groups: ");
+            for (String er : activityLogAlert.actionGroupIds()) {
+                info.append("\n\t\tAction Group Id: ").append(er);
+            }
+        }
+
+        if (activityLogAlert.equalsConditions() != null && !activityLogAlert.equalsConditions().isEmpty()) {
+            info.append("\n\tAlert conditions (when all of is true): ");
+            for (Map.Entry<String, String> er : activityLogAlert.equalsConditions().entrySet()) {
+                info.append("\n\t\t'").append(er.getKey()).append("' equals '").append(er.getValue()).append("'");
+            }
+        }
+        System.out.println(info.toString());
+    }
+
+    /**
+     * Print metric alert settings.
+     *
+     * @param metricAlert metric alert instance
+     */
+    public static void print(MetricAlert metricAlert) {
+
+        StringBuilder info = new StringBuilder("Metric Alert: ")
+                .append("\n\tId: ").append(metricAlert.id())
+                .append("\n\tName: ").append(metricAlert.name())
+                .append("\n\tDescription: ").append(metricAlert.description())
+                .append("\n\tIs Enabled: ").append(metricAlert.enabled())
+                .append("\n\tIs Auto Mitigated: ").append(metricAlert.autoMitigate())
+                .append("\n\tSeverity: ").append(metricAlert.severity())
+                .append("\n\tWindow Size: ").append(metricAlert.windowSize())
+                .append("\n\tEvaluation Frequency: ").append(metricAlert.evaluationFrequency());
+
+        if (metricAlert.scopes() != null && !metricAlert.scopes().isEmpty()) {
+            info.append("\n\tScopes: ");
+            for (String er : metricAlert.scopes()) {
+                info.append("\n\t\tId: ").append(er);
+            }
+        }
+
+        if (metricAlert.actionGroupIds() != null && !metricAlert.actionGroupIds().isEmpty()) {
+            info.append("\n\tAction Groups: ");
+            for (String er : metricAlert.actionGroupIds()) {
+                info.append("\n\t\tAction Group Id: ").append(er);
+            }
+        }
+
+        if (metricAlert.alertCriterias() != null && !metricAlert.alertCriterias().isEmpty()) {
+            info.append("\n\tAlert conditions (when all of is true): ");
+            for (Map.Entry<String, MetricAlertCondition> er : metricAlert.alertCriterias().entrySet()) {
+                MetricAlertCondition alertCondition = er.getValue();
+                info.append("\n\t\tCondition name: ").append(er.getKey())
+                        .append("\n\t\tSignal name: ").append(alertCondition.metricName())
+                        .append("\n\t\tMetric Namespace: ").append(alertCondition.metricNamespace())
+                        .append("\n\t\tOperator: ").append(alertCondition.condition())
+                        .append("\n\t\tThreshold: ").append(alertCondition.threshold())
+                        .append("\n\t\tTime Aggregation: ").append(alertCondition.timeAggregation());
+                if (alertCondition.dimensions() != null && !alertCondition.dimensions().isEmpty()) {
+                    for (MetricDimension dimon : alertCondition.dimensions()) {
+                        info.append("\n\t\tDimension Filter: ").append("Name [").append(dimon.name()).append("] operator [Include] values[");
+                        for (String vals : dimon.values()) {
+                            info.append(vals).append(", ");
+                        }
+                        info.append("]");
+                    }
+                }
+            }
+        }
+        System.out.println(info.toString());
+    }
 
     public static Response<String> curl(String urlString) {
         try {
@@ -3031,7 +3004,12 @@ public final class Utils {
 
     public static String get(String urlString) {
         try {
-            return stringResponse(httpClient.getString(getHost(urlString), getPathAndQuery(urlString))).block().getValue();
+            SimpleResponse<String> response = stringResponse(httpClient.getString(getHost(urlString), getPathAndQuery(urlString))).block();
+            if (response != null) {
+                return response.getValue();
+            } else {
+                return null;
+            }
         } catch (Exception e) {
             return null;
         }
@@ -3039,7 +3017,12 @@ public final class Utils {
 
     public static String post(String urlString, String body) {
         try {
-            return stringResponse(httpClient.postString(getHost(urlString), getPathAndQuery(urlString), body)).block().getValue();
+            SimpleResponse<String> response = stringResponse(httpClient.postString(getHost(urlString), getPathAndQuery(urlString), body)).block();
+            if (response != null) {
+                return response.getValue();
+            } else {
+                return null;
+            }
         } catch (Exception e) {
             return null;
         }
@@ -3068,10 +3051,10 @@ public final class Utils {
         return path;
     }
 
-    protected static WebAppTestClient httpClient = RestProxy.create(
+    private static WebAppTestClient httpClient = RestProxy.create(
             WebAppTestClient.class,
             new HttpPipelineBuilder()
-                    .policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)), new RetryPolicy())
+                    .policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC)), new RetryPolicy())
                     .build());
 
     @Host("{$host}")

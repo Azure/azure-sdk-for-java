@@ -6,9 +6,11 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.util.Configuration;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSenderClientBuilder;
 import com.azure.messaging.servicebus.models.ReceiveMode;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -18,7 +20,6 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.Duration;
 import java.util.Locale;
 import java.util.stream.Stream;
 
@@ -149,51 +150,6 @@ class ServiceBusClientBuilderTest {
         assertThrows(IllegalStateException.class, receiverBuilder::buildAsyncClient);
     }
 
-    private static Stream<Arguments> cannotCreateAutoSyncReceivers() {
-        return Stream.of(
-            Arguments.of(true, false),
-            Arguments.of(false, true)
-        );
-    }
-
-    /**
-     * Throws when auto-renewal or auto-complete is set on the sync receiver.
-     */
-    @ParameterizedTest
-    @MethodSource
-    void cannotCreateAutoSyncReceivers(boolean isAutoComplete, boolean isAutoRenew) {
-        // Arrange
-        final ServiceBusReceiverClientBuilder receiverBuilder = new ServiceBusClientBuilder()
-            .connectionString(NAMESPACE_CONNECTION_STRING)
-            .receiver()
-            .topicName("baz").subscriptionName("bar")
-            .receiveMode(ReceiveMode.PEEK_LOCK)
-            .isAutoComplete(isAutoComplete)
-            .isLockAutoRenewed(isAutoRenew)
-            .maxAutoLockRenewalDuration(Duration.ofSeconds(10));
-
-        // Act & Assert
-        assertThrows(IllegalStateException.class, receiverBuilder::buildClient);
-    }
-
-    /**
-     * Throws when auto-renewal is set, we also need a duration.
-     */
-    @Test
-    void cannotAutoRenewLockWithoutDuration() {
-        // Arrange
-        final ServiceBusReceiverClientBuilder receiverBuilder = new ServiceBusClientBuilder()
-            .connectionString(NAMESPACE_CONNECTION_STRING)
-            .receiver()
-            .topicName("baz").subscriptionName("bar")
-            .receiveMode(ReceiveMode.PEEK_LOCK)
-            .isAutoComplete(false)
-            .isLockAutoRenewed(true);
-
-        // Act & Assert
-        assertThrows(IllegalStateException.class, receiverBuilder::buildAsyncClient);
-    }
-
     /**
      * Throws when the prefetch is less than 1.
      */
@@ -205,38 +161,48 @@ class ServiceBusClientBuilderTest {
             .receiver()
             .topicName("baz").subscriptionName("bar")
             .receiveMode(ReceiveMode.PEEK_LOCK)
-            .isAutoComplete(true)
             .prefetchCount(0);
 
         // Act & Assert
         assertThrows(IllegalArgumentException.class, receiverBuilder::buildAsyncClient);
     }
 
-    private static Stream<Arguments> cannotAutoRenewLockWithInvalidDuration() {
-        return Stream.of(
-            Arguments.of(Duration.ZERO),
-            Arguments.of(Duration.ofSeconds(-1))
-        );
+    @MethodSource("getProxyConfigurations")
+    @ParameterizedTest
+    public void testProxyOptionsConfiguration(String proxyConfiguration, boolean expectedClientCreation) {
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+        configuration = configuration.put(Configuration.PROPERTY_HTTP_PROXY, proxyConfiguration);
+        boolean clientCreated = false;
+        try {
+            ServiceBusReceiverClient syncClient = new ServiceBusClientBuilder()
+                .connectionString(NAMESPACE_CONNECTION_STRING)
+                .configuration(configuration)
+                .receiver()
+                .topicName("baz").subscriptionName("bar")
+                .receiveMode(ReceiveMode.PEEK_LOCK)
+                .buildClient();
+
+            clientCreated = true;
+        } catch (Exception ex) {
+        }
+
+        Assertions.assertEquals(expectedClientCreation, clientCreated);
     }
 
-    /**
-     * Throws when auto-renewal is set, we also need a positive duration.
-     */
-    @ParameterizedTest
-    @MethodSource
-    void cannotAutoRenewLockWithInvalidDuration(Duration duration) {
-        // Arrange
-        final ServiceBusReceiverClientBuilder receiverBuilder = new ServiceBusClientBuilder()
-            .connectionString(NAMESPACE_CONNECTION_STRING)
-            .receiver()
-            .topicName("baz").subscriptionName("bar")
-            .receiveMode(ReceiveMode.PEEK_LOCK)
-            .isAutoComplete(false)
-            .isLockAutoRenewed(true)
-            .maxAutoLockRenewalDuration(duration);
+    private static Stream<Arguments> getProxyConfigurations() {
+        return Stream.of(
+            Arguments.of("http://localhost:8080", true),
+            Arguments.of("localhost:8080", true),
+            Arguments.of("localhost_8080", false),
+            Arguments.of("http://example.com:8080", true),
+            Arguments.of("http://sub.example.com:8080", true),
+            Arguments.of(":8080", false),
+            Arguments.of("http://localhost", true),
+            Arguments.of("sub.example.com:8080", true),
+            Arguments.of("https://username:password@sub.example.com:8080", true),
+            Arguments.of("https://username:password@sub.example.com", true)
+        );
 
-        // Act & Assert
-        assertThrows(IllegalArgumentException.class, receiverBuilder::buildAsyncClient);
     }
 
     private static URI getUri(String endpointFormat, String namespace, String domainName) {

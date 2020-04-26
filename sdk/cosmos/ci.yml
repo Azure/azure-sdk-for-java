@@ -22,6 +22,10 @@ trigger:
       - sdk/cosmos/
     exclude:
       - sdk/cosmos/mgmt
+      - sdk/cosmos/mgmt-v2015_04_08
+      - sdk/cosmos/mgmt-v2019_08_01
+      - sdk/cosmos/mgmt-v2019_08_01_preview
+      - sdk/cosmos/mgmt-v2019_12_12
 
 pr:
   branches:
@@ -35,6 +39,10 @@ pr:
       - sdk/cosmos/
     exclude:
       - sdk/cosmos/mgmt
+      - sdk/cosmos/mgmt-v2015_04_08
+      - sdk/cosmos/mgmt-v2019_08_01
+      - sdk/cosmos/mgmt-v2019_08_01_preview
+      - sdk/cosmos/mgmt-v2019_12_12
 
 stages:
   - template: ../../eng/pipelines/templates/stages/cosmos-sdk-client.yml #NOTE: Non-standard template.

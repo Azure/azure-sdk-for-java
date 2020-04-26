@@ -3,8 +3,6 @@
 
 package com.azure.management.keyvault.implementation;
 
-import java.util.UUID;
-
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.graphrbac.implementation.GraphRbacManager;
@@ -21,16 +19,14 @@ import com.azure.management.keyvault.models.DeletedVaultInner;
 import com.azure.management.keyvault.models.VaultInner;
 import com.azure.management.keyvault.models.VaultsInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import java.util.UUID;
 import reactor.core.publisher.Mono;
 
-/**
- * The implementation of Vaults and its parent interfaces.
- */
+/** The implementation of Vaults and its parent interfaces. */
 class VaultsImpl extends GroupableResourcesImpl<Vault, VaultImpl, VaultInner, VaultsInner, KeyVaultManager>
-        implements Vaults {
+    implements Vaults {
     private final GraphRbacManager graphRbacManager;
     private final String tenantId;
-    
 
     VaultsImpl(final KeyVaultManager keyVaultManager, final GraphRbacManager graphRbacManager, final String tenantId) {
         super(keyVaultManager.inner().vaults(), keyVaultManager);
@@ -133,20 +129,26 @@ class VaultsImpl extends GroupableResourcesImpl<Vault, VaultImpl, VaultInner, Va
     public Vault recoverSoftDeletedVault(String resourceGroupName, String vaultName, String location) {
         return recoverSoftDeletedVaultAsync(resourceGroupName, vaultName, location).block();
     }
-    
+
     @Override
-    public Mono<Vault> recoverSoftDeletedVaultAsync(final String resourceGroupName, final String vaultName, String location) {
+    public Mono<Vault> recoverSoftDeletedVaultAsync(
+        final String resourceGroupName, final String vaultName, String location) {
         final KeyVaultManager manager = this.manager();
-        return getDeletedAsync(vaultName, location).flatMap(deletedVault -> {
-            VaultCreateOrUpdateParameters parameters = new VaultCreateOrUpdateParameters();
-            parameters.withLocation(deletedVault.location());
-            parameters.withTags(deletedVault.inner().properties().tags());
-            parameters.withProperties(new VaultProperties()
-                    .withCreateMode(CreateMode.RECOVER)
-                    .withSku(new Sku().withName(SkuName.STANDARD))
-                    .withTenantId(UUID.fromString(tenantId))
-            );
-            return inner().createOrUpdateAsync(resourceGroupName, vaultName, parameters).map(inner -> (Vault) new VaultImpl(inner.getId(), inner, manager, graphRbacManager));
-        });
+        return getDeletedAsync(vaultName, location)
+            .flatMap(
+                deletedVault -> {
+                    VaultCreateOrUpdateParameters parameters = new VaultCreateOrUpdateParameters();
+                    parameters.withLocation(deletedVault.location());
+                    parameters.withTags(deletedVault.inner().properties().tags());
+                    parameters
+                        .withProperties(
+                            new VaultProperties()
+                                .withCreateMode(CreateMode.RECOVER)
+                                .withSku(new Sku().withName(SkuName.STANDARD))
+                                .withTenantId(UUID.fromString(tenantId)));
+                    return inner()
+                        .createOrUpdateAsync(resourceGroupName, vaultName, parameters)
+                        .map(inner -> (Vault) new VaultImpl(inner.getId(), inner, manager, graphRbacManager));
+                });
     }
 }

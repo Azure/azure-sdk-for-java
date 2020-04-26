@@ -10,6 +10,7 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
@@ -24,6 +25,7 @@ import java.util.Objects;
  * @see TokenCredential
  */
 public final class KeyVaultCredentialPolicy implements HttpPipelinePolicy {
+    private final ClientLogger logger = new ClientLogger(KeyVaultCredentialPolicy.class);
     private static final String WWW_AUTHENTICATE = "WWW-Authenticate";
     private static final String BEARER_TOKEN_PREFIX = "Bearer ";
     private static final String AUTHORIZATION = "Authorization";
@@ -48,9 +50,26 @@ public final class KeyVaultCredentialPolicy implements HttpPipelinePolicy {
      */
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
+            return Mono.error(new RuntimeException("Token credentials require a URL using the HTTPS protocol scheme"));
+        }
         return next.clone().process()
-            // Ignore body
-            .doOnNext(HttpResponse::close)
+            .doOnNext(httpResponse -> {
+                // KV follows challenge based auth. Currently every service
+                // call hit the endpoint for challenge and then resend the
+                // request with token. The challenge response body is not
+                // consumed, not draining/closing the body will result in leak.
+                // Ref: https://github.com/Azure/azure-sdk-for-java/issues/7934
+                //      https://github.com/Azure/azure-sdk-for-java/issues/10467
+                try {
+                    httpResponse.getBody().subscribe().dispose();
+                } catch (RuntimeException ignored) {
+                    logger.logExceptionAsWarning(ignored);
+                }
+                // The ReactorNettyHttpResponse::close() should be sufficient
+                // and should take care similar body disposal but looks like that
+                // is not happening, need to re-visit the close() method.
+            })
             .map(res -> res.getHeaderValue(WWW_AUTHENTICATE))
             .map(header -> extractChallenge(header, BEARER_TOKEN_PREFIX))
             .flatMap(map -> {

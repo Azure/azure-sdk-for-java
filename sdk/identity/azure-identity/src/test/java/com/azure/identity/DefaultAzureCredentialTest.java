@@ -233,7 +233,6 @@ public class DefaultAzureCredentialTest {
             .verify();
     }
 
-
     @Test
     public void testCredentialUnavailable() throws Exception {
         Configuration configuration = Configuration.getGlobalConfiguration();

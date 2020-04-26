@@ -11,11 +11,9 @@ import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.samples.Utils;
 import com.azure.management.sql.SqlDatabase;
 import com.azure.management.sql.SqlServer;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 
 import java.io.File;
-import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -142,7 +140,7 @@ public final class ManageWebAppSqlConnection {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure.configure()
-                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+                    .withLogLevel(HttpLogDetailLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 

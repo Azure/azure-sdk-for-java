@@ -27,6 +27,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.management.containerregistry.ReplicationUpdateParameters;
 import java.nio.ByteBuffer;
@@ -34,141 +36,227 @@ import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * Replications.
- */
+/** An instance of this class provides access to all the operations defined in Replications. */
 public final class ReplicationsInner {
-    /**
-     * The proxy service used to perform REST calls.
-     */
-    private ReplicationsService service;
+    /** The proxy service used to perform REST calls. */
+    private final ReplicationsService service;
 
-    /**
-     * The service client containing this operation class.
-     */
-    private ContainerRegistryManagementClientImpl client;
+    /** The service client containing this operation class. */
+    private final ContainerRegistryManagementClientImpl client;
 
     /**
      * Initializes an instance of ReplicationsInner.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     ReplicationsInner(ContainerRegistryManagementClientImpl client) {
-        this.service = RestProxy.create(ReplicationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy.create(ReplicationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * ContainerRegistryManagementClientReplications to be used by the proxy
+     * The interface defining all the services for ContainerRegistryManagementClientReplications to be used by the proxy
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ContainerRegistryManagementClientReplications")
+    @ServiceInterface(name = "ContainerRegistryMan")
     private interface ReplicationsService {
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/replications/{replicationName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerRegistry/registries/{registryName}/replications/{replicationName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ReplicationInner>> get(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName, @PathParam("replicationName") String replicationName);
+        Mono<SimpleResponse<ReplicationInner>> get(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("registryName") String registryName,
+            @PathParam("replicationName") String replicationName,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/replications/{replicationName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerRegistry/registries/{registryName}/replications/{replicationName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> create(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName, @PathParam("replicationName") String replicationName, @BodyParam("application/json") ReplicationInner replication);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> create(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("registryName") String registryName,
+            @PathParam("replicationName") String replicationName,
+            @BodyParam("application/json") ReplicationInner replication,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/replications/{replicationName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerRegistry/registries/{registryName}/replications/{replicationName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName, @PathParam("replicationName") String replicationName);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("registryName") String registryName,
+            @PathParam("replicationName") String replicationName,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/replications/{replicationName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Patch(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerRegistry/registries/{registryName}/replications/{replicationName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> update(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName, @PathParam("replicationName") String replicationName, @BodyParam("application/json") ReplicationUpdateParameters replicationUpdateParameters);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> update(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("registryName") String registryName,
+            @PathParam("replicationName") String replicationName,
+            @BodyParam("application/json") ReplicationUpdateParameters replicationUpdateParameters,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/replications")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerRegistry/registries/{registryName}/replications")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ReplicationListResultInner>> list(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName);
+        Mono<SimpleResponse<ReplicationListResultInner>> list(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("registryName") String registryName,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/replications/{replicationName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerRegistry/registries/{registryName}/replications/{replicationName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ReplicationInner>> beginCreate(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName, @PathParam("replicationName") String replicationName, @BodyParam("application/json") ReplicationInner replication);
+        Mono<SimpleResponse<ReplicationInner>> beginCreate(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("registryName") String registryName,
+            @PathParam("replicationName") String replicationName,
+            @BodyParam("application/json") ReplicationInner replication,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/replications/{replicationName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerRegistry/registries/{registryName}/replications/{replicationName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> beginDelete(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName, @PathParam("replicationName") String replicationName);
+        Mono<Response<Void>> beginDelete(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("registryName") String registryName,
+            @PathParam("replicationName") String replicationName,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/replications/{replicationName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Patch(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerRegistry/registries/{registryName}/replications/{replicationName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ReplicationInner>> beginUpdate(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName, @PathParam("replicationName") String replicationName, @BodyParam("application/json") ReplicationUpdateParameters replicationUpdateParameters);
+        Mono<SimpleResponse<ReplicationInner>> beginUpdate(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("registryName") String registryName,
+            @PathParam("replicationName") String replicationName,
+            @BodyParam("application/json") ReplicationUpdateParameters replicationUpdateParameters,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ReplicationListResultInner>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<ReplicationListResultInner>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
      * Gets the properties of the specified replication.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified replication.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ReplicationInner>> getWithResponseAsync(String resourceGroupName, String registryName, String replicationName) {
+    public Mono<SimpleResponse<ReplicationInner>> getWithResponseAsync(
+        String resourceGroupName, String registryName, String replicationName) {
         final String apiVersion = "2017-10-01";
-        return service.get(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, registryName, replicationName);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .get(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            registryName,
+                            replicationName,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets the properties of the specified replication.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified replication.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ReplicationInner> getAsync(String resourceGroupName, String registryName, String replicationName) {
         return getWithResponseAsync(resourceGroupName, registryName, replicationName)
-            .flatMap((SimpleResponse<ReplicationInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<ReplicationInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets the properties of the specified replication.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified replication.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationInner get(String resourceGroupName, String registryName, String replicationName) {
@@ -177,7 +265,7 @@ public final class ReplicationsInner {
 
     /**
      * Creates a replication for a container registry with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -185,16 +273,31 @@ public final class ReplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String registryName, String replicationName, ReplicationInner replication) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> createWithResponseAsync(
+        String resourceGroupName, String registryName, String replicationName, ReplicationInner replication) {
         final String apiVersion = "2017-10-01";
-        return service.create(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, registryName, replicationName, replication);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .create(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            registryName,
+                            replicationName,
+                            replication,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Creates a replication for a container registry with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -202,18 +305,24 @@ public final class ReplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ReplicationInner> createAsync(String resourceGroupName, String registryName, String replicationName, ReplicationInner replication) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, registryName, replicationName, replication);
-        return this.client.<ReplicationInner, ReplicationInner>getLroResultAsync(mono, this.client.getHttpPipeline(), ReplicationInner.class, ReplicationInner.class)
+    public Mono<ReplicationInner> createAsync(
+        String resourceGroupName, String registryName, String replicationName, ReplicationInner replication) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            createWithResponseAsync(resourceGroupName, registryName, replicationName, replication);
+        return this
+            .client
+            .<ReplicationInner, ReplicationInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), ReplicationInner.class, ReplicationInner.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Creates a replication for a container registry with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -221,49 +330,69 @@ public final class ReplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReplicationInner create(String resourceGroupName, String registryName, String replicationName, ReplicationInner replication) {
+    public ReplicationInner create(
+        String resourceGroupName, String registryName, String replicationName, ReplicationInner replication) {
         return createAsync(resourceGroupName, registryName, replicationName, replication).block();
     }
 
     /**
      * Deletes a replication from a container registry.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String registryName, String replicationName) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String registryName, String replicationName) {
         final String apiVersion = "2017-10-01";
-        return service.delete(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, registryName, replicationName);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .delete(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            registryName,
+                            replicationName,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Deletes a replication from a container registry.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String registryName, String replicationName) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, registryName, replicationName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, registryName, replicationName);
+        return this
+            .client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Deletes a replication from a container registry.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -278,7 +407,7 @@ public final class ReplicationsInner {
 
     /**
      * Updates a replication for a container registry with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -286,18 +415,33 @@ public final class ReplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String registryName, String replicationName, Map<String, String> tags) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName, String registryName, String replicationName, Map<String, String> tags) {
         final String apiVersion = "2017-10-01";
         ReplicationUpdateParameters replicationUpdateParameters = new ReplicationUpdateParameters();
         replicationUpdateParameters.withTags(tags);
-        return service.update(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, registryName, replicationName, replicationUpdateParameters);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .update(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            registryName,
+                            replicationName,
+                            replicationUpdateParameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Updates a replication for a container registry with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -305,18 +449,24 @@ public final class ReplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ReplicationInner> updateAsync(String resourceGroupName, String registryName, String replicationName, Map<String, String> tags) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, registryName, replicationName, tags);
-        return this.client.<ReplicationInner, ReplicationInner>getLroResultAsync(mono, this.client.getHttpPipeline(), ReplicationInner.class, ReplicationInner.class)
+    public Mono<ReplicationInner> updateAsync(
+        String resourceGroupName, String registryName, String replicationName, Map<String, String> tags) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, registryName, replicationName, tags);
+        return this
+            .client
+            .<ReplicationInner, ReplicationInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), ReplicationInner.class, ReplicationInner.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Updates a replication for a container registry with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -324,58 +474,75 @@ public final class ReplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReplicationInner update(String resourceGroupName, String registryName, String replicationName, Map<String, String> tags) {
+    public ReplicationInner update(
+        String resourceGroupName, String registryName, String replicationName, Map<String, String> tags) {
         return updateAsync(resourceGroupName, registryName, replicationName, tags).block();
     }
 
     /**
      * Lists all the replications for the specified container registry.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list replications for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ReplicationInner>> listSinglePageAsync(String resourceGroupName, String registryName) {
         final String apiVersion = "2017-10-01";
-        return service.list(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, registryName)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .list(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            registryName,
+                            context))
+            .<PagedResponse<ReplicationInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Lists all the replications for the specified container registry.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list replications for a container registry.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ReplicationInner> listAsync(String resourceGroupName, String registryName) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, registryName),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(resourceGroupName, registryName), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all the replications for the specified container registry.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list replications for a container registry.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReplicationInner> list(String resourceGroupName, String registryName) {
@@ -384,7 +551,7 @@ public final class ReplicationsInner {
 
     /**
      * Creates a replication for a container registry with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -392,16 +559,31 @@ public final class ReplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ReplicationInner>> beginCreateWithResponseAsync(String resourceGroupName, String registryName, String replicationName, ReplicationInner replication) {
+    public Mono<SimpleResponse<ReplicationInner>> beginCreateWithResponseAsync(
+        String resourceGroupName, String registryName, String replicationName, ReplicationInner replication) {
         final String apiVersion = "2017-10-01";
-        return service.beginCreate(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, registryName, replicationName, replication);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginCreate(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            registryName,
+                            replicationName,
+                            replication,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Creates a replication for a container registry with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -409,22 +591,25 @@ public final class ReplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ReplicationInner> beginCreateAsync(String resourceGroupName, String registryName, String replicationName, ReplicationInner replication) {
+    public Mono<ReplicationInner> beginCreateAsync(
+        String resourceGroupName, String registryName, String replicationName, ReplicationInner replication) {
         return beginCreateWithResponseAsync(resourceGroupName, registryName, replicationName, replication)
-            .flatMap((SimpleResponse<ReplicationInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<ReplicationInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Creates a replication for a container registry with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -432,37 +617,54 @@ public final class ReplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReplicationInner beginCreate(String resourceGroupName, String registryName, String replicationName, ReplicationInner replication) {
+    public ReplicationInner beginCreate(
+        String resourceGroupName, String registryName, String replicationName, ReplicationInner replication) {
         return beginCreateAsync(resourceGroupName, registryName, replicationName, replication).block();
     }
 
     /**
      * Deletes a replication from a container registry.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithResponseAsync(String resourceGroupName, String registryName, String replicationName) {
+    public Mono<Response<Void>> beginDeleteWithResponseAsync(
+        String resourceGroupName, String registryName, String replicationName) {
         final String apiVersion = "2017-10-01";
-        return service.beginDelete(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, registryName, replicationName);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginDelete(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            registryName,
+                            replicationName,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Deletes a replication from a container registry.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> beginDeleteAsync(String resourceGroupName, String registryName, String replicationName) {
@@ -472,7 +674,7 @@ public final class ReplicationsInner {
 
     /**
      * Deletes a replication from a container registry.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -487,7 +689,7 @@ public final class ReplicationsInner {
 
     /**
      * Updates a replication for a container registry with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -495,18 +697,33 @@ public final class ReplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ReplicationInner>> beginUpdateWithResponseAsync(String resourceGroupName, String registryName, String replicationName, Map<String, String> tags) {
+    public Mono<SimpleResponse<ReplicationInner>> beginUpdateWithResponseAsync(
+        String resourceGroupName, String registryName, String replicationName, Map<String, String> tags) {
         final String apiVersion = "2017-10-01";
         ReplicationUpdateParameters replicationUpdateParameters = new ReplicationUpdateParameters();
         replicationUpdateParameters.withTags(tags);
-        return service.beginUpdate(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, registryName, replicationName, replicationUpdateParameters);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginUpdate(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            registryName,
+                            replicationName,
+                            replicationUpdateParameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Updates a replication for a container registry with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -514,22 +731,25 @@ public final class ReplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ReplicationInner> beginUpdateAsync(String resourceGroupName, String registryName, String replicationName, Map<String, String> tags) {
+    public Mono<ReplicationInner> beginUpdateAsync(
+        String resourceGroupName, String registryName, String replicationName, Map<String, String> tags) {
         return beginUpdateWithResponseAsync(resourceGroupName, registryName, replicationName, tags)
-            .flatMap((SimpleResponse<ReplicationInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<ReplicationInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Updates a replication for a container registry with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -537,29 +757,36 @@ public final class ReplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReplicationInner beginUpdate(String resourceGroupName, String registryName, String replicationName, Map<String, String> tags) {
+    public ReplicationInner beginUpdate(
+        String resourceGroupName, String registryName, String replicationName, Map<String, String> tags) {
         return beginUpdateAsync(resourceGroupName, registryName, replicationName, tags).block();
     }
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink null
+     *
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list replications for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ReplicationInner>> listNextSinglePageAsync(String nextLink) {
-        return service.listNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(context -> service.listNext(nextLink, context))
+            .<PagedResponse<ReplicationInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 }

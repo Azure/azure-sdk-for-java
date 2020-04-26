@@ -7,23 +7,15 @@ package com.azure.management.sql;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for SecurityAlertPolicyEmailAccountAdmins.
- */
+/** Defines values for SecurityAlertPolicyEmailAccountAdmins. */
 public enum SecurityAlertPolicyEmailAccountAdmins {
-    /**
-     * Enum value Enabled.
-     */
+    /** Enum value Enabled. */
     ENABLED("Enabled"),
 
-    /**
-     * Enum value Disabled.
-     */
+    /** Enum value Disabled. */
     DISABLED("Disabled");
 
-    /**
-     * The actual serialized value for a SecurityAlertPolicyEmailAccountAdmins instance.
-     */
+    /** The actual serialized value for a SecurityAlertPolicyEmailAccountAdmins instance. */
     private final String value;
 
     SecurityAlertPolicyEmailAccountAdmins(String value) {
@@ -32,7 +24,7 @@ public enum SecurityAlertPolicyEmailAccountAdmins {
 
     /**
      * Parses a serialized value to a SecurityAlertPolicyEmailAccountAdmins instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed SecurityAlertPolicyEmailAccountAdmins object, or null if unable to parse.
      */

@@ -3,19 +3,13 @@
 
 package com.azure.management.sql;
 
-
 import com.azure.core.annotation.Fluent;
 import reactor.core.publisher.Mono;
 
-/**
- * An immutable client-side representation of an Azure SQL Warehouse.
- */
+/** An immutable client-side representation of an Azure SQL Warehouse. */
 @Fluent
-public interface SqlWarehouse extends
-        SqlDatabase {
-    /**
-     * Pause an Azure SQL Data Warehouse database.
-     */
+public interface SqlWarehouse extends SqlDatabase {
+    /** Pause an Azure SQL Data Warehouse database. */
     void pauseDataWarehouse();
 
     /**
@@ -25,9 +19,7 @@ public interface SqlWarehouse extends
      */
     Mono<Void> pauseDataWarehouseAsync();
 
-    /**
-     * Resume an Azure SQL Data Warehouse database.
-     */
+    /** Resume an Azure SQL Data Warehouse database. */
     void resumeDataWarehouse();
 
     /**
@@ -36,5 +28,4 @@ public interface SqlWarehouse extends
      * @return a representation of the deferred computation of this call
      */
     Mono<Void> resumeDataWarehouseAsync();
- }
-
+}

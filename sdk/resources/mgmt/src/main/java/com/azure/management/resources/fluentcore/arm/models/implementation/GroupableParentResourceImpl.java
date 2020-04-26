@@ -3,7 +3,6 @@
 
 package com.azure.management.resources.fluentcore.arm.models.implementation;
 
-import com.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.management.resources.fluentcore.arm.implementation.ManagerBase;
 import com.azure.management.resources.fluentcore.arm.models.Resource;
 import reactor.core.publisher.Mono;
@@ -12,10 +11,10 @@ import reactor.core.publisher.Mono;
  * The implementation for GroupableResource.
  * (Internal use only)
  *
- * @param <FluentModelT>     The fluent model type
- * @param <InnerModelT>      Azure inner resource class type
+ * @param <FluentModelT> The fluent model type
+ * @param <InnerModelT> Azure inner resource class type
  * @param <FluentModelImplT> the implementation type of the fluent model type
- * @param <ManagerT>         the service manager type
+ * @param <ManagerT> the service manager type
  */
 public abstract class GroupableParentResourceImpl<
         FluentModelT extends Resource,
@@ -23,9 +22,7 @@ public abstract class GroupableParentResourceImpl<
         FluentModelImplT extends GroupableParentResourceImpl<FluentModelT, InnerModelT, FluentModelImplT, ManagerT>,
         ManagerT extends ManagerBase>
         extends
-        GroupableResourceImpl<FluentModelT, InnerModelT, FluentModelImplT, ManagerT>
-        implements
-        GroupableResource<ManagerT, InnerModelT> {
+        GroupableResourceImpl<FluentModelT, InnerModelT, FluentModelImplT, ManagerT> {
 
     protected GroupableParentResourceImpl(
             String name,
@@ -39,9 +36,9 @@ public abstract class GroupableParentResourceImpl<
 
     protected abstract void initializeChildrenFromInner();
 
-    protected void beforeCreating() {}
+    protected void beforeCreating() { }
 
-    protected void afterCreating() {}
+    protected void afterCreating() { }
 
     @Override
     public Mono<FluentModelT> createResourceAsync() {

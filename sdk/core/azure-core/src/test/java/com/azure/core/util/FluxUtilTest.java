@@ -9,9 +9,19 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.logging.ClientLogger;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
+
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -19,16 +29,15 @@ import java.nio.channels.AsynchronousFileChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
-import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import reactor.test.StepVerifier;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -62,9 +71,18 @@ public class FluxUtilTest {
     }
 
     @Test
-    public void toReactorContextEmpty() {
-        reactor.util.context.Context reactorContext = FluxUtil.toReactorContext(null);
-        assertTrue(reactorContext.isEmpty());
+    public void toReactorContextNull() {
+        assertTrue(FluxUtil.toReactorContext(null).isEmpty());
+    }
+
+    @Test
+    public void toReactorContextContextNone() {
+        assertTrue(FluxUtil.toReactorContext(Context.NONE).isEmpty());
+    }
+
+    @Test
+    public void toReactorContextCleansesNullValues() {
+        assertTrue(FluxUtil.toReactorContext(new Context("key", null)).isEmpty());
     }
 
     @Test
@@ -102,7 +120,7 @@ public class FluxUtilTest {
     @Test
     public void testToMono() {
         String testValue = "some value";
-        Response<String> response = new SimpleResponse<String>(new HttpRequest(HttpMethod.GET, "http://www.test.com"),
+        Response<String> response = new SimpleResponse<>(new HttpRequest(HttpMethod.GET, "http://www.test.com"),
             202, new HttpHeaders(), testValue);
         StepVerifier.create(FluxUtil.toMono(response))
             .assertNext(val -> assertEquals(val, testValue))
@@ -143,15 +161,112 @@ public class FluxUtilTest {
         String target = "testo there";
 
         Flux<ByteBuffer> body = Flux.just(ByteBuffer.wrap(toReplace.getBytes(StandardCharsets.UTF_8)));
-        File file = createFileIfNotExist("target/test1");
+        File file = createFileIfNotExist();
         FileOutputStream stream = new FileOutputStream(file);
         stream.write(original.getBytes(StandardCharsets.UTF_8));
         stream.close();
         try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.WRITE)) {
             FluxUtil.writeFile(body, channel).block();
             byte[] outputStream = Files.readAllBytes(file.toPath());
-            assertTrue(Arrays.equals(outputStream, target.getBytes(StandardCharsets.UTF_8)));
+            assertArrayEquals(outputStream, target.getBytes(StandardCharsets.UTF_8));
         }
+    }
+
+    @ParameterizedTest
+    @MethodSource("toFluxByteBufferSupplier")
+    public void toFluxByteBuffer(InputStream inputStream, Integer chunkSize, byte[] expected) {
+        Flux<ByteBuffer> conversionFlux = (chunkSize == null)
+            ? FluxUtil.toFluxByteBuffer(inputStream)
+            : FluxUtil.toFluxByteBuffer(inputStream, chunkSize);
+
+        // If the stream is null or empty the Flux will only trigger complete.
+        if (inputStream == null || expected.length == 0) {
+            StepVerifier.create(conversionFlux).verifyComplete();
+            return;
+        }
+
+        int unboxedChunkSize = (chunkSize == null) ? 4096 : chunkSize;
+        AtomicLong requestCount = new AtomicLong((long) Math.ceil((double) expected.length / unboxedChunkSize));
+        ByteBuffer collectionBuffer = ByteBuffer.allocate(expected.length);
+
+        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(conversionFlux))
+            .thenRequest(requestCount.get())
+            .thenConsumeWhile(bytes -> {
+                collectionBuffer.put(bytes, collectionBuffer.position(), bytes.length);
+
+                // Check if this is the last emission expected.
+                if (requestCount.decrementAndGet() == -1) {
+                    assertArrayEquals(expected, collectionBuffer.array());
+                    return false;
+                } else {
+                    return true;
+                }
+            }).verifyComplete();
+    }
+
+    private static Stream<Arguments> toFluxByteBufferSupplier() {
+        byte[] emptyBuffer = new byte[0];
+        byte[] singleRead = new byte[4096];
+        byte[] multipleReads = new byte[8193];
+
+        SecureRandom random = new SecureRandom();
+        random.nextBytes(singleRead);
+        random.nextBytes(multipleReads);
+
+        return Stream.of(
+            Arguments.arguments(null, null, emptyBuffer),
+            Arguments.arguments(new ByteArrayInputStream(emptyBuffer), null, emptyBuffer),
+            Arguments.arguments(new ByteArrayInputStream(singleRead), null, singleRead),
+            Arguments.arguments(new ByteArrayInputStream(multipleReads), null, multipleReads),
+            Arguments.arguments(new ByteArrayInputStream(singleRead), 8192, singleRead),
+            Arguments.arguments(new ByteArrayInputStream(singleRead), 2048, singleRead),
+            Arguments.arguments(new ByteArrayInputStream(multipleReads), 5432, multipleReads)
+        );
+    }
+
+    @Test
+    public void toFluxByteBufferMultipleSubscriptions() {
+        byte[] singleRead = new byte[4096];
+        new SecureRandom().nextBytes(singleRead);
+
+        InputStream inputStream = new ByteArrayInputStream(singleRead);
+
+        Flux<ByteBuffer> conversionFlux = FluxUtil.toFluxByteBuffer(inputStream);
+
+        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(conversionFlux))
+            .assertNext(actual -> assertArrayEquals(singleRead, actual))
+            .verifyComplete();
+
+        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(conversionFlux))
+            .assertNext(actual -> assertArrayEquals(new byte[0], actual))
+            .verifyComplete();
+    }
+
+    @Test
+    public void illegalToFluxByteBufferChunkSize() {
+        StepVerifier.create(FluxUtil.toFluxByteBuffer(null, 0))
+            .verifyError(IllegalArgumentException.class);
+
+        StepVerifier.create(FluxUtil.toFluxByteBuffer(null, -1))
+            .verifyError(IllegalArgumentException.class);
+    }
+
+    @Test
+    public void toFluxByteBufferSinkException() {
+        InputStream inputStream = new InputStream() {
+            @Override
+            public int read() {
+                return 0;
+            }
+
+            @Override
+            public int read(byte[] b, int off, int len) throws IOException {
+                throw new IOException("Error");
+            }
+        };
+
+        StepVerifier.create(FluxUtil.toFluxByteBuffer(inputStream))
+            .verifyError(IOException.class);
     }
 
     public Flux<ByteBuffer> mockReturnType() {
@@ -197,8 +312,8 @@ public class FluxUtilTest {
         return Mono.just(msg);
     }
 
-    private File createFileIfNotExist(String fileName) throws IOException {
-        File file = new File(fileName);
+    private File createFileIfNotExist() throws IOException {
+        File file = new File("target/test1");
         if (file.getParentFile() != null) {
             file.getParentFile().mkdirs();
         }

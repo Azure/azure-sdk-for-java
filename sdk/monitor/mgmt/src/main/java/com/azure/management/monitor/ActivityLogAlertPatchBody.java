@@ -9,9 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * The ActivityLogAlertPatchBody model.
- */
+/** The ActivityLogAlertPatchBody model. */
 @JsonFlatten
 @Fluent
 public class ActivityLogAlertPatchBody {
@@ -30,7 +28,7 @@ public class ActivityLogAlertPatchBody {
 
     /**
      * Get the tags property: Resource tags.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -39,7 +37,7 @@ public class ActivityLogAlertPatchBody {
 
     /**
      * Set the tags property: Resource tags.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the ActivityLogAlertPatchBody object itself.
      */
@@ -49,10 +47,9 @@ public class ActivityLogAlertPatchBody {
     }
 
     /**
-     * Get the enabled property: Indicates whether this activity log alert is
-     * enabled. If an activity log alert is not enabled, then none of its
-     * actions will be activated.
-     * 
+     * Get the enabled property: Indicates whether this activity log alert is enabled. If an activity log alert is not
+     * enabled, then none of its actions will be activated.
+     *
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -60,10 +57,9 @@ public class ActivityLogAlertPatchBody {
     }
 
     /**
-     * Set the enabled property: Indicates whether this activity log alert is
-     * enabled. If an activity log alert is not enabled, then none of its
-     * actions will be activated.
-     * 
+     * Set the enabled property: Indicates whether this activity log alert is enabled. If an activity log alert is not
+     * enabled, then none of its actions will be activated.
+     *
      * @param enabled the enabled value to set.
      * @return the ActivityLogAlertPatchBody object itself.
      */

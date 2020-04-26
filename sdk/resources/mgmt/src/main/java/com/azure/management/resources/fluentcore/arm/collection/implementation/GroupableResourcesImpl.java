@@ -19,11 +19,11 @@ import reactor.core.publisher.Mono;
  * Base class for resource collection classes.
  * (Internal use only)
  *
- * @param <T>                the individual resource type returned
- * @param <ImplT>            the individual resource implementation
- * @param <InnerT>           the wrapper inner type
+ * @param <T> the individual resource type returned
+ * @param <ImplT> the individual resource implementation
+ * @param <InnerT> the wrapper inner type
  * @param <InnerCollectionT> the inner type of the collection object
- * @param <ManagerT>         the manager type for this resource provider type
+ * @param <ManagerT> the manager type for this resource provider type
  */
 public abstract class GroupableResourcesImpl<
         T extends GroupableResource<ManagerT, InnerT>,
@@ -67,10 +67,6 @@ public abstract class GroupableResourcesImpl<
     @Override
     public final Mono<T> getByIdAsync(String id) {
         ResourceId resourceId = ResourceId.fromString(id);
-
-        if (resourceId == null) {
-            return null;
-        }
 
         return getByResourceGroupAsync(resourceId.resourceGroupName(), resourceId.name());
     }

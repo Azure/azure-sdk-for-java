@@ -6,11 +6,8 @@ import com.azure.management.containerregistry.SourceUploadDefinition;
 import com.azure.management.containerregistry.models.SourceUploadDefinitionInner;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 
-/**
- * Implementation for SourceUploadDefinition.
- */
-public class SourceUploadDefinitionImpl
-    extends WrapperImpl<SourceUploadDefinitionInner>
+/** Implementation for SourceUploadDefinition. */
+public class SourceUploadDefinitionImpl extends WrapperImpl<SourceUploadDefinitionInner>
     implements SourceUploadDefinition {
 
     /**

@@ -19,6 +19,8 @@ import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation.SynapseManager;
 import java.util.Map;
+import java.util.List;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation.PrivateEndpointConnectionInner;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation.WorkspaceInner;
 
 /**
@@ -44,6 +46,16 @@ public interface Workspace extends HasInner<WorkspaceInner>, Resource, Groupable
      * @return the managedResourceGroupName value.
      */
     String managedResourceGroupName();
+
+    /**
+     * @return the managedVirtualNetwork value.
+     */
+    String managedVirtualNetwork();
+
+    /**
+     * @return the privateEndpointConnections value.
+     */
+    List<PrivateEndpointConnection> privateEndpointConnections();
 
     /**
      * @return the provisioningState value.
@@ -124,6 +136,30 @@ public interface Workspace extends HasInner<WorkspaceInner>, Resource, Groupable
         }
 
         /**
+         * The stage of the workspace definition allowing to specify ManagedVirtualNetwork.
+         */
+        interface WithManagedVirtualNetwork {
+            /**
+             * Specifies managedVirtualNetwork.
+             * @param managedVirtualNetwork Setting this to 'default' will ensure that all compute for this workspace is in a virtual network managed on behalf of the user
+             * @return the next definition stage
+             */
+            WithCreate withManagedVirtualNetwork(String managedVirtualNetwork);
+        }
+
+        /**
+         * The stage of the workspace definition allowing to specify PrivateEndpointConnections.
+         */
+        interface WithPrivateEndpointConnections {
+            /**
+             * Specifies privateEndpointConnections.
+             * @param privateEndpointConnections Private endpoint connections to the workspace
+             * @return the next definition stage
+             */
+            WithCreate withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections);
+        }
+
+        /**
          * The stage of the workspace definition allowing to specify SqlAdministratorLogin.
          */
         interface WithSqlAdministratorLogin {
@@ -164,7 +200,7 @@ public interface Workspace extends HasInner<WorkspaceInner>, Resource, Groupable
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Workspace>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithConnectivityEndpoints, DefinitionStages.WithDefaultDataLakeStorage, DefinitionStages.WithIdentity, DefinitionStages.WithSqlAdministratorLogin, DefinitionStages.WithSqlAdministratorLoginPassword, DefinitionStages.WithVirtualNetworkProfile {
+        interface WithCreate extends Creatable<Workspace>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithConnectivityEndpoints, DefinitionStages.WithDefaultDataLakeStorage, DefinitionStages.WithIdentity, DefinitionStages.WithManagedVirtualNetwork, DefinitionStages.WithPrivateEndpointConnections, DefinitionStages.WithSqlAdministratorLogin, DefinitionStages.WithSqlAdministratorLoginPassword, DefinitionStages.WithVirtualNetworkProfile {
         }
     }
     /**

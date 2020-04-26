@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The Dependency model.
- */
+/** The Dependency model. */
 @Fluent
 public final class Dependency {
     /*
@@ -39,7 +37,7 @@ public final class Dependency {
 
     /**
      * Get the dependsOn property: The list of dependencies.
-     * 
+     *
      * @return the dependsOn value.
      */
     public List<BasicDependency> dependsOn() {
@@ -48,7 +46,7 @@ public final class Dependency {
 
     /**
      * Set the dependsOn property: The list of dependencies.
-     * 
+     *
      * @param dependsOn the dependsOn value to set.
      * @return the Dependency object itself.
      */
@@ -59,7 +57,7 @@ public final class Dependency {
 
     /**
      * Get the id property: The ID of the dependency.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -68,7 +66,7 @@ public final class Dependency {
 
     /**
      * Set the id property: The ID of the dependency.
-     * 
+     *
      * @param id the id value to set.
      * @return the Dependency object itself.
      */
@@ -79,7 +77,7 @@ public final class Dependency {
 
     /**
      * Get the resourceType property: The dependency resource type.
-     * 
+     *
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -88,7 +86,7 @@ public final class Dependency {
 
     /**
      * Set the resourceType property: The dependency resource type.
-     * 
+     *
      * @param resourceType the resourceType value to set.
      * @return the Dependency object itself.
      */
@@ -99,7 +97,7 @@ public final class Dependency {
 
     /**
      * Get the resourceName property: The dependency resource name.
-     * 
+     *
      * @return the resourceName value.
      */
     public String resourceName() {
@@ -108,7 +106,7 @@ public final class Dependency {
 
     /**
      * Set the resourceName property: The dependency resource name.
-     * 
+     *
      * @param resourceName the resourceName value to set.
      * @return the Dependency object itself.
      */

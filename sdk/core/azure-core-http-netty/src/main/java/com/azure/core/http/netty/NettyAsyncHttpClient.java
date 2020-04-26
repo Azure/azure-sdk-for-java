@@ -10,6 +10,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.implementation.HttpProxyExceptionHandler;
+import com.azure.core.util.CoreUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.EventLoopGroup;
@@ -45,6 +46,7 @@ import java.util.regex.Pattern;
  * @see NettyAsyncHttpClientBuilder
  */
 class NettyAsyncHttpClient implements HttpClient {
+    private static final Pattern CHARSET_PATTERN = Pattern.compile("charset=(\\S+)\\b", Pattern.CASE_INSENSITIVE);
 
     private final EventLoopGroup eventLoopGroup;
     private final Supplier<ProxyHandler> proxyHandlerSupplier;
@@ -160,8 +162,6 @@ class NettyAsyncHttpClient implements HttpClient {
     }
 
     static class ReactorNettyHttpResponse extends HttpResponse {
-
-        private static final ByteBuffer EMPTY_BYTE_BUFFER = ByteBuffer.wrap(new byte[0]);
         private final HttpClientResponse reactorNettyResponse;
         private final Connection reactorNettyConnection;
         private final boolean disableBufferCopy;
@@ -211,11 +211,8 @@ class NettyAsyncHttpClient implements HttpClient {
 
         @Override
         public Mono<String> getBodyAsString() {
-            return bodyIntern().aggregate().asString().doFinally(s -> {
-                if (!reactorNettyConnection.isDisposed()) {
-                    reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
-                }
-            });
+            return getBodyAsByteArray().map(bytes ->
+                CoreUtils.bomAwareToString(bytes, reactorNettyResponse.responseHeaders().get("Content-Type")));
         }
 
         @Override

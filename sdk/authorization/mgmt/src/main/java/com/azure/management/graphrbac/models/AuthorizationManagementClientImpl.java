@@ -12,18 +12,14 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.management.AzureServiceClient;
 
-/**
- * Initializes a new instance of the AuthorizationManagementClientImpl type.
- */
+/** Initializes a new instance of the AuthorizationManagementClientImpl type. */
 public final class AuthorizationManagementClientImpl extends AzureServiceClient {
-    /**
-     * The ID of the target subscription.
-     */
+    /** The ID of the target subscription. */
     private String subscriptionId;
 
     /**
      * Gets The ID of the target subscription.
-     * 
+     *
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
@@ -32,7 +28,7 @@ public final class AuthorizationManagementClientImpl extends AzureServiceClient 
 
     /**
      * Sets The ID of the target subscription.
-     * 
+     *
      * @param subscriptionId the subscriptionId value.
      * @return the service client itself.
      */
@@ -41,14 +37,12 @@ public final class AuthorizationManagementClientImpl extends AzureServiceClient 
         return this;
     }
 
-    /**
-     * server parameter.
-     */
+    /** server parameter. */
     private String host;
 
     /**
      * Gets server parameter.
-     * 
+     *
      * @return the host value.
      */
     public String getHost() {
@@ -57,7 +51,7 @@ public final class AuthorizationManagementClientImpl extends AzureServiceClient 
 
     /**
      * Sets server parameter.
-     * 
+     *
      * @param host the host value.
      * @return the service client itself.
      */
@@ -66,114 +60,100 @@ public final class AuthorizationManagementClientImpl extends AzureServiceClient 
         return this;
     }
 
-    /**
-     * The HTTP pipeline to send requests through.
-     */
-    private HttpPipeline httpPipeline;
+    /** The HTTP pipeline to send requests through. */
+    private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /**
-     * The ClassicAdministratorsInner object to access its operations.
-     */
-    private ClassicAdministratorsInner classicAdministrators;
+    /** The ClassicAdministratorsInner object to access its operations. */
+    private final ClassicAdministratorsInner classicAdministrators;
 
     /**
      * Gets the ClassicAdministratorsInner object to access its operations.
-     * 
+     *
      * @return the ClassicAdministratorsInner object.
      */
     public ClassicAdministratorsInner classicAdministrators() {
         return this.classicAdministrators;
     }
 
-    /**
-     * The GlobalAdministratorsInner object to access its operations.
-     */
-    private GlobalAdministratorsInner globalAdministrators;
+    /** The GlobalAdministratorsInner object to access its operations. */
+    private final GlobalAdministratorsInner globalAdministrators;
 
     /**
      * Gets the GlobalAdministratorsInner object to access its operations.
-     * 
+     *
      * @return the GlobalAdministratorsInner object.
      */
     public GlobalAdministratorsInner globalAdministrators() {
         return this.globalAdministrators;
     }
 
-    /**
-     * The ProviderOperationsMetadatasInner object to access its operations.
-     */
-    private ProviderOperationsMetadatasInner providerOperationsMetadatas;
+    /** The ProviderOperationsMetadatasInner object to access its operations. */
+    private final ProviderOperationsMetadatasInner providerOperationsMetadatas;
 
     /**
      * Gets the ProviderOperationsMetadatasInner object to access its operations.
-     * 
+     *
      * @return the ProviderOperationsMetadatasInner object.
      */
     public ProviderOperationsMetadatasInner providerOperationsMetadatas() {
         return this.providerOperationsMetadatas;
     }
 
-    /**
-     * The RoleAssignmentsInner object to access its operations.
-     */
-    private RoleAssignmentsInner roleAssignments;
+    /** The RoleAssignmentsInner object to access its operations. */
+    private final RoleAssignmentsInner roleAssignments;
 
     /**
      * Gets the RoleAssignmentsInner object to access its operations.
-     * 
+     *
      * @return the RoleAssignmentsInner object.
      */
     public RoleAssignmentsInner roleAssignments() {
         return this.roleAssignments;
     }
 
-    /**
-     * The PermissionsInner object to access its operations.
-     */
-    private PermissionsInner permissions;
+    /** The PermissionsInner object to access its operations. */
+    private final PermissionsInner permissions;
 
     /**
      * Gets the PermissionsInner object to access its operations.
-     * 
+     *
      * @return the PermissionsInner object.
      */
     public PermissionsInner permissions() {
         return this.permissions;
     }
 
-    /**
-     * The RoleDefinitionsInner object to access its operations.
-     */
-    private RoleDefinitionsInner roleDefinitions;
+    /** The RoleDefinitionsInner object to access its operations. */
+    private final RoleDefinitionsInner roleDefinitions;
 
     /**
      * Gets the RoleDefinitionsInner object to access its operations.
-     * 
+     *
      * @return the RoleDefinitionsInner object.
      */
     public RoleDefinitionsInner roleDefinitions() {
         return this.roleDefinitions;
     }
 
-    /**
-     * Initializes an instance of AuthorizationManagementClient client.
-     */
+    /** Initializes an instance of AuthorizationManagementClient client. */
     public AuthorizationManagementClientImpl() {
-        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(), AzureEnvironment.AZURE);
+        this(
+            new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
+            AzureEnvironment.AZURE);
     }
 
     /**
      * Initializes an instance of AuthorizationManagementClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
     public AuthorizationManagementClientImpl(HttpPipeline httpPipeline) {
@@ -182,7 +162,7 @@ public final class AuthorizationManagementClientImpl extends AzureServiceClient 
 
     /**
      * Initializes an instance of AuthorizationManagementClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param environment The Azure environment.
      */

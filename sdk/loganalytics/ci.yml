@@ -21,7 +21,7 @@ trigger:
     include:
       - sdk/loganalytics/
     exclude:
-      - sdk/loganalytics/mgmt-
+      - sdk/loganalytics/mgmt-v2015_03_20
 
 pr:
   branches:
@@ -34,7 +34,7 @@ pr:
     include:
       - sdk/loganalytics/
     exclude:
-      - sdk/loganalytics/mgmt-
+      - sdk/loganalytics/mgmt-v2015_03_20
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml

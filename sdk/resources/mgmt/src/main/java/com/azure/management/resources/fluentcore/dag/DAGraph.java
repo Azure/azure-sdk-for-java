@@ -3,6 +3,8 @@
 
 package com.azure.management.resources.fluentcore.dag;
 
+import com.azure.core.util.logging.ClientLogger;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -33,6 +35,8 @@ public class DAGraph<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Graph<D
      * are ready to invoke.
      */
     protected ConcurrentLinkedQueue<String> queue;
+
+    private final ClientLogger logger = new ClientLogger(this.getClass());
 
     /**
      * Creates a new DAG.
@@ -172,7 +176,7 @@ public class DAGraph<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Graph<D
     /**
      * Reports that a node is faulted.
      *
-     * @param faulted   the node faulted
+     * @param faulted the node faulted
      * @param throwable the reason for fault
      */
     public void reportError(NodeT faulted, Throwable throwable) {
@@ -217,7 +221,8 @@ public class DAGraph<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Graph<D
             @Override
             public void visitEdge(String fromKey, String toKey, EdgeType edgeType) {
                 if (edgeType == EdgeType.BACK) {
-                    throw new IllegalStateException("Detected circular dependency: " + findPath(fromKey, toKey));
+                    throw logger.logExceptionAsError(
+                        new IllegalStateException("Detected circular dependency: " + findPath(fromKey, toKey)));
                 }
             }
         });
@@ -235,7 +240,7 @@ public class DAGraph<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Graph<D
             }
         }
         if (queue.isEmpty()) {
-            throw new IllegalStateException("Detected circular dependency");
+            throw logger.logExceptionAsError(new IllegalStateException("Detected circular dependency"));
         }
     }
 
@@ -260,7 +265,8 @@ public class DAGraph<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Graph<D
     private void bubbleUpNodeTable(DAGraph<DataT, NodeT> from, LinkedList<String> path) {
         if (path.contains(from.rootNode.key())) {
             path.push(from.rootNode.key()); // For better error message
-            throw new IllegalStateException("Detected circular dependency: " + String.join(" -> ", path));
+            throw logger.logExceptionAsError(
+                new IllegalStateException("Detected circular dependency: " + String.join(" -> ", path)));
         }
         path.push(from.rootNode.key());
         for (DAGraph<DataT, NodeT> to : from.parentDAGs) {

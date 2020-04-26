@@ -14,50 +14,33 @@ import com.azure.management.resources.fluentcore.model.Refreshable;
 import com.azure.management.resources.fluentcore.model.Updatable;
 import reactor.core.publisher.Mono;
 
-/**
- * An immutable client-side representation of an Azure managed snapshot.
- */
+/** An immutable client-side representation of an Azure managed snapshot. */
 @Fluent
-public interface Snapshot extends
-        GroupableResource<ComputeManager, SnapshotInner>,
-        Refreshable<Snapshot>,
-        Updatable<Snapshot.Update> {
+public interface Snapshot
+    extends GroupableResource<ComputeManager, SnapshotInner>, Refreshable<Snapshot>, Updatable<Snapshot.Update> {
     /**
      * @return the snapshot SKU type.
      * @deprecated use {@link Snapshot#skuType()} instead.
-     *
      */
     @Deprecated
     DiskSkuTypes sku();
 
-    /**
-     * @return the snapshot SKU type.
-     */
+    /** @return the snapshot SKU type. */
     SnapshotSkuType skuType();
 
-    /**
-     * @return whether a snapshot is incremental
-     */
+    /** @return whether a snapshot is incremental */
     boolean incremental();
 
-    /**
-     * @return the snapshot creation method
-     */
+    /** @return the snapshot creation method */
     DiskCreateOption creationMethod();
 
-    /**
-     * @return disk size in GB
-     */
+    /** @return disk size in GB */
     int sizeInGB();
 
-    /**
-     * @return the type of operating system in the snapshot
-     */
+    /** @return the type of operating system in the snapshot */
     OperatingSystemTypes osType();
 
-    /**
-     * @return the details of the source from which snapshot is created
-     */
+    /** @return the details of the source from which snapshot is created */
     CreationSource source();
 
     /**
@@ -76,9 +59,7 @@ public interface Snapshot extends
      */
     Mono<String> grantAccessAsync(int accessDurationInSeconds);
 
-    /**
-     * Revoke access granted to the snapshot.
-     */
+    /** Revoke access granted to the snapshot. */
     void revokeAccess();
 
     /**
@@ -88,11 +69,9 @@ public interface Snapshot extends
      */
     Mono<Void> revokeAccessAsync();
 
-    /**
-     * The entirety of the managed snapshot definition.
-     */
-    interface Definition extends
-            DefinitionStages.Blank,
+    /** The entirety of the managed snapshot definition. */
+    interface Definition
+        extends DefinitionStages.Blank,
             DefinitionStages.WithGroup,
             DefinitionStages.WithSnapshotSource,
             DefinitionStages.WithWindowsSnapshotSource,
@@ -104,35 +83,22 @@ public interface Snapshot extends
             DefinitionStages.WithCreate {
     }
 
-    /**
-     * Grouping of managed snapshot definition stages.
-     */
+    /** Grouping of managed snapshot definition stages. */
     interface DefinitionStages {
-        /**
-         * The first stage of a managed snapshot definition.
-         */
+        /** The first stage of a managed snapshot definition. */
         interface Blank extends GroupableResource.DefinitionWithRegion<WithGroup> {
         }
 
-        /**
-         * The stage of the managed snapshot definition allowing to specify the resource group.
-         */
+        /** The stage of the managed snapshot definition allowing to specify the resource group. */
         interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithSnapshotSource> {
         }
 
-        /**
-         * The stage of the managed snapshot definition allowing to choose OS source or data source.
-         */
+        /** The stage of the managed snapshot definition allowing to choose OS source or data source. */
         interface WithSnapshotSource
-                extends
-                WithWindowsSnapshotSource,
-                WithLinuxSnapshotSource,
-                WithDataSnapshotSource {
+            extends WithWindowsSnapshotSource, WithLinuxSnapshotSource, WithDataSnapshotSource {
         }
 
-        /**
-         *  The stage of the managed snapshot definition allowing to choose Windows OS source.
-         */
+        /** The stage of the managed snapshot definition allowing to choose Windows OS source. */
         interface WithWindowsSnapshotSource {
             /**
              * Specifies the source Windows OS managed disk.
@@ -175,9 +141,7 @@ public interface Snapshot extends
             WithCreate withWindowsFromVhd(String vhdUrl);
         }
 
-        /**
-         *  The stage of the managed snapshot definition allowing to choose a Linux OS source.
-         */
+        /** The stage of the managed snapshot definition allowing to choose a Linux OS source. */
         interface WithLinuxSnapshotSource {
             /**
              * Specifies the source Linux OS managed disk.
@@ -220,18 +184,12 @@ public interface Snapshot extends
             WithCreate withLinuxFromVhd(String vhdUrl);
         }
 
-        /**
-         * The stage of the managed snapshot definition allowing to choose data source.
-         */
-        interface WithDataSnapshotSource extends
-                WithDataSnapshotFromVhd,
-                WithDataSnapshotFromDisk,
-                WithDataSnapshotFromSnapshot {
+        /** The stage of the managed snapshot definition allowing to choose data source. */
+        interface WithDataSnapshotSource
+            extends WithDataSnapshotFromVhd, WithDataSnapshotFromDisk, WithDataSnapshotFromSnapshot {
         }
 
-        /**
-         * The stage of the managed disk definition allowing to choose source data disk VHD.
-         */
+        /** The stage of the managed disk definition allowing to choose source data disk VHD. */
         interface WithDataSnapshotFromVhd {
             /**
              * Specifies the source data VHD.
@@ -242,9 +200,7 @@ public interface Snapshot extends
             WithCreate withDataFromVhd(String vhdUrl);
         }
 
-        /**
-         * The stage of the managed disk definition allowing to choose managed disk containing data.
-         */
+        /** The stage of the managed disk definition allowing to choose managed disk containing data. */
         interface WithDataSnapshotFromDisk {
             /**
              * Specifies the ID of source data managed disk.
@@ -263,9 +219,7 @@ public interface Snapshot extends
             WithCreate withDataFromDisk(Disk managedDisk);
         }
 
-        /**
-         * The stage of the managed disk definition allowing to choose managed snapshot containing data.
-         */
+        /** The stage of the managed disk definition allowing to choose managed snapshot containing data. */
         interface WithDataSnapshotFromSnapshot {
             /**
              * Specifies the source data managed snapshot.
@@ -284,9 +238,7 @@ public interface Snapshot extends
             WithCreate withDataFromSnapshot(Snapshot snapshot);
         }
 
-        /**
-         * The stage of the managed disk definition allowing to choose a source operating system image.
-         */
+        /** The stage of the managed disk definition allowing to choose a source operating system image. */
         interface WithOSSnapshotFromImage {
             /**
              * Specifies an image containing an operating system.
@@ -313,9 +265,7 @@ public interface Snapshot extends
              */
             WithCreate fromImage(VirtualMachineCustomImage image);
         }
-        /**
-         * The stage of the managed disk definition allowing to choose source data disk image.
-         */
+        /** The stage of the managed disk definition allowing to choose source data disk image. */
         interface WithDataSnapshotFromImage {
             /**
              * Specifies an image containing source data disk image.
@@ -345,9 +295,7 @@ public interface Snapshot extends
             WithCreate fromImage(VirtualMachineCustomImage image, int diskLun);
         }
 
-        /**
-         * The stage of the managed snapshot allowing to specify the size.
-         */
+        /** The stage of the managed snapshot allowing to specify the size. */
         interface WithSize {
             /**
              * Specifies the disk size.
@@ -358,9 +306,7 @@ public interface Snapshot extends
             WithCreate withSizeInGB(int sizeInGB);
         }
 
-        /**
-         * The stage of the managed snapshot allowing to specify incremental snapshot.
-         */
+        /** The stage of the managed snapshot allowing to specify incremental snapshot. */
         interface WithIncremental {
             /**
              * Specifies whether a snapshot is incremental.
@@ -371,14 +317,12 @@ public interface Snapshot extends
             WithCreate withIncremental(boolean enabled);
         }
 
-        /**
-         * The stage of the snapshot definition allowing to choose account type.
-         */
+        /** The stage of the snapshot definition allowing to choose account type. */
         interface WithSku {
             /**
              * Specifies the SKU type.
-             * @deprecated use {@link WithSku#withSku(SnapshotSkuType)} instead.
              *
+             * @deprecated use {@link WithSku#withSku(SnapshotSkuType)} instead.
              * @param sku SKU type
              * @return the next stage of the definition
              */
@@ -395,12 +339,11 @@ public interface Snapshot extends
         }
 
         /**
-         * The stage of the definition which contains all the minimum required inputs for
-         * the resource to be created, but also allows
-         * for any other optional settings to be specified.
+         * The stage of the definition which contains all the minimum required inputs for the resource to be created,
+         * but also allows for any other optional settings to be specified.
          */
-        interface WithCreate extends
-                Creatable<Snapshot>,
+        interface WithCreate
+            extends Creatable<Snapshot>,
                 Resource.DefinitionWithTags<Snapshot.DefinitionStages.WithCreate>,
                 WithSize,
                 WithSku,
@@ -408,18 +351,14 @@ public interface Snapshot extends
         }
     }
 
-    /**
-     * Grouping of managed snapshot update stages.
-     */
+    /** Grouping of managed snapshot update stages. */
     interface UpdateStages {
-        /**
-         * The stage of the managed snapshot update allowing to choose account type.
-         */
+        /** The stage of the managed snapshot update allowing to choose account type. */
         interface WithSku {
             /**
              * Specifies the SKU type.
-             * @deprecated use {@link WithSku#withSku(SnapshotSkuType)} instead.
              *
+             * @deprecated use {@link WithSku#withSku(SnapshotSkuType)} instead.
              * @param sku SKU type
              * @return the next stage of the update
              */
@@ -435,9 +374,7 @@ public interface Snapshot extends
             Update withSku(SnapshotSkuType sku);
         }
 
-        /**
-         * The stage of the managed snapshot update allowing to specify OS settings.
-         */
+        /** The stage of the managed snapshot update allowing to specify OS settings. */
         interface WithOSSettings {
             /**
              * Specifies the operating system type.
@@ -449,12 +386,9 @@ public interface Snapshot extends
         }
     }
 
-    /**
-     * The template for an update operation, containing all the settings that
-     * can be modified.
-     */
-    interface Update extends
-            Appliable<Snapshot>,
+    /** The template for an update operation, containing all the settings that can be modified. */
+    interface Update
+        extends Appliable<Snapshot>,
             Resource.UpdateWithTags<Snapshot.Update>,
             UpdateStages.WithSku,
             UpdateStages.WithOSSettings {

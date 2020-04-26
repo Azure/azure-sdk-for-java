@@ -13,17 +13,16 @@ import com.azure.management.network.models.ExpressRouteCircuitPeeringsInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.IndependentChildrenImpl;
 import reactor.core.publisher.Mono;
 
-/**
- * Represents Express Route Circuit Peerings collection associated with Network Watcher.
- */
-class ExpressRouteCircuitPeeringsImpl extends IndependentChildrenImpl<
+/** Represents Express Route Circuit Peerings collection associated with Network Watcher. */
+class ExpressRouteCircuitPeeringsImpl
+    extends IndependentChildrenImpl<
         ExpressRouteCircuitPeering,
         ExpressRouteCircuitPeeringImpl,
         ExpressRouteCircuitPeeringInner,
         ExpressRouteCircuitPeeringsInner,
         NetworkManager,
         ExpressRouteCircuit>
-        implements ExpressRouteCircuitPeerings {
+    implements ExpressRouteCircuitPeerings {
     private final ExpressRouteCircuitImpl parent;
 
     /**
@@ -41,9 +40,7 @@ class ExpressRouteCircuitPeeringsImpl extends IndependentChildrenImpl<
         return wrapList(inner().list(parent.resourceGroupName(), parent.name()));
     }
 
-    /**
-     * @return an observable emits packet captures in this collection
-     */
+    /** @return an observable emits packet captures in this collection */
     @Override
     public PagedFlux<ExpressRouteCircuitPeering> listAsync() {
         return wrapPageAsync(inner().listAsync(parent.resourceGroupName(), parent.name()));
@@ -51,7 +48,8 @@ class ExpressRouteCircuitPeeringsImpl extends IndependentChildrenImpl<
 
     @Override
     protected ExpressRouteCircuitPeeringImpl wrapModel(String name) {
-        return new ExpressRouteCircuitPeeringImpl(parent, new ExpressRouteCircuitPeeringInner(), inner(), ExpressRoutePeeringType.fromString(name));
+        return new ExpressRouteCircuitPeeringImpl(
+            parent, new ExpressRouteCircuitPeeringInner(), inner(), ExpressRoutePeeringType.fromString(name));
     }
 
     protected ExpressRouteCircuitPeeringImpl wrapModel(ExpressRouteCircuitPeeringInner inner) {
@@ -60,23 +58,25 @@ class ExpressRouteCircuitPeeringsImpl extends IndependentChildrenImpl<
 
     @Override
     public ExpressRouteCircuitPeeringImpl defineAzurePrivatePeering() {
-        return new ExpressRouteCircuitPeeringImpl(parent, new ExpressRouteCircuitPeeringInner(), inner(), ExpressRoutePeeringType.AZURE_PRIVATE_PEERING);
+        return new ExpressRouteCircuitPeeringImpl(
+            parent, new ExpressRouteCircuitPeeringInner(), inner(), ExpressRoutePeeringType.AZURE_PRIVATE_PEERING);
     }
 
     @Override
     public ExpressRouteCircuitPeeringImpl defineAzurePublicPeering() {
-        return new ExpressRouteCircuitPeeringImpl(parent, new ExpressRouteCircuitPeeringInner(), inner(), ExpressRoutePeeringType.AZURE_PUBLIC_PEERING);
+        return new ExpressRouteCircuitPeeringImpl(
+            parent, new ExpressRouteCircuitPeeringInner(), inner(), ExpressRoutePeeringType.AZURE_PUBLIC_PEERING);
     }
 
     @Override
     public ExpressRouteCircuitPeeringImpl defineMicrosoftPeering() {
-        return new ExpressRouteCircuitPeeringImpl(parent, new ExpressRouteCircuitPeeringInner(), inner(), ExpressRoutePeeringType.MICROSOFT_PEERING);
+        return new ExpressRouteCircuitPeeringImpl(
+            parent, new ExpressRouteCircuitPeeringInner(), inner(), ExpressRoutePeeringType.MICROSOFT_PEERING);
     }
 
     @Override
     public Mono<ExpressRouteCircuitPeering> getByNameAsync(String name) {
-        return inner().getAsync(parent.resourceGroupName(), parent.name(), name)
-                .map(inner -> wrapModel(inner));
+        return inner().getAsync(parent.resourceGroupName(), parent.name(), name).map(inner -> wrapModel(inner));
     }
 
     @Override
@@ -91,9 +91,7 @@ class ExpressRouteCircuitPeeringsImpl extends IndependentChildrenImpl<
 
     @Override
     public Mono<Void> deleteByNameAsync(String name) {
-        return this.inner().deleteAsync(parent.resourceGroupName(),
-                parent.name(),
-                name);
+        return this.inner().deleteAsync(parent.resourceGroupName(), parent.name(), name);
     }
 
     @Override
@@ -108,8 +106,7 @@ class ExpressRouteCircuitPeeringsImpl extends IndependentChildrenImpl<
 
     @Override
     public Mono<ExpressRouteCircuitPeering> getByParentAsync(String resourceGroup, String parentName, String name) {
-        return inner().getAsync(resourceGroup, parentName, name)
-                .map(inner -> wrapModel((inner)));
+        return inner().getAsync(resourceGroup, parentName, name).map(inner -> wrapModel((inner)));
     }
 
     @Override

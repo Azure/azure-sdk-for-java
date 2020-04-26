@@ -7,28 +7,18 @@ package com.azure.management.monitor;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for ScaleDirection.
- */
+/** Defines values for ScaleDirection. */
 public enum ScaleDirection {
-    /**
-     * Enum value None.
-     */
+    /** Enum value None. */
     NONE("None"),
 
-    /**
-     * Enum value Increase.
-     */
+    /** Enum value Increase. */
     INCREASE("Increase"),
 
-    /**
-     * Enum value Decrease.
-     */
+    /** Enum value Decrease. */
     DECREASE("Decrease");
 
-    /**
-     * The actual serialized value for a ScaleDirection instance.
-     */
+    /** The actual serialized value for a ScaleDirection instance. */
     private final String value;
 
     ScaleDirection(String value) {
@@ -37,7 +27,7 @@ public enum ScaleDirection {
 
     /**
      * Parses a serialized value to a ScaleDirection instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed ScaleDirection object, or null if unable to parse.
      */

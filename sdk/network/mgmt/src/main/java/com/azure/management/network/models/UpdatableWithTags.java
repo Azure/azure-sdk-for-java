@@ -3,7 +3,6 @@
 
 package com.azure.management.network.models;
 
-
 import java.util.Map;
 
 /**
@@ -14,10 +13,10 @@ import java.util.Map;
 public interface UpdatableWithTags<T> {
     /**
      * Begins a tags update for a resource.
-     * <p>
-     * This is the beginning of the builder pattern used to update tags for a resources
-     * in Azure. The final method completing the definition and starting the actual resource update
-     * process in Azure is {@link AppliableWithTags#applyTags()}.
+     *
+     * <p>This is the beginning of the builder pattern used to update tags for a resources in Azure. The final method
+     * completing the definition and starting the actual resource update process in Azure is {@link
+     * AppliableWithTags#applyTags()}.
      *
      * @return the stage of new resource update
      */
@@ -40,7 +39,7 @@ public interface UpdatableWithTags<T> {
         /**
          * Adds a tag to the resource.
          *
-         * @param key   the key for the tag
+         * @param key the key for the tag
          * @param value the value for the tag
          * @return the next stage of the resource update
          */

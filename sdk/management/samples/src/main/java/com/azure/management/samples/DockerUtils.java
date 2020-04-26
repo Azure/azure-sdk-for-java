@@ -26,7 +26,7 @@ import javax.net.ssl.SSLContext;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.Security;
@@ -44,15 +44,16 @@ public class DockerUtils {
     /**
      * Creates "in memory" SSL configuration to be used by the Java Docker Client.
      */
-    public static class DockerSSLConfig implements SSLConfig, Serializable {
+    public static class DockerSSLConfig implements SSLConfig {
         private SslConfigurator sslConfig;
 
         /**
          * Constructor for the class.
          *
-         * @param caPem   - content of the ca.pem certificate file
-         * @param keyPem  - content of the key.pem certificate file
+         * @param caPem - content of the ca.pem certificate file
+         * @param keyPem - content of the key.pem certificate file
          * @param certPem - content of the cert.pem certificate file
+         * @throws DockerClientException throws when something unexpected happens
          */
         public DockerSSLConfig(String caPem, String keyPem, String certPem) {
             try {
@@ -81,12 +82,12 @@ public class DockerUtils {
     /**
      * Instantiate a Docker client that will be used for Docker client related operations.
      *
-     * @param azure             - instance of Azure
-     * @param rgName            - name of the Azure resource group to be used when creating a virtual machine
-     * @param region            - region to be used when creating a virtual machine
+     * @param azure - instance of Azure
+     * @param rgName - name of the Azure resource group to be used when creating a virtual machine
+     * @param region - region to be used when creating a virtual machine
      * @param registryServerUrl - address of the private container registry
-     * @param username          - user name to connect with to the private container registry
-     * @param password          - password to connect with to the private container registry
+     * @param username - user name to connect with to the private container registry
+     * @param password - password to connect with to the private container registry
      * @return an instance of DockerClient
      * @throws Exception exception thrown
      */
@@ -113,9 +114,9 @@ public class DockerUtils {
                 String keyPemPath = envDockerCertPath + File.separator + "key.pem";
                 String certPemPath = envDockerCertPath + File.separator + "cert.pem";
 
-                String keyPemContent = new String(Files.readAllBytes(Paths.get(keyPemPath)));
-                String certPemContent = new String(Files.readAllBytes(Paths.get(certPemPath)));
-                String caPemContent = new String(Files.readAllBytes(Paths.get(caPemPath)));
+                String keyPemContent = new String(Files.readAllBytes(Paths.get(keyPemPath)), StandardCharsets.UTF_8);
+                String certPemContent = new String(Files.readAllBytes(Paths.get(certPemPath)), StandardCharsets.UTF_8);
+                String caPemContent = new String(Files.readAllBytes(Paths.get(caPemPath)), StandardCharsets.UTF_8);
 
                 dockerClientConfig = createDockerClientConfig(dockerHostUrl, registryServerUrl, username, password,
                         caPemContent, keyPemContent, certPemContent);
@@ -134,13 +135,13 @@ public class DockerUtils {
     /**
      * Creates a DockerClientConfig object to be used when creating the Java Docker client using a secured connection.
      *
-     * @param host              - Docker host address (IP) to connect to
+     * @param host - Docker host address (IP) to connect to
      * @param registryServerUrl - address of the private container registry
-     * @param username          - user name to connect with to the private container registry
-     * @param password          - password to connect with to the private container registry
-     * @param caPemContent      - content of the ca.pem certificate file
-     * @param keyPemContent     - content of the key.pem certificate file
-     * @param certPemContent    - content of the cert.pem certificate file
+     * @param username - user name to connect with to the private container registry
+     * @param password - password to connect with to the private container registry
+     * @param caPemContent - content of the ca.pem certificate file
+     * @param keyPemContent - content of the key.pem certificate file
+     * @param certPemContent - content of the cert.pem certificate file
      * @return an instance of DockerClient configuration
      */
     public static DockerClientConfig createDockerClientConfig(String host, String registryServerUrl, String username, String password,
@@ -158,10 +159,10 @@ public class DockerUtils {
     /**
      * Creates a DockerClientConfig object to be used when creating the Java Docker client using an unsecured connection.
      *
-     * @param host              - Docker host address (IP) to connect to
+     * @param host - Docker host address (IP) to connect to
      * @param registryServerUrl - address of the private container registry
-     * @param username          - user name to connect with to the private container registry
-     * @param password          - password to connect with to the private container registry
+     * @param username - user name to connect with to the private container registry
+     * @param password - password to connect with to the private container registry
      * @return an instance of DockerClient configuration
      */
     public static DockerClientConfig createDockerClientConfig(String host, String registryServerUrl, String username, String password) {
@@ -177,12 +178,12 @@ public class DockerUtils {
     /**
      * It creates a new Azure virtual machine and it instantiate a Java Docker client.
      *
-     * @param azure             - instance of Azure
-     * @param rgName            - name of the Azure resource group to be used when creating a virtual machine
-     * @param region            - region to be used when creating a virtual machine
+     * @param azure - instance of Azure
+     * @param rgName - name of the Azure resource group to be used when creating a virtual machine
+     * @param region - region to be used when creating a virtual machine
      * @param registryServerUrl - address of the private container registry
-     * @param username          - user name to connect with to the private container registry
-     * @param password          - password to connect with to the private container registry
+     * @param username - user name to connect with to the private container registry
+     * @param password - password to connect with to the private container registry
      * @return an instance of DockerClient
      * @throws Exception exception thrown
      */
@@ -233,12 +234,12 @@ public class DockerUtils {
     /**
      * Install Docker on a given virtual machine and return a DockerClient.
      *
-     * @param dockerHostIP      - address (IP) of the Docker host machine
-     * @param vmUserName        - user name to connect with to the Docker host machine
-     * @param vmPassword        - password to connect with to the Docker host machine
+     * @param dockerHostIP - address (IP) of the Docker host machine
+     * @param vmUserName - user name to connect with to the Docker host machine
+     * @param vmPassword - password to connect with to the Docker host machine
      * @param registryServerUrl - address of the private container registry
-     * @param username          - user name to connect with to the private container registry
-     * @param password          - password to connect with to the private container registry
+     * @param username - user name to connect with to the private container registry
+     * @param password - password to connect with to the private container registry
      * @return an instance of DockerClient
      */
     public static DockerClient installDocker(String dockerHostIP, String vmUserName, String vmPassword,
@@ -254,38 +255,38 @@ public class DockerUtils {
             System.out.println("Copy Docker setup scripts to remote host: " + dockerHostIP);
             sshShell = SSHShell.open(dockerHostIP, 22, vmUserName, vmPassword);
 
-            sshShell.upload(new ByteArrayInputStream(INSTALL_DOCKER_FOR_UBUNTU_SERVER_16_04_LTS.getBytes()),
+            sshShell.upload(new ByteArrayInputStream(INSTALL_DOCKER_FOR_UBUNTU_SERVER_16_04_LTS.getBytes(StandardCharsets.UTF_8)),
                     "INSTALL_DOCKER_FOR_UBUNTU_SERVER_16_04_LTS.sh",
                     ".azuredocker",
                     true,
                     "4095");
 
-            sshShell.upload(new ByteArrayInputStream(CREATE_OPENSSL_TLS_CERTS_FOR_UBUNTU.replaceAll("HOST_IP", dockerHostIP).getBytes()),
+            sshShell.upload(new ByteArrayInputStream(CREATE_OPENSSL_TLS_CERTS_FOR_UBUNTU.replaceAll("HOST_IP", dockerHostIP).getBytes(StandardCharsets.UTF_8)),
                     "CREATE_OPENSSL_TLS_CERTS_FOR_UBUNTU.sh",
                     ".azuredocker",
                     true,
                     "4095");
-            sshShell.upload(new ByteArrayInputStream(INSTALL_DOCKER_TLS_CERTS_FOR_UBUNTU.getBytes()),
+            sshShell.upload(new ByteArrayInputStream(INSTALL_DOCKER_TLS_CERTS_FOR_UBUNTU.getBytes(StandardCharsets.UTF_8)),
                     "INSTALL_DOCKER_TLS_CERTS_FOR_UBUNTU.sh",
                     ".azuredocker",
                     true,
                     "4095");
-            sshShell.upload(new ByteArrayInputStream(DEFAULT_DOCKERD_CONFIG_TLS_ENABLED.getBytes()),
+            sshShell.upload(new ByteArrayInputStream(DEFAULT_DOCKERD_CONFIG_TLS_ENABLED.getBytes(StandardCharsets.UTF_8)),
                     "dockerd_tls.config",
                     ".azuredocker",
                     true,
                     "4095");
-            sshShell.upload(new ByteArrayInputStream(CREATE_DEFAULT_DOCKERD_OPTS_TLS_ENABLED.getBytes()),
+            sshShell.upload(new ByteArrayInputStream(CREATE_DEFAULT_DOCKERD_OPTS_TLS_ENABLED.getBytes(StandardCharsets.UTF_8)),
                     "CREATE_DEFAULT_DOCKERD_OPTS_TLS_ENABLED.sh",
                     ".azuredocker",
                     true,
                     "4095");
-            sshShell.upload(new ByteArrayInputStream(DEFAULT_DOCKERD_CONFIG_TLS_DISABLED.getBytes()),
+            sshShell.upload(new ByteArrayInputStream(DEFAULT_DOCKERD_CONFIG_TLS_DISABLED.getBytes(StandardCharsets.UTF_8)),
                     "dockerd_notls.config",
                     ".azuredocker",
                     true,
                     "4095");
-            sshShell.upload(new ByteArrayInputStream(CREATE_DEFAULT_DOCKERD_OPTS_TLS_DISABLED.getBytes()),
+            sshShell.upload(new ByteArrayInputStream(CREATE_DEFAULT_DOCKERD_OPTS_TLS_DISABLED.getBytes(StandardCharsets.UTF_8)),
                     "CREATE_DEFAULT_DOCKERD_OPTS_TLS_DISABLED.sh",
                     ".azuredocker",
                     true,
@@ -409,16 +410,16 @@ public class DockerUtils {
             + "if [ ! -d ~/.azuredocker/tls ]; then mkdir -p ~/.azuredocker/tls ; fi \n"
             + "echo Running: sudo apt-get update \n"
             + "sudo apt-get update \n"
-            + "echo Running: sudo apt-get install -y --no-install-recommends apt-transport-https ca-certificates curl software-properties-common \n"
+            + "echo Running: sudo apt-get install -y --no-install-recommends apt-transport-https ca-certificates curl gnupg-agent software-properties-common \n"
             + "sudo apt-get install -y --no-install-recommends apt-transport-https ca-certificates curl software-properties-common \n"
-            + "echo Running: curl -fsSL https://apt.dockerproject.org/gpg | sudo apt-key add - \n"
-            + "curl -fsSL https://apt.dockerproject.org/gpg | sudo apt-key add - \n"
-            + "echo Running: sudo add-apt-repository \"deb https://apt.dockerproject.org/repo/ ubuntu-$(lsb_release -cs) main\" \n"
-            + "sudo add-apt-repository \"deb https://apt.dockerproject.org/repo/ ubuntu-xenial main\" \n"
+            + "echo Running: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - \n"
+            + "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - \n"
+            + "echo Running: sudo add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\" \n"
+            + "sudo add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\" \n"
             + "echo Running: sudo apt-get update \n"
             + "sudo apt-get update \n"
-            + "echo Running: sudo apt-get -y install docker-engine \n"
-            + "sudo apt-get -y install docker-engine \n"
+            + "echo Running: sudo apt-get -y install docker-ce docker-ce-cli containerd.io \n"
+            + "sudo apt-get -y install docker-ce docker-ce-cli containerd.io \n"
             + "echo Running: sudo groupadd docker \n"
             + "sudo groupadd docker \n"
             + "echo Running: sudo usermod -aG docker $USER \n"
@@ -444,10 +445,8 @@ public class DockerUtils {
             + "openssl genrsa -out server-key.pem 2048 \n"
             + "echo Running: openssl req -subj '/CN=HOST_IP' -sha256 -new -key server-key.pem -out server.csr \n"
             + "openssl req -subj '/CN=HOST_IP' -sha256 -new -key server-key.pem -out server.csr \n"
-            + "echo Running: \"echo subjectAltName = DNS:HOST_IP IP:127.0.0.1 > extfile.cnf \" \n"
-            + "echo subjectAltName = DNS:HOST_IP IP:127.0.0.1 > extfile.cnf \n"
-            + "echo Running: openssl x509 -req -passin pass:$CERT_CA_PWD_PARAM$ -days 365 -sha256 -in server.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out server.pem -extfile extfile.cnf \n"
-            + "openssl x509 -req -passin pass:$CERT_CA_PWD_PARAM$ -days 365 -sha256 -in server.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out server.pem -extfile extfile.cnf \n"
+            + "echo Running: openssl x509 -req -passin pass:$CERT_CA_PWD_PARAM$ -days 365 -sha256 -in server.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out server.pem \n"
+            + "openssl x509 -req -passin pass:$CERT_CA_PWD_PARAM$ -days 365 -sha256 -in server.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out server.pem \n"
             // Generate Client certificates
             + "echo Running: openssl genrsa -passout pass:$CERT_CA_PWD_PARAM$ -out key.pem \n"
             + "openssl genrsa -passout pass:$CERT_CA_PWD_PARAM$ -out key.pem \n"

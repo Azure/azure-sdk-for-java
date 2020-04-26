@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -32,6 +33,9 @@ public class ServiceBusReceiverClient implements AutoCloseable {
     private final AtomicInteger idGenerator = new AtomicInteger();
     private final ServiceBusReceiverAsyncClient asyncClient;
     private final Duration operationTimeout;
+    private static final ReceiveAsyncOptions DEFAULT_RECEIVE_OPTIONS = new ReceiveAsyncOptions()
+        .setEnableAutoComplete(false)
+        .setMaxAutoRenewDuration(Duration.ZERO);
 
     /**
      * Creates a synchronous receiver given its asynchronous counterpart.
@@ -250,18 +254,42 @@ public class ServiceBusReceiverClient implements AutoCloseable {
     }
 
     /**
-     * Receives an iterable stream of {@link ServiceBusReceivedMessage messages} from the Service Bus entity. The
+     * Receives an iterable stream of {@link ServiceBusReceivedMessage messages} from the Service Bus entity.
+     * The receive operation will wait for a default 1 minute for receiving a message before it times out. You can it
+     * override by using {@link #receive(int, Duration)}.
      *
      * @param maxMessages The maximum number of messages to receive.
      * @return An {@link IterableStream} of at most {@code maxMessages} messages from the Service Bus entity.
+     *
+     * @throws IllegalArgumentException if {@code maxMessages} is zero or a negative value.
      */
     public IterableStream<ServiceBusReceivedMessage> receive(int maxMessages) {
+        return receive(maxMessages, operationTimeout);
+    }
+
+    /**
+     * Receives an iterable stream of {@link ServiceBusReceivedMessage messages} from the Service Bus entity.
+     *
+     * @param maxMessages The maximum number of messages to receive.
+     * @param maxWaitTime The time the client waits for receiving a message before it times out.
+     * @return An {@link IterableStream} of at most {@code maxMessages} messages from the Service Bus entity.
+     *
+     * @throws IllegalArgumentException if {@code maxMessages} or {@code maxWaitTime} is zero or a negative value.
+     */
+    public IterableStream<ServiceBusReceivedMessage> receive(int maxMessages, Duration maxWaitTime) {
         if (maxMessages <= 0) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
+        } else if (Objects.isNull(maxWaitTime)) {
+            throw logger.logExceptionAsError(
+                new NullPointerException("'maxWaitTime' cannot be null."));
+        } else if (maxWaitTime.isNegative() || maxWaitTime.isZero()) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'maxWaitTime' cannot be zero or less. maxWaitTime: " + maxWaitTime));
         }
 
-        final Flux<ServiceBusReceivedMessage> messages = Flux.create(emitter -> queueWork(maxMessages, emitter));
+        final Flux<ServiceBusReceivedMessage> messages = Flux.create(emitter -> queueWork(maxMessages, maxWaitTime,
+            emitter));
 
         return new IterableStream<>(messages);
     }
@@ -328,13 +356,14 @@ public class ServiceBusReceiverClient implements AutoCloseable {
      * Given an {@code emitter}, queues that work in {@link SynchronousMessageSubscriber}. If the synchronous job has
      * not been created, will initialise it.
      */
-    private void queueWork(int maximumMessageCount, FluxSink<ServiceBusReceivedMessage> emitter) {
+    private void queueWork(int maximumMessageCount, Duration maxWaitTime,
+        FluxSink<ServiceBusReceivedMessage> emitter) {
         final long id = idGenerator.getAndIncrement();
-        final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, operationTimeout,
+        final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, maxWaitTime,
             emitter);
         final SynchronousMessageSubscriber syncSubscriber = new SynchronousMessageSubscriber(work);
 
         logger.info("[{}]: Started synchronous message subscriber.", id);
-        asyncClient.receive().subscribeWith(syncSubscriber);
+        asyncClient.receive(DEFAULT_RECEIVE_OPTIONS).subscribeWith(syncSubscriber);
     }
 }

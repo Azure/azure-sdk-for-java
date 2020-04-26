@@ -66,7 +66,6 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.MAX_M
  * <li>The sending of events needs to be highly available.</li>
  * <li>The event data should be evenly distributed among all available partitions.</li>
  * </ul>
- * </p>
  *
  * <p>
  * If no partition id is specified, the following rules are used for automatically selecting one:
@@ -75,7 +74,6 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.MAX_M
  * <li>If a partition becomes unavailable, the Event Hubs service will automatically detect it and forward the
  * message to another available partition.</li>
  * </ol>
- * </p>
  *
  * <p><strong>Create a producer and publish events to any partition</strong></p>
  * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch}

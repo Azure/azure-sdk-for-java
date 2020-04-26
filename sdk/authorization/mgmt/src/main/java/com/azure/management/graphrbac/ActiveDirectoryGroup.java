@@ -10,72 +10,54 @@ import com.azure.management.resources.fluentcore.model.Appliable;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.fluentcore.model.Updatable;
-import reactor.core.publisher.Mono;
 
-import java.util.Set;
+import java.util.List;
 
-/**
- * An immutable client-side representation of an Azure AD group.
- */
+/** An immutable client-side representation of an Azure AD group. */
 @Fluent
-public interface ActiveDirectoryGroup extends
-        ActiveDirectoryObject,
-        HasInner<ADGroupInner>,
-        Updatable<ActiveDirectoryGroup.Update> {
-    /**
-     * @return security enabled field.
-     */
+public interface ActiveDirectoryGroup
+    extends ActiveDirectoryObject, HasInner<ADGroupInner>, Updatable<ActiveDirectoryGroup.Update> {
+    /** @return security enabled field. */
     boolean securityEnabled();
 
-    /**
-     * @return mail field.
-     */
+    /** @return mail field. */
     String mail();
 
     /**
      * Lists the members in the group.
-     * @return an unmodifiable set of the members
+     *
+     * @return a list of the members
      */
-    Set<ActiveDirectoryObject> listMembers();
+    List<ActiveDirectoryObject> listMembers();
 
     /**
      * Lists the members in the group.
-     * @return an unmodifiable set of the members
+     *
+     * @return a list of the members
      */
     PagedFlux<ActiveDirectoryObject> listMembersAsync();
 
-    /**
-     * Container interface for all the definitions that need to be implemented.
-     */
-    interface Definition extends
-            DefinitionStages.Blank,
-            DefinitionStages.WithEmailAlias,
-            DefinitionStages.WithCreate {
+    /** Container interface for all the definitions that need to be implemented. */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithEmailAlias, DefinitionStages.WithCreate {
     }
 
-    /**
-     * Grouping of all the AD group definition stages.
-     */
+    /** Grouping of all the AD group definition stages. */
     interface DefinitionStages {
-        /**
-         * The first stage of the AD group definition.
-         */
+        /** The first stage of the AD group definition. */
         interface Blank extends WithEmailAlias {
         }
 
-        /**
-         * An AD Group definition allowing mail nickname to be specified.
-         */
+        /** An AD Group definition allowing mail nickname to be specified. */
         interface WithEmailAlias {
             WithCreate withEmailAlias(String mailNickname);
         }
 
-        /**
-         * An AD Group definition allowing members to be added.
-         */
+        /** An AD Group definition allowing members to be added. */
         interface WithMember {
             /**
-             * Add a member based on its object id. The member can be a user, a group, a service principal, or an application.
+             * Add a member based on its object id. The member can be a user, a group, a service principal, or an
+             * application.
+             *
              * @param objectId the Active Directory object's id
              * @return the next AD Group definition stage
              */
@@ -83,6 +65,7 @@ public interface ActiveDirectoryGroup extends
 
             /**
              * Adds a user as a member in the group.
+             *
              * @param user the Active Directory user to add
              * @return the next AD group definition stage
              */
@@ -90,6 +73,7 @@ public interface ActiveDirectoryGroup extends
 
             /**
              * Adds a group as a member in the group.
+             *
              * @param group the Active Directory group to add
              * @return the next AD group definition stage
              */
@@ -97,6 +81,7 @@ public interface ActiveDirectoryGroup extends
 
             /**
              * Adds a service principal as a member in the group.
+             *
              * @param servicePrincipal the service principal to add
              * @return the next AD group definition stage
              */
@@ -104,26 +89,21 @@ public interface ActiveDirectoryGroup extends
         }
 
         /**
-         * An AD group definition with sufficient inputs to create a new
-         * group in the cloud, but exposing additional optional inputs to
-         * specify.
+         * An AD group definition with sufficient inputs to create a new group in the cloud, but exposing additional
+         * optional inputs to specify.
          */
-        interface WithCreate extends
-                Creatable<ActiveDirectoryGroup>,
-                WithMember {
+        interface WithCreate extends Creatable<ActiveDirectoryGroup>, WithMember {
         }
     }
 
-    /**
-     * Grouping of all the AD group update stages.
-     */
+    /** Grouping of all the AD group update stages. */
     interface UpdateStages {
-        /**
-         * An AD Group definition allowing members to be added or removed.
-         */
+        /** An AD Group definition allowing members to be added or removed. */
         interface WithMember {
             /**
-             * Adds a member based on its object id. The member can be a user, a group, a service principal, or an application.
+             * Adds a member based on its object id. The member can be a user, a group, a service principal, or an
+             * application.
+             *
              * @param objectId the Active Directory object's id
              * @return the next AD Group update stage
              */
@@ -131,6 +111,7 @@ public interface ActiveDirectoryGroup extends
 
             /**
              * Adds a user as a member in the group.
+             *
              * @param user the Active Directory user to add
              * @return the next AD group update stage
              */
@@ -138,6 +119,7 @@ public interface ActiveDirectoryGroup extends
 
             /**
              * Adds a group as a member in the group.
+             *
              * @param group the Active Directory group to add
              * @return the next AD group update stage
              */
@@ -145,6 +127,7 @@ public interface ActiveDirectoryGroup extends
 
             /**
              * Adds a service principal as a member in the group.
+             *
              * @param servicePrincipal the service principal to add
              * @return the next AD group update stage
              */
@@ -152,6 +135,7 @@ public interface ActiveDirectoryGroup extends
 
             /**
              * Removes a member based on its object id.
+             *
              * @param objectId the Active Directory object's id
              * @return the next AD Group update stage
              */
@@ -159,6 +143,7 @@ public interface ActiveDirectoryGroup extends
 
             /**
              * Removes a user as a member in the group.
+             *
              * @param user the Active Directory user to remove
              * @return the next AD group update stage
              */
@@ -166,6 +151,7 @@ public interface ActiveDirectoryGroup extends
 
             /**
              * Removes a group as a member in the group.
+             *
              * @param group the Active Directory group to remove
              * @return the next AD group update stage
              */
@@ -173,6 +159,7 @@ public interface ActiveDirectoryGroup extends
 
             /**
              * Removes a service principal as a member in the group.
+             *
              * @param servicePrincipal the service principal to remove
              * @return the next AD group update stage
              */
@@ -180,11 +167,7 @@ public interface ActiveDirectoryGroup extends
         }
     }
 
-    /**
-     * The template for a group update operation, containing all the settings that can be modified.
-     */
-    interface Update extends
-            Appliable<ActiveDirectoryGroup>,
-            UpdateStages.WithMember {
+    /** The template for a group update operation, containing all the settings that can be modified. */
+    interface Update extends Appliable<ActiveDirectoryGroup>, UpdateStages.WithMember {
     }
 }

@@ -1,21 +1,24 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdk84695334278.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06",
-    "Headers" : { },
+    "Uri" : "https://azsjavadeletesynonymmapisidempotent9619655622dec780.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "d93a8676-67a7-4703-8b13-a2e20471b435"
+    },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "484f6034-ef86-464b-940b-b5af190de71c",
+      "request-id" : "d93a8676-67a7-4703-8b13-a2e20471b435",
       "StatusCode" : "404",
-      "Date" : "Mon, 24 Feb 2020 20:47:04 GMT",
+      "Date" : "Tue, 21 Apr 2020 19:14:35 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "26",
+      "client-request-id" : "d93a8676-67a7-4703-8b13-a2e20471b435",
+      "elapsed-time" : "24",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "127",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No synonymMap with the name 'test-synonym' was found in a service named 'azs-sdk84695334278'.\"}}",
+      "Content-Length" : "160",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No synonymMap with the name 'test-synonym' was found in a service named 'azsjavadeletesynonymmapisidempotent9619655622dec780'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"
@@ -23,67 +26,75 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk84695334278.search.windows.net/synonymmaps?api-version=2019-05-06",
+    "Uri" : "https://azsjavadeletesynonymmapisidempotent9619655622dec780.search.windows.net/synonymmaps?api-version=2019-05-06-Preview",
     "Headers" : {
+      "x-ms-client-request-id" : "07ecf9fe-eb9d-4a34-a9a0-08ed71130b84",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "d4f9d519-90d6-4f40-b569-fa4945fedc96",
+      "request-id" : "07ecf9fe-eb9d-4a34-a9a0-08ed71130b84",
       "StatusCode" : "201",
-      "Date" : "Mon, 24 Feb 2020 20:47:04 GMT",
+      "Date" : "Tue, 21 Apr 2020 19:14:35 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D7B96AB50669F2\"",
-      "elapsed-time" : "32",
+      "client-request-id" : "07ecf9fe-eb9d-4a34-a9a0-08ed71130b84",
+      "ETag" : "W/\"0x8D7E6283AB87207\"",
+      "elapsed-time" : "17",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "218",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk84695334278.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D7B96AB50669F2\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"word1,word2\",\"encryptionKey\":null}",
+      "Content-Length" : "251",
+      "Body" : "{\"@odata.context\":\"https://azsjavadeletesynonymmapisidempotent9619655622dec780.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D7E6283AB87207\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"word1,word2\",\"encryptionKey\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk84695334278.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06"
+      "Location" : "https://azsjavadeletesynonymmapisidempotent9619655622dec780.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06-Preview"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdk84695334278.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06",
-    "Headers" : { },
+    "Uri" : "https://azsjavadeletesynonymmapisidempotent9619655622dec780.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "117de775-0fbc-4a8a-b8a9-9902c7ca3299"
+    },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "49",
+      "client-request-id" : "117de775-0fbc-4a8a-b8a9-9902c7ca3299",
+      "elapsed-time" : "13",
       "Expires" : "-1",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "b357cdf3-afec-490f-80c1-d703b0258761",
+      "request-id" : "117de775-0fbc-4a8a-b8a9-9902c7ca3299",
       "StatusCode" : "204",
-      "Date" : "Mon, 24 Feb 2020 20:47:04 GMT"
+      "Date" : "Tue, 21 Apr 2020 19:14:35 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdk84695334278.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06",
-    "Headers" : { },
+    "Uri" : "https://azsjavadeletesynonymmapisidempotent9619655622dec780.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "a9583b62-d235-4fc7-aaeb-66a5f0d54fa6"
+    },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "d8c717fe-7d5b-41cb-81a8-3681354a81c4",
+      "request-id" : "a9583b62-d235-4fc7-aaeb-66a5f0d54fa6",
       "StatusCode" : "404",
-      "Date" : "Mon, 24 Feb 2020 20:47:04 GMT",
+      "Date" : "Tue, 21 Apr 2020 19:14:35 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "5",
+      "client-request-id" : "a9583b62-d235-4fc7-aaeb-66a5f0d54fa6",
+      "elapsed-time" : "4",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "127",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No synonymMap with the name 'test-synonym' was found in a service named 'azs-sdk84695334278'.\"}}",
+      "Content-Length" : "160",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No synonymMap with the name 'test-synonym' was found in a service named 'azsjavadeletesynonymmapisidempotent9619655622dec780'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   } ],
-  "variables" : [ "azs-sdk77909073ad5", "azs-sdk84695334278" ]
+  "variables" : [ "azsjavadeletesynonymmapisidempotent9619655622dec780" ]
 }

@@ -10,18 +10,13 @@ import com.azure.management.sql.SqlFirewallRule;
 import com.azure.management.sql.SqlFirewallRuleOperations;
 import com.azure.management.sql.SqlServer;
 import com.azure.management.sql.models.FirewallRuleInner;
+import java.util.Objects;
 import reactor.core.publisher.Mono;
 
-import java.util.Objects;
-
-/**
- * Implementation for SqlFirewallRule.
- */
+/** Implementation for SqlFirewallRule. */
 public class SqlFirewallRuleImpl
-    extends
-        ExternalChildResourceImpl<SqlFirewallRule, FirewallRuleInner, SqlServerImpl, SqlServer>
-    implements
-        SqlFirewallRule,
+    extends ExternalChildResourceImpl<SqlFirewallRule, FirewallRuleInner, SqlServerImpl, SqlServer>
+    implements SqlFirewallRule,
         SqlFirewallRule.SqlFirewallRuleDefinition<SqlServer.DefinitionStages.WithCreate>,
         SqlFirewallRule.Update,
         SqlFirewallRuleOperations.SqlFirewallRuleOperationsDefinition {
@@ -33,12 +28,13 @@ public class SqlFirewallRuleImpl
     /**
      * Creates an instance of external child resource in-memory.
      *
-     * @param name        the name of this external child resource
-     * @param parent      reference to the parent of this external child resource
+     * @param name the name of this external child resource
+     * @param parent reference to the parent of this external child resource
      * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses firewall rule operations
      */
-    SqlFirewallRuleImpl(String name, SqlServerImpl parent, FirewallRuleInner innerObject, SqlServerManager sqlServerManager) {
+    SqlFirewallRuleImpl(
+        String name, SqlServerImpl parent, FirewallRuleInner innerObject, SqlServerManager sqlServerManager) {
         super(name, parent, innerObject);
 
         Objects.requireNonNull(parent);
@@ -53,11 +49,16 @@ public class SqlFirewallRuleImpl
      *
      * @param resourceGroupName the resource group name
      * @param sqlServerName the parent SQL server name
-     * @param name        the name of this external child resource
+     * @param name the name of this external child resource
      * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses firewall rule operations
      */
-    SqlFirewallRuleImpl(String resourceGroupName, String sqlServerName, String name, FirewallRuleInner innerObject, SqlServerManager sqlServerManager) {
+    SqlFirewallRuleImpl(
+        String resourceGroupName,
+        String sqlServerName,
+        String name,
+        FirewallRuleInner innerObject,
+        SqlServerManager sqlServerManager) {
         super(name, null, innerObject);
         Objects.requireNonNull(sqlServerManager);
         this.sqlServerManager = sqlServerManager;
@@ -68,7 +69,7 @@ public class SqlFirewallRuleImpl
     /**
      * Creates an instance of external child resource in-memory.
      *
-     * @param name        the name of this external child resource
+     * @param name the name of this external child resource
      * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses firewall rule operations
      */
@@ -80,7 +81,11 @@ public class SqlFirewallRuleImpl
 
     @Override
     protected Mono<FirewallRuleInner> getInnerAsync() {
-        return this.sqlServerManager.inner().firewallRules().getAsync(this.resourceGroupName, this.sqlServerName, this.name());
+        return this
+            .sqlServerManager
+            .inner()
+            .firewallRules()
+            .getAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
     @Override
@@ -106,12 +111,12 @@ public class SqlFirewallRuleImpl
     }
 
     @Override
-    public String startIPAddress() {
+    public String startIpAddress() {
         return this.inner().startIpAddress();
     }
 
     @Override
-    public String endIPAddress() {
+    public String endIpAddress() {
         return this.inner().endIpAddress();
     }
 
@@ -143,39 +148,51 @@ public class SqlFirewallRuleImpl
     @Override
     public Mono<SqlFirewallRule> createResourceAsync() {
         final SqlFirewallRuleImpl self = this;
-        return this.sqlServerManager.inner().firewallRules()
+        return this
+            .sqlServerManager
+            .inner()
+            .firewallRules()
             .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.inner())
-            .map(inner -> {
-                self.setInner(inner);
-                return self;
-            });
+            .map(
+                inner -> {
+                    self.setInner(inner);
+                    return self;
+                });
     }
 
     @Override
     public Mono<SqlFirewallRule> updateResourceAsync() {
         final SqlFirewallRuleImpl self = this;
-        return this.sqlServerManager.inner().firewallRules()
+        return this
+            .sqlServerManager
+            .inner()
+            .firewallRules()
             .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.inner())
-            .map(inner -> {
-                self.setInner(inner);
-                return self;
-            });
+            .map(
+                inner -> {
+                    self.setInner(inner);
+                    return self;
+                });
     }
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return this.sqlServerManager.inner().firewallRules().deleteAsync(this.resourceGroupName, this.sqlServerName, this.name());
+        return this
+            .sqlServerManager
+            .inner()
+            .firewallRules()
+            .deleteAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
     @Override
-    public SqlFirewallRuleImpl withStartIPAddress(String startIPAddress) {
-        this.inner().withStartIpAddress(startIPAddress);
+    public SqlFirewallRuleImpl withStartIpAddress(String startIpAddress) {
+        this.inner().withStartIpAddress(startIpAddress);
         return this;
     }
 
     @Override
-    public SqlFirewallRuleImpl withEndIPAddress(String endIPAddress) {
-        this.inner().withEndIpAddress(endIPAddress);
+    public SqlFirewallRuleImpl withEndIpAddress(String endIpAddress) {
+        this.inner().withEndIpAddress(endIpAddress);
         return this;
     }
 
@@ -203,14 +220,14 @@ public class SqlFirewallRuleImpl
     }
 
     @Override
-    public SqlFirewallRuleImpl withIPAddressRange(String startIPAddress, String endIPAddress) {
-        this.inner().withStartIpAddress(startIPAddress);
-        this.inner().withEndIpAddress(endIPAddress);
+    public SqlFirewallRuleImpl withIpAddressRange(String startIpAddress, String endIpAddress) {
+        this.inner().withStartIpAddress(startIpAddress);
+        this.inner().withEndIpAddress(endIpAddress);
         return this;
     }
 
     @Override
-    public SqlFirewallRuleImpl withIPAddress(String ipAddress) {
+    public SqlFirewallRuleImpl withIpAddress(String ipAddress) {
         this.inner().withStartIpAddress(ipAddress);
         this.inner().withEndIpAddress(ipAddress);
         return this;

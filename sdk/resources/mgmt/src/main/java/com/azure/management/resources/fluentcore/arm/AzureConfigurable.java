@@ -9,7 +9,6 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.management.AzureTokenCredential;
 
 import java.net.Proxy;
-import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -20,12 +19,23 @@ import java.util.concurrent.TimeUnit;
 public interface AzureConfigurable<T extends AzureConfigurable<T>> {
 
     /**
-     * Set the logging level on the HTTP client.
+     * Set the logging options on the HTTP client.
      *
-     * @param level the HttpLogDetailLevel logging level
+     * @param logOptions the HttpLogDetailLevel logging options
      * @return the configurable object itself
      */
-    T withLogOptions(HttpLogOptions level);
+    T withLogOptions(HttpLogOptions logOptions);
+
+    /**
+     * Sets the logging detail level on the HTTP client.
+     *
+     * If set, this configure will override {@link HttpLogOptions#setLogLevel(HttpLogDetailLevel)} configure of
+     * {@link AzureConfigurable#withLogOptions(HttpLogOptions)}.
+
+     * @param logLevel the logging level
+     * @return the configurable object itself
+     */
+    T withLogLevel(HttpLogDetailLevel logLevel);
 
     /**
      * Plug in a policy into the HTTP pipeline.
@@ -55,7 +65,7 @@ public interface AzureConfigurable<T extends AzureConfigurable<T>> {
      * Set the read timeout on the HTTP client. Default is 10 seconds.
      *
      * @param timeout the timeout numeric value
-     * @param unit    the time unit for the numeric value
+     * @param unit the time unit for the numeric value
      * @return the configurable object itself for chaining
      */
     T withReadTimeout(long timeout, TimeUnit unit);
@@ -64,7 +74,7 @@ public interface AzureConfigurable<T extends AzureConfigurable<T>> {
      * Set the connection timeout on the HTTP client. Default is 10 seconds.
      *
      * @param timeout the timeout numeric value
-     * @param unit    the time unit for the numeric value
+     * @param unit the time unit for the numeric value
      * @return the configurable object itself for chaining
      */
     T withConnectionTimeout(long timeout, TimeUnit unit);

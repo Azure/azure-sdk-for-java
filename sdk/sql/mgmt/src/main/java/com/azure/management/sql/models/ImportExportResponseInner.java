@@ -10,9 +10,7 @@ import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/**
- * The ImportExportResponse model.
- */
+/** The ImportExportResponse model. */
 @JsonFlatten
 @Immutable
 public class ImportExportResponseInner extends ProxyResource {
@@ -72,7 +70,7 @@ public class ImportExportResponseInner extends ProxyResource {
 
     /**
      * Get the requestType property: The request type of the operation.
-     * 
+     *
      * @return the requestType value.
      */
     public String requestType() {
@@ -81,7 +79,7 @@ public class ImportExportResponseInner extends ProxyResource {
 
     /**
      * Get the requestId property: The request type of the operation.
-     * 
+     *
      * @return the requestId value.
      */
     public UUID requestId() {
@@ -90,7 +88,7 @@ public class ImportExportResponseInner extends ProxyResource {
 
     /**
      * Get the serverName property: The name of the server.
-     * 
+     *
      * @return the serverName value.
      */
     public String serverName() {
@@ -99,7 +97,7 @@ public class ImportExportResponseInner extends ProxyResource {
 
     /**
      * Get the databaseName property: The name of the database.
-     * 
+     *
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -108,7 +106,7 @@ public class ImportExportResponseInner extends ProxyResource {
 
     /**
      * Get the status property: The status message returned from the server.
-     * 
+     *
      * @return the status value.
      */
     public String status() {
@@ -116,9 +114,8 @@ public class ImportExportResponseInner extends ProxyResource {
     }
 
     /**
-     * Get the lastModifiedTime property: The operation status last modified
-     * time.
-     * 
+     * Get the lastModifiedTime property: The operation status last modified time.
+     *
      * @return the lastModifiedTime value.
      */
     public String lastModifiedTime() {
@@ -127,7 +124,7 @@ public class ImportExportResponseInner extends ProxyResource {
 
     /**
      * Get the queuedTime property: The operation queued time.
-     * 
+     *
      * @return the queuedTime value.
      */
     public String queuedTime() {
@@ -136,7 +133,7 @@ public class ImportExportResponseInner extends ProxyResource {
 
     /**
      * Get the blobUri property: The blob uri.
-     * 
+     *
      * @return the blobUri value.
      */
     public String blobUri() {
@@ -144,9 +141,8 @@ public class ImportExportResponseInner extends ProxyResource {
     }
 
     /**
-     * Get the errorMessage property: The error message returned from the
-     * server.
-     * 
+     * Get the errorMessage property: The error message returned from the server.
+     *
      * @return the errorMessage value.
      */
     public String errorMessage() {

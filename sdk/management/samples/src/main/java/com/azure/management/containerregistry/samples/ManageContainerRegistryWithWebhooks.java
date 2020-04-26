@@ -4,7 +4,6 @@
 package com.azure.management.containerregistry.samples;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.management.Azure;
 import com.azure.management.containerregistry.AccessKeyType;
 import com.azure.management.containerregistry.Registry;
@@ -19,6 +18,7 @@ import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.command.PullImageResultCallback;
 import com.github.dockerjava.api.exception.NotFoundException;
+import com.github.dockerjava.api.model.AuthConfig;
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.Image;
 import com.github.dockerjava.core.command.PushImageResultCallback;
@@ -102,7 +102,6 @@ public class ManageContainerRegistryWithWebhooks {
                 System.out.print("\t" + webhookEventInfo.eventResponseMessage().content());
             }
 
-
             //=============================================================
             // Create a Docker client that will be used to push/pull images to/from the Azure Container Registry
 
@@ -116,12 +115,13 @@ public class ManageContainerRegistryWithWebhooks {
 
             dockerClient.pullImageCmd(dockerImageName)
                 .withTag(dockerImageTag)
+                .withAuthConfig(new AuthConfig()) // anonymous
                 .exec(new PullImageResultCallback())
                 .awaitCompletion();
             System.out.println("List local Docker images:");
             List<Image> images = dockerClient.listImagesCmd().withShowAll(true).exec();
             for (Image image : images) {
-                System.out.format("\tFound Docker image %s (%s)\n", image.getRepoTags()[0], image.getId());
+                System.out.format("\tFound Docker image %s (%s)%n", image.getRepoTags()[0], image.getId());
             }
 
             CreateContainerResponse dockerContainerInstance = dockerClient.createContainerCmd(dockerImageName + ":" + dockerImageTag)
@@ -133,14 +133,14 @@ public class ManageContainerRegistryWithWebhooks {
                 .withShowAll(true)
                 .exec();
             for (Container container : dockerContainers) {
-                System.out.format("\tFound Docker container %s (%s)\n", container.getImage(), container.getId());
+                System.out.format("\tFound Docker container %s (%s)%n", container.getImage(), container.getId());
             }
 
             //=============================================================
             // Commit the new container
 
             String privateRepoUrl = azureRegistry.loginServerUrl() + "/samples/" + dockerContainerName;
-            String dockerImageId = dockerClient.commitCmd(dockerContainerInstance.getId())
+            dockerClient.commitCmd(dockerContainerInstance.getId())
                 .withRepository(privateRepoUrl)
                 .withTag("latest").exec();
 
@@ -204,7 +204,7 @@ public class ManageContainerRegistryWithWebhooks {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure.configure()
-                .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY))
+                .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credFile)
                 .withDefaultSubscription();
 

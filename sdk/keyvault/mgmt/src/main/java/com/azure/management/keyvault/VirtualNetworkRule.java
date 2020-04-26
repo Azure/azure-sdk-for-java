@@ -7,9 +7,7 @@ package com.azure.management.keyvault;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The VirtualNetworkRule model.
- */
+/** The VirtualNetworkRule model. */
 @Fluent
 public final class VirtualNetworkRule {
     /*
@@ -22,7 +20,7 @@ public final class VirtualNetworkRule {
     /**
      * Get the id property: Full resource id of a vnet subnet, such as
      * '/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/subnet1'.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -32,7 +30,7 @@ public final class VirtualNetworkRule {
     /**
      * Set the id property: Full resource id of a vnet subnet, such as
      * '/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/subnet1'.
-     * 
+     *
      * @param id the id value to set.
      * @return the VirtualNetworkRule object itself.
      */

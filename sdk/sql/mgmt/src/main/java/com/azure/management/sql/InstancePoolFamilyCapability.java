@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The InstancePoolFamilyCapability model.
- */
+/** The InstancePoolFamilyCapability model. */
 @Fluent
 public final class InstancePoolFamilyCapability {
     /*
@@ -45,7 +43,7 @@ public final class InstancePoolFamilyCapability {
 
     /**
      * Get the name property: Family name.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -54,7 +52,7 @@ public final class InstancePoolFamilyCapability {
 
     /**
      * Get the supportedLicenseTypes property: List of supported license types.
-     * 
+     *
      * @return the supportedLicenseTypes value.
      */
     public List<LicenseTypeCapability> supportedLicenseTypes() {
@@ -62,9 +60,8 @@ public final class InstancePoolFamilyCapability {
     }
 
     /**
-     * Get the supportedVcoresValues property: List of supported virtual cores
-     * values.
-     * 
+     * Get the supportedVcoresValues property: List of supported virtual cores values.
+     *
      * @return the supportedVcoresValues value.
      */
     public List<InstancePoolVcoresCapability> supportedVcoresValues() {
@@ -73,7 +70,7 @@ public final class InstancePoolFamilyCapability {
 
     /**
      * Get the status property: The status of the capability.
-     * 
+     *
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -81,9 +78,8 @@ public final class InstancePoolFamilyCapability {
     }
 
     /**
-     * Get the reason property: The reason for the capability not being
-     * available.
-     * 
+     * Get the reason property: The reason for the capability not being available.
+     *
      * @return the reason value.
      */
     public String reason() {
@@ -91,9 +87,8 @@ public final class InstancePoolFamilyCapability {
     }
 
     /**
-     * Set the reason property: The reason for the capability not being
-     * available.
-     * 
+     * Set the reason property: The reason for the capability not being available.
+     *
      * @param reason the reason value to set.
      * @return the InstancePoolFamilyCapability object itself.
      */

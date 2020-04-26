@@ -9,26 +9,28 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.management.resources.DeploymentsBeginWhatIfHeaders;
 
-/**
- * Contains all response data for the beginWhatIf operation.
- */
-public final class DeploymentsBeginWhatIfResponse extends ResponseBase<DeploymentsBeginWhatIfHeaders, WhatIfOperationResultInner> {
+/** Contains all response data for the beginWhatIf operation. */
+public final class DeploymentsBeginWhatIfResponse
+    extends ResponseBase<DeploymentsBeginWhatIfHeaders, WhatIfOperationResultInner> {
     /**
      * Creates an instance of DeploymentsBeginWhatIfResponse.
-     * 
+     *
      * @param request the request which resulted in this DeploymentsBeginWhatIfResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public DeploymentsBeginWhatIfResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, WhatIfOperationResultInner value, DeploymentsBeginWhatIfHeaders headers) {
+    public DeploymentsBeginWhatIfResponse(
+        HttpRequest request,
+        int statusCode,
+        HttpHeaders rawHeaders,
+        WhatIfOperationResultInner value,
+        DeploymentsBeginWhatIfHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /**
-     * @return the deserialized response body.
-     */
+    /** @return the deserialized response body. */
     @Override
     public WhatIfOperationResultInner getValue() {
         return super.getValue();

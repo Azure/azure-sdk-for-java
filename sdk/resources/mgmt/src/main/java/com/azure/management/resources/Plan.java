@@ -7,9 +7,7 @@ package com.azure.management.resources;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Plan model.
- */
+/** The Plan model. */
 @Fluent
 public final class Plan {
     /*
@@ -44,7 +42,7 @@ public final class Plan {
 
     /**
      * Get the name property: The plan ID.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -53,7 +51,7 @@ public final class Plan {
 
     /**
      * Set the name property: The plan ID.
-     * 
+     *
      * @param name the name value to set.
      * @return the Plan object itself.
      */
@@ -64,7 +62,7 @@ public final class Plan {
 
     /**
      * Get the publisher property: The publisher ID.
-     * 
+     *
      * @return the publisher value.
      */
     public String publisher() {
@@ -73,7 +71,7 @@ public final class Plan {
 
     /**
      * Set the publisher property: The publisher ID.
-     * 
+     *
      * @param publisher the publisher value to set.
      * @return the Plan object itself.
      */
@@ -84,7 +82,7 @@ public final class Plan {
 
     /**
      * Get the product property: The offer ID.
-     * 
+     *
      * @return the product value.
      */
     public String product() {
@@ -93,7 +91,7 @@ public final class Plan {
 
     /**
      * Set the product property: The offer ID.
-     * 
+     *
      * @param product the product value to set.
      * @return the Plan object itself.
      */
@@ -104,7 +102,7 @@ public final class Plan {
 
     /**
      * Get the promotionCode property: The promotion code.
-     * 
+     *
      * @return the promotionCode value.
      */
     public String promotionCode() {
@@ -113,7 +111,7 @@ public final class Plan {
 
     /**
      * Set the promotionCode property: The promotion code.
-     * 
+     *
      * @param promotionCode the promotionCode value to set.
      * @return the Plan object itself.
      */
@@ -124,7 +122,7 @@ public final class Plan {
 
     /**
      * Get the version property: The plan's version.
-     * 
+     *
      * @return the version value.
      */
     public String version() {
@@ -133,7 +131,7 @@ public final class Plan {
 
     /**
      * Set the version property: The plan's version.
-     * 
+     *
      * @param version the version value to set.
      * @return the Plan object itself.
      */

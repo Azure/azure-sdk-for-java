@@ -9,9 +9,7 @@ import com.azure.management.keyvault.PrivateLinkResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The PrivateLinkResourceListResult model.
- */
+/** The PrivateLinkResourceListResult model. */
 @Fluent
 public final class PrivateLinkResourceListResultInner {
     /*
@@ -22,7 +20,7 @@ public final class PrivateLinkResourceListResultInner {
 
     /**
      * Get the value property: Array of private link resources.
-     * 
+     *
      * @return the value value.
      */
     public List<PrivateLinkResource> value() {
@@ -31,7 +29,7 @@ public final class PrivateLinkResourceListResultInner {
 
     /**
      * Set the value property: Array of private link resources.
-     * 
+     *
      * @param value the value value to set.
      * @return the PrivateLinkResourceListResultInner object itself.
      */

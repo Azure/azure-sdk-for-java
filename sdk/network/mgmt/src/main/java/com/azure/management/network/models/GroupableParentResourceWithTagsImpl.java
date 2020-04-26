@@ -11,21 +11,19 @@ import reactor.core.publisher.Mono;
 /**
  * The implementation for {@link GroupableResource} that can update tags as a separate operation.
  *
- * @param <FluentModelT>     The fluent model type
- * @param <InnerModelT>      Azure inner resource class type
+ * @param <FluentModelT> The fluent model type
+ * @param <InnerModelT> Azure inner resource class type
  * @param <FluentModelImplT> the implementation type of the fluent model type
- * @param <ManagerT>         the service manager type
+ * @param <ManagerT> the service manager type
  */
 public abstract class GroupableParentResourceWithTagsImpl<
         FluentModelT extends Resource,
         InnerModelT extends com.azure.core.management.Resource,
-        FluentModelImplT extends GroupableParentResourceWithTagsImpl<FluentModelT, InnerModelT, FluentModelImplT, ManagerT>,
+        FluentModelImplT extends
+            GroupableParentResourceWithTagsImpl<FluentModelT, InnerModelT, FluentModelImplT, ManagerT>,
         ManagerT extends ManagerBase>
-        extends
-        GroupableParentResourceImpl<FluentModelT, InnerModelT, FluentModelImplT, ManagerT>
-        implements
-        UpdatableWithTags<FluentModelT>,
-        AppliableWithTags<FluentModelT> {
+    extends GroupableParentResourceImpl<FluentModelT, InnerModelT, FluentModelImplT, ManagerT>
+    implements UpdatableWithTags<FluentModelT>, AppliableWithTags<FluentModelT> {
     protected GroupableParentResourceWithTagsImpl(String name, InnerModelT innerObject, ManagerT manager) {
         super(name, innerObject, manager);
     }
@@ -45,9 +43,11 @@ public abstract class GroupableParentResourceWithTagsImpl<
 
     @Override
     public Mono<FluentModelT> applyTagsAsync() {
-        @SuppressWarnings("unchecked") final FluentModelT self = (FluentModelT) this;
+        @SuppressWarnings("unchecked")
+        final FluentModelT self = (FluentModelT) this;
         return applyTagsToInnerAsync()
-                .flatMap(inner -> {
+            .flatMap(
+                inner -> {
                     setInner(inner);
                     return Mono.just(self);
                 });

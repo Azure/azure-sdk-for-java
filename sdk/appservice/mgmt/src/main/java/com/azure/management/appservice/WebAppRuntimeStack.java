@@ -4,12 +4,9 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
-
 import java.util.Objects;
 
-/**
- * Defines web app runtime stack on Windows operating system.
- */
+/** Defines web app runtime stack on Windows operating system. */
 @Fluent
 public class WebAppRuntimeStack {
 
@@ -32,15 +29,14 @@ public class WebAppRuntimeStack {
 
     /**
      * Creates a custom web app runtime stack on Windows operating system.
+     *
      * @param runtime the language runtime
      */
     public WebAppRuntimeStack(String runtime) {
         this.runtime = Objects.requireNonNull(runtime);
     }
 
-    /**
-     * @return the name of the language runtime
-     */
+    /** @return the name of the language runtime */
     public String runtime() {
         return runtime;
     }

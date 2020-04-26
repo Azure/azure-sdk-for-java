@@ -21,33 +21,28 @@ import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
  * Base class implementation for various network interface IP configurations.
  *
  * @param <ParentImplT> parent implementation
- * @param <ParentT>     parent interface
+ * @param <ParentT> parent interface
  */
 abstract class NicIPConfigurationBaseImpl<ParentImplT extends ParentT, ParentT extends HasManager<NetworkManager>>
-        extends
-        ChildResourceImpl<NetworkInterfaceIPConfigurationInner, ParentImplT, ParentT>
-        implements
-        NicIPConfigurationBase {
-    /**
-     * the network client.
-     */
+    extends ChildResourceImpl<NetworkInterfaceIPConfigurationInner, ParentImplT, ParentT>
+    implements NicIPConfigurationBase {
+    /** the network client. */
     private final NetworkManager networkManager;
 
-    protected NicIPConfigurationBaseImpl(NetworkInterfaceIPConfigurationInner inner,
-                                         ParentImplT parent,
-                                         NetworkManager networkManager) {
+    protected NicIPConfigurationBaseImpl(
+        NetworkInterfaceIPConfigurationInner inner, ParentImplT parent, NetworkManager networkManager) {
         super(inner, parent);
         this.networkManager = networkManager;
     }
@@ -122,7 +117,10 @@ abstract class NicIPConfigurationBaseImpl<ParentImplT extends ParentT, ParentT e
 
     @Override
     public Collection<ApplicationGatewayBackend> listAssociatedApplicationGatewayBackends() {
-        return this.parent().manager().listAssociatedApplicationGatewayBackends(this.inner().applicationGatewayBackendAddressPools());
+        return this
+            .parent()
+            .manager()
+            .listAssociatedApplicationGatewayBackends(this.inner().applicationGatewayBackendAddressPools());
     }
 
     @Override
@@ -135,10 +133,10 @@ abstract class NicIPConfigurationBaseImpl<ParentImplT extends ParentT, ParentT e
         final List<LoadBalancerBackend> backends = new ArrayList<>();
         for (BackendAddressPoolInner backendRef : backendRefs) {
             String loadBalancerId = ResourceUtils.parentResourceIdFromResourceId(backendRef.getId());
-            LoadBalancer loadBalancer = loadBalancers.get(loadBalancerId.toLowerCase());
+            LoadBalancer loadBalancer = loadBalancers.get(loadBalancerId.toLowerCase(Locale.ROOT));
             if (loadBalancer == null) {
                 loadBalancer = this.networkManager.loadBalancers().getById(loadBalancerId);
-                loadBalancers.put(loadBalancerId.toLowerCase(), loadBalancer);
+                loadBalancers.put(loadBalancerId.toLowerCase(Locale.ROOT), loadBalancer);
             }
             String backendName = ResourceUtils.nameFromResourceId(backendRef.getId());
             backends.add(loadBalancer.backends().get(backendName));
@@ -156,10 +154,10 @@ abstract class NicIPConfigurationBaseImpl<ParentImplT extends ParentT, ParentT e
         final List<LoadBalancerInboundNatRule> rules = new ArrayList<>();
         for (InboundNatRuleInner ref : inboundNatPoolRefs) {
             String loadBalancerId = ResourceUtils.parentResourceIdFromResourceId(ref.getId());
-            LoadBalancer loadBalancer = loadBalancers.get(loadBalancerId.toLowerCase());
+            LoadBalancer loadBalancer = loadBalancers.get(loadBalancerId.toLowerCase(Locale.ROOT));
             if (loadBalancer == null) {
                 loadBalancer = this.networkManager.loadBalancers().getById(loadBalancerId);
-                loadBalancers.put(loadBalancerId.toLowerCase(), loadBalancer);
+                loadBalancers.put(loadBalancerId.toLowerCase(Locale.ROOT), loadBalancer);
             }
             String ruleName = ResourceUtils.nameFromResourceId(ref.getId());
             rules.add(loadBalancer.inboundNatRules().get(ruleName));
