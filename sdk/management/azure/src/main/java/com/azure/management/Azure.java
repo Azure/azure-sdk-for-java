@@ -5,10 +5,7 @@ package com.azure.management;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.CloudException;
-import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.management.appservice.AppServiceCertificateOrders;
 import com.azure.management.appservice.AppServiceCertificates;
 import com.azure.management.appservice.AppServiceDomains;
@@ -83,8 +80,6 @@ import com.azure.management.resources.Subscriptions;
 import com.azure.management.resources.Tenants;
 import com.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.azure.management.resources.fluentcore.policy.ProviderRegistrationPolicy;
-import com.azure.management.resources.fluentcore.policy.ResourceManagerThrottlingPolicy;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
@@ -98,7 +93,6 @@ import com.azure.management.storage.StorageAccounts;
 import com.azure.management.storage.StorageSkus;
 import com.azure.management.storage.Usages;
 import com.azure.management.storage.implementation.StorageManager;
-import java.io.File;
 import java.io.IOException;
 
 /** The entry point for accessing resource management APIs in Azure. */
@@ -133,10 +127,11 @@ public final class Azure {
      * Authenticate to Azure using an Azure credential object.
      *
      * @param credential the credential object
+     * @param profile the profile to use
      * @return the authenticated Azure client
      */
-    public static Authenticated authenticate(TokenCredential credential) {
-        return new AuthenticatedImpl(HttpPipelineProvider.buildHttpPipeline(credential), new AzureProfile(AzureEnvironment.AZURE));
+    public static Authenticated authenticate(TokenCredential credential, AzureProfile profile) {
+        return new AuthenticatedImpl(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
 //    /**
@@ -224,7 +219,7 @@ public final class Azure {
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         @Override
         public Authenticated authenticate(TokenCredential credential, AzureProfile profile) {
-            return Azure.authenticate(buildHttpPipeline(credential), profile);
+            return Azure.authenticate(buildHttpPipeline(credential, profile), profile);
         }
 
 //        @Override

@@ -42,7 +42,7 @@ public final class MSIManager extends Manager<MSIManager, ManagedServiceIdentity
      * @return the MSIManager
      */
     public static MSIManager authenticate(TokenCredential credential, AzureProfile profile) {
-        return new MSIManager(HttpPipelineProvider.buildHttpPipeline(credential), profile, new SdkContext());
+        return new MSIManager(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile, new SdkContext());
     }
 
     /**
@@ -90,7 +90,7 @@ public final class MSIManager extends Manager<MSIManager, ManagedServiceIdentity
      */
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         public MSIManager authenticate(TokenCredential credential, AzureProfile profile) {
-            return MSIManager.authenticate(buildHttpPipeline(credential), profile);
+            return MSIManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
     }
 

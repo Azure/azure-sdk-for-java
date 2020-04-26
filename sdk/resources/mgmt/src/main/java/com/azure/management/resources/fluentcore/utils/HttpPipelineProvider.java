@@ -12,11 +12,12 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.management.AzureEnvironment;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.management.AuthenticationPolicy;
 import com.azure.management.UserAgentPolicy;
 import com.azure.management.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.management.resources.fluentcore.policy.ResourceManagerThrottlingPolicy;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,18 +34,20 @@ public final class HttpPipelineProvider {
      * Creates http pipeline with token credential
      *
      * @param credential the token credential
+     * @param profile the profile
      * @return the http pipeline
      */
-    public static HttpPipeline buildHttpPipeline(TokenCredential credential) {
+    public static HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile) {
         // TODO: basic policies should be provided
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         HttpLogOptions httpLogOptions = new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC);
         policies.add(new UserAgentPolicy(httpLogOptions, null));
 
         List<HttpPipelinePolicy> retryPolicies = new ArrayList<>();
-        retryPolicies.add(new ProviderRegistrationPolicy(credential));
+        retryPolicies.add(new RetryPolicy());
+        retryPolicies.add(new ProviderRegistrationPolicy(credential, profile));
         retryPolicies.add(new ResourceManagerThrottlingPolicy());
-        retryPolicies.add(new AuthenticationPolicy(credential, AzureEnvironment.AZURE, null));
+        retryPolicies.add(new AuthenticationPolicy(credential, profile.environment(), null));
         retryPolicies.add(new HttpLoggingPolicy(httpLogOptions));
         return buildHttpPipeline(policies, retryPolicies, null);
     }
@@ -66,7 +69,6 @@ public final class HttpPipelineProvider {
         HttpPolicyProviders.addBeforeRetryPolicies(allPolicies);
         allPolicies.addAll(retryPolicies);
         HttpPolicyProviders.addAfterRetryPolicies(allPolicies);
-        // TODO: Add proxy support
         return new HttpPipelineBuilder()
             .policies(allPolicies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)

@@ -37,7 +37,7 @@ public final class DnsZoneManager extends Manager<DnsZoneManager, DnsManagementC
      * @return the DnsZoneManager
      */
     public static DnsZoneManager authenticate(TokenCredential credential, AzureProfile profile) {
-        return authenticate(HttpPipelineProvider.buildHttpPipeline(credential), profile);
+        return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
     /**
@@ -79,7 +79,7 @@ public final class DnsZoneManager extends Manager<DnsZoneManager, DnsManagementC
     private static class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
 
         public DnsZoneManager authenticate(TokenCredential credential, AzureProfile profile) {
-            return DnsZoneManager.authenticate(buildHttpPipeline(credential), profile);
+            return DnsZoneManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
     }
 

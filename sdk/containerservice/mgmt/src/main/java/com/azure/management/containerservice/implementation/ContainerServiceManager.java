@@ -41,7 +41,7 @@ public final class ContainerServiceManager
      * @return the ContainerServiceManager
      */
     public static ContainerServiceManager authenticate(TokenCredential credential, AzureProfile profile) {
-        return authenticate(HttpPipelineProvider.buildHttpPipeline(credential), profile);
+        return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
     /**
@@ -84,7 +84,7 @@ public final class ContainerServiceManager
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         @Override
         public ContainerServiceManager authenticate(TokenCredential credential, AzureProfile profile) {
-            return ContainerServiceManager.authenticate(buildHttpPipeline(credential), profile);
+            return ContainerServiceManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
     }
 

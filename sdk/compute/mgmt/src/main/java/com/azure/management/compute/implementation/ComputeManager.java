@@ -69,7 +69,7 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
      * @return the ComputeManager
      */
     public static ComputeManager authenticate(TokenCredential credential, AzureProfile profile) {
-        return authenticate(HttpPipelineProvider.buildHttpPipeline(credential), profile);
+        return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
     /**
@@ -111,7 +111,7 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         @Override
         public ComputeManager authenticate(TokenCredential credential, AzureProfile profile) {
-            return ComputeManager.authenticate(buildHttpPipeline(credential), profile);
+            return ComputeManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
     }
 

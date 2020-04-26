@@ -82,7 +82,7 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
      * @return the NetworkManager
      */
     public static NetworkManager authenticate(TokenCredential credential, AzureProfile profile) {
-        return authenticate(HttpPipelineProvider.buildHttpPipeline(credential), profile);
+        return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
     /**
@@ -116,7 +116,7 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
     private static class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
 
         public NetworkManager authenticate(TokenCredential credential, AzureProfile profile) {
-            return NetworkManager.authenticate(buildHttpPipeline(credential), profile);
+            return NetworkManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
     }
 

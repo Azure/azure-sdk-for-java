@@ -11,11 +11,12 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.Configuration;
 import com.azure.management.AuthenticationPolicy;
 import com.azure.management.UserAgentPolicy;
 import com.azure.management.resources.fluentcore.arm.AzureConfigurable;
+import com.azure.management.resources.fluentcore.policy.AuxiliaryAuthenticationPolicy;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.HttpPipelineProvider;
 
 import java.net.Proxy;
@@ -34,19 +35,17 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
         implements AzureConfigurable<T> {
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
-    private HttpLogDetailLevel httpLogDetailLevel;
     private List<HttpPipelinePolicy> policies;
     private List<String> scopes;
     private RetryPolicy retryPolicy;
     private Configuration configuration;
-    private AzureEnvironment environment;
+    private TokenCredential[] tokens;
 
     protected AzureConfigurableImpl() {
         policies = new ArrayList<>();
         scopes = new ArrayList<>();
         retryPolicy = new RetryPolicy();
         httpLogOptions = new HttpLogOptions().setLogLevel(HttpLogDetailLevel.NONE);
-        environment = AzureEnvironment.AZURE;
     }
 
     @Override
@@ -72,7 +71,9 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
 
     @Override
     public T withAuxiliaryCredentials(TokenCredential... tokens) {
-        return null;
+        Objects.requireNonNull(tokens);
+        this.tokens = tokens;
+        return (T) this;
     }
 
 //    @Override
@@ -134,14 +135,7 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
         return (T) this;
     }
 
-    @Override
-    public T withEnvironment(AzureEnvironment environment) {
-        Objects.requireNonNull(environment);
-        this.environment = environment;
-        return (T) this;
-    }
-
-    protected HttpPipeline buildHttpPipeline(TokenCredential credential) {
+    protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile) {
         Objects.requireNonNull(credential);
 
         List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -149,7 +143,10 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
 
         List<HttpPipelinePolicy> retryPolicies = new ArrayList<>();
         retryPolicies.add(retryPolicy);
-        retryPolicies.add(new AuthenticationPolicy(credential, environment, scopes()));
+        retryPolicies.add(new AuthenticationPolicy(credential, profile.environment(), scopes()));
+        if (this.tokens != null) {
+            retryPolicies.add(new AuxiliaryAuthenticationPolicy(profile.environment(), tokens));
+        }
         retryPolicies.add(new HttpLoggingPolicy(httpLogOptions));
         retryPolicies.addAll(this.policies);
         return HttpPipelineProvider.buildHttpPipeline(policies, retryPolicies, httpClient);

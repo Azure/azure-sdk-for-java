@@ -123,12 +123,4 @@ public interface AzureConfigurable<T extends AzureConfigurable<T>> {
      * @return the configurable object itself for chaining
      */
     T withConfiguration(Configuration configuration);
-
-    /**
-     * Sets the Azure environment.
-     *
-     * @param environment the Azure environment
-     * @return the configurable object itself for chaining
-     */
-    T withEnvironment(AzureEnvironment environment);
 }

@@ -47,7 +47,7 @@ public final class StorageManager extends Manager<StorageManager, StorageManagem
      * @return the StorageManager
      */
     public static StorageManager authenticate(TokenCredential credential, AzureProfile profile) {
-        return authenticate(HttpPipelineProvider.buildHttpPipeline(credential), profile);
+        return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
     /**
@@ -88,7 +88,7 @@ public final class StorageManager extends Manager<StorageManager, StorageManagem
     /** The implementation for Configurable interface. */
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         public StorageManager authenticate(TokenCredential credential, AzureProfile profile) {
-            return StorageManager.authenticate(buildHttpPipeline(credential), profile);
+            return StorageManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
     }
 

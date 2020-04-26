@@ -54,7 +54,7 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
      * @return the StorageManager
      */
     public static AppServiceManager authenticate(TokenCredential credential, AzureProfile profile) {
-        return authenticate(HttpPipelineProvider.buildHttpPipeline(credential), profile);
+        return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
     /**
@@ -96,7 +96,7 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
     /** The implementation for Configurable interface. */
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         public AppServiceManager authenticate(TokenCredential credential, AzureProfile profile) {
-            return AppServiceManager.authenticate(buildHttpPipeline(credential), profile);
+            return AppServiceManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
     }
 

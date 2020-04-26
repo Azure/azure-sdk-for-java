@@ -51,7 +51,7 @@ public class SqlServerManager extends Manager<SqlServerManager, SqlManagementCli
      * @return the SqlServer
      */
     public static SqlServerManager authenticate(TokenCredential credential, AzureProfile profile) {
-        return authenticate(HttpPipelineProvider.buildHttpPipeline(credential), profile);
+        return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
     /**
@@ -94,7 +94,7 @@ public class SqlServerManager extends Manager<SqlServerManager, SqlManagementCli
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         @Override
         public SqlServerManager authenticate(TokenCredential credential, AzureProfile profile) {
-            return SqlServerManager.authenticate(buildHttpPipeline(credential), profile);
+            return SqlServerManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
     }
 

@@ -5,7 +5,6 @@ package com.azure.management.resources.implementation;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.management.resources.Deployments;
 import com.azure.management.resources.Features;
 import com.azure.management.resources.GenericResources;
@@ -55,9 +54,8 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
      * @param credential the credential to use
      * @return the ResourceManager instance
      */
-    public static ResourceManager.Authenticated authenticate(TokenCredential credential) {
-        return new AuthenticatedImpl(HttpPipelineProvider.buildHttpPipeline(credential),
-            new AzureProfile(AzureEnvironment.AZURE));
+    public static ResourceManager.Authenticated authenticate(TokenCredential credential, AzureProfile profile) {
+        return new AuthenticatedImpl(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
     /**
@@ -99,7 +97,7 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
      */
     private static class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         public ResourceManager.Authenticated authenticate(TokenCredential credential, AzureProfile profile) {
-            return ResourceManager.authenticate(buildHttpPipeline(credential), profile);
+            return ResourceManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
     }
 

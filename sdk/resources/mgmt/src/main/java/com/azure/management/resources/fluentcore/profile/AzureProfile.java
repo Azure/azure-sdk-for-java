@@ -14,7 +14,7 @@ public class AzureProfile {
     private String tenantId;
     private String subscriptionId;
     private AzureEnvironment environment;
-    private final Configuration configuration = Configuration.getGlobalConfiguration().clone();
+    private final Configuration configuration = Configuration.getGlobalConfiguration();
 
     /**
      * Creates AzureProfile instance with Azure environment.

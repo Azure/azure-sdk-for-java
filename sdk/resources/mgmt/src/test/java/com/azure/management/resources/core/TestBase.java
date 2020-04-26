@@ -51,7 +51,8 @@ public abstract class TestBase {
     private PrintStream out;
     private String baseUri;
     protected SdkContext sdkContext = new SdkContext();
-    protected AuthFile authFile;
+    private AuthFile authFile;
+    private AzureProfile profile;
 
     public String generateRandomResourceName(String prefix, int maxLen) {
         return sdkContext.randomResourceName(prefix, maxLen);
@@ -194,7 +195,6 @@ public abstract class TestBase {
 
         TokenCredential credential;
         HttpPipeline httpPipeline;
-        AzureProfile profile;
 
         if (isPlaybackMode()) {
             credential = new AzureTestCredential();
@@ -344,6 +344,10 @@ public abstract class TestBase {
 
     protected String clientIdFromFile() {
         return authFile.clientId();
+    }
+
+    protected AzureProfile profile() {
+        return this.profile;
     }
 
     protected abstract void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) throws IOException;

@@ -35,7 +35,7 @@ public final class CosmosDBManager extends Manager<CosmosDBManager, CosmosDBMana
      * @return the ComputeManager
      */
     public static CosmosDBManager authenticate(TokenCredential credential, AzureProfile profile) {
-        return authenticate(HttpPipelineProvider.buildHttpPipeline(credential), profile);
+        return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
     /**
@@ -77,7 +77,7 @@ public final class CosmosDBManager extends Manager<CosmosDBManager, CosmosDBMana
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         @Override
         public CosmosDBManager authenticate(TokenCredential credential, AzureProfile profile) {
-            return CosmosDBManager.authenticate(buildHttpPipeline(credential), profile);
+            return CosmosDBManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
     }
 

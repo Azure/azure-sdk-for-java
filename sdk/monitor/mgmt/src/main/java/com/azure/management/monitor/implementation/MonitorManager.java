@@ -48,7 +48,7 @@ public final class MonitorManager extends Manager<MonitorManager, MonitorClientI
      */
     public static MonitorManager authenticate(
         TokenCredential credential, AzureProfile profile, SdkContext sdkContext) {
-        return authenticate(HttpPipelineProvider.buildHttpPipeline(credential), profile, sdkContext);
+        return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile, sdkContext);
     }
     /**
      * Creates an instance of MonitorManager that exposes Monitor API entry points.
@@ -134,7 +134,7 @@ public final class MonitorManager extends Manager<MonitorManager, MonitorClientI
     /** The implementation for Configurable interface. */
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         public MonitorManager authenticate(TokenCredential credential, AzureProfile profile) {
-            return MonitorManager.authenticate(buildHttpPipeline(credential), profile);
+            return MonitorManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
     }
 

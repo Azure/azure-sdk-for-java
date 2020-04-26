@@ -43,7 +43,7 @@ public final class KeyVaultManager extends Manager<KeyVaultManager, KeyVaultMana
      */
     public static KeyVaultManager authenticate(TokenCredential credential, AzureProfile profile) {
         return authenticate(
-            HttpPipelineProvider.buildHttpPipeline(credential), profile);
+            HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
     /**
@@ -87,7 +87,7 @@ public final class KeyVaultManager extends Manager<KeyVaultManager, KeyVaultMana
         public KeyVaultManager authenticate(TokenCredential credential, AzureProfile profile) {
             return KeyVaultManager
                 .authenticate(
-                    buildHttpPipeline(credential), profile);
+                    buildHttpPipeline(credential, profile), profile);
         }
     }
 

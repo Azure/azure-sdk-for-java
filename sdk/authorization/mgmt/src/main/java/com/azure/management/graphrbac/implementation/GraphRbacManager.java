@@ -5,7 +5,6 @@ package com.azure.management.graphrbac.implementation;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.management.graphrbac.ActiveDirectoryApplications;
 import com.azure.management.graphrbac.ActiveDirectoryGroups;
 import com.azure.management.graphrbac.ActiveDirectoryUsers;
@@ -42,11 +41,11 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
      * Creates an instance of GraphRbacManager that exposes Graph RBAC management API entry points.
      *
      * @param credential the credential to use
+     * @param profile the profile to use
      * @return the GraphRbacManager instance
      */
-    public static GraphRbacManager authenticate(TokenCredential credential) {
-        return authenticate(
-            HttpPipelineProvider.buildHttpPipeline(credential), new AzureProfile(AzureEnvironment.AZURE));
+    public static GraphRbacManager authenticate(TokenCredential credential, AzureProfile profile) {
+        return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
     /**
@@ -92,17 +91,17 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
          * Creates an instance of GraphRbacManager that exposes resource management API entry points.
          *
          * @param credential the credential to use
+         * @param profile the profile to use
          * @return the interface exposing resource management API entry points that work across subscriptions
          */
-        GraphRbacManager authenticate(TokenCredential credential);
+        GraphRbacManager authenticate(TokenCredential credential, AzureProfile profile);
     }
 
     /** The implementation for Configurable interface. */
     private static class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
-        public GraphRbacManager authenticate(TokenCredential credential) {
+        public GraphRbacManager authenticate(TokenCredential credential, AzureProfile profile) {
             return GraphRbacManager
-                .authenticate(
-                    HttpPipelineProvider.buildHttpPipeline(credential), new AzureProfile(AzureEnvironment.AZURE));
+                .authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
         }
     }
 
