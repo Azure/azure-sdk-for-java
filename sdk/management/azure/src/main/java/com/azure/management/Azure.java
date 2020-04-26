@@ -3,6 +3,8 @@
 
 package com.azure.management;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.CloudException;
@@ -36,6 +38,7 @@ import com.azure.management.containerservice.KubernetesClusters;
 import com.azure.management.containerservice.implementation.ContainerServiceManager;
 import com.azure.management.cosmosdb.CosmosDBAccounts;
 import com.azure.management.cosmosdb.implementation.CosmosDBManager;
+import com.azure.management.dns.implementation.DnsZoneManager;
 import com.azure.management.graphrbac.ActiveDirectoryApplications;
 import com.azure.management.graphrbac.ActiveDirectoryGroups;
 import com.azure.management.graphrbac.ActiveDirectoryUsers;
@@ -82,6 +85,8 @@ import com.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.management.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.management.resources.fluentcore.policy.ResourceManagerThrottlingPolicy;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
+import com.azure.management.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.resources.implementation.ResourceManager;
 import com.azure.management.sql.SqlServers;
@@ -107,7 +112,7 @@ public final class Azure {
     //    private final TrafficManager trafficManager;
     //    private final RedisManager redisManager;
     //    private final CdnManager cdnManager;
-    //    private final DnsZoneManager dnsZoneManager;
+    private final DnsZoneManager dnsZoneManager;
     private final AppServiceManager appServiceManager;
     private final SqlServerManager sqlServerManager;
     //    private final ServiceBusManager serviceBusManager;
@@ -125,76 +130,68 @@ public final class Azure {
     private final SdkContext sdkContext;
 
     /**
-     * Authenticate to Azure using an Azure credentials object.
+     * Authenticate to Azure using an Azure credential object.
      *
-     * @param credential the credentials object
+     * @param credential the credential object
      * @return the authenticated Azure client
      */
-    public static Authenticated authenticate(AzureTokenCredential credential) {
-        return new AuthenticatedImpl(
-            new RestClientBuilder()
-                .withBaseUrl(credential.getEnvironment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
-                .withCredential(credential)
-                .withSerializerAdapter(new AzureJacksonAdapter())
-                .withPolicy(new ProviderRegistrationPolicy(credential))
-                .withPolicy(new ResourceManagerThrottlingPolicy())
-                .buildClient(),
-            credential.getDomain());
+    public static Authenticated authenticate(TokenCredential credential) {
+        return new AuthenticatedImpl(HttpPipelineProvider.buildHttpPipeline(credential), new AzureProfile(AzureEnvironment.AZURE));
     }
 
-    /**
-     * Authenticates API access using a properties file containing the required credentials.
-     *
-     * @param credentialsFile the file containing the credentials in the standard Java properties file format, with the
-     *     following keys:
-     *     <p><code>
-     *                        subscription= #subscription ID<br>
-     *                        tenant= #tenant ID<br>
-     *                        client= #client id<br>
-     *                        key= #client key<br>
-     *                        managementURI= #management URI<br>
-     *                        baseURL= #base URL<br>
-     *                        authURL= #authentication URL<br>
-     *                        </code>
-     * @return authenticated Azure client
-     * @throws IOException exception thrown from file access
-     */
-    public static Authenticated authenticate(File credentialsFile) throws IOException {
-        ApplicationTokenCredential credential = ApplicationTokenCredential.fromFile(credentialsFile);
-        return new AuthenticatedImpl(
-                new RestClientBuilder()
-                    .withBaseUrl(credential.getEnvironment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
-                    .withCredential(credential)
-                    .withSerializerAdapter(new AzureJacksonAdapter())
-                    .withPolicy(new ProviderRegistrationPolicy(credential))
-                    .withPolicy(new ResourceManagerThrottlingPolicy())
-                    .buildClient(),
-                credential.getDomain())
-            .withDefaultSubscription(credential.getDefaultSubscriptionId());
-    }
+//    /**
+//     * Authenticates API access using a properties file containing the required credential.
+//     *
+//     * @param credentialFile the file containing the credential in the standard Java properties file format, with the
+//     *     following keys:
+//     *     <p><code>
+//     *                        subscription= #subscription ID<br>
+//     *                        tenant= #tenant ID<br>
+//     *                        client= #client id<br>
+//     *                        key= #client key<br>
+//     *                        managementURI= #management URI<br>
+//     *                        baseURL= #base URL<br>
+//     *                        authURL= #authentication URL<br>
+//     *                        </code>
+//     * @return authenticated Azure client
+//     * @throws IOException exception thrown from file access
+//     */
+//    public static Authenticated authenticate(File credentialFile) throws IOException {
+//        ApplicationTokenCredential credential = ApplicationTokenCredential.fromFile(credentialFile);
+//        return new AuthenticatedImpl(
+//                new RestClientBuilder()
+//                    .withBaseUrl(credential.getEnvironment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
+//                    .withCredential(credential)
+//                    .withSerializerAdapter(new AzureJacksonAdapter())
+//                    .withPolicy(new ProviderRegistrationPolicy(credential))
+//                    .withPolicy(new ResourceManagerThrottlingPolicy())
+//                    .buildClient(),
+//                credential.getDomain())
+//            .withDefaultSubscription(credential.getDefaultSubscriptionId());
+//    }
 
     /**
      * Authenticates API access using a RestClient instance.
      *
-     * @param restClient the RestClient configured with Azure authentication credentials
-     * @param tenantId the tenantId in Active Directory
+     * @param httpPipeline the HttpPipeline configured with Azure authentication credential
+     * @param profile the profile used in Active Directory
      * @return authenticated Azure client
      */
-    public static Authenticated authenticate(RestClient restClient, String tenantId) {
-        return new AuthenticatedImpl(restClient, tenantId);
+    public static Authenticated authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        return new AuthenticatedImpl(httpPipeline, profile);
     }
 
-    /**
-     * Authenticates API access using a RestClient instance.
-     *
-     * @param restClient the RestClient configured with Azure authentication credentials
-     * @param tenantId the tenantId in Active Directory
-     * @param subscriptionId the ID of the subscription
-     * @return authenticated Azure client
-     */
-    public static Authenticated authenticate(RestClient restClient, String tenantId, String subscriptionId) {
-        return new AuthenticatedImpl(restClient, tenantId).withDefaultSubscription(subscriptionId);
-    }
+//    /**
+//     * Authenticates API access using a RestClient instance.
+//     *
+//     * @param restClient the RestClient configured with Azure authentication credential
+//     * @param tenantId the tenantId in Active Directory
+//     * @param subscriptionId the ID of the subscription
+//     * @return authenticated Azure client
+//     */
+//    public static Authenticated authenticate(HttpPipeline restClient, String tenantId, String subscriptionId) {
+//        return new AuthenticatedImpl(restClient, tenantId).withDefaultSubscription(subscriptionId);
+//    }
 
     /** @return an interface allow configurations on the client. */
     public static Configurable configure() {
@@ -204,45 +201,39 @@ public final class Azure {
     /** The interface allowing configurations to be made on the client. */
     public interface Configurable extends AzureConfigurable<Configurable> {
         /**
-         * Authenticates API access based on the provided credentials.
+         * Authenticates API access based on the provided credential.
          *
-         * @param credentials The credentials to authenticate API access with
+         * @param credential The credential to authenticate API access with
          * @return the authenticated Azure client
          */
-        Authenticated authenticate(AzureTokenCredential credentials);
+        Authenticated authenticate(TokenCredential credential, AzureProfile profile);
 
-        /**
-         * Authenticates API access using a properties file containing the required credentials.
-         *
-         * @param credentialsFile the file containing the credentials in the standard Java properties file format
-         *     following the same schema as {@link Azure#authenticate(File)}.
-         *     <p>
-         * @return Authenticated Azure client
-         * @throws IOException exceptions thrown from file access
-         */
-        Authenticated authenticate(File credentialsFile) throws IOException;
+//        /**
+//         * Authenticates API access using a properties file containing the required credential.
+//         *
+//         * @param credentialFile the file containing the credential in the standard Java properties file format
+//         *     following the same schema as {@link Azure#authenticate(File)}.
+//         *     <p>
+//         * @return Authenticated Azure client
+//         * @throws IOException exceptions thrown from file access
+//         */
+//        Authenticated authenticate(File credentialFile) throws IOException;
     }
 
     /** The implementation for {@link Configurable}. */
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         @Override
-        public Authenticated authenticate(AzureTokenCredential credentials) {
-            if (credentials.getDefaultSubscriptionId() != null) {
-                return Azure
-                    .authenticate(
-                        buildRestClient(credentials), credentials.getDomain(), credentials.getDefaultSubscriptionId());
-            } else {
-                return Azure.authenticate(buildRestClient(credentials), credentials.getDomain());
-            }
+        public Authenticated authenticate(TokenCredential credential, AzureProfile profile) {
+            return Azure.authenticate(buildHttpPipeline(credential), profile);
         }
 
-        @Override
-        public Authenticated authenticate(File credentialsFile) throws IOException {
-            ApplicationTokenCredential credentials = ApplicationTokenCredential.fromFile(credentialsFile);
-            return Azure
-                .authenticate(
-                    buildRestClient(credentials), credentials.getDomain(), credentials.getDefaultSubscriptionId());
-        }
+//        @Override
+//        public Authenticated authenticate(File credentialFile) throws IOException {
+//            ApplicationTokenCredential credential = ApplicationTokenCredential.fromFile(credentialFile);
+//            return Azure
+//                .authenticate(
+//                    buildRestClient(credential), credential.getDomain(), credential.getDefaultSubscriptionId());
+//        }
     }
 
     /**
@@ -294,42 +285,41 @@ public final class Azure {
         /**
          * Selects the default subscription as the subscription for the APIs to work with.
          *
-         * <p>The default subscription can be specified inside the authentication file using {@link
-         * Azure#authenticate(File)}. If no default subscription has been previously provided, the first subscription as
+         * <p>The default subscription can be specified inside the Azure profile using {@link
+         * AzureProfile}. If no default subscription has been previously provided, the first subscription as
          * returned by {@link Authenticated#subscriptions()} will be selected.
          *
          * @return an authenticated Azure client configured to work with the default subscription
          * @throws CloudException exception thrown from Azure
          * @throws IOException exception thrown from serialization/deserialization
          */
-        Azure withDefaultSubscription() throws CloudException, IOException;
+        Azure withDefaultSubscription() throws CloudException;
     }
 
     /** The implementation for the Authenticated interface. */
     private static final class AuthenticatedImpl implements Authenticated {
-        private final RestClient restClient;
+        private final HttpPipeline httpPipeline;
+        private final AzureProfile profile;
         private final ResourceManager.Authenticated resourceManagerAuthenticated;
         private final GraphRbacManager graphRbacManager;
         private SdkContext sdkContext;
-        private String defaultSubscription;
-        private final String tenantId;
 
-        private AuthenticatedImpl(RestClient restClient, String tenantId) {
-            this.resourceManagerAuthenticated = ResourceManager.authenticate(restClient);
-            this.graphRbacManager = GraphRbacManager.authenticate(restClient, tenantId);
-            this.restClient = restClient;
-            this.tenantId = tenantId;
+        private AuthenticatedImpl(HttpPipeline httpPipeline, AzureProfile profile) {
+            this.resourceManagerAuthenticated = ResourceManager.authenticate(httpPipeline, profile);
+            this.graphRbacManager = GraphRbacManager.authenticate(httpPipeline, profile);
+            this.httpPipeline = httpPipeline;
+            this.profile = profile;
             this.sdkContext = new SdkContext();
         }
 
-        private AuthenticatedImpl withDefaultSubscription(String subscriptionId) {
-            this.defaultSubscription = subscriptionId;
-            return this;
-        }
+//        private AuthenticatedImpl withDefaultSubscription(String subscriptionId) {
+//            this.profile.withSubscriptionId(subscriptionId);
+//            return this;
+//        }
 
         @Override
         public String tenantId() {
-            return tenantId;
+            return profile.tenantId();
         }
 
         @Override
@@ -385,51 +375,43 @@ public final class Azure {
 
         @Override
         public Azure withSubscription(String subscriptionId) {
-            return new Azure(restClient, subscriptionId, tenantId, this);
+            profile.withSubscriptionId(subscriptionId);
+            return new Azure(httpPipeline, profile, this);
         }
 
         @Override
-        public Azure withDefaultSubscription() throws CloudException, IOException {
-            if (this.defaultSubscription != null) {
-                return withSubscription(this.defaultSubscription);
-            } else {
-                PagedIterable<Subscription> subs = this.subscriptions().list();
-                if (subs.iterator().hasNext()) {
-                    return withSubscription(subs.iterator().next().subscriptionId());
-                } else {
-                    return withSubscription(null);
-                }
-            }
+        public Azure withDefaultSubscription() throws CloudException {
+            return new Azure(httpPipeline, profile, this);
         }
     }
 
-    private Azure(RestClient restClient, String subscriptionId, String tenantId, Authenticated authenticated) {
+    private Azure(HttpPipeline httpPipeline, AzureProfile profile, Authenticated authenticated) {
         this.sdkContext = authenticated.sdkContext();
         this.resourceManager =
-            ResourceManager.authenticate(restClient).withSdkContext(sdkContext).withSubscription(subscriptionId);
-        this.storageManager = StorageManager.authenticate(restClient, subscriptionId, sdkContext);
-        this.computeManager = ComputeManager.authenticate(restClient, subscriptionId, sdkContext);
-        this.networkManager = NetworkManager.authenticate(restClient, subscriptionId, sdkContext);
-        this.keyVaultManager = KeyVaultManager.authenticate(restClient, tenantId, subscriptionId, sdkContext);
+            ResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext).withDefaultSubscription();
+        this.storageManager = StorageManager.authenticate(httpPipeline, profile, sdkContext);
+        this.computeManager = ComputeManager.authenticate(httpPipeline, profile, sdkContext);
+        this.networkManager = NetworkManager.authenticate(httpPipeline, profile, sdkContext);
+        this.keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile, sdkContext);
         //        this.batchManager = BatchManager.authenticate(restClient, subscriptionId, sdkContext);
         //        this.trafficManager = TrafficManager.authenticate(restClient, subscriptionId, sdkContext);
         //        this.redisManager = RedisManager.authenticate(restClient, subscriptionId, sdkContext);
         //        this.cdnManager = CdnManager.authenticate(restClient, subscriptionId, sdkContext);
-        //        this.dnsZoneManager = DnsZoneManager.authenticate(restClient, subscriptionId, sdkContext);
-        this.appServiceManager = AppServiceManager.authenticate(restClient, tenantId, subscriptionId, sdkContext);
-        this.sqlServerManager = SqlServerManager.authenticate(restClient, tenantId, subscriptionId, sdkContext);
+        this.dnsZoneManager = DnsZoneManager.authenticate(httpPipeline, profile, sdkContext);
+        this.appServiceManager = AppServiceManager.authenticate(httpPipeline, profile, sdkContext);
+        this.sqlServerManager = SqlServerManager.authenticate(httpPipeline, profile, sdkContext);
         //        this.serviceBusManager = ServiceBusManager.authenticate(restClient, subscriptionId, sdkContext);
         //        this.containerInstanceManager = ContainerInstanceManager.authenticate(restClient, subscriptionId,
         // sdkContext);
-        this.containerRegistryManager = ContainerRegistryManager.authenticate(restClient, subscriptionId, sdkContext);
-        this.containerServiceManager = ContainerServiceManager.authenticate(restClient, subscriptionId, sdkContext);
-        this.cosmosDBManager = CosmosDBManager.authenticate(restClient, subscriptionId, sdkContext);
+        this.containerRegistryManager = ContainerRegistryManager.authenticate(httpPipeline, profile, sdkContext);
+        this.containerServiceManager = ContainerServiceManager.authenticate(httpPipeline, profile, sdkContext);
+        this.cosmosDBManager = CosmosDBManager.authenticate(httpPipeline, profile, sdkContext);
         //        this.searchServiceManager = SearchServiceManager.authenticate(restClient, subscriptionId, sdkContext);
         //        this.authorizationManager = AuthorizationManager.authenticate(restClient, subscriptionId, sdkContext);
-        this.msiManager = MSIManager.authenticate(restClient, subscriptionId, sdkContext);
-        this.monitorManager = MonitorManager.authenticate(restClient, subscriptionId, sdkContext);
+        this.msiManager = MSIManager.authenticate(httpPipeline, profile, sdkContext);
+        this.monitorManager = MonitorManager.authenticate(httpPipeline, profile, sdkContext);
         //        this.eventHubManager = EventHubManager.authenticate(restClient, subscriptionId, sdkContext);
-        this.subscriptionId = subscriptionId;
+        this.subscriptionId = profile.subscriptionId();
         this.authenticated = authenticated;
     }
 

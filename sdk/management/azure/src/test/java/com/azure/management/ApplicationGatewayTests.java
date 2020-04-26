@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.management;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.CloudException;
 import com.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.azure.management.compute.VirtualMachine;
@@ -23,6 +24,8 @@ import com.azure.management.resources.fluentcore.model.CreatedResources;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -30,10 +33,10 @@ public class ApplicationGatewayTests extends TestBase {
     private Azure azure;
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         Azure.Authenticated azureAuthed =
-            Azure.authenticate(restClient, defaultSubscription, domain).withSdkContext(sdkContext);
-        azure = azureAuthed.withSubscription(defaultSubscription);
+            Azure.authenticate(httpPipeline, profile).withSdkContext(sdkContext);
+        azure = azureAuthed.withDefaultSubscription();
     }
 
     @Override
