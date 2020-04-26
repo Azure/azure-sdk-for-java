@@ -59,7 +59,7 @@ public class AzureCliCredentialTest {
         // test
         AzureCliCredential credential = new AzureCliCredentialBuilder().build();
         StepVerifier.create(credential.getToken(request))
-            .expectErrorMatches(e -> e instanceof Exception && "Azure CLI not installed".equals(e.getMessage()))
+            .expectErrorMatches(e -> e instanceof CredentialUnavailableException && e.getMessage().contains("Azure CLI not installed"))))
             .verify();
     }
 
@@ -77,7 +77,7 @@ public class AzureCliCredentialTest {
         // test
         AzureCliCredential credential = new AzureCliCredentialBuilder().build();
         StepVerifier.create(credential.getToken(request))
-            .expectErrorMatches(e -> e instanceof Exception && "Azure  not Login".equals(e.getMessage()))
+            .expectErrorMatches(e -> e instanceof CredentialUnavailableException && e.getMessage().contains("Azure  not Login"))))
             .verify();
     }
     
@@ -95,7 +95,7 @@ public class AzureCliCredentialTest {
         // test
         AzureCliCredential credential = new AzureCliCredentialBuilder().build();
         StepVerifier.create(credential.getToken(request))
-            .expectErrorMatches(e -> e instanceof Exception && "other error".equals(e.getMessage()))
+            .expectErrorMatches(e -> e instanceof CredentialUnavailableException && e.getMessage().contains("other error"))))
             .verify();
     }
 
