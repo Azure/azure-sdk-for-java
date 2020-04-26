@@ -13,10 +13,6 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-<<<<<<< HEAD
-import com.azure.core.util.logging.ClientLogger;
-=======
->>>>>>> 19d0ededf1d6793437a7df4005a40ed504e65e10
 
 /**
  * A credential provider that provides token credentials based on Azure CLI
@@ -25,12 +21,7 @@ import com.azure.core.util.logging.ClientLogger;
 @Immutable
 class AzureCliCredential implements TokenCredential {
     private final IdentityClient identityClient;
-<<<<<<< HEAD
-    private final ClientLogger logger = new ClientLogger(AzureCliCredential.class);
-    
-=======
 
->>>>>>> 19d0ededf1d6793437a7df4005a40ed504e65e10
     /**
      * Creates an AzureCliSecretCredential with default identity client options.
      * @param identityClientOptions the options to configure the identity client
@@ -41,12 +32,8 @@ class AzureCliCredential implements TokenCredential {
 
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
-<<<<<<< HEAD
-        return identityClient.authenticateWithAzureCli(request).onErrorResume(t -> Mono.error(logger.logExceptionAsError(new RuntimeException(
-            "AzureCliCredential authentication unavailable.",
-            t))));
-=======
-        return identityClient.authenticateWithAzureCli(request);
->>>>>>> 19d0ededf1d6793437a7df4005a40ed504e65e10
+        return identityClient.authenticateWithAzureCli(request).onErrorResume(t -> Mono.error(new CredentialUnavailableException(
+            "AzureCliCredential authentication unavailable." + t.getMessage(),
+            t)));
     }
 }

@@ -7,6 +7,7 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.msalextensions.PersistentTokenCacheAccessAspect;
 import com.microsoft.aad.msal4j.IAccount;
@@ -85,9 +86,8 @@ public class SharedTokenCacheCredential implements TokenCredential {
                     .setTokenCacheAccessAspect(accessAspect)
                     .build();
             } catch (Exception e) {
-                return Mono.error((new RuntimeException(
-                    "SharedTokenCacheCredential authentication unavailable. No client id were discovered.",
-                    e)));
+                return Mono.error(new CredentialUnavailableException("SharedTokenCacheCredential authentication "
+                                                                         + "unavailable." +  e.getMessage(), e));
             }
         }
 
@@ -105,25 +105,32 @@ public class SharedTokenCacheCredential implements TokenCredential {
                     }
                 }
 
-                if (accounts.size() == 0) {
-                    if (username == null) {
-                        return Mono.error(new RuntimeException(
-                                "SharedTokenCacheCredential authentication unavailable. No accounts were discovered in the cache."));
-                    } else {
-                        return Mono.error(new RuntimeException(String.format("SharedTokenCacheCredential authentication unavailable."
-                            + " No account matching the specified %s was found in the cache.", username)));
-                    }
-                } else if (accounts.size() > 1) {
-                    if (username == null) {
-                        return Mono.error(new RuntimeException("SharedTokenCacheCredential authentication unavailable. "
-                            + "Multiple accounts were found in the cache. Use username and tenant id to disambiguate."));
-                    } else {
-                        return Mono.error(new RuntimeException(String.format("SharedTokenCacheCredential authentication unavailable."
-                            + "Multiple accounts matching the specified  %s were found in the cache.", username)));
-                    }
-                } else {
-                    requestedAccount = accounts.values().iterator().next();
+                if (set.size() == 0) {
+                    return Mono.error(new CredentialUnavailableException("SharedTokenCacheCredential authentication "
+                             + "unavailable. No accounts were found in the cache."));
                 }
+
+                if (CoreUtils.isNullOrEmpty(username)) {
+                    return Mono.error(new CredentialUnavailableException("SharedTokenCacheCredential authentication "
+                             + "unavailable. Multiple accounts were found in the cache. Use username and tenant id "
+                             + "to disambiguate."));
+                }
+
+                if (accounts.size() != 1) {
+                    if (accounts.size() == 0) {
+                        return Mono.error(new CredentialUnavailableException(
+                            String.format("SharedTokenCacheCredential authentication "
+                             + "unavailable. No account matching the specified username %s was found in "
+                             + "the cache.", username)));
+                    } else {
+                        return Mono.error(new CredentialUnavailableException(String.format("SharedTokenCacheCredential"
+                             + " authentication unavailable. Multiple accounts matching the specified username %s were "
+                             + "found in the cache.", username)));
+                    }
+                }
+
+                requestedAccount = accounts.values().iterator().next();
+
 
                 // if it does, then request the token
                 SilentParameters params = SilentParameters.builder(
