@@ -27,33 +27,22 @@ import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for Vault and its parent interfaces.
- */
-class KeyImpl
-        extends CreatableUpdatableImpl<
-                Key,
-                KeyVaultKey,
-                KeyImpl>
-        implements
-                Key,
-                Key.Definition,
-                Key.UpdateWithCreate,
-                Key.UpdateWithImport {
+/** Implementation for Vault and its parent interfaces. */
+class KeyImpl extends CreatableUpdatableImpl<Key, KeyVaultKey, KeyImpl>
+    implements Key, Key.Definition, Key.UpdateWithCreate, Key.UpdateWithImport {
 
     private final Vault vault;
 
     private CreateKeyOptions createKeyRequest;
     private UpdateKeyOptions updateKeyRequest;
-    private ImportKeyOptions importKeyRequest;
+    private ImportKeyOptions importKeyRequest = null;
 
     private CryptographyAsyncClient cryptographyClient;
 
@@ -72,13 +61,13 @@ class KeyImpl
     }
 
     private void init(boolean createNewCryptographyClient) {
-        createKeyRequest = null;
-        updateKeyRequest = null;
+        this.createKeyRequest = null;
         this.updateKeyRequest = new UpdateKeyOptions();
         if (inner() != null) {
             updateKeyRequest.keyProperties = inner().getProperties();
             if (createNewCryptographyClient) {
-                cryptographyClient = new CryptographyClientBuilder()
+                cryptographyClient =
+                    new CryptographyClientBuilder()
                         .keyIdentifier(inner().getKey().getId())
                         .pipeline(vault.vaultRestClient().getHttpPipeline())
                         .buildAsyncClient();
@@ -122,9 +111,11 @@ class KeyImpl
 
     @Override
     public Flux<Key> listVersionsAsync() {
-        return vault.keyClient().listPropertiesOfKeyVersions(this.name())
-                .flatMap(p -> vault.keyClient().getKey(p.getName(), p.getVersion()))
-                .map(this::wrapModel);
+        return vault
+            .keyClient()
+            .listPropertiesOfKeyVersions(this.name())
+            .flatMap(p -> vault.keyClient().getKey(p.getName(), p.getVersion()))
+            .map(this::wrapModel);
     }
 
     @Override
@@ -235,11 +226,13 @@ class KeyImpl
         } else {
             mono = vault.keyClient().importKey(importKeyRequest);
         }
-        return mono.map(inner -> {
-            this.setInner(inner);
-            init(true);
-            return this;
-        });
+        return mono
+            .map(
+                inner -> {
+                    this.setInner(inner);
+                    init(true);
+                    return this;
+                });
     }
 
     @Override
@@ -247,24 +240,39 @@ class KeyImpl
         UpdateKeyOptions optionsToUpdate = updateKeyRequest;
         Mono<Key> mono = Mono.just(this);
         if (createKeyRequest != null || importKeyRequest != null) {
-            mono = createResourceAsync()
-                    .then(Mono.fromCallable(() -> {
-                        // merge optionsToUpdate into refreshed updateKeyRequest
-                        updateKeyRequest.keyProperties.setEnabled(optionsToUpdate.keyProperties.isEnabled());
-                        updateKeyRequest.keyProperties.setExpiresOn(optionsToUpdate.keyProperties.getExpiresOn());
-                        updateKeyRequest.keyProperties.setNotBefore(optionsToUpdate.keyProperties.getNotBefore());
-                        updateKeyRequest.keyProperties.setTags(optionsToUpdate.keyProperties.getTags());
-                        updateKeyRequest.keyOperations = optionsToUpdate.keyOperations;
-                        return this;
-                    }));
+            mono =
+                createResourceAsync()
+                    .then(
+                        Mono
+                            .fromCallable(
+                                () -> {
+                                    // merge optionsToUpdate into refreshed updateKeyRequest
+                                    updateKeyRequest
+                                        .keyProperties
+                                        .setEnabled(optionsToUpdate.keyProperties.isEnabled());
+                                    updateKeyRequest
+                                        .keyProperties
+                                        .setExpiresOn(optionsToUpdate.keyProperties.getExpiresOn());
+                                    updateKeyRequest
+                                        .keyProperties
+                                        .setNotBefore(optionsToUpdate.keyProperties.getNotBefore());
+                                    updateKeyRequest.keyProperties.setTags(optionsToUpdate.keyProperties.getTags());
+                                    updateKeyRequest.keyOperations = optionsToUpdate.keyOperations;
+                                    return this;
+                                }));
         }
         return mono
-                .then(vault.keyClient().updateKeyProperties(updateKeyRequest.keyProperties, updateKeyRequest.keyOperations.toArray(new KeyOperation[0]))
-                .map(inner -> {
-                    this.setInner(inner);
-                    init(false);
-                    return this;
-                }));
+            .then(
+                vault
+                    .keyClient()
+                    .updateKeyProperties(
+                        updateKeyRequest.keyProperties, updateKeyRequest.keyOperations.toArray(new KeyOperation[0]))
+                    .map(
+                        inner -> {
+                            this.setInner(inner);
+                            init(false);
+                            return this;
+                        }));
     }
 
     @Override
@@ -337,10 +345,11 @@ class KeyImpl
 
     @Override
     public KeyImpl withKeySize(int size) {
-        if (createKeyRequest instanceof CreateEcKeyOptions) {
-            // TODO
-            //((CreateEcKeyOptions) createKeyRequest).setKeySize(size);
-        } else if (createKeyRequest instanceof CreateRsaKeyOptions) {
+        // TODO (weidxu) currently no setKeySize in CreateEcKeyOptions
+        /*if (createKeyRequest instanceof CreateEcKeyOptions) {
+            ((CreateEcKeyOptions) createKeyRequest).setKeySize(size);
+        } else */
+        if (createKeyRequest instanceof CreateRsaKeyOptions) {
             ((CreateRsaKeyOptions) createKeyRequest).setKeySize(size);
         }
         return this;

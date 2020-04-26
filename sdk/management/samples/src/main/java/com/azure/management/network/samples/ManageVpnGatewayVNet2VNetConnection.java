@@ -4,8 +4,6 @@
 package com.azure.management.network.samples;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.Azure;
 import com.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.azure.management.compute.VirtualMachine;
@@ -21,7 +19,6 @@ import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.CreatedResources;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.samples.Utils;
-import com.azure.management.storage.BlobContainer;
 import com.azure.management.storage.StorageAccount;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
@@ -169,7 +166,9 @@ public final class ManageVpnGatewayVNet2VNetConnection {
 
             //============================================================
             // List VPN Gateway connections for particular gateway
-            PagedIterable<VirtualNetworkGatewayConnection> connections = vngw1.listConnections();
+            System.out.println("List connections...");
+            vngw1.listConnections().forEach(connection1 -> System.out.println(connection1.name()));
+            System.out.println();
 
             //============================================================
             // Create 2 virtual machines, each one in its network and verify connectivity between them
@@ -248,7 +247,7 @@ public final class ManageVpnGatewayVNet2VNetConnection {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure.configure()
-                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY))
+                    .withLogLevel(HttpLogDetailLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 

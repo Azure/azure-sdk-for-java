@@ -1,20 +1,21 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk983942b430e.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
+    "Uri" : "https://azsjava44222aa429ca5e94d4204b1817d9f.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06-Preview",
     "Headers" : {
+      "x-ms-client-request-id" : "464dead1-8b9e-41c3-9ce4-c222a6c15b95",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "1d36a4a6-6683-4896-bcea-da3ea4684f64",
+      "request-id" : "464dead1-8b9e-41c3-9ce4-c222a6c15b95",
       "StatusCode" : "200",
-      "Date" : "Fri, 13 Mar 2020 19:31:28 GMT",
+      "Date" : "Tue, 21 Apr 2020 18:59:13 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "1d36a4a6-6683-4896-bcea-da3ea4684f64",
-      "elapsed-time" : "137",
+      "client-request-id" : "464dead1-8b9e-41c3-9ce4-c222a6c15b95",
+      "elapsed-time" : "483",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "74",
@@ -25,20 +26,20 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azs-sdk983942b430e.search.windows.net/indexes('hotels')/docs('1')?$select=HotelId%2cRooms/BaseRate%2cRooms/BedOptions%2cRooms/SleepsCount%2cRooms/SmokingAllowed%2cRooms/Tags&api-version=2019-05-06",
+    "Uri" : "https://azsjava44222aa429ca5e94d4204b1817d9f.search.windows.net/indexes('hotels')/docs('1')?$select=HotelId%2cRooms/BaseRate%2cRooms/BedOptions%2cRooms/SleepsCount%2cRooms/SmokingAllowed%2cRooms/Tags&api-version=2019-05-06-Preview",
     "Headers" : {
-      "x-ms-client-request-id" : "d5128917-ff3b-4151-88ce-d8bf33afb47d"
+      "x-ms-client-request-id" : "c0248cde-75df-4e6d-95ec-171bc86a0301"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "aa1fbf74-0c55-4bf8-8287-8861f1c5fa25",
+      "request-id" : "c0248cde-75df-4e6d-95ec-171bc86a0301",
       "StatusCode" : "200",
-      "Date" : "Fri, 13 Mar 2020 19:31:30 GMT",
+      "Date" : "Tue, 21 Apr 2020 18:59:15 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "aa1fbf74-0c55-4bf8-8287-8861f1c5fa25",
-      "elapsed-time" : "10",
+      "client-request-id" : "c0248cde-75df-4e6d-95ec-171bc86a0301",
+      "elapsed-time" : "8",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "112",
@@ -48,5 +49,5 @@
     },
     "Exception" : null
   } ],
-  "variables" : [ "azs-sdk983942b430e" ]
+  "variables" : [ "azsjava44222aa429ca5e94d4204b1817d9f" ]
 }

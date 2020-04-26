@@ -7,9 +7,7 @@ package com.azure.management.monitor;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The AzureAppPushReceiver model.
- */
+/** The AzureAppPushReceiver model. */
 @Fluent
 public final class AzureAppPushReceiver {
     /*
@@ -26,9 +24,9 @@ public final class AzureAppPushReceiver {
     private String emailAddress;
 
     /**
-     * Get the name property: The name of the Azure mobile app push receiver.
-     * Names must be unique across all receivers within an action group.
-     * 
+     * Get the name property: The name of the Azure mobile app push receiver. Names must be unique across all receivers
+     * within an action group.
+     *
      * @return the name value.
      */
     public String name() {
@@ -36,9 +34,9 @@ public final class AzureAppPushReceiver {
     }
 
     /**
-     * Set the name property: The name of the Azure mobile app push receiver.
-     * Names must be unique across all receivers within an action group.
-     * 
+     * Set the name property: The name of the Azure mobile app push receiver. Names must be unique across all receivers
+     * within an action group.
+     *
      * @param name the name value to set.
      * @return the AzureAppPushReceiver object itself.
      */
@@ -48,9 +46,8 @@ public final class AzureAppPushReceiver {
     }
 
     /**
-     * Get the emailAddress property: The email address registered for the
-     * Azure mobile app.
-     * 
+     * Get the emailAddress property: The email address registered for the Azure mobile app.
+     *
      * @return the emailAddress value.
      */
     public String emailAddress() {
@@ -58,9 +55,8 @@ public final class AzureAppPushReceiver {
     }
 
     /**
-     * Set the emailAddress property: The email address registered for the
-     * Azure mobile app.
-     * 
+     * Set the emailAddress property: The email address registered for the Azure mobile app.
+     *
      * @param emailAddress the emailAddress value to set.
      * @return the AzureAppPushReceiver object itself.
      */

@@ -3,14 +3,11 @@
 
 package com.azure.management.monitor;
 
-import java.util.Collection;
-
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import java.util.Collection;
 
-/**
- * Defines values for MetricAlertRuleCondition.
- */
+/** Defines values for MetricAlertRuleCondition. */
 public final class MetricAlertRuleCondition extends ExpandableStringEnum<MetricAlertRuleCondition> {
     /** Static value Equals for MetricAlertRuleCondition. */
     public static final MetricAlertRuleCondition EQUALS = fromString("Equals");
@@ -32,6 +29,7 @@ public final class MetricAlertRuleCondition extends ExpandableStringEnum<MetricA
 
     /**
      * Creates or finds a MetricAlertRuleCondition from its string representation.
+     *
      * @param name a name to look for
      * @return the corresponding MetricAlertRuleCondition
      */
@@ -40,9 +38,7 @@ public final class MetricAlertRuleCondition extends ExpandableStringEnum<MetricA
         return fromString(name, MetricAlertRuleCondition.class);
     }
 
-    /**
-     * @return known MetricAlertRuleCondition values
-     */
+    /** @return known MetricAlertRuleCondition values */
     public static Collection<MetricAlertRuleCondition> values() {
         return values(MetricAlertRuleCondition.class);
     }

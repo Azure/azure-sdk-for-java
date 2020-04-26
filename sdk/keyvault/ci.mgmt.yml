@@ -15,9 +15,16 @@ trigger:
     include:
       - sdk/keyvault/
     exclude:
-      - sdk/keyvault/azure
-      - sdk/keyvault/microsoft-azure
-      - sdk/keyvault/ms-azure
+      - sdk/keyvault/microsoft-azure-keyvault
+      - sdk/keyvault/microsoft-azure-keyvault-complete
+      - sdk/keyvault/microsoft-azure-keyvault-core
+      - sdk/keyvault/microsoft-azure-keyvault-cryptography
+      - sdk/keyvault/microsoft-azure-keyvault-extensions
+      - sdk/keyvault/microsoft-azure-keyvault-test
+      - sdk/keyvault/microsoft-azure-keyvault-webkey    
+      - sdk/keyvault/azure-security-keyvault-certificates
+      - sdk/keyvault/azure-security-keyvault-keys
+      - sdk/keyvault/azure-security-keyvault-secrets
 
 pr:
   branches:
@@ -30,9 +37,16 @@ pr:
     include:
       - sdk/keyvault/
     exclude:
-      - sdk/keyvault/azure
-      - sdk/keyvault/microsoft-azure
-      - sdk/keyvault/ms-azure
+      - sdk/keyvault/microsoft-azure-keyvault
+      - sdk/keyvault/microsoft-azure-keyvault-complete
+      - sdk/keyvault/microsoft-azure-keyvault-core
+      - sdk/keyvault/microsoft-azure-keyvault-cryptography
+      - sdk/keyvault/microsoft-azure-keyvault-extensions
+      - sdk/keyvault/microsoft-azure-keyvault-test
+      - sdk/keyvault/microsoft-azure-keyvault-webkey    
+      - sdk/keyvault/azure-security-keyvault-certificates
+      - sdk/keyvault/azure-security-keyvault-keys
+      - sdk/keyvault/azure-security-keyvault-secrets
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

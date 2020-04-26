@@ -10,10 +10,12 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * The RunRequest model.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = RunRequest.class)
+/** The RunRequest model. */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type",
+    defaultImpl = RunRequest.class)
 @JsonTypeName("RunRequest")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "DockerBuildRequest", value = DockerBuildRequest.class),
@@ -31,9 +33,8 @@ public class RunRequest {
     private Boolean isArchiveEnabled;
 
     /**
-     * Get the isArchiveEnabled property: The value that indicates whether
-     * archiving is enabled for the run or not.
-     * 
+     * Get the isArchiveEnabled property: The value that indicates whether archiving is enabled for the run or not.
+     *
      * @return the isArchiveEnabled value.
      */
     public Boolean isArchiveEnabled() {
@@ -41,9 +42,8 @@ public class RunRequest {
     }
 
     /**
-     * Set the isArchiveEnabled property: The value that indicates whether
-     * archiving is enabled for the run or not.
-     * 
+     * Set the isArchiveEnabled property: The value that indicates whether archiving is enabled for the run or not.
+     *
      * @param isArchiveEnabled the isArchiveEnabled value to set.
      * @return the RunRequest object itself.
      */

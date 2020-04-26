@@ -11,9 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-/**
- * The ElasticPoolActivity model.
- */
+/** The ElasticPoolActivity model. */
 @JsonFlatten
 @Fluent
 public class ElasticPoolActivityInner extends ProxyResource {
@@ -145,7 +143,7 @@ public class ElasticPoolActivityInner extends ProxyResource {
 
     /**
      * Get the location property: The geo-location where the resource lives.
-     * 
+     *
      * @return the location value.
      */
     public String location() {
@@ -154,7 +152,7 @@ public class ElasticPoolActivityInner extends ProxyResource {
 
     /**
      * Set the location property: The geo-location where the resource lives.
-     * 
+     *
      * @param location the location value to set.
      * @return the ElasticPoolActivityInner object itself.
      */
@@ -164,9 +162,8 @@ public class ElasticPoolActivityInner extends ProxyResource {
     }
 
     /**
-     * Get the endTime property: The time the operation finished (ISO8601
-     * format).
-     * 
+     * Get the endTime property: The time the operation finished (ISO8601 format).
+     *
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -175,7 +172,7 @@ public class ElasticPoolActivityInner extends ProxyResource {
 
     /**
      * Get the errorCode property: The error code if available.
-     * 
+     *
      * @return the errorCode value.
      */
     public Integer errorCode() {
@@ -184,7 +181,7 @@ public class ElasticPoolActivityInner extends ProxyResource {
 
     /**
      * Get the errorMessage property: The error message if available.
-     * 
+     *
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -193,7 +190,7 @@ public class ElasticPoolActivityInner extends ProxyResource {
 
     /**
      * Get the errorSeverity property: The error severity if available.
-     * 
+     *
      * @return the errorSeverity value.
      */
     public Integer errorSeverity() {
@@ -202,7 +199,7 @@ public class ElasticPoolActivityInner extends ProxyResource {
 
     /**
      * Get the operation property: The operation name.
-     * 
+     *
      * @return the operation value.
      */
     public String operation() {
@@ -211,7 +208,7 @@ public class ElasticPoolActivityInner extends ProxyResource {
 
     /**
      * Get the operationId property: The unique operation ID.
-     * 
+     *
      * @return the operationId value.
      */
     public UUID operationId() {
@@ -220,7 +217,7 @@ public class ElasticPoolActivityInner extends ProxyResource {
 
     /**
      * Get the percentComplete property: The percentage complete if available.
-     * 
+     *
      * @return the percentComplete value.
      */
     public Integer percentComplete() {
@@ -228,9 +225,8 @@ public class ElasticPoolActivityInner extends ProxyResource {
     }
 
     /**
-     * Get the requestedDatabaseDtuMax property: The requested max DTU per
-     * database if available.
-     * 
+     * Get the requestedDatabaseDtuMax property: The requested max DTU per database if available.
+     *
      * @return the requestedDatabaseDtuMax value.
      */
     public Integer requestedDatabaseDtuMax() {
@@ -238,9 +234,8 @@ public class ElasticPoolActivityInner extends ProxyResource {
     }
 
     /**
-     * Get the requestedDatabaseDtuMin property: The requested min DTU per
-     * database if available.
-     * 
+     * Get the requestedDatabaseDtuMin property: The requested min DTU per database if available.
+     *
      * @return the requestedDatabaseDtuMin value.
      */
     public Integer requestedDatabaseDtuMin() {
@@ -248,9 +243,8 @@ public class ElasticPoolActivityInner extends ProxyResource {
     }
 
     /**
-     * Get the requestedDtu property: The requested DTU for the pool if
-     * available.
-     * 
+     * Get the requestedDtu property: The requested DTU for the pool if available.
+     *
      * @return the requestedDtu value.
      */
     public Integer requestedDtu() {
@@ -258,9 +252,8 @@ public class ElasticPoolActivityInner extends ProxyResource {
     }
 
     /**
-     * Get the requestedElasticPoolName property: The requested name for the
-     * elastic pool if available.
-     * 
+     * Get the requestedElasticPoolName property: The requested name for the elastic pool if available.
+     *
      * @return the requestedElasticPoolName value.
      */
     public String requestedElasticPoolName() {
@@ -268,9 +261,8 @@ public class ElasticPoolActivityInner extends ProxyResource {
     }
 
     /**
-     * Get the requestedStorageLimitInGB property: The requested storage limit
-     * for the pool in GB if available.
-     * 
+     * Get the requestedStorageLimitInGB property: The requested storage limit for the pool in GB if available.
+     *
      * @return the requestedStorageLimitInGB value.
      */
     public Long requestedStorageLimitInGB() {
@@ -279,7 +271,7 @@ public class ElasticPoolActivityInner extends ProxyResource {
 
     /**
      * Get the elasticPoolName property: The name of the elastic pool.
-     * 
+     *
      * @return the elasticPoolName value.
      */
     public String elasticPoolName() {
@@ -287,9 +279,8 @@ public class ElasticPoolActivityInner extends ProxyResource {
     }
 
     /**
-     * Get the serverName property: The name of the server the elastic pool is
-     * in.
-     * 
+     * Get the serverName property: The name of the server the elastic pool is in.
+     *
      * @return the serverName value.
      */
     public String serverName() {
@@ -297,9 +288,8 @@ public class ElasticPoolActivityInner extends ProxyResource {
     }
 
     /**
-     * Get the startTime property: The time the operation started (ISO8601
-     * format).
-     * 
+     * Get the startTime property: The time the operation started (ISO8601 format).
+     *
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -308,7 +298,7 @@ public class ElasticPoolActivityInner extends ProxyResource {
 
     /**
      * Get the state property: The current state of the operation.
-     * 
+     *
      * @return the state value.
      */
     public String state() {
@@ -316,9 +306,8 @@ public class ElasticPoolActivityInner extends ProxyResource {
     }
 
     /**
-     * Get the requestedStorageLimitInMB property: The requested storage limit
-     * in MB.
-     * 
+     * Get the requestedStorageLimitInMB property: The requested storage limit in MB.
+     *
      * @return the requestedStorageLimitInMB value.
      */
     public Integer requestedStorageLimitInMB() {
@@ -326,9 +315,8 @@ public class ElasticPoolActivityInner extends ProxyResource {
     }
 
     /**
-     * Get the requestedDatabaseDtuGuarantee property: The requested per
-     * database DTU guarantee.
-     * 
+     * Get the requestedDatabaseDtuGuarantee property: The requested per database DTU guarantee.
+     *
      * @return the requestedDatabaseDtuGuarantee value.
      */
     public Integer requestedDatabaseDtuGuarantee() {
@@ -336,9 +324,8 @@ public class ElasticPoolActivityInner extends ProxyResource {
     }
 
     /**
-     * Get the requestedDatabaseDtuCap property: The requested per database DTU
-     * cap.
-     * 
+     * Get the requestedDatabaseDtuCap property: The requested per database DTU cap.
+     *
      * @return the requestedDatabaseDtuCap value.
      */
     public Integer requestedDatabaseDtuCap() {
@@ -347,7 +334,7 @@ public class ElasticPoolActivityInner extends ProxyResource {
 
     /**
      * Get the requestedDtuGuarantee property: The requested DTU guarantee.
-     * 
+     *
      * @return the requestedDtuGuarantee value.
      */
     public Integer requestedDtuGuarantee() {

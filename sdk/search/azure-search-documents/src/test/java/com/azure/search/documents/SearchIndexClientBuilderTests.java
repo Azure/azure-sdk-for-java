@@ -5,7 +5,12 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import org.junit.jupiter.api.Test;
+import reactor.test.StepVerifier;
 
+import java.net.MalformedURLException;
+import java.security.SecureRandom;
+
+import static com.azure.search.documents.SearchServiceClientBuilderTests.request;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -14,7 +19,7 @@ public class SearchIndexClientBuilderTests {
     private final AzureKeyCredential searchApiKeyCredential = new AzureKeyCredential("0123");
     private final String searchEndpoint = "https://test.search.windows.net";
     private final String indexName = "myindex";
-    private final SearchServiceVersion apiVersion = SearchServiceVersion.V2019_05_06;
+    private final SearchServiceVersion apiVersion = SearchServiceVersion.V2019_05_06_Preview;
 
     @Test
     public void buildSyncClientTest() {
@@ -68,7 +73,7 @@ public class SearchIndexClientBuilderTests {
 
     @Test
     public void whenApiVersionSpecifiedThenSpecifiedValueExists() {
-        SearchServiceVersion expectedVersion = SearchServiceVersion.V2019_05_06;
+        SearchServiceVersion expectedVersion = SearchServiceVersion.V2019_05_06_Preview;
 
         SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
             .endpoint(searchEndpoint)
@@ -190,5 +195,24 @@ public class SearchIndexClientBuilderTests {
 
         assertEquals(SearchServiceVersion.getLatest().getVersion(),
             searchIndexAsyncClient.getServiceVersion().getVersion());
+    }
+
+    @Test
+    public void indexClientFreshDateOnRetry() throws MalformedURLException {
+        byte[] randomData = new byte[256];
+        new SecureRandom().nextBytes(randomData);
+        SearchIndexAsyncClient searchIndexAsyncClient = new SearchIndexClientBuilder()
+            .endpoint(searchEndpoint)
+            .credential(searchApiKeyCredential)
+            .indexName("test_builder")
+            .httpClient(new SearchServiceClientBuilderTests.FreshDateTestClient())
+            .buildAsyncClient();
+
+        StepVerifier.create(searchIndexAsyncClient.getHttpPipeline().send(
+            request(searchIndexAsyncClient.getEndpoint())))
+            .assertNext(response -> {
+                assertEquals(200, response.getStatusCode());
+            })
+            .verifyComplete();
     }
 }

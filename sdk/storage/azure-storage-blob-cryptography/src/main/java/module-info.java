@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 module com.azure.storage.blob.cryptography {
-    requires com.azure.storage.blob;
+    requires transitive com.azure.storage.blob;
 
     requires com.fasterxml.jackson.dataformat.xml;
 

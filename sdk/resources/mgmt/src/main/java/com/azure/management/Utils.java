@@ -6,12 +6,13 @@ package com.azure.management;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.management.AzureEnvironment;
 
+import java.util.Locale;
 import java.util.Map;
 
 /**
  * Defines a few utilities.
  */
-public class Utils {
+public final class Utils {
 
     private Utils() {
     }
@@ -23,7 +24,7 @@ public class Utils {
      * @return the default scope
      */
     public static String getDefaultScopeFromRequest(HttpRequest request, AzureEnvironment environment) {
-        return getDefaultScopeFromUrl(request.getUrl().toString().toLowerCase(), environment);
+        return getDefaultScopeFromUrl(request.getUrl().toString().toLowerCase(Locale.ROOT), environment);
     }
 
     /**

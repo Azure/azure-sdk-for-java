@@ -59,7 +59,7 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs</artifactId>
-    <version>5.0.2</version>
+    <version>5.0.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -270,17 +270,19 @@ to newest events that get pushed to the partition by invoking `receiveFromPartit
 can begin receiving events from multiple partitions using the same EventHubConsumerAsyncClient by calling
 `receiveFromPartition(String, EventPosition)` with another partition id, and subscribing to that Flux.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L120-L128 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L120-L130 -->
 ```java
 EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
     .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
     .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
     .buildAsyncConsumerClient();
 
-// Receive events from partition with id "0", only getting events that are newly added to the partition.
+// Receive newly added events from partition with id "0". EventPosition specifies the position
+// within the Event Hub partition to begin consuming events.
 consumer.receiveFromPartition("0", EventPosition.latest()).subscribe(event -> {
     // Process each event as it arrives.
 });
+// add sleep or System.in.read() to receive events before exiting the process.
 ```
 
 #### Consume events with EventHubConsumerClient
@@ -288,7 +290,7 @@ consumer.receiveFromPartition("0", EventPosition.latest()).subscribe(event -> {
 Developers can create a synchronous consumer that returns events in batches using an `EventHubConsumerClient`. In the
 snippet below, a consumer is created that starts reading events from the beginning of the partition's event stream.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L135-L147 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L137-L149 -->
 ```java
 EventHubConsumerClient consumer = new EventHubClientBuilder()
     .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
@@ -321,12 +323,12 @@ received from the Event Hub and writes to console. For production applications, 
 store like [Checkpoint Store with Azure Storage Blobs][BlobCheckpointStore].
 
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L155-L176 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L157-L178 -->
 ```java
 EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
     .consumerGroup("<< CONSUMER GROUP NAME >>")
     .connectionString("<< EVENT HUB CONNECTION STRING >>")
-    .checkpointStore(new InMemoryCheckpointStore())
+    .checkpointStore(new SampleCheckpointStore())
     .processEvent(eventContext -> {
         System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
             + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
@@ -351,9 +353,9 @@ eventProcessorClient.stop();
 
 ### Enable client logging
 
-You can set the `AZURE_LOG_LEVEL` environment variable to view logging statements made in the client library. For
-example, setting `AZURE_LOG_LEVEL=2` would show all informational, warning, and error log messages. For more
-information, see [Logging with Azure SDK][LoggingAzureWithSDK].
+Azure SDKs for Java offer a consistent logging story to help aid in troubleshooting application errors and expedite
+their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help
+locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
 
 ### Enable AMQP transport logging
 
@@ -430,38 +432,38 @@ If you would like to become an active contributor to this project please refer t
 Guidelines](./CONTRIBUTING.md) for more information.
 
 <!-- Links -->
-[amqp_transport_error]: https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-amqp-error
 [aad_authorization]: https://docs.microsoft.com/azure/event-hubs/authorize-access-azure-active-directory
+[amqp_transport_error]: https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-amqp-error
+[AmqpErrorCondition]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/AmqpErrorCondition.java
+[AmqpErrorContext]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/AmqpErrorContext.java
+[AmqpException]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/AmqpException.java
+[AmqpRetryOptions]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/AmqpRetryOptions.java
 [api_documentation]: https://aka.ms/java-docs
 [app_registration_page]: https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#get-values-for-signing-in
 [application_client_secret]: https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#create-a-new-application-secret
+[BlobCheckpointStore]: ../azure-messaging-eventhubs-checkpointstore-blob/README.md
+[CreateBatchOptions]: ./src/main/java/com/azure/messaging/eventhubs/models/CreateBatchOptions.java
 [event_hubs_connection_string]: https://docs.microsoft.com/azure/event-hubs/event-hubs-get-connection-string
 [event_hubs_create]: https://docs.microsoft.com/azure/event-hubs/event-hubs-create
 [event_hubs_features]: https://docs.microsoft.com/azure/event-hubs/event-hubs-features
 [event_hubs_messaging_exceptions]: https://docs.microsoft.com/azure/event-hubs/event-hubs-messaging-exceptions
 [event_hubs_product_docs]: https://docs.microsoft.com/azure/event-hubs/
 [event_hubs_quotas]: https://docs.microsoft.com/azure/event-hubs/event-hubs-quotas
-[java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
-[maven]: https://maven.apache.org/
-[oasis_amqp_v1_error]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-error
-[oasis_amqp_v1]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
-[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
-[qpid_proton_j_apache]: http://qpid.apache.org/proton/
-[samples_readme]: ./src/samples/README.md
-[sample_examples]: ./src/samples/java/com/azure/messaging/eventhubs/
-[source_code]: ./
-[AmqpException]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/AmqpException.java
-[AmqpErrorCondition]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/AmqpErrorCondition.java
-[AmqpErrorContext]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/AmqpErrorContext.java
 [EventHubConsumerAsyncClient]: ./src/main/java/com/azure/messaging/eventhubs/EventHubConsumerAsyncClient.java
 [EventHubConsumerClient]: ./src/main/java/com/azure/messaging/eventhubs/EventHubConsumerClient.java
 [EventHubProducerAsyncClient]: ./src/main/java/com/azure/messaging/eventhubs/EventHubProducerAsyncClient.java
 [EventHubProducerClient]: ./src/main/java/com/azure/messaging/eventhubs/EventHubProducerClient.java
 [EventProcessorClient]: ./src/main/java/com/azure/messaging/eventhubs/EventProcessorClient.java
-[CreateBatchOptions]: ./src/main/java/com/azure/messaging/eventhubs/models/CreateBatchOptions.java
 [InMemoryCheckpointStore]: ./src/samples/java/com/azure/messaging/eventhubs/InMemoryCheckpointStore.java
-[LoggingAzureWithSDK]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
-[AmqpRetryOptions]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/AmqpRetryOptions.java
-[BlobCheckpointStore]: ../azure-messaging-eventhubs-checkpointstore-blob/README.md
+[java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
+[maven]: https://maven.apache.org/
+[oasis_amqp_v1_error]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-error
+[oasis_amqp_v1]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
+[qpid_proton_j_apache]: http://qpid.apache.org/proton/
+[sample_examples]: ./src/samples/java/com/azure/messaging/eventhubs/
+[samples_readme]: ./src/samples/README.md
+[source_code]: ./
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventhubs%2Fazure-messaging-eventhubs%2FREADME.png)

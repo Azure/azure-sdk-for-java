@@ -13,9 +13,7 @@ import com.azure.management.sql.SyncMemberState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/**
- * The SyncMember model.
- */
+/** The SyncMember model. */
 @JsonFlatten
 @Fluent
 public class SyncMemberInner extends ProxyResource {
@@ -75,7 +73,7 @@ public class SyncMemberInner extends ProxyResource {
 
     /**
      * Get the databaseType property: Database type of the sync member.
-     * 
+     *
      * @return the databaseType value.
      */
     public SyncMemberDbType databaseType() {
@@ -84,7 +82,7 @@ public class SyncMemberInner extends ProxyResource {
 
     /**
      * Set the databaseType property: Database type of the sync member.
-     * 
+     *
      * @param databaseType the databaseType value to set.
      * @return the SyncMemberInner object itself.
      */
@@ -94,9 +92,8 @@ public class SyncMemberInner extends ProxyResource {
     }
 
     /**
-     * Get the syncAgentId property: ARM resource id of the sync agent in the
-     * sync member.
-     * 
+     * Get the syncAgentId property: ARM resource id of the sync agent in the sync member.
+     *
      * @return the syncAgentId value.
      */
     public String syncAgentId() {
@@ -104,9 +101,8 @@ public class SyncMemberInner extends ProxyResource {
     }
 
     /**
-     * Set the syncAgentId property: ARM resource id of the sync agent in the
-     * sync member.
-     * 
+     * Set the syncAgentId property: ARM resource id of the sync agent in the sync member.
+     *
      * @param syncAgentId the syncAgentId value to set.
      * @return the SyncMemberInner object itself.
      */
@@ -116,9 +112,8 @@ public class SyncMemberInner extends ProxyResource {
     }
 
     /**
-     * Get the sqlServerDatabaseId property: SQL Server database id of the sync
-     * member.
-     * 
+     * Get the sqlServerDatabaseId property: SQL Server database id of the sync member.
+     *
      * @return the sqlServerDatabaseId value.
      */
     public UUID sqlServerDatabaseId() {
@@ -126,9 +121,8 @@ public class SyncMemberInner extends ProxyResource {
     }
 
     /**
-     * Set the sqlServerDatabaseId property: SQL Server database id of the sync
-     * member.
-     * 
+     * Set the sqlServerDatabaseId property: SQL Server database id of the sync member.
+     *
      * @param sqlServerDatabaseId the sqlServerDatabaseId value to set.
      * @return the SyncMemberInner object itself.
      */
@@ -138,9 +132,8 @@ public class SyncMemberInner extends ProxyResource {
     }
 
     /**
-     * Get the serverName property: Server name of the member database in the
-     * sync member.
-     * 
+     * Get the serverName property: Server name of the member database in the sync member.
+     *
      * @return the serverName value.
      */
     public String serverName() {
@@ -148,9 +141,8 @@ public class SyncMemberInner extends ProxyResource {
     }
 
     /**
-     * Set the serverName property: Server name of the member database in the
-     * sync member.
-     * 
+     * Set the serverName property: Server name of the member database in the sync member.
+     *
      * @param serverName the serverName value to set.
      * @return the SyncMemberInner object itself.
      */
@@ -160,9 +152,8 @@ public class SyncMemberInner extends ProxyResource {
     }
 
     /**
-     * Get the databaseName property: Database name of the member database in
-     * the sync member.
-     * 
+     * Get the databaseName property: Database name of the member database in the sync member.
+     *
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -170,9 +161,8 @@ public class SyncMemberInner extends ProxyResource {
     }
 
     /**
-     * Set the databaseName property: Database name of the member database in
-     * the sync member.
-     * 
+     * Set the databaseName property: Database name of the member database in the sync member.
+     *
      * @param databaseName the databaseName value to set.
      * @return the SyncMemberInner object itself.
      */
@@ -182,9 +172,8 @@ public class SyncMemberInner extends ProxyResource {
     }
 
     /**
-     * Get the userName property: User name of the member database in the sync
-     * member.
-     * 
+     * Get the userName property: User name of the member database in the sync member.
+     *
      * @return the userName value.
      */
     public String userName() {
@@ -192,9 +181,8 @@ public class SyncMemberInner extends ProxyResource {
     }
 
     /**
-     * Set the userName property: User name of the member database in the sync
-     * member.
-     * 
+     * Set the userName property: User name of the member database in the sync member.
+     *
      * @param userName the userName value to set.
      * @return the SyncMemberInner object itself.
      */
@@ -204,9 +192,8 @@ public class SyncMemberInner extends ProxyResource {
     }
 
     /**
-     * Get the password property: Password of the member database in the sync
-     * member.
-     * 
+     * Get the password property: Password of the member database in the sync member.
+     *
      * @return the password value.
      */
     public String password() {
@@ -214,9 +201,8 @@ public class SyncMemberInner extends ProxyResource {
     }
 
     /**
-     * Set the password property: Password of the member database in the sync
-     * member.
-     * 
+     * Set the password property: Password of the member database in the sync member.
+     *
      * @param password the password value to set.
      * @return the SyncMemberInner object itself.
      */
@@ -227,7 +213,7 @@ public class SyncMemberInner extends ProxyResource {
 
     /**
      * Get the syncDirection property: Sync direction of the sync member.
-     * 
+     *
      * @return the syncDirection value.
      */
     public SyncDirection syncDirection() {
@@ -236,7 +222,7 @@ public class SyncMemberInner extends ProxyResource {
 
     /**
      * Set the syncDirection property: Sync direction of the sync member.
-     * 
+     *
      * @param syncDirection the syncDirection value to set.
      * @return the SyncMemberInner object itself.
      */
@@ -247,7 +233,7 @@ public class SyncMemberInner extends ProxyResource {
 
     /**
      * Get the syncState property: Sync state of the sync member.
-     * 
+     *
      * @return the syncState value.
      */
     public SyncMemberState syncState() {

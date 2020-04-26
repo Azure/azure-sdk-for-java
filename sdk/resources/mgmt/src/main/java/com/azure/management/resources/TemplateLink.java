@@ -7,9 +7,7 @@ package com.azure.management.resources;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The TemplateLink model.
- */
+/** The TemplateLink model. */
 @Fluent
 public final class TemplateLink {
     /*
@@ -26,7 +24,7 @@ public final class TemplateLink {
 
     /**
      * Get the uri property: The URI of the template to deploy.
-     * 
+     *
      * @return the uri value.
      */
     public String uri() {
@@ -35,7 +33,7 @@ public final class TemplateLink {
 
     /**
      * Set the uri property: The URI of the template to deploy.
-     * 
+     *
      * @param uri the uri value to set.
      * @return the TemplateLink object itself.
      */
@@ -45,9 +43,8 @@ public final class TemplateLink {
     }
 
     /**
-     * Get the contentVersion property: If included, must match the
-     * ContentVersion in the template.
-     * 
+     * Get the contentVersion property: If included, must match the ContentVersion in the template.
+     *
      * @return the contentVersion value.
      */
     public String contentVersion() {
@@ -55,9 +52,8 @@ public final class TemplateLink {
     }
 
     /**
-     * Set the contentVersion property: If included, must match the
-     * ContentVersion in the template.
-     * 
+     * Set the contentVersion property: If included, must match the ContentVersion in the template.
+     *
      * @param contentVersion the contentVersion value to set.
      * @return the TemplateLink object itself.
      */

@@ -14,26 +14,20 @@ import com.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
-import com.azure.management.resources.fluentcore.utils.SdkContext;
-import org.junit.jupiter.api.Assertions;
-
 import java.io.IOException;
+import org.junit.jupiter.api.Assertions;
 
 /**
  * Base class for CRUD test cases for top level Azure resource models.
  *
- * @param <ResourceT>   Top level resource type
+ * @param <ResourceT> Top level resource type
  * @param <CollectionT> Type representing the collection of the top level resources
  */
 public abstract class TestTemplate<
-        ResourceT extends GroupableResource<? extends ManagerBase, ?>,
-        CollectionT extends
-                SupportsListing<ResourceT>
-                & SupportsGettingByResourceGroup<ResourceT>
-                & SupportsDeletingById
-                & SupportsGettingById<ResourceT>
-                & HasInner<?>
-                & HasManager<? extends ManagerBase>> {
+    ResourceT extends GroupableResource<? extends ManagerBase, ?>,
+    CollectionT extends
+        SupportsListing<ResourceT> & SupportsGettingByResourceGroup<ResourceT> & SupportsDeletingById
+            & SupportsGettingById<ResourceT> & HasInner<?> & HasManager<? extends ManagerBase>> {
 
     private ResourceT resource;
     private CollectionT collection;
@@ -65,7 +59,7 @@ public abstract class TestTemplate<
      *
      * @return number of resources in the list
      * @throws CloudException if anything goes wrong
-     * @throws IOException    if anything goes wrong
+     * @throws IOException if anything goes wrong
      */
     public int verifyListing() throws CloudException, IOException {
         PagedIterable<ResourceT> resources = this.collection.list();
@@ -80,10 +74,11 @@ public abstract class TestTemplate<
      *
      * @return the gotten resource
      * @throws CloudException if anything goes wrong
-     * @throws IOException    if anything goes wrong
+     * @throws IOException if anything goes wrong
      */
     public ResourceT verifyGetting() throws CloudException, IOException {
-        ResourceT resourceByGroup = this.collection.getByResourceGroup(this.resource.resourceGroupName(), this.resource.name());
+        ResourceT resourceByGroup =
+            this.collection.getByResourceGroup(this.resource.resourceGroupName(), this.resource.name());
         ResourceT resourceById = this.collection.getById(resourceByGroup.id());
         Assertions.assertTrue(resourceById.id().equalsIgnoreCase(resourceByGroup.id()));
         return resourceById;
@@ -110,7 +105,7 @@ public abstract class TestTemplate<
     /**
      * Runs the test.
      *
-     * @param collection     collection of resources to test
+     * @param collection collection of resources to test
      * @param resourceGroups the resource groups collection
      * @throws Exception if anything goes wrong
      */
@@ -165,7 +160,7 @@ public abstract class TestTemplate<
     /**
      * Runs the test.
      *
-     * @param collection     collection of resources to test
+     * @param collection collection of resources to test
      * @param resourceGroups the resource groups collection
      * @throws Exception if anything goes wrong
      */

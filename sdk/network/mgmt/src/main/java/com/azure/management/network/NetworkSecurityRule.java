@@ -2,103 +2,77 @@
 // Licensed under the MIT License.
 package com.azure.management.network;
 
-
 import com.azure.core.annotation.Fluent;
 import com.azure.management.network.models.SecurityRuleInner;
 import com.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.azure.management.resources.fluentcore.model.Attachable;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.fluentcore.model.Settable;
-
 import java.util.List;
 import java.util.Set;
 
-/**
- * A network security rule in a network security group.
- */
+/** A network security rule in a network security group. */
 @Fluent
-public interface NetworkSecurityRule extends
-        HasInner<SecurityRuleInner>,
-        ChildResource<NetworkSecurityGroup> {
+public interface NetworkSecurityRule extends HasInner<SecurityRuleInner>, ChildResource<NetworkSecurityGroup> {
 
-    /**
-     * @return the direction of the network traffic that the network security rule applies to.
-     */
+    /** @return the direction of the network traffic that the network security rule applies to. */
     SecurityRuleDirection direction();
 
-    /**
-     * @return the network protocol the rule applies to
-     */
+    /** @return the network protocol the rule applies to */
     SecurityRuleProtocol protocol();
 
-    /**
-     * @return the user-defined description of the security rule
-     */
+    /** @return the user-defined description of the security rule */
     String description();
 
-    /**
-     * @return the type of access the rule enforces
-     */
+    /** @return the type of access the rule enforces */
     SecurityRuleAccess access();
 
     /**
-     * @return the source address prefix the rule applies to, expressed using the CIDR notation in the format: "###.###.###.###/##",
-     * and "*" means "any"
+     * @return the source address prefix the rule applies to, expressed using the CIDR notation in the format:
+     *     "###.###.###.###/##", and "*" means "any"
      */
     String sourceAddressPrefix();
 
     /**
-     * @return the list of source address prefixes the rule applies to, expressed using the CIDR notation in the format: "###.###.###.###/##",
-     * and "*" means "any", or IP addresses
+     * @return the list of source address prefixes the rule applies to, expressed using the CIDR notation in the format:
+     *     "###.###.###.###/##", and "*" means "any", or IP addresses
      */
     List<String> sourceAddressPrefixes();
 
-    /**
-     * @return the source port range that the rule applies to, in the format "##-##", where "*" means "any"
-     */
+    /** @return the source port range that the rule applies to, in the format "##-##", where "*" means "any" */
     String sourcePortRange();
 
-    /**
-     * @return the source port ranges that the rule applies to, in the format "##-##", where "*" means "any"
-     */
+    /** @return the source port ranges that the rule applies to, in the format "##-##", where "*" means "any" */
     List<String> sourcePortRanges();
 
     /**
-     * @return the destination address prefix the rule applies to, expressed using the CIDR notation in the format: "###.###.###.###/##",
-     * and "*" means "any"
+     * @return the destination address prefix the rule applies to, expressed using the CIDR notation in the format:
+     *     "###.###.###.###/##", and "*" means "any"
      */
     String destinationAddressPrefix();
 
     /**
-     * @return the list of destination address prefixes the rule applies to, expressed using the CIDR notation in the format: "###.###.###.###/##",
-     * and "*" means "any", or IP addresses
+     * @return the list of destination address prefixes the rule applies to, expressed using the CIDR notation in the
+     *     format: "###.###.###.###/##", and "*" means "any", or IP addresses
      */
     List<String> destinationAddressPrefixes();
 
-    /**
-     * @return the destination port range that the rule applies to, in the format "##-##", where "*" means any
-     */
+    /** @return the destination port range that the rule applies to, in the format "##-##", where "*" means any */
     String destinationPortRange();
 
-    /**
-     * @return the destination port ranges that the rule applies to, in the format "##-##", where "*" means any
-     */
+    /** @return the destination port ranges that the rule applies to, in the format "##-##", where "*" means any */
     List<String> destinationPortRanges();
 
     /**
-     * @return the priority number of this rule based on which this rule will be applied relative to the priority numbers of any other rules specified
-     * for this network security group
+     * @return the priority number of this rule based on which this rule will be applied relative to the priority
+     *     numbers of any other rules specified for this network security group
      */
     int priority();
 
-    /**
-     * @return list of application security group ids specified as source
-     */
+    /** @return list of application security group ids specified as source */
     Set<String> sourceApplicationSecurityGroupIds();
 
-    /**
-     * @return list of application security group ids specified as destination
-     */
+    /** @return list of application security group ids specified as destination */
     Set<String> destinationApplicationSecurityGroupIds();
 
     /**
@@ -106,8 +80,8 @@ public interface NetworkSecurityRule extends
      *
      * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
-    interface Definition<ParentT> extends
-            DefinitionStages.Blank<ParentT>,
+    interface Definition<ParentT>
+        extends DefinitionStages.Blank<ParentT>,
             DefinitionStages.WithAttach<ParentT>,
             DefinitionStages.WithDirectionAccess<ParentT>,
             DefinitionStages.WithSourceAddressOrSecurityGroup<ParentT>,
@@ -117,9 +91,7 @@ public interface NetworkSecurityRule extends
             DefinitionStages.WithProtocol<ParentT> {
     }
 
-    /**
-     * Grouping of security rule definition stages applicable as part of a network security group creation.
-     */
+    /** Grouping of security rule definition stages applicable as part of a network security group creation. */
     interface DefinitionStages {
         /**
          * The first stage of a security rule definition.
@@ -176,7 +148,7 @@ public interface NetworkSecurityRule extends
              * Specifies the destination port range to which this rule applies.
              *
              * @param from the starting port number
-             * @param to   the ending port number
+             * @param to the ending port number
              * @return the next stage of the definition
              */
             WithProtocol<ParentT> toPortRange(int from, int to);
@@ -191,9 +163,9 @@ public interface NetworkSecurityRule extends
         }
 
         /**
-         * The stage of the network rule definition allowing the destination address to be specified.
-         * Note: network security rule must specify a non empty value for exactly one of:
-         * DestinationAddressPrefixes, DestinationAddressPrefix, DestinationApplicationSecurityGroups.
+         * The stage of the network rule definition allowing the destination address to be specified. Note: network
+         * security rule must specify a non empty value for exactly one of: DestinationAddressPrefixes,
+         * DestinationAddressPrefix, DestinationApplicationSecurityGroups.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
@@ -255,7 +227,7 @@ public interface NetworkSecurityRule extends
              * Specifies the source port range to which this rule applies.
              *
              * @param from the starting port number
-             * @param to   the ending port number
+             * @param to the ending port number
              * @return the next stage of the definition
              */
             WithDestinationAddressOrSecurityGroup<ParentT> fromPortRange(int from, int to);
@@ -270,9 +242,9 @@ public interface NetworkSecurityRule extends
         }
 
         /**
-         * The stage of the network rule definition allowing the source address to be specified.
-         * Note: network security rule must specify a non empty value for exactly one of:
-         * SourceAddressPrefixes, SourceAddressPrefix, SourceApplicationSecurityGroups.
+         * The stage of the network rule definition allowing the source address to be specified. Note: network security
+         * rule must specify a non empty value for exactly one of: SourceAddressPrefixes, SourceAddressPrefix,
+         * SourceApplicationSecurityGroups.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
@@ -352,8 +324,8 @@ public interface NetworkSecurityRule extends
         interface WithPriority<ParentT> {
             /**
              * Specifies the priority to assign to this rule.
-             * <p>
-             * Security rules are applied in the order of their assigned priority.
+             *
+             * <p>Security rules are applied in the order of their assigned priority.
              *
              * @param priority the priority number in the range 100 to 4096
              * @return the next stage
@@ -378,16 +350,14 @@ public interface NetworkSecurityRule extends
 
         /**
          * The final stage of the security rule definition.
-         * <p>
-         * At this stage, any remaining optional settings can be specified, or the security rule definition
-         * can be attached to the parent network security group definition using {@link WithAttach#attach()}.
+         *
+         * <p>At this stage, any remaining optional settings can be specified, or the security rule definition can be
+         * attached to the parent network security group definition using {@link WithAttach#attach()}.
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
-        interface WithAttach<ParentT> extends
-                Attachable.InDefinition<ParentT>,
-                WithPriority<ParentT>,
-                WithDescription<ParentT> {
+        interface WithAttach<ParentT>
+            extends Attachable.InDefinition<ParentT>, WithPriority<ParentT>, WithDescription<ParentT> {
         }
     }
 
@@ -396,8 +366,8 @@ public interface NetworkSecurityRule extends
      *
      * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
      */
-    interface UpdateDefinition<ParentT> extends
-            UpdateDefinitionStages.Blank<ParentT>,
+    interface UpdateDefinition<ParentT>
+        extends UpdateDefinitionStages.Blank<ParentT>,
             UpdateDefinitionStages.WithDirectionAccess<ParentT>,
             UpdateDefinitionStages.WithSourceAddressOrSecurityGroup<ParentT>,
             UpdateDefinitionStages.WithSourcePort<ParentT>,
@@ -407,9 +377,7 @@ public interface NetworkSecurityRule extends
             UpdateDefinitionStages.WithAttach<ParentT> {
     }
 
-    /**
-     * Grouping of security rule definition stages applicable as part of a network security group update.
-     */
+    /** Grouping of security rule definition stages applicable as part of a network security group update. */
     interface UpdateDefinitionStages {
         /**
          * The first stage of a security rule description as part of an update of a networking security group.
@@ -455,9 +423,9 @@ public interface NetworkSecurityRule extends
         }
 
         /**
-         * The stage of the network rule definition allowing the source address to be specified.
-         * Note: network security rule must specify a non empty value for exactly one of:
-         * SourceAddressPrefixes, SourceAddressPrefix, SourceApplicationSecurityGroups.
+         * The stage of the network rule definition allowing the source address to be specified. Note: network security
+         * rule must specify a non empty value for exactly one of: SourceAddressPrefixes, SourceAddressPrefix,
+         * SourceApplicationSecurityGroups.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
@@ -519,11 +487,10 @@ public interface NetworkSecurityRule extends
              * Specifies the source port range to which this rule applies.
              *
              * @param from the starting port number
-             * @param to   the ending port number
+             * @param to the ending port number
              * @return the next stage of the definition
              */
             WithDestinationAddressOrSecurityGroup<ParentT> fromPortRange(int from, int to);
-
 
             /**
              * Specifies the source port ranges to which this rule applies.
@@ -535,9 +502,9 @@ public interface NetworkSecurityRule extends
         }
 
         /**
-         * The stage of the network rule definition allowing the destination address to be specified.
-         * Note: network security rule must specify a non empty value for exactly one of:
-         * DestinationAddressPrefixes, DestinationAddressPrefix, DestinationApplicationSecurityGroups.
+         * The stage of the network rule definition allowing the destination address to be specified. Note: network
+         * security rule must specify a non empty value for exactly one of: DestinationAddressPrefixes,
+         * DestinationAddressPrefix, DestinationApplicationSecurityGroups.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
@@ -599,7 +566,7 @@ public interface NetworkSecurityRule extends
              * Specifies the destination port range to which this rule applies.
              *
              * @param from the starting port number
-             * @param to   the ending port number
+             * @param to the ending port number
              * @return the next stage of the definition
              */
             WithProtocol<ParentT> toPortRange(int from, int to);
@@ -637,9 +604,9 @@ public interface NetworkSecurityRule extends
 
         /**
          * The final stage of the security rule definition.
-         * <p>
-         * At this stage, any remaining optional settings can be specified, or the security rule definition
-         * can be attached to the parent network security group definition using {@link WithAttach#attach()}.
+         *
+         * <p>At this stage, any remaining optional settings can be specified, or the security rule definition can be
+         * attached to the parent network security group definition using {@link WithAttach#attach()}.
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
@@ -647,8 +614,8 @@ public interface NetworkSecurityRule extends
 
             /**
              * Specifies the priority to assign to this rule.
-             * <p>
-             * Security rules are applied in the order of their assigned priority.
+             *
+             * <p>Security rules are applied in the order of their assigned priority.
              *
              * @param priority the priority number in the range 100 to 4096
              * @return the next stage of the update
@@ -665,11 +632,9 @@ public interface NetworkSecurityRule extends
         }
     }
 
-    /**
-     * The entirety of a security rule update as part of a network security group update.
-     */
-    interface Update extends
-            UpdateStages.WithDirectionAccess,
+    /** The entirety of a security rule update as part of a network security group update. */
+    interface Update
+        extends UpdateStages.WithDirectionAccess,
             UpdateStages.WithSourceAddressOrSecurityGroup,
             UpdateStages.WithSourcePort,
             UpdateStages.WithDestinationAddressOrSecurityGroup,
@@ -679,8 +644,8 @@ public interface NetworkSecurityRule extends
 
         /**
          * Specifies the priority to assign to this security rule.
-         * <p>
-         * Security rules are applied in the order of their assigned priority.
+         *
+         * <p>Security rules are applied in the order of their assigned priority.
          *
          * @param priority the priority number in the range 100 to 4096
          * @return the next stage of the update
@@ -696,13 +661,9 @@ public interface NetworkSecurityRule extends
         Update withDescription(String description);
     }
 
-    /**
-     * Grouping of security rule update stages.
-     */
+    /** Grouping of security rule update stages. */
     interface UpdateStages {
-        /**
-         * The stage of the network rule description allowing the direction and the access type to be specified.
-         */
+        /** The stage of the network rule description allowing the direction and the access type to be specified. */
         interface WithDirectionAccess {
             /**
              * Allows inbound traffic.
@@ -734,9 +695,9 @@ public interface NetworkSecurityRule extends
         }
 
         /**
-         * The stage of the network rule description allowing the source address to be specified.
-         * Note: network security rule must specify a non empty value for exactly one of:
-         * SourceAddressPrefixes, SourceAddressPrefix, SourceApplicationSecurityGroups.
+         * The stage of the network rule description allowing the source address to be specified. Note: network security
+         * rule must specify a non empty value for exactly one of: SourceAddressPrefixes, SourceAddressPrefix,
+         * SourceApplicationSecurityGroups.
          */
         interface WithSourceAddressOrSecurityGroup {
             /**
@@ -771,9 +732,7 @@ public interface NetworkSecurityRule extends
             Update withSourceApplicationSecurityGroup(String id);
         }
 
-        /**
-         * The stage of the network rule description allowing the source port(s) to be specified.
-         */
+        /** The stage of the network rule description allowing the source port(s) to be specified. */
         interface WithSourcePort {
             /**
              * Specifies the source port to which this rule applies.
@@ -794,11 +753,10 @@ public interface NetworkSecurityRule extends
              * Specifies the source port range to which this rule applies.
              *
              * @param from the starting port number
-             * @param to   the ending port number
+             * @param to the ending port number
              * @return the next stage of the definition
              */
             Update fromPortRange(int from, int to);
-
 
             /**
              * Specifies the source port ranges to which this rule applies.
@@ -810,9 +768,9 @@ public interface NetworkSecurityRule extends
         }
 
         /**
-         * The stage of the network rule description allowing the destination address to be specified.
-         * Note: network security rule must specify a non empty value for exactly one of:
-         * DestinationAddressPrefixes, DestinationAddressPrefix, DestinationApplicationSecurityGroups.
+         * The stage of the network rule description allowing the destination address to be specified. Note: network
+         * security rule must specify a non empty value for exactly one of: DestinationAddressPrefixes,
+         * DestinationAddressPrefix, DestinationApplicationSecurityGroups.
          */
         interface WithDestinationAddressOrSecurityGroup {
             /**
@@ -847,9 +805,7 @@ public interface NetworkSecurityRule extends
             Update withDestinationApplicationSecurityGroup(String id);
         }
 
-        /**
-         * The stage of the network rule description allowing the destination port(s) to be specified.
-         */
+        /** The stage of the network rule description allowing the destination port(s) to be specified. */
         interface WithDestinationPort {
             /**
              * Specifies the destination port to which this rule applies.
@@ -870,7 +826,7 @@ public interface NetworkSecurityRule extends
              * Specifies the destination port range to which this rule applies.
              *
              * @param from the starting port number
-             * @param to   the ending port number
+             * @param to the ending port number
              * @return the next stage of the definition
              */
             Update toPortRange(int from, int to);
@@ -904,5 +860,4 @@ public interface NetworkSecurityRule extends
             Update withAnyProtocol();
         }
     }
-
 }

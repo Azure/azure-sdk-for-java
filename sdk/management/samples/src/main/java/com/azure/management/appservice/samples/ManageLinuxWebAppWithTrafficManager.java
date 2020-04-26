@@ -3,23 +3,13 @@
 
 package com.azure.management.appservice.samples;
 
-import com.azure.management.Azure;
-import com.azure.management.appservice.AppServiceDomain;
-import com.azure.management.appservice.AppServicePlan;
-import com.azure.management.appservice.OperatingSystem;
-import com.azure.management.appservice.PricingTier;
-import com.azure.management.appservice.RuntimeStack;
-import com.azure.management.appservice.WebApp;
-import com.azure.management.resources.fluentcore.arm.CountryIsoCode;
-import com.azure.management.resources.fluentcore.arm.CountryPhoneCode;
-import com.azure.management.resources.fluentcore.arm.Region;
-import com.azure.management.samples.Utils;
-//import com.azure.management.trafficmanager.TrafficManagerProfile;
-//import com.azure.management.trafficmanager.TrafficRoutingMethod;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.management.Azure;
 
 import java.io.File;
+
+//import com.azure.management.trafficmanager.TrafficManagerProfile;
+//import com.azure.management.trafficmanager.TrafficRoutingMethod;
 
 
 /**
@@ -32,13 +22,13 @@ import java.io.File;
  *  - Scale up the app service plans to twice the capacity
  */
 public final class ManageLinuxWebAppWithTrafficManager {
-    private static String RG_NAME;
+//    private static String rgName;
     // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
     private static final String CERT_PASSWORD = "StrongPass!12";
 
     private static Azure azure;
-    private static AppServiceDomain domain;
-    private static String pfxPath;
+//    private static AppServiceDomain domain;
+//    private static String pfxPath;
 
     /**
      * Main function which runs the actual sample.
@@ -46,6 +36,7 @@ public final class ManageLinuxWebAppWithTrafficManager {
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure) {
+        System.out.println("removed later");
         return true;
 //        RG_NAME = azure.sdkContext().randomResourceName("rgNEMV_", 24);
 //
@@ -252,7 +243,7 @@ public final class ManageLinuxWebAppWithTrafficManager {
 
             azure = Azure
                     .configure()
-                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+                    .withLogLevel(HttpLogDetailLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 
@@ -266,30 +257,30 @@ public final class ManageLinuxWebAppWithTrafficManager {
         }
     }
 
-    private static AppServicePlan createAppServicePlan(String name, Region region) {
-        return azure.appServices().appServicePlans().define(name)
-                .withRegion(region)
-                .withExistingResourceGroup(RG_NAME)
-                .withPricingTier(PricingTier.STANDARD_S2)
-                .withOperatingSystem(OperatingSystem.LINUX)
-                .create();
-    }
-
-    private static WebApp createWebApp(String name, AppServicePlan plan) {
-        return azure.webApps().define(name)
-                .withExistingLinuxPlan(plan)
-                .withExistingResourceGroup(RG_NAME)
-                .withBuiltInImage(RuntimeStack.NODEJS_4_5)
-                .withManagedHostnameBindings(domain, name)
-                .defineSslBinding()
-                    .forHostname(name + "." + domain.name())
-                    .withPfxCertificateToUpload(new File(pfxPath), CERT_PASSWORD)
-                    .withSniBasedSsl()
-                    .attach()
-                .defineSourceControl()
-                    .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test")
-                    .withBranch("master")
-                    .attach()
-                .create();
-    }
+//    private static AppServicePlan createAppServicePlan(String name, Region region) {
+//        return azure.appServicePlans().define(name)
+//                .withRegion(region)
+//                .withExistingResourceGroup(rgName)
+//                .withPricingTier(PricingTier.STANDARD_S2)
+//                .withOperatingSystem(OperatingSystem.LINUX)
+//                .create();
+//    }
+//
+//    private static WebApp createWebApp(String name, AppServicePlan plan) {
+//        return azure.webApps().define(name)
+//                .withExistingLinuxPlan(plan)
+//                .withExistingResourceGroup(rgName)
+//                .withBuiltInImage(RuntimeStack.NODEJS_4_5)
+//                .withManagedHostnameBindings(domain, name)
+//                .defineSslBinding()
+//                    .forHostname(name + "." + domain.name())
+//                    .withPfxCertificateToUpload(new File(pfxPath), CERT_PASSWORD)
+//                    .withSniBasedSsl()
+//                    .attach()
+//                .defineSourceControl()
+//                    .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test")
+//                    .withBranch("master")
+//                    .attach()
+//                .create();
+//    }
 }

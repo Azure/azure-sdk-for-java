@@ -11,6 +11,7 @@ package com.microsoft.azure.management.synapse.v2019_06_01_preview.implementatio
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.DataLakeStorageAccountDetails;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.VirtualNetworkProfile;
 import java.util.Map;
+import java.util.List;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.ManagedIdentity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -62,6 +63,19 @@ public class WorkspaceInner extends Resource {
      */
     @JsonProperty(value = "properties.connectivityEndpoints")
     private Map<String, String> connectivityEndpoints;
+
+    /**
+     * Setting this to 'default' will ensure that all compute for this
+     * workspace is in a virtual network managed on behalf of the user.
+     */
+    @JsonProperty(value = "properties.managedVirtualNetwork")
+    private String managedVirtualNetwork;
+
+    /**
+     * Private endpoint connections to the workspace.
+     */
+    @JsonProperty(value = "properties.privateEndpointConnections")
+    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /**
      * Identity of the workspace.
@@ -184,6 +198,46 @@ public class WorkspaceInner extends Resource {
      */
     public WorkspaceInner withConnectivityEndpoints(Map<String, String> connectivityEndpoints) {
         this.connectivityEndpoints = connectivityEndpoints;
+        return this;
+    }
+
+    /**
+     * Get setting this to 'default' will ensure that all compute for this workspace is in a virtual network managed on behalf of the user.
+     *
+     * @return the managedVirtualNetwork value
+     */
+    public String managedVirtualNetwork() {
+        return this.managedVirtualNetwork;
+    }
+
+    /**
+     * Set setting this to 'default' will ensure that all compute for this workspace is in a virtual network managed on behalf of the user.
+     *
+     * @param managedVirtualNetwork the managedVirtualNetwork value to set
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withManagedVirtualNetwork(String managedVirtualNetwork) {
+        this.managedVirtualNetwork = managedVirtualNetwork;
+        return this;
+    }
+
+    /**
+     * Get private endpoint connections to the workspace.
+     *
+     * @return the privateEndpointConnections value
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
+     * Set private endpoint connections to the workspace.
+     *
+     * @param privateEndpointConnections the privateEndpointConnections value to set
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
+        this.privateEndpointConnections = privateEndpointConnections;
         return this;
     }
 

@@ -7,9 +7,7 @@ package com.azure.management.containerregistry;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The SourceRegistryCredentials model.
- */
+/** The SourceRegistryCredentials model. */
 @Fluent
 public final class SourceRegistryCredentials {
     /*
@@ -23,12 +21,10 @@ public final class SourceRegistryCredentials {
     private SourceRegistryLoginMode loginMode;
 
     /**
-     * Get the loginMode property: The authentication mode which determines the
-     * source registry login scope. The credentials for the source registry
-     * will be generated using the given scope. These credentials will be used
-     * to login to
-     * the source registry during the run.
-     * 
+     * Get the loginMode property: The authentication mode which determines the source registry login scope. The
+     * credentials for the source registry will be generated using the given scope. These credentials will be used to
+     * login to the source registry during the run.
+     *
      * @return the loginMode value.
      */
     public SourceRegistryLoginMode loginMode() {
@@ -36,12 +32,10 @@ public final class SourceRegistryCredentials {
     }
 
     /**
-     * Set the loginMode property: The authentication mode which determines the
-     * source registry login scope. The credentials for the source registry
-     * will be generated using the given scope. These credentials will be used
-     * to login to
-     * the source registry during the run.
-     * 
+     * Set the loginMode property: The authentication mode which determines the source registry login scope. The
+     * credentials for the source registry will be generated using the given scope. These credentials will be used to
+     * login to the source registry during the run.
+     *
      * @param loginMode the loginMode value to set.
      * @return the SourceRegistryCredentials object itself.
      */

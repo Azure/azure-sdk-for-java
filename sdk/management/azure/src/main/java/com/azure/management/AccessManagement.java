@@ -9,9 +9,7 @@ import com.azure.management.graphrbac.RoleAssignments;
 import com.azure.management.graphrbac.RoleDefinitions;
 import com.azure.management.graphrbac.ServicePrincipals;
 
-/**
- * Exposes methods related to managing access permissions in Azure.
- */
+/** Exposes methods related to managing access permissions in Azure. */
 public interface AccessManagement {
     /**
      * Entry point to AD user management APIs.

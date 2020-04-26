@@ -7,9 +7,7 @@ package com.azure.management.sql;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ManagedInstancePairInfo model.
- */
+/** The ManagedInstancePairInfo model. */
 @Fluent
 public final class ManagedInstancePairInfo {
     /*
@@ -25,9 +23,8 @@ public final class ManagedInstancePairInfo {
     private String partnerManagedInstanceId;
 
     /**
-     * Get the primaryManagedInstanceId property: Id of Primary Managed
-     * Instance in pair.
-     * 
+     * Get the primaryManagedInstanceId property: Id of Primary Managed Instance in pair.
+     *
      * @return the primaryManagedInstanceId value.
      */
     public String primaryManagedInstanceId() {
@@ -35,11 +32,9 @@ public final class ManagedInstancePairInfo {
     }
 
     /**
-     * Set the primaryManagedInstanceId property: Id of Primary Managed
-     * Instance in pair.
-     * 
-     * @param primaryManagedInstanceId the primaryManagedInstanceId value to
-     * set.
+     * Set the primaryManagedInstanceId property: Id of Primary Managed Instance in pair.
+     *
+     * @param primaryManagedInstanceId the primaryManagedInstanceId value to set.
      * @return the ManagedInstancePairInfo object itself.
      */
     public ManagedInstancePairInfo withPrimaryManagedInstanceId(String primaryManagedInstanceId) {
@@ -48,9 +43,8 @@ public final class ManagedInstancePairInfo {
     }
 
     /**
-     * Get the partnerManagedInstanceId property: Id of Partner Managed
-     * Instance in pair.
-     * 
+     * Get the partnerManagedInstanceId property: Id of Partner Managed Instance in pair.
+     *
      * @return the partnerManagedInstanceId value.
      */
     public String partnerManagedInstanceId() {
@@ -58,11 +52,9 @@ public final class ManagedInstancePairInfo {
     }
 
     /**
-     * Set the partnerManagedInstanceId property: Id of Partner Managed
-     * Instance in pair.
-     * 
-     * @param partnerManagedInstanceId the partnerManagedInstanceId value to
-     * set.
+     * Set the partnerManagedInstanceId property: Id of Partner Managed Instance in pair.
+     *
+     * @param partnerManagedInstanceId the partnerManagedInstanceId value to set.
      * @return the ManagedInstancePairInfo object itself.
      */
     public ManagedInstancePairInfo withPartnerManagedInstanceId(String partnerManagedInstanceId) {

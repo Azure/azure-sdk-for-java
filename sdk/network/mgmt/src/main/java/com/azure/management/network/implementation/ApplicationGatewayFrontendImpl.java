@@ -13,13 +13,10 @@ import com.azure.management.network.Subnet;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
-/**
- * Implementation for ApplicationGatewayFrontend.
- */
+/** Implementation for ApplicationGatewayFrontend. */
 class ApplicationGatewayFrontendImpl
-        extends ChildResourceImpl<ApplicationGatewayFrontendIPConfiguration, ApplicationGatewayImpl, ApplicationGateway>
-        implements
-        ApplicationGatewayFrontend,
+    extends ChildResourceImpl<ApplicationGatewayFrontendIPConfiguration, ApplicationGatewayImpl, ApplicationGateway>
+    implements ApplicationGatewayFrontend,
         ApplicationGatewayFrontend.Definition<ApplicationGateway.DefinitionStages.WithListener>,
         ApplicationGatewayFrontend.UpdateDefinition<ApplicationGateway.Update>,
         ApplicationGatewayFrontend.Update {
@@ -93,8 +90,7 @@ class ApplicationGatewayFrontendImpl
 
     @Override
     public ApplicationGatewayFrontendImpl withExistingSubnet(String parentNetworkResourceId, String subnetName) {
-        SubResource subnetRef = new SubResource()
-                .setId(parentNetworkResourceId + "/subnets/" + subnetName);
+        SubResource subnetRef = new SubResource().setId(parentNetworkResourceId + "/subnets/" + subnetName);
         this.inner().withSubnet(subnetRef);
 
         // Ensure this frontend is not public
@@ -122,26 +118,19 @@ class ApplicationGatewayFrontendImpl
     }
 
     public ApplicationGatewayFrontendImpl withoutSubnet() {
-        this.inner()
-                .withSubnet(null)
-                .withPrivateIPAddress(null)
-                .withPrivateIPAllocationMethod(null);
+        this.inner().withSubnet(null).withPrivateIPAddress(null).withPrivateIPAllocationMethod(null);
         return this;
     }
 
     @Override
     public ApplicationGatewayFrontendImpl withPrivateIPAddressDynamic() {
-        this.inner()
-                .withPrivateIPAddress(null)
-                .withPrivateIPAllocationMethod(IPAllocationMethod.DYNAMIC);
+        this.inner().withPrivateIPAddress(null).withPrivateIPAllocationMethod(IPAllocationMethod.DYNAMIC);
         return this;
     }
 
     @Override
     public ApplicationGatewayFrontendImpl withPrivateIPAddressStatic(String ipAddress) {
-        this.inner()
-                .withPrivateIPAddress(ipAddress)
-                .withPrivateIPAllocationMethod(IPAllocationMethod.STATIC);
+        this.inner().withPrivateIPAddress(ipAddress).withPrivateIPAllocationMethod(IPAllocationMethod.STATIC);
         return this;
     }
 

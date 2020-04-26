@@ -3,7 +3,6 @@
 package com.azure.management.resources.samples;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.management.Azure;
 import com.azure.management.resources.Deployment;
 import com.azure.management.resources.DeploymentMode;
@@ -108,7 +107,7 @@ public class DeployVirtualMachineUsingARMTemplate {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure.configure()
-                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                    .withLogLevel(HttpLogDetailLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 
@@ -125,16 +124,16 @@ public class DeployVirtualMachineUsingARMTemplate {
         final String adminPassword = "12NewPA$$w0rd!";
         final String osDiskName = azure.sdkContext().randomResourceName("osdisk-", 24);
 
-        final InputStream embeddedTemplate;
-        embeddedTemplate = DeployVirtualMachineUsingARMTemplate.class.getResourceAsStream("/virtualMachineWithManagedDisksTemplate.json");
+        try (InputStream embeddedTemplate = DeployUsingARMTemplateWithProgress.class.getResourceAsStream("/templateValue.json")) {
 
-        final ObjectMapper mapper = new ObjectMapper();
-        final JsonNode tmp = mapper.readTree(embeddedTemplate);
+            final ObjectMapper mapper = new ObjectMapper();
+            final JsonNode tmp = mapper.readTree(embeddedTemplate);
 
-        DeployVirtualMachineUsingARMTemplate.validateAndAddFieldValue("string", adminUsername, "adminUsername", null, tmp);
-        DeployVirtualMachineUsingARMTemplate.validateAndAddFieldValue("string", adminPassword, "adminPassword", null, tmp);
-        DeployVirtualMachineUsingARMTemplate.validateAndAddFieldValue("string", osDiskName, "osDiskName", null, tmp);
-        return tmp.toString();
+            DeployVirtualMachineUsingARMTemplate.validateAndAddFieldValue("string", adminUsername, "adminUsername", null, tmp);
+            DeployVirtualMachineUsingARMTemplate.validateAndAddFieldValue("string", adminPassword, "adminPassword", null, tmp);
+            DeployVirtualMachineUsingARMTemplate.validateAndAddFieldValue("string", osDiskName, "osDiskName", null, tmp);
+            return tmp.toString();
+        }
     }
 
     private static void validateAndAddFieldValue(String type, String fieldValue, String fieldName, String errorMessage,

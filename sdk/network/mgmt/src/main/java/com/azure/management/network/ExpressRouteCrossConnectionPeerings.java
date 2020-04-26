@@ -12,12 +12,10 @@ import com.azure.management.resources.fluentcore.collection.SupportsDeletingByNa
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-/**
- * Entry point for express route cross connection peerings management API in Azure.
- */
+/** Entry point for express route cross connection peerings management API in Azure. */
 @Fluent
-public interface ExpressRouteCrossConnectionPeerings extends
-        SupportsListing<ExpressRouteCrossConnectionPeering>,
+public interface ExpressRouteCrossConnectionPeerings
+    extends SupportsListing<ExpressRouteCrossConnectionPeering>,
         SupportsGettingByName<ExpressRouteCrossConnectionPeering>,
         SupportsGettingById<ExpressRouteCrossConnectionPeering>,
         SupportsDeletingByName,
@@ -26,12 +24,14 @@ public interface ExpressRouteCrossConnectionPeerings extends
         HasParent<ExpressRouteCrossConnection> {
     /**
      * Begins definition of Azure private peering.
+     *
      * @return next peering definition stage
      */
     ExpressRouteCrossConnectionPeering.DefinitionStages.Blank defineAzurePrivatePeering();
 
     /**
      * Begins definition of Microsoft peering.
+     *
      * @return next peering definition stage
      */
     ExpressRouteCrossConnectionPeering.DefinitionStages.WithAdvertisedPublicPrefixes defineMicrosoftPeering();

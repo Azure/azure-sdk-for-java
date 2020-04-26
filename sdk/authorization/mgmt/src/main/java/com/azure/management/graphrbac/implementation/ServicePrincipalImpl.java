@@ -6,9 +6,7 @@ package com.azure.management.graphrbac.implementation;
 import com.azure.management.graphrbac.ActiveDirectoryApplication;
 import com.azure.management.graphrbac.BuiltInRole;
 import com.azure.management.graphrbac.CertificateCredential;
-import com.azure.management.graphrbac.KeyCredentialsUpdateParameters;
 import com.azure.management.graphrbac.PasswordCredential;
-import com.azure.management.graphrbac.PasswordCredentialsUpdateParameters;
 import com.azure.management.graphrbac.RoleAssignment;
 import com.azure.management.graphrbac.ServicePrincipal;
 import com.azure.management.graphrbac.ServicePrincipalCreateParameters;
@@ -18,9 +16,6 @@ import com.azure.management.graphrbac.models.ServicePrincipalInner;
 import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -29,17 +24,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for ServicePrincipal and its parent interfaces.
- */
-class ServicePrincipalImpl
-        extends CreatableUpdatableImpl<ServicePrincipal, ServicePrincipalInner, ServicePrincipalImpl>
-        implements
-            ServicePrincipal,
-            ServicePrincipal.Definition,
-            ServicePrincipal.Update,
-            HasCredential<ServicePrincipalImpl> {
+/** Implementation for ServicePrincipal and its parent interfaces. */
+class ServicePrincipalImpl extends CreatableUpdatableImpl<ServicePrincipal, ServicePrincipalInner, ServicePrincipalImpl>
+    implements ServicePrincipal,
+        ServicePrincipal.Definition,
+        ServicePrincipal.Update,
+        HasCredential<ServicePrincipalImpl> {
     private GraphRbacManager manager;
 
     private Map<String, PasswordCredential> cachedPasswordCredentials;
@@ -111,20 +104,24 @@ class ServicePrincipalImpl
                 ActiveDirectoryApplication application = this.taskResult(applicationCreatable.key());
                 createParameters.withAppId(application.applicationId());
             }
-            sp = manager.inner().servicePrincipals().createAsync(createParameters)
-                    .map(innerToFluentMap(this));
+            sp = manager.inner().servicePrincipals().createAsync(createParameters).map(innerToFluentMap(this));
         }
-        return sp.flatMap(servicePrincipal -> submitCredentialsAsync(servicePrincipal).mergeWith(submitRolesAsync(servicePrincipal)).last()).map(servicePrincipal -> {
-            for (PasswordCredentialImpl<?> passwordCredential : passwordCredentialsToCreate) {
-                passwordCredential.exportAuthFile((ServicePrincipalImpl) servicePrincipal);
-            }
-            for (CertificateCredentialImpl<?> certificateCredential : certificateCredentialsToCreate) {
-                certificateCredential.exportAuthFile((ServicePrincipalImpl) servicePrincipal);
-            }
-            passwordCredentialsToCreate.clear();
-            certificateCredentialsToCreate.clear();
-            return servicePrincipal;
-        });
+        return sp
+            .flatMap(
+                servicePrincipal ->
+                    submitCredentialsAsync(servicePrincipal).mergeWith(submitRolesAsync(servicePrincipal)).last())
+            .map(
+                servicePrincipal -> {
+                    for (PasswordCredentialImpl<?> passwordCredential : passwordCredentialsToCreate) {
+                        passwordCredential.exportAuthFile((ServicePrincipalImpl) servicePrincipal);
+                    }
+                    for (CertificateCredentialImpl<?> certificateCredential : certificateCredentialsToCreate) {
+                        certificateCredential.exportAuthFile((ServicePrincipalImpl) servicePrincipal);
+                    }
+                    passwordCredentialsToCreate.clear();
+                    certificateCredentialsToCreate.clear();
+                    return servicePrincipal;
+                });
     }
 
     private Mono<ServicePrincipal> submitCredentialsAsync(final ServicePrincipal sp) {
@@ -138,13 +135,18 @@ class ServicePrincipalImpl
                 newCerts.put(create.name(), create);
             }
             List<KeyCredentialInner> updateKeyCredentials = new ArrayList<>();
-            for (CertificateCredential certificateCredential: newCerts.values()) {
+            for (CertificateCredential certificateCredential : newCerts.values()) {
                 updateKeyCredentials.add(certificateCredential.inner());
             }
-            mono = mono.concatWith(manager().inner().servicePrincipals().updateKeyCredentialsAsync(
-                    sp.id(),
-                    updateKeyCredentials
-            ).then(Mono.just(ServicePrincipalImpl.this))).last();
+            mono =
+                mono
+                    .concatWith(
+                        manager()
+                            .inner()
+                            .servicePrincipals()
+                            .updateKeyCredentialsAsync(sp.id(), updateKeyCredentials)
+                            .then(Mono.just(ServicePrincipalImpl.this)))
+                    .last();
         }
         if (!passwordCredentialsToCreate.isEmpty() || !passwordCredentialsToDelete.isEmpty()) {
             Map<String, PasswordCredential> newPasses = new HashMap<>(cachedPasswordCredentials);
@@ -155,19 +157,26 @@ class ServicePrincipalImpl
                 newPasses.put(create.name(), create);
             }
             List<PasswordCredentialInner> updatePasswordCredentials = new ArrayList<>();
-            for (PasswordCredential passwordCredential: newPasses.values()) {
+            for (PasswordCredential passwordCredential : newPasses.values()) {
                 updatePasswordCredentials.add(passwordCredential.inner());
             }
-            mono = mono.concatWith(manager().inner().servicePrincipals().updatePasswordCredentialsAsync(
-                    sp.id(),
-                    updatePasswordCredentials
-            ).then(Mono.just(ServicePrincipalImpl.this))).last();
+            mono =
+                mono
+                    .concatWith(
+                        manager()
+                            .inner()
+                            .servicePrincipals()
+                            .updatePasswordCredentialsAsync(sp.id(), updatePasswordCredentials)
+                            .then(Mono.just(ServicePrincipalImpl.this)))
+                    .last();
         }
-        return mono.flatMap(servicePrincipal -> {
-            passwordCredentialsToDelete.clear();
-            certificateCredentialsToDelete.clear();
-            return refreshCredentialsAsync();
-        });
+        return mono
+            .flatMap(
+                servicePrincipal -> {
+                    passwordCredentialsToDelete.clear();
+                    certificateCredentialsToDelete.clear();
+                    return refreshCredentialsAsync();
+                });
     }
 
     private Mono<ServicePrincipal> submitRolesAsync(final ServicePrincipal servicePrincipal) {
@@ -175,31 +184,48 @@ class ServicePrincipalImpl
         if (rolesToCreate.isEmpty()) {
             create = Mono.just(servicePrincipal);
         } else {
-            create = Flux.fromIterable(rolesToCreate.entrySet())
-                    .flatMap(roleEntry -> manager().roleAssignments().define(this.manager().sdkContext().randomUuid())
-                            .forServicePrincipal(servicePrincipal)
-                            .withBuiltInRole(roleEntry.getValue())
-                            .withScope(roleEntry.getKey())
-                            .createAsync())
-                    .doOnNext(indexable -> cachedRoleAssignments.put(((RoleAssignment)indexable).id(), (RoleAssignment)indexable))
+            create =
+                Flux
+                    .fromIterable(rolesToCreate.entrySet())
+                    .flatMap(
+                        roleEntry ->
+                            manager()
+                                .roleAssignments()
+                                .define(this.manager().sdkContext().randomUuid())
+                                .forServicePrincipal(servicePrincipal)
+                                .withBuiltInRole(roleEntry.getValue())
+                                .withScope(roleEntry.getKey())
+                                .createAsync())
+                    .doOnNext(
+                        indexable ->
+                            cachedRoleAssignments.put(((RoleAssignment) indexable).id(), (RoleAssignment) indexable))
                     .last()
-                    .map(indexable -> {
-                        rolesToCreate.clear();
-                        return servicePrincipal;
-                    });
+                    .map(
+                        indexable -> {
+                            rolesToCreate.clear();
+                            return servicePrincipal;
+                        });
         }
         Mono<ServicePrincipal> delete;
         if (rolesToDelete.isEmpty()) {
-            delete =  Mono.just(servicePrincipal);
+            delete = Mono.just(servicePrincipal);
         } else {
-            delete = Flux.fromIterable(rolesToDelete)
-                    .flatMap(role -> manager().roleAssignments().deleteByIdAsync(cachedRoleAssignments.get(role).id()).thenReturn(role))
+            delete =
+                Flux
+                    .fromIterable(rolesToDelete)
+                    .flatMap(
+                        role ->
+                            manager()
+                                .roleAssignments()
+                                .deleteByIdAsync(cachedRoleAssignments.get(role).id())
+                                .thenReturn(role))
                     .doOnNext(s -> cachedRoleAssignments.remove(s))
                     .last()
-                    .map(s -> {
-                        rolesToDelete.clear();
-                        return servicePrincipal;
-                    });
+                    .map(
+                        s -> {
+                            rolesToDelete.clear();
+                            return servicePrincipal;
+                        });
         }
         return create.mergeWith(delete).last();
     }
@@ -210,26 +236,43 @@ class ServicePrincipalImpl
     }
 
     Mono<ServicePrincipal> refreshCredentialsAsync() {
-        return Mono.just(ServicePrincipalImpl.this).map((Function<ServicePrincipalImpl, ServicePrincipal>) servicePrincipal -> {
-            servicePrincipal.cachedCertificateCredentials.clear();
-            servicePrincipal.cachedPasswordCredentials.clear();
-            return servicePrincipal;
-        }).concatWith(manager().inner().servicePrincipals().listKeyCredentialsAsync(id()).map(keyCredentialInner -> {
-            CertificateCredential credential = new CertificateCredentialImpl<>(keyCredentialInner);
-            ServicePrincipalImpl.this.cachedCertificateCredentials.put(credential.name(), credential);
-            return ServicePrincipalImpl.this;
-        })).concatWith(manager().inner().servicePrincipals().listPasswordCredentialsAsync(id()).map(passwordCredentialInner -> {
-            PasswordCredential credential = new PasswordCredentialImpl<>(passwordCredentialInner);
-            ServicePrincipalImpl.this.cachedPasswordCredentials.put(credential.name(), credential);
-            return ServicePrincipalImpl.this;
-        })).last();
+        return Mono
+            .just(ServicePrincipalImpl.this)
+            .map(
+                (Function<ServicePrincipalImpl, ServicePrincipal>)
+                servicePrincipal -> {
+                    servicePrincipal.cachedCertificateCredentials.clear();
+                    servicePrincipal.cachedPasswordCredentials.clear();
+                    return servicePrincipal;
+                })
+            .concatWith(
+                manager()
+                    .inner()
+                    .servicePrincipals()
+                    .listKeyCredentialsAsync(id())
+                    .map(
+                        keyCredentialInner -> {
+                            CertificateCredential credential = new CertificateCredentialImpl<>(keyCredentialInner);
+                            ServicePrincipalImpl.this.cachedCertificateCredentials.put(credential.name(), credential);
+                            return ServicePrincipalImpl.this;
+                        }))
+            .concatWith(
+                manager()
+                    .inner()
+                    .servicePrincipals()
+                    .listPasswordCredentialsAsync(id())
+                    .map(
+                        passwordCredentialInner -> {
+                            PasswordCredential credential = new PasswordCredentialImpl<>(passwordCredentialInner);
+                            ServicePrincipalImpl.this.cachedPasswordCredentials.put(credential.name(), credential);
+                            return ServicePrincipalImpl.this;
+                        }))
+            .last();
     }
 
     @Override
     public Mono<ServicePrincipal> refreshAsync() {
-        return getInnerAsync()
-                .map(innerToFluentMap(this))
-                .flatMap(application -> refreshCredentialsAsync());
+        return getInnerAsync().map(innerToFluentMap(this)).flatMap(application -> refreshCredentialsAsync());
     }
 
     @Override
@@ -288,9 +331,8 @@ class ServicePrincipalImpl
 
     @Override
     public ServicePrincipalImpl withNewApplication(String signOnUrl) {
-        return withNewApplication(manager.applications().define(name())
-                .withSignOnUrl(signOnUrl)
-                .withIdentifierUrl(signOnUrl));
+        return withNewApplication(
+            manager.applications().define(name()).withSignOnUrl(signOnUrl).withIdentifierUrl(signOnUrl));
     }
 
     @Override

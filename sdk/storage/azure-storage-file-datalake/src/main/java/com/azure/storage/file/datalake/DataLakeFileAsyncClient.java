@@ -103,7 +103,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
     DataLakeFileAsyncClient(DataLakePathAsyncClient pathAsyncClient) {
         super(pathAsyncClient.getHttpPipeline(), pathAsyncClient.getPathUrl(), pathAsyncClient.getServiceVersion(),
-            pathAsyncClient.getAccountName(), pathAsyncClient.getFileSystemName(), pathAsyncClient.getObjectPath(),
+            pathAsyncClient.getAccountName(), pathAsyncClient.getFileSystemName(), pathAsyncClient.pathName,
             PathResourceType.FILE, pathAsyncClient.getBlockBlobAsyncClient());
     }
 
@@ -511,7 +511,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     /**
      * Appends data to the specified resource to later be flushed (written) by a call to flush
      *
-     * <p><strong>Code Samples>Code Samples</strong></p>
+     * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.append#Flux-long-long}
      *
@@ -537,7 +537,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     /**
      * Appends data to the specified resource to later be flushed (written) by a call to flush
      *
-     * <p><strong>Code Samples>Code Samples</strong></p>
+     * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.appendWithResponse#Flux-long-long-byte-String}
      *
@@ -582,7 +582,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * The previously uploaded data must be contiguous.
      * <p>By default this method will not overwrite existing data.</p>
      *
-     * <p><strong>Code Samples>Code Samples</strong></p>
+     * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.flush#long}
      *
@@ -606,7 +606,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * Flushes (writes) data previously appended to the file through a call to append.
      * The previously uploaded data must be contiguous.
      *
-     * <p><strong>Code Samples>Code Samples</strong></p>
+     * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.flush#long-boolean}
      *
@@ -636,7 +636,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * Flushes (writes) data previously appended to the file through a call to append.
      * The previously uploaded data must be contiguous.
      *
-     * <p><strong>Code Samples>Code Samples</strong></p>
+     * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.flushWithResponse#long-boolean-boolean-PathHttpHeaders-DataLakeRequestConditions}
      *

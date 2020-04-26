@@ -3,6 +3,7 @@
 
 package com.azure.management.appservice.samples;
 
+import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.management.Azure;
 import com.azure.management.appservice.AppServiceDomain;
 import com.azure.management.appservice.CustomHostNameDnsRecordType;
@@ -11,10 +12,9 @@ import com.azure.management.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.management.resources.fluentcore.arm.CountryPhoneCode;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.samples.Utils;
-import com.azure.core.http.policy.HttpLogOptions;
 
 import java.io.File;
-import com.azure.core.http.policy.HttpLogDetailLevel;
+import java.util.Locale;
 
 
 /**
@@ -49,7 +49,7 @@ public final class ManageFunctionAppWithDomainSsl {
 
             System.out.println("Creating function app " + app1Name + "...");
 
-            FunctionApp app1 = azure.appServices().functionApps().define(app1Name)
+            FunctionApp app1 = azure.functionApps().define(app1Name)
                     .withRegion(Region.US_EAST2)
                     .withNewResourceGroup(rgName)
                     .create();
@@ -61,7 +61,7 @@ public final class ManageFunctionAppWithDomainSsl {
             // Create a second function app with the same app service plan
 
             System.out.println("Creating another function app " + app2Name + "...");
-            FunctionApp app2 = azure.appServices().functionApps().define(app2Name)
+            FunctionApp app2 = azure.functionApps().define(app2Name)
                     .withRegion(Region.US_EAST2)
                     .withExistingResourceGroup(rgName)
                     .create();
@@ -74,7 +74,7 @@ public final class ManageFunctionAppWithDomainSsl {
 
             System.out.println("Purchasing a domain " + domainName + "...");
 
-            AppServiceDomain domain = azure.appServices().domains().define(domainName)
+            AppServiceDomain domain = azure.appServiceDomains().define(domainName)
                     .withExistingResourceGroup(rgName)
                     .defineRegistrantContact()
                         .withFirstName("Jon")
@@ -113,8 +113,8 @@ public final class ManageFunctionAppWithDomainSsl {
             //============================================================
             // Create a self-singed SSL certificate
 
-            String pfxPath = ManageFunctionAppWithDomainSsl.class.getResource("/").getPath() + "webapp_" + ManageFunctionAppWithDomainSsl.class.getSimpleName().toLowerCase() + ".pfx";
-            String cerPath = ManageFunctionAppWithDomainSsl.class.getResource("/").getPath() + "webapp_" + ManageFunctionAppWithDomainSsl.class.getSimpleName().toLowerCase() + ".cer";
+            String pfxPath = ManageFunctionAppWithDomainSsl.class.getResource("/").getPath() + "webapp_" + ManageFunctionAppWithDomainSsl.class.getSimpleName().toLowerCase(Locale.ROOT) + ".pfx";
+            String cerPath = ManageFunctionAppWithDomainSsl.class.getResource("/").getPath() + "webapp_" + ManageFunctionAppWithDomainSsl.class.getSimpleName().toLowerCase(Locale.ROOT) + ".cer";
 
             System.out.println("Creating a self-signed certificate " + pfxPath + "...");
 
@@ -186,7 +186,7 @@ public final class ManageFunctionAppWithDomainSsl {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure.configure()
-                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY))
+                    .withLogLevel(HttpLogDetailLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 

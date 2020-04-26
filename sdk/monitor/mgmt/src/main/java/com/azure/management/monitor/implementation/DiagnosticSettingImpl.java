@@ -3,31 +3,29 @@
 
 package com.azure.management.monitor.implementation;
 
-import com.azure.management.monitor.LogSettings;
-import com.azure.management.monitor.MetricSettings;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.monitor.CategoryType;
 import com.azure.management.monitor.DiagnosticSetting;
 import com.azure.management.monitor.DiagnosticSettingsCategory;
+import com.azure.management.monitor.LogSettings;
+import com.azure.management.monitor.MetricSettings;
 import com.azure.management.monitor.RetentionPolicy;
 import com.azure.management.monitor.models.DiagnosticSettingsResourceInner;
 import com.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import reactor.core.publisher.Mono;
-
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.TreeMap;
+import reactor.core.publisher.Mono;
 
-/**
- * The Azure metric definition entries are of type DiagnosticSetting.
- */
+/** The Azure metric definition entries are of type DiagnosticSetting. */
 class DiagnosticSettingImpl
-        extends CreatableUpdatableImpl<DiagnosticSetting, DiagnosticSettingsResourceInner, DiagnosticSettingImpl>
-        implements
-            DiagnosticSetting,
-            DiagnosticSetting.Definition,
-            DiagnosticSetting.Update {
+    extends CreatableUpdatableImpl<DiagnosticSetting, DiagnosticSettingsResourceInner, DiagnosticSettingImpl>
+    implements DiagnosticSetting, DiagnosticSetting.Definition, DiagnosticSetting.Update {
+
+    private final ClientLogger logger = new ClientLogger(getClass());
+
     public static final String DIAGNOSTIC_SETTINGS_URI = "/providers/microsoft.insights/diagnosticSettings/";
 
     private String resourceId;
@@ -35,9 +33,8 @@ class DiagnosticSettingImpl
     private TreeMap<String, LogSettings> logSet;
     private final MonitorManager myManager;
 
-    DiagnosticSettingImpl(String name,
-                          DiagnosticSettingsResourceInner innerModel,
-                          final MonitorManager monitorManager) {
+    DiagnosticSettingImpl(
+        String name, DiagnosticSettingsResourceInner innerModel, final MonitorManager monitorManager) {
         super(name, innerModel);
         this.myManager = monitorManager;
         initializeSets();
@@ -123,14 +120,16 @@ class DiagnosticSettingImpl
     }
 
     @Override
-    public DiagnosticSettingImpl withLogsAndMetrics(List<DiagnosticSettingsCategory> categories, Duration timeGrain, int retentionDays) {
+    public DiagnosticSettingImpl withLogsAndMetrics(
+        List<DiagnosticSettingsCategory> categories, Duration timeGrain, int retentionDays) {
         for (DiagnosticSettingsCategory dsc : categories) {
             if (dsc.type() == CategoryType.METRICS) {
                 this.withMetric(dsc.name(), timeGrain, retentionDays);
             } else if (dsc.type() == CategoryType.LOGS) {
                 this.withLog(dsc.name(), retentionDays);
             } else {
-                throw new UnsupportedOperationException(dsc.type().toString() + " is unsupported.");
+                throw logger.logExceptionAsError(
+                    new UnsupportedOperationException(dsc.type().toString() + " is unsupported."));
             }
         }
         return this;
@@ -220,8 +219,12 @@ class DiagnosticSettingImpl
     public Mono<DiagnosticSetting> createResourceAsync() {
         this.inner().withLogs(new ArrayList<>(logSet.values()));
         this.inner().withMetrics(new ArrayList<>(metricSet.values()));
-        return this.manager().inner().diagnosticSettings().createOrUpdateAsync(this.resourceId, this.name(), this.inner())
-                .map(innerToFluentMap(this));
+        return this
+            .manager()
+            .inner()
+            .diagnosticSettings()
+            .createOrUpdateAsync(this.resourceId, this.name(), this.inner())
+            .map(innerToFluentMap(this));
     }
 
     @Override
@@ -236,8 +239,13 @@ class DiagnosticSettingImpl
         this.metricSet.clear();
         this.logSet.clear();
         if (!isInCreateMode()) {
-            this.resourceId = inner.getId().substring(0,
-                    this.inner().getId().length() - (DiagnosticSettingImpl.DIAGNOSTIC_SETTINGS_URI + this.inner().getName()).length());
+            this.resourceId =
+                inner
+                    .getId()
+                    .substring(
+                        0,
+                        this.inner().getId().length()
+                            - (DiagnosticSettingImpl.DIAGNOSTIC_SETTINGS_URI + this.inner().getName()).length());
             for (MetricSettings ms : this.inner().metrics()) {
                 this.metricSet.put(ms.category(), ms);
             }

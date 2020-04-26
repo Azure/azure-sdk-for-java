@@ -6,12 +6,9 @@ import com.azure.management.compute.InstanceViewStatus;
 import com.azure.management.compute.RunCommandResult;
 import com.azure.management.compute.models.RunCommandResultInner;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
-
 import java.util.List;
 
-/**
- * The implementation of ComputeUsage.
- */
+/** The implementation of ComputeUsage. */
 class RunCommandResultImpl extends WrapperImpl<RunCommandResultInner> implements RunCommandResult {
     RunCommandResultImpl(RunCommandResultInner innerObject) {
         super(innerObject);
@@ -27,4 +24,3 @@ class RunCommandResultImpl extends WrapperImpl<RunCommandResultInner> implements
         return inner().value();
     }
 }
-

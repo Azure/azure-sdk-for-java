@@ -11,7 +11,6 @@ import com.azure.management.appservice.WebApp;
 import com.azure.management.appservice.WebContainer;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.samples.Utils;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 
 import java.io.File;
@@ -63,7 +62,7 @@ public final class ManageWebAppBasic {
             // Create a second web app with the same app service plan
 
             System.out.println("Creating another web app " + app2Name + " in resource group " + rg1Name + "...");
-            AppServicePlan plan = azure.appServices().appServicePlans().getById(app1.appServicePlanId());
+            AppServicePlan plan = azure.appServicePlans().getById(app1.appServicePlanId());
             WebApp app2 = azure.webApps()
                     .define(app2Name)
                     .withExistingWindowsPlan(plan)
@@ -172,7 +171,7 @@ public final class ManageWebAppBasic {
 
             Azure azure = Azure
                     .configure()
-                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                    .withLogLevel(HttpLogDetailLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 

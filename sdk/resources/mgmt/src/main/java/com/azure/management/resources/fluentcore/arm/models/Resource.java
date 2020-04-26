@@ -16,7 +16,7 @@ public interface Resource extends
         HasId,
         HasName {
 
-    static Resource DUMMY = new Resource() {
+    Resource DUMMY = new Resource() {
         @Override
         public String type() {
             return null;
@@ -113,7 +113,7 @@ public interface Resource extends
         /**
          * Adds a tag to the resource.
          *
-         * @param key   the key for the tag
+         * @param key the key for the tag
          * @param value the value for the tag
          * @return the next stage of the definition
          */
@@ -137,7 +137,7 @@ public interface Resource extends
         /**
          * Adds a tag to the resource.
          *
-         * @param key   the key for the tag
+         * @param key the key for the tag
          * @param value the value for the tag
          * @return the next stage of the resource update
          */

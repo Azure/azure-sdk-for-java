@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
  * Base implementation for Wrapper interface.
  *
  * @param <InnerT> wrapped type
- * @param <Impl>   impl type
+ * @param <Impl> impl type
  */
 public abstract class RefreshableWrapperImpl<InnerT, Impl>
         extends WrapperImpl<InnerT>

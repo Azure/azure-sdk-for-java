@@ -13,14 +13,14 @@ A single queue message can be up to 64 KB in size, and a queue can contain milli
 - [Azure Subscription][azure_subscription]
 - [Create Storage Account][storage_account]
 
-### Adding the package to your product
+### Include the package
 
 [//]: # ({x-version-update-start;com.azure:azure-storage-queue;current})
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-queue</artifactId>
-  <version>12.4.0</version>
+  <version>12.5.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

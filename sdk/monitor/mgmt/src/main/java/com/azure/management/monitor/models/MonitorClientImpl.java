@@ -12,18 +12,14 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.management.AzureServiceClient;
 
-/**
- * Initializes a new instance of the MonitorClientImpl type.
- */
+/** Initializes a new instance of the MonitorClientImpl type. */
 public final class MonitorClientImpl extends AzureServiceClient {
-    /**
-     * The Azure subscription Id.
-     */
+    /** The Azure subscription Id. */
     private String subscriptionId;
 
     /**
      * Gets The Azure subscription Id.
-     * 
+     *
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
@@ -32,23 +28,21 @@ public final class MonitorClientImpl extends AzureServiceClient {
 
     /**
      * Sets The Azure subscription Id.
-     * 
+     *
      * @param subscriptionId the subscriptionId value.
      * @return the service client itself.
      */
-    MonitorClientImpl setSubscriptionId(String subscriptionId) {
+    public MonitorClientImpl setSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
 
-    /**
-     * server parameter.
-     */
+    /** server parameter. */
     private String host;
 
     /**
      * Gets server parameter.
-     * 
+     *
      * @return the host value.
      */
     public String getHost() {
@@ -57,333 +51,289 @@ public final class MonitorClientImpl extends AzureServiceClient {
 
     /**
      * Sets server parameter.
-     * 
+     *
      * @param host the host value.
      * @return the service client itself.
      */
-    MonitorClientImpl setHost(String host) {
+    public MonitorClientImpl setHost(String host) {
         this.host = host;
         return this;
     }
 
-    /**
-     * The HTTP pipeline to send requests through.
-     */
-    private HttpPipeline httpPipeline;
+    /** The HTTP pipeline to send requests through. */
+    private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /**
-     * The AutoscaleSettingsInner object to access its operations.
-     */
-    private AutoscaleSettingsInner autoscaleSettings;
+    /** The AutoscaleSettingsInner object to access its operations. */
+    private final AutoscaleSettingsInner autoscaleSettings;
 
     /**
      * Gets the AutoscaleSettingsInner object to access its operations.
-     * 
+     *
      * @return the AutoscaleSettingsInner object.
      */
     public AutoscaleSettingsInner autoscaleSettings() {
         return this.autoscaleSettings;
     }
 
-    /**
-     * The OperationsInner object to access its operations.
-     */
-    private OperationsInner operations;
+    /** The OperationsInner object to access its operations. */
+    private final OperationsInner operations;
 
     /**
      * Gets the OperationsInner object to access its operations.
-     * 
+     *
      * @return the OperationsInner object.
      */
     public OperationsInner operations() {
         return this.operations;
     }
 
-    /**
-     * The AlertRuleIncidentsInner object to access its operations.
-     */
-    private AlertRuleIncidentsInner alertRuleIncidents;
+    /** The AlertRuleIncidentsInner object to access its operations. */
+    private final AlertRuleIncidentsInner alertRuleIncidents;
 
     /**
      * Gets the AlertRuleIncidentsInner object to access its operations.
-     * 
+     *
      * @return the AlertRuleIncidentsInner object.
      */
     public AlertRuleIncidentsInner alertRuleIncidents() {
         return this.alertRuleIncidents;
     }
 
-    /**
-     * The AlertRulesInner object to access its operations.
-     */
-    private AlertRulesInner alertRules;
+    /** The AlertRulesInner object to access its operations. */
+    private final AlertRulesInner alertRules;
 
     /**
      * Gets the AlertRulesInner object to access its operations.
-     * 
+     *
      * @return the AlertRulesInner object.
      */
     public AlertRulesInner alertRules() {
         return this.alertRules;
     }
 
-    /**
-     * The LogProfilesInner object to access its operations.
-     */
-    private LogProfilesInner logProfiles;
+    /** The LogProfilesInner object to access its operations. */
+    private final LogProfilesInner logProfiles;
 
     /**
      * Gets the LogProfilesInner object to access its operations.
-     * 
+     *
      * @return the LogProfilesInner object.
      */
     public LogProfilesInner logProfiles() {
         return this.logProfiles;
     }
 
-    /**
-     * The DiagnosticSettingsInner object to access its operations.
-     */
-    private DiagnosticSettingsInner diagnosticSettings;
+    /** The DiagnosticSettingsInner object to access its operations. */
+    private final DiagnosticSettingsInner diagnosticSettings;
 
     /**
      * Gets the DiagnosticSettingsInner object to access its operations.
-     * 
+     *
      * @return the DiagnosticSettingsInner object.
      */
     public DiagnosticSettingsInner diagnosticSettings() {
         return this.diagnosticSettings;
     }
 
-    /**
-     * The DiagnosticSettingsCategorysInner object to access its operations.
-     */
-    private DiagnosticSettingsCategorysInner diagnosticSettingsCategorys;
+    /** The DiagnosticSettingsCategorysInner object to access its operations. */
+    private final DiagnosticSettingsCategorysInner diagnosticSettingsCategorys;
 
     /**
      * Gets the DiagnosticSettingsCategorysInner object to access its operations.
-     * 
+     *
      * @return the DiagnosticSettingsCategorysInner object.
      */
     public DiagnosticSettingsCategorysInner diagnosticSettingsCategorys() {
         return this.diagnosticSettingsCategorys;
     }
 
-    /**
-     * The ActionGroupsInner object to access its operations.
-     */
-    private ActionGroupsInner actionGroups;
+    /** The ActionGroupsInner object to access its operations. */
+    private final ActionGroupsInner actionGroups;
 
     /**
      * Gets the ActionGroupsInner object to access its operations.
-     * 
+     *
      * @return the ActionGroupsInner object.
      */
     public ActionGroupsInner actionGroups() {
         return this.actionGroups;
     }
 
-    /**
-     * The ActivityLogAlertsInner object to access its operations.
-     */
-    private ActivityLogAlertsInner activityLogAlerts;
+    /** The ActivityLogAlertsInner object to access its operations. */
+    private final ActivityLogAlertsInner activityLogAlerts;
 
     /**
      * Gets the ActivityLogAlertsInner object to access its operations.
-     * 
+     *
      * @return the ActivityLogAlertsInner object.
      */
     public ActivityLogAlertsInner activityLogAlerts() {
         return this.activityLogAlerts;
     }
 
-    /**
-     * The ActivityLogsInner object to access its operations.
-     */
-    private ActivityLogsInner activityLogs;
+    /** The ActivityLogsInner object to access its operations. */
+    private final ActivityLogsInner activityLogs;
 
     /**
      * Gets the ActivityLogsInner object to access its operations.
-     * 
+     *
      * @return the ActivityLogsInner object.
      */
     public ActivityLogsInner activityLogs() {
         return this.activityLogs;
     }
 
-    /**
-     * The EventCategoriesInner object to access its operations.
-     */
-    private EventCategoriesInner eventCategories;
+    /** The EventCategoriesInner object to access its operations. */
+    private final EventCategoriesInner eventCategories;
 
     /**
      * Gets the EventCategoriesInner object to access its operations.
-     * 
+     *
      * @return the EventCategoriesInner object.
      */
     public EventCategoriesInner eventCategories() {
         return this.eventCategories;
     }
 
-    /**
-     * The TenantActivityLogsInner object to access its operations.
-     */
-    private TenantActivityLogsInner tenantActivityLogs;
+    /** The TenantActivityLogsInner object to access its operations. */
+    private final TenantActivityLogsInner tenantActivityLogs;
 
     /**
      * Gets the TenantActivityLogsInner object to access its operations.
-     * 
+     *
      * @return the TenantActivityLogsInner object.
      */
     public TenantActivityLogsInner tenantActivityLogs() {
         return this.tenantActivityLogs;
     }
 
-    /**
-     * The MetricDefinitionsInner object to access its operations.
-     */
-    private MetricDefinitionsInner metricDefinitions;
+    /** The MetricDefinitionsInner object to access its operations. */
+    private final MetricDefinitionsInner metricDefinitions;
 
     /**
      * Gets the MetricDefinitionsInner object to access its operations.
-     * 
+     *
      * @return the MetricDefinitionsInner object.
      */
     public MetricDefinitionsInner metricDefinitions() {
         return this.metricDefinitions;
     }
 
-    /**
-     * The MetricsInner object to access its operations.
-     */
-    private MetricsInner metrics;
+    /** The MetricsInner object to access its operations. */
+    private final MetricsInner metrics;
 
     /**
      * Gets the MetricsInner object to access its operations.
-     * 
+     *
      * @return the MetricsInner object.
      */
     public MetricsInner metrics() {
         return this.metrics;
     }
 
-    /**
-     * The MetricBaselinesInner object to access its operations.
-     */
-    private MetricBaselinesInner metricBaselines;
+    /** The MetricBaselinesInner object to access its operations. */
+    private final MetricBaselinesInner metricBaselines;
 
     /**
      * Gets the MetricBaselinesInner object to access its operations.
-     * 
+     *
      * @return the MetricBaselinesInner object.
      */
     public MetricBaselinesInner metricBaselines() {
         return this.metricBaselines;
     }
 
-    /**
-     * The BaselinesInner object to access its operations.
-     */
-    private BaselinesInner baselines;
+    /** The BaselinesInner object to access its operations. */
+    private final BaselinesInner baselines;
 
     /**
      * Gets the BaselinesInner object to access its operations.
-     * 
+     *
      * @return the BaselinesInner object.
      */
     public BaselinesInner baselines() {
         return this.baselines;
     }
 
-    /**
-     * The MetricAlertsInner object to access its operations.
-     */
-    private MetricAlertsInner metricAlerts;
+    /** The MetricAlertsInner object to access its operations. */
+    private final MetricAlertsInner metricAlerts;
 
     /**
      * Gets the MetricAlertsInner object to access its operations.
-     * 
+     *
      * @return the MetricAlertsInner object.
      */
     public MetricAlertsInner metricAlerts() {
         return this.metricAlerts;
     }
 
-    /**
-     * The MetricAlertsStatusInner object to access its operations.
-     */
-    private MetricAlertsStatusInner metricAlertsStatus;
+    /** The MetricAlertsStatusInner object to access its operations. */
+    private final MetricAlertsStatusInner metricAlertsStatus;
 
     /**
      * Gets the MetricAlertsStatusInner object to access its operations.
-     * 
+     *
      * @return the MetricAlertsStatusInner object.
      */
     public MetricAlertsStatusInner metricAlertsStatus() {
         return this.metricAlertsStatus;
     }
 
-    /**
-     * The ScheduledQueryRulesInner object to access its operations.
-     */
-    private ScheduledQueryRulesInner scheduledQueryRules;
+    /** The ScheduledQueryRulesInner object to access its operations. */
+    private final ScheduledQueryRulesInner scheduledQueryRules;
 
     /**
      * Gets the ScheduledQueryRulesInner object to access its operations.
-     * 
+     *
      * @return the ScheduledQueryRulesInner object.
      */
     public ScheduledQueryRulesInner scheduledQueryRules() {
         return this.scheduledQueryRules;
     }
 
-    /**
-     * The MetricNamespacesInner object to access its operations.
-     */
-    private MetricNamespacesInner metricNamespaces;
+    /** The MetricNamespacesInner object to access its operations. */
+    private final MetricNamespacesInner metricNamespaces;
 
     /**
      * Gets the MetricNamespacesInner object to access its operations.
-     * 
+     *
      * @return the MetricNamespacesInner object.
      */
     public MetricNamespacesInner metricNamespaces() {
         return this.metricNamespaces;
     }
 
-    /**
-     * The VMInsightsInner object to access its operations.
-     */
-    private VMInsightsInner vMInsights;
+    /** The VMInsightsInner object to access its operations. */
+    private final VMInsightsInner vMInsights;
 
     /**
      * Gets the VMInsightsInner object to access its operations.
-     * 
+     *
      * @return the VMInsightsInner object.
      */
     public VMInsightsInner vMInsights() {
         return this.vMInsights;
     }
 
-    /**
-     * Initializes an instance of MonitorClient client.
-     */
+    /** Initializes an instance of MonitorClient client. */
     public MonitorClientImpl() {
-        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(), AzureEnvironment.AZURE);
+        this(
+            new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
+            AzureEnvironment.AZURE);
     }
 
     /**
      * Initializes an instance of MonitorClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
     public MonitorClientImpl(HttpPipeline httpPipeline) {
@@ -392,7 +342,7 @@ public final class MonitorClientImpl extends AzureServiceClient {
 
     /**
      * Initializes an instance of MonitorClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param environment The Azure environment.
      */

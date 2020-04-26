@@ -428,4 +428,25 @@ directive:
       transform: >-
         return $
         .replace(/public Boolean isShouldDetectOrientation\(\) \{/g, "public Boolean shouldDetectOrientation() {")
+
+    # Changed isRetrievable to isHidden
+    - from: swagger-document
+      where: $.definitions.Field.properties
+      transform: >
+         $.hidden = $.retrievable;
+         $.hidden = {
+            "type": "boolean", 
+            "description": "A value indicating whether the field will be returned in a search result. This property must be false for key fields, and must be null for complex fields. You can hide a field from search results if you want to use it only as a filter, for sorting, or for scoring. This property can also be changed on existing fields and enabling it does not cause an increase in index storage requirements."
+         }
+    
+    - from: Field.java
+      where: $
+      transform: >-
+        return $
+        .replace(/(import com\.azure\.core\.annotation\.Fluent\;)/g, "$1\nimport com.fasterxml.jackson.annotation.JsonIgnore;")
+        .replace(/(public Field setRetrievable\(Boolean retrievable\))/g, "private Field setRetrievable(Boolean retrievable)")
+        .replace(/(public Boolean isRetrievable\(\))/g, "private Boolean isRetrievable()")
+        .replace(/(        return this\.hidden\;)/g, "        return retrievable == null ? null : !retrievable;")
+        .replace(/(this\.hidden \= hidden\;)/g, "$1\n        retrievable = this.hidden == null ? null : !this.hidden;")
+        .replace(/(    \@JsonProperty\(value \= \"hidden\"\))/g, "    @JsonIgnore")
 ```

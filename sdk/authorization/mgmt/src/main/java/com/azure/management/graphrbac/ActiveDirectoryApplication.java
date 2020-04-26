@@ -9,85 +9,54 @@ import com.azure.management.resources.fluentcore.model.Appliable;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.fluentcore.model.Updatable;
-
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * An immutable client-side representation of an Azure AD application.
- */
+/** An immutable client-side representation of an Azure AD application. */
 @Fluent
-public interface ActiveDirectoryApplication extends
-        ActiveDirectoryObject,
-        HasInner<ApplicationInner>,
-        Updatable<ActiveDirectoryApplication.Update> {
-    /**
-     * @return the application ID
-     */
+public interface ActiveDirectoryApplication
+    extends ActiveDirectoryObject, HasInner<ApplicationInner>, Updatable<ActiveDirectoryApplication.Update> {
+    /** @return the application ID */
     String applicationId();
 
-    /**
-     * @return the application permissions
-     */
+    /** @return the application permissions */
     List<String> applicationPermissions();
 
-    /**
-     * @return whether the application is be available to other tenants
-     */
+    /** @return whether the application is be available to other tenants */
     boolean availableToOtherTenants();
 
-    /**
-     * @return a collection of URIs for the application
-     */
+    /** @return a collection of URIs for the application */
     Set<String> identifierUris();
 
-    /**
-     * @return a collection of reply URLs for the application
-     */
+    /** @return a collection of reply URLs for the application */
     Set<String> replyUrls();
 
-    /**
-     * @return the home page of the application
-     */
+    /** @return the home page of the application */
     URL signOnUrl();
 
-    /**
-     * @return the mapping of password credentials from their names
-     */
+    /** @return the mapping of password credentials from their names */
     Map<String, PasswordCredential> passwordCredentials();
 
-    /**
-     * @return the mapping of certificate credentials from their names
-     */
+    /** @return the mapping of certificate credentials from their names */
     Map<String, CertificateCredential> certificateCredentials();
 
     /**************************************************************
      * Fluent interfaces to provision an application
      **************************************************************/
 
-    /**
-     * Container interface for all the definitions that need to be implemented.
-     */
-    interface Definition extends
-            DefinitionStages.Blank,
-            DefinitionStages.WithCreate {
+    /** Container interface for all the definitions that need to be implemented. */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithCreate {
     }
 
-    /**
-     * Grouping of all the application definition stages.
-     */
+    /** Grouping of all the application definition stages. */
     interface DefinitionStages {
-        /**
-         * The first stage of the application definition.
-         */
+        /** The first stage of the application definition. */
         interface Blank extends WithSignOnUrl {
         }
 
-        /**
-         * The stage of application definition allowing specifying the sign on URL.
-         */
+        /** The stage of application definition allowing specifying the sign on URL. */
         interface WithSignOnUrl {
             /**
              * Specifies the sign on URL.
@@ -98,9 +67,7 @@ public interface ActiveDirectoryApplication extends
             WithCreate withSignOnUrl(String signOnUrl);
         }
 
-        /**
-         * The stage of application definition allowing specifying reply URLs.
-         */
+        /** The stage of application definition allowing specifying reply URLs. */
         interface WithReplyUrl {
             /**
              * Adds a reply URL to the application.
@@ -111,9 +78,7 @@ public interface ActiveDirectoryApplication extends
             WithCreate withReplyUrl(String replyUrl);
         }
 
-        /**
-         * The stage of application definition allowing specifying identifier URLs.
-         */
+        /** The stage of application definition allowing specifying identifier URLs. */
         interface WithIdentifierUrl {
             /**
              * Adds an identifier URL to the application.
@@ -124,12 +89,11 @@ public interface ActiveDirectoryApplication extends
             WithCreate withIdentifierUrl(String identifierUrl);
         }
 
-        /**
-         * The stage of application definition allowing specifying identifier keys.
-         */
+        /** The stage of application definition allowing specifying identifier keys. */
         interface WithCredential {
             /**
              * Starts the definition of a certificate credential.
+             *
              * @param name the descriptive name of the certificate credential
              * @return the first stage in certificate credential definition
              */
@@ -137,6 +101,7 @@ public interface ActiveDirectoryApplication extends
 
             /**
              * Starts the definition of a password credential.
+             *
              * @param name the descriptive name of the password credential
              * @return the first stage in password credential definition
              */
@@ -149,6 +114,7 @@ public interface ActiveDirectoryApplication extends
         interface WithMultiTenant {
             /**
              * Specifies if the application can be used in multiple tenants.
+             *
              * @param availableToOtherTenants true if this application is available in other tenants
              * @return the next stage in application definition
              */
@@ -156,12 +122,11 @@ public interface ActiveDirectoryApplication extends
         }
 
         /**
-         * An application definition with sufficient inputs to create a new
-         * application in the cloud, but exposing additional optional inputs to
-         * specify.
+         * An application definition with sufficient inputs to create a new application in the cloud, but exposing
+         * additional optional inputs to specify.
          */
-        interface WithCreate extends
-                Creatable<ActiveDirectoryApplication>,
+        interface WithCreate
+            extends Creatable<ActiveDirectoryApplication>,
                 WithIdentifierUrl,
                 WithReplyUrl,
                 WithCredential,
@@ -169,13 +134,9 @@ public interface ActiveDirectoryApplication extends
         }
     }
 
-    /**
-     * Grouping of all the application update stages.
-     */
+    /** Grouping of all the application update stages. */
     interface UpdateStages {
-        /**
-         * The stage of application update allowing specifying the sign on URL.
-         */
+        /** The stage of application update allowing specifying the sign on URL. */
         interface WithSignOnUrl {
             /**
              * Specifies the sign on URL.
@@ -186,9 +147,7 @@ public interface ActiveDirectoryApplication extends
             Update withSignOnUrl(String signOnUrl);
         }
 
-        /**
-         * The stage of application update allowing specifying reply URLs.
-         */
+        /** The stage of application update allowing specifying reply URLs. */
         interface WithReplyUrl {
             /**
              * Adds a reply URL to the application.
@@ -207,9 +166,7 @@ public interface ActiveDirectoryApplication extends
             Update withoutReplyUrl(String replyUrl);
         }
 
-        /**
-         * The stage of application update allowing specifying identifier URLs.
-         */
+        /** The stage of application update allowing specifying identifier URLs. */
         interface WithIdentifierUrl {
             /**
              * Adds an identifier URL to the application.
@@ -228,12 +185,11 @@ public interface ActiveDirectoryApplication extends
             Update withoutIdentifierUrl(String identifierUrl);
         }
 
-        /**
-         * The stage of application update allowing specifying identifier keys.
-         */
+        /** The stage of application update allowing specifying identifier keys. */
         interface WithCredential {
             /**
              * Starts the definition of a certificate credential.
+             *
              * @param name the descriptive name of the certificate credential
              * @return the first stage in certificate credential definition
              */
@@ -241,6 +197,7 @@ public interface ActiveDirectoryApplication extends
 
             /**
              * Starts the definition of a password credential.
+             *
              * @param name the descriptive name of the password credential
              * @return the first stage in password credential definition
              */
@@ -248,18 +205,18 @@ public interface ActiveDirectoryApplication extends
 
             /**
              * Removes a key.
+             *
              * @param name the name of the key
              * @return the next stage of the application update
              */
             Update withoutCredential(String name);
         }
 
-        /**
-         * The stage of application update allowing specifying if the application can be used in multiple tenants.
-         */
+        /** The stage of application update allowing specifying if the application can be used in multiple tenants. */
         interface WithMultiTenant {
             /**
              * Specifies if the application can be used in multiple tenants.
+             *
              * @param availableToOtherTenants true if this application is available in other tenants
              * @return the next stage in application update
              */
@@ -267,11 +224,9 @@ public interface ActiveDirectoryApplication extends
         }
     }
 
-    /**
-     * The template for an application update operation, containing all the settings that can be modified.
-     */
-    interface Update extends
-            Appliable<ActiveDirectoryApplication>,
+    /** The template for an application update operation, containing all the settings that can be modified. */
+    interface Update
+        extends Appliable<ActiveDirectoryApplication>,
             UpdateStages.WithSignOnUrl,
             UpdateStages.WithIdentifierUrl,
             UpdateStages.WithReplyUrl,

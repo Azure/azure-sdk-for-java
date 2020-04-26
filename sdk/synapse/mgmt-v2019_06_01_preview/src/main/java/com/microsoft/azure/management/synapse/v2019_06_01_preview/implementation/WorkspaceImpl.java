@@ -15,7 +15,10 @@ import com.microsoft.azure.management.synapse.v2019_06_01_preview.WorkspacePatch
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.DataLakeStorageAccountDetails;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.VirtualNetworkProfile;
 import java.util.Map;
+import java.util.List;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.ManagedIdentity;
+import java.util.ArrayList;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.PrivateEndpointConnection;
 import rx.functions.Func1;
 
 class WorkspaceImpl extends GroupableResourceCoreImpl<Workspace, WorkspaceInner, WorkspaceImpl, SynapseManager> implements Workspace, Workspace.Definition, Workspace.Update {
@@ -89,6 +92,22 @@ class WorkspaceImpl extends GroupableResourceCoreImpl<Workspace, WorkspaceInner,
     }
 
     @Override
+    public String managedVirtualNetwork() {
+        return this.inner().managedVirtualNetwork();
+    }
+
+    @Override
+    public List<PrivateEndpointConnection> privateEndpointConnections() {
+        List<PrivateEndpointConnection> lst = new ArrayList<PrivateEndpointConnection>();
+        if (this.inner().privateEndpointConnections() != null) {
+            for (PrivateEndpointConnectionInner inner : this.inner().privateEndpointConnections()) {
+                lst.add( new PrivateEndpointConnectionImpl(inner, manager()));
+            }
+        }
+        return lst;
+    }
+
+    @Override
     public String provisioningState() {
         return this.inner().provisioningState();
     }
@@ -117,6 +136,18 @@ class WorkspaceImpl extends GroupableResourceCoreImpl<Workspace, WorkspaceInner,
     @Override
     public WorkspaceImpl withDefaultDataLakeStorage(DataLakeStorageAccountDetails defaultDataLakeStorage) {
         this.inner().withDefaultDataLakeStorage(defaultDataLakeStorage);
+        return this;
+    }
+
+    @Override
+    public WorkspaceImpl withManagedVirtualNetwork(String managedVirtualNetwork) {
+        this.inner().withManagedVirtualNetwork(managedVirtualNetwork);
+        return this;
+    }
+
+    @Override
+    public WorkspaceImpl withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
+        this.inner().withPrivateEndpointConnections(privateEndpointConnections);
         return this;
     }
 

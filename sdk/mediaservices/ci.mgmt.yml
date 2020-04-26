@@ -16,8 +16,7 @@ trigger:
       - sdk/mediaservices/
     exclude:
       - sdk/mediaservices/azure
-      - sdk/mediaservices/microsoft-azure
-      - sdk/mediaservices/ms-azure
+      - sdk/mediaservices/microsoft-azure-media
 
 pr:
   branches:
@@ -31,8 +30,7 @@ pr:
       - sdk/mediaservices/
     exclude:
       - sdk/mediaservices/azure
-      - sdk/mediaservices/microsoft-azure
-      - sdk/mediaservices/ms-azure
+      - sdk/mediaservices/microsoft-azure-media
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

@@ -14,7 +14,6 @@ import com.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.azure.management.resources.fluentcore.arm.models.HasResourceGroup;
 import com.azure.management.resources.fluentcore.arm.models.IndependentChild;
 import com.azure.management.resources.fluentcore.arm.models.Resource;
-import com.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
@@ -22,12 +21,12 @@ import reactor.core.publisher.Mono;
  * Base class for independent child collection class.
  * (Internal use only)
  *
- * @param <T>                the individual resource type returned
- * @param <ImplT>            the individual resource implementation
- * @param <InnerT>           the wrapper inner type
+ * @param <T> the individual resource type returned
+ * @param <ImplT> the individual resource implementation
+ * @param <InnerT> the wrapper inner type
  * @param <InnerCollectionT> the inner type of the collection object
- * @param <ManagerT>         the manager type for this resource provider type
- * @param <ParentT>          the type of the parent resource
+ * @param <ManagerT> the manager type for this resource provider type
+ * @param <ParentT> the type of the parent resource
  */
 public abstract class IndependentChildrenImpl<
         T extends IndependentChild<ManagerT>,
@@ -41,7 +40,6 @@ public abstract class IndependentChildrenImpl<
         SupportsGettingById<T>,
         SupportsGettingByParent<T, ParentT, ManagerT>,
         SupportsListingByParent<T, ParentT, ManagerT>,
-        SupportsDeletingById,
         SupportsDeletingByParent,
         HasManager<ManagerT>,
         HasInner<InnerCollectionT> {
@@ -81,7 +79,7 @@ public abstract class IndependentChildrenImpl<
     @Override
     public Mono<T> getByIdAsync(String id) {
         ResourceId resourceId = ResourceId.fromString(id);
-        if (resourceId == null) {
+        if (resourceId.parent() == null) {
             return null;
         }
 

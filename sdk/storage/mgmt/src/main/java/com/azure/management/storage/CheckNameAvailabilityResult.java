@@ -3,14 +3,11 @@
 
 package com.azure.management.storage;
 
-
 import com.azure.management.storage.models.CheckNameAvailabilityResultInner;
 
-/**
- * The {@link StorageAccounts#checkNameAvailability} action result.
- */
+/** The {@link StorageAccounts#checkNameAvailability} action result. */
 public class CheckNameAvailabilityResult {
-    private CheckNameAvailabilityResultInner inner;
+    private final CheckNameAvailabilityResultInner inner;
 
     /**
      * Creates an instance of the check name availability result object.
@@ -22,26 +19,22 @@ public class CheckNameAvailabilityResult {
     }
 
     /**
-     * @return a boolean value that indicates whether the name is available for
-     * you to use. If true, the name is available. If false, the name has
-     * already been taken or invalid and cannot be used.
+     * @return a boolean value that indicates whether the name is available for you to use. If true, the name is
+     *     available. If false, the name has already been taken or invalid and cannot be used.
      */
     public boolean isAvailable() {
         return inner.nameAvailable();
     }
 
     /**
-     * @return the reason that a storage account name could not be used. The
-     * Reason element is only returned if NameAvailable is false. Possible
-     * values include: 'AccountNameInvalid', 'AlreadyExists'.
+     * @return the reason that a storage account name could not be used. The Reason element is only returned if
+     *     NameAvailable is false. Possible values include: 'AccountNameInvalid', 'AlreadyExists'.
      */
     public Reason reason() {
         return inner.reason();
     }
 
-    /**
-     * @return an error message explaining the Reason value in more detail
-     */
+    /** @return an error message explaining the Reason value in more detail */
     public String message() {
         return inner.message();
     }

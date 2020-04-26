@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ServerCommunicationLinkListResult model.
- */
+/** The ServerCommunicationLinkListResult model. */
 @Fluent
 public final class ServerCommunicationLinkListResultInner {
     /*
@@ -21,7 +19,7 @@ public final class ServerCommunicationLinkListResultInner {
 
     /**
      * Get the value property: The list of server communication links.
-     * 
+     *
      * @return the value value.
      */
     public List<ServerCommunicationLinkInner> value() {
@@ -30,7 +28,7 @@ public final class ServerCommunicationLinkListResultInner {
 
     /**
      * Set the value property: The list of server communication links.
-     * 
+     *
      * @param value the value value to set.
      * @return the ServerCommunicationLinkListResultInner object itself.
      */

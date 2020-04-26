@@ -6,6 +6,7 @@ package com.azure.management.resources.fluentcore.arm;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.util.Collection;
+import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -128,18 +129,18 @@ public final class Region {
     private Region(String name, String label) {
         this.name = name;
         this.label = label;
-        VALUES_BY_NAME.put(name.toLowerCase(), this);
+        VALUES_BY_NAME.put(name.toLowerCase(Locale.ROOT), this);
     }
 
     /**
      * Creates a region from a name and a label.
      *
-     * @param name  the uniquely identifiable name of the region
+     * @param name the uniquely identifiable name of the region
      * @param label the label of the region
      * @return the newly created region
      */
     public static Region create(String name, String label) {
-        Region region = VALUES_BY_NAME.get(name.toLowerCase());
+        Region region = VALUES_BY_NAME.get(name.toLowerCase(Locale.ROOT));
         if (region != null) {
             return region;
         } else {
@@ -180,7 +181,7 @@ public final class Region {
             return null;
         }
 
-        return VALUES_BY_NAME.get(labelOrName.toLowerCase().replace(" ", ""));
+        return VALUES_BY_NAME.get(labelOrName.toLowerCase(Locale.ROOT).replace(" ", ""));
     }
 
     /**
@@ -194,11 +195,11 @@ public final class Region {
             return null;
         }
 
-        Region region = VALUES_BY_NAME.get(name.toLowerCase().replace(" ", ""));
+        Region region = VALUES_BY_NAME.get(name.toLowerCase(Locale.ROOT).replace(" ", ""));
         if (region != null) {
             return region;
         } else {
-            return Region.create(name.toLowerCase().replace(" ", ""), name);
+            return Region.create(name.toLowerCase(Locale.ROOT).replace(" ", ""), name);
         }
     }
 

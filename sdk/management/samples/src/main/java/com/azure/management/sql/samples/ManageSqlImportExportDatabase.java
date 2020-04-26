@@ -5,7 +5,6 @@ package com.azure.management.sql.samples;
 
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.management.ApplicationTokenCredential;
@@ -17,7 +16,6 @@ import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.samples.Utils;
 import com.azure.management.sql.SampleName;
 import com.azure.management.sql.SqlDatabase;
-import com.azure.management.sql.SqlDatabaseImportExportResponse;
 import com.azure.management.sql.SqlServer;
 import com.azure.management.storage.StorageAccount;
 
@@ -69,7 +67,6 @@ public final class ManageSqlImportExportDatabase {
             // Export a database from a SQL server created above to a new storage account within the same resource group.
             System.out.println("Exporting a database from a SQL server created above to a new storage account within the same resource group.");
 
-            SqlDatabaseImportExportResponse exportedDB;
             StorageAccount storageAccount = azure.storageAccounts().getByResourceGroup(sqlServer.resourceGroupName(), storageName);
             if (storageAccount == null) {
                 Creatable<StorageAccount> storageAccountCreatable = azure.storageAccounts()
@@ -77,12 +74,12 @@ public final class ManageSqlImportExportDatabase {
                     .withRegion(sqlServer.regionName())
                     .withExistingResourceGroup(sqlServer.resourceGroupName());
 
-                exportedDB = dbFromSample.exportTo(storageAccountCreatable, "container-name", "dbfromsample.bacpac")
+                dbFromSample.exportTo(storageAccountCreatable, "container-name", "dbfromsample.bacpac")
                     .withSqlAdministratorLoginAndPassword(administratorLogin, administratorPassword)
                     .execute();
                 storageAccount = azure.storageAccounts().getByResourceGroup(sqlServer.resourceGroupName(), storageName);
             } else {
-                exportedDB = dbFromSample.exportTo(storageAccount, "container-name", "dbfromsample.bacpac")
+                dbFromSample.exportTo(storageAccount, "container-name", "dbfromsample.bacpac")
                     .withSqlAdministratorLoginAndPassword(administratorLogin, administratorPassword)
                     .execute();
             }
@@ -147,8 +144,7 @@ public final class ManageSqlImportExportDatabase {
                 System.out.println("Deleting Resource Group: " + rgName);
                 azure.resourceGroups().deleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             }
         }
@@ -170,7 +166,7 @@ public final class ManageSqlImportExportDatabase {
                     .withBaseUrl(AzureEnvironment.AZURE, AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                     .withSerializerAdapter(new AzureJacksonAdapter())
 //                .withReadTimeout(150, TimeUnit.SECONDS)
-                    .withHttpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY))
+                    .withLogLevel(HttpLogDetailLevel.BASIC)
                     .withCredential(credentials).buildClient();
             Azure azure = Azure.authenticate(restClient, credentials.getDomain(), credentials.getDefaultSubscriptionId()).withDefaultSubscription();
 

@@ -4,6 +4,7 @@
 package com.azure.management.graphrbac.implementation;
 
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.graphrbac.PasswordCredential;
 import com.azure.management.graphrbac.models.PasswordCredentialInner;
 import com.azure.management.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
@@ -11,36 +12,37 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Base64;
 
-/**
- * Implementation for ServicePrincipal and its parent interfaces.
- */
-class PasswordCredentialImpl<T>
-        extends IndexableRefreshableWrapperImpl<PasswordCredential, PasswordCredentialInner>
-        implements PasswordCredential,
-            PasswordCredential.Definition<T>,
-            PasswordCredential.UpdateDefinition<T> {
+/** Implementation for ServicePrincipal and its parent interfaces. */
+class PasswordCredentialImpl<T> extends IndexableRefreshableWrapperImpl<PasswordCredential, PasswordCredentialInner>
+    implements PasswordCredential, PasswordCredential.Definition<T>, PasswordCredential.UpdateDefinition<T> {
 
     private String name;
     private HasCredential<?> parent;
     OutputStream authFile;
     private String subscriptionId;
+    private final ClientLogger logger = new ClientLogger(PasswordCredentialImpl.class);
 
     PasswordCredentialImpl(PasswordCredentialInner passwordCredential) {
         super(passwordCredential);
         if (passwordCredential.customKeyIdentifier() != null && passwordCredential.customKeyIdentifier().length > 0) {
-            this.name = new String(Base64.getDecoder().decode(new String(passwordCredential.customKeyIdentifier())));
+            this.name = new String(
+                Base64.getDecoder().decode(
+                    new String(passwordCredential.customKeyIdentifier(), StandardCharsets.UTF_8)),
+                StandardCharsets.UTF_8);
         } else {
             this.name = passwordCredential.keyId();
         }
     }
 
     PasswordCredentialImpl(String name, HasCredential<?> parent) {
-        super(new PasswordCredentialInner()
-                .withCustomKeyIdentifier(Base64.getEncoder().encode(name.getBytes()))
+        super(
+            new PasswordCredentialInner()
+                .withCustomKeyIdentifier(Base64.getEncoder().encode(name.getBytes(StandardCharsets.UTF_8)))
                 .withStartDate(OffsetDateTime.now())
                 .withEndDate(OffsetDateTime.now().plusYears(1)));
         this.name = name;
@@ -49,12 +51,12 @@ class PasswordCredentialImpl<T>
 
     @Override
     public Mono<PasswordCredential> refreshAsync() {
-        throw new UnsupportedOperationException("Cannot refresh credentials.");
+        throw logger.logExceptionAsError(new UnsupportedOperationException("Cannot refresh credentials."));
     }
 
     @Override
     protected Mono<PasswordCredentialInner> getInnerAsync() {
-        throw new UnsupportedOperationException("Cannot refresh credentials.");
+        throw logger.logExceptionAsError(new UnsupportedOperationException("Cannot refresh credentials."));
     }
 
     @Override
@@ -71,7 +73,6 @@ class PasswordCredentialImpl<T>
     public String value() {
         return inner().value();
     }
-
 
     @Override
     @SuppressWarnings("unchecked")
@@ -114,19 +115,40 @@ class PasswordCredentialImpl<T>
         AzureEnvironment environment = AzureEnvironment.AZURE;
 
         StringBuilder builder = new StringBuilder("{\n");
-        builder.append("  ").append(String.format("\"clientId\": \"%s\",", servicePrincipal.applicationId())).append("\n");
+        builder
+            .append("  ")
+            .append(String.format("\"clientId\": \"%s\",", servicePrincipal.applicationId()))
+            .append("\n");
         builder.append("  ").append(String.format("\"clientSecret\": \"%s\",", value())).append("\n");
-        builder.append("  ").append(String.format("\"tenantId\": \"%s\",", servicePrincipal.manager().tenantId())).append("\n");
-        builder.append("  ").append(String.format("\"subscriptionId\": \"%s\",", servicePrincipal.assignedSubscription)).append("\n");
-        builder.append("  ").append(String.format("\"activeDirectoryEndpointUrl\": \"%s\",", environment.getActiveDirectoryEndpoint())).append("\n");
-        builder.append("  ").append(String.format("\"resourceManagerEndpointUrl\": \"%s\",", environment.getResourceManagerEndpoint())).append("\n");
-        builder.append("  ").append(String.format("\"activeDirectoryGraphResourceId\": \"%s\",", environment.getGraphEndpoint())).append("\n");
-        builder.append("  ").append(String.format("\"managementEndpointUrl\": \"%s\"", environment.getManagementEndpoint())).append("\n");
+        builder
+            .append("  ")
+            .append(String.format("\"tenantId\": \"%s\",", servicePrincipal.manager().tenantId()))
+            .append("\n");
+        builder
+            .append("  ")
+            .append(String.format("\"subscriptionId\": \"%s\",", servicePrincipal.assignedSubscription))
+            .append("\n");
+        builder
+            .append("  ")
+            .append(String.format("\"activeDirectoryEndpointUrl\": \"%s\",", environment.getActiveDirectoryEndpoint()))
+            .append("\n");
+        builder
+            .append("  ")
+            .append(String.format("\"resourceManagerEndpointUrl\": \"%s\",", environment.getResourceManagerEndpoint()))
+            .append("\n");
+        builder
+            .append("  ")
+            .append(String.format("\"activeDirectoryGraphResourceId\": \"%s\",", environment.getGraphEndpoint()))
+            .append("\n");
+        builder
+            .append("  ")
+            .append(String.format("\"managementEndpointUrl\": \"%s\"", environment.getManagementEndpoint()))
+            .append("\n");
         builder.append("}");
         try {
-            authFile.write(builder.toString().getBytes());
+            authFile.write(builder.toString().getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw logger.logExceptionAsError(new RuntimeException(e));
         }
     }
 

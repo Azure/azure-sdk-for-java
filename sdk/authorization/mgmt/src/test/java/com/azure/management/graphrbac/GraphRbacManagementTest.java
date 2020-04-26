@@ -7,14 +7,11 @@ import com.azure.management.RestClient;
 import com.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.azure.management.resources.core.TestBase;
 import com.azure.management.resources.implementation.ResourceManager;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-/**
- * The base for storage manager tests.
- */
+/** The base for storage manager tests. */
 public abstract class GraphRbacManagementTest extends TestBase {
     protected GraphRbacManager graphRbacManager;
     protected ResourceManager resourceManager;
@@ -22,7 +19,8 @@ public abstract class GraphRbacManagementTest extends TestBase {
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
         graphRbacManager = GraphRbacManager.authenticate(restClient, domain, sdkContext);
-        resourceManager = ResourceManager.authenticate(restClient).withSdkContext(sdkContext).withSubscription(defaultSubscription);
+        resourceManager =
+            ResourceManager.authenticate(restClient).withSdkContext(sdkContext).withSubscription(defaultSubscription);
     }
 
     @Override

@@ -6,27 +6,23 @@ import com.azure.management.network.ApplicationGateway;
 import com.azure.management.network.ApplicationGatewayAuthenticationCertificate;
 import com.azure.management.network.models.ApplicationGatewayAuthenticationCertificateInner;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
-
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Base64;
 
-/**
- * Implementation for ApplicationGatewayAuthenticationCertificate.
- */
+/** Implementation for ApplicationGatewayAuthenticationCertificate. */
 class ApplicationGatewayAuthenticationCertificateImpl
-        extends ChildResourceImpl<
-        ApplicationGatewayAuthenticationCertificateInner,
-        ApplicationGatewayImpl,
-        ApplicationGateway>
-        implements
-        ApplicationGatewayAuthenticationCertificate,
+    extends ChildResourceImpl<
+        ApplicationGatewayAuthenticationCertificateInner, ApplicationGatewayImpl, ApplicationGateway>
+    implements ApplicationGatewayAuthenticationCertificate,
         ApplicationGatewayAuthenticationCertificate.Definition<ApplicationGateway.DefinitionStages.WithCreate>,
         ApplicationGatewayAuthenticationCertificate.UpdateDefinition<ApplicationGateway.Update>,
         ApplicationGatewayAuthenticationCertificate.Update {
 
-    ApplicationGatewayAuthenticationCertificateImpl(ApplicationGatewayAuthenticationCertificateInner inner, ApplicationGatewayImpl parent) {
+    ApplicationGatewayAuthenticationCertificateImpl(
+        ApplicationGatewayAuthenticationCertificateInner inner, ApplicationGatewayImpl parent) {
         super(inner, parent);
     }
 
@@ -55,7 +51,7 @@ class ApplicationGatewayAuthenticationCertificateImpl
 
     @Override
     public ApplicationGatewayAuthenticationCertificateImpl fromBytes(byte[] data) {
-        String encoded = new String(Base64.getEncoder().encode(data));
+        String encoded = new String(Base64.getEncoder().encode(data), StandardCharsets.UTF_8);
         return this.fromBase64(encoded);
     }
 
@@ -66,7 +62,7 @@ class ApplicationGatewayAuthenticationCertificateImpl
         }
 
         byte[] content = Files.readAllBytes(certificateFile.toPath());
-        return (content != null) ? this.fromBytes(content) : null;
+        return this.fromBytes(content);
     }
 
     @Override

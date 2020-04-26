@@ -4,7 +4,6 @@
 package com.azure.management.containerregistry.samples;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.management.Azure;
 import com.azure.management.containerregistry.AccessKeyType;
 import com.azure.management.containerregistry.Registry;
@@ -15,6 +14,7 @@ import com.azure.management.samples.Utils;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.exception.NotFoundException;
+import com.github.dockerjava.api.model.AuthConfig;
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.Image;
 import com.github.dockerjava.core.command.PullImageResultCallback;
@@ -83,12 +83,13 @@ public class ManageContainerRegistry {
 
             dockerClient.pullImageCmd(dockerImageName)
                     .withTag(dockerImageTag)
+                    .withAuthConfig(new AuthConfig()) // anonymous
                     .exec(new PullImageResultCallback())
                     .awaitSuccess();
             System.out.println("List local Docker images:");
             List<Image> images = dockerClient.listImagesCmd().withShowAll(true).exec();
             for (Image image : images) {
-                System.out.format("\tFound Docker image %s (%s)\n", image.getRepoTags()[0], image.getId());
+                System.out.format("\tFound Docker image %s (%s)%n", image.getRepoTags()[0], image.getId());
             }
 
             CreateContainerResponse dockerContainerInstance = dockerClient.createContainerCmd(dockerImageName + ":" + dockerImageTag)
@@ -100,16 +101,16 @@ public class ManageContainerRegistry {
                     .withShowAll(true)
                     .exec();
             for (Container container : dockerContainers) {
-                System.out.format("\tFound Docker container %s (%s)\n", container.getImage(), container.getId());
+                System.out.format("\tFound Docker container %s (%s)%n", container.getImage(), container.getId());
             }
 
             //=============================================================
             // Commit the new container
 
             String privateRepoUrl = azureRegistry.loginServerUrl() + "/samples/" + dockerContainerName;
-            String dockerImageId = dockerClient.commitCmd(dockerContainerInstance.getId())
-                    .withRepository(privateRepoUrl)
-                    .withTag("latest").exec();
+            dockerClient.commitCmd(dockerContainerInstance.getId())
+                .withRepository(privateRepoUrl)
+                .withTag("latest").exec();
 
             // We can now remove the temporary container instance
             dockerClient.removeContainerCmd(dockerContainerInstance.getId())
@@ -120,7 +121,6 @@ public class ManageContainerRegistry {
             // Push the new Docker image to the Azure Container Registry
 
             dockerClient.pushImageCmd(privateRepoUrl)
-                    .withAuthConfig(dockerClient.authConfig())
                     .exec(new PushImageResultCallback()).awaitSuccess();
 
             // Remove the temp image from the local Docker host
@@ -141,17 +141,17 @@ public class ManageContainerRegistry {
                     .withShowAll(true)
                     .exec();
             for (Image image : images) {
-                System.out.format("\tFound Docker image %s (%s)\n", image.getRepoTags()[0], image.getId());
+                System.out.format("\tFound Docker image %s (%s)%n", image.getRepoTags()[0], image.getId());
             }
-            dockerContainerInstance = dockerClient.createContainerCmd(privateRepoUrl)
-                    .withName(dockerContainerName + "-private")
-                    .withCmd("/hello").exec();
+            dockerClient.createContainerCmd(privateRepoUrl)
+                .withName(dockerContainerName + "-private")
+                .withCmd("/hello").exec();
             System.out.println("List Docker containers after instantiating container from the Azure Container Registry sample image:");
             dockerContainers = dockerClient.listContainersCmd()
                     .withShowAll(true)
                     .exec();
             for (Container container : dockerContainers) {
-                System.out.format("\tFound Docker container %s (%s)\n", container.getImage(), container.getId());
+                System.out.format("\tFound Docker container %s (%s)%n", container.getImage(), container.getId());
             }
 
             return true;
@@ -185,7 +185,7 @@ public class ManageContainerRegistry {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure.configure()
-                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY))
+                    .withLogLevel(HttpLogDetailLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 

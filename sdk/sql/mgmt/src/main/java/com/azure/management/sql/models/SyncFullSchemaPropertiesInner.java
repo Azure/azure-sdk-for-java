@@ -10,9 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/**
- * The SyncFullSchemaProperties model.
- */
+/** The SyncFullSchemaProperties model. */
 @Immutable
 public final class SyncFullSchemaPropertiesInner {
     /*
@@ -29,7 +27,7 @@ public final class SyncFullSchemaPropertiesInner {
 
     /**
      * Get the tables property: List of tables in the database full schema.
-     * 
+     *
      * @return the tables value.
      */
     public List<SyncFullSchemaTable> tables() {
@@ -37,9 +35,8 @@ public final class SyncFullSchemaPropertiesInner {
     }
 
     /**
-     * Get the lastUpdateTime property: Last update time of the database
-     * schema.
-     * 
+     * Get the lastUpdateTime property: Last update time of the database schema.
+     *
      * @return the lastUpdateTime value.
      */
     public OffsetDateTime lastUpdateTime() {

@@ -12,7 +12,6 @@ import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.samples.Utils;
 import com.azure.management.storage.StorageAccount;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
@@ -87,7 +86,7 @@ public final class ManageLinuxWebAppStorageAccountConnection {
 
             System.out.println("Creating web app " + app1Name + "...");
 
-            // FIXME the env variable will not work in linux since dot is not allowed in env variable name
+            // note: the env variable will not work in linux since dot is not allowed in env variable name
             WebApp app1 = azure.webApps().define(app1Name)
                     .withRegion(Region.US_WEST)
                     .withExistingResourceGroup(rgName)
@@ -149,7 +148,7 @@ public final class ManageLinuxWebAppStorageAccountConnection {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure.configure()
-                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+                    .withLogLevel(HttpLogDetailLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 

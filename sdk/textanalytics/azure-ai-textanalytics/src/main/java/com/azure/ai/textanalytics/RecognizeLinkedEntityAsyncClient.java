@@ -62,6 +62,7 @@ class RecognizeLinkedEntityAsyncClient {
      * @return The {@link TextAnalyticsPagedFlux} of {@link LinkedEntity}.
      */
     TextAnalyticsPagedFlux<LinkedEntity> recognizeLinkedEntities(String document, String language) {
+        Objects.requireNonNull(document, "'document' cannot be null.");
         return new TextAnalyticsPagedFlux<>(() ->
             (continuationToken, pageSize) -> recognizeLinkedEntitiesBatch(
                 Collections.singletonList(new TextDocumentInput("0", document, language)), null)
@@ -98,6 +99,11 @@ class RecognizeLinkedEntityAsyncClient {
     TextAnalyticsPagedFlux<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesBatch(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
         Objects.requireNonNull(documents, "'documents' cannot be null.");
+        final Iterator<TextDocumentInput> iterator = documents.iterator();
+        if (!iterator.hasNext()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'documents' cannot be empty."));
+        }
+
         try {
             return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> withContext(context ->
                 getRecognizedLinkedEntitiesResponseInPage(documents, options, context)).flux());
@@ -120,6 +126,11 @@ class RecognizeLinkedEntityAsyncClient {
     TextAnalyticsPagedFlux<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesBatchWithContext(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
         Objects.requireNonNull(documents, "'documents' cannot be null.");
+        final Iterator<TextDocumentInput> iterator = documents.iterator();
+        if (!iterator.hasNext()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'documents' cannot be empty."));
+        }
+
         return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
             getRecognizedLinkedEntitiesResponseInPage(documents, options, context).flux());
     }

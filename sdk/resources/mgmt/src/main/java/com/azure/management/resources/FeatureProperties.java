@@ -7,9 +7,7 @@ package com.azure.management.resources;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The FeatureProperties model.
- */
+/** The FeatureProperties model. */
 @Fluent
 public final class FeatureProperties {
     /*
@@ -19,9 +17,8 @@ public final class FeatureProperties {
     private String state;
 
     /**
-     * Get the state property: The registration state of the feature for the
-     * subscription.
-     * 
+     * Get the state property: The registration state of the feature for the subscription.
+     *
      * @return the state value.
      */
     public String state() {
@@ -29,9 +26,8 @@ public final class FeatureProperties {
     }
 
     /**
-     * Set the state property: The registration state of the feature for the
-     * subscription.
-     * 
+     * Set the state property: The registration state of the feature for the subscription.
+     *
      * @param state the state value to set.
      * @return the FeatureProperties object itself.
      */

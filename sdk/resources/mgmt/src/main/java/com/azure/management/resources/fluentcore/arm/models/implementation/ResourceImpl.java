@@ -21,8 +21,8 @@ import java.util.TreeMap;
  * model implementations.
  * (Internal use only)
  *
- * @param <FluentModelT>     The fluent model type
- * @param <InnerModelT>      Azure inner resource class type
+ * @param <FluentModelT> The fluent model type
+ * @param <InnerModelT> Azure inner resource class type
  * @param <FluentModelImplT> the implementation type of the fluent model type
  */
 public abstract class ResourceImpl<
@@ -101,7 +101,7 @@ public abstract class ResourceImpl<
     /**
      * Adds a tag to the resource.
      *
-     * @param key   the key for the tag
+     * @param key the key for the tag
      * @param value the value for the tag
      * @return the next stage of the definition/update
      */
@@ -111,7 +111,6 @@ public abstract class ResourceImpl<
             this.inner().setTags(new HashMap<String, String>());
         }
         this.inner().getTags().put(key, value);
-        System.out.println(this.inner().getTags());
         return (FluentModelImplT) this;
     }
 

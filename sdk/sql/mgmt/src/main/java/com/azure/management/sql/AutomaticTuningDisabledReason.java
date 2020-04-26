@@ -7,48 +7,30 @@ package com.azure.management.sql;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for AutomaticTuningDisabledReason.
- */
+/** Defines values for AutomaticTuningDisabledReason. */
 public enum AutomaticTuningDisabledReason {
-    /**
-     * Enum value Default.
-     */
+    /** Enum value Default. */
     DEFAULT("Default"),
 
-    /**
-     * Enum value Disabled.
-     */
+    /** Enum value Disabled. */
     DISABLED("Disabled"),
 
-    /**
-     * Enum value AutoConfigured.
-     */
+    /** Enum value AutoConfigured. */
     AUTO_CONFIGURED("AutoConfigured"),
 
-    /**
-     * Enum value InheritedFromServer.
-     */
+    /** Enum value InheritedFromServer. */
     INHERITED_FROM_SERVER("InheritedFromServer"),
 
-    /**
-     * Enum value QueryStoreOff.
-     */
+    /** Enum value QueryStoreOff. */
     QUERY_STORE_OFF("QueryStoreOff"),
 
-    /**
-     * Enum value QueryStoreReadOnly.
-     */
+    /** Enum value QueryStoreReadOnly. */
     QUERY_STORE_READ_ONLY("QueryStoreReadOnly"),
 
-    /**
-     * Enum value NotSupported.
-     */
+    /** Enum value NotSupported. */
     NOT_SUPPORTED("NotSupported");
 
-    /**
-     * The actual serialized value for a AutomaticTuningDisabledReason instance.
-     */
+    /** The actual serialized value for a AutomaticTuningDisabledReason instance. */
     private final String value;
 
     AutomaticTuningDisabledReason(String value) {
@@ -57,7 +39,7 @@ public enum AutomaticTuningDisabledReason {
 
     /**
      * Parses a serialized value to a AutomaticTuningDisabledReason instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed AutomaticTuningDisabledReason object, or null if unable to parse.
      */

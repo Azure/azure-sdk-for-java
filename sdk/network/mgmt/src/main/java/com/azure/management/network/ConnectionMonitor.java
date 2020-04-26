@@ -10,71 +10,45 @@ import com.azure.management.resources.fluentcore.arm.models.HasName;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.fluentcore.model.Indexable;
-import reactor.core.publisher.Mono;
-
 import java.time.OffsetDateTime;
 import java.util.Map;
+import reactor.core.publisher.Mono;
 
-/**
- * Client-side representation of Connection Monitor object, associated with Network Watcher.
- */
+/** Client-side representation of Connection Monitor object, associated with Network Watcher. */
 @Fluent
-public interface ConnectionMonitor extends
-        HasInner<ConnectionMonitorResultInner>,
-        HasName,
-        HasId,
-        Indexable {
-    /**
-     * @return connection monitor location
-     */
+public interface ConnectionMonitor extends HasInner<ConnectionMonitorResultInner>, HasName, HasId, Indexable {
+    /** @return connection monitor location */
     String location();
 
-    /**
-     * @return connection monitor tags
-     */
+    /** @return connection monitor tags */
     Map<String, String> tags();
 
-    /**
-     * @return the source property
-     */
+    /** @return the source property */
     ConnectionMonitorSource source();
 
-    /**
-     * @return the destination property
-     */
+    /** @return the destination property */
     ConnectionMonitorDestination destination();
 
     /**
-     * Determines if the connection monitor will start automatically once
-     * created.
+     * Determines if the connection monitor will start automatically once created.
      *
      * @return true if the connection monitor will start automatically once created, false otherwise
      */
     boolean autoStart();
 
-    /**
-     * @return the provisioning state of the connection monitor
-     */
+    /** @return the provisioning state of the connection monitor */
     ProvisioningState provisioningState();
 
-    /**
-     * @return the date and time when the connection monitor was started
-     */
+    /** @return the date and time when the connection monitor was started */
     OffsetDateTime startTime();
 
-    /**
-     * @return the monitoring status of the connection monitor
-     */
+    /** @return the monitoring status of the connection monitor */
     String monitoringStatus();
 
-    /**
-     * @return monitoring interval in seconds
-     */
+    /** @return monitoring interval in seconds */
     int monitoringIntervalInSeconds();
 
-    /**
-     * Stops a specified connection monitor.
-     */
+    /** Stops a specified connection monitor. */
     void stop();
 
     /**
@@ -84,9 +58,7 @@ public interface ConnectionMonitor extends
      */
     Mono<Void> stopAsync();
 
-    /**
-     * Starts a specified connection monitor.
-     */
+    /** Starts a specified connection monitor. */
     void start();
 
     /**
@@ -110,24 +82,18 @@ public interface ConnectionMonitor extends
      */
     Mono<ConnectionMonitorQueryResult> queryAsync();
 
-    /**
-     * The entirety of the connection monitor definition.
-     */
-    interface Definition extends
-            DefinitionStages.WithSource,
+    /** The entirety of the connection monitor definition. */
+    interface Definition
+        extends DefinitionStages.WithSource,
             DefinitionStages.WithDestination,
             DefinitionStages.WithDestinationPort,
             DefinitionStages.WithCreate {
     }
 
-    /**
-     * Grouping of connection monitor definition stages.
-     */
+    /** Grouping of connection monitor definition stages. */
     interface DefinitionStages {
 
-        /**
-         * Sets the source property.
-         */
+        /** Sets the source property. */
         interface WithSource {
             /**
              * @param resourceId the ID of the resource used as the source by connection monitor
@@ -142,9 +108,7 @@ public interface ConnectionMonitor extends
             WithDestination withSource(HasNetworkInterfaces vm);
         }
 
-        /**
-         * Sets the source port used by connection monitor.
-         */
+        /** Sets the source port used by connection monitor. */
         interface WithSourcePort {
             /**
              * @param port source port used by connection monitor
@@ -153,9 +117,7 @@ public interface ConnectionMonitor extends
             WithDestination withSourcePort(int port);
         }
 
-        /**
-         * Sets the destination.
-         */
+        /** Sets the destination. */
         interface WithDestination {
             /**
              * @param resourceId the ID of the resource used as the source by connection monitor
@@ -176,9 +138,7 @@ public interface ConnectionMonitor extends
             WithDestinationPort withDestinationAddress(String address);
         }
 
-        /**
-         * Sets the destination port used by connection monitor.
-         */
+        /** Sets the destination port used by connection monitor. */
         interface WithDestinationPort {
             /**
              * @param port the ID of the resource used as the source by connection monitor
@@ -188,8 +148,8 @@ public interface ConnectionMonitor extends
         }
 
         /**
-         * Determines if the connection monitor will start automatically once
-         * created. By default it is started automatically.
+         * Determines if the connection monitor will start automatically once created. By default it is started
+         * automatically.
          */
         interface WithAutoStart {
             /**
@@ -200,9 +160,7 @@ public interface ConnectionMonitor extends
             WithCreate withoutAutoStart();
         }
 
-        /**
-         * Sets monitoring interval in seconds.
-         */
+        /** Sets monitoring interval in seconds. */
         interface WithMonitoringInterval {
             /**
              * @param seconds monitoring interval in seconds
@@ -211,9 +169,7 @@ public interface ConnectionMonitor extends
             WithCreate withMonitoringInterval(int seconds);
         }
 
-        /**
-         * The stage of the connection monitor definition allowing to add or update tags.
-         */
+        /** The stage of the connection monitor definition allowing to add or update tags. */
         interface WithTags {
             /**
              * Specifies tags for the connection monitor.
@@ -226,7 +182,7 @@ public interface ConnectionMonitor extends
             /**
              * Adds a tag to the connection monitor.
              *
-             * @param key   the key for the tag
+             * @param key the key for the tag
              * @param value the value for the tag
              * @return the next stage of the definition
              */
@@ -241,12 +197,8 @@ public interface ConnectionMonitor extends
             WithCreate withoutTag(String key);
         }
 
-        interface WithCreate extends
-                Creatable<ConnectionMonitor>,
-                WithSourcePort,
-                WithAutoStart,
-                WithMonitoringInterval,
-                WithTags {
+        interface WithCreate
+            extends Creatable<ConnectionMonitor>, WithSourcePort, WithAutoStart, WithMonitoringInterval, WithTags {
         }
     }
 }

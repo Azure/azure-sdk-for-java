@@ -9,9 +9,7 @@ import com.azure.management.resources.DeploymentPropertiesExtended;
 import com.azure.management.resources.ErrorResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The DeploymentValidateResult model.
- */
+/** The DeploymentValidateResult model. */
 @Fluent
 public final class DeploymentValidateResultInner {
     /*
@@ -28,7 +26,7 @@ public final class DeploymentValidateResultInner {
 
     /**
      * Get the error property: The deployment validation error.
-     * 
+     *
      * @return the error value.
      */
     public ErrorResponse error() {
@@ -37,7 +35,7 @@ public final class DeploymentValidateResultInner {
 
     /**
      * Set the error property: The deployment validation error.
-     * 
+     *
      * @param error the error value to set.
      * @return the DeploymentValidateResultInner object itself.
      */
@@ -48,7 +46,7 @@ public final class DeploymentValidateResultInner {
 
     /**
      * Get the properties property: The template deployment properties.
-     * 
+     *
      * @return the properties value.
      */
     public DeploymentPropertiesExtended properties() {
@@ -57,7 +55,7 @@ public final class DeploymentValidateResultInner {
 
     /**
      * Set the properties property: The template deployment properties.
-     * 
+     *
      * @param properties the properties value to set.
      * @return the DeploymentValidateResultInner object itself.
      */

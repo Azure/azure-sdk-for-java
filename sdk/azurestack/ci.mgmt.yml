@@ -14,10 +14,6 @@ trigger:
   paths:
     include:
       - sdk/azurestack/
-    exclude:
-      - sdk/azurestack/azure
-      - sdk/azurestack/microsoft-azure
-      - sdk/azurestack/ms-azure
 
 pr:
   branches:
@@ -29,10 +25,6 @@ pr:
   paths:
     include:
       - sdk/azurestack/
-    exclude:
-      - sdk/azurestack/azure
-      - sdk/azurestack/microsoft-azure
-      - sdk/azurestack/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

@@ -3,16 +3,13 @@
 
 package com.azure.management.keyvault.implementation;
 
+import com.azure.management.keyvault.DeletedVault;
+import com.azure.management.keyvault.models.DeletedVaultInner;
+import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-import com.azure.management.keyvault.models.DeletedVaultInner;
-import com.azure.management.keyvault.DeletedVault;
-import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
-
-/**
- * Deleted vault information with extended details.
- */
+/** Deleted vault information with extended details. */
 public class DeletedVaultImpl extends WrapperImpl<DeletedVaultInner> implements DeletedVault {
 
     DeletedVaultImpl(DeletedVaultInner inner) {
@@ -48,5 +45,4 @@ public class DeletedVaultImpl extends WrapperImpl<DeletedVaultInner> implements 
     public Map<String, String> tags() {
         return inner().properties().tags();
     }
-
 }

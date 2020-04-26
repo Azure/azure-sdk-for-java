@@ -5,21 +5,14 @@ package com.azure.management.monitor;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.monitor.models.ActivityLogsInner;
 import com.azure.management.monitor.implementation.MonitorManager;
+import com.azure.management.monitor.models.ActivityLogsInner;
 import com.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import java.time.OffsetDateTime;
 
-import java.util.List;
-
-/**
- * Entry point for Monitor Activity logs API.
- */
-public interface ActivityLogs extends
-        HasManager<MonitorManager>,
-        HasInner<ActivityLogsInner> {
-
+/** Entry point for Monitor Activity logs API. */
+public interface ActivityLogs extends HasManager<MonitorManager>, HasInner<ActivityLogsInner> {
 
     /**
      * Lists available event categories supported in the Activity Logs Service.
@@ -42,25 +35,19 @@ public interface ActivityLogs extends
      */
     ActivityLogsQueryDefinitionStages.WithEventDataStartTimeFilter defineQuery();
 
-    /**
-     * The entirety of a Activity Logs query definition.
-     */
-    interface ActivityLogsQueryDefinition extends
-            ActivityLogsQueryDefinitionStages.WithEventDataStartTimeFilter,
+    /** The entirety of a Activity Logs query definition. */
+    interface ActivityLogsQueryDefinition
+        extends ActivityLogsQueryDefinitionStages.WithEventDataStartTimeFilter,
             ActivityLogsQueryDefinitionStages.WithEventDataEndFilter,
             ActivityLogsQueryDefinitionStages.WithEventDataFieldFilter,
             ActivityLogsQueryDefinitionStages.WithActivityLogsSelectFilter,
             ActivityLogsQueryDefinitionStages.WithActivityLogsQueryExecute {
     }
 
-    /**
-     * Grouping of Activity log query stages.
-     */
+    /** Grouping of Activity log query stages. */
     interface ActivityLogsQueryDefinitionStages {
 
-        /**
-         * The stage of a Activity Log query allowing to specify start time filter.
-         */
+        /** The stage of a Activity Log query allowing to specify start time filter. */
         interface WithEventDataStartTimeFilter {
             /**
              * Sets the start time for Activity Log query filter.
@@ -71,9 +58,7 @@ public interface ActivityLogs extends
             WithEventDataEndFilter startingFrom(OffsetDateTime startTime);
         }
 
-        /**
-         * The stage of a Activity Log query allowing to specify end time filter.
-         */
+        /** The stage of a Activity Log query allowing to specify end time filter. */
         interface WithEventDataEndFilter {
             /**
              * Sets the end time for Activity Log query filter.
@@ -84,9 +69,7 @@ public interface ActivityLogs extends
             WithEventDataFieldFilter endsBefore(OffsetDateTime endTime);
         }
 
-        /**
-         * The stage of a Activity Log query allowing to specify data fields in the server response.
-         */
+        /** The stage of a Activity Log query allowing to specify data fields in the server response. */
         interface WithEventDataFieldFilter {
             /**
              * Selects data fields that will be populated in the server response.
@@ -104,11 +87,8 @@ public interface ActivityLogs extends
             WithActivityLogsSelectFilter withAllPropertiesInResponse();
         }
 
-        /**
-         * The stage of the Activity log filtering by type and query execution.
-         */
-        interface WithActivityLogsSelectFilter extends
-                WithActivityLogsQueryExecute {
+        /** The stage of the Activity log filtering by type and query execution. */
+        interface WithActivityLogsSelectFilter extends WithActivityLogsQueryExecute {
 
             /**
              * Filters events for a given resource group.
@@ -143,9 +123,7 @@ public interface ActivityLogs extends
             WithActivityLogsQueryExecute filterByCorrelationId(String correlationId);
         }
 
-        /**
-         * The stage of the Activity log query execution.
-         */
+        /** The stage of the Activity log query execution. */
         interface WithActivityLogsQueryExecute {
             /**
              * Executes the query.

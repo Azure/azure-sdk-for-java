@@ -26,6 +26,7 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 
+import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 import static java.lang.Double.NEGATIVE_INFINITY;
 import static java.lang.Double.NaN;
 import static java.lang.Double.POSITIVE_INFINITY;
@@ -46,7 +47,7 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
 
         SearchDocument result = client.getDocument(expected.hotelId());
         Hotel actual = convertToType(result, Hotel.class);
-        TestHelpers.assertHotelsEqual(expected, actual);
+        assertObjectEquals(expected, actual, true);
     }
 
     @Test
@@ -59,7 +60,7 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
 
         SearchDocument result = client.getDocument(expected.hotelId());
         Hotel actual = convertToType(result, Hotel.class);
-        TestHelpers.assertHotelsEqual(expected, actual);
+        assertObjectEquals(expected, actual, true);
     }
 
     @Test
@@ -72,7 +73,7 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
 
         SearchDocument result = client.getDocument(expected.hotelId());
         Hotel actual = convertToType(result, Hotel.class);
-        TestHelpers.assertHotelsEqual(expected, actual);
+        assertObjectEquals(expected, actual, true);
     }
 
     @Test
@@ -85,7 +86,7 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
 
         SearchDocument result = client.getDocument(expected.key());
         ModelWithPrimitiveCollections actual = convertToType(result, ModelWithPrimitiveCollections.class);
-        TestHelpers.assetModelsWithPrimitivesEqual(expected, actual);
+        assertObjectEquals(expected, actual, true);
     }
 
     @Test
@@ -105,7 +106,7 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
         List<String> selectedFields = Arrays.asList("Description", "HotelName", "Address/City", "Rooms/BaseRate");
         Response<SearchDocument> response = client.getDocumentWithResponse(indexedDoc.hotelId(), selectedFields, generateRequestOptions(), Context.NONE);
         Hotel actual = convertToType(response.getValue(), Hotel.class);
-        TestHelpers.assertHotelsEqual(expected, actual);
+        assertObjectEquals(expected, actual, true);
     }
 
     @Test
@@ -514,35 +515,35 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
                     .setName("Key")
                     .setType(DataType.EDM_STRING)
                     .setKey(true)
-                    .setRetrievable(true),
+                    .setHidden(false),
                 new Field()
                     .setName("Bools")
                     .setType(DataType.collection(DataType.EDM_BOOLEAN))
-                    .setRetrievable(true),
+                    .setHidden(false),
                 new Field()
                     .setName("Dates")
                     .setType(DataType.collection(DataType.EDM_DATE_TIME_OFFSET))
-                    .setRetrievable(true),
+                    .setHidden(false),
                 new Field()
                     .setName("Doubles")
                     .setType(DataType.collection(DataType.EDM_DOUBLE))
-                    .setRetrievable(true),
+                    .setHidden(false),
                 new Field()
                     .setName("Points")
                     .setType(DataType.collection(DataType.EDM_GEOGRAPHY_POINT))
-                    .setRetrievable(true),
+                    .setHidden(false),
                 new Field()
                     .setName("Ints")
                     .setType(DataType.collection(DataType.EDM_INT32))
-                    .setRetrievable(true),
+                    .setHidden(false),
                 new Field()
                     .setName("Longs")
                     .setType(DataType.collection(DataType.EDM_INT64))
-                    .setRetrievable(true),
+                    .setHidden(false),
                 new Field()
                     .setName("Strings")
                     .setType(DataType.collection(DataType.EDM_STRING))
-                    .setRetrievable(true)
+                    .setHidden(false)
             ));
 
         setupIndex(index);

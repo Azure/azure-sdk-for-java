@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/**
- * The TimeSeriesInformation model.
- */
+/** The TimeSeriesInformation model. */
 @Fluent
 public final class TimeSeriesInformation {
     /*
@@ -33,9 +31,8 @@ public final class TimeSeriesInformation {
     private List<OffsetDateTime> timestamps;
 
     /**
-     * Get the sensitivities property: the list of sensitivities for
-     * calculating the baseline.
-     * 
+     * Get the sensitivities property: the list of sensitivities for calculating the baseline.
+     *
      * @return the sensitivities value.
      */
     public List<String> sensitivities() {
@@ -43,9 +40,8 @@ public final class TimeSeriesInformation {
     }
 
     /**
-     * Set the sensitivities property: the list of sensitivities for
-     * calculating the baseline.
-     * 
+     * Set the sensitivities property: the list of sensitivities for calculating the baseline.
+     *
      * @param sensitivities the sensitivities value to set.
      * @return the TimeSeriesInformation object itself.
      */
@@ -56,7 +52,7 @@ public final class TimeSeriesInformation {
 
     /**
      * Get the values property: The metric values to calculate the baseline.
-     * 
+     *
      * @return the values value.
      */
     public List<Double> values() {
@@ -65,7 +61,7 @@ public final class TimeSeriesInformation {
 
     /**
      * Set the values property: The metric values to calculate the baseline.
-     * 
+     *
      * @param values the values value to set.
      * @return the TimeSeriesInformation object itself.
      */
@@ -76,7 +72,7 @@ public final class TimeSeriesInformation {
 
     /**
      * Get the timestamps property: the array of timestamps of the baselines.
-     * 
+     *
      * @return the timestamps value.
      */
     public List<OffsetDateTime> timestamps() {
@@ -85,7 +81,7 @@ public final class TimeSeriesInformation {
 
     /**
      * Set the timestamps property: the array of timestamps of the baselines.
-     * 
+     *
      * @param timestamps the timestamps value to set.
      * @return the TimeSeriesInformation object itself.
      */

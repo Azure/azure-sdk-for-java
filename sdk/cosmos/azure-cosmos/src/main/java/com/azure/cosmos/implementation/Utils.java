@@ -4,16 +4,17 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.uuid.EthernetAddress;
+import com.azure.cosmos.implementation.uuid.Generators;
+import com.azure.cosmos.implementation.uuid.impl.TimeBasedGenerator;
 import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
-import com.fasterxml.uuid.EthernetAddress;
-import com.fasterxml.uuid.Generators;
-import com.fasterxml.uuid.impl.TimeBasedGenerator;
 import io.netty.buffer.ByteBuf;
 
 import java.io.IOException;
@@ -586,10 +587,10 @@ public class Utils {
             return;
         }
         if (pagedFluxOptions.getRequestContinuation() != null) {
-            feedOptions.setRequestContinuation(pagedFluxOptions.getRequestContinuation());
+            ModelBridgeInternal.setFeedOptionsContinuationToken(feedOptions, pagedFluxOptions.getRequestContinuation());
         }
         if (pagedFluxOptions.getMaxItemCount() != null) {
-            feedOptions.setMaxItemCount(pagedFluxOptions.getMaxItemCount());
+            ModelBridgeInternal.setFeedOptionsMaxItemCount(feedOptions, pagedFluxOptions.getMaxItemCount());
         }
     }
 

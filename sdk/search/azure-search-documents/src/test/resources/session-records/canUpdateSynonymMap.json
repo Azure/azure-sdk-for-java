@@ -1,74 +1,81 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk57258033359.search.windows.net/synonymmaps?api-version=2019-05-06",
+    "Uri" : "https://azsjavacanupdatesynonymmap34a7206444de8637c5154.search.windows.net/synonymmaps?api-version=2019-05-06-Preview",
     "Headers" : {
+      "x-ms-client-request-id" : "b44d6d10-6a53-4999-94f0-eaa0c8b3f39c",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "e7a97043-7a53-42fb-9f96-d824f5b2ccc6",
+      "request-id" : "b44d6d10-6a53-4999-94f0-eaa0c8b3f39c",
       "StatusCode" : "201",
-      "Date" : "Mon, 24 Feb 2020 20:03:24 GMT",
+      "Date" : "Tue, 21 Apr 2020 19:15:16 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D7B9649B34A301\"",
-      "elapsed-time" : "74",
+      "client-request-id" : "b44d6d10-6a53-4999-94f0-eaa0c8b3f39c",
+      "ETag" : "W/\"0x8D7E62853486EA8\"",
+      "elapsed-time" : "38",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "218",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk57258033359.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D7B9649B34A301\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"word1,word2\",\"encryptionKey\":null}",
+      "Content-Length" : "247",
+      "Body" : "{\"@odata.context\":\"https://azsjavacanupdatesynonymmap34a7206444de8637c5154.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D7E62853486EA8\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"word1,word2\",\"encryptionKey\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk57258033359.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06"
+      "Location" : "https://azsjavacanupdatesynonymmap34a7206444de8637c5154.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06-Preview"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azs-sdk57258033359.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06",
+    "Uri" : "https://azsjavacanupdatesynonymmap34a7206444de8637c5154.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06-Preview",
     "Headers" : {
+      "x-ms-client-request-id" : "d9975721-1681-4f67-b72f-ff482d87d26f",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "8f505080-180b-4077-8f40-c7ff034b9ff7",
+      "request-id" : "d9975721-1681-4f67-b72f-ff482d87d26f",
       "StatusCode" : "200",
-      "Date" : "Mon, 24 Feb 2020 20:03:24 GMT",
+      "Date" : "Tue, 21 Apr 2020 19:15:16 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D7B9649B395ECF\"",
-      "elapsed-time" : "43",
+      "client-request-id" : "d9975721-1681-4f67-b72f-ff482d87d26f",
+      "ETag" : "W/\"0x8D7E628534E8AA3\"",
+      "elapsed-time" : "16",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "224",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk57258033359.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D7B9649B395ECF\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"newword1,newword2\",\"encryptionKey\":null}",
+      "Content-Length" : "253",
+      "Body" : "{\"@odata.context\":\"https://azsjavacanupdatesynonymmap34a7206444de8637c5154.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D7E628534E8AA3\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"newword1,newword2\",\"encryptionKey\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azs-sdk57258033359.search.windows.net/synonymmaps?api-version=2019-05-06",
-    "Headers" : { },
+    "Uri" : "https://azsjavacanupdatesynonymmap34a7206444de8637c5154.search.windows.net/synonymmaps?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "2e94f07a-81b3-4451-8128-681ceffb7eb7"
+    },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "da4321f2-f10d-4078-8ca9-675750297116",
+      "request-id" : "2e94f07a-81b3-4451-8128-681ceffb7eb7",
       "StatusCode" : "200",
-      "Date" : "Mon, 24 Feb 2020 20:03:24 GMT",
+      "Date" : "Tue, 21 Apr 2020 19:15:16 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "18",
+      "client-request-id" : "2e94f07a-81b3-4451-8128-681ceffb7eb7",
+      "elapsed-time" : "8",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "228",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk57258033359.search.windows.net/$metadata#synonymmaps\",\"value\":[{\"@odata.etag\":\"\\\"0x8D7B9649B395ECF\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"newword1,newword2\",\"encryptionKey\":null}]}",
+      "Content-Length" : "257",
+      "Body" : "{\"@odata.context\":\"https://azsjavacanupdatesynonymmap34a7206444de8637c5154.search.windows.net/$metadata#synonymmaps\",\"value\":[{\"@odata.etag\":\"\\\"0x8D7E628534E8AA3\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"newword1,newword2\",\"encryptionKey\":null}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   } ],
-  "variables" : [ "azs-sdk57258033359" ]
+  "variables" : [ "azsjavacanupdatesynonymmap34a7206444de8637c5154" ]
 }

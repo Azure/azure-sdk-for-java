@@ -9,8 +9,6 @@ import com.azure.management.resources.fluentcore.arm.Region;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
 public class NetworkUsageOperationsTests extends NetworkManagementTest {
     @Test
     public void canListNetworkUsages() throws Exception {

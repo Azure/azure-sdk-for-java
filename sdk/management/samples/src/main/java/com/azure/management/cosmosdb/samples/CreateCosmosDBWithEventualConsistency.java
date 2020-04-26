@@ -5,14 +5,12 @@ package com.azure.management.cosmosdb.samples;
 
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.CloudException;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosContainer;
 import com.azure.cosmos.CosmosDatabase;
 import com.azure.management.ApplicationTokenCredential;
 import com.azure.management.Azure;
@@ -120,7 +118,7 @@ public final class CreateCosmosDBWithEventualConsistency {
             System.out.println(myDatabase.toString());
 
             // Create a new collection.
-            CosmosContainer myCollection = myDatabase.createContainer(COLLECTION_ID, "/keyPath/", 1000).getContainer();
+            myDatabase.createContainer(COLLECTION_ID, "/keyPath/", 1000);
         } catch (Exception ex) {
             throw ex;
         }
@@ -139,7 +137,7 @@ public final class CreateCosmosDBWithEventualConsistency {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure.configure()
-                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+                    .withLogLevel(HttpLogDetailLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 

@@ -7,9 +7,7 @@ package com.azure.management.keyvault;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The PrivateEndpoint model.
- */
+/** The PrivateEndpoint model. */
 @Immutable
 public final class PrivateEndpoint {
     /*
@@ -20,7 +18,7 @@ public final class PrivateEndpoint {
 
     /**
      * Get the id property: Full identifier of the private endpoint resource.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {

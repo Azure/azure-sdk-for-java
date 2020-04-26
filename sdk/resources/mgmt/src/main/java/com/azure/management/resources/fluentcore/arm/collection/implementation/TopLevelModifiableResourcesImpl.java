@@ -6,19 +6,14 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Resource;
 import com.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
-import com.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
-import com.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
-import com.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
 import com.azure.management.resources.fluentcore.arm.implementation.ManagerBase;
 import com.azure.management.resources.fluentcore.arm.models.GroupableResource;
-import com.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.management.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
-import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.fluentcore.utils.ReactorMapper;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -31,11 +26,11 @@ import java.util.Collection;
  * Base class for resource collection classes.
  * (Internal use only)
  *
- * @param <T>                the individual resource type returned
- * @param <ImplT>            the individual resource implementation
- * @param <InnerT>           the wrapper inner type
+ * @param <T> the individual resource type returned
+ * @param <ImplT> the individual resource implementation
+ * @param <InnerT> the wrapper inner type
  * @param <InnerCollectionT> the inner type of the collection object
- * @param <ManagerT>         the manager type for this resource provider type
+ * @param <ManagerT> the manager type for this resource provider type
  */
 public abstract class TopLevelModifiableResourcesImpl<
         T extends GroupableResource<ManagerT, InnerT>,
@@ -45,11 +40,6 @@ public abstract class TopLevelModifiableResourcesImpl<
         ManagerT extends ManagerBase>
         extends GroupableResourcesImpl<T, ImplT, InnerT, InnerCollectionT, ManagerT>
         implements
-        SupportsGettingById<T>,
-        SupportsGettingByResourceGroup<T>,
-        SupportsDeletingByResourceGroup,
-        HasManager<ManagerT>,
-        HasInner<InnerCollectionT>,
         SupportsListing<T>,
         SupportsListingByResourceGroup<T>,
         SupportsBatchDeletion {

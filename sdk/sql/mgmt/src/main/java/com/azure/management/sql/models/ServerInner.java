@@ -13,9 +13,7 @@ import com.azure.management.sql.ServerPublicNetworkAccess;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The Server model.
- */
+/** The Server model. */
 @JsonFlatten
 @Fluent
 public class ServerInner extends Resource {
@@ -83,9 +81,8 @@ public class ServerInner extends Resource {
     private ServerPublicNetworkAccess publicNetworkAccess;
 
     /**
-     * Get the identity property: The Azure Active Directory identity of the
-     * server.
-     * 
+     * Get the identity property: The Azure Active Directory identity of the server.
+     *
      * @return the identity value.
      */
     public ResourceIdentity identity() {
@@ -93,9 +90,8 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Set the identity property: The Azure Active Directory identity of the
-     * server.
-     * 
+     * Set the identity property: The Azure Active Directory identity of the server.
+     *
      * @param identity the identity value to set.
      * @return the ServerInner object itself.
      */
@@ -105,9 +101,8 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Get the kind property: Kind of sql server. This is metadata used for the
-     * Azure portal experience.
-     * 
+     * Get the kind property: Kind of sql server. This is metadata used for the Azure portal experience.
+     *
      * @return the kind value.
      */
     public String kind() {
@@ -115,9 +110,8 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Get the administratorLogin property: Administrator username for the
-     * server. Once created it cannot be changed.
-     * 
+     * Get the administratorLogin property: Administrator username for the server. Once created it cannot be changed.
+     *
      * @return the administratorLogin value.
      */
     public String administratorLogin() {
@@ -125,9 +119,8 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Set the administratorLogin property: Administrator username for the
-     * server. Once created it cannot be changed.
-     * 
+     * Set the administratorLogin property: Administrator username for the server. Once created it cannot be changed.
+     *
      * @param administratorLogin the administratorLogin value to set.
      * @return the ServerInner object itself.
      */
@@ -137,9 +130,8 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Get the administratorLoginPassword property: The administrator login
-     * password (required for server creation).
-     * 
+     * Get the administratorLoginPassword property: The administrator login password (required for server creation).
+     *
      * @return the administratorLoginPassword value.
      */
     public String administratorLoginPassword() {
@@ -147,11 +139,9 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Set the administratorLoginPassword property: The administrator login
-     * password (required for server creation).
-     * 
-     * @param administratorLoginPassword the administratorLoginPassword value
-     * to set.
+     * Set the administratorLoginPassword property: The administrator login password (required for server creation).
+     *
+     * @param administratorLoginPassword the administratorLoginPassword value to set.
      * @return the ServerInner object itself.
      */
     public ServerInner withAdministratorLoginPassword(String administratorLoginPassword) {
@@ -161,7 +151,7 @@ public class ServerInner extends Resource {
 
     /**
      * Get the version property: The version of the server.
-     * 
+     *
      * @return the version value.
      */
     public String version() {
@@ -170,7 +160,7 @@ public class ServerInner extends Resource {
 
     /**
      * Set the version property: The version of the server.
-     * 
+     *
      * @param version the version value to set.
      * @return the ServerInner object itself.
      */
@@ -181,7 +171,7 @@ public class ServerInner extends Resource {
 
     /**
      * Get the state property: The state of the server.
-     * 
+     *
      * @return the state value.
      */
     public String state() {
@@ -189,9 +179,8 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Get the fullyQualifiedDomainName property: The fully qualified domain
-     * name of the server.
-     * 
+     * Get the fullyQualifiedDomainName property: The fully qualified domain name of the server.
+     *
      * @return the fullyQualifiedDomainName value.
      */
     public String fullyQualifiedDomainName() {
@@ -199,9 +188,8 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Get the privateEndpointConnections property: List of private endpoint
-     * connections on a server.
-     * 
+     * Get the privateEndpointConnections property: List of private endpoint connections on a server.
+     *
      * @return the privateEndpointConnections value.
      */
     public List<ServerPrivateEndpointConnection> privateEndpointConnections() {
@@ -209,9 +197,8 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Get the minimalTlsVersion property: Minimal TLS version. Allowed values:
-     * '1.0', '1.1', '1.2'.
-     * 
+     * Get the minimalTlsVersion property: Minimal TLS version. Allowed values: '1.0', '1.1', '1.2'.
+     *
      * @return the minimalTlsVersion value.
      */
     public String minimalTlsVersion() {
@@ -219,9 +206,8 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Set the minimalTlsVersion property: Minimal TLS version. Allowed values:
-     * '1.0', '1.1', '1.2'.
-     * 
+     * Set the minimalTlsVersion property: Minimal TLS version. Allowed values: '1.0', '1.1', '1.2'.
+     *
      * @param minimalTlsVersion the minimalTlsVersion value to set.
      * @return the ServerInner object itself.
      */
@@ -231,10 +217,9 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Get the publicNetworkAccess property: Whether or not public endpoint
-     * access is allowed for this server.  Value is optional but if passed in,
-     * must be 'Enabled' or 'Disabled'.
-     * 
+     * Get the publicNetworkAccess property: Whether or not public endpoint access is allowed for this server. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     *
      * @return the publicNetworkAccess value.
      */
     public ServerPublicNetworkAccess publicNetworkAccess() {
@@ -242,10 +227,9 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Set the publicNetworkAccess property: Whether or not public endpoint
-     * access is allowed for this server.  Value is optional but if passed in,
-     * must be 'Enabled' or 'Disabled'.
-     * 
+     * Set the publicNetworkAccess property: Whether or not public endpoint access is allowed for this server. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     *
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ServerInner object itself.
      */
