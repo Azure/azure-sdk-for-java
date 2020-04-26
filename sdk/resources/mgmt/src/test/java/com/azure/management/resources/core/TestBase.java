@@ -51,6 +51,7 @@ public abstract class TestBase {
     private PrintStream out;
     private String baseUri;
     protected SdkContext sdkContext = new SdkContext();
+    protected AuthFile authFile;
 
     public String generateRandomResourceName(String prefix, int maxLen) {
         return sdkContext.randomResourceName(prefix, maxLen);
@@ -228,8 +229,8 @@ public abstract class TestBase {
         } else {
             if (System.getenv("AZURE_AUTH_LOCATION") != null) { // Record mode
                 final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
-                AuthFile authFile = AuthFile.parse(credFile);
-                credential = authFile.generateCredential();
+                AuthFile authFile = buildAuthFile(credFile);
+                credential = authFile.credential();
                 profile = new AzureProfile(authFile.tenantId(), authFile.subscriptionId(), authFile.environment());
             } else {
                 String clientId = System.getenv("AZURE_CLIENT_ID");
@@ -330,6 +331,19 @@ public abstract class TestBase {
         } else {
             return AzureEnvironment.AZURE.url(AzureEnvironment.Endpoint.RESOURCE_MANAGER);
         }
+    }
+
+    protected AuthFile buildAuthFile(File credFile) throws IOException {
+        this.authFile = AuthFile.parse(credFile);
+        return this.authFile;
+    }
+
+    protected TokenCredential credentialFromFile() {
+        return this.authFile.credential();
+    }
+
+    protected String clientIdFromFile() {
+        return authFile.clientId();
     }
 
     protected abstract void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) throws IOException;

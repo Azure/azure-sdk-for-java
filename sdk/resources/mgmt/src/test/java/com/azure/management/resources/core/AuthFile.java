@@ -35,6 +35,7 @@ final class AuthFile {
     private String clientCertificate;
     private String clientCertificatePassword;
     private String subscriptionId;
+    private TokenCredential credential;
 
     @JsonIgnore
     private final AzureEnvironment environment;
@@ -111,7 +112,7 @@ final class AuthFile {
     /**
      * @return an ApplicationTokenCredentials object from the information in this class
      */
-    TokenCredential generateCredential() {
+    private TokenCredential generateCredential() {
         if (clientSecret != null) {
             return new ClientSecretCredentialBuilder()
                 .tenantId(tenantId)
@@ -147,6 +148,17 @@ final class AuthFile {
 
     AzureEnvironment environment() {
         return this.environment;
+    }
+
+    String clientId() {
+        return this.clientId;
+    }
+
+    TokenCredential credential() {
+        if (this.credential == null) {
+            this.credential = generateCredential();
+        }
+        return credential;
     }
 
     /**

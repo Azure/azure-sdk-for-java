@@ -52,7 +52,7 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
     /**
      * Creates an instance of ResourceManager that exposes resource management API entry points.
      *
-     * @param credential the credentials to use
+     * @param credential the credential to use
      * @return the ResourceManager instance
      */
     public static ResourceManager.Authenticated authenticate(TokenCredential credential) {
@@ -64,6 +64,7 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
      * Creates an instance of ResourceManager that exposes resource management API entry points.
      *
      * @param httpPipeline the HttpPipeline to be used for API calls
+     * @param profile the profile used in resource management
      * @return the interface exposing resource management API entry points that work across subscriptions
      */
     public static ResourceManager.Authenticated authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
@@ -86,10 +87,11 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
         /**
          * Creates an instance of ResourceManager that exposes resource management API entry points.
          *
-         * @param credentials the credentials to use
+         * @param credential the credential to use
+         * @param profile the profile used in resource management
          * @return the interface exposing resource management API entry points that work across subscriptions
          */
-        ResourceManager.Authenticated authenticate(TokenCredential credentials, AzureProfile profile);
+        ResourceManager.Authenticated authenticate(TokenCredential credential, AzureProfile profile);
     }
 
     /**
