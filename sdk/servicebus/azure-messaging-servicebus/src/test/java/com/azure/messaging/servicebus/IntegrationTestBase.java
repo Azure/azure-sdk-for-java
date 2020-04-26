@@ -18,7 +18,6 @@ import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
@@ -39,6 +38,7 @@ import static com.azure.core.amqp.ProxyOptions.PROXY_PASSWORD;
 import static com.azure.core.amqp.ProxyOptions.PROXY_USERNAME;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public abstract class IntegrationTestBase extends TestBase {
     protected static final Duration TIMEOUT = Duration.ofSeconds(60);
@@ -71,7 +71,7 @@ public abstract class IntegrationTestBase extends TestBase {
         logger.info("========= SET-UP [{}] =========", testInfo.getDisplayName());
 
         testName = testInfo.getDisplayName();
-        Assumptions.assumeTrue(getTestMode() == TestMode.RECORD);
+        assumeTrue(getTestMode() == TestMode.RECORD);
 
         properties = new ConnectionStringProperties(getConnectionString());
 
@@ -186,6 +186,33 @@ public abstract class IntegrationTestBase extends TestBase {
         return properties;
     }
 
+    protected static Stream<Arguments> messagingEntityProvider() {
+        return Stream.of(
+            Arguments.of(MessagingEntityType.QUEUE),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION)
+        );
+    }
+
+    protected static Stream<Arguments> messagingEntityWithSessions() {
+        return Stream.of(
+            Arguments.of(MessagingEntityType.QUEUE, false),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, false),
+            Arguments.of(MessagingEntityType.QUEUE, true),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, true)
+        );
+    }
+
+    protected static Stream<Arguments> receiveDeferredMessageBySequenceNumber() {
+        return Stream.of(
+            Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.COMPLETED),
+            Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.ABANDONED),
+            Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.SUSPENDED),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.ABANDONED),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.COMPLETED),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.SUSPENDED)
+        );
+    }
+
     /**
      * Creates a new instance of {@link ServiceBusClientBuilder} with the default integration test settings and uses a
      * connection string to authenticate.
@@ -209,7 +236,8 @@ public abstract class IntegrationTestBase extends TestBase {
         if (useCredentials) {
             final String fqdn = getFullyQualifiedDomainName();
 
-            Assumptions.assumeTrue(fqdn != null && !fqdn.isEmpty(), AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME + " variable needs to be set when using credentials.");
+            assumeTrue(fqdn != null && !fqdn.isEmpty(),
+                AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME + " variable needs to be set when using credentials.");
 
             final ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
                 .clientId(System.getenv("AZURE_CLIENT_ID"))
@@ -247,48 +275,34 @@ public abstract class IntegrationTestBase extends TestBase {
         }
     }
 
-    protected static Stream<Arguments> messagingEntityProvider() {
-        return Stream.of(
-            Arguments.of(MessagingEntityType.QUEUE),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION)
-        );
-    }
-
-    protected static Stream<Arguments> messagingEntityWithSessions() {
-        return Stream.of(
-            Arguments.of(MessagingEntityType.QUEUE, false),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, false),
-            Arguments.of(MessagingEntityType.QUEUE, true),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, true)
-        );
-    }
-
     protected ServiceBusMessage getMessage(String messageId, boolean isSessionEnabled) {
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId);
 
         return isSessionEnabled ? message.setSessionId(sessionId) : message;
     }
 
-    protected void assertMessageEquals(ServiceBusReceivedMessage message, String messageId, boolean isSessionEnabled) {
-        assertArrayEquals(CONTENTS_BYTES, message.getBody());
+    protected void assertMessageEquals(ServiceBusReceivedMessageContext message, String messageId,
+        boolean isSessionEnabled) {
+        assertMessageEquals(message.getMessage(), messageId, isSessionEnabled);
+    }
 
+    protected void assertMessageEquals(ServiceBusReceivedMessage message, String messageId, boolean isSessionEnabled) {
         // Disabling message ID assertion. Since we do multiple operations on the same queue/topic, it's possible
         // the queue or topic contains messages from previous test cases.
-        // assertEquals(messageId, message.getMessageId());
+        assertMessageEquals(message, messageId, isSessionEnabled, false);
+    }
+
+    protected void assertMessageEquals(ServiceBusReceivedMessage message, String messageId, boolean isSessionEnabled,
+        boolean verifyMessageId) {
+
+        assertArrayEquals(CONTENTS_BYTES, message.getBody());
+
+        if (verifyMessageId) {
+            assertEquals(messageId, message.getMessageId());
+        }
 
         if (isSessionEnabled) {
             assertEquals(sessionId, message.getSessionId());
         }
-    }
-
-    protected static Stream<Arguments> receiveDeferredMessageBySequenceNumber() {
-        return Stream.of(
-            Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.COMPLETED),
-            Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.ABANDONED),
-            Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.SUSPENDED),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.ABANDONED),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.COMPLETED),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.SUSPENDED)
-        );
     }
 }

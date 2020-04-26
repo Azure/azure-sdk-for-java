@@ -54,15 +54,15 @@ public class ReceiveMessageAndSettleAsyncSample {
             .setMaxAutoRenewDuration(Duration.ofSeconds(120));
 
         Disposable subscription = receiver.receive(options)
-            .flatMap(message -> {
+            .flatMap(context -> {
                 boolean messageProcessed = false;
-                // Process the message here.
+                // Process the context and its message here.
                 // Change the `messageProcessed` according to you business logic and if you are able to process the
                 // message successfully.
                 if (messageProcessed) {
-                    return receiver.complete(message);
+                    return receiver.complete(context.getMessage());
                 } else {
-                    return receiver.abandon(message);
+                    return receiver.abandon(context.getMessage());
                 }
             }).subscribe();
 

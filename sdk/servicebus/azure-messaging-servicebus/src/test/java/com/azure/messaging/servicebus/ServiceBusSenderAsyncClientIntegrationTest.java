@@ -45,9 +45,9 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         try {
             receiver.receive(new ReceiveAsyncOptions().setEnableAutoComplete(false))
                 .take(numberOfMessages)
-                .map(message -> {
-                    logger.info("Message received: {}", message.getSequenceNumber());
-                    return message;
+                .map(context -> {
+                    logger.info("Message received: {}", context.getMessage().getSequenceNumber());
+                    return context.getMessage();
                 })
                 .timeout(Duration.ofSeconds(5), Mono.empty())
                 .blockLast();

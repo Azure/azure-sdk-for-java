@@ -40,6 +40,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+/**
+ * Tests for {@link ServiceBusReceiveLinkProcessor}.
+ */
 class ServiceBusReceiveLinkProcessorTest {
     private static final int PREFETCH = 5;
 

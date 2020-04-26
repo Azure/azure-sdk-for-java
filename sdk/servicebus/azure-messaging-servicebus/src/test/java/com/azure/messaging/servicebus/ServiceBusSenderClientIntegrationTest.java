@@ -10,7 +10,6 @@ import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 
@@ -19,7 +18,6 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Stream;
 
 /**
  * Integration tests for the {@link ServiceBusSenderClient}.
@@ -40,9 +38,9 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
         try {
             receiver.receive(new ReceiveAsyncOptions().setEnableAutoComplete(false))
                 .take(messagesPending.get())
-                .map(message -> {
-                    logger.info("Message received: {}", message.getSequenceNumber());
-                    return message;
+                .map(context -> {
+                    logger.info("Message received: {}", context.getMessage().getSequenceNumber());
+                    return context;
                 })
                 .timeout(Duration.ofSeconds(5), Mono.empty())
                 .blockLast();
@@ -53,17 +51,10 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
         }
     }
 
-    static Stream<Arguments> receiverTypesProvider() {
-        return Stream.of(
-            Arguments.of(MessagingEntityType.QUEUE),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION)
-        );
-    }
-
     /**
      * Verifies that we can send a message to a non-session queue.
      */
-    @MethodSource("receiverTypesProvider")
+    @MethodSource("messagingEntityProvider")
     @ParameterizedTest
     void nonSessionQueueSendMessage(MessagingEntityType entityType) {
         // Arrange
@@ -82,7 +73,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can send a {@link ServiceBusMessageBatch} to a non-session queue.
      */
-    @MethodSource("receiverTypesProvider")
+    @MethodSource("messagingEntityProvider")
     @ParameterizedTest
     void nonSessionMessageBatch(MessagingEntityType entityType) {
         // Arrange
@@ -125,7 +116,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can schedule a message to a non-session entity.
      */
-    @MethodSource("receiverTypesProvider")
+    @MethodSource("messagingEntityProvider")
     @ParameterizedTest
     void nonSessionScheduleMessage(MessagingEntityType entityType) {
         // Arrange
@@ -148,7 +139,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can cancel a scheduled a message to a non-session entity.
      */
-    @MethodSource("receiverTypesProvider")
+    @MethodSource("messagingEntityProvider")
     @ParameterizedTest
     void nonSessionCancelScheduleMessage(MessagingEntityType entityType) {
         // Arrange

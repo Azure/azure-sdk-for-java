@@ -28,7 +28,6 @@ import org.apache.qpid.proton.amqp.transport.DeliveryState.DeliveryStateType;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -60,6 +59,7 @@ import java.util.stream.IntStream;
 
 import static com.azure.messaging.servicebus.TestUtils.getMessage;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -116,6 +116,10 @@ class ServiceBusReceiverAsyncClientTest {
     @Mock
     private ServiceBusReceivedMessage receivedMessage2;
     @Mock
+    private ServiceBusReceivedMessageContext context;
+    @Mock
+    private ServiceBusReceivedMessageContext context2;
+    @Mock
     private Runnable onClientClose;
 
     @BeforeAll
@@ -133,6 +137,9 @@ class ServiceBusReceiverAsyncClientTest {
         logger.info("[{}] Setting up.", testInfo.getDisplayName());
 
         MockitoAnnotations.initMocks(this);
+
+        when(context.getMessage()).thenReturn(receivedMessage);
+        when(context2.getMessage()).thenReturn(receivedMessage2);
 
         // Forcing us to publish the messages we receive on the AMQP link on single. Similar to how it is done
         // in ReactorExecutor.
@@ -158,7 +165,7 @@ class ServiceBusReceiverAsyncClientTest {
                     connectionOptions.getRetry()));
 
         receiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, null), connectionProcessor, CLEANUP_INTERVAL,
+            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, null, false, -1), connectionProcessor, CLEANUP_INTERVAL,
             tracerProvider, messageSerializer, onClientClose);
 
         sessionReceiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
@@ -259,7 +266,7 @@ class ServiceBusReceiverAsyncClientTest {
     @Test
     void receivesAndAutoCompletes() throws InterruptedException {
         // Arrange
-        final ReceiverOptions options = new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, null);
+        final ReceiverOptions options = new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, null, false, -1);
         final ServiceBusReceiverAsyncClient consumer2 = new ServiceBusReceiverAsyncClient(
             NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE, options, connectionProcessor, CLEANUP_INTERVAL,
             tracerProvider, messageSerializer, onClientClose);
@@ -294,7 +301,8 @@ class ServiceBusReceiverAsyncClientTest {
                 messageSink.next(message);
                 messageSink.next(message2);
             })
-            .expectNext(receivedMessage, receivedMessage2)
+            .assertNext(c -> assertEquals(receivedMessage, c.getMessage()))
+            .assertNext(c -> assertEquals(receivedMessage2, c.getMessage()))
             .verifyComplete();
 
         TimeUnit.SECONDS.sleep(2);
@@ -310,7 +318,7 @@ class ServiceBusReceiverAsyncClientTest {
     @Test
     void receivesAndAutoCompleteWithoutLockTokenErrors() {
         // Arrange
-        final ReceiverOptions options = new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, null);
+        final ReceiverOptions options = new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, null, false, -1);
         final ServiceBusReceiverAsyncClient consumer2 = new ServiceBusReceiverAsyncClient(
             NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE, options, connectionProcessor, CLEANUP_INTERVAL,
             tracerProvider, messageSerializer, onClientClose);
@@ -384,7 +392,7 @@ class ServiceBusReceiverAsyncClientTest {
      */
     @Test
     void completeInReceiveAndDeleteMode() {
-        final ReceiverOptions options = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, PREFETCH, null);
+        final ReceiverOptions options = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, PREFETCH, null, false, -1);
         ServiceBusReceiverAsyncClient client = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, options, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
             messageSerializer, onClientClose);
@@ -466,6 +474,7 @@ class ServiceBusReceiverAsyncClientTest {
         // Act & Assert
         StepVerifier.create(receiver.receive()
             .take(1)
+            .map(ServiceBusReceivedMessageContext::getMessage)
             .flatMap(m -> receiver.deadLetter(m, deadLetterOptions)))
             .then(() -> messageSink.next(message))
             .expectNext()
@@ -647,8 +656,8 @@ class ServiceBusReceiverAsyncClientTest {
         final String actualNamespace = receiver.getFullyQualifiedNamespace();
 
         // Assert
-        Assertions.assertEquals(entityPath, actual);
-        Assertions.assertEquals(NAMESPACE, actualNamespace);
+        assertEquals(entityPath, actual);
+        assertEquals(NAMESPACE, actualNamespace);
     }
 
     /**
