@@ -3,8 +3,8 @@
 
 package com.azure.management.monitor;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.RestClient;
 import com.azure.management.appservice.AppServicePlan;
 import com.azure.management.appservice.OperatingSystem;
 import com.azure.management.appservice.PricingTier;
@@ -12,6 +12,8 @@ import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.Region;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -19,10 +21,10 @@ public class AutoscaleTests extends MonitorManagementTest {
     private static String rgName = "";
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         rgName = generateRandomResourceName("jMonitor_", 18);
 
-        super.initializeClients(restClient, defaultSubscription, domain);
+        super.initializeClients(httpPipeline, profile);
     }
 
     @Override
