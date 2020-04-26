@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.spring.autoconfigure.aad;
 
 import com.nimbusds.jose.JOSEException;
@@ -28,6 +29,11 @@ import java.util.stream.Collectors;
 
 import static org.springframework.util.StringUtils.hasText;
 
+/**
+ * A stateless authentication filter which uses app roles feature of Azure Active Directory. Since it's a stateless
+ * implementation so the principal will not be stored in session. By using roles claim in the token it will not call
+ * Microsoft Graph to retrieve users' groups.
+ */
 public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADAppRoleStatelessAuthenticationFilter.class);

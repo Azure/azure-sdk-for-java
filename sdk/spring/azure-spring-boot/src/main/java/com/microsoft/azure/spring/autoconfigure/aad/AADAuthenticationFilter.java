@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.spring.autoconfigure.aad;
 
 import com.microsoft.aad.msal4j.MsalServiceException;
@@ -24,9 +25,9 @@ import java.net.MalformedURLException;
 import java.text.ParseException;
 
 /**
- * The filter injects UserPrincipal object that is associated with the thread of the current user request.
- * User's AAD membership info, along with token claims set, JWS object etc. are accessible from the object which can be
- * used for role based authorization.
+ * A stateful authentication filter which uses Microsoft Graph groups to authorize. Both ID token and access token are
+ * supported. In the case of access token, only access token issued for the exact same application this filter used for
+ * could be accepted, e.g. access token issued for Microsoft Graph could not be processed by users' application.
  */
 public class AADAuthenticationFilter extends OncePerRequestFilter {
     private static final Logger LOGGER = LoggerFactory.getLogger(AADAuthenticationFilter.class);

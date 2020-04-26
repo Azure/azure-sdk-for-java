@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.spring.autoconfigure.aad;
 
 import com.microsoft.aad.msal4j.MsalServiceException;
@@ -14,12 +15,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Strategy used to handle a failed authentication attempt.
+ * <p>
+ * To redirect the user to the authentication page to allow them to try again when conditional access policy is
+ * configured on Azure Active Directory.
+ */
 public class AADAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
     private AuthenticationFailureHandler defaultHandler;
 
     public AADAuthenticationFailureHandler() {
-        this.defaultHandler = new SimpleUrlAuthenticationFailureHandler(AADConstantsHelper.FAILURE_DEFUALT_URL);
+        this.defaultHandler = new SimpleUrlAuthenticationFailureHandler(AADConstantsHelper.FAILURE_DEFAULT_URL);
     }
 
     @Override

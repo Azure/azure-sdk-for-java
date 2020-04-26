@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.spring.autoconfigure.aad;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -40,6 +41,9 @@ import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+/**
+ * Microsoft Graph client encapsulation.
+ */
 public class AzureADGraphClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureADGraphClient.class);

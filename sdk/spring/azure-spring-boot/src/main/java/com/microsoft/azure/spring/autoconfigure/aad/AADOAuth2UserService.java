@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.spring.autoconfigure.aad;
 
 import com.microsoft.aad.msal4j.MsalServiceException;
@@ -21,6 +22,9 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Set;
 
+/**
+ * This implementation will retrieve group info of user from Microsoft Graph and map groups to {@link GrantedAuthority}.
+ */
 public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, OidcUser> {
     private static final String CONDITIONAL_ACCESS_POLICY = "conditional_access_policy";
     private static final String INVALID_REQUEST = "invalid_request";

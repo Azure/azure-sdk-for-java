@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.spring.autoconfigure.aad;
 
 import com.nimbusds.jose.JOSEException;
@@ -29,6 +30,9 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * A user principal manager to load user info from JWT.
+ */
 public class UserPrincipalManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserPrincipalManager.class);
@@ -42,7 +46,7 @@ public class UserPrincipalManager {
     private final Boolean explicitAudienceCheck;
     private final Set<String> validAudiences = new HashSet<>();
 
-    /**
+    /**ø
      * Creates a new {@link UserPrincipalManager} with a predefined {@link JWKSource}.
      * <p>
      * This is helpful in cases the JWK is not a remote JWKSet or for unit testing.

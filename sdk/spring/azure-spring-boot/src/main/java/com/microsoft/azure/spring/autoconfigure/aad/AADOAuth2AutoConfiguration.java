@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.spring.autoconfigure.aad;
 
 import com.microsoft.azure.telemetry.TelemetrySender;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -22,6 +24,14 @@ import java.util.Map;
 import static com.microsoft.azure.telemetry.TelemetryData.SERVICE_NAME;
 import static com.microsoft.azure.telemetry.TelemetryData.getClassPackageSimpleName;
 
+/**
+ * {@link EnableAutoConfiguration Auto-configuration} for Azure Active Authentication OAuth 2.0.
+ * <p>
+ * The configuration will not be activated if no {@literal azure.activedirectory.tenant-id} property provided.
+ * <p>
+ * A OAuth2 user service {@link AADOAuth2UserService} will be auto-configured by specifying
+ * {@literal azure.activedirectory.active-directory-groups} property.
+ */
 @Configuration
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)

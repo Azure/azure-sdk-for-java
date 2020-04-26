@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.spring.autoconfigure.aad;
 
 import static com.microsoft.azure.telemetry.TelemetryData.SERVICE_NAME;
@@ -17,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -28,6 +30,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.util.ClassUtils;
 
+/**
+ * {@link EnableAutoConfiguration Auto-configuration} for Azure Active Authentication filters .
+ * <p>
+ * The configuration will not be activated if no {@literal azure.activedirectory.client-id} property provided.
+ * <p>
+ * A stateless filter {@link AADAppRoleStatelessAuthenticationFilter} will be auto-configured by specifying
+ * {@literal azure.activedirectory.session-stateless=true}. Otherwise, {@link AADAuthenticationFilter} will be
+ * configured.
+ */
 @Configuration
 @ConditionalOnWebApplication
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
