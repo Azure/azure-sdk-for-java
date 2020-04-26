@@ -113,7 +113,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
             SdkContext.sleep(10000);
             ResourceManager resourceManager =
                 ResourceManager
-                    .authenticate(buildCredential(new File(authFile)))
+                    .authenticate(credentialFromFile())
                     .withSubscription(subscription);
             ResourceGroup group = resourceManager.resourceGroups().define(rgName).withRegion(Region.US_WEST).create();
 
