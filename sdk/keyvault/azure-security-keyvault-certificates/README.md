@@ -1,5 +1,5 @@
 # Azure Key Vault Certificate client library for Java
-Azure Key Vault allows you to securely manage and tightly control your certificates. Azure Key Vault Certificate client library supports certificates backed by RSA and EC keys.
+Azure Key Vault allows you to securely manage and tightly control your certificates. The Azure Key Vault Certificate client library supports certificates backed by RSA and EC keys.
 
  Multiple certificates, and multiple versions of the same certificate, can be kept in the Key Vault. Cryptographic keys in Key Vault backing the certificates are represented as [JSON Web Key [JWK]](https://tools.ietf.org/html/rfc7517) objects. This library offers operations to create, retrieve, update, delete, purge, backup, restore, and list the certificates and its versions.
 
