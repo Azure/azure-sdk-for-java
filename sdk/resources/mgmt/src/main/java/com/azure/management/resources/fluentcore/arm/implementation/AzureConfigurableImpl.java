@@ -73,18 +73,6 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
         return (T) this;
     }
 
-//    @Override
-//    public T withAuxiliaryCredentials(AzureTokenCredentials... tokens) {
-//        if (tokens != null) {
-//            if (tokens.length > 3) {
-//                throw new IllegalArgumentException("Only can hold up to three auxiliary tokens.");
-//            }
-//            AuxiliaryCredentialsInterceptor interceptor = new AuxiliaryCredentialsInterceptor(tokens);
-//            this.restClientBuilder = this.restClientBuilder.withInterceptor(interceptor);
-//        }
-//        return (T) this;
-//    }
-
     @Override
     public T withUserAgent(String userAgent) {
         // TODO: pending

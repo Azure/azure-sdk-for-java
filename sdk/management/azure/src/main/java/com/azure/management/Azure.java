@@ -132,37 +132,6 @@ public final class Azure {
         return new AuthenticatedImpl(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
-//    /**
-//     * Authenticates API access using a properties file containing the required credential.
-//     *
-//     * @param credentialFile the file containing the credential in the standard Java properties file format, with the
-//     *     following keys:
-//     *     <p><code>
-//     *                        subscription= #subscription ID<br>
-//     *                        tenant= #tenant ID<br>
-//     *                        client= #client id<br>
-//     *                        key= #client key<br>
-//     *                        managementURI= #management URI<br>
-//     *                        baseURL= #base URL<br>
-//     *                        authURL= #authentication URL<br>
-//     *                        </code>
-//     * @return authenticated Azure client
-//     * @throws IOException exception thrown from file access
-//     */
-//    public static Authenticated authenticate(File credentialFile) throws IOException {
-//        ApplicationTokenCredential credential = ApplicationTokenCredential.fromFile(credentialFile);
-//        return new AuthenticatedImpl(
-//                new RestClientBuilder()
-//                    .withBaseUrl(credential.getEnvironment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
-//                    .withCredential(credential)
-//                    .withSerializerAdapter(new AzureJacksonAdapter())
-//                    .withPolicy(new ProviderRegistrationPolicy(credential))
-//                    .withPolicy(new ResourceManagerThrottlingPolicy())
-//                    .buildClient(),
-//                credential.getDomain())
-//            .withDefaultSubscription(credential.getDefaultSubscriptionId());
-//    }
-
     /**
      * Authenticates API access using a RestClient instance.
      *
@@ -173,18 +142,6 @@ public final class Azure {
     public static Authenticated authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return new AuthenticatedImpl(httpPipeline, profile);
     }
-
-//    /**
-//     * Authenticates API access using a RestClient instance.
-//     *
-//     * @param restClient the RestClient configured with Azure authentication credential
-//     * @param tenantId the tenantId in Active Directory
-//     * @param subscriptionId the ID of the subscription
-//     * @return authenticated Azure client
-//     */
-//    public static Authenticated authenticate(HttpPipeline restClient, String tenantId, String subscriptionId) {
-//        return new AuthenticatedImpl(restClient, tenantId).withDefaultSubscription(subscriptionId);
-//    }
 
     /** @return an interface allow configurations on the client. */
     public static Configurable configure() {
@@ -201,17 +158,6 @@ public final class Azure {
          * @return the authenticated Azure client
          */
         Authenticated authenticate(TokenCredential credential, AzureProfile profile);
-
-//        /**
-//         * Authenticates API access using a properties file containing the required credential.
-//         *
-//         * @param credentialFile the file containing the credential in the standard Java properties file format
-//         *     following the same schema as {@link Azure#authenticate(File)}.
-//         *     <p>
-//         * @return Authenticated Azure client
-//         * @throws IOException exceptions thrown from file access
-//         */
-//        Authenticated authenticate(File credentialFile) throws IOException;
     }
 
     /** The implementation for {@link Configurable}. */
@@ -220,14 +166,6 @@ public final class Azure {
         public Authenticated authenticate(TokenCredential credential, AzureProfile profile) {
             return Azure.authenticate(buildHttpPipeline(credential, profile), profile);
         }
-
-//        @Override
-//        public Authenticated authenticate(File credentialFile) throws IOException {
-//            ApplicationTokenCredential credential = ApplicationTokenCredential.fromFile(credentialFile);
-//            return Azure
-//                .authenticate(
-//                    buildRestClient(credential), credential.getDomain(), credential.getDefaultSubscriptionId());
-//        }
     }
 
     /**
@@ -304,11 +242,6 @@ public final class Azure {
             this.profile = profile;
             this.sdkContext = new SdkContext();
         }
-
-//        private AuthenticatedImpl withDefaultSubscription(String subscriptionId) {
-//            this.profile.withSubscriptionId(subscriptionId);
-//            return this;
-//        }
 
         @Override
         public String tenantId() {
