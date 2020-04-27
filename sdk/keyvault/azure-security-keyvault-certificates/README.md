@@ -109,7 +109,7 @@ The Certificate client performs the interactions with the Azure Key Vault servic
 
 ## Examples
 ### Sync API
-The following sections provide several code snippets covering some of the most common Azure Key Vault Certificate Service tasks, including:
+The following sections provide several code snippets covering some of the most common Azure Key Vault Certificate service tasks, including:
 - [Create a Certificate](#create-a-certificate)
 - [Retrieve a Certificate](#retrieve-a-certificate)
 - [Update an existing Certificate](#update-an-existing-certificate)
