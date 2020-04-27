@@ -176,7 +176,7 @@ public class ServiceBusSenderClientTest {
 
         final List<ServiceBusMessage> sentMessages = messageListCaptor.getValue();
         Assertions.assertEquals(count, sentMessages.size());
-        
+
         sentMessages.forEach(sentMessage -> {
             Assertions.assertArrayEquals(contents, sentMessage.getBody());
         });

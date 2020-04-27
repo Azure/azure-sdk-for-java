@@ -136,15 +136,19 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Sends a list of messages to a Service Bus queue or topic.
+     * Sends a list of messages to a Service Bus queue or topic using a batched approach. If the size of messages
+     * exceed the maximum size of a single batch, an exception will be triggered and the send will fail.
+     * By default, the message size is the max amount allowed on the link.
      *
      * @param messages Messages to be sent to Service Bus queue or topic.
      *
      * @return The {@link Mono} the finishes this operation on service bus resource.
      *
-     * @throws NullPointerException if {@code message} is {@code null}.
+     * @throws NullPointerException if {@code messages} is {@code null}.
      */
     public Mono<Void> send(Iterable<ServiceBusMessage> messages) {
+        Objects.requireNonNull(messages, "'messages' cannot be null.");
+
         return createBatch().flatMap(messageBatch -> {
             messages.forEach(serviceBusMessage -> messageBatch.tryAdd(serviceBusMessage));
             return send(messageBatch);

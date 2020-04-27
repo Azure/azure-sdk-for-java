@@ -19,11 +19,8 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Integration tests for {@link ServiceBusSenderAsyncClient} from queues or subscriptions.
@@ -93,7 +90,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
      */
     @MethodSource("receiverTypesProvider")
     @ParameterizedTest
-    void nonSessionEntitySendMessageList(MessagingEntityType entityType) throws InterruptedException {
+    void nonSessionEntitySendMessageList(MessagingEntityType entityType) {
         // Arrange
         setSenderAndReceiver(entityType, false);
 
