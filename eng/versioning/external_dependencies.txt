@@ -25,15 +25,15 @@ commons-codec:commons-codec;1.13
 io.micrometer:micrometer-core;1.2.0
 io.micrometer:micrometer-registry-azure-monitor;1.2.0
 io.micrometer:micrometer-registry-graphite;1.2.0
-io.netty:netty-buffer;4.1.45.Final
-io.netty:netty-codec-http;4.1.45.Final
-io.netty:netty-codec-http2;4.1.45.Final
-io.netty:netty-handler;4.1.45.Final
-io.netty:netty-handler-proxy;4.1.45.Final
-io.netty:netty-tcnative;2.0.27.Final
-io.netty:netty-tcnative-boringssl-static;2.0.27.Final
-io.netty:netty-transport-native-epoll;4.1.45.Final
-io.netty:netty-transport-native-unix-common;4.1.45.Final
+io.netty:netty-buffer;4.1.49.Final
+io.netty:netty-codec-http;4.1.49.Final
+io.netty:netty-codec-http2;4.1.49.Final
+io.netty:netty-handler;4.1.49.Final
+io.netty:netty-handler-proxy;4.1.49.Final
+io.netty:netty-tcnative;2.0.29.Final
+io.netty:netty-tcnative-boringssl-static;2.0.29.Final
+io.netty:netty-transport-native-epoll;4.1.49.Final
+io.netty:netty-transport-native-unix-common;4.1.49.Final
 io.projectreactor.netty:reactor-netty;0.9.7.RELEASE
 io.projectreactor:reactor-core;3.3.5.RELEASE
 io.reactivex:rxjava;1.2.4
@@ -173,13 +173,13 @@ cosmos_com.google.guava:guava;25.0-jre
 cosmos_io.dropwizard.metrics:metrics-core;4.1.0
 cosmos_io.dropwizard.metrics:metrics-graphite;4.1.0
 cosmos_io.dropwizard.metrics:metrics-jvm;4.1.0
-cosmos_io.netty:netty-buffer;4.1.45.Final
-cosmos_io.netty:netty-codec-http;4.1.45.Final
-cosmos_io.netty:netty-codec-http2;4.1.45.Final
-cosmos_io.netty:netty-handler;4.1.45.Final
-cosmos_io.netty:netty-handler-proxy;4.1.45.Final
-cosmos_io.netty:netty-tcnative;2.0.27.Final
-cosmos_io.netty:netty-transport-native-epoll;4.1.45.Final
+cosmos_io.netty:netty-buffer;4.1.49.Final
+cosmos_io.netty:netty-codec-http;4.1.49.Final
+cosmos_io.netty:netty-codec-http2;4.1.49.Final
+cosmos_io.netty:netty-handler;4.1.49.Final
+cosmos_io.netty:netty-handler-proxy;4.1.49.Final
+cosmos_io.netty:netty-tcnative;2.0.29.Final
+cosmos_io.netty:netty-transport-native-epoll;4.1.49.Final
 cosmos_org.mockito:mockito-core;1.10.19
 
 # sdk\eventgrid\microsoft-azure-eventgrid\pom.xml
