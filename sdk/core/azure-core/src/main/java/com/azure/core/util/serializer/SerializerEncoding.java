@@ -4,6 +4,7 @@
 package com.azure.core.util.serializer;
 
 
+import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpHeaders;
 
 /**
@@ -25,13 +26,10 @@ public enum SerializerEncoding {
      */
     TEXT;
 
-    private static final String APPLICATION_XML = "application/xml";
-    private static final String TEXT_XML = "text/xml";
-
-    private static final String TEXT_PLAIN = "text/plain";
-
     /**
      * Determines the serializer encoding to use based on the {@code Content-Type} header.
+     * <p>
+     * If the {@code Content-Type} is unknown {@link #JSON} will be returned.
      *
      * @param headers The {@link HttpHeaders} that will be used to retrieve the {@code Content-Type} header.
      * @return The serializer encoding to use when handling the body.
@@ -41,9 +39,10 @@ public enum SerializerEncoding {
 
         if (mimeContentType != null) {
             String[] parts = mimeContentType.split(";");
-            if (APPLICATION_XML.equalsIgnoreCase(parts[0]) || TEXT_XML.equalsIgnoreCase(parts[0])) {
+            if (ContentType.APPLICATION_XML.equalsIgnoreCase(parts[0])
+                || ContentType.TEXT_XML.equalsIgnoreCase(parts[0])) {
                 return XML;
-            } else if (TEXT_PLAIN.equalsIgnoreCase(parts[0])) {
+            } else if (ContentType.TEXT_PLAIN.equalsIgnoreCase(parts[0])) {
                 return TEXT;
             }
         }

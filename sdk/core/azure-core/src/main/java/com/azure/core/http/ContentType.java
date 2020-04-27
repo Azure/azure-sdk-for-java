@@ -8,19 +8,34 @@ package com.azure.core.http;
  */
 public final class ContentType {
     /**
-     * the default JSON Content-Type header.
+     * A JSON {@code Content-Type} header.
      */
     public static final String APPLICATION_JSON = "application/json";
 
     /**
-     * the default binary Content-Type header.
+     * A binary {@code Content-Type} header.
      */
     public static final String APPLICATION_OCTET_STREAM = "application/octet-stream";
 
     /**
-     * The default form data Content-Type header.
+     * A URL encoded form {@code Content-Type} header.
      */
     public static final String APPLICATION_X_WWW_FORM_URLENCODED = "application/x-www-form-urlencoded";
+
+    /**
+     * An XML {@code Content-Type} header.
+     */
+    public static final String APPLICATION_XML = "application/xml";
+
+    /**
+     * A plaintext {@code Content-Type} header.
+     */
+    public static final String TEXT_PLAIN = "text/plain";
+
+    /**
+     * An XML {@code Content-Type} header.
+     */
+    public static final String TEXT_XML = "text/xml";
 
     /**
      * Private ctr.

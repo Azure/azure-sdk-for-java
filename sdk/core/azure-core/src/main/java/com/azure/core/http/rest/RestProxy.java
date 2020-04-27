@@ -257,11 +257,14 @@ public final class RestProxy implements InvocationHandler {
         }
 
         request.getHeaders().put("Content-Type", contentType);
+        SerializerEncoding bodyEncoding = getRequestBodyEncoding(contentType);
 
         if (FluxUtil.isFluxByteBuffer(methodParser.getBodyJavaType())) {
             // Content-Length or Transfer-Encoding: chunked must be provided by a user-specified header when a
             // Flux<byte[]> is given for the body.
             request.setBody((Flux<ByteBuffer>) bodyContentObject);
+        } else if (bodyEncoding != null) {
+            request.setBody(serializer.serialize(bodyContentObject, bodyEncoding));
         } else if (bodyContentObject instanceof byte[]) {
             request.setBody((byte[]) bodyContentObject);
         } else if (bodyContentObject instanceof String) {
@@ -278,6 +281,20 @@ public final class RestProxy implements InvocationHandler {
         }
 
         return request;
+    }
+
+    private SerializerEncoding getRequestBodyEncoding(String contentType) {
+        String[] parts = contentType.split(";");
+        if (ContentType.APPLICATION_XML.equalsIgnoreCase(parts[0])
+            || ContentType.TEXT_XML.equalsIgnoreCase(parts[0])) {
+            return SerializerEncoding.XML;
+        } else if (ContentType.TEXT_PLAIN.equalsIgnoreCase(parts[0])) {
+            return SerializerEncoding.TEXT;
+        } else if (ContentType.APPLICATION_JSON.equalsIgnoreCase(parts[0])) {
+            return SerializerEncoding.JSON;
+        } else {
+            return null;
+        }
     }
 
     private Mono<HttpDecodedResponse> ensureExpectedStatus(Mono<HttpDecodedResponse> asyncDecodedResponse,
