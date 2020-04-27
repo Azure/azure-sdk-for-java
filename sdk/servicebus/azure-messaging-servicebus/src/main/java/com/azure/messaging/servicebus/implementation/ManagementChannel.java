@@ -355,7 +355,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
             final Map<String, Object> body = new HashMap<>();
             body.put(ManagementConstants.SESSION_ID, sessionId);
-            body.put(ManagementConstants.SESSION_STATE, state);
+            body.put(ManagementConstants.SESSION_STATE, state == null ? null : new Binary(state));
 
             message.setBody(new AmqpValue(body));
 

@@ -43,6 +43,7 @@ import static com.azure.messaging.servicebus.implementation.ManagementConstants.
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_RENEW_SESSION_LOCK;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_SET_SESSION_STATE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -135,7 +136,14 @@ class ManagementChannelTests {
 
         @SuppressWarnings("unchecked") final Map<String, Object> hashMap = (Map<String, Object>) amqpValue.getValue();
         assertEquals(sessionId, hashMap.get(ManagementConstants.SESSION_ID));
-        assertEquals(state, hashMap.get(ManagementConstants.SESSION_STATE));
+
+        final Object addedState = hashMap.get(ManagementConstants.SESSION_STATE);
+        if (state == null) {
+            assertNull(addedState);
+        } else {
+            assertTrue(addedState instanceof Binary);
+            assertEquals(state, ((Binary) addedState).getArray());
+        }
 
         // Assert application properties
         final Map<String, Object> applicationProperties = sentMessage.getApplicationProperties().getValue();
