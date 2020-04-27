@@ -589,7 +589,14 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         sendMessage(messageToSend).block(Duration.ofSeconds(10));
 
         // Act
-        StepVerifier.create(receiver.setSessionState(sessionId, sessionState))
+        StepVerifier.create(receiver.receive()
+            .filter(x -> x.getSessionId().equals(sessionId))
+            .take(1)
+            .flatMap(m -> {
+                logger.info("SessionId:{}. LockToken: {}. LockedUntil: {}. Message received.",
+                    m.getSessionId(), m.getLockToken(), m.getLockedUntil());
+                return receiver.setSessionState(sessionId, sessionState);
+            }))
             .expectComplete()
             .verify();
 
