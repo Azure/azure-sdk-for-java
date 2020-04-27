@@ -117,7 +117,6 @@ The following sections provide several code snippets covering some of the most c
 - [List Certificates](#list-certificates)
 
 ### Create a certificate
-
 Create a certificate to be stored in the Azure Key Vault.
 - `beginCreateCertificate` creates a new certificate in the Azure Key Vault. if the certificate with name already exists then a new version of the certificate is created.
 
