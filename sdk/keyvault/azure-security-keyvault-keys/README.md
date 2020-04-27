@@ -36,7 +36,7 @@ In order to interact with the Key Vault service, you'll need to create an instan
 
 The `DefaultAzureCredential` way of authentication by providing client secret credentials is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].
 
- #### Create/Get credentials
+#### Create/Get credentials
 To create/get client secret credentials you can use the [Azure Portal][azure_create_application_in_portal], [Azure CLI][azure_keyvault_cli_full] or [Azure Cloud Shell](https://shell.azure.com/bash)
 
 Here is an [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
