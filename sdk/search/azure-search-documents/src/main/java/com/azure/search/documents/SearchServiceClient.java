@@ -82,8 +82,8 @@ public final class SearchServiceClient {
      * Creates a new Azure Cognitive Search data source or updates a data source if it already exists.
      *
      * @param dataSource the {@link DataSource} to create or update
-     * @param onlyIfUnchanged boolean to indicate whether to check etag before perform the operation. True means
-     * operation will apply only if etag matches. Otherwise, false.
+     * @param onlyIfUnchanged {@code true} to update if the {@code dataSource} is the same as the current service value.
+     * {@code false} to always update existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
@@ -179,8 +179,8 @@ public final class SearchServiceClient {
      * Delete a DataSource with Response
      *
      * @param dataSource the {@link DataSource} to be deleted.
-     * @param onlyIfUnchanged boolean to indicate whether to check etag before perform the operation. True means
-     * operation will apply only if etag matches. Otherwise, false.
+     * @param onlyIfUnchanged {@code true} to delete if the {@code dataSource} is the same as the current service value.
+     * {@code false} to always delete existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
@@ -230,8 +230,8 @@ public final class SearchServiceClient {
      * Creates a new Azure Cognitive Search indexer or updates an indexer if it already exists.
      *
      * @param indexer The {@link Indexer} to create or update.
-     * @param onlyIfUnchanged boolean to indicate whether to check etag before perform the operation. True means
-     * operation will apply only if etag matches. Otherwise, false.
+     * @param onlyIfUnchanged {@code true} to update if the {@code indexer} is the same as the current service value.
+     * {@code false} to always update existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
@@ -301,8 +301,8 @@ public final class SearchServiceClient {
      * Deletes an Azure Cognitive Search indexer.
      *
      * @param indexer the search {@link Indexer}
-     * @param onlyIfUnchanged boolean to indicate whether to check etag before perform the operation. True means
-     * operation will apply only if etag matches. Otherwise, false.
+     * @param onlyIfUnchanged {@code true} to delete if the {@code indexer} is the same as the current service value.
+     * {@code false} to always delete existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context the context
@@ -493,8 +493,8 @@ public final class SearchServiceClient {
      * index by taking the index offline for at least a few seconds. This temporarily causes indexing and query requests
      * to fail. Performance and write availability of the index can be impaired for several minutes after the index is
      * updated, or longer for very large indexes.
-     * @param onlyIfUnchanged boolean to indicate whether to check etag before perform the operation. True means
-     * operation will apply only if etag matches. Otherwise, false.
+     * @param onlyIfUnchanged {@code true} to update if the {@code index} is the same as the current service value.
+     * {@code false} to always update existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
@@ -519,8 +519,8 @@ public final class SearchServiceClient {
      * Deletes an Azure Cognitive Search index and all the documents it contains.
      *
      * @param index the Search {@link Index} to delete.
-     * @param onlyIfUnchanged boolean to indicate whether to check etag before perform the operation. True means
-     * operation will apply only if etag matches. Otherwise, false.
+     * @param onlyIfUnchanged {@code true} to delete if the {@code index} is the same as the current service value.
+     * {@code false} to always delete existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
@@ -643,8 +643,8 @@ public final class SearchServiceClient {
      * Creates a new Azure Cognitive Search skillset or updates a skillset if it already exists.
      *
      * @param skillset the {@link Skillset} to create or update.
-     * @param onlyIfUnchanged boolean to indicate whether to check etag before perform the operation. True means
-     * operation will apply only if etag matches. Otherwise, false.
+     * @param onlyIfUnchanged {@code true} to update if the {@code skillset} is the same as the current service value.
+     * {@code false} to always update existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
@@ -669,8 +669,8 @@ public final class SearchServiceClient {
      * Deletes a cognitive skillset in an Azure Cognitive Search service.
      *
      * @param skillset the {@link Skillset} to delete.
-     * @param onlyIfUnchanged boolean to indicate whether to check etag before perform the operation. True means
-     * operation will apply only if etag matches. Otherwise, false.
+     * @param onlyIfUnchanged {@code true} to delete if the {@code skillset} is the same as the current service value.
+     * {@code false} to always delete existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
@@ -767,8 +767,8 @@ public final class SearchServiceClient {
      * Creates a new Azure Cognitive Search synonym map or updates a synonym map if it already exists.
      *
      * @param synonymMap the definition of the synonym map to create or update
-     * @param onlyIfUnchanged boolean to indicate whether to check etag before perform the operation. True means
-     * operation will apply only if etag matches. Otherwise, false.
+     * @param onlyIfUnchanged {@code true} to update if the {@code synonymMap} is the same as the current service value.
+     * {@code false} to always update existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
@@ -793,8 +793,8 @@ public final class SearchServiceClient {
      * Deletes an Azure Cognitive Search synonym map.
      *
      * @param synonymMap the {@link SynonymMap} to delete.
-     * @param onlyIfUnchanged boolean to indicate whether to check etag before perform the operation. True means
-     * operation will apply only if etag matches. Otherwise, false.
+     * @param onlyIfUnchanged {@code true} to delete if the {@code synonymMap} is the same as the current service value.
+     * {@code false} to always delete existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
