@@ -205,7 +205,8 @@ PollResponse<DeletedKey> deletedKeyPollResponse = deletedKeyPoller.poll();
 
 // Deleted key is accessible as soon as polling begins.
 DeletedKey deletedKey = deletedKeyPollResponse.getValue();
-System.out.println("Deleted Date  %s" + deletedKey.getDeletedOn().toString());
+// Deletion date only works for SoftDelete Enabled Key Vault.
+System.out.printf("Deletion date:  %s\n", deletedKey.getDeletedOn().toString());
 
 // Key is being deleted on server.
 deletedKeyPoller.waitForCompletion();
