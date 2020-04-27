@@ -17,6 +17,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessageLockContainer;
+import com.azure.messaging.servicebus.implementation.MessageManagementNode;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAsyncConsumer;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
@@ -82,6 +83,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private final Runnable onClientClose;
     private final String sessionId;
     private final String linkName;
+    private final boolean isSessionReceiver;
 
     private final AtomicReference<ServiceBusAsyncConsumer> consumer = new AtomicReference<>();
 
@@ -111,9 +113,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         this.prefetch = receiverOptions.getPrefetchCount();
         this.receiveMode = receiverOptions.getReceiveMode();
         this.sessionId = receiverOptions.getSessionId();
+        this.isSessionReceiver = !CoreUtils.isNullOrEmpty(this.sessionId);
         this.entityType = entityType;
         this.onClientClose = onClientClose;
-
         this.linkName = StringUtil.getRandomString(entityPath);
         this.managementNodeLocks = new MessageLockContainer(cleanupInterval);
         this.defaultReceiveOptions = new ReceiveAsyncOptions()
@@ -188,6 +190,24 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Mono<Void> complete(MessageLockToken lockToken) {
         return updateDisposition(lockToken, DispositionStatus.COMPLETED, null, null, null);
+    }
+
+    /**
+     * Gets the state of a session given its identifier.
+     *
+     * @param sessionId Identifier of session to get.
+     *
+     * @return The session state or an empty Mono if there is no state set for the session.
+     * @throws IllegalStateException if the receiver is a non-session receiver.
+     */
+    public Mono<byte[]> getSessionState(String sessionId) {
+        if (!isSessionReceiver) {
+            return monoError(logger, new IllegalStateException("Cannot get session state on a non-session receiver."));
+        } else {
+            return connectionProcessor
+                .flatMap(connection -> connection.getManagementNode(entityPath, entityType, sessionId))
+                .flatMap(channel -> channel.getSessionState(sessionId));
+        }
     }
 
     /**
@@ -495,6 +515,43 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
+     * Sets the state of a session given its identifier.
+     *
+     * @param sessionId Identifier of session to get.
+     *
+     * @return The next expiration time for the session lock.
+     * @throws IllegalStateException if the receiver is a non-session receiver.
+     */
+    public Mono<Instant> renewSessionLock(String sessionId) {
+        if (!isSessionReceiver) {
+            return monoError(logger, new IllegalStateException("Cannot renew session lock on a non-session receiver."));
+        } else {
+            return connectionProcessor
+                .flatMap(connection -> connection.getManagementNode(entityPath, entityType, sessionId))
+                .flatMap(channel -> channel.renewSessionLock(sessionId));
+        }
+    }
+
+    /**
+     * Sets the state of a session given its identifier.
+     *
+     * @param sessionId Identifier of session to get.
+     * @param sessionState State to set on the session.
+     *
+     * @return A Mono that completes when the session is set
+     * @throws IllegalStateException if the receiver is a non-session receiver.
+     */
+    public Mono<Void> setSessionState(String sessionId, byte[] sessionState) {
+        if (!isSessionReceiver) {
+            return monoError(logger, new IllegalStateException("Cannot set session state on a non-session receiver."));
+        } else {
+            return connectionProcessor
+                .flatMap(connection -> connection.getManagementNode(entityPath, entityType, sessionId))
+                .flatMap(channel -> channel.setSessionState(sessionId, sessionState));
+        }
+    }
+
+    /**
      * Disposes of the consumer by closing the underlying connection to the service.
      */
     @Override
@@ -604,5 +661,32 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         consumer.set(newConsumer);
 
         return newConsumer;
+    }
+
+    private static final class MessageManagement implements MessageManagementNode {
+        private final ServiceBusReceiverAsyncClient client;
+        private MessageManagement(ServiceBusReceiverAsyncClient client) {
+            this.client = client;
+        }
+
+        @Override
+        public Mono<Void> abandon(MessageLockToken lockToken) {
+            return client.abandon(lockToken);
+        }
+
+        @Override
+        public Mono<Void> complete(MessageLockToken lockToken) {
+            return client.complete(lockToken);
+        }
+
+        @Override
+        public Mono<Void> deadLetter(MessageLockToken lockToken) {
+            return client.deadLetter(lockToken);
+        }
+
+        @Override
+        public Mono<Instant> renewMessageLock(MessageLockToken lockToken) {
+            return client.renewMessageLock(lockToken);
+        }
     }
 }

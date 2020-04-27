@@ -35,6 +35,7 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -94,6 +95,40 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
                 return sendWithVerify(channel, requestMessage);
             })).then();
+    }
+
+    @Override
+    public Mono<byte[]> getSessionState(String sessionId) {
+        return isAuthorized(ManagementConstants.OPERATION_RENEW_SESSION_LOCK).then(createChannel.flatMap(channel -> {
+            final Message message = createManagementMessage(ManagementConstants.OPERATION_SET_SESSION_STATE, null);
+
+            final HashMap<String, Object> body = new HashMap<>();
+            body.put(ManagementConstants.SESSION_ID, sessionId);
+
+            message.setBody(new AmqpValue(body));
+
+            return sendWithVerify(channel, message);
+        })).flatMap(response -> {
+            final Object value = ((AmqpValue) response.getBody()).getValue();
+
+            if (!(value instanceof Map)) {
+                return monoError(logger, Exceptions.propagate(new AmqpException(false, String.format(
+                    "Body not expected when renewing session. Id: %s. Value: %s", sessionId, value),
+                    getErrorContext())));
+            }
+
+            @SuppressWarnings("unchecked")
+            final Map<String, Object> map = (Map<String, Object>) value;
+            final Object sessionState = map.get(ManagementConstants.SESSION_STATE);
+
+            if (!map.containsKey(ManagementConstants.SESSION_STATE) || sessionState == null) {
+                logger.info("sessionId[{}]. Does not have a session state.", sessionId);
+                return Mono.empty();
+            }
+
+            final byte[] state = ((Binary) sessionState).getArray();
+            return Mono.just(state);
+        });
     }
 
     /**
@@ -205,6 +240,40 @@ public class ManagementChannel implements ServiceBusManagementNode {
         }));
     }
 
+    @Override
+    public Mono<Instant> renewSessionLock(String sessionId) {
+        return isAuthorized(ManagementConstants.OPERATION_RENEW_SESSION_LOCK).then(createChannel.flatMap(channel -> {
+            final Message message = createManagementMessage(ManagementConstants.OPERATION_SET_SESSION_STATE, null);
+
+            final HashMap<String, Object> body = new HashMap<>();
+            body.put(ManagementConstants.SESSION_ID, sessionId);
+
+            message.setBody(new AmqpValue(body));
+
+            return sendWithVerify(channel, message);
+        })).map(response -> {
+            final Object value = ((AmqpValue) response.getBody()).getValue();
+
+            if (!(value instanceof Map)) {
+                throw logger.logExceptionAsError(Exceptions.propagate(new AmqpException(false, String.format(
+                    "Body not expected when renewing session. Id: %s. Value: %s", sessionId, value),
+                    getErrorContext())));
+            }
+
+            @SuppressWarnings("unchecked")
+            final Map<String, Object> map = (Map<String, Object>) value;
+            final Object expirationValue = map.get(ManagementConstants.EXPIRATION);
+
+            if (!(expirationValue instanceof Date)) {
+                throw logger.logExceptionAsError(Exceptions.propagate(new AmqpException(false, String.format(
+                    "Expiration is not of type Date when renewing session. Id: %s. Value: %s", sessionId,
+                    expirationValue), getErrorContext())));
+            }
+
+            return ((Date) expirationValue).toInstant();
+        });
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -272,6 +341,21 @@ public class ManagementChannel implements ServiceBusManagementNode {
             }
 
             return sequenceNumbers.get(0);
+        }));
+    }
+
+    @Override
+    public Mono<Void> setSessionState(String sessionId, byte[] state) {
+        return isAuthorized(ManagementConstants.OPERATION_SET_SESSION_STATE).then(createChannel.flatMap(channel -> {
+            final Message message = createManagementMessage(ManagementConstants.OPERATION_SET_SESSION_STATE, null);
+
+            final HashMap<String, Object> body = new HashMap<>();
+            body.put(ManagementConstants.SESSION_ID, sessionId);
+            body.put(ManagementConstants.SESSION_STATE, state);
+
+            message.setBody(new AmqpValue(body));
+
+            return sendWithVerify(channel, message).then();
         }));
     }
 
