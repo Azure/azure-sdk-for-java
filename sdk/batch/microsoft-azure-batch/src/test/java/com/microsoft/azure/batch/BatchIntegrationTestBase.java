@@ -346,7 +346,7 @@ public class BatchIntegrationTestBase {
             "72f988bf-86f1-41af-91ab-2d7cd011db47",
             System.getenv("APPLICATION_SECRET"),
             AzureEnvironment.AZURE);
-        Azure azure = Azure.authenticate(token).withSubscription(System.getenv("AZURE_BATCH_SUBSCRIPTION_ID"));
+        Azure azure = Azure.authenticate(token).withSubscription("677f962b-9abf-4423-a27b-0c2f4094dcec");
         String vnetName = "AzureBatchTestVnet";
         String subnetName = "AzureBatchTestSubnet";
         if (azure.networks().list().size() == 0) {
