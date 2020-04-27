@@ -39,7 +39,7 @@ The `DefaultAzureCredential` way of authentication by providing client secret cr
  #### Create/Get credentials
 To create/get client secret credentials you can use the [Azure Portal][azure_create_application_in_portal], [Azure CLI][azure_keyvault_cli_full] or [Azure Cloud Shell](https://shell.azure.com/bash)
 
-Here is [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
+Here is an [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
 
  * Create a service principal and configure its access to Azure resources:
 
