@@ -93,7 +93,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-core</artifactId>
-      <version>3.3.3.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
+      <version>3.3.5.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
       <exclusions>
         <exclusion>
           <groupId>io.netty</groupId>
@@ -233,7 +233,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.3.3.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.3.5.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -247,7 +247,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>io.projectreactor.netty</groupId>
       <artifactId>reactor-netty</artifactId>
-      <version>0.9.5.RELEASE</version> <!-- {x-version-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
+      <version>0.9.7.RELEASE</version> <!-- {x-version-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -312,8 +312,8 @@ Licensed under the MIT License.
                 <include>io.netty:netty-handler:[4.1.45.Final]</include> <!-- {x-include-update;cosmos_io.netty:netty-handler;external_dependency} -->
                 <include>io.netty:netty-handler-proxy:[4.1.45.Final]</include> <!-- {x-include-update;cosmos_io.netty:netty-handler-proxy;external_dependency} -->
                 <include>io.netty:netty-transport-native-epoll:[4.1.45.Final]</include> <!-- {x-include-update;cosmos_io.netty:netty-transport-native-epoll;external_dependency} -->
-                <include>io.projectreactor:reactor-core:[3.3.3.RELEASE]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
-                <include>io.projectreactor.netty:reactor-netty:[0.9.5.RELEASE]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
+                <include>io.projectreactor:reactor-core:[3.3.5.RELEASE]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
+                <include>io.projectreactor.netty:reactor-netty:[0.9.7.RELEASE]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
                 <include>org.slf4j:slf4j-api:[1.7.28]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
               </includes>
             </bannedDependencies>
