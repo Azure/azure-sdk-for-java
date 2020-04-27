@@ -41,6 +41,7 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -271,6 +272,39 @@ class ServiceBusSenderAsyncClientTest {
 
         // Act
         StepVerifier.create(sender.send(batch))
+            .verifyComplete();
+
+        // Assert
+        verify(sendLink).send(messagesCaptor.capture());
+
+        final List<org.apache.qpid.proton.message.Message> messagesSent = messagesCaptor.getValue();
+        Assertions.assertEquals(count, messagesSent.size());
+
+        messagesSent.forEach(message -> Assertions.assertEquals(Section.SectionType.Data, message.getBody().getType()));
+    }
+
+    /**
+     * Verifies that sending multiple message will result in calling sender.send(Iterator).
+     */
+    @Test
+    void sendMessagesList() {
+        // Arrange
+        final int count = 4;
+        final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
+        final List<ServiceBusMessage> messageList = new ArrayList<>();
+
+        IntStream.range(0, count).forEach(index -> {
+            final ServiceBusMessage message = new ServiceBusMessage(contents);
+            Assertions.assertTrue(messageList.add(message));
+        });
+
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions)))
+            .thenReturn(Mono.just(sendLink));
+        when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
+        when(sendLink.send(anyList())).thenReturn(Mono.empty());
+
+        // Act
+        StepVerifier.create(sender.send(messageList))
             .verifyComplete();
 
         // Assert

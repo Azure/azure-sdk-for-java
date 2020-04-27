@@ -20,6 +20,9 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.IntStream;
 
 import static com.azure.messaging.servicebus.ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -36,6 +39,9 @@ public class ServiceBusSenderClientTest {
 
     @Captor
     private ArgumentCaptor<ServiceBusMessage> singleMessageCaptor;
+
+    @Captor
+    private ArgumentCaptor<List<ServiceBusMessage>> messageListCaptor;
 
     @Captor
     private ArgumentCaptor<Instant> scheduleMessageCaptor;
@@ -142,6 +148,39 @@ public class ServiceBusSenderClientTest {
 
         //Assert
         Assertions.assertEquals(batch, messageBatch);
+    }
+
+    /**
+     * Verifies that sending a single message will result in calling sender.send(Message).
+     */
+    @Test
+    void sendMessageList() {
+        // Arrange
+        final int count = 4;
+        final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
+        final List<ServiceBusMessage> messageList = new ArrayList<>();
+
+        IntStream.range(0, count).forEach(index -> {
+            final ServiceBusMessage message = new ServiceBusMessage(contents);
+            Assertions.assertTrue(messageList.add(message));
+        });
+
+        when(asyncSender.send(messageList)).thenReturn(Mono.empty());
+
+        // Act
+        sender.send(messageList);
+
+        // Assert
+        verify(asyncSender, times(1)).send(messageList);
+        verify(asyncSender).send(messageListCaptor.capture());
+
+        final List<ServiceBusMessage> sentMessages = messageListCaptor.getValue();
+        Assertions.assertEquals(count, sentMessages.size());
+        
+        sentMessages.forEach(sentMessage -> {
+            Assertions.assertArrayEquals(contents, sentMessage.getBody());
+        });
+
     }
 
     /**
