@@ -100,7 +100,8 @@ public class ManagementChannel implements ServiceBusManagementNode {
     @Override
     public Mono<byte[]> getSessionState() {
         if (!isSessionEnabled) {
-            return monoError(logger, new IllegalStateException("Cannot get session state for non-session management node"));
+            return monoError(logger,
+                new IllegalStateException("Cannot get session state for non-session management node"));
         }
 
         return isAuthorized(ManagementConstants.OPERATION_GET_SESSION_STATE).then(createChannel.flatMap(channel -> {
