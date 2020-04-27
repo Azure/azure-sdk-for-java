@@ -12,7 +12,6 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HostPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.TimeoutPolicy;
@@ -20,8 +19,6 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.management.AuthenticationPolicy;
-import com.azure.management.UserAgentPolicy;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
@@ -197,7 +194,6 @@ public abstract class TestBase {
         HttpPipeline httpPipeline;
 
         if (isPlaybackMode()) {
-            credential = new AzureTestCredential();
             profile = new AzureProfile(
                 ZERO_TENANT, ZERO_SUBSCRIPTION,
                 new AzureEnvironment(
@@ -213,16 +209,13 @@ public abstract class TestBase {
                         }}));
 
             List<HttpPipelinePolicy> policies = new ArrayList<>();
-            HttpLogOptions httpLogOptions = new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS);
-            policies.add(new UserAgentPolicy(httpLogOptions, null));
-            List<HttpPipelinePolicy> retryPolicies = new ArrayList<>();
-            retryPolicies.add(new RetryPolicy());
-            retryPolicies.add(interceptorManager.initInterceptor());
-            retryPolicies.add(new HostPolicy(playbackUri + "/"));
-            retryPolicies.add(new ResourceGroupTaggingPolicy());
-            retryPolicies.add(new CookiePolicy());
-            retryPolicies.add(new AuthenticationPolicy(credential, profile.environment(), null));
-            httpPipeline = HttpPipelineProvider.buildHttpPipeline(policies, retryPolicies, null);
+            policies.add(interceptorManager.initInterceptor());
+            policies.add(new HostPolicy(playbackUri + "/"));
+            policies.add(new ResourceGroupTaggingPolicy());
+            policies.add(new CookiePolicy());
+            httpPipeline = HttpPipelineProvider.buildHttpPipeline(
+                null, profile, null, new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS),
+                null, new RetryPolicy(), policies, null);
 
             interceptorManager.addTextReplacementRule(PLAYBACK_URI_BASE + "1234", playbackUri);
             System.out.println(playbackUri);
@@ -251,22 +244,16 @@ public abstract class TestBase {
 
             }
 
-            HttpLogOptions httpLogOptions = new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS);
             List<HttpPipelinePolicy> policies = new ArrayList<>();
-            policies.add(new UserAgentPolicy(httpLogOptions, null));
-            List<HttpPipelinePolicy> retryPolicies = new ArrayList<>();
-            retryPolicies.add(new RetryPolicy());
-            retryPolicies.add(new ResourceGroupTaggingPolicy());
-            retryPolicies.add(new TimeoutPolicy(Duration.ofMinutes(1)));
-            retryPolicies.add(new CookiePolicy());
-            retryPolicies.add(new AuthenticationPolicy(credential, profile.environment(), null));
-            retryPolicies.add(new HttpLoggingPolicy(httpLogOptions));
+            policies.add(new ResourceGroupTaggingPolicy());
+            policies.add(new TimeoutPolicy(Duration.ofMinutes(1)));
+            policies.add(new CookiePolicy());
             if (!interceptorManager.isNoneMode()) {
-                retryPolicies.add(interceptorManager.initInterceptor());
+                policies.add(interceptorManager.initInterceptor());
             }
-            httpPipeline = HttpPipelineProvider.buildHttpPipeline(policies,
-                retryPolicies,
-                generateHttpClientWithProxy(null));
+            httpPipeline = HttpPipelineProvider.buildHttpPipeline(
+                credential, profile, null, new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS),
+                null, new RetryPolicy(), policies, null);
 
             interceptorManager.addTextReplacementRule(profile.subscriptionId(), ZERO_SUBSCRIPTION);
             interceptorManager.addTextReplacementRule(profile.tenantId(), ZERO_TENANT);

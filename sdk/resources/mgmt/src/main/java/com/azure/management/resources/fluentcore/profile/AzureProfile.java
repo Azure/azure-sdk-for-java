@@ -6,6 +6,8 @@ package com.azure.management.resources.fluentcore.profile;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.Configuration;
 
+import java.util.Objects;
+
 /**
  * Azure profile for client.
  */
@@ -17,7 +19,7 @@ public class AzureProfile {
     private final Configuration configuration = Configuration.getGlobalConfiguration();
 
     /**
-     * Creates AzureProfile instance with Azure environment.
+     * Creates AzureProfile instance with Azure environment. The global environment is {@link AzureEnvironment#AZURE}.
      *
      * @param environment the Azure environment
      */
@@ -27,12 +29,14 @@ public class AzureProfile {
 
     /**
      * Creates AzureProfile instance with tenant ID, subscription ID and Azure environment.
+     * The global environment is {@link AzureEnvironment#AZURE}.
      *
      * @param tenantId the tenant ID required for Graph Rbac
      * @param subscriptionId the subscription ID required for resource management
      * @param environment the Azure environment
      */
     public AzureProfile(String tenantId, String subscriptionId, AzureEnvironment environment) {
+        Objects.requireNonNull(environment);
         this.tenantId = tenantId;
         this.subscriptionId = subscriptionId;
         this.environment = environment;

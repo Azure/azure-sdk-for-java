@@ -8,12 +8,9 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.Configuration;
-import com.azure.management.AuthenticationPolicy;
-import com.azure.management.UserAgentPolicy;
 import com.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.management.resources.fluentcore.policy.AuxiliaryAuthenticationPolicy;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
@@ -32,7 +29,7 @@ import java.util.concurrent.TimeUnit;
  * @param <T> the type of the configurable interface
  */
 public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
-        implements AzureConfigurable<T> {
+    implements AzureConfigurable<T> {
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
     private List<HttpPipelinePolicy> policies;
@@ -137,19 +134,11 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
 
     protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile) {
         Objects.requireNonNull(credential);
-
-        List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(httpLogOptions, configuration));
-
-        List<HttpPipelinePolicy> retryPolicies = new ArrayList<>();
-        retryPolicies.add(retryPolicy);
-        retryPolicies.add(new AuthenticationPolicy(credential, profile.environment(), scopes()));
-        if (this.tokens != null) {
-            retryPolicies.add(new AuxiliaryAuthenticationPolicy(profile.environment(), tokens));
+        if (tokens != null) {
+            policies.add(new AuxiliaryAuthenticationPolicy(profile.environment(), tokens));
         }
-        retryPolicies.add(new HttpLoggingPolicy(httpLogOptions));
-        retryPolicies.addAll(this.policies);
-        return HttpPipelineProvider.buildHttpPipeline(policies, retryPolicies, httpClient);
+        return HttpPipelineProvider.buildHttpPipeline(credential, profile, scopes(), httpLogOptions, configuration,
+            retryPolicy, policies, httpClient);
     }
 
     private String[] scopes() {

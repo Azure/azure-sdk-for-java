@@ -96,7 +96,6 @@ class FunctionAppImpl
         SiteLogsConfigInner logConfig,
         AppServiceManager manager) {
         super(name, innerObject, siteConfig, logConfig, manager);
-        // TODO: confirm host url
         functionAppKeyServiceHost = manager.environment().getResourceManagerEndpoint();
         functionAppKeyService = RestProxy.create(FunctionAppKeyService.class, manager.httpPipeline());
         if (!isInCreateMode()) {
@@ -126,8 +125,7 @@ class FunctionAppImpl
                 .policies(policies.toArray(new HttpPipelinePolicy[0]))
                 .httpClient(manager().httpPipeline().getHttpClient())
                 .build();
-            //TODO: confirm host url
-            functionServiceHost = manager().environment().getResourceManagerEndpoint();
+            functionServiceHost = baseUrl;
             functionService =
                 RestProxy.create(FunctionService.class, httpPipeline, new AzureJacksonAdapter());
         }
