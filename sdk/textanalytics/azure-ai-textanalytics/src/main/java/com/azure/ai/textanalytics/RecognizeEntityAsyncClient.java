@@ -158,8 +158,8 @@ class RecognizeEntityAsyncClient {
                     : toTextDocumentStatistics(documentEntities.getStatistics()),
                 null,
                 new IterableStream<>(documentEntities.getEntities().stream().map(entity ->
-                    new CategorizedEntity(entity.getText(), EntityCategory.fromString(entity.getType()),
-                        entity.getSubtype(), entity.getOffset(), entity.getLength(), entity.getScore()))
+                    new CategorizedEntity(entity.getText(), EntityCategory.fromString(entity.getCategory()),
+                        entity.getSubcategory(), entity.getOffset(), entity.getLength(), entity.getConfidenceScore()))
                     .collect(Collectors.toList())))));
         // Document errors
         entitiesResult.getErrors().forEach(documentError -> recognizeCategorizedEntitiesResults.add(
@@ -184,11 +184,11 @@ class RecognizeEntityAsyncClient {
      */
     private Mono<TextAnalyticsPagedResponse<RecognizeCategorizedEntitiesResult>> getRecognizedEntitiesResponseInPage(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
-        return service.entitiesRecognitionGeneralWithRestResponseAsync(
+        return service.entitiesRecognitionGeneralWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
+            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE),
             options == null ? null : options.getModelVersion(),
-            options == null ? null : options.isIncludeStatistics(),
-            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+            options == null ? null : options.isIncludeStatistics())
             .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
             .doOnSuccess(response -> logger.info("Recognized entities for a batch of documents- {}",
                 response.getValue()))

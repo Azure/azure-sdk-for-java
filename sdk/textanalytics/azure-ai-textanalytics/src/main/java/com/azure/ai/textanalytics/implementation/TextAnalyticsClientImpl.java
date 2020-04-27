@@ -148,6 +148,23 @@ public final class TextAnalyticsClientImpl {
     }
 
     /**
+     * The API returns a list of general named entities in a given document. For the list of supported entity types, check &lt;a href="https://aka.ms/taner"&gt;Supported Entity Types in Text Analytics API&lt;/a&gt;. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
+     * 
+     * @param input Contains a set of input documents to be analyzed by the service.
+     * @param context The context to associate with this operation.
+     * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is not specified, the API should default to the latest, non-preview version.
+     * @param showStats (Optional) if set to true, response will contain input and document level statistics.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TextAnalyticsErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<EntitiesResult>> entitiesRecognitionGeneralWithResponseAsync(MultiLanguageBatchInput input, Context context, String modelVersion, Boolean showStats) {
+        return service.entitiesRecognitionGeneral(this.getEndpoint(), modelVersion, showStats, input, context);
+    }
+
+    /**
      * The API returns a list of recognized entities with links to a well-known knowledge base. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
      * 
      * @param input Contains a set of input documents to be analyzed by the service.
@@ -161,6 +178,23 @@ public final class TextAnalyticsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<EntityLinkingResult>> entitiesLinkingWithResponseAsync(MultiLanguageBatchInput input, String modelVersion, Boolean showStats) {
         return FluxUtil.withContext(context -> service.entitiesLinking(this.getEndpoint(), modelVersion, showStats, input, context));
+    }
+
+    /**
+     * The API returns a list of recognized entities with links to a well-known knowledge base. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
+     * 
+     * @param input Contains a set of input documents to be analyzed by the service.
+     * @param context The context to associate with this operation.
+     * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is not specified, the API should default to the latest, non-preview version.
+     * @param showStats (Optional) if set to true, response will contain input and document level statistics.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TextAnalyticsErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<EntityLinkingResult>> entitiesLinkingWithResponseAsync(MultiLanguageBatchInput input, Context context, String modelVersion, Boolean showStats) {
+        return service.entitiesLinking(this.getEndpoint(), modelVersion, showStats, input, context);
     }
 
     /**
@@ -180,6 +214,23 @@ public final class TextAnalyticsClientImpl {
     }
 
     /**
+     * The API returns a list of strings denoting the key phrases in the input text. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
+     * 
+     * @param input Contains a set of input documents to be analyzed by the service.
+     * @param context The context to associate with this operation.
+     * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is not specified, the API should default to the latest, non-preview version.
+     * @param showStats (Optional) if set to true, response will contain input and document level statistics.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TextAnalyticsErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<KeyPhraseResult>> keyPhrasesWithResponseAsync(MultiLanguageBatchInput input, Context context, String modelVersion, Boolean showStats) {
+        return service.keyPhrases(this.getEndpoint(), modelVersion, showStats, input, context);
+    }
+
+    /**
      * The API returns the detected language and a numeric score between 0 and 1. Scores close to 1 indicate 100% certainty that the identified language is true. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
      * 
      * @param input Collection of documents to analyze.
@@ -196,6 +247,23 @@ public final class TextAnalyticsClientImpl {
     }
 
     /**
+     * The API returns the detected language and a numeric score between 0 and 1. Scores close to 1 indicate 100% certainty that the identified language is true. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
+     * 
+     * @param input Collection of documents to analyze.
+     * @param context The context to associate with this operation.
+     * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is not specified, the API should default to the latest, non-preview version.
+     * @param showStats (Optional) if set to true, response will contain input and document level statistics.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TextAnalyticsErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<LanguageResult>> languagesWithResponseAsync(LanguageBatchInput input, Context context, String modelVersion, Boolean showStats) {
+        return service.languages(this.getEndpoint(), modelVersion, showStats, input, context);
+    }
+
+    /**
      * The API returns a sentiment prediction, as well as sentiment scores for each sentiment class (Positive, Negative, and Neutral) for the document and each sentence within it. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
      * 
      * @param input Contains a set of input documents to be analyzed by the service.
@@ -209,5 +277,22 @@ public final class TextAnalyticsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<SentimentResponse>> sentimentWithResponseAsync(MultiLanguageBatchInput input, String modelVersion, Boolean showStats) {
         return FluxUtil.withContext(context -> service.sentiment(this.getEndpoint(), modelVersion, showStats, input, context));
+    }
+
+    /**
+     * The API returns a sentiment prediction, as well as sentiment scores for each sentiment class (Positive, Negative, and Neutral) for the document and each sentence within it. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
+     * 
+     * @param input Contains a set of input documents to be analyzed by the service.
+     * @param context The context to associate with this operation.
+     * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is not specified, the API should default to the latest, non-preview version.
+     * @param showStats (Optional) if set to true, response will contain input and document level statistics.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TextAnalyticsErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<SentimentResponse>> sentimentWithResponseAsync(MultiLanguageBatchInput input, Context context, String modelVersion, Boolean showStats) {
+        return service.sentiment(this.getEndpoint(), modelVersion, showStats, input, context);
     }
 }

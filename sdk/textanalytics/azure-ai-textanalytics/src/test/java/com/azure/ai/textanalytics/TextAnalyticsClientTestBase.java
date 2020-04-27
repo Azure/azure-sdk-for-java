@@ -22,13 +22,13 @@ import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
-import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.http.policy.AzureKeyCredentialPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -40,7 +40,6 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -65,10 +64,11 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class TextAnalyticsClientTestBase extends TestBase {
-    private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
     private static final String NAME = "name";
     private static final String TEXT_ANALYTICS_PROPERTIES = "azure-ai-textanalytics.properties";
+    private static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
     private static final String VERSION = "version";
+    private static final String AZURE_TEXT_ANALYTICS_API_KEY = "AZURE_TEXT_ANALYTICS_API_KEY";
 
     private final HttpLogOptions httpLogOptions = new HttpLogOptions();
     private final Map<String, String> properties = CoreUtils.getProperties(TEXT_ANALYTICS_PROPERTIES);
@@ -82,10 +82,11 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     static final String INVALID_DOCUMENT_NPE_MESSAGE = "'document' cannot be null.";
 
     <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
-        TokenCredential credential = null;
+        AzureKeyCredential credential = null;
 
         if (!interceptorManager.isPlaybackMode()) {
-            credential = new DefaultAzureCredentialBuilder().build();
+            credential = new AzureKeyCredential(
+                Configuration.getGlobalConfiguration().get(AZURE_TEXT_ANALYTICS_API_KEY));
         }
 
         HttpClient httpClient;
@@ -97,10 +98,11 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
 
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
         if (credential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(credential, DEFAULT_SCOPE));
+            policies.add(new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, credential));
         }
+
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(new RetryPolicy());
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);

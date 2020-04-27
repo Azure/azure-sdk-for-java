@@ -148,7 +148,7 @@ class AnalyzeSentimentAsyncClient {
                     documentSentiment.getSentiment())));
         }
 
-        final SentimentConfidenceScorePerLabel confidenceScorePerLabel = documentSentiment.getDocumentScores();
+        final SentimentConfidenceScorePerLabel confidenceScorePerLabel = documentSentiment.getConfidenceScores();
 
         // Sentence text sentiment
         final List<SentenceSentiment> sentenceSentiments = documentSentiment.getSentences().stream()
@@ -163,7 +163,7 @@ class AnalyzeSentimentAsyncClient {
                             sentenceSentiment.getSentiment())));
                 }
                 final SentimentConfidenceScorePerLabel confidenceScorePerSentence =
-                    sentenceSentiment.getSentenceScores();
+                    sentenceSentiment.getConfidenceScores();
 
                 return new SentenceSentiment(
                     sentenceSentimentLabel,
@@ -199,11 +199,11 @@ class AnalyzeSentimentAsyncClient {
      */
     private Mono<TextAnalyticsPagedResponse<AnalyzeSentimentResult>> getAnalyzedSentimentResponseInPage(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
-        return service.sentimentWithRestResponseAsync(
+        return service.sentimentWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(documents)),
+            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE),
             options == null ? null : options.getModelVersion(),
-            options == null ? null : options.isIncludeStatistics(),
-            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+            options == null ? null : options.isIncludeStatistics())
             .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
             .doOnSuccess(response -> logger.info("Analyzed sentiment for a batch of documents - {}", response))
             .doOnError(error -> logger.warning("Failed to analyze sentiment - {}", error))

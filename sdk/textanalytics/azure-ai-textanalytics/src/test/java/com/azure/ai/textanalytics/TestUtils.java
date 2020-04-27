@@ -147,9 +147,10 @@ final class TestUtils {
      * Helper method to get the expected Categorized Entities List 1
      */
     static List<CategorizedEntity> getCategorizedEntitiesList1() {
-        CategorizedEntity categorizedEntity1 = new CategorizedEntity("Seattle", EntityCategory.LOCATION, "GPE", 26, 7, 0.0);
-        CategorizedEntity categorizedEntity2 = new CategorizedEntity("last week", EntityCategory.DATE_TIME, "DateRange", 34, 9, 0.0);
-        return Arrays.asList(categorizedEntity1, categorizedEntity2);
+        CategorizedEntity categorizedEntity1 = new CategorizedEntity("trip", EntityCategory.EVENT, null, 18, 4, 0.0);
+        CategorizedEntity categorizedEntity2 = new CategorizedEntity("Seattle", EntityCategory.LOCATION, "GPE", 26, 7, 0.0);
+        CategorizedEntity categorizedEntity3 = new CategorizedEntity("last week", EntityCategory.DATE_TIME, "DateRange", 34, 9, 0.0);
+        return Arrays.asList(categorizedEntity1, categorizedEntity2, categorizedEntity3);
     }
 
     /**

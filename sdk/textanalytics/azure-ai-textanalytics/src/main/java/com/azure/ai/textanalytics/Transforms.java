@@ -80,16 +80,16 @@ final class Transforms {
      */
     static com.azure.ai.textanalytics.models.TextAnalyticsError toTextAnalyticsError(
         TextAnalyticsError textAnalyticsError) {
-        if (textAnalyticsError.getInnerError() == null) {
+        if (textAnalyticsError.getInnererror() == null) {
             return new com.azure.ai.textanalytics.models.TextAnalyticsError(
                 TextAnalyticsErrorCode.fromString(textAnalyticsError.getCode().toString()),
                 textAnalyticsError.getMessage(),
                 textAnalyticsError.getTarget());
         }
         return new com.azure.ai.textanalytics.models.TextAnalyticsError(
-            TextAnalyticsErrorCode.fromString(textAnalyticsError.getInnerError().getCode().toString()),
-            textAnalyticsError.getInnerError().getMessage(),
-            textAnalyticsError.getInnerError().getTarget());
+            TextAnalyticsErrorCode.fromString(textAnalyticsError.getInnererror().getCode().toString()),
+            textAnalyticsError.getInnererror().getMessage(),
+            textAnalyticsError.getInnererror().getTarget());
     }
 
     /**

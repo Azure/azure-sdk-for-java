@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.azure.ai.textanalytics.TestUtils.getCategorizedEntitiesList1;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchCategorizedEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchDetectedLanguages;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchKeyPhrases;
@@ -168,12 +169,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeEntitiesForTextInput() {
-        final CategorizedEntity categorizedEntity1 = new CategorizedEntity("Seattle", EntityCategory.LOCATION, "GPE", 26, 7, 0.0);
-        final CategorizedEntity categorizedEntity2 = new CategorizedEntity("last week", EntityCategory.DATE_TIME, "DateRange", 34, 9, 0.0);
-
         final List<CategorizedEntity> entities = client.recognizeEntities("I had a wonderful trip to Seattle last week.").stream().collect(Collectors.toList());
-        validateCategorizedEntity(categorizedEntity1, entities.get(0));
-        validateCategorizedEntity(categorizedEntity2, entities.get(1));
+        validateCategorizedEntities(getCategorizedEntitiesList1(), entities);
     }
 
     @Test

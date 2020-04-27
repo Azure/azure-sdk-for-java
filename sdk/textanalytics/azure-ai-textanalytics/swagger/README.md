@@ -31,4 +31,5 @@ license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
 custom-types-subpackage: models
+context-client-method-parameter: true
 ```

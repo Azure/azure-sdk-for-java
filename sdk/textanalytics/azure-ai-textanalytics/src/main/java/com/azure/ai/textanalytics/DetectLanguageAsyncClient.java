@@ -116,11 +116,12 @@ class DetectLanguageAsyncClient {
                 documentLanguage.getDetectedLanguages();
             if (detectedLanguages.size() >= 1) {
                 detectedLanguages.sort(
-                    Comparator.comparing(com.azure.ai.textanalytics.implementation.models.DetectedLanguage::getScore));
+                    Comparator.comparing(
+                        com.azure.ai.textanalytics.implementation.models.DetectedLanguage::getConfidenceScore));
                 com.azure.ai.textanalytics.implementation.models.DetectedLanguage detectedLanguageResult =
                     detectedLanguages.get(0);
                 primaryLanguage = new DetectedLanguage(detectedLanguageResult.getName(),
-                    detectedLanguageResult.getIso6391Name(), detectedLanguageResult.getScore());
+                    detectedLanguageResult.getIso6391Name(), detectedLanguageResult.getConfidenceScore());
             }
 
             detectLanguageResults.add(new DetectLanguageResult(documentLanguage.getId(),
@@ -161,11 +162,11 @@ class DetectLanguageAsyncClient {
      */
     private Mono<TextAnalyticsPagedResponse<DetectLanguageResult>> getDetectedLanguageResponseInPage(
         Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options, Context context) {
-        return service.languagesWithRestResponseAsync(
+        return service.languagesWithResponseAsync(
             new LanguageBatchInput().setDocuments(toLanguageInput(documents)),
+            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE),
             options == null ? null : options.getModelVersion(),
-            options == null ? null : options.isIncludeStatistics(),
-            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+            options == null ? null : options.isIncludeStatistics())
             .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
             .doOnSuccess(response -> logger.info("Detected languages for a batch of documents - {}",
                 response.getValue()))

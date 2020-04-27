@@ -175,7 +175,7 @@ class RecognizeLinkedEntityAsyncClient {
             linkedEntitiesList.add(new LinkedEntity(
                 linkedEntity.getName(),
                 new IterableStream<>(linkedEntity.getMatches().stream().map(match -> new LinkedEntityMatch(
-                    match.getText(), match.getScore(), match.getLength(), match.getOffset()))
+                    match.getText(), match.getConfidenceScore(), match.getLength(), match.getOffset()))
                     .collect(Collectors.toList())),
                 linkedEntity.getLanguage(),
                 linkedEntity.getId(), linkedEntity.getUrl(), linkedEntity.getDataSource()));
@@ -194,11 +194,11 @@ class RecognizeLinkedEntityAsyncClient {
      */
     private Mono<TextAnalyticsPagedResponse<RecognizeLinkedEntitiesResult>> getRecognizedLinkedEntitiesResponseInPage(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
-        return service.entitiesLinkingWithRestResponseAsync(
+        return service.entitiesLinkingWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(documents)),
+            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE),
             options == null ? null : options.getModelVersion(),
-            options == null ? null : options.isIncludeStatistics(),
-            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+            options == null ? null : options.isIncludeStatistics())
             .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
             .doOnSuccess(response -> logger.info("Recognized linked entities for a batch of documents - {}",
                 response.getValue()))
