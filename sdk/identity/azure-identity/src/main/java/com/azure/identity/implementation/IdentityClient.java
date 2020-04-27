@@ -22,11 +22,8 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.DeviceCodeInfo;
-import com.azure.identity.KnownAuthorityHosts;
 import com.azure.identity.implementation.util.CertificateUtil;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ClientCredentialParameters;
@@ -464,37 +461,13 @@ public class IdentityClient {
 
         String credential = accessor.getCredentials("VS Code Azure", cloud);
 
-        String authority = KnownAuthorityHosts.AZURE_CLOUD.replaceAll("/+$", "")
+        String authority = accessor.getAzureAuthHost(cloud).replaceAll("/+$", "")
             + "/organizations/" + tenant;
         PublicClientApplication.Builder publicClientApplicationBuilder = PublicClientApplication.builder(clientId);
         if (httpPipelineAdapter != null) {
             publicClientApplicationBuilder.httpClient(httpPipelineAdapter);
         } else if (options.getProxyOptions() != null) {
             publicClientApplicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
-        }
-
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode parsedCredentials = mapper.readTree(credential);
-            String redirectUri = parsedCredentials.get("redirectionUrl").asText();
-            String authorizationCode = parsedCredentials.get("code").asText();
-
-            AuthorizationCodeParameters authorizationCodeParameters = AuthorizationCodeParameters
-                .builder(authorizationCode, new URI(redirectUri))
-                .scopes(new HashSet<>(request.getScopes()))
-                .build();
-
-            PublicClientApplication application = publicClientApplicationBuilder.authority(authority).build();
-
-            return Mono.fromFuture(() -> application.acquireToken(
-                authorizationCodeParameters))
-                .map(ar -> new MsalToken(ar, options));
-        } catch (JsonProcessingException e) {
-            // Move below to try auth with refresh token.
-        } catch (URISyntaxException e) {
-            return Mono.error(logger.logExceptionAsError(new RuntimeException(e)));
-        } catch (MalformedURLException e) {
-            return Mono.error(logger.logExceptionAsError(new IllegalStateException(e)));
         }
 
         try {
@@ -508,6 +481,7 @@ public class IdentityClient {
 
             return Mono.defer(() -> Mono.fromFuture(clientApplication.acquireToken(parameters))
                                         .map(ar -> new MsalToken(ar, options)));
+
         } catch (MalformedURLException e) {
             return Mono.error(logger.logExceptionAsError(new IllegalStateException(e)));
         }

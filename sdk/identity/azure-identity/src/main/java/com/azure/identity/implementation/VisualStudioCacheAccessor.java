@@ -4,6 +4,8 @@
 package com.azure.identity.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.CredentialUnavailableException;
+import com.azure.identity.KnownAuthorityHosts;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.aad.msal4jextensions.persistence.mac.KeyChainAccessor;
@@ -60,16 +62,17 @@ public class VisualStudioCacheAccessor {
      * @return the credential.
      */
     public String getCredentials(String serviceName, String accountName) {
+        String credential;
         if (Platform.isWindows()) {
             WindowsCredentialAccessor winCredAccessor =
                     new WindowsCredentialAccessor(serviceName, accountName);
-            return winCredAccessor.read();
+            credential = winCredAccessor.read();
         } else if (Platform.isMac()) {
             KeyChainAccessor keyChainAccessor = new KeyChainAccessor(null,
                     serviceName, accountName);
 
             byte[] readCreds = keyChainAccessor.read();
-            return new String(readCreds, StandardCharsets.UTF_8);
+            credential = new String(readCreds, StandardCharsets.UTF_8);
         } else if (Platform.isLinux()) {
 
             LinuxKeyRingAccessor keyRingAccessor = new LinuxKeyRingAccessor(
@@ -77,10 +80,48 @@ public class VisualStudioCacheAccessor {
                     serviceName, "account", accountName);
 
             byte[] readCreds = keyRingAccessor.read();
-            return new String(readCreds, StandardCharsets.UTF_8);
+            credential = new String(readCreds, StandardCharsets.UTF_8);
         } else {
             throw logger.logExceptionAsError(
-                new RuntimeException("Platform could not be determined for VsCode Credential authentication."));
+                new CredentialUnavailableException("Platform could not be determined for VsCode"
+                                                           + " Credential authentication."));
+        }
+        if (!isRefreshTokenString(credential)) {
+            throw logger.logExceptionAsError(
+                    new CredentialUnavailableException("Please authenticate via Azure Tools plugin in VSCode IDE."));
+        }
+        return credential;
+    }
+
+    private boolean isRefreshTokenString(String str) {
+        for (int i = 0; i < str.length(); i++) {
+            char ch = str.charAt(i);
+            if ((ch < '0' || ch > '9') && (ch < 'A' || ch > 'Z') && (ch < 'a' || ch > 'z')
+                        && ch != '_' && ch != '-' && ch != '.') {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Get the auth host of the specified {@code azureEnvironment}.
+     * @param azureEnvironment
+     * @return the auth host.
+     */
+    public String getAzureAuthHost(String azureEnvironment) {
+
+        switch (azureEnvironment) {
+            case "Azure":
+                return KnownAuthorityHosts.AZURE_CLOUD;
+            case "AzureChina":
+                return KnownAuthorityHosts.AZURE_CHINA_CLOUD;
+            case "AzureGermanCloud":
+                return KnownAuthorityHosts.AZURE_GERMAN_CLOUD;
+            case "AzureUSGovernment":
+                return KnownAuthorityHosts.AZURE_US_GOVERNMENT;
+            default:
+                return KnownAuthorityHosts.AZURE_CLOUD;
         }
     }
 

@@ -20,7 +20,22 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     private boolean excludeManagedIdentityCredential;
     private boolean excludeSharedTokenCacheCredential;
     private boolean excludeAzureCliCredential;
+    private boolean excludeVsCodeCredential;
+    private String tenantId;
     private final ClientLogger logger = new ClientLogger(DefaultAzureCredentialBuilder.class);
+
+
+    /**
+     * Sets the tenant ID of the application.
+     *
+     * @param tenantId the tenant ID of the application.
+     * @return An updated instance of this builder with the tenant id set as specified.
+     */
+    @SuppressWarnings("unchecked")
+    public DefaultAzureCredentialBuilder tenantId(String tenantId) {
+        this.tenantId = tenantId;
+        return this;
+    }
 
 
     /**
@@ -80,6 +95,16 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     }
 
     /**
+     * Excludes the {@link VisualStudioCodeCredential} from the {@link DefaultAzureCredential} authentication flow.
+     *
+     * @return An updated instance of this builder with the Visual Studio Code credential exclusion set as specified.
+     */
+    public DefaultAzureCredentialBuilder excludeVisualStudioCodeCredential() {
+        excludeVsCodeCredential = true;
+        return this;
+    }
+
+    /**
      * Specifies the ExecutorService to be used to execute the authentication requests.
      * Developer is responsible for maintaining the lifecycle of the ExecutorService.
      *
@@ -126,6 +151,10 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
 
         if (!excludeAzureCliCredential) {
             output.add(new AzureCliCredential(identityClientOptions));
+        }
+
+        if (!excludeVsCodeCredential) {
+            output.add(new VisualStudioCodeCredential(tenantId, identityClientOptions));
         }
 
         if (output.size() == 0) {
