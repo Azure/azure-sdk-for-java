@@ -199,7 +199,7 @@ for (CertificateProperties certificateProperties : certificateClient.listPropert
 The following sections provide several code snippets covering some of the most common asynchronous Azure Key Vault Certificate service tasks, including:
 - [Create a certificate asynchronously](#create-a-certificate-asynchronously)
 - [Retrieve a certificate asynchronously](#retrieve-a-certificate-asynchronously)
-- [Update an existing Certificate Asynchronously](#update-an-existing-certificate-asynchronously)
+- [Update an existing certificate asynchronously](#update-an-existing-certificate-asynchronously)
 - [Delete a Certficate Asynchronously](#delete-a-certificate-asynchronously)
 - [List Certificates Asynchronously](#list-certificates-asynchronously)
 
