@@ -49,10 +49,10 @@ public class EventProcessorBuilderJavaDocCodeSamples {
         EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
             .consumerGroup("consumer-group")
             .checkpointStore(new InMemoryCheckpointStore())
-            .processEventBatch(eventContextBatch -> {
-                eventContextBatch.forEach(eventContext -> {
-                    System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId()
-                        + "and sequence number of event = " + eventContext.getEventData().getSequenceNumber());
+            .processEventBatch(eventBatchContext -> {
+                eventBatchContext.getEventDataList().forEach(eventData -> {
+                    System.out.println("Partition id = " + eventBatchContext.getPartitionContext().getPartitionId()
+                        + "and sequence number of event = " + eventData.getSequenceNumber());
                 });
             }, 50, Duration.ofSeconds(30))
             .processError(errorContext -> {

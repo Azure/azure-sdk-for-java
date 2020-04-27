@@ -22,9 +22,11 @@ import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.CloseReason;
 import com.azure.messaging.eventhubs.models.ErrorContext;
+import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.InitializationContext;
+import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
@@ -167,7 +169,7 @@ class PartitionPumpManager {
                     .receiveFromPartition(claimedOwnership.getPartitionId(), startFromEventPosition, receiveOptions)
                     .windowTimeout(maxBatchSize, maxWaitTime)
                     .flatMap(Flux::collectList)
-                    .subscribe(partitionEventBatch -> processEventBatch(partitionContext, partitionProcessor,
+                    .subscribe(partitionEventBatch -> processEvents(partitionContext, partitionProcessor,
                         eventHubConsumer, partitionEventBatch),
                         /* EventHubConsumer receive() returned an error */
                         ex -> handleError(claimedOwnership, eventHubConsumer, partitionProcessor, ex, partitionContext),
@@ -182,7 +184,7 @@ class PartitionPumpManager {
                     .window(maxBatchSize)
                     .flatMap(Flux::collectList)
                     .subscribe(partitionEventBatch -> {
-                        processEventBatch(partitionContext, partitionProcessor,
+                        processEvents(partitionContext, partitionProcessor,
                             eventHubConsumer, partitionEventBatch);
                     },
                         /* EventHubConsumer receive() returned an error */
@@ -203,16 +205,19 @@ class PartitionPumpManager {
                     "Error occurred while starting partition pump for partition " + claimedOwnership.getPartitionId(),
                     ex));
         }
-
     }
 
     private void processEvent(PartitionContext partitionContext, PartitionProcessor partitionProcessor,
         EventHubConsumerAsyncClient eventHubConsumer, EventContext eventContext) {
+
+        Context processSpanContext = null;
         EventData eventData = eventContext.getEventData();
-        Context processSpanContext = startProcessTracingSpan(eventData, eventHubConsumer.getEventHubName(),
-            eventHubConsumer.getFullyQualifiedNamespace());
-        if (processSpanContext.getData(SPAN_CONTEXT_KEY).isPresent()) {
-            eventData.addContext(SPAN_CONTEXT_KEY, processSpanContext);
+        if (eventData != null) {
+            processSpanContext = startProcessTracingSpan(eventData, eventHubConsumer.getEventHubName(),
+                eventHubConsumer.getFullyQualifiedNamespace());
+            if (processSpanContext.getData(SPAN_CONTEXT_KEY).isPresent()) {
+                eventData.addContext(SPAN_CONTEXT_KEY, processSpanContext);
+            }
         }
         try {
             partitionProcessor.processEvent(new EventContext(partitionContext, eventData, checkpointStore,
@@ -226,23 +231,29 @@ class PartitionPumpManager {
         }
     }
 
-    private void processEventBatch(PartitionContext partitionContext, PartitionProcessor partitionProcessor,
+    private void processEvents(PartitionContext partitionContext, PartitionProcessor partitionProcessor,
         EventHubConsumerAsyncClient eventHubConsumer, List<PartitionEvent> partitionEventBatch) {
-        List<EventContext> eventContextBatch = partitionEventBatch.stream()
-            .map(partitionEvent -> new EventContext(partitionContext, partitionEvent.getData(), checkpointStore,
-                partitionEvent.getLastEnqueuedEventProperties()))
-            .collect(Collectors.toList());
         try {
-            if (!batchReceiveMode && maxBatchSize == 1) {
-                EventContext eventContext;
-                if (eventContextBatch.isEmpty()) {
-                    eventContext = new EventContext(partitionContext, null, checkpointStore, null);
-                    partitionProcessor.processEvent(eventContext);
-                } else {
-                    processEvent(partitionContext, partitionProcessor, eventHubConsumer, eventContextBatch.get(0));
-                }
+            if (batchReceiveMode) {
+                LastEnqueuedEventProperties[] lastEnqueuedEventProperties = new LastEnqueuedEventProperties[1];
+                List<EventData> eventDataList = partitionEventBatch.stream()
+                    .map(partitionEvent -> {
+                        lastEnqueuedEventProperties[0] = partitionEvent.getLastEnqueuedEventProperties();
+                        return partitionEvent.getData();
+                    })
+                    .collect(Collectors.toList());
+                EventBatchContext eventBatchContext = new EventBatchContext(partitionContext, eventDataList,
+                    checkpointStore,
+                    lastEnqueuedEventProperties[0]);
+                partitionProcessor.processEventBatch(eventBatchContext);
             } else {
-                partitionProcessor.processEventBatch(eventContextBatch);
+                EventData eventData = (partitionEventBatch.size() == 1
+                    ? partitionEventBatch.get(0).getData() : null);
+                LastEnqueuedEventProperties lastEnqueuedEventProperties = (partitionEventBatch.size() == 1
+                    ? partitionEventBatch.get(0).getLastEnqueuedEventProperties() : null);
+                EventContext eventContext = new EventContext(partitionContext, eventData, checkpointStore,
+                    lastEnqueuedEventProperties);
+                processEvent(partitionContext, partitionProcessor, eventHubConsumer, eventContext);
             }
         } catch (Throwable throwable) {
             /* user code for event processing threw an exception - log and bubble up */
@@ -311,6 +322,10 @@ class PartitionPumpManager {
      * Ends the process tracing span and the scope of that span.
      */
     private void endProcessTracingSpan(Context processSpanContext, Signal<Void> signal) {
+        if (processSpanContext == null) {
+            return;
+        }
+
         Optional<Object> spanScope = processSpanContext.getData(SCOPE_KEY);
         // Disposes of the scope when the trace span closes.
         if (!spanScope.isPresent() || !tracerProvider.isEnabled()) {

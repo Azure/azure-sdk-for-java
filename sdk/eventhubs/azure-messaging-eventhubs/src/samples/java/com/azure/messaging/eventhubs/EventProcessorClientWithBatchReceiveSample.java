@@ -4,9 +4,8 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.messaging.eventhubs.models.ErrorContext;
-import com.azure.messaging.eventhubs.models.EventContext;
+import com.azure.messaging.eventhubs.models.EventBatchContext;
 import java.time.Duration;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import org.slf4j.Logger;
@@ -28,16 +27,16 @@ public class EventProcessorClientWithBatchReceiveSample {
     public static void main(String[] args) throws Exception {
 
         Logger logger = LoggerFactory.getLogger(EventProcessorClientSample.class);
-        Consumer<List<EventContext>> processEventBatch = eventContextBatch -> {
-            eventContextBatch.forEach(eventContext -> {
+        Consumer<EventBatchContext> processEventBatch = eventBatchContext -> {
+            eventBatchContext.getEventDataList().forEach(event -> {
                 logger.info(
                     "Processing event: Event Hub name = {}; consumer group name = {}; partition id = {}; sequence number = {}",
-                    eventContext.getPartitionContext().getEventHubName(),
-                    eventContext.getPartitionContext().getConsumerGroup(),
-                    eventContext.getPartitionContext().getPartitionId(),
-                    eventContext.getEventData().getSequenceNumber());
-                eventContext.updateCheckpoint();
+                    eventBatchContext.getPartitionContext().getEventHubName(),
+                    eventBatchContext.getPartitionContext().getConsumerGroup(),
+                    eventBatchContext.getPartitionContext().getPartitionId(),
+                    event.getSequenceNumber());
             });
+            eventBatchContext.updateCheckpoint();
         };
 
         // This error handler logs the error that occurred and keeps the processor running. If the error occurred in

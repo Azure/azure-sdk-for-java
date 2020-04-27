@@ -89,11 +89,12 @@ public class EventProcessorClientBuilderTest {
                     System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
                         + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
                 })
-                .processEventBatch(eventContextBatch -> {
-                    eventContextBatch.forEach(eventContext -> {
+                .processEventBatch(eventBatchContext -> {
+                    eventBatchContext.getEventDataList().forEach(event -> {
                         System.out
-                            .println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
-                                + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
+                            .println(
+                                "Partition id = " + eventBatchContext.getPartitionContext().getPartitionId() + " and "
+                                    + "sequence number of event = " + event.getSequenceNumber());
                     });
                 }, 5, Duration.ofSeconds(1))
                 .processError(errorContext -> {
@@ -125,11 +126,11 @@ public class EventProcessorClientBuilderTest {
         EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
             .connectionString(CORRECT_CONNECTION_STRING)
             .consumerGroup("consumer-group")
-            .processEventBatch(eventContextBatch -> {
-                eventContextBatch.forEach(eventContext -> {
+            .processEventBatch(eventBatchContext -> {
+                eventBatchContext.getEventDataList().forEach(event -> {
                     System.out
-                        .println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
-                            + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
+                        .println("Partition id = " + eventBatchContext.getPartitionContext().getPartitionId() + " and "
+                            + "sequence number of event = " + event.getSequenceNumber());
                 });
             }, 5, Duration.ofSeconds(1))
             .processError(errorContext -> {

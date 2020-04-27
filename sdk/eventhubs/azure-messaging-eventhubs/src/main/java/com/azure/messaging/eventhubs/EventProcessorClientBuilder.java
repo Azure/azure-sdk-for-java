@@ -16,12 +16,12 @@ import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.ErrorContext;
+import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.InitializationContext;
 import java.time.Duration;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ServiceLoader;
@@ -76,7 +76,7 @@ public class EventProcessorClientBuilder {
     private String consumerGroup;
     private CheckpointStore checkpointStore;
     private Consumer<EventContext> processEvent;
-    private Consumer<List<EventContext>> processEventBatch;
+    private Consumer<EventBatchContext> processEventBatch;
     private Consumer<ErrorContext> processError;
     private Consumer<InitializationContext> processPartitionInitialization;
     private Consumer<CloseContext> processPartitionClose;
@@ -280,7 +280,7 @@ public class EventProcessorClientBuilder {
      * @return The updated {@link EventProcessorClient} instance.
      * @throws NullPointerException if {@code processEvent} is {@code null}.
      */
-    public EventProcessorClientBuilder processEventBatch(Consumer<List<EventContext>> processEventBatch,
+    public EventProcessorClientBuilder processEventBatch(Consumer<EventBatchContext> processEventBatch,
         int maxBatchSize) {
         return this.processEventBatch(processEventBatch, maxBatchSize, null);
     }
@@ -300,7 +300,7 @@ public class EventProcessorClientBuilder {
      * @return The updated {@link EventProcessorClient} instance.
      * @throws NullPointerException if {@code processEvent} is {@code null}.
      */
-    public EventProcessorClientBuilder processEventBatch(Consumer<List<EventContext>> processEventBatch,
+    public EventProcessorClientBuilder processEventBatch(Consumer<EventBatchContext> processEventBatch,
         int maxBatchSize, Duration maxWaitTime) {
         if (maxBatchSize <= 0) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'maxBatchSize' should be greater than 0"));
@@ -436,11 +436,11 @@ public class EventProcessorClientBuilder {
             }
 
             @Override
-            public void processEventBatch(List<EventContext> eventContextBatch) {
+            public void processEventBatch(EventBatchContext eventBatchContext) {
                 if (processEventBatch != null) {
-                    processEventBatch.accept(eventContextBatch);
+                    processEventBatch.accept(eventBatchContext);
                 } else {
-                    eventContextBatch.forEach(this::processEvent);
+                    super.processEventBatch(eventBatchContext);
                 }
             }
 
