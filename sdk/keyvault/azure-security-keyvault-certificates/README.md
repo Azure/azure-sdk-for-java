@@ -205,7 +205,7 @@ The following sections provide several code snippets covering some of the most c
 
 > Note : You should add "System.in.read()" or "Thread.Sleep()" after the function calls in the main class/thread to allow Async functions/operations to execute and finish before the main application/thread exits.
 
-### Create a Certificate Asynchronously
+### Create a certificate asynchronously
 
 Create a certificate to be stored in the Azure Key Vault.
 - `beginCreateCertificate` creates a new certificate in the Azure Key Vault. if the certificate with name already exists then a new version of the certificate is created.
