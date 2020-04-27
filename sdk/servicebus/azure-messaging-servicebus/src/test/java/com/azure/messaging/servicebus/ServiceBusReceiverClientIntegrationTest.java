@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -109,19 +110,11 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         // Act & Assert
         IterableStream<ServiceBusReceivedMessage> messages = receiver.receive(maxMessages, shortTimeOut);
 
-        int receivedMessages = messages.stream().collect(Collectors.toList()).size();
-        assertEquals(0, receivedMessages);
+        final long receivedMessages = messages.stream().count();
+        assertEquals(0L, receivedMessages);
 
         // Second time user try to receive, it should throw exception.
-        try {
-            messages = receiver.receive(maxMessages, shortTimeOut);
-            messages.stream().collect(Collectors.toList()).size();
-
-            //We can not have second subscriber.
-            assertTrue(false, "Should have thrown IllegalStateException.");
-        } catch (Exception ex) {
-            assertTrue(ex instanceof IllegalStateException);
-        }
+        assertThrows(IllegalStateException.class, () -> receiver.receive(maxMessages, shortTimeOut));
     }
 
     /**
@@ -165,14 +158,13 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         setSenderAndReceiver(entityType, isSessionEnabled);
         int howManyMessage = 2;
-        int noMessages = 0;
+        long noMessages = 0;
 
         // Act
         IterableStream<ServiceBusReceivedMessage> messages = receiver.receive(howManyMessage, Duration.ofSeconds(15));
 
         // Assert
-        final int receivedMessages = messages.stream().collect(Collectors.toList()).size();
-        assertEquals(noMessages, receivedMessages);
+        assertEquals(noMessages, messages.stream().count());
     }
 
     /**
