@@ -132,7 +132,7 @@ import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy; 
 
 CertificateClient certificateClient = new CertificateClientBuilder()
-        .vaultUrl(<your-vault-url>)
+        .vaultUrl(<your-key-vault-url>)
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 
