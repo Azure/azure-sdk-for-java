@@ -201,7 +201,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws IllegalStateException if the receiver is a non-session receiver.
      */
     public Mono<byte[]> getSessionState(String sessionId) {
-        if (!isSessionReceiver) {
+        if (isDisposed.get()) {
+            return monoError(logger, new IllegalStateException(
+                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "getSessionState")));
+        } else if (!isSessionReceiver) {
             return monoError(logger, new IllegalStateException("Cannot get session state on a non-session receiver."));
         } else {
             return connectionProcessor
