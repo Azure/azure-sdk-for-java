@@ -120,7 +120,7 @@ class ManagementChannelTests {
             tokenManager, messageSerializer, Duration.ofSeconds(10));
 
         // Act
-        StepVerifier.create(managementChannel.setSessionState(sessionId, state))
+        StepVerifier.create(managementChannel.setSessionState(state))
             .expectComplete()
             .verify();
 
@@ -159,7 +159,7 @@ class ManagementChannelTests {
         responseMessage.setBody(new AmqpValue(responseBody));
 
         // Act & Assert
-        StepVerifier.create(managementChannel.getSessionState(sessionId))
+        StepVerifier.create(managementChannel.getSessionState())
             .expectNext(sessionState)
             .verifyComplete();
 
@@ -193,7 +193,7 @@ class ManagementChannelTests {
         responseMessage.setBody(new AmqpValue(responseBody));
 
         // Act & Assert
-        StepVerifier.create(managementChannel.getSessionState(sessionId))
+        StepVerifier.create(managementChannel.getSessionState())
             .verifyComplete();
 
         verify(requestResponseChannel).sendWithAck(messageCaptor.capture());
@@ -228,7 +228,7 @@ class ManagementChannelTests {
         responseMessage.setBody(new AmqpValue(responseBody));
 
         // Act & Assert
-        StepVerifier.create(managementChannel.renewSessionLock(sessionId))
+        StepVerifier.create(managementChannel.renewSessionLock())
             .assertNext(expiration -> assertEquals(instant, expiration))
             .verifyComplete();
 

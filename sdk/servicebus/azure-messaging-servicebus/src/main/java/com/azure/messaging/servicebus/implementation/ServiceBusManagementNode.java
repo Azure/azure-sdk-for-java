@@ -29,11 +29,9 @@ public interface ServiceBusManagementNode extends AutoCloseable {
     /**
      * Gets the current session state.
      *
-     * @param sessionId Identifier of session.
-     *
      * @return The state of the session.
      */
-    Mono<byte[]> getSessionState(String sessionId);
+    Mono<byte[]> getSessionState();
 
     /**
      * This will return next available message to peek.
@@ -103,11 +101,9 @@ public interface ServiceBusManagementNode extends AutoCloseable {
     /**
      * Renews the lock on the session.
      *
-     * @param sessionId Identifier of the session.
-     *
      * @return The next expiration time for the session.
      */
-    Mono<Instant> renewSessionLock(String sessionId);
+    Mono<Instant> renewSessionLock();
 
     /**
      * Sends a scheduled message to the Azure Service Bus entity this sender is connected to. A scheduled message is
@@ -123,15 +119,15 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      *     message. This sequence number can be used to cancel the scheduling of the message.
      */
     Mono<Long> schedule(ServiceBusMessage message, Instant scheduledEnqueueTime, int maxSendLinkSize);
+
     /**
      * Updates the session state.
      *
-     * @param sessionId identifier of session to update.
      * @param state State to update session.
      *
      * @return A Mono that completes when the state is updated.
      */
-    Mono<Void> setSessionState(String sessionId, byte[] state);
+    Mono<Void> setSessionState(byte[] state);
 
     /**
      * Updates the disposition status of a message given its lock token.

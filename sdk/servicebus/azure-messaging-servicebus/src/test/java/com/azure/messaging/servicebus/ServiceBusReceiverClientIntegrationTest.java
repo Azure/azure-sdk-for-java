@@ -64,11 +64,13 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
             dispose(receiver, sender, receiveAndDeleteReceiver);
             return;
         }
+
         // In the case that this test failed... we're going to drain the queue or subscription.
         if (pending > 0) {
             try {
                 IterableStream<ServiceBusReceivedMessage> removedMessage = receiveAndDeleteReceiver.receive(
-                    pending + BUFFER_MESSAGES_TO_REMOVE);
+                    pending + BUFFER_MESSAGES_TO_REMOVE, Duration.ofSeconds(15));
+
                 removedMessage.stream().forEach(receivedMessage -> {
                     logger.info("Removed Message Seq: {} ", receivedMessage.getSequenceNumber());
                 });
@@ -566,7 +568,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     }
 
     private void setSenderAndReceiver(MessagingEntityType entityType, boolean isSessionEnabled,
-                                      Function<ServiceBusClientBuilder.ServiceBusReceiverClientBuilder, ServiceBusClientBuilder.ServiceBusReceiverClientBuilder> onReceiverCreate) {
+        Function<ServiceBusClientBuilder.ServiceBusReceiverClientBuilder, ServiceBusClientBuilder.ServiceBusReceiverClientBuilder> onReceiverCreate) {
 
         switch (entityType) {
             case QUEUE:

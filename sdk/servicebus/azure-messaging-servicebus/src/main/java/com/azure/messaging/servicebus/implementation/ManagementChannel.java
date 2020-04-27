@@ -98,7 +98,11 @@ public class ManagementChannel implements ServiceBusManagementNode {
     }
 
     @Override
-    public Mono<byte[]> getSessionState(String sessionId) {
+    public Mono<byte[]> getSessionState() {
+        if (!isSessionEnabled) {
+            return monoError(logger, new IllegalStateException("Cannot get session state for non-session management node"));
+        }
+
         return isAuthorized(ManagementConstants.OPERATION_GET_SESSION_STATE).then(createChannel.flatMap(channel -> {
             final Message message = createManagementMessage(ManagementConstants.OPERATION_GET_SESSION_STATE, null);
 
@@ -241,7 +245,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
     }
 
     @Override
-    public Mono<Instant> renewSessionLock(String sessionId) {
+    public Mono<Instant> renewSessionLock() {
         return isAuthorized(ManagementConstants.OPERATION_RENEW_SESSION_LOCK).then(createChannel.flatMap(channel -> {
             final Message message = createManagementMessage(ManagementConstants.OPERATION_RENEW_SESSION_LOCK, null);
 
@@ -345,7 +349,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
     }
 
     @Override
-    public Mono<Void> setSessionState(String sessionId, byte[] state) {
+    public Mono<Void> setSessionState(byte[] state) {
         return isAuthorized(ManagementConstants.OPERATION_SET_SESSION_STATE).then(createChannel.flatMap(channel -> {
             final Message message = createManagementMessage(ManagementConstants.OPERATION_SET_SESSION_STATE, null);
 

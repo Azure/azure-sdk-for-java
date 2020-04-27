@@ -205,7 +205,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         } else {
             return connectionProcessor
                 .flatMap(connection -> connection.getManagementNode(entityPath, entityType, sessionId))
-                .flatMap(channel -> channel.getSessionState(sessionId));
+                .flatMap(channel -> channel.getSessionState());
         }
     }
 
@@ -527,7 +527,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         } else {
             return connectionProcessor
                 .flatMap(connection -> connection.getManagementNode(entityPath, entityType, sessionId))
-                .flatMap(channel -> channel.renewSessionLock(sessionId));
+                .flatMap(channel -> channel.renewSessionLock());
         }
     }
 
@@ -546,7 +546,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         } else {
             return connectionProcessor
                 .flatMap(connection -> connection.getManagementNode(entityPath, entityType, sessionId))
-                .flatMap(channel -> channel.setSessionState(sessionId, sessionState));
+                .flatMap(channel -> channel.setSessionState(sessionState));
         }
     }
 
