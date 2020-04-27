@@ -1,7 +1,7 @@
 # Azure Key Vault Certificate client library for Java
-Azure Key Vault allows you to securely manage and tightly control your certificates. The Azure Key Vault Certificate client library supports certificates backed by RSA and EC keys.
+Azure Key Vault allows you to securely manage and tightly control your Certificates. The Azure Key Vault Certificate client library supports Certificates backed by RSA and EC keys.
 
-Multiple certificates and multiple versions of the same certificate can be kept in the Key Vault. Cryptographic keys in Key Vault backing the certificates are represented as [JSON Web Key [JWK]](https://tools.ietf.org/html/rfc7517) objects. This library offers operations to create, retrieve, update, delete, purge, backup, restore, and list the certificates, as well as its versions.
+Multiple Certificates and multiple versions of the same Certificate can be kept in the Key Vault. Cryptographic keys in Key Vault backing the Certificates are represented as [JSON Web Key [JWK]](https://tools.ietf.org/html/rfc7517) objects. This library offers operations to create, retrieve, update, delete, purge, backup, restore, and list the Certificates, as well as its versions.
 
 [Source code][source_code] | [API reference documentation][api_documentation] | [Product documentation][azkeyvault_docs] | [Samples][certificates_samples]
 
@@ -66,7 +66,7 @@ Here is an [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
     export AZURE_TENANT_ID="tenant-ID"
   ```
 
-* Grant the aforementioned application authorization to perform certificate operations on the Key Vault:
+* Grant the aforementioned application authorization to perform Certificate operations on the Key Vault:
 
     ```Bash
     az keyvault set-policy --name <your-key-vault-name> --spn $AZURE_CLIENT_ID --certificate-permissions backup delete get list create update
@@ -99,13 +99,13 @@ CertificateClient client = new CertificateClientBuilder()
 
 ## Key concepts
 ### Certificate
-  Azure Key Vault supports certificates with secret content types(`PKCS12` & `PEM`). The certificate can be backed by keys in key vault of types(`EC` & `RSA`). In addition to the certificate policy, the following attributes may be specified:
-* enabled: Specifies whether the certificate is enabled and useable.
-* created: Indicates when this version of the certificate was created.
-* updated: Indicates when this version of the certificate was updated.
+  Azure Key Vault supports Certificates with secret content types(`PKCS12` & `PEM`). The Certificate can be backed by keys in key vault of types(`EC` & `RSA`). In addition to the Certificate policy, the following attributes may be specified:
+* enabled: Specifies whether the Certificate is enabled and useable.
+* created: Indicates when this version of the Certificate was created.
+* updated: Indicates when this version of the Certificate was updated.
 
 ### Certificate Client:
-The Certificate client performs the interactions with the Azure Key Vault service for getting, setting, updating, deleting, and listing certificates and its versions. The client also supports CRUD operations for certificate issuers and contacts in the key vault. An asynchronous and synchronous, CertificateClient, client exists in the SDK allowing for selection of a client based on an application's use case. Once you've initialized a Certificate, you can interact with the primary resource types in Key Vault.
+The Certificate client performs the interactions with the Azure Key Vault service for getting, setting, updating, deleting, and listing Certificates and its versions. The client also supports CRUD operations for Certificate issuers and contacts in the key vault. An asynchronous and synchronous, CertificateClient, client exists in the SDK allowing for selection of a client based on an application's use case. Once you've initialized a Certificate, you can interact with the primary resource types in Key Vault.
 
 ## Examples
 ### Sync API
@@ -116,9 +116,9 @@ The following sections provide several code snippets covering some of the most c
 - [Delete a Certificate](#delete-a-certificate)
 - [List Certificates](#list-certificates)
 
-### Create a certificate
-Create a certificate to be stored in the Azure Key Vault.
-- `beginCreateCertificate` creates a new certificate in the Azure Key Vault. If a certificate with the same name already exists then a new version of the certificate is created.
+### Create a Certificate
+Create a Certificate to be stored in the Azure Key Vault.
+- `beginCreateCertificate` creates a new Certificate in the Azure Key Vault. If a Certificate with the same name already exists then a new version of the Certificate is created.
 
 ```Java
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -184,7 +184,7 @@ deleteCertificatePoller.waitForCompletion();
 
 ### List Certificates
 
-List the certificates in the key vault by calling `listPropertiesOfCertificates`.
+List the Certificates in the key vault by calling `listPropertiesOfCertificates`.
 
 ```java
 // List operations don't return the certificates with their full information. So, for each returned certificate we call getCertificate to get the certificate with all its properties excluding the policy.
@@ -205,9 +205,9 @@ The following sections provide several code snippets covering some of the most c
 
 > Note : You should add "System.in.read()" or "Thread.Sleep()" after the function calls in the main class/thread to allow Async functions/operations to execute and finish before the main application/thread exits.
 
-### Create a certificate asynchronously
-Create a certificate to be stored in the Azure Key Vault.
-- `beginCreateCertificate` creates a new certificate in the Azure Key Vault. If a certificate with same name already exists then a new version of the certificate is created.
+### Create a Certificate asynchronously
+Create a Certificate to be stored in the Azure Key Vault.
+- `beginCreateCertificate` creates a new Certificate in the Azure Key Vault. If a Certificate with same name already exists then a new version of the Certificate is created.
 
 ```Java
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -267,7 +267,7 @@ certificateAsyncClient.beginDeleteCertificate("certificateName")
 
 ### List Certificates Asynchronously
 
-List the certificates in the key vault by calling `listPropertiesOfCertificates`.
+List the Certificates in the Key Vault by calling `listPropertiesOfCertificates`.
 
 ```Java
 // The List Certificates operation returns certificates without their full properties, so for each certificate returned we call `getCertificate` to get all its attributes excluding the policy.
@@ -280,7 +280,7 @@ certificateAsyncClient.listPropertiesOfCertificates()
 
 ## Troubleshooting
 ### General
-Certificate Vault clients raise exceptions. For example, if you try to retrieve a certificate after it is deleted a `404` error is returned, indicating resource not found. In the following snippet, the error is handled gracefully by catching the exception and displaying additional information about the error.
+Certificate Vault clients raise exceptions. For example, if you try to retrieve a Certificate after it is deleted a `404` error is returned, indicating resource not found. In the following snippet, the error is handled gracefully by catching the exception and displaying additional information about the error.
 
 ```java
 try {
