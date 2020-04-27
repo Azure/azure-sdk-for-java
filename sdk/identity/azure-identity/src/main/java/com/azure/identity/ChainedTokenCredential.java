@@ -42,11 +42,12 @@ public class ChainedTokenCredential implements TokenCredential {
         return Flux.fromIterable(credentials)
                    .flatMap(p -> p.getToken(request).onErrorResume(Exception.class, t -> {
                         if (!t.getClass().getSimpleName().equals("CredentialUnavailableException")) {
-                        throw logger.logExceptionAsError(new CredentialUnavailableException(
-                            unavailableError + p.getClass().getSimpleName() + " authentication failed.", t));
+                                    throw logger.logExceptionAsError(new CredentialUnavailableException(
+                                            unavailableError + p.getClass().getSimpleName() + " authentication failed.",
+                                            t));
                         }
-                        message.append(t.getMessage()).append(" "); 
-                        return Mono.empty();
+                    message.append(t.getMessage()).append(" "); 
+                    return Mono.empty();
                    }), 1)
                    .next()
                    .switchIfEmpty(Mono.defer(() -> {

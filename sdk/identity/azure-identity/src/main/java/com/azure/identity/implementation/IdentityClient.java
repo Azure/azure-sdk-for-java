@@ -646,7 +646,8 @@ public class IdentityClient {
             } catch (ConnectException | SecurityException | SocketTimeoutException e) {
                 throw logger.logExceptionAsError(
                         new CredentialUnavailableException(
-                                "ManagedIdentityCredential authentication unavailable. Connection to IMDS endpoint cannot be established, "
+                                "ManagedIdentityCredential authentication unavailable. "
+                                 + "Connection to IMDS endpoint cannot be established, "
                                  + e.getMessage() + ".", e));
             } finally {
                 if (connection != null) {
