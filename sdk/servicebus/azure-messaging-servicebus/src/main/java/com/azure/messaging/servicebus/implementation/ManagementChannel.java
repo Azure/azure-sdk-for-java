@@ -99,10 +99,10 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
     @Override
     public Mono<byte[]> getSessionState(String sessionId) {
-        return isAuthorized(ManagementConstants.OPERATION_RENEW_SESSION_LOCK).then(createChannel.flatMap(channel -> {
-            final Message message = createManagementMessage(ManagementConstants.OPERATION_SET_SESSION_STATE, null);
+        return isAuthorized(ManagementConstants.OPERATION_GET_SESSION_STATE).then(createChannel.flatMap(channel -> {
+            final Message message = createManagementMessage(ManagementConstants.OPERATION_GET_SESSION_STATE, null);
 
-            final HashMap<String, Object> body = new HashMap<>();
+            final Map<String, Object> body = new HashMap<>();
             body.put(ManagementConstants.SESSION_ID, sessionId);
 
             message.setBody(new AmqpValue(body));
@@ -186,7 +186,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
                     ManagementConstants.OPERATION_RECEIVE_BY_SEQUENCE_NUMBER, null);
 
                 // set mandatory properties on AMQP message body
-                final HashMap<String, Object> requestBodyMap = new HashMap<>();
+                final Map<String, Object> requestBodyMap = new HashMap<>();
 
                 requestBodyMap.put(ManagementConstants.SEQUENCE_NUMBERS, Arrays.stream(sequenceNumbers)
                     .boxed().toArray(Long[]::new));
@@ -243,9 +243,9 @@ public class ManagementChannel implements ServiceBusManagementNode {
     @Override
     public Mono<Instant> renewSessionLock(String sessionId) {
         return isAuthorized(ManagementConstants.OPERATION_RENEW_SESSION_LOCK).then(createChannel.flatMap(channel -> {
-            final Message message = createManagementMessage(ManagementConstants.OPERATION_SET_SESSION_STATE, null);
+            final Message message = createManagementMessage(ManagementConstants.OPERATION_RENEW_SESSION_LOCK, null);
 
-            final HashMap<String, Object> body = new HashMap<>();
+            final Map<String, Object> body = new HashMap<>();
             body.put(ManagementConstants.SESSION_ID, sessionId);
 
             message.setBody(new AmqpValue(body));
@@ -301,7 +301,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
                     AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, errorMessage, exception, getErrorContext())));
             }
 
-            final HashMap<String, Object> messageEntry = new HashMap<>();
+            final Map<String, Object> messageEntry = new HashMap<>();
             messageEntry.put(ManagementConstants.MESSAGE, new Binary(bytes, 0, encodedSize));
             messageEntry.put(ManagementConstants.MESSAGE_ID, amqpMessage.getMessageId());
 
@@ -320,7 +320,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
                 messageEntry.put(ManagementConstants.VIA_PARTITION_KEY, viaPartitionKey);
             }
 
-            final Collection<HashMap<String, Object>> messageList = new LinkedList<>();
+            final Collection<Map<String, Object>> messageList = new LinkedList<>();
             messageList.add(messageEntry);
 
             final Map<String, Object> requestBodyMap = new HashMap<>();
@@ -349,7 +349,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
         return isAuthorized(ManagementConstants.OPERATION_SET_SESSION_STATE).then(createChannel.flatMap(channel -> {
             final Message message = createManagementMessage(ManagementConstants.OPERATION_SET_SESSION_STATE, null);
 
-            final HashMap<String, Object> body = new HashMap<>();
+            final Map<String, Object> body = new HashMap<>();
             body.put(ManagementConstants.SESSION_ID, sessionId);
             body.put(ManagementConstants.SESSION_STATE, state);
 
@@ -411,7 +411,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
                 null);
 
             // set mandatory properties on AMQP message body
-            final HashMap<String, Object> requestBodyMap = new HashMap<>();
+            final Map<String, Object> requestBodyMap = new HashMap<>();
             requestBodyMap.put(ManagementConstants.FROM_SEQUENCE_NUMBER, fromSequenceNumber);
             requestBodyMap.put(ManagementConstants.MESSAGE_COUNT_KEY, maxMessages);
 
@@ -443,7 +443,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
     private Mono<Void> isAuthorized(String operation) {
         return tokenManager.getAuthorizationResults().next().flatMap(response -> {
-            if (response != AmqpResponseCode.ACCEPTED) {
+            if (response != AmqpResponseCode.ACCEPTED && response != AmqpResponseCode.OK) {
                 return Mono.error(new AmqpException(false, String.format(
                     "User does not have authorization to perform operation [%s] on entity [%s]", operation, entityPath),
                     getErrorContext()));
