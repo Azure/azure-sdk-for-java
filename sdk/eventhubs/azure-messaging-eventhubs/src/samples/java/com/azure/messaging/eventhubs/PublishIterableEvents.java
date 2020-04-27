@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.eventhubs;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -20,6 +23,7 @@ public class PublishIterableEvents {
      * Main method to invoke this demo about how to send an iterable of events with partition id configured.
      *
      * @param args Unused arguments to the program.
+     * @throws InterruptedException If the program was interrupted before completion.
      */
     public static void main(String[] args) throws InterruptedException {
         // The connection string value can be obtained by:
@@ -54,8 +58,7 @@ public class PublishIterableEvents {
         producer.getPartitionIds()
             .take(1) // take the first partition id
             .flatMap(partitionId -> producer.send(events, new SendOptions().setPartitionId(partitionId)))
-            .subscribe(unused -> {
-                },
+            .subscribe(unused -> { },
                 ex -> System.out.println("Failed to send events: " + ex.getMessage()),
                 () -> {
                     countDownLatch.countDown();
