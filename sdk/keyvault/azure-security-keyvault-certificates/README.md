@@ -90,7 +90,7 @@ import com.azure.security.keyvault.certificates.CertificateClient;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
 
 CertificateClient client = new CertificateClientBuilder()
-        .vaultUrl(<your-vault-url>)
+        .vaultUrl(<your-key-vault-url>)
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 ```
