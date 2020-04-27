@@ -8,9 +8,7 @@ import com.azure.core.util.CoreUtils;
 
 import java.time.OffsetDateTime;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * This class contains the response information returned from the service when getting blob properties.

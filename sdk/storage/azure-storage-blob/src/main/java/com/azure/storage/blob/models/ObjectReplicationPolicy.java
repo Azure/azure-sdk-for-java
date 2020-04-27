@@ -5,15 +5,14 @@ package com.azure.storage.blob.models;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * A type that contains information about an object replication policy on a source blob.
  */
 public class ObjectReplicationPolicy {
 
-    private String policyId;
-    private Map<String, String> ruleStatuses;
+    private final String policyId;
+    private final Map<String, String> ruleStatuses;
 
     ObjectReplicationPolicy(String policyId) {
         this.policyId = policyId;
@@ -24,20 +23,18 @@ public class ObjectReplicationPolicy {
         this.ruleStatuses.put(rule, status);
     }
 
+    /**
+     * @return The policy id.
+     */
+    public String getPolicyId() {
+        return policyId;
+    }
+
+    /**
+     * @return A {@code Map} of rules associated with this policy to the status of the replication associated with that
+     * rule.
+     */
     public Map<String, String> getRules() {
         return this.ruleStatuses;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ObjectReplicationPolicy that = (ObjectReplicationPolicy) o;
-        return policyId.equals(that.policyId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(policyId);
     }
 }
