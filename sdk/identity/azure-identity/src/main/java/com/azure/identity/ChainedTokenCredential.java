@@ -7,10 +7,11 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.util.logging.ClientLogger;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
 import java.util.Deque;
 
 /**
@@ -22,8 +23,10 @@ import java.util.Deque;
  */
 @Immutable
 public class ChainedTokenCredential implements TokenCredential {
+    private final ClientLogger logger = new ClientLogger(ChainedTokenCredential.class);
     private final Deque<TokenCredential> credentials;
-    private final String UnavailableError = this.getClass().getSimpleName() + " authentication failed. ---> ";
+    private final String unavailableError = this.getClass().getSimpleName() + " authentication failed. ---> ";
+
 
     /**
      * Create an instance of chained token credential that aggregates a list of token
@@ -38,12 +41,12 @@ public class ChainedTokenCredential implements TokenCredential {
         StringBuilder message = new StringBuilder();
         return Flux.fromIterable(credentials)
                    .flatMap(p -> p.getToken(request).onErrorResume(Exception.class, t -> {
-                      if (!t.getClass().getSimpleName().equals("CredentialUnavailableException")) {
-                        throw new CredentialUnavailableException(
-                            UnavailableError + p.getClass().getSimpleName() + " authentication failed.", t);
-                       }
-                       message.append(t.getMessage()).append(" "); 
-                       return Mono.empty();
+                        if (!t.getClass().getSimpleName().equals("CredentialUnavailableException")) {
+                        throw logger.logExceptionAsError(new CredentialUnavailableException(
+                            unavailableError + p.getClass().getSimpleName() + " authentication failed.", t));
+                        }
+                        message.append(t.getMessage()).append(" "); 
+                        return Mono.empty();
                    }), 1)
                    .next()
                    .switchIfEmpty(Mono.defer(() -> {

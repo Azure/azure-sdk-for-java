@@ -5,7 +5,6 @@ package com.azure.identity.implementation;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.http.HttpClient;
@@ -646,8 +645,9 @@ public class IdentityClient {
                 connection.connect();
             } catch (ConnectException | SecurityException | SocketTimeoutException e) {
                 throw logger.logExceptionAsError(
-                    new CredentialUnavailableException("ManagedIdentityCredential authentication unavailable. Connection to IMDS endpoint cannot be established, "
-                                                             + e.getMessage() + ".", e));
+                        new CredentialUnavailableException(
+                                "ManagedIdentityCredential authentication unavailable. Connection to IMDS endpoint cannot be established, "
+                                 + e.getMessage() + ".", e));
             } finally {
                 if (connection != null) {
                     connection.disconnect();
