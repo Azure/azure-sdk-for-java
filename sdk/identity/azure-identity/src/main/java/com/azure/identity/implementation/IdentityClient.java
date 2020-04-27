@@ -94,6 +94,8 @@ public class IdentityClient {
     private final String tenantId;
     private final String clientId;
     private HttpPipelineAdapter httpPipelineAdapter;
+    private static final String INTELLIJ_CREDENTIAL_NOT_AVAILABLE_ERROR = "IntelliJ Authentication not available."
+                                   + " Plese login with Azure Tools for IntelliJ plugin in the IDE.";
 
     /**
      * Creates an IdentityClient with the given options.
@@ -155,14 +157,10 @@ public class IdentityClient {
     public Mono<MsalToken> authenticateWithIntelliJ(TokenRequestContext request) {
         try {
             IntelliJCacheAccessor cacheAccessor = new IntelliJCacheAccessor(options.getKeepPassDatabasePath());
-            IntelliJAuthMethodDetails authDetails = cacheAccessor.getIntelliJAuthDetails();
+            IntelliJAuthMethodDetails authDetails = cacheAccessor.getAuthDetailsIfAvailable();
             String authType = authDetails.getAuthMethod();
-            if (CoreUtils.isNullOrEmpty(authType)) {
-                throw logger.logExceptionAsError(new RuntimeException("IntelliJ Authentication not available."
-                    + " Plese login with Azure Tools for IntelliJ plugin in the IDE."));
-            }
             if (authType.equalsIgnoreCase("SP")) {
-                HashMap<String, String> spDetails = cacheAccessor
+                Map<String, String> spDetails = cacheAccessor
                     .getIntellijServicePrincipalDetails(authDetails.getCredFilePath());
                 String authorityUrl = spDetails.get("authURL") + spDetails.get("tenant");
                 try {
@@ -191,6 +189,25 @@ public class IdentityClient {
                     return Mono.error(e);
                 }
             } else if (authType.equalsIgnoreCase("DC")) {
+                String authHost = cacheAccessor.getAzureAuthHost(authDetails.getAzureEnv())
+                                      .replaceAll("/+$", "") + "/organizations/" + tenantId;
+
+                PublicClientApplication.Builder applicationBuilder = PublicClientApplication.builder(clientId)
+                    .authority(authHost);
+
+                if (httpPipelineAdapter != null) {
+                    applicationBuilder.httpClient(httpPipelineAdapter);
+                } else if (options.getProxyOptions() != null) {
+                    applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
+                }
+
+                if (options.getExecutorService() != null) {
+                    applicationBuilder.executorService(options.getExecutorService());
+                }
+
+                PublicClientApplication publicClientApplication = applicationBuilder
+                                                                      .build();
+
                 JsonNode intelliJCredentials = cacheAccessor.getDeviceCodeCredentials();
                 String refreshToken = intelliJCredentials.get("refreshToken").textValue();
 

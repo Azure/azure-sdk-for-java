@@ -4,6 +4,7 @@
 package com.azure.identity;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayDeque;
@@ -20,6 +21,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     private boolean excludeManagedIdentityCredential;
     private boolean excludeSharedTokenCacheCredential;
     private boolean excludeAzureCliCredential;
+    private boolean excludeIntelliCredential;
     private final ClientLogger logger = new ClientLogger(DefaultAzureCredentialBuilder.class);
 
 
@@ -30,6 +32,28 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      */
     public DefaultAzureCredentialBuilder authorityHost(String authorityHost) {
         this.identityClientOptions.setAuthorityHost(authorityHost);
+        return this;
+    }
+
+
+    /**
+     * Specifies the keep pass database path to read IntelliJ credentials on windows platform. This is required
+     * only on windows platform.
+     *
+     * <p>This path can be located in the IntelliJ IDE.
+     * Windows: File -&gt; Settings -&gt; Appearance &amp; Behavior -&gt; System Settings -&gt; Passwords </p>
+     *
+     * @param databasePath the path to the keep pass database.
+     * @throws IllegalArgumentException if {@code databasePath is either not specified or is empty}
+     * @return An updated instance of this builder with the keep pass database path set as specified.
+     */
+    public DefaultAzureCredentialBuilder windowsKeepPassDatabasePath(String databasePath) {
+        if (CoreUtils.isNullOrEmpty(databasePath)) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("The windows keep pass database path is either empty or not configured."
+                                                   + " Please configure it on the builder."));
+        }
+        this.identityClientOptions.setKeepPassDatabasePath(databasePath);
         return this;
     }
 
@@ -80,6 +104,16 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     }
 
     /**
+     * Excludes the {@link IntelliJCredential} from the {@link DefaultAzureCredential} authentication flow.
+     *
+     * @return An updated instance of this builder with the IntelliJ credential exclusion set as specified.
+     */
+    public DefaultAzureCredentialBuilder excludeIntelliJCredential() {
+        excludeAzureCliCredential = true;
+        return this;
+    }
+
+    /**
      * Specifies the ExecutorService to be used to execute the authentication requests.
      * Developer is responsible for maintaining the lifecycle of the ExecutorService.
      *
@@ -110,7 +144,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     }
 
     private ArrayDeque<TokenCredential> getCredentialsChain() {
-        ArrayDeque<TokenCredential> output = new ArrayDeque<>(4);
+        ArrayDeque<TokenCredential> output = new ArrayDeque<>(5);
         if (!excludeEnvironmentCredential) {
             output.add(new EnvironmentCredential(identityClientOptions));
         }
@@ -126,6 +160,10 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
 
         if (!excludeAzureCliCredential) {
             output.add(new AzureCliCredential(identityClientOptions));
+        }
+
+        if (!excludeIntelliCredential) {
+            output.add(new IntelliJCredential(identityClientOptions));
         }
 
         if (output.size() == 0) {

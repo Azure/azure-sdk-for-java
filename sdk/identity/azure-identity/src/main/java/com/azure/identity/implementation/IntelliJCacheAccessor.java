@@ -5,6 +5,7 @@ package com.azure.identity.implementation;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.KnownAuthorityHosts;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.aad.msal4jextensions.persistence.mac.KeyChainAccessor;
@@ -35,7 +36,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
+import java.util.Map;
 
 /**
  * This class accesses IntelliJ Azure Tools credentials cache via JNA.
@@ -43,6 +44,11 @@ import java.util.Locale;
 public class IntelliJCacheAccessor {
     private final ClientLogger logger = new ClientLogger(IntelliJCacheAccessor.class);
     private String keepPassDatabasePath;
+    private static final String INTELLIJ_CREDENTIAL_NOT_AVAILABLE_ERROR = "IntelliJ Authentication not available."
+              + " Please login with Azure Tools for IntelliJ plugin in the IDE.";
+    private static final byte[] CRYPTO_KEY = new byte[] {0x50, 0x72, 0x6f, 0x78, 0x79, 0x20, 0x43, 0x6f, 0x6e, 0x66,
+        0x69, 0x67, 0x20, 0x53, 0x65, 0x63};
+
 
     /**
      * Creates an instance of {@link IntelliJCacheAccessor}
@@ -54,21 +60,7 @@ public class IntelliJCacheAccessor {
     }
 
     private String getAzureToolsforIntelliJPluginConfigPath() {
-        return Paths.get(System.getProperty("user.home"), "sAzureToolsForIntelliJ").toString();
-    }
-
-    /**
-     * Get the current authentication method details of Azure Tools plugin in IntelliJ IDE.
-     *
-     * @return the {@link IntelliJAuthMethodDetails}
-     * @throws IOException if an error is encountered while reading the auth details file.
-     */
-    public IntelliJAuthMethodDetails getIntelliJAuthDetails() throws IOException {
-        String authMethodDetailsPath =
-                Paths.get(getAzureToolsforIntelliJPluginConfigPath(),"AuthMethodDetails.json").toString();
-        ObjectMapper objectMapper = new ObjectMapper();
-        File file = new File(authMethodDetailsPath.toString());
-        return objectMapper.readValue(file, IntelliJAuthMethodDetails.class);
+        return Paths.get(System.getProperty("user.home"), "AzureToolsForIntelliJ").toString();
     }
 
     /**
@@ -116,7 +108,7 @@ public class IntelliJCacheAccessor {
      * @return the {@link HashMap} holding auth details.
      * @throws IOException if an error is countered while reading the credential file.
      */
-    public HashMap<String, String> getIntellijServicePrincipalDetails(String credFilePath) throws IOException {
+    public Map<String, String> getIntellijServicePrincipalDetails(String credFilePath) throws IOException {
         BufferedReader reader = null;
         HashMap<String, String> servicePrincipalDetails = new HashMap<>(8);
         try {
@@ -141,10 +133,7 @@ public class IntelliJCacheAccessor {
     private JsonNode getCredentialFromKdbx() throws IOException {
         String extractedpwd = getKdbxPassword();
 
-        byte[] cryptoKey = new byte[]{0x50, 0x72, 0x6f, 0x78, 0x79, 0x20, 0x43, 0x6f, 0x6e, 0x66,
-            0x69, 0x67, 0x20, 0x53, 0x65, 0x63};
-
-        SecretKeySpec key = new SecretKeySpec(cryptoKey, "AES");
+        SecretKeySpec key = new SecretKeySpec(CRYPTO_KEY, "AES");
         String password = "";
 
         byte[] dataToDecrypt = Crypt32Util.cryptUnprotectData(Base64.getDecoder().decode(extractedpwd));
@@ -183,8 +172,9 @@ public class IntelliJCacheAccessor {
 
     private String getKdbxPassword() throws IOException {
         if (CoreUtils.isNullOrEmpty(keepPassDatabasePath)) {
-            throw new IllegalArgumentException("The windows keep pass database path is either empty or not configured."
-                                                   + " Please configure it on the IntelliJ Credential builder.");
+            throw logger.logExceptionAsError(
+                    new IllegalArgumentException("The windows keep pass database path is either empty"
+                                     + " or not configured Please configure it on the IntelliJ Credential builder."));
         }
         String passwordFilePath = new File(keepPassDatabasePath).getParent() + "\\" + "c.pwd";
         String extractedpwd = "";
@@ -213,5 +203,59 @@ public class IntelliJCacheAccessor {
             }
         }
         return extractedpwd;
+    }
+
+    /**
+     * Get the auth host of the specified {@code azureEnvironment}.
+     * @param azureEnvironment
+     * @return the auth host.
+     */
+    public String getAzureAuthHost(String azureEnvironment) {
+
+        switch (azureEnvironment) {
+            case "GLOBAL":
+                return KnownAuthorityHosts.AZURE_CLOUD;
+            case "CHINA":
+                return KnownAuthorityHosts.AZURE_CHINA_CLOUD;
+            case "GERMAN":
+                return KnownAuthorityHosts.AZURE_GERMAN_CLOUD;
+            case "US_GOVERNMENT":
+                return KnownAuthorityHosts.AZURE_US_GOVERNMENT;
+            default:
+                return KnownAuthorityHosts.AZURE_CLOUD;
+        }
+    }
+
+    /**
+     * Get the current authentication method details of Azure Tools plugin in IntelliJ IDE.
+     *
+     * @return the {@link IntelliJAuthMethodDetails}
+     * @throws IOException if an error is encountered while reading the auth details file.
+     */
+    public IntelliJAuthMethodDetails getAuthDetailsIfAvailable() throws IOException {
+        String authMethodDetailsPath =
+                Paths.get(getAzureToolsforIntelliJPluginConfigPath(), "AuthMethodDetails.json").toString();
+        File authFile = new File(authMethodDetailsPath);
+        if (!authFile.exists()) {
+            throw logger.logExceptionAsError(new RuntimeException(INTELLIJ_CREDENTIAL_NOT_AVAILABLE_ERROR));
+        }
+        ObjectMapper objectMapper = new ObjectMapper();
+        IntelliJAuthMethodDetails authMethodDetails = objectMapper
+                                                  .readValue(authMethodDetailsPath, IntelliJAuthMethodDetails.class);
+
+        String authType = authMethodDetails.getAuthMethod();
+        if (CoreUtils.isNullOrEmpty(authType)) {
+            throw logger.logExceptionAsError(new RuntimeException(INTELLIJ_CREDENTIAL_NOT_AVAILABLE_ERROR));
+        }
+        if (authType.equalsIgnoreCase("SP")) {
+            if (CoreUtils.isNullOrEmpty(authMethodDetails.getCredFilePath())) {
+                throw logger.logExceptionAsError(new RuntimeException(INTELLIJ_CREDENTIAL_NOT_AVAILABLE_ERROR));
+            }
+        } else if (authType.equalsIgnoreCase("DC")) {
+            if (CoreUtils.isNullOrEmpty(authMethodDetails.getAccountEmail())) {
+                throw logger.logExceptionAsError(new RuntimeException(INTELLIJ_CREDENTIAL_NOT_AVAILABLE_ERROR));
+            }
+        }
+        return authMethodDetails;
     }
 }

@@ -20,11 +20,9 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * <p> If the developer has authenticated successfully with Azure Tools for IntelliJ plugin in the IntelliJ IDE then
  * this credential can be used in the development code to reuse the cached plugin credentials.</p>
- *
- * @see IntelliJCredentialBuilder
  */
 @Immutable
-public class IntelliJCredential implements TokenCredential {
+class IntelliJCredential implements TokenCredential {
     private final IdentityClient identityClient;
     private final AtomicReference<MsalToken> cachedToken;
 
