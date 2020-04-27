@@ -15,14 +15,12 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -80,31 +78,6 @@ public class JacksonJsonSerializerTests {
         byte[] expected = "{\"name\":\"John Doe\",\"age\":50}".getBytes(StandardCharsets.UTF_8);
 
         assertArrayEquals(expected, CUSTOM_SERIALIZER.serialize(person));
-    }
-
-    @Test
-    public void streamCannotBeNull() {
-        assertThrows(NullPointerException.class, () -> DEFAULT_SERIALIZER.serialize("{}", null));
-    }
-
-    @Test
-    public void serializeWithDefaultSerializerToStream() {
-        Person person = new Person().setAge(50);
-        byte[] expected = "{\"name\":null,\"age\":50}".getBytes(StandardCharsets.UTF_8);
-
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        DEFAULT_SERIALIZER.serialize(person, stream);
-        assertArrayEquals(expected, stream.toByteArray());
-    }
-
-    @Test
-    public void serializeWithCustomSerializerToStream() {
-        Person person = new Person().setAge(50);
-        byte[] expected = "{\"name\":\"John Doe\",\"age\":50}".getBytes(StandardCharsets.UTF_8);
-
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        CUSTOM_SERIALIZER.serialize(person, stream);
-        assertArrayEquals(expected, stream.toByteArray());
     }
 
     private static final class PersonSerializer extends JsonSerializer<Person> {

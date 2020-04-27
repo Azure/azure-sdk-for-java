@@ -3,14 +3,12 @@
 
 package com.azure.core.serializer.json.jackson;
 
-import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.UncheckedIOException;
-import java.util.Objects;
 
 /**
  * Jackson based implementation of the {@link JsonSerializer} interface.
@@ -46,17 +44,6 @@ public final class JacksonJsonSerializer implements JsonSerializer {
     public byte[] serialize(Object value) {
         try {
             return mapper.writeValueAsBytes(value);
-        } catch (IOException ex) {
-            throw logger.logExceptionAsError(new UncheckedIOException(ex));
-        }
-    }
-
-    @Override
-    public void serialize(Object value, OutputStream stream) {
-        Objects.requireNonNull(stream, "'stream' cannot be null.");
-
-        try {
-            mapper.writeValue(stream, value);
         } catch (IOException ex) {
             throw logger.logExceptionAsError(new UncheckedIOException(ex));
         }

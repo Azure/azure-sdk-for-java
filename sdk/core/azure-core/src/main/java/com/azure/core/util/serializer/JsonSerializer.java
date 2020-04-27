@@ -3,8 +3,6 @@
 
 package com.azure.core.util.serializer;
 
-import java.io.OutputStream;
-
 /**
  * Generic interface covering basic JSON serialization and deserialization methods.
  */
@@ -26,12 +24,4 @@ public interface JsonSerializer {
      * @return The JSON byte stream representing the object.
      */
     byte[] serialize(Object value);
-
-    /**
-     * Converts the object into a JSON byte stream and writes it to the {@link OutputStream}.
-     *
-     * @param value The object.
-     * @param stream The {@link OutputStream} where the JSON byte stream will be written.
-     */
-    void serialize(Object value, OutputStream stream);
 }

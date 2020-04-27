@@ -11,14 +11,12 @@ import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -69,31 +67,6 @@ public class GsonJsonSerializerTests {
         byte[] expected = "{\"name\":\"John Doe\",\"age\":50}".getBytes(StandardCharsets.UTF_8);
 
         assertArrayEquals(expected, CUSTOM_SERIALIZER.serialize(person));
-    }
-
-    @Test
-    public void streamCannotBeNull() {
-        assertThrows(NullPointerException.class, () -> DEFAULT_SERIALIZER.serialize("{}", null));
-    }
-
-    @Test
-    public void serializeWithDefaultSerializerToStream() {
-        Person person = new Person(null, 50);
-        byte[] expected = "{\"age\":50}".getBytes(StandardCharsets.UTF_8);
-
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        DEFAULT_SERIALIZER.serialize(person, stream);
-        assertArrayEquals(expected, stream.toByteArray());
-    }
-
-    @Test
-    public void serializeWithCustomSerializerToStream() {
-        Person person = new Person(null, 50);
-        byte[] expected = "{\"name\":\"John Doe\",\"age\":50}".getBytes(StandardCharsets.UTF_8);
-
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        CUSTOM_SERIALIZER.serialize(person, stream);
-        assertArrayEquals(expected, stream.toByteArray());
     }
 
     public static final class Person {
