@@ -35,6 +35,7 @@ public final class ManageWebAppCosmosDbThroughKeyVault {
     /**
      * Main function which runs the actual sample.
      * @param azure instance of the azure client
+     * @param clientId the client ID
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure, String clientId) {

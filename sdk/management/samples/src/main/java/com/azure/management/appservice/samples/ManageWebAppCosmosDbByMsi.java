@@ -24,9 +24,6 @@ import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.samples.Utils;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 
-import java.io.File;
-
-
 /**
  * Azure App Service basic sample for managing web apps.
  *  - Create a Cosmos DB with credentials stored in a Key Vault
@@ -41,6 +38,8 @@ public final class ManageWebAppCosmosDbByMsi {
     /**
      * Main function which runs the actual sample.
      * @param azure instance of the azure client
+     * @param credential the credential to use
+     * @param clientId the client ID
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure, TokenCredential credential, String clientId) {

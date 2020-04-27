@@ -18,9 +18,6 @@ import com.azure.management.storage.StorageAccountSkuType;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import org.apache.commons.lang.time.StopWatch;
 
-import java.io.File;
-
-
 /**
  * Azure App Service basic sample for managing function apps.
  *  - Create 2 linux function apps.

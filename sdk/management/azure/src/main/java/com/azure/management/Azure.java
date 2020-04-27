@@ -92,7 +92,6 @@ import com.azure.management.storage.StorageAccounts;
 import com.azure.management.storage.StorageSkus;
 import com.azure.management.storage.Usages;
 import com.azure.management.storage.implementation.StorageManager;
-import java.io.IOException;
 
 /** The entry point for accessing resource management APIs in Azure. */
 public final class Azure {

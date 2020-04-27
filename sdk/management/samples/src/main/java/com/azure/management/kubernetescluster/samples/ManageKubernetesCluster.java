@@ -14,7 +14,6 @@ import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.samples.SSHShell;
 import com.azure.management.samples.Utils;
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Date;

@@ -65,7 +65,7 @@ class KuduClient {
             policies.add(webAppBase.manager().httpPipeline().getPolicy(i));
         }
         policies.add(new KuduAuthenticationPolicy(webAppBase));
-        HttpPipeline httpPipeline= new HttpPipelineBuilder()
+        HttpPipeline httpPipeline = new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(webAppBase.manager().httpPipeline().getHttpClient())
             .build();

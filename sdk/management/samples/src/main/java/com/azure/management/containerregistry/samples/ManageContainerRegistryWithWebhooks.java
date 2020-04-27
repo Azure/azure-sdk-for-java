@@ -27,7 +27,6 @@ import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.Image;
 import com.github.dockerjava.core.command.PushImageResultCallback;
 
-import java.io.File;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;

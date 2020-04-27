@@ -9,8 +9,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Disabled;
 
-import java.io.IOException;
-
 public class KeyVaultSampleTests extends SamplesTestBase {
     @Test
     @Disabled("Some RBAC related issue with current credentials")

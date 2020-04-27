@@ -67,7 +67,8 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
      * @param sdkContext the sdk context
      * @return the interface exposing Graph RBAC management API entry points that work across subscriptions
      */
-    public static GraphRbacManager authenticate(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+    public static GraphRbacManager authenticate(
+        HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
         return new GraphRbacManager(httpPipeline, profile, sdkContext);
     }
 

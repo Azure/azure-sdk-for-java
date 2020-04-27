@@ -122,7 +122,7 @@ class FunctionAppImpl
                 policies.add(manager().httpPipeline().getPolicy(i));
             }
             policies.add(new FunctionAuthenticationPolicy(this));
-            HttpPipeline httpPipeline= new HttpPipelineBuilder()
+            HttpPipeline httpPipeline = new HttpPipelineBuilder()
                 .policies(policies.toArray(new HttpPipelinePolicy[0]))
                 .httpClient(manager().httpPipeline().getHttpClient())
                 .build();
