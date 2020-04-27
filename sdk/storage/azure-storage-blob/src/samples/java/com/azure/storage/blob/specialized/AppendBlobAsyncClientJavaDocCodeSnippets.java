@@ -74,7 +74,7 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
      * Code snippet for {@link AppendBlobAsyncClient#createWithResponse(AppendBlobCreateOptions)}
      */
     public void create3() {
-        // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#AppendBlobCreateConditions
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#AppendBlobCreateOptions
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setContentType("binary")
             .setContentLanguage("en-US");
@@ -86,7 +86,7 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
         client.createWithResponse(new AppendBlobCreateOptions().setHeaders(headers).setMetadata(metadata)
             .setTags(tags).setRequestConditions(requestConditions)).subscribe(response ->
             System.out.printf("Created AppendBlob at %s%n", response.getValue().getLastModified()));
-        // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#AppendBlobCreateConditions
+        // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#AppendBlobCreateOptions
     }
 
     /**

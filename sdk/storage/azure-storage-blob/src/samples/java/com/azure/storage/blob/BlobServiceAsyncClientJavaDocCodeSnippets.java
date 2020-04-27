@@ -113,7 +113,7 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.BlobAsyncServiceClient.findBlobsByTag#String-FindBlobsOptions
         client.findBlobsByTags("where=tag=value", new FindBlobsOptions().setMaxResultsPerPage(10))
             .subscribe(blob -> System.out.printf("Name: %s%n", blob.getName()));
-        // END: com.azure.storage.blob.BlobAsyncServiceClient.filterBlobs#String-FindBlobsOptions
+        // END: com.azure.storage.blob.BlobAsyncServiceClient.findBlobsByTag#String-FindBlobsOptions
     }
 
     /**
