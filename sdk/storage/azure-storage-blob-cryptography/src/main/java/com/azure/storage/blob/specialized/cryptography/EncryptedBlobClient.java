@@ -11,6 +11,8 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.BlobUploadFromFileOptions;
+import com.azure.storage.blob.models.BlockBlobOutputStreamOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlobOutputStream;
@@ -107,7 +109,9 @@ public class EncryptedBlobClient extends BlobClient {
     public BlobOutputStream getBlobOutputStream(ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
         BlobRequestConditions requestConditions) {
-        return this.getBlobOutputStream(parallelTransferOptions, headers, metadata, null, tier, requestConditions);
+        return this.getBlobOutputStream(new BlockBlobOutputStreamOptions()
+            .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
+            .setTier(tier).setRequestConditions(requestConditions));
     }
 
     /**
@@ -116,22 +120,14 @@ public class EncryptedBlobClient extends BlobClient {
      * <p>
      * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
      *
-     * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
-     * @param headers {@link BlobHttpHeaders}
-     * @param metadata Metadata to associate with the blob.
-     * @param tags Tags to associate with the destination blob.
-     * @param tier {@link AccessTier} for the destination blob.
-     * @param requestConditions {@link BlobRequestConditions}
+     * @param options {@link BlockBlobOutputStreamOptions}
      *
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      * @throws BlobStorageException If a storage service error occurred.
      */
-    public BlobOutputStream getBlobOutputStream(ParallelTransferOptions parallelTransferOptions,
-        BlobHttpHeaders headers, Map<String, String> metadata, Map<String, String> tags, AccessTier tier,
-        BlobRequestConditions requestConditions) {
+    public BlobOutputStream getBlobOutputStream(BlockBlobOutputStreamOptions options) {
 
-        return BlobOutputStream.blockBlobOutputStream(encryptedBlobAsyncClient, parallelTransferOptions, headers,
-            metadata, tags, tier, requestConditions, null);
+        return BlobOutputStream.blockBlobOutputStream(encryptedBlobAsyncClient, options, null);
     }
 
     /**
@@ -187,7 +183,9 @@ public class EncryptedBlobClient extends BlobClient {
     public void uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions,
         Duration timeout) throws UncheckedIOException {
-        this.uploadFromFile(filePath, parallelTransferOptions, headers, metadata, null, tier, requestConditions,
+        this.uploadFromFile(filePath, new BlobUploadFromFileOptions()
+                .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
+                .setTier(tier).setRequestConditions(requestConditions),
             timeout);
     }
 
@@ -196,25 +194,17 @@ public class EncryptedBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions-Duration}
+     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String-BlobUploadFromFileOptions-Duration}
      *
      * @param filePath Path of the file to upload
-     * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file. Number of parallel
-     *        transfers parameter is ignored.
-     * @param headers {@link BlobHttpHeaders}
-     * @param metadata Metadata to associate with the blob.
-     * @param tags Tags to associate with the destination blob.
-     * @param tier {@link AccessTier} for the uploaded blob
-     * @param requestConditions {@link BlobRequestConditions}
+     * @param options {@link BlobUploadFromFileOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @throws UncheckedIOException If an I/O error occurs
      */
     @Override
-    public void uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
-        BlobHttpHeaders headers, Map<String, String> metadata, Map<String, String> tags, AccessTier tier,
-        BlobRequestConditions requestConditions, Duration timeout) throws UncheckedIOException {
-        Mono<Void> upload = this.encryptedBlobAsyncClient.uploadFromFile(filePath, parallelTransferOptions,
-            headers, metadata, tags, tier, requestConditions);
+    public void uploadFromFile(String filePath, BlobUploadFromFileOptions options, Duration timeout)
+        throws UncheckedIOException {
+        Mono<Void> upload = this.encryptedBlobAsyncClient.uploadFromFile(filePath, options);
 
         try {
             StorageImplUtils.blockWithOptionalTimeout(upload, timeout);

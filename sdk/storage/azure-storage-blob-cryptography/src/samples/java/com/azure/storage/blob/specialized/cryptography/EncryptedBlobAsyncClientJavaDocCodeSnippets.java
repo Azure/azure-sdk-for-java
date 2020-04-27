@@ -4,8 +4,10 @@
 package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.BlobParallelUploadOptions;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobUploadFromFileOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import reactor.core.publisher.Flux;
@@ -95,6 +97,33 @@ public class EncryptedBlobAsyncClientJavaDocCodeSnippets {
             .subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",
                 Base64.getEncoder().encodeToString(response.getValue().getContentMd5())));
         // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions
+    }
+
+    /**
+     * Code snippet for {@link EncryptedBlobAsyncClient#uploadWithResponse(Flux, com.azure.storage.blob.models.BlobParallelUploadOptions)}
+     */
+    public void upload3() {
+        // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadWithResponse#Flux-BlobParallelUploadOptions
+        BlobHttpHeaders headers = new BlobHttpHeaders()
+            .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+
+        Map<String, String> metadata = new HashMap<>(Collections.singletonMap("metadata", "value"));
+        Map<String, String> tags = new HashMap<>(Collections.singletonMap("tag", "value"));
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setBlockSizeLong(blockSize)
+            .setNumBuffers(numBuffers);
+
+        client.uploadWithResponse(data, new BlobParallelUploadOptions()
+            .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
+            .setTags(tags).setTier(AccessTier.HOT).setRequestConditions(requestConditions))
+            .subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",
+                Base64.getEncoder().encodeToString(response.getValue().getContentMd5())));
+        // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobParallelUploadOptions
     }
 
     /**
