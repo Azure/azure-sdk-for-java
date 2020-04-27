@@ -274,7 +274,7 @@ List the certificates in the key vault by calling `listPropertiesOfCertificates`
 certificateAsyncClient.listPropertiesOfCertificates()
     .subscribe(certificateProperties -> certificateAsyncClient.getCertificateVersion(certificateProperties.getName(),
      certificateProperties.getVersion());
-        .subscribe(certificateResponse -> System.out.printf("Received certificate with name %s and key id %s",
+        .subscribe(certificateResponse -> System.out.printf("Received certificate with name \"%s\" and key id %s",
             certificateResponse.getName(), certificateResponse.getKeyId())));
 ```
 
