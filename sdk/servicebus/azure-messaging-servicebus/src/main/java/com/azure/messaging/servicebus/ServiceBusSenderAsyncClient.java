@@ -136,6 +136,22 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     }
 
     /**
+     * Sends a list of messages to a Service Bus queue or topic.
+     *
+     * @param messages Messages to be sent to Service Bus queue or topic.
+     *
+     * @return The {@link Mono} the finishes this operation on service bus resource.
+     *
+     * @throws NullPointerException if {@code message} is {@code null}.
+     */
+    public Mono<Void> send(Iterable<ServiceBusMessage> messages) {
+        return createBatch().flatMap(messageBatch -> {
+            messages.forEach(serviceBusMessage -> messageBatch.tryAdd(serviceBusMessage));
+            return send(messageBatch);
+        }).then();
+    }
+
+    /**
      * Sends a message to a Service Bus queue or topic.
      *
      * @param message Message to be sent to Service Bus queue or topic.

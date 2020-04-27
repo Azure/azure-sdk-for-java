@@ -106,6 +106,28 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
+     * Verifies that we can send a list of messages to a non-session entity
+     */
+    @MethodSource("receiverTypesProvider")
+    @ParameterizedTest
+    void nonSessionEntitySendMessageList(MessagingEntityType entityType) {
+        // Arrange
+        setSenderAndReceiver(entityType);
+
+        final String messageId = UUID.randomUUID().toString();
+        final CreateBatchOptions options = new CreateBatchOptions().setMaximumSizeInBytes(1024);
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(3, messageId);
+
+        // Assert & Act
+
+        sender.send(messages);
+
+        for (int i = 0; i < messages.size(); i++) {
+            messagesPending.incrementAndGet();
+        }
+    }
+
+    /**
      * Verifies that we can schedule a message to a non-session entity.
      */
     @MethodSource("receiverTypesProvider")

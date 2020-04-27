@@ -16,10 +16,14 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Integration tests for {@link ServiceBusSenderAsyncClient} from queues or subscriptions.
@@ -56,6 +60,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         } finally {
             dispose(receiver);
         }
+
     }
 
     static Stream<Arguments> receiverTypesProvider() {
@@ -80,6 +85,32 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Assert & Act
         StepVerifier.create(sender.send(message).doOnSuccess(aVoid -> messagesPending.incrementAndGet()))
+            .verifyComplete();
+    }
+
+    /**
+     * Verifies that we can send a list of messages to a non-session entity.
+     */
+    @MethodSource("receiverTypesProvider")
+    @ParameterizedTest
+    void nonSessionEntitySendMessageList(MessagingEntityType entityType) throws InterruptedException {
+        // Arrange
+        setSenderAndReceiver(entityType, false);
+
+        final String messageId1 = UUID.randomUUID().toString();
+        final String messageId2 = UUID.randomUUID().toString();
+        final String contents = "Some-content";
+
+        final List<ServiceBusMessage> messages = Arrays.asList(
+            TestUtils.getServiceBusMessage(contents, messageId1),
+            TestUtils.getServiceBusMessage(contents, messageId2));
+
+        // Assert & Act
+        StepVerifier.create(sender.send(messages).doOnSuccess(aVoid -> {
+            for (int i = 0; i < messages.size(); i++) {
+                messagesPending.incrementAndGet();
+            }
+        }))
             .verifyComplete();
     }
 

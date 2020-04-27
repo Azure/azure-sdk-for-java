@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.messaging.servicebus.models.CreateBatchOptions;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -69,6 +70,19 @@ public class ServiceBusSenderClient implements AutoCloseable {
     public void send(ServiceBusMessage message) {
         Objects.requireNonNull(message, "'message' cannot be null.");
         asyncClient.send(message).block(tryTimeout);
+    }
+
+    /**
+     * Sends a list of messages to a Service Bus queue or topic.
+     *
+     * @param messages Messages to be sent to Service Bus queue or topic.
+     *
+     * @return The {@link Mono} the finishes this operation on service bus resource.
+     *
+     * @throws NullPointerException if {@code message} is {@code null}.
+     */
+    public void send(Iterable<ServiceBusMessage> messages) {
+        asyncClient.send(messages).block(tryTimeout);
     }
 
     /**
