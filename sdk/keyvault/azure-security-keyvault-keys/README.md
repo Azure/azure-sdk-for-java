@@ -58,11 +58,11 @@ Here is an [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
 
 * Use the above returned credentials information to set the **AZURE_CLIENT_ID** (appId), **AZURE_CLIENT_SECRET** (password), and **AZURE_TENANT_ID** (tenantId) environment variables. The following example shows a way to do this in Bash:
 
-  ```Bash
+    ```Bash
     export AZURE_CLIENT_ID="generated-app-ID"
     export AZURE_CLIENT_SECRET="random-password"
     export AZURE_TENANT_ID="tenant-ID"
-  ```
+    ```
 
 * Grant the aforementioned application authorization to perform key operations on the Key Vault:
 
@@ -88,9 +88,9 @@ import com.azure.security.keyvault.keys.KeyClient;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
 
 KeyClient client = new KeyClientBuilder()
-        .vaultUrl(<your-key-vault-url>)
-        .credential(new DefaultAzureCredentialBuilder().build())
-        .buildClient();
+    .vaultUrl(<your-key-vault-url>)
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildClient();
 ```
 
 > NOTE: For using an asynchronous client use KeyAsyncClient instead of KeyClient and call `buildAsyncClient()`
@@ -152,9 +152,9 @@ import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
 
 KeyClient keyClient = new KeyClientBuilder()
-        .vaultUrl(<your-key-vault-url>)
-        .credential(new DefaultAzureCredentialBuilder().build())
-        .buildClient();
+    .vaultUrl(<your-key-vault-url>)
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildClient();
 
 KeyVaultKey rsaKey = keyClient.createRsaKey(new CreateRsaKeyOptions("CloudRsaKey")
     .setExpiresOn(OffsetDateTime.now().plusYears(1))
@@ -258,7 +258,7 @@ The following sections provide several code snippets covering some of the most c
 - [Encrypt asynchronously](#encryp-asynchronously)
 - [Decrypt asynchronously](#decrypt-asynchronously)
 
-> Note : You should add "System.in.read()" or "Thread.sleep()" after the function calls in the main class/thread to allow async functions/operations to execute and finish before the main application/thread exits.
+> Note : You should add `System.in.read()` or `Thread.sleep()` after the function calls in the main class/thread to allow async functions/operations to execute and finish before the main application/thread exits.
 
 ### Create a key asynchronously
 Create a key to be stored in the Azure Key Vault.
@@ -272,9 +272,9 @@ import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 
 KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
-        .vaultUrl(<your-key-vault-url>)
-        .credential(new DefaultAzureCredentialBuilder().build())
-        .buildAsyncClient();
+    .vaultUrl(<your-key-vault-url>)
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildAsyncClient();
 
 keyAsyncClient.createRsaKey(new CreateRsaKeyOptions("CloudRsaKey")
     .setExpiresOn(OffsetDateTime.now().plusYears(1))
@@ -379,7 +379,7 @@ cryptoAsyncClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText)
 
 ## Troubleshooting
 ### General
-Azure Key Vault clients raise exceptions. For example, if you try to retrieve a key after it is deleted a `404` error is returned, indicating the resource was not found. In the following snippet, the error is handled gracefully by catching the exception and displaying additional information about the error.
+Azure Key Vault Key clients raise exceptions. For example, if you try to retrieve a key after it is deleted a `404` error is returned, indicating the resource was not found. In the following snippet, the error is handled gracefully by catching the exception and displaying additional information about the error.
 
 ```java
 try {
@@ -396,7 +396,7 @@ All client libraries by default use the Netty HTTP client. Adding the above depe
 All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL operations. The Boring SSL library is an Uber JAR containing native libraries for Linux / macOS / Windows, and provides better performance compared to the default SSL implementation within the JDK. For more information, including how to reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
 
 ## Next steps
-Several KeyVault Java SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Azure Key Vault.
+Several Key Vault Java SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Azure Key Vault.
 
 ## Next steps Samples
 Samples are explained in detail [here][samples_readme].
