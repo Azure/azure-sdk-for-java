@@ -3,10 +3,12 @@
 
 package com.azure.management.appservice.samples;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
-
-import java.io.File;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 
 //import com.azure.management.trafficmanager.TrafficManagerProfile;
 //import com.azure.management.trafficmanager.TrafficRoutingMethod;

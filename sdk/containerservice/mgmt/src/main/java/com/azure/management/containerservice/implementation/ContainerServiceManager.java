@@ -3,11 +3,8 @@
 
 package com.azure.management.containerservice.implementation;
 
-import com.azure.core.management.AzureEnvironment;
-import com.azure.core.management.serializer.AzureJacksonAdapter;
-import com.azure.management.AzureTokenCredential;
-import com.azure.management.RestClient;
-import com.azure.management.RestClientBuilder;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpPipeline;
 import com.azure.management.containerservice.KubernetesClusters;
 import com.azure.management.containerservice.models.ContainerServiceManagementClientBuilder;
 import com.azure.management.containerservice.models.ContainerServiceManagementClientImpl;

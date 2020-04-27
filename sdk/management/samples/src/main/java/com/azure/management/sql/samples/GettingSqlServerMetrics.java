@@ -9,8 +9,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
-import com.azure.management.RestClient;
-import com.azure.management.RestClientBuilder;
 import com.azure.management.monitor.Metric;
 import com.azure.management.monitor.MetricCollection;
 import com.azure.management.monitor.MetricDefinition;

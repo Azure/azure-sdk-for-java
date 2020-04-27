@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.management.kubernetescluster.samples;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -12,6 +13,7 @@ import com.azure.management.containerregistry.RegistryCredentials;
 import com.azure.management.containerservice.ContainerServiceVMSizeTypes;
 import com.azure.management.containerservice.KubernetesCluster;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.samples.DockerUtils;
 import com.azure.management.samples.SSHShell;

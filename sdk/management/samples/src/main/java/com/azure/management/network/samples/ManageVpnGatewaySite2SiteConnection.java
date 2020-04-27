@@ -4,6 +4,8 @@
 package com.azure.management.network.samples;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
 import com.azure.management.network.LocalNetworkGateway;
 import com.azure.management.network.Network;
