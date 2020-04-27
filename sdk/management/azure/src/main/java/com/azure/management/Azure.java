@@ -198,6 +198,7 @@ public final class Azure {
          * Authenticates API access based on the provided credential.
          *
          * @param credential The credential to authenticate API access with
+         * @param profile the profile to use
          * @return the authenticated Azure client
          */
         Authenticated authenticate(TokenCredential credential, AzureProfile profile);
@@ -285,7 +286,6 @@ public final class Azure {
          *
          * @return an authenticated Azure client configured to work with the default subscription
          * @throws CloudException exception thrown from Azure
-         * @throws IOException exception thrown from serialization/deserialization
          */
         Azure withDefaultSubscription() throws CloudException;
     }

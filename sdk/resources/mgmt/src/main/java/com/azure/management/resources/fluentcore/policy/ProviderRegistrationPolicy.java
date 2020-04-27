@@ -38,6 +38,7 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
      * Initialize a provider registration policy with a credential that's authorized
      * to register the provider.
      * @param credential the credential for provider registration
+     * @param profile the profile to use
      */
     public ProviderRegistrationPolicy(TokenCredential credential, AzureProfile profile) {
         this.credential = credential;
@@ -50,7 +51,6 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        final HttpRequest request = context.getHttpRequest();
         return next.process().flatMap(
             response -> {
                 if (!isResponseSuccessful(response)) {

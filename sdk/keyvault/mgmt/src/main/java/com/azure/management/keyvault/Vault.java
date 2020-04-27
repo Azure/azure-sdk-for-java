@@ -206,6 +206,7 @@ public interface Vault
             /**
              * Get the virtualNetworkRules value.
              *
+             * @param virtualNetworkRules the virtual network rules
              * @return the next stage of key vault definition.
              */
             WithCreate withVirtualNetworkRules(List<VirtualNetworkRule> virtualNetworkRules);
