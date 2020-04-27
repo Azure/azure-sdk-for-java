@@ -204,7 +204,6 @@ SyncPoller<DeletedKey, Void> deletedKeyPoller = keyClient.beginDeleteKey("keyNam
 PollResponse<DeletedKey> deletedKeyPollResponse = deletedKeyPoller.poll();
 
 // Deleted key is accessible as soon as polling begins.
-// Deleted date only works for SoftDelete Enabled Key Vault.
 DeletedKey deletedKey = deletedKeyPollResponse.getValue();
 System.out.println("Deleted Date  %s" + deletedKey.getDeletedOn().toString());
 
