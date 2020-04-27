@@ -17,7 +17,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessageLockContainer;
-import com.azure.messaging.servicebus.implementation.MessageManagementNode;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAsyncConsumer;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
@@ -661,32 +660,5 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         consumer.set(newConsumer);
 
         return newConsumer;
-    }
-
-    private static final class MessageManagement implements MessageManagementNode {
-        private final ServiceBusReceiverAsyncClient client;
-        private MessageManagement(ServiceBusReceiverAsyncClient client) {
-            this.client = client;
-        }
-
-        @Override
-        public Mono<Void> abandon(MessageLockToken lockToken) {
-            return client.abandon(lockToken);
-        }
-
-        @Override
-        public Mono<Void> complete(MessageLockToken lockToken) {
-            return client.complete(lockToken);
-        }
-
-        @Override
-        public Mono<Void> deadLetter(MessageLockToken lockToken) {
-            return client.deadLetter(lockToken);
-        }
-
-        @Override
-        public Mono<Instant> renewMessageLock(MessageLockToken lockToken) {
-            return client.renewMessageLock(lockToken);
-        }
     }
 }
