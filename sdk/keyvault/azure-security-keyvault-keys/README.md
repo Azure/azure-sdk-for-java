@@ -157,7 +157,7 @@ import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
 
 KeyClient keyClient = new KeyClientBuilder()
-        .vaultUrl(<your-vault-url>)
+        .vaultUrl(<your-key-vault-url>)
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 
