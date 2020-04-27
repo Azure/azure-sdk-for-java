@@ -20,6 +20,12 @@ public class AzureProfile {
 
     /**
      * Creates AzureProfile instance with Azure environment. The global environment is {@link AzureEnvironment#AZURE}.
+     * The tenant ID and subscription ID can be set via environment variables. The environment variables are expected
+     * as below:
+     * <ul>
+     *     <li>{@link Configuration#PROPERTY_AZURE_TENANT_ID AZURE_TENANT_ID}</li>
+     *     <li>{@link Configuration#PROPERTY_AZURE_SUBSCRIPTION_ID AZURE_SUBSCRIPTION_ID}</li>
+     * </ul>
      *
      * @param environment the Azure environment
      */

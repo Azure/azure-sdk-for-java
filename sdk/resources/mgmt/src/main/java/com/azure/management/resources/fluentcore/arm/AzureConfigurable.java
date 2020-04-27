@@ -8,10 +8,8 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.Configuration;
-
-import java.net.Proxy;
-import java.util.concurrent.TimeUnit;
 
 /**
  * The base interface for allowing configurations to be made on the HTTP client.
@@ -56,48 +54,12 @@ public interface AzureConfigurable<T extends AzureConfigurable<T>> {
     T withAuxiliaryCredentials(TokenCredential... tokens);
 
     /**
-     * Specify the user agent header.
+     * Sets the retry policy used in http pipeline.
      *
-     * @param userAgent the user agent to use
-     * @return the configurable object itself
-     */
-    T withUserAgent(String userAgent);
-
-    /**
-     * Set the read timeout on the HTTP client. Default is 10 seconds.
-     *
-     * @param timeout the timeout numeric value
-     * @param unit the time unit for the numeric value
+     * @param retryPolicy the retry policy
      * @return the configurable object itself for chaining
      */
-    T withReadTimeout(long timeout, TimeUnit unit);
-
-    /**
-     * Set the connection timeout on the HTTP client. Default is 10 seconds.
-     *
-     * @param timeout the timeout numeric value
-     * @param unit the time unit for the numeric value
-     * @return the configurable object itself for chaining
-     */
-    T withConnectionTimeout(long timeout, TimeUnit unit);
-
-    /**
-     * Sets whether to use the thread pool in OkHttp/Netty client or Reactor schedulers.
-     * If set to true, the thread pool in Http client will be used. Default is false.
-     *
-     * @param useHttpClientThreadPool whether to use the thread pool in Okhttp/Netty client. Default is false.
-     * @return the configurable object itself for chaining
-     */
-    T useHttpClientThreadPool(boolean useHttpClientThreadPool);
-
-
-    /**
-     * Sets the proxy for the HTTP client.
-     *
-     * @param proxy the proxy to use
-     * @return the configurable object itself for chaining
-     */
-    T withProxy(Proxy proxy);
+    T withRetryPolicy(RetryPolicy retryPolicy);
 
     /**
      * Sets the credential scope.

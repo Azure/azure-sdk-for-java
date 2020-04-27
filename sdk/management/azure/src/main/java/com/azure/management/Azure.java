@@ -5,7 +5,7 @@ package com.azure.management;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.management.CloudException;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.AppServiceCertificateOrders;
 import com.azure.management.appservice.AppServiceCertificates;
 import com.azure.management.appservice.AppServiceDomains;
@@ -222,13 +222,13 @@ public final class Azure {
          * returned by {@link Authenticated#subscriptions()} will be selected.
          *
          * @return an authenticated Azure client configured to work with the default subscription
-         * @throws CloudException exception thrown from Azure
          */
-        Azure withDefaultSubscription() throws CloudException;
+        Azure withDefaultSubscription();
     }
 
     /** The implementation for the Authenticated interface. */
     private static final class AuthenticatedImpl implements Authenticated {
+        private final ClientLogger logger = new ClientLogger(AuthenticatedImpl.class);
         private final HttpPipeline httpPipeline;
         private final AzureProfile profile;
         private final ResourceManager.Authenticated resourceManagerAuthenticated;
@@ -306,7 +306,11 @@ public final class Azure {
         }
 
         @Override
-        public Azure withDefaultSubscription() throws CloudException {
+        public Azure withDefaultSubscription() {
+            if (profile.subscriptionId() == null) {
+                throw logger.logExceptionAsError(
+                    new IllegalArgumentException("Please specify the subscription ID for resource management."));
+            }
             return new Azure(httpPipeline, profile, this);
         }
     }

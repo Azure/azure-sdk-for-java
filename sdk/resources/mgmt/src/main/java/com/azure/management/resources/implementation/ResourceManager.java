@@ -5,6 +5,7 @@ package com.azure.management.resources.implementation;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.Deployments;
 import com.azure.management.resources.Features;
 import com.azure.management.resources.GenericResources;
@@ -143,6 +144,7 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
      * The implementation for Authenticated interface.
      */
     private static final class AuthenticatedImpl implements Authenticated {
+        private final ClientLogger logger = new ClientLogger(AuthenticatedImpl.class);
         private HttpPipeline httpPipeline;
         private AzureProfile profile;
         private SdkContext sdkContext;
@@ -189,6 +191,10 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
 
         @Override
         public ResourceManager withDefaultSubscription() {
+            if (profile.subscriptionId() == null) {
+                throw logger.logExceptionAsError(
+                    new IllegalArgumentException("Please specify the subscription ID for resource management."));
+            }
             return new ResourceManager(httpPipeline, profile, sdkContext);
         }
     }

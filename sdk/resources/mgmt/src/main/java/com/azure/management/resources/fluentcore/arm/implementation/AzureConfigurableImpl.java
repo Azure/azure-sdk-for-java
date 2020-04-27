@@ -16,11 +16,9 @@ import com.azure.management.resources.fluentcore.policy.AuxiliaryAuthenticationP
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.HttpPipelineProvider;
 
-import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 /**
  * The implementation for {@link AzureConfigurable} and the base class for
@@ -74,29 +72,10 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
     }
 
     @Override
-    public T withUserAgent(String userAgent) {
-        // TODO: pending
+    public T withRetryPolicy(RetryPolicy retryPolicy) {
+        Objects.requireNonNull(retryPolicy);
+        this.retryPolicy = retryPolicy;
         return (T) this;
-    }
-
-    @Override
-    public T withReadTimeout(long timeout, TimeUnit unit) {
-        return null;
-    }
-
-    @Override
-    public T withConnectionTimeout(long timeout, TimeUnit unit) {
-        return null;
-    }
-
-    @Override
-    public T useHttpClientThreadPool(boolean useHttpClientThreadPool) {
-        return null;
-    }
-
-    @Override
-    public T withProxy(Proxy proxy) {
-        return null;
     }
 
     @Override
