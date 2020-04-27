@@ -208,7 +208,7 @@ The following sections provide several code snippets covering some of the most c
 ### Create a certificate asynchronously
 
 Create a certificate to be stored in the Azure Key Vault.
-- `beginCreateCertificate` creates a new certificate in the Azure Key Vault. if the certificate with name already exists then a new version of the certificate is created.
+- `beginCreateCertificate` creates a new certificate in the Azure Key Vault. If a certificate with same name already exists then a new version of the certificate is created.
 
 ```Java
 import com.azure.identity.DefaultAzureCredentialBuilder;
