@@ -76,7 +76,7 @@ Here is an [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
     > --key-permissions:
     > Accepted values: backup, delete, get, list, purge, recover, restore, create, update, encrypt, decrypt, import, wrapkey, unwrapkey, verify, sign
 
-* Use the above mentioned Key Vault name to retreive details of your Vault which also contains your Key Vault URL:
+* Use the aforementioned Key Vault name to retrieve details of your Key Vault, which also contain your Key Vault URL:
 
     ```Bash
     az keyvault show --name <your-key-vault-name>
