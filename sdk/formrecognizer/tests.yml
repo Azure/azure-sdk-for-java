@@ -10,3 +10,48 @@ jobs:
           safeName: azureaiformrecognizer
       EnvVars:
         AZURE_TEST_MODE: RECORD
+      Matrix:
+        # Manual matrix that uses Ubuntu 16.04 until the DNS resolution issue is
+        # resolved
+        Linux - Java 8 (AzureCloud):
+          OSName: 'Linux'
+          OSVmImage: 'ubuntu-16.04'
+          JavaVersion: '1.8'
+          DisplayName: 'Linux - Java 8'
+          CloudType: AzureCloud
+          AZURE_TEST_HTTP_CLIENTS: netty
+        macOS - Java 8 (AzureCloud):
+          OSName: 'macOS'
+          OSVmImage: 'macOS-10.15'
+          JavaVersion: '1.8'
+          DisplayName: 'macOS - Java 8'
+          CloudType: AzureCloud
+          AZURE_TEST_HTTP_CLIENTS: okhttp
+        Windows - Java 8 (AzureCloud):
+          OSName: 'Windows'
+          OSVmImage: 'windows-2019'
+          JavaVersion: '1.8'
+          DisplayName: 'Windows - Java 8'
+          CloudType: AzureCloud
+          AZURE_TEST_HTTP_CLIENTS: netty
+        Linux - Java 11 (AzureCloud):
+          OSName: 'Linux'
+          OSVmImage: 'ubuntu-16.04'
+          JavaVersion: '1.11'
+          DisplayName: 'Linux - Java 11'
+          CloudType: AzureCloud
+          AZURE_TEST_HTTP_CLIENTS: okhttp
+        macOS - Java 11 (AzureCloud):
+          OSName: 'macOS'
+          OSVmImage: 'macOS-10.15'
+          JavaVersion: '1.11'
+          DisplayName: 'macOS - Java 11'
+          CloudType: AzureCloud
+          AZURE_TEST_HTTP_CLIENTS: netty
+        Windows - Java 11 (AzureCloud):
+          OSName: 'Windows'
+          OSVmImage: 'windows-2019'
+          JavaVersion: '1.11'
+          DisplayName: 'Windows - Java 11'
+          CloudType: AzureCloud
+          AZURE_TEST_HTTP_CLIENTS: okhttp
