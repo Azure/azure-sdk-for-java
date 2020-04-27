@@ -215,7 +215,7 @@ import com.azure.security.keyvault.certificates.CertificateAsyncClient;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy; 
 
 //Creates a certificate using the default policy and polls on its progress.
-certificateAsyncClient.beginCreateCertificate("certificateName", CertificatePolicy.getDefault())
+certificateAsyncClient.beginCreateCertificate("<certificate-name>", CertificatePolicy.getDefault())
     .subscribe(pollResponse -> {
         System.out.println("---------------------------------------------------------------------------------");
         System.out.println(pollResponse.getStatus());
