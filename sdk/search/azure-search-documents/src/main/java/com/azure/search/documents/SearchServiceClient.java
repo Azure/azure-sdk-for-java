@@ -188,7 +188,7 @@ public final class SearchServiceClient {
      */
     public Response<Void> deleteDataSourceWithResponse(DataSource dataSource, boolean onlyIfUnchanged,
         RequestOptions requestOptions, Context context) {
-        String etag = asyncClient.getETagFromResource(dataSource, onlyIfUnchanged);
+        String etag = onlyIfUnchanged ? dataSource.getETag() : null;
         return asyncClient.deleteDataSourceWithResponse(dataSource.getName(), etag, requestOptions, context).block();
     }
 
@@ -310,7 +310,7 @@ public final class SearchServiceClient {
      */
     public Response<Void> deleteIndexerWithResponse(Indexer indexer, boolean onlyIfUnchanged,
         RequestOptions requestOptions, Context context) {
-        String etag = asyncClient.getETagFromResource(indexer, onlyIfUnchanged);
+        String etag = onlyIfUnchanged ? indexer.getETag() : null;
         return asyncClient.deleteIndexerWithResponse(indexer.getName(), etag, requestOptions, context).block();
     }
 
@@ -528,7 +528,7 @@ public final class SearchServiceClient {
      */
     public Response<Void> deleteIndexWithResponse(Index index, boolean onlyIfUnchanged,
         RequestOptions requestOptions, Context context) {
-        String etag = asyncClient.getETagFromResource(index, onlyIfUnchanged);
+        String etag = onlyIfUnchanged ? index.getETag() : null;
         return asyncClient.deleteIndexWithResponse(index.getName(), etag, requestOptions, context).block();
     }
 
@@ -678,7 +678,7 @@ public final class SearchServiceClient {
      */
     public Response<Void> deleteSkillsetWithResponse(Skillset skillset, boolean onlyIfUnchanged,
         RequestOptions requestOptions, Context context) {
-        String etag = asyncClient.getETagFromResource(skillset, onlyIfUnchanged);
+        String etag = onlyIfUnchanged ? skillset.getETag() : null;
         return asyncClient.deleteSkillsetWithResponse(skillset.getName(), etag, requestOptions, context).block();
     }
 
@@ -802,7 +802,7 @@ public final class SearchServiceClient {
      */
     public Response<Void> deleteSynonymMapWithResponse(SynonymMap synonymMap, boolean onlyIfUnchanged,
         RequestOptions requestOptions, Context context) {
-        String etag = asyncClient.getETagFromResource(synonymMap, onlyIfUnchanged);
+        String etag = onlyIfUnchanged ? synonymMap.getETag() : null;
         return asyncClient.deleteSynonymMapWithResponse(synonymMap.getName(), etag, requestOptions, context)
             .block();
     }

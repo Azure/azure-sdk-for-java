@@ -142,12 +142,13 @@ public final class SearchServiceAsyncClient {
 
     Mono<Response<DataSource>> createOrUpdateDataSourceWithResponse(DataSource dataSource,
         boolean onlyIfUnchanged, RequestOptions requestOptions, Context context) {
-        String etag = getETagFromResource(dataSource, onlyIfUnchanged);
+        Objects.requireNonNull(dataSource, "'DataSource' cannot be null.");
+        String ifMatch = onlyIfUnchanged ? dataSource.getETag() : null;
         try {
             return restClient
                 .dataSources()
-                .createOrUpdateWithRestResponseAsync(dataSource.getName(), dataSource, etag, null,
-                    requestOptions, context)
+                .createOrUpdateWithRestResponseAsync(dataSource.getName(),
+                    dataSource, ifMatch, null, requestOptions, context)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -292,7 +293,8 @@ public final class SearchServiceAsyncClient {
      */
     public Mono<Response<Void>> deleteDataSourceWithResponse(DataSource dataSource, boolean onlyIfUnchanged,
         RequestOptions requestOptions) {
-        String etag = getETagFromResource(dataSource, onlyIfUnchanged);
+        Objects.requireNonNull(dataSource, "'DataSource' cannot be null");
+        String etag = onlyIfUnchanged ? dataSource.getETag() : null;
         return withContext(context ->
             deleteDataSourceWithResponse(dataSource.getName(), etag, requestOptions, context));
     }
@@ -371,11 +373,12 @@ public final class SearchServiceAsyncClient {
 
     Mono<Response<Indexer>> createOrUpdateIndexerWithResponse(Indexer indexer, boolean onlyIfUnchanged,
         RequestOptions requestOptions, Context context) {
-        String ifMatch = getETagFromResource(indexer, onlyIfUnchanged);
+        Objects.requireNonNull(indexer, "'Indexer' cannot be 'null'");
+        String ifMatch = onlyIfUnchanged ? indexer.getETag() : null;
         try {
             return restClient.indexers()
-                .createOrUpdateWithRestResponseAsync(indexer.getName(), indexer, ifMatch, null,
-                    requestOptions, context)
+                .createOrUpdateWithRestResponseAsync(indexer.getName(), indexer, ifMatch, null, requestOptions,
+                    context)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -482,7 +485,8 @@ public final class SearchServiceAsyncClient {
      */
     public Mono<Response<Void>> deleteIndexerWithResponse(Indexer indexer, boolean onlyIfUnchanged,
         RequestOptions requestOptions) {
-        String etag = getETagFromResource(indexer, onlyIfUnchanged);
+        Objects.requireNonNull(indexer, "'Indexer' cannot be null");
+        String etag = onlyIfUnchanged ? indexer.getETag() : null;
         return withContext(context -> deleteIndexerWithResponse(indexer.getName(), etag, requestOptions, context));
     }
 
@@ -784,7 +788,8 @@ public final class SearchServiceAsyncClient {
     Mono<Response<Index>> createOrUpdateIndexWithResponse(Index index, boolean allowIndexDowntime,
         boolean onlyIfUnchanged, RequestOptions requestOptions, Context context) {
         try {
-            String ifMatch = getETagFromResource(index, onlyIfUnchanged);
+            Objects.requireNonNull(index, "'Index' cannot null.");
+            String ifMatch = onlyIfUnchanged ? index.getETag() : null;
             return restClient.indexes()
                 .createOrUpdateWithRestResponseAsync(index.getName(), index, allowIndexDowntime, ifMatch, null,
                     requestOptions, context)
@@ -816,7 +821,8 @@ public final class SearchServiceAsyncClient {
      */
     public Mono<Response<Void>> deleteIndexWithResponse(Index index, boolean onlyIfUnchanged,
         RequestOptions requestOptions) {
-        String etag = getETagFromResource(index, onlyIfUnchanged);
+        Objects.requireNonNull(index, "'Index' cannot be null.");
+        String etag = onlyIfUnchanged ? index.getETag() : null;
         return withContext(context -> deleteIndexWithResponse(index.getName(), etag, requestOptions, context));
     }
 
@@ -1027,7 +1033,8 @@ public final class SearchServiceAsyncClient {
 
     Mono<Response<Skillset>> createOrUpdateSkillsetWithResponse(Skillset skillset, boolean onlyIfUnchanged,
         RequestOptions requestOptions, Context context) {
-        String ifMatch = getETagFromResource(skillset, onlyIfUnchanged);
+        Objects.requireNonNull(skillset, "'Skillset' cannot be null.");
+        String ifMatch = onlyIfUnchanged ? skillset.getETag() : null;
         try {
             return restClient.skillsets()
                 .createOrUpdateWithRestResponseAsync(skillset.getName(), skillset, ifMatch, null, requestOptions,
@@ -1061,7 +1068,8 @@ public final class SearchServiceAsyncClient {
      */
     public Mono<Response<Void>> deleteSkillsetWithResponse(Skillset skillset, boolean onlyIfUnchanged,
         RequestOptions requestOptions) {
-        String etag = getETagFromResource(skillset, onlyIfUnchanged);
+        Objects.requireNonNull(skillset, "'Skillset' cannot be null.");
+        String etag = onlyIfUnchanged ? skillset.getETag() : null;
         return withContext(context ->
             deleteSkillsetWithResponse(skillset.getName(), etag, requestOptions, context));
     }
@@ -1221,7 +1229,8 @@ public final class SearchServiceAsyncClient {
 
     Mono<Response<SynonymMap>> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap,
         boolean onlyIfUnchanged, RequestOptions requestOptions, Context context) {
-        String ifMatch = getETagFromResource(synonymMap, onlyIfUnchanged);
+        Objects.requireNonNull(synonymMap, "'SynonymMap' cannot be null.");
+        String ifMatch = onlyIfUnchanged ? synonymMap.getETag() : null;
         try {
             return restClient.synonymMaps()
                 .createOrUpdateWithRestResponseAsync(synonymMap.getName(), synonymMap, ifMatch, null, requestOptions,
@@ -1255,7 +1264,8 @@ public final class SearchServiceAsyncClient {
      */
     public Mono<Response<Void>> deleteSynonymMapWithResponse(SynonymMap synonymMap, boolean onlyIfUnchanged,
         RequestOptions requestOptions) {
-        String etag = getETagFromResource(synonymMap, onlyIfUnchanged);
+        Objects.requireNonNull(synonymMap, "'SynonymMap' cannot be null");
+        String etag = onlyIfUnchanged ? synonymMap.getETag() : null;
         return withContext(context ->
             deleteSynonymMapWithResponse(synonymMap.getName(), etag, requestOptions, context));
     }
@@ -1300,15 +1310,6 @@ public final class SearchServiceAsyncClient {
                 .map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
-        }
-    }
-
-    protected String getETagFromResource(Object resource, boolean onlyIfUnchanged) {
-        Objects.requireNonNull(resource);
-        try {
-            return onlyIfUnchanged ? (String) resource.getClass().getMethod("getETag").invoke(resource) : null;
-        } catch (Exception ex) {
-            return null;
         }
     }
 }
