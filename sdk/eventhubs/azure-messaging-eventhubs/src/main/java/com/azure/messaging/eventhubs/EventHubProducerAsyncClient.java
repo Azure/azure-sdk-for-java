@@ -301,7 +301,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      * @param events Events to send to the service.
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
-    Mono<Void> send(Iterable<EventData> events) {
+    public Mono<Void> send(Iterable<EventData> events) {
         if (events == null) {
             return monoError(logger, new NullPointerException("'events' cannot be null."));
         }
@@ -318,7 +318,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      * @param options The set of options to consider when sending this batch.
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
-    Mono<Void> send(Iterable<EventData> events, SendOptions options) {
+    public Mono<Void> send(Iterable<EventData> events, SendOptions options) {
         if (events == null) {
             return monoError(logger, new NullPointerException("'events' cannot be null."));
         } else if (options == null) {
