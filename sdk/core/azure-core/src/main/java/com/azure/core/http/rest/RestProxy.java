@@ -409,9 +409,9 @@ public final class RestProxy implements InvocationHandler {
         // 'RestResponseBase' class instead.
         Class<? extends Response<?>> cls = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
         if (cls.equals(Response.class)) {
-            cls = (Class<? extends Response<?>>) ResponseBase.class;
+            cls = (Class<? extends Response<?>>) (Object) ResponseBase.class;
         } else if (cls.equals(PagedResponse.class)) {
-            cls = (Class<? extends Response<?>>) PagedResponseBase.class;
+            cls = (Class<? extends Response<?>>) (Object) PagedResponseBase.class;
 
             if (bodyAsObject != null && !TypeUtil.isTypeOrSubTypeOf(bodyAsObject.getClass(), Page.class)) {
                 throw logger.logExceptionAsError(new RuntimeException(
