@@ -627,6 +627,134 @@ class ServiceBusReceiverAsyncClientTest {
         Assertions.assertEquals(NAMESPACE, actualNamespace);
     }
 
+    /**
+     * Cannot get session state for non-session receiver.
+     */
+    @Test
+    void cannotPerformGetSessionState() {
+        // Arrange
+        final String sessionId = "a-session-id";
+
+        // Act & Assert
+        StepVerifier.create(consumer.getSessionState(sessionId))
+            .expectError(IllegalStateException.class)
+            .verify();
+    }
+
+    /**
+     * Cannot get session state for non-session receiver.
+     */
+    @Test
+    void cannotPerformSetSessionState() {
+        // Arrange
+        final String sessionId = "a-session-id";
+        final byte[] sessionState = new byte[]{10, 11, 8};
+
+        // Act & Assert
+        StepVerifier.create(consumer.setSessionState(sessionId, sessionState))
+            .expectError(IllegalStateException.class)
+            .verify();
+    }
+
+    /**
+     * Cannot get session state for non-session receiver.
+     */
+    @Test
+    void cannotPerformRenewSessionLock() {
+        // Arrange
+        final String sessionId = "a-session-id";
+
+        // Act & Assert
+        StepVerifier.create(consumer.renewSessionLock(sessionId))
+            .expectError(IllegalStateException.class)
+            .verify();
+    }
+
+    /**
+     * Verifies that we can get a session state.
+     */
+    @SuppressWarnings("unchecked")
+    @Test
+    void getSessionState() {
+        // Arrange
+        final String sessionId = "a-session-id";
+        final byte[] bytes = new byte[]{95, 11, 54, 10};
+        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 10, sessionId);
+        final ServiceBusReceiverAsyncClient receiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
+            MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
+            messageSerializer, onClientClose);
+
+        when(managementNode.getSessionState()).thenReturn(Mono.just(bytes), Mono.empty());
+
+        // Act & Assert
+        StepVerifier.create(receiver.getSessionState(sessionId))
+            .expectNext(bytes)
+            .expectComplete()
+            .verify();
+    }
+
+    /**
+     * Verifies that we can set a session state.
+     */
+    @Test
+    void setSessionState() {
+        // Arrange
+        final String sessionId = "a-session-id";
+        final byte[] bytes = new byte[]{95, 11, 54, 10};
+        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 10, sessionId);
+        final ServiceBusReceiverAsyncClient receiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
+            MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
+            messageSerializer, onClientClose);
+
+        when(managementNode.setSessionState(bytes)).thenReturn(Mono.empty());
+
+        // Act & Assert
+        StepVerifier.create(receiver.setSessionState(sessionId, bytes))
+            .expectComplete()
+            .verify();
+    }
+
+    /**
+     * Verifies that we can renew a session state.
+     */
+    @Test
+    void renewSessionLock() {
+        // Arrange
+        final Instant expiry = Instant.ofEpochSecond(1588011761L);
+        final String sessionId = "something-else";
+        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 10, sessionId);
+        final ServiceBusReceiverAsyncClient receiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
+            MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
+            messageSerializer, onClientClose);
+
+        when(managementNode.renewSessionLock()).thenReturn(Mono.just(expiry));
+
+        // Act & Assert
+        StepVerifier.create(receiver.renewSessionLock(sessionId))
+            .assertNext(v -> {
+                logger.info("Info. {}", v);
+            })
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
+    void cannotRenewMessageLockInSession() {
+        // Arrange
+        final UUID messageLock = UUID.randomUUID();
+        final MessageLockToken lockToken = MessageLockToken.fromString(messageLock.toString());
+        final String sessionId = "A session";
+        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 10, sessionId);
+        final ServiceBusReceiverAsyncClient receiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
+            MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
+            messageSerializer, onClientClose);
+
+        // Act & Assert
+        StepVerifier.create(receiver.renewMessageLock(lockToken))
+            .expectError(IllegalStateException.class)
+            .verify();
+    }
+
     private List<Message> getMessages(int numberOfEvents) {
         final Map<String, String> map = Collections.singletonMap("SAMPLE_HEADER", "foo");
 

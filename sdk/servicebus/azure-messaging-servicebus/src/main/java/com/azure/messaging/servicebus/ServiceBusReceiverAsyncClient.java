@@ -200,7 +200,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws IllegalStateException if the receiver is a non-session receiver.
      */
     public Mono<byte[]> getSessionState(String sessionId) {
-        if (!isSessionReceiver) {
+        if (isDisposed.get()) {
+            return monoError(logger, new IllegalStateException(
+                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "getSessionState")));
+        } else if (!isSessionReceiver) {
             return monoError(logger, new IllegalStateException("Cannot get session state on a non-session receiver."));
         } else {
             return connectionProcessor
@@ -491,6 +494,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return monoError(logger, new NullPointerException("'receivedMessage.lockToken' cannot be null."));
         } else if (lockToken.getLockToken().isEmpty()) {
             return monoError(logger, new IllegalArgumentException("'message.lockToken' cannot be empty."));
+        } else if (isSessionReceiver) {
+            return monoError(logger, new IllegalStateException(
+                String.format("Cannot renew message lock [%s] for a session receiver.", lockToken.getLockToken())));
         }
 
         final UUID lockTokenUuid;
@@ -522,7 +528,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws IllegalStateException if the receiver is a non-session receiver.
      */
     public Mono<Instant> renewSessionLock(String sessionId) {
-        if (!isSessionReceiver) {
+        if (isDisposed.get()) {
+            return monoError(logger, new IllegalStateException(
+                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "renewSessionLock")));
+        } else if (!isSessionReceiver) {
             return monoError(logger, new IllegalStateException("Cannot renew session lock on a non-session receiver."));
         } else {
             return connectionProcessor
@@ -541,7 +550,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws IllegalStateException if the receiver is a non-session receiver.
      */
     public Mono<Void> setSessionState(String sessionId, byte[] sessionState) {
-        if (!isSessionReceiver) {
+        if (isDisposed.get()) {
+            return monoError(logger, new IllegalStateException(
+                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "setSessionState")));
+        } else if (!isSessionReceiver) {
             return monoError(logger, new IllegalStateException("Cannot set session state on a non-session receiver."));
         } else {
             return connectionProcessor

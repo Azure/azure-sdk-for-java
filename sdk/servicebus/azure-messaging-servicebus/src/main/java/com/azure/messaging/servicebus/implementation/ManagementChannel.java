@@ -125,7 +125,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
             final Map<String, Object> map = (Map<String, Object>) value;
             final Object sessionState = map.get(ManagementConstants.SESSION_STATE);
 
-            if (!map.containsKey(ManagementConstants.SESSION_STATE) || sessionState == null) {
+            if (sessionState == null) {
                 logger.info("sessionId[{}]. Does not have a session state.", sessionId);
                 return Mono.empty();
             }
