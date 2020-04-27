@@ -5,9 +5,6 @@ package com.azure.management.network.samples;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
 import com.azure.management.network.ExpressRouteCrossConnection;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
@@ -34,7 +31,10 @@ public final class ManageExpressRouteCrossConnection {
         try {
             //============================================================
             // list Express Route Cross Connections
-            PagedIterable<ExpressRouteCrossConnection> connections = azure.expressRouteCrossConnections().list();
+            System.out.println("List express route cross connection...");
+            azure.expressRouteCrossConnections().list().forEach(expressRouteCrossConnection ->
+                System.out.println(expressRouteCrossConnection.name()));
+            System.out.println();
 
             //============================================================
             // get Express Route Cross Connection by id

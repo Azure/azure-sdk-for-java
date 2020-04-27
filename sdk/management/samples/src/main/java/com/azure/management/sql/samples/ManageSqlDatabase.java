@@ -15,7 +15,6 @@ import com.azure.management.samples.Utils;
 import com.azure.management.sql.DatabaseEdition;
 import com.azure.management.sql.ServiceObjectiveName;
 import com.azure.management.sql.SqlDatabase;
-import com.azure.management.sql.SqlDatabaseUsageMetric;
 import com.azure.management.sql.SqlFirewallRule;
 import com.azure.management.sql.SqlServer;
 
@@ -105,7 +104,7 @@ public final class ManageSqlDatabase {
 
             Utils.print(firewallRule);
 
-            List<SqlDatabaseUsageMetric> usages = database.listUsageMetrics();
+            database.listUsageMetrics();
 
             // Delete the database.
             System.out.println("Deleting a database");

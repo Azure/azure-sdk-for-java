@@ -4,14 +4,10 @@
 package com.azure.management.network.samples;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
 import com.azure.management.network.LocalNetworkGateway;
 import com.azure.management.network.Network;
 import com.azure.management.network.VirtualNetworkGateway;
-import com.azure.management.network.VirtualNetworkGatewayConnection;
 import com.azure.management.network.VirtualNetworkGatewaySkuName;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
@@ -93,7 +89,9 @@ public final class ManageVpnGatewaySite2SiteConnection {
 
             //============================================================
             // List VPN Gateway connections for particular gateway
-            PagedIterable<VirtualNetworkGatewayConnection> connections = vngw.listConnections();
+            System.out.println("List connections...");
+            vngw.listConnections().forEach(connection -> System.out.println(connection.name()));
+            System.out.println();
 
             //============================================================
             // Reset virtual network gateway

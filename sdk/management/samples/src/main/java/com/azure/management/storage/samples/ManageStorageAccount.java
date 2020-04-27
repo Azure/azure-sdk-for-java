@@ -108,11 +108,11 @@ public final class ManageStorageAccount {
 
             System.out.println("Creating a V2 Storage Account");
 
-            StorageAccount storageAccount3 = azure.storageAccounts().define(storageAccountName3)
-                    .withRegion(Region.US_EAST)
-                    .withNewResourceGroup(rgName)
-                    .withGeneralPurposeAccountKindV2()
-                    .create();
+            azure.storageAccounts().define(storageAccountName3)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withGeneralPurposeAccountKindV2()
+                .create();
 
             System.out.println("Created V2 Storage Account");
 

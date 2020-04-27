@@ -14,7 +14,7 @@ stages:
         TestMatrix:
           Linux - Java 8:
             OSName: 'Linux'
-            OSVmImage: 'ubuntu-16.04'
+            OSVmImage: 'ubuntu-18.04'
             JavaVersion: '1.8'
             RunTitle: 'Linux on Java 1.8'
             ProfileFlag: '-Punit'
@@ -32,7 +32,7 @@ stages:
             ProfileFlag: '-Punit'
           Linux - Java 11:
             OSName: 'Linux'
-            OSVmImage: 'ubuntu-16.04'
+            OSVmImage: 'ubuntu-18.04'
             JavaVersion: '1.11'
             RunTitle: 'Linux on Java 1.11'
             ProfileFlag: '-Punit'

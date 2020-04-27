@@ -77,6 +77,9 @@ import com.azure.management.storage.StorageAccount;
 import com.azure.management.storage.implementation.StorageManager;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import reactor.core.Exceptions;
+import reactor.core.publisher.Mono;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -84,12 +87,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Callable;
-import reactor.core.Exceptions;
-import reactor.core.publisher.Mono;
 
 /** The implementation for VirtualMachine and its create and update interfaces. */
 class VirtualMachineImpl

@@ -91,7 +91,7 @@ public class ManageSqlFailoverGroups {
             // Get the Failover Group from the secondary SQL server.
             System.out.println("Getting the Failover Group from the secondary SQL server");
 
-            SqlFailoverGroup failoverGroupOnPartner = sqlSecondaryServer.failoverGroups().get(failoverGroup.name());
+            sqlSecondaryServer.failoverGroups().get(failoverGroup.name());
 
             Utils.print(failoverGroup);
 

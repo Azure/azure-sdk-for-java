@@ -62,6 +62,7 @@ public class GenericResourcesTests extends ResourceManagerTestBase {
         boolean found = false;
         for (GenericResource gr : resourceList) {
             if (gr.name().equals(resource.name())) {
+                Assertions.assertNotNull(gr.apiVersion());
                 found = true;
                 break;
             }
