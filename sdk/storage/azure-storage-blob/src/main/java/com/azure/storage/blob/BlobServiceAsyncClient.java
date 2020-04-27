@@ -369,11 +369,12 @@ public final class BlobServiceAsyncClient {
         }
     }
 
-    // TODO: Return type?
     PagedFlux<FilterBlobItem> findBlobsByTags(String query, FindBlobsOptions options, Duration timeout) {
         throwOnAnonymousAccess();
+        FindBlobsOptions finalOptions = options == null ? new FindBlobsOptions() : options;
+
         Function<String, Mono<PagedResponse<FilterBlobItem>>> func =
-            marker -> findBlobsByTags(query, marker, options.getMaxResultsPerPage(), timeout)
+            marker -> findBlobsByTags(query, marker, finalOptions.getMaxResultsPerPage(), timeout)
                 .map(response -> {
                     List<FilterBlobItem> value = response.getValue().getBlobs() == null
                         ? Collections.emptyList()
