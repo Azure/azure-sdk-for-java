@@ -433,7 +433,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws AmqpException if {@link AmqpRetryOptions#getTryTimeout() operation timeout} has elapsed and
      *     downstream consumers are still processing the message.
      */
-    public Flux<ServiceBusReceivedMessage> receive() {
+    public Flux<ServiceBusReceivedMessageContext> receive() {
         return receive(defaultReceiveOptions);
     }
 
@@ -449,7 +449,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@link ReceiveAsyncOptions#getMaxAutoRenewDuration() max auto-renew
      *     duration} is negative.
      */
-    public Flux<ServiceBusReceivedMessage> receive(ReceiveAsyncOptions options) {
+    public Flux<ServiceBusReceivedMessageContext> receive(ReceiveAsyncOptions options) {
         if (isDisposed.get()) {
             return fluxError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "receive")));
@@ -466,7 +466,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 "Auto-complete is not supported on a receiver opened in ReceiveMode.RECEIVE_AND_DELETE.")));
         }
 
-        return getOrCreateConsumer(options).receive();
+        return getOrCreateConsumer(options).receive().map(message -> new ServiceBusReceivedMessageContext(message));
     }
 
     /**

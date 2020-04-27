@@ -28,7 +28,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @see ServiceBusReceiverAsyncClient To communicate with a Service Bus resource using an asynchronous client.
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class)
-public class ServiceBusReceiverClient implements AutoCloseable {
+public final class ServiceBusReceiverClient implements AutoCloseable {
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverClient.class);
     private final AtomicInteger idGenerator = new AtomicInteger();
     private final ServiceBusReceiverAsyncClient asyncClient;
@@ -275,7 +275,7 @@ public class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @throws IllegalArgumentException if {@code maxMessages} is zero or a negative value.
      */
-    public IterableStream<ServiceBusReceivedMessage> receive(int maxMessages) {
+    public IterableStream<ServiceBusReceivedMessageContext> receive(int maxMessages) {
         return receive(maxMessages, operationTimeout);
     }
 
@@ -288,7 +288,7 @@ public class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @throws IllegalArgumentException if {@code maxMessages} or {@code maxWaitTime} is zero or a negative value.
      */
-    public IterableStream<ServiceBusReceivedMessage> receive(int maxMessages, Duration maxWaitTime) {
+    public IterableStream<ServiceBusReceivedMessageContext> receive(int maxMessages, Duration maxWaitTime) {
         if (maxMessages <= 0) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
@@ -300,8 +300,8 @@ public class ServiceBusReceiverClient implements AutoCloseable {
                 new IllegalArgumentException("'maxWaitTime' cannot be zero or less. maxWaitTime: " + maxWaitTime));
         }
 
-        final Flux<ServiceBusReceivedMessage> messages = Flux.create(emitter -> queueWork(maxMessages, maxWaitTime,
-            emitter));
+        final Flux<ServiceBusReceivedMessageContext> messages = Flux.create(emitter ->
+            queueWork(maxMessages, maxWaitTime, emitter));
 
         return new IterableStream<>(messages);
     }
@@ -394,7 +394,7 @@ public class ServiceBusReceiverClient implements AutoCloseable {
      * not been created, will initialise it.
      */
     private void queueWork(int maximumMessageCount, Duration maxWaitTime,
-        FluxSink<ServiceBusReceivedMessage> emitter) {
+        FluxSink<ServiceBusReceivedMessageContext> emitter) {
         final long id = idGenerator.getAndIncrement();
         final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, maxWaitTime,
             emitter);
