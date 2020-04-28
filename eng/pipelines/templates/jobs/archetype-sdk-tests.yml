@@ -77,7 +77,7 @@ jobs:
     steps:
       # https://bugs.launchpad.net/ubuntu/+source/systemd/+bug/1822416
       - script: sudo ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf
-        displayName: Bypass local DNS server to workaround issues resolving cognitiveservices names
+        displayName: Bypass local DNS server to workaround issue resolving cognitiveservices names
         condition: and(succeededOrFailed(), eq(variables['OSVmImage'], 'ubuntu-18.04'))
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
