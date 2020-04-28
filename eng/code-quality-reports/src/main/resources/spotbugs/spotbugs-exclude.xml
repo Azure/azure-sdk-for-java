@@ -1951,12 +1951,23 @@
     CI_CONFUSED_INHERITANCE,
     MS_SHOULD_BE_FINAL"/>
   </Match>
-    
+
   <!-- Empty byte array is returned as null to reactor. Reactor transform null from Callable to downstream onComplete  -->
   <Match>
     <Class name="~com\.azure\.core\.http\.okhttp\.OkHttpAsyncHttpClient\$OkHttpResponse(.*)"/>
     <Method name="~(.*)\$(getBodyAsByteArray|null)\$(.*)"/>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
+
+  <Match>
+    <Or>
+      <Class name="com.microsoft.azure.utils.PropertyLoader"/> <!-- false positive -->
+      <Class name="com.microsoft.azure.spring.support.GetHashMac"/> <!-- false positive -->
+    </Or>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE,
+                  NP_LOAD_OF_KNOWN_NULL_VALUE,
+                  RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE,
+                  RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
   </Match>
 
 </FindBugsFilter>
