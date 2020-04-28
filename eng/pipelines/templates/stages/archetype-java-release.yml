@@ -87,7 +87,7 @@ stages:
                     - checkout: self
                     - template: /eng/pipelines/templates/steps/stage-artifacts.yml
                       parameters:
-                        ArtifactDirectory: $(Pipeline.Workspace)/${{paramters.ArtifactName}}
+                        ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
                         ArtifactName: ${{artifact.name}}
                         ArtifactSafeName: ${{artifact.safeName}}
                         StagingDirectory: $(Pipeline.Workspace)
@@ -155,7 +155,7 @@ stages:
                       - checkout: self
                       - template: /eng/pipelines/templates/steps/stage-artifacts.yml
                         parameters:
-                          ArtifactDirectory: $(Pipeline.Workspace)/${{paramters.ArtifactName}}
+                          ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
                           ArtifactName: ${{artifact.name}}
                           ArtifactSafeName: ${{artifact.safeName}}
                           StagingDirectory: $(Pipeline.Workspace)
