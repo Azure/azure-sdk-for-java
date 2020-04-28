@@ -6,8 +6,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.management.AzureTokenCredential;
-import com.azure.management.RestClient;
 import com.azure.management.compute.AvailabilitySet;
 import com.azure.management.compute.AvailabilitySetSkuTypes;
 import com.azure.management.compute.BillingProfile;
@@ -79,6 +77,9 @@ import com.azure.management.storage.StorageAccount;
 import com.azure.management.storage.implementation.StorageManager;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import reactor.core.Exceptions;
+import reactor.core.publisher.Mono;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -90,8 +91,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Callable;
-import reactor.core.Exceptions;
-import reactor.core.publisher.Mono;
 
 /** The implementation for VirtualMachine and its create and update interfaces. */
 class VirtualMachineImpl
@@ -1781,22 +1780,7 @@ class VirtualMachineImpl
     }
 
     AzureEnvironment environment() {
-        RestClient restClient = this.manager().getRestClient();
-        AzureEnvironment environment = null;
-        if (restClient.getCredential() instanceof AzureTokenCredential) {
-            environment = ((AzureTokenCredential) restClient.getCredential()).getEnvironment();
-        }
-        String baseUrl = restClient.getBaseUrl().toString();
-        for (AzureEnvironment env : AzureEnvironment.knownEnvironments()) {
-            if (env.getResourceManagerEndpoint().toLowerCase().contains(baseUrl.toLowerCase())) {
-                environment = env;
-                break;
-            }
-        }
-        if (environment != null) {
-            return environment;
-        }
-        return environment == null ? AzureEnvironment.AZURE : environment;
+        return manager().environment();
     }
 
     private void setOSDiskDefaults() {
@@ -1968,7 +1952,7 @@ class VirtualMachineImpl
         if (isInCreateMode()) {
             NetworkInterface primaryNetworkInterface = null;
             if (this.creatablePrimaryNetworkInterfaceKey != null) {
-                primaryNetworkInterface = this.<NetworkInterface>taskResult(this.creatablePrimaryNetworkInterfaceKey);
+                primaryNetworkInterface = this.taskResult(this.creatablePrimaryNetworkInterfaceKey);
             } else if (this.existingPrimaryNetworkInterfaceToAssociate != null) {
                 primaryNetworkInterface = this.existingPrimaryNetworkInterfaceToAssociate;
             }
@@ -1985,7 +1969,7 @@ class VirtualMachineImpl
         //
         for (String creatableSecondaryNetworkInterfaceKey : this.creatableSecondaryNetworkInterfaceKeys) {
             NetworkInterface secondaryNetworkInterface =
-                this.<NetworkInterface>taskResult(creatableSecondaryNetworkInterfaceKey);
+                this.taskResult(creatableSecondaryNetworkInterfaceKey);
             NetworkInterfaceReference nicReference = new NetworkInterfaceReference();
             nicReference.withPrimary(false);
             nicReference.setId(secondaryNetworkInterface.id());
@@ -2162,7 +2146,7 @@ class VirtualMachineImpl
 
     private void initializeDataDisks() {
         if (this.inner().storageProfile().dataDisks() == null) {
-            this.inner().storageProfile().withDataDisks(new ArrayList<DataDisk>());
+            this.inner().storageProfile().withDataDisks(new ArrayList<>());
         }
 
         this.isUnmanagedDiskSelected = false;
@@ -2336,7 +2320,7 @@ class VirtualMachineImpl
         private void setAttachableNewDataDisks(Callable<Integer> nextLun) throws Exception {
             List<DataDisk> dataDisks = vm.inner().storageProfile().dataDisks();
             for (Map.Entry<String, DataDisk> entry : this.newDisksToAttach.entrySet()) {
-                Disk managedDisk = vm.<Disk>taskResult(entry.getKey());
+                Disk managedDisk = vm.taskResult(entry.getKey());
                 DataDisk dataDisk = entry.getValue();
                 dataDisk.withCreateOption(DiskCreateOptionTypes.ATTACH);
                 if (dataDisk.lun() == -1) {

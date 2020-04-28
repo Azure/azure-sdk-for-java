@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class SearchServiceClientBuilderTests {
     private final AzureKeyCredential searchApiKeyCredential = new AzureKeyCredential("0123");
     private final String searchEndpoint = "https://test.search.windows.net";
-    private final SearchServiceVersion apiVersion = SearchServiceVersion.V2019_05_06;
+    private final SearchServiceVersion apiVersion = SearchServiceVersion.V2019_05_06_Preview;
 
     @Test
     public void buildSyncClientTest() {
@@ -78,7 +78,7 @@ public class SearchServiceClientBuilderTests {
 
     @Test
     public void whenApiVersionSpecifiedThenSpecifiedValueExists() {
-        SearchServiceVersion expectedApiVersion = SearchServiceVersion.V2019_05_06;
+        SearchServiceVersion expectedApiVersion = SearchServiceVersion.V2019_05_06_Preview;
 
         SearchServiceClient client = new SearchServiceClientBuilder()
             .endpoint(searchEndpoint)

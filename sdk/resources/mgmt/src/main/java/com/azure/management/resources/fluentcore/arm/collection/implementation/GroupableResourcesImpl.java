@@ -68,10 +68,6 @@ public abstract class GroupableResourcesImpl<
     public final Mono<T> getByIdAsync(String id) {
         ResourceId resourceId = ResourceId.fromString(id);
 
-        if (resourceId == null) {
-            return null;
-        }
-
         return getByResourceGroupAsync(resourceId.resourceGroupName(), resourceId.name());
     }
 

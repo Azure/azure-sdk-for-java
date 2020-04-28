@@ -6,7 +6,6 @@ package com.azure.messaging.servicebus.implementation;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.models.ReceiveMode;
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -15,16 +14,24 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * The management node for fetching metadata about the Service Bus and peek operation.
+ * The management node for performing Service Bus metadata operations, scheduling, and inspecting messages.
  */
 public interface ServiceBusManagementNode extends AutoCloseable {
     /**
-     * Updates the disposition status of a message given its lock token.
+     * Cancels the enqueuing of an already sent scheduled message, if it was not already enqueued.
      *
-     * @return Mono that completes successfully when the message is completed. Otherwise, returns an error.
+     * @param sequenceNumber The sequence number of the scheduled message.
+     *
+     * @return {@link Void} The successful completion represents the pending cancellation.
      */
-    Mono<Void> updateDisposition(String lockToken, DispositionStatus dispositionStatus, String deadLetterReason,
-        String deadLetterErrorDescription, Map<String, Object> propertiesToModify);
+    Mono<Void> cancelScheduledMessage(long sequenceNumber);
+
+    /**
+     * Gets the current session state.
+     *
+     * @return The state of the session.
+     */
+    Mono<byte[]> getSessionState();
 
     /**
      * This will return next available message to peek.
@@ -41,42 +48,43 @@ public interface ServiceBusManagementNode extends AutoCloseable {
     Mono<ServiceBusReceivedMessage> peek(long fromSequenceNumber);
 
     /**
-     * Sends a scheduled message to the Azure Service Bus entity this sender is connected to. A scheduled message is
-     * enqueued and made available to receivers only at the scheduled enqueue time. This is an asynchronous method
-     * returning a CompletableFuture which completes when the message is sent to the entity. The CompletableFuture,
-     * on completion, returns the sequence number of the scheduled message which can be used to cancel the scheduling
-     * of the message.
-     *
-     * @param message The message to be sent to the entity.
-     * @param scheduledEnqueueTime The {@link Instant} at which the message should be enqueued in the entity.
-     * @return The sequence number representing the pending send, which returns the sequence number of
-      * the scheduled message. This sequence number can be used to cancel the scheduling of the message.
-     */
-    Mono<Long> schedule(ServiceBusMessage message, Instant scheduledEnqueueTime,  int maxSendLinkSize);
-
-    /**
-     * Cancels the enqueuing of an already sent scheduled message, if it was not already enqueued.
-     *
-     * @param sequenceNumber The sequence number of the scheduled message.
-     * @return {@link Void} The successful completion represents the pending cancellation.
-     */
-    Mono<Void> cancelScheduledMessage(long sequenceNumber);
-
-    /**
      * Reads the next batch of active messages without changing the state of the receiver or the message source.
      *
      * @param maxMessages The number of messages.
      * @param fromSequenceNumber The sequence number from where to read the message.
+     *
      * @return The {@link Flux} of {@link ServiceBusReceivedMessage} peeked.
      */
     Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages, long fromSequenceNumber);
 
     /**
      * Reads the next batch of active messages without changing the state of the receiver or the message source.
+     *
      * @param maxMessages The number of messages.
+     *
      * @return The {@link Flux} of {@link ServiceBusReceivedMessage} peeked.
      */
     Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages);
+
+    /**
+     * Receives a deferred {@link ServiceBusReceivedMessage}. Deferred message can only be received by using sequence
+     * number.
+     *
+     * @param sequenceNumber The {@link ServiceBusReceivedMessage#getSequenceNumber()}.
+     *
+     * @return The received {@link ServiceBusReceivedMessage} message for given sequence number.
+     */
+    Mono<ServiceBusReceivedMessage> receiveDeferredMessage(ReceiveMode receiveMode, long sequenceNumber);
+
+    /**
+     * Receives a deferred {@link ServiceBusReceivedMessage}. Deferred messages can only be received by using sequence
+     * number.
+     *
+     * @param sequenceNumbers The sequence numbers from the {@link ServiceBusReceivedMessage#getSequenceNumber()}.
+     *
+     * @return The received {@link ServiceBusReceivedMessage} message for given sequence number.
+     */
+    Flux<ServiceBusReceivedMessage> receiveDeferredMessageBatch(ReceiveMode receiveMode, long... sequenceNumbers);
 
     /**
      * Asynchronously renews the lock on the message specified by the lock token. The lock will be renewed based on
@@ -91,22 +99,43 @@ public interface ServiceBusManagementNode extends AutoCloseable {
     Mono<Instant> renewMessageLock(UUID messageLock);
 
     /**
-     * Receives a deferred {@link ServiceBusReceivedMessage}. Deferred message can only be received by using
-     * sequence number.
+     * Renews the lock on the session.
      *
-     * @param sequenceNumber The {@link ServiceBusReceivedMessage#getSequenceNumber()}.
-     * @return The received {@link ServiceBusReceivedMessage} message for given sequence number.
+     * @return The next expiration time for the session.
      */
-    Mono<ServiceBusReceivedMessage> receiveDeferredMessage(ReceiveMode receiveMode, long sequenceNumber);
+    Mono<Instant> renewSessionLock();
 
     /**
-     * Receives a deferred {@link ServiceBusReceivedMessage}. Deferred messages can only be received by using
-     * sequence number.
+     * Sends a scheduled message to the Azure Service Bus entity this sender is connected to. A scheduled message is
+     * enqueued and made available to receivers only at the scheduled enqueue time. This is an asynchronous method
+     * returning a CompletableFuture which completes when the message is sent to the entity. The CompletableFuture, on
+     * completion, returns the sequence number of the scheduled message which can be used to cancel the scheduling of
+     * the message.
      *
-     * @param sequenceNumbers The sequence numbers from the {@link ServiceBusReceivedMessage#getSequenceNumber()}.
-     * @return The received {@link ServiceBusReceivedMessage} message for given sequence number.
+     * @param message The message to be sent to the entity.
+     * @param scheduledEnqueueTime The {@link Instant} at which the message should be enqueued in the entity.
+     *
+     * @return The sequence number representing the pending send, which returns the sequence number of the scheduled
+     *     message. This sequence number can be used to cancel the scheduling of the message.
      */
-    Flux<ServiceBusReceivedMessage> receiveDeferredMessageBatch(ReceiveMode receiveMode, long... sequenceNumbers);
+    Mono<Long> schedule(ServiceBusMessage message, Instant scheduledEnqueueTime, int maxSendLinkSize);
+
+    /**
+     * Updates the session state.
+     *
+     * @param state State to update session.
+     *
+     * @return A Mono that completes when the state is updated.
+     */
+    Mono<Void> setSessionState(byte[] state);
+
+    /**
+     * Updates the disposition status of a message given its lock token.
+     *
+     * @return Mono that completes successfully when the message is completed. Otherwise, returns an error.
+     */
+    Mono<Void> updateDisposition(String lockToken, DispositionStatus dispositionStatus, String deadLetterReason,
+        String deadLetterErrorDescription, Map<String, Object> propertiesToModify);
 
     @Override
     void close();

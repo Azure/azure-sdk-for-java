@@ -12,6 +12,7 @@ import com.azure.management.network.VpnClientRootCertificate;
 import com.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -65,7 +66,8 @@ class PointToSiteConfigurationImpl extends IndexableWrapperImpl<VpnClientConfigu
             return this;
         } else {
             byte[] content = Files.readAllBytes(certificateFile.toPath());
-            String certificate = new String(content).replace(BEGIN_CERT, "").replace(END_CERT, "");
+            String certificate = new String(content, StandardCharsets.UTF_8)
+                .replace(BEGIN_CERT, "").replace(END_CERT, "");
             return this.withAzureCertificate(name, certificate);
         }
     }

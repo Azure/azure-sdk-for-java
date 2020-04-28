@@ -16,8 +16,8 @@ public class JobTests extends BatchIntegrationTestBase {
     public static void setup() throws Exception {
         poolId = getStringIdWithUserNamePrefix("-testpool");
         if(isRecordMode()) {
-            createClient(AuthMode.SharedKey);
-            livePool = createIfNotExistPaaSPool(poolId);
+            createClient(AuthMode.AAD);
+            livePool = createIfNotExistIaaSPool(poolId);
             Assert.assertNotNull(livePool);
         }
     }

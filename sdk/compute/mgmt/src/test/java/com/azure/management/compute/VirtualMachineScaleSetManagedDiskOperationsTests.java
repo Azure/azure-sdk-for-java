@@ -3,13 +3,14 @@
 
 package com.azure.management.compute;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.RestClient;
 import com.azure.management.network.LoadBalancer;
 import com.azure.management.network.Network;
 import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import java.util.Iterator;
 import org.junit.jupiter.api.Assertions;
@@ -20,9 +21,9 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
     private Region region = Region.US_EAST;
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         rgName = generateRandomResourceName("javacsmrg", 15);
-        super.initializeClients(restClient, defaultSubscription, domain);
+        super.initializeClients(httpPipeline, profile);
     }
 
     @Override

@@ -5,6 +5,7 @@ package com.azure.management.network;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /** Defines values for PublicIPSkuType. */
@@ -35,7 +36,7 @@ public final class PublicIPSkuType {
     private PublicIPSkuType(PublicIPAddressSkuName skuName) {
         this.skuName = skuName;
         if (skuName != null) {
-            VALUES_BY_NAME.put(skuName.toString().toLowerCase(), this);
+            VALUES_BY_NAME.put(skuName.toString().toLowerCase(Locale.ROOT), this);
         }
     }
 
@@ -52,7 +53,7 @@ public final class PublicIPSkuType {
         if (pipSku.name() == null) {
             return null;
         }
-        PublicIPSkuType result = VALUES_BY_NAME.get(pipSku.name().toString().toLowerCase());
+        PublicIPSkuType result = VALUES_BY_NAME.get(pipSku.name().toString().toLowerCase(Locale.ROOT));
         if (result != null) {
             return result;
         } else {

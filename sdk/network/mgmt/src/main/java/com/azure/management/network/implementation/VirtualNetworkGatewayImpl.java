@@ -4,6 +4,7 @@ package com.azure.management.network.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.BgpSettings;
 import com.azure.management.network.Network;
 import com.azure.management.network.PublicIPAddress;
@@ -27,13 +28,14 @@ import com.azure.management.resources.fluentcore.arm.models.Resource;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.utils.PagedConverter;
 import com.azure.management.resources.fluentcore.utils.Utils;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /** Implementation for VirtualNetworkGateway and its create and update interfaces. */
 class VirtualNetworkGatewayImpl
@@ -41,6 +43,7 @@ class VirtualNetworkGatewayImpl
         VirtualNetworkGateway, VirtualNetworkGatewayInner, VirtualNetworkGatewayImpl, NetworkManager>
     implements VirtualNetworkGateway, VirtualNetworkGateway.Definition, VirtualNetworkGateway.Update {
     private static final String GATEWAY_SUBNET = "GatewaySubnet";
+    private final ClientLogger logger = new ClientLogger(getClass());
 
     private Map<String, VirtualNetworkGatewayIPConfiguration> ipConfigs;
     private VirtualNetworkGatewayConnections connections;
@@ -393,7 +396,7 @@ class VirtualNetworkGatewayImpl
         // Determine if a default public frontend PIP should be created
         final VirtualNetworkGatewayIPConfigurationImpl defaultIPConfig = ensureDefaultIPConfig();
         final Mono<Resource> pipObservable;
-        if (defaultIPConfig != null && defaultIPConfig.publicIPAddressId() == null) {
+        if (defaultIPConfig.publicIPAddressId() == null) {
             // If public ip not specified, then create a default PIP
             pipObservable =
                 Utils
@@ -413,7 +416,7 @@ class VirtualNetworkGatewayImpl
         if (defaultIPConfig.subnetName() != null) {
             // ...and no need to create VNet
             networkObservable = Mono.empty(); // ...and don't create another VNet
-        } else {
+        } else if (creatableNetwork != null) {
             // But if default IP config does not have a subnet specified, then create a VNet
             networkObservable =
                 Utils
@@ -424,6 +427,8 @@ class VirtualNetworkGatewayImpl
                             defaultIPConfig.withExistingSubnet(network, GATEWAY_SUBNET);
                             return network;
                         });
+        } else {
+            throw logger.logExceptionAsError(new IllegalStateException("Creatable Network should not be null"));
         }
 
         return Flux

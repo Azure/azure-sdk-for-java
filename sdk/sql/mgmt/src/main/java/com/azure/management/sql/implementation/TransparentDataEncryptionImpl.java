@@ -109,12 +109,10 @@ class TransparentDataEncryptionImpl
                 .inner()
                 .transparentDataEncryptionActivities()
                 .listByConfiguration(this.resourceGroupName, this.sqlServerName, this.databaseName());
-        if (transparentDataEncryptionActivityInners != null) {
-            for (TransparentDataEncryptionActivityInner transparentDataEncryptionActivityInner
-                : transparentDataEncryptionActivityInners) {
-                transparentDataEncryptionActivities
-                    .add(new TransparentDataEncryptionActivityImpl(transparentDataEncryptionActivityInner));
-            }
+        for (TransparentDataEncryptionActivityInner transparentDataEncryptionActivityInner
+            : transparentDataEncryptionActivityInners) {
+            transparentDataEncryptionActivities
+                .add(new TransparentDataEncryptionActivityImpl(transparentDataEncryptionActivityInner));
         }
         return Collections.unmodifiableList(transparentDataEncryptionActivities);
     }
@@ -127,8 +125,7 @@ class TransparentDataEncryptionImpl
             .transparentDataEncryptionActivities()
             .listByConfigurationAsync(this.resourceGroupName, this.sqlServerName, this.databaseName())
             .mapPage(
-                transparentDataEncryptionActivityInner ->
-                    new TransparentDataEncryptionActivityImpl(transparentDataEncryptionActivityInner));
+                TransparentDataEncryptionActivityImpl::new);
     }
 
     @Override

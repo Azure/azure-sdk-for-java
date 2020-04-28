@@ -177,20 +177,9 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         this.concurrentRequests.incrementAndGet();
         this.lastRequestNanoTime.set(args.nanoTimeCreated());
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("\n  {}\n  {}\n  REQUEST", this, args);
-        }
-
         final RntbdRequestRecord record = this.write(args);
 
         record.whenComplete((response, error) -> {
-
-            if (error == null) {
-                logger.debug("\n  [{}]\n  {}\n  request succeeded with response status: {}", this, args, response.getStatus());
-            } else {
-                logger.debug("\n  [{}]\n  {}\n  request failed due to ", this, args, error);
-            }
-
             this.concurrentRequests.decrementAndGet();
             this.metrics.markComplete(record);
         });

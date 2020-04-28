@@ -6,7 +6,6 @@ package com.azure.management.resources.fluentcore.model.implementation;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.fluentcore.model.Indexable;
 import com.azure.management.resources.fluentcore.model.Updatable;
-import com.azure.management.resources.fluentcore.model.Appliable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -24,8 +23,7 @@ public abstract class AppliableImpl<
         extends
         CreatableUpdatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
         implements
-        Updatable<FluentModelImplT>,
-        Appliable<FluentModelT> {
+        Updatable<FluentModelImplT> {
     private final ClientLogger logger = new ClientLogger(getClass());
     /**
      * Creates an AppliableImpl.

@@ -1,53 +1,57 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azs-sdk56740fd7c0b.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06",
+    "Uri" : "https://azsjava690235d2bfbaac9cb42d7b7550d73.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06-Preview",
     "Headers" : {
+      "x-ms-client-request-id" : "e0f77f1d-8d60-4441-a409-76f8a72442b2",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "5f9a3ea0-94c9-4c88-9b3e-faeb01d0b20b",
+      "request-id" : "e0f77f1d-8d60-4441-a409-76f8a72442b2",
       "StatusCode" : "201",
-      "Date" : "Mon, 24 Feb 2020 20:44:08 GMT",
+      "Date" : "Tue, 21 Apr 2020 19:14:31 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D7B96A4C007D95\"",
-      "elapsed-time" : "59",
+      "client-request-id" : "e0f77f1d-8d60-4441-a409-76f8a72442b2",
+      "ETag" : "W/\"0x8D7E628389D9B2A\"",
+      "elapsed-time" : "40",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "218",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk56740fd7c0b.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D7B96A4C007D95\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"word1,word2\",\"encryptionKey\":null}",
+      "Content-Length" : "236",
+      "Body" : "{\"@odata.context\":\"https://azsjava690235d2bfbaac9cb42d7b7550d73.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D7E628389D9B2A\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"word1,word2\",\"encryptionKey\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk56740fd7c0b.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06"
+      "Location" : "https://azsjava690235d2bfbaac9cb42d7b7550d73.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06-Preview"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azs-sdk56740fd7c0b.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06",
+    "Uri" : "https://azsjava690235d2bfbaac9cb42d7b7550d73.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06-Preview",
     "Headers" : {
+      "x-ms-client-request-id" : "45c3c2b2-792e-4fa0-b7fc-ad44361c5102",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "364a47a8-8ffd-4e7c-b349-3b50c19580fa",
+      "request-id" : "45c3c2b2-792e-4fa0-b7fc-ad44361c5102",
       "StatusCode" : "200",
-      "Date" : "Mon, 24 Feb 2020 20:44:11 GMT",
+      "Date" : "Tue, 21 Apr 2020 19:14:31 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D7B96A4D6B9AE3\"",
-      "elapsed-time" : "32",
+      "client-request-id" : "45c3c2b2-792e-4fa0-b7fc-ad44361c5102",
+      "ETag" : "W/\"0x8D7E62838A5653D\"",
+      "elapsed-time" : "15",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "225",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk56740fd7c0b.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D7B96A4D6B9AE3\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"mutated1, mutated2\",\"encryptionKey\":null}",
+      "Content-Length" : "243",
+      "Body" : "{\"@odata.context\":\"https://azsjava690235d2bfbaac9cb42d7b7550d73.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D7E62838A5653D\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"mutated1, mutated2\",\"encryptionKey\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   } ],
-  "variables" : [ "azs-sdk434318008ff", "azs-sdk56740fd7c0b" ]
+  "variables" : [ "azsjava690235d2bfbaac9cb42d7b7550d73" ]
 }

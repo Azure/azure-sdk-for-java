@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.core.exception.AzureException;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RequestTimeline;
@@ -31,7 +32,7 @@ import java.util.Map;
  * When a transport level error happens that request is not able to reach the
  * service, an IllegalStateException is thrown instead of CosmosClientException.
  */
-public class CosmosClientException extends RuntimeException {
+public class CosmosClientException extends AzureException {
     private static final long serialVersionUID = 1L;
 
     private final int statusCode;

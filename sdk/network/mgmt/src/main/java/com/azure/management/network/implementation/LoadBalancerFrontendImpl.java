@@ -148,8 +148,8 @@ class LoadBalancerFrontendImpl extends ChildResourceImpl<FrontendIPConfiguration
 
     @Override
     public LoadBalancerFrontendImpl withExistingSubnet(String parentNetworkResourceId, String subnetName) {
-        SubnetInner subnetRef =
-            (SubnetInner) new SubnetInner().setId(parentNetworkResourceId + "/subnets/" + subnetName);
+        SubnetInner subnetRef = new SubnetInner();
+        subnetRef.setId(parentNetworkResourceId + "/subnets/" + subnetName);
         this
             .inner()
             .withSubnet(subnetRef)

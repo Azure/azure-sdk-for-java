@@ -69,11 +69,11 @@ public final class ResourceId {
             }
 
             // Ensure "subscriptions"
-            if (splits.length > 0 && !splits[0].equalsIgnoreCase("subscriptions")) {
+            if (!splits[0].equalsIgnoreCase("subscriptions")) {
                 throw new InvalidParameterException(badIdErrorText(id));
             }
             // Extract subscription ID
-            this.subscriptionId = splits.length > 1 ? splits[1] : null;
+            this.subscriptionId = splits[1];
             // Ensure "resourceGroups"
             if (splits.length > 2 && !splits[2].equalsIgnoreCase("resourceGroups")) {
                 throw new InvalidParameterException(badIdErrorText(id));

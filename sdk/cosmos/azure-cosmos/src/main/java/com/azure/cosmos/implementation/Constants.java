@@ -153,6 +153,7 @@ public final class Constants {
         // Time-to-Live
         public static final String TTL = "ttl";
         public static final String DEFAULT_TTL = "defaultTtl";
+        public static final String ANALYTICAL_STORAGE_TTL = "analyticalStorageTtl";
 
         // Global DB account properties
         public static final String Name = "name";
@@ -193,7 +194,7 @@ public final class Constants {
         public static final String SINGLE_SPACE_URI_ENCODING = "%20";
         public static final String UTF_8 = "UTF-8";
     }
-    
+
     public static final class PartitionedQueryExecutionInfo {
         public static final int VERSION_1 = 1;
     }

@@ -3,8 +3,9 @@
 
 package com.azure.management.storage;
 
-import com.azure.management.RestClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.management.resources.core.TestBase;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.implementation.ResourceManager;
 import com.azure.management.storage.implementation.StorageManager;
 
@@ -14,10 +15,10 @@ public abstract class StorageManagementTest extends TestBase {
     protected StorageManager storageManager;
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         resourceManager =
-            ResourceManager.authenticate(restClient).withSdkContext(sdkContext).withSubscription(defaultSubscription);
+            ResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext).withDefaultSubscription();
 
-        storageManager = StorageManager.authenticate(restClient, defaultSubscription, sdkContext);
+        storageManager = StorageManager.authenticate(httpPipeline, profile, sdkContext);
     }
 }
