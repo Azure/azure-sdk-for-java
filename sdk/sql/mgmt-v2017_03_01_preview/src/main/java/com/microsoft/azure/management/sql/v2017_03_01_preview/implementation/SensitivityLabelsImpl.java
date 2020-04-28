@@ -10,7 +10,6 @@
 package com.microsoft.azure.management.sql.v2017_03_01_preview.implementation;
 
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
-import com.microsoft.azure.management.sql.v2017_03_01_preview.SensitivityLabelSource;
 import com.microsoft.azure.management.sql.v2017_03_01_preview.SensitivityLabels;
 import rx.Completable;
 import rx.Observable;
