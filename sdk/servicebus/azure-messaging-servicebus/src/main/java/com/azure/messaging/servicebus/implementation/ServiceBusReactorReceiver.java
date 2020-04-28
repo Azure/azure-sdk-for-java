@@ -11,6 +11,7 @@ import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.ReactorReceiver;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.Proton;
@@ -128,7 +129,13 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
                     return Mono.empty();
                 }
 
-                return Mono.just(String.valueOf(value));
+                final String actualSessionId = String.valueOf(value);
+                if (!CoreUtils.isNullOrEmpty(sessionId) && sessionId.equals(actualSessionId)) {
+                    logger.warning("entityPath[{}], sessionId[{}]. expectedSessionId[{}]. Expected id does not match.",
+                        entityPath, sessionId, actualSessionId);
+                }
+
+                return Mono.just(actualSessionId);
             })
             .cache(value -> Duration.ofSeconds(Long.MAX_VALUE), error -> Duration.ZERO, () -> Duration.ZERO);
 
@@ -190,7 +197,11 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
 
     @Override
     public Mono<String> getSessionId() {
-        return sessionIdMono;
+        return sessionIdMono.doOnSubscribe(e -> {
+            logger.info("subscription");
+        }).doOnNext(e -> {
+            logger.info("Id emitted {}", e);
+        });
     }
 
     @Override
