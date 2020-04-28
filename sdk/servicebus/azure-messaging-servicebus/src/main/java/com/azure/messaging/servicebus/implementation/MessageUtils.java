@@ -11,6 +11,7 @@ import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 
 import java.nio.ByteBuffer;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.UUID;
 
 /**
@@ -20,6 +21,7 @@ final class MessageUtils {
     static final UUID ZERO_LOCK_TOKEN = new UUID(0L, 0L);
     static final int LOCK_TOKEN_SIZE = 16;
 
+    private static final long EPOCH_IN_DOT_NET_TICKS = 621355968000000000L;
     private static final int GUID_SIZE = 16;
 
     private MessageUtils() {
@@ -45,6 +47,21 @@ final class MessageUtils {
         final long mostSignificantBits = buffer.getLong();
         final long leastSignificantBits = buffer.getLong();
         return new UUID(mostSignificantBits, leastSignificantBits);
+    }
+
+    /**
+     * Gets the {@link Instant} representation of .NET epoch ticks. .NET ticks are measured from 0001/01/01. Java
+     * {@link Instant} is measured from 1970/01/01.
+     *
+     * @param dotNetTicks long measured from 01/01/0001
+     * @return The instant represented by the ticks.
+     */
+    static Instant convertDotNetTicksToInstant(long dotNetTicks) {
+        long ticksFromEpoch = dotNetTicks - EPOCH_IN_DOT_NET_TICKS;
+        long millisecondsFromEpoch = Double.valueOf(ticksFromEpoch * 0.0001).longValue();
+        long fractionTicks = ticksFromEpoch % 10000;
+
+        return Instant.ofEpochMilli(millisecondsFromEpoch).plusNanos(fractionTicks * 100);
     }
 
     // Pass little less than client timeout to the server so client doesn't time out before server times out
