@@ -72,7 +72,11 @@ abstract class AsyncBenchmark<T> {
         logger = LoggerFactory.getLogger(this.getClass());
 
         try {
-            cosmosAsyncDatabase = cosmosClient.getDatabase(this.configuration.getDatabaseId()).read().block().getDatabase();
+            cosmosAsyncDatabase = cosmosClient.getDatabase(
+                this.configuration.getDatabaseId()
+            ).read().doOnError(error ->
+                logger.error("Database {} creation failed due to ", this.configuration.getDatabaseId(), error)
+            ).block().getDatabase();
         } catch (CosmosClientException e) {
             if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
                 cosmosAsyncDatabase = cosmosClient.createDatabase(cfg.getDatabaseId()).block().getDatabase();
@@ -84,11 +88,18 @@ abstract class AsyncBenchmark<T> {
         }
 
         try {
-            cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(this.configuration.getCollectionId()).read().block().getContainer();
+            cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(
+                this.configuration.getCollectionId()
+            ).read().doOnError(error ->
+                logger.error("Database {} creation failed due to ", this.configuration.getDatabaseId(), error)
+            ).block().getContainer();
         } catch (CosmosClientException e) {
             if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                cosmosAsyncContainer =
-                    cosmosAsyncDatabase.createContainer(this.configuration.getCollectionId(), Configuration.DEFAULT_PARTITION_KEY_PATH, this.configuration.getThroughput()).block().getContainer();
+                cosmosAsyncContainer = cosmosAsyncDatabase.createContainer(
+                    this.configuration.getCollectionId(),
+                    Configuration.DEFAULT_PARTITION_KEY_PATH,
+                    this.configuration.getThroughput()
+                ).block().getContainer();
                 logger.info("Collection {} is created for this test", this.configuration.getCollectionId());
                 collectionCreated = true;
             } else {
@@ -106,18 +117,19 @@ abstract class AsyncBenchmark<T> {
         if (configuration.getOperationType() != Configuration.Operation.WriteLatency
                 && configuration.getOperationType() != Configuration.Operation.WriteThroughput
                 && configuration.getOperationType() != Configuration.Operation.ReadMyWrites) {
+            logger.info("PRE-populating {} documents ....", cfg.getNumberOfOperations());
             String dataFieldValue = RandomStringUtils.randomAlphabetic(cfg.getDocumentDataFieldSize());
             for (int i = 0; i < cfg.getNumberOfPreCreatedDocuments(); i++) {
                 String uuid = UUID.randomUUID().toString();
                 PojoizedJson newDoc = generateDocument(uuid, dataFieldValue);
 
                 Flux<PojoizedJson> obs = cosmosAsyncContainer.createItem(newDoc).map(resp -> {
-                                                                                         PojoizedJson x =
-                                                                                             resp.getItem();
-                                                                                         return x;
-                                                                                     }
-                ).flux();
+                    PojoizedJson x =
+                        resp.getItem();
+                    return x;
+                }).flux();
                 createDocumentObservables.add(obs);
+                logger.info("Finished pre-populating {} documents", cfg.getNumberOfOperations());
             }
         }
 
