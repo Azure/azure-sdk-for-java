@@ -28,8 +28,6 @@ import static com.azure.storage.internal.avro.implementation.AvroConstants.Types
 import static com.azure.storage.internal.avro.implementation.AvroConstants.Types.STRING;
 import static com.azure.storage.internal.avro.implementation.AvroConstants.Types.UNION;
 
-/* TODO : I think nested classes is not super idiomatic and maybe we should create different independent types for each of these */
-
 /**
  * A class that represents an Avro type.
  * AvroTypes function as a type that stores all the data a schema may need.
