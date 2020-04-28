@@ -3,6 +3,9 @@
 
 package com.microsoft.azure.spring.support;
 
+/**
+ * Util class to generate user agent.
+ */
 public class UserAgent {
     /**
      * Generate UserAgent string for given service.

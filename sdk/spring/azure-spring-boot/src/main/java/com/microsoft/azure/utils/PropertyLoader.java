@@ -7,15 +7,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * Util class to load property files.
+ */
 public class PropertyLoader {
     private static final String PROJECT_PROPERTY_FILE = "/META-INF/project.properties";
 
     private static final String TELEMETRY_CONFIG_FILE = "/telemetry.config";
 
     private static String getProperty(String file, String property) {
-        InputStream inputStream = null;
-        try {
-            inputStream = PropertyLoader.class.getResourceAsStream(file);
+        try (InputStream inputStream = PropertyLoader.class.getResourceAsStream(file)) {
             if (inputStream != null) {
                 final Properties properties = new Properties();
                 properties.load(inputStream);
@@ -24,14 +25,6 @@ public class PropertyLoader {
             }
         } catch (IOException e) {
             // Omitted
-        } finally {
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-                    // Omitted
-                }
-            }
         }
 
         return "unknown";

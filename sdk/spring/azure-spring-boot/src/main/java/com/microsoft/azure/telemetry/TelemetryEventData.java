@@ -11,6 +11,9 @@ import org.springframework.util.Assert;
 import java.time.Instant;
 import java.util.Map;
 
+/**
+ * Telemetry data will be sent to Application Insights.
+ */
 public class TelemetryEventData {
 
     private final String name;

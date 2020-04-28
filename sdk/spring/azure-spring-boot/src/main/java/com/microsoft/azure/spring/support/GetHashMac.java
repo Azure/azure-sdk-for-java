@@ -72,8 +72,7 @@ public final class GetHashMac {
             final ProcessBuilder builder = new ProcessBuilder(command);
             final Process process = builder.start();
 
-            InputStream inputStream = process.getInputStream();
-            try (
+            try (InputStream inputStream = process.getInputStream();
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
                 BufferedReader br = new BufferedReader(inputStreamReader)) {
                 String tmp;

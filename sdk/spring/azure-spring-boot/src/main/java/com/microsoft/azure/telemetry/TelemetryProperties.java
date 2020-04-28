@@ -5,6 +5,9 @@ package com.microsoft.azure.telemetry;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+/**
+ * Telemetry configuration's properties.
+ */
 @ConfigurationProperties("telemetry")
 public class TelemetryProperties {
 

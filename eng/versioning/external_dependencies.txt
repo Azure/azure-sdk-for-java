@@ -123,7 +123,7 @@ com.microsoft.azure:azure-mgmt-search;1.24.1
 com.azure:sdk-build-tools;1.0.0
 com.beust:jcommander;1.58
 com.google.code.findbugs:jsr305;3.0.2
-com.nimbusds:nimbus-jose-jwt;6.0.1
+com.nimbusds:nimbus-jose-jwt;7.9
 com.nimbusds:oauth2-oidc-sdk;6.14
 com.puppycrawl.tools:checkstyle;8.29
 commons-io:commons-io;2.5
@@ -209,6 +209,9 @@ eventgrid_commons-io:commons-io;2.6
 # sdk\eventhubs\microsoft-azure-eventhubs-extensions\pom.xml
 eventhubs_com.microsoft.azure:msal4j;0.4.0-preview
 
+# sdk\eventhubs\microsoft-azure-eventhubs\pom.xml
+eventhubs_com.nimbusds:nimbus-jose-jwt;6.0.1
+
 # sdk\keyvault\microsoft-azure-keyvault-extensions\pom.xml
 keyvault_org.mockito:mockito-core;1.10.19
 # sdk\keyvault\microsoft-azure-keyvault-test\pom.xml
@@ -228,7 +231,3 @@ media_com.microsoft.azure:adal4j;1.2.0
 
 # sdk\storage\azure-storage-blob-cryptography\pom.xml
 storage_com.microsoft.azure:azure-storage;8.4.0
-
-
-# sdk\spring\azure-spring-boot\pom.xml
-spring_com.nimbusds:nimbus-jose-jwt;7.9

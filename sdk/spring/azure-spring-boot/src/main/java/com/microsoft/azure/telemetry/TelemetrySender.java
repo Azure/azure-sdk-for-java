@@ -23,6 +23,9 @@ import java.util.Map;
 
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON;
 
+/**
+ * Client used for sending telemetry info.
+ */
 public class TelemetrySender {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TelemetrySender.class);

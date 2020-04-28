@@ -3,6 +3,9 @@
 
 package com.microsoft.azure.telemetry;
 
+/**
+ * This class contains constants like telemetry keys and methods to retrieve telemetry info.
+ */
 public class TelemetryData {
 
     public static final String INSTALLATION_ID = "installationId";
