@@ -37,8 +37,8 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
 
     private Function<SynonymMap, SynonymMap> mutateSynonymMapFunc = this::mutateSynonymsInSynonymMap;
 
-    private BiConsumer<String, AccessOptions> deleteSynonymMapFunc = (String name, AccessOptions ac) ->
-            client.deleteSynonymMapWithResponse(new SynonymMap().setName(name), ac.getOnlyIfUnchanged(),
+    private BiConsumer<SynonymMap, AccessOptions> deleteSynonymMapFunc = (SynonymMap synonymMap, AccessOptions ac) ->
+            client.deleteSynonymMapWithResponse(synonymMap, ac.getOnlyIfUnchanged(),
                 ac.getRequestOptions(), Context.NONE);
 
     private SynonymMap createOrUpdateSynonymMap(
@@ -179,12 +179,6 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
     }
 
     @Test
-    public void createOrUpdateSynonymMapIfNotExistsFailsOnExistingResource() {
-        AccessConditionTests.createOrUpdateIfNotExistsFailsOnExistingResource(createOrUpdateSynonymMapFunc,
-            newSynonymMapFunc, mutateSynonymMapFunc);
-    }
-
-    @Test
     public void createOrUpdateSynonymMapIfNotExistsSucceedsOnNoResource() {
         AccessConditionTests.createOrUpdateIfNotExistsSucceedsOnNoResource(createOrUpdateSynonymMapFunc,
             newSynonymMapFunc);
@@ -194,11 +188,6 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
     public void createOrUpdateSynonymMapIfExistsSucceedsOnExistingResource() {
         AccessConditionTests.updateIfExistsSucceedsOnExistingResource(newSynonymMapFunc, createOrUpdateSynonymMapFunc,
             mutateSynonymMapFunc);
-    }
-
-    @Test
-    public void createOrUpdateSynonymMapIfExistsFailsOnNoResource() {
-        AccessConditionTests.updateIfExistsFailsOnNoResource(newSynonymMapFunc, createOrUpdateSynonymMapFunc);
     }
 
     @Test
@@ -286,7 +275,7 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
     @Test
     public void deleteSynonymMapIfExistsWorksOnlyWhenResourceExists() {
         AccessConditionTests.deleteIfExistsWorksOnlyWhenResourceExists(deleteSynonymMapFunc,
-            createOrUpdateSynonymMapFunc, newSynonymMapFunc, "test-synonym");
+            createOrUpdateSynonymMapFunc, newSynonymMapFunc);
     }
 
     void assertSynonymMapsEqual(SynonymMap actual, SynonymMap expected) {

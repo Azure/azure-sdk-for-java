@@ -36,7 +36,6 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
-import static com.azure.search.documents.TestHelpers.getETag;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -55,9 +54,9 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
 
     private Function<Index, Index> mutateIndexFunc = this::mutateCorsOptionsInIndex;
 
-    private BiConsumer<String, AccessOptions> deleteIndexFunc =
-        (String name, AccessOptions ac) ->
-            client.deleteIndexWithResponse(new Index().setName(name), ac.getOnlyIfUnchanged(), ac.getRequestOptions(),
+    private BiConsumer<Index, AccessOptions> deleteIndexFunc =
+        (Index index, AccessOptions ac) ->
+            client.deleteIndexWithResponse(index, ac.getOnlyIfUnchanged(), ac.getRequestOptions(),
                 Context.NONE);
 
     private Index createOrUpdateIndex(Index index, Boolean onlyIfUnchanged, RequestOptions requestOptions) {
@@ -171,34 +170,29 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         // Create the resource in the search service
         Index originalIndex = createOrUpdateIndexFunc.apply(indexToCreate, accessOptions);
 
-        // Get the eTag for the newly created resource
-        String eTagStale = getETag(originalIndex);
-
         // Update the resource, the eTag will be changed
         Index updatedIndex = createOrUpdateIndexFunc.apply(originalIndex
             .setCorsOptions(new CorsOptions().setAllowedOrigins("https://test.com/")), accessOptions);
 
         try {
             accessOptions = new AccessOptions(true);
-            deleteIndexFunc.accept(HOTEL_INDEX_NAME, accessOptions);
+            deleteIndexFunc.accept(originalIndex, accessOptions);
             fail("deleteFunc should have failed due to selected MatchConditions");
         } catch (Exception exc) {
             assertEquals(SearchErrorException.class, exc.getClass());
             assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((SearchErrorException) exc).getResponse().getStatusCode());
         }
 
-        // Get the new eTag
-        String eTagCurrent = getETag(updatedIndex);
         accessOptions = new AccessOptions(true);
 
         // Delete should succeed
-        deleteIndexFunc.accept(HOTEL_INDEX_NAME, accessOptions);
+        deleteIndexFunc.accept(updatedIndex, accessOptions);
     }
 
     @Test
     public void deleteIndexIfExistsWorksOnlyWhenResourceExists() {
         AccessConditionTests.deleteIfExistsWorksOnlyWhenResourceExists(deleteIndexFunc, createOrUpdateIndexFunc,
-            newIndexFunc, HOTEL_INDEX_NAME);
+            newIndexFunc);
     }
 
     @Test
@@ -462,12 +456,6 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
     }
 
     @Test
-    public void createOrUpdateIndexIfNotExistsFailsOnExistingResource() {
-        AccessConditionTests.createOrUpdateIfNotExistsFailsOnExistingResource(createOrUpdateIndexFunc, newIndexFunc,
-            mutateIndexFunc);
-    }
-
-    @Test
     public void createOrUpdateIndexIfNotExistsSucceedsOnNoResource() {
         AccessConditionTests.createOrUpdateIfNotExistsSucceedsOnNoResource(createOrUpdateIndexFunc, newIndexFunc);
     }
@@ -477,11 +465,6 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
     public void createOrUpdateIndexIfExistsSucceedsOnExistingResource() {
         AccessConditionTests.updateIfExistsSucceedsOnExistingResource(newIndexFunc, createOrUpdateIndexFunc,
             mutateIndexFunc);
-    }
-
-    @Test
-    public void createOrUpdateIndexIfExistsFailsOnNoResource() {
-        AccessConditionTests.updateIfExistsFailsOnNoResource(newIndexFunc, createOrUpdateIndexFunc);
     }
 
     @Test

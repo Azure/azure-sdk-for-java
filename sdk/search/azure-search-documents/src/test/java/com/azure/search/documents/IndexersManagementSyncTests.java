@@ -71,9 +71,9 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
     private Function<Indexer, Indexer> mutateIndexerFunc =
         (Indexer indexer) -> indexer.setDescription("ABrandNewDescription");
 
-    private BiConsumer<String, AccessOptions> deleteIndexerFunc =
-        (String name, AccessOptions ac) ->
-            client.deleteIndexerWithResponse(new Indexer().setName(name), ac.getOnlyIfUnchanged(),
+    private BiConsumer<Indexer, AccessOptions> deleteIndexerFunc =
+        (Indexer indexer, AccessOptions ac) ->
+            client.deleteIndexerWithResponse(indexer, ac.getOnlyIfUnchanged(),
                 ac.getRequestOptions(), Context.NONE);
 
 
@@ -316,17 +316,6 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
     }
 
     @Test
-    public void createOrUpdateIndexerIfNotExistsFailsOnExistingResource() {
-        // Prepare data source and index
-        createDataSourceAndIndex();
-
-        AccessConditionTests.createOrUpdateIfNotExistsFailsOnExistingResource(
-            createOrUpdateIndexerFunc,
-            newIndexerFunc,
-            mutateIndexerFunc);
-    }
-
-    @Test
     public void canUpdateIndexer() {
         DataSource dataSource = createTestSqlDataSourceObject();
         client.createOrUpdateDataSource(dataSource);
@@ -537,7 +526,7 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         createDataSourceAndIndex();
 
         AccessConditionTests.deleteIfExistsWorksOnlyWhenResourceExists(deleteIndexerFunc, createOrUpdateIndexerFunc,
-            newIndexerFunc, "name");
+            newIndexerFunc);
     }
 
     @Test
@@ -547,11 +536,6 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
 
         AccessConditionTests.deleteIfNotChangedWorksOnlyOnCurrentResource(deleteIndexerFunc, newIndexerFunc,
             createOrUpdateIndexerFunc, "name");
-    }
-
-    @Test
-    public void updateIndexerIfExistsFailsOnNoResource() {
-        AccessConditionTests.updateIfExistsFailsOnNoResource(newIndexerFunc, createOrUpdateIndexerFunc);
     }
 
     @Test

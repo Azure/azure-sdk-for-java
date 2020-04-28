@@ -16,43 +16,9 @@ import java.util.function.Supplier;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class AccessConditionTests {
-
-    /**
-     * Checks that create or update fails when a resource exists
-     *
-     * @param createOrUpdateDefinition a function that creates or updates a resource in the service
-     * @param newResourceDefinition a function to generate a new resource object
-     * @param <T> one of the entity types (Index / Indexer / SynonymMap / DataSource / etc)
-     */
-    public static <T> void createOrUpdateIfNotExistsFailsOnExistingResource(
-        BiFunction<T, AccessOptions, T> createOrUpdateDefinition, Supplier<T> newResourceDefinition,
-        Function<T, T> mutateResourceDefinition) {
-
-        // Create a new resource (Indexer, SynonymMap, etc...)
-        T newResource = newResourceDefinition.get();
-
-        // Create the resource in the search service
-        AccessOptions accessOptions = new AccessOptions(true);
-        T createdResource = createOrUpdateDefinition.apply(newResource, accessOptions);
-
-        try {
-            // Change the resource object (locally, not on the service)
-            T mutatedResource = mutateResourceDefinition.apply(createdResource);
-
-            // Update the resource, expect to fail as it already exists
-            createOrUpdateDefinition.apply(mutatedResource, accessOptions);
-            fail("createOrUpdateDefinition should have failed due to selected AccessCondition");
-        } catch (Exception exc) {
-            assertEquals(SearchErrorException.class, exc.getClass());
-            assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(),
-                ((SearchErrorException) exc).getResponse().getStatusCode());
-        }
-    }
-
     /**
      * Checks that create or update only work if item which does not exists
      *
@@ -82,26 +48,24 @@ public class AccessConditionTests {
      * @param deleteFunc a function that deletes a resource in the service
      * @param createOrUpdateDefinition a function that creates or updates a resource in the service
      * @param newResourceDefinition a function to generate a new resource object
-     * @param resourceName the name of the resource
      * @param <T> one of the entity types (Index / Indexer / SynonymMap / DataSource / etc)
      */
-    public static <T> void deleteIfExistsWorksOnlyWhenResourceExists(BiConsumer<String, AccessOptions> deleteFunc,
-        BiFunction<T, AccessOptions, T> createOrUpdateDefinition, Supplier<T> newResourceDefinition,
-        String resourceName) {
+    public static <T> void deleteIfExistsWorksOnlyWhenResourceExists(BiConsumer<T, AccessOptions> deleteFunc,
+        BiFunction<T, AccessOptions, T> createOrUpdateDefinition, Supplier<T> newResourceDefinition) {
         // Create a new resource (Indexer, SynonymMap, etc...)
         T newResource = newResourceDefinition.get();
         AccessOptions accessOptions = new AccessOptions(false);
 
         // Create it on the search service
-        createOrUpdateDefinition.apply(newResource, accessOptions);
+        T updatedSource = createOrUpdateDefinition.apply(newResource, accessOptions);
 
         // Try to delete and expect to succeed
         accessOptions = new AccessOptions(true);
-        deleteFunc.accept(resourceName, accessOptions);
+        deleteFunc.accept(updatedSource, accessOptions);
 
         // Try to delete again and expect to fail
         try {
-            deleteFunc.accept(resourceName, accessOptions);
+            deleteFunc.accept(updatedSource, accessOptions);
             fail("deleteFunc should have failed due to non existent resource");
         } catch (Exception exc) {
             assertEquals(SearchErrorException.class, exc.getClass());
@@ -116,26 +80,23 @@ public class AccessConditionTests {
      * @param newResourceDefinition a function to generate a new resource object
      * @param <T> one of the entity types (Index / Indexer / SynonymMap / DataSource / etc)
      */
-    public static <T> void deleteIfNotChangedWorksOnlyOnCurrentResource(BiConsumer<String, AccessOptions> deleteFunc,
+    public static <T> void deleteIfNotChangedWorksOnlyOnCurrentResource(BiConsumer<T, AccessOptions> deleteFunc,
         Supplier<T> newResourceDefinition, BiFunction<T, AccessOptions, T> createOrUpdateDefinition,
         String resourceName) {
 
         // Create a new resource (Indexer, SynonymMap, etc...)
         T staleResource = newResourceDefinition.get();
-        AccessOptions accessOptions = new AccessOptions(false);
+        AccessOptions accessOptions = new AccessOptions(true);
 
         // Create the resource in the search service
         staleResource = createOrUpdateDefinition.apply(staleResource, accessOptions);
-
-        // Get the eTag for the newly created resource
-        String eTagStale = TestHelpers.getETag(staleResource);
 
         // Update the resource, the eTag will be changed
         T currentResource = createOrUpdateDefinition.apply(staleResource, accessOptions);
 
         try {
             accessOptions = new AccessOptions(true);
-            deleteFunc.accept(resourceName, accessOptions);
+            deleteFunc.accept(staleResource, accessOptions);
             fail("deleteFunc should have failed due to selected AccessCondition");
         } catch (Exception exc) {
             assertEquals(SearchErrorException.class, exc.getClass());
@@ -143,34 +104,10 @@ public class AccessConditionTests {
         }
 
         // Get the new eTag
-        String eTagCurrent = TestHelpers.getETag(currentResource);
         accessOptions = new AccessOptions(true);
 
         // Delete should succeed
-        deleteFunc.accept(resourceName, accessOptions);
-    }
-
-    /**
-     * Checks that update if exists fails when the resource does not exists
-     *
-     * @param createOrUpdateDefinition a function that creates or updates a resource in the service
-     * @param newResourceDefinition a function to generate a new resource object
-     * @param <T> one of the entity types (Index / Indexer / SynonymMap / DataSource / etc)
-     */
-    public static <T> void updateIfExistsFailsOnNoResource(Supplier<T> newResourceDefinition,
-        BiFunction<T, AccessOptions, T> createOrUpdateDefinition) {
-        T newResource = newResourceDefinition.get();
-        try {
-            AccessOptions accessOptions = new AccessOptions(true);
-            createOrUpdateDefinition.apply(newResource, accessOptions);
-            fail("createOrUpdateDefinition should have failed due to selected AccessCondition");
-        } catch (Exception exc) {
-            assertEquals(SearchErrorException.class, exc.getClass());
-            assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((SearchErrorException) exc).getResponse().getStatusCode());
-        }
-
-        // The resource should never have been created on the server, and thus it should not have an ETag
-        assertNull(TestHelpers.getETag(newResource));
+        deleteFunc.accept(currentResource, accessOptions);
     }
 
     /**
@@ -238,7 +175,7 @@ public class AccessConditionTests {
 
         // Update and check the eTags were changed
         try {
-            createOrUpdateDefinition.apply(mutateResource, accessOptions);
+            createOrUpdateDefinition.apply(newResource, accessOptions);
             fail("createOrUpdateDefinition should have failed due to selected AccessCondition");
         } catch (Exception exc) {
             assertEquals(SearchErrorException.class, exc.getClass());
