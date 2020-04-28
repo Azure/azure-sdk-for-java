@@ -397,23 +397,22 @@ public final class BlobDownloadHeaders {
      */
     public Map<String, ObjectReplicationPolicy> getObjectReplicationSourcePolicies() {
         Map<String, ObjectReplicationPolicy> objectReplicationSourcePolicies = new HashMap<>();
-        this.objectReplicationDestinationPolicyId = this.objectReplicationRuleStatus.getOrDefault("policy-id", null);
-        if (objectReplicationDestinationPolicyId == null) {
-            for (String str : this.objectReplicationRuleStatus.keySet()) {
-                String[] split = str.split("_");
+        if (objectReplicationDestinationPolicyId == null && this.objectReplicationRuleStatus != null) {
+            for (Map.Entry<String, String> entry : this.objectReplicationRuleStatus.entrySet()) {
+                String[] split = entry.getKey().split("_");
                 String policyId = split[0];
                 String ruleId = split[1];
                 if (objectReplicationSourcePolicies.containsKey(policyId)) {
-                    objectReplicationSourcePolicies.get(policyId)
-                        .putRuleAndStatus(ruleId, this.objectReplicationRuleStatus.get(str));
+                    objectReplicationSourcePolicies.get(policyId).putRuleAndStatus(ruleId, entry.getValue());
                 } else {
                     ObjectReplicationPolicy policy = new ObjectReplicationPolicy(policyId);
-                    policy.putRuleAndStatus(ruleId, objectReplicationRuleStatus.get(str));
+                    policy.putRuleAndStatus(ruleId, entry.getValue());
                     objectReplicationSourcePolicies.put(policyId, policy);
                 }
             }
         }
-        return objectReplicationSourcePolicies;    }
+        return objectReplicationSourcePolicies;
+    }
 
     /**
      * Set the objectReplicationRuleStatus property: The

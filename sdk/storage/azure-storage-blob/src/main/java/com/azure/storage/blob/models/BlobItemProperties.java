@@ -10,7 +10,6 @@ import com.azure.storage.blob.implementation.models.BlobItemPropertiesInternal;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
-import java.util.Map;
 
 /**
  * Properties of a blob.
@@ -280,9 +279,12 @@ public final class BlobItemProperties {
     @JsonProperty(value = "AccessTierChangeTime")
     private OffsetDateTime accessTierChangeTime;
 
+    // TODO: (rickle-msft) uncomment when these are returned on lists.
+    /*
     private Map<String, ObjectReplicationPolicy> objectReplicationSourcePolicies;
 
     private String objectReplicationDestinationPolicyId;
+    */
 
     /**
      * Get the creationTime property: The creationTime property.
