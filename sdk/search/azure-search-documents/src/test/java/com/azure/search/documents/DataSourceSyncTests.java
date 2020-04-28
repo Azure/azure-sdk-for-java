@@ -4,7 +4,6 @@
 package com.azure.search.documents;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.search.documents.models.DataContainer;
@@ -45,7 +44,7 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
     // commonly used lambda definitions
     private BiFunction<DataSource, AccessOptions, DataSource> createOrUpdateDataSourceFunc =
         (DataSource ds, AccessOptions ac) ->
-            createOrUpdateDataSource(ds, ac.getAccessCondition(), ac.getRequestOptions());
+            createOrUpdateDataSource(ds, ac.getOnlyIfUnchanged(), ac.getRequestOptions());
 
     private Supplier<DataSource> newDataSourceFunc = () -> createTestBlobDataSource(null);
 
@@ -53,7 +52,8 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
         (DataSource ds) -> ds.setDescription("somethingnew");
 
     private BiConsumer<String, AccessOptions> deleteDataSourceFunc = (String name, AccessOptions ac) ->
-        client.deleteDataSourceWithResponse(name, ac.getAccessCondition(), ac.getRequestOptions(), Context.NONE);
+        client.deleteDataSourceWithResponse(new DataSource().setName(name),
+            ac.getOnlyIfUnchanged(), ac.getRequestOptions(), Context.NONE);
 
     @Override
     protected void beforeTest() {
@@ -61,10 +61,9 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
         client = getSearchServiceClientBuilder().buildClient();
     }
 
-    private DataSource createOrUpdateDataSource(DataSource datasource,
-        MatchConditions accessCondition,
+    private DataSource createOrUpdateDataSource(DataSource datasource, Boolean onlyIfUnchanged,
         RequestOptions requestOptions) {
-        return client.createOrUpdateDataSourceWithResponse(datasource, accessCondition, requestOptions, Context.NONE)
+        return client.createOrUpdateDataSourceWithResponse(datasource, onlyIfUnchanged, requestOptions, Context.NONE)
             .getValue();
     }
 
@@ -89,9 +88,9 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
         DataSource dataSource2 = createTestSqlDataSourceObject();
 
         client.createOrUpdateDataSourceWithResponse(
-            dataSource1, new MatchConditions(), new RequestOptions(), Context.NONE);
+            dataSource1, false, new RequestOptions(), Context.NONE);
         client.createOrUpdateDataSourceWithResponse(
-            dataSource2, new MatchConditions(), new RequestOptions(), Context.NONE);
+            dataSource2, false, new RequestOptions(), Context.NONE);
 
         Iterator<DataSource> results = client.listDataSources("name", new RequestOptions(), Context.NONE).iterator();
 
@@ -113,20 +112,17 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
         DataSource dataSource = createTestBlobDataSource(null);
 
         // Try to delete before the data source exists, expect a NOT FOUND return status code
-        Response<Void> result = client.deleteDataSourceWithResponse(dataSource.getName(),
-            new MatchConditions(), generateRequestOptions(), Context.NONE);
+        Response<Void> result = client.deleteDataSourceWithResponse(dataSource, false, generateRequestOptions(), Context.NONE);
         assertEquals(HttpURLConnection.HTTP_NOT_FOUND, result.getStatusCode());
 
         // Create the data source
         client.createOrUpdateDataSource(dataSource);
 
         // Delete twice, expect the first to succeed (with NO CONTENT status code) and the second to return NOT FOUND
-        result = client.deleteDataSourceWithResponse(dataSource.getName(),
-            new MatchConditions(), generateRequestOptions(), Context.NONE);
+        result = client.deleteDataSourceWithResponse(dataSource, false, generateRequestOptions(), Context.NONE);
         assertEquals(HttpURLConnection.HTTP_NO_CONTENT, result.getStatusCode());
         // Again, expect to fail
-        result = client.deleteDataSourceWithResponse(dataSource.getName(),
-            new MatchConditions(), generateRequestOptions(), Context.NONE);
+        result = client.deleteDataSourceWithResponse(dataSource, false, generateRequestOptions(), Context.NONE);
         assertEquals(HttpURLConnection.HTTP_NOT_FOUND, result.getStatusCode());
     }
 

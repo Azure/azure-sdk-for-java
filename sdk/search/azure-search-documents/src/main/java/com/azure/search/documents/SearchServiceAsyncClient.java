@@ -4,7 +4,6 @@ package com.azure.search.documents;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
@@ -27,6 +26,7 @@ import com.azure.search.documents.models.SynonymMap;
 import com.azure.search.documents.models.TokenInfo;
 import reactor.core.publisher.Mono;
 
+import java.util.Objects;
 import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -117,36 +117,38 @@ public final class SearchServiceAsyncClient {
     /**
      * Creates a new Azure Cognitive Search data source or updates a data source if it already exists.
      *
-     * @param dataSource the definition of the data source to create or update
+     * @param dataSource The definition of the {@link DataSource} to create or update.
      * @return the data source that was created or updated.
      */
     public Mono<DataSource> createOrUpdateDataSource(DataSource dataSource) {
-        return createOrUpdateDataSourceWithResponse(dataSource, null, null).map(Response::getValue);
+        return createOrUpdateDataSourceWithResponse(dataSource, false, null).map(Response::getValue);
     }
 
     /**
      * Creates a new Azure Cognitive Search data source or updates a data source if it already exists.
      *
-     * @param dataSource The definition of the data source to create or update.
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
+     * @param dataSource The definition of the {@link DataSource} to create or update.
+     * @param onlyIfUnchanged {@code true} to update if the {@code dataSource} is the same as the current service value.
+     * {@code false} to always update existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @return a data source response.
      */
     public Mono<Response<DataSource>> createOrUpdateDataSourceWithResponse(DataSource dataSource,
-        MatchConditions accessCondition, RequestOptions requestOptions) {
+        boolean onlyIfUnchanged, RequestOptions requestOptions) {
         return withContext(context ->
-            createOrUpdateDataSourceWithResponse(dataSource, accessCondition, requestOptions, context));
+            createOrUpdateDataSourceWithResponse(dataSource, onlyIfUnchanged, requestOptions, context));
     }
 
     Mono<Response<DataSource>> createOrUpdateDataSourceWithResponse(DataSource dataSource,
-        MatchConditions accessCondition, RequestOptions requestOptions, Context context) {
+        boolean onlyIfUnchanged, RequestOptions requestOptions, Context context) {
+        Objects.requireNonNull(dataSource, "'DataSource' cannot be null.");
+        String ifMatch = onlyIfUnchanged ? dataSource.getETag() : null;
         try {
             return restClient
                 .dataSources()
                 .createOrUpdateWithRestResponseAsync(dataSource.getName(),
-                    dataSource, requestOptions, accessCondition, context)
+                    dataSource, ifMatch, null, requestOptions, context)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -166,7 +168,7 @@ public final class SearchServiceAsyncClient {
     /**
      * Creates a new Azure Cognitive Search data source
      *
-     * @param dataSource The definition of the data source to create.
+     * @param dataSource The definition of the {@link DataSource} to create.
      * @param requestOptions Additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging.
      * @return a Mono which performs the network request upon subscription.
@@ -190,7 +192,7 @@ public final class SearchServiceAsyncClient {
     /**
      * Retrieves a DataSource from an Azure Cognitive Search service.
      *
-     * @param dataSourceName the name of the data source to retrieve
+     * @param dataSourceName the name of the {@link DataSource} to retrieve.
      * @return the DataSource.
      */
     public Mono<DataSource> getDataSource(String dataSourceName) {
@@ -200,7 +202,7 @@ public final class SearchServiceAsyncClient {
     /**
      * Retrieves a DataSource from an Azure Cognitive Search service.
      *
-     * @param dataSourceName the name of the data source to retrieve
+     * @param dataSourceName the name of the {@link DataSource} to retrieve.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging.
      * @return a response containing the DataSource.
@@ -271,37 +273,40 @@ public final class SearchServiceAsyncClient {
     /**
      * Delete a DataSource
      *
-     * @param dataSourceName the name of the data source for deletion
+     * @param dataSourceName the name of the {@link DataSource} for deletion
      * @return a void Mono
      */
     public Mono<Void> deleteDataSource(String dataSourceName) {
-        return deleteDataSourceWithResponse(dataSourceName, null, null).flatMap(FluxUtil::toMono);
+        return withContext(context ->
+            deleteDataSourceWithResponse(dataSourceName, null, null, context).flatMap(FluxUtil::toMono));
     }
 
     /**
      * Deletes an Azure Cognitive Search data source.
      *
-     * @param dataSourceName The name of the data source to delete.
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
+     * @param dataSource The {@link DataSource} to delete.
+     * @param onlyIfUnchanged {@code true} to delete if the {@code dataSource} is the same as the current service value.
+     * {@code false} to always delete existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @return a mono response
      */
-    public Mono<Response<Void>> deleteDataSourceWithResponse(String dataSourceName, MatchConditions accessCondition,
+    public Mono<Response<Void>> deleteDataSourceWithResponse(DataSource dataSource, boolean onlyIfUnchanged,
         RequestOptions requestOptions) {
+        Objects.requireNonNull(dataSource, "'DataSource' cannot be null");
+        String etag = onlyIfUnchanged ? dataSource.getETag() : null;
         return withContext(context ->
-            deleteDataSourceWithResponse(dataSourceName, accessCondition, requestOptions, context));
+            deleteDataSourceWithResponse(dataSource.getName(), etag, requestOptions, context));
     }
 
-    Mono<Response<Void>> deleteDataSourceWithResponse(String dataSourceName, MatchConditions accessCondition,
-        RequestOptions requestOptions, Context context) {
+    Mono<Response<Void>> deleteDataSourceWithResponse(String dataSourceName, String etag, RequestOptions requestOptions,
+        Context context) {
         try {
             return restClient.dataSources()
                 .deleteWithRestResponseAsync(
                     dataSourceName,
+                    etag, null,
                     requestOptions,
-                    accessCondition,
                     context).map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -347,30 +352,32 @@ public final class SearchServiceAsyncClient {
      * @return a response containing the created Indexer.
      */
     public Mono<Indexer> createOrUpdateIndexer(Indexer indexer) {
-        return createOrUpdateIndexerWithResponse(indexer, null, null).map(Response::getValue);
+        return createOrUpdateIndexerWithResponse(indexer, false, null).map(Response::getValue);
     }
 
     /**
      * Creates a new Azure Cognitive Search indexer or updates an indexer if it already exists.
      *
-     * @param indexer the definition of the indexer to create or update
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
+     * @param indexer the definition of the {@link Indexer} to create or update
+     * @param onlyIfUnchanged {@code true} to update if the {@code indexer} is the same as the current service value.
+     * {@code false} to always update existing value.
      * @param requestOptions additional parameters for the operation Contains the tracking ID sent with the request to
      * help with debugging
      * @return a response containing the created Indexer.
      */
-    public Mono<Response<Indexer>> createOrUpdateIndexerWithResponse(Indexer indexer, MatchConditions accessCondition,
+    public Mono<Response<Indexer>> createOrUpdateIndexerWithResponse(Indexer indexer, boolean onlyIfUnchanged,
         RequestOptions requestOptions) {
         return withContext(context ->
-            createOrUpdateIndexerWithResponse(indexer, accessCondition, requestOptions, context));
+            createOrUpdateIndexerWithResponse(indexer, onlyIfUnchanged, requestOptions, context));
     }
 
-    Mono<Response<Indexer>> createOrUpdateIndexerWithResponse(Indexer indexer, MatchConditions accessCondition,
+    Mono<Response<Indexer>> createOrUpdateIndexerWithResponse(Indexer indexer, boolean onlyIfUnchanged,
         RequestOptions requestOptions, Context context) {
+        Objects.requireNonNull(indexer, "'Indexer' cannot be 'null'");
+        String ifMatch = onlyIfUnchanged ? indexer.getETag() : null;
         try {
             return restClient.indexers()
-                .createOrUpdateWithRestResponseAsync(indexer.getName(), indexer, requestOptions, accessCondition,
+                .createOrUpdateWithRestResponseAsync(indexer.getName(), indexer, ifMatch, null, requestOptions,
                     context)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
@@ -462,40 +469,42 @@ public final class SearchServiceAsyncClient {
      * @return a response signalling completion.
      */
     public Mono<Void> deleteIndexer(String indexerName) {
-        return deleteIndexerWithResponse(indexerName, null, null).flatMap(FluxUtil::toMono);
+        return withContext(context -> deleteIndexerWithResponse(indexerName, null, null, context)
+            .flatMap(FluxUtil::toMono));
     }
 
     /**
      * Deletes an Azure Cognitive Search indexer.
      *
-     * @param indexerName the name of the indexer to delete
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
+     * @param indexer the {@link Indexer} to delete
+     * @param onlyIfUnchanged {@code true} to delete if the {@code indexer} is the same as the current service value.
+     * {@code false} to always delete existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @return a response signalling completion.
      */
-    public Mono<Response<Void>> deleteIndexerWithResponse(String indexerName, MatchConditions accessCondition,
+    public Mono<Response<Void>> deleteIndexerWithResponse(Indexer indexer, boolean onlyIfUnchanged,
         RequestOptions requestOptions) {
-        return withContext(context -> deleteIndexerWithResponse(indexerName, accessCondition, requestOptions, context));
+        Objects.requireNonNull(indexer, "'Indexer' cannot be null");
+        String etag = onlyIfUnchanged ? indexer.getETag() : null;
+        return withContext(context -> deleteIndexerWithResponse(indexer.getName(), etag, requestOptions, context));
     }
 
     /**
      * Deletes an Azure Cognitive Search indexer.
      *
      * @param indexerName the name of the indexer to delete
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
+     * @param etag Optional. The etag to match.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context the context
      * @return a response signalling completion.
      */
-    Mono<Response<Void>> deleteIndexerWithResponse(String indexerName, MatchConditions accessCondition,
-        RequestOptions requestOptions, Context context) {
+    Mono<Response<Void>> deleteIndexerWithResponse(String indexerName, String etag, RequestOptions requestOptions,
+        Context context) {
         try {
             return restClient.indexers()
-                .deleteWithRestResponseAsync(indexerName, requestOptions, accessCondition, context)
+                .deleteWithRestResponseAsync(indexerName, etag, null, requestOptions, context)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -622,6 +631,7 @@ public final class SearchServiceAsyncClient {
     }
 
     Mono<Response<Index>> createIndexWithResponse(Index index, RequestOptions requestOptions, Context context) {
+        Objects.requireNonNull(index, "'Index' cannot be null");
         try {
             return restClient.indexes()
                 .createWithRestResponseAsync(index, requestOptions, context)
@@ -748,11 +758,11 @@ public final class SearchServiceAsyncClient {
     /**
      * Creates a new Azure Cognitive Search index or updates an index if it already exists.
      *
-     * @param index the definition of the index to create or update
+     * @param index the definition of the {@link Index} to create or update.
      * @return the index that was created or updated.
      */
     public Mono<Index> createOrUpdateIndex(Index index) {
-        return createOrUpdateIndexWithResponse(index, false, null, null).map(Response::getValue);
+        return createOrUpdateIndexWithResponse(index, false, false, null).map(Response::getValue);
     }
 
     /**
@@ -763,24 +773,26 @@ public final class SearchServiceAsyncClient {
      * index by taking the index offline for at least a few seconds. This temporarily causes indexing and query requests
      * to fail. Performance and write availability of the index can be impaired for several minutes after the index is
      * updated, or longer for very large indexes
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
+     * @param onlyIfUnchanged {@code true} to update if the {@code index} is the same as the current service value.
+     * {@code false} to always update existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @return a response containing the index that was created or updated
      */
     public Mono<Response<Index>> createOrUpdateIndexWithResponse(Index index, boolean allowIndexDowntime,
-        MatchConditions accessCondition, RequestOptions requestOptions) {
+        boolean onlyIfUnchanged, RequestOptions requestOptions) {
         return withContext(context ->
-            createOrUpdateIndexWithResponse(index, allowIndexDowntime, accessCondition, requestOptions, context));
+            createOrUpdateIndexWithResponse(index, allowIndexDowntime, onlyIfUnchanged, requestOptions, context));
     }
 
     Mono<Response<Index>> createOrUpdateIndexWithResponse(Index index, boolean allowIndexDowntime,
-        MatchConditions accessCondition, RequestOptions requestOptions, Context context) {
+        boolean onlyIfUnchanged, RequestOptions requestOptions, Context context) {
         try {
+            Objects.requireNonNull(index, "'Index' cannot null.");
+            String ifMatch = onlyIfUnchanged ? index.getETag() : null;
             return restClient.indexes()
-                .createOrUpdateWithRestResponseAsync(index.getName(), index, allowIndexDowntime, requestOptions,
-                    accessCondition, context)
+                .createOrUpdateWithRestResponseAsync(index.getName(), index, allowIndexDowntime, ifMatch, null,
+                    requestOptions, context)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -794,29 +806,31 @@ public final class SearchServiceAsyncClient {
      * @return a response signalling completion.
      */
     public Mono<Void> deleteIndex(String indexName) {
-        return deleteIndexWithResponse(indexName, null, null).flatMap(FluxUtil::toMono);
+        return withContext(context -> deleteIndexWithResponse(indexName, null, null, null).flatMap(FluxUtil::toMono));
     }
 
     /**
      * Deletes an Azure Cognitive Search index and all the documents it contains.
      *
-     * @param indexName the name of the index to delete
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
+     * @param index the {@link Index} to delete.
+     * @param onlyIfUnchanged {@code true} to delete if the {@code index} is the same as the current service value.
+     * {@code false} to always delete existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @return a response signalling completion.
      */
-    public Mono<Response<Void>> deleteIndexWithResponse(String indexName, MatchConditions accessCondition,
+    public Mono<Response<Void>> deleteIndexWithResponse(Index index, boolean onlyIfUnchanged,
         RequestOptions requestOptions) {
-        return withContext(context -> deleteIndexWithResponse(indexName, accessCondition, requestOptions, context));
+        Objects.requireNonNull(index, "'Index' cannot be null.");
+        String etag = onlyIfUnchanged ? index.getETag() : null;
+        return withContext(context -> deleteIndexWithResponse(index.getName(), etag, requestOptions, context));
     }
 
-    Mono<Response<Void>> deleteIndexWithResponse(String indexName, MatchConditions accessCondition,
-        RequestOptions requestOptions, Context context) {
+    Mono<Response<Void>> deleteIndexWithResponse(String indexName, String etag, RequestOptions requestOptions,
+        Context context) {
         try {
             return restClient.indexes()
-                .deleteWithRestResponseAsync(indexName, requestOptions, accessCondition, context)
+                .deleteWithRestResponseAsync(indexName, etag, null, requestOptions, context)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -899,6 +913,7 @@ public final class SearchServiceAsyncClient {
 
     Mono<Response<Skillset>> createSkillsetWithResponse(Skillset skillset, RequestOptions requestOptions,
         Context context) {
+        Objects.requireNonNull(skillset, "'Skillset' cannot be null.");
         try {
             return restClient.skillsets()
                 .createWithRestResponseAsync(skillset, requestOptions, context)
@@ -997,30 +1012,32 @@ public final class SearchServiceAsyncClient {
      * @return the skillset that was created or updated.
      */
     public Mono<Skillset> createOrUpdateSkillset(Skillset skillset) {
-        return createOrUpdateSkillsetWithResponse(skillset, null, null).map(Response::getValue);
+        return createOrUpdateSkillsetWithResponse(skillset, false, null).map(Response::getValue);
     }
 
     /**
      * Creates a new Azure Cognitive Search skillset or updates a skillset if it already exists.
      *
      * @param skillset the definition of the skillset to create or update
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
+     * @param onlyIfUnchanged {@code true} to update if the {@code skillset} is the same as the current service value.
+     * {@code false} to always update existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @return a response containing the skillset that was created or updated.
      */
     public Mono<Response<Skillset>> createOrUpdateSkillsetWithResponse(Skillset skillset,
-        MatchConditions accessCondition, RequestOptions requestOptions) {
+        boolean onlyIfUnchanged, RequestOptions requestOptions) {
         return withContext(context ->
-            createOrUpdateSkillsetWithResponse(skillset, accessCondition, requestOptions, context));
+            createOrUpdateSkillsetWithResponse(skillset, onlyIfUnchanged, requestOptions, context));
     }
 
-    Mono<Response<Skillset>> createOrUpdateSkillsetWithResponse(Skillset skillset, MatchConditions accessCondition,
+    Mono<Response<Skillset>> createOrUpdateSkillsetWithResponse(Skillset skillset, boolean onlyIfUnchanged,
         RequestOptions requestOptions, Context context) {
+        Objects.requireNonNull(skillset, "'Skillset' cannot be null.");
+        String ifMatch = onlyIfUnchanged ? skillset.getETag() : null;
         try {
             return restClient.skillsets()
-                .createOrUpdateWithRestResponseAsync(skillset.getName(), skillset, requestOptions, accessCondition,
+                .createOrUpdateWithRestResponseAsync(skillset.getName(), skillset, ifMatch, null, requestOptions,
                     context)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
@@ -1035,30 +1052,33 @@ public final class SearchServiceAsyncClient {
      * @return a response signalling completion.
      */
     public Mono<Void> deleteSkillset(String skillsetName) {
-        return deleteSkillsetWithResponse(skillsetName, null, null).flatMap(FluxUtil::toMono);
+        return withContext(context -> deleteSkillsetWithResponse(skillsetName, null, null, context)
+            .flatMap(FluxUtil::toMono));
     }
 
     /**
      * Deletes a cognitive skillset in an Azure Cognitive Search service.
      *
-     * @param skillsetName the name of the skillset to delete
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
+     * @param skillset the {@link Skillset} to delete.
+     * @param onlyIfUnchanged {@code true} to delete if the {@code skillset} is the same as the current service value.
+     * {@code false} to always delete existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @return a response signalling completion.
      */
-    public Mono<Response<Void>> deleteSkillsetWithResponse(String skillsetName, MatchConditions accessCondition,
+    public Mono<Response<Void>> deleteSkillsetWithResponse(Skillset skillset, boolean onlyIfUnchanged,
         RequestOptions requestOptions) {
+        Objects.requireNonNull(skillset, "'Skillset' cannot be null.");
+        String etag = onlyIfUnchanged ? skillset.getETag() : null;
         return withContext(context ->
-            deleteSkillsetWithResponse(skillsetName, accessCondition, requestOptions, context));
+            deleteSkillsetWithResponse(skillset.getName(), etag, requestOptions, context));
     }
 
-    Mono<Response<Void>> deleteSkillsetWithResponse(String skillsetName, MatchConditions accessCondition,
-        RequestOptions requestOptions, Context context) {
+    Mono<Response<Void>> deleteSkillsetWithResponse(String skillsetName, String etag, RequestOptions requestOptions,
+        Context context) {
         try {
             return restClient.skillsets()
-                .deleteWithRestResponseAsync(skillsetName, requestOptions, accessCondition, context)
+                .deleteWithRestResponseAsync(skillsetName, etag, null, requestOptions, context)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -1078,7 +1098,7 @@ public final class SearchServiceAsyncClient {
     /**
      * Creates a new Azure Cognitive Search synonym map.
      *
-     * @param synonymMap the definition of the synonym map to create
+     * @param synonymMap the definition of the {@link SynonymMap} to create
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @return a response containing the created SynonymMap.
@@ -1090,6 +1110,7 @@ public final class SearchServiceAsyncClient {
 
     Mono<Response<SynonymMap>> createSynonymMapWithResponse(SynonymMap synonymMap, RequestOptions requestOptions,
         Context context) {
+        Objects.requireNonNull(synonymMap, "'SynonymMap' cannot be null.");
         try {
             return restClient.synonymMaps()
                 .createWithRestResponseAsync(synonymMap, requestOptions, context)
@@ -1183,34 +1204,36 @@ public final class SearchServiceAsyncClient {
     /**
      * Creates a new Azure Cognitive Search synonym map or updates a synonym map if it already exists.
      *
-     * @param synonymMap the definition of the synonym map to create or update
+     * @param synonymMap the definition of the {@link SynonymMap} to create or update
      * @return the synonym map that was created or updated.
      */
     public Mono<SynonymMap> createOrUpdateSynonymMap(SynonymMap synonymMap) {
-        return createOrUpdateSynonymMapWithResponse(synonymMap, null, null).map(Response::getValue);
+        return createOrUpdateSynonymMapWithResponse(synonymMap, false, null).map(Response::getValue);
     }
 
     /**
      * Creates a new Azure Cognitive Search synonym map or updates a synonym map if it already exists.
      *
-     * @param synonymMap the definition of the synonym map to create or update
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
+     * @param synonymMap the definition of the {@link SynonymMap} to create or update
+     * @param onlyIfUnchanged {@code true} to update if the {@code synonymMap} is the same as the current service value.
+     * {@code false} to always update existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @return a response containing the synonym map that was created or updated.
      */
     public Mono<Response<SynonymMap>> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap,
-        MatchConditions accessCondition, RequestOptions requestOptions) {
+        boolean onlyIfUnchanged, RequestOptions requestOptions) {
         return withContext(context ->
-            createOrUpdateSynonymMapWithResponse(synonymMap, accessCondition, requestOptions, context));
+            createOrUpdateSynonymMapWithResponse(synonymMap, onlyIfUnchanged, requestOptions, context));
     }
 
     Mono<Response<SynonymMap>> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap,
-        MatchConditions accessCondition, RequestOptions requestOptions, Context context) {
+        boolean onlyIfUnchanged, RequestOptions requestOptions, Context context) {
+        Objects.requireNonNull(synonymMap, "'SynonymMap' cannot be null.");
+        String ifMatch = onlyIfUnchanged ? synonymMap.getETag() : null;
         try {
             return restClient.synonymMaps()
-                .createOrUpdateWithRestResponseAsync(synonymMap.getName(), synonymMap, requestOptions, accessCondition,
+                .createOrUpdateWithRestResponseAsync(synonymMap.getName(), synonymMap, ifMatch, null, requestOptions,
                     context)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
@@ -1221,34 +1244,37 @@ public final class SearchServiceAsyncClient {
     /**
      * Deletes an Azure Cognitive Search synonym map.
      *
-     * @param synonymMapName the name of the synonym map to delete
+     * @param synonymMapName the name of the {@link SynonymMap} to delete
      * @return a response signalling completion.
      */
     public Mono<Void> deleteSynonymMap(String synonymMapName) {
-        return deleteSynonymMapWithResponse(synonymMapName, null, null).flatMap(FluxUtil::toMono);
+        return withContext(context -> deleteSynonymMapWithResponse(synonymMapName, null, null, context)
+            .flatMap(FluxUtil::toMono));
     }
 
     /**
      * Deletes an Azure Cognitive Search synonym map.
      *
-     * @param synonymMapName the name of the synonym map to delete
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
+     * @param synonymMap the {@link SynonymMap} to delete.
+     * @param onlyIfUnchanged {@code true} to delete if the {@code synonymMap} is the same as the current service value.
+     * {@code false} to always delete existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @return a response signalling completion.
      */
-    public Mono<Response<Void>> deleteSynonymMapWithResponse(String synonymMapName, MatchConditions accessCondition,
+    public Mono<Response<Void>> deleteSynonymMapWithResponse(SynonymMap synonymMap, boolean onlyIfUnchanged,
         RequestOptions requestOptions) {
+        Objects.requireNonNull(synonymMap, "'SynonymMap' cannot be null");
+        String etag = onlyIfUnchanged ? synonymMap.getETag() : null;
         return withContext(context ->
-            deleteSynonymMapWithResponse(synonymMapName, accessCondition, requestOptions, context));
+            deleteSynonymMapWithResponse(synonymMap.getName(), etag, requestOptions, context));
     }
 
-    Mono<Response<Void>> deleteSynonymMapWithResponse(String synonymMapName, MatchConditions accessCondition,
+    Mono<Response<Void>> deleteSynonymMapWithResponse(String synonymMapName, String etag,
         RequestOptions requestOptions, Context context) {
         try {
             return restClient.synonymMaps()
-                .deleteWithRestResponseAsync(synonymMapName, requestOptions, accessCondition, context)
+                .deleteWithRestResponseAsync(synonymMapName, etag, null, requestOptions, context)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

@@ -25,7 +25,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.core.http.MatchConditions;
 import com.azure.search.documents.implementation.models.ListDataSourcesResult;
 import com.azure.search.documents.models.DataSource;
 import com.azure.search.documents.models.RequestOptions;
@@ -69,12 +68,12 @@ public final class DataSourcesImpl {
         @Put("datasources('{dataSourceName}')")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<DataSource>> createOrUpdate(@PathParam("dataSourceName") String dataSourceName, @HostParam("endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") DataSource dataSource, @HeaderParam("Prefer") String prefer, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
+        Mono<SimpleResponse<DataSource>> createOrUpdate(@PathParam("dataSourceName") String dataSourceName, @HostParam("endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") DataSource dataSource, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("Prefer") String prefer, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
 
         @Delete("datasources('{dataSourceName}')")
         @ExpectedResponses({204, 404})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<Void>> delete(@PathParam("dataSourceName") String dataSourceName, @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
+        Mono<Response<Void>> delete(@PathParam("dataSourceName") String dataSourceName, @HostParam("endpoint") String endpoint, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
 
         @Get("datasources('{dataSourceName}')")
         @ExpectedResponses({200})
@@ -103,11 +102,11 @@ public final class DataSourcesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DataSource>> createOrUpdateWithRestResponseAsync(String dataSourceName, DataSource dataSource, Context context) {
-        final String prefer = "return=representation";
-        final UUID xMsClientRequestId = null;
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return service.createOrUpdate(dataSourceName, this.client.getEndpoint(), dataSource, prefer, this.client.getApiVersion(), xMsClientRequestId, ifMatch, ifNoneMatch, context);
+        final String prefer = "return=representation";
+        final UUID xMsClientRequestId = null;
+        return service.createOrUpdate(dataSourceName, this.client.getEndpoint(), dataSource, ifMatch, ifNoneMatch, prefer, this.client.getApiVersion(), xMsClientRequestId, context);
     }
 
     /**
@@ -115,28 +114,21 @@ public final class DataSourcesImpl {
      *
      * @param dataSourceName The name of the datasource to create or update.
      * @param dataSource The definition of the datasource to create or update.
+     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server matches this value.
+     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the server does not match this value.
      * @param requestOptions Additional parameters for the operation.
-     * @param accessCondition Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DataSource>> createOrUpdateWithRestResponseAsync(String dataSourceName, DataSource dataSource, RequestOptions requestOptions, MatchConditions accessCondition, Context context) {
+    public Mono<SimpleResponse<DataSource>> createOrUpdateWithRestResponseAsync(String dataSourceName, DataSource dataSource, String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
         final String prefer = "return=representation";
         UUID xMsClientRequestId = null;
         if (requestOptions != null) {
             xMsClientRequestId = requestOptions.getXMsClientRequestId();
         }
-        String ifMatch = null;
-        if (accessCondition != null) {
-            ifMatch = accessCondition.getIfMatch();
-        }
-        String ifNoneMatch = null;
-        if (accessCondition != null) {
-            ifNoneMatch = accessCondition.getIfNoneMatch();
-        }
-        return service.createOrUpdate(dataSourceName, this.client.getEndpoint(), dataSource, prefer, this.client.getApiVersion(), xMsClientRequestId, ifMatch, ifNoneMatch, context);
+        return service.createOrUpdate(dataSourceName, this.client.getEndpoint(), dataSource, ifMatch, ifNoneMatch, prefer, this.client.getApiVersion(), xMsClientRequestId, context);
     }
 
     /**
@@ -149,37 +141,30 @@ public final class DataSourcesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithRestResponseAsync(String dataSourceName, Context context) {
-        final UUID xMsClientRequestId = null;
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return service.delete(dataSourceName, this.client.getEndpoint(), this.client.getApiVersion(), xMsClientRequestId, ifMatch, ifNoneMatch, context);
+        final UUID xMsClientRequestId = null;
+        return service.delete(dataSourceName, this.client.getEndpoint(), ifMatch, ifNoneMatch, this.client.getApiVersion(), xMsClientRequestId, context);
     }
 
     /**
      * Deletes a datasource.
      *
      * @param dataSourceName The name of the datasource to delete.
+     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server matches this value.
+     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the server does not match this value.
      * @param requestOptions Additional parameters for the operation.
-     * @param accessCondition Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithRestResponseAsync(String dataSourceName, RequestOptions requestOptions, MatchConditions accessCondition, Context context) {
+    public Mono<Response<Void>> deleteWithRestResponseAsync(String dataSourceName, String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
         UUID xMsClientRequestId = null;
         if (requestOptions != null) {
             xMsClientRequestId = requestOptions.getXMsClientRequestId();
         }
-        String ifMatch = null;
-        if (accessCondition != null) {
-            ifMatch = accessCondition.getIfMatch();
-        }
-        String ifNoneMatch = null;
-        if (accessCondition != null) {
-            ifNoneMatch = accessCondition.getIfNoneMatch();
-        }
-        return service.delete(dataSourceName, this.client.getEndpoint(), this.client.getApiVersion(), xMsClientRequestId, ifMatch, ifNoneMatch, context);
+        return service.delete(dataSourceName, this.client.getEndpoint(), ifMatch, ifNoneMatch, this.client.getApiVersion(), xMsClientRequestId, context);
     }
 
     /**

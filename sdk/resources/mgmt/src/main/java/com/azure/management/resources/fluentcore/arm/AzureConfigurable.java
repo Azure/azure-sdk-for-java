@@ -3,13 +3,15 @@
 
 package com.azure.management.resources.fluentcore.arm;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.management.AzureTokenCredential;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.util.Configuration;
 
-import java.net.Proxy;
-import java.util.concurrent.TimeUnit;
+import java.util.List;
 
 /**
  * The base interface for allowing configurations to be made on the HTTP client.
@@ -48,52 +50,56 @@ public interface AzureConfigurable<T extends AzureConfigurable<T>> {
     /**
      * Set the cross-tenant auxiliary credentials for Azure which can hold up to three.
      *
-     * @param tokens the AzureTokenCredential list
+     * @param token the auxiliary credential
      * @return the configurable object itself
      */
-    T withAuxiliaryCredentials(AzureTokenCredential... tokens);
+    T withAuxiliaryCredential(TokenCredential token);
 
     /**
-     * Specify the user agent header.
+     * Set the cross-tenant auxiliary credentials for Azure which can hold up to three.
      *
-     * @param userAgent the user agent to use
+     * @param tokens the auxiliary credentials
      * @return the configurable object itself
      */
-    T withUserAgent(String userAgent);
+    T withAuxiliaryCredentials(List<TokenCredential> tokens);
 
     /**
-     * Set the read timeout on the HTTP client. Default is 10 seconds.
+     * Sets the retry policy used in http pipeline.
      *
-     * @param timeout the timeout numeric value
-     * @param unit the time unit for the numeric value
+     * @param retryPolicy the retry policy
      * @return the configurable object itself for chaining
      */
-    T withReadTimeout(long timeout, TimeUnit unit);
+    T withRetryPolicy(RetryPolicy retryPolicy);
 
     /**
-     * Set the connection timeout on the HTTP client. Default is 10 seconds.
+     * Sets the credential scope.
      *
-     * @param timeout the timeout numeric value
-     * @param unit the time unit for the numeric value
+     * @param scope the credential scope
      * @return the configurable object itself for chaining
      */
-    T withConnectionTimeout(long timeout, TimeUnit unit);
+    T withScope(String scope);
 
     /**
-     * Sets whether to use the thread pool in OkHttp/Netty client or Reactor schedulers.
-     * If set to true, the thread pool in Http client will be used. Default is false.
+     * Sets the credential scopes.
      *
-     * @param useHttpClientThreadPool whether to use the thread pool in Okhttp/Netty client. Default is false.
+     * @param scopes the credential scope
      * @return the configurable object itself for chaining
      */
-    T useHttpClientThreadPool(boolean useHttpClientThreadPool);
-
+    T withScopes(List<String> scopes);
 
     /**
-     * Sets the proxy for the HTTP client.
+     * Sets the http client.
      *
-     * @param proxy the proxy to use
+     * @param httpClient the http client
      * @return the configurable object itself for chaining
      */
-    T withProxy(Proxy proxy);
+    T withHttpClient(HttpClient httpClient);
+
+    /**
+     * Sets the configuration.
+     *
+     * @param configuration the proxy to use
+     * @return the configurable object itself for chaining
+     */
+    T withConfiguration(Configuration configuration);
 }
