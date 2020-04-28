@@ -7,14 +7,12 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.List;
 
 public class CloudErrorTests {
 
@@ -55,23 +53,6 @@ public class CloudErrorTests {
     private static class WebError extends CloudError {
         @JsonProperty(value = "innererror", access = JsonProperty.Access.WRITE_ONLY)
         private String innererror;
-
-        /**
-         * Constructs a new {@link CloudError} object.
-         *
-         * @param code the error code parsed from the body of the http error response.
-         * @param message the error message.
-         * @param target the target of the error.
-         * @param details the details for the error.
-         * @param additionalInfo the additional info for the error.
-         */
-        @JsonCreator
-        WebError(@JsonProperty("code") String code, @JsonProperty("message") String message,
-                 @JsonProperty("target") String target,
-                 @JsonProperty("details") List<CloudError> details,
-                 @JsonProperty("additionalInfo") List<CloudErrorAdditionalInfo> additionalInfo) {
-            super(code, message, target, details, additionalInfo);
-        }
 
         public String getInnererror() {
             return this.innererror;

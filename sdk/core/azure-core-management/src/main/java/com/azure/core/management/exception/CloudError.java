@@ -4,10 +4,8 @@
 package com.azure.core.management.exception;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,48 +16,32 @@ public class CloudError {
     /**
      * The error code parsed from the body of the http error response.
      */
-    private final String code;
+    @JsonProperty(value = "code", access = JsonProperty.Access.WRITE_ONLY)
+    private String code;
 
     /**
      * The error message parsed from the body of the http error response.
      */
-    private final String message;
+    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
+    private String message;
 
     /**
      * The target of the error.
      */
-    private final String target;
+    @JsonProperty(value = "target", access = JsonProperty.Access.WRITE_ONLY)
+    private String target;
 
     /**
      * Details for the error.
      */
-    private final List<CloudError> details;
+    @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
+    private List<CloudError> details;
 
     /**
      * Additional info for the error.
      */
-    private final List<CloudErrorAdditionalInfo> additionalInfo;
-
-    /**
-     * Constructs a new {@link CloudError} object.
-     *
-     * @param code the error code parsed from the body of the http error response.
-     * @param message the error message.
-     * @param target the target of the error.
-     * @param details the details for the error.
-     * @param additionalInfo the additional info for the error.
-     */
-    @JsonCreator
-    public CloudError(@JsonProperty("code") String code, @JsonProperty("message") String message,
-                      @JsonProperty("target") String target,
-                      @JsonProperty("details") List<CloudError> details,
-                      @JsonProperty("additionalInfo") List<CloudErrorAdditionalInfo> additionalInfo) {
-        this.code = code;
-        this.message = message;
-        this.target = target;
-        this.details = details == null ? new ArrayList<>() : details;
-        this.additionalInfo = additionalInfo == null ? new ArrayList<>() : additionalInfo;
-    }
+    @JsonProperty(value = "additionalInfo", access = JsonProperty.Access.WRITE_ONLY)
+    private List<CloudErrorAdditionalInfo> additionalInfo;
 
     /**
      * @return the error code parsed from the body of the http error response.
