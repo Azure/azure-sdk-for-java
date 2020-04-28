@@ -85,14 +85,12 @@ stages:
                 deploy:
                   steps:
                     - checkout: self
-                    - pwsh: |
-                        Get-ChildItem $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
-                        New-Item -Type Directory -Name ${{artifact.safeName}} -Path $(Pipeline.Workspace)
-                        Copy-Item $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.name}}-[0-9]*.[0-9]*.[0-9]* $(Pipeline.Workspace)/${{artifact.safeName}}
-                        Get-ChildItem $(Pipeline.Workspace)/${{artifact.safeName}}
-                      workingDirectory: $(Pipeline.Workspace)
-                      displayName: Stage artifacts
-                      timeoutInMinutes: 5
+                    - template: /eng/pipelines/templates/steps/stage-artifacts.yml
+                      parameters:
+                        ArtifactDirectory: $(Pipeline.Workspace)/${{paramters.ArtifactName}}
+                        ArtifactName: ${{artifact.name}}
+                        ArtifactSafeName: ${{artifact.safeName}}
+                        StagingDirectory: $(Pipeline.Workspace)
                     - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
                       parameters:
                         ArtifactLocation: $(Pipeline.Workspace)/${{artifact.safeName}}
@@ -155,16 +153,12 @@ stages:
                   deploy:
                     steps:
                       - checkout: self
-                      - pwsh: |
-                          Get-ChildItem -Recurse $(Pipeline.Workspace)
-                          New-Item -Type Directory -Name ${{artifact.safeName}} -Path $(Pipeline.Workspace)
-                          Copy-Item $(Pipeline.Workspace)/${{parameters.ArtifactName}}/${{artifact.name}}-[0-9]*.[0-9]*.[0-9]* $(Pipeline.Workspace)/${{artifact.safeName}}
-                        workingDirectory: $(Pipeline.Workspace)
-                        displayName: Stage artifacts
-                      - pwsh: |
-                          Get-ChildItem -Recurse $(Pipeline.Workspace)/${{artifact.safeName}}
-                        workingDirectory: $(Pipeline.Workspace)
-                        displayName: Output Visible Artifacts
+                      - template: /eng/pipelines/templates/steps/stage-artifacts.yml
+                        parameters:
+                          ArtifactDirectory: $(Pipeline.Workspace)/${{paramters.ArtifactName}}
+                          ArtifactName: ${{artifact.name}}
+                          ArtifactSafeName: ${{artifact.safeName}}
+                          StagingDirectory: $(Pipeline.Workspace)
                       - template: /eng/common/pipelines/templates/steps/publish-blobs.yml
                         parameters:
                           FolderForUpload: '$(Pipeline.Workspace)/${{artifact.safeName}}'

@@ -1,0 +1,14 @@
+parameters:
+    ArtifactSafeName: not-specified
+    StagingDirectory: not-specified
+    ArtifactDirectory: not-specified
+    ArtifactName: not-specified
+
+  steps:
+    - pwsh: |
+        $stagingDirectory = New-Item -Type Directory -Name ${{parameters.ArtifactSafeName}} -Path ${{parameters.StagingDirectory}}
+        $artifactsFilteredByExtension = Get-ChildItem -Path ${{parameters.ArtifactDirectory}} -Include @("*.jar", "*.pom", "*.aar") -Recurse
+        $artifactsFilteredByName = Where-Object { $_.Name -like "${{parameters.ArtifactName}}-[0-9]*.[0-9]*.[0-9]*" }
+        $artifactsFilteredByName | Copy-Item -Destination $stagingDirectory
+        Get-ChildItem $stagingDirectory
+      displayName: Stage artifacts
