@@ -3,6 +3,7 @@
 
 package com.azure.management.samples;
 
+import com.azure.cosmos.ConnectionPolicy;
 import com.azure.management.cosmosdb.samples.CreateCosmosDBTableWithVirtualNetworkRule;
 import com.azure.management.cosmosdb.samples.CreateCosmosDBWithEventualConsistency;
 import com.azure.management.cosmosdb.samples.CreateCosmosDBWithIPRange;
@@ -17,7 +18,7 @@ public class CosmosDBTests extends SamplesTestBase {
     public void testCreateCosmosDBWithEventualConsistency() {
         // Skip test in "playback" mode due to HTTP calls made outside of the management plane which can not be recorded at this time
         if (!isPlaybackMode()) {
-            Assertions.assertTrue(CreateCosmosDBWithEventualConsistency.runSample(azure));
+            Assertions.assertTrue(CreateCosmosDBWithEventualConsistency.runSample(azure, ConnectionPolicy.getDefaultPolicy()));
         }
     }
 
@@ -43,7 +44,7 @@ public class CosmosDBTests extends SamplesTestBase {
     public void testManageHACosmosDB() {
         // Skip test in "playback" mode due to HTTP calls made outside of the management plane which can not be recorded at this time
         if (!isPlaybackMode()) {
-            Assertions.assertTrue(ManageHACosmosDB.runSample(azure));
+            Assertions.assertTrue(ManageHACosmosDB.runSample(azure, ConnectionPolicy.getDefaultPolicy()));
         }
     }
 }
