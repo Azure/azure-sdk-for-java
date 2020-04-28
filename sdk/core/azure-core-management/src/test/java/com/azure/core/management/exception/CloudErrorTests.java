@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.util.List;
 
 public class CloudErrorTests {
 
@@ -36,7 +37,7 @@ public class CloudErrorTests {
 
     @Test
     public void testSubclassDeserialization() throws IOException {
-        final String sampleErrorResponse = "{\"error\":{\"code\":\"WepAppError\",\"message\":\"Web app error.\",\"innererror\":\"Deployment error.\"}}";
+        final String sampleErrorResponse = "{\"error\":{\"code\":\"WepAppError\",\"message\":\"Web app error.\",\"innererror\":\"Deployment error.\",\"details\":[{\"innererror\":\"Inner error.\"}]}}";
 
         SerializerAdapter serializerAdapter = new JacksonAdapter();
 
@@ -47,6 +48,8 @@ public class CloudErrorTests {
         WebError webError = errorResponse.getError();
         Assertions.assertEquals("WepAppError", webError.getCode());
         Assertions.assertEquals("Deployment error.", webError.getInnererror());
+        Assertions.assertEquals(1, webError.getDetails().size());
+        Assertions.assertEquals("Inner error.", webError.getDetails().get(0).getInnererror());
     }
 
     @Immutable
@@ -54,8 +57,15 @@ public class CloudErrorTests {
         @JsonProperty(value = "innererror", access = JsonProperty.Access.WRITE_ONLY)
         private String innererror;
 
+        @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
+        private List<WebError> details;
+
         public String getInnererror() {
             return this.innererror;
+        }
+
+        public List<WebError> getDetails() {
+            return details;
         }
     }
 

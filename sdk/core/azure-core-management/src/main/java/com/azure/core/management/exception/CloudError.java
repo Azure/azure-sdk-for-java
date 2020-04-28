@@ -67,7 +67,7 @@ public class CloudError {
     /**
      * @return the details for the error.
      */
-    public List<CloudError> getDetails() {
+    public List<? extends CloudError> getDetails() {
         return details;
     }
 

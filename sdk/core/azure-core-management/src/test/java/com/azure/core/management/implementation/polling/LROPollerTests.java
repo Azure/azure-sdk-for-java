@@ -17,12 +17,12 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.Resource;
 import com.azure.core.management.polling.PollResult;
-import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingContext;
+import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.github.tomakehurst.wiremock.WireMockServer;
@@ -57,7 +57,7 @@ import java.util.function.Function;
 
 @SuppressWarnings("unchecked")
 public class LROPollerTests {
-    private static final SerializerAdapter SERIALIZER = new AzureJacksonAdapter();
+    private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
 
     private static final Duration POLLING_DURATION = Duration.ofMillis(100);
 
