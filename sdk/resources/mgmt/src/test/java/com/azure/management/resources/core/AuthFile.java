@@ -1,14 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.management;
+package com.azure.management.resources.core;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.identity.ClientCertificateCredentialBuilder;
+import com.azure.identity.ClientSecretCredentialBuilder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.File;
@@ -32,16 +35,15 @@ final class AuthFile {
     private String clientCertificate;
     private String clientCertificatePassword;
     private String subscriptionId;
+    private TokenCredential credential;
 
     @JsonIgnore
     private final AzureEnvironment environment;
     @JsonIgnore
     private static final SerializerAdapter ADAPTER = new AzureJacksonAdapter();
-    @JsonIgnore
-    private String authFilePath;
 
     private AuthFile() {
-        environment = new AzureEnvironment(new HashMap<String, String>());
+        environment = new AzureEnvironment(new HashMap<>());
         environment.endpoints().putAll(AzureEnvironment.AZURE.endpoints());
     }
 
@@ -64,15 +66,15 @@ final class AuthFile {
         } else {
             // Set defaults
             Properties authSettings = new Properties();
-            authSettings.put(CredentialSettings.AUTH_URL.toString(),
+            authSettings.put(AuthFile.CredentialSettings.AUTH_URL.toString(),
                 AzureEnvironment.AZURE.getActiveDirectoryEndpoint());
-            authSettings.put(CredentialSettings.BASE_URL.toString(),
+            authSettings.put(AuthFile.CredentialSettings.BASE_URL.toString(),
                 AzureEnvironment.AZURE.getResourceManagerEndpoint());
-            authSettings.put(CredentialSettings.MANAGEMENT_URI.toString(),
+            authSettings.put(AuthFile.CredentialSettings.MANAGEMENT_URI.toString(),
                 AzureEnvironment.AZURE.getManagementEndpoint());
-            authSettings.put(CredentialSettings.GRAPH_URL.toString(),
+            authSettings.put(AuthFile.CredentialSettings.GRAPH_URL.toString(),
                 AzureEnvironment.AZURE.getGraphEndpoint());
-            authSettings.put(CredentialSettings.VAULT_SUFFIX.toString(),
+            authSettings.put(AuthFile.CredentialSettings.VAULT_SUFFIX.toString(),
                 AzureEnvironment.AZURE.getKeyVaultDnsSuffix());
 
             // Load the credentials from the file
@@ -81,27 +83,25 @@ final class AuthFile {
             credentialsReader.close();
 
             authFile = new AuthFile();
-            authFile.clientId = authSettings.getProperty(CredentialSettings.CLIENT_ID.toString());
-            authFile.tenantId = authSettings.getProperty(CredentialSettings.TENANT_ID.toString());
-            authFile.clientSecret = authSettings.getProperty(CredentialSettings.CLIENT_KEY.toString());
-            authFile.clientCertificate = authSettings.getProperty(CredentialSettings.CLIENT_CERT.toString());
+            authFile.clientId = authSettings.getProperty(AuthFile.CredentialSettings.CLIENT_ID.toString());
+            authFile.tenantId = authSettings.getProperty(AuthFile.CredentialSettings.TENANT_ID.toString());
+            authFile.clientSecret = authSettings.getProperty(AuthFile.CredentialSettings.CLIENT_KEY.toString());
+            authFile.clientCertificate = authSettings.getProperty(AuthFile.CredentialSettings.CLIENT_CERT.toString());
             authFile.clientCertificatePassword =
-                authSettings.getProperty(CredentialSettings.CLIENT_CERT_PASS.toString());
-            authFile.subscriptionId = authSettings.getProperty(CredentialSettings.SUBSCRIPTION_ID.toString());
+                authSettings.getProperty(AuthFile.CredentialSettings.CLIENT_CERT_PASS.toString());
+            authFile.subscriptionId = authSettings.getProperty(AuthFile.CredentialSettings.SUBSCRIPTION_ID.toString());
 
             authFile.environment.endpoints().put(AzureEnvironment.Endpoint.MANAGEMENT.identifier(),
-                authSettings.getProperty(CredentialSettings.MANAGEMENT_URI.toString()));
+                authSettings.getProperty(AuthFile.CredentialSettings.MANAGEMENT_URI.toString()));
             authFile.environment.endpoints().put(AzureEnvironment.Endpoint.ACTIVE_DIRECTORY.identifier(),
-                authSettings.getProperty(CredentialSettings.AUTH_URL.toString()));
+                authSettings.getProperty(AuthFile.CredentialSettings.AUTH_URL.toString()));
             authFile.environment.endpoints().put(AzureEnvironment.Endpoint.RESOURCE_MANAGER.identifier(),
-                authSettings.getProperty(CredentialSettings.BASE_URL.toString()));
+                authSettings.getProperty(AuthFile.CredentialSettings.BASE_URL.toString()));
             authFile.environment.endpoints().put(AzureEnvironment.Endpoint.GRAPH.identifier(),
-                authSettings.getProperty(CredentialSettings.GRAPH_URL.toString()));
+                authSettings.getProperty(AuthFile.CredentialSettings.GRAPH_URL.toString()));
             authFile.environment.endpoints().put(AzureEnvironment.Endpoint.KEYVAULT.identifier(),
-                authSettings.getProperty(CredentialSettings.VAULT_SUFFIX.toString()));
+                authSettings.getProperty(AuthFile.CredentialSettings.VAULT_SUFFIX.toString()));
         }
-        authFile.authFilePath = file.getParent();
-
         return authFile;
     }
 
@@ -112,32 +112,53 @@ final class AuthFile {
     /**
      * @return an ApplicationTokenCredentials object from the information in this class
      */
-    ApplicationTokenCredential generateCredential() throws IOException {
+    private TokenCredential generateCredential() {
         if (clientSecret != null) {
-            return (ApplicationTokenCredential) new ApplicationTokenCredential(
-                    clientId,
-                    tenantId,
-                    clientSecret,
-                    environment).defaultSubscriptionId(subscriptionId);
+            return new ClientSecretCredentialBuilder()
+                .tenantId(tenantId)
+                .clientId(clientId)
+                .clientSecret(clientSecret)
+                .authorityHost(environment.getActiveDirectoryEndpoint())
+                .build();
         } else if (clientCertificate != null) {
-            byte[] certData;
-            File f = new File(clientCertificate);
-            if (!f.exists()) {
-                f = new File(authFilePath, clientCertificate);
+            ClientCertificateCredentialBuilder builder = new ClientCertificateCredentialBuilder()
+                .tenantId(tenantId)
+                .clientId(clientId)
+                .authorityHost(environment.getActiveDirectoryEndpoint());
+            if (clientCertificatePassword != null) {
+                builder.pfxCertificate(clientCertificate, clientCertificatePassword);
+            } else {
+                builder.pemCertificate(clientCertificate);
             }
-            certData = Files.readAllBytes(f.toPath());
-
-            return (ApplicationTokenCredential) new ApplicationTokenCredential(
-                    clientId,
-                    tenantId,
-                    certData,
-                    clientCertificatePassword,
-                    environment).defaultSubscriptionId(subscriptionId);
+            return builder.build();
         } else {
             ClientLogger logger = new ClientLogger(this.getClass());
             throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Please specify either a client key or a client certificate."));
+                new IllegalArgumentException("Please specify either a client key or a client certificate."));
         }
+    }
+
+    String subscriptionId() {
+        return this.subscriptionId;
+    }
+
+    String tenantId() {
+        return this.tenantId;
+    }
+
+    AzureEnvironment environment() {
+        return this.environment;
+    }
+
+    String clientId() {
+        return this.clientId;
+    }
+
+    TokenCredential credential() {
+        if (this.credential == null) {
+            this.credential = generateCredential();
+        }
+        return credential;
     }
 
     /**

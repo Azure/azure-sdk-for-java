@@ -3,12 +3,13 @@
 
 package com.azure.management.monitor;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.RestClient;
 import com.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.azure.management.compute.VirtualMachine;
 import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.storage.StorageAccount;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -22,11 +23,11 @@ public class AlertsTests extends MonitorManagementTest {
     private String saName = "";
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         rgName = generateRandomResourceName("jMonitor_", 18);
         saName = generateRandomResourceName("jMonitorSA", 18);
 
-        super.initializeClients(restClient, defaultSubscription, domain);
+        super.initializeClients(httpPipeline, profile);
     }
 
     @Override
@@ -450,7 +451,7 @@ public class AlertsTests extends MonitorManagementTest {
                     .activityLogAlerts()
                     .define("somename")
                     .withExistingResourceGroup(rgName)
-                    .withTargetSubscription(monitorManager.getSubscriptionId())
+                    .withTargetSubscription(monitorManager.subscriptionId())
                     .withDescription("AutoScale-VM-Creation-Failed")
                     .withRuleEnabled()
                     .withActionGroups(ag.id())
@@ -462,7 +463,7 @@ public class AlertsTests extends MonitorManagementTest {
             Assertions.assertNotNull(ala);
             Assertions.assertEquals(1, ala.scopes().size());
             Assertions
-                .assertEquals("/subscriptions/" + monitorManager.getSubscriptionId(), ala.scopes().iterator().next());
+                .assertEquals("/subscriptions/" + monitorManager.subscriptionId(), ala.scopes().iterator().next());
             Assertions.assertEquals("AutoScale-VM-Creation-Failed", ala.description());
             Assertions.assertEquals(true, ala.enabled());
             Assertions.assertEquals(1, ala.actionGroupIds().size());
@@ -501,7 +502,7 @@ public class AlertsTests extends MonitorManagementTest {
 
             Assertions.assertEquals(1, ala.scopes().size());
             Assertions
-                .assertEquals("/subscriptions/" + monitorManager.getSubscriptionId(), ala.scopes().iterator().next());
+                .assertEquals("/subscriptions/" + monitorManager.subscriptionId(), ala.scopes().iterator().next());
             Assertions.assertEquals("AutoScale-VM-Creation-Failed", ala.description());
             Assertions.assertEquals(false, ala.enabled());
             Assertions.assertEquals(1, ala.actionGroupIds().size());

@@ -5,7 +5,6 @@ package com.azure.management.network;
 
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.management.ApplicationTokenCredential;
 import com.azure.management.keyvault.Secret;
 import com.azure.management.keyvault.Vault;
 import com.azure.management.msi.Identity;
@@ -135,9 +134,6 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
                 .withStaticIP()
                 .create();
 
-        ApplicationTokenCredential credentials =
-            ApplicationTokenCredential.fromFile(new File(System.getenv("AZURE_AUTH_LOCATION")));
-
         Identity identity =
             msiManager
                 .identities()
@@ -149,8 +145,8 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
         Assertions.assertNotNull(identity.name());
         Assertions.assertNotNull(identity.principalId());
 
-        Secret secret1 = createKeyVaultSecret(credentials.getClientId(), identity.principalId());
-        Secret secret2 = createKeyVaultSecret(credentials.getClientId(), identity.principalId());
+        Secret secret1 = createKeyVaultSecret(clientIdFromFile(), identity.principalId());
+        Secret secret2 = createKeyVaultSecret(clientIdFromFile(), identity.principalId());
 
         ManagedServiceIdentity serviceIdentity = createManagedServiceIdentityFromIdentity(identity);
 

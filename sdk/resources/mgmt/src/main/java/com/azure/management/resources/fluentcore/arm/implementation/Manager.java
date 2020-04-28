@@ -3,8 +3,9 @@
 
 package com.azure.management.resources.fluentcore.arm.implementation;
 
-import com.azure.management.RestClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.management.resources.fluentcore.model.HasInner;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 
 /**
@@ -17,9 +18,9 @@ public abstract class Manager<T, InnerT> extends ManagerBase implements HasInner
 
     protected final InnerT innerManagementClient;
 
-    protected Manager(RestClient restClient, String subscriptionId,
+    protected Manager(HttpPipeline httpPipeline, AzureProfile profile,
                       InnerT innerManagementClient, SdkContext sdkContext) {
-        super(restClient, subscriptionId, sdkContext);
+        super(httpPipeline, profile, sdkContext);
         this.innerManagementClient = innerManagementClient;
     }
 

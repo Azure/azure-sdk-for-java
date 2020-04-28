@@ -4,7 +4,6 @@
 package com.azure.management.keyvault;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.ApplicationTokenCredential;
 import com.azure.management.resources.core.TestBase;
 import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.Region;
@@ -15,7 +14,6 @@ import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyType;
-import java.io.File;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.MessageDigest;
@@ -200,9 +198,6 @@ public class KeyTests extends KeyVaultManagementTest {
     private Vault createVault() throws Exception {
         String vaultName = sdkContext.randomResourceName("vault", 20);
 
-        ApplicationTokenCredential credentials =
-            ApplicationTokenCredential.fromFile(new File(System.getenv("AZURE_AUTH_LOCATION")));
-
         Vault vault =
             keyVaultManager
                 .vaults()
@@ -210,7 +205,7 @@ public class KeyTests extends KeyVaultManagementTest {
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(rgName)
                 .defineAccessPolicy()
-                .forServicePrincipal(credentials.getClientId())
+                .forServicePrincipal(clientIdFromFile())
                 .allowKeyAllPermissions()
                 .attach()
                 .create();
