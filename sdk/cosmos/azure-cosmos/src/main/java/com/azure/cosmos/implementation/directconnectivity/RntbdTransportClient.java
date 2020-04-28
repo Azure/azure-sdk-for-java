@@ -110,8 +110,6 @@ public final class RntbdTransportClient extends TransportClient {
     @Override
     public Mono<StoreResponse> invokeStoreAsync(final Uri addressUri, final RxDocumentServiceRequest request) {
 
-        logger.debug("RntbdTransportClient.invokeStoreAsync({}, {})", addressUri, request);
-
         checkNotNull(addressUri, "expected non-null address");
         checkNotNull(request, "expected non-null request");
         this.throwIfClosed();
@@ -119,9 +117,6 @@ public final class RntbdTransportClient extends TransportClient {
         URI address = addressUri.getURI();
 
         final RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, address);
-
-        requestArgs.traceOperation(logger, null, "invokeStoreAsync");
-
         final RntbdEndpoint endpoint = this.endpointProvider.get(address);
         final RntbdRequestRecord record = endpoint.request(requestArgs);
 
@@ -137,9 +132,6 @@ public final class RntbdTransportClient extends TransportClient {
 
             if (response != null) {
                 RequestTimeline timeline = record.takeTimelineSnapshot();
-                if (record.lifetime().toMillis() > 10_000L) {
-                    logger.warn("{} request took {} to complete", record, record.lifetime());
-                }
                 response.setRequestTimeline(timeline);
             }
         })).doOnCancel(() -> {
@@ -218,6 +210,9 @@ public final class RntbdTransportClient extends TransportClient {
         @JsonProperty()
         private final Duration shutdownTimeout;
 
+        @JsonProperty()
+        private final int threadCount;
+
         @JsonIgnore()
         private final UserAgentContainer userAgent;
 
@@ -240,6 +235,7 @@ public final class RntbdTransportClient extends TransportClient {
             this.requestTimerResolution = Duration.ofMillis(100L);
             this.sendHangDetectionTime = Duration.ofSeconds(10L);
             this.shutdownTimeout = Duration.ofSeconds(15L);
+            this.threadCount = 2 * Runtime.getRuntime().availableProcessors();
             this.userAgent = new UserAgentContainer();
         }
 
@@ -258,6 +254,7 @@ public final class RntbdTransportClient extends TransportClient {
             this.requestTimerResolution = builder.requestTimerResolution;
             this.sendHangDetectionTime = builder.sendHangDetectionTime;
             this.shutdownTimeout = builder.shutdownTimeout;
+            this.threadCount = builder.threadCount;
             this.userAgent = builder.userAgent;
 
             this.connectionTimeout = builder.connectionTimeout == null
@@ -323,6 +320,10 @@ public final class RntbdTransportClient extends TransportClient {
 
         public Duration shutdownTimeout() {
             return this.shutdownTimeout;
+        }
+
+        public int threadCount() {
+            return this.threadCount;
         }
 
         public UserAgentContainer userAgent() {
@@ -463,6 +464,7 @@ public final class RntbdTransportClient extends TransportClient {
             private Duration requestTimerResolution;
             private Duration sendHangDetectionTime;
             private Duration shutdownTimeout;
+            private int threadCount;
             private UserAgentContainer userAgent;
 
             // endregion
@@ -486,6 +488,7 @@ public final class RntbdTransportClient extends TransportClient {
                 this.requestTimerResolution = DEFAULT_OPTIONS.requestTimerResolution;
                 this.sendHangDetectionTime = DEFAULT_OPTIONS.sendHangDetectionTime;
                 this.shutdownTimeout = DEFAULT_OPTIONS.shutdownTimeout;
+                this.threadCount = DEFAULT_OPTIONS.threadCount;
                 this.userAgent = DEFAULT_OPTIONS.userAgent;
             }
 
@@ -606,6 +609,12 @@ public final class RntbdTransportClient extends TransportClient {
                     "expected positive value, not %s",
                     value);
                 this.shutdownTimeout = value;
+                return this;
+            }
+
+            public Builder threadCount(final int value) {
+                checkArgument(value > 0, "expected positive value, not %s", value);
+                this.threadCount = value;
                 return this;
             }
 

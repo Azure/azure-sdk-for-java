@@ -70,9 +70,11 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     // region Constructors
 
     private RntbdServiceEndpoint(
-        final Provider provider, final Config config, final NioEventLoopGroup group, final RntbdRequestTimer timer,
-        final URI physicalAddress
-    ) {
+        final Provider provider,
+        final Config config,
+        final NioEventLoopGroup group,
+        final RntbdRequestTimer timer,
+        final URI physicalAddress) {
 
         final Bootstrap bootstrap = new Bootstrap()
             .channel(NioSocketChannel.class)
@@ -176,15 +178,12 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         this.lastRequestNanoTime.set(args.nanoTimeCreated());
 
         if (logger.isDebugEnabled()) {
-            args.traceOperation(logger, null, "request");
             logger.debug("\n  {}\n  {}\n  REQUEST", this, args);
         }
 
         final RntbdRequestRecord record = this.write(args);
 
         record.whenComplete((response, error) -> {
-
-            args.traceOperation(logger, null, "requestComplete", response, error);
 
             if (error == null) {
                 logger.debug("\n  [{}]\n  {}\n  request succeeded with response status: {}", this, args, response.getStatus());
@@ -208,19 +207,26 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
     // region Privates
 
+    private void ensureSuccessWhenReleasedToPool(Channel channel, Future<Void> released) {
+        if (released.isSuccess()) {
+            logger.debug("\n  [{}]\n  {}\n  release succeeded", this, channel);
+        } else {
+            logger.debug("\n  [{}]\n  {}\n  release failed due to {}", this, channel, released.cause());
+        }
+    }
+
     private void releaseToPool(final Channel channel) {
 
         logger.debug("\n  [{}]\n  {}\n  RELEASE", this, channel);
+        final Future<Void> released = this.channelPool.release(channel);
 
-        this.channelPool.release(channel).addListener(future -> {
-            if (logger.isDebugEnabled()) {
-                if (future.isSuccess()) {
-                    logger.debug("\n  [{}]\n  {}\n  release succeeded", this, channel);
-                } else {
-                    logger.debug("\n  [{}]\n  {}\n  release failed due to {}", this, channel, future.cause());
-                }
+        if (logger.isDebugEnabled()) {
+            if (released.isDone()) {
+                ensureSuccessWhenReleasedToPool(channel, released);
+            } else {
+                this.channelPool.release(channel).addListener(ignored -> ensureSuccessWhenReleasedToPool(channel, released));
             }
-        });
+        }
     }
 
     private void throwIfClosed() {
@@ -326,7 +332,6 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             checkNotNull(sslContext, "expected non-null sslContext");
 
             final DefaultThreadFactory threadFactory = new DefaultThreadFactory("cosmos-rntbd-nio", true);
-            final int threadCount = Runtime.getRuntime().availableProcessors();
             final LogLevel wireLogLevel;
 
             if (logger.isDebugEnabled()) {
@@ -342,7 +347,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                 config.requestTimeoutInNanos(),
                 config.requestTimerResolutionInNanos());
 
-            this.eventLoopGroup = new NioEventLoopGroup(threadCount, threadFactory);
+            this.eventLoopGroup = new NioEventLoopGroup(options.threadCount(), threadFactory);
             this.endpoints = new ConcurrentHashMap<>();
             this.evictions = new AtomicInteger();
             this.closed = new AtomicBoolean();
@@ -392,10 +397,13 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         }
 
         @Override
-        public RntbdEndpoint get(URI physicalAddress) {
-            return endpoints.computeIfAbsent(physicalAddress.getAuthority(), authority ->
-                new RntbdServiceEndpoint(this, config, eventLoopGroup, requestTimer, physicalAddress)
-            );
+        public RntbdEndpoint get(final URI physicalAddress) {
+            return endpoints.computeIfAbsent(physicalAddress.getAuthority(), authority -> new RntbdServiceEndpoint(
+                this,
+                this.config,
+                this.eventLoopGroup,
+                this.requestTimer,
+                physicalAddress));
         }
 
         @Override
@@ -403,7 +411,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             return this.endpoints.values().stream();
         }
 
-        private void evict(RntbdEndpoint endpoint) {
+        private void evict(final RntbdEndpoint endpoint) {
             if (this.endpoints.remove(endpoint.remoteAddress().toString()) != null) {
                 this.evictions.incrementAndGet();
             }
