@@ -186,7 +186,7 @@ public class MultiMetricCriteria {
     }
 
     @JsonAnySetter
-    private void withAdditionalProperties(String key, Object value) {
+    void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
             additionalProperties = new HashMap<>();
         }

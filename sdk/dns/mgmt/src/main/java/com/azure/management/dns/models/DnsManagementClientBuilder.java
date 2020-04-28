@@ -12,10 +12,8 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 
-/**
- * A builder for creating a new instance of the DnsManagementClientImpl type.
- */
-@ServiceClientBuilder(serviceClients = DnsManagementClientImpl.class)
+/** A builder for creating a new instance of the DnsManagementClientImpl type. */
+@ServiceClientBuilder(serviceClients = {DnsManagementClientImpl.class})
 public final class DnsManagementClientBuilder {
     /*
      * The ID of the target subscription.
@@ -24,7 +22,7 @@ public final class DnsManagementClientBuilder {
 
     /**
      * Sets The ID of the target subscription.
-     * 
+     *
      * @param subscriptionId the subscriptionId value.
      * @return the DnsManagementClientBuilder.
      */
@@ -40,7 +38,7 @@ public final class DnsManagementClientBuilder {
 
     /**
      * Sets server parameter.
-     * 
+     *
      * @param host the host value.
      * @return the DnsManagementClientBuilder.
      */
@@ -56,7 +54,7 @@ public final class DnsManagementClientBuilder {
 
     /**
      * Sets Api Version.
-     * 
+     *
      * @param apiVersion the apiVersion value.
      * @return the DnsManagementClientBuilder.
      */
@@ -72,7 +70,7 @@ public final class DnsManagementClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     * 
+     *
      * @param environment the environment value.
      * @return the DnsManagementClientBuilder.
      */
@@ -88,7 +86,7 @@ public final class DnsManagementClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     * 
+     *
      * @param pipeline the pipeline value.
      * @return the DnsManagementClientBuilder.
      */
@@ -99,10 +97,10 @@ public final class DnsManagementClientBuilder {
 
     /**
      * Builds an instance of DnsManagementClientImpl with the provided parameters.
-     * 
+     *
      * @return an instance of DnsManagementClientImpl.
      */
-    public DnsManagementClientImpl build() {
+    public DnsManagementClientImpl buildClient() {
         if (host == null) {
             this.host = "https://management.azure.com";
         }
@@ -113,7 +111,10 @@ public final class DnsManagementClientBuilder {
             this.environment = AzureEnvironment.AZURE;
         }
         if (pipeline == null) {
-            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build();
+            this.pipeline =
+                new HttpPipelineBuilder()
+                    .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+                    .build();
         }
         DnsManagementClientImpl client = new DnsManagementClientImpl(pipeline, environment);
         client.setSubscriptionId(this.subscriptionId);

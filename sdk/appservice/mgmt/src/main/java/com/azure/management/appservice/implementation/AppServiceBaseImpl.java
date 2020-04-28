@@ -407,14 +407,19 @@ abstract class AppServiceBaseImpl<
         String id =
             ResourceUtils
                 .constructResourceId(
-                    this.manager().getSubscriptionId(),
+                    this.manager().subscriptionId(),
                     resourceGroupName(),
                     "Microsoft.Web",
                     "serverFarms",
                     appServicePlanCreatable.name(),
                     "");
         inner().withServerFarmId(id);
-        return withOperatingSystem(((AppServicePlanImpl) appServicePlanCreatable).operatingSystem());
+        if (appServicePlanCreatable instanceof AppServicePlanImpl) {
+            return withOperatingSystem(((AppServicePlanImpl) appServicePlanCreatable).operatingSystem());
+        } else {
+            throw logger.logExceptionAsError(
+                new IllegalStateException("Internal error, appServicePlanCreatable must be class AppServicePlanImpl"));
+        }
     }
 
     @SuppressWarnings("unchecked")

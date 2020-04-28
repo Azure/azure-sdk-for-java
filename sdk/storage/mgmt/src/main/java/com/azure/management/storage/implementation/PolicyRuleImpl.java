@@ -175,7 +175,7 @@ class PolicyRuleImpl implements PolicyRule, PolicyRule.Definition, PolicyRule.Up
         if (blobTypesToFilterFor == null) {
             blobTypesToFilterFor = new ArrayList<>();
         }
-        if (blobTypesToFilterFor.contains(blobType)) {
+        if (blobTypesToFilterFor.contains(blobType.toString())) {
             return this;
         }
         blobTypesToFilterFor.add(blobType.toString());
@@ -262,9 +262,6 @@ class PolicyRuleImpl implements PolicyRule, PolicyRule.Definition, PolicyRule.Up
     @Override
     public PolicyRuleImpl withDeleteActionOnSnapShot(float daysAfterSnapShotCreationUntilDeleting) {
         ManagementPolicySnapShot currentSnapShot = new ManagementPolicySnapShot();
-        if (currentSnapShot == null) {
-            currentSnapShot = new ManagementPolicySnapShot();
-        }
         currentSnapShot
             .withDelete(
                 new DateAfterCreation().withDaysAfterCreationGreaterThan(daysAfterSnapShotCreationUntilDeleting));

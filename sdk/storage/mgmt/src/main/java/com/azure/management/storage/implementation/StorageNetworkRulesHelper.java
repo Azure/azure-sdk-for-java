@@ -15,12 +15,13 @@ import com.azure.management.storage.models.StorageAccountInner;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.TreeSet;
 
-/** Helper to operate on storage account NetworkRule set {@link StorageAccountInner#getNetworkRuleSet} property. */
+/** Helper to operate on storage account NetworkRule set {@link StorageAccountInner#networkRuleSet()} property. */
 final class StorageNetworkRulesHelper {
-    private static final String BYPASS_NONE_STR = Bypass.NONE.toString().toLowerCase();
+    private static final String BYPASS_NONE_STR = Bypass.NONE.toString().toLowerCase(Locale.ROOT);
     private final boolean isInCreateMode;
     private final StorageAccountInner inner;
     private final StorageAccountCreateParameters createParameters;
@@ -129,7 +130,7 @@ final class StorageNetworkRulesHelper {
             && inner.networkRuleSet().defaultAction() != null
             && inner.networkRuleSet().defaultAction().equals(DefaultAction.DENY)) {
             Set<String> bypassSet = parseBypass(inner.networkRuleSet().bypass());
-            return bypassSet.contains(Bypass.LOGGING.toString().toLowerCase());
+            return bypassSet.contains(Bypass.LOGGING.toString().toLowerCase(Locale.ROOT));
         }
         return true;
     }
@@ -145,7 +146,7 @@ final class StorageNetworkRulesHelper {
             && inner.networkRuleSet().defaultAction() != null
             && inner.networkRuleSet().defaultAction().equals(DefaultAction.DENY)) {
             Set<String> bypassSet = parseBypass(inner.networkRuleSet().bypass());
-            return bypassSet.contains(Bypass.METRICS.toString().toLowerCase());
+            return bypassSet.contains(Bypass.METRICS.toString().toLowerCase(Locale.ROOT));
         }
         return true;
     }
@@ -161,7 +162,7 @@ final class StorageNetworkRulesHelper {
             && inner.networkRuleSet().defaultAction() != null
             && inner.networkRuleSet().defaultAction().equals(DefaultAction.DENY)) {
             Set<String> bypassSet = parseBypass(inner.networkRuleSet().bypass());
-            return bypassSet.contains(Bypass.AZURE_SERVICES.toString().toLowerCase());
+            return bypassSet.contains(Bypass.AZURE_SERVICES.toString().toLowerCase(Locale.ROOT));
         }
         return true;
     }
@@ -350,7 +351,7 @@ final class StorageNetworkRulesHelper {
      */
     private void addToBypassList(Bypass bypass) {
         NetworkRuleSet networkRuleSet = this.getNetworkRuleSetConfig(true);
-        final String bypassStr = bypass.toString().toLowerCase();
+        final String bypassStr = bypass.toString().toLowerCase(Locale.ROOT);
         Set<String> bypassSet = parseBypass(networkRuleSet.bypass());
         if (bypassStr.equalsIgnoreCase(BYPASS_NONE_STR)) {
             bypassSet.clear();
@@ -375,7 +376,7 @@ final class StorageNetworkRulesHelper {
             return;
         } else {
             Set<String> bypassSet = parseBypass(networkRuleSet.bypass());
-            String bypassStr = bypass.toString().toLowerCase();
+            String bypassStr = bypass.toString().toLowerCase(Locale.ROOT);
             if (bypassSet.contains(bypassStr)) {
                 bypassSet.remove(bypassStr);
             }
@@ -387,7 +388,7 @@ final class StorageNetworkRulesHelper {
     }
 
     /**
-     * The {@link NetworkRuleSet#getDefaultAction()} is a required property.
+     * The {@link NetworkRuleSet#defaultAction()} is a required property.
      *
      * <p>During create mode, this method sets the default action to DENY if it is already not set by the user and user
      * specifies at least one network rule or choose at least one exception.
@@ -590,7 +591,7 @@ final class StorageNetworkRulesHelper {
             Set<String> bypassSet = new TreeSet<>();
             List<String> bypassStrList = Arrays.asList(bypass.toString().split(","));
             for (String s : bypassStrList) {
-                s = s.trim().toLowerCase();
+                s = s.trim().toLowerCase(Locale.ROOT);
                 if (!s.isEmpty() && !bypassSet.contains(s)) {
                     bypassSet.add(s);
                 }

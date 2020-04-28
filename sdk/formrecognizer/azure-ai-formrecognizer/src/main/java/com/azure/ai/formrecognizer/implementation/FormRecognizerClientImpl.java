@@ -152,12 +152,12 @@ public final class FormRecognizerClientImpl {
         @Post("/prebuilt/receipt/analyze")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsync(@HostParam("endpoint") String endpoint, @QueryParam("includeTextDetails") Boolean includeTextDetails, @BodyParam("application/json") SourcePath fileStream, Context context);
+        Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsync(@HostParam("endpoint") String endpoint, @QueryParam("includeTextDetails") Boolean includeTextDetails, @HeaderParam("Content-Type") ContentType contentType, @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream, @HeaderParam("Content-Length") long contentLength, Context context);
 
         @Post("/prebuilt/receipt/analyze")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsync(@HostParam("endpoint") String endpoint, @QueryParam("includeTextDetails") Boolean includeTextDetails, @HeaderParam("Content-Type") ContentType contentType, @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream, @HeaderParam("Content-Length") long contentLength, Context context);
+        Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsync(@HostParam("endpoint") String endpoint, @QueryParam("includeTextDetails") Boolean includeTextDetails, @BodyParam("application/json") SourcePath fileStream, Context context);
 
         @Get("/prebuilt/receipt/analyzeResults/{resultId}")
         @ExpectedResponses({200})
@@ -167,12 +167,12 @@ public final class FormRecognizerClientImpl {
         @Post("/layout/analyze")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsync(@HostParam("endpoint") String endpoint, @BodyParam("application/json") SourcePath fileStream, Context context);
+        Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsync(@HostParam("endpoint") String endpoint, @HeaderParam("Content-Type") ContentType contentType, @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream, @HeaderParam("Content-Length") long contentLength, Context context);
 
         @Post("/layout/analyze")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsync(@HostParam("endpoint") String endpoint, @HeaderParam("Content-Type") ContentType contentType, @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream, @HeaderParam("Content-Length") long contentLength, Context context);
+        Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsync(@HostParam("endpoint") String endpoint, @BodyParam("application/json") SourcePath fileStream, Context context);
 
         @Get("/layout/analyzeResults/{resultId}")
         @ExpectedResponses({200})

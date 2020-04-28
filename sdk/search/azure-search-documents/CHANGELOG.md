@@ -1,7 +1,7 @@
 # Release History
 
 ## 1.0.0-beta.3 (Unreleased)
-
+- Change `createOrUpdate*` and `delete*` APIs in `SearchServiceClient` to use boolean `onlyIfUnchanged` instead of `MatchConditioans`.
 
 ## 1.0.0-beta.2 (2020-04-06)
 

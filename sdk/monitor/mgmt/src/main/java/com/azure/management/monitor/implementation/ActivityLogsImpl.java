@@ -21,9 +21,9 @@ import java.util.stream.Collectors;
 class ActivityLogsImpl implements ActivityLogs, ActivityLogs.ActivityLogsQueryDefinition {
 
     private final MonitorManager myManager;
-    private OffsetDateTime queryStartTime;
-    private OffsetDateTime queryEndTime;
-    private TreeSet<String> responsePropertySelector;
+    private OffsetDateTime queryStartTime = null;
+    private OffsetDateTime queryEndTime = null;
+    private final TreeSet<String> responsePropertySelector;
     private String filterString;
     private boolean filterForTenant;
 

@@ -9,10 +9,8 @@ import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.arm.ResourceId;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
-import com.azure.management.resources.fluentcore.dag.FunctionalTaskItem;
 import com.azure.management.resources.fluentcore.dag.TaskGroup;
 import com.azure.management.resources.fluentcore.model.Creatable;
-import com.azure.management.resources.fluentcore.model.Indexable;
 import com.azure.management.sql.AuthenticationType;
 import com.azure.management.sql.CreateMode;
 import com.azure.management.sql.DatabaseEdition;
@@ -213,7 +211,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
 
     @Override
     public long maxSizeBytes() {
-        return Long.valueOf(this.inner().maxSizeBytes());
+        return this.inner().maxSizeBytes();
     }
 
     @Override
@@ -274,10 +272,8 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
                 .inner()
                 .restorePoints()
                 .listByDatabase(this.resourceGroupName, this.sqlServerName, this.name());
-        if (restorePointInners != null) {
-            for (RestorePointInner inner : restorePointInners) {
-                restorePoints.add(new RestorePointImpl(this.resourceGroupName, this.sqlServerName, inner));
-            }
+        for (RestorePointInner inner : restorePointInners) {
+            restorePoints.add(new RestorePointImpl(this.resourceGroupName, this.sqlServerName, inner));
         }
         return Collections.unmodifiableList(restorePoints);
     }
@@ -304,14 +300,12 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
                 .inner()
                 .replicationLinks()
                 .listByDatabase(this.resourceGroupName, this.sqlServerName, this.name());
-        if (replicationLinkInners != null) {
-            for (ReplicationLinkInner inner : replicationLinkInners) {
-                replicationLinkMap
-                    .put(
-                        inner.getName(),
-                        new ReplicationLinkImpl(
-                            this.resourceGroupName, this.sqlServerName, inner, this.sqlServerManager));
-            }
+        for (ReplicationLinkInner inner : replicationLinkInners) {
+            replicationLinkMap
+                .put(
+                    inner.getName(),
+                    new ReplicationLinkImpl(
+                        this.resourceGroupName, this.sqlServerName, inner, this.sqlServerManager));
         }
         return Collections.unmodifiableMap(replicationLinkMap);
     }
@@ -404,10 +398,8 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
                 .inner()
                 .databaseUsages()
                 .listByDatabase(this.resourceGroupName, this.sqlServerName, this.name());
-        if (databaseUsageInners != null) {
-            for (DatabaseUsageInner inner : databaseUsageInners) {
-                databaseUsageMetrics.add(new SqlDatabaseUsageMetricImpl(inner));
-            }
+        for (DatabaseUsageInner inner : databaseUsageInners) {
+            databaseUsageMetrics.add(new SqlDatabaseUsageMetricImpl(inner));
         }
         return Collections.unmodifiableList(databaseUsageMetrics);
     }
@@ -419,7 +411,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             .inner()
             .databaseUsages()
             .listByDatabaseAsync(this.resourceGroupName, this.sqlServerName, this.name())
-            .mapPage(databaseUsageInner -> new SqlDatabaseUsageMetricImpl(databaseUsageInner));
+            .mapPage(SqlDatabaseUsageMetricImpl::new);
     }
 
     @Override
@@ -466,10 +458,8 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
                 .inner()
                 .databases()
                 .listMetrics(this.resourceGroupName, this.sqlServerName, this.name(), filter);
-        if (metricInners != null) {
-            for (MetricInner metricInner : metricInners) {
-                sqlDatabaseMetrics.add(new SqlDatabaseMetricImpl(metricInner));
-            }
+        for (MetricInner metricInner : metricInners) {
+            sqlDatabaseMetrics.add(new SqlDatabaseMetricImpl(metricInner));
         }
         return Collections.unmodifiableList(sqlDatabaseMetrics);
     }
@@ -481,7 +471,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             .inner()
             .databases()
             .listMetricsAsync(this.resourceGroupName, this.sqlServerName, this.name(), filter)
-            .mapPage(metricInner -> new SqlDatabaseMetricImpl(metricInner));
+            .mapPage(SqlDatabaseMetricImpl::new);
     }
 
     @Override
@@ -493,10 +483,8 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
                 .inner()
                 .databases()
                 .listMetricDefinitions(this.resourceGroupName, this.sqlServerName, this.name());
-        if (metricDefinitionInners != null) {
-            for (MetricDefinitionInner metricDefinitionInner : metricDefinitionInners) {
-                sqlDatabaseMetricDefinitions.add(new SqlDatabaseMetricDefinitionImpl(metricDefinitionInner));
-            }
+        for (MetricDefinitionInner metricDefinitionInner : metricDefinitionInners) {
+            sqlDatabaseMetricDefinitions.add(new SqlDatabaseMetricDefinitionImpl(metricDefinitionInner));
         }
 
         return Collections.unmodifiableList(sqlDatabaseMetricDefinitions);
@@ -509,7 +497,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             .inner()
             .databases()
             .listMetricDefinitionsAsync(this.resourceGroupName, this.sqlServerName, this.name())
-            .mapPage(metricDefinitionInner -> new SqlDatabaseMetricDefinitionImpl(metricDefinitionInner));
+            .mapPage(SqlDatabaseMetricDefinitionImpl::new);
     }
 
     @Override
@@ -552,17 +540,15 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
                 .inner()
                 .serviceTierAdvisors()
                 .listByDatabase(this.resourceGroupName, this.sqlServerName, this.name());
-        if (serviceTierAdvisorInners != null) {
-            for (ServiceTierAdvisorInner serviceTierAdvisorInner : serviceTierAdvisorInners) {
-                serviceTierAdvisorMap
-                    .put(
-                        serviceTierAdvisorInner.getName(),
-                        new ServiceTierAdvisorImpl(
-                            this.resourceGroupName,
-                            this.sqlServerName,
-                            serviceTierAdvisorInner,
-                            this.sqlServerManager));
-            }
+        for (ServiceTierAdvisorInner serviceTierAdvisorInner : serviceTierAdvisorInners) {
+            serviceTierAdvisorMap
+                .put(
+                    serviceTierAdvisorInner.getName(),
+                    new ServiceTierAdvisorImpl(
+                        this.resourceGroupName,
+                        this.sqlServerName,
+                        serviceTierAdvisorInner,
+                        this.sqlServerManager));
         }
         return Collections.unmodifiableMap(serviceTierAdvisorMap);
     }
@@ -788,7 +774,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
         if (this.parentId() == null) {
             return ResourceUtils
                 .constructResourceId(
-                    this.sqlServerManager.getSubscriptionId(),
+                    this.sqlServerManager.subscriptionId(),
                     this.resourceGroupName,
                     "Microsoft.Sql",
                     "elasticPools",
@@ -884,29 +870,24 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
         this.initializeImportRequestInner();
         this
             .addDependency(
-                new FunctionalTaskItem() {
-                    @Override
-                    public Mono<Indexable> apply(final Context context) {
-                        return storageAccount
-                            .getKeysAsync()
-                            .flatMap(storageAccountKeys -> Mono.justOrEmpty(storageAccountKeys.stream().findFirst()))
-                            .flatMap(
-                                storageAccountKey -> {
-                                    self
-                                        .importRequestInner
-                                        .withStorageUri(
-                                            String
-                                                .format(
-                                                    "%s%s/%s",
-                                                    storageAccount.endPoints().primary().blob(),
-                                                    containerName,
-                                                    fileName));
-                                    self.importRequestInner.withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY);
-                                    self.importRequestInner.withStorageKey(storageAccountKey.value());
-                                    return context.voidMono();
-                                });
-                    }
-                });
+                context -> storageAccount
+                    .getKeysAsync()
+                    .flatMap(storageAccountKeys -> Mono.justOrEmpty(storageAccountKeys.stream().findFirst()))
+                    .flatMap(
+                        storageAccountKey -> {
+                            self
+                                .importRequestInner
+                                .withStorageUri(
+                                    String
+                                        .format(
+                                            "%s%s/%s",
+                                            storageAccount.endPoints().primary().blob(),
+                                            containerName,
+                                            fileName));
+                            self.importRequestInner.withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY);
+                            self.importRequestInner.withStorageKey(storageAccountKey.value());
+                            return context.voidMono();
+                        }));
         return this;
     }
 
@@ -1063,7 +1044,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             new Sku()
                 .withName(serviceObjective.toString())
                 .withTier(edition.toString())
-                .withCapacity(capacity <= 0 ? null : Integer.valueOf(capacity));
+                .withCapacity(capacity <= 0 ? null : capacity);
 
         return this.withCustomEdition(sku);
     }

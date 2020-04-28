@@ -50,7 +50,7 @@ input-file:
 - https://github.com/Azure/azure-rest-api-specs/blob/master/specification/search/data-plane/Azure.Search/preview/2019-05-06-preview/searchservice.json
 title: SearchServiceRestClient
 custom-types-subpackage: implementation.models
-custom-types: AnalyzeResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListSkillsetsResult,ListSynonymMapsResult,AccessCondition
+custom-types: AnalyzeResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListSkillsetsResult,ListSynonymMapsResult
 ```
 
 ### Tag: package-2019-05-searchindex-preview
@@ -274,11 +274,9 @@ directive:
       where: $
       transform: >-
         return $
-        .replace(/(import com\.azure\.search\.documents\.implementation\.models\.AccessCondition\;)/g, "import com.azure.core.http.MatchConditions;")
         .replace(/(this.getSearchServiceName)/g, "this.client.getSearchServiceName")
         .replace(/(this.getEndpoint)/g, "this.client.getEndpoint")
         .replace(/(this.getSearchDnsSuffix)/g, "this.client.getSearchDnsSuffix")
-        .replace(/(AccessCondition)/g, "MatchConditions")
 
     # Add RestProxy import
     - from:
@@ -449,4 +447,11 @@ directive:
         .replace(/(        return this\.hidden\;)/g, "        return retrievable == null ? null : !retrievable;")
         .replace(/(this\.hidden \= hidden\;)/g, "$1\n        retrievable = this.hidden == null ? null : !this.hidden;")
         .replace(/(    \@JsonProperty\(value \= \"hidden\"\))/g, "    @JsonIgnore")
+
+    # Remove access-condition group paremeters
+    - from: swagger-document
+      where: $.parameters
+      transform: >-
+        delete $.IfMatchParameter["x-ms-parameter-grouping"];
+        delete $.IfNoneMatchParameter["x-ms-parameter-grouping"];
 ```

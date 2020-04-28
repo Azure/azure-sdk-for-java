@@ -66,11 +66,28 @@ public class AdditionalPropertiesSerializerTests {
     public void canDeserializeAdditionalPropertiesThroughInheritance() throws Exception {
         String wireValue = "{\"$type\":\"foochild\",\"properties\":{\"bar\":\"hello.world\",\"props\":{\"baz\":[\"hello\",\"hello.world\"],\"q\":{\"qux\":{\"hello\":\"world\",\"a.b\":\"c.d\",\"bar.b\":\"uuzz\",\"bar.a\":\"ttyy\"}}}},\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}";
         Foo deserialized = new JacksonAdapter().deserialize(wireValue, Foo.class, SerializerEncoding.JSON);
+        // Check additional properties are populated
         Assertions.assertNotNull(deserialized.additionalProperties());
         Assertions.assertEquals("baz", deserialized.additionalProperties().get("bar"));
         Assertions.assertEquals("c.d", deserialized.additionalProperties().get("a.b"));
         Assertions.assertEquals("barbar", deserialized.additionalProperties().get("properties.bar"));
         Assertions.assertTrue(deserialized instanceof FooChild);
+        // Check typed properties are populated
+        Assertions.assertEquals("hello.world", deserialized.bar());
+        Assertions.assertNotNull(deserialized.baz());
+        Assertions.assertEquals(2, deserialized.baz().size());
+        Assertions.assertTrue(deserialized.baz().contains("hello"));
+        Assertions.assertTrue(deserialized.baz().contains("hello.world"));
+        Assertions.assertNotNull(deserialized.qux());
+        Assertions.assertEquals(4, deserialized.qux().size());
+        Assertions.assertTrue(deserialized.qux().containsKey("hello"));
+        Assertions.assertTrue(deserialized.qux().containsKey("a.b"));
+        Assertions.assertTrue(deserialized.qux().containsKey("bar.a"));
+        Assertions.assertTrue(deserialized.qux().containsKey("bar.b"));
+        Assertions.assertEquals("world", deserialized.qux().get("hello"));
+        Assertions.assertEquals("c.d", deserialized.qux().get("a.b"));
+        Assertions.assertEquals("ttyy", deserialized.qux().get("bar.a"));
+        Assertions.assertEquals("uuzz", deserialized.qux().get("bar.b"));
     }
 
     @Test

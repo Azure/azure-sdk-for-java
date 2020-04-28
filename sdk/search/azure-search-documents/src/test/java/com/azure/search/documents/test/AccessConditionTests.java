@@ -36,7 +36,7 @@ public class AccessConditionTests {
         T newResource = newResourceDefinition.get();
 
         // Create the resource in the search service
-        AccessOptions accessOptions = new AccessOptions(TestHelpers.generateIfNotExistsAccessCondition());
+        AccessOptions accessOptions = new AccessOptions(true);
         T createdResource = createOrUpdateDefinition.apply(newResource, accessOptions);
 
         try {
@@ -66,7 +66,7 @@ public class AccessConditionTests {
         // Create a new resource (Indexer, SynonymMap, etc...)
         T newResource = newResourceDefinition.get();
 
-        AccessOptions accessOptions = new AccessOptions(TestHelpers.generateIfNotExistsAccessCondition());
+        AccessOptions accessOptions = new AccessOptions(true);
 
         // Create the resource on the service
         T createdResource = createOrUpdateDefinition.apply(newResource, accessOptions);
@@ -90,13 +90,13 @@ public class AccessConditionTests {
         String resourceName) {
         // Create a new resource (Indexer, SynonymMap, etc...)
         T newResource = newResourceDefinition.get();
-        AccessOptions accessOptions = new AccessOptions(null);
+        AccessOptions accessOptions = new AccessOptions(false);
 
         // Create it on the search service
         createOrUpdateDefinition.apply(newResource, accessOptions);
 
         // Try to delete and expect to succeed
-        accessOptions = new AccessOptions(TestHelpers.generateIfExistsAccessCondition());
+        accessOptions = new AccessOptions(true);
         deleteFunc.accept(resourceName, accessOptions);
 
         // Try to delete again and expect to fail
@@ -122,7 +122,7 @@ public class AccessConditionTests {
 
         // Create a new resource (Indexer, SynonymMap, etc...)
         T staleResource = newResourceDefinition.get();
-        AccessOptions accessOptions = new AccessOptions(null);
+        AccessOptions accessOptions = new AccessOptions(false);
 
         // Create the resource in the search service
         staleResource = createOrUpdateDefinition.apply(staleResource, accessOptions);
@@ -134,7 +134,7 @@ public class AccessConditionTests {
         T currentResource = createOrUpdateDefinition.apply(staleResource, accessOptions);
 
         try {
-            accessOptions = new AccessOptions(TestHelpers.generateIfNotChangedAccessCondition(eTagStale));
+            accessOptions = new AccessOptions(true);
             deleteFunc.accept(resourceName, accessOptions);
             fail("deleteFunc should have failed due to selected AccessCondition");
         } catch (Exception exc) {
@@ -144,7 +144,7 @@ public class AccessConditionTests {
 
         // Get the new eTag
         String eTagCurrent = TestHelpers.getETag(currentResource);
-        accessOptions = new AccessOptions(TestHelpers.generateIfNotChangedAccessCondition(eTagCurrent));
+        accessOptions = new AccessOptions(true);
 
         // Delete should succeed
         deleteFunc.accept(resourceName, accessOptions);
@@ -161,7 +161,7 @@ public class AccessConditionTests {
         BiFunction<T, AccessOptions, T> createOrUpdateDefinition) {
         T newResource = newResourceDefinition.get();
         try {
-            AccessOptions accessOptions = new AccessOptions(TestHelpers.generateIfExistsAccessCondition());
+            AccessOptions accessOptions = new AccessOptions(true);
             createOrUpdateDefinition.apply(newResource, accessOptions);
             fail("createOrUpdateDefinition should have failed due to selected AccessCondition");
         } catch (Exception exc) {
@@ -187,7 +187,7 @@ public class AccessConditionTests {
         T newResource = newResourceDefinition.get();
 
         // Create the resource on the search service
-        AccessOptions accessOptions = new AccessOptions(null);
+        AccessOptions accessOptions = new AccessOptions(false);
         newResource = createOrUpdateDefinition.apply(newResource, accessOptions);
 
         // get the original eTag
@@ -197,7 +197,7 @@ public class AccessConditionTests {
         T mutateResource = mutateResourceDefinition.apply(newResource);
 
         // Update the resource on the service
-        accessOptions.setAccessCondition(TestHelpers.generateIfExistsAccessCondition());
+        accessOptions.setAccessCondition(false);
         mutateResource = createOrUpdateDefinition.apply(mutateResource, accessOptions);
 
         // Get the updated ETag
@@ -222,7 +222,7 @@ public class AccessConditionTests {
         T newResource = newResourceDefinition.get();
 
         // Create the resource on the search service
-        AccessOptions accessOptions = new AccessOptions(null);
+        AccessOptions accessOptions = new AccessOptions(false);
         newResource = createOrUpdateDefinition.apply(newResource, accessOptions);
         String originalETag = TestHelpers.getETag(newResource);
 
@@ -230,7 +230,7 @@ public class AccessConditionTests {
         T mutateResource = mutateResourceDefinition.apply(newResource);
 
         // Update the resource on the service
-        accessOptions.setAccessCondition(TestHelpers.generateIfNotChangedAccessCondition(originalETag));
+        accessOptions.setAccessCondition(true);
         mutateResource = createOrUpdateDefinition.apply(mutateResource, accessOptions);
 
         // Get the updated eTag
@@ -265,7 +265,7 @@ public class AccessConditionTests {
         T newResource = newResourceDefinition.get();
 
         // Create the resource on the search service
-        AccessOptions accessOptions = new AccessOptions(null);
+        AccessOptions accessOptions = new AccessOptions(false);
         newResource = createOrUpdateDefinition.apply(newResource, accessOptions);
         String originalETag = TestHelpers.getETag(newResource);
 
@@ -273,7 +273,7 @@ public class AccessConditionTests {
         T mutateResource = mutateResourceDefinition.apply(newResource);
 
         // Update the resource on the service
-        accessOptions.setAccessCondition(TestHelpers.generateIfNotChangedAccessCondition(originalETag));
+        accessOptions.setAccessCondition(true);
         mutateResource = createOrUpdateDefinition.apply(mutateResource, accessOptions);
 
         String updatedETag = TestHelpers.getETag(mutateResource);

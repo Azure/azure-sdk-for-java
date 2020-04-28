@@ -3,9 +3,10 @@
 
 package com.azure.management.appservice;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
-import com.azure.management.RestClient;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import java.io.ByteArrayInputStream;
 import java.util.zip.ZipInputStream;
@@ -20,13 +21,13 @@ public class LinuxWebAppsTests extends AppServiceTest {
     private String webappName2 = "";
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         webappName1 = generateRandomResourceName("java-webapp-", 20);
         webappName2 = generateRandomResourceName("java-webapp-", 20);
         rgName1 = generateRandomResourceName("javacsmrg", 20);
         rgName2 = generateRandomResourceName("javacsmrg", 20);
 
-        super.initializeClients(restClient, defaultSubscription, domain);
+        super.initializeClients(httpPipeline, profile);
     }
 
     @Override

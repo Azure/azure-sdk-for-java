@@ -6,6 +6,7 @@ package com.azure.management;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.management.AzureEnvironment;
 
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -23,7 +24,7 @@ public final class Utils {
      * @return the default scope
      */
     public static String getDefaultScopeFromRequest(HttpRequest request, AzureEnvironment environment) {
-        return getDefaultScopeFromUrl(request.getUrl().toString().toLowerCase(), environment);
+        return getDefaultScopeFromUrl(request.getUrl().toString().toLowerCase(Locale.ROOT), environment);
     }
 
     /**
@@ -71,29 +72,5 @@ public final class Utils {
             return s.substring(0, s.length() - 1);
         }
         return s;
-    }
-
-    /**
-     * Gets the subscription ID from rest client.
-     * @param restClient the rest client
-     * @return the subscription ID
-     */
-    public static String getSubscriptionIdFromRestClient(RestClient restClient) {
-        if (restClient.getCredential() instanceof AzureTokenCredential) {
-            return ((AzureTokenCredential) restClient.getCredential()).getDefaultSubscriptionId();
-        }
-        return null;
-    }
-
-    /**
-     * Gets the tenant ID from rest client.
-     * @param restClient the rest client
-     * @return the tenant ID
-     */
-    public static String getTenantIdFromRestClient(RestClient restClient) {
-        if (restClient.getCredential() instanceof AzureTokenCredential) {
-            return ((AzureTokenCredential) restClient.getCredential()).getDomain();
-        }
-        return null;
     }
 }

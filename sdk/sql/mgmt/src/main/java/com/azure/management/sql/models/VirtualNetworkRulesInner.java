@@ -61,8 +61,8 @@ public final class VirtualNetworkRulesInner {
     private interface VirtualNetworkRulesService {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/virtualNetworkRules/{virtualNetworkRuleName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/virtualNetworkRules/{virtualNetworkRuleName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<VirtualNetworkRuleInner>> get(
@@ -76,8 +76,8 @@ public final class VirtualNetworkRulesInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/virtualNetworkRules/{virtualNetworkRuleName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/virtualNetworkRules/{virtualNetworkRuleName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(
@@ -92,8 +92,8 @@ public final class VirtualNetworkRulesInner {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/virtualNetworkRules/{virtualNetworkRuleName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/virtualNetworkRules/{virtualNetworkRuleName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
@@ -107,8 +107,8 @@ public final class VirtualNetworkRulesInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/virtualNetworkRules")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/virtualNetworkRules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<VirtualNetworkRuleListResultInner>> listByServer(
@@ -121,8 +121,8 @@ public final class VirtualNetworkRulesInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/virtualNetworkRules/{virtualNetworkRuleName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/virtualNetworkRules/{virtualNetworkRuleName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<VirtualNetworkRuleInner>> beginCreateOrUpdate(
@@ -137,8 +137,8 @@ public final class VirtualNetworkRulesInner {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/virtualNetworkRules/{virtualNetworkRuleName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/virtualNetworkRules/{virtualNetworkRuleName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<Response<Void>> beginDelete(

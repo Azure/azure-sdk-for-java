@@ -1,75 +1,82 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk942571730a6.search.windows.net/synonymmaps?api-version=2019-05-06",
+    "Uri" : "https://azsjavacanlistsynonymmapswithselectedfield59c9165349f08.search.windows.net/synonymmaps?api-version=2019-05-06-Preview",
     "Headers" : {
+      "x-ms-client-request-id" : "14f741de-49c8-40f2-a0ec-2ff8f6fd3d2f",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "2ffcfd37-d4ed-481f-9272-f73d8c424706",
+      "request-id" : "14f741de-49c8-40f2-a0ec-2ff8f6fd3d2f",
       "StatusCode" : "201",
-      "Date" : "Mon, 24 Feb 2020 20:02:06 GMT",
+      "Date" : "Tue, 21 Apr 2020 19:14:20 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D7B9646CBE9D7B\"",
-      "elapsed-time" : "119",
+      "client-request-id" : "14f741de-49c8-40f2-a0ec-2ff8f6fd3d2f",
+      "ETag" : "W/\"0x8D7E6283281EEF1\"",
+      "elapsed-time" : "81",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "218",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk942571730a6.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D7B9646CBE9D7B\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"word1,word2\",\"encryptionKey\":null}",
+      "Content-Length" : "255",
+      "Body" : "{\"@odata.context\":\"https://azsjavacanlistsynonymmapswithselectedfield59c9165349f08.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D7E6283281EEF1\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"word1,word2\",\"encryptionKey\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk942571730a6.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06"
+      "Location" : "https://azsjavacanlistsynonymmapswithselectedfield59c9165349f08.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06-Preview"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk942571730a6.search.windows.net/synonymmaps?api-version=2019-05-06",
+    "Uri" : "https://azsjavacanlistsynonymmapswithselectedfield59c9165349f08.search.windows.net/synonymmaps?api-version=2019-05-06-Preview",
     "Headers" : {
+      "x-ms-client-request-id" : "8994552f-2f85-4aa5-ab58-fd5ff4961b44",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "282bfab6-151f-4ee7-ba6a-b28fe9247887",
+      "request-id" : "8994552f-2f85-4aa5-ab58-fd5ff4961b44",
       "StatusCode" : "201",
-      "Date" : "Mon, 24 Feb 2020 20:02:06 GMT",
+      "Date" : "Tue, 21 Apr 2020 19:14:20 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D7B9646CCD6D48\"",
-      "elapsed-time" : "63",
+      "client-request-id" : "8994552f-2f85-4aa5-ab58-fd5ff4961b44",
+      "ETag" : "W/\"0x8D7E6283288CE6A\"",
+      "elapsed-time" : "29",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "219",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk942571730a6.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D7B9646CCD6D48\\\"\",\"name\":\"test-synonym1\",\"format\":\"solr\",\"synonyms\":\"word1,word2\",\"encryptionKey\":null}",
+      "Content-Length" : "256",
+      "Body" : "{\"@odata.context\":\"https://azsjavacanlistsynonymmapswithselectedfield59c9165349f08.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D7E6283288CE6A\\\"\",\"name\":\"test-synonym1\",\"format\":\"solr\",\"synonyms\":\"word1,word2\",\"encryptionKey\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk942571730a6.search.windows.net/synonymmaps('test-synonym1')?api-version=2019-05-06"
+      "Location" : "https://azsjavacanlistsynonymmapswithselectedfield59c9165349f08.search.windows.net/synonymmaps('test-synonym1')?api-version=2019-05-06-Preview"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azs-sdk942571730a6.search.windows.net/synonymmaps?$select=name&api-version=2019-05-06",
-    "Headers" : { },
+    "Uri" : "https://azsjavacanlistsynonymmapswithselectedfield59c9165349f08.search.windows.net/synonymmaps?$select=name&api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "e97a22c5-6273-4506-a270-900e23f04e20"
+    },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "df4f5735-cf02-4953-9cb1-bb02c5d3bdea",
+      "request-id" : "e97a22c5-6273-4506-a270-900e23f04e20",
       "StatusCode" : "200",
-      "Date" : "Mon, 24 Feb 2020 20:02:06 GMT",
+      "Date" : "Tue, 21 Apr 2020 19:14:20 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "32",
+      "client-request-id" : "e97a22c5-6273-4506-a270-900e23f04e20",
+      "elapsed-time" : "13",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "153",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk942571730a6.search.windows.net/$metadata#synonymmaps(name)\",\"value\":[{\"name\":\"test-synonym\"},{\"name\":\"test-synonym1\"}]}",
+      "Content-Length" : "190",
+      "Body" : "{\"@odata.context\":\"https://azsjavacanlistsynonymmapswithselectedfield59c9165349f08.search.windows.net/$metadata#synonymmaps(name)\",\"value\":[{\"name\":\"test-synonym\"},{\"name\":\"test-synonym1\"}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   } ],
-  "variables" : [ "azs-sdk942571730a6" ]
+  "variables" : [ "azsjavacanlistsynonymmapswithselectedfield59c9165349f08" ]
 }

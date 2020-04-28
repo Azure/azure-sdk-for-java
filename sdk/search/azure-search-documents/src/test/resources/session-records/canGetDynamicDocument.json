@@ -1,20 +1,21 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk790278a1482.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
+    "Uri" : "https://azsjavacangetdynamicdocument5f4767494ad08e5352d7.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06-Preview",
     "Headers" : {
+      "x-ms-client-request-id" : "5af8c5da-1783-4948-a027-27dfb42254ed",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "14fe4bd3-420a-40cd-814e-9c6abd37f942",
+      "request-id" : "5af8c5da-1783-4948-a027-27dfb42254ed",
       "StatusCode" : "200",
-      "Date" : "Fri, 13 Mar 2020 20:26:28 GMT",
+      "Date" : "Tue, 21 Apr 2020 19:04:26 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "14fe4bd3-420a-40cd-814e-9c6abd37f942",
-      "elapsed-time" : "194",
+      "client-request-id" : "5af8c5da-1783-4948-a027-27dfb42254ed",
+      "elapsed-time" : "120",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "74",
@@ -25,18 +26,20 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azs-sdk790278a1482.search.windows.net/indexes('hotels')/docs('1')?api-version=2019-05-06",
-    "Headers" : { },
+    "Uri" : "https://azsjavacangetdynamicdocument5f4767494ad08e5352d7.search.windows.net/indexes('hotels')/docs('1')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "6e5ba234-0c81-4968-91d4-d32243dbc34b"
+    },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "2090483d-5752-42b4-887a-b3895bf8db84",
+      "request-id" : "6e5ba234-0c81-4968-91d4-d32243dbc34b",
       "StatusCode" : "200",
-      "Date" : "Fri, 13 Mar 2020 20:26:30 GMT",
+      "Date" : "Tue, 21 Apr 2020 19:04:29 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "2090483d-5752-42b4-887a-b3895bf8db84",
-      "elapsed-time" : "13",
+      "client-request-id" : "6e5ba234-0c81-4968-91d4-d32243dbc34b",
+      "elapsed-time" : "15",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "1667",
@@ -46,5 +49,5 @@
     },
     "Exception" : null
   } ],
-  "variables" : [ "azs-sdk790278a1482" ]
+  "variables" : [ "azsjavacangetdynamicdocument5f4767494ad08e5352d7" ]
 }

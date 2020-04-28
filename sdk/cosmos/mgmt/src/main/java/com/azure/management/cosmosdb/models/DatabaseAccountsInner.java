@@ -31,6 +31,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.management.cosmosdb.DatabaseAccountCreateUpdateParameters;
 import com.azure.management.cosmosdb.DatabaseAccountRegenerateKeyParameters;
@@ -43,16 +44,19 @@ import com.azure.management.cosmosdb.RegionForOnlineOffline;
 import com.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.management.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.management.resources.fluentcore.collection.InnerSupportsListing;
-import java.nio.ByteBuffer;
-import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
+import java.util.List;
 
 /** An instance of this class provides access to all the operations defined in DatabaseAccounts. */
 public final class DatabaseAccountsInner
     implements InnerSupportsGet<DatabaseAccountGetResultsInner>,
         InnerSupportsListing<DatabaseAccountGetResultsInner>,
         InnerSupportsDelete<Void> {
+    private final ClientLogger logger = new ClientLogger(DatabaseAccountsInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final DatabaseAccountsService service;
 
@@ -1419,7 +1423,12 @@ public final class DatabaseAccountsInner
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean checkNameExists(String accountName) {
-        return checkNameExistsAsync(accountName).block();
+        Boolean value = checkNameExistsAsync(accountName).block();
+        if (value != null) {
+            return value;
+        } else {
+            throw logger.logExceptionAsError(new NullPointerException());
+        }
     }
 
     /**

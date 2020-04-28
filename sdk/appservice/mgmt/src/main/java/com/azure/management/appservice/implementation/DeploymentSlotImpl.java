@@ -9,9 +9,9 @@ import com.azure.management.appservice.models.SiteConfigResourceInner;
 import com.azure.management.appservice.models.SiteInner;
 import com.azure.management.appservice.models.SiteLogsConfigInner;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
 import reactor.core.publisher.Mono;
 
 /** The implementation for DeploymentSlot. */
@@ -68,7 +68,7 @@ class DeploymentSlotImpl
     @Override
     public Mono<Void> warDeployAsync(File warFile, String appName) {
         try {
-            return warDeployAsync(new FileInputStream(warFile), appName);
+            return kuduClient.warDeployAsync(warFile, appName);
         } catch (IOException e) {
             return Mono.error(e);
         }
@@ -107,7 +107,7 @@ class DeploymentSlotImpl
     @Override
     public Mono<Void> zipDeployAsync(File zipFile) {
         try {
-            return zipDeployAsync(new FileInputStream(zipFile));
+            return kuduClient.zipDeployAsync(zipFile);
         } catch (IOException e) {
             return Mono.error(e);
         }
