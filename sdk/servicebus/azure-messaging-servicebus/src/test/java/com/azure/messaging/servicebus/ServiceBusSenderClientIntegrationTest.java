@@ -19,6 +19,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
@@ -113,16 +114,16 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
     void nonSessionEntitySendMessageList(MessagingEntityType entityType) {
         // Arrange
         setSenderAndReceiver(entityType);
-
+        int count = 3;
         final String messageId = UUID.randomUUID().toString();
-        final CreateBatchOptions options = new CreateBatchOptions().setMaximumSizeInBytes(1024);
-        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(3, messageId);
+        final ServiceBusMessage[] messages = new ServiceBusMessage[count];
+        TestUtils.getServiceBusMessages(3, messageId).toArray(messages);
 
         // Assert & Act
 
         sender.send(messages);
 
-        for (int i = 0; i < messages.size(); i++) {
+        for (int i = 0; i < messages.length; i++) {
             messagesPending.incrementAndGet();
         }
     }

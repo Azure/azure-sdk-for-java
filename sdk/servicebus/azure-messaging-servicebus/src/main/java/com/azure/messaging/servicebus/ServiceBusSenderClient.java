@@ -74,13 +74,13 @@ public class ServiceBusSenderClient implements AutoCloseable {
     }
 
     /**
-     * Sends a list of {@link ServiceBusMessage} to a Service Bus queue or topic.
+     * Sends a array of {@link ServiceBusMessage} to a Service Bus queue or topic.
      *
      * @param messages Messages to be sent to Service Bus queue or topic.
      *
      * @throws NullPointerException if {@code messages} is {@code null}.
      */
-    public void send(Iterable<ServiceBusMessage> messages) {
+    public void send(ServiceBusMessage... messages) {
         asyncClient.send(messages).block(tryTimeout);
     }
 

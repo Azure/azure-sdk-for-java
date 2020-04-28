@@ -22,6 +22,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.IntStream;
 
 import static com.azure.messaging.servicebus.ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES;
@@ -41,7 +42,8 @@ public class ServiceBusSenderClientTest {
     private ArgumentCaptor<ServiceBusMessage> singleMessageCaptor;
 
     @Captor
-    private ArgumentCaptor<List<ServiceBusMessage>> messageListCaptor;
+    //private ArgumentCaptor<ServiceBusMessage[]> messageListCaptor = ArgumentCaptor.forClass(ServiceBusMessage[].class);
+    private ArgumentCaptor<ServiceBusMessage[]> messageListCaptor = ArgumentCaptor.forClass(ServiceBusMessage[].class);
 
     @Captor
     private ArgumentCaptor<Instant> scheduleMessageCaptor;
@@ -158,29 +160,30 @@ public class ServiceBusSenderClientTest {
         // Arrange
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
-        final List<ServiceBusMessage> messageList = new ArrayList<>();
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage[] messages = new ServiceBusMessage[count];
 
         IntStream.range(0, count).forEach(index -> {
-            final ServiceBusMessage message = new ServiceBusMessage(contents);
-            Assertions.assertTrue(messageList.add(message));
+            messages[index] = new ServiceBusMessage(contents);
         });
 
-        when(asyncSender.send(messageList)).thenReturn(Mono.empty());
+        when(asyncSender.send(messages)).thenReturn(Mono.empty());
 
         // Act
-        sender.send(messageList);
+        sender.send(messages);
 
         // Assert
-        verify(asyncSender, times(1)).send(messageList);
+        verify(asyncSender, times(1)).send(messages);
         verify(asyncSender).send(messageListCaptor.capture());
 
-        final List<ServiceBusMessage> sentMessages = messageListCaptor.getValue();
+
+        final List<ServiceBusMessage[]> sentMessages = messageListCaptor.getAllValues();
         Assertions.assertEquals(count, sentMessages.size());
 
-        sentMessages.forEach(sentMessage -> {
-            Assertions.assertArrayEquals(contents, sentMessage.getBody());
-        });
-
+        for (int index = 0;index < sentMessages.size(); ++index) {
+            Object object = sentMessages.get(0);
+            Assertions.assertArrayEquals(contents, ((ServiceBusMessage) object).getBody());
+        }
     }
 
     /**

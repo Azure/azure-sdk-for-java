@@ -93,18 +93,18 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     void nonSessionEntitySendMessageList(MessagingEntityType entityType) {
         // Arrange
         setSenderAndReceiver(entityType, false);
-
+        int count = 2;
         final String messageId1 = UUID.randomUUID().toString();
         final String messageId2 = UUID.randomUUID().toString();
         final String contents = "Some-content";
 
-        final List<ServiceBusMessage> messages = Arrays.asList(
-            TestUtils.getServiceBusMessage(contents, messageId1),
-            TestUtils.getServiceBusMessage(contents, messageId2));
+        final ServiceBusMessage[] messages = new ServiceBusMessage[count];
+        messages[0] = TestUtils.getServiceBusMessage(contents, messageId1);
+        messages[1] = TestUtils.getServiceBusMessage(contents, messageId2);
 
         // Assert & Act
         StepVerifier.create(sender.send(messages).doOnSuccess(aVoid -> {
-            for (int i = 0; i < messages.size(); i++) {
+            for (int i = 0; i < messages.length; i++) {
                 messagesPending.incrementAndGet();
             }
         }))

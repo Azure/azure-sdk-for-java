@@ -291,11 +291,10 @@ class ServiceBusSenderAsyncClientTest {
         // Arrange
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
-        final List<ServiceBusMessage> messageList = new ArrayList<>();
+        final ServiceBusMessage[] messages = new ServiceBusMessage[count];
 
         IntStream.range(0, count).forEach(index -> {
-            final ServiceBusMessage message = new ServiceBusMessage(contents);
-            Assertions.assertTrue(messageList.add(message));
+            messages[index] = new ServiceBusMessage(contents);
         });
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions)))
@@ -304,7 +303,7 @@ class ServiceBusSenderAsyncClientTest {
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
         // Act
-        StepVerifier.create(sender.send(messageList))
+        StepVerifier.create(sender.send(messages))
             .verifyComplete();
 
         // Assert
