@@ -179,6 +179,18 @@ public class ServiceBusReceiverClient implements AutoCloseable {
     }
 
     /**
+     * Gets the state of a session given its identifier.
+     *
+     * @param sessionId Identifier of session to get.
+     *
+     * @return The session state or null if there is no state set for the session.
+     * @throws IllegalStateException if the receiver is a non-session receiver.
+     */
+    public byte[] getSessionState(String sessionId) {
+        return asyncClient.getSessionState(sessionId).block(operationTimeout);
+    }
+
+    /**
      * Reads the next active message without changing the state of the receiver or the message source. The first call to
      * {@code peek()} fetches the first active message for this receiver. Each subsequent call fetches the subsequent
      * message in the entity.
@@ -339,9 +351,34 @@ public class ServiceBusReceiverClient implements AutoCloseable {
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     * @throws IllegalStateException if the receiver is a session receiver.
      */
     public Instant renewMessageLock(MessageLockToken lockToken) {
         return asyncClient.renewMessageLock(lockToken).block(operationTimeout);
+    }
+
+    /**
+     * Sets the state of a session given its identifier.
+     *
+     * @param sessionId Identifier of session to get.
+     *
+     * @return The next expiration time for the session lock.
+     * @throws IllegalStateException if the receiver is a non-session receiver.
+     */
+    public Instant renewSessionLock(String sessionId) {
+        return asyncClient.renewSessionLock(sessionId).block(operationTimeout);
+    }
+
+    /**
+     * Sets the state of a session given its identifier.
+     *
+     * @param sessionId Identifier of session to get.
+     * @param sessionState State to set on the session.
+     *
+     * @throws IllegalStateException if the receiver is a non-session receiver.
+     */
+    public void setSessionState(String sessionId, byte[] sessionState) {
+        asyncClient.setSessionState(sessionId, sessionState).block(operationTimeout);
     }
 
     /**
