@@ -9,44 +9,47 @@ import java.util.stream.Collectors;
 /**
  * A helper Field model to build a simple search field.
  */
-public class ComplexField {
-    private String name;
-    private ComplexDataType dataType;
-    private List<Field> fieldList;
+public class ComplexField extends FieldBase {
+    private List<Field> subFields;
 
-    public String getName() {
-        return name;
+    /**
+     * Initializes a new instance of the {@link ComplexField} class.
+     *
+     * @param name The name of the field, which must be unique within the index or parent field.
+     * @param collection Whether the field is a collection of strings.
+     */
+    public ComplexField(String name, boolean collection) {
+        super(name, collection ? DataType.collection(DataType.EDM_COMPLEX_TYPE) : DataType.EDM_COMPLEX_TYPE);
     }
 
-    public ComplexField setName(String name) {
-        this.name = name;
+    /**
+     * Gets a collection of {@link SimpleField} or {@link ComplexField} child fields.
+     *
+     * @return The list of sub-fields.
+     */
+    public List<Field> getSubFields() {
+        return subFields;
+    }
+
+    /**
+     * Sets a collection of {@link SimpleField} or {@link ComplexField} child fields.
+     *
+     * @param subFields The list of sub-fields.
+     * @return The {@link ComplexField} object itself.
+     */
+    public ComplexField setSubFields(List<Field> subFields) {
+        this.subFields = subFields;
         return this;
     }
 
-    public ComplexDataType getDataType() {
-        return dataType;
-    }
-
-    public ComplexField setDataType(ComplexDataType dataType) {
-        this.dataType = dataType;
-        return this;
-    }
-
-    public List<Field> getFieldList() {
-        return fieldList;
-    }
-
-    public ComplexField setSimpleFieldList(List<SimpleField> fieldList) {
-        this.fieldList = fieldList.stream().map(SimpleField::build).collect(Collectors.toList());
-        return this;
-    }
-
-    public ComplexField setComplexFieldList(List<ComplexField> fieldList) {
-        this.fieldList = fieldList.stream().map(ComplexField::build).collect(Collectors.toList());
-        return this;
-    }
-
+    /**
+     * Convert ComplexField to {@link Field}.
+     *
+     * @return The {@link Field} object.
+     */
     public Field build() {
-        return new Field().setName(name).setType(dataType.toDataType()).setFields(fieldList);
+        return new Field().setName(super.getName()).setType(super.getDataType()).setFields(subFields)
+            .setKey(false).setFilterable(false).setSortable(false).setHidden(false).setSearchable(false)
+            .setFacetable(false);
     }
 }
