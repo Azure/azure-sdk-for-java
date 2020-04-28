@@ -34,6 +34,7 @@ Licensed under the MIT License.
   <properties>
     <jacoco.min.linecoverage>0.01</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.01</jacoco.min.branchcoverage>
+    <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
   </properties>
 
   <build>
