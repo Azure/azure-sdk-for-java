@@ -609,7 +609,7 @@ public final class BlobServiceSasSignatureValues {
      */
     private void ensureState() {
         if (version == null) {
-            version = BlobServiceVersion.getLatest().getVersion();
+            version = "2019-10-10"; // TODO: (rickle-msft) Revert when sas starts working for 12-12
         }
 
         if (CoreUtils.isNullOrEmpty(blobName)) {
