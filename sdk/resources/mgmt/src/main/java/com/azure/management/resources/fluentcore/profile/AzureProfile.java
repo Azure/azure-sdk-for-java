@@ -16,7 +16,6 @@ public class AzureProfile {
     private String tenantId;
     private String subscriptionId;
     private AzureEnvironment environment;
-    private final Configuration configuration = Configuration.getGlobalConfiguration();
 
     /**
      * Creates AzureProfile instance with Azure environment. The global environment is {@link AzureEnvironment#AZURE}.
@@ -28,9 +27,15 @@ public class AzureProfile {
      * </ul>
      *
      * @param environment the Azure environment
+     * @param loadEnvironmentVariables the boolean flag indicates whether the environment variables are set
      */
-    public AzureProfile(AzureEnvironment environment) {
-        this(null, null, environment);
+    public AzureProfile(AzureEnvironment environment, boolean loadEnvironmentVariables) {
+        Objects.requireNonNull(environment);
+        if (loadEnvironmentVariables) {
+            Configuration configuration = Configuration.getGlobalConfiguration().clone();
+            this.tenantId = configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID);
+            this.subscriptionId = configuration.get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID);
+        }
     }
 
     /**
@@ -76,9 +81,6 @@ public class AzureProfile {
      * @return the tenant ID
      */
     public String tenantId() {
-        if (this.tenantId == null) {
-            this.tenantId = configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID);
-        }
         return this.tenantId;
     }
 
@@ -88,9 +90,6 @@ public class AzureProfile {
      * @return the subscription ID
      */
     public String subscriptionId() {
-        if (this.subscriptionId == null) {
-            this.subscriptionId = configuration.get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID);
-        }
         return this.subscriptionId;
     }
 
@@ -100,9 +99,6 @@ public class AzureProfile {
      * @return the Azure environment
      */
     public AzureEnvironment environment() {
-        if (this.environment == null) {
-            this.environment = AzureEnvironment.AZURE;
-        }
         return environment;
     }
 }
