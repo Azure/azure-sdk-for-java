@@ -4,7 +4,7 @@ parameters:
     ArtifactDirectory: not-specified
     ArtifactName: not-specified
 
-  steps:
+steps:
     - pwsh: |
         $stagingDirectory = New-Item -Type Directory -Name ${{parameters.ArtifactSafeName}} -Path ${{parameters.StagingDirectory}}
         $artifactsFilteredByExtension = Get-ChildItem -Path ${{parameters.ArtifactDirectory}} -Include @("*.jar", "*.pom", "*.aar") -Recurse
