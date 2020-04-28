@@ -90,6 +90,8 @@ public interface PolicySetDefinition extends HasInner<PolicySetDefinitionInner>,
         interface WithPolicyDefinitions {
            /**
             * Specifies policyDefinitions.
+            * @param policyDefinitions An array of policy definition references
+            * @return the next definition stage
             */
             WithCreate withPolicyDefinitions(List<PolicyDefinitionReference> policyDefinitions);
         }
@@ -100,6 +102,8 @@ public interface PolicySetDefinition extends HasInner<PolicySetDefinitionInner>,
         interface WithDescription {
             /**
              * Specifies description.
+             * @param description The policy set definition description
+             * @return the next definition stage
              */
             WithCreate withDescription(String description);
         }
@@ -110,6 +114,8 @@ public interface PolicySetDefinition extends HasInner<PolicySetDefinitionInner>,
         interface WithDisplayName {
             /**
              * Specifies displayName.
+             * @param displayName The display name of the policy set definition
+             * @return the next definition stage
              */
             WithCreate withDisplayName(String displayName);
         }
@@ -120,6 +126,8 @@ public interface PolicySetDefinition extends HasInner<PolicySetDefinitionInner>,
         interface WithMetadata {
             /**
              * Specifies metadata.
+             * @param metadata The policy set definition metadata
+             * @return the next definition stage
              */
             WithCreate withMetadata(Object metadata);
         }
@@ -130,6 +138,8 @@ public interface PolicySetDefinition extends HasInner<PolicySetDefinitionInner>,
         interface WithParameters {
             /**
              * Specifies parameters.
+             * @param parameters The policy set definition parameters that can be used in policy definition references
+             * @return the next definition stage
              */
             WithCreate withParameters(Object parameters);
         }
@@ -140,6 +150,8 @@ public interface PolicySetDefinition extends HasInner<PolicySetDefinitionInner>,
         interface WithPolicyType {
             /**
              * Specifies policyType.
+             * @param policyType The type of policy definition. Possible values are NotSpecified, BuiltIn, and Custom. Possible values include: 'NotSpecified', 'BuiltIn', 'Custom'
+             * @return the next definition stage
              */
             WithCreate withPolicyType(PolicyType policyType);
         }
@@ -168,6 +180,8 @@ public interface PolicySetDefinition extends HasInner<PolicySetDefinitionInner>,
         interface WithDescription {
             /**
              * Specifies description.
+             * @param description The policy set definition description
+             * @return the next update stage
              */
             Update withDescription(String description);
         }
@@ -178,6 +192,8 @@ public interface PolicySetDefinition extends HasInner<PolicySetDefinitionInner>,
         interface WithDisplayName {
             /**
              * Specifies displayName.
+             * @param displayName The display name of the policy set definition
+             * @return the next update stage
              */
             Update withDisplayName(String displayName);
         }
@@ -188,6 +204,8 @@ public interface PolicySetDefinition extends HasInner<PolicySetDefinitionInner>,
         interface WithMetadata {
             /**
              * Specifies metadata.
+             * @param metadata The policy set definition metadata
+             * @return the next update stage
              */
             Update withMetadata(Object metadata);
         }
@@ -198,6 +216,8 @@ public interface PolicySetDefinition extends HasInner<PolicySetDefinitionInner>,
         interface WithParameters {
             /**
              * Specifies parameters.
+             * @param parameters The policy set definition parameters that can be used in policy definition references
+             * @return the next update stage
              */
             Update withParameters(Object parameters);
         }
@@ -208,6 +228,8 @@ public interface PolicySetDefinition extends HasInner<PolicySetDefinitionInner>,
         interface WithPolicyType {
             /**
              * Specifies policyType.
+             * @param policyType The type of policy definition. Possible values are NotSpecified, BuiltIn, and Custom. Possible values include: 'NotSpecified', 'BuiltIn', 'Custom'
+             * @return the next update stage
              */
             Update withPolicyType(PolicyType policyType);
         }
