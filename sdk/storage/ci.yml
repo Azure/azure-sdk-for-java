@@ -76,6 +76,9 @@ stages:
         - name: azure-storage-file-datalake
           groupId: com.azure
           safeName: azurestoragefiledatalake
+        - name: azure-storage-internal-avro
+          groupId: com.azure
+          safeName: azurestorageinternalavro
         - name: azure-storage-queue
           groupId: com.azure
           safeName: azurestoragequeue
