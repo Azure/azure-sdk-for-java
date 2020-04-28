@@ -482,6 +482,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
+     * @throws IllegalStateException if the receiver is a session receiver.
      * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns an empty value.
      */
     public Mono<Instant> renewMessageLock(MessageLockToken lockToken) {

@@ -351,6 +351,7 @@ public class ServiceBusReceiverClient implements AutoCloseable {
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     * @throws IllegalStateException if the receiver is a session receiver.
      */
     public Instant renewMessageLock(MessageLockToken lockToken) {
         return asyncClient.renewMessageLock(lockToken).block(operationTimeout);
