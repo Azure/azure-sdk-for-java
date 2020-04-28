@@ -136,7 +136,6 @@ public abstract class AvroSchema {
                 checkType("type", type, AvroType.AvroUnionType.class);
                 AvroType.AvroUnionType unionType = (AvroType.AvroUnionType) type;
                 return new AvroUnionSchema(unionType.getTypes(), state, onResult);
-
             }
             case FIXED: {
                 checkType("type", type, AvroType.AvroFixedType.class);
