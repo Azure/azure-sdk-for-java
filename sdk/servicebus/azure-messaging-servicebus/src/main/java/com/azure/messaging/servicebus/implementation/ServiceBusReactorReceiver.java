@@ -130,14 +130,14 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
                 }
 
                 final String actualSessionId = String.valueOf(value);
-                if (!CoreUtils.isNullOrEmpty(sessionId) && sessionId.equals(actualSessionId)) {
+                if (!CoreUtils.isNullOrEmpty(sessionId) && !sessionId.equals(actualSessionId)) {
                     logger.warning("entityPath[{}], sessionId[{}]. expectedSessionId[{}]. Expected id does not match.",
                         entityPath, sessionId, actualSessionId);
                 }
 
                 return Mono.just(actualSessionId);
             })
-            .cache(value -> Duration.ofSeconds(Long.MAX_VALUE), error -> Duration.ZERO, () -> Duration.ZERO);
+            .cache(value -> Duration.ofMillis(Long.MAX_VALUE), error -> Duration.ZERO, () -> Duration.ZERO);
 
         this.sessionLockedUntil = getEndpointStates().filter(x -> x == AmqpEndpointState.ACTIVE)
             .next()
@@ -153,7 +153,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
                     return Instant.EPOCH;
                 }
             })
-            .cache(value -> Duration.ofSeconds(Long.MAX_VALUE), error -> Duration.ZERO, () -> Duration.ZERO);
+            .cache(value -> Duration.ofMillis(Long.MAX_VALUE), error -> Duration.ZERO, () -> Duration.ZERO);
     }
 
     public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState) {
@@ -197,11 +197,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
 
     @Override
     public Mono<String> getSessionId() {
-        return sessionIdMono.doOnSubscribe(e -> {
-            logger.info("subscription");
-        }).doOnNext(e -> {
-            logger.info("Id emitted {}", e);
-        });
+        return sessionIdMono;
     }
 
     @Override

@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.time.Instant;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -42,5 +43,19 @@ class MessageUtilsTest {
 
         // Assert
         assertEquals(guidString, convertedGuid.toString(), "UUID conversion from DotNet to Java failed");
+    }
+
+    @Test
+    void convertUUIDToDotNetBytes() {
+        // Arrange
+        String guidString = "b5dc4a70-ac5d-43b3-b132-ec8fcdac3a9d";
+        UUID javaGuid = UUID.fromString(guidString);
+        byte[] dotNetGuidBytes = {112, 74, (byte) 220, (byte) 181, 93, (byte) 172, (byte) 179, 67, (byte) 177, 50, (byte) 236, (byte) 143, (byte) 205, (byte) 172, 58, (byte) 157};
+
+        // Act
+        byte[] convertedBytes = MessageUtils.convertUUIDToDotNetBytes(javaGuid);
+
+        // Assert
+        assertArrayEquals(dotNetGuidBytes, convertedBytes, "UUID conversion from Java to DotNet failed");
     }
 }

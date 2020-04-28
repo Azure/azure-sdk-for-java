@@ -32,11 +32,12 @@ import reactor.core.publisher.FluxSink;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.azure.messaging.servicebus.implementation.ServiceBusReactorSession.LOCKED_UNTIL_UTC;
 import static com.azure.messaging.servicebus.implementation.ServiceBusReactorSession.SESSION_FILTER;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -116,6 +117,9 @@ class ServiceBusReactorReceiverTest {
         Mockito.framework().clearInlineMocks();
     }
 
+    /**
+     * Gets the session id for a sessionful receiver.
+     */
     @Test
     void getsSessionId() {
         // Arrange
@@ -130,9 +134,89 @@ class ServiceBusReactorReceiverTest {
         // Act & Assert
         StepVerifier.create(sessionReactor.getSessionId())
             .then(() -> endpointStatesSink.next(EndpointState.ACTIVE))
-            .assertNext(e -> {
-                assertEquals(actualSession, e);
-            })
+            .expectNext(actualSession)
+            .verifyComplete();
+    }
+
+    /**
+     * A non session receive link does not have a session id.
+     */
+    @Test
+    void nonSessionReceiverNoSessionId() {
+        // Arrange
+        final String actualSession = "a-session-id-from-service";
+        final Map<Symbol, Object> properties = new HashMap<>();
+        properties.put(SESSION_FILTER, actualSession);
+
+        final Source remoteSource = mock(Source.class);
+        when(receiver.getRemoteSource()).thenReturn(remoteSource);
+        when(remoteSource.getFilter()).thenReturn(properties);
+
+        // Act & Assert
+        StepVerifier.create(reactorReceiver.getSessionId())
+            .then(() -> endpointStatesSink.next(EndpointState.ACTIVE))
+            .verifyComplete();
+    }
+
+    /**
+     * A non session receive link does not have a session id.
+     */
+    @Test
+    void sessionReceiverNoSessionId() {
+        // Arrange
+        final Map<Symbol, Object> properties = new HashMap<>();
+
+        final Source remoteSource = mock(Source.class);
+        when(receiver.getRemoteSource()).thenReturn(remoteSource);
+        when(remoteSource.getFilter()).thenReturn(properties);
+
+        // Act & Assert
+        StepVerifier.create(sessionReactor.getSessionId())
+            .then(() -> endpointStatesSink.next(EndpointState.ACTIVE))
+            .verifyComplete();
+    }
+
+    /**
+     * Gets locked until for sessioned receiver.
+     */
+    @Test
+    void getSessionLockedUntil() {
+        // Arrange
+        // 2020-04-28 06:42:27
+        final long ticks = 637236529470000000L;
+        final Instant lockedUntil = Instant.ofEpochSecond(1588056147L);
+        final String actualSession = "a-session-id-from-service";
+        final Map<Symbol, Object> properties = new HashMap<>();
+        properties.put(SESSION_FILTER, actualSession);
+        properties.put(LOCKED_UNTIL_UTC, ticks);
+
+        when(receiver.getRemoteProperties()).thenReturn(properties);
+
+        // Act & Assert
+        StepVerifier.create(sessionReactor.getSessionLockedUntil())
+            .then(() -> endpointStatesSink.next(EndpointState.ACTIVE))
+            .expectNext(lockedUntil)
+            .verifyComplete();
+    }
+
+    /**
+     * Gets locked until for sessioned receiver.
+     */
+    @Test
+    void nonSessionGetLockedUntil() {
+        // Arrange
+        // 2020-04-28 06:42:27
+        final long ticks = 637236529470000000L;
+        final Map<Symbol, Object> properties = new HashMap<>();
+        properties.put(LOCKED_UNTIL_UTC, ticks);
+        final Instant epoch = Instant.EPOCH;
+
+        when(receiver.getRemoteProperties()).thenReturn(properties);
+
+        // Act & Assert
+        StepVerifier.create(reactorReceiver.getSessionLockedUntil())
+            .then(() -> endpointStatesSink.next(EndpointState.ACTIVE))
+            .expectNext(epoch)
             .verifyComplete();
     }
 }

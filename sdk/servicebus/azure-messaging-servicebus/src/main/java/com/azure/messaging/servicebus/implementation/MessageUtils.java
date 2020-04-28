@@ -31,7 +31,6 @@ final class MessageUtils {
      * Converts a .NET GUID to its Java UUID representation.
      *
      * @param dotNetBytes .NET GUID to convert.
-     *
      * @return the equivalent UUID.
      */
     static UUID convertDotNetBytesToUUID(byte[] dotNetBytes) {
@@ -47,6 +46,25 @@ final class MessageUtils {
         final long mostSignificantBits = buffer.getLong();
         final long leastSignificantBits = buffer.getLong();
         return new UUID(mostSignificantBits, leastSignificantBits);
+    }
+
+    /**
+     * Converts a Java UUID to its byte[] representation.
+     *
+     * @param uuid UUID to convert to .NET bytes.
+     * @return The .NET byte representation.
+     */
+    static byte[] convertUUIDToDotNetBytes(UUID uuid) {
+        if (uuid == null || uuid.equals(ZERO_LOCK_TOKEN)) {
+            return new byte[GUID_SIZE];
+        }
+
+        ByteBuffer buffer = ByteBuffer.allocate(GUID_SIZE);
+        buffer.putLong(uuid.getMostSignificantBits());
+        buffer.putLong(uuid.getLeastSignificantBits());
+        byte[] javaBytes = buffer.array();
+
+        return reorderBytes(javaBytes);
     }
 
     /**
@@ -74,7 +92,6 @@ final class MessageUtils {
      *
      * @param errorCondition Error condition for the AMQP exception.
      * @param errorContext AMQP context it occurred in.
-     *
      * @return Corresponding {@link Throwable} for the error condition.
      */
     static Throwable toException(ErrorCondition errorCondition, AmqpErrorContext errorContext) {
