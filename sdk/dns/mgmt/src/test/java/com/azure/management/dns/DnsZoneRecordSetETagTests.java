@@ -3,14 +3,15 @@
 
 package com.azure.management.dns;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.CloudError;
 import com.azure.core.management.CloudException;
-import com.azure.management.RestClient;
 import com.azure.management.dns.implementation.DnsZoneManager;
 import com.azure.management.resources.core.TestBase;
 import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.implementation.ResourceManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -26,10 +27,10 @@ public class DnsZoneRecordSetETagTests extends TestBase {
     protected DnsZoneManager zoneManager;
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         resourceManager =
-            ResourceManager.authenticate(restClient).withSdkContext(sdkContext).withSubscription(defaultSubscription);
-        zoneManager = DnsZoneManager.authenticate(restClient, defaultSubscription, sdkContext);
+            ResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext).withDefaultSubscription();
+        zoneManager = DnsZoneManager.authenticate(httpPipeline, profile, sdkContext);
         rgName = generateRandomResourceName("dnsetagtest", 15);
     }
 

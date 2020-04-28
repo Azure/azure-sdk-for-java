@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.management;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.CloudException;
 import com.azure.management.compute.CachingTypes;
@@ -40,6 +41,7 @@ import com.azure.management.resources.core.TestBase;
 import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.storage.SkuName;
 import com.azure.management.storage.StorageAccount;
@@ -60,11 +62,11 @@ public class AzureTests extends TestBase {
     private MSIManager msiManager;
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         Azure.Authenticated azureAuthed =
-            Azure.authenticate(restClient, defaultSubscription, domain).withSdkContext(sdkContext);
-        azure = azureAuthed.withSubscription(defaultSubscription);
-        this.msiManager = MSIManager.authenticate(restClient, defaultSubscription, sdkContext);
+            Azure.authenticate(httpPipeline, profile).withSdkContext(sdkContext);
+        azure = azureAuthed.withDefaultSubscription();
+        this.msiManager = MSIManager.authenticate(httpPipeline, profile, sdkContext);
     }
 
     @Override

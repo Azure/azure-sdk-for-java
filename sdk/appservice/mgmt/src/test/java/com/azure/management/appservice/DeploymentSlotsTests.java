@@ -3,8 +3,9 @@
 
 package com.azure.management.appservice;
 
-import com.azure.management.RestClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -15,13 +16,13 @@ public class DeploymentSlotsTests extends AppServiceTest {
     private String slotName3 = "";
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         webappName = generateRandomResourceName("java-webapp-", 20);
         slotName1 = generateRandomResourceName("java-slot-", 20);
         slotName2 = generateRandomResourceName("java-slot-", 20);
         slotName3 = generateRandomResourceName("java-slot-", 20);
 
-        super.initializeClients(restClient, defaultSubscription, domain);
+        super.initializeClients(httpPipeline, profile);
     }
 
     @Test

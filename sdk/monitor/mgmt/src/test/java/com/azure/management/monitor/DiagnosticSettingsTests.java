@@ -3,7 +3,8 @@
 
 package com.azure.management.monitor;
 
-import com.azure.management.RestClient;
+import com.azure.core.http.HttpPipeline;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 
 public class DiagnosticSettingsTests extends MonitorManagementTest {
@@ -13,13 +14,13 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
     private String ehName = "";
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         rgName = generateRandomResourceName("jMonitor_", 18);
         saName = generateRandomResourceName("jMonitorSa", 18);
         dsName = generateRandomResourceName("jMonitorDs_", 18);
         ehName = generateRandomResourceName("jMonitorEH", 18);
 
-        super.initializeClients(restClient, defaultSubscription, domain);
+        super.initializeClients(httpPipeline, profile);
     }
 
     @Override

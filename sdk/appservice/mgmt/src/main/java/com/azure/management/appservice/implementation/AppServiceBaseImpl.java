@@ -407,7 +407,7 @@ abstract class AppServiceBaseImpl<
         String id =
             ResourceUtils
                 .constructResourceId(
-                    this.manager().getSubscriptionId(),
+                    this.manager().subscriptionId(),
                     resourceGroupName(),
                     "Microsoft.Web",
                     "serverFarms",
