@@ -28,7 +28,7 @@ public class EventProcessorClientWithBatchReceiveSample {
 
         Logger logger = LoggerFactory.getLogger(EventProcessorClientSample.class);
         Consumer<EventBatchContext> processEventBatch = eventBatchContext -> {
-            eventBatchContext.getEventDataList().forEach(event -> {
+            eventBatchContext.getEvents().forEach(event -> {
                 logger.info(
                     "Processing event: Event Hub name = {}; consumer group name = {}; partition id = {}; sequence number = {}",
                     eventBatchContext.getPartitionContext().getEventHubName(),

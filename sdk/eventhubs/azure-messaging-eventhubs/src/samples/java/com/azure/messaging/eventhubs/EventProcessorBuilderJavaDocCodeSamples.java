@@ -50,7 +50,7 @@ public class EventProcessorBuilderJavaDocCodeSamples {
             .consumerGroup("consumer-group")
             .checkpointStore(new InMemoryCheckpointStore())
             .processEventBatch(eventBatchContext -> {
-                eventBatchContext.getEventDataList().forEach(eventData -> {
+                eventBatchContext.getEvents().forEach(eventData -> {
                     System.out.println("Partition id = " + eventBatchContext.getPartitionContext().getPartitionId()
                         + "and sequence number of event = " + eventData.getSequenceNumber());
                 });

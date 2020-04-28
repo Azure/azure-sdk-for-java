@@ -90,7 +90,7 @@ public class EventProcessorClientBuilderTest {
                         + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
                 })
                 .processEventBatch(eventBatchContext -> {
-                    eventBatchContext.getEventDataList().forEach(event -> {
+                    eventBatchContext.getEvents().forEach(event -> {
                         System.out
                             .println(
                                 "Partition id = " + eventBatchContext.getPartitionContext().getPartitionId() + " and "
@@ -127,7 +127,7 @@ public class EventProcessorClientBuilderTest {
             .connectionString(CORRECT_CONNECTION_STRING)
             .consumerGroup("consumer-group")
             .processEventBatch(eventBatchContext -> {
-                eventBatchContext.getEventDataList().forEach(event -> {
+                eventBatchContext.getEvents().forEach(event -> {
                     System.out
                         .println("Partition id = " + eventBatchContext.getPartitionContext().getPartitionId() + " and "
                             + "sequence number of event = " + event.getSequenceNumber());

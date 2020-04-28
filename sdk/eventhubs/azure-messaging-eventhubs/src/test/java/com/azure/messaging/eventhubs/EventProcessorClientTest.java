@@ -496,8 +496,8 @@ public class EventProcessorClientTest {
 
         @Override
         public void processEventBatch(EventBatchContext eventBatchContext) {
-            receivedEventsCount.add(eventBatchContext.getEventDataList().size());
-            eventBatchContext.getEventDataList().forEach(eventContext -> {
+            receivedEventsCount.add(eventBatchContext.getEvents().size());
+            eventBatchContext.getEvents().forEach(eventContext -> {
                 if (countDownLatch != null) {
                     countDownLatch.countDown();
                 }

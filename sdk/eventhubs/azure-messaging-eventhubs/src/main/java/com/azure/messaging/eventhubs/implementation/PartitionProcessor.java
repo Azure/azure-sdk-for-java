@@ -5,12 +5,14 @@ package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventProcessorClient;
+import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.CloseReason;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.InitializationContext;
+import java.util.function.Consumer;
 
 /**
  * An abstract class defining all the operations that a partition processor can perform. Users of {@link
@@ -52,8 +54,9 @@ public abstract class PartitionProcessor {
     public abstract void processEvent(EventContext eventContext);
 
     /**
-     * This method is called when a batch of events is received for this partition. The default behavior will be to
-     * forward the individual events in this batch to {@link #processEvent(EventContext)}.
+     * This method is called when a batch of events is received for this partition. To receive events in batches,
+     * {@link EventProcessorClientBuilder#processEventBatch(Consumer, int) processEventBatch} has to be
+     * setup when creating {@link EventProcessorClient} instance.
      *
      * @param eventBatchContext The event batch context containing the batch of events along with partition information.
      */
