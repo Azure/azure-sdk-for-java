@@ -15,7 +15,7 @@ public class AzureProfile {
 
     private String tenantId;
     private String subscriptionId;
-    private AzureEnvironment environment;
+    private final AzureEnvironment environment;
 
     /**
      * Creates AzureProfile instance with Azure environment. The global environment is {@link AzureEnvironment#AZURE}.
@@ -31,8 +31,9 @@ public class AzureProfile {
      */
     public AzureProfile(AzureEnvironment environment, boolean loadEnvironmentVariables) {
         Objects.requireNonNull(environment);
+        this.environment = environment;
         if (loadEnvironmentVariables) {
-            Configuration configuration = Configuration.getGlobalConfiguration().clone();
+            Configuration configuration = Configuration.getGlobalConfiguration();
             this.tenantId = configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID);
             this.subscriptionId = configuration.get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID);
         }

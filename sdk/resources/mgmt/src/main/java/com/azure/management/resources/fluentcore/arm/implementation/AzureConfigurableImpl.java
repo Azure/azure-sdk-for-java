@@ -34,11 +34,12 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
     private List<String> scopes;
     private RetryPolicy retryPolicy;
     private Configuration configuration;
-    private TokenCredential[] tokens;
+    private List<TokenCredential> tokens;
 
     protected AzureConfigurableImpl() {
         policies = new ArrayList<>();
         scopes = new ArrayList<>();
+        tokens = new ArrayList<>();
         retryPolicy = new RetryPolicy();
         httpLogOptions = new HttpLogOptions().setLogLevel(HttpLogDetailLevel.NONE);
     }
@@ -65,9 +66,16 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
     }
 
     @Override
-    public T withAuxiliaryCredentials(TokenCredential... tokens) {
+    public T withAuxiliaryCredential(TokenCredential token) {
+        Objects.requireNonNull(token);
+        this.tokens.add(token);
+        return (T) this;
+    }
+
+    @Override
+    public T withAuxiliaryCredentials(List<TokenCredential> tokens) {
         Objects.requireNonNull(tokens);
-        this.tokens = tokens;
+        this.tokens.addAll(tokens);
         return (T) this;
     }
 
@@ -82,6 +90,13 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
     public T withScope(String scope) {
         Objects.requireNonNull(scope);
         this.scopes.add(scope);
+        return (T) this;
+    }
+
+    @Override
+    public T withScopes(List<String> scopes) {
+        Objects.requireNonNull(scopes);
+        this.scopes.addAll(scopes);
         return (T) this;
     }
 
@@ -101,8 +116,9 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
 
     protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile) {
         Objects.requireNonNull(credential);
-        if (tokens != null) {
-            policies.add(new AuxiliaryAuthenticationPolicy(profile.environment(), tokens));
+        if (!tokens.isEmpty()) {
+            policies.add(
+                new AuxiliaryAuthenticationPolicy(profile.environment(), tokens.toArray(new TokenCredential[0])));
         }
         return HttpPipelineProvider.buildHttpPipeline(credential, profile, scopes(), httpLogOptions, configuration,
             retryPolicy, policies, httpClient);

@@ -205,9 +205,19 @@ public final class Azure {
         Authenticated withSdkContext(SdkContext sdkContext);
 
         /**
+         * Specifies a specific tenant for azure.
+         *
+         * <p>Only Graph RBAC APIs require a tenant to be selected.</p>
+         *
+         * @param tenantId the ID of the tenant
+         * @return the authenticated itself for chaining
+         */
+        Authenticated withTenantId(String tenantId);
+
+        /**
          * Selects a specific subscription for the APIs to work with.
          *
-         * <p>Most Azure APIs require a specific subscription to be selected.
+         * <p>Most Azure APIs require a specific subscription to be selected.</p>
          *
          * @param subscriptionId the ID of the subscription
          * @return an authenticated Azure client configured to work with the specified subscription
@@ -219,7 +229,7 @@ public final class Azure {
          *
          * <p>The default subscription can be specified inside the Azure profile using {@link
          * AzureProfile}. If no default subscription has been previously provided, the first subscription as
-         * returned by {@link Authenticated#subscriptions()} will be selected.
+         * returned by {@link Authenticated#subscriptions()} will be selected.</p>
          *
          * @return an authenticated Azure client configured to work with the default subscription
          */
@@ -297,6 +307,12 @@ public final class Azure {
         @Override
         public SdkContext sdkContext() {
             return this.sdkContext;
+        }
+
+        @Override
+        public Authenticated withTenantId(String tenantId) {
+            profile.withTenantId(tenantId);
+            return this;
         }
 
         @Override

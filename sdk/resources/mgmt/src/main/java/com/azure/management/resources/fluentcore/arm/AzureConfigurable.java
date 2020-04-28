@@ -11,6 +11,8 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.Configuration;
 
+import java.util.List;
+
 /**
  * The base interface for allowing configurations to be made on the HTTP client.
  *
@@ -48,10 +50,18 @@ public interface AzureConfigurable<T extends AzureConfigurable<T>> {
     /**
      * Set the cross-tenant auxiliary credentials for Azure which can hold up to three.
      *
-     * @param tokens the AzureTokenCredential list
+     * @param token the auxiliary credential
      * @return the configurable object itself
      */
-    T withAuxiliaryCredentials(TokenCredential... tokens);
+    T withAuxiliaryCredential(TokenCredential token);
+
+    /**
+     * Set the cross-tenant auxiliary credentials for Azure which can hold up to three.
+     *
+     * @param tokens the auxiliary credentials
+     * @return the configurable object itself
+     */
+    T withAuxiliaryCredentials(List<TokenCredential> tokens);
 
     /**
      * Sets the retry policy used in http pipeline.
@@ -68,6 +78,14 @@ public interface AzureConfigurable<T extends AzureConfigurable<T>> {
      * @return the configurable object itself for chaining
      */
     T withScope(String scope);
+
+    /**
+     * Sets the credential scopes.
+     *
+     * @param scopes the credential scope
+     * @return the configurable object itself for chaining
+     */
+    T withScopes(List<String> scopes);
 
     /**
      * Sets the http client.

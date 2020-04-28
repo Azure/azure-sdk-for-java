@@ -222,7 +222,7 @@ public final class ManageSqlDatabaseInElasticPool {
      */
     public static void main(String[] args) {
         try {
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();
