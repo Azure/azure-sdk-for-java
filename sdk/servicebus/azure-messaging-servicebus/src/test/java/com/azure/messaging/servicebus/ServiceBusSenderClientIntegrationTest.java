@@ -106,7 +106,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Verifies that we can send a list of messages to a non-session entity
+     * Verifies that we can send an array of messages to a non-session entity
      */
     @MethodSource("receiverTypesProvider")
     @ParameterizedTest

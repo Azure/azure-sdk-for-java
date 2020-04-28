@@ -137,7 +137,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Sends a array of messages to a Service Bus queue or topic using a batched approach. If the size of messages
+     * Sends an array of messages to a Service Bus queue or topic using a batched approach. If the size of messages
      * exceed the maximum size of a single batch, an exception will be triggered and the send will fail.
      * By default, the message size is the max amount allowed on the link.
      *
@@ -154,24 +154,6 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             Stream.of(messages).forEach(serviceBusMessage -> messageBatch.tryAdd(serviceBusMessage));
             return send(messageBatch);
         });
-    }
-
-    /**
-     * Sends a message to a Service Bus queue or topic.
-     *
-     * @param message Message to be sent to Service Bus queue or topic.
-     * @param sessionId the session id to associate with the message.
-     *
-     * @return A {@link Mono} the finishes this operation on service bus resource.
-     *
-     * @throws NullPointerException if {@code message} or {@code sessionId} is {@code null}.
-     */
-    public Mono<Void> send(ServiceBusMessage message, String sessionId) {
-        Objects.requireNonNull(message, "'message' cannot be null.");
-        Objects.requireNonNull(sessionId, "'sessionId' cannot be null.");
-
-        //TODO (hemanttanwar): Implement session id feature.
-        return Mono.error(new IllegalStateException("Not implemented."));
     }
 
     /**

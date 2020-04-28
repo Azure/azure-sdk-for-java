@@ -56,7 +56,6 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         } finally {
             dispose(receiver);
         }
-
     }
 
     static Stream<Arguments> receiverTypesProvider() {

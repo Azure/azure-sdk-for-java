@@ -60,9 +60,7 @@ public class ServiceBusSenderClient implements AutoCloseable {
     }
 
     /**
-     * Sends a list of messages to a Service Bus queue or topic using a batched approach. If the size of messages
-     * exceed the maximum size of a single batch, an exception will be triggered and the send will fail.
-     * By default, the message size is the max amount allowed on the link.
+     * Sends a message to a Service Bus queue or topic.
      *
      * @param message Message to be sent to Service Bus queue or topic.
      *
@@ -74,7 +72,9 @@ public class ServiceBusSenderClient implements AutoCloseable {
     }
 
     /**
-     * Sends a array of {@link ServiceBusMessage} to a Service Bus queue or topic.
+     * Sends an array of {@link ServiceBusMessage} to a Service Bus queue or topic using a batched approach.
+     * If the size of messages exceed the maximum size of a single batch, an exception will be triggered and the send
+     * will fail. By default, the message size is the max amount allowed on the link.
      *
      * @param messages Messages to be sent to Service Bus queue or topic.
      *

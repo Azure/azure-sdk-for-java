@@ -342,7 +342,6 @@ class ServiceBusSenderAsyncClientTest {
                 && ((AmqpException) error).getErrorCondition() == AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED);
 
         verify(sendLink, times(0)).send(anyList());
-
     }
 
     /**
