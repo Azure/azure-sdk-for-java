@@ -203,6 +203,12 @@ public class FieldBuilder {
             searchField.setKey(simpleFieldPropertyAnnotation.isKey());
             searchField.setHidden(simpleFieldPropertyAnnotation.isHidden());
         } else if (classField.isAnnotationPresent(SearchableFieldProperty.class)){
+            if (!searchField.getType().equals(DataType.EDM_STRING) &&
+                !searchField.getType().equals(DataType.collection(DataType.EDM_STRING))) {
+                throw logger.logExceptionAsError(new RuntimeException(String.format("SearchFieldProperty can only"
+                    + " be used on string properties. Property %s returns a %s value.",
+                    classField.getName(), searchField.getType())));
+            }
             SearchableFieldProperty searchableFieldPropertyAnnotation =
                 classField.getDeclaredAnnotation(SearchableFieldProperty.class);
             searchField.setSearchable(true);

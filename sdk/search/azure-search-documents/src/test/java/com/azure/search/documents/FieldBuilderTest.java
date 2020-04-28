@@ -7,6 +7,8 @@ import com.azure.search.documents.models.Field;
 import com.azure.search.documents.models.SearchableField;
 import com.azure.search.documents.models.SimpleField;
 import com.azure.search.documents.test.environment.models.Hotel;
+import com.azure.search.documents.test.environment.models.HotelSearchException;
+import com.azure.search.documents.test.environment.models.HotelSearchableExceptionOnList;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -14,6 +16,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FieldBuilderTest {
     @Test
@@ -24,6 +28,24 @@ public class FieldBuilderTest {
         for (int i = 0; i < expectedFields.size(); i++) {
             TestHelpers.assertObjectEquals(expectedFields.get(i), actualFields.get(i));
         }
+    }
+
+    @Test
+    public void hotelSearchableThrowException() {
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            FieldBuilder.build(HotelSearchException.class);
+        });
+        assertTrue(exception.getMessage().contains("hotelId"));
+        assertTrue(exception.getMessage().contains(DataType.EDM_INT32.toString()));
+    }
+
+    @Test
+    public void hotelListFieldSearchableThrowException() {
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            FieldBuilder.build(HotelSearchableExceptionOnList.class);
+        });
+        assertTrue(exception.getMessage().contains("passcode"));
+        assertTrue(exception.getMessage().contains(DataType.collection(DataType.EDM_INT32).toString()));
     }
 
     private List<Field> buildHotelFieldsFromModel() {
