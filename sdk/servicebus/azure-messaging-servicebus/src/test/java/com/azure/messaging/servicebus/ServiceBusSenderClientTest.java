@@ -20,7 +20,6 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.IntStream;
@@ -42,7 +41,6 @@ public class ServiceBusSenderClientTest {
     private ArgumentCaptor<ServiceBusMessage> singleMessageCaptor;
 
     @Captor
-    //private ArgumentCaptor<ServiceBusMessage[]> messageListCaptor = ArgumentCaptor.forClass(ServiceBusMessage[].class);
     private ArgumentCaptor<ServiceBusMessage[]> messageListCaptor = ArgumentCaptor.forClass(ServiceBusMessage[].class);
 
     @Captor
@@ -153,18 +151,17 @@ public class ServiceBusSenderClientTest {
     }
 
     /**
-     * Verifies that sending a single message will result in calling sender.send(Message).
+     * Verifies that sending an array of message will result in calling sender.send(Message...).
      */
     @Test
     void sendMessageList() {
         // Arrange
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
-        final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage[] messages = new ServiceBusMessage[count];
 
         IntStream.range(0, count).forEach(index -> {
-            messages[index] = new ServiceBusMessage(contents);
+            messages[index] = new ServiceBusMessage(contents).setSessionId(UUID.randomUUID().toString());
         });
 
         when(asyncSender.send(messages)).thenReturn(Mono.empty());
@@ -176,11 +173,10 @@ public class ServiceBusSenderClientTest {
         verify(asyncSender, times(1)).send(messages);
         verify(asyncSender).send(messageListCaptor.capture());
 
-
         final List<ServiceBusMessage[]> sentMessages = messageListCaptor.getAllValues();
         Assertions.assertEquals(count, sentMessages.size());
 
-        for (int index = 0;index < sentMessages.size(); ++index) {
+        for (int index = 0; index < sentMessages.size(); ++index) {
             Object object = sentMessages.get(0);
             Assertions.assertArrayEquals(contents, ((ServiceBusMessage) object).getBody());
         }
