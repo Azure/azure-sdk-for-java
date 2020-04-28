@@ -198,17 +198,17 @@ public final class BlobProperties {
         this.objectReplicationSourcePolicies = new HashMap<>();
         objectReplicationStatus = objectReplicationStatus == null ? new HashMap<>() : objectReplicationStatus;
         this.objectReplicationDestinationPolicyId = objectReplicationStatus.getOrDefault("policy-id", null);
-        if (objectReplicationDestinationPolicyId == null) {
+        if (this.objectReplicationDestinationPolicyId == null) {
             for (Map.Entry<String, String> entry : objectReplicationStatus.entrySet()) {
                 String[] split = entry.getKey().split("_");
                 String policyId = split[0];
                 String ruleId = split[1];
-                if (objectReplicationSourcePolicies.containsKey(policyId)) {
-                    objectReplicationSourcePolicies.get(policyId).putRuleAndStatus(ruleId, entry.getValue());
+                if (this.objectReplicationSourcePolicies.containsKey(policyId)) {
+                    this.objectReplicationSourcePolicies.get(policyId).putRuleAndStatus(ruleId, entry.getValue());
                 } else {
                     ObjectReplicationPolicy policy = new ObjectReplicationPolicy(policyId);
                     policy.putRuleAndStatus(ruleId, entry.getValue());
-                    objectReplicationSourcePolicies.put(policyId, policy);
+                    this.objectReplicationSourcePolicies.put(policyId, policy);
                 }
             }
         }

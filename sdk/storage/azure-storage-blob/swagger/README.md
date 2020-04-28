@@ -25,7 +25,7 @@ sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
-custom-types: BlobAccessPolicy,AccessTier,AccountKind,ArchiveStatus,BlobDownloadHeaders,BlobHttpHeaders,BlobContainerItem,BlobContainerItemProperties,BlobContainerEncryptionScope,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,BlobPrefix,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberActionType,BlobSignedIdentifier,SkuName,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey
+custom-types: BlobAccessPolicy,AccessTier,AccountKind,ArchiveStatus,BlobHttpHeaders,BlobContainerItem,BlobContainerItemProperties,BlobContainerEncryptionScope,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,BlobPrefix,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberActionType,BlobSignedIdentifier,SkuName,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey
 custom-types-subpackage: models
 ```
 
@@ -1335,52 +1335,6 @@ directive:
       replace('sizeInt', 'size').replace('sizeInt', 'size').replace('sizeInt', 'size').replace('sizeInt', 'size').
       replace('sizeInt', 'size').replace('sizeInt', 'size').replace('sizeInt', 'size').replace('sizeInt', 'size').
       replace(/\/\*\s+\*\s+The size property.\s+\*\/\s+\/\*/gm, '/*')
-```
-
-### BlobDownloadHeaders for ORS
-``` yaml
-directive:
-- from: BlobDownloadHeaders.java
-  where: $
-  transform: >-
-    return $
-    .replace(/(public Map<String, String> getObjectReplicationRuleStatus\(\) {\s+return this.objectReplicationRuleStatus;\s+})/g, "public Map<String, ObjectReplicationPolicy> getObjectReplicationSourcePolicies() {\n        Map<String, ObjectReplicationPolicy> objectReplicationSourcePolicies = new HashMap<>();\n        if (objectReplicationDestinationPolicyId == null && this.objectReplicationRuleStatus != null) {\n            for (Map.Entry<String, String> entry : this.objectReplicationRuleStatus.entrySet()) {\n                String[] split = entry.getKey().split(\"_\");\n                String policyId = split[0];\n                String ruleId = split[1];\n                if (objectReplicationSourcePolicies.containsKey(policyId)) {\n                    objectReplicationSourcePolicies.get(policyId).putRuleAndStatus(ruleId, entry.getValue());\n                } else {\n                    ObjectReplicationPolicy policy = new ObjectReplicationPolicy(policyId);\n                    policy.putRuleAndStatus(ruleId, entry.getValue());\n                    objectReplicationSourcePolicies.put(policyId, policy);\n                }\n            }\n        }\n        return objectReplicationSourcePolicies;\n    }")
-```
-
-``` yaml
-directive:
-- from: BlobDownloadHeaders.java
-  where: $
-  transform: >-
-    return $
-    .replace(/(public String getObjectReplicationDestinationPolicyId\(\) {\s+return this.objectReplicationDestinationPolicyId;\s+})/g, "public String getObjectReplicationDestinationPolicyId() {\n        return this.objectReplicationRuleStatus.getOrDefault(\"policy-id\", null);\n    }")
-```
-
-``` yaml
-directive:
-- from: BlobDownloadHeaders.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "import java.util.Map;",
-        "import java.util.Map;\nimport java.util.HashMap;")
-```
-
-``` yaml
-directive:	
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}/{blob}"].get
-  transform: >	
-    $.responses["200"].headers["x-ms-or-policy-id"]["x-ms-client-name"] = "ObjectReplicationDestinationPolicyId"
-```
-
-``` yaml
-directive:	
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}/{blob}"].get
-  transform: >	
-    $.responses["206"].headers["x-ms-or-policy-id"]["x-ms-client-name"] = "ObjectReplicationDestinationPolicyId"
 ```
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob%2Fswagger%2FREADME.png)
