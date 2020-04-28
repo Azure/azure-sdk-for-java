@@ -5,10 +5,8 @@ package com.azure.search.documents.test;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.search.documents.TestHelpers;
-import com.azure.search.documents.models.DataSource;
 import com.azure.search.documents.models.SearchErrorException;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.jupiter.api.Test;
 
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -18,7 +16,6 @@ import java.util.function.Supplier;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class AccessConditionTests {
