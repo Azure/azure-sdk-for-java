@@ -48,8 +48,8 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
 
     private Supplier<DataSource> newDataSourceFunc = () -> createTestBlobDataSource(null);
 
-    private Function<DataSource, DataSource> mutateDataSourceFunc =
-        (DataSource ds) -> ds.setDescription("somethingnew");
+    private Function<DataSource, DataSource> mutateDataSourceFunc = (DataSource ds) -> 
+        ds.setDescription("somethingnew");
 
     private BiConsumer<DataSource, AccessOptions> deleteDataSourceFunc = (DataSource dataSource, AccessOptions ac) ->
         client.deleteDataSourceWithResponse(dataSource,
