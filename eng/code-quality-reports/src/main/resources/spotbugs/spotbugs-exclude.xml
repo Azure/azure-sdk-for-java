@@ -1971,7 +1971,8 @@
 
   <!-- Internal Avro Parser does check the types before casting. Seems to be a false positive.  -->
   <Match>
-    <Class name="com.azure.storage.internal.avro.implementation.schema.complex.AvroSchema"/>
+    <Class name="com.azure.storage.internal.avro.implementation.schema.AvroSchema"/>
+    <Method name="getSchema"/>
     <Bug pattern="BC_UNCONFIRMED_CAST"/>
   </Match>
 
