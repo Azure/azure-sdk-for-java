@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
@@ -10,12 +11,15 @@ import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.ReactorReceiver;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.Proton;
+import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.Outcome;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
+import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.transaction.TransactionalState;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
@@ -32,6 +36,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -41,12 +46,15 @@ import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.messaging.servicebus.implementation.MessageUtils.LOCK_TOKEN_SIZE;
+import static com.azure.messaging.servicebus.implementation.ServiceBusReactorSession.LOCKED_UNTIL_UTC;
+import static com.azure.messaging.servicebus.implementation.ServiceBusReactorSession.SESSION_FILTER;
 
 /**
  * A proton-j receiver for Service Bus.
  */
-public class ServiceBusReactorReceiver extends ReactorReceiver {
+public class ServiceBusReactorReceiver extends ReactorReceiver implements ServiceBusReceiveLink {
     private static final Message EMPTY_MESSAGE = Proton.message();
+
     private final ClientLogger logger = new ClientLogger(ServiceBusReactorReceiver.class);
     private final ConcurrentHashMap<String, Delivery> unsettledDeliveries = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, UpdateDispositionWorkItem> pendingUpdates = new ConcurrentHashMap<>();
@@ -63,9 +71,23 @@ public class ServiceBusReactorReceiver extends ReactorReceiver {
     private final AmqpRetryPolicy retryPolicy;
     private final ReceiveLinkHandler handler;
     private final ReactorProvider provider;
+    private final Mono<String> sessionIdMono;
+    private final Mono<Instant> sessionLockedUntil;
 
     public ServiceBusReactorReceiver(String entityPath, Receiver receiver, ReceiveLinkHandler handler,
         TokenManager tokenManager, ReactorProvider provider, Duration timeout, AmqpRetryPolicy retryPolicy) {
+        this(entityPath, receiver, handler, tokenManager, provider, timeout, retryPolicy, null, false);
+    }
+
+    public ServiceBusReactorReceiver(String entityPath, Receiver receiver, ReceiveLinkHandler handler,
+        TokenManager tokenManager, ReactorProvider provider, Duration timeout, AmqpRetryPolicy retryPolicy,
+        String sessionId) {
+        this(entityPath, receiver, handler, tokenManager, provider, timeout, retryPolicy, sessionId, true);
+    }
+
+    private ServiceBusReactorReceiver(String entityPath, Receiver receiver, ReceiveLinkHandler handler,
+        TokenManager tokenManager, ReactorProvider provider, Duration timeout, AmqpRetryPolicy retryPolicy,
+        String sessionId, boolean isSessionReceiver) {
         super(entityPath, receiver, handler, tokenManager, provider.getReactorDispatcher());
         this.receiver = receiver;
         this.handler = handler;
@@ -90,6 +112,49 @@ public class ServiceBusReactorReceiver extends ReactorReceiver {
                 completeWorkItem(key, null, value.getSink(), error);
             });
         });
+
+        if (!isSessionReceiver) {
+            this.sessionIdMono = Mono.empty();
+            this.sessionLockedUntil = Mono.just(Instant.EPOCH);
+            return;
+        }
+
+        this.sessionIdMono = getEndpointStates().filter(x -> x == AmqpEndpointState.ACTIVE)
+            .next()
+            .flatMap(state -> {
+                @SuppressWarnings("unchecked")
+                final Map<Symbol, Object> remoteSource = ((Source) receiver.getRemoteSource()).getFilter();
+                final Object value = remoteSource.get(SESSION_FILTER);
+                if (value == null) {
+                    logger.info("entityPath[{}], linkName[{}]. There is no session id.", entityPath, getLinkName());
+                    return Mono.empty();
+                }
+
+                final String actualSessionId = String.valueOf(value);
+                if (!CoreUtils.isNullOrEmpty(sessionId) && !sessionId.equals(actualSessionId)) {
+                    logger.warning("entityPath[{}], sessionId[{}]. expectedSessionId[{}]. Expected id does not match.",
+                        entityPath, sessionId, actualSessionId);
+                }
+
+                return Mono.just(actualSessionId);
+            })
+            .cache(value -> Duration.ofMillis(Long.MAX_VALUE), error -> Duration.ZERO, () -> Duration.ZERO);
+
+        this.sessionLockedUntil = getEndpointStates().filter(x -> x == AmqpEndpointState.ACTIVE)
+            .next()
+            .map(state -> {
+                if (receiver.getRemoteProperties() != null
+                    && receiver.getRemoteProperties().containsKey(LOCKED_UNTIL_UTC)) {
+                    final long ticks = (long) receiver.getRemoteProperties().get(LOCKED_UNTIL_UTC);
+                    return MessageUtils.convertDotNetTicksToInstant(ticks);
+                } else {
+                    logger.info("entityPath[{}], linkName[{}]. expectedSessionId[{}]. Locked until not set.",
+                        entityPath, getLinkName(), sessionId);
+
+                    return Instant.EPOCH;
+                }
+            })
+            .cache(value -> Duration.ofMillis(Long.MAX_VALUE), error -> Duration.ZERO, () -> Duration.ZERO);
     }
 
     public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState) {
@@ -129,6 +194,16 @@ public class ServiceBusReactorReceiver extends ReactorReceiver {
     public Flux<Message> receive() {
         // Remove empty update disposition messages. The deliveries themselves are ACKs with no message.
         return super.receive().filter(message -> message != EMPTY_MESSAGE);
+    }
+
+    @Override
+    public Mono<String> getSessionId() {
+        return sessionIdMono;
+    }
+
+    @Override
+    public Mono<Instant> getSessionLockedUntil() {
+        return sessionLockedUntil;
     }
 
     @Override
