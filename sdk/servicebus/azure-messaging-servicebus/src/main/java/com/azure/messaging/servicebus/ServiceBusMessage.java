@@ -5,7 +5,6 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.util.Context;
 
-import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
@@ -61,17 +60,6 @@ public class ServiceBusMessage {
         this.body = Objects.requireNonNull(body, "'body' cannot be null.");
         this.context = Context.NONE;
         this.properties = new HashMap<>();
-    }
-
-    /**
-     * Creates a {@link ServiceBusMessage} containing the {@code body}.
-     *
-     * @param body The data to set for this {@link ServiceBusMessage}.
-     *
-     * @throws NullPointerException if {@code body} is {@code null}.
-     */
-    public ServiceBusMessage(ByteBuffer body) {
-        this(body.array());
     }
 
     /**
