@@ -1,5 +1,8 @@
 # Release History
 
+## 8.1.0-beta.1 (Unreleased)
+
+
 ## 8.0.0 (2020-04-27)
 ### Features
 - Added ability to encrypt `ComputeNode` disk drives using the new `diskEncryptionConfiguration` property of `VirtualMachineConfiguration`.

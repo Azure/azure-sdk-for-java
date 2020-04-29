@@ -1970,5 +1970,17 @@
     <Package name="~com\.azure\.management(\.[^.]+)*\.samples(\.[^.]+)*"/>
     <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
+  
+  <!-- Exclude from spring related classes -->
+  <Match>
+    <Or>
+      <Class name="com.microsoft.azure.utils.PropertyLoader"/> <!-- false positive -->
+      <Class name="com.microsoft.azure.spring.support.GetHashMac"/> <!-- false positive -->
+    </Or>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE,
+                  NP_LOAD_OF_KNOWN_NULL_VALUE,
+                  RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE,
+                  RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
+  </Match>
 
 </FindBugsFilter>
