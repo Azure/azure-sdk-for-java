@@ -1227,7 +1227,8 @@ public class BlobAsyncClientBase {
                     hd.isIncrementalCopy(), hd.getDestinationSnapshot(), AccessTier.fromString(hd.getAccessTier()),
                     hd.isAccessTierInferred(), ArchiveStatus.fromString(hd.getArchiveStatus()),
                     hd.getEncryptionKeySha256(), hd.getAccessTierChangeTime(), hd.getMetadata(),
-                    hd.getBlobCommittedBlockCount(), hd.getVersionId(), hd.isCurrentVersion());
+                    hd.getBlobCommittedBlockCount(), null, null);
+//                    hd.getBlobCommittedBlockCount(), hd.getVersionId(), hd.isCurrentVersion());
                 return new SimpleResponse<>(rb, properties);
             });
     }

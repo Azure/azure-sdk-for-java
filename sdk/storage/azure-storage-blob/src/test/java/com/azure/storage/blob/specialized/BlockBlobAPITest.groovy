@@ -11,22 +11,9 @@ import com.azure.core.http.HttpRequest
 import com.azure.core.util.Context
 import com.azure.core.util.FluxUtil
 import com.azure.identity.DefaultAzureCredentialBuilder
-import com.azure.storage.blob.APISpec
-import com.azure.storage.blob.BlobAsyncClient
-import com.azure.storage.blob.BlobClient
-import com.azure.storage.blob.BlobServiceClientBuilder
-import com.azure.storage.blob.BlobUrlParts
-import com.azure.storage.blob.ProgressReceiver
-import com.azure.storage.blob.models.AccessTier
-import com.azure.storage.blob.models.BlobErrorCode
-import com.azure.storage.blob.models.BlobHttpHeaders
-import com.azure.storage.blob.models.BlobRange
-import com.azure.storage.blob.models.BlobRequestConditions
-import com.azure.storage.blob.models.BlobStorageException
-import com.azure.storage.blob.models.BlockListType
-import com.azure.storage.blob.models.CustomerProvidedKey
-import com.azure.storage.blob.models.ParallelTransferOptions
-import com.azure.storage.blob.models.PublicAccessType
+import com.azure.storage.blob.*
+import com.azure.storage.blob.models.*
+import com.azure.storage.common.ErrorReceiver
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RequestRetryOptions
 import reactor.core.publisher.Flux
@@ -1663,5 +1650,387 @@ class BlockBlobAPITest extends APISpec {
 
         then:
         thrown(IllegalArgumentException)
+    }
+
+    /* Quick Query Tests. */
+
+    // Generates and uploads a CSV file
+    def uploadCsv(BlobQuickQueryDelimitedSerialization s, int numCopies) {
+        String header = String.join(new String(s.getColumnSeparator()), "rn1", "rn2", "rn3", "rn4")
+            .concat(new String(s.getRecordSeparator()))
+        byte[] headers = header.getBytes()
+
+        String csv = String.join(new String(s.getColumnSeparator()), "100", "200", "300", "400")
+            .concat(new String(s.getRecordSeparator()))
+            .concat(String.join(new String(s.getColumnSeparator()), "300", "400", "500", "600")
+                .concat(new String(s.getRecordSeparator())))
+
+        byte[] csvData = csv.getBytes()
+
+        int headerLength = s.isHeadersPresent() ? headers.length : 0
+        byte[] data = new byte[headerLength + csvData.length * numCopies]
+        if (s.isHeadersPresent()) {
+            System.arraycopy(headers, 0, data, 0, headers.length)
+        }
+
+        for (int i = 0; i < numCopies; i++) {
+            int o = i * csvData.length + headerLength;
+            System.arraycopy(csvData, 0, data, o, csvData.length)
+        }
+
+        InputStream inputStream = new ByteArrayInputStream(data)
+
+        blobClient.upload(inputStream, data.length, true)
+    }
+
+    def uploadSmallJson(int numCopies) {
+        StringBuilder b = new StringBuilder()
+        b.append('{\n')
+        for(int i = 0; i < numCopies; i++) {
+            b.append(String.format('\t"name%d": "owner%d",\n', i, i))
+        }
+        b.append('}')
+
+        InputStream inputStream = new ByteArrayInputStream(b.toString().getBytes())
+
+        blobClient.upload(inputStream, b.length(), true)
+    }
+
+    byte[] readFromInputStream(InputStream stream, int numBytesToRead) {
+        byte[] queryData = new byte[numBytesToRead]
+
+        def totalRead = 0
+        def bytesRead = 0
+        def length = numBytesToRead
+
+        while (bytesRead != -1 && totalRead < numBytesToRead) {
+            bytesRead = stream.read(queryData, totalRead, length)
+            if (bytesRead != -1) {
+                totalRead += bytesRead
+                length -= bytesRead
+            }
+        }
+
+        stream.close()
+        return queryData
+    }
+
+    def "Quick query min"() {
+        setup:
+        BlobQuickQueryDelimitedSerialization ser = new BlobQuickQueryDelimitedSerialization()
+            .setRecordSeparator('\n' as char)
+            .setColumnSeparator(',' as char)
+            .setEscapeChar('\0' as char)
+            .setFieldQuote('\0' as char)
+            .setHeadersPresent(false)
+        uploadCsv(ser, 32)
+
+        ByteArrayOutputStream downloadData = new ByteArrayOutputStream()
+        blobClient.download(downloadData)
+        byte[] downloadedData = downloadData.toByteArray()
+
+        when:
+        InputStream qqStream = blockBlobClient.openQueryInputStream("SELECT * from BlobStorage")
+
+        byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
+
+        then:
+        notThrown(IOException)
+        for (int j = 0; j < downloadedData.length; j++) {
+            assert queryData[j] == downloadedData[j]
+        }
+    }
+
+    /* Snapshot test: TODO, cant get block blob snapshot client. */
+
+    @Unroll
+    def "Query different sizes"() {
+        setup:
+        BlobQuickQueryDelimitedSerialization ser = new BlobQuickQueryDelimitedSerialization()
+            .setRecordSeparator('\n' as char)
+            .setColumnSeparator(',' as char)
+            .setEscapeChar('\0' as char)
+            .setFieldQuote('\0' as char)
+            .setHeadersPresent(false)
+        uploadCsv(ser, numCopies)
+
+        ByteArrayOutputStream downloadData = new ByteArrayOutputStream()
+        blobClient.download(downloadData)
+        byte[] downloadedData = downloadData.toByteArray()
+
+        when:
+        InputStream qqStream = blockBlobClient.openQueryInputStream("SELECT * from BlobStorage")
+
+        byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
+
+        then:
+        notThrown(IOException)
+        for (int j = 0; j < downloadedData.length; j++) {
+            assert queryData[j] == downloadedData[j]
+        }
+
+        // To calculate the size of data being tested = numCopies * 32 bytes
+        where:
+        numCopies | _
+        1         | _ // 32 bytes
+        32        | _ // 1 KB
+        256       | _ // 8 KB
+        400       | _ // 12 ish KB
+        4000      | _ // 125 KB
+    }
+
+    /* Note: Input delimited tested everywhere. */
+    @Unroll
+    def "Input json"() {
+        setup:
+        BlobQuickQueryJsonSerialization ser = new BlobQuickQueryJsonSerialization()
+            .setRecordSeparator(recordSeparator as char)
+        uploadSmallJson(numCopies)
+
+        ByteArrayOutputStream downloadData = new ByteArrayOutputStream()
+        blobClient.download(downloadData)
+        byte[] downloadedData = downloadData.toByteArray()
+
+        when:
+        InputStream qqStream = blockBlobClient.openQueryInputStream("SELECT * from BlobStorage", ser, ser, null, null, null)
+
+        byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
+
+        then:
+        notThrown(IOException)
+        for (int j = 0; j < downloadedData.length; j++) {
+            assert queryData[j] == downloadedData[j]
+        }
+
+        where:
+        numCopies | recordSeparator || _
+//        0         | '\n'            || _
+//        10        | '\n'            || _
+//        100       | '\n'            || _
+        1000      | '\n'            || _ /* TODO : Investigate this case: I think its a bug in upload via InputStream :( */
+    }
+
+    def "Non fatal error"() {
+        setup:
+        BlobQuickQueryDelimitedSerialization base = new BlobQuickQueryDelimitedSerialization()
+            .setRecordSeparator('\n' as char)
+            .setEscapeChar('\0' as char)
+            .setFieldQuote('\0' as char)
+            .setHeadersPresent(false)
+
+        uploadCsv(base.setColumnSeparator('.' as char), 32)
+
+        MockErrorReceiver receiver = new MockErrorReceiver("InvalidColumnOrdinal")
+
+        when:
+        InputStream qqStream = blockBlobClient.openQueryInputStream("SELECT _1 from BlobStorage WHERE _2 > 250",
+            base.setColumnSeparator(',' as char), base.setColumnSeparator(',' as char), null,
+            receiver, null)
+
+
+        readFromInputStream(qqStream, Constants.KB)
+
+        then:
+        receiver.numErrors > 0
+        notThrown(BlobStorageException)
+    }
+
+    def "Fatal error"() {
+        setup:
+        BlobQuickQueryDelimitedSerialization base = new BlobQuickQueryDelimitedSerialization()
+            .setRecordSeparator('\n' as char)
+            .setEscapeChar('\0' as char)
+            .setFieldQuote('\0' as char)
+            .setHeadersPresent(true)
+
+        uploadCsv(base.setColumnSeparator('.' as char), 32)
+
+        when:
+        InputStream qqStream = blockBlobClient.openQueryInputStream("SELECT * from BlobStorage",
+            new BlobQuickQueryJsonSerialization(), null, null, null, null)
+
+        readFromInputStream(qqStream, Constants.KB)
+
+        then:
+        thrown(IOException)
+    }
+
+    def "Progress receiver"() {
+        setup:
+        BlobQuickQueryDelimitedSerialization base = new BlobQuickQueryDelimitedSerialization()
+            .setRecordSeparator('\n' as char)
+            .setEscapeChar('\0' as char)
+            .setFieldQuote('\0' as char)
+            .setHeadersPresent(false)
+
+        uploadCsv(base.setColumnSeparator('.' as char), 32)
+
+        def mockReceiver = new MockProgressReceiver()
+        def sizeofBlobToRead = blobClient.getProperties().getBlobSize()
+
+        when:
+        InputStream qqStream = blockBlobClient.openQueryInputStream("SELECT * from BlobStorage",
+            null, null, null, null, mockReceiver as com.azure.storage.common.ProgressReceiver)
+
+        /* The QQ Avro stream has the following pattern
+           n * (data record -> progress record) -> end record */
+        // 1KB of data will only come back as a single data record.
+        /* Pretend to read more data because the input stream will not parse records following the data record if it
+         doesn't need to. */
+        readFromInputStream(qqStream, Constants.MB)
+
+        then:
+        // At least the size of blob to read will be in the progress list
+        mockReceiver.progressList.contains(sizeofBlobToRead)
+    }
+
+    @Requires( { liveMode() } ) // Large amount of data.
+    def "Multiple records with progress receiver"() {
+        setup:
+        BlobQuickQueryDelimitedSerialization ser = new BlobQuickQueryDelimitedSerialization()
+            .setRecordSeparator('\n' as char)
+            .setColumnSeparator(',' as char)
+            .setEscapeChar('\0' as char)
+            .setFieldQuote('\0' as char)
+            .setHeadersPresent(false)
+        uploadCsv(ser, 512000)
+
+        def mockReceiver = new MockProgressReceiver()
+
+        when:
+        InputStream qqStream = blockBlobClient.openQueryInputStream("SELECT * from BlobStorage",
+            null, null, null, null, mockReceiver as com.azure.storage.common.ProgressReceiver)
+
+        /* The Avro stream has the following pattern
+           n * (data record -> progress record) -> end record */
+        // 1KB of data will only come back as a single data record.
+        /* Pretend to read more data because the input stream will not parse records following the data record if it
+         doesn't need to. */
+        readFromInputStream(qqStream, 16 * Constants.MB)
+
+        then:
+        long temp = 0
+        // Make sure theyre all increasingly bigger
+        for (long progress : mockReceiver.progressList) {
+            assert progress >= temp
+            temp = progress
+        }
+    }
+
+    class MockProgressReceiver implements com.azure.storage.common.ProgressReceiver {
+
+        List<Long> progressList
+
+        MockProgressReceiver() {
+            this.progressList = new ArrayList<>()
+        }
+
+        @Override
+        void reportProgress(long bytesRead) {
+            progressList.add(bytesRead)
+        }
+    }
+
+    class MockErrorReceiver implements ErrorReceiver<BlobQuickQueryError> {
+
+        String expectedType
+        int numErrors
+
+        MockErrorReceiver(String expectedType) {
+            this.expectedType = expectedType
+            this.numErrors = 0
+        }
+
+        @Override
+        void reportError(BlobQuickQueryError nonFatalError) {
+            assert !nonFatalError.isFatal()
+            assert nonFatalError.getName() == expectedType
+            numErrors++
+        }
+    }
+
+    @Unroll
+    def "Query input output IA"() {
+        when:
+        /* Mock random impl of QQ Serialization*/
+        BlobQuickQuerySerialization ser = Spy() {
+            return '\n'
+        }
+        def inSer = input ? ser : null
+        def outSer = output ? ser : null
+
+        InputStream stream = blockBlobClient.openQueryInputStream("SELECT * from BlobStorage", inSer, outSer, null, null, null)
+        stream.read()
+        stream.close()
+
+        then:
+        thrown(IOException)
+
+        where:
+        input   | output   || _
+        true    | false    || _
+        false   | true     || _
+    }
+
+    @Unroll
+    def "Query AC"() {
+        setup:
+        match = setupBlobMatchCondition(blockBlobClient, match)
+        leaseID = setupBlobLeaseCondition(blockBlobClient, leaseID)
+        def bac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+
+        when:
+        InputStream stream = blockBlobClient.openQueryInputStream("SELECT * from BlobStorage", null, null, bac, null, null)
+
+        stream.read()
+
+        stream.close()
+
+        then:
+        notThrown(BlobStorageException)
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Unroll
+    def "Query AC fail"() {
+        setup:
+        setupBlobLeaseCondition(blockBlobClient, leaseID)
+        def bac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupBlobMatchCondition(blockBlobClient, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+
+        when:
+        InputStream stream = blockBlobClient.openQueryInputStream("SELECT * from BlobStorage", null, null, bac, null, null)
+
+        stream.read()
+
+        stream.close()
+
+        then:
+        thrown(IOException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
     }
 }
