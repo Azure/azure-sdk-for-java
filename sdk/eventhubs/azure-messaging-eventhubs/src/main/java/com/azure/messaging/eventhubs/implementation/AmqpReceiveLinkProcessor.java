@@ -177,7 +177,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                     },
                     error -> {
                         currentLink = null;
-                        logger.warning("linkName[{}] entityPath[{}]. Error occurred in in link.", linkName, entityPath);
+                        logger.warning("linkName[{}] entityPath[{}]. Error occurred in link.", linkName, entityPath);
                         onError(error);
                     },
                     () -> {
@@ -276,8 +276,6 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             return;
         }
 
-        drain();
-
         final int attempt = retryAttempts.incrementAndGet();
         final Duration retryInterval = retryPolicy.calculateRetryDelay(throwable, attempt);
 
@@ -298,11 +296,10 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             logger.info("Parent connection is disposed. Not reopening on error.");
         }
 
-        logger.warning("linkName[{}] entityPath[{}] Non-retryable error occurred in AMQP receive link.",
+        logger.warning("linkName[{}] entityPath[{}]. Non-retryable error occurred in AMQP receive link.",
             linkName, entityPath, throwable);
 
         lastError = throwable;
-
         isTerminated.set(true);
 
         synchronized (lock) {
@@ -407,6 +404,8 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         if (currentLinkSubscriptions != null) {
             currentLinkSubscriptions.dispose();
         }
+
+        Operators.onDiscardQueueWithClear(messageQueue, currentContext(), null);
     }
 
     private void drain() {
