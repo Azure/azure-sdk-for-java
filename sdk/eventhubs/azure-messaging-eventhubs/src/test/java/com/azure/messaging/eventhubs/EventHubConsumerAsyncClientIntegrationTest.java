@@ -300,13 +300,16 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
             .filter(event -> TestUtils.isMatchingEvent(event, MESSAGE_TRACKING_ID))
             .subscribe(
                 event -> logger.info("C3:\tReceived event sequence: {}", event.getData().getSequenceNumber()),
-                ex -> logger.error("C3:\tERROR", ex),
+                ex -> {
+                    logger.error("C3:\tERROR", ex);
+                    semaphore.release();
+                },
                 () -> logger.info("C3:\tCompleted.")));
 
         // Assert
         try {
-            Assertions.assertTrue(semaphore.tryAcquire(20, TimeUnit.SECONDS), "The EventHubConsumer was not closed "
-                + "after one with a higher epoch number started.");
+            Assertions.assertTrue(semaphore.tryAcquire(20, TimeUnit.SECONDS),
+                "The EventHubConsumer was not closed after one with a higher epoch number started.");
         } finally {
             subscriptions.dispose();
             isActive.set(false);
@@ -579,6 +582,44 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
             isActive.set(false);
             producerEvents.dispose();
             consumer.close();
+        }
+    }
+
+    /**
+     * Verify that when we specify backpressure, events are no longer fetched after we've reached the subscribed amount.
+     */
+    @Test
+    void canReceiveWithBackpressure() {
+        // Arrange
+        final int backpressure = 15;
+        final String secondPartitionId = "2";
+        final AtomicBoolean isActive = new AtomicBoolean(true);
+        final EventHubProducerAsyncClient producer = builder.buildAsyncProducerClient();
+        final Disposable producerEvents = getEvents(isActive)
+            .flatMap(event -> producer.send(event, new SendOptions().setPartitionId(secondPartitionId)))
+            .subscribe(
+                sent -> {
+                },
+                error -> logger.error("Error sending event", error),
+                () -> logger.info("Event sent."));
+
+        final ReceiveOptions options = new ReceiveOptions()
+            .setTrackLastEnqueuedEventProperties(true);
+        final EventHubConsumerAsyncClient consumer = builder
+            .prefetchCount(2)
+            .buildAsyncConsumerClient();
+
+        // Act & Assert
+        try {
+            StepVerifier.create(consumer.receiveFromPartition(secondPartitionId, EventPosition.latest(), options), backpressure)
+                .expectNextCount(backpressure)
+                .thenAwait(Duration.ofSeconds(5))
+                .thenCancel()
+                .verify();
+        } finally {
+            isActive.set(false);
+            producerEvents.dispose();
+            dispose(producer, consumer);
         }
     }
 
