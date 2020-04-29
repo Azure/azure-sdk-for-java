@@ -80,6 +80,31 @@ class BlobAPITest extends APISpec {
         stream.toByteArray() == randomData
     }
 
+
+    /* Tests an issue found where buffered upload would not deep copy buffers while determining what upload path to take. */
+    @Unroll
+    def "Upload input stream single upload" () {
+        setup:
+        def randomData = getRandomByteArray(20 * Constants.KB)
+        def input = new ByteArrayInputStream(randomData)
+
+        when:
+        bc.upload(input, 20 * Constants.KB, true)
+
+        then:
+        def stream = new ByteArrayOutputStream()
+        bc.downloadWithResponse(stream, null, null, null, false, null, null)
+        stream.toByteArray() == randomData
+
+        where:
+        size                || _
+        1 * Constants.KB    || _  /* Less than copyToOutputStream buffer size, Less than maxSingleUploadSize */
+        8 * Constants.KB    || _  /* Equal to copyToOutputStream buffer size, Less than maxSingleUploadSize */
+        20 * Constants.KB   || _  /* Greater than copyToOutputStream buffer size, Less than maxSingleUploadSize */
+    }
+
+    /* TODO: Add more tests to test large data sizes. */
+
     @Requires( { liveMode() } )
     def "Upload input stream large data"() {
         setup:
@@ -90,7 +115,7 @@ class BlobAPITest extends APISpec {
 
         when:
         // Uses blob output stream under the hood.
-        bc.uploadWithResponse(input, 20 * Constants.MB, pto, null, null, null, null, null)
+        bc.uploadWithResponse(input, 20 * Constants.MB, pto, null, null, null, null, null, null)
 
         then:
         notThrown(BlobStorageException)

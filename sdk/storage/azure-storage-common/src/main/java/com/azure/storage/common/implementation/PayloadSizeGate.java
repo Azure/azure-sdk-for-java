@@ -38,12 +38,16 @@ final class PayloadSizeGate {
      * @return Buffered data or incoming data depending on threshold condition.
      */
     Flux<ByteBuffer> write(ByteBuffer buf) {
+        /* Deep copy the buffer. This is required to ensure integrity of data. */
+        ByteBuffer cachedBuffer = ByteBuffer.allocate(buf.remaining()).put(buf);
+        cachedBuffer.flip();
+
         if (isThresholdBreached()) {
-            size += buf.remaining();
-            return Flux.just(buf);
+            size += cachedBuffer.remaining();
+            return Flux.just(cachedBuffer);
         } else {
-            size += buf.remaining();
-            byteBuffers.add(buf);
+            size += cachedBuffer.remaining();
+            byteBuffers.add(cachedBuffer);
             if (isThresholdBreached()) {
                 Flux<ByteBuffer> result = dequeuingFlux(byteBuffers);
                 byteBuffers = null;
