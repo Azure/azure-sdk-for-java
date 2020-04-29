@@ -3,12 +3,15 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.exception.AmqpErrorCondition;
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
+import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -28,6 +31,9 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 /**
  * Integration tests for {@link ServiceBusReceiverAsyncClient} from queues or subscriptions.
@@ -76,6 +82,31 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         } finally {
             dispose(receiver, sender, receiveAndDeleteReceiver);
         }
+    }
+
+    /**
+     * Verifies that we can not receive from a session enabled receiver which try to connect to non session entity.
+     */
+    @MethodSource("messagingEntityProvider")
+    @ParameterizedTest
+    void createSessionReceiverForNonSessiondEntity(MessagingEntityType entityType) {
+        // Arrange
+        String sessionId = "test-session-id";
+        ServiceBusReceiverClientBuilder builder = createBuilder()
+            .receiver();
+
+        if (entityType == MessagingEntityType.QUEUE) {
+            builder.queueName(getQueueName());
+        } else if (entityType == MessagingEntityType.SUBSCRIPTION) {
+            builder.topicName(getTopicName());
+            builder.subscriptionName(getSubscriptionName());
+        }
+
+        ServiceBusReceiverAsyncClient invalidReceiver = builder.sessionId(sessionId).buildAsyncClient();
+
+        // Assert & Act
+        StepVerifier.create(invalidReceiver.receive())
+            .verifyErrorMatches(error -> error instanceof UnsupportedOperationException);
     }
 
     /**

@@ -66,6 +66,26 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
+     * Verifies that we can send a session message to a non-sessionful entity.
+     * This also work in track-1 code base.
+     */
+    @MethodSource("receiverTypesProvider")
+    @ParameterizedTest
+    void sendSessionMessageToNonSessionEntity(MessagingEntityType entityType) {
+        // Arrange
+        setSenderAndReceiver(entityType, false);
+
+        final String messageId = UUID.randomUUID().toString();
+        final String contents = "Some-contents";
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(contents, messageId);
+        message.setSessionId("test-session-id1");
+
+        // Assert & Act
+        StepVerifier.create(sender.send(message).doOnSuccess(aVoid -> messagesPending.incrementAndGet()))
+            .verifyComplete();
+    }
+
+    /**
      * Verifies that we can send a message to a non-session queue.
      */
     @MethodSource("receiverTypesProvider")
