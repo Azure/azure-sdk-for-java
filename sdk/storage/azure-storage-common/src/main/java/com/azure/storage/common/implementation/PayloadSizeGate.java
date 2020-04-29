@@ -38,6 +38,7 @@ final class PayloadSizeGate {
      * @return Buffered data or incoming data depending on threshold condition.
      */
     Flux<ByteBuffer> write(ByteBuffer buf) {
+        /* TODO (gapra): Investigate if there is way to avoid copying the data twice since this may result in lower perf. */
         /* Deep copy the buffer. This is required to ensure integrity of data. */
         ByteBuffer cachedBuffer = ByteBuffer.allocate(buf.remaining()).put(buf);
         cachedBuffer.flip();
