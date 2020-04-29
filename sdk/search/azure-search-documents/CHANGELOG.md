@@ -1,7 +1,7 @@
 # Release History
 
 ## 1.0.0-beta.3 (Unreleased)
-- Changed `createOrUpdate*` and `delete*` APIs in `SearchServiceClient` to use boolean `onlyIfUnchanged` instead of `MatchConditioans`.
+- Changed `createOrUpdate*` and `delete*` APIs in `SearchServiceClient` to use boolean `onlyIfUnchanged` instead of `MatchConditions`.
 - Added helper class `FieldBuilder` which coverts strongly-typed model class to `List<Field>`. 
 - Added annotations `FieldIgnore`, `SimpleFieldProperty`, `SearchableFieldProperty` to define the `Field` on model properties.
 - Added fluent class `SimpleField`, `SearchableField` and `ComplexField` to build `Field`.
