@@ -420,31 +420,31 @@ public class IdentityClient {
      */
     public Mono<MsalToken> authenticateWithMsalAccount(TokenRequestContext request, IAccount account) {
         return Mono.defer(() -> Mono.fromFuture(() -> {
-                SilentParameters.SilentParametersBuilder parametersBuilder = SilentParameters.builder(
-                    new HashSet<>(request.getScopes()));
-                if (account != null) {
-                    parametersBuilder = parametersBuilder.account(account);
-                }
-                try {
-                    return getPublicClientApplication(false)
-                        .acquireTokenSilently(parametersBuilder.build());
-                } catch (MalformedURLException e) {
-                    throw logger.logExceptionAsError(Exceptions.propagate(e));
-                }
-            }).map(ar -> new MsalToken(ar, options))
-            .filter(t -> !t.isExpired())
-            .switchIfEmpty(Mono.fromFuture(() -> {
-                SilentParameters.SilentParametersBuilder forceParametersBuilder = SilentParameters.builder(
-                    new HashSet<>(request.getScopes())).forceRefresh(true);
-                if (account != null) {
-                    forceParametersBuilder = forceParametersBuilder.account(account);
-                }
-                try {
-                    return getPublicClientApplication(false).acquireTokenSilently(forceParametersBuilder.build());
-                } catch (MalformedURLException e) {
-                    throw logger.logExceptionAsError(Exceptions.propagate(e));
-                }
-            }).map(result -> new MsalToken(result, options))));
+            SilentParameters.SilentParametersBuilder parametersBuilder = SilentParameters.builder(
+                new HashSet<>(request.getScopes()));
+            if (account != null) {
+                parametersBuilder = parametersBuilder.account(account);
+            }
+            try {
+                return getPublicClientApplication(false)
+                    .acquireTokenSilently(parametersBuilder.build());
+            } catch (MalformedURLException e) {
+                throw logger.logExceptionAsError(Exceptions.propagate(e));
+            }
+        }).map(ar -> new MsalToken(ar, options))
+        .filter(t -> !t.isExpired())
+        .switchIfEmpty(Mono.fromFuture(() -> {
+            SilentParameters.SilentParametersBuilder forceParametersBuilder = SilentParameters.builder(
+                new HashSet<>(request.getScopes())).forceRefresh(true);
+            if (account != null) {
+                forceParametersBuilder = forceParametersBuilder.account(account);
+            }
+            try {
+                return getPublicClientApplication(false).acquireTokenSilently(forceParametersBuilder.build());
+            } catch (MalformedURLException e) {
+                throw logger.logExceptionAsError(Exceptions.propagate(e));
+            }
+        }).map(result -> new MsalToken(result, options))));
     }
 
     /**
