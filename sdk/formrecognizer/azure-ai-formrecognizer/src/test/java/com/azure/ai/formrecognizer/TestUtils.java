@@ -75,7 +75,7 @@ final class TestUtils {
         + ".com/Azure/azure-sdk-for-java/master/sdk/formrecognizer/azure-ai-formrecognizer/src/test/resources"
         + "/sample_files/Test/layout1.jpg";
 
-    private static final String CUSTOM_FORM_LABELED_DATA = "src/test/resources/sample_files/Content"
+    static final String CUSTOM_FORM_LABELED_DATA = "src/test/resources/sample_files/Content"
         + "/customFormLabeledContent.json";
     static final String CUSTOM_FORM_DATA = "src/test/resources/sample_files/Content/customFormContent.json";
     private static final String RECEIPT_FORM_DATA = "src/test/resources/sample_files/Content/receiptContent.json";

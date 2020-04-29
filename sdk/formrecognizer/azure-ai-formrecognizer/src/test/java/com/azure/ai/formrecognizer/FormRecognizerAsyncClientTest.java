@@ -21,14 +21,13 @@ import java.time.Duration;
 
 import static com.azure.ai.formrecognizer.TestUtils.CUSTOM_FORM_DATA;
 import static com.azure.ai.formrecognizer.TestUtils.CUSTOM_FORM_FILE_LENGTH;
+import static com.azure.ai.formrecognizer.TestUtils.CUSTOM_FORM_LABELED_DATA;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_SOURCE_URL_ERROR;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_URL;
 import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_LOCAL_URL;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedReceipts;
-import static com.azure.ai.formrecognizer.TestUtils.getExpectedRecognizedForms;
-import static com.azure.ai.formrecognizer.TestUtils.getExpectedRecognizedLabeledForms;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedUSReceipt;
 import static com.azure.ai.formrecognizer.TestUtils.getPageResults;
 import static com.azure.ai.formrecognizer.TestUtils.getRawResponse;
@@ -267,7 +266,8 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                     CUSTOM_FORM_FILE_LENGTH, FormContentType.APPLICATION_PDF, true, null)
                     .getSyncPoller();
                 syncPoller.waitForCompletion();
-                validateRecognizedFormResult(getExpectedRecognizedLabeledForms(), syncPollers.getFinalResult());
+                validateRecognizedResult(syncPollers.getFinalResult(),
+                    getRawResponse(CUSTOM_FORM_LABELED_DATA).getAnalyzeResult(), true, true);
             }));
     }
 
@@ -312,7 +312,8 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                     CUSTOM_FORM_FILE_LENGTH, null, true, null)
                     .getSyncPoller();
                 syncPoller.waitForCompletion();
-                validateRecognizedFormResult(getExpectedRecognizedLabeledForms(), syncPollers.getFinalResult());
+                validateRecognizedResult(syncPollers.getFinalResult(),
+                    getRawResponse(CUSTOM_FORM_LABELED_DATA).getAnalyzeResult(), true, true);
             }));
     }
 
@@ -333,8 +334,8 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                     CUSTOM_FORM_FILE_LENGTH, FormContentType.APPLICATION_PDF, false, null)
                     .getSyncPoller();
                 syncPoller.waitForCompletion();
-                validateRecognizedUnLabeledResult(syncPollers.getFinalResult(),
-                    getRawResponse(CUSTOM_FORM_DATA).getAnalyzeResult(), false);
+                validateRecognizedResult(syncPollers.getFinalResult(),
+                    getRawResponse(CUSTOM_FORM_DATA).getAnalyzeResult(), false, false);
             }));
     }
 }

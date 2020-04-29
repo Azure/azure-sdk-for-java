@@ -16,12 +16,12 @@ import org.junit.jupiter.api.Test;
 
 import static com.azure.ai.formrecognizer.TestUtils.CUSTOM_FORM_DATA;
 import static com.azure.ai.formrecognizer.TestUtils.CUSTOM_FORM_FILE_LENGTH;
+import static com.azure.ai.formrecognizer.TestUtils.CUSTOM_FORM_LABELED_DATA;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_SOURCE_URL_ERROR;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_URL;
 import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedReceipts;
-import static com.azure.ai.formrecognizer.TestUtils.getExpectedRecognizedLabeledForms;
 import static com.azure.ai.formrecognizer.TestUtils.getPageResults;
 import static com.azure.ai.formrecognizer.TestUtils.getRawResponse;
 import static com.azure.ai.formrecognizer.TestUtils.getReadResults;
@@ -214,7 +214,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                     = client.beginRecognizeCustomForms(data, syncPoller.getFinalResult().getModelId(),
                     CUSTOM_FORM_FILE_LENGTH, FormContentType.APPLICATION_PDF, true, null);
                 syncPoller.waitForCompletion();
-                validateRecognizedFormResult(getExpectedRecognizedLabeledForms(), syncPollers.getFinalResult());
+                validateRecognizedResult(syncPollers.getFinalResult(),
+                    getRawResponse(CUSTOM_FORM_LABELED_DATA).getAnalyzeResult(), true, true);
             }));
     }
 
@@ -255,8 +256,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                     = client.beginRecognizeCustomForms(data, syncPoller.getFinalResult().getModelId(),
                     CUSTOM_FORM_FILE_LENGTH, null, true, null);
                 syncPoller.waitForCompletion();
-                validateRecognizedFormResult(getExpectedRecognizedLabeledForms(), syncPollers.getFinalResult());
-            }));
+                validateRecognizedResult(syncPollers.getFinalResult(),
+                    getRawResponse(CUSTOM_FORM_LABELED_DATA).getAnalyzeResult(), true, true);            }));
     }
 
     /**
@@ -274,8 +275,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                     = client.beginRecognizeCustomForms(data, syncPoller.getFinalResult().getModelId(),
                     CUSTOM_FORM_FILE_LENGTH, FormContentType.APPLICATION_PDF, false, null);
                 syncPoller.waitForCompletion();
-                validateRecognizedUnLabeledResult(syncPollers.getFinalResult(),
-                    getRawResponse(CUSTOM_FORM_DATA).getAnalyzeResult(), false);
+                validateRecognizedResult(syncPollers.getFinalResult(),
+                    getRawResponse(CUSTOM_FORM_DATA).getAnalyzeResult(), false, false);
             }));
     }
 
@@ -295,8 +296,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                     = client.beginRecognizeCustomForms(data, syncPoller.getFinalResult().getModelId(),
                     CUSTOM_FORM_FILE_LENGTH, FormContentType.APPLICATION_PDF, true, null);
                 syncPoller.waitForCompletion();
-                validateRecognizedUnLabeledResult(syncPollers.getFinalResult(),
-                    getRawResponse(CUSTOM_FORM_DATA).getAnalyzeResult(), true);
+                validateRecognizedResult(syncPollers.getFinalResult(),
+                    getRawResponse(CUSTOM_FORM_DATA).getAnalyzeResult(), true, false);
             }));
     }
 }
