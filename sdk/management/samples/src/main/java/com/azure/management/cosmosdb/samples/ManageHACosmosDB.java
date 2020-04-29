@@ -38,10 +38,9 @@ public final class ManageHACosmosDB {
     /**
      * Main function which runs the actual sample.
      * @param azure instance of the azure client
-     * @param connectionPolicy connection policy used for cosmos client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure, ConnectionPolicy connectionPolicy) {
+    public static boolean runSample(Azure azure) {
         final String docDBName = azure.sdkContext().randomResourceName("docDb", 10);
         final String rgName = azure.sdkContext().randomResourceName("rgNEMV", 24);
 
@@ -87,7 +86,7 @@ public final class ManageHACosmosDB {
             // Connect to CosmosDB and add a collection
 
             System.out.println("Connecting and adding collection");
-            createDBAndAddCollection(masterKey, endPoint, connectionPolicy);
+            createDBAndAddCollection(masterKey, endPoint);
 
             //============================================================
             // Delete CosmosDB.
@@ -117,12 +116,12 @@ public final class ManageHACosmosDB {
         return false;
     }
 
-    private static void createDBAndAddCollection(String masterKey, String endPoint, ConnectionPolicy connectionPolicy) throws CosmosClientException {
+    private static void createDBAndAddCollection(String masterKey, String endPoint) throws CosmosClientException {
         try {
             CosmosClient cosmosClient = new CosmosClientBuilder()
                     .setEndpoint(endPoint)
                     .setKey(masterKey)
-                    .setConnectionPolicy(connectionPolicy)
+                    .setConnectionPolicy(ConnectionPolicy.getDefaultPolicy())
                     .setConsistencyLevel(ConsistencyLevel.SESSION)
                     .buildClient();
 
@@ -163,8 +162,7 @@ public final class ManageHACosmosDB {
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());
 
-            ConnectionPolicy connectionPolicy = ConnectionPolicy.getDefaultPolicy();
-            runSample(azure, connectionPolicy);
+            runSample(azure);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
