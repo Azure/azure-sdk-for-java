@@ -55,7 +55,7 @@ public class VisualStudioCacheAccessor {
             File settingsFile = new File(settingsPath);
             output = mapper.readTree(settingsFile);
         } catch (Exception e) {
-            return output;
+            return null;
         }
         return output;
     }
