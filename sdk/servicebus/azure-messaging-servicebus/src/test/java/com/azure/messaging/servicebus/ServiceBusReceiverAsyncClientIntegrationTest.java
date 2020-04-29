@@ -23,6 +23,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -327,11 +328,10 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void receiveAndRenewLock(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType, false);
+        setSenderAndReceiver(entityType, true);
 
         final String messageId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = getMessage(messageId, false);
-
+        final ServiceBusMessage message = getMessage(messageId, true);
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
             .setEnableAutoComplete(false);
 
@@ -576,6 +576,37 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .verify();
     }
 
+    @MethodSource("messagingEntityProvider")
+    @ParameterizedTest
+    void setAndGetSessionState(MessagingEntityType entityType) {
+        // Arrange
+        setSenderAndReceiver(entityType, true);
+
+        final byte[] sessionState = "Finished".getBytes(UTF_8);
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage messageToSend = getMessage(messageId, true);
+
+        sendMessage(messageToSend).block(Duration.ofSeconds(10));
+
+        // Act
+        StepVerifier.create(receiver.receive()
+            .filter(x -> x.getSessionId().equals(sessionId))
+            .take(1)
+            .flatMap(m -> {
+                logger.info("SessionId:{}. LockToken: {}. LockedUntil: {}. Message received.",
+                    m.getSessionId(), m.getLockToken(), m.getLockedUntil());
+                return receiver.setSessionState(sessionId, sessionState);
+            }))
+            .expectComplete()
+            .verify();
+
+        StepVerifier.create(receiver.getSessionState(sessionId))
+            .assertNext(state -> {
+                logger.info("State received: {}", new String(state, UTF_8));
+                assertArrayEquals(sessionState, state);
+            })
+            .verifyComplete();
+    }
 
     private void setSenderAndReceiver(MessagingEntityType entityType, boolean isSessionEnabled) {
         setSenderAndReceiver(entityType, isSessionEnabled, Function.identity());

@@ -77,7 +77,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
 
             //The Storage operations run only in Record mode.
             // Playback mode is configured to test Batch operations only.
-            if(isRecordMode()) {
+            if (isRecordMode()) {
                 // Create storage container
                 container = createBlobContainer(storageAccountName, storageAccountKey, "testaddtask");
                 sas = uploadFileToCloud(container, BLOB_FILE_NAME, temp.getAbsolutePath());
@@ -109,7 +109,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
             contraint.withMaxTaskRetryCount(5);
             batchClient.taskOperations().updateTask(jobId, taskId, contraint);
             task = batchClient.taskOperations().getTask(jobId, taskId);
-            Assert.assertEquals((Integer)5, task.constraints().maxTaskRetryCount());
+            Assert.assertEquals((Integer) 5, task.constraints().maxTaskRetryCount());
 
             // LIST
             List<CloudTask> tasks = batchClient.taskOperations().listTasks(jobId);
@@ -546,7 +546,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
 
         // Num Resource Files * Max Chunk Size should be greater than or equal to the limit which triggers the PoisonTask test to ensure we encounter the error in the initial chunk.
         for(int i = 0; i < 100; i++) {
-            resourceFile = new ResourceFile().withHttpUrl("https://mystorageaccount.blob.core.windows.net/files/resourceFile"+i).withFilePath("resourceFile"+i);
+            resourceFile = new ResourceFile().withHttpUrl("https://mystorageaccount.blob.core.windows.net/files/resourceFile"+i).withFilePath("resourceFile" + i);
             resourceFiles.add(resourceFile);
         }
         // Num tasks to add
