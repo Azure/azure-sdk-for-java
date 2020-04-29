@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.FileInputStream;
 import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.nio.file.Paths;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -75,7 +76,7 @@ public class IntelliJCacheAccessor {
             KeyChainAccessor accessor = new KeyChainAccessor(null, "ADAuthManager",
                 "cachedAuthResult");
 
-            String jsonCred  = new String(accessor.read());
+            String jsonCred  = new String(accessor.read(), Charset.forName("UTF-8"));
 
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readTree(jsonCred);
@@ -86,7 +87,7 @@ public class IntelliJCacheAccessor {
                 "service", "ADAuthManager",
                 "account", "cachedAuthResult");
 
-            String jsonCred  = new String(accessor.read());
+            String jsonCred  = new String(accessor.read(), Charset.forName("UTF-8"));
             if (jsonCred.startsWith("cachedAuthResult@")) {
                 jsonCred = jsonCred.replaceFirst("cachedAuthResult@", "");
             }
@@ -153,14 +154,14 @@ public class IntelliJCacheAccessor {
             cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(dataToDecrypt, decryptBuffer.position(), ivLen));
             int dataOffset = decryptBuffer.position() + ivLen;
             byte[] decrypted = cipher.doFinal(dataToDecrypt, dataOffset, dataToDecrypt.length - dataOffset);
-            password = new String(decrypted);
+            password = new String(decrypted, Charset.forName("UTF-8"));
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException
                 | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
             throw logger.logExceptionAsError(new RuntimeException("Unable to access cache.", e));
         }
 
         try {
-            KdbxCreds creds = new KdbxCreds(password.getBytes());
+            KdbxCreds creds = new KdbxCreds(password.getBytes(Charset.forName("UTF-8")));
             InputStream inputStream = new FileInputStream(new File(keePassDatabasePath));
             Database database = SimpleDatabase.load(creds, inputStream);
 
