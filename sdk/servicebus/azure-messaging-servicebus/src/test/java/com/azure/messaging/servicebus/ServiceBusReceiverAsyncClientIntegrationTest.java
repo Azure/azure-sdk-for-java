@@ -377,7 +377,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Blocking here because it is not part of the scenario we want to test.
         sendMessage(message).block(TIMEOUT);
 
-        final ReceiveAsyncOptions options = new ReceiveAsyncOptions().setEnableAutoComplete(false);
         final ServiceBusReceivedMessageContext receivedContext = receiver.receive(options).next().block(TIMEOUT);
         assertNotNull(receivedContext);
 
@@ -639,7 +638,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .take(1)
             .flatMap(m -> {
                 logger.info("SessionId:{}. LockToken: {}. LockedUntil: {}. Message received.",
-                    m.getSessionId(), m.getLockToken(), m.getLockedUntil());
+                    m.getSessionId(), m.getMessage().getLockToken(), m.getMessage().getLockedUntil());
                 return receiver.setSessionState(sessionId, sessionState);
             }))
             .expectComplete()

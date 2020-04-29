@@ -9,8 +9,8 @@ import java.util.Objects;
  */
 public class ServiceBusReceivedMessageContext {
     private final ServiceBusReceivedMessage message;
-    private final ServiceBusErrorContext errorContext;
-    private final boolean hasError;
+    private final String sessionId;
+    private final Throwable error;
 
     /**
      * Creates an instance where a message was successfully received.
@@ -19,19 +19,38 @@ public class ServiceBusReceivedMessageContext {
      */
     ServiceBusReceivedMessageContext(ServiceBusReceivedMessage message) {
         this.message = Objects.requireNonNull(message, "'message' cannot be null.");
-        this.errorContext = null;
-        this.hasError = false;
+        this.sessionId = message.getSessionId();
+        this.error = null;
     }
 
     /**
      * Creates an instance where an error occurred such as session-lock-lost.
      *
-     * @param errorContext Context for that error.
+     * @param sessionId Session id that the error occurred in.
+     * @param error AMQP exception that occurred in session.
      */
-    ServiceBusReceivedMessageContext(ServiceBusErrorContext errorContext) {
+    ServiceBusReceivedMessageContext(String sessionId, Throwable error) {
+        this.sessionId = Objects.requireNonNull(sessionId, "'sessionId' cannot be null.");
+        this.error = Objects.requireNonNull(error, "'error' cannot be null.");
         this.message = null;
-        this.errorContext = Objects.requireNonNull(errorContext, "'errorContext' cannot be null.");
-        this.hasError = true;
+    }
+
+    /**
+     * Gets the session id of the message or that the error occurred in.
+     *
+     * @return The session id associated with the error or message. {@code null} if there is no session.
+     */
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    /**
+     * Gets the throwable that occurred.
+     *
+     * @return The throwable that occurred or {@code null} if there was no error.
+     */
+    public Throwable getThrowable() {
+        return error;
     }
 
     /**
@@ -44,20 +63,11 @@ public class ServiceBusReceivedMessageContext {
     }
 
     /**
-     * Gets the error context associated with the receive operation.
-     *
-     * @return The error context for the receive operation or {@code null} if there is no error.
-     */
-    public ServiceBusErrorContext getErrorContext() {
-        return errorContext;
-    }
-
-    /**
      * Gets whether or not an error occurred while receiving the next message.
      *
      * @return {@code true} if there was an error when receiving the next message; {@code false} otherwise.
      */
     public boolean hasError() {
-        return hasError;
+        return error != null;
     }
 }

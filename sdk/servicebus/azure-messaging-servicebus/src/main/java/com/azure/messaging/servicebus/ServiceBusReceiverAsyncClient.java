@@ -193,27 +193,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Gets the state of a session given its identifier.
-     *
-     * @param sessionId Identifier of session to get.
-     *
-     * @return The session state or an empty Mono if there is no state set for the session.
-     * @throws IllegalStateException if the receiver is a non-session receiver.
-     */
-    public Mono<byte[]> getSessionState(String sessionId) {
-        if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
-                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "getSessionState")));
-        } else if (!isSessionReceiver) {
-            return monoError(logger, new IllegalStateException("Cannot get session state on a non-session receiver."));
-        } else {
-            return connectionProcessor
-                .flatMap(connection -> connection.getManagementNode(entityPath, entityType, sessionId))
-                .flatMap(channel -> channel.getSessionState());
-        }
-    }
-
-    /**
      * Defers a {@link ServiceBusReceivedMessage message} using its lock token. This will move message into the deferred
      * subqueue.
      *

@@ -70,11 +70,12 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         // In the case that this test failed... we're going to drain the queue or subscription.
         if (pending > 0) {
             try {
-                IterableStream<ServiceBusReceivedMessage> removedMessage = receiveAndDeleteReceiver.receive(
+                IterableStream<ServiceBusReceivedMessageContext> removedMessage = receiveAndDeleteReceiver.receive(
                     pending + BUFFER_MESSAGES_TO_REMOVE, Duration.ofSeconds(15));
 
-                removedMessage.stream().forEach(receivedMessage -> {
-                    logger.info("Removed Message Seq: {} ", receivedMessage.getSequenceNumber());
+                removedMessage.stream().forEach(context -> {
+                    ServiceBusReceivedMessage message = context.getMessage();
+                    logger.info("Removed Message Seq: {} ", message.getSequenceNumber());
                 });
             } catch (Exception e) {
                 logger.warning("Error occurred when draining queue.", e);
