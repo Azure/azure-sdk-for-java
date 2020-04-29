@@ -7,7 +7,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
-import com.azure.identity.KeyringItemSchema;
 import com.azure.identity.KnownAuthorityHosts;
 import com.microsoft.aad.msal4jextensions.PersistenceSettings;
 import com.sun.jna.Platform;
@@ -32,7 +31,7 @@ public final class IdentityClientOptions {
     private static final String DEFAULT_KEYCHAIN_SERVICE = "Microsoft.Developer.IdentityService";
     private static final String DEFAULT_KEYCHAIN_ACCOUNT = "MSALCache";
     private static final String DEFAULT_KEYRING_NAME = "default";
-    private static final KeyringItemSchema DEFAULT_KEYRING_SCHEMA = KeyringItemSchema.MSAL_CACHE;
+    private static final String DEFAULT_KEYRING_SCHEMA = "msal.cache";
     private static final String DEFAULT_KEYRING_ITEM_NAME = DEFAULT_KEYCHAIN_ACCOUNT;
     private static final String DEFAULT_KEYRING_ATTR_NAME = "MsalClientID";
     private static final String DEFAULT_KEYRING_ATTR_VALUE = "Microsoft.Developer.IdentityService";
@@ -50,11 +49,11 @@ public final class IdentityClientOptions {
     private String keychainService;
     private String keychainAccount;
     private String keyringName;
-    private KeyringItemSchema keyringItemSchema;
+    private String keyringItemSchema;
     private String keyringItemName;
     private final String[] attributes; // preserve order
-    private boolean useUnprotectedFileOnLinux;
-    private boolean sharedTokenCacheDisabled;
+    private boolean allowUnencryptedCache;
+    private boolean sharedTokenCacheEnabled;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -72,8 +71,8 @@ public final class IdentityClientOptions {
         keyringItemSchema = DEFAULT_KEYRING_SCHEMA;
         keyringItemName = DEFAULT_KEYRING_ITEM_NAME;
         attributes = new String[] { DEFAULT_KEYRING_ATTR_NAME, DEFAULT_KEYRING_ATTR_VALUE };
-        useUnprotectedFileOnLinux = false;
-        sharedTokenCacheDisabled = false;
+        allowUnencryptedCache = false;
+        sharedTokenCacheEnabled = false;
     }
 
     /**
@@ -234,9 +233,9 @@ public final class IdentityClientOptions {
     PersistenceSettings getPersistenceSettings() {
         return PersistenceSettings.builder(cacheFileName, cacheFileDirectory)
                 .setMacKeychain(keychainService, keychainAccount)
-                .setLinuxKeyring(keyringName, keyringItemSchema.toString(), keyringItemName,
+                .setLinuxKeyring(keyringName, keyringItemSchema, keyringItemName,
                         attributes[0], attributes[1], null, null)
-                .setLinuxUseUnprotectedFileAsCacheStorage(useUnprotectedFileOnLinux)
+                .setLinuxUseUnprotectedFileAsCacheStorage(allowUnencryptedCache)
                 .build();
     }
 
@@ -244,12 +243,12 @@ public final class IdentityClientOptions {
      * Sets whether to use an unprotected file specified by <code>cacheFileLocation()</code> instead of
      * Gnome keyring on Linux. This is false by default.
      *
-     * @param useUnprotectedFileOnLinux whether to use an unprotected file for cache storage.
+     * @param allowUnencryptedCache whether to use an unprotected file for cache storage.
      *
      * @return The updated identity client options.
      */
-    public IdentityClientOptions setUseUnprotectedTokenCacheFileOnLinux(boolean useUnprotectedFileOnLinux) {
-        this.useUnprotectedFileOnLinux = useUnprotectedFileOnLinux;
+    public IdentityClientOptions allowUnencryptedCache(boolean allowUnencryptedCache) {
+        this.allowUnencryptedCache = allowUnencryptedCache;
         return this;
     }
 
@@ -257,19 +256,19 @@ public final class IdentityClientOptions {
      * Gets if the shared token cache is disabled.
      * @return if the shared token cache is disabled.
      */
-    public boolean isSharedTokenCacheDisabled() {
-        return this.sharedTokenCacheDisabled;
+    public boolean isSharedTokenCacheEnabled() {
+        return this.sharedTokenCacheEnabled;
     }
 
     /**
-     * Disable using the shared token cache.
+     * Sets whether to enable using the shared token cache.
      *
-     * @param disabled whether to disable using the shared token cache.
+     * @param enabled whether to enable using the shared token cache.
      *
      * @return The updated identity client options.
      */
-    public IdentityClientOptions disableSharedTokenCache(boolean disabled) {
-        this.sharedTokenCacheDisabled = disabled;
+    public IdentityClientOptions enableSharedTokenCache(boolean enabled) {
+        this.sharedTokenCacheEnabled = enabled;
         return this;
     }
 }

@@ -155,7 +155,7 @@ public class IdentityClient {
             if (options.getExecutorService() != null) {
                 publicClientApplicationBuilder.executorService(options.getExecutorService());
             }
-            if (!options.isSharedTokenCacheDisabled()) {
+            if (!options.isSharedTokenCacheEnabled()) {
                 try {
                     publicClientApplicationBuilder.setTokenCacheAccessAspect(
                             new PersistenceTokenCacheAccessAspect(options.getPersistenceSettings()));
