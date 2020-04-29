@@ -32,7 +32,7 @@ public class TestResourceStreaming extends TestTemplate<VirtualMachine, VirtualM
         Creatable<ResourceGroup> rgCreatable =
             virtualMachines
                 .manager()
-                .getResourceManager()
+                .resourceManager()
                 .resourceGroups()
                 .define(virtualMachines.manager().getSdkContext().randomResourceName("rg" + vmName, 20))
                 .withRegion(Region.US_EAST);

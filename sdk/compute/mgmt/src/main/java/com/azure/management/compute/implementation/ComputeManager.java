@@ -3,12 +3,8 @@
 
 package com.azure.management.compute.implementation;
 
-import com.azure.core.management.AzureEnvironment;
-import com.azure.core.management.serializer.AzureJacksonAdapter;
-import com.azure.management.AzureTokenCredential;
-import com.azure.management.RestClient;
-import com.azure.management.RestClientBuilder;
-import com.azure.management.Utils;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpPipeline;
 import com.azure.management.compute.AvailabilitySets;
 import com.azure.management.compute.ComputeSkus;
 import com.azure.management.compute.ComputeUsages;
@@ -29,6 +25,8 @@ import com.azure.management.network.implementation.NetworkManager;
 import com.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.management.resources.fluentcore.arm.implementation.Manager;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
+import com.azure.management.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.storage.implementation.StorageManager;
 
@@ -66,41 +64,35 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
     /**
      * Creates an instance of ComputeManager that exposes Compute resource management API entry points.
      *
-     * @param credential the credentials to use
-     * @param subscriptionId the subscription
+     * @param credential the credential to use
+     * @param profile the profile to use
      * @return the ComputeManager
      */
-    public static ComputeManager authenticate(AzureTokenCredential credential, String subscriptionId) {
-        return authenticate(
-            new RestClientBuilder()
-                .withBaseUrl(credential.getEnvironment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
-                .withCredential(credential)
-                .withSerializerAdapter(new AzureJacksonAdapter())
-                .buildClient(),
-            subscriptionId);
+    public static ComputeManager authenticate(TokenCredential credential, AzureProfile profile) {
+        return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
     /**
      * Creates an instance of ComputeManager that exposes Compute resource management API entry points.
      *
-     * @param restClient the RestClient to be used for API calls.
-     * @param subscriptionId the subscription
+     * @param httpPipeline the HttpPipeline to be used for API calls.
+     * @param profile the profile to use
      * @return the ComputeManager
      */
-    public static ComputeManager authenticate(RestClient restClient, String subscriptionId) {
-        return authenticate(restClient, subscriptionId, new SdkContext());
+    public static ComputeManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        return authenticate(httpPipeline, profile, new SdkContext());
     }
 
     /**
      * Creates an instance of ComputeManager that exposes Compute resource management API entry points.
      *
-     * @param restClient the RestClient to be used for API calls.
-     * @param subscriptionId the subscription
+     * @param httpPipeline the HttpPipeline to be used for API calls.
+     * @param profile the profile to use
      * @param sdkContext the sdk context
      * @return the ComputeManager
      */
-    public static ComputeManager authenticate(RestClient restClient, String subscriptionId, SdkContext sdkContext) {
-        return new ComputeManager(restClient, subscriptionId, sdkContext);
+    public static ComputeManager authenticate(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+        return new ComputeManager(httpPipeline, profile, sdkContext);
     }
 
     /** The interface allowing configurations to be set. */
@@ -108,34 +100,33 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
         /**
          * Creates an instance of ComputeManager that exposes Compute resource management API entry points.
          *
-         * @param credentials the credentials to use
-         * @param subscriptionId the subscription
+         * @param credential the credential to use
+         * @param profile the profile to use
          * @return the ComputeManager
          */
-        ComputeManager authenticate(AzureTokenCredential credentials, String subscriptionId);
+        ComputeManager authenticate(TokenCredential credential, AzureProfile profile);
     }
 
     /** The implementation for Configurable interface. */
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         @Override
-        public ComputeManager authenticate(AzureTokenCredential credential, String subscriptionId) {
-            return ComputeManager.authenticate(buildRestClient(credential), subscriptionId);
+        public ComputeManager authenticate(TokenCredential credential, AzureProfile profile) {
+            return ComputeManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
     }
 
-    private ComputeManager(RestClient restClient, String subscriptionId, SdkContext sdkContext) {
+    private ComputeManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
         super(
-            restClient,
-            subscriptionId,
+            httpPipeline,
+            profile,
             new ComputeManagementClientBuilder()
-                .pipeline(restClient.getHttpPipeline())
-                .subscriptionId(subscriptionId)
+                .pipeline(httpPipeline)
+                .subscriptionId(profile.subscriptionId())
                 .buildClient(),
             sdkContext);
-        storageManager = StorageManager.authenticate(restClient, subscriptionId, sdkContext);
-        networkManager = NetworkManager.authenticate(restClient, subscriptionId, sdkContext);
-        rbacManager =
-            GraphRbacManager.authenticate(restClient, Utils.getTenantIdFromRestClient(restClient), sdkContext);
+        storageManager = StorageManager.authenticate(httpPipeline, profile, sdkContext);
+        networkManager = NetworkManager.authenticate(httpPipeline, profile, sdkContext);
+        rbacManager = GraphRbacManager.authenticate(httpPipeline, profile, sdkContext);
     }
 
     /** @return the availability set resource management API entry point */

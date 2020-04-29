@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.search.documents;
 
-import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -37,8 +36,6 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
-import static com.azure.search.documents.TestHelpers.generateIfNotChangedAccessCondition;
-import static com.azure.search.documents.TestHelpers.getETag;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -51,18 +48,19 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
 
     // commonly used lambda definitions
     private BiFunction<Index, AccessOptions, Index> createOrUpdateIndexFunc = (Index index, AccessOptions ac) ->
-        createOrUpdateIndex(index, ac.getAccessCondition(), ac.getRequestOptions());
+        createOrUpdateIndex(index, ac.getOnlyIfUnchanged(), ac.getRequestOptions());
 
     private Supplier<Index> newIndexFunc = this::createTestIndex;
 
     private Function<Index, Index> mutateIndexFunc = this::mutateCorsOptionsInIndex;
 
-    private BiConsumer<String, AccessOptions> deleteIndexFunc =
-        (String name, AccessOptions ac) ->
-            client.deleteIndexWithResponse(name, ac.getAccessCondition(), ac.getRequestOptions(), Context.NONE);
+    private BiConsumer<Index, AccessOptions> deleteIndexFunc =
+        (Index index, AccessOptions ac) ->
+            client.deleteIndexWithResponse(index, ac.getOnlyIfUnchanged(), ac.getRequestOptions(),
+                Context.NONE);
 
-    private Index createOrUpdateIndex(Index index, MatchConditions accessCondition, RequestOptions requestOptions) {
-        return client.createOrUpdateIndexWithResponse(index, false, accessCondition, requestOptions, Context.NONE)
+    private Index createOrUpdateIndex(Index index, Boolean onlyIfUnchanged, RequestOptions requestOptions) {
+        return client.createOrUpdateIndexWithResponse(index, false, onlyIfUnchanged, requestOptions, Context.NONE)
             .getValue();
     }
 
@@ -167,39 +165,34 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
     @Test
     public void deleteIndexIfNotChangedWorksOnlyOnCurrentResource() {
         Index indexToCreate = createTestIndex();
-        AccessOptions accessOptions = new AccessOptions(null);
+        AccessOptions accessOptions = new AccessOptions(false);
 
         // Create the resource in the search service
         Index originalIndex = createOrUpdateIndexFunc.apply(indexToCreate, accessOptions);
-
-        // Get the eTag for the newly created resource
-        String eTagStale = getETag(originalIndex);
 
         // Update the resource, the eTag will be changed
         Index updatedIndex = createOrUpdateIndexFunc.apply(originalIndex
             .setCorsOptions(new CorsOptions().setAllowedOrigins("https://test.com/")), accessOptions);
 
         try {
-            accessOptions = new AccessOptions(generateIfNotChangedAccessCondition(eTagStale));
-            deleteIndexFunc.accept(HOTEL_INDEX_NAME, accessOptions);
+            accessOptions = new AccessOptions(true);
+            deleteIndexFunc.accept(originalIndex, accessOptions);
             fail("deleteFunc should have failed due to selected MatchConditions");
         } catch (Exception exc) {
             assertEquals(SearchErrorException.class, exc.getClass());
             assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((SearchErrorException) exc).getResponse().getStatusCode());
         }
 
-        // Get the new eTag
-        String eTagCurrent = getETag(updatedIndex);
-        accessOptions = new AccessOptions(generateIfNotChangedAccessCondition(eTagCurrent));
+        accessOptions = new AccessOptions(true);
 
         // Delete should succeed
-        deleteIndexFunc.accept(HOTEL_INDEX_NAME, accessOptions);
+        deleteIndexFunc.accept(updatedIndex, accessOptions);
     }
 
     @Test
     public void deleteIndexIfExistsWorksOnlyWhenResourceExists() {
         AccessConditionTests.deleteIfExistsWorksOnlyWhenResourceExists(deleteIndexFunc, createOrUpdateIndexFunc,
-            newIndexFunc, HOTEL_INDEX_NAME);
+            newIndexFunc);
     }
 
     @Test
@@ -212,17 +205,17 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
                     .setType(DataType.EDM_STRING)
                     .setKey(true)
             ));
-        Response<Void> deleteResponse = client.deleteIndexWithResponse(index.getName(), new MatchConditions(), generateRequestOptions(), Context.NONE);
+        Response<Void> deleteResponse = client.deleteIndexWithResponse(index, false, generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
 
         Response<Index> createResponse = client.createIndexWithResponse(index, generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.CREATED.code(), createResponse.getStatusCode());
 
         // Delete the same index twice
-        deleteResponse = client.deleteIndexWithResponse(index.getName(), new MatchConditions(), generateRequestOptions(), Context.NONE);
+        deleteResponse = client.deleteIndexWithResponse(index, false, generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.NO_CONTENT.code(), deleteResponse.getStatusCode());
 
-        deleteResponse = client.deleteIndexWithResponse(index.getName(), new MatchConditions(), generateRequestOptions(), Context.NONE);
+        deleteResponse = client.deleteIndexWithResponse(index, false, generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
     }
 
@@ -328,7 +321,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         hotelNameField.setSynonymMaps(Collections.emptyList());
 
         Index updatedIndex = client.createOrUpdateIndexWithResponse(existingIndex,
-            true, new MatchConditions(), generateRequestOptions(), Context.NONE).getValue();
+            true, false, generateRequestOptions(), Context.NONE).getValue();
         assertObjectEquals(existingIndex, updatedIndex, true, "etag", "@odata.etag");
     }
 
@@ -381,7 +374,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         hotelNameField.setHidden(true);
 
         updatedIndex = client.createOrUpdateIndexWithResponse(existingIndex,
-            true, new MatchConditions(), generateRequestOptions(), Context.NONE).getValue();
+            true, false, generateRequestOptions(), Context.NONE).getValue();
 
         assertObjectEquals(existingIndex, updatedIndex, true, "etag", "@odata.etag");
     }
@@ -406,7 +399,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         ));
 
         Index updatedIndex = client.createOrUpdateIndexWithResponse(existingIndex,
-            true, new MatchConditions(), generateRequestOptions(), Context.NONE).getValue();
+            true, false, generateRequestOptions(), Context.NONE).getValue();
         assertObjectEquals(existingIndex, updatedIndex, true, "etag", "@odata.etag");
     }
 
@@ -449,23 +442,17 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
     public void createOrUpdateIndexCreatesWhenIndexDoesNotExistWithResponse() {
         Index expected = createTestIndex();
 
-        Index actual = client.createOrUpdateIndexWithResponse(expected, false, new MatchConditions(),
+        Index actual = client.createOrUpdateIndexWithResponse(expected, false, false,
             generateRequestOptions(), Context.NONE).getValue();
         assertObjectEquals(expected, actual, true, "etag");
 
         actual = client.createOrUpdateIndexWithResponse(expected.setName("hotel1"),
-            false, new MatchConditions(), generateRequestOptions(), Context.NONE).getValue();
+            false, false, generateRequestOptions(), Context.NONE).getValue();
         assertObjectEquals(expected, actual, true, "etag");
 
         Response<Index> createOrUpdateResponse = client.createOrUpdateIndexWithResponse(expected.setName("hotel2"),
-            false, new MatchConditions(), generateRequestOptions(), Context.NONE);
+            false, false, generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.CREATED.code(), createOrUpdateResponse.getStatusCode());
-    }
-
-    @Test
-    public void createOrUpdateIndexIfNotExistsFailsOnExistingResource() {
-        AccessConditionTests.createOrUpdateIfNotExistsFailsOnExistingResource(createOrUpdateIndexFunc, newIndexFunc,
-            mutateIndexFunc);
     }
 
     @Test
@@ -478,11 +465,6 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
     public void createOrUpdateIndexIfExistsSucceedsOnExistingResource() {
         AccessConditionTests.updateIfExistsSucceedsOnExistingResource(newIndexFunc, createOrUpdateIndexFunc,
             mutateIndexFunc);
-    }
-
-    @Test
-    public void createOrUpdateIndexIfExistsFailsOnNoResource() {
-        AccessConditionTests.updateIfExistsFailsOnNoResource(newIndexFunc, createOrUpdateIndexFunc);
     }
 
     @Test

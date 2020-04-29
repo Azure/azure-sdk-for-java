@@ -5,13 +5,12 @@ package com.azure.management.compute;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.SubResource;
-import com.azure.management.ApplicationTokenCredential;
-import com.azure.management.RestClient;
 import com.azure.management.graphrbac.BuiltInRole;
 import com.azure.management.graphrbac.RoleAssignment;
 import com.azure.management.keyvault.Secret;
@@ -32,6 +31,7 @@ import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.storage.StorageAccount;
 import com.azure.management.storage.StorageAccountKey;
 import com.microsoft.azure.storage.CloudStorageAccount;
@@ -39,7 +39,6 @@ import com.microsoft.azure.storage.blob.CloudBlobClient;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
@@ -55,9 +54,9 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
     private final Region region = Region.US_WEST;
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         rgName = generateRandomResourceName("javacsmrg", 15);
-        super.initializeClients(restClient, defaultSubscription, domain);
+        super.initializeClients(httpPipeline, profile);
     }
 
     @Override
@@ -442,8 +441,6 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         }
         Assertions.assertTrue(backends.size() == 2);
 
-        ApplicationTokenCredential credentials =
-            ApplicationTokenCredential.fromFile(new File(System.getenv("AZURE_AUTH_LOCATION")));
         Vault vault =
             this
                 .keyVaultManager
@@ -452,7 +449,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .defineAccessPolicy()
-                .forServicePrincipal(credentials.getClientId())
+                .forServicePrincipal(clientIdFromFile())
                 .allowSecretAllPermissions()
                 .attach()
                 .withDeploymentEnabled()

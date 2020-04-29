@@ -7,6 +7,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.messaging.servicebus.models.CreateBatchOptions;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Objects;
 
 /**
@@ -68,6 +69,32 @@ public class ServiceBusSenderClient implements AutoCloseable {
     public void send(ServiceBusMessage message) {
         Objects.requireNonNull(message, "'message' cannot be null.");
         asyncClient.send(message).block(tryTimeout);
+    }
+
+    /**
+     * Sends a scheduled message to the Azure Service Bus entity this sender is connected to. A scheduled message is
+     * enqueued and made available to receivers only at the scheduled enqueue time.
+     *
+     * @param message Message to be sent to the Service Bus Queue or Topic.
+     * @param scheduledEnqueueTime Instant at which the message should appear in the Service Bus queue or topic.
+     *
+     * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
+     *
+     * @throws NullPointerException if {@code message} or {@code scheduledEnqueueTime} is {@code null}.
+     */
+    public Long scheduleMessage(ServiceBusMessage message, Instant scheduledEnqueueTime) {
+        return asyncClient.scheduleMessage(message, scheduledEnqueueTime).block(tryTimeout);
+    }
+
+    /**
+     * Cancels the enqueuing of an already scheduled message, if it was not already enqueued.
+     *
+     * @param sequenceNumber of the scheduled message to cancel.
+     *
+     * @throws IllegalArgumentException if {@code sequenceNumber} is negative.
+     */
+    public void cancelScheduledMessage(long sequenceNumber) {
+        asyncClient.cancelScheduledMessage(sequenceNumber).block(tryTimeout);
     }
 
     /**
