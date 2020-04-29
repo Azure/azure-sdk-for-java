@@ -3,6 +3,7 @@
 package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Database;
@@ -47,6 +48,7 @@ public final class CosmosAsyncClient implements Closeable {
     private final List<CosmosPermissionProperties> permissions;
     private final CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
     private final CosmosKeyCredential cosmosKeyCredential;
+    private final TokenCredential tokenCredential;
     private final boolean sessionCapturingOverride;
     private final boolean enableTransportClientSharing;
 
@@ -59,6 +61,7 @@ public final class CosmosAsyncClient implements Closeable {
         this.permissions = builder.getPermissions();
         this.cosmosAuthorizationTokenResolver = builder.getAuthorizationTokenResolver();
         this.cosmosKeyCredential = builder.getKeyCredential();
+        this.tokenCredential = builder.getCredential();
         this.sessionCapturingOverride = builder.isSessionCapturingOverrideEnabled();
         this.enableTransportClientSharing = builder.isConnectionReuseAcrossClientsEnabled();
         this.asyncDocumentClient = new AsyncDocumentClient.Builder()
@@ -71,6 +74,7 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withTokenResolver(this.cosmosAuthorizationTokenResolver)
                                        .withCosmosKeyCredential(this.cosmosKeyCredential)
                                        .withTransportClientSharing(this.enableTransportClientSharing)
+                                       .withTokenCredential(this.tokenCredential)
                                        .build();
     }
 

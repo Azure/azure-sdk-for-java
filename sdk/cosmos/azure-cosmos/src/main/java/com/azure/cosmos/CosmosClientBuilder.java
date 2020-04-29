@@ -3,12 +3,14 @@
 package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Helper class to buildAsyncClient {@link CosmosAsyncClient} instances
@@ -32,6 +34,7 @@ public class CosmosClientBuilder {
     private Configs configs = new Configs();
     private String serviceEndpoint;
     private String keyOrResourceToken;
+    private TokenCredential tokenCredential;
     private ConnectionPolicy connectionPolicy;
     private ConsistencyLevel desiredConsistencyLevel;
     private List<CosmosPermissionProperties> permissions;
@@ -141,7 +144,12 @@ public class CosmosClientBuilder {
      */
     public CosmosClientBuilder authorizationTokenResolver(
         CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver) {
-        this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
+        this.cosmosAuthorizationTokenResolver = Objects.requireNonNull(cosmosAuthorizationTokenResolver,
+            "'cosmosAuthorizationTokenResolver' cannot be null.");
+        this.keyOrResourceToken = null;
+        this.cosmosKeyCredential= null;
+        this.permissions = null;
+        this.tokenCredential = null;
         return this;
     }
 
@@ -181,14 +189,19 @@ public class CosmosClientBuilder {
      *
      * @param key master or readonly key
      * @return current Builder.
+     * @throws NullPointerException If {@code key} is {@code null}.
      */
     public CosmosClientBuilder key(String key) {
-        this.keyOrResourceToken = key;
+        this.keyOrResourceToken = Objects.requireNonNull(key, "'key' cannot be null.");
+        this.cosmosAuthorizationTokenResolver = null;
+        this.cosmosKeyCredential= null;
+        this.permissions = null;
+        this.tokenCredential = null;
         return this;
     }
 
     /**
-     * Sets a resource token used to perform authentication
+     * Gets a resource token used to perform authentication
      * for accessing resource.
      *
      * @return the resourceToken
@@ -203,9 +216,40 @@ public class CosmosClientBuilder {
      *
      * @param resourceToken resourceToken for authentication
      * @return current Builder.
+     * @throws NullPointerException If {@code resourceToken} is {@code null}.
      */
     public CosmosClientBuilder resourceToken(String resourceToken) {
         this.keyOrResourceToken = resourceToken;
+        this.cosmosAuthorizationTokenResolver = null;
+        this.cosmosKeyCredential= null;
+        this.permissions = null;
+        this.tokenCredential = null;
+        return this;
+    }
+
+    /**
+     * Gets a token credential instance used to perform authentication
+     * for accessing resource.
+     *
+     * @return the resourceToken
+     */
+    TokenCredential getCredential() {
+        return tokenCredential;
+    }
+
+    /**
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service.
+     *
+     * @param credential {@link TokenCredential}.
+     * @return the updated CosmosClientBuilder
+     * @throws NullPointerException If {@code credential} is {@code null}.
+     */
+    public CosmosClientBuilder credential(TokenCredential credential) {
+        this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this.keyOrResourceToken = null;
+        this.cosmosAuthorizationTokenResolver = null;
+        this.cosmosKeyCredential= null;
+        this.permissions = null;
         return this;
     }
 
@@ -225,9 +269,14 @@ public class CosmosClientBuilder {
      *
      * @param permissions Permission list for authentication.
      * @return current Builder.
+     * @throws NullPointerException If {@code permissions} is {@code null}.
      */
     public CosmosClientBuilder permissions(List<CosmosPermissionProperties> permissions) {
-        this.permissions = permissions;
+        this.permissions = Objects.requireNonNull(permissions, "'permissions' cannot be null.");
+        this.keyOrResourceToken = null;
+        this.cosmosAuthorizationTokenResolver = null;
+        this.cosmosKeyCredential= null;
+        this.tokenCredential = null;
         return this;
     }
 
@@ -285,9 +334,14 @@ public class CosmosClientBuilder {
      *
      * @param cosmosKeyCredential {@link CosmosKeyCredential}
      * @return current cosmosClientBuilder
+     * @throws NullPointerException If {@code cosmosKeyCredential} is {@code null}.
      */
     public CosmosClientBuilder keyCredential(CosmosKeyCredential cosmosKeyCredential) {
-        this.cosmosKeyCredential = cosmosKeyCredential;
+        this.cosmosKeyCredential = Objects.requireNonNull(cosmosKeyCredential, "'cosmosKeyCredential' cannot be null.");
+        this.keyOrResourceToken = null;
+        this.cosmosAuthorizationTokenResolver = null;
+        this.permissions = null;
+        this.tokenCredential = null;
         return this;
     }
 
@@ -307,7 +361,8 @@ public class CosmosClientBuilder {
             "cannot buildAsyncClient client without service endpoint");
         ifThrowIllegalArgException(
             this.keyOrResourceToken == null && (permissions == null || permissions.isEmpty())
-                && this.cosmosAuthorizationTokenResolver == null && this.cosmosKeyCredential == null,
+                && this.cosmosAuthorizationTokenResolver == null && this.cosmosKeyCredential == null
+                && this.tokenCredential == null,
             "cannot buildAsyncClient client without any one of key, resource token, permissions, token resolver, and "
                 + "cosmos key credential");
         ifThrowIllegalArgException(cosmosKeyCredential != null && StringUtils.isEmpty(cosmosKeyCredential.getKey()),

@@ -2,6 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.core.credential.SimpleTokenCache;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
@@ -93,6 +96,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final Configs configs;
     private final boolean connectionSharingAcrossClientsEnabled;
     private CosmosKeyCredential cosmosKeyCredential;
+    private TokenCredential tokenCredential;
+    private String[] tokenCredentialScopes;
+    private SimpleTokenCache tokenCredentialCache;
     private CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
     private SessionContainer sessionContainer;
     private String firstResourceTokenFromPermissionFeed = StringUtils.EMPTY;
@@ -136,7 +142,23 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosKeyCredential cosmosKeyCredential,
                                 boolean sessionCapturingOverride,
                                 boolean connectionSharingAcrossClientsEnabled) {
-        this(serviceEndpoint, masterKeyOrResourceToken, permissionFeed, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, sessionCapturingOverride, connectionSharingAcrossClientsEnabled);
+        this(serviceEndpoint, masterKeyOrResourceToken, permissionFeed, connectionPolicy, consistencyLevel, configs,
+            cosmosAuthorizationTokenResolver, cosmosKeyCredential,null, sessionCapturingOverride, connectionSharingAcrossClientsEnabled);
+    }
+
+    public RxDocumentClientImpl(URI serviceEndpoint,
+                                String masterKeyOrResourceToken,
+                                List<Permission> permissionFeed,
+                                ConnectionPolicy connectionPolicy,
+                                ConsistencyLevel consistencyLevel,
+                                Configs configs,
+                                CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver,
+                                CosmosKeyCredential cosmosKeyCredential,
+                                TokenCredential tokenCredential,
+                                boolean sessionCapturingOverride,
+                                boolean connectionSharingAcrossClientsEnabled) {
+        this(serviceEndpoint, masterKeyOrResourceToken, permissionFeed, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential,
+            tokenCredential, sessionCapturingOverride, connectionSharingAcrossClientsEnabled);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -147,9 +169,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 ConsistencyLevel consistencyLevel,
                                 Configs configs,
                                 CosmosKeyCredential cosmosKeyCredential,
+                                TokenCredential tokenCredential,
                                 boolean sessionCapturingOverrideEnabled,
                                 boolean connectionSharingAcrossClientsEnabled) {
-        this(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, sessionCapturingOverrideEnabled, connectionSharingAcrossClientsEnabled);
+        this(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential,
+            tokenCredential, sessionCapturingOverrideEnabled, connectionSharingAcrossClientsEnabled);
         if (permissionFeed != null && permissionFeed.size() > 0) {
             this.resourceTokensMap = new HashMap<>();
             for (Permission permission : permissionFeed) {
@@ -198,6 +222,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                          ConsistencyLevel consistencyLevel,
                          Configs configs,
                          CosmosKeyCredential cosmosKeyCredential,
+                         TokenCredential tokenCredential,
                          boolean sessionCapturingOverrideEnabled,
                          boolean connectionSharingAcrossClientsEnabled) {
 
@@ -211,6 +236,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.masterKeyOrResourceToken = masterKeyOrResourceToken;
         this.serviceEndpoint = serviceEndpoint;
         this.cosmosKeyCredential = cosmosKeyCredential;
+        this.tokenCredential = tokenCredential;
 
         if (this.cosmosKeyCredential != null) {
             hasAuthKeyResourceToken = false;
@@ -218,13 +244,21 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         } else if (masterKeyOrResourceToken != null && ResourceTokenAuthorizationHelper.isResourceToken(masterKeyOrResourceToken)) {
             this.authorizationTokenProvider = null;
             hasAuthKeyResourceToken = true;
-        } else if(masterKeyOrResourceToken != null && !ResourceTokenAuthorizationHelper.isResourceToken(masterKeyOrResourceToken)){
+        } else if (masterKeyOrResourceToken != null && !ResourceTokenAuthorizationHelper.isResourceToken(masterKeyOrResourceToken)) {
             this.cosmosKeyCredential = new CosmosKeyCredential(this.masterKeyOrResourceToken);
             hasAuthKeyResourceToken = false;
             this.authorizationTokenProvider = new BaseAuthorizationTokenProvider(this.cosmosKeyCredential);
         } else {
             hasAuthKeyResourceToken = false;
             this.authorizationTokenProvider = null;
+            if (tokenCredential != null) {
+                this.tokenCredentialScopes = new String[] {
+                    AadTokenAuthorizationHelper.AAD_AUTH_TOKEN_GENERAL_SCOPE,
+//                    Utils.joinPath(serviceEndpoint.toString(), ".default")
+                };
+                this.tokenCredentialCache = new SimpleTokenCache(() -> this.tokenCredential
+                    .getToken(new TokenRequestContext().addScopes(this.tokenCredentialScopes)));
+            }
         }
 
         if (connectionPolicy != null) {
@@ -720,38 +754,42 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private Mono<RxDocumentServiceResponse> delete(RxDocumentServiceRequest request, DocumentClientRetryPolicy documentClientRetryPolicy) {
-        populateHeaders(request, RequestVerb.DELETE);
-        if(request.requestContext != null && documentClientRetryPolicy.getRetryCount() > 0) {
-            documentClientRetryPolicy.updateEndTime();
-            request.requestContext.updateRetryContext(documentClientRetryPolicy, true);
-        }
+        return populateHeaders(request, RequestVerb.DELETE)
+            .flatMap(requestPopulated -> {
+                if (requestPopulated.requestContext != null && documentClientRetryPolicy.getRetryCount() > 0) {
+                    documentClientRetryPolicy.updateEndTime();
+                    requestPopulated.requestContext.updateRetryContext(documentClientRetryPolicy, true);
+                }
 
-        return getStoreProxy(request).processMessage(request);
+                return getStoreProxy(requestPopulated).processMessage(requestPopulated);
+            });
     }
 
     private Mono<RxDocumentServiceResponse> read(RxDocumentServiceRequest request, DocumentClientRetryPolicy documentClientRetryPolicy) {
-        populateHeaders(request, RequestVerb.GET);
-        if(request.requestContext != null && documentClientRetryPolicy.getRetryCount() > 0) {
-            documentClientRetryPolicy.updateEndTime();
-            request.requestContext.updateRetryContext(documentClientRetryPolicy, true);
-        }
-
-        return getStoreProxy(request).processMessage(request);
+        return populateHeaders(request, RequestVerb.GET)
+            .flatMap(requestPopulated -> {
+                    if (requestPopulated.requestContext != null && documentClientRetryPolicy.getRetryCount() > 0) {
+                        documentClientRetryPolicy.updateEndTime();
+                        requestPopulated.requestContext.updateRetryContext(documentClientRetryPolicy, true);
+                    }
+                return getStoreProxy(requestPopulated).processMessage(requestPopulated);
+                });
     }
 
     Mono<RxDocumentServiceResponse> readFeed(RxDocumentServiceRequest request) {
-        populateHeaders(request, RequestVerb.GET);
-        return gatewayProxy.processMessage(request);
+        return populateHeaders(request, RequestVerb.GET)
+            .flatMap(gatewayProxy::processMessage);
     }
 
     private Mono<RxDocumentServiceResponse> query(RxDocumentServiceRequest request) {
-        populateHeaders(request, RequestVerb.POST);
-        return this.getStoreProxy(request).processMessage(request)
-                .map(response -> {
-                            this.captureSessionToken(request, response);
+        return populateHeaders(request, RequestVerb.POST)
+            .flatMap(requestPopulated ->
+                this.getStoreProxy(requestPopulated).processMessage(requestPopulated)
+                    .map(response -> {
+                            this.captureSessionToken(requestPopulated, response);
                             return response;
                         }
-                );
+                    ));
     }
 
     @Override
@@ -1052,7 +1090,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return addPartitionKeyInformation(request, content, document, options, collectionObs);
     }
 
-    private void populateHeaders(RxDocumentServiceRequest request, RequestVerb httpMethod) {
+    private Mono<RxDocumentServiceRequest> populateHeaders(RxDocumentServiceRequest request, RequestVerb httpMethod) {
+//    private void populateHeaders(RxDocumentServiceRequest request, RequestVerb httpMethod) {
         request.getHeaders().put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
         if (this.masterKeyOrResourceToken != null || this.resourceTokensMap != null
             || this.cosmosAuthorizationTokenResolver != null || this.cosmosKeyCredential != null) {
@@ -1076,6 +1115,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         if (!request.getHeaders().containsKey(HttpConstants.HttpHeaders.ACCEPT)) {
             request.getHeaders().put(HttpConstants.HttpHeaders.ACCEPT, RuntimeConstants.MediaTypes.JSON);
+        }
+
+        if (this.tokenCredential != null) {
+            return AadTokenAuthorizationHelper.populateAuthorizationHeader(request, this.tokenCredentialCache);
+        } else {
+            return Mono.just(request);
         }
     }
 
@@ -1118,47 +1163,53 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private Mono<RxDocumentServiceResponse> create(RxDocumentServiceRequest request, DocumentClientRetryPolicy retryPolicy) {
-        populateHeaders(request, RequestVerb.POST);
-        RxStoreModel storeProxy = this.getStoreProxy(request);
-        if(request.requestContext != null && retryPolicy.getRetryCount() > 0) {
-            retryPolicy.updateEndTime();
-            request.requestContext.updateRetryContext(retryPolicy, true);
-        }
+        return populateHeaders(request, RequestVerb.POST)
+            .flatMap(requestPopulated -> {
+                RxStoreModel storeProxy = this.getStoreProxy(requestPopulated);
+                if (requestPopulated.requestContext != null && retryPolicy.getRetryCount() > 0) {
+                    retryPolicy.updateEndTime();
+                    requestPopulated.requestContext.updateRetryContext(retryPolicy, true);
+                }
 
-        return storeProxy.processMessage(request);
+                return storeProxy.processMessage(requestPopulated);
+            });
     }
 
     private Mono<RxDocumentServiceResponse> upsert(RxDocumentServiceRequest request, DocumentClientRetryPolicy documentClientRetryPolicy) {
 
-        populateHeaders(request, RequestVerb.POST);
-        Map<String, String> headers = request.getHeaders();
-        // headers can never be null, since it will be initialized even when no
-        // request options are specified,
-        // hence using assertion here instead of exception, being in the private
-        // method
-        assert (headers != null);
-        headers.put(HttpConstants.HttpHeaders.IS_UPSERT, "true");
-        if(request.requestContext != null && documentClientRetryPolicy.getRetryCount() > 0) {
-            documentClientRetryPolicy.updateEndTime();
-            request.requestContext.updateRetryContext(documentClientRetryPolicy, true);
-        }
+        return populateHeaders(request, RequestVerb.POST)
+            .flatMap(requestPopulated -> {
+                Map<String, String> headers = requestPopulated.getHeaders();
+                // headers can never be null, since it will be initialized even when no
+                // request options are specified,
+                // hence using assertion here instead of exception, being in the private
+                // method
+                assert (headers != null);
+                headers.put(HttpConstants.HttpHeaders.IS_UPSERT, "true");
+                if (requestPopulated.requestContext != null && documentClientRetryPolicy.getRetryCount() > 0) {
+                    documentClientRetryPolicy.updateEndTime();
+                    requestPopulated.requestContext.updateRetryContext(documentClientRetryPolicy, true);
+                }
 
-        return getStoreProxy(request).processMessage(request)
-                .map(response -> {
-                            this.captureSessionToken(request, response);
+                return getStoreProxy(requestPopulated).processMessage(requestPopulated)
+                    .map(response -> {
+                            this.captureSessionToken(requestPopulated, response);
                             return response;
                         }
-                );
+                    );
+            });
     }
 
     private Mono<RxDocumentServiceResponse> replace(RxDocumentServiceRequest request, DocumentClientRetryPolicy documentClientRetryPolicy) {
-        populateHeaders(request, RequestVerb.PUT);
-        if(request.requestContext != null && documentClientRetryPolicy.getRetryCount() > 0) {
-            documentClientRetryPolicy.updateEndTime();
-            request.requestContext.updateRetryContext(documentClientRetryPolicy, true);
-        }
+        return populateHeaders(request, RequestVerb.PUT)
+            .flatMap(requestPopulated -> {
+                if (requestPopulated.requestContext != null && documentClientRetryPolicy.getRetryCount() > 0) {
+                    documentClientRetryPolicy.updateEndTime();
+                    requestPopulated.requestContext.updateRetryContext(documentClientRetryPolicy, true);
+                }
 
-        return getStoreProxy(request).processMessage(request);
+                return getStoreProxy(requestPopulated).processMessage(requestPopulated);
+            });
     }
 
     @Override
@@ -3005,21 +3056,23 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     public Flux<DatabaseAccount> getDatabaseAccountFromEndpoint(URI endpoint) {
         return Flux.defer(() -> {
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
-                    ResourceType.DatabaseAccount, "", null, (Object) null);
-            this.populateHeaders(request, RequestVerb.GET);
+                ResourceType.DatabaseAccount, "", null, (Object) null);
+            return this.populateHeaders(request, RequestVerb.GET)
+                .flatMap(requestPopulated -> {
 
-            request.setEndpointOverride(endpoint);
-            return this.gatewayProxy.processMessage(request).doOnError(e -> {
-                String message = String.format("Failed to retrieve database account information. %s",
-                        e.getCause() != null
+                    requestPopulated.setEndpointOverride(endpoint);
+                    return this.gatewayProxy.processMessage(requestPopulated).doOnError(e -> {
+                        String message = String.format("Failed to retrieve database account information. %s",
+                            e.getCause() != null
                                 ? e.getCause().toString()
                                 : e.toString());
-                logger.warn(message);
-            }).map(rsp -> rsp.getResource(DatabaseAccount.class))
-                    .doOnNext(databaseAccount -> {
-                        this.useMultipleWriteLocations = this.connectionPolicy.isUsingMultipleWriteLocations()
+                        logger.warn(message);
+                    }).map(rsp -> rsp.getResource(DatabaseAccount.class))
+                        .doOnNext(databaseAccount -> {
+                            this.useMultipleWriteLocations = this.connectionPolicy.isUsingMultipleWriteLocations()
                                 && BridgeInternal.isEnableMultipleWriteLocations(databaseAccount);
-                    });
+                        });
+                });
         });
     }
 
