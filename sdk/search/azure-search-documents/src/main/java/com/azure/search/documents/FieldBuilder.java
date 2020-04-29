@@ -29,7 +29,7 @@ import java.util.Stack;
 import java.util.stream.Collectors;
 
 /**
- * Helper to covert model class to search field {@link Field}.
+ * Helper to convert model class to search field {@link Field}.
  */
 public class FieldBuilder {
     private static final int MAX_DEPTH = 10000;
@@ -257,4 +257,3 @@ public class FieldBuilder {
         return DataType.EDM_COMPLEX_TYPE;
     }
 }
-
