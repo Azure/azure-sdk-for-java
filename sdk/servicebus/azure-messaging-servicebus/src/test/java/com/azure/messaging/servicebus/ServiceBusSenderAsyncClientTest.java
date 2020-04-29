@@ -315,7 +315,7 @@ class ServiceBusSenderAsyncClientTest {
     }
 
     /**
-     * Verifies that sending multiple message will result in calling sender.send(Iterator).
+     * Verifies that sending multiple message which does not fit in single batch will throw exception.
      */
     @Test
     void sendMessagesListExceedSize() {
