@@ -23,8 +23,8 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
@@ -39,6 +39,9 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     private final AtomicBoolean hasFirstLink = new AtomicBoolean();
     private final AtomicBoolean linkCreditsAdded = new AtomicBoolean();
 
+    private final AtomicReference<CoreSubscriber<? super Message>> downstream = new AtomicReference<>();
+    private final AtomicInteger wip = new AtomicInteger();
+
     private final int prefetch;
     private final AmqpRetryPolicy retryPolicy;
     private final Disposable parentConnection;
@@ -49,24 +52,15 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     private volatile Disposable currentLinkSubscriptions;
     private volatile Disposable retrySubscription;
 
-    private volatile CoreSubscriber<? super Message> downstream;
-    @SuppressWarnings("rawtypes")
-    private static final AtomicReferenceFieldUpdater<AmqpReceiveLinkProcessor, CoreSubscriber> DOWNSTREAM =
-        AtomicReferenceFieldUpdater.newUpdater(AmqpReceiveLinkProcessor.class, CoreSubscriber.class,
-            "downstream");
-
-    private volatile int wip;
-    private static final AtomicIntegerFieldUpdater<AmqpReceiveLinkProcessor> WIP =
-        AtomicIntegerFieldUpdater.newUpdater(AmqpReceiveLinkProcessor.class, "wip");
-
-    private volatile long requested;
-    private static final AtomicLongFieldUpdater<AmqpReceiveLinkProcessor> REQUESTED =
-        AtomicLongFieldUpdater.newUpdater(AmqpReceiveLinkProcessor.class, "requested");
-
+    // Opting to use AtomicReferenceFieldUpdater because Project Reactor provides utility methods that calculates
+    // backpressure requests, sets the upstream correctly, and reports its state.
     private volatile Subscription upstream;
     private static final AtomicReferenceFieldUpdater<AmqpReceiveLinkProcessor, Subscription> UPSTREAM =
         AtomicReferenceFieldUpdater.newUpdater(AmqpReceiveLinkProcessor.class, Subscription.class,
             "upstream");
+    private volatile long requested;
+    private static final AtomicLongFieldUpdater<AmqpReceiveLinkProcessor> REQUESTED =
+        AtomicLongFieldUpdater.newUpdater(AmqpReceiveLinkProcessor.class, "requested");
 
     /**
      * Creates an instance of {@link AmqpReceiveLinkProcessor}.
@@ -181,17 +175,12 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                         onError(error);
                     },
                     () -> {
-                        if (parentConnection.isDisposed()) {
-                            logger.info("Parent connection is disposed.");
-                            downstream.onComplete();
-                        } else if (isTerminated()) {
-                            logger.info("Processor is disposed.");
-                            downstream.onComplete();
-                        } else if (upstream == Operators.cancelledSubscription()) {
-                            logger.info("Upstream has no more items to emit. Disposing.");
+                        if (parentConnection.isDisposed() || isTerminated()
+                            || upstream == Operators.cancelledSubscription()) {
+                            logger.info("Terminal state reached. Disposing of link processor.");
                             dispose();
                         } else {
-                            logger.info("Receive link endpoint states are closed.");
+                            logger.info("Receive link endpoint states are closed. Requesting another.");
                             final AmqpReceiveLink existing = currentLink;
                             currentLink = null;
 
@@ -251,7 +240,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             return;
         }
 
-        if (DOWNSTREAM.compareAndSet(this, null, actual)) {
+        if (downstream.compareAndSet(null, actual)) {
             actual.onSubscribe(this);
             drain();
         } else {
@@ -302,10 +291,9 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         lastError = throwable;
         isTerminated.set(true);
 
-        synchronized (lock) {
-            if (downstream != null) {
-                downstream.onError(throwable);
-            }
+        final CoreSubscriber<? super Message> subscriber = downstream.get();
+        if (subscriber != null) {
+            subscriber.onError(throwable);
         }
 
         onDispose();
@@ -410,21 +398,22 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
     private void drain() {
         // If someone is already in this loop, then we are already clearing the queue.
-        if (!WIP.compareAndSet(this, 0, 1)) {
+        if (!wip.compareAndSet(0, 1)) {
             return;
         }
 
         try {
             drainQueue();
         } finally {
-            if (WIP.decrementAndGet(this) != 0) {
+            if (wip.decrementAndGet() != 0) {
                 logger.warning("There is another worker in drainLoop. But there should only be 1 worker.");
             }
         }
     }
 
     private void drainQueue() {
-        if (downstream == null || checkAndSetTerminated()) {
+        final CoreSubscriber<? super Message> subscriber = downstream.get();
+        if (subscriber == null || checkAndSetTerminated()) {
             return;
         }
 
@@ -447,17 +436,17 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                 }
 
                 if (isCancelled) {
-                    Operators.onDiscard(message, downstream.currentContext());
-                    Operators.onDiscardQueueWithClear(messageQueue, downstream.currentContext(), null);
+                    Operators.onDiscard(message, subscriber.currentContext());
+                    Operators.onDiscardQueueWithClear(messageQueue, subscriber.currentContext(), null);
                     return;
                 }
 
                 try {
-                    downstream.onNext(message);
+                    subscriber.onNext(message);
                 } catch (Exception e) {
                     logger.error("Exception occurred while handling downstream onNext operation.", e);
                     throw logger.logExceptionAsError(Exceptions.propagate(
-                        Operators.onOperatorError(upstream, e, message, downstream.currentContext())));
+                        Operators.onOperatorError(upstream, e, message, subscriber.currentContext())));
                 }
 
                 numberEmitted++;
@@ -475,11 +464,12 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             return false;
         }
 
+        final CoreSubscriber<? super Message> subscriber = downstream.get();
         final Throwable error = lastError;
         if (error != null) {
-            downstream.onError(error);
+            subscriber.onError(error);
         } else {
-            downstream.onComplete();
+            subscriber.onComplete();
         }
 
         if (currentLink != null) {
@@ -491,9 +481,9 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     }
 
     private int getCreditsToAdd() {
-        final CoreSubscriber<? super Message> d = downstream;
+        final CoreSubscriber<? super Message> subscriber = downstream.get();
         final long r = requested;
-        if (d == null || r == 0) {
+        if (subscriber == null || r == 0) {
             logger.info("Not adding credits. No downstream subscribers or items requested.");
             linkCreditsAdded.set(false);
             return 0;
