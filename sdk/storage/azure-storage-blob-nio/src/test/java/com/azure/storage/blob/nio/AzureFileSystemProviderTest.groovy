@@ -756,19 +756,41 @@ class AzureFileSystemProviderTest extends APISpec {
         StandardOpenOption.WRITE             | _
     }
 
-    def "InputStream non file fail"() {
+    def "InputStream non file fail root"() {
         setup:
         def fs = createFS(config)
 
         when:
-        fs.provider().newInputStream()
+        fs.provider().newInputStream(fs.getPath(getDefaultDir(fs)))
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    def "InputStream non file fail dir"() {
+        setup:
+        def fs = createFS(config)
+
+        def cc = rootNameToContainerClient(getDefaultDir(fs))
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        putDirectoryBlob(bc)
+
+        when:
+        fs.provider().newInputStream(fs.getPath(bc.getBlobName()))
 
         then:
         thrown(IOException)
+    }
 
-        // Root
-        // Dir
-        // no exist
+    def "InputStream non file fail no file"() {
+        setup:
+        def fs = createFS(config)
+
+        when:
+        fs.provider().newInputStream(fs.getPath("foo"))
+
+        then:
+        thrown(IOException)
     }
 
     def basicSetupForCopyTest(FileSystem fs) {
