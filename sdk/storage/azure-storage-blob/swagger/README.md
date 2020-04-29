@@ -15,7 +15,8 @@ autorest --use=@microsoft.azure/autorest.java@3.0.4 --use=jianghaolu/autorest.mo
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.BlobStorage/preview/2019-12-12/blob.json
+# input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.BlobStorage/preview/2019-12-12/blob.json
+input-file: https://github.com/Azure/azure-rest-api-specs/blob/6cd6f02d824569dccb2427cf1611fe1cd8cc4350/specification/storage/data-plane/Microsoft.BlobStorage/preview/2019-12-12/blob.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.blob
@@ -25,7 +26,7 @@ sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
-custom-types: BlobAccessPolicy,AccessTier,AccountKind,ArchiveStatus,BlobDownloadHeaders,BlobHttpHeaders,BlobContainerItem,BlobItem,BlobContainerItemProperties,BlobContainerEncryptionScope,BlobItemProperties,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,BlobPrefix,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberActionType,BlobSignedIdentifier,SkuName,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey
+custom-types: BlobAccessPolicy,AccessTier,AccountKind,ArchiveStatus,BlobDownloadHeaders,BlobHttpHeaders,BlobContainerItem,BlobItem,BlobContainerItemProperties,BlobContainerEncryptionScope,BlobItemProperties,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,BlobPrefix,BlobQuickQueryHeaders,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberActionType,BlobSignedIdentifier,SkuName,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey
 custom-types-subpackage: models
 ```
 
@@ -1336,6 +1337,20 @@ directive:
       replace('sizeInt', 'size').replace('sizeInt', 'size').replace('sizeInt', 'size').replace('sizeInt', 'size').
       replace('sizeInt', 'size').replace('sizeInt', 'size').replace('sizeInt', 'size').replace('sizeInt', 'size').
       replace(/\/\*\s+\*\s+The size property.\s+\*\/\s+\/\*/gm, '/*')
+```
+
+### /{containerName}/{blob}?comp=query
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=query"]
+  transform: >
+    let param = $.post.parameters[0];
+    if (!param["$ref"].endsWith("ContainerName")) {
+      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
+      $.post.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
+      $.post.parameters.splice(1, 0, { "$ref": path + "Blob" });
+    }
 ```
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob%2Fswagger%2FREADME.png)
