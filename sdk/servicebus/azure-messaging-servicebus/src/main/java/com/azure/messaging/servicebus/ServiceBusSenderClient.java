@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.messaging.servicebus.models.CreateBatchOptions;
 
@@ -72,15 +73,16 @@ public class ServiceBusSenderClient implements AutoCloseable {
     }
 
     /**
-     * Sends an array of {@link ServiceBusMessage} to a Service Bus queue or topic using a batched approach.
+     * Sends a set of {@link ServiceBusMessage} to a Service Bus queue or topic using a batched approach.
      * If the size of messages exceed the maximum size of a single batch, an exception will be triggered and the send
      * will fail. By default, the message size is the max amount allowed on the link.
      *
      * @param messages Messages to be sent to Service Bus queue or topic.
      *
      * @throws NullPointerException if {@code messages} is {@code null}.
+     * @throws AmqpException if {@code messages} is larger than the maximum allowed size of a single batch.
      */
-    public void send(ServiceBusMessage... messages) {
+    public void send(Iterable<ServiceBusMessage> messages) {
         asyncClient.send(messages).block(tryTimeout);
     }
 

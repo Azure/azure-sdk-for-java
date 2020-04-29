@@ -56,6 +56,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -293,11 +294,7 @@ class ServiceBusSenderAsyncClientTest {
         // Arrange
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
-        final ServiceBusMessage[] messages = new ServiceBusMessage[count];
-
-        IntStream.range(0, count).forEach(index -> {
-            messages[index] = new ServiceBusMessage(contents).setMessageId(UUID.randomUUID().toString());
-        });
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString());
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions)))
             .thenReturn(Mono.just(sendLink));
@@ -325,12 +322,7 @@ class ServiceBusSenderAsyncClientTest {
         // Arrange
         final int count = 4;
         final Mono<Integer> linkMaxSize = Mono.just(1);
-        final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
-        final ServiceBusMessage[] messages = new ServiceBusMessage[count];
-
-        IntStream.range(0, count).forEach(index -> {
-            messages[index] = new ServiceBusMessage(contents).setMessageId(UUID.randomUUID().toString());
-        });
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString());
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions)))
             .thenReturn(Mono.just(sendLink));
@@ -341,7 +333,7 @@ class ServiceBusSenderAsyncClientTest {
             .verifyErrorMatches(error -> error instanceof AmqpException
                 && ((AmqpException) error).getErrorCondition() == AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED);
 
-        verify(sendLink, times(0)).send(anyList());
+        verify(sendLink, never()).send(anyList());
     }
 
     /**

@@ -114,17 +114,14 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         setSenderAndReceiver(entityType);
         int count = 3;
-        final String messageId = UUID.randomUUID().toString();
-        final ServiceBusMessage[] messages = new ServiceBusMessage[count];
-        TestUtils.getServiceBusMessages(3, messageId).toArray(messages);
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString());
+
 
         // Assert & Act
 
         sender.send(messages);
 
-        for (int i = 0; i < messages.length; i++) {
-            messagesPending.incrementAndGet();
-        }
+        messages.forEach(serviceBusMessage -> messagesPending.incrementAndGet());
     }
 
     /**

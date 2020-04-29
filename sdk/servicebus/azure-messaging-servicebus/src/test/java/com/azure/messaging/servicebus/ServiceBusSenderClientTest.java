@@ -22,7 +22,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.IntStream;
 
 import static com.azure.messaging.servicebus.ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -41,7 +40,7 @@ public class ServiceBusSenderClientTest {
     private ArgumentCaptor<ServiceBusMessage> singleMessageCaptor;
 
     @Captor
-    private ArgumentCaptor<ServiceBusMessage[]> messageListCaptor = ArgumentCaptor.forClass(ServiceBusMessage[].class);
+    private ArgumentCaptor<List<ServiceBusMessage>> messageListCaptor;
 
     @Captor
     private ArgumentCaptor<Instant> scheduleMessageCaptor;
@@ -76,6 +75,7 @@ public class ServiceBusSenderClientTest {
     void teardown() {
         sender.close();
         singleMessageCaptor = null;
+        messageListCaptor = null;
         Mockito.framework().clearInlineMocks();
     }
 
@@ -158,11 +158,7 @@ public class ServiceBusSenderClientTest {
         // Arrange
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
-        final ServiceBusMessage[] messages = new ServiceBusMessage[count];
-
-        IntStream.range(0, count).forEach(index -> {
-            messages[index] = new ServiceBusMessage(contents).setSessionId(UUID.randomUUID().toString());
-        });
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString());
 
         when(asyncSender.send(messages)).thenReturn(Mono.empty());
 
@@ -173,13 +169,9 @@ public class ServiceBusSenderClientTest {
         verify(asyncSender, times(1)).send(messages);
         verify(asyncSender).send(messageListCaptor.capture());
 
-        final List<ServiceBusMessage[]> sentMessages = messageListCaptor.getAllValues();
+        final List<ServiceBusMessage> sentMessages = messageListCaptor.getValue();
         Assertions.assertEquals(count, sentMessages.size());
-
-        for (int index = 0; index < sentMessages.size(); ++index) {
-            Object object = sentMessages.get(0);
-            Assertions.assertArrayEquals(contents, ((ServiceBusMessage) object).getBody());
-        }
+        sentMessages.forEach(serviceBusMessage -> Assertions.assertArrayEquals(contents, serviceBusMessage.getBody()));
     }
 
     /**

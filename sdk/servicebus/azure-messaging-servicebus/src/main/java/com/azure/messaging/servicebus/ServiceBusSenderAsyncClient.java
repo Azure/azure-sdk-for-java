@@ -38,7 +38,6 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
-import java.util.stream.Stream;
 
 import static com.azure.core.amqp.implementation.RetryUtil.getRetryPolicy;
 import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
@@ -137,21 +136,22 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Sends an array of messages to a Service Bus queue or topic using a batched approach. If the size of messages
+     * Sends a set of messages to a Service Bus queue or topic using a batched approach. If the size of messages
      * exceed the maximum size of a single batch, an exception will be triggered and the send will fail.
      * By default, the message size is the max amount allowed on the link.
      *
      * @param messages Messages to be sent to Service Bus queue or topic.
      *
-     * @return The {@link Mono} the finishes this operation on service bus resource.
+     * @return A {@link Mono} that completes when all messages have been sent to the Service Bus resource.
      *
      * @throws NullPointerException if {@code messages} is {@code null}.
+     * @throws AmqpException if {@code messages} is larger than the maximum allowed size of a single batch.
      */
-    public Mono<Void> send(ServiceBusMessage... messages) {
+    public Mono<Void> send(Iterable<ServiceBusMessage> messages) {
         Objects.requireNonNull(messages, "'messages' cannot be null.");
 
         return createBatch().flatMap(messageBatch -> {
-            Stream.of(messages).forEach(serviceBusMessage -> messageBatch.tryAdd(serviceBusMessage));
+            messages.forEach(message -> messageBatch.tryAdd(message));
             return send(messageBatch);
         });
     }
