@@ -207,4 +207,7 @@ class NioBlobInputStreamTest extends APISpec {
     // Reading
     // Test option validation on provider
     // Test path validation on provider
+    // double check docs
+
+    // Outputstream: Could do a commitBlockList on each write so data is available immediately. Could stage each write as a block. Could just use BlobOutputStream
 }

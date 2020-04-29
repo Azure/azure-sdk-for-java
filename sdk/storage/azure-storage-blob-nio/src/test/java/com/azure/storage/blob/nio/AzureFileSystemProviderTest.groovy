@@ -16,6 +16,7 @@ import java.nio.file.FileSystemAlreadyExistsException
 import java.nio.file.FileSystemNotFoundException
 import java.nio.file.NoSuchFileException
 import java.nio.file.StandardCopyOption
+import java.nio.file.StandardOpenOption
 import java.nio.file.attribute.FileAttribute
 import java.security.MessageDigest
 
@@ -711,7 +712,7 @@ class AzureFileSystemProviderTest extends APISpec {
 
         when:
         def it = fs.provider().newDirectoryStream(fs.getPath(getDefaultDir(fs)),
-            {path -> path.getFileName().toString().startsWith("a")}).iterator()
+            { path -> path.getFileName().toString().startsWith("a") }).iterator()
 
         then:
         it.hasNext()
@@ -724,10 +725,50 @@ class AzureFileSystemProviderTest extends APISpec {
         def fs = createFS(config)
 
         when:
-        fs.provider().newDirectoryStream(fs.getPath("fakeRoot:"), {path -> true})
+        fs.provider().newDirectoryStream(fs.getPath("fakeRoot:"), { path -> true })
 
         then:
         thrown(IOException)
+    }
+
+    @Unroll
+    def "InputStream options fail"() {
+        setup:
+        def fs = createFS(config)
+
+        when:
+        // Options are validated before path is validated.
+        fs.provider().newInputStream(fs.getPath("foo"), option)
+
+        then:
+        thrown(UnsupportedOperationException)
+
+        where:
+        option                               | _
+        StandardOpenOption.APPEND            | _
+        StandardOpenOption.CREATE            | _
+        StandardOpenOption.CREATE_NEW        | _
+        StandardOpenOption.DELETE_ON_CLOSE   | _
+        StandardOpenOption.DSYNC             | _
+        StandardOpenOption.SPARSE            | _
+        StandardOpenOption.SYNC              | _
+        StandardOpenOption.TRUNCATE_EXISTING | _
+        StandardOpenOption.WRITE             | _
+    }
+
+    def "InputStream non file fail"() {
+        setup:
+        def fs = createFS(config)
+
+        when:
+        fs.provider().newInputStream()
+
+        then:
+        thrown(IOException)
+
+        // Root
+        // Dir
+        // no exist
     }
 
     def basicSetupForCopyTest(FileSystem fs) {
