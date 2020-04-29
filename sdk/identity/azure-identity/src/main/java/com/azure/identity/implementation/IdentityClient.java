@@ -160,12 +160,11 @@ public class IdentityClient {
                     publicClientApplicationBuilder.setTokenCacheAccessAspect(
                             new PersistenceTokenCacheAccessAspect(options.getPersistenceSettings()));
                 } catch (Throwable t) {
+                    String message = "Shared token cache is unavailable in this environment.";
                     if (sharedTokenCacheCredential) {
-                        throw logger.logExceptionAsError(new CredentialUnavailableException(
-                            "Shared token cache is unavailable in this environment.", t));
+                        throw logger.logExceptionAsError(new CredentialUnavailableException(message, t));
                     } else {
-                        throw logger.logExceptionAsError(new ClientAuthenticationException(
-                            "Shared token cache is unavailable in this environment.", null, t));
+                        throw logger.logExceptionAsError(new ClientAuthenticationException(message, null, t));
                     }
                 }
             }
@@ -408,6 +407,9 @@ public class IdentityClient {
         return Mono.fromFuture(() -> getPublicClientApplication(false).acquireToken(
             UserNamePasswordParameters.builder(new HashSet<>(request.getScopes()), username, password.toCharArray())
                 .build()))
+            .doFinally(s -> {
+                if (s.)
+            })
             .onErrorMap(t -> new ClientAuthenticationException("Failed to acquire token with username and password",
                 null, t)).map(ar -> new MsalToken(ar, options));
     }
