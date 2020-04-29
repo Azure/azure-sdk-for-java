@@ -19,18 +19,19 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 
+import static com.azure.ai.formrecognizer.TestUtils.CUSTOM_FORM_DATA;
 import static com.azure.ai.formrecognizer.TestUtils.CUSTOM_FORM_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_SOURCE_URL_ERROR;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_URL;
 import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_LOCAL_URL;
-import static com.azure.ai.formrecognizer.TestUtils.getExpectedFormPages;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedReceipts;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedRecognizedForms;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedRecognizedLabeledForms;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedUSReceipt;
 import static com.azure.ai.formrecognizer.TestUtils.getPageResults;
+import static com.azure.ai.formrecognizer.TestUtils.getRawResponse;
 import static com.azure.ai.formrecognizer.TestUtils.getReadResults;
 import static com.azure.ai.formrecognizer.TestUtils.getReplayableBufferData;
 import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
@@ -175,7 +176,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 = client.beginRecognizeContent(toFluxByteBuffer(data),
                 LAYOUT_FILE_LENGTH, FormContentType.IMAGE_JPEG, null).getSyncPoller();
             syncPoller.waitForCompletion();
-            validateLayoutDataResults(syncPoller.getFinalResult(), getReadResults(), getPageResults());
+            validateLayoutDataResults(syncPoller.getFinalResult(), getReadResults(), getPageResults(), false);
         });
     }
 
@@ -207,7 +208,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 = client.beginRecognizeContent(toFluxByteBuffer(data),
                 LAYOUT_FILE_LENGTH, null, null).getSyncPoller();
             syncPoller.waitForCompletion();
-            validateLayoutDataResults(syncPoller.getFinalResult(), getReadResults(), getPageResults());
+            validateLayoutDataResults(syncPoller.getFinalResult(), getReadResults(), getPageResults(), false);
         });
     }
 
@@ -220,7 +221,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             SyncPoller<OperationResult, IterableStream<FormPage>> syncPoller
                 = client.beginRecognizeContentFromUrl(sourceUrl).getSyncPoller();
             syncPoller.waitForCompletion();
-            validateLayoutDataResults(syncPoller.getFinalResult(), getReadResults(), getPageResults());
+            validateLayoutDataResults(syncPoller.getFinalResult(), getReadResults(), getPageResults(), false);
         });
     }
 
@@ -332,7 +333,8 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                     CUSTOM_FORM_FILE_LENGTH, FormContentType.APPLICATION_PDF, false, null)
                     .getSyncPoller();
                 syncPoller.waitForCompletion();
-                validateRecognizedFormResult(getExpectedRecognizedForms(), syncPollers.getFinalResult());
+                validateRecognizedUnLabeledResult(syncPollers.getFinalResult(),
+                    getRawResponse(CUSTOM_FORM_DATA).getAnalyzeResult(), false);
             }));
     }
 }

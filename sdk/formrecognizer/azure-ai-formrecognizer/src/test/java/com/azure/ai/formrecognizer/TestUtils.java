@@ -77,7 +77,7 @@ final class TestUtils {
 
     private static final String CUSTOM_FORM_LABELED_DATA = "src/test/resources/sample_files/Content"
         + "/customFormLabeledContent.json";
-    private static final String CUSTOM_FORM_DATA = "src/test/resources/sample_files/Content/customFormContent.json";
+    static final String CUSTOM_FORM_DATA = "src/test/resources/sample_files/Content/customFormContent.json";
     private static final String RECEIPT_FORM_DATA = "src/test/resources/sample_files/Content/receiptContent.json";
     private static final String LAYOUT_FORM_DATA = "src/test/resources/sample_files/Content/layoutContent.json";
 

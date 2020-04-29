@@ -3,8 +3,10 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.implementation.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.implementation.models.DataTable;
 import com.azure.ai.formrecognizer.implementation.models.DataTableCell;
+import com.azure.ai.formrecognizer.implementation.models.KeyValuePair;
 import com.azure.ai.formrecognizer.implementation.models.PageResult;
 import com.azure.ai.formrecognizer.implementation.models.ReadResult;
 import com.azure.ai.formrecognizer.implementation.models.TextLine;
@@ -99,7 +101,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     }
 
     static void validateLayoutDataResults(IterableStream<FormPage> actualFormPages, List<ReadResult> readResults,
-        List<PageResult> pageResults) {
+        List<PageResult> pageResults, boolean includeTextDetails) {
         List<FormPage> actualFormPageList = actualFormPages.stream().collect(Collectors.toList());
         for (int i = 0; i < actualFormPageList.size(); i++) {
             FormPage actualFormPage = actualFormPageList.get(i);
@@ -109,8 +111,11 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             assertEquals(readResult.getWidth(), actualFormPage.getWidth());
             assertEquals(readResult.getHeight(), actualFormPage.getHeight());
             assertEquals(readResult.getUnit().toString(), actualFormPage.getUnit().toString());
-            validateFormLineData(readResult.getLines(), actualFormPage.getLines());
-            validateFormTableData(pageResults.get(i).getTables(), actualFormPage.getTables(), readResults);
+            if (includeTextDetails) {
+                validateFormLineData(readResult.getLines(), actualFormPage.getLines());
+            }
+            validateFormTableData(pageResults.get(i).getTables(), actualFormPage.getTables(), readResults,
+                includeTextDetails);
         }
     }
 
@@ -140,28 +145,32 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
                     }
                     FormWord actualFormContent = (FormWord) actualFormContentList.get(i);
                     assertEquals(expectedTextWord.getText(), actualFormContent.getText());
-                    assertEquals(expectedTextWord.getConfidence(), actualFormContent.getConfidence());
-                    // validateBoundingBoxData(expectedTextWord.getBoundingBox(), actualFormContent.getBoundingBox());
+                    if (expectedTextWord.getConfidence() != null) {
+                        assertEquals(expectedTextWord.getConfidence(), actualFormContent.getConfidence());
+                    } else {
+                        assertEquals(1.0f, actualFormContent.getConfidence());
+                    }
+                    validateBoundingBoxData(expectedTextWord.getBoundingBox(), actualFormContent.getBoundingBox());
                 }
             }
         }
     }
 
     private static void validateFormTableData(List<DataTable> expectedFormTables,
-        IterableStream<FormTable> actualFormTables, List<ReadResult> readResults) {
+        IterableStream<FormTable> actualFormTables, List<ReadResult> readResults, boolean includeTextDetails) {
         List<FormTable> actualFormTable = actualFormTables.stream().collect(Collectors.toList());
         assertEquals(expectedFormTables.size(), actualFormTable.size());
         for (int i = 0; i < actualFormTable.size(); i++) {
             DataTable expectedTable = expectedFormTables.get(i);
             FormTable actualTable = actualFormTable.get(i);
             assertEquals(expectedTable.getColumns(), actualTable.getColumnCount());
-            validateCellData(expectedTable.getCells(), actualTable.getCells(), readResults);
+            validateCellData(expectedTable.getCells(), actualTable.getCells(), readResults, includeTextDetails);
             assertEquals(expectedTable.getRows(), actualTable.getRowCount());
         }
     }
 
     private static void validateCellData(List<DataTableCell> expectedTableCells,
-        IterableStream<FormTableCell> actualTableCells, List<ReadResult> readResults) {
+        IterableStream<FormTableCell> actualTableCells, List<ReadResult> readResults, boolean includeTextDetails) {
         List<FormTableCell> actualTableCellList = actualTableCells.stream().collect(Collectors.toList());
         assertEquals(expectedTableCells.size(), actualTableCellList.size());
         for (int i = 0; i < actualTableCellList.size(); i++) {
@@ -171,8 +180,11 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             assertEquals(expectedTableCell.getColumnSpan(), actualTableCell.getColumnSpan());
             assertEquals(expectedTableCell.getRowIndex(), actualTableCell.getRowIndex());
             assertEquals(expectedTableCell.getRowSpan(), actualTableCell.getRowSpan());
-            // validateBoundingBoxData(expectedTableCell.getBoundingBox(), actualTableCell.getBoundingBox());
-            validateReferenceElementsData(expectedTableCell.getElements(), actualTableCell.getElements(), readResults);
+            validateBoundingBoxData(expectedTableCell.getBoundingBox(), actualTableCell.getBoundingBox());
+            if (includeTextDetails) {
+                validateReferenceElementsData(expectedTableCell.getElements(), actualTableCell.getElements(),
+                    readResults);
+            }
         }
     }
 
@@ -183,7 +195,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             TextLine expectedLine = expectedLines.get(i);
             FormLine actualLine = actualLineList.get(i);
             assertEquals(expectedLine.getText(), actualLine.getText());
-            // validateBoundingBoxData(expectedLine.getBoundingBox(), actualLine.getBoundingBox());
+            validateBoundingBoxData(expectedLine.getBoundingBox(), actualLine.getBoundingBox());
             validateFormWordData(expectedLine.getWords(), actualLine.getFormWords());
         }
     }
@@ -197,16 +209,19 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             TextWord expectedWord = expectedFormWords.get(i);
             FormWord actualWord = actualFormWordList.get(i);
             assertEquals(expectedWord.getText(), actualWord.getText());
-            // validateBoundingBoxData(expectedWord.getBoundingBox(), actualWord.getBoundingBox());
+            validateBoundingBoxData(expectedWord.getBoundingBox(), actualWord.getBoundingBox());
             assertEquals(expectedWord.getConfidence(), actualWord.getConfidence());
         }
     }
 
     private static void validateBoundingBoxData(List<Float> expectedBoundingBox, BoundingBox actualBoundingBox) {
-        for (int i = 0, j = 0; i < actualBoundingBox.getPoints().size(); i = i + 2, j++) {
-            Point actualPoint = actualBoundingBox.getPoints().get(i);
-            assertEquals(expectedBoundingBox.get(i), actualPoint.getX());
-            assertEquals(expectedBoundingBox.get(++j), actualPoint.getY());
+        if (actualBoundingBox != null && actualBoundingBox.getPoints() != null) {
+            int i = 0;
+            for (Point point : actualBoundingBox.getPoints()) {
+                assertEquals(expectedBoundingBox.get(i), point.getX());
+                assertEquals(expectedBoundingBox.get(++i), point.getY());
+                i++;
+            }
         }
     }
 
@@ -231,15 +246,48 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         }
     }
 
-    static void validateRecognizedFormResultData(IterableStream<RecognizedForm> expectedForms,
-        IterableStream<RecognizedForm> actualForms) {
-        List<RecognizedForm> expectedFormList = expectedForms.stream().collect(Collectors.toList());
+    static void validateRecognizedUnLabeledResult(IterableStream<RecognizedForm> actualForms,
+        AnalyzeResult rawResponse, boolean includeTextDetails) {
+        List<ReadResult> readResults = rawResponse.getReadResults();
+        List<PageResult> pageResults = rawResponse.getPageResults();
         List<RecognizedForm> actualFormList = actualForms.stream().collect(Collectors.toList());
 
-        assertEquals(expectedFormList.size(), actualFormList.size());
         for (int i = 0; i < actualFormList.size(); i++) {
-            validateRecognizedForm(expectedFormList.get(i), actualFormList.get(i));
+            final RecognizedForm actualForm = actualFormList.get(i);
+            final PageResult expectedPage = pageResults.get(i);
+            validateLayoutDataResults(actualForm.getPages(), readResults, pageResults, false);
+            validatePageRangeData(expectedPage.getPage(), actualForm.getPageRange());
+            validateUnlabeledFields(expectedPage.getKeyValuePairs(), actualForm.getFields(), readResults,
+                includeTextDetails);
+
         }
+    }
+
+    private static void validateUnlabeledFields(List<KeyValuePair> expectedFieldMap,
+        Map<String, FormField<?>> actualFieldMap,
+        List<ReadResult> readResults, boolean includeTextDetails) {
+        for (int i = 0; i < expectedFieldMap.size(); i++) {
+            final KeyValuePair expectedFormField = expectedFieldMap.get(i);
+            final FormField<?> actualFormField = actualFieldMap.get("field-" + i);
+            assertEquals(expectedFormField.getConfidence(), actualFormField.getConfidence());
+            assertEquals(expectedFormField.getKey().getText(), actualFormField.getLabelText().getText());
+            validateBoundingBoxData(expectedFormField.getKey().getBoundingBox(),
+                actualFormField.getLabelText().getBoundingBox());
+            if (includeTextDetails) {
+                validateReferenceElementsData(expectedFormField.getKey().getElements(),
+                    actualFormField.getLabelText().getTextContent(), readResults);
+                validateReferenceElementsData(expectedFormField.getValue().getElements(),
+                    actualFormField.getValueText().getTextContent(), readResults);
+            }
+            assertEquals(expectedFormField.getValue().getText(), actualFormField.getValueText().getText());
+            validateBoundingBoxData(expectedFormField.getValue().getBoundingBox(),
+                actualFormField.getValueText().getBoundingBox());
+        }
+    }
+
+    private static void validatePageRangeData(int expectedPageInfo, PageRange actualPageInfo) {
+        assertEquals(expectedPageInfo, actualPageInfo.getStartPageNumber());
+        assertEquals(expectedPageInfo, actualPageInfo.getEndPageNumber());
     }
 
     static void validateUSReceipt(USReceipt expectedReceipt, USReceipt actualRecognizedReceipt,
