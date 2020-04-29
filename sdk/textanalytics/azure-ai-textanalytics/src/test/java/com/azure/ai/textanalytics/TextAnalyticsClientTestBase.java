@@ -13,7 +13,7 @@ import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.RecognizeCategorizedEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
@@ -74,7 +74,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     private final Map<String, String> properties = CoreUtils.getProperties(TEXT_ANALYTICS_PROPERTIES);
     private final String clientName = properties.getOrDefault(NAME, "UnknownName");
     private final String clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
-    static final String BATCH_ERROR_EXCEPTION_MESSAGE = "Error in accessing the property on document id: 2, when RecognizeCategorizedEntitiesResult returned with an error: Document text is empty. ErrorCodeValue: {invalidDocument}";
+    static final String BATCH_ERROR_EXCEPTION_MESSAGE = "Error in accessing the property on document id: 2, when RecognizeEntitiesResultImpl returned with an error: Document text is empty. ErrorCodeValue: {invalidDocument}";
     static final String INVALID_COUNTRY_HINT_EXPECTED_EXCEPTION_MESSAGE = "Country hint is not valid. Please specify an ISO 3166-1 alpha-2 two letter country code. ErrorCodeValue: {invalidCountryHint}";
     static final String INVALID_DOCUMENT_BATCH_NPE_MESSAGE = "'documents' cannot be null.";
     static final String INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE = "'documents' cannot be empty.";
@@ -377,8 +377,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     static void validateCategorizedEntitiesWithPagedResponse(boolean showStatistics,
-        TextAnalyticsPagedResponse<RecognizeCategorizedEntitiesResult> expected,
-        TextAnalyticsPagedResponse<RecognizeCategorizedEntitiesResult> actual) {
+        TextAnalyticsPagedResponse<RecognizeEntitiesResult> expected,
+        TextAnalyticsPagedResponse<RecognizeEntitiesResult> actual) {
 
         validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
             validateCategorizedEntities(
@@ -425,7 +425,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     static void validatePrimaryLanguage(DetectedLanguage expectedLanguage, DetectedLanguage actualLanguage) {
         assertEquals(expectedLanguage.getIso6391Name(), actualLanguage.getIso6391Name());
         assertEquals(expectedLanguage.getName(), actualLanguage.getName());
-        assertNotNull(actualLanguage.getScore());
+        assertNotNull(actualLanguage.getConfidenceScore());
     }
 
     /**
@@ -438,7 +438,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         CategorizedEntity expectedCategorizedEntity, CategorizedEntity actualCategorizedEntity) {
         assertEquals(expectedCategorizedEntity.getGraphemeLength() > 0, actualCategorizedEntity.getGraphemeLength() > 0);
         assertEquals(expectedCategorizedEntity.getGraphemeOffset(), actualCategorizedEntity.getGraphemeOffset());
-        assertEquals(expectedCategorizedEntity.getSubCategory(), actualCategorizedEntity.getSubCategory());
+        assertEquals(expectedCategorizedEntity.getSubcategory(), actualCategorizedEntity.getSubcategory());
         assertEquals(expectedCategorizedEntity.getText(), actualCategorizedEntity.getText());
         assertEquals(expectedCategorizedEntity.getCategory(), actualCategorizedEntity.getCategory());
         assertNotNull(actualCategorizedEntity.getConfidenceScore());

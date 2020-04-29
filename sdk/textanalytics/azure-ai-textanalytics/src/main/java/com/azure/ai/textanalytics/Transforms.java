@@ -8,6 +8,8 @@ import com.azure.ai.textanalytics.implementation.models.LanguageInput;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageInput;
 import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsError;
+import com.azure.ai.textanalytics.implementation.models.TextAnalyticsErrorImpl;
+import com.azure.ai.textanalytics.implementation.models.TextDocumentStatisticsImpl;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
@@ -56,7 +58,7 @@ final class Transforms {
      * @return the {@link TextDocumentStatistics} returned by the SDK.
      */
     static TextDocumentStatistics toTextDocumentStatistics(DocumentStatistics statistics) {
-        return new TextDocumentStatistics(statistics.getCharactersCount(), statistics.getTransactionsCount());
+        return new TextDocumentStatisticsImpl(statistics.getCharactersCount(), statistics.getTransactionsCount());
     }
 
     /**
@@ -81,12 +83,12 @@ final class Transforms {
     static com.azure.ai.textanalytics.models.TextAnalyticsError toTextAnalyticsError(
         TextAnalyticsError textAnalyticsError) {
         if (textAnalyticsError.getInnererror() == null) {
-            return new com.azure.ai.textanalytics.models.TextAnalyticsError(
+            return new TextAnalyticsErrorImpl(
                 TextAnalyticsErrorCode.fromString(textAnalyticsError.getCode().toString()),
                 textAnalyticsError.getMessage(),
                 textAnalyticsError.getTarget());
         }
-        return new com.azure.ai.textanalytics.models.TextAnalyticsError(
+        return new TextAnalyticsErrorImpl(
             TextAnalyticsErrorCode.fromString(textAnalyticsError.getInnererror().getCode().toString()),
             textAnalyticsError.getInnererror().getMessage(),
             textAnalyticsError.getInnererror().getTarget());

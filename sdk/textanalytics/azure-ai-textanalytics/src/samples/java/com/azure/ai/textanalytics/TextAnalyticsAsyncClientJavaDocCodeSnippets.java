@@ -66,7 +66,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         String document = "Bonjour tout le monde";
         textAnalyticsAsyncClient.detectLanguage(document).subscribe(detectedLanguage ->
             System.out.printf("Detected language name: %s, ISO 6391 Name: %s, score: %f.%n",
-                detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore()));
+                detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getConfidenceScore()));
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguage#string
     }
 
@@ -79,7 +79,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         String countryHint = "US";
         textAnalyticsAsyncClient.detectLanguage(document, countryHint).subscribe(detectedLanguage ->
             System.out.printf("Detected language name: %s, ISO 6391 Name: %s, score: %f.%n",
-                detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore()));
+                detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getConfidenceScore()));
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguage#string-string
     }
 
@@ -99,7 +99,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             for (DetectLanguageResult detectLanguageResult : batchResult.getElements()) {
                 DetectedLanguage detectedLanguage = detectLanguageResult.getPrimaryLanguage();
                 System.out.printf("Detected language name: %s, ISO 6391 Name: %s, score: %f.%n",
-                    detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
+                    detectedLanguage.getName(), detectedLanguage.getIso6391Name(),
+                    detectedLanguage.getConfidenceScore());
             }
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageBatch#Iterable
@@ -124,7 +125,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 for (DetectLanguageResult detectLanguageResult : batchResult.getElements()) {
                     DetectedLanguage detectedLanguage = detectLanguageResult.getPrimaryLanguage();
                     System.out.printf("Detected language name: %s, ISO 6391 Name: %s, score: %f.%n",
-                        detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
+                        detectedLanguage.getName(), detectedLanguage.getIso6391Name(),
+                        detectedLanguage.getConfidenceScore());
                 }
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageBatch#Iterable-String
@@ -149,7 +151,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 for (DetectLanguageResult detectLanguageResult : batchResult.getElements()) {
                     DetectedLanguage detectedLanguage = detectLanguageResult.getPrimaryLanguage();
                     System.out.printf("Detected language name: %s, ISO 6391 Name: %s, score: %f.%n",
-                        detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
+                        detectedLanguage.getName(), detectedLanguage.getIso6391Name(),
+                        detectedLanguage.getConfidenceScore());
                 }
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageBatch#Iterable-String-TextAnalyticsRequestOptions
@@ -178,7 +181,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 for (DetectLanguageResult detectLanguageResult : response.getElements()) {
                     DetectedLanguage detectedLanguage = detectLanguageResult.getPrimaryLanguage();
                     System.out.printf("Detected language name: %s, ISO 6391 Name: %s, score: %f.%n",
-                        detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
+                        detectedLanguage.getName(), detectedLanguage.getIso6391Name(),
+                        detectedLanguage.getConfidenceScore());
                 }
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageBatch#Iterable-TextAnalyticsRequestOptions
@@ -233,7 +237,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             batchResult.getElements().forEach(recognizeEntitiesResult ->
                 recognizeEntitiesResult.getEntities().forEach(entity -> System.out.printf(
                     "Recognized entity: %s, entity category: %s, entity sub-category: %s, score: %f.%n",
-                    entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getConfidenceScore())));
+                    entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore())));
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeCategorizedEntitiesBatch#Iterable
     }

@@ -4,13 +4,14 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
+import com.azure.ai.textanalytics.implementation.models.DetectLanguageResultImpl;
+import com.azure.ai.textanalytics.implementation.models.DetectedLanguageImpl;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentLanguage;
 import com.azure.ai.textanalytics.implementation.models.LanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.LanguageResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
-import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
@@ -20,7 +21,6 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -111,24 +111,14 @@ class DetectLanguageAsyncClient {
 
         final List<DetectLanguageResult> detectLanguageResults = new ArrayList<>();
         for (DocumentLanguage documentLanguage : languageResult.getDocuments()) {
-            DetectedLanguage primaryLanguage = null;
-            List<com.azure.ai.textanalytics.implementation.models.DetectedLanguage> detectedLanguages =
-                documentLanguage.getDetectedLanguages();
-            if (detectedLanguages.size() >= 1) {
-                detectedLanguages.sort(
-                    Comparator.comparing(
-                        com.azure.ai.textanalytics.implementation.models.DetectedLanguage::getConfidenceScore));
-                com.azure.ai.textanalytics.implementation.models.DetectedLanguage detectedLanguageResult =
-                    detectedLanguages.get(0);
-                primaryLanguage = new DetectedLanguage(detectedLanguageResult.getName(),
-                    detectedLanguageResult.getIso6391Name(), detectedLanguageResult.getConfidenceScore());
-            }
-
-            detectLanguageResults.add(new DetectLanguageResult(documentLanguage.getId(),
+            com.azure.ai.textanalytics.implementation.models.DetectedLanguage detectedLanguage =
+                documentLanguage.getDetectedLanguage();
+            detectLanguageResults.add(new DetectLanguageResultImpl(documentLanguage.getId(),
                 documentLanguage.getStatistics() == null
                     ? null : Transforms.toTextDocumentStatistics(documentLanguage.getStatistics()),
                 null,
-                primaryLanguage));
+                new DetectedLanguageImpl(detectedLanguage.getName(),
+                    detectedLanguage.getIso6391Name(), detectedLanguage.getConfidenceScore())));
         }
 
         for (DocumentError documentError : languageResult.getErrors()) {
@@ -136,8 +126,7 @@ class DetectLanguageAsyncClient {
                 Transforms.toTextAnalyticsError(documentError.getError());
             final String documentId = documentError.getId();
 
-            detectLanguageResults.add(
-                new DetectLanguageResult(documentId, null, error, null));
+            detectLanguageResults.add(new DetectLanguageResultImpl(documentId, null, error, null));
         }
 
         return new TextAnalyticsPagedResponse<>(

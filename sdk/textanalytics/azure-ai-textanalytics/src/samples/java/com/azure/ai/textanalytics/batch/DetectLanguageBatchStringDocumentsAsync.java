@@ -48,7 +48,7 @@ public class DetectLanguageBatchStringDocumentsAsync {
                     // Valid document
                     DetectedLanguage language = detectLanguageResult.getPrimaryLanguage();
                     System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %f.%n",
-                        language.getName(), language.getIso6391Name(), language.getScore());
+                        language.getName(), language.getIso6391Name(), language.getConfidenceScore());
                 }
             },
             error -> System.err.println("There was an error detecting language of the documents." + error),

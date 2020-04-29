@@ -29,7 +29,7 @@ public class RecognizeEntitiesAsync {
         client.recognizeEntities(document).subscribe(
             entity -> System.out.printf(
                 "Recognized categorized entity: %s, entity category: %s, entity sub-category: %s, score: %f.%n",
-                entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getConfidenceScore()),
+                entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()),
             error -> System.err.println("There was an error recognizing entities of the text." + error),
             () -> System.out.println("Entities recognized."));
 

@@ -12,7 +12,7 @@ import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
-import com.azure.ai.textanalytics.models.RecognizeCategorizedEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
@@ -368,12 +368,12 @@ public final class TextAnalyticsAsyncClient {
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      *
      * @return A {@link TextAnalyticsPagedFlux} contains a list of
-     * {@link RecognizeCategorizedEntitiesResult recognized categorized entities document result}.
+     * {@link RecognizeEntitiesResult recognized categorized entities document result}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedFlux<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatch(
+    public TextAnalyticsPagedFlux<RecognizeEntitiesResult> recognizeEntitiesBatch(
         Iterable<String> documents) {
         return recognizeEntitiesBatch(documents, defaultLanguage, null);
     }
@@ -394,12 +394,12 @@ public final class TextAnalyticsAsyncClient {
      * default.
      *
      * @return A {@link TextAnalyticsPagedFlux} contains a list of
-     * {@link RecognizeCategorizedEntitiesResult recognized categorized entities document result}.
+     * {@link RecognizeEntitiesResult recognized categorized entities document result}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedFlux<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatch(
+    public TextAnalyticsPagedFlux<RecognizeEntitiesResult> recognizeEntitiesBatch(
         Iterable<String> documents, String language) {
         return recognizeEntitiesBatch(documents, language, null);
     }
@@ -423,12 +423,12 @@ public final class TextAnalyticsAsyncClient {
      * and show statistics.
      *
      * @return A {@link TextAnalyticsPagedFlux} contains a list of
-     * {@link RecognizeCategorizedEntitiesResult recognized categorized entities document result}.
+     * {@link RecognizeEntitiesResult recognized categorized entities document result}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedFlux<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatch(
+    public TextAnalyticsPagedFlux<RecognizeEntitiesResult> recognizeEntitiesBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
         return recognizeEntitiesBatch(
             mapByIndex(documents, (index, value) -> new TextDocumentInput(index, value, language)), options);
@@ -451,12 +451,12 @@ public final class TextAnalyticsAsyncClient {
      * and show statistics.
      *
      * @return A {@link TextAnalyticsPagedFlux} contains a list of
-     * {@link RecognizeCategorizedEntitiesResult recognized categorized entities document result}.
+     * {@link RecognizeEntitiesResult recognized categorized entities document result}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedFlux<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatch(
+    public TextAnalyticsPagedFlux<RecognizeEntitiesResult> recognizeEntitiesBatch(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
         return recognizeEntityAsyncClient.recognizeEntitiesBatch(documents, options);
     }

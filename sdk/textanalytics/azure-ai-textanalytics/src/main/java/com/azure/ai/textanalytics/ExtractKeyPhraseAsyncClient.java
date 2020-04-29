@@ -6,6 +6,7 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentKeyPhrases;
+import com.azure.ai.textanalytics.implementation.models.ExtractKeyPhraseResultImpl;
 import com.azure.ai.textanalytics.implementation.models.KeyPhraseResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
@@ -151,7 +152,7 @@ class ExtractKeyPhraseAsyncClient {
         final List<ExtractKeyPhraseResult> keyPhraseResultList = new ArrayList<>();
         for (DocumentKeyPhrases documentKeyPhrases : keyPhraseResult.getDocuments()) {
             final String documentId = documentKeyPhrases.getId();
-            keyPhraseResultList.add(new ExtractKeyPhraseResult(
+            keyPhraseResultList.add(new ExtractKeyPhraseResultImpl(
                 documentId,
                 documentKeyPhrases.getStatistics() == null ? null
                     : toTextDocumentStatistics(documentKeyPhrases.getStatistics()), null,
@@ -164,7 +165,7 @@ class ExtractKeyPhraseAsyncClient {
 
             final String documentId = documentError.getId();
 
-            keyPhraseResultList.add(new ExtractKeyPhraseResult(
+            keyPhraseResultList.add(new ExtractKeyPhraseResultImpl(
                 documentId, null, error, null));
         }
 

@@ -20,10 +20,10 @@ public final class DocumentLanguage {
     private String id;
 
     /*
-     * A list of extracted languages.
+     * Detected Language.
      */
-    @JsonProperty(value = "detectedLanguages", required = true)
-    private List<DetectedLanguage> detectedLanguages;
+    @JsonProperty(value = "detectedLanguage", required = true)
+    private DetectedLanguage detectedLanguage;
 
     /*
      * Warnings encountered while processing document.
@@ -40,7 +40,7 @@ public final class DocumentLanguage {
 
     /**
      * Get the id property: Unique, non-empty document identifier.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -49,7 +49,7 @@ public final class DocumentLanguage {
 
     /**
      * Set the id property: Unique, non-empty document identifier.
-     * 
+     *
      * @param id the id value to set.
      * @return the DocumentLanguage object itself.
      */
@@ -59,29 +59,29 @@ public final class DocumentLanguage {
     }
 
     /**
-     * Get the detectedLanguages property: A list of extracted languages.
-     * 
-     * @return the detectedLanguages value.
+     * Get the detectedLanguage property: Detected Language.
+     *
+     * @return the detectedLanguage value.
      */
-    public List<DetectedLanguage> getDetectedLanguages() {
-        return this.detectedLanguages;
+    public DetectedLanguage getDetectedLanguage() {
+        return this.detectedLanguage;
     }
 
     /**
-     * Set the detectedLanguages property: A list of extracted languages.
-     * 
-     * @param detectedLanguages the detectedLanguages value to set.
+     * Set the detectedLanguage property: Detected Language.
+     *
+     * @param detectedLanguage the detectedLanguage value to set.
      * @return the DocumentLanguage object itself.
      */
-    public DocumentLanguage setDetectedLanguages(List<DetectedLanguage> detectedLanguages) {
-        this.detectedLanguages = detectedLanguages;
+    public DocumentLanguage setDetectedLanguage(DetectedLanguage detectedLanguage) {
+        this.detectedLanguage = detectedLanguage;
         return this;
     }
 
     /**
      * Get the warnings property: Warnings encountered while processing
      * document.
-     * 
+     *
      * @return the warnings value.
      */
     public List<TextAnalyticsWarning> getWarnings() {
@@ -91,7 +91,7 @@ public final class DocumentLanguage {
     /**
      * Set the warnings property: Warnings encountered while processing
      * document.
-     * 
+     *
      * @param warnings the warnings value to set.
      * @return the DocumentLanguage object itself.
      */
@@ -103,7 +103,7 @@ public final class DocumentLanguage {
     /**
      * Get the statistics property: if showStats=true was specified in the
      * request this field will contain information about the document payload.
-     * 
+     *
      * @return the statistics value.
      */
     public DocumentStatistics getStatistics() {
@@ -113,7 +113,7 @@ public final class DocumentLanguage {
     /**
      * Set the statistics property: if showStats=true was specified in the
      * request this field will contain information about the document payload.
-     * 
+     *
      * @param statistics the statistics value to set.
      * @return the DocumentLanguage object itself.
      */

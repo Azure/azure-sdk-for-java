@@ -27,6 +27,6 @@ public class DetectLanguage {
 
         final DetectedLanguage detectedLanguage = client.detectLanguage(document);
         System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %f.%n",
-            detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
+            detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getConfidenceScore());
     }
 }

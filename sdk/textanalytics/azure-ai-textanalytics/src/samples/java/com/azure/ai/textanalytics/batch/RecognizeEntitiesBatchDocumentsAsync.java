@@ -5,7 +5,7 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.RecognizeCategorizedEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
@@ -53,7 +53,7 @@ public class RecognizeEntitiesBatchDocumentsAsync {
 
                 // Recognized entities for each of documents from a batch of documents
                 AtomicInteger counter = new AtomicInteger();
-                for (RecognizeCategorizedEntitiesResult entitiesResult : pagedResponse.getElements()) {
+                for (RecognizeEntitiesResult entitiesResult : pagedResponse.getElements()) {
                     System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
                     if (entitiesResult.isError()) {
                         // Erroneous document
@@ -62,7 +62,7 @@ public class RecognizeEntitiesBatchDocumentsAsync {
                         // Valid document
                         entitiesResult.getEntities().forEach(entity -> System.out.printf(
                             "Recognized entity: %s, entity category: %s, entity sub-category: %s, score: %f.%n",
-                            entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getConfidenceScore()));
+                            entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
                     }
                 }
             },

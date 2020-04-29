@@ -11,7 +11,7 @@ import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
-import com.azure.ai.textanalytics.models.RecognizeCategorizedEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
@@ -300,12 +300,12 @@ public final class TextAnalyticsClient {
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      *
      * @return The {@link TextAnalyticsPagedIterable} contains a list of
-     * {@link RecognizeCategorizedEntitiesResult recognized categorized entities document result}.
+     * {@link RecognizeEntitiesResult recognized categorized entities document result}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedIterable<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatch(
+    public TextAnalyticsPagedIterable<RecognizeEntitiesResult> recognizeEntitiesBatch(
         Iterable<String> documents) {
         return new TextAnalyticsPagedIterable<>(client.recognizeEntitiesBatch(documents));
     }
@@ -323,12 +323,12 @@ public final class TextAnalyticsClient {
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
      *
      * @return The {@link TextAnalyticsPagedIterable} contains a list of
-     * {@link RecognizeCategorizedEntitiesResult recognized categorized entities document result}.
+     * {@link RecognizeEntitiesResult recognized categorized entities document result}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedIterable<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatch(
+    public TextAnalyticsPagedIterable<RecognizeEntitiesResult> recognizeEntitiesBatch(
         Iterable<String> documents, String language) {
         return new TextAnalyticsPagedIterable<>(client.recognizeEntitiesBatch(documents, language));
     }
@@ -349,12 +349,12 @@ public final class TextAnalyticsClient {
      * and show statistics.
      *
      * @return The {@link TextAnalyticsPagedIterable} contains a list of
-     * {@link RecognizeCategorizedEntitiesResult recognized categorized entities document result}.
+     * {@link RecognizeEntitiesResult recognized categorized entities document result}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedIterable<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatch(
+    public TextAnalyticsPagedIterable<RecognizeEntitiesResult> recognizeEntitiesBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
         return new TextAnalyticsPagedIterable<>(
             client.recognizeEntitiesBatch(documents, language, options));
@@ -377,12 +377,12 @@ public final class TextAnalyticsClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The {@link TextAnalyticsPagedIterable} contains a list of
-     * {@link RecognizeCategorizedEntitiesResult recognized categorized entities document result}.
+     * {@link RecognizeEntitiesResult recognized categorized entities document result}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedIterable<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatch(
+    public TextAnalyticsPagedIterable<RecognizeEntitiesResult> recognizeEntitiesBatch(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
         return new TextAnalyticsPagedIterable<>(
             client.recognizeEntityAsyncClient.recognizeEntitiesBatchWithContext(documents, options,

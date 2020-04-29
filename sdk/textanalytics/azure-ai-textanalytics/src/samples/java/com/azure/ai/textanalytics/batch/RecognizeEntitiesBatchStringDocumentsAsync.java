@@ -46,7 +46,7 @@ public class RecognizeEntitiesBatchStringDocumentsAsync {
                     // Valid document
                     entitiesResult.getEntities().forEach(entity -> System.out.printf(
                         "Recognized entity: %s, entity category: %s, entity sub-category: %s, score: %f.%n",
-                        entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getConfidenceScore()));
+                        entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
                 }
             },
             error -> System.err.println("There was an error recognizing entities of the documents." + error),

@@ -3,6 +3,18 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.implementation.models.AnalyzeSentimentResultImpl;
+import com.azure.ai.textanalytics.implementation.models.CategorizedEntityImpl;
+import com.azure.ai.textanalytics.implementation.models.DetectLanguageResultImpl;
+import com.azure.ai.textanalytics.implementation.models.DetectedLanguageImpl;
+import com.azure.ai.textanalytics.implementation.models.ExtractKeyPhraseResultImpl;
+import com.azure.ai.textanalytics.implementation.models.LinkedEntityImpl;
+import com.azure.ai.textanalytics.implementation.models.LinkedEntityMatchImpl;
+import com.azure.ai.textanalytics.implementation.models.RecognizeEntitiesResultImpl;
+import com.azure.ai.textanalytics.implementation.models.RecognizeLinkedEntitiesResultImpl;
+import com.azure.ai.textanalytics.implementation.models.SentenceSentimentImpl;
+import com.azure.ai.textanalytics.implementation.models.SentimentConfidenceScoresImpl;
+import com.azure.ai.textanalytics.implementation.models.TextDocumentStatisticsImpl;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
@@ -13,10 +25,8 @@ import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.RecognizeCategorizedEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
-import com.azure.ai.textanalytics.models.SentenceSentiment;
-import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
@@ -67,8 +77,8 @@ final class TestUtils {
     // Spanish that can be given as a hint.
     static final List<String> SPANISH_SAME_AS_ENGLISH_INPUTS = Arrays.asList("personal", "social");
 
-    static final DetectedLanguage DETECTED_LANGUAGE_SPANISH = new DetectedLanguage("Spanish", "es", 1.0);
-    static final DetectedLanguage DETECTED_LANGUAGE_ENGLISH = new DetectedLanguage("English", "en", 1.0);
+    static final DetectedLanguage DETECTED_LANGUAGE_SPANISH = new DetectedLanguageImpl("Spanish", "es", 1.0);
+    static final DetectedLanguage DETECTED_LANGUAGE_ENGLISH = new DetectedLanguageImpl("English", "en", 1.0);
 
     static final List<DetectedLanguage> DETECT_SPANISH_LANGUAGE_RESULTS = Arrays.asList(
         DETECTED_LANGUAGE_SPANISH, DETECTED_LANGUAGE_SPANISH);
@@ -104,17 +114,17 @@ final class TestUtils {
      * Helper method to get the expected Batch Detected Languages
      */
     static TextAnalyticsPagedResponse<DetectLanguageResult> getExpectedBatchDetectedLanguages() {
-        DetectedLanguage detectedLanguage1 = new DetectedLanguage("English", "en", 0.0);
-        DetectedLanguage detectedLanguage2 = new DetectedLanguage("Spanish", "es", 0.0);
-        DetectedLanguage detectedLanguage3 = new DetectedLanguage("(Unknown)", "(Unknown)", 0.0);
+        DetectedLanguage detectedLanguage1 = new DetectedLanguageImpl("English", "en", 0.0);
+        DetectedLanguage detectedLanguage2 = new DetectedLanguageImpl("Spanish", "es", 0.0);
+        DetectedLanguage detectedLanguage3 = new DetectedLanguageImpl("(Unknown)", "(Unknown)", 0.0);
 
-        TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(26, 1);
-        TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(40, 1);
-        TextDocumentStatistics textDocumentStatistics3 = new TextDocumentStatistics(6, 1);
+        TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatisticsImpl(26, 1);
+        TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatisticsImpl(40, 1);
+        TextDocumentStatistics textDocumentStatistics3 = new TextDocumentStatisticsImpl(6, 1);
 
-        DetectLanguageResult detectLanguageResult1 = new DetectLanguageResult("0", textDocumentStatistics1, null, detectedLanguage1);
-        DetectLanguageResult detectLanguageResult2 = new DetectLanguageResult("1", textDocumentStatistics2, null, detectedLanguage2);
-        DetectLanguageResult detectLanguageResult3 = new DetectLanguageResult("2", textDocumentStatistics3, null, detectedLanguage3);
+        DetectLanguageResult detectLanguageResult1 = new DetectLanguageResultImpl("0", textDocumentStatistics1, null, detectedLanguage1);
+        DetectLanguageResult detectLanguageResult2 = new DetectLanguageResultImpl("1", textDocumentStatistics2, null, detectedLanguage2);
+        DetectLanguageResult detectLanguageResult3 = new DetectLanguageResultImpl("2", textDocumentStatistics3, null, detectedLanguage3);
 
         TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(3, 3, 0, 3);
         List<DetectLanguageResult> detectLanguageResultList = Arrays.asList(detectLanguageResult1, detectLanguageResult2, detectLanguageResult3);
@@ -126,7 +136,7 @@ final class TestUtils {
     /**
      * Helper method to get the expected Batch Categorized Entities
      */
-    static TextAnalyticsPagedResponse<RecognizeCategorizedEntitiesResult> getExpectedBatchCategorizedEntities() {
+    static TextAnalyticsPagedResponse<RecognizeEntitiesResult> getExpectedBatchCategorizedEntities() {
         return new TextAnalyticsPagedResponse<>(null, 200, null,
             Arrays.asList(getExpectedBatchCategorizedEntities1(), getExpectedBatchCategorizedEntities2()),
             null,  DEFAULT_MODEL_VERSION,
@@ -147,9 +157,9 @@ final class TestUtils {
      * Helper method to get the expected Categorized Entities List 1
      */
     static List<CategorizedEntity> getCategorizedEntitiesList1() {
-        CategorizedEntity categorizedEntity1 = new CategorizedEntity("trip", EntityCategory.EVENT, null, 18, 4, 0.0);
-        CategorizedEntity categorizedEntity2 = new CategorizedEntity("Seattle", EntityCategory.LOCATION, "GPE", 26, 7, 0.0);
-        CategorizedEntity categorizedEntity3 = new CategorizedEntity("last week", EntityCategory.DATE_TIME, "DateRange", 34, 9, 0.0);
+        CategorizedEntity categorizedEntity1 = new CategorizedEntityImpl("trip", EntityCategory.EVENT, null, 18, 4, 0.0);
+        CategorizedEntity categorizedEntity2 = new CategorizedEntityImpl("Seattle", EntityCategory.LOCATION, "GPE", 26, 7, 0.0);
+        CategorizedEntity categorizedEntity3 = new CategorizedEntityImpl("last week", EntityCategory.DATE_TIME, "DateRange", 34, 9, 0.0);
         return Arrays.asList(categorizedEntity1, categorizedEntity2, categorizedEntity3);
     }
 
@@ -157,43 +167,43 @@ final class TestUtils {
      * Helper method to get the expected Categorized Entities List 2
      */
     static List<CategorizedEntity> getCategorizedEntitiesList2() {
-        CategorizedEntity categorizedEntity3 = new CategorizedEntity("Microsoft", EntityCategory.ORGANIZATION, null, 10, 9, 0.0);
+        CategorizedEntity categorizedEntity3 = new CategorizedEntityImpl("Microsoft", EntityCategory.ORGANIZATION, null, 10, 9, 0.0);
         return Arrays.asList(categorizedEntity3);
     }
 
     /**
      * Helper method to get the expected Batch Categorized Entities
      */
-    static RecognizeCategorizedEntitiesResult getExpectedBatchCategorizedEntities1() {
+    static RecognizeEntitiesResult getExpectedBatchCategorizedEntities1() {
         IterableStream<CategorizedEntity> categorizedEntityList1 = new IterableStream<>(getCategorizedEntitiesList1());
-        TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(44, 1);
-        RecognizeCategorizedEntitiesResult recognizeCategorizedEntitiesResult1 = new RecognizeCategorizedEntitiesResult("0", textDocumentStatistics1, null, categorizedEntityList1);
-        return recognizeCategorizedEntitiesResult1;
+        TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatisticsImpl(44, 1);
+        RecognizeEntitiesResult recognizeEntitiesResult1 = new RecognizeEntitiesResultImpl("0", textDocumentStatistics1, null, categorizedEntityList1);
+        return recognizeEntitiesResult1;
     }
 
     /**
      * Helper method to get the expected Batch Categorized Entities
      */
-    static RecognizeCategorizedEntitiesResult getExpectedBatchCategorizedEntities2() {
+    static RecognizeEntitiesResult getExpectedBatchCategorizedEntities2() {
         IterableStream<CategorizedEntity> categorizedEntityList2 = new IterableStream<>(getCategorizedEntitiesList2());
-        TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(20, 1);
-        RecognizeCategorizedEntitiesResult recognizeCategorizedEntitiesResult2 = new RecognizeCategorizedEntitiesResult("1", textDocumentStatistics2, null, categorizedEntityList2);
-        return recognizeCategorizedEntitiesResult2;
+        TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatisticsImpl(20, 1);
+        RecognizeEntitiesResult recognizeEntitiesResult2 = new RecognizeEntitiesResultImpl("1", textDocumentStatistics2, null, categorizedEntityList2);
+        return recognizeEntitiesResult2;
     }
 
     /**
      * Helper method to get the expected Batch Linked Entities
      */
     static TextAnalyticsPagedResponse<RecognizeLinkedEntitiesResult> getExpectedBatchLinkedEntities() {
-        LinkedEntityMatch linkedEntityMatch1 = new LinkedEntityMatch("Seattle", 0.0, 7, 26);
-        LinkedEntityMatch linkedEntityMatch2 = new LinkedEntityMatch("Microsoft", 0.0, 9, 10);
+        LinkedEntityMatch linkedEntityMatch1 = new LinkedEntityMatchImpl("Seattle", 0.0, 7, 26);
+        LinkedEntityMatch linkedEntityMatch2 = new LinkedEntityMatchImpl("Microsoft", 0.0, 9, 10);
 
-        LinkedEntity linkedEntity1 = new LinkedEntity(
+        LinkedEntity linkedEntity1 = new LinkedEntityImpl(
             "Seattle", new IterableStream<>(Collections.singletonList(linkedEntityMatch1)),
             "en", "Seattle", "https://en.wikipedia.org/wiki/Seattle",
             "Wikipedia");
 
-        LinkedEntity linkedEntity2 = new LinkedEntity(
+        LinkedEntity linkedEntity2 = new LinkedEntityImpl(
             "Microsoft", new IterableStream<>(Collections.singletonList(linkedEntityMatch2)),
             "en", "Microsoft", "https://en.wikipedia.org/wiki/Microsoft",
             "Wikipedia");
@@ -201,11 +211,11 @@ final class TestUtils {
         IterableStream<LinkedEntity> linkedEntityList1 = new IterableStream<>(Collections.singletonList(linkedEntity1));
         IterableStream<LinkedEntity> linkedEntityList2 = new IterableStream<>(Collections.singletonList(linkedEntity2));
 
-        TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(44, 1);
-        TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(20, 1);
+        TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatisticsImpl(44, 1);
+        TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatisticsImpl(20, 1);
 
-        RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult1 = new RecognizeLinkedEntitiesResult("0", textDocumentStatistics1, null, linkedEntityList1);
-        RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult2 = new RecognizeLinkedEntitiesResult("1", textDocumentStatistics2, null, linkedEntityList2);
+        RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult1 = new RecognizeLinkedEntitiesResultImpl("0", textDocumentStatistics1, null, linkedEntityList1);
+        RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult2 = new RecognizeLinkedEntitiesResultImpl("1", textDocumentStatistics2, null, linkedEntityList2);
 
         TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(2, 2, 0, 2);
         List<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesResultList = Arrays.asList(recognizeLinkedEntitiesResult1, recognizeLinkedEntitiesResult2);
@@ -217,11 +227,11 @@ final class TestUtils {
      * Helper method to get the expected Batch Key Phrases
      */
     static TextAnalyticsPagedResponse<ExtractKeyPhraseResult> getExpectedBatchKeyPhrases() {
-        TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(49, 1);
-        TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(21, 1);
+        TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatisticsImpl(49, 1);
+        TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatisticsImpl(21, 1);
 
-        ExtractKeyPhraseResult extractKeyPhraseResult1 = new ExtractKeyPhraseResult("0", textDocumentStatistics1, null, new IterableStream<>(Arrays.asList("input text", "world")));
-        ExtractKeyPhraseResult extractKeyPhraseResult2 = new ExtractKeyPhraseResult("1", textDocumentStatistics2, null, new IterableStream<>(Collections.singletonList("monde")));
+        ExtractKeyPhraseResult extractKeyPhraseResult1 = new ExtractKeyPhraseResultImpl("0", textDocumentStatistics1, null, new IterableStream<>(Arrays.asList("input text", "world")));
+        ExtractKeyPhraseResult extractKeyPhraseResult2 = new ExtractKeyPhraseResultImpl("1", textDocumentStatistics2, null, new IterableStream<>(Collections.singletonList("monde")));
 
         TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(2, 2, 0, 2);
         List<ExtractKeyPhraseResult> extractKeyPhraseResultList = Arrays.asList(extractKeyPhraseResult1, extractKeyPhraseResult2);
@@ -234,26 +244,26 @@ final class TestUtils {
      * Helper method to get the expected Batch Text Sentiments
      */
     static TextAnalyticsPagedResponse<AnalyzeSentimentResult> getExpectedBatchTextSentiment() {
-        final TextDocumentStatistics textDocumentStatistics = new TextDocumentStatistics(67, 1);
+        final TextDocumentStatistics textDocumentStatistics = new TextDocumentStatisticsImpl(67, 1);
 
         final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(TextSentiment.MIXED,
-            new SentimentConfidenceScores(0.0, 0.0, 0.0),
+            new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentiment(TextSentiment.NEGATIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0), 31, 0),
-                new SentenceSentiment(TextSentiment.POSITIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0), 35, 32)
+                new SentenceSentimentImpl(TextSentiment.NEGATIVE, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0), 31, 0),
+                new SentenceSentimentImpl(TextSentiment.POSITIVE, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0), 35, 32)
             )));
 
         final DocumentSentiment expectedDocumentSentiment2 = new DocumentSentiment(TextSentiment.MIXED,
-            new SentimentConfidenceScores(0.0, 0.0, 0.0),
+            new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentiment(TextSentiment.POSITIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0), 35, 0),
-                new SentenceSentiment(TextSentiment.NEGATIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0), 31, 36)
+                new SentenceSentimentImpl(TextSentiment.POSITIVE, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0), 35, 0),
+                new SentenceSentimentImpl(TextSentiment.NEGATIVE, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0), 31, 36)
             )));
 
-        final AnalyzeSentimentResult analyzeSentimentResult1 = new AnalyzeSentimentResult("0",
+        final AnalyzeSentimentResult analyzeSentimentResult1 = new AnalyzeSentimentResultImpl("0",
             textDocumentStatistics, null, expectedDocumentSentiment);
 
-        final AnalyzeSentimentResult analyzeSentimentResult2 = new AnalyzeSentimentResult("1",
+        final AnalyzeSentimentResult analyzeSentimentResult2 = new AnalyzeSentimentResultImpl("1",
             textDocumentStatistics, null, expectedDocumentSentiment2);
 
         return new TextAnalyticsPagedResponse<>(null, 200, null,

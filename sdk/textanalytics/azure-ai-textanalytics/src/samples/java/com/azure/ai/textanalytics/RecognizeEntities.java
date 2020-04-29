@@ -26,6 +26,6 @@ public class RecognizeEntities {
 
         client.recognizeEntities(document).forEach(entity -> System.out.printf(
             "Recognized categorized entity: %s, entity category: %s, entity sub-category: %s, score: %f.%n",
-            entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getConfidenceScore()));
+            entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
     }
 }

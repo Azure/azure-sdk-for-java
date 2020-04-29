@@ -3,12 +3,15 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.implementation.models.DetectedLanguageImpl;
+import com.azure.ai.textanalytics.implementation.models.LinkedEntityImpl;
+import com.azure.ai.textanalytics.implementation.models.LinkedEntityMatchImpl;
+import com.azure.ai.textanalytics.implementation.models.SentenceSentimentImpl;
+import com.azure.ai.textanalytics.implementation.models.SentimentConfidenceScoresImpl;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.SentenceSentiment;
-import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.core.exception.HttpResponseException;
@@ -113,7 +116,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void detectSingleTextLanguage() {
-        DetectedLanguage primaryLanguage = new DetectedLanguage("English", "en", 1.0);
+        DetectedLanguage primaryLanguage = new DetectedLanguageImpl("English", "en", 1.0);
         StepVerifier.create(client.detectLanguage("This is a test English Text"))
             .assertNext(response -> validatePrimaryLanguage(primaryLanguage, response))
             .verifyComplete();
@@ -146,7 +149,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void detectLanguageFaultyText() {
         StepVerifier.create(client.detectLanguage("!@#%%"))
             .assertNext(response -> validatePrimaryLanguage(
-                new DetectedLanguage("(Unknown)", "(Unknown)", 0.0), response))
+                new DetectedLanguageImpl("(Unknown)", "(Unknown)", 0.0), response))
             .verifyComplete();
     }
 
@@ -167,7 +170,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void detectLanguageEmptyCountryHint() {
         StepVerifier.create(client.detectLanguage("Este es un documento  escrito en Español", ""))
             .assertNext(response -> validatePrimaryLanguage(
-                new DetectedLanguage("Spanish", "es", 0.0), response))
+                new DetectedLanguageImpl("Spanish", "es", 0.0), response))
             .verifyComplete();
     }
 
@@ -178,7 +181,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void detectLanguageNoneCountryHint() {
         StepVerifier.create(client.detectLanguage("Este es un documento  escrito en Español", "none"))
             .assertNext(response -> validatePrimaryLanguage(
-                new DetectedLanguage("Spanish", "es", 0.0), response))
+                new DetectedLanguageImpl("Spanish", "es", 0.0), response))
             .verifyComplete();
     }
 
@@ -255,8 +258,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     // Linked Entities
     @Test
     public void recognizeLinkedEntitiesForTextInput() {
-        final LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch("Seattle", 0.0, 7, 26);
-        final LinkedEntity linkedEntity = new LinkedEntity("Seattle", new IterableStream<>(Collections.singletonList(linkedEntityMatch)), "en", "Seattle", "https://en.wikipedia.org/wiki/Seattle", "Wikipedia");
+        final LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatchImpl("Seattle", 0.0, 7, 26);
+        final LinkedEntity linkedEntity = new LinkedEntityImpl("Seattle", new IterableStream<>(Collections.singletonList(linkedEntityMatch)), "en", "Seattle", "https://en.wikipedia.org/wiki/Seattle", "Wikipedia");
 
         StepVerifier.create(client.recognizeLinkedEntities("I had a wonderful trip to Seattle last week."))
             .assertNext(response -> validateLinkedEntity(linkedEntity, response))
@@ -388,10 +391,10 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void analyseSentimentForTextInput() {
         final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(TextSentiment.MIXED,
-            new SentimentConfidenceScores(0.0, 0.0, 0.0),
+            new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentiment(TextSentiment.NEGATIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0), 31, 0),
-                new SentenceSentiment(TextSentiment.POSITIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0), 35, 32)
+                new SentenceSentimentImpl(TextSentiment.NEGATIVE, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0), 31, 0),
+                new SentenceSentimentImpl(TextSentiment.POSITIVE, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0), 35, 32)
             )));
 
         StepVerifier
@@ -416,10 +419,10 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void analyseSentimentForFaultyText() {
         final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(
             TextSentiment.NEUTRAL,
-            new SentimentConfidenceScores(0.0, 0.0, 0.0),
+            new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentiment(TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0), 1, 0),
-                new SentenceSentiment(TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0), 4, 1)
+                new SentenceSentimentImpl(TextSentiment.NEUTRAL, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0), 1, 0),
+                new SentenceSentimentImpl(TextSentiment.NEUTRAL, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0), 4, 1)
             )));
 
         StepVerifier.create(client.analyzeSentiment("!@#%%"))

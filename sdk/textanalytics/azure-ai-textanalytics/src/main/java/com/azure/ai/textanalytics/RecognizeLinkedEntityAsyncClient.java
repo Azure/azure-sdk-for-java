@@ -5,9 +5,11 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.models.EntityLinkingResult;
+import com.azure.ai.textanalytics.implementation.models.LinkedEntityImpl;
+import com.azure.ai.textanalytics.implementation.models.LinkedEntityMatchImpl;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
+import com.azure.ai.textanalytics.implementation.models.RecognizeLinkedEntitiesResultImpl;
 import com.azure.ai.textanalytics.models.LinkedEntity;
-import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
@@ -150,7 +152,7 @@ class RecognizeLinkedEntityAsyncClient {
         // List of documents results
         final List<RecognizeLinkedEntitiesResult> linkedEntitiesResults = new ArrayList<>();
         entityLinkingResult.getDocuments().forEach(documentLinkedEntities ->
-            linkedEntitiesResults.add(new RecognizeLinkedEntitiesResult(
+            linkedEntitiesResults.add(new RecognizeLinkedEntitiesResultImpl(
                 documentLinkedEntities.getId(),
                 documentLinkedEntities.getStatistics() == null ? null
                     : toTextDocumentStatistics(documentLinkedEntities.getStatistics()),
@@ -158,7 +160,7 @@ class RecognizeLinkedEntityAsyncClient {
                 mapLinkedEntity(documentLinkedEntities.getEntities()))));
         // Document errors
         entityLinkingResult.getErrors().forEach(documentError -> linkedEntitiesResults.add(
-            new RecognizeLinkedEntitiesResult(documentError.getId(), null,
+            new RecognizeLinkedEntitiesResultImpl(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError()), null)));
 
         return new TextAnalyticsPagedResponse<>(
@@ -172,9 +174,9 @@ class RecognizeLinkedEntityAsyncClient {
         List<com.azure.ai.textanalytics.implementation.models.LinkedEntity> linkedEntities) {
         List<LinkedEntity> linkedEntitiesList = new ArrayList<>();
         for (com.azure.ai.textanalytics.implementation.models.LinkedEntity linkedEntity : linkedEntities) {
-            linkedEntitiesList.add(new LinkedEntity(
+            linkedEntitiesList.add(new LinkedEntityImpl(
                 linkedEntity.getName(),
-                new IterableStream<>(linkedEntity.getMatches().stream().map(match -> new LinkedEntityMatch(
+                new IterableStream<>(linkedEntity.getMatches().stream().map(match -> new LinkedEntityMatchImpl(
                     match.getText(), match.getConfidenceScore(), match.getLength(), match.getOffset()))
                     .collect(Collectors.toList())),
                 linkedEntity.getLanguage(),
