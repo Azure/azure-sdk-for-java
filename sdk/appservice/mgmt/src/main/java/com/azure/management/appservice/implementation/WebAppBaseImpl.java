@@ -348,7 +348,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
         if (inner().defaultHostName() != null) {
             return inner().defaultHostName();
         } else {
-            AzureEnvironment environment = Utils.extractAzureEnvironment(manager().restClient());
+            AzureEnvironment environment = manager().environment();
             String dns = DNS_MAP.get(environment);
             String leaf = name();
             if (this instanceof DeploymentSlotBaseImpl<?, ?, ?, ?, ?>) {

@@ -3,8 +3,8 @@
 
 package com.azure.management.compute;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.CloudException;
-import com.azure.management.RestClient;
 import com.azure.management.network.Network;
 import com.azure.management.network.NetworkInterface;
 import com.azure.management.network.PublicIPAddress;
@@ -14,6 +14,7 @@ import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.arm.models.Resource;
 import com.azure.management.resources.fluentcore.model.Creatable;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.storage.StorageAccount;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,9 +34,9 @@ public class VirtualMachineRelatedResourcesDeletionTests extends ComputeManageme
     private String rgName = "";
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         rgName = generateRandomResourceName("javacsmrg", 15);
-        super.initializeClients(restClient, defaultSubscription, domain);
+        super.initializeClients(httpPipeline, profile);
     }
 
     @Override
