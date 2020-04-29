@@ -58,8 +58,6 @@ public class FieldBuilder {
         Short.class,
         short.class);
 
-    private static final Map<Class<?>, Field> CLASS_FIELD_HASH_MAP = new HashMap<>();
-
     /**
      * Creates a collection of {@link Field} objects corresponding to the properties of the type supplied.
      *
@@ -84,7 +82,6 @@ public class FieldBuilder {
         if (classChain.contains(curClass)) {
             logger.warning(String.format("There is circular dependencies %s, %s", classChain, curClass));
             return null;
-
         }
         if (classChain.size() > MAX_DEPTH) {
             throw logger.logExceptionAsError(new RuntimeException(
@@ -110,24 +107,10 @@ public class FieldBuilder {
         if (isArrayOrList(type)) {
             return buildCollectionField(classField, classChain, logger);
         }
-        if (CLASS_FIELD_HASH_MAP.containsKey(type)) {
-            return deepCopyFieldWithName(CLASS_FIELD_HASH_MAP.get(type), classField.getName() ,logger);
-        }
         List<Field> childFields = build((Class<?>) type, classChain, logger);
         Field searchField = convertToBasicSearchField(classField, logger);
         searchField.setFields(childFields);
-        CLASS_FIELD_HASH_MAP.put((Class<?>) type, searchField);
         return searchField;
-    }
-
-    private static Field deepCopyFieldWithName(Field field, String name, ClientLogger logger) {
-        try {
-            Field copyField = new ObjectMapper().readValue(new ObjectMapper().writeValueAsString(field), Field.class);
-            return copyField.setName(name);
-        } catch (JsonProcessingException e) {
-            throw logger.logExceptionAsError(new RuntimeException(
-                String.format("Something wrong when copy field of %s", name)));
-        }
     }
 
     private static boolean isSupportedNoneParameterizedType(Type type) {
