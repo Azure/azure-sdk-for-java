@@ -9,6 +9,8 @@ import com.azure.management.resources.fluentcore.arm.Region;
 import java.io.File;
 
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
+import com.azure.management.resources.fluentcore.utils.DelayProvider;
+import com.azure.management.resources.fluentcore.utils.SdkContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -79,7 +81,7 @@ public class WarDeployTests extends AppServiceTest {
             Assertions.assertNotNull(body);
             Assertions.assertTrue(body.contains("Azure Samples Hello World"));
 
-            response = curl("http://" + webappName + "." + "azurewebsites.net/app2");
+            response = curl("http://" + webappName + "." + "azurewebsites.net/app2/");
             Assertions.assertEquals(200, response.getStatusCode());
             body = response.getValue();
             Assertions.assertNotNull(body);
