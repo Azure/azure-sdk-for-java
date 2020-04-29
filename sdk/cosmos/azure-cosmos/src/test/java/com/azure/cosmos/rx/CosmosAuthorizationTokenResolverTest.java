@@ -3,8 +3,6 @@
 
 package com.azure.cosmos.rx;
 
-import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
-import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
@@ -75,7 +73,6 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
 
     private AsyncDocumentClient.Builder clientBuilder;
     private AsyncDocumentClient client;
-    private JsonSerializer jsonSerializer;
 
     @Factory(dataProvider = "clientBuilders")
     public CosmosAuthorizationTokenResolverTest(AsyncDocumentClient.Builder clientBuilder) {
@@ -96,7 +93,6 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
         createdCollection = SHARED_MULTI_PARTITION_COLLECTION;
 
         client = clientBuilder().build();
-        jsonSerializer = new JacksonJsonSerializerBuilder().build();
 
         userWithReadPermission = createUser(client, createdDatabase.getId(), getUserDefinition());
         readPermission = client.createPermission(userWithReadPermission.getSelfLink(), getPermission(createdCollection, "ReadPermissionOnColl", PermissionMode.READ), null).single().block()

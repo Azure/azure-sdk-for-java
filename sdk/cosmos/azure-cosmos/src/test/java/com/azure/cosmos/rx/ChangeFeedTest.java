@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
-import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
-import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ChangeFeedOptions;
@@ -50,7 +48,6 @@ public class ChangeFeedTest extends TestSuiteBase {
     private Multimap<String, Document> partitionKeyToDocuments = ArrayListMultimap.create();
 
     private AsyncDocumentClient client;
-    private JsonSerializer jsonSerializer;
 
     public String getCollectionLink() {
         return TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId());
@@ -274,7 +271,6 @@ public class ChangeFeedTest extends TestSuiteBase {
     public void before_ChangeFeedTest() throws Exception {
         // set up the client
         client = clientBuilder().build();
-        jsonSerializer = new JacksonJsonSerializerBuilder().build();
         createdDatabase = SHARED_DATABASE;
     }
 

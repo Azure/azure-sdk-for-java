@@ -2,13 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
-import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.implementation.http.HttpRequest;
 import io.netty.handler.codec.http.HttpMethod;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.SkipException;
@@ -39,7 +37,6 @@ public class SessionTest extends TestSuiteBase {
     private AsyncDocumentClient houseKeepingClient;
     private ConnectionMode connectionMode;
     private RequestOptions options;
-    private JsonSerializer jsonSerializer;
 
     @Factory(dataProvider = "clientBuildersWithDirectSession")
     public SessionTest(AsyncDocumentClient.Builder clientBuilder) {
@@ -59,7 +56,6 @@ public class SessionTest extends TestSuiteBase {
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_SessionTest() {
         createdDatabase = SHARED_DATABASE;
-        jsonSerializer = new JacksonJsonSerializerBuilder().build();
 
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();

@@ -3,8 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
-import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
@@ -248,7 +246,6 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                 .withConnectionPolicy(connectionPolicy)
                 .withConsistencyLevel(ConsistencyLevel.SESSION)
                 .build();
-        JsonSerializer jsonSerializer = new JacksonJsonSerializerBuilder().build();
         try {
             DocumentCollection documentCollection = new DocumentCollection();
             documentCollection.setId(UUID.randomUUID().toString());

@@ -4,23 +4,21 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
-import com.azure.core.util.serializer.JsonSerializer;
-import com.azure.cosmos.implementation.apachecommons.collections.map.UnmodifiableMap;
-import com.azure.cosmos.models.AccessCondition;
-import com.azure.cosmos.models.AccessConditionType;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.apachecommons.collections.map.UnmodifiableMap;
+import com.azure.cosmos.implementation.directconnectivity.WFConstants;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
+import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.AccessCondition;
+import com.azure.cosmos.models.AccessConditionType;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.models.Resource;
-import com.azure.cosmos.implementation.directconnectivity.WFConstants;
-import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
-import com.azure.cosmos.implementation.routing.Range;
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.Assertions;
 import org.testng.SkipException;
@@ -45,14 +43,12 @@ public class ConsistencyTestsBase extends TestSuiteBase {
     AsyncDocumentClient initClient;
     Database createdDatabase;
     DocumentCollection createdCollection;
-    JsonSerializer jsonSerializer;
 
     @BeforeClass(groups = {"direct"}, timeOut = SETUP_TIMEOUT)
     public void before_ConsistencyTestsBase() throws Exception {
         initClient = createGatewayRxDocumentClient().build();
         createdDatabase = SHARED_DATABASE;
         createdCollection = SHARED_MULTI_PARTITION_COLLECTION;
-        jsonSerializer = new JacksonJsonSerializerBuilder().build();
     }
 
     void validateStrongConsistency(Resource resourceToWorkWith) throws Exception {
