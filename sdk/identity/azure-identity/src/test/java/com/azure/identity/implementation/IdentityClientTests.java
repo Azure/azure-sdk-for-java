@@ -260,7 +260,7 @@ public class IdentityClientTests {
         // test
         IdentityClientOptions options = new IdentityClientOptions();
         IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).identityClientOptions(options).build();
-        StepVerifier.create(client.authenticateWithUserRefreshToken(request2, TestUtils.getMockMsalToken(token1, expiresAt).block()))
+        StepVerifier.create(client.authenticateWithMsalAccount(request2, TestUtils.getMockMsalAccount(token1, expiresAt).block()))
             .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
                                                   && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
             .verifyComplete();

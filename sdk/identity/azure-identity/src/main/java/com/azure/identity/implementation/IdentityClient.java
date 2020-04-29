@@ -29,7 +29,6 @@ import com.microsoft.aad.msal4j.ClientCredentialParameters;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
 import com.microsoft.aad.msal4j.IAccount;
-import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.SilentParameters;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
@@ -70,7 +69,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -117,7 +115,7 @@ public class IdentityClient {
         this.options = options;
     }
 
-    private PublicClientApplication getPublicClientApplication(boolean requirePersistence) {
+    private PublicClientApplication getPublicClientApplication(boolean sharedTokenCacheCredential) {
         if (publicClientApplication != null) {
             return publicClientApplication;
         } else if (clientId == null) {
@@ -160,12 +158,12 @@ public class IdentityClient {
                     publicClientApplicationBuilder.setTokenCacheAccessAspect(
                             new PersistenceTokenCacheAccessAspect(options.getPersistenceSettings()));
                 } catch (Throwable t) {
-                    CredentialUnavailableException cue = new CredentialUnavailableException(
-                            "Shared token cache is unavailable on this platform.", t);
-                    if (requirePersistence) {
-                        throw logger.logExceptionAsWarning(cue);
+                    if (sharedTokenCacheCredential) {
+                        throw logger.logExceptionAsError(new CredentialUnavailableException(
+                            "Shared token cache is unavailable in this environment.", t));
                     } else {
-                        logger.logExceptionAsWarning(cue);
+                        throw logger.logExceptionAsError(new ClientAuthenticationException(
+                            "Shared token cache is unavailable in this environment.", null, t));
                     }
                 }
             }
@@ -409,21 +407,23 @@ public class IdentityClient {
         return Mono.fromFuture(() -> getPublicClientApplication(false).acquireToken(
             UserNamePasswordParameters.builder(new HashSet<>(request.getScopes()), username, password.toCharArray())
                 .build()))
-            .map(ar -> new MsalToken(ar, options));
+            .onErrorResume(t -> Mono.error(new ClientAuthenticationException("Failed to acquire token with username "
+                + "and password", null, t))).map(ar -> new MsalToken(ar, options));
     }
 
     /**
      * Asynchronously acquire a token from the currently logged in client.
      *
      * @param request the details of the token request
+     * @param account the account used to login to acquire the last token
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<MsalToken> authenticateWithUserRefreshToken(TokenRequestContext request, MsalToken msalToken) {
+    public Mono<MsalToken> authenticateWithMsalAccount(TokenRequestContext request, IAccount account) {
         SilentParameters parameters;
         SilentParameters forceParameters;
-        if (msalToken.getAccount() != null) {
-            parameters = SilentParameters.builder(new HashSet<>(request.getScopes()), msalToken.getAccount()).build();
-            forceParameters = SilentParameters.builder(new HashSet<>(request.getScopes()), msalToken.getAccount())
+        if (account != null) {
+            parameters = SilentParameters.builder(new HashSet<>(request.getScopes()), account).build();
+            forceParameters = SilentParameters.builder(new HashSet<>(request.getScopes()), account)
                     .forceRefresh(true).build();
         } else {
             parameters = SilentParameters.builder(new HashSet<>(request.getScopes())).build();
@@ -465,7 +465,8 @@ public class IdentityClient {
                 dc -> deviceCodeConsumer.accept(new DeviceCodeInfo(dc.userCode(), dc.deviceCode(),
                     dc.verificationUri(), OffsetDateTime.now().plusSeconds(dc.expiresIn()), dc.message()))).build();
             return getPublicClientApplication(false).acquireToken(parameters);
-        }).map(ar -> new MsalToken(ar, options));
+        }).onErrorResume(t -> Mono.error(new ClientAuthenticationException("Failed to acquire token with device code",
+            null, t))).map(ar -> new MsalToken(ar, options));
     }
 
     /**
@@ -482,7 +483,8 @@ public class IdentityClient {
             AuthorizationCodeParameters.builder(authorizationCode, redirectUrl)
                 .scopes(new HashSet<>(request.getScopes()))
                 .build()))
-            .map(ar -> new MsalToken(ar, options));
+            .onErrorResume(t -> Mono.error(new ClientAuthenticationException("Failed to acquire token with "
+                + "authorization code", null, t))).map(ar -> new MsalToken(ar, options));
     }
 
     /**
@@ -576,35 +578,7 @@ public class IdentityClient {
                         requestedAccount = accounts.values().iterator().next();
                     }
 
-                    // if it does, then request the token
-                    SilentParameters params = SilentParameters.builder(
-                            new HashSet<>(request.getScopes()), requestedAccount)
-                            .authorityUrl(authorityUrl)
-                            .build();
-
-                    SilentParameters forceParams = SilentParameters.builder(
-                            new HashSet<>(request.getScopes()), requestedAccount)
-                            .authorityUrl(authorityUrl)
-                            .forceRefresh(true)
-                            .build();
-
-                    CompletableFuture<IAuthenticationResult> future;
-                    try {
-                        future = getPublicClientApplication(false).acquireTokenSilently(params);
-                        return Mono.fromFuture(() -> future).map(result ->
-                                    new MsalToken(result, options))
-                                .filter(t -> !t.isExpired())
-                                .switchIfEmpty(Mono.defer(() -> Mono.fromFuture(() -> {
-                                        try {
-                                            return getPublicClientApplication(false).acquireTokenSilently(forceParams);
-                                        } catch (MalformedURLException e) {
-                                            throw logger.logExceptionAsWarning(new RuntimeException(e));
-                                        }
-                                    }
-                                ).map(result -> new MsalToken(result, options))));
-                    } catch (MalformedURLException e) {
-                        return Mono.error(new RuntimeException("Token was not found"));
-                    }
+                    return authenticateWithMsalAccount(request, requestedAccount);
                 });
     }
 
