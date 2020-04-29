@@ -1,4 +1,7 @@
-package com.azure.search.annotation;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.search.documents.indexes;
 
 import com.azure.search.documents.models.AnalyzerName;
 
@@ -54,21 +57,21 @@ public @interface SearchableFieldProperty {
      *
      * @return {@link AnalyzerName} String value. Or default to "null" String type.
      */
-    String analyzer() default "null";
+    String analyzer() default "";
 
     /**
      * Optional arguments defines the name of the search analyzer used for the field.
      *
      * @return {@link AnalyzerName} String value. Or default to "null" String type.
      */
-    String searchAnalyzer() default "null";
+    String searchAnalyzer() default "";
 
     /**
      * Optional arguments defines the name of the analyzer used for the field.
      *
      * @return {@link AnalyzerName} String value. Or default to "null" String type.
      */
-    String indexAnalyzer() default "null";
+    String indexAnalyzer() default "";
 
     /**
      * Optional arguments defines the array of synonymMaps used for the field.

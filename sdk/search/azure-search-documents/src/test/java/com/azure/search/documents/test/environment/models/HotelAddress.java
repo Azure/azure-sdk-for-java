@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.test.environment.models;
 
-import com.azure.search.annotation.SearchableFieldProperty;
-import com.azure.search.annotation.SimpleFieldProperty;
+import com.azure.search.documents.indexes.SearchableFieldProperty;
+import com.azure.search.documents.indexes.SimpleFieldProperty;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class HotelAddress {

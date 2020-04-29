@@ -4,14 +4,13 @@
 package com.azure.search.documents;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.annotation.FieldIgnore;
-import com.azure.search.annotation.SearchableFieldProperty;
-import com.azure.search.annotation.SimpleFieldProperty;
+import com.azure.search.documents.indexes.FieldIgnore;
+import com.azure.search.documents.indexes.SearchableFieldProperty;
+import com.azure.search.documents.indexes.SimpleFieldProperty;
 import com.azure.search.documents.models.AnalyzerName;
 import com.azure.search.documents.models.DataType;
 import com.azure.search.documents.models.Field;
 import com.azure.search.documents.models.GeoPoint;
-import com.azure.search.documents.models.SearchableField;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -60,7 +59,8 @@ public class FieldBuilder {
     /**
      * Creates a collection of {@link Field} objects corresponding to the properties of the type supplied.
      *
-     * @param modelClass The class type for which fields will be created, based on its properties.
+     * @param modelClass The class for which fields will be created, based on its properties.
+     * @param <T> The generic type of the model class.
      * @return A collection of fields.
      */
     public static <T> List<Field> build(Class<T> modelClass) {
@@ -110,7 +110,7 @@ public class FieldBuilder {
         if (CLASS_FIELD_HASH_MAP.containsKey(type)) {
             return CLASS_FIELD_HASH_MAP.get(type);
         }
-        List<Field> childFields = build((Class<?>)type, classChain, logger);
+        List<Field> childFields = build((Class<?>) type, classChain, logger);
         Field searchField = convertToBasicSearchField(classField, logger);
         searchField.setFields(childFields);
         searchField.setSearchable(false); // TODO
@@ -152,7 +152,7 @@ public class FieldBuilder {
             Field searchField = convertToBasicSearchField(classField, logger);
             return enrichWithAnnotation(searchField, classField, logger);
         }
-        List<Field> childFields = build((Class<?>)componentOrElementType, classChain, logger);
+        List<Field> childFields = build((Class<?>) componentOrElementType, classChain, logger);
         Field searchField = convertToBasicSearchField(classField, logger);
         searchField.setFields(childFields);
         return searchField;
@@ -188,10 +188,9 @@ public class FieldBuilder {
         ClientLogger logger) {
         if (classField.isAnnotationPresent(SimpleFieldProperty.class)
             && classField.isAnnotationPresent(SearchableFieldProperty.class)) {
-            throw logger
-                .logExceptionAsError(new IllegalArgumentException(
-                    String.format("@SimpleFieldProperty and @SearchableFieldProperty cannot be present simultaneously for %s",
-                        classField.getName())));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                    String.format("@SimpleFieldProperty and @SearchableFieldProperty cannot be present simultaneously "
+                        + "for %s", classField.getName())));
         }
         if (classField.isAnnotationPresent(SimpleFieldProperty.class)) {
             SimpleFieldProperty simpleFieldPropertyAnnotation =
@@ -202,9 +201,9 @@ public class FieldBuilder {
             searchField.setFacetable(simpleFieldPropertyAnnotation.isFacetable());
             searchField.setKey(simpleFieldPropertyAnnotation.isKey());
             searchField.setHidden(simpleFieldPropertyAnnotation.isHidden());
-        } else if (classField.isAnnotationPresent(SearchableFieldProperty.class)){
-            if (!searchField.getType().equals(DataType.EDM_STRING) &&
-                !searchField.getType().equals(DataType.collection(DataType.EDM_STRING))) {
+        } else if (classField.isAnnotationPresent(SearchableFieldProperty.class)) {
+            if (!searchField.getType().equals(DataType.EDM_STRING)
+                && !searchField.getType().equals(DataType.collection(DataType.EDM_STRING))) {
                 throw logger.logExceptionAsError(new RuntimeException(String.format("SearchFieldProperty can only"
                     + " be used on string properties. Property %s returns a %s value.",
                     classField.getName(), searchField.getType())));
@@ -220,10 +219,10 @@ public class FieldBuilder {
             if (!"null".equals(searchableFieldPropertyAnnotation.analyzer())) {
                 searchField.setAnalyzer(AnalyzerName.fromString((searchableFieldPropertyAnnotation.analyzer())));
             }
-            if (!"null".equals(searchableFieldPropertyAnnotation.searchAnalyzer())) {
+            if (!searchableFieldPropertyAnnotation.searchAnalyzer().isEmpty()) {
                 searchField.setAnalyzer(AnalyzerName.fromString((searchableFieldPropertyAnnotation.searchAnalyzer())));
             }
-            if (!"null".equals(searchableFieldPropertyAnnotation.indexAnalyzer())) {
+            if (!searchableFieldPropertyAnnotation.indexAnalyzer().isEmpty()) {
                 searchField.setAnalyzer(AnalyzerName.fromString((searchableFieldPropertyAnnotation.indexAnalyzer())));
             }
             if (searchableFieldPropertyAnnotation.synonymMaps().length != 0) {
@@ -238,13 +237,13 @@ public class FieldBuilder {
             throw logger.logExceptionAsError(new IllegalArgumentException("Map and its subclasses are not supported"));
         }
         if (UNSUPPORTED_TYPES.contains(type)) {
-            throw logger
-                .logExceptionAsError(new IllegalArgumentException(String.format("%s is not supported", type.getName())));
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format("%s is not supported",
+                    type.getName())));
         }
         if (Collection.class.isAssignableFrom(type)) {
             if (!List.class.isAssignableFrom(type)) {
-                throw logger
-                    .logExceptionAsError(new IllegalArgumentException(String.format("%s is not supported", type.getName())));
+                throw logger.logExceptionAsError(new IllegalArgumentException(
+                    String.format("%s is not supported", type.getName())));
             }
             if (hasArrayOrCollectionWrapped) {
                 throw logger
