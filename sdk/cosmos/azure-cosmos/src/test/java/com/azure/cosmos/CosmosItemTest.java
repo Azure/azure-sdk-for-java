@@ -7,6 +7,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.FeedOptions;
@@ -15,7 +16,6 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
-import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -52,8 +52,8 @@ public class CosmosItemTest extends TestSuiteBase {
         this.client.close();
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void createItem() throws Exception {
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void createItem() {
         CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<CosmosItemProperties> itemResponse = container.createItem(properties);
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
@@ -66,7 +66,7 @@ public class CosmosItemTest extends TestSuiteBase {
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void createItem_alreadyExists() throws Exception {
+    public void createItem_alreadyExists() {
         CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<CosmosItemProperties> itemResponse = container.createItem(properties);
         validateItemResponse(properties, itemResponse);
@@ -84,21 +84,21 @@ public class CosmosItemTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readItem() throws Exception {
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void readItem() {
         CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
-        CosmosItemResponse<CosmosItemProperties> itemResponse = container.createItem(properties);
+        container.createItem(properties);
 
         CosmosItemResponse<CosmosItemProperties> readResponse1 = container.readItem(properties.getId(),
-                                                                                    new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
-                                                                                    new CosmosItemRequestOptions(),
-                                                                                    CosmosItemProperties.class);
+            new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
+            new CosmosItemRequestOptions(),
+            CosmosItemProperties.class);
         validateItemResponse(properties, readResponse1);
 
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void replaceItem() throws Exception{
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void replaceItem() {
         CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<CosmosItemProperties> itemResponse = container.createItem(properties);
 
@@ -109,59 +109,59 @@ public class CosmosItemTest extends TestSuiteBase {
         ModelBridgeInternal.setPartitionKey(options, new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")));
         // replace document
         CosmosItemResponse<CosmosItemProperties> replace = container.replaceItem(properties,
-                                                              properties.getId(),
-                                                              new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
-                                                              options);
+            properties.getId(),
+            new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
+            options);
         assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(BridgeInternal.getProperties(replace), "newProp")).isEqualTo(newPropValue);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void deleteItem() throws Exception {
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void deleteItem() {
         CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
-        CosmosItemResponse<CosmosItemProperties> itemResponse = container.createItem(properties);
+        container.createItem(properties);
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
 
         CosmosItemResponse<?> deleteResponse = container.deleteItem(properties.getId(),
-                                                                    new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
-                                                                    options);
+            new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
+            options);
         assertThat(deleteResponse.getStatusCode()).isEqualTo(204);
     }
 
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readAllItems() throws Exception{
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void readAllItems() {
         CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
-        CosmosItemResponse<CosmosItemProperties> itemResponse = container.createItem(properties);
+        container.createItem(properties);
 
         FeedOptions feedOptions = new FeedOptions();
 
         CosmosPagedIterable<CosmosItemProperties> feedResponseIterator3 =
-                container.readAllItems(feedOptions, CosmosItemProperties.class);
+            container.readAllItems(feedOptions, CosmosItemProperties.class);
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }
 
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void queryItems() throws Exception{
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void queryItems() {
         CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
-        CosmosItemResponse<CosmosItemProperties> itemResponse = container.createItem(properties);
+        container.createItem(properties);
 
         String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
         FeedOptions feedOptions = new FeedOptions();
 
         CosmosPagedIterable<CosmosItemProperties> feedResponseIterator1 =
-                container.queryItems(query, feedOptions, CosmosItemProperties.class);
+            container.queryItems(query, feedOptions, CosmosItemProperties.class);
         // Very basic validation
         assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
         CosmosPagedIterable<CosmosItemProperties> feedResponseIterator3 =
-                container.queryItems(querySpec, feedOptions, CosmosItemProperties.class);
+            container.queryItems(querySpec, feedOptions, CosmosItemProperties.class);
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void queryItemsWithContinuationTokenAndPageSize() throws Exception{
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void queryItemsWithContinuationTokenAndPageSize() {
         List<String> actualIds = new ArrayList<>();
         CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
         container.createItem(properties);
@@ -194,7 +194,7 @@ public class CosmosItemTest extends TestSuiteBase {
                 finalDocumentCount += fr.getResults().size();
                 continuationToken = fr.getContinuationToken();
             }
-        } while(continuationToken != null);
+        } while (continuationToken != null);
 
         assertThat(finalDocumentCount).isEqualTo(initialDocumentCount);
 
@@ -203,18 +203,16 @@ public class CosmosItemTest extends TestSuiteBase {
 
     private CosmosItemProperties getDocumentDefinition(String documentId) {
         final String uuid = UUID.randomUUID().toString();
-        final CosmosItemProperties properties =
-            new CosmosItemProperties(String.format("{ "
-                                                       + "\"id\": \"%s\", "
-                                                       + "\"mypk\": \"%s\", "
-                                                       + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]"
-                                                       + "}"
-                , documentId, uuid));
-        return properties;
+        return new CosmosItemProperties(String.format("{ "
+                + "\"id\": \"%s\", "
+                + "\"mypk\": \"%s\", "
+                + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]"
+                + "}"
+            , documentId, uuid));
     }
 
     private void validateItemResponse(CosmosItemProperties containerProperties,
-                                      CosmosItemResponse<CosmosItemProperties> createResponse) {
+        CosmosItemResponse<CosmosItemProperties> createResponse) {
         // Basic validation
         assertThat(BridgeInternal.getProperties(createResponse).getId()).isNotNull();
         assertThat(BridgeInternal.getProperties(createResponse).getId())
