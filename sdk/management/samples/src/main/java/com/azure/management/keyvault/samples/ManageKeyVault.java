@@ -3,16 +3,18 @@
 
 package com.azure.management.keyvault.samples;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.management.ApplicationTokenCredential;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.core.util.Configuration;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
 import com.azure.management.keyvault.KeyPermissions;
 import com.azure.management.keyvault.SecretPermissions;
 import com.azure.management.keyvault.Vault;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.samples.Utils;
-
-import java.io.File;
 
 /**
  * Azure Key Vault sample for managing key vaults -
@@ -152,17 +154,22 @@ public final class ManageKeyVault {
             //=============================================================
             // Authenticate
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
+            final Configuration configuration = Configuration.getGlobalConfiguration();
 
-            Azure azure = Azure.configure()
-                    .withLogLevel(HttpLogDetailLevel.BASIC)
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+            Azure azure = Azure
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());
 
-            runSample(azure, ApplicationTokenCredential.fromFile(credFile).getClientId());
+            runSample(azure, configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID));
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

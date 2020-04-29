@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -172,6 +173,33 @@ class ServiceBusReceiverClientTest {
     }
 
     @Test
+    void getSessionState() {
+        // Arrange
+        final String sessionId = "a-session-id";
+        final byte[] contents = new byte[]{10, 111, 23};
+        when(asyncClient.getSessionState(sessionId)).thenReturn(Mono.just(contents));
+
+        // Act
+        final byte[] actual = client.getSessionState(sessionId);
+
+        // Assert
+        assertEquals(contents, actual);
+    }
+
+    @Test
+    void getSessionStateNull() {
+        // Arrange
+        final String sessionId = "a-session-id";
+        when(asyncClient.getSessionState(sessionId)).thenReturn(Mono.empty());
+
+        // Act
+        final byte[] actual = client.getSessionState(sessionId);
+
+        // Assert
+        assertNull(actual);
+    }
+
+    @Test
     void peekMessage() {
         // Arrange
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
@@ -313,7 +341,6 @@ class ServiceBusReceiverClientTest {
         assertEquals(maxMessages, collected.size());
     }
 
-
     /**
      * Verifies we cannot pass null value for maxWaitTime while receiving.
      */
@@ -333,7 +360,7 @@ class ServiceBusReceiverClientTest {
     void receiveMessageNegativeWaitTime() {
         // Arrange
         final int maxMessages = 10;
-        Duration negativeReceiveWaitTime =  Duration.ofSeconds(-10);
+        Duration negativeReceiveWaitTime = Duration.ofSeconds(-10);
 
         // Act & Assert
         assertThrows(IllegalArgumentException.class, () -> client.receive(maxMessages, negativeReceiveWaitTime));
@@ -524,6 +551,34 @@ class ServiceBusReceiverClientTest {
 
         // Assert
         assertEquals(response, actual);
+    }
+
+    @Test
+    void renewSessionLock() {
+        // Arrange
+        final String sessionId = "a-session-id";
+        final Instant response = Instant.ofEpochSecond(1585259339);
+        when(asyncClient.renewSessionLock(sessionId)).thenReturn(Mono.just(response));
+
+        // Act
+        final Instant actual = client.renewSessionLock(sessionId);
+
+        // Assert
+        assertEquals(response, actual);
+    }
+
+    @Test
+    void setSessionState() {
+        // Arrange
+        final String sessionId = "a-session-id";
+        final byte[] contents = new byte[]{10, 111, 23};
+        when(asyncClient.setSessionState(sessionId, contents)).thenReturn(Mono.empty());
+
+        // Act
+        client.setSessionState(sessionId, contents);
+
+        // Assert
+        verify(asyncClient).setSessionState(sessionId, contents);
     }
 
     private static boolean lockTokenEquals(MessageLockToken compared) {

@@ -25,7 +25,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.core.http.MatchConditions;
 import com.azure.search.documents.implementation.models.AnalyzeResult;
 import com.azure.search.documents.implementation.models.ListIndexesResult;
 import com.azure.search.documents.models.AnalyzeRequest;
@@ -82,12 +81,12 @@ public final class IndexesImpl {
         @Put("indexes('{indexName}')")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<Index>> createOrUpdate(@PathParam("indexName") String indexName, @HostParam("endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") Index index, @QueryParam("allowIndexDowntime") Boolean allowIndexDowntime, @HeaderParam("Prefer") String prefer, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
+        Mono<SimpleResponse<Index>> createOrUpdate(@PathParam("indexName") String indexName, @HostParam("endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") Index index, @QueryParam("allowIndexDowntime") Boolean allowIndexDowntime, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("Prefer") String prefer, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
 
         @Delete("indexes('{indexName}')")
         @ExpectedResponses({204, 404})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<Void>> delete(@PathParam("indexName") String indexName, @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
+        Mono<Response<Void>> delete(@PathParam("indexName") String indexName, @HostParam("endpoint") String endpoint, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
 
         @Get("indexes('{indexName}')")
         @ExpectedResponses({200})
@@ -181,11 +180,11 @@ public final class IndexesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Index>> createOrUpdateWithRestResponseAsync(String indexName, Index index, Context context) {
         final Boolean allowIndexDowntime = null;
-        final String prefer = "return=representation";
-        final UUID xMsClientRequestId = null;
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return service.createOrUpdate(indexName, this.client.getEndpoint(), index, allowIndexDowntime, prefer, this.client.getApiVersion(), xMsClientRequestId, ifMatch, ifNoneMatch, context);
+        final String prefer = "return=representation";
+        final UUID xMsClientRequestId = null;
+        return service.createOrUpdate(indexName, this.client.getEndpoint(), index, allowIndexDowntime, ifMatch, ifNoneMatch, prefer, this.client.getApiVersion(), xMsClientRequestId, context);
     }
 
     /**
@@ -194,28 +193,21 @@ public final class IndexesImpl {
      * @param indexName The definition of the index to create or update.
      * @param index The definition of the index to create or update.
      * @param allowIndexDowntime Allows new analyzers, tokenizers, token filters, or char filters to be added to an index by taking the index offline for at least a few seconds. This temporarily causes indexing and query requests to fail. Performance and write availability of the index can be impaired for several minutes after the index is updated, or longer for very large indexes.
+     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server matches this value.
+     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the server does not match this value.
      * @param requestOptions Additional parameters for the operation.
-     * @param accessCondition Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Index>> createOrUpdateWithRestResponseAsync(String indexName, Index index, Boolean allowIndexDowntime, RequestOptions requestOptions, MatchConditions accessCondition, Context context) {
+    public Mono<SimpleResponse<Index>> createOrUpdateWithRestResponseAsync(String indexName, Index index, Boolean allowIndexDowntime, String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
         final String prefer = "return=representation";
         UUID xMsClientRequestId = null;
         if (requestOptions != null) {
             xMsClientRequestId = requestOptions.getXMsClientRequestId();
         }
-        String ifMatch = null;
-        if (accessCondition != null) {
-            ifMatch = accessCondition.getIfMatch();
-        }
-        String ifNoneMatch = null;
-        if (accessCondition != null) {
-            ifNoneMatch = accessCondition.getIfNoneMatch();
-        }
-        return service.createOrUpdate(indexName, this.client.getEndpoint(), index, allowIndexDowntime, prefer, this.client.getApiVersion(), xMsClientRequestId, ifMatch, ifNoneMatch, context);
+        return service.createOrUpdate(indexName, this.client.getEndpoint(), index, allowIndexDowntime, ifMatch, ifNoneMatch, prefer, this.client.getApiVersion(), xMsClientRequestId, context);
     }
 
     /**
@@ -228,37 +220,30 @@ public final class IndexesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithRestResponseAsync(String indexName, Context context) {
-        final UUID xMsClientRequestId = null;
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return service.delete(indexName, this.client.getEndpoint(), this.client.getApiVersion(), xMsClientRequestId, ifMatch, ifNoneMatch, context);
+        final UUID xMsClientRequestId = null;
+        return service.delete(indexName, this.client.getEndpoint(), ifMatch, ifNoneMatch, this.client.getApiVersion(), xMsClientRequestId, context);
     }
 
     /**
      * Deletes a search index and all the documents it contains.
      *
      * @param indexName The name of the index to delete.
+     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server matches this value.
+     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the server does not match this value.
      * @param requestOptions Additional parameters for the operation.
-     * @param accessCondition Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithRestResponseAsync(String indexName, RequestOptions requestOptions, MatchConditions accessCondition, Context context) {
+    public Mono<Response<Void>> deleteWithRestResponseAsync(String indexName, String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
         UUID xMsClientRequestId = null;
         if (requestOptions != null) {
             xMsClientRequestId = requestOptions.getXMsClientRequestId();
         }
-        String ifMatch = null;
-        if (accessCondition != null) {
-            ifMatch = accessCondition.getIfMatch();
-        }
-        String ifNoneMatch = null;
-        if (accessCondition != null) {
-            ifNoneMatch = accessCondition.getIfNoneMatch();
-        }
-        return service.delete(indexName, this.client.getEndpoint(), this.client.getApiVersion(), xMsClientRequestId, ifMatch, ifNoneMatch, context);
+        return service.delete(indexName, this.client.getEndpoint(), ifMatch, ifNoneMatch, this.client.getApiVersion(), xMsClientRequestId, context);
     }
 
     /**

@@ -11,6 +11,7 @@ import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 
 import java.nio.ByteBuffer;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.UUID;
 
 /**
@@ -20,6 +21,7 @@ final class MessageUtils {
     static final UUID ZERO_LOCK_TOKEN = new UUID(0L, 0L);
     static final int LOCK_TOKEN_SIZE = 16;
 
+    private static final long EPOCH_IN_DOT_NET_TICKS = 621355968000000000L;
     private static final int GUID_SIZE = 16;
 
     private MessageUtils() {
@@ -29,7 +31,6 @@ final class MessageUtils {
      * Converts a .NET GUID to its Java UUID representation.
      *
      * @param dotNetBytes .NET GUID to convert.
-     *
      * @return the equivalent UUID.
      */
     static UUID convertDotNetBytesToUUID(byte[] dotNetBytes) {
@@ -47,6 +48,40 @@ final class MessageUtils {
         return new UUID(mostSignificantBits, leastSignificantBits);
     }
 
+    /**
+     * Converts a Java UUID to its byte[] representation.
+     *
+     * @param uuid UUID to convert to .NET bytes.
+     * @return The .NET byte representation.
+     */
+    static byte[] convertUUIDToDotNetBytes(UUID uuid) {
+        if (uuid == null || uuid.equals(ZERO_LOCK_TOKEN)) {
+            return new byte[GUID_SIZE];
+        }
+
+        ByteBuffer buffer = ByteBuffer.allocate(GUID_SIZE);
+        buffer.putLong(uuid.getMostSignificantBits());
+        buffer.putLong(uuid.getLeastSignificantBits());
+        byte[] javaBytes = buffer.array();
+
+        return reorderBytes(javaBytes);
+    }
+
+    /**
+     * Gets the {@link Instant} representation of .NET epoch ticks. .NET ticks are measured from 0001/01/01. Java
+     * {@link Instant} is measured from 1970/01/01.
+     *
+     * @param dotNetTicks long measured from 01/01/0001
+     * @return The instant represented by the ticks.
+     */
+    static Instant convertDotNetTicksToInstant(long dotNetTicks) {
+        long ticksFromEpoch = dotNetTicks - EPOCH_IN_DOT_NET_TICKS;
+        long millisecondsFromEpoch = Double.valueOf(ticksFromEpoch * 0.0001).longValue();
+        long fractionTicks = ticksFromEpoch % 10000;
+
+        return Instant.ofEpochMilli(millisecondsFromEpoch).plusNanos(fractionTicks * 100);
+    }
+
     // Pass little less than client timeout to the server so client doesn't time out before server times out
     static Duration adjustServerTimeout(Duration clientTimeout) {
         return clientTimeout.minusMillis(1000);
@@ -57,7 +92,6 @@ final class MessageUtils {
      *
      * @param errorCondition Error condition for the AMQP exception.
      * @param errorContext AMQP context it occurred in.
-     *
      * @return Corresponding {@link Throwable} for the error condition.
      */
     static Throwable toException(ErrorCondition errorCondition, AmqpErrorContext errorContext) {
