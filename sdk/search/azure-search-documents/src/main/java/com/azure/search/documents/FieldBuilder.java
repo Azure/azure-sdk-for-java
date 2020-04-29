@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 /**
  * Helper to convert model class to search field {@link Field}.
  */
-public class FieldBuilder {
+public final class FieldBuilder {
     private static final int MAX_DEPTH = 10000;
     private static final Map<Class<?>, DataType> SUPPORTED_NONE_PARAMETERIZED_TYPE = new HashMap<>();
 
