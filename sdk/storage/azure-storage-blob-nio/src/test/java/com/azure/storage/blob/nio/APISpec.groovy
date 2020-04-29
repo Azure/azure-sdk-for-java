@@ -465,12 +465,16 @@ class APISpec extends Specification {
      * @return Whether the files have equivalent content based on offset and read count
      */
     def compareFiles(File file1, File file2, long offset, long count) {
-        def pos = 0L
-        def readBuffer = 8 * Constants.KB
         def stream1 = new FileInputStream(file1)
         stream1.skip(offset)
         def stream2 = new FileInputStream(file2)
 
+        return compareInputStreams(stream1, stream2, count)
+    }
+
+    def compareInputStreams(InputStream stream1, InputStream stream2, long count) {
+        def pos = 0L
+        def readBuffer = 8 * Constants.KB
         try {
             while (pos < count) {
                 def bufferSize = (int) Math.min(readBuffer, count - pos)

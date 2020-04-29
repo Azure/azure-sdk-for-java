@@ -3,7 +3,9 @@
 
 package com.azure.storage.blob.nio;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.specialized.BlobInputStream;
+import com.azure.storage.common.implementation.Constants;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,6 +14,7 @@ import java.io.InputStream;
  * Provides an InputStream to read a file stored as an Azure Blob.
  */
 public class NioBlobInputStream extends InputStream {
+    private final ClientLogger logger = new ClientLogger(NioBlobInputStream.class);
 
     private final BlobInputStream blobInputStream;
 
@@ -77,7 +80,14 @@ public class NioBlobInputStream extends InputStream {
      */
     @Override
     public int read() throws IOException {
-        return this.blobInputStream.read();
+        try {
+            return this.blobInputStream.read();
+        } catch (RuntimeException e) {
+            if (e.getMessage().equals(Constants.STREAM_CLOSED)) {
+                throw LoggingUtility.logError(logger, new IOException(e));
+            }
+            throw LoggingUtility.logError(logger, e);
+        }
     }
 
     /**
@@ -105,7 +115,14 @@ public class NioBlobInputStream extends InputStream {
      */
     @Override
     public int read(final byte[] b) throws IOException {
-        return this.blobInputStream.read(b);
+        try {
+            return this.blobInputStream.read(b);
+        } catch (RuntimeException e) {
+            if (e.getMessage().equals(Constants.STREAM_CLOSED)) {
+                throw LoggingUtility.logError(logger, new IOException(e));
+            }
+            throw LoggingUtility.logError(logger, e);
+        }
     }
 
     /**
@@ -153,7 +170,14 @@ public class NioBlobInputStream extends InputStream {
      */
     @Override
     public int read(final byte[] b, final int off, final int len) throws IOException {
-       return this.blobInputStream.read(b, off, len);
+        try {
+            return this.blobInputStream.read(b, off, len);
+        } catch (RuntimeException e) {
+            if (e.getMessage().equals(Constants.STREAM_CLOSED)) {
+                throw LoggingUtility.logError(logger, new IOException(e));
+            }
+            throw LoggingUtility.logError(logger, e);
+        }
     }
 
     /**
@@ -163,8 +187,15 @@ public class NioBlobInputStream extends InputStream {
      * @throws RuntimeException If this stream has not been marked or if the mark has been invalidated.
      */
     @Override
-    public synchronized void reset() {
-        this.blobInputStream.reset();
+    public synchronized void reset() throws IOException{
+        try {
+            this.blobInputStream.reset();
+        } catch (RuntimeException e) {
+            if (e.getMessage().equals("Stream mark expired.")) {
+                throw LoggingUtility.logError(logger, new IOException(e));
+            }
+            throw LoggingUtility.logError(logger, e);
+        }
     }
 
     /**
