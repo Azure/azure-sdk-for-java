@@ -407,9 +407,6 @@ public class IdentityClient {
         return Mono.fromFuture(() -> getPublicClientApplication(false).acquireToken(
             UserNamePasswordParameters.builder(new HashSet<>(request.getScopes()), username, password.toCharArray())
                 .build()))
-            .doFinally(s -> {
-                if (s.)
-            })
             .onErrorMap(t -> new ClientAuthenticationException("Failed to acquire token with username and password",
                 null, t)).map(ar -> new MsalToken(ar, options));
     }
