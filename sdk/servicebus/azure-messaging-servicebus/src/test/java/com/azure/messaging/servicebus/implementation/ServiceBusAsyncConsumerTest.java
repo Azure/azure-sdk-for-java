@@ -25,6 +25,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.Disposable;
 import reactor.core.publisher.DirectProcessor;
+import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
@@ -33,6 +34,7 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -42,10 +44,10 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 class ServiceBusAsyncConsumerTest {
-    private final DirectProcessor<Message> messageProcessor = DirectProcessor.create();
-    private final FluxSink<Message> messageProcessorSink = messageProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
-    private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
-    private final FluxSink<AmqpEndpointState> endpointProcessorSink = endpointProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
+    private final EmitterProcessor<Message> messageProcessor = EmitterProcessor.create();
+    private final FluxSink<Message> messageProcessorSink = messageProcessor.sink();
+    private final EmitterProcessor<AmqpEndpointState> endpointProcessor = EmitterProcessor.create();
+    private final FluxSink<AmqpEndpointState> endpointProcessorSink = endpointProcessor.sink();
     private final ClientLogger logger = new ClientLogger(ServiceBusAsyncConsumer.class);
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions();
     private final Duration renewDuration = Duration.ofSeconds(5);
@@ -71,7 +73,7 @@ class ServiceBusAsyncConsumerTest {
 
     @BeforeAll
     static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(90));
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(20));
     }
 
     @AfterAll
@@ -84,15 +86,16 @@ class ServiceBusAsyncConsumerTest {
         logger.info("[{}]: Setting up.", testInfo.getDisplayName());
 
         MockitoAnnotations.initMocks(this);
-        linkProcessor = Flux.<AmqpReceiveLink>create(sink -> sink.next(link))
-            .subscribeWith(new ServiceBusReceiveLinkProcessor(10, retryPolicy, parentConnection,
-                new AmqpErrorContext("a-namespace")));
-
-        when(connection.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
 
         when(link.getEndpointStates()).thenReturn(endpointProcessor);
         when(link.receive()).thenReturn(messageProcessor);
+        linkProcessor = Flux.<AmqpReceiveLink>create(sink -> sink.onRequest(requested -> {
+            logger.info("Requested link: {}", requested);
+            sink.next(link);
+        })).subscribeWith(new ServiceBusReceiveLinkProcessor(10, retryPolicy, parentConnection,
+            new AmqpErrorContext("a-namespace")));
 
+        when(connection.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(onComplete.apply(any(ServiceBusReceivedMessage.class))).thenReturn(Mono.empty());
     }
 
@@ -114,6 +117,8 @@ class ServiceBusAsyncConsumerTest {
             isAutoComplete, false, renewDuration, retryOptions, onComplete, onAbandon,
             onRenewLock);
 
+        when(link.getCredits()).thenReturn(1);
+
         final Message message1 = mock(Message.class);
         final Message message2 = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage1 = mock(ServiceBusReceivedMessage.class);
@@ -130,7 +135,6 @@ class ServiceBusAsyncConsumerTest {
         // Act and Assert
         StepVerifier.create(consumer.receive().take(2))
             .then(() -> {
-                endpointProcessorSink.next(AmqpEndpointState.ACTIVE);
                 messageProcessorSink.next(message1);
                 messageProcessorSink.next(message2);
             })
@@ -167,7 +171,6 @@ class ServiceBusAsyncConsumerTest {
         // Act and Assert
         StepVerifier.create(consumer.receive())
             .then(() -> {
-                endpointProcessorSink.next(AmqpEndpointState.ACTIVE);
                 messageProcessorSink.next(message1);
             })
             .expectNext(receivedMessage1)
