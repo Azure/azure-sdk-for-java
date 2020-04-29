@@ -45,7 +45,7 @@ public class ClaimsBasedSecurityChannel implements ClaimsBasedSecurityNode {
         this.authorizationType = Objects.requireNonNull(authorizationType, "'authorizationType' cannot be null.");
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         this.credential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
-        this.cbsChannelMono = Objects.requireNonNull(responseChannelMono, "'responseChannelMono' cannot be null.");
+        this.cbsChannelMono = Objects.requireNonNull(responseChannelMono, "'cbsChannelMono' cannot be null.");
     }
 
     @Override
@@ -74,7 +74,6 @@ public class ClaimsBasedSecurityChannel implements ClaimsBasedSecurityNode {
 
                         throw logger.logExceptionAsError(Exceptions.propagate(amqpResponseCodeToException(
                             statusCode.getValue(), description, channel.getErrorContext())));
-
                     });
                 }));
     }
