@@ -226,8 +226,13 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLin
                     () -> {
                         if (parentConnection.isDisposed()) {
                             logger.info("Parent connection is disposed.");
+                            downstream.onComplete();
                         } else if (isTerminated()) {
                             logger.info("Processor is disposed.");
+                            downstream.onComplete();
+                        } else if (upstream == Operators.cancelledSubscription()) {
+                            logger.info("Upstream has no more items to emit. Disposing.");
+                            dispose();
                         } else {
                             logger.info("Receive link endpoint states are closed.");
                             final AmqpReceiveLink existing = currentLink;
@@ -312,7 +317,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLin
         final int attempt = retryAttempts.incrementAndGet();
         final Duration retryInterval = retryPolicy.calculateRetryDelay(throwable, attempt);
 
-        if (retryInterval != null && !parentConnection.isDisposed()) {
+        if (retryInterval != null && !parentConnection.isDisposed() && upstream != Operators.cancelledSubscription()) {
             logger.warning("Transient error occurred. Attempt: {}. Retrying after {} ms.",
                 attempt, retryInterval.toMillis(), throwable);
 
@@ -501,12 +506,6 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLin
     private boolean checkAndSetTerminated() {
         if (!isTerminated()) {
             return false;
-        }
-
-        if (upstream == Operators.cancelledSubscription()) {
-            dispose();
-            messageQueue.clear();
-            return true;
         }
 
         final Throwable error = lastError;

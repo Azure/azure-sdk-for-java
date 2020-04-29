@@ -501,6 +501,77 @@ class ServiceBusReceiveLinkProcessorTest {
             .verify();
     }
 
+    @Test
+    void receivesUntilFirstLinkClosed() {
+        // Arrange
+        ServiceBusReceiveLinkProcessor processor = Flux.just(link1).subscribeWith(linkProcessor);
+        FluxSink<AmqpEndpointState> sink = endpointProcessor.sink();
+
+        when(link1.getCredits()).thenReturn(1);
+
+        // Act & Assert
+        StepVerifier.create(processor)
+            .then(() -> {
+                sink.next(AmqpEndpointState.ACTIVE);
+                messageProcessorSink.next(message1);
+                messageProcessorSink.next(message2);
+            })
+            .expectNext(message1)
+            .expectNext(message2)
+            .then(() -> sink.complete())
+            .expectComplete()
+            .verify();
+
+        Assertions.assertTrue(processor.isTerminated());
+        Assertions.assertFalse(processor.hasError());
+        Assertions.assertNull(processor.getError());
+
+        verify(link1).addCredits(eq(PREFETCH));
+        verify(link1).setEmptyCreditListener(creditSupplierCaptor.capture());
+
+        Supplier<Integer> value = creditSupplierCaptor.getValue();
+        Assertions.assertNotNull(value);
+
+        final Integer creditValue = value.get();
+        // Expecting 1 because it is Long.MAX_VALUE.
+        Assertions.assertEquals(1, creditValue);
+    }
+
+    @Test
+    void receivesFromFirstLink() {
+        // Arrange
+        ServiceBusReceiveLinkProcessor processor = Flux.just(link1).subscribeWith(linkProcessor);
+        FluxSink<AmqpEndpointState> sink = endpointProcessor.sink();
+
+        when(link1.getCredits()).thenReturn(1);
+
+        // Act & Assert
+        StepVerifier.create(processor)
+            .then(() -> {
+                sink.next(AmqpEndpointState.ACTIVE);
+                messageProcessorSink.next(message1);
+                messageProcessorSink.next(message2);
+            })
+            .expectNext(message1)
+            .expectNext(message2)
+            .thenCancel()
+            .verify();
+
+        Assertions.assertTrue(processor.isTerminated());
+        Assertions.assertFalse(processor.hasError());
+        Assertions.assertNull(processor.getError());
+
+        verify(link1).addCredits(eq(PREFETCH));
+        verify(link1).setEmptyCreditListener(creditSupplierCaptor.capture());
+
+        Supplier<Integer> value = creditSupplierCaptor.getValue();
+        Assertions.assertNotNull(value);
+
+        final Integer creditValue = value.get();
+        // Expecting 1 because it is Long.MAX_VALUE.
+        Assertions.assertEquals(1, creditValue);
+    }
+
     private static Flux<AmqpReceiveLink> createSink(AmqpReceiveLink[] links) {
         return Flux.create(emitter -> {
             final AtomicInteger counter = new AtomicInteger();
