@@ -51,6 +51,7 @@ local.properties
 target
 .idea
 *.iml
+*jacoco.exec
 
 # Mac OS #
 .DS_Store
