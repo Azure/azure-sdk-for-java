@@ -128,6 +128,12 @@ public class DefaultAzureCredentialTest {
         PowerMockito.whenNew(AzureCliCredential.class).withAnyArguments()
             .thenReturn(azureCliCredential);
 
+        IntelliJCredential intelliJCredential = PowerMockito.mock(IntelliJCredential.class);
+        when(intelliJCredential.getToken(request))
+                .thenReturn(Mono.error(
+                        new CredentialUnavailableException("Cannot get token from IntelliJ Credential")));
+        PowerMockito.whenNew(IntelliJCredential.class).withAnyArguments()
+                .thenReturn(intelliJCredential);
 
         // test
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
@@ -135,7 +141,8 @@ public class DefaultAzureCredentialTest {
             .expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage()
                                       .matches("Tried EnvironmentCredential, ManagedIdentityCredential, "
                                                    + "SharedTokenCacheCredential"
-                                                   + "[\\$\\w]+\\$\\d*,\\s+AzureCliCredential[\\$\\w\\s\\.]+"))
+                                                   + "[\\$\\w]+\\$\\d*,\\s+AzureCliCredential"
+                                                   + "[\\$\\w]+\\$\\d*,\\s+IntelliJCredential[\\$\\w\\s\\.]+"))
             .verify();
     }
 
@@ -146,6 +153,7 @@ public class DefaultAzureCredentialTest {
                                                 .excludeAzureCliCredential()
                                                 .excludeManagedIdentityCredential()
                                                 .excludeSharedTokenCacheCredential()
+                                                .excludeIntelliJCredential()
                                                 .build();
     }
 
@@ -163,6 +171,13 @@ public class DefaultAzureCredentialTest {
         PowerMockito.whenNew(ManagedIdentityCredential.class).withAnyArguments()
             .thenReturn(managedIdentityCredential);
 
+        IntelliJCredential intelliJCredential = PowerMockito.mock(IntelliJCredential.class);
+        when(intelliJCredential.getToken(request))
+                .thenReturn(Mono.error(
+                        new CredentialUnavailableException("Cannot get token from IntelliJ Credential")));
+        PowerMockito.whenNew(IntelliJCredential.class).withAnyArguments()
+                .thenReturn(intelliJCredential);
+
         // test
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
                                                 .excludeEnvironmentCredential()
@@ -171,7 +186,8 @@ public class DefaultAzureCredentialTest {
             .expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage()
                   .matches("Tried ManagedIdentityCredential[\\$\\w]+\\$\\d*,"
                                + " SharedTokenCacheCredential, "
-                               + "AzureCliCredential[\\$\\w\\s\\.]+"))
+                               + "AzureCliCredential, "
+                               + "IntelliJCredential[\\$\\w]+\\$\\d* but[\\$\\w\\s\\.]+"))
             .verify();
     }
 
@@ -180,6 +196,13 @@ public class DefaultAzureCredentialTest {
         Configuration configuration = Configuration.getGlobalConfiguration();
 
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+
+        IntelliJCredential intelliJCredential = PowerMockito.mock(IntelliJCredential.class);
+        when(intelliJCredential.getToken(request))
+                .thenReturn(Mono.error(
+                        new CredentialUnavailableException("Cannot get token from IntelliJ Credential")));
+        PowerMockito.whenNew(IntelliJCredential.class).withAnyArguments()
+                .thenReturn(intelliJCredential);
 
         // test
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
@@ -198,6 +221,13 @@ public class DefaultAzureCredentialTest {
         Configuration configuration = Configuration.getGlobalConfiguration();
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
 
+        IntelliJCredential intelliJCredential = PowerMockito.mock(IntelliJCredential.class);
+        when(intelliJCredential.getToken(request))
+                .thenReturn(Mono.error(
+                        new CredentialUnavailableException("Cannot get token from IntelliJ Credential")));
+        PowerMockito.whenNew(IntelliJCredential.class).withAnyArguments()
+                .thenReturn(intelliJCredential);
+
         ManagedIdentityCredential managedIdentityCredential = PowerMockito.mock(ManagedIdentityCredential.class);
         when(managedIdentityCredential.getToken(request))
             .thenReturn(Mono.error(
@@ -214,7 +244,8 @@ public class DefaultAzureCredentialTest {
             .expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage()
                                       .matches("Tried EnvironmentCredential, "
                                                       + "ManagedIdentityCredential[\\$\\w]+\\$\\d*, "
-                                                      + "AzureCliCredential[\\$\\w\\s\\.]+"))
+                                                       + "AzureCliCredential, "
+                                                       + "IntelliJCredential[\\$\\w]+\\$\\d* but[\\$\\w\\s\\.]+"))
             .verify();
     }
 
@@ -230,6 +261,13 @@ public class DefaultAzureCredentialTest {
         PowerMockito.whenNew(ManagedIdentityCredential.class).withAnyArguments()
             .thenReturn(managedIdentityCredential);
 
+        IntelliJCredential intelliJCredential = PowerMockito.mock(IntelliJCredential.class);
+        when(intelliJCredential.getToken(request))
+                .thenReturn(Mono.error(
+                        new CredentialUnavailableException("Cannot get token from IntelliJ Credential")));
+        PowerMockito.whenNew(IntelliJCredential.class).withAnyArguments()
+                .thenReturn(intelliJCredential);
+
 
         // test
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
@@ -239,7 +277,9 @@ public class DefaultAzureCredentialTest {
             .expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage()
                                       .matches("Tried EnvironmentCredential, "
                                                       + "ManagedIdentityCredential[\\$\\w]+\\$\\d*, "
-                                                      + "SharedTokenCacheCredential but[\\$\\w\\s\\.]+"))
+                                                      + "SharedTokenCacheCredential, "
+                                                      + "IntelliJCredential[\\$\\w]+\\$\\d* but[\\$\\w\\s\\.]+"))
+
             .verify();
     }
 
@@ -257,6 +297,13 @@ public class DefaultAzureCredentialTest {
         PowerMockito.whenNew(ManagedIdentityCredential.class).withAnyArguments()
             .thenReturn(managedIdentityCredential);
 
+        IntelliJCredential intelliJCredential = PowerMockito.mock(IntelliJCredential.class);
+        when(intelliJCredential.getToken(request))
+                .thenReturn(Mono.error(
+                        new CredentialUnavailableException("Cannot get token from IntelliJ Credential")));
+        PowerMockito.whenNew(IntelliJCredential.class).withAnyArguments()
+                .thenReturn(intelliJCredential);
+
         // test
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
                                                 .build();
@@ -265,7 +312,8 @@ public class DefaultAzureCredentialTest {
                                         .matches("Tried EnvironmentCredential, "
                                                         + "ManagedIdentityCredential[\\$\\w]+\\$\\d*, "
                                                         + "SharedTokenCacheCredential, "
-                                                        + "AzureCliCredential but[\\$\\w\\s\\.]+"))
+                                                        + "AzureCliCredential, "
+                                                        + "IntelliJCredential[\\$\\w]+\\$\\d* but[\\$\\w\\s\\.]+"))
             .verify();
     }
 }

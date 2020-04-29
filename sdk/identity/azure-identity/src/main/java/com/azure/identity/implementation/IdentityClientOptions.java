@@ -207,8 +207,8 @@ public final class IdentityClientOptions {
     }
 
     /**
-     * Get the keep pass database path.
-     * @return the keep pass database path to extract inellij credentials from.
+     * Get the kee pass database path.
+     * @return the kee pass database path to extract inellij credentials from.
      */
     public String getKeepPassDatabasePath() {
         return keepPassDatabasePath;

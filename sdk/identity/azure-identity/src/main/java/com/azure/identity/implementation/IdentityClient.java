@@ -61,7 +61,6 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -94,8 +93,6 @@ public class IdentityClient {
     private final String tenantId;
     private final String clientId;
     private HttpPipelineAdapter httpPipelineAdapter;
-    private static final String INTELLIJ_CREDENTIAL_NOT_AVAILABLE_ERROR = "IntelliJ Authentication not available."
-                                   + " Plese login with Azure Tools for IntelliJ plugin in the IDE.";
 
     /**
      * Creates an IdentityClient with the given options.
@@ -219,8 +216,9 @@ public class IdentityClient {
                                     .map(ar -> new MsalToken(ar, options)));
 
             } else {
-                throw logger.logExceptionAsError(new RuntimeException("IntelliJ Authentication not available."
-                    + " Plese login with Azure Tools for IntelliJ plugin in the IDE."));
+                throw logger.logExceptionAsError(new CredentialUnavailableException(
+                    "IntelliJ Authentication not available."
+                    + " Please login with Azure Tools for IntelliJ plugin in the IDE."));
             }
         } catch (IOException e) {
             return Mono.error(e);

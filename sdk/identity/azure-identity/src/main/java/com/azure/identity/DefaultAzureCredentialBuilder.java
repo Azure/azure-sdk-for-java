@@ -21,7 +21,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     private boolean excludeManagedIdentityCredential;
     private boolean excludeSharedTokenCacheCredential;
     private boolean excludeAzureCliCredential;
-    private boolean excludeIntelliCredential;
+    private boolean excludeIntelliJCredential;
     private final ClientLogger logger = new ClientLogger(DefaultAzureCredentialBuilder.class);
 
 
@@ -37,20 +37,21 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
 
 
     /**
-     * Specifies the keep pass database path to read IntelliJ credentials on windows platform. This is required
-     * only on windows platform.
+     * Specifies the kee pass database path to read the cached credentials of Azure toolkit for IntelliJ plugin.
+     * The {@code databasePath} is required on windows platform. For mac and linux platform native key chain /
+     * key ring will be accessed respectively to retrieve the cached credentials.
      *
      * <p>This path can be located in the IntelliJ IDE.
-     * Windows: File -&gt; Settings -&gt; Appearance &amp; Behavior -&gt; System Settings -&gt; Passwords </p>
+     * Windows: File -&gt; Settings -&gt; Appearance &amp; Behavior -&gt; System Settings -&gt; Passwords. </p>
      *
-     * @param databasePath the path to the keep pass database.
+     * @param databasePath the path to the kee pass database.
      * @throws IllegalArgumentException if {@code databasePath is either not specified or is empty}
-     * @return An updated instance of this builder with the keep pass database path set as specified.
+     * @return An updated instance of this builder with the kee pass database path set as specified.
      */
-    public DefaultAzureCredentialBuilder windowsKeepPassDatabasePath(String databasePath) {
+    public DefaultAzureCredentialBuilder keePassDatabasePath(String databasePath) {
         if (CoreUtils.isNullOrEmpty(databasePath)) {
             throw logger.logExceptionAsError(
-                new IllegalArgumentException("The windows keep pass database path is either empty or not configured."
+                new IllegalArgumentException("The kee pass database path is either empty or not configured."
                                                    + " Please configure it on the builder."));
         }
         this.identityClientOptions.setKeepPassDatabasePath(databasePath);
@@ -109,7 +110,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      * @return An updated instance of this builder with the IntelliJ credential exclusion set as specified.
      */
     public DefaultAzureCredentialBuilder excludeIntelliJCredential() {
-        excludeAzureCliCredential = true;
+        excludeIntelliJCredential = true;
         return this;
     }
 
@@ -162,7 +163,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
             output.add(new AzureCliCredential(identityClientOptions));
         }
 
-        if (!excludeIntelliCredential) {
+        if (!excludeIntelliJCredential) {
             output.add(new IntelliJCredential(identityClientOptions));
         }
 

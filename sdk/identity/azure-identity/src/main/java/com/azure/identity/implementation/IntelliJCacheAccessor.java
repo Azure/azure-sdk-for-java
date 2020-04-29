@@ -5,6 +5,7 @@ package com.azure.identity.implementation;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.KnownAuthorityHosts;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,9 +44,9 @@ import java.util.Map;
  */
 public class IntelliJCacheAccessor {
     private final ClientLogger logger = new ClientLogger(IntelliJCacheAccessor.class);
-    private String keepPassDatabasePath;
+    private String keePassDatabasePath;
     private static final String INTELLIJ_CREDENTIAL_NOT_AVAILABLE_ERROR = "IntelliJ Authentication not available."
-              + " Please login with Azure Tools for IntelliJ plugin in the IDE.";
+              + " Please log in with Azure Tools for IntelliJ plugin in the IDE.";
     private static final byte[] CRYPTO_KEY = new byte[] {0x50, 0x72, 0x6f, 0x78, 0x79, 0x20, 0x43, 0x6f, 0x6e, 0x66,
         0x69, 0x67, 0x20, 0x53, 0x65, 0x63};
 
@@ -53,10 +54,10 @@ public class IntelliJCacheAccessor {
     /**
      * Creates an instance of {@link IntelliJCacheAccessor}
      *
-     * @param keepPassDatabasePath the keep pass database path.
+     * @param keePassDatabasePath the kee pass database path.
      */
-    public IntelliJCacheAccessor(String keepPassDatabasePath) {
-        this.keepPassDatabasePath = keepPassDatabasePath;
+    public IntelliJCacheAccessor(String keePassDatabasePath) {
+        this.keePassDatabasePath = keePassDatabasePath;
     }
 
     private String getAzureToolsforIntelliJPluginConfigPath() {
@@ -131,6 +132,12 @@ public class IntelliJCacheAccessor {
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     private JsonNode getCredentialFromKdbx() throws IOException {
+        if (CoreUtils.isNullOrEmpty(keePassDatabasePath)) {
+            throw logger.logExceptionAsError(
+                    new CredentialUnavailableException("The kee pass database path is either empty or not configured."
+                           + " Please configure it on the builder. It is required to use "
+                           + "IntelliJ credential on the windows platform."));
+        }
         String extractedpwd = getKdbxPassword();
 
         SecretKeySpec key = new SecretKeySpec(CRYPTO_KEY, "AES");
@@ -154,29 +161,24 @@ public class IntelliJCacheAccessor {
 
         try {
             KdbxCreds creds = new KdbxCreds(password.getBytes());
-            InputStream inputStream = new FileInputStream(new File(keepPassDatabasePath));
+            InputStream inputStream = new FileInputStream(new File(keePassDatabasePath));
             Database database = SimpleDatabase.load(creds, inputStream);
 
             List<Entry> entries = database.findEntries("ADAuthManager");
             if (entries.size() == 0) {
-                throw logger.logExceptionAsError(new RuntimeException("No credentials found in the cache."
+                throw logger.logExceptionAsError(new CredentialUnavailableException("No credentials found in the cache."
                         + " Please login with IntelliJ Azure Tools plugin in the IDE."));
             }
 
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readTree(entries.get(0).getPassword());
         } catch (Exception e) {
-            throw logger.logExceptionAsError(new RuntimeException("Failed to read keep pass database.", e));
+            throw logger.logExceptionAsError(new RuntimeException("Failed to read kee pass database.", e));
         }
     }
 
     private String getKdbxPassword() throws IOException {
-        if (CoreUtils.isNullOrEmpty(keepPassDatabasePath)) {
-            throw logger.logExceptionAsError(
-                    new IllegalArgumentException("The windows keep pass database path is either empty"
-                                     + " or not configured Please configure it on the IntelliJ Credential builder."));
-        }
-        String passwordFilePath = new File(keepPassDatabasePath).getParent() + "\\" + "c.pwd";
+        String passwordFilePath = new File(keePassDatabasePath).getParent() + File.separator + "c.pwd";
         String extractedpwd = "";
 
         BufferedReader reader = null;
@@ -237,23 +239,27 @@ public class IntelliJCacheAccessor {
                 Paths.get(getAzureToolsforIntelliJPluginConfigPath(), "AuthMethodDetails.json").toString();
         File authFile = new File(authMethodDetailsPath);
         if (!authFile.exists()) {
-            throw logger.logExceptionAsError(new RuntimeException(INTELLIJ_CREDENTIAL_NOT_AVAILABLE_ERROR));
+            throw logger.logExceptionAsError(
+                    new CredentialUnavailableException(INTELLIJ_CREDENTIAL_NOT_AVAILABLE_ERROR));
         }
         ObjectMapper objectMapper = new ObjectMapper();
         IntelliJAuthMethodDetails authMethodDetails = objectMapper
-                                                  .readValue(authMethodDetailsPath, IntelliJAuthMethodDetails.class);
+                                                  .readValue(authFile, IntelliJAuthMethodDetails.class);
 
         String authType = authMethodDetails.getAuthMethod();
         if (CoreUtils.isNullOrEmpty(authType)) {
-            throw logger.logExceptionAsError(new RuntimeException(INTELLIJ_CREDENTIAL_NOT_AVAILABLE_ERROR));
+            throw logger.logExceptionAsError(
+                    new CredentialUnavailableException(INTELLIJ_CREDENTIAL_NOT_AVAILABLE_ERROR));
         }
         if (authType.equalsIgnoreCase("SP")) {
             if (CoreUtils.isNullOrEmpty(authMethodDetails.getCredFilePath())) {
-                throw logger.logExceptionAsError(new RuntimeException(INTELLIJ_CREDENTIAL_NOT_AVAILABLE_ERROR));
+                throw logger.logExceptionAsError(
+                        new CredentialUnavailableException(INTELLIJ_CREDENTIAL_NOT_AVAILABLE_ERROR));
             }
         } else if (authType.equalsIgnoreCase("DC")) {
             if (CoreUtils.isNullOrEmpty(authMethodDetails.getAccountEmail())) {
-                throw logger.logExceptionAsError(new RuntimeException(INTELLIJ_CREDENTIAL_NOT_AVAILABLE_ERROR));
+                throw logger.logExceptionAsError(
+                        new CredentialUnavailableException(INTELLIJ_CREDENTIAL_NOT_AVAILABLE_ERROR));
             }
         }
         return authMethodDetails;
