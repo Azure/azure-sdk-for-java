@@ -158,7 +158,8 @@ public class ServiceBusSenderClientTest {
         // Arrange
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
-        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString());
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString(),
+            contents);
 
         when(asyncSender.send(messages)).thenReturn(Mono.empty());
 
