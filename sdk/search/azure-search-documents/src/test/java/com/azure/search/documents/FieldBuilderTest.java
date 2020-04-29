@@ -52,46 +52,46 @@ public class FieldBuilderTest {
     }
 
     private List<Field> buildHotelFieldsFromModel() {
-        Field hotelId = new SimpleField("hotelId", DataType.EDM_STRING).setSortable(true)
+        Field hotelId = new SimpleField("hotelId", DataType.EDM_STRING, false).setSortable(true)
             .setKey(true).build();
         Field hotelName = new SearchableField("hotelName", false).setAnalyzer(AnalyzerName.fromString("en.lucene"))
             .setSortable(true).build();
-        Field description = new SimpleField("description", DataType.EDM_STRING).build();
-        Field category = new SimpleField("category", DataType.EDM_STRING).build();
+        Field description = new SimpleField("description", DataType.EDM_STRING, false).build();
+        Field category = new SimpleField("category", DataType.EDM_STRING, false).build();
         Field tags = new SearchableField("tags", true).build();
-        Field parkingIncluded = new SimpleField("parkingIncluded", DataType.EDM_BOOLEAN).build();
-        Field smokingAllowed = new SimpleField("smokingAllowed", DataType.EDM_BOOLEAN).build();
-        Field lastRenovationDate = new SimpleField("lastRenovationDate", DataType.EDM_DATE_TIME_OFFSET).build();
-        Field rating = new SimpleField("rating", DataType.EDM_INT32).build();
-        Field location = new SimpleField("location", DataType.EDM_GEOGRAPHY_POINT).build();
+        Field parkingIncluded = new SimpleField("parkingIncluded", DataType.EDM_BOOLEAN, false).build();
+        Field smokingAllowed = new SimpleField("smokingAllowed", DataType.EDM_BOOLEAN, false).build();
+        Field lastRenovationDate = new SimpleField("lastRenovationDate", DataType.EDM_DATE_TIME_OFFSET, false).build();
+        Field rating = new SimpleField("rating", DataType.EDM_INT32, false).build();
+        Field location = new SimpleField("location", DataType.EDM_GEOGRAPHY_POINT, false).build();
         Field address = new ComplexField("address", false)
-            .setSubFields(buildHotelAddressField()).build();
-        Field rooms = new ComplexField("rooms", true).setSubFields(buildHotelRoomField()).build();
+            .setFields(buildHotelAddressField()).build();
+        Field rooms = new ComplexField("rooms", true).setFields(buildHotelRoomField()).build();
 
         return Arrays.asList(hotelId, hotelName, description, category, tags, parkingIncluded, smokingAllowed,
             lastRenovationDate, rating, location, address, rooms);
     }
 
     private List<Field> buildHotelAddressField() {
-        Field streetAddress = new SimpleField("streetAddress", DataType.EDM_STRING).setFacetable(true)
+        Field streetAddress = new SimpleField("streetAddress", DataType.EDM_STRING, false).setFacetable(true)
             .setKey(true).build();
         Field city = new SearchableField("city", false).setFilterable(true).build();
         Field stateProvince = new SearchableField("stateProvince", false).build();
         Field country = new SearchableField("country", false)
             .setSynonymMaps(Arrays.asList("America -> USA", "USA -> US")).build();
-        Field postalCode = new SimpleField("postalCode", DataType.EDM_STRING).build();
+        Field postalCode = new SimpleField("postalCode", DataType.EDM_STRING, false).build();
         return Arrays.asList(streetAddress, city, stateProvince, country, postalCode);
     }
 
     private List<Field> buildHotelRoomField() {
-        Field description = new SimpleField("description", DataType.EDM_STRING).build();
-        Field descriptionFr = new SimpleField("descriptionFr", DataType.EDM_STRING).build();
-        Field type = new SimpleField("type", DataType.EDM_STRING).build();
-        Field baseRate = new SimpleField("baseRate", DataType.EDM_DOUBLE).build();
-        Field bedOptions = new SimpleField("bedOptions", DataType.EDM_STRING).build();
-        Field sleepsCount = new SimpleField("sleepsCount", DataType.EDM_INT32).build();
-        Field smokingAllowed = new SimpleField("smokingAllowed", DataType.EDM_BOOLEAN).build();
-        Field tags = new SimpleField("tags", DataType.collection(DataType.EDM_STRING)).build();
+        Field description = new SimpleField("description", DataType.EDM_STRING, false).build();
+        Field descriptionFr = new SimpleField("descriptionFr", DataType.EDM_STRING, false).build();
+        Field type = new SimpleField("type", DataType.EDM_STRING, false).build();
+        Field baseRate = new SimpleField("baseRate", DataType.EDM_DOUBLE, false).build();
+        Field bedOptions = new SimpleField("bedOptions", DataType.EDM_STRING, false).build();
+        Field sleepsCount = new SimpleField("sleepsCount", DataType.EDM_INT32, false).build();
+        Field smokingAllowed = new SimpleField("smokingAllowed", DataType.EDM_BOOLEAN, false).build();
+        Field tags = new SimpleField("tags", DataType.EDM_STRING, true).build();
         return Arrays.asList(description, descriptionFr, type, baseRate, bedOptions, sleepsCount, smokingAllowed, tags);
     }
 

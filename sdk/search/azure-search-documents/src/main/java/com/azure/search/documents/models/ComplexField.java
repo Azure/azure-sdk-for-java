@@ -4,13 +4,12 @@
 package com.azure.search.documents.models;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A helper Field model to build a simple search field.
  */
 public class ComplexField extends FieldBase {
-    private List<Field> subFields;
+    private List<Field> fields;
 
     /**
      * Initializes a new instance of the {@link ComplexField} class.
@@ -27,18 +26,18 @@ public class ComplexField extends FieldBase {
      *
      * @return The list of sub-fields.
      */
-    public List<Field> getSubFields() {
-        return subFields;
+    public List<Field> getFields() {
+        return fields;
     }
 
     /**
      * Sets a collection of {@link SimpleField} or {@link ComplexField} child fields.
      *
-     * @param subFields The list of sub-fields.
+     * @param fields The list of sub-fields.
      * @return The {@link ComplexField} object itself.
      */
-    public ComplexField setSubFields(List<Field> subFields) {
-        this.subFields = subFields;
+    public ComplexField setFields(List<Field> fields) {
+        this.fields = fields;
         return this;
     }
 
@@ -48,7 +47,7 @@ public class ComplexField extends FieldBase {
      * @return The {@link Field} object.
      */
     public Field build() {
-        return new Field().setName(super.getName()).setType(super.getDataType()).setFields(subFields)
+        return new Field().setName(super.getName()).setType(super.getDataType()).setFields(fields)
             .setKey(false).setFilterable(false).setSortable(false).setHidden(false).setSearchable(false)
             .setFacetable(false);
     }

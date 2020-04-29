@@ -24,8 +24,8 @@ public class SimpleField extends FieldBase {
      * @param dataType The {@link DataType} of the {@link Field}.
      * @throws NullPointerException when {@code name} is null.
      */
-    public SimpleField(String name, DataType dataType) {
-        super(name, dataType);
+    public SimpleField(String name, DataType dataType, boolean collection) {
+        super(name, collection ? DataType.collection(dataType) : dataType);
     }
 
     /**

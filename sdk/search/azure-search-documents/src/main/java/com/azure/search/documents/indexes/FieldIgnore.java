@@ -14,10 +14,4 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface FieldIgnore {
-    /**
-     * Optional argument that defines whether this annotation is active or not.
-     *
-     * @return True if annotation is enabled (by default); false if it is to be ignored.
-     */
-    boolean value() default true;
 }

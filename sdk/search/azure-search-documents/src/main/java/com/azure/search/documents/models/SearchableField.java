@@ -22,7 +22,7 @@ public class SearchableField extends SimpleField {
      * @throws NullPointerException when {@code name} is null.
      */
     public SearchableField(String name, boolean collection) {
-        super(name, collection ?  DataType.collection(DataType.EDM_STRING) : DataType.EDM_STRING);
+        super(name, DataType.EDM_STRING, collection);
     }
 
     /**

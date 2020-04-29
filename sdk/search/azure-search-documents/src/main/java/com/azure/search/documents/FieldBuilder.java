@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
  * Helper to covert model class to search field {@link Field}.
  */
 public class FieldBuilder {
-    private static final int MAX_DEPTH = 10;
+    private static final int MAX_DEPTH = 10000;
     private static final Map<Class<?>, DataType> SUPPORTED_NONE_PARAMETERIZED_TYPE = new HashMap<>();
 
     static {
@@ -216,7 +216,7 @@ public class FieldBuilder {
             searchField.setFacetable(searchableFieldPropertyAnnotation.isFacetable());
             searchField.setKey(searchableFieldPropertyAnnotation.isKey());
             searchField.setHidden(searchableFieldPropertyAnnotation.isHidden());
-            if (!"null".equals(searchableFieldPropertyAnnotation.analyzer())) {
+            if (!searchableFieldPropertyAnnotation.analyzer().isEmpty()) {
                 searchField.setAnalyzer(AnalyzerName.fromString((searchableFieldPropertyAnnotation.analyzer())));
             }
             if (!searchableFieldPropertyAnnotation.searchAnalyzer().isEmpty()) {
