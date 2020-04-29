@@ -3,11 +3,8 @@
 
 package com.azure.management.keyvault.implementation;
 
-import com.azure.core.management.AzureEnvironment;
-import com.azure.core.management.serializer.AzureJacksonAdapter;
-import com.azure.management.AzureTokenCredential;
-import com.azure.management.RestClient;
-import com.azure.management.RestClientBuilder;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpPipeline;
 import com.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.azure.management.keyvault.Vaults;
 import com.azure.management.keyvault.models.KeyVaultManagementClientBuilder;
@@ -15,8 +12,8 @@ import com.azure.management.keyvault.models.KeyVaultManagementClientImpl;
 import com.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.management.resources.fluentcore.arm.implementation.Manager;
-import com.azure.management.resources.fluentcore.policy.ProviderRegistrationPolicy;
-import com.azure.management.resources.fluentcore.policy.ResourceManagerThrottlingPolicy;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
+import com.azure.management.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure KeyVault resource management. */
@@ -41,46 +38,36 @@ public final class KeyVaultManager extends Manager<KeyVaultManager, KeyVaultMana
      * Creates an instance of KeyVaultManager that exposes KeyVault resource management API entry points.
      *
      * @param credential the credential to use
-     * @param subscriptionId the subscription UUID
+     * @param profile the profile to use
      * @return the KeyVaultManager
      */
-    public static KeyVaultManager authenticate(AzureTokenCredential credential, String subscriptionId) {
+    public static KeyVaultManager authenticate(TokenCredential credential, AzureProfile profile) {
         return authenticate(
-            new RestClientBuilder()
-                .withBaseUrl(credential.getEnvironment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
-                .withCredential(credential)
-                .withSerializerAdapter(new AzureJacksonAdapter())
-                .withPolicy(new ProviderRegistrationPolicy(credential))
-                .withPolicy(new ResourceManagerThrottlingPolicy())
-                .buildClient(),
-            credential.getDomain(),
-            subscriptionId);
+            HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
     /**
      * Creates an instance of KeyVaultManager that exposes KeyVault resource management API entry points.
      *
-     * @param restClient the RestClient to be used for API calls
-     * @param tenantId the tenant UUID
-     * @param subscriptionId the subscription UUID
+     * @param httpPipeline the HttpPipeline to be used for API calls
+     * @param profile the profile to use
      * @return the KeyVaultManager
      */
-    public static KeyVaultManager authenticate(RestClient restClient, String tenantId, String subscriptionId) {
-        return authenticate(restClient, tenantId, subscriptionId, new SdkContext());
+    public static KeyVaultManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        return authenticate(httpPipeline, profile, new SdkContext());
     }
 
     /**
      * Creates an instance of KeyVaultManager that exposes KeyVault resource management API entry points.
      *
-     * @param restClient the RestClient to be used for API calls
-     * @param tenantId the tenant UUID
-     * @param subscriptionId the subscription UUID
+     * @param httpPipeline the HttpPipeline to be used for API calls
+     * @param profile the profile to use
      * @param sdkContext the sdk context
      * @return the KeyVaultManager
      */
     public static KeyVaultManager authenticate(
-        RestClient restClient, String tenantId, String subscriptionId, SdkContext sdkContext) {
-        return new KeyVaultManager(restClient, tenantId, subscriptionId, sdkContext);
+        HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+        return new KeyVaultManager(httpPipeline, profile, sdkContext);
     }
 
     /** The interface allowing configurations to be set. */
@@ -89,35 +76,34 @@ public final class KeyVaultManager extends Manager<KeyVaultManager, KeyVaultMana
          * Creates an instance of KeyVaultManager that exposes KeyVault management API entry points.
          *
          * @param credential the credential to use
-         * @param tenantId the tenant UUID
-         * @param subscriptionId the subscription UUID
+         * @param profile the profile to use
          * @return the interface exposing KeyVault management API entry points that work across subscriptions
          */
-        KeyVaultManager authenticate(AzureTokenCredential credential, String tenantId, String subscriptionId);
+        KeyVaultManager authenticate(TokenCredential credential, AzureProfile profile);
     }
 
     /** The implementation for Configurable interface. */
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
-        public KeyVaultManager authenticate(AzureTokenCredential credential, String tenantId, String subscriptionId) {
+        public KeyVaultManager authenticate(TokenCredential credential, AzureProfile profile) {
             return KeyVaultManager
                 .authenticate(
-                    buildRestClient(credential, AzureEnvironment.Endpoint.RESOURCE_MANAGER), tenantId, subscriptionId);
+                    buildHttpPipeline(credential, profile), profile);
         }
     }
 
     private KeyVaultManager(
-        final RestClient restClient, String tenantId, String subscriptionId, SdkContext sdkContext) {
+        final HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
         super(
-            restClient,
-            subscriptionId,
+            httpPipeline,
+            profile,
             new KeyVaultManagementClientBuilder()
-                .pipeline(restClient.getHttpPipeline())
-                .host(restClient.getBaseUrl().toString())
-                .subscriptionId(subscriptionId)
+                .pipeline(httpPipeline)
+                .host(profile.environment().getResourceManagerEndpoint())
+                .subscriptionId(profile.subscriptionId())
                 .buildClient(),
             sdkContext);
-        graphRbacManager = GraphRbacManager.authenticate(restClient, tenantId, sdkContext);
-        this.tenantId = tenantId;
+        graphRbacManager = GraphRbacManager.authenticate(httpPipeline, profile, sdkContext);
+        this.tenantId = profile.tenantId();
     }
 
     /** @return the KeyVault account management API entry point */
@@ -128,12 +114,12 @@ public final class KeyVaultManager extends Manager<KeyVaultManager, KeyVaultMana
         return vaults;
     }
 
-    /**
-     * Creates a new RestClientBuilder instance from the RestClient used by Manager.
-     *
-     * @return the new RestClientBuilder instance created from the RestClient used by Manager
-     */
-    RestClientBuilder newRestClientBuilder() {
-        return restClient.newBuilder();
-    }
+//    /**
+//     * Creates a new RestClientBuilder instance from the RestClient used by Manager.
+//     *
+//     * @return the new RestClientBuilder instance created from the RestClient used by Manager
+//     */
+//    RestClientBuilder newRestClientBuilder() {
+//        return restClient.newBuilder();
+//    }
 }

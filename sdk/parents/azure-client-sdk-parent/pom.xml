@@ -106,6 +106,7 @@
     <build.context>azure-client-sdk-parent</build.context>
     <jacoco.min.linecoverage>0.40</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.30</jacoco.min.branchcoverage>
+    <jacoco.skip.coverage.check>false</jacoco.skip.coverage.check>
   </properties>
 
   <build>
@@ -359,6 +360,7 @@
               <goal>check</goal>
             </goals>
             <configuration>
+              <skip>${jacoco.skip.coverage.check}</skip>
               <rules>
                 <rule>
                   <element>BUNDLE</element>

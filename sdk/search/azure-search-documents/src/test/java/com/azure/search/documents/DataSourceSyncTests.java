@@ -48,11 +48,11 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
 
     private Supplier<DataSource> newDataSourceFunc = () -> createTestBlobDataSource(null);
 
-    private Function<DataSource, DataSource> mutateDataSourceFunc =
-        (DataSource ds) -> ds.setDescription("somethingnew");
+    private Function<DataSource, DataSource> mutateDataSourceFunc = (DataSource ds) -> 
+        ds.setDescription("somethingnew");
 
-    private BiConsumer<String, AccessOptions> deleteDataSourceFunc = (String name, AccessOptions ac) ->
-        client.deleteDataSourceWithResponse(new DataSource().setName(name),
+    private BiConsumer<DataSource, AccessOptions> deleteDataSourceFunc = (DataSource dataSource, AccessOptions ac) ->
+        client.deleteDataSourceWithResponse(dataSource,
             ac.getOnlyIfUnchanged(), ac.getRequestOptions(), Context.NONE);
 
     @Override
@@ -163,12 +163,6 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
     }
 
     @Test
-    public void createOrUpdateDataSourceIfNotExistsFailsOnExistingResource() {
-        AccessConditionTests.createOrUpdateIfNotExistsFailsOnExistingResource(createOrUpdateDataSourceFunc,
-            newDataSourceFunc, mutateDataSourceFunc);
-    }
-
-    @Test
     public void createOrUpdateDatasourceIfNotExistsSucceedsOnNoResource() {
         AccessConditionTests.createOrUpdateIfNotExistsSucceedsOnNoResource(createOrUpdateDataSourceFunc,
             newDataSourceFunc);
@@ -177,18 +171,13 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
     @Test
     public void deleteDataSourceIfExistsWorksOnlyWhenResourceExists() {
         AccessConditionTests.deleteIfExistsWorksOnlyWhenResourceExists(deleteDataSourceFunc,
-            createOrUpdateDataSourceFunc, newDataSourceFunc, BLOB_DATASOURCE_TEST_NAME);
+            createOrUpdateDataSourceFunc, newDataSourceFunc);
     }
 
     @Test
     public void deleteDataSourceIfNotChangedWorksOnlyOnCurrentResource() {
         AccessConditionTests.deleteIfNotChangedWorksOnlyOnCurrentResource(deleteDataSourceFunc, newDataSourceFunc,
             createOrUpdateDataSourceFunc, BLOB_DATASOURCE_TEST_NAME);
-    }
-
-    @Test
-    public void updateDataSourceIfExistsFailsOnNoResource() {
-        AccessConditionTests.updateIfExistsFailsOnNoResource(newDataSourceFunc, createOrUpdateDataSourceFunc);
     }
 
     @Test
