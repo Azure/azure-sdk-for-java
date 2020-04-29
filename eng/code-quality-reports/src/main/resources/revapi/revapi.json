@@ -9,7 +9,13 @@
             "com\\.azure\\..+\\.implementation(\\..+)?",
             "com\\.fasterxml\\.jackson\\..+",
             "reactor\\.netty\\..+",
-            "io\\.netty\\..+"
+            "io\\.netty\\..+",
+            "com\\.nimbusds(\\..+)?",
+            "com\\.microsoft\\.azure\\..+",
+            "com\\.microsoft\\.spring\\..+",
+            "javax\\.jms(\\..+)?",
+            "javax\\.servlet(\\..+)?",
+            "io\\.micrometer(\\..+)?"
           ]
         }
       }
