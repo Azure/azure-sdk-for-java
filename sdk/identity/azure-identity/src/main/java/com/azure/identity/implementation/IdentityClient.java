@@ -33,6 +33,7 @@ import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.SilentParameters;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 import com.microsoft.aad.msal4jextensions.PersistenceTokenCacheAccessAspect;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -119,7 +120,8 @@ public class IdentityClient {
         if (publicClientApplication != null) {
             return publicClientApplication;
         } else if (clientId == null) {
-            return null;
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "A non-null value for client ID must be providedfor user authentication."));
         } else {
             String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/organizations/" + tenantId;
             PublicClientApplication.Builder publicClientApplicationBuilder = PublicClientApplication.builder(clientId);
@@ -275,7 +277,6 @@ public class IdentityClient {
         return Mono.just(token);
     }
 
-
     /**
      * Asynchronously acquire a token from Active Directory with a client secret.
      *
@@ -407,8 +408,8 @@ public class IdentityClient {
         return Mono.fromFuture(() -> getPublicClientApplication(false).acquireToken(
             UserNamePasswordParameters.builder(new HashSet<>(request.getScopes()), username, password.toCharArray())
                 .build()))
-            .onErrorResume(t -> Mono.error(new ClientAuthenticationException("Failed to acquire token with username "
-                + "and password", null, t))).map(ar -> new MsalToken(ar, options));
+            .onErrorMap(t -> new ClientAuthenticationException("Failed to acquire token with username and password",
+                null, t)).map(ar -> new MsalToken(ar, options));
     }
 
     /**
@@ -419,33 +420,32 @@ public class IdentityClient {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<MsalToken> authenticateWithMsalAccount(TokenRequestContext request, IAccount account) {
-        SilentParameters parameters;
-        SilentParameters forceParameters;
-        if (account != null) {
-            parameters = SilentParameters.builder(new HashSet<>(request.getScopes()), account).build();
-            forceParameters = SilentParameters.builder(new HashSet<>(request.getScopes()), account)
-                    .forceRefresh(true).build();
-        } else {
-            parameters = SilentParameters.builder(new HashSet<>(request.getScopes())).build();
-            forceParameters = SilentParameters.builder(new HashSet<>(request.getScopes())).forceRefresh(true).build();
-        }
-        return Mono.defer(() -> {
-            try {
-                return Mono.fromFuture(getPublicClientApplication(false).acquireTokenSilently(parameters))
-                        .map(ar -> new MsalToken(ar, options))
-                        .filter(t -> !t.isExpired())
-                        .switchIfEmpty(Mono.defer(() -> Mono.fromFuture(() -> {
-                                try {
-                                    return getPublicClientApplication(false).acquireTokenSilently(forceParameters);
-                                } catch (MalformedURLException e) {
-                                    throw logger.logExceptionAsWarning(new RuntimeException(e));
-                                }
-                            }
-                        ).map(result -> new MsalToken(result, options))));
-            } catch (MalformedURLException e) {
-                return Mono.error(e);
-            }
-        });
+        return Mono.defer(() -> Mono.fromFuture(() -> {
+                SilentParameters.SilentParametersBuilder parametersBuilder = SilentParameters.builder(
+                    new HashSet<>(request.getScopes()));
+                if (account != null) {
+                    parametersBuilder = parametersBuilder.account(account);
+                }
+                try {
+                    return getPublicClientApplication(false)
+                        .acquireTokenSilently(parametersBuilder.build());
+                } catch (MalformedURLException e) {
+                    throw logger.logExceptionAsError(Exceptions.propagate(e));
+                }
+            }).map(ar -> new MsalToken(ar, options))
+            .filter(t -> !t.isExpired())
+            .switchIfEmpty(Mono.fromFuture(() -> {
+                SilentParameters.SilentParametersBuilder forceParametersBuilder = SilentParameters.builder(
+                    new HashSet<>(request.getScopes())).forceRefresh(true);
+                if (account != null) {
+                    forceParametersBuilder = forceParametersBuilder.account(account);
+                }
+                try {
+                    return getPublicClientApplication(false).acquireTokenSilently(forceParametersBuilder.build());
+                } catch (MalformedURLException e) {
+                    throw logger.logExceptionAsError(Exceptions.propagate(e));
+                }
+            }).map(result -> new MsalToken(result, options))));
     }
 
     /**
@@ -465,8 +465,8 @@ public class IdentityClient {
                 dc -> deviceCodeConsumer.accept(new DeviceCodeInfo(dc.userCode(), dc.deviceCode(),
                     dc.verificationUri(), OffsetDateTime.now().plusSeconds(dc.expiresIn()), dc.message()))).build();
             return getPublicClientApplication(false).acquireToken(parameters);
-        }).onErrorResume(t -> Mono.error(new ClientAuthenticationException("Failed to acquire token with device code",
-            null, t))).map(ar -> new MsalToken(ar, options));
+        }).onErrorMap(t -> new ClientAuthenticationException("Failed to acquire token with device code", null, t))
+            .map(ar -> new MsalToken(ar, options));
     }
 
     /**
@@ -483,8 +483,8 @@ public class IdentityClient {
             AuthorizationCodeParameters.builder(authorizationCode, redirectUrl)
                 .scopes(new HashSet<>(request.getScopes()))
                 .build()))
-            .onErrorResume(t -> Mono.error(new ClientAuthenticationException("Failed to acquire token with "
-                + "authorization code", null, t))).map(ar -> new MsalToken(ar, options));
+            .onErrorMap(t -> new ClientAuthenticationException("Failed to acquire token with authorization code",
+                null, t)).map(ar -> new MsalToken(ar, options));
     }
 
     /**
@@ -537,8 +537,8 @@ public class IdentityClient {
     public Mono<AccessToken> authenticateWithSharedTokenCache(TokenRequestContext request, String username) {
         // find if the Public Client app with the requested username exists
         return Mono.fromFuture(() -> getPublicClientApplication(true).getAccounts())
-                .onErrorResume(t -> Mono.error(new CredentialUnavailableException(
-                        "Cannot get accounts from token cache. Error: " + t.getMessage(), t)))
+                .onErrorMap(t -> new CredentialUnavailableException(
+                        "Cannot get accounts from token cache. Error: " + t.getMessage(), t))
                 .flatMap(set -> {
                     IAccount requestedAccount;
                     Map<String, IAccount> accounts = new HashMap<>(); // home account id -> account
