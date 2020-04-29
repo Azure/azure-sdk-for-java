@@ -182,14 +182,16 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                     },
                     () -> {
                         if (parentConnection.isDisposed()) {
-                            logger.info("linkName[{}] entityPath[{}]. Parent connection is disposed.",
-                                linkName, entityPath);
+                            logger.info("Parent connection is disposed.");
+                            downstream.onComplete();
                         } else if (isTerminated()) {
-                            logger.info("linkName[{}] entityPath[{}]. Processor is disposed.", linkName, entityPath);
+                            logger.info("Processor is disposed.");
+                            downstream.onComplete();
+                        } else if (upstream == Operators.cancelledSubscription()) {
+                            logger.info("Upstream has no more items to emit. Disposing.");
+                            dispose();
                         } else {
-                            logger.info("linkName[{}] entityPath[{}]. Receive link endpoint states are closed.",
-                                linkName, entityPath);
-
+                            logger.info("Receive link endpoint states are closed.");
                             final AmqpReceiveLink existing = currentLink;
                             currentLink = null;
 
@@ -279,14 +281,11 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         final int attempt = retryAttempts.incrementAndGet();
         final Duration retryInterval = retryPolicy.calculateRetryDelay(throwable, attempt);
 
-        final String linkName;
-        final String entityPath;
-        synchronized (lock) {
-            linkName = currentLink != null ? currentLink.getLinkName() : "n/a";
-            entityPath = currentLink != null ? currentLink.getEntityPath() : "n/a";
-        }
+        final AmqpReceiveLink link = currentLink;
+        final String linkName = link != null ? link.getLinkName() : "n/a";
+        final String entityPath = link != null ? link.getEntityPath() : "n/a";
 
-        if (retryInterval != null && !parentConnection.isDisposed()) {
+        if (retryInterval != null && !parentConnection.isDisposed() && upstream != Operators.cancelledSubscription()) {
             logger.warning("linkName[{}] entityPath[{}]. Transient error occurred. Attempt: {}. Retrying after {} ms.",
                 linkName, entityPath, attempt, retryInterval.toMillis(), throwable);
 
@@ -475,12 +474,6 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     private boolean checkAndSetTerminated() {
         if (!isTerminated()) {
             return false;
-        }
-
-        if (upstream == Operators.cancelledSubscription()) {
-            dispose();
-            messageQueue.clear();
-            return true;
         }
 
         final Throwable error = lastError;
