@@ -2,12 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
+import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
+import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
-import com.azure.cosmos.implementation.http.HttpRequest;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -131,8 +133,9 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
     public Document createDocument(AsyncDocumentClient client, String collectionLink, int cnt) {
 
         Document docDefinition = getDocumentDefinition(cnt);
-        return client
-                .createDocument(collectionLink, docDefinition, null, false).block().getResource();
+        JsonSerializer jsonSerializer = new JacksonJsonSerializerBuilder().build();
+        return client.createDocument(collectionLink, docDefinition, null, false)
+            .block().getResource();
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)

@@ -3,21 +3,15 @@
 
 package com.azure.cosmos.rx;
 
+import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.implementation.ChangeFeedOptions;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.models.CosmosResourceType;
-import com.azure.cosmos.models.FeedOptions;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.PermissionMode;
-import com.azure.cosmos.models.RequestVerb;
-import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.ChangeFeedOptions;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
@@ -33,6 +27,14 @@ import com.azure.cosmos.implementation.StoredProcedureResponse;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.TestSuiteBase;
 import com.azure.cosmos.implementation.User;
+import com.azure.cosmos.models.CosmosResourceType;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PermissionMode;
+import com.azure.cosmos.models.RequestVerb;
+import com.azure.cosmos.models.Resource;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -73,6 +75,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
 
     private AsyncDocumentClient.Builder clientBuilder;
     private AsyncDocumentClient client;
+    private JsonSerializer jsonSerializer;
 
     @Factory(dataProvider = "clientBuilders")
     public CosmosAuthorizationTokenResolverTest(AsyncDocumentClient.Builder clientBuilder) {
@@ -93,6 +96,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
         createdCollection = SHARED_MULTI_PARTITION_COLLECTION;
 
         client = clientBuilder().build();
+        jsonSerializer = new JacksonJsonSerializerBuilder().build();
 
         userWithReadPermission = createUser(client, createdDatabase.getId(), getUserDefinition());
         readPermission = client.createPermission(userWithReadPermission.getSelfLink(), getPermission(createdCollection, "ReadPermissionOnColl", PermissionMode.READ), null).single().block()

@@ -549,17 +549,6 @@ public class Utils {
         }
     }
 
-    public static <T> T parse(byte[] item, Class<T> itemClassType) {
-        if (Utils.isEmpty(item)) {
-            return null;
-        }
-        try {
-            return getSimpleObjectMapper().readValue(item, itemClassType);
-        } catch (IOException e) {
-            throw new IllegalStateException("Failed to get POJO.", e);
-        }
-    }
-
     public static ByteBuffer serializeJsonToByteBuffer(ObjectMapper objectMapper, Object object) {
         try {
             ByteBufferOutputStream byteBufferOutputStream = new ByteBufferOutputStream(ONE_KB);

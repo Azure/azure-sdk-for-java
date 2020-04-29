@@ -3,6 +3,7 @@
 package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Database;
@@ -14,7 +15,6 @@ import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
@@ -49,6 +49,7 @@ public final class CosmosAsyncClient implements Closeable {
     private final CosmosKeyCredential cosmosKeyCredential;
     private final boolean sessionCapturingOverride;
     private final boolean enableTransportClientSharing;
+    private final JsonSerializer jsonSerializer;
 
     CosmosAsyncClient(CosmosClientBuilder builder) {
         this.configs = builder.configs();
@@ -61,6 +62,7 @@ public final class CosmosAsyncClient implements Closeable {
         this.cosmosKeyCredential = builder.getKeyCredential();
         this.sessionCapturingOverride = builder.isSessionCapturingOverrideEnabled();
         this.enableTransportClientSharing = builder.isConnectionReuseAcrossClientsEnabled();
+        this.jsonSerializer = builder.jsonSerializer();
         this.asyncDocumentClient = new AsyncDocumentClient.Builder()
                                        .withServiceEndpoint(this.serviceEndpoint)
                                        .withMasterKeyOrResourceToken(this.keyOrResourceToken)
@@ -161,6 +163,13 @@ public final class CosmosAsyncClient implements Closeable {
      */
     CosmosKeyCredential cosmosKeyCredential() {
         return cosmosKeyCredential;
+    }
+
+    /**
+     * @return The {@link JsonSerializer} used to handle custom objects.
+     */
+    JsonSerializer jsonSerializer() {
+        return jsonSerializer;
     }
 
     /**

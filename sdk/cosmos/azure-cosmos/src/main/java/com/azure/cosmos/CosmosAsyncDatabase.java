@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Offer;
@@ -683,4 +684,7 @@ public class CosmosAsyncDatabase {
         return this.link;
     }
 
+    JsonSerializer jsonSerializer() {
+        return client.jsonSerializer();
+    }
 }

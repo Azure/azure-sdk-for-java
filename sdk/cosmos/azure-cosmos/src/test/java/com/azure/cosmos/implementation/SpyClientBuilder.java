@@ -12,6 +12,7 @@ public class SpyClientBuilder extends AsyncDocumentClient.Builder {
         super.masterKeyOrResourceToken = builder.masterKeyOrResourceToken;
         super.serviceEndpoint = builder.serviceEndpoint;
         super.cosmosKeyCredential = builder.cosmosKeyCredential;
+        super.jsonSerializer = builder.jsonSerializer;
     }
 
     public SpyClientUnderTestFactory.ClientUnderTest build() {
@@ -20,7 +21,7 @@ public class SpyClientBuilder extends AsyncDocumentClient.Builder {
                 masterKeyOrResourceToken,
                 connectionPolicy,
                 desiredConsistencyLevel,
-                configs, cosmosKeyCredential);
+                configs, cosmosKeyCredential, jsonSerializer);
     }
 
     public SpyClientUnderTestFactory.ClientWithGatewaySpy buildWithGatewaySpy() {
@@ -29,7 +30,7 @@ public class SpyClientBuilder extends AsyncDocumentClient.Builder {
                 masterKeyOrResourceToken,
                 connectionPolicy,
                 desiredConsistencyLevel,
-                configs, cosmosKeyCredential);
+                configs, cosmosKeyCredential, jsonSerializer);
     }
 
     public SpyClientUnderTestFactory.DirectHttpsClientUnderTest buildWithDirectHttps() {
@@ -37,6 +38,6 @@ public class SpyClientBuilder extends AsyncDocumentClient.Builder {
                 serviceEndpoint,
                 masterKeyOrResourceToken,
                 connectionPolicy,
-                desiredConsistencyLevel, cosmosKeyCredential);
+                desiredConsistencyLevel, cosmosKeyCredential, jsonSerializer);
     }
 }

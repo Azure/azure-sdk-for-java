@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
@@ -19,7 +20,6 @@ import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.CosmosAuthorizationTokenResolver;
-import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
@@ -92,6 +92,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final boolean hasAuthKeyResourceToken;
     private final Configs configs;
     private final boolean connectionSharingAcrossClientsEnabled;
+    private final JsonSerializer jsonSerializer;
     private CosmosKeyCredential cosmosKeyCredential;
     private CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
     private SessionContainer sessionContainer;
@@ -135,8 +136,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver,
                                 CosmosKeyCredential cosmosKeyCredential,
                                 boolean sessionCapturingOverride,
-                                boolean connectionSharingAcrossClientsEnabled) {
-        this(serviceEndpoint, masterKeyOrResourceToken, permissionFeed, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, sessionCapturingOverride, connectionSharingAcrossClientsEnabled);
+                                boolean connectionSharingAcrossClientsEnabled,
+                                JsonSerializer jsonSerializer) {
+        this(serviceEndpoint, masterKeyOrResourceToken, permissionFeed, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, sessionCapturingOverride, connectionSharingAcrossClientsEnabled, jsonSerializer);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -148,8 +150,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 Configs configs,
                                 CosmosKeyCredential cosmosKeyCredential,
                                 boolean sessionCapturingOverrideEnabled,
-                                boolean connectionSharingAcrossClientsEnabled) {
-        this(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, sessionCapturingOverrideEnabled, connectionSharingAcrossClientsEnabled);
+                                boolean connectionSharingAcrossClientsEnabled,
+                                JsonSerializer jsonSerializer) {
+        this(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, sessionCapturingOverrideEnabled, connectionSharingAcrossClientsEnabled, jsonSerializer);
         if (permissionFeed != null && permissionFeed.size() > 0) {
             this.resourceTokensMap = new HashMap<>();
             for (Permission permission : permissionFeed) {
@@ -199,7 +202,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                          Configs configs,
                          CosmosKeyCredential cosmosKeyCredential,
                          boolean sessionCapturingOverrideEnabled,
-                         boolean connectionSharingAcrossClientsEnabled) {
+                         boolean connectionSharingAcrossClientsEnabled,
+                         JsonSerializer jsonSerializer) {
 
         logger.info(
             "Initializing DocumentClient with"
@@ -249,6 +253,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.globalEndpointManager = new GlobalEndpointManager(asDatabaseAccountManagerInternal(), this.connectionPolicy, /**/configs);
         this.retryPolicy = new RetryPolicy(this.globalEndpointManager, this.connectionPolicy);
         this.resetSessionTokenRetryPolicy = retryPolicy;
+        this.jsonSerializer = jsonSerializer;
     }
 
     private void initializeGatewayConfigurationReader() {
@@ -1017,7 +1022,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                                     Object document,
                                                                     RequestOptions options,
                                                                     boolean disableAutomaticIdGeneration,
-                                                                    OperationType operationType) {
+                                                                    OperationType operationType,
+                                                                    JsonSerializer jsonSerializer) {
 
         if (StringUtils.isEmpty(documentCollectionLink)) {
             throw new IllegalArgumentException("documentCollectionLink");
@@ -1027,7 +1033,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         ZonedDateTime serializationStartTimeUTC = ZonedDateTime.now(ZoneOffset.UTC);
-        ByteBuffer content = BridgeInternal.serializeJsonToByteBuffer(document, mapper);
+        ByteBuffer content = CosmosItemProperties.serializeJsonToByteBuffer(document, mapper, jsonSerializer);
         ZonedDateTime serializationEndTimeUTC = ZonedDateTime.now(ZoneOffset.UTC);
         SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
             serializationStartTimeUTC,
@@ -1163,23 +1169,23 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<Document>> createDocument(String collectionLink, Object document,
-                                                           RequestOptions options, boolean disableAutomaticIdGeneration) {
+        RequestOptions options, boolean disableAutomaticIdGeneration) {
         DocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         if (options == null || options.getPartitionKey() == null) {
             requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(collectionCache, requestRetryPolicy, collectionLink, options);
         }
 
         DocumentClientRetryPolicy finalRetryPolicyInstance = requestRetryPolicy;
-        return ObservableHelper.inlineIfPossibleAsObs(() -> createDocumentInternal(collectionLink, document, options, disableAutomaticIdGeneration, finalRetryPolicyInstance), requestRetryPolicy);
+        return ObservableHelper.inlineIfPossibleAsObs(() -> createDocumentInternal(collectionLink, document, options, disableAutomaticIdGeneration, finalRetryPolicyInstance, jsonSerializer), requestRetryPolicy);
     }
 
     private Mono<ResourceResponse<Document>> createDocumentInternal(String collectionLink, Object document,
-                                                                    RequestOptions options, boolean disableAutomaticIdGeneration, DocumentClientRetryPolicy requestRetryPolicy) {
+                                                                    RequestOptions options, boolean disableAutomaticIdGeneration, DocumentClientRetryPolicy requestRetryPolicy, JsonSerializer jsonSerializer) {
         try {
             logger.debug("Creating a Document. collectionLink: [{}]", collectionLink);
 
             Mono<RxDocumentServiceRequest> requestObs = getCreateDocumentRequest(requestRetryPolicy, collectionLink, document,
-                options, disableAutomaticIdGeneration, OperationType.Create);
+                options, disableAutomaticIdGeneration, OperationType.Create, jsonSerializer);
 
             Mono<RxDocumentServiceResponse> responseObservable = requestObs.flatMap(request -> {
                 return create(request, requestRetryPolicy);
@@ -1196,22 +1202,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<Document>> upsertDocument(String collectionLink, Object document,
-                                                                 RequestOptions options, boolean disableAutomaticIdGeneration) {
+        RequestOptions options, boolean disableAutomaticIdGeneration) {
         DocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         if (options == null || options.getPartitionKey() == null) {
             requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(collectionCache, requestRetryPolicy, collectionLink, options);
         }
         DocumentClientRetryPolicy finalRetryPolicyInstance = requestRetryPolicy;
-        return ObservableHelper.inlineIfPossibleAsObs(() -> upsertDocumentInternal(collectionLink, document, options, disableAutomaticIdGeneration, finalRetryPolicyInstance), finalRetryPolicyInstance);
+        return ObservableHelper.inlineIfPossibleAsObs(() -> upsertDocumentInternal(collectionLink, document, options, disableAutomaticIdGeneration, finalRetryPolicyInstance, jsonSerializer), finalRetryPolicyInstance);
     }
 
     private Mono<ResourceResponse<Document>> upsertDocumentInternal(String collectionLink, Object document,
-                                                                    RequestOptions options, boolean disableAutomaticIdGeneration, DocumentClientRetryPolicy retryPolicyInstance) {
+                                                                    RequestOptions options, boolean disableAutomaticIdGeneration, DocumentClientRetryPolicy retryPolicyInstance, JsonSerializer jsonSerializer) {
         try {
             logger.debug("Upserting a Document. collectionLink: [{}]", collectionLink);
 
             Mono<RxDocumentServiceRequest> reqObs = getCreateDocumentRequest(retryPolicyInstance, collectionLink, document,
-                options, disableAutomaticIdGeneration, OperationType.Upsert);
+                options, disableAutomaticIdGeneration, OperationType.Upsert, jsonSerializer);
 
             Mono<RxDocumentServiceResponse> responseObservable = reqObs.flatMap(request -> {
                 return upsert(request, retryPolicyInstance);

@@ -2,16 +2,20 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.core.serializer.json.jackson.JacksonJsonSerializer;
+import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.CosmosAuthorizationTokenResolver;
-import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -78,6 +82,7 @@ public interface AsyncDocumentClient {
         CosmosKeyCredential cosmosKeyCredential;
         boolean sessionCapturingOverride;
         boolean transportClientSharing;
+        JsonSerializer jsonSerializer;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -170,6 +175,20 @@ public interface AsyncDocumentClient {
             return this;
         }
 
+        /**
+         * Sets the {@link JsonSerializer} that will be used to handle custom objects.
+         * <p>
+         * If a {@link JsonSerializer} isn't configured {@link JacksonJsonSerializer} will be used by default using
+         * {@link ObjectMapper#ObjectMapper()}.
+         *
+         * @param jsonSerializer The {@link JsonSerializer}.
+         * @return The updated Builder object.
+         */
+        public Builder withJsonSerializer(JsonSerializer jsonSerializer) {
+            this.jsonSerializer = jsonSerializer;
+            return this;
+        }
+
         private void ifThrowIllegalArgException(boolean value, String error) {
             if (value) {
                 throw new IllegalArgumentException(error);
@@ -187,6 +206,10 @@ public interface AsyncDocumentClient {
             ifThrowIllegalArgException(cosmosKeyCredential != null && StringUtils.isEmpty(cosmosKeyCredential.getKey()),
                 "cannot buildAsyncClient client without key credential");
 
+            JsonSerializer buildJsonSerializer = (jsonSerializer == null)
+                ? new JacksonJsonSerializerBuilder().build()
+                : jsonSerializer;
+
             RxDocumentClientImpl client = new RxDocumentClientImpl(serviceEndpoint,
                                                                    masterKeyOrResourceToken,
                                                                    permissionFeed,
@@ -196,7 +219,8 @@ public interface AsyncDocumentClient {
                                                                    cosmosAuthorizationTokenResolver,
                                                                    cosmosKeyCredential,
                                                                    sessionCapturingOverride,
-                                                                   transportClientSharing);
+                                                                   transportClientSharing,
+                                                                   buildJsonSerializer);
             client.init();
             return client;
         }
@@ -476,7 +500,7 @@ public interface AsyncDocumentClient {
      * @return a {@link Mono} containing the single resource response with the created document or an error.
      */
     Mono<ResourceResponse<Document>> createDocument(String collectionLink, Object document, RequestOptions options,
-                                                    boolean disableAutomaticIdGeneration);
+        boolean disableAutomaticIdGeneration);
 
     /**
      * Upserts a document.
@@ -492,7 +516,7 @@ public interface AsyncDocumentClient {
      * @return a {@link Mono} containing the single resource response with the upserted document or an error.
      */
     Mono<ResourceResponse<Document>> upsertDocument(String collectionLink, Object document, RequestOptions options,
-                                                          boolean disableAutomaticIdGeneration);
+        boolean disableAutomaticIdGeneration);
 
     /**
      * Replaces a document using a POJO object.

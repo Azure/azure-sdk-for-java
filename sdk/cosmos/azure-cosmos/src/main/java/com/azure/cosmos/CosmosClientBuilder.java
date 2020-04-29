@@ -3,10 +3,13 @@
 package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.serializer.json.jackson.JacksonJsonSerializer;
+import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosPermissionProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
 
@@ -39,6 +42,7 @@ public class CosmosClientBuilder {
     private CosmosKeyCredential cosmosKeyCredential;
     private boolean sessionCapturingOverrideEnabled;
     private boolean connectionReuseAcrossClientsEnabled;
+    private JsonSerializer jsonSerializer;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -292,6 +296,27 @@ public class CosmosClientBuilder {
     }
 
     /**
+     * Sets the {@link JsonSerializer} that will be used to handle custom objects.
+     * <p>
+     * If a {@link JsonSerializer} isn't configured {@link JacksonJsonSerializer} will be used by default using
+     * {@link ObjectMapper#ObjectMapper()}.
+     *
+     * @param jsonSerializer The {@link JsonSerializer}.
+     * @return The updated CosmosClientBuilder object.
+     */
+    public CosmosClientBuilder jsonSerializer(JsonSerializer jsonSerializer) {
+        this.jsonSerializer = jsonSerializer;
+        return this;
+    }
+
+    /**
+     * @return The {@link JsonSerializer} configured in this builder.
+     */
+    JsonSerializer jsonSerializer() {
+        return jsonSerializer;
+    }
+
+    /**
      * Builds a cosmos configuration object with the provided properties
      *
      * @return CosmosAsyncClient
@@ -312,6 +337,10 @@ public class CosmosClientBuilder {
                 + "cosmos key credential");
         ifThrowIllegalArgException(cosmosKeyCredential != null && StringUtils.isEmpty(cosmosKeyCredential.getKey()),
             "cannot buildAsyncClient client without key credential");
+
+        if (jsonSerializer == null) {
+            jsonSerializer = new JacksonJsonSerializerBuilder().build();
+        }
     }
 
     /**

@@ -4,6 +4,7 @@
 module com.azure.cosmos {
 
     requires transitive com.azure.core;
+    requires com.azure.core.serializer.json.jackson;
 
     requires com.fasterxml.jackson.datatype.jsr310;
     requires io.netty.transport;
@@ -28,6 +29,7 @@ module com.azure.cosmos {
     // public API surface area
     exports com.azure.cosmos;
     exports com.azure.cosmos.models;
+    exports com.azure.cosmos.util;
 
     // exporting some packages specifically for Jackson
     opens com.azure.cosmos to com.fasterxml.jackson.databind;

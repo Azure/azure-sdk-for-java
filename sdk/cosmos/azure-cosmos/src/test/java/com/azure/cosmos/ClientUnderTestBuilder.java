@@ -29,7 +29,8 @@ public class ClientUnderTestBuilder extends CosmosClientBuilder {
                 this.getConnectionPolicy(),
                 this.getConsistencyLevel(),
                 this.configs(),
-                this.getKeyCredential());
+                this.getKeyCredential(),
+                this.jsonSerializer());
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException(e.getMessage());
         }

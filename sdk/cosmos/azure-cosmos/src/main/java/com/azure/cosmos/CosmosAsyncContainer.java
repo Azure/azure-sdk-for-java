@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -24,6 +25,7 @@ import com.azure.cosmos.util.UtilBridgeInternal;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
@@ -220,12 +222,9 @@ public class CosmosAsyncContainer {
         Class<T> itemType = (Class<T>) item.getClass();
         RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
         return database.getDocClientWrapper()
-                   .createDocument(getLink(),
-                                   item,
-                                   requestOptions,
-                                   true)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType))
-                   .single();
+            .createDocument(getLink(), item, requestOptions, true)
+            .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, jsonSerializer()))
+            .single();
     }
 
     /**
@@ -262,11 +261,9 @@ public class CosmosAsyncContainer {
         @SuppressWarnings("unchecked")
         Class<T> itemType = (Class<T>) item.getClass();
         return this.getDatabase().getDocClientWrapper()
-                   .upsertDocument(this.getLink(), item,
-                       ModelBridgeInternal.toRequestOptions(options),
-                                   true)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType))
-                   .single();
+            .upsertDocument(this.getLink(), item, ModelBridgeInternal.toRequestOptions(options), true)
+            .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, jsonSerializer()))
+            .single();
     }
 
     /**
@@ -381,16 +378,19 @@ public class CosmosAsyncContainer {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, feedOptions);
             return getDatabase().getDocClientWrapper()
-                       .queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, feedOptions)
-                       .map(response ->
-                                prepareFeedResponse(response, classType));
+                .queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, feedOptions)
+                .map(response -> prepareFeedResponse(response, classType));
         });
     }
 
     private <T> FeedResponse<T> prepareFeedResponse(FeedResponse<Document> response, Class<T> classType) {
         return BridgeInternal.createFeedResponseWithQueryMetrics(
-            (response.getResults().stream().map(document -> ModelBridgeInternal.toObjectFromJsonSerializable(document, classType))
-                 .collect(Collectors.toList())), response.getResponseHeaders(),
+            // TODO (alzimmer): Need to figure out if 'response' can change to FeedResponse<String>.
+            // Change the logic so we get back a list of JSON object strings that can be parsed based on 'classType'.
+            //response.getResults().stream().map(document -> ModelBridgeInternal.toObjectFromJsonSerializable(document, classType))
+            response.getElements().stream().map(document -> jsonSerializer()
+                .deserialize(document.toJson().getBytes(StandardCharsets.UTF_8), classType))
+                .collect(Collectors.toList()), response.getResponseHeaders(),
             ModelBridgeInternal.queryMetrics(response));
     }
 
@@ -436,7 +436,7 @@ public class CosmosAsyncContainer {
         RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
         return this.getDatabase().getDocClientWrapper()
                    .readDocument(getItemLink(itemId), requestOptions)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType))
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, jsonSerializer()))
                    .single();
     }
 
@@ -482,10 +482,10 @@ public class CosmosAsyncContainer {
         @SuppressWarnings("unchecked")
         Class<T> itemType = (Class<T>) item.getClass();
         return this.getDatabase()
-                   .getDocClientWrapper()
-                   .replaceDocument(getItemLink(itemId), doc, ModelBridgeInternal.toRequestOptions(options))
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType))
-                   .single();
+            .getDocClientWrapper()
+            .replaceDocument(getItemLink(itemId), doc, ModelBridgeInternal.toRequestOptions(options))
+            .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, jsonSerializer()))
+            .single();
     }
 
     /**
@@ -524,10 +524,10 @@ public class CosmosAsyncContainer {
         ModelBridgeInternal.setPartitionKey(options, partitionKey);
         RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
         return this.getDatabase()
-                   .getDocClientWrapper()
-                   .deleteDocument(getItemLink(itemId), requestOptions)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponseWithObjectType(response))
-                   .single();
+            .getDocClientWrapper()
+            .deleteDocument(getItemLink(itemId), requestOptions)
+            .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponseWithObjectType(response, jsonSerializer()))
+            .single();
     }
 
     private String getItemLink(String itemId) {
@@ -680,5 +680,9 @@ public class CosmosAsyncContainer {
 
     String getLink() {
         return this.link;
+    }
+
+    JsonSerializer jsonSerializer() {
+        return database.jsonSerializer();
     }
 }

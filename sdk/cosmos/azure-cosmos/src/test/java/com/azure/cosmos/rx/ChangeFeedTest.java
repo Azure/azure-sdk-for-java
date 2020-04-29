@@ -2,13 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
+import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.implementation.ChangeFeedOptions;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.ChangeFeedOptions;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
@@ -19,6 +17,10 @@ import com.azure.cosmos.implementation.TestSuiteBase;
 import com.azure.cosmos.implementation.TestUtils;
 import com.azure.cosmos.implementation.guava25.collect.ArrayListMultimap;
 import com.azure.cosmos.implementation.guava25.collect.Multimap;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.Resource;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
@@ -48,6 +50,7 @@ public class ChangeFeedTest extends TestSuiteBase {
     private Multimap<String, Document> partitionKeyToDocuments = ArrayListMultimap.create();
 
     private AsyncDocumentClient client;
+    private JsonSerializer jsonSerializer;
 
     public String getCollectionLink() {
         return TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId());
@@ -271,6 +274,7 @@ public class ChangeFeedTest extends TestSuiteBase {
     public void before_ChangeFeedTest() throws Exception {
         // set up the client
         client = clientBuilder().build();
+        jsonSerializer = new JacksonJsonSerializerBuilder().build();
         createdDatabase = SHARED_DATABASE;
     }
 

@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
@@ -72,12 +73,12 @@ public final class ModelBridgeInternal {
         return new CosmosAsyncDatabaseResponse(response, client);
     }
 
-    public static <T> CosmosAsyncItemResponse<T> createCosmosAsyncItemResponse(ResourceResponse<Document> response, Class<T> classType) {
-        return new CosmosAsyncItemResponse<>(response, classType);
+    public static <T> CosmosAsyncItemResponse<T> createCosmosAsyncItemResponse(ResourceResponse<Document> response, Class<T> classType, JsonSerializer jsonSerializer) {
+        return new CosmosAsyncItemResponse<>(response, classType, jsonSerializer);
     }
 
-    public static CosmosAsyncItemResponse<Object> createCosmosAsyncItemResponseWithObjectType(ResourceResponse<Document> response) {
-        return new CosmosAsyncItemResponse<>(response, Object.class);
+    public static CosmosAsyncItemResponse<Object> createCosmosAsyncItemResponseWithObjectType(ResourceResponse<Document> response, JsonSerializer jsonSerializer) {
+        return new CosmosAsyncItemResponse<>(response, Object.class, jsonSerializer);
     }
 
     public static CosmosAsyncPermissionResponse createCosmosAsyncPermissionResponse(ResourceResponse<Permission> response,

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models;
 
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosResponseDiagnostics;
 import com.azure.cosmos.implementation.CosmosItemProperties;
@@ -22,13 +23,15 @@ import java.util.Map;
  */
 public class CosmosAsyncItemResponse<T> {
     private final Class<T> itemClassType;
+    private final JsonSerializer jsonSerializer;
     private final byte[] responseBodyAsByteArray;
     private T item;
     private final ResourceResponse<Document> resourceResponse;
     private CosmosItemProperties props;
 
-    CosmosAsyncItemResponse(ResourceResponse<Document> response, Class<T> classType) {
+    CosmosAsyncItemResponse(ResourceResponse<Document> response, Class<T> classType, JsonSerializer jsonSerializer) {
         this.itemClassType = classType;
+        this.jsonSerializer = jsonSerializer;
         this.responseBodyAsByteArray = response.getBodyAsByteArray();
         this.resourceResponse = response;
     }
@@ -62,7 +65,7 @@ public class CosmosAsyncItemResponse<T> {
             synchronized (this) {
                 if (item == null && !Utils.isEmpty(responseBodyAsByteArray)) {
                     ZonedDateTime serializationStartTime = ZonedDateTime.now(ZoneOffset.UTC);
-                    item = Utils.parse(responseBodyAsByteArray, itemClassType);
+                    item = jsonSerializer.deserialize(responseBodyAsByteArray, itemClassType);
                     ZonedDateTime serializationEndTime = ZonedDateTime.now(ZoneOffset.UTC);
                     SerializationDiagnosticsContext.SerializationDiagnostics diagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
                         serializationStartTime,

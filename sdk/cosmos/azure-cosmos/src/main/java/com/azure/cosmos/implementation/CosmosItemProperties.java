@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.Resource;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -83,7 +84,8 @@ public class CosmosItemProperties extends Resource {
         return typedItem;
     }
 
-    public static ByteBuffer serializeJsonToByteBuffer(Object cosmosItem, ObjectMapper objectMapper) {
+    public static ByteBuffer serializeJsonToByteBuffer(Object cosmosItem, ObjectMapper objectMapper,
+        JsonSerializer jsonSerializer) {
         if (cosmosItem instanceof com.azure.cosmos.implementation.CosmosItemProperties) {
             return ((com.azure.cosmos.implementation.CosmosItemProperties) cosmosItem).serializeJsonToByteBuffer();
         } else {
@@ -91,7 +93,7 @@ public class CosmosItemProperties extends Resource {
                 return ModelBridgeInternal.serializeJsonToByteBuffer((Document) cosmosItem);
             }
 
-            return Utils.serializeJsonToByteBuffer(objectMapper, cosmosItem);
+            return ByteBuffer.wrap(jsonSerializer.serialize(cosmosItem));
         }
     }
 
