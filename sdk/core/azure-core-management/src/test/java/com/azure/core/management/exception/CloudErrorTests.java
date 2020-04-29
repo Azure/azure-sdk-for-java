@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 public class CloudErrorTests {
 
@@ -50,6 +51,18 @@ public class CloudErrorTests {
         Assertions.assertEquals("Deployment error.", webError.getInnererror());
         Assertions.assertEquals(1, webError.getDetails().size());
         Assertions.assertEquals("Inner error.", webError.getDetails().get(0).getInnererror());
+
+        Object errorResponseObj = serializerAdapter.deserialize(sampleErrorResponse, Object.class, SerializerEncoding.JSON);
+        WebError webError2 = errorFromObject(serializerAdapter, errorResponseObj);
+        Assertions.assertEquals("WepAppError", webError2.getCode());
+    }
+
+    private static WebError errorFromObject(SerializerAdapter serializerAdapter, Object errorResponseObj) throws IOException {
+        String json = serializerAdapter.serialize(errorResponseObj, SerializerEncoding.JSON);
+        ErrorResponse<WebError> errorResponse =  serializerAdapter.deserialize(json,
+            new TypeReference<ErrorResponse<WebError>>() {
+            }.getType(), SerializerEncoding.JSON);
+        return errorResponse.getError();
     }
 
     @Immutable
