@@ -43,7 +43,7 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
     }
 
     /**
-     * Sets whether to enable using the shared token cache.
+     * Sets whether to enable using the shared token cache. This is disabled by default.
      *
      * @param enabled whether to enabled using the shared token cache.
      *

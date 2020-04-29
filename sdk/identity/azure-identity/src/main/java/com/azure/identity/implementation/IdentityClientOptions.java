@@ -261,7 +261,7 @@ public final class IdentityClientOptions {
     }
 
     /**
-     * Sets whether to enable using the shared token cache.
+     * Sets whether to enable using the shared token cache. This is disabled by default.
      *
      * @param enabled whether to enable using the shared token cache.
      *
