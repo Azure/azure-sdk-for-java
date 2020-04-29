@@ -26,12 +26,12 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
 
 
     /**
-     * Sets the tenant ID of the application.
+     * Sets the tenant id of the user to authenticate through the {@link DefaultAzureCredential}. The default is null
+     * and will authenticate users to their default tenant.
      *
-     * @param tenantId the tenant ID of the application.
+     * @param tenantId the tenant ID to set.
      * @return An updated instance of this builder with the tenant id set as specified.
      */
-    @SuppressWarnings("unchecked")
     public DefaultAzureCredentialBuilder tenantId(String tenantId) {
         this.tenantId = tenantId;
         return this;
@@ -99,7 +99,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      *
      * @return An updated instance of this builder with the Visual Studio Code credential exclusion set as specified.
      */
-    public DefaultAzureCredentialBuilder excludeVisualStudioCodeCredential() {
+    public DefaultAzureCredentialBuilder excludeVSCodeCredential() {
         excludeVsCodeCredential = true;
         return this;
     }
@@ -135,7 +135,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     }
 
     private ArrayDeque<TokenCredential> getCredentialsChain() {
-        ArrayDeque<TokenCredential> output = new ArrayDeque<>(4);
+        ArrayDeque<TokenCredential> output = new ArrayDeque<>(5);
         if (!excludeEnvironmentCredential) {
             output.add(new EnvironmentCredential(identityClientOptions));
         }

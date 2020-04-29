@@ -3,6 +3,7 @@
 
 package com.azure.identity.implementation;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.KnownAuthorityHosts;
@@ -19,6 +20,8 @@ import java.nio.file.Paths;
  * This class allows access to Visual Studio Code cached credential data.
  */
 public class VisualStudioCacheAccessor {
+    private static final String PLATFORM_NOT_SUPPORTED_ERROR = "Platform could not be determined for VS Code"
+                                               + " credential authentication.";
     private final ClientLogger logger = new ClientLogger(VisualStudioCacheAccessor.class);
 
     /**
@@ -45,6 +48,9 @@ public class VisualStudioCacheAccessor {
             } else if (Platform.isLinux()) {
                 settingsPath = Paths.get(homeDir, ".config", "Code", "User", "settings.json")
                         .toString();
+            }  else {
+                throw logger.logExceptionAsError(
+                        new CredentialUnavailableException(PLATFORM_NOT_SUPPORTED_ERROR));
             }
             File settingsFile = new File(settingsPath);
             output = mapper.readTree(settingsFile);
@@ -74,7 +80,6 @@ public class VisualStudioCacheAccessor {
             byte[] readCreds = keyChainAccessor.read();
             credential = new String(readCreds, StandardCharsets.UTF_8);
         } else if (Platform.isLinux()) {
-
             LinuxKeyRingAccessor keyRingAccessor = new LinuxKeyRingAccessor(
                     "org.freedesktop.Secret.Generic", "service",
                     serviceName, "account", accountName);
@@ -83,12 +88,11 @@ public class VisualStudioCacheAccessor {
             credential = new String(readCreds, StandardCharsets.UTF_8);
         } else {
             throw logger.logExceptionAsError(
-                new CredentialUnavailableException("Platform could not be determined for VsCode"
-                                                           + " Credential authentication."));
+                new CredentialUnavailableException(PLATFORM_NOT_SUPPORTED_ERROR));
         }
-        if (!isRefreshTokenString(credential)) {
+        if (CoreUtils.isNullOrEmpty(credential) || !isRefreshTokenString(credential)) {
             throw logger.logExceptionAsError(
-                    new CredentialUnavailableException("Please authenticate via Azure Tools plugin in VSCode IDE."));
+                    new CredentialUnavailableException("Please authenticate via Azure Tools plugin in VS Code IDE."));
         }
         return credential;
     }
