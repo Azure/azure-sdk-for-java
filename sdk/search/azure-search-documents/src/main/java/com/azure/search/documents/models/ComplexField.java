@@ -6,7 +6,8 @@ package com.azure.search.documents.models;
 import java.util.List;
 
 /**
- * A helper Field model to build a simple search field.
+ * A helper Field model to build a complex field which uses {@code DataType.EDM_COMPLEX_TYPE} or collection of
+ * {@code DataType.EDM_COMPLEX_TYPE}.
  */
 public class ComplexField extends FieldBase {
     private List<Field> fields;

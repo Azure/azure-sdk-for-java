@@ -3,6 +3,7 @@
 
 package com.azure.search.documents;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.indexes.FieldIgnore;
 import com.azure.search.documents.indexes.SearchableFieldProperty;
@@ -11,12 +12,15 @@ import com.azure.search.documents.models.AnalyzerName;
 import com.azure.search.documents.models.DataType;
 import com.azure.search.documents.models.Field;
 import com.azure.search.documents.models.GeoPoint;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -77,14 +81,14 @@ public class FieldBuilder {
      * @return A list of {@link Field} that curClass is built to.
      */
     private static List<Field> build(Class<?> curClass, Stack<Class<?>> classChain, ClientLogger logger) {
-
         if (classChain.contains(curClass)) {
-            throw logger.logExceptionAsError(new RuntimeException(
-                String.format("There is circular dependencies %s, %s", classChain, curClass)));
+            logger.warning(String.format("There is circular dependencies %s, %s", classChain, curClass));
+            return null;
+
         }
         if (classChain.size() > MAX_DEPTH) {
-            throw logger.logExceptionAsError(
-                new RuntimeException("The dependency graph is too deep. Please review your schema."));
+            throw logger.logExceptionAsError(new RuntimeException(
+                "The dependency graph is too deep. Please review your schema."));
         }
         classChain.push(curClass);
         List<java.lang.reflect.Field> classFields = Arrays.asList(curClass.getDeclaredFields());
@@ -96,8 +100,7 @@ public class FieldBuilder {
         return searchFields;
     }
 
-    private static Field buildField(java.lang.reflect.Field classField,
-        Stack<Class<?>> classChain,
+    private static Field buildField(java.lang.reflect.Field classField, Stack<Class<?>> classChain,
         ClientLogger logger) {
         Type type = classField.getGenericType();
 
@@ -108,15 +111,23 @@ public class FieldBuilder {
             return buildCollectionField(classField, classChain, logger);
         }
         if (CLASS_FIELD_HASH_MAP.containsKey(type)) {
-            return CLASS_FIELD_HASH_MAP.get(type);
+            return deepCopyFieldWithName(CLASS_FIELD_HASH_MAP.get(type), classField.getName() ,logger);
         }
         List<Field> childFields = build((Class<?>) type, classChain, logger);
         Field searchField = convertToBasicSearchField(classField, logger);
         searchField.setFields(childFields);
-        searchField.setSearchable(false); // TODO
-        searchField.setFilterable(false); // TODO
         CLASS_FIELD_HASH_MAP.put((Class<?>) type, searchField);
         return searchField;
+    }
+
+    private static Field deepCopyFieldWithName(Field field, String name, ClientLogger logger) {
+        try {
+            Field copyField = new ObjectMapper().readValue(new ObjectMapper().writeValueAsString(field), Field.class);
+            return copyField.setName(name);
+        } catch (JsonProcessingException e) {
+            throw logger.logExceptionAsError(new RuntimeException(
+                String.format("Something wrong when copy field of %s", name)));
+        }
     }
 
     private static boolean isSupportedNoneParameterizedType(Type type) {
@@ -246,8 +257,7 @@ public class FieldBuilder {
                     String.format("%s is not supported", type.getName())));
             }
             if (hasArrayOrCollectionWrapped) {
-                throw logger
-                    .logExceptionAsError(new IllegalArgumentException(""));
+                throw logger.logExceptionAsError(new IllegalArgumentException(""));
             }
         }
     }

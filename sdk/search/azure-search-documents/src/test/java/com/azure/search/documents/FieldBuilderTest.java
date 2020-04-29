@@ -10,11 +10,13 @@ import com.azure.search.documents.models.Field;
 import com.azure.search.documents.models.SearchableField;
 import com.azure.search.documents.models.SimpleField;
 import com.azure.search.documents.test.environment.models.Hotel;
+import com.azure.search.documents.test.environment.models.HotelCircularDependencies;
 import com.azure.search.documents.test.environment.models.HotelSearchException;
 import com.azure.search.documents.test.environment.models.HotelSearchableExceptionOnList;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +28,7 @@ public class FieldBuilderTest {
     @Test
     public void hotelComparison() {
         List<Field> actualFields = sortByFieldName(FieldBuilder.build(Hotel.class));
-        List<Field> expectedFields = sortByFieldName(buildHotelFieldsFromModel());
+        List<Field> expectedFields = sortByFieldName(buildHotelFields());
         assertEquals(expectedFields.size(), actualFields.size());
         for (int i = 0; i < expectedFields.size(); i++) {
             TestHelpers.assertObjectEquals(expectedFields.get(i), actualFields.get(i));
@@ -51,7 +53,28 @@ public class FieldBuilderTest {
         assertTrue(exception.getMessage().contains(DataType.collection(DataType.EDM_INT32).toString()));
     }
 
-    private List<Field> buildHotelFieldsFromModel() {
+    @Test
+    public void hotelCircularDependencies() {
+        List<Field> actualFields = sortByFieldName(FieldBuilder.build(HotelCircularDependencies.class));
+        List<Field> expectedFields = sortByFieldName(buildHotelCircularDependenciesModel());
+        assertEquals(expectedFields.size(), actualFields.size());
+        for (int i = 0; i < expectedFields.size(); i++) {
+            TestHelpers.assertObjectEquals(expectedFields.get(i), actualFields.get(i));
+        }
+    }
+
+    private List<Field> buildHotelCircularDependenciesModel() {
+        Field homeAddress = new ComplexField("homeAddress", false).setFields(buildHotelInAddress()).build();
+        Field billingAddress = new ComplexField("billingAddress", false).setFields(buildHotelInAddress()).build();
+        return Arrays.asList(homeAddress, billingAddress);
+    }
+
+    private List<Field> buildHotelInAddress() {
+        Field hotel = new ComplexField("hotel", false).build();
+        return Collections.singletonList(hotel);
+    }
+
+    private List<Field> buildHotelFields() {
         Field hotelId = new SimpleField("hotelId", DataType.EDM_STRING, false).setSortable(true)
             .setKey(true).build();
         Field hotelName = new SearchableField("hotelName", false).setAnalyzer(AnalyzerName.fromString("en.lucene"))

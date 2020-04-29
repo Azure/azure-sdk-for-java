@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 /**
  * Base field type for helper classes to more easily create a {@link Index}.
  */
-class FieldBase {
+public abstract class FieldBase {
     private final ClientLogger logger = new ClientLogger(FieldBase.class);
     private final String name;
     private final DataType dataType;
