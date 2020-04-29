@@ -24,6 +24,19 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
     }
 
     /**
+     * Sets whether to use an unprotected file specified by <code>cacheFileLocation()</code> instead of
+     * Gnome keyring on Linux. This is false by default.
+     *
+     * @param allowUnencryptedCache whether to use an unprotected file for cache storage.
+     *
+     * @return An updated instance of this builder with the unprotected token cache setting set as specified.
+     */
+    public SharedTokenCacheCredentialBuilder allowUnencryptedCache(boolean allowUnencryptedCache) {
+        this.identityClientOptions.allowUnencryptedCache(allowUnencryptedCache);
+        return this;
+    }
+
+    /**
      * Creates a new {@link SharedTokenCacheCredentialBuilder} with the current configurations.
      *
      * @return a {@link SharedTokenCacheCredentialBuilder} with the current configurations.

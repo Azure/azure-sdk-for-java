@@ -70,31 +70,4 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
         this.identityClientOptions.setExecutorService(executorService);
         return (T) this;
     }
-
-    /**
-     * Sets whether to use an unprotected file specified by <code>cacheFileLocation()</code> instead of
-     * Gnome keyring on Linux. This is false by default.
-     *
-     * @param allowUnencryptedCache whether to use an unprotected file for cache storage.
-     *
-     * @return An updated instance of this builder with the unprotected token cache setting set as specified.
-     */
-    @SuppressWarnings("unchecked")
-    public T allowUnencryptedCache(boolean allowUnencryptedCache) {
-        this.identityClientOptions.allowUnencryptedCache(allowUnencryptedCache);
-        return (T) this;
-    }
-
-    /**
-     * Sets whether to enable using the shared token cache.
-     *
-     * @param enabled whether to enabled using the shared token cache.
-     *
-     * @return An updated instance of this builder with if the shared token cache enabled specified.
-     */
-    @SuppressWarnings("unchecked")
-    public T enableSharedTokenCache(boolean enabled) {
-        this.identityClientOptions.enableSharedTokenCache(enabled);
-        return (T) this;
-    }
 }

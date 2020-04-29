@@ -169,7 +169,7 @@ public class IdentityClientTests {
         mockForDeviceCodeFlow(request, accessToken, expiresOn);
 
         // test
-        IdentityClientOptions options = new IdentityClientOptions().enableSharedTokenCache(true);
+        IdentityClientOptions options = new IdentityClientOptions();
         IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).identityClientOptions(options).build();
         AccessToken token = client.authenticateWithDeviceCode(request, deviceCodeChallenge -> { /* do nothing */ }).block();
         Assert.assertEquals(accessToken, token.getToken());
@@ -238,7 +238,7 @@ public class IdentityClientTests {
         mockForAuthorizationCodeFlow(token1, request, expiresAt);
 
         // test
-        IdentityClientOptions options = new IdentityClientOptions().enableSharedTokenCache(true);
+        IdentityClientOptions options = new IdentityClientOptions();
         IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).identityClientOptions(options).build();
         StepVerifier.create(client.authenticateWithAuthorizationCode(request, authCode1, redirectUri))
             .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
@@ -258,7 +258,7 @@ public class IdentityClientTests {
         mockForUserRefreshTokenFlow(token2, request2, expiresAt);
 
         // test
-        IdentityClientOptions options = new IdentityClientOptions().enableSharedTokenCache(true);
+        IdentityClientOptions options = new IdentityClientOptions();
         IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).identityClientOptions(options).build();
         StepVerifier.create(client.authenticateWithUserRefreshToken(request2, TestUtils.getMockMsalToken(token1, expiresAt).block()))
             .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
@@ -279,7 +279,7 @@ public class IdentityClientTests {
         mockForUsernamePasswordCodeFlow(token, request, expiresOn);
 
         // test
-        IdentityClientOptions options = new IdentityClientOptions().enableSharedTokenCache(true);
+        IdentityClientOptions options = new IdentityClientOptions();
         IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).identityClientOptions(options).build();
         StepVerifier.create(client.authenticateWithUsernamePassword(request, username, password))
             .expectNextMatches(accessToken -> token.equals(accessToken.getToken())
@@ -301,7 +301,7 @@ public class IdentityClientTests {
         mocForBrowserAuthenticationCodeFlow();
 
         // test
-        IdentityClientOptions options = new IdentityClientOptions().enableSharedTokenCache(true);
+        IdentityClientOptions options = new IdentityClientOptions();
         IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).identityClientOptions(options).build();
         StepVerifier.create(client.authenticateWithBrowserInteraction(request, 4567))
             .expectNextMatches(accessToken -> token.equals(accessToken.getToken())
