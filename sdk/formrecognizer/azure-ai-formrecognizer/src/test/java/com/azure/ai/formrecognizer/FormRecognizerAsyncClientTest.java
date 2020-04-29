@@ -30,6 +30,8 @@ import static com.azure.ai.formrecognizer.TestUtils.getExpectedReceipts;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedRecognizedForms;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedRecognizedLabeledForms;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedUSReceipt;
+import static com.azure.ai.formrecognizer.TestUtils.getPageResults;
+import static com.azure.ai.formrecognizer.TestUtils.getReadResults;
 import static com.azure.ai.formrecognizer.TestUtils.getReplayableBufferData;
 import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -173,7 +175,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 = client.beginRecognizeContent(toFluxByteBuffer(data),
                 LAYOUT_FILE_LENGTH, FormContentType.IMAGE_JPEG, null).getSyncPoller();
             syncPoller.waitForCompletion();
-            validateLayoutResult(getExpectedFormPages(), syncPoller.getFinalResult());
+            validateLayoutDataResults(syncPoller.getFinalResult(), getReadResults(), getPageResults());
         });
     }
 
@@ -205,7 +207,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 = client.beginRecognizeContent(toFluxByteBuffer(data),
                 LAYOUT_FILE_LENGTH, null, null).getSyncPoller();
             syncPoller.waitForCompletion();
-            validateLayoutResult(getExpectedFormPages(), syncPoller.getFinalResult());
+            validateLayoutDataResults(syncPoller.getFinalResult(), getReadResults(), getPageResults());
         });
     }
 
@@ -218,7 +220,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             SyncPoller<OperationResult, IterableStream<FormPage>> syncPoller
                 = client.beginRecognizeContentFromUrl(sourceUrl).getSyncPoller();
             syncPoller.waitForCompletion();
-            validateLayoutResult(getExpectedFormPages(), syncPoller.getFinalResult());
+            validateLayoutDataResults(syncPoller.getFinalResult(), getReadResults(), getPageResults());
         });
     }
 

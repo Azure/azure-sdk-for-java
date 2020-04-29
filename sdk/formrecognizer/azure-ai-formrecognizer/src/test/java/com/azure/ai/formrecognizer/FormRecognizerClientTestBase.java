@@ -3,6 +3,12 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.implementation.models.DataTable;
+import com.azure.ai.formrecognizer.implementation.models.DataTableCell;
+import com.azure.ai.formrecognizer.implementation.models.PageResult;
+import com.azure.ai.formrecognizer.implementation.models.ReadResult;
+import com.azure.ai.formrecognizer.implementation.models.TextLine;
+import com.azure.ai.formrecognizer.implementation.models.TextWord;
 import com.azure.ai.formrecognizer.models.BoundingBox;
 import com.azure.ai.formrecognizer.models.FormContent;
 import com.azure.ai.formrecognizer.models.FormField;
@@ -60,6 +66,7 @@ import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.formrecognizer.FormRecognizerClientBuilder.OCP_APIM_SUBSCRIPTION_KEY;
@@ -73,6 +80,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     private static final String NAME = "name";
     private static final String FORM_RECOGNIZER_PROPERTIES = "azure-ai-formrecognizer.properties";
     private static final String VERSION = "version";
+    private static final Pattern NON_DIGIT_PATTERN = Pattern.compile("[^0-9]+");
+    ;
 
     private final HttpLogOptions httpLogOptions = new HttpLogOptions();
     private final Map<String, String> properties = CoreUtils.getProperties(FORM_RECOGNIZER_PROPERTIES);
@@ -89,6 +98,118 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         }
     }
 
+    static void validateLayoutDataResults(IterableStream<FormPage> actualFormPages, List<ReadResult> readResults,
+        List<PageResult> pageResults) {
+        List<FormPage> actualFormPageList = actualFormPages.stream().collect(Collectors.toList());
+        for (int i = 0; i < actualFormPageList.size(); i++) {
+            FormPage actualFormPage = actualFormPageList.get(i);
+            ReadResult readResult = readResults.get(i);
+
+            assertEquals(readResult.getAngle(), actualFormPage.getTextAngle());
+            assertEquals(readResult.getWidth(), actualFormPage.getWidth());
+            assertEquals(readResult.getHeight(), actualFormPage.getHeight());
+            assertEquals(readResult.getUnit().toString(), actualFormPage.getUnit().toString());
+            validateFormLineData(readResult.getLines(), actualFormPage.getLines());
+            validateFormTableData(pageResults.get(i).getTables(), actualFormPage.getTables(), readResults);
+        }
+    }
+
+    private static void validateReferenceElementsData(List<String> expectedElements,
+        IterableStream<FormContent> actualElementStream, List<ReadResult> readResults) {
+        if (expectedElements != null && actualElementStream != null) {
+            List<FormContent> actualFormContentList = actualElementStream.stream().collect(Collectors.toList());
+            assertEquals(expectedElements.size(), actualFormContentList.size());
+            for (int i = 0; i < actualFormContentList.size(); i++) {
+                String[] indices = NON_DIGIT_PATTERN.matcher(expectedElements.get(i)).replaceAll(" ").trim().split(" ");
+
+                if (indices.length < 2) {
+                    return;
+                }
+
+                int readResultIndex = Integer.parseInt(indices[0]);
+                int lineIndex = Integer.parseInt(indices[1]);
+                if (indices.length == 3) {
+                    int wordIndex = Integer.parseInt(indices[2]);
+                    TextWord expectedTextWord =
+                        readResults.get(readResultIndex).getLines().get(lineIndex).getWords().get(wordIndex);
+                    TextLine expectedTextLine = readResults.get(readResultIndex).getLines().get(lineIndex);
+
+                    if (actualFormContentList.get(i).getTextContentType().equals(TextContentType.LINE)) {
+                        FormLine actualFormLine = (FormLine) actualFormContentList.get(i);
+                        validateFormWordData(expectedTextLine.getWords(), actualFormLine.getFormWords());
+                    }
+                    FormWord actualFormContent = (FormWord) actualFormContentList.get(i);
+                    assertEquals(expectedTextWord.getText(), actualFormContent.getText());
+                    assertEquals(expectedTextWord.getConfidence(), actualFormContent.getConfidence());
+                    // validateBoundingBoxData(expectedTextWord.getBoundingBox(), actualFormContent.getBoundingBox());
+                }
+            }
+        }
+    }
+
+    private static void validateFormTableData(List<DataTable> expectedFormTables,
+        IterableStream<FormTable> actualFormTables, List<ReadResult> readResults) {
+        List<FormTable> actualFormTable = actualFormTables.stream().collect(Collectors.toList());
+        assertEquals(expectedFormTables.size(), actualFormTable.size());
+        for (int i = 0; i < actualFormTable.size(); i++) {
+            DataTable expectedTable = expectedFormTables.get(i);
+            FormTable actualTable = actualFormTable.get(i);
+            assertEquals(expectedTable.getColumns(), actualTable.getColumnCount());
+            validateCellData(expectedTable.getCells(), actualTable.getCells(), readResults);
+            assertEquals(expectedTable.getRows(), actualTable.getRowCount());
+        }
+    }
+
+    private static void validateCellData(List<DataTableCell> expectedTableCells,
+        IterableStream<FormTableCell> actualTableCells, List<ReadResult> readResults) {
+        List<FormTableCell> actualTableCellList = actualTableCells.stream().collect(Collectors.toList());
+        assertEquals(expectedTableCells.size(), actualTableCellList.size());
+        for (int i = 0; i < actualTableCellList.size(); i++) {
+            DataTableCell expectedTableCell = expectedTableCells.get(i);
+            FormTableCell actualTableCell = actualTableCellList.get(i);
+            assertEquals(expectedTableCell.getColumnIndex(), actualTableCell.getColumnIndex());
+            assertEquals(expectedTableCell.getColumnSpan(), actualTableCell.getColumnSpan());
+            assertEquals(expectedTableCell.getRowIndex(), actualTableCell.getRowIndex());
+            assertEquals(expectedTableCell.getRowSpan(), actualTableCell.getRowSpan());
+            // validateBoundingBoxData(expectedTableCell.getBoundingBox(), actualTableCell.getBoundingBox());
+            validateReferenceElementsData(expectedTableCell.getElements(), actualTableCell.getElements(), readResults);
+        }
+    }
+
+    private static void validateFormLineData(List<TextLine> expectedLines, IterableStream<FormLine> actualLines) {
+        List<FormLine> actualLineList = actualLines.stream().collect(Collectors.toList());
+        assertEquals(expectedLines.size(), actualLineList.size());
+        for (int i = 0; i < actualLineList.size(); i++) {
+            TextLine expectedLine = expectedLines.get(i);
+            FormLine actualLine = actualLineList.get(i);
+            assertEquals(expectedLine.getText(), actualLine.getText());
+            // validateBoundingBoxData(expectedLine.getBoundingBox(), actualLine.getBoundingBox());
+            validateFormWordData(expectedLine.getWords(), actualLine.getFormWords());
+        }
+    }
+
+    private static void validateFormWordData(List<TextWord> expectedFormWords,
+        IterableStream<FormWord> actualFormWords) {
+        List<FormWord> actualFormWordList = actualFormWords.stream().collect(Collectors.toList());
+        assertEquals(expectedFormWords.size(), actualFormWordList.size());
+        for (int i = 0; i < actualFormWordList.size(); i++) {
+
+            TextWord expectedWord = expectedFormWords.get(i);
+            FormWord actualWord = actualFormWordList.get(i);
+            assertEquals(expectedWord.getText(), actualWord.getText());
+            // validateBoundingBoxData(expectedWord.getBoundingBox(), actualWord.getBoundingBox());
+            assertEquals(expectedWord.getConfidence(), actualWord.getConfidence());
+        }
+    }
+
+    private static void validateBoundingBoxData(List<Float> expectedBoundingBox, BoundingBox actualBoundingBox) {
+        for (int i = 0, j = 0; i < actualBoundingBox.getPoints().size(); i = i + 2, j++) {
+            Point actualPoint = actualBoundingBox.getPoints().get(i);
+            assertEquals(expectedBoundingBox.get(i), actualPoint.getX());
+            assertEquals(expectedBoundingBox.get(++j), actualPoint.getY());
+        }
+    }
+
     static void validateReceiptResult(IterableStream<RecognizedReceipt> expectedReceipts,
         IterableStream<RecognizedReceipt> actualResult) {
         List<RecognizedReceipt> expectedReceiptList = expectedReceipts.stream().collect(Collectors.toList());
@@ -100,6 +221,17 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     }
 
     static void validateRecognizedFormResult(IterableStream<RecognizedForm> expectedForms,
+        IterableStream<RecognizedForm> actualForms) {
+        List<RecognizedForm> expectedFormList = expectedForms.stream().collect(Collectors.toList());
+        List<RecognizedForm> actualFormList = actualForms.stream().collect(Collectors.toList());
+
+        assertEquals(expectedFormList.size(), actualFormList.size());
+        for (int i = 0; i < actualFormList.size(); i++) {
+            validateRecognizedForm(expectedFormList.get(i), actualFormList.get(i));
+        }
+    }
+
+    static void validateRecognizedFormResultData(IterableStream<RecognizedForm> expectedForms,
         IterableStream<RecognizedForm> actualForms) {
         List<RecognizedForm> expectedFormList = expectedForms.stream().collect(Collectors.toList());
         List<RecognizedForm> actualFormList = actualForms.stream().collect(Collectors.toList());
@@ -131,157 +263,6 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             includeTextDetails);
         validateReceiptItems(expectedReceipt.getReceiptItems(), actualRecognizedReceipt.getReceiptItems(),
             includeTextDetails);
-    }
-
-    @Test
-    abstract void recognizeReceiptSourceUrl();
-
-    @Test
-    abstract void recognizeReceiptSourceUrlTextDetails();
-
-    @Test
-    abstract void recognizeReceiptData();
-
-    @Test
-    abstract void recognizeReceiptDataTextDetails();
-
-    @Test
-    abstract void recognizeReceiptDataTextDetailsWithNullData();
-
-    @Test
-    abstract void recognizeReceiptDataWithContentTypeAutoDetection();
-
-    @Test
-    abstract void recognizeLayoutData();
-
-    @Test
-    abstract void recognizeLayoutDataWithNullData();
-
-    @Test
-    abstract void recognizeLayoutDataWithContentTypeAutoDetection();
-
-    @Test
-    abstract void recognizeLayoutSourceUrl();
-
-    @Test
-    abstract void recognizeLayoutInvalidSourceUrl();
-
-    @Test
-    abstract void recognizeCustomFormLabeledData();
-
-    @Test
-    abstract void recognizeCustomFormUnlabeledData();
-
-    @Test
-    abstract void recognizeCustomFormLabeledDataWithNullValues();
-
-    @Test
-    abstract void recognizeCustomFormLabeledDataWithContentTypeAutoDetection();
-
-    @Test
-    abstract void recognizeCustomFormInvalidSourceUrl();
-
-    void receiptSourceUrlRunner(Consumer<String> testRunner) {
-        testRunner.accept(TestUtils.RECEIPT_URL);
-    }
-
-    void receiptSourceUrlRunnerTextDetails(BiConsumer<String, Boolean> testRunner) {
-        testRunner.accept(TestUtils.RECEIPT_URL, true);
-    }
-
-    void receiptDataRunner(Consumer<InputStream> testRunner) {
-        testRunner.accept(getFileData(RECEIPT_LOCAL_URL));
-    }
-
-    void receiptDataRunnerTextDetails(BiConsumer<InputStream, Boolean> testRunner) {
-        testRunner.accept(getFileData(RECEIPT_LOCAL_URL), true);
-    }
-
-    void invalidSourceUrlRunner(Consumer<String> testRunner) {
-        testRunner.accept(TestUtils.INVALID_RECEIPT_URL);
-    }
-
-    void layoutDataRunner(Consumer<InputStream> testRunner) {
-        testRunner.accept(getFileData(LAYOUT_LOCAL_URL));
-    }
-
-    void layoutSourceUrlRunner(Consumer<String> testRunner) {
-        testRunner.accept(TestUtils.LAYOUT_URL);
-    }
-
-    void customFormLabeledDataRunner(Consumer<InputStream> testRunner) {
-        testRunner.accept(getFileData(TestUtils.FORM_LOCAL_URL));
-    }
-
-    void beginTrainingUnlabeledResultRunner(BiConsumer<String, Boolean> testRunner) {
-        testRunner.accept(createStorageAndGenerateSas("src/test/resources/sample_files/Train"), false);
-    }
-
-    void beginTrainingLabeledResultRunner(BiConsumer<String, Boolean> testRunner) {
-        testRunner.accept(createStorageAndGenerateSas("src/test/resources/sample_files/TrainLabeled"), true);
-    }
-
-    protected <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
-        // TODO: #9252 AAD not supported by service
-        // TokenCredential credential = null;
-        AzureKeyCredential credential = null;
-
-        if (!interceptorManager.isPlaybackMode()) {
-            credential = new AzureKeyCredential(getApiKey());
-        }
-
-        HttpClient httpClient;
-        Configuration buildConfiguration = Configuration.getGlobalConfiguration().clone();
-
-        // Closest to API goes first, closest to wire goes last.
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
-            buildConfiguration));
-        policies.add(new RequestIdPolicy());
-        policies.add(new AddDatePolicy());
-
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        if (credential != null) {
-            policies.add(new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, credential));
-        }
-
-        policies.add(new RetryPolicy());
-
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
-
-        if (interceptorManager.isPlaybackMode()) {
-            httpClient = interceptorManager.getPlaybackClient();
-        } else {
-            httpClient = new NettyAsyncHttpClientBuilder().wiretap(true).build();
-        }
-        policies.add(interceptorManager.getRecordPolicy());
-
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
-            .build();
-
-        T client;
-        client = clientBuilder.apply(pipeline);
-
-        return Objects.requireNonNull(client);
-    }
-
-    /**
-     * Get the string of API key value based on what running mode is on.
-     *
-     * @return the API key string
-     */
-    String getApiKey() {
-        return interceptorManager.isPlaybackMode() ? "apiKeyInPlayback"
-            : Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_API_KEY);
-    }
-
-    protected String getEndpoint() {
-        return interceptorManager.isPlaybackMode()
-            ? "https://localhost:8080"
-            : Configuration.getGlobalConfiguration().get("AZURE_FORM_RECOGNIZER_ENDPOINT");
     }
 
     private static void validateFormPage(FormPage expectedFormPage, FormPage actualFormPage) {
@@ -440,6 +421,157 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     private static void validatePageRange(PageRange expectedPageInfo, PageRange actualPageInfo) {
         assertEquals(expectedPageInfo.getStartPageNumber(), actualPageInfo.getStartPageNumber());
         assertEquals(expectedPageInfo.getEndPageNumber(), actualPageInfo.getEndPageNumber());
+    }
+
+    @Test
+    abstract void recognizeReceiptSourceUrl();
+
+    @Test
+    abstract void recognizeReceiptSourceUrlTextDetails();
+
+    @Test
+    abstract void recognizeReceiptData();
+
+    @Test
+    abstract void recognizeReceiptDataTextDetails();
+
+    @Test
+    abstract void recognizeReceiptDataTextDetailsWithNullData();
+
+    @Test
+    abstract void recognizeReceiptDataWithContentTypeAutoDetection();
+
+    @Test
+    abstract void recognizeLayoutData();
+
+    @Test
+    abstract void recognizeLayoutDataWithNullData();
+
+    @Test
+    abstract void recognizeLayoutDataWithContentTypeAutoDetection();
+
+    @Test
+    abstract void recognizeLayoutSourceUrl();
+
+    @Test
+    abstract void recognizeLayoutInvalidSourceUrl();
+
+    @Test
+    abstract void recognizeCustomFormLabeledData();
+
+    @Test
+    abstract void recognizeCustomFormUnlabeledData();
+
+    @Test
+    abstract void recognizeCustomFormLabeledDataWithNullValues();
+
+    @Test
+    abstract void recognizeCustomFormLabeledDataWithContentTypeAutoDetection();
+
+    @Test
+    abstract void recognizeCustomFormInvalidSourceUrl();
+
+    void receiptSourceUrlRunner(Consumer<String> testRunner) {
+        testRunner.accept(TestUtils.RECEIPT_URL);
+    }
+
+    void receiptSourceUrlRunnerTextDetails(BiConsumer<String, Boolean> testRunner) {
+        testRunner.accept(TestUtils.RECEIPT_URL, true);
+    }
+
+    void receiptDataRunner(Consumer<InputStream> testRunner) {
+        testRunner.accept(getFileData(RECEIPT_LOCAL_URL));
+    }
+
+    void receiptDataRunnerTextDetails(BiConsumer<InputStream, Boolean> testRunner) {
+        testRunner.accept(getFileData(RECEIPT_LOCAL_URL), true);
+    }
+
+    void invalidSourceUrlRunner(Consumer<String> testRunner) {
+        testRunner.accept(TestUtils.INVALID_RECEIPT_URL);
+    }
+
+    void layoutDataRunner(Consumer<InputStream> testRunner) {
+        testRunner.accept(getFileData(LAYOUT_LOCAL_URL));
+    }
+
+    void layoutSourceUrlRunner(Consumer<String> testRunner) {
+        testRunner.accept(TestUtils.LAYOUT_URL);
+    }
+
+    void customFormLabeledDataRunner(Consumer<InputStream> testRunner) {
+        testRunner.accept(getFileData(TestUtils.FORM_LOCAL_URL));
+    }
+
+    void beginTrainingUnlabeledResultRunner(BiConsumer<String, Boolean> testRunner) {
+        testRunner.accept(createStorageAndGenerateSas("src/test/resources/sample_files/Train"), false);
+    }
+
+    void beginTrainingLabeledResultRunner(BiConsumer<String, Boolean> testRunner) {
+        testRunner.accept(createStorageAndGenerateSas("src/test/resources/sample_files/TrainLabeled"), true);
+    }
+
+    protected <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
+        // TODO: #9252 AAD not supported by service
+        // TokenCredential credential = null;
+        AzureKeyCredential credential = null;
+
+        if (!interceptorManager.isPlaybackMode()) {
+            credential = new AzureKeyCredential(getApiKey());
+        }
+
+        HttpClient httpClient;
+        Configuration buildConfiguration = Configuration.getGlobalConfiguration().clone();
+
+        // Closest to API goes first, closest to wire goes last.
+        final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
+            buildConfiguration));
+        policies.add(new RequestIdPolicy());
+        policies.add(new AddDatePolicy());
+
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        if (credential != null) {
+            policies.add(new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, credential));
+        }
+
+        policies.add(new RetryPolicy());
+
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
+        policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
+
+        if (interceptorManager.isPlaybackMode()) {
+            httpClient = interceptorManager.getPlaybackClient();
+        } else {
+            httpClient = new NettyAsyncHttpClientBuilder().wiretap(true).build();
+        }
+        policies.add(interceptorManager.getRecordPolicy());
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .build();
+
+        T client;
+        client = clientBuilder.apply(pipeline);
+
+        return Objects.requireNonNull(client);
+    }
+
+    /**
+     * Get the string of API key value based on what running mode is on.
+     *
+     * @return the API key string
+     */
+    String getApiKey() {
+        return interceptorManager.isPlaybackMode() ? "apiKeyInPlayback"
+            : Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_API_KEY);
+    }
+
+    protected String getEndpoint() {
+        return interceptorManager.isPlaybackMode()
+            ? "https://localhost:8080"
+            : Configuration.getGlobalConfiguration().get("AZURE_FORM_RECOGNIZER_ENDPOINT");
     }
 
     private String createStorageAndGenerateSas(String folderPath) {

@@ -109,6 +109,14 @@ final class TestUtils {
         return readResults.stream().map(Transforms::getReadResultFormLines).collect(Collectors.toList());
     }
 
+    static List<ReadResult> getReadResults() {
+        return getRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult().getReadResults();
+    }
+
+    static List<PageResult> getPageResults() {
+        return getRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult().getPageResults();
+    }
+
     static IterableStream<RecognizedReceipt> getRawExpectedReceipt(boolean includeTextDetails) {
         return toReceipt(getRawResponse(RECEIPT_FORM_DATA).getAnalyzeResult(), includeTextDetails);
     }
