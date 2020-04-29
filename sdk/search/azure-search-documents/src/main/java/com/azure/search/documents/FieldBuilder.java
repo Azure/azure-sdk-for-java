@@ -168,13 +168,13 @@ public class FieldBuilder {
         Field searchField = new Field();
         searchField.setName(classField.getName());
         DataType dataType = covertToDataType(classField.getGenericType(), false, logger);
-        searchField.setType(dataType);
-        searchField.setKey(false);
-        searchField.setSearchable(false);
-        searchField.setFacetable(false);
-        searchField.setHidden(false);
-        searchField.setFilterable(false);
-        searchField.setSortable(false);
+        searchField.setType(dataType)
+            .setKey(false)
+            .setSearchable(false)
+            .setFacetable(false)
+            .setHidden(false)
+            .setFilterable(false)
+            .setSortable(false);
         return searchField;
     }
 
@@ -189,12 +189,12 @@ public class FieldBuilder {
         if (classField.isAnnotationPresent(SimpleFieldProperty.class)) {
             SimpleFieldProperty simpleFieldPropertyAnnotation =
                 classField.getDeclaredAnnotation(SimpleFieldProperty.class);
-            searchField.setSearchable(false);
-            searchField.setSortable(simpleFieldPropertyAnnotation.isSortable());
-            searchField.setFilterable(simpleFieldPropertyAnnotation.isFilterable());
-            searchField.setFacetable(simpleFieldPropertyAnnotation.isFacetable());
-            searchField.setKey(simpleFieldPropertyAnnotation.isKey());
-            searchField.setHidden(simpleFieldPropertyAnnotation.isHidden());
+            searchField.setSearchable(false)
+                .setSortable(simpleFieldPropertyAnnotation.isSortable())
+                .setFilterable(simpleFieldPropertyAnnotation.isFilterable())
+                .setFacetable(simpleFieldPropertyAnnotation.isFacetable())
+                .setKey(simpleFieldPropertyAnnotation.isKey())
+                .setHidden(simpleFieldPropertyAnnotation.isHidden());
         } else if (classField.isAnnotationPresent(SearchableFieldProperty.class)) {
             if (!searchField.getType().equals(DataType.EDM_STRING)
                 && !searchField.getType().equals(DataType.collection(DataType.EDM_STRING))) {
@@ -204,12 +204,12 @@ public class FieldBuilder {
             }
             SearchableFieldProperty searchableFieldPropertyAnnotation =
                 classField.getDeclaredAnnotation(SearchableFieldProperty.class);
-            searchField.setSearchable(true);
-            searchField.setSortable(searchableFieldPropertyAnnotation.isSortable());
-            searchField.setFilterable(searchableFieldPropertyAnnotation.isFilterable());
-            searchField.setFacetable(searchableFieldPropertyAnnotation.isFacetable());
-            searchField.setKey(searchableFieldPropertyAnnotation.isKey());
-            searchField.setHidden(searchableFieldPropertyAnnotation.isHidden());
+            searchField.setSearchable(true)
+                .setSortable(searchableFieldPropertyAnnotation.isSortable())
+                .setFilterable(searchableFieldPropertyAnnotation.isFilterable())
+                .setFacetable(searchableFieldPropertyAnnotation.isFacetable())
+                .setKey(searchableFieldPropertyAnnotation.isKey())
+                .setHidden(searchableFieldPropertyAnnotation.isHidden());
             if (!searchableFieldPropertyAnnotation.analyzer().isEmpty()) {
                 searchField.setAnalyzer(AnalyzerName.fromString((searchableFieldPropertyAnnotation.analyzer())));
             }

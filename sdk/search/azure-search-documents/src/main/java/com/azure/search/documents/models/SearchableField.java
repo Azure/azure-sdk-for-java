@@ -129,10 +129,18 @@ public class SearchableField extends SimpleField {
      * @return The {@link Field} object.
      */
     public Field build() {
-        return new Field().setName(super.getName()).setType(super.getDataType()).setSearchable(true)
-            .setKey(super.isKey()).setSortable(super.isSortable()).setFilterable(super.isFilterable())
-            .setHidden(super.isHidden()).setFacetable(super.isFacetable()).setAnalyzer(this.analyzer)
-            .setSearchAnalyzer(this.searchAnalyzer).setIndexAnalyzer(this.indexAnalyzer)
+        return new Field()
+            .setName(super.getName())
+            .setType(super.getDataType())
+            .setSearchable(true)
+            .setKey(super.isKey())
+            .setSortable(super.isSortable())
+            .setFilterable(super.isFilterable())
+            .setHidden(super.isHidden())
+            .setFacetable(super.isFacetable())
+            .setAnalyzer(this.analyzer)
+            .setSearchAnalyzer(this.searchAnalyzer)
+            .setIndexAnalyzer(this.indexAnalyzer)
             .setSynonymMaps(this.synonymMaps);
     }
 }

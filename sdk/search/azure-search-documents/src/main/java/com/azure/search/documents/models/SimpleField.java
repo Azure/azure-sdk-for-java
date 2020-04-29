@@ -143,8 +143,14 @@ public class SimpleField extends FieldBase {
      * @return The {@link Field} object.
      */
     public Field build() {
-        return new Field().setName(super.getName()).setType(super.getDataType()).setKey(key).setSearchable(false)
-            .setSortable(sortable).setFilterable(filterable).setHidden(hidden).setFacetable(facetable)
+        return new Field().setName(super.getName())
+            .setType(super.getDataType())
+            .setKey(key)
+            .setSearchable(false)
+            .setSortable(sortable)
+            .setFilterable(filterable)
+            .setHidden(hidden)
+            .setFacetable(facetable)
             .setHidden(hidden);
     }
 }

@@ -48,8 +48,14 @@ public class ComplexField extends FieldBase {
      * @return The {@link Field} object.
      */
     public Field build() {
-        return new Field().setName(super.getName()).setType(super.getDataType()).setFields(fields)
-            .setKey(false).setFilterable(false).setSortable(false).setHidden(false).setSearchable(false)
+        return new Field().setName(super.getName())
+            .setType(super.getDataType())
+            .setFields(fields)
+            .setKey(false)
+            .setFilterable(false)
+            .setSortable(false)
+            .setHidden(false)
+            .setSearchable(false)
             .setFacetable(false);
     }
 }
