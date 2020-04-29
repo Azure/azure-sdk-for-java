@@ -9,8 +9,6 @@ import com.azure.management.resources.fluentcore.arm.Region;
 import java.io.File;
 
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
-import com.azure.management.resources.fluentcore.utils.DelayProvider;
-import com.azure.management.resources.fluentcore.utils.SdkContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
