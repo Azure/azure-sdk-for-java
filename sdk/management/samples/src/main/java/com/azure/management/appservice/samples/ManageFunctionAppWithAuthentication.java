@@ -174,7 +174,7 @@ public final class ManageFunctionAppWithAuthentication {
             System.out.println("Deploying a local function app to " + app3Name + " through web deploy...");
 
             app3.deploy()
-                    .withPackageUri("https://github.com/Azure/azure-libraries-for-java/raw/master/azure-samples/src/main/resources/square-function-app-function-auth.zip")
+                    .withPackageUri("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/management/samples/src/main/resources/square-function-app-function-auth.zip")
                     .withExistingDeploymentsDeleted(false)
                     .execute();
 
