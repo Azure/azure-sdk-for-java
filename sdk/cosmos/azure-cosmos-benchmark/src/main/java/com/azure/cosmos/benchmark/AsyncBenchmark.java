@@ -129,8 +129,8 @@ abstract class AsyncBenchmark<T> {
                     return x;
                 }).flux();
                 createDocumentObservables.add(obs);
-                logger.info("Finished pre-populating {} documents", cfg.getNumberOfOperations());
             }
+            logger.info("Finished pre-populating {} documents", cfg.getNumberOfOperations());
         }
 
         docsToRead = Flux.merge(Flux.fromIterable(createDocumentObservables), 100).collectList().block();
