@@ -47,7 +47,7 @@ public class Resource extends ProxyResource {
      *
      * @return the tags value
      */
-    public Map<String, String> getTags() {
+    public Map<String, String> tags() {
         return this.tags;
     }
 
