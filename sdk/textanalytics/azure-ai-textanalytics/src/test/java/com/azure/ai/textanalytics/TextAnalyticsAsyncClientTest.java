@@ -208,6 +208,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     @Test
+    public void recognizeEntitiesDuplicateIdInput() {
+        recognizeCategorizedEntityDuplicateIdRunner(inputs ->
+            StepVerifier.create(client.recognizeEntitiesBatch(inputs, null))
+                .verifyErrorSatisfies(ex -> assertEquals(HttpResponseException.class, ex.getClass())));
+    }
+
+    @Test
     public void recognizeEntitiesBatchInputSingleError() {
         recognizeBatchCategorizedEntitySingleErrorRunner((inputs) ->
             StepVerifier.create(client.recognizeEntitiesBatch(inputs, null))
@@ -281,6 +288,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     @Test
+    public void recognizeLinkedEntitiesDuplicateIdInput() {
+        recognizeBatchLinkedEntityDuplicateIdRunner(inputs ->
+            StepVerifier.create(client.recognizeLinkedEntitiesBatch(inputs, null))
+                .verifyErrorSatisfies(ex -> assertEquals(HttpResponseException.class, ex.getClass())));
+    }
+
+    @Test
     public void recognizeLinkedEntitiesForBatchInput() {
         recognizeBatchLinkedEntityRunner((inputs) ->
             StepVerifier.create(client.recognizeLinkedEntitiesBatch(inputs, null).byPage())
@@ -340,6 +354,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         StepVerifier.create(client.extractKeyPhrases("!@#%%"))
             .expectNextCount(0)
             .verifyComplete();
+    }
+
+    @Test
+    public void extractKeyPhrasesDuplicateIdInput() {
+        extractBatchKeyPhrasesDuplicateIdRunner(inputs ->
+            StepVerifier.create(client.extractKeyPhrasesBatch(inputs, null))
+                .verifyErrorSatisfies(ex -> assertEquals(HttpResponseException.class, ex.getClass())));
     }
 
     @Test
@@ -427,6 +448,16 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
         StepVerifier.create(client.analyzeSentiment("!@#%%"))
             .assertNext(response -> validateAnalyzedSentiment(expectedDocumentSentiment, response)).verifyComplete();
+    }
+
+    /**
+     * Test analyzing sentiment for a duplicate ID list.
+     */
+    @Test
+    public void analyseSentimentDuplicateIdInput() {
+        analyseBatchSentimentDuplicateIdRunner(inputs ->
+            StepVerifier.create(client.analyzeSentimentBatch(inputs, null))
+                .verifyErrorSatisfies(ex -> assertEquals(HttpResponseException.class, ex.getClass())));
     }
 
     /**

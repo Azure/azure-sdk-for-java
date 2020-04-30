@@ -10,11 +10,13 @@ import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentLanguage;
 import com.azure.ai.textanalytics.implementation.models.LanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.LanguageResult;
+import com.azure.ai.textanalytics.implementation.models.TextAnalyticsErrorException;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -152,14 +154,21 @@ class DetectLanguageAsyncClient {
     private Mono<TextAnalyticsPagedResponse<DetectLanguageResult>> getDetectedLanguageResponseInPage(
         Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options, Context context) {
         return service.languagesWithResponseAsync(
-            new LanguageBatchInput().setDocuments(toLanguageInput(documents)),
-            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE),
-            options == null ? null : options.getModelVersion(),
-            options == null ? null : options.isIncludeStatistics())
-            .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
-            .doOnSuccess(response -> logger.info("Detected languages for a batch of documents - {}",
-                response.getValue()))
-            .doOnError(error -> logger.warning("Failed to detect language - {}", error))
-            .map(this::toTextAnalyticsPagedResponse);
+                new LanguageBatchInput().setDocuments(toLanguageInput(documents)),
+                context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE),
+                options == null ? null : options.getModelVersion(),
+                options == null ? null : options.isIncludeStatistics())
+                .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
+                .doOnSuccess(response -> logger.info("Detected languages for a batch of documents - {}",
+                    response.getValue()))
+                .doOnError(error -> logger.warning("Failed to detect language - {}", error))
+                .map(this::toTextAnalyticsPagedResponse)
+                .onErrorMap(throwable -> {
+                    if (throwable instanceof TextAnalyticsErrorException) {
+                        TextAnalyticsErrorException errorException = (TextAnalyticsErrorException) throwable;
+                        return new HttpResponseException(errorException.getMessage(), errorException.getResponse());
+                    }
+                    return throwable;
+                });
     }
 }

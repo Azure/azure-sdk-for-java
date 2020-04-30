@@ -103,6 +103,14 @@ final class TestUtils {
         );
     }
 
+    static List<TextDocumentInput> getDuplicateTextDocumentInputs() {
+        return Arrays.asList(
+            new TextDocumentInput("0", CATEGORIZED_ENTITY_INPUTS.get(0)),
+            new TextDocumentInput("0", CATEGORIZED_ENTITY_INPUTS.get(0)),
+            new TextDocumentInput("0", CATEGORIZED_ENTITY_INPUTS.get(0))
+        );
+    }
+
     static List<TextDocumentInput> getTextDocumentInputs(List<String> inputs) {
         return IntStream.range(0, inputs.size())
             .mapToObj(index ->

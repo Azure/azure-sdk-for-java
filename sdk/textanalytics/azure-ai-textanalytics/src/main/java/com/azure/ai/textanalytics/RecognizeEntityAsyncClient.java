@@ -8,6 +8,7 @@ import com.azure.ai.textanalytics.implementation.models.CategorizedEntityImpl;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.RecognizeEntitiesResultImpl;
+import com.azure.ai.textanalytics.implementation.models.TextAnalyticsErrorException;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
@@ -15,6 +16,7 @@ import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
@@ -195,6 +197,13 @@ class RecognizeEntityAsyncClient {
             .doOnSuccess(response -> logger.info("Recognized entities for a batch of documents- {}",
                 response.getValue()))
             .doOnError(error -> logger.warning("Failed to recognize entities - {}", error))
-            .map(this::toTextAnalyticsPagedResponse);
+            .map(this::toTextAnalyticsPagedResponse)
+            .onErrorMap(throwable -> {
+                if (throwable instanceof TextAnalyticsErrorException) {
+                    TextAnalyticsErrorException errorException = (TextAnalyticsErrorException) throwable;
+                    return new HttpResponseException(errorException.getMessage(), errorException.getResponse());
+                }
+                return throwable;
+            });
     }
 }

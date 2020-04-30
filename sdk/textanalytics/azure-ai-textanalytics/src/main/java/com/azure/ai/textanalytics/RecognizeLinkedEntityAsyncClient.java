@@ -9,12 +9,14 @@ import com.azure.ai.textanalytics.implementation.models.LinkedEntityImpl;
 import com.azure.ai.textanalytics.implementation.models.LinkedEntityMatchImpl;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.RecognizeLinkedEntitiesResultImpl;
+import com.azure.ai.textanalytics.implementation.models.TextAnalyticsErrorException;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
@@ -205,6 +207,13 @@ class RecognizeLinkedEntityAsyncClient {
             .doOnSuccess(response -> logger.info("Recognized linked entities for a batch of documents - {}",
                 response.getValue()))
             .doOnError(error -> logger.warning("Failed to recognize linked entities - {}", error))
-            .map(this::toTextAnalyticsPagedResponse);
+            .map(this::toTextAnalyticsPagedResponse)
+            .onErrorMap(throwable -> {
+                if (throwable instanceof TextAnalyticsErrorException) {
+                    TextAnalyticsErrorException errorException = (TextAnalyticsErrorException) throwable;
+                    return new HttpResponseException(errorException.getMessage(), errorException.getResponse());
+                }
+                return throwable;
+            });
     }
 }

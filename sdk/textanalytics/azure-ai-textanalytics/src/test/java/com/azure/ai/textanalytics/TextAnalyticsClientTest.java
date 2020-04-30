@@ -187,6 +187,15 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     @Test
+    public void recognizeEntitiesDuplicateIdInput() {
+        recognizeCategorizedEntityDuplicateIdRunner(inputs -> {
+            HttpResponseException response = assertThrows(HttpResponseException.class,
+                () -> client.recognizeEntitiesBatch(inputs, null, Context.NONE).stream().findFirst().get());
+            assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response.getResponse().getStatusCode());
+        });
+    }
+
+    @Test
     public void recognizeEntitiesBatchInputSingleError() {
         recognizeBatchCategorizedEntitySingleErrorRunner((inputs) -> {
             TextAnalyticsPagedIterable<RecognizeEntitiesResult> response = client.recognizeEntitiesBatch(inputs, null, Context.NONE);
@@ -261,6 +270,15 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     @Test
+    public void recognizeLinkedEntitiesDuplicateIdInput() {
+        recognizeBatchLinkedEntityDuplicateIdRunner(inputs -> {
+            HttpResponseException response = assertThrows(HttpResponseException.class,
+                () -> client.recognizeLinkedEntitiesBatch(inputs, null, Context.NONE).stream().findFirst().get());
+            assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response.getResponse().getStatusCode());
+        });
+    }
+
+    @Test
     public void recognizeLinkedEntitiesForBatchInput() {
         recognizeBatchLinkedEntityRunner((inputs) ->
             client.recognizeLinkedEntitiesBatch(inputs, null, Context.NONE).iterableByPage().forEach(pagedResponse ->
@@ -311,6 +329,15 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void extractKeyPhrasesForFaultyText() {
         assertFalse(client.extractKeyPhrases("!@#%%").iterator().hasNext());
+    }
+
+    @Test
+    public void extractKeyPhrasesDuplicateIdInput() {
+        extractBatchKeyPhrasesDuplicateIdRunner(inputs -> {
+            HttpResponseException response = assertThrows(HttpResponseException.class,
+                () -> client.extractKeyPhrasesBatch(inputs, null, Context.NONE).stream().findFirst().get());
+            assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response.getResponse().getStatusCode());
+        });
     }
 
     @Test
@@ -392,6 +419,18 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         DocumentSentiment analyzeSentimentResult = client.analyzeSentiment("!@#%%");
 
         validateAnalyzedSentiment(expectedDocumentSentiment, analyzeSentimentResult);
+    }
+
+    /**
+     * Test analyzing sentiment for a duplicate ID list.
+     */
+    @Test
+    public void analyseSentimentDuplicateIdInput() {
+        analyseBatchSentimentDuplicateIdRunner(inputs -> {
+            HttpResponseException response = assertThrows(HttpResponseException.class,
+                () -> client.analyzeSentimentBatch(inputs, null, Context.NONE).stream().findFirst().get());
+            assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response.getResponse().getStatusCode());
+        });
     }
 
     /**
