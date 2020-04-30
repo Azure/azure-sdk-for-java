@@ -91,3 +91,6 @@ spring.security.oauth2.client.provider.azure-oauth-provider.jwk-set-uri=https://
 ---
 ### Meet with `AADSTS240002: Input id_token cannot be used as 'urn:ietf:params:oauth:grant-type:jwt-bearer' grant` error.
 In Azure portal, app registration manifest page, configure `oauth2AllowImplicitFlow` in your application manifest to `true`. See [this issue](https://github.com/MicrosoftDocs/azure-docs/issues/8121#issuecomment-387090099) for details on this workaround.
+
+## Next steps
+## Contributing
