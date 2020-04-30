@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.management.compute.implementation;
 
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.CachingTypes;
@@ -530,6 +531,11 @@ class VirtualMachineScaleSetVMImpl
     @Override
     public PagedIterable<VirtualMachineScaleSetNetworkInterface> listNetworkInterfaces() {
         return this.parent().listNetworkInterfacesByInstanceId(this.instanceId());
+    }
+
+    @Override
+    public PagedFlux<VirtualMachineScaleSetNetworkInterface> listNetworkInterfacesAsync() {
+        return this.parent().listNetworkInterfacesByInstanceIdAsync(this.instanceId());
     }
 
     @Override

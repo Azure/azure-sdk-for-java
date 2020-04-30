@@ -209,7 +209,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         final String uname = "jvuser";
         final String password = "123OData!@#123";
         final String apacheInstallScript =
-            "https://raw.githubusercontent.com/Azure/azure-libraries-for-net/master/Samples/Asset/install_apache.sh";
+            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/blob/master/sdk/compute/mgmt/src/test/resources/install_apache.sh";
         final String installCommand = "bash install_apache.sh Abc.123x(";
         List<String> fileUris = new ArrayList<>();
         fileUris.add(apacheInstallScript);
