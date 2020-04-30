@@ -568,6 +568,14 @@
                 <packages>com.azure.core.management*</packages>
               </group>
               <group>
+                <title>Azure Core - Serializer - JSON - Gson</title>
+                <packages>com.azure.core.serializer.json.gson*</packages>
+              </group>
+              <group>
+                <title>Azure Core - Serializer - JSON - Jackson</title>
+                <packages>com.azure.core.serializer.json.jackson*</packages>
+              </group>
+              <group>
                 <title>Azure App Configuration</title>
                 <packages>com.azure.data.appconfiguration*</packages>
               </group>
@@ -808,6 +816,8 @@
                 -snippetpath ${project.basedir}/sdk/core/azure-core/src/samples/java
                 -snippetpath ${project.basedir}/sdk/core/azure-core-http-netty/src/samples/java
                 -snippetpath ${project.basedir}/sdk/core/azure-core-http-okhttp/src/samples/java
+                -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-json-gson/src/samples/java
+                -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-json-jackson/src/samples/java
                 -snippetpath ${project.basedir}/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java
                 -snippetpath ${project.basedir}/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-certificates/src/samples/java
@@ -1468,6 +1478,8 @@
     <module>../../core/azure-core-http-netty</module>
     <module>../../core/azure-core-http-okhttp</module>
     <module>../../core/azure-core-http-jdk-httpclient</module>
+    <module>../../core/azure-core-serializer-json-gson</module>
+    <module>../../core/azure-core-serializer-json-jackson</module>
     <module>../../core/azure-core-test</module>
     <module>../../core/azure-core-tracing-opentelemetry</module>
     <module>../../cosmos/azure-cosmos</module>
