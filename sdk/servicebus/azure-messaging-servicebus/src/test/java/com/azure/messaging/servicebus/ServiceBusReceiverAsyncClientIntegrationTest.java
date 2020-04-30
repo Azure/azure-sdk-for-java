@@ -17,12 +17,15 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 
+import static com.azure.messaging.servicebus.TestUtils.MESSAGE_POSITION_ID;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -233,7 +236,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Verifies that we can send and peek a batch of messages.
+     * Verifies that we can send and peek a batch of messages and the sequence number is tracked correctly.
      */
     @MethodSource("messagingEntityWithSessions")
     @ParameterizedTest
@@ -241,15 +244,38 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         setSenderAndReceiver(entityType, isSessionEnabled);
 
-        final String messageId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
-        final int maxMessages = 2;
+        final BiConsumer<ServiceBusReceivedMessage, Integer> checkCorrectMessage = (message, index) -> {
+            final Map<String, Object> properties = message.getProperties();
+            final Object value = properties.get(MESSAGE_POSITION_ID);
+            assertTrue(value instanceof Integer, "Did not contain correct position number: " + value);
 
-        Mono.when(sendMessage(message), sendMessage(message)).block(TIMEOUT);
+            final int position = (int) value;
+            assertEquals(index, position);
+        };
+        final String messageId = UUID.randomUUID().toString();
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(10, messageId);
+        if (isSessionEnabled) {
+            messages.forEach(m -> m.setSessionId(sessionId));
+        }
+
+        sendMessage(messages).block(TIMEOUT);
 
         // Assert & Act
-        StepVerifier.create(receiver.peekBatch(maxMessages))
-            .expectNextCount(maxMessages)
+        StepVerifier.create(receiver.peekBatch(3))
+            .assertNext(message -> checkCorrectMessage.accept(message, 0))
+            .assertNext(message -> checkCorrectMessage.accept(message, 1))
+            .assertNext(message -> checkCorrectMessage.accept(message, 2))
+            .verifyComplete();
+
+        StepVerifier.create(receiver.peekBatch(4))
+            .assertNext(message -> checkCorrectMessage.accept(message, 3))
+            .assertNext(message -> checkCorrectMessage.accept(message, 4))
+            .assertNext(message -> checkCorrectMessage.accept(message, 5))
+            .assertNext(message -> checkCorrectMessage.accept(message, 6))
+            .verifyComplete();
+
+        StepVerifier.create(receiver.peek())
+            .assertNext(message -> checkCorrectMessage.accept(message, 7))
             .verifyComplete();
     }
 
@@ -673,6 +699,13 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         return sender.send(message).doOnSuccess(aVoid -> {
             int number = messagesPending.incrementAndGet();
             logger.info("Number sent: {}", number);
+        });
+    }
+
+    private Mono<Void> sendMessage(List<ServiceBusMessage> messages) {
+        return sender.send(messages).doOnSuccess(aVoid -> {
+            int number = messagesPending.addAndGet(messages.size());
+            logger.info("Number of messages sent: {}", number);
         });
     }
 }

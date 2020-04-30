@@ -303,12 +303,17 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(channel -> channel.peek(lastPeekedSequenceNumber.get() + 1, sessionId, getLinkName()))
+            .flatMap(channel -> {
+                final long sequence = lastPeekedSequenceNumber.get() + 1;
+
+                logger.verbose("Peek message from sequence number: {}", sequence);
+                return channel.peek(sequence, sessionId, getLinkName());
+            })
             .handle((message, sink) -> {
                 final long current = lastPeekedSequenceNumber
                     .updateAndGet(value -> Math.max(value, message.getSequenceNumber()));
-                logger.verbose("Last peeked sequence number: {}", current);
 
+                logger.verbose("Updating last peeked sequence number: {}", current);
                 sink.next(message);
             });
     }
@@ -352,6 +357,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMapMany(node -> {
                 final long nextSequenceNumber = lastPeekedSequenceNumber.get() + 1;
+                logger.verbose("Peek batch from sequence number: {}", nextSequenceNumber);
 
                 final Flux<ServiceBusReceivedMessage> messages =
                     node.peek(nextSequenceNumber, sessionId, getLinkName(), maxMessages);
@@ -359,6 +365,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                     .handle((last, sink) -> {
                         final long current = lastPeekedSequenceNumber
                             .updateAndGet(value -> Math.max(value, last.getSequenceNumber()));
+
                         logger.verbose("Last peeked sequence number in batch: {}", current);
                         sink.complete();
                     });
