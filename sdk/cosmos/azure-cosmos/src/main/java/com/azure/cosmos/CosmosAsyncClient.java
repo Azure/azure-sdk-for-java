@@ -16,6 +16,7 @@ import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -320,6 +321,19 @@ public final class CosmosAsyncClient implements Closeable {
     public Mono<CosmosAsyncDatabaseResponse> createDatabase(String id, int throughput) {
         CosmosDatabaseRequestOptions options = new CosmosDatabaseRequestOptions();
         ModelBridgeInternal.setOfferThroughput(options, throughput);
+        return createDatabase(new CosmosDatabaseProperties(id), options);
+    }
+
+    /**
+     * Creates a database.
+     *
+     * @param id the id
+     * @param throughputProperties the throughputProperties
+     * @return the mono
+     */
+    public Mono<CosmosAsyncDatabaseResponse> createDatabase(String id, ThroughputProperties throughputProperties) {
+        CosmosDatabaseRequestOptions options = new CosmosDatabaseRequestOptions();
+        ModelBridgeInternal.setOfferProperties(options, throughputProperties);
         return createDatabase(new CosmosDatabaseProperties(id), options);
     }
 

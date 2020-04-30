@@ -3,6 +3,7 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosContainer;
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CompositePathSortOrder;
 import com.azure.cosmos.CosmosAsyncClient;
@@ -27,6 +28,8 @@ import com.azure.cosmos.models.SpatialType;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.RetryAnalyzer;
+import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.models.ThroughputResponse;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -365,6 +368,33 @@ public class CollectionCrudTest extends TestSuiteBase {
             safeClose(client1);
             safeClose(client2);
         }
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void readReplaceAutoscaleThroughput() throws Exception {
+        safeDeleteDatabase(client.getDatabase("newTestDatabase"));
+        int initalThroughput = 5000;
+        ThroughputProperties throughputProperties =
+            ThroughputProperties.createAutoScaledProvisionedThroughput(initalThroughput, 50);
+        CosmosAsyncDatabase database = client.createDatabase("newTestDatabase")
+                                           .block()
+                                           .getDatabase();
+
+        CosmosContainerProperties containerProperties = new CosmosContainerProperties("testCol", "/myPk");
+        CosmosAsyncContainer container = database.createContainer(containerProperties, throughputProperties,
+                                                                  new CosmosContainerRequestOptions())
+                                        .block()
+                                        .getContainer();
+
+        // Read
+        ThroughputResponse readThroughputResponse = container.readThroughput().block();
+        assertThat(readThroughputResponse.getProperties().getMaxAutoscaleThroughput()).isEqualTo(initalThroughput);
+
+        // Replace
+        int tagetThroughput = 6000;
+        throughputProperties = ThroughputProperties.createAutoScaledProvisionedThroughput(tagetThroughput);
+        ThroughputResponse replaceResponse = container.replaceThroughput(throughputProperties).block();
+        assertThat(replaceResponse.getProperties().getMaxAutoscaleThroughput()).isEqualTo(tagetThroughput);
     }
 
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)

@@ -4,6 +4,8 @@ package com.azure.cosmos.rx;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.implementation.Offer;
+import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDatabaseForTest;
@@ -11,6 +13,8 @@ import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.implementation.FailureValidator;
+import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.models.ThroughputResponse;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -19,6 +23,8 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DatabaseCrudTest extends TestSuiteBase {
     private final String preExistingDatabaseId = CosmosDatabaseForTest.generateId();
@@ -106,6 +112,25 @@ public class DatabaseCrudTest extends TestSuiteBase {
         // validate
         FailureValidator validator = new FailureValidator.Builder().resourceNotFound().build();
         validateFailure(deleteObservable, validator);
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void readReplaceAutoscaleThroughput() throws Exception {
+        safeDeleteDatabase(client.getDatabase("newTestDatabase"));
+        int initalThroughput = 5000;
+        ThroughputProperties properties = ThroughputProperties.createAutoScaledProvisionedThroughput(initalThroughput,
+                                                                                                     50);
+        CosmosAsyncDatabase database = client.createDatabase("newTestDatabase", properties)
+                                           .block()
+                                           .getDatabase();
+
+        ThroughputResponse readThroughputResponse = database.readThroughput().block();
+        assertThat(readThroughputResponse.getProperties().getMaxAutoscaleThroughput()).isEqualTo(initalThroughput);
+        database.createContainer("testCol", "/myPk").block();
+        int tagetThroughput = 6000;
+        properties = ThroughputProperties.createAutoScaledProvisionedThroughput(tagetThroughput);
+        ThroughputResponse replaceResponse = database.replaceThroughput(properties).block();
+        assertThat(replaceResponse.getProperties().getMaxAutoscaleThroughput()).isEqualTo(tagetThroughput);
     }
 
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)

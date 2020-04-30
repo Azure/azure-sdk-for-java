@@ -11,12 +11,15 @@ import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.models.CosmosAsyncUserResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.models.ThroughputResponse;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import reactor.core.Exceptions;
@@ -151,6 +154,22 @@ public class CosmosAsyncDatabase {
         ModelBridgeInternal.validateResource(containerProperties);
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
         ModelBridgeInternal.setOfferThroughput(options, throughput);
+        return createContainer(containerProperties, options);
+    }
+
+    /**
+     * Creates a container.
+     *
+     * @param containerProperties the container properties
+     * @param throughputProperties the throughput properties
+     * @param options the request options
+     * @return the mono
+     */
+    public Mono<CosmosAsyncContainerResponse> createContainer(
+        CosmosContainerProperties containerProperties,
+        ThroughputProperties throughputProperties,
+        CosmosContainerRequestOptions options){
+        ModelBridgeInternal.setOfferProperties(options, throughputProperties);
         return createContainer(containerProperties, options);
     }
 
@@ -661,6 +680,72 @@ public class CosmosAsyncDatabase {
                                                           }).map(offerResourceResponse -> offerResourceResponse
                                                                                               .getResource()
                                                                                               .getThroughput()));
+    }
+
+    /**
+     * Sets throughput provisioned for a container in measurement of
+     * Requests-per-Unit in the Azure Cosmos service.
+     *
+     * @param throughputProperties the throughput properties
+     * @return the mono
+     */
+    public Mono<ThroughputResponse> replaceThroughput(ThroughputProperties throughputProperties) {
+        return this.read()
+                   .flatMap(response -> this.getDocClientWrapper()
+                                            .queryOffers("select * from c where c.offerResourceId = '"
+                                                             + response.getProperties()
+                                                                   .getResourceId()
+                                                             + "'", new FeedOptions())
+                                            .single()
+                                            .flatMap(offerFeedResponse -> {
+                                                if (offerFeedResponse.getResults().isEmpty()) {
+                                                    return Mono.error(BridgeInternal
+                                                                          .createCosmosClientException(
+                                                                              HttpConstants.StatusCodes.BADREQUEST,
+                                                                              "No offers found for the " +
+                                                                                  "resource"));
+                                                }
+
+                                                Offer existingOffer = offerFeedResponse.getResults().get(0);
+                                                ModelBridgeInternal.updateOfferFromProperties(existingOffer,
+                                                                                              throughputProperties);
+
+                                                return this.getDocClientWrapper()
+                                                           .replaceOffer(existingOffer)
+                                                           .single();
+                                            })
+                                            .map(ModelBridgeInternal::createThroughputRespose));
+    }
+
+    /**
+     * Gets the throughput of the database
+     *
+     * @return the mono containing throughput response
+     */
+    public Mono<ThroughputResponse> readThroughput() {
+        return this.read()
+                   .flatMap(response -> getDocClientWrapper()
+                                            .queryOffers("select * from c where c.offerResourceId = '"
+                                                             + response
+                                                                   .getProperties()
+                                                                   .getResourceId() + "'",
+                                                         new FeedOptions())
+                                            .single()
+                                            .flatMap(offerFeedResponse -> {
+                                                if (offerFeedResponse.getResults().isEmpty()) {
+                                                    return Mono.error(BridgeInternal
+                                                                          .createCosmosClientException(
+                                                                              HttpConstants.StatusCodes.BADREQUEST,
+                                                                              "No offers found for the " +
+                                                                                  "resource"));
+                                                }
+                                                return getDocClientWrapper()
+                                                           .readOffer(offerFeedResponse.getResults()
+                                                                          .get(0)
+                                                                          .getSelfLink())
+                                                           .single();
+                                            })
+                                            .map(ModelBridgeInternal::createThroughputRespose));
     }
 
     CosmosAsyncClient getClient() {

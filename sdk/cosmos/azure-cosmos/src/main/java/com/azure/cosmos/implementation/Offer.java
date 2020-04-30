@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.Resource;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -26,6 +27,18 @@ public class Offer extends Resource {
         this.setContent(content);
     }
 
+    Offer(OfferAutoscaleSettings offerAutoscaleSettings) {
+        super();
+        this.setOfferVersion(Constants.Properties.OFFER_VERSION_V2);
+        this.setOfferType("");
+        ObjectNode content = Utils.getSimpleObjectMapper().createObjectNode();
+//        content.put(Constants.Properties.OFFER_THROUGHPUT, null);
+        content.replace(Constants.Properties.AUTOPILOT_SETTINGS, ModelBridgeInternal
+                                                                     .getPropertyBagFromJsonSerializable(offerAutoscaleSettings));
+        this.setContent(content);
+    }
+
+
     /**
      * Initialize an offer object from json string.
      *
@@ -34,7 +47,71 @@ public class Offer extends Resource {
     public Offer(String jsonString) {
         super(jsonString);
     }
-    
+
+    /**
+     * Create fixed offer offer.
+     *
+     * @param throughput the throughput
+     * @return the offer
+     */
+    public static Offer createFixedOffer(int throughput) {
+        return new Offer(throughput);
+    }
+
+    /**
+     * Create autoscale offer offer.
+     *
+     * @param startingMaxThroughput the starting max throughput
+     * @param autoUpgradeMaxThroughputIncrementPercentage the auto upgrade max throughput increment percentage
+     * @return the offer
+     */
+    public static Offer createAutoscaleOffer(
+        int startingMaxThroughput,
+        int autoUpgradeMaxThroughputIncrementPercentage) {
+        return new Offer(new OfferAutoscaleSettings(startingMaxThroughput,
+                                                    autoUpgradeMaxThroughputIncrementPercentage));
+    }
+
+    /**
+     * Gets offer auto scale settings.
+     *
+     * @return the offer auto scale settings
+     */
+    public OfferAutoscaleSettings getOfferAutoScaleSettings() {
+        if (this.getContent().hasNonNull(Constants.Properties.AUTOPILOT_SETTINGS)) {
+            return new OfferAutoscaleSettings((ObjectNode) this.getContent()
+                                                               .get(Constants.Properties.AUTOPILOT_SETTINGS));
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Gets max autoscale throughput.
+     *
+     * @return the max autoscale throughput
+     */
+    public int getMaxAutoscaleThroughput() {
+        OfferAutoscaleSettings offerAutoscaleSettings = this.getOfferAutoScaleSettings();
+        if (offerAutoscaleSettings != null) {
+            return offerAutoscaleSettings.getMaxThroughput();
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * Sets max autoscale throughput.
+     *
+     * @param maxAutoscaleThroughput the max autoscale throughput
+     */
+    public void setMaxAutoscaleThroughput(int maxAutoscaleThroughput) {
+        OfferAutoscaleSettings offerAutoscaleSettings = this.getOfferAutoScaleSettings();
+        if (offerAutoscaleSettings != null) {
+            offerAutoscaleSettings.setMaxThroughput(maxAutoscaleThroughput);
+        }
+    }
+
     /**
      * Gets the self-link of a resource to which the resource offer applies.
      *
@@ -117,6 +194,15 @@ public class Offer extends Resource {
     }
 
     /**
+     * Has offer throughput.
+     *
+     * @return the if the offer has throughput
+     */
+    public boolean hasOfferThroughput(){
+        return this.getContent().hasNonNull(Constants.Properties.OFFER_THROUGHPUT);
+    }
+
+    /**
      * Sets the offer throughput for this offer.
      *
      * @param throughput the throughput of this offer.
@@ -142,4 +228,9 @@ public class Offer extends Resource {
     public Integer getInt(String propertyName) {
         return super.getInt(propertyName);
     }
+
+    public void updateAutoscaleThroughput(int maxAutoscaleThroughput) {
+        this.getOfferAutoScaleSettings().setMaxThroughput(maxAutoscaleThroughput);
+    }
+
 }
