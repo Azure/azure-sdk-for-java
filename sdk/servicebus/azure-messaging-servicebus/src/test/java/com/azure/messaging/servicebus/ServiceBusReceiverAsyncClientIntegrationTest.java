@@ -3,27 +3,28 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.core.amqp.exception.AmqpErrorCondition;
-import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
-import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -31,9 +32,6 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 /**
  * Integration tests for {@link ServiceBusReceiverAsyncClient} from queues or subscriptions.
@@ -87,6 +85,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         } finally {
             dispose(receiver, sender, receiveAndDeleteReceiver);
         }
+
     }
 
     /**
@@ -160,6 +159,54 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .verify();
 
         messagesPending.decrementAndGet();
+    }
+
+    /**
+     * Verifies that we can send messaged with some delay and receive a message without receiver dying.
+     */
+    @MethodSource("messagingEntityWithSessions")
+    @ParameterizedTest
+    void receiveSlowMultipleMessageAutoComplete(MessagingEntityType entityType, boolean isSessionEnabled) {
+        // Arrange
+        int count = 3;
+        setSenderAndReceiver(entityType, isSessionEnabled);
+        Duration delayPublishing = Duration.ofMillis(1000);
+
+        final String messageId = UUID.randomUUID().toString();
+        AtomicReference<List<ServiceBusReceivedMessage>> receivedMessages = new AtomicReference<>();
+        receivedMessages.set(new ArrayList<>());
+
+        Flux.just(
+            getMessage(messageId, isSessionEnabled),
+            getMessage(messageId, isSessionEnabled),
+            getMessage(messageId, isSessionEnabled)
+        )
+            .delayElements(delayPublishing)
+            .map(message -> sender.send(message).subscribe())
+            .subscribe();
+
+        // Assert & Act
+        StepVerifier.create(receiver.receive())
+            .assertNext(receivedMessage -> {
+                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+                receivedMessages.get().add(receivedMessage);
+            })
+            .assertNext(receivedMessage -> {
+                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+                receivedMessages.get().add(receivedMessage);
+            })
+            .assertNext(receivedMessage -> {
+                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+                receivedMessages.get().add(receivedMessage);
+            })
+            .thenCancel()
+            .verify();
+
+        for (int index = 0; index < count; ++index) {
+            messagesPending.decrementAndGet();
+        }
+
+        assertEquals(count, receivedMessages.get().size());
     }
 
     /**
