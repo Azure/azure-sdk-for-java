@@ -3,10 +3,6 @@
 
 package com.azure.search.documents.models;
 
-import com.azure.core.util.CoreUtils;
-
-import java.util.Objects;
-
 /**
  * A helper Field model to build a simple {@link Field}.
  */
@@ -22,6 +18,7 @@ public class SimpleField extends FieldBase {
      *
      * @param name The name of the field, which must be unique within the index or parent field.
      * @param dataType The {@link DataType} of the {@link Field}.
+     * @param collection boolean field to indicate whether the dataType is collection.
      * @throws NullPointerException when {@code name} is null.
      */
     public SimpleField(String name, DataType dataType, boolean collection) {
