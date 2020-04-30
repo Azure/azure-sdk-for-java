@@ -44,6 +44,12 @@ public class RegistryUpdateParameters {
     private StorageAccountProperties storageAccount;
 
     /**
+     * The network rule set for a container registry.
+     */
+    @JsonProperty(value = "properties.networkRuleSet")
+    private NetworkRuleSet networkRuleSet;
+
+    /**
      * Get the tags for the container registry.
      *
      * @return the tags value
@@ -120,6 +126,26 @@ public class RegistryUpdateParameters {
      */
     public RegistryUpdateParameters withStorageAccount(StorageAccountProperties storageAccount) {
         this.storageAccount = storageAccount;
+        return this;
+    }
+
+    /**
+     * Get the network rule set for a container registry.
+     *
+     * @return the networkRuleSet value
+     */
+    public NetworkRuleSet networkRuleSet() {
+        return this.networkRuleSet;
+    }
+
+    /**
+     * Set the network rule set for a container registry.
+     *
+     * @param networkRuleSet the networkRuleSet value to set
+     * @return the RegistryUpdateParameters object itself.
+     */
+    public RegistryUpdateParameters withNetworkRuleSet(NetworkRuleSet networkRuleSet) {
+        this.networkRuleSet = networkRuleSet;
         return this;
     }
 
