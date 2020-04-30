@@ -35,7 +35,7 @@ public class ServiceBusReceiverClient implements AutoCloseable {
     private final ServiceBusReceiverAsyncClient asyncClient;
     private final Duration operationTimeout;
     private static final ReceiveAsyncOptions DEFAULT_RECEIVE_OPTIONS = new ReceiveAsyncOptions()
-        .setEnableAutoComplete(false)
+        .setIsAutoCompleteEnabled(false)
         .setMaxAutoRenewDuration(Duration.ZERO);
 
     /**

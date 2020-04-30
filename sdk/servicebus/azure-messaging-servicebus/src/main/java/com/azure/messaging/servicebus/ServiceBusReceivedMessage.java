@@ -38,6 +38,8 @@ public final class ServiceBusReceivedMessage implements MessageLockToken {
     private Duration timeToLive;
     private String to;
     private String viaPartitionKey;
+    private String deadLetterReason;
+    private String deadLetterDescription;
 
     ServiceBusReceivedMessage(byte[] body) {
         this.body = Objects.requireNonNull(body, "'body' cannot be null.");
@@ -82,6 +84,14 @@ public final class ServiceBusReceivedMessage implements MessageLockToken {
      */
     public String getCorrelationId() {
         return correlationId;
+    }
+
+    public String getDeadLetterDescription() {
+        return deadLetterDescription;
+    }
+
+    public String getDeadLetterReason() {
+        return deadLetterReason;
     }
 
     /**
@@ -373,6 +383,14 @@ public final class ServiceBusReceivedMessage implements MessageLockToken {
         this.contentType = contentType;
     }
 
+    void setDeadLetterDescription(String deadLetterDescription) {
+        this.deadLetterDescription = deadLetterDescription;
+    }
+
+    void setDeadLetterReason(String deadLetterReason) {
+        this.deadLetterReason = deadLetterReason;
+    }
+
     /**
      * Sets the name of the queue or subscription that this message was enqueued on, before it was
      * deadlettered.
@@ -532,28 +550,5 @@ public final class ServiceBusReceivedMessage implements MessageLockToken {
      */
     void setViaPartitionKey(String viaPartitionKey) {
         this.viaPartitionKey = viaPartitionKey;
-    }
-
-    /**
-     * Takes the {@link ServiceBusReceivedMessage} and create an instance of {@link ServiceBusMessage}.
-     * This is normally used when a {@link ServiceBusReceivedMessage} needs to be sent to another entity.
-     *
-     * @return Created {@link ServiceBusMessage} instance.
-     */
-    public ServiceBusMessage toServiceBusMessage() {
-        ServiceBusMessage message =  new ServiceBusMessage(body);
-        message.setMessageId(getMessageId());
-        message.setScheduledEnqueueTime(getScheduledEnqueueTime());
-        message.setContentType(getContentType());
-        message.setCorrelationId(getCorrelationId());
-        message.setLabel(getLabel());
-        message.setPartitionKey(getPartitionKey());
-        message.setReplyTo(getReplyTo());
-        message.setReplyToSessionId(getReplyToSessionId());
-        message.setTimeToLive(getTimeToLive());
-        message.setTo(getTo());
-        message.setSessionId(getSessionId());
-        message.setViaPartitionKey(getViaPartitionKey());
-        return message;
     }
 }

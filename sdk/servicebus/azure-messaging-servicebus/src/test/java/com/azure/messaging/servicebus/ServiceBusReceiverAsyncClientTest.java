@@ -238,7 +238,7 @@ class ServiceBusReceiverAsyncClientTest {
         final List<Message> messages = getMessages(10);
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
             .setMaxAutoRenewDuration(Duration.ZERO)
-            .setEnableAutoComplete(false);
+            .setIsAutoCompleteEnabled(false);
 
         ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
         when(receivedMessage.getLockToken()).thenReturn(UUID.randomUUID().toString());

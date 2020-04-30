@@ -50,7 +50,7 @@ public class ReceiveMessageAndSettleAsyncSample {
         // enableAutoComplete to false, means the onus is on users to complete, abandon, defer, or dead-letter the
         // message when they are finished with it.
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
-            .setEnableAutoComplete(false)
+            .setIsAutoCompleteEnabled(false)
             .setMaxAutoRenewDuration(Duration.ofSeconds(120));
 
         Disposable subscription = receiver.receive(options)

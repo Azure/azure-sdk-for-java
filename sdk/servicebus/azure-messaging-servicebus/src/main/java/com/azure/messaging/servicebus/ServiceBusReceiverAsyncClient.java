@@ -122,7 +122,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         this.onClientClose = onClientClose;
         this.managementNodeLocks = new MessageLockContainer(cleanupInterval);
         this.defaultReceiveOptions = new ReceiveAsyncOptions()
-            .setEnableAutoComplete(true)
+            .setIsAutoCompleteEnabled(true)
             .setMaxAutoRenewDuration(connectionProcessor.getRetryOptions().getTryTimeout());
     }
 
@@ -487,7 +487,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return fluxError(logger, new IllegalArgumentException("'maxAutoRenewDuration' cannot be negative."));
         }
 
-        if (receiveMode != ReceiveMode.PEEK_LOCK && options.isEnableAutoComplete()) {
+        if (receiveMode != ReceiveMode.PEEK_LOCK && options.isAutoCompleteEnabled()) {
             return Flux.error(logger.logExceptionAsError(new UnsupportedOperationException(
                 "Auto-complete is not supported on a receiver opened in ReceiveMode.RECEIVE_AND_DELETE.")));
         }
@@ -751,7 +751,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             && !options.getMaxAutoRenewDuration().isZero();
 
         final ServiceBusAsyncConsumer newConsumer = new ServiceBusAsyncConsumer(linkName, linkMessageProcessor,
-            messageSerializer, options.isEnableAutoComplete(), isAutoLockRenewal, options.getMaxAutoRenewDuration(),
+            messageSerializer, options.isAutoCompleteEnabled(), isAutoLockRenewal, options.getMaxAutoRenewDuration(),
             connectionProcessor.getRetryOptions(), this::complete, this::abandon, this::renewMessageLock);
 
         // There could have been multiple threads trying to create this async consumer when the result was null.
