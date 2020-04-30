@@ -54,6 +54,7 @@ class NioBlobInputStreamTest extends APISpec {
 
         where:
         size            | _
+        0               | _
         100             | _
         9 * 1024 * 1024 | _ // Test having to chunk downloads into multiple requests.
     }
