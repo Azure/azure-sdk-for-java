@@ -95,9 +95,9 @@ public final class UploadBufferPool {
 
         Flux<BufferAggregator> result;
         // We can fit this whole write in the buffer we currently have.
-        if (this.currentBuf.remaining() >= buf.remaining()) {
+        if (this.currentBuf.remainingCapacity() >= buf.remaining()) {
             this.currentBuf.append(buf);
-            if (this.currentBuf.remaining() == 0) {
+            if (this.currentBuf.remainingCapacity() == 0) {
                 result = Flux.just(this.currentBuf);
                 // This will force us to get a new buffer next time we try to write.
                 this.currentBuf = null;
@@ -112,10 +112,10 @@ public final class UploadBufferPool {
             // We will overflow the current buffer and require another one.
             // Duplicate and adjust the window of buf so that we fill up currentBuf without going out of bounds.
             ByteBuffer duplicate = buf.duplicate();
-            duplicate.limit(buf.position() + (int) this.currentBuf.remaining());
+            duplicate.limit(buf.position() + (int) this.currentBuf.remainingCapacity());
             this.currentBuf.append(duplicate);
             // Adjust the window of original buffer to represent remaining part.
-            buf.position(buf.position() + (int) this.currentBuf.remaining());
+            buf.position(buf.position() + (int) this.currentBuf.remainingCapacity());
 
             result = Flux.just(this.currentBuf);
 

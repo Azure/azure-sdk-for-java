@@ -307,7 +307,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         return chunkedSource.concatMap(pool::write)
             .concatWith(Flux.defer(pool::flush))
             /* Map the data to a tuple 3, of buffer, buffer length, buffer offset */
-            .map(buffer -> Tuples.of(buffer, buffer.remaining(), 0L))
+            .map(bufferAggregator -> Tuples.of(bufferAggregator, bufferAggregator.length(), 0L))
             /* Scan reduces a flux with an accumulator while emitting the intermediate results. */
             /* As an example, data consists of ByteBuffers of length 10-10-5.
                In the map above we transform the initial ByteBuffer to a tuple3 of buff, 10, 0.
@@ -316,23 +316,24 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                (from previous emission). Scan emits that, and on the last iteration, the last ByteBuffer gets
                transformed to buff, 5, 10+10 (from previous emission). */
             .scan((result, source) -> {
-                BufferAggregator buffer = source.getT1();
-                long currentBufferLength = buffer.remaining();
+                BufferAggregator bufferAggregator = source.getT1();
+                long currentBufferLength = bufferAggregator.length();
                 long lastBytesWritten = result.getT2();
                 long lastOffset = result.getT3();
 
-                return Tuples.of(buffer, currentBufferLength, lastBytesWritten + lastOffset);
+                return Tuples.of(bufferAggregator, currentBufferLength, lastBytesWritten + lastOffset);
             })
             .flatMapSequential(tuple3 -> {
-                BufferAggregator buffer = tuple3.getT1();
-                long currentBufferLength = buffer.remaining();
+                BufferAggregator bufferAggregator = tuple3.getT1();
+                long currentBufferLength = bufferAggregator.length();
                 long currentOffset = tuple3.getT3() + fileOffset;
                 // Report progress as necessary.
                 Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(
-                    buffer.asFlux(), parallelTransferOptions.getProgressReceiver(), progressLock, totalProgress);
+                    bufferAggregator.asFlux(), parallelTransferOptions.getProgressReceiver(),
+                    progressLock, totalProgress);
                 return appendWithResponse(progressData, currentOffset, currentBufferLength, null,
                     requestConditions.getLeaseId())
-                    .doFinally(x -> pool.returnBuffer(buffer))
+                    .doFinally(x -> pool.returnBuffer(bufferAggregator))
                     .map(resp -> currentBufferLength + currentOffset) /* End of file after append to pass to flush. */
                     .flux();
             })

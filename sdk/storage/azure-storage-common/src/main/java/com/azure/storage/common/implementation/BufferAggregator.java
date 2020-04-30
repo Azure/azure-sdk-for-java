@@ -30,7 +30,7 @@ public final class BufferAggregator {
     /**
      * @return Remaining number of bytes this instance can store.
      */
-    public long remaining() {
+    long remainingCapacity() {
         return limit - length;
     }
 

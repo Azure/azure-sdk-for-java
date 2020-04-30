@@ -2054,7 +2054,6 @@ class FileAPITest extends APISpec {
         10                                             | null            || 0  // Size is too small to trigger block uploading
         10 * Constants.KB                              | null            || 0  // Size is too small to trigger block uploading
         50 * Constants.MB                              | null            || 0  // Size is too small to trigger block uploading
-        DataLakeFileAsyncClient.MAX_APPEND_FILE_BYTES + 1 | null            || Math.ceil((DataLakeFileAsyncClient.MAX_APPEND_FILE_BYTES + 1) / BlobAsyncClient.BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE) // HTBB optimizations should trigger when file size is >100MB and defaults are used.
         101 * Constants.MB                             | 4 * 1024 * 1024 || 0  // Size is too small to trigger block uploading
     }
 
