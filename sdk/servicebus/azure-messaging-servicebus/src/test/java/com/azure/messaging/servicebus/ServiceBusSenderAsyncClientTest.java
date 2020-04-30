@@ -8,6 +8,8 @@ import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
@@ -43,6 +45,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.IntStream;
 
 import static com.azure.messaging.servicebus.ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES;
@@ -53,6 +56,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -81,9 +85,9 @@ class ServiceBusSenderAsyncClientTest {
     private Runnable onClientClose;
 
     @Captor
-    private ArgumentCaptor<org.apache.qpid.proton.message.Message> singleMessageCaptor;
+    private ArgumentCaptor<Message> singleMessageCaptor;
     @Captor
-    private ArgumentCaptor<List<org.apache.qpid.proton.message.Message>> messagesCaptor;
+    private ArgumentCaptor<List<Message>> messagesCaptor;
 
     private MessageSerializer serializer = new ServiceBusMessageSerializer();
     private TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
@@ -160,7 +164,8 @@ class ServiceBusSenderAsyncClientTest {
      */
     @Test
     void createBatchNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> sender.createBatch(null));
+        StepVerifier.create(sender.createBatch(null))
+            .verifyErrorMatches(error -> error instanceof NullPointerException);
     }
 
     /**
@@ -280,6 +285,56 @@ class ServiceBusSenderAsyncClientTest {
         Assertions.assertEquals(count, messagesSent.size());
 
         messagesSent.forEach(message -> Assertions.assertEquals(Section.SectionType.Data, message.getBody().getType()));
+    }
+
+    /**
+     * Verifies that sending multiple message will result in calling sender.send(Message...).
+     */
+    @Test
+    void sendMessagesList() {
+        // Arrange
+        final int count = 4;
+        final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString());
+
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions)))
+            .thenReturn(Mono.just(sendLink));
+        when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
+        when(sendLink.send(anyList())).thenReturn(Mono.empty());
+
+        // Act
+        StepVerifier.create(sender.send(messages))
+            .verifyComplete();
+
+        // Assert
+        verify(sendLink).send(messagesCaptor.capture());
+
+        final List<Message> messagesSent = messagesCaptor.getValue();
+        Assertions.assertEquals(count, messagesSent.size());
+
+        messagesSent.forEach(message -> Assertions.assertEquals(Section.SectionType.Data, message.getBody().getType()));
+    }
+
+    /**
+     * Verifies that sending multiple message which does not fit in single batch will throw exception.
+     */
+    @Test
+    void sendMessagesListExceedSize() {
+        // Arrange
+        final int count = 4;
+        final Mono<Integer> linkMaxSize = Mono.just(1);
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString());
+
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions)))
+            .thenReturn(Mono.just(sendLink));
+        when(sendLink.getLinkSize()).thenReturn(linkMaxSize);
+
+        // Act & Assert
+        StepVerifier.create(sender.send(messages))
+            .verifyErrorMatches(error -> error instanceof AmqpException
+                && ((AmqpException) error).getErrorCondition() == AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED);
+
+        verify(sendLink, never()).send(anyList());
     }
 
     /**
