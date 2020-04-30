@@ -72,8 +72,8 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
 
     private Function<Skillset, Skillset> mutateSkillsetFunc = this::mutateSkillsInSkillset;
 
-    private BiConsumer<String, AccessOptions> deleteSkillsetFunc = (String name, AccessOptions ac) ->
-        client.deleteSkillsetWithResponse(new Skillset().setName(name), ac.getOnlyIfUnchanged(), ac.getRequestOptions(),
+    private BiConsumer<Skillset, AccessOptions> deleteSkillsetFunc = (Skillset skillset, AccessOptions ac) ->
+        client.deleteSkillsetWithResponse(skillset, ac.getOnlyIfUnchanged(), ac.getRequestOptions(),
             Context.NONE);
 
     private Skillset createSkillset(Skillset skillset, Boolean onlyIfUnchanged, RequestOptions requestOptions) {
@@ -481,12 +481,6 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
     }
 
     @Test
-    public void createOrUpdateSkillsetIfNotExistsFailsOnExistingResource() {
-        AccessConditionTests.createOrUpdateIfNotExistsFailsOnExistingResource(createOrUpdateSkillsetFunc,
-            newSkillsetFunc, mutateSkillsetFunc);
-    }
-
-    @Test
     public void createOrUpdateSkillsetIfNotExistsSucceedsOnNoResource() {
         AccessConditionTests.createOrUpdateIfNotExistsSucceedsOnNoResource(createOrUpdateSkillsetFunc, newSkillsetFunc);
     }
@@ -495,11 +489,6 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
     public void createOrUpdateSkillsetIfExistsSucceedsOnExistingResource() {
         AccessConditionTests.updateIfExistsSucceedsOnExistingResource(newSkillsetFunc, createOrUpdateSkillsetFunc,
             mutateSkillsetFunc);
-    }
-
-    @Test
-    public void createOrUpdateSkillsetIfExistsFailsOnNoResource() {
-        AccessConditionTests.updateIfExistsFailsOnNoResource(newSkillsetFunc, createOrUpdateSkillsetFunc);
     }
 
     @Test
@@ -523,7 +512,7 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
     @Test
     public void deleteSkillsetIfExistsWorksOnlyWhenResourceExists() {
         AccessConditionTests.deleteIfExistsWorksOnlyWhenResourceExists(deleteSkillsetFunc, createOrUpdateSkillsetFunc,
-            newSkillsetFunc, OCR_SKILLSET_NAME);
+            newSkillsetFunc);
     }
 
     private InputFieldMappingEntry simpleInputFieldMappingEntry(String name, String source) {

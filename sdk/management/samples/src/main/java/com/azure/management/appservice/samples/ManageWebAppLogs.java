@@ -92,7 +92,7 @@ public final class ManageWebAppLogs {
                     System.out.println("Deploying coffeeshop.war to " + appName + " through web deploy...");
 
                     app.deploy()
-                            .withPackageUri("https://github.com/Azure/azure-libraries-for-java/raw/master/azure-samples/src/main/resources/coffeeshop.zip")
+                            .withPackageUri("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/management/samples/src/main/resources/coffeeshop.zip")
                             .withExistingDeploymentsDeleted(false)
                             .execute();
 

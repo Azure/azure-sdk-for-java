@@ -42,6 +42,8 @@ parameters:
       OSVmImage: 'windows-2019'
       JavaVersion: '1.8'
       RunTitle: 'From Source: Windows on Java 1.8'
+      PLSkipOptions: '!com.azure:jacoco-test-coverage'
+      AdditionalOptions: '-amd'
       TestFromSource: true
 
 jobs:
@@ -262,7 +264,7 @@ jobs:
         displayName: 'Run tests'
         inputs:
           mavenPomFile: pom.xml
-          options: ${{ parameters.TestOptions }} -pl $(ProjectList) -am
+          options: ${{ parameters.TestOptions }} -pl $(PLSkipOptions)$(ProjectList) -am $(AdditionalOptions)
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
