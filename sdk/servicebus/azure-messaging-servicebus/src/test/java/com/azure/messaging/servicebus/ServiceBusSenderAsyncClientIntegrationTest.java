@@ -67,7 +67,6 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
 
     /**
      * Verifies that we can send a session message to a non-sessionful entity.
-     * This also work in track-1 code base.
      */
     @MethodSource("receiverTypesProvider")
     @ParameterizedTest

@@ -8,6 +8,8 @@ import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
@@ -34,6 +36,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.DirectProcessor;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -341,6 +344,31 @@ class ServiceBusSenderAsyncClientTest {
             .verifyComplete();
 
         verify(managementNode).cancelScheduledMessage(sequenceNumberReturned);
+    }
+
+    /**
+     * Verifies that it fails if we try to send multiple messages that cannot fit in a single message batch.
+     */
+    @Test
+    void sharedConnectionMultipleClients() {
+        // Arrange
+        long sequenceNumberReturned = 10;
+        Instant instant = mock(Instant.class);
+
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class)))
+            .thenReturn(Mono.just(sendLink));
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(MAX_MESSAGE_LENGTH_BYTES));
+        when(managementNode.schedule(eq(message), eq(instant), any(Integer.class)))
+            .thenReturn(just(sequenceNumberReturned));
+
+        // Act & Assert
+        StepVerifier.create(sender.scheduleMessage(message, instant))
+            .expectNext(sequenceNumberReturned)
+            .verifyComplete();
+
+        verify(managementNode).schedule(message, instant, MAX_MESSAGE_LENGTH_BYTES);
+
+        verify(connection, times(0)).createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class));
     }
 
     /**

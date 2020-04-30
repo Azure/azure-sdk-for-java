@@ -6,15 +6,22 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.Configuration;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSenderClientBuilder;
+import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.models.ReceiveMode;
+import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -25,6 +32,10 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class ServiceBusClientBuilderTest {
     private static final String NAMESPACE_NAME = "dummyNamespaceName";
@@ -43,6 +54,20 @@ class ServiceBusClientBuilderTest {
     private static final String ENTITY_PATH_CONNECTION_STRING = String.format("Endpoint=%s;SharedAccessKeyName=%s;SharedAccessKey=%s;EntityPath=%s",
         ENDPOINT, SHARED_ACCESS_KEY_NAME, SHARED_ACCESS_KEY, QUEUE_NAME);
     private static final Proxy PROXY_ADDRESS = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, Integer.parseInt(PROXY_PORT)));
+
+    @Mock
+    ServiceBusClientBuilder mockBuilder;
+
+    @Mock
+    ServiceBusReceiverClientBuilder mockReceiverBuilder;
+
+    @Mock
+    ServiceBusConnectionProcessor mockConnectionProcessor;
+
+    @BeforeEach
+    void setup() {
+        MockitoAnnotations.initMocks(this);
+    }
 
     @Test
     void missingConnectionString() {
@@ -212,5 +237,41 @@ class ServiceBusClientBuilderTest {
             throw new IllegalArgumentException(String.format(Locale.US,
                 "Invalid namespace name: %s", namespace), exception);
         }
+    }
+
+    /**
+     * Connection is shared across many receiver and senders..
+     */
+    @Test
+    void sharedConnectionTest() {
+
+        // Arrange
+        //ServiceBusReceiverClientBuilder receiverBuilder =  new ServiceBusClientBuilder.ServiceBusReceiverClientBuilder();
+        //when(mockBuilder.createSharedConnection(any(MessageSerializer.class))).thenReturn(mockConnectionProcessor);
+        //when(mockBuilder.receiver()).thenReturn(receiverBuilder);
+
+        /*ServiceBusReceiverClientBuilder receiverBuilder1 = mockBuilder.receiver();
+
+        ServiceBusReceiverAsyncClient client1 = receiverBuilder1.buildAsyncClient();
+        ServiceBusReceiverAsyncClient client2 = receiverBuilder1.buildAsyncClient();
+        ServiceBusReceiverAsyncClient client3 = receiverBuilder1.buildAsyncClient();
+
+        client1.receive().doOnNext(receivedMessage -> {
+            System.out.println("Received " + receivedMessage.getSequenceNumber());
+        }).subscribe();
+
+        client2.receive().doOnNext(receivedMessage -> {
+            System.out.println("Received " + receivedMessage.getSequenceNumber());
+        }).subscribe();
+
+        client3.receive().doOnNext(receivedMessage -> {
+            System.out.println("Received " + receivedMessage.getSequenceNumber());
+        }).subscribe();
+        */
+        ServiceBusClientBuilder builder = new ServiceBusClientBuilder();
+        builder.createSharedConnection();
+
+        // Act & Assert
+        verify(mockBuilder, times(1)).createSharedConnection(any(MessageSerializer.class));
     }
 }
