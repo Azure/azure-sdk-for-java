@@ -18,9 +18,11 @@ import org.junit.jupiter.api.Test;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.validateLayoutResult;
+import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.validateLayoutDataResults;
 import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_URL;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedFormPages;
+import static com.azure.ai.formrecognizer.TestUtils.getPageResults;
+import static com.azure.ai.formrecognizer.TestUtils.getReadResults;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
@@ -45,8 +47,8 @@ public class FormRecognizerClientBuilderTest extends TestBase {
     @Test
     public void clientBuilderWithRotateToValidKey() {
         clientBuilderWithRotateToValidKeyRunner(clientBuilder -> (input, output) ->
-            validateLayoutResult(output,
-                clientBuilder.buildClient().beginRecognizeContentFromUrl(input).getFinalResult()));
+            validateLayoutDataResults(clientBuilder.buildClient().beginRecognizeContentFromUrl(input).getFinalResult(),
+                getReadResults(), getPageResults(), false));
     }
 
     /**
@@ -64,8 +66,8 @@ public class FormRecognizerClientBuilderTest extends TestBase {
     @Test
     public void clientBuilderWithNullServiceVersion() {
         clientBuilderWithNullServiceVersionRunner(clientBuilder -> (input, output) ->
-            validateLayoutResult(output,
-                clientBuilder.buildClient().beginRecognizeContentFromUrl(input).getFinalResult()));
+            validateLayoutDataResults(clientBuilder.buildClient().beginRecognizeContentFromUrl(input).getFinalResult(),
+                getReadResults(), getPageResults(), false));
     }
 
     /**
@@ -74,8 +76,8 @@ public class FormRecognizerClientBuilderTest extends TestBase {
     @Test
     public void clientBuilderWithDefaultPipeline() {
         clientBuilderWithDefaultPipelineRunner(clientBuilder -> (input, output) ->
-            validateLayoutResult(output,
-                clientBuilder.buildClient().beginRecognizeContentFromUrl(input).getFinalResult()));
+            validateLayoutDataResults(clientBuilder.buildClient().beginRecognizeContentFromUrl(input).getFinalResult(),
+                getReadResults(), getPageResults(), false));
     }
 
     // Client builder runner

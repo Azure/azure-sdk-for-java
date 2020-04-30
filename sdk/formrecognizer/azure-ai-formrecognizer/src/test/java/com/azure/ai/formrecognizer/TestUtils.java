@@ -16,7 +16,6 @@ import com.azure.ai.formrecognizer.models.DimensionUnit;
 import com.azure.ai.formrecognizer.models.FormLine;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormTable;
-import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.ai.formrecognizer.models.TrainingDocumentInfo;
 import com.azure.ai.formrecognizer.models.TrainingStatus;
@@ -47,7 +46,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static com.azure.ai.formrecognizer.Transforms.toReceipt;
-import static com.azure.ai.formrecognizer.Transforms.toRecognizedForm;
 
 /**
  * Contains helper methods for generating inputs for test methods
@@ -78,8 +76,8 @@ final class TestUtils {
     static final String CUSTOM_FORM_LABELED_DATA = "src/test/resources/sample_files/Content"
         + "/customFormLabeledContent.json";
     static final String CUSTOM_FORM_DATA = "src/test/resources/sample_files/Content/customFormContent.json";
-    private static final String RECEIPT_FORM_DATA = "src/test/resources/sample_files/Content/receiptContent.json";
-    private static final String LAYOUT_FORM_DATA = "src/test/resources/sample_files/Content/layoutContent.json";
+    static final String RECEIPT_FORM_DATA = "src/test/resources/sample_files/Content/receiptContent.json";
+    static final String LAYOUT_FORM_DATA = "src/test/resources/sample_files/Content/layoutContent.json";
 
 
     private TestUtils() {
@@ -128,25 +126,12 @@ final class TestUtils {
         return new IterableStream<>(Collections.singletonList(formPage));
     }
 
-    static IterableStream<RecognizedReceipt> getExpectedReceipts(boolean includeTextDetails) {
-        return getRawExpectedReceipt(includeTextDetails);
-    }
-
     static USReceipt getExpectedUSReceipt() {
         USReceipt usReceipt = null;
         for (RecognizedReceipt recognizedReceipt : getRawExpectedReceipt(true)) {
             usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
         }
         return usReceipt;
-    }
-
-    static IterableStream<RecognizedForm> getExpectedRecognizedForms() {
-        return new IterableStream<RecognizedForm>(toRecognizedForm(getRawResponse(CUSTOM_FORM_DATA).getAnalyzeResult(), false));
-    }
-
-    static IterableStream<RecognizedForm> getExpectedRecognizedLabeledForms() {
-        return new IterableStream<RecognizedForm>(
-            toRecognizedForm(getRawResponse(CUSTOM_FORM_LABELED_DATA).getAnalyzeResult(), true));
     }
 
     static List<TrainingDocumentInfo> getExpectedTrainingDocuments() {

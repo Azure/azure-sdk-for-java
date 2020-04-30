@@ -21,7 +21,7 @@ import static com.azure.ai.formrecognizer.TestUtils.INVALID_SOURCE_URL_ERROR;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_URL;
 import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_FILE_LENGTH;
-import static com.azure.ai.formrecognizer.TestUtils.getExpectedReceipts;
+import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_FORM_DATA;
 import static com.azure.ai.formrecognizer.TestUtils.getPageResults;
 import static com.azure.ai.formrecognizer.TestUtils.getRawResponse;
 import static com.azure.ai.formrecognizer.TestUtils.getReadResults;
@@ -49,7 +49,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
                 client.beginRecognizeReceiptsFromUrl(sourceUrl);
             syncPoller.waitForCompletion();
-            validateReceiptResult(getExpectedReceipts(false), syncPoller.getFinalResult());
+            validateReceiptResultData(syncPoller.getFinalResult(), getRawResponse(RECEIPT_FORM_DATA).getAnalyzeResult(), false);
         });
     }
 
@@ -63,8 +63,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
                 client.beginRecognizeReceiptsFromUrl(sourceUrl, includeTextDetails, null);
             syncPoller.waitForCompletion();
-            validateReceiptResult(getExpectedReceipts(includeTextDetails),
-                syncPoller.getFinalResult());
+            validateReceiptResultData(syncPoller.getFinalResult(), getRawResponse(RECEIPT_FORM_DATA).getAnalyzeResult(), true);
         });
     }
 
@@ -77,7 +76,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
                 client.beginRecognizeReceipts(data, RECEIPT_FILE_LENGTH, FormContentType.IMAGE_JPEG, false, null);
             syncPoller.waitForCompletion();
-            validateReceiptResult(getExpectedReceipts(false), syncPoller.getFinalResult());
+            validateReceiptResultData(syncPoller.getFinalResult(), getRawResponse(RECEIPT_FORM_DATA).getAnalyzeResult(), false);
         });
     }
 
@@ -100,7 +99,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
                 client.beginRecognizeReceipts(data, RECEIPT_FILE_LENGTH, null, false, null);
             syncPoller.waitForCompletion();
-            validateReceiptResult(getExpectedReceipts(false), syncPoller.getFinalResult());
+            validateReceiptResultData(syncPoller.getFinalResult(), getRawResponse(RECEIPT_FORM_DATA).getAnalyzeResult(), false);
         });
     }
 
@@ -115,7 +114,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 client.beginRecognizeReceipts(data, RECEIPT_FILE_LENGTH, FormContentType.IMAGE_PNG,
                     includeTextDetails, null);
             syncPoller.waitForCompletion();
-            validateReceiptResult(getExpectedReceipts(includeTextDetails), syncPoller.getFinalResult());
+            validateReceiptResultData(syncPoller.getFinalResult(), getRawResponse(RECEIPT_FORM_DATA).getAnalyzeResult(), true);
         });
     }
 
@@ -185,7 +184,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @Test
     void recognizeCustomFormInvalidSourceUrl() {
-        beginTrainingLabeledResultRunner((storageSASUrl, useLabelFile) -> {
+        beginTrainingLabeledRunner((storageSASUrl, useLabelFile) -> {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
                 client.getFormTrainingClient().beginTraining(storageSASUrl, useLabelFile);
             syncPoller.waitForCompletion();
@@ -204,8 +203,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @Test
     void recognizeCustomFormLabeledData() {
-        customFormLabeledDataRunner(data ->
-            beginTrainingLabeledResultRunner((storageSASUrl, useLabelFile) -> {
+        customFormDataRunner(data ->
+            beginTrainingLabeledRunner((storageSASUrl, useLabelFile) -> {
                 SyncPoller<OperationResult, CustomFormModel> syncPoller =
                     client.getFormTrainingClient().beginTraining(storageSASUrl, useLabelFile);
                 syncPoller.waitForCompletion();
@@ -224,8 +223,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @Test
     void recognizeCustomFormLabeledDataWithNullValues() {
-        customFormLabeledDataRunner(data ->
-            beginTrainingLabeledResultRunner((storageSASUrl, useLabelFile) -> {
+        customFormDataRunner(data ->
+            beginTrainingLabeledRunner((storageSASUrl, useLabelFile) -> {
                 SyncPoller<OperationResult, CustomFormModel> syncPoller =
                     client.getFormTrainingClient().beginTraining(storageSASUrl, useLabelFile);
                 syncPoller.waitForCompletion();
@@ -246,8 +245,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @Test
     void recognizeCustomFormLabeledDataWithContentTypeAutoDetection() {
-        customFormLabeledDataRunner(data ->
-            beginTrainingLabeledResultRunner((storageSASUrl, useLabelFile) -> {
+        customFormDataRunner(data ->
+            beginTrainingLabeledRunner((storageSASUrl, useLabelFile) -> {
                 SyncPoller<OperationResult, CustomFormModel> syncPoller =
                     client.getFormTrainingClient().beginTraining(storageSASUrl, useLabelFile);
                 syncPoller.waitForCompletion();
@@ -257,7 +256,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                     CUSTOM_FORM_FILE_LENGTH, null, true, null);
                 syncPoller.waitForCompletion();
                 validateRecognizedResult(syncPollers.getFinalResult(),
-                    getRawResponse(CUSTOM_FORM_LABELED_DATA).getAnalyzeResult(), true, true);            }));
+                    getRawResponse(CUSTOM_FORM_LABELED_DATA).getAnalyzeResult(), true, true);
+            }));
     }
 
     /**
@@ -265,8 +265,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @Test
     void recognizeCustomFormUnlabeledData() {
-        customFormLabeledDataRunner(data ->
-            beginTrainingUnlabeledResultRunner((storageSASUrl, useLabelFile) -> {
+        customFormDataRunner(data ->
+            beginTrainingUnlabeledRunner((storageSASUrl, useLabelFile) -> {
                 SyncPoller<OperationResult, CustomFormModel> syncPoller =
                     client.getFormTrainingClient().beginTraining(storageSASUrl, useLabelFile);
                 syncPoller.waitForCompletion();
@@ -286,8 +286,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @Test
     void recognizeCustomFormUnlabeledDataIncludeTextDetails() {
-        customFormLabeledDataRunner(data ->
-            beginTrainingUnlabeledResultRunner((storageSASUrl, useLabelFile) -> {
+        customFormDataRunner(data ->
+            beginTrainingUnlabeledRunner((storageSASUrl, useLabelFile) -> {
                 SyncPoller<OperationResult, CustomFormModel> syncPoller =
                     client.getFormTrainingClient().beginTraining(storageSASUrl, useLabelFile);
                 syncPoller.waitForCompletion();
