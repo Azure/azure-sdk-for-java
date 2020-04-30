@@ -59,8 +59,8 @@ public final class RntbdReporter {
         final Object[] arguments) {
 
         final FormattingTuple formattingTuple = MessageFormatter.arrayFormat(format, arguments);
-        final Exception exception = new AzureException(null);
         final Throwable throwable = formattingTuple.getThrowable();
+        final Exception exception = new AzureException(null, throwable);
         final StackTraceElement[] stackTrace = exception.getStackTrace();
 
         logger.error("Report this {} issue to ensure it is addressed:\n[{}]\n[{}]\n[{}{}]",
