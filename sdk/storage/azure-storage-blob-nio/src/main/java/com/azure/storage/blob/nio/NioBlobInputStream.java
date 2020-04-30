@@ -56,12 +56,9 @@ public class NioBlobInputStream extends InputStream {
     }
 
     /**
-     * Tests if this input stream supports the mark and reset methods. Whether or not mark and reset are supported is an
-     * invariant property of a particular input stream instance. The markSupported method of {@link InputStream} returns
-     * false.
+     * Tests if this input stream supports the mark and reset methods.
      *
-     * @return <Code>True</Code> if this stream instance supports the mark and reset methods; <Code>False</Code>
-     * otherwise.
+     * @return Returns {@code true}
      */
     @Override
     public boolean markSupported() {
@@ -144,17 +141,6 @@ public class NioBlobInputStream extends InputStream {
      * In every case, elements <code>b[0]</code> through <code>b[off]</code> and elements <code>b[off+len]</code>
      * through <code>b[b.length-1]</code> are unaffected.
      *
-     * The <code>read(b, off, len)</code> method for class {@link InputStream} simply calls the method
-     * <code>read()</code> repeatedly. If the first such
-     * call results in an <code>IOException</code>, that exception is returned from the call to the
-     * <code>read(b, off, len)</code> method. If any
-     * subsequent call to <code>read()</code> results in a <code>IOException</code>, the exception is caught and treated
-     * as if it were end of file; the bytes read up to that point are stored into <code>b</code> and the number of bytes
-     * read before the exception occurred is returned. The default implementation of this method blocks until the
-     * requested amount of input data
-     * <code>len</code> has been read, end of file is detected, or an exception is thrown. Subclasses are encouraged to
-     * provide a more efficient implementation of this method.
-     *
      * @param b A <code>byte</code> array which represents the buffer into which the data is read.
      * @param off An <code>int</code> which represents the start offset in the <code>byte</code> array at which the data
      * is written.
@@ -173,7 +159,7 @@ public class NioBlobInputStream extends InputStream {
         try {
             return this.blobInputStream.read(b, off, len);
         } catch (RuntimeException e) {
-            if (e.getMessage().equals(Constants.STREAM_CLOSED)) {
+            if (e.getMessage() != null && e.getMessage().equals(Constants.STREAM_CLOSED)) {
                 throw LoggingUtility.logError(logger, new IOException(e));
             }
             throw LoggingUtility.logError(logger, e);
