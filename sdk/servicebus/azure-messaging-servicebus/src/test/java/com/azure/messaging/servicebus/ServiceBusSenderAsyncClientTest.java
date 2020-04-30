@@ -164,7 +164,8 @@ class ServiceBusSenderAsyncClientTest {
      */
     @Test
     void createBatchNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> sender.createBatch(null));
+        StepVerifier.create(sender.createBatch(null))
+            .verifyErrorMatches(error -> error instanceof NullPointerException);
     }
 
     /**
