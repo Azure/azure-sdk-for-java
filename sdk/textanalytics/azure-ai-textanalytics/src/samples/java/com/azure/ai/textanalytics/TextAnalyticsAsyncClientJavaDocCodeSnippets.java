@@ -236,7 +236,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             // Batch result of categorized entities
             batchResult.getElements().forEach(recognizeEntitiesResult ->
                 recognizeEntitiesResult.getEntities().forEach(entity -> System.out.printf(
-                    "Recognized entity: %s, entity category: %s, entity sub-category: %s, score: %f.%n",
+                    "Recognized entity: %s, entity category: %s, entity subcategory: %s, score: %f.%n",
                     entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore())));
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeCategorizedEntitiesBatch#Iterable

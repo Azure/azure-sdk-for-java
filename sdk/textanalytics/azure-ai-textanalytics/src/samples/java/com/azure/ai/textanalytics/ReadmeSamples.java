@@ -122,7 +122,7 @@ public class ReadmeSamples {
     public void recognizeEntity() {
         String document = "Satya Nadella is the CEO of Microsoft";
         textAnalyticsClient.recognizeEntities(document).forEach(entity ->
-            System.out.printf("Recognized entity: %s, category: %s, subCategory: %s, score: %f.%n",
+            System.out.printf("Recognized entity: %s, category: %s, subcategory: %s, score: %f.%n",
                 entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
     }
 

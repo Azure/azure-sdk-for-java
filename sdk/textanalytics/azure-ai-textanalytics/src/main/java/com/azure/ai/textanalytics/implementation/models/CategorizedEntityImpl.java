@@ -25,7 +25,7 @@ public final class CategorizedEntityImpl implements CategorizedEntity {
     /*
      * CategorizedEntity sub category, such as Age/Year/TimeRange etc
      */
-    private final String subCategory;
+    private final String subcategory;
 
     /*
      * Start position for the entity text.
@@ -47,16 +47,16 @@ public final class CategorizedEntityImpl implements CategorizedEntity {
      *
      * @param text The entity text as appears in the request.
      * @param category The entity category, such as Person/Location/Org/SSN etc.
-     * @param subCategory The entity subcategory, such as Age/Year/TimeRange etc.
+     * @param subcategory The entity subcategory, such as Age/Year/TimeRange etc.
      * @param offset The grapheme start position for the entity text.
      * @param length The grapheme length for the entity text.
      * @param confidenceScore A confidence score between 0 and 1 of the extracted entity.
      */
-    public CategorizedEntityImpl(String text, EntityCategory category, String subCategory,
+    public CategorizedEntityImpl(String text, EntityCategory category, String subcategory,
                                  int offset, int length, double confidenceScore) {
         this.text = text;
         this.category = category;
-        this.subCategory = subCategory;
+        this.subcategory = subcategory;
         this.offset = offset;
         this.length = length;
         this.confidenceScore = confidenceScore;
@@ -86,7 +86,7 @@ public final class CategorizedEntityImpl implements CategorizedEntity {
      * @return The subcategory value.
      */
     public String getSubcategory() {
-        return this.subCategory;
+        return this.subcategory;
     }
 
     /**
