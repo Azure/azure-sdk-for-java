@@ -51,7 +51,7 @@ public class ReceiveMessageAndSettleAsyncSample {
         // message when they are finished with it.
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
             .setIsAutoCompleteEnabled(false)
-            .setMaxAutoRenewDuration(Duration.ofSeconds(120));
+            .setMaxAutoLockRenewalDuration(Duration.ofSeconds(120));
 
         Disposable subscription = receiver.receive(options)
             .flatMap(message -> {

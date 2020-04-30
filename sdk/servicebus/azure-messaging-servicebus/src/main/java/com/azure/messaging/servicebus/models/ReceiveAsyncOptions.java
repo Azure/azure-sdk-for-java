@@ -41,7 +41,7 @@ public class ReceiveAsyncOptions {
      * @return the amount of time to continue auto-renewing the message lock. {@link Duration#ZERO} or {@code null}
      *     indicates that auto-renewal is disabled.
      */
-    public Duration getMaxAutoRenewDuration() {
+    public Duration getMaxAutoLockRenewalDuration() {
         return maxAutoRenewDuration;
     }
 
@@ -49,13 +49,13 @@ public class ReceiveAsyncOptions {
      * Sets the amount of time to continue auto-renewing the message lock. Setting {@link Duration#ZERO} or {@code null}
      * disables auto-renewal.
      *
-     * @param maxAutoRenewDuration the amount of time to continue auto-renewing the message lock. {@link
+     * @param maxAutoLockRenewalDuration the amount of time to continue auto-renewing the message lock. {@link
      *     Duration#ZERO} or {@code null} indicates that auto-renewal is disabled.
      *
      * @return The updated {@link ReceiveAsyncOptions} object.
      */
-    public ReceiveAsyncOptions setMaxAutoRenewDuration(Duration maxAutoRenewDuration) {
-        this.maxAutoRenewDuration = maxAutoRenewDuration;
+    public ReceiveAsyncOptions setMaxAutoLockRenewalDuration(Duration maxAutoLockRenewalDuration) {
+        this.maxAutoRenewDuration = maxAutoLockRenewalDuration;
         return this;
     }
 }

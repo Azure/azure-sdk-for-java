@@ -123,7 +123,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         this.managementNodeLocks = new MessageLockContainer(cleanupInterval);
         this.defaultReceiveOptions = new ReceiveAsyncOptions()
             .setIsAutoCompleteEnabled(true)
-            .setMaxAutoRenewDuration(connectionProcessor.getRetryOptions().getTryTimeout());
+            .setMaxAutoLockRenewalDuration(connectionProcessor.getRetryOptions().getTryTimeout());
     }
 
     /**
@@ -465,14 +465,14 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
     /**
      * Receives a stream of {@link ServiceBusReceivedMessage messages} from the Service Bus entity with a set of
-     * options. To disable lock auto-renewal, set {@link ReceiveAsyncOptions#setMaxAutoRenewDuration(Duration)
+     * options. To disable lock auto-renewal, set {@link ReceiveAsyncOptions#setMaxAutoLockRenewalDuration(Duration)
      * setMaxAutoRenewDuration} to {@link Duration#ZERO} or {@code null}.
      *
      * @param options Set of options to set when receiving messages.
      *
      * @return A stream of messages from the Service Bus entity.
      * @throws NullPointerException if {@code options} is null.
-     * @throws IllegalArgumentException if {@link ReceiveAsyncOptions#getMaxAutoRenewDuration() max auto-renew
+     * @throws IllegalArgumentException if {@link ReceiveAsyncOptions#getMaxAutoLockRenewalDuration() max auto-renew
      *     duration} is negative.
      */
     public Flux<ServiceBusReceivedMessage> receive(ReceiveAsyncOptions options) {
@@ -483,7 +483,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         if (Objects.isNull(options)) {
             return fluxError(logger, new NullPointerException("'options' cannot be null"));
-        } else if (options.getMaxAutoRenewDuration() != null && options.getMaxAutoRenewDuration().isNegative()) {
+        } else if (options.getMaxAutoLockRenewalDuration() != null && options.getMaxAutoLockRenewalDuration().isNegative()) {
             return fluxError(logger, new IllegalArgumentException("'maxAutoRenewDuration' cannot be negative."));
         }
 
@@ -747,11 +747,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionProcessor.getRetryOptions());
         final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLink.subscribeWith(
             new ServiceBusReceiveLinkProcessor(prefetch, retryPolicy, connectionProcessor, context));
-        final boolean isAutoLockRenewal = options.getMaxAutoRenewDuration() != null
-            && !options.getMaxAutoRenewDuration().isZero();
+        final boolean isAutoLockRenewal = options.getMaxAutoLockRenewalDuration() != null
+            && !options.getMaxAutoLockRenewalDuration().isZero();
 
         final ServiceBusAsyncConsumer newConsumer = new ServiceBusAsyncConsumer(linkName, linkMessageProcessor,
-            messageSerializer, options.isAutoCompleteEnabled(), isAutoLockRenewal, options.getMaxAutoRenewDuration(),
+            messageSerializer, options.isAutoCompleteEnabled(), isAutoLockRenewal, options.getMaxAutoLockRenewalDuration(),
             connectionProcessor.getRetryOptions(), this::complete, this::abandon, this::renewMessageLock);
 
         // There could have been multiple threads trying to create this async consumer when the result was null.

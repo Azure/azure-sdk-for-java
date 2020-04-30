@@ -409,7 +409,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
             .setIsAutoCompleteEnabled(false)
-            .setMaxAutoRenewDuration(Duration.ofSeconds(120));
+            .setMaxAutoLockRenewalDuration(Duration.ofSeconds(120));
 
         // Send the message to verify.
         sendMessage(message).block(TIMEOUT);

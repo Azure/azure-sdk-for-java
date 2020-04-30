@@ -237,7 +237,7 @@ class ServiceBusReceiverAsyncClientTest {
         final int numberOfEvents = 1;
         final List<Message> messages = getMessages(10);
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
-            .setMaxAutoRenewDuration(Duration.ZERO)
+            .setMaxAutoLockRenewalDuration(Duration.ZERO)
             .setIsAutoCompleteEnabled(false);
 
         ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
@@ -617,7 +617,7 @@ class ServiceBusReceiverAsyncClientTest {
             .receiveMode(ReceiveMode.PEEK_LOCK)
             .buildAsyncClient();
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
-            .setMaxAutoRenewDuration(Duration.ofSeconds(-1));
+            .setMaxAutoLockRenewalDuration(Duration.ofSeconds(-1));
 
         // Act & Assert
         StepVerifier.create(receiver.receive(options))
