@@ -18,36 +18,15 @@ import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.cosmosdb.v2019_08_01.implementation.CosmosDBManager;
 import java.util.Map;
-import java.util.List;
 
 /**
  * Type representing MongoDBCollectionGetResults.
  */
 public interface MongoDBCollectionGetResults extends HasInner<MongoDBCollectionGetResultsInner>, Indexable, Refreshable<MongoDBCollectionGetResults>, Updatable<MongoDBCollectionGetResults.Update>, HasManager<CosmosDBManager> {
     /**
-     * @return the _etag value.
-     */
-    String _etag();
-
-    /**
-     * @return the _rid value.
-     */
-    String _rid();
-
-    /**
-     * @return the _ts value.
-     */
-    Object _ts();
-
-    /**
      * @return the id value.
      */
     String id();
-
-    /**
-     * @return the indexes value.
-     */
-    List<MongoIndex> indexes();
 
     /**
      * @return the location value.
@@ -55,19 +34,14 @@ public interface MongoDBCollectionGetResults extends HasInner<MongoDBCollectionG
     String location();
 
     /**
-     * @return the mongoDBCollectionGetResultsId value.
-     */
-    String mongoDBCollectionGetResultsId();
-
-    /**
      * @return the name value.
      */
     String name();
 
     /**
-     * @return the shardKey value.
+     * @return the resource value.
      */
-    Map<String, String> shardKey();
+    MongoDBCollectionGetPropertiesResource resource();
 
     /**
      * @return the tags value.
