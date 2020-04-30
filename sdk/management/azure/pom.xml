@@ -12,7 +12,7 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>azure</artifactId>
+  <artifactId>azure-management</artifactId>
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK</name>
