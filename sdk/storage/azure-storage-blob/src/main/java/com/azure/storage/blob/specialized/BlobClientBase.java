@@ -940,12 +940,16 @@ public class BlobClientBase {
         return this.client.generateSas(blobServiceSasSignatureValues);
     }
 
+    /* TODO : Populate Rest Api docs for quick query. */
     /**
      * Opens a blob input stream to query the blob.
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/>Azure Docs</a></p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.quickquery.BlobQuickQueryClient.openInputStream#String}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.openQueryInputStream#String}
      *
      * @param expression The query expression.
      */
@@ -956,9 +960,12 @@ public class BlobClientBase {
     /**
      * Opens a blob input stream to query the blob.
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/>Azure Docs</a></p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.quickquery.BlobQuickQueryClient.openInputStream#String-BlobQuickQuerySerialization-BlobQuickQuerySerialization-BlobRequestConditions-ErrorReceiver-ProgressReceiver}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.openQueryInputStream#String-BlobQuickQuerySerialization-BlobQuickQuerySerialization-BlobRequestConditions-ErrorReceiver-ProgressReceiver}
      *
      * @param expression The query expression.
      * @param input {@link BlobQuickQuerySerialization Serialization input}.
@@ -981,11 +988,14 @@ public class BlobClientBase {
     }
 
     /**
-     * Queries an entire blob into an output stream. NOTE: Returns raw avro.
+     * Queries an entire blob into an output stream.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/>Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.quickquery.BlobQuickQueryClient.query#OutputStream-String}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.query#OutputStream-String}
      *
      * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @param expression The query expression.
@@ -997,11 +1007,14 @@ public class BlobClientBase {
     }
 
     /**
-     * Queries an entire blob into an output stream. NOTE: Returns raw avro.
+     * Queries an entire blob into an output stream.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/>Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.quickquery.BlobQuickQueryClient.queryWithResponse#OutputStream-String-BlobQuickQuerySerialization-BlobQuickQuerySerialization-BlobRequestConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.queryWithResponse#OutputStream-String-BlobQuickQuerySerialization-BlobQuickQuerySerialization-BlobRequestConditions-Duration-Context}
      *
      * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @param expression The query expression.

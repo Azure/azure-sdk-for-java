@@ -10,6 +10,10 @@ import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobQuickQueryDelimitedSerialization;
+import com.azure.storage.blob.models.BlobQuickQueryError;
+import com.azure.storage.blob.models.BlobQuickQueryJsonSerialization;
+import com.azure.storage.blob.models.BlobQuickQuerySerialization;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
@@ -19,6 +23,8 @@ import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
+import com.azure.storage.common.ErrorReceiver;
+import com.azure.storage.common.ProgressReceiver;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayOutputStream;
@@ -469,5 +475,55 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
 
         client.generateUserDelegationSas(values, userDelegationKey);
         // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey
+    }
+
+    /**
+     * Code snippet for {@link BlobAsyncClientBase#query(String)}
+     */
+    public void query() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.query#String
+        ByteArrayOutputStream queryData = new ByteArrayOutputStream();
+        String expression = "SELECT * from BlobStorage";
+        client.query(expression).subscribe(piece -> {
+            try {
+                queryData.write(piece.array());
+            } catch (IOException ex) {
+                throw new UncheckedIOException(ex);
+            }
+        });
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.query#String
+    }
+
+    /**
+     * Code snippet for {@link BlobAsyncClientBase#queryWithResponse(String, BlobQuickQuerySerialization, BlobQuickQuerySerialization, BlobRequestConditions, ErrorReceiver, ProgressReceiver)}
+     */
+    public void queryWithResponse() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.queryWithResponse#String-BlobQuickQuerySerialization-BlobQuickQuerySerialization-BlobRequestConditions-ErrorReceiver-ProgressReceiver
+        String expression = "SELECT * from BlobStorage";
+        BlobQuickQueryJsonSerialization input = new BlobQuickQueryJsonSerialization()
+            .setRecordSeparator('\n');
+        BlobQuickQueryDelimitedSerialization output = new BlobQuickQueryDelimitedSerialization()
+            .setEscapeChar('\0')
+            .setColumnSeparator(',')
+            .setRecordSeparator('\n')
+            .setFieldQuote('\'')
+            .setHeadersPresent(true);
+        BlobRequestConditions requestConditions = new BlobRequestConditions().setLeaseId(leaseId);
+        ErrorReceiver<BlobQuickQueryError> errorHandler = System.out::println;
+        ProgressReceiver progressReceiver = bytesTransferred -> System.out.println("total blob bytes read: "
+            + bytesTransferred);
+
+        client.queryWithResponse(expression, input, output, requestConditions, errorHandler, progressReceiver)
+            .subscribe(response -> {
+            ByteArrayOutputStream queryData = new ByteArrayOutputStream();
+            response.getValue().subscribe(piece -> {
+                try {
+                    queryData.write(piece.array());
+                } catch (IOException ex) {
+                    throw new UncheckedIOException(ex);
+                }
+            });
+        });
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.queryWithResponse#String-BlobQuickQuerySerialization-BlobQuickQuerySerialization-BlobRequestConditions-ErrorReceiver-ProgressReceiver
     }
 }

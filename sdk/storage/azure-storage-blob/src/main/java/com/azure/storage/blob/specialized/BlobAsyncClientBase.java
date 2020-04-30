@@ -1621,11 +1621,14 @@ public class BlobAsyncClientBase {
     }
 
     /**
-     * Queries the entire blob. NOTE: Returns raw avro.
+     * Queries the entire blob.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/>Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.quickquery.BlobQuickQueryAsyncClient.query#String}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.query#String}
      *
      * @param expression The query expression.
      * @return A reactive response containing the queried data.
@@ -1636,11 +1639,14 @@ public class BlobAsyncClientBase {
     }
 
     /**
-     * Queries the entire blob. NOTE: Returns raw avro.
+     * Queries the entire blob.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/>Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.quickquery.BlobQuickQueryAsyncClient.queryWithResponse#String-BlobQuickQuerySerialization-BlobQuickQuerySerialization-BlobRequestConditions-ErrorReceiver-ProgressReceiver
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.queryWithResponse#String-BlobQuickQuerySerialization-BlobQuickQuerySerialization-BlobRequestConditions-ErrorReceiver-ProgressReceiver
      *
      * @param expression The query expression.
      * @param input {@link BlobQuickQuerySerialization Serialization input}
@@ -1686,19 +1692,35 @@ public class BlobAsyncClientBase {
                 response.getDeserializedHeaders()));
     }
 
-    private Flux<ByteBuffer> parse(Flux<ByteBuffer> avro, Function<Object, Mono<ByteBuffer>> recordHandler) {
+    /**
+     * Avro parses a quick query reactive stream.
+     *
+     * @param avro The reactive stream.
+     * @param objectHandler The function to handle objects.
+     * @return The parsed quick query reactive stream.
+     */
+    private Flux<ByteBuffer> parse(Flux<ByteBuffer> avro, Function<Object, Mono<ByteBuffer>> objectHandler) {
         AvroParser parser = new AvroParser();
         return avro
             .concatMap(parser::parse)
-            .concatMap(recordHandler);
+            .concatMap(objectHandler);
     }
 
-    private Mono<ByteBuffer> parseRecord(Object r, ErrorReceiver<BlobQuickQueryError> errorReceiver,
+    /**
+     * Parses a quick query record.
+     *
+     * @param quickQueryRecord The quick query record.
+     * @param errorReceiver The error receiver.
+     * @param progressReceiver The progress receiver.
+     * @return The optional data in the record.
+     */
+    private Mono<ByteBuffer> parseRecord(Object quickQueryRecord, ErrorReceiver<BlobQuickQueryError> errorReceiver,
         ProgressReceiver progressReceiver) {
-        if (!(r instanceof Map)) {
+        if (!(quickQueryRecord instanceof Map)) {
             return Mono.error(new IllegalArgumentException("Expected object to be of type Map"));
         }
-        Map<String, Object> record = (Map<String, Object>) r;
+        AvroSchema.checkType("record", quickQueryRecord, Map.class);
+        Map<?, ?> record = (Map<?, ?>) quickQueryRecord;
         Object recordSchema = record.get(AvroConstants.RECORD);
 
         switch (recordSchema.toString()) {
@@ -1716,22 +1738,34 @@ public class BlobAsyncClientBase {
         }
     }
 
-    private Mono<ByteBuffer> parseResultData(Object dataRecord) {
-        Map<String, Object> record = (Map<String, Object>) dataRecord;
-        Object data = record.get("data");
+    /**
+     * Parses a quick query result data record.
+     * @param dataRecord The quick query result data record.
+     * @return The data in the record.
+     */
+    private Mono<ByteBuffer> parseResultData(Map<?, ?> dataRecord) {
+        Object data = dataRecord.get("data");
 
-        if (checkParametersNotNull("result data", data)) {
+        if (checkParametersNotNull(data)) {
+            AvroSchema.checkType("data", data, List.class);
             return Mono.just(ByteBuffer.wrap(AvroSchema.getBytes((List<?>) data)));
         } else {
             return Mono.error(new IllegalArgumentException("Failed to parse result data record from blob query response stream."));
         }
     }
 
-    private Mono<ByteBuffer> parseEnd(Object endRecord, ProgressReceiver progressReceiver) {
-        Map<String, Object> record = (Map<String, Object>) endRecord;
+    /**
+     * Parses a quick query end record.
+     * @param endRecord The quick query end record.
+     * @param progressReceiver The progress receiver.
+     * @return Mono.empty or Mono.error
+     */
+    private Mono<ByteBuffer> parseEnd(Map<?, ?> endRecord, ProgressReceiver progressReceiver) {
         if (progressReceiver != null) {
-            Object total = record.get("totalBytes");
-            if (checkParametersNotNull("end", total)) {
+            Object total = endRecord.get("totalBytes");
+
+            if (checkParametersNotNull(total)) {
+                AvroSchema.checkType("total", total, Long.class);
                 progressReceiver.reportProgress((Long) total);
             } else {
                 return Mono.error(new IllegalArgumentException("Failed to parse end record from blob query response stream."));
@@ -1740,12 +1774,19 @@ public class BlobAsyncClientBase {
         return Mono.empty();
     }
 
-    private Mono<ByteBuffer> parseProgress(Object progressRecord, ProgressReceiver progressReceiver) {
-        Map<String, Object> record = (Map<String, Object>) progressRecord;
+    /**
+     * Parses a quick query progress record.
+     * @param progressRecord The quick query progress record.
+     * @param progressReceiver The progress receiver.
+     * @return Mono.empty or Mono.error
+     */
+    private Mono<ByteBuffer> parseProgress(Map<?, ?> progressRecord, ProgressReceiver progressReceiver) {
         if (progressReceiver != null) {
-            Object scanned = record.get("bytesScanned");
-            if (checkParametersNotNull("progress", scanned)) {
-                progressReceiver.reportProgress((Long) scanned);
+            Object bytesScanned = progressRecord.get("bytesScanned");
+
+            if (checkParametersNotNull(bytesScanned)) {
+                AvroSchema.checkType("bytesScanned", bytesScanned, Long.class);
+                progressReceiver.reportProgress((Long) bytesScanned);
             } else {
                 return Mono.error(new IllegalArgumentException("Failed to parse progress record from blob query response stream."));
             }
@@ -1753,16 +1794,26 @@ public class BlobAsyncClientBase {
         return Mono.empty();
     }
 
-    private Mono<ByteBuffer> parseError(Object errorRecord, ErrorReceiver<BlobQuickQueryError> errorReceiver) {
-        Map<String, Object> record = (Map<String, Object>) errorRecord;
-        Object fatal = record.get("fatal");
-        Object name = record.get("name");
-        Object description = record.get("description");
-        Object position = record.get("position");
+    /**
+     * Parses a quick query error record.
+     * @param errorRecord The quick query error record.
+     * @param errorReceiver The error receiver.
+     * @return Mono.empty or Mono.error
+     */
+    private Mono<ByteBuffer> parseError(Map<?, ?> errorRecord, ErrorReceiver<BlobQuickQueryError> errorReceiver) {
+        Object fatal = errorRecord.get("fatal");
+        Object name = errorRecord.get("name");
+        Object description = errorRecord.get("description");
+        Object position = errorRecord.get("position");
 
-        if (checkParametersNotNull("error", fatal, name, description, position)) {
-            BlobQuickQueryError error = new BlobQuickQueryError((Boolean) fatal, name.toString(),
-                description.toString(), (Long) position);
+        if (checkParametersNotNull(fatal, name, description, position)) {
+            AvroSchema.checkType("fatal", fatal, Boolean.class);
+            AvroSchema.checkType("name", name, String.class);
+            AvroSchema.checkType("description", description, String.class);
+            AvroSchema.checkType("position", position, Long.class);
+
+            BlobQuickQueryError error = new BlobQuickQueryError((Boolean) fatal, (String) name,
+                (String) description, (Long) position);
 
             if (errorReceiver != null) {
                 errorReceiver.reportError(error);
@@ -1780,7 +1831,7 @@ public class BlobAsyncClientBase {
     /**
      * Validates that all parameters are non-null. Throws IOException if any of them are.
      */
-    private boolean checkParametersNotNull(String record, Object... data) {
+    private boolean checkParametersNotNull(Object... data) {
         for (Object o : data) {
             if (o == null || o instanceof AvroNullSchema.Null) {
                 return false;

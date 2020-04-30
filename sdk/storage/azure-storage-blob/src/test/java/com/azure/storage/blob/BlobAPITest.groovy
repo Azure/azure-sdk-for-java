@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob
 
-
 import com.azure.core.http.RequestConditions
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.polling.LongRunningOperationStatus
