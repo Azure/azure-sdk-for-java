@@ -11,6 +11,7 @@ import com.azure.ai.textanalytics.implementation.models.KeyPhraseResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsErrorException;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
+import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
@@ -162,7 +163,7 @@ class ExtractKeyPhraseAsyncClient {
         }
 
         for (DocumentError documentError : keyPhraseResult.getErrors()) {
-            final com.azure.ai.textanalytics.models.TextAnalyticsError error =
+            final TextAnalyticsError error =
                 toTextAnalyticsError(documentError.getError());
 
             final String documentId = documentError.getId();

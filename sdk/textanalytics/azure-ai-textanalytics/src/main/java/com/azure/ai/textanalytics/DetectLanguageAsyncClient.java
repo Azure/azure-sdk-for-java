@@ -13,6 +13,7 @@ import com.azure.ai.textanalytics.implementation.models.LanguageResult;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsErrorException;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
+import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
@@ -124,7 +125,7 @@ class DetectLanguageAsyncClient {
         }
 
         for (DocumentError documentError : languageResult.getErrors()) {
-            com.azure.ai.textanalytics.models.TextAnalyticsError error =
+            TextAnalyticsError error =
                 Transforms.toTextAnalyticsError(documentError.getError());
             final String documentId = documentError.getId();
 

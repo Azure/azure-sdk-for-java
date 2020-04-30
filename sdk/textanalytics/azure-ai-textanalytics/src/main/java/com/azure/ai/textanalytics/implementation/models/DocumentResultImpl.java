@@ -20,7 +20,7 @@ public class DocumentResultImpl implements DocumentResult {
 
     private final String id;
     private final TextDocumentStatistics textDocumentStatistics;
-    private final com.azure.ai.textanalytics.models.TextAnalyticsError error;
+    private final TextAnalyticsError error;
     private final boolean isError;
 
     /**
@@ -31,8 +31,7 @@ public class DocumentResultImpl implements DocumentResult {
      * @param textDocumentStatistics The text document statistics.
      * @param error The document error.
      */
-    DocumentResultImpl(String id, TextDocumentStatistics textDocumentStatistics,
-                       com.azure.ai.textanalytics.models.TextAnalyticsError error) {
+    DocumentResultImpl(String id, TextDocumentStatistics textDocumentStatistics, TextAnalyticsError error) {
         this.id = id;
         this.error = error;
         this.isError = error != null;
