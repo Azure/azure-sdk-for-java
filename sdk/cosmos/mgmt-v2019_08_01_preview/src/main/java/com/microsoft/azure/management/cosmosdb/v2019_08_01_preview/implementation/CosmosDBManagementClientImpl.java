@@ -378,6 +378,19 @@ public class CosmosDBManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The NotebookWorkspacesInner object to access its operations.
+     */
+    private NotebookWorkspacesInner notebookWorkspaces;
+
+    /**
+     * Gets the NotebookWorkspacesInner object to access its operations.
+     * @return the NotebookWorkspacesInner object.
+     */
+    public NotebookWorkspacesInner notebookWorkspaces() {
+        return this.notebookWorkspaces;
+    }
+
+    /**
      * The PrivateLinkResourcesInner object to access its operations.
      */
     private PrivateLinkResourcesInner privateLinkResources;
@@ -455,6 +468,7 @@ public class CosmosDBManagementClientImpl extends AzureServiceClient {
         this.tableResources = new TableResourcesInner(restClient().retrofit(), this);
         this.cassandraResources = new CassandraResourcesInner(restClient().retrofit(), this);
         this.gremlinResources = new GremlinResourcesInner(restClient().retrofit(), this);
+        this.notebookWorkspaces = new NotebookWorkspacesInner(restClient().retrofit(), this);
         this.privateLinkResources = new PrivateLinkResourcesInner(restClient().retrofit(), this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
