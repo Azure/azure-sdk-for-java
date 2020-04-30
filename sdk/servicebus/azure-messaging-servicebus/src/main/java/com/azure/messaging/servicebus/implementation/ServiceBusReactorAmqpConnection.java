@@ -92,9 +92,9 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
                 connectionId, entityPath))));
         }
 
-        final String path = String.join("-", entityPath, entityType.toString());
+        final String entityTypePath = String.join("-", entityType.toString(), entityPath);
 
-        final ServiceBusManagementNode existing = managementNodes.get(path);
+        final ServiceBusManagementNode existing = managementNodes.get(entityTypePath);
         if (existing != null) {
             return Mono.just(existing);
         }
@@ -105,7 +105,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
                     fullyQualifiedNamespace, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE)
                     .getTokenManager(getClaimsBasedSecurityNode(), entityPath);
 
-                return tokenManager.authorize().thenReturn(managementNodes.compute(entityPath, (key, current) -> {
+                return tokenManager.authorize().thenReturn(managementNodes.compute(entityTypePath, (key, current) -> {
                     if (current != null) {
                         logger.info("A management node exists already, returning it.");
 
