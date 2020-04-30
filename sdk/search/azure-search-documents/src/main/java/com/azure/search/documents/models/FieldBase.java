@@ -6,6 +6,8 @@ package com.azure.search.documents.models;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.util.Objects;
+
 /**
  * Base field type for helper classes to more easily create a {@link Index}.
  */
@@ -23,6 +25,7 @@ public abstract class FieldBase {
         if (CoreUtils.isNullOrEmpty(name)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("The name of field cannot be null"));
         }
+        Objects.requireNonNull(dataType, "DataType cannot be null.");
         this.name = name;
         this.dataType = dataType;
     }

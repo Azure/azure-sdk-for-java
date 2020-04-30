@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
@@ -51,6 +52,7 @@ public final class FieldBuilder {
     }
 
     private static final List<Class<?>> UNSUPPORTED_TYPES = Arrays.asList(Byte.class,
+        CharSequence.class,
         Character.class,
         char.class,
         Float.class,
@@ -160,7 +162,8 @@ public final class FieldBuilder {
             ParameterizedType pt = (ParameterizedType) arrayOrListType;
             return pt.getActualTypeArguments()[0];
         }
-        throw logger.logExceptionAsError(new RuntimeException("Should not be there"));
+        throw logger.logExceptionAsError(new RuntimeException("We currently do not support the collection type: "
+                + arrayOrListType.getTypeName()));
     }
 
     private static Field convertToBasicSearchField(java.lang.reflect.Field classField,
@@ -220,7 +223,9 @@ public final class FieldBuilder {
                 searchField.setAnalyzer(AnalyzerName.fromString((searchableFieldPropertyAnnotation.indexAnalyzer())));
             }
             if (searchableFieldPropertyAnnotation.synonymMaps().length != 0) {
-                searchField.setSynonymMaps(Arrays.asList(searchableFieldPropertyAnnotation.synonymMaps()));
+                List<String> synonymMaps = Arrays.stream(searchableFieldPropertyAnnotation.synonymMaps())
+                    .filter(synonym -> !synonym.trim().isEmpty()).collect(Collectors.toList());
+                searchField.setSynonymMaps(synonymMaps);
             }
         }
         return searchField;

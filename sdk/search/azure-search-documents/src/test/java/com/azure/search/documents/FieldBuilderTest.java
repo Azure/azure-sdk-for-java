@@ -13,6 +13,7 @@ import com.azure.search.documents.test.environment.models.Hotel;
 import com.azure.search.documents.test.environment.models.HotelCircularDependencies;
 import com.azure.search.documents.test.environment.models.HotelSearchException;
 import com.azure.search.documents.test.environment.models.HotelSearchableExceptionOnList;
+import com.azure.search.documents.test.environment.models.HotelWithEmptyInSynonymMaps;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -29,10 +30,7 @@ public class FieldBuilderTest {
     public void hotelComparison() {
         List<Field> actualFields = sortByFieldName(FieldBuilder.build(Hotel.class));
         List<Field> expectedFields = sortByFieldName(buildHotelFields());
-        assertEquals(expectedFields.size(), actualFields.size());
-        for (int i = 0; i < expectedFields.size(); i++) {
-            TestHelpers.assertObjectEquals(expectedFields.get(i), actualFields.get(i));
-        }
+        assertListFieldEquals(expectedFields, actualFields);
     }
 
     @Test
@@ -40,8 +38,7 @@ public class FieldBuilderTest {
         Exception exception = assertThrows(RuntimeException.class, () -> {
             FieldBuilder.build(HotelSearchException.class);
         });
-        assertTrue(exception.getMessage().contains("hotelId"));
-        assertTrue(exception.getMessage().contains(DataType.EDM_INT32.toString()));
+        assertExceptionMassageAndDataType(exception, "hotelId", DataType.EDM_INT32);
     }
 
     @Test
@@ -49,18 +46,35 @@ public class FieldBuilderTest {
         Exception exception = assertThrows(RuntimeException.class, () -> {
             FieldBuilder.build(HotelSearchableExceptionOnList.class);
         });
-        assertTrue(exception.getMessage().contains("passcode"));
-        assertTrue(exception.getMessage().contains(DataType.collection(DataType.EDM_INT32).toString()));
+        assertExceptionMassageAndDataType(exception, "passcode", DataType.collection(DataType.EDM_INT32));
     }
 
     @Test
     public void hotelCircularDependencies() {
         List<Field> actualFields = sortByFieldName(FieldBuilder.build(HotelCircularDependencies.class));
         List<Field> expectedFields = sortByFieldName(buildHotelCircularDependenciesModel());
-        assertEquals(expectedFields.size(), actualFields.size());
-        for (int i = 0; i < expectedFields.size(); i++) {
-            TestHelpers.assertObjectEquals(expectedFields.get(i), actualFields.get(i));
+        assertListFieldEquals(expectedFields, actualFields);
+    }
+
+    @Test
+    public void hotelWithEmptySynonymMaps(){
+        // We cannot put null in the annotation. So no need to test null case.
+        List<Field> actualFields = FieldBuilder.build(HotelWithEmptyInSynonymMaps.class);
+        List<Field> expectedFields = Collections.singletonList(new SearchableField("tags", true)
+            .setSynonymMaps(Arrays.asList("asynonymMaps", "maps")).build());
+        assertListFieldEquals(expectedFields, actualFields);
+    }
+
+    private void assertListFieldEquals(List<Field> expected, List<Field> actual) {
+        assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < expected.size(); i++) {
+            TestHelpers.assertObjectEquals(expected.get(i), actual.get(i));
         }
+    }
+
+    private void assertExceptionMassageAndDataType(Exception exception, String msg, DataType dataType) {
+        assertTrue(exception.getMessage().contains(msg));
+        assertTrue(exception.getMessage().contains(dataType.toString()));
     }
 
     private List<Field> buildHotelCircularDependenciesModel() {
