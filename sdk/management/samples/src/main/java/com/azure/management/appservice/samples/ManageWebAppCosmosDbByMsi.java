@@ -86,6 +86,7 @@ public final class ManageWebAppCosmosDbByMsi {
             SecretClient client = new SecretClientBuilder()
                     .vaultUrl(vault.vaultUri())
                     .credential(credential)
+                    .httpClient(vault.manager().httpPipeline().getHttpClient())
                     .buildClient();
 
             //============================================================
