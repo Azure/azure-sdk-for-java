@@ -879,11 +879,12 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         }
     }
 
+    /* TODO : Service docs*/
     /**
      * Queries the entire file.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/>Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -901,11 +902,11 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * Queries the entire file.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/>Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.queryWithResponse#String-FileQueryOptions
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.queryWithResponse#String-FileQueryOptions}
      *
      * @param expression The query expression.
      * @param queryOptions {@link FileQueryOptions The query options}

@@ -1621,11 +1621,12 @@ public class BlobAsyncClientBase {
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()));
     }
 
+    /* TODO : Quick Query service docs. */
     /**
      * Queries the entire blob.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/>Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1643,11 +1644,11 @@ public class BlobAsyncClientBase {
      * Queries the entire blob.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/>Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.queryWithResponse#String-QueryOptions
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.queryWithResponse#String-QueryOptions}
      *
      * @param expression The query expression.
      * @param queryOptions {@link BlobQueryOptions The query options}.

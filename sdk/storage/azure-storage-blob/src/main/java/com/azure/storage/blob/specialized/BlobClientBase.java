@@ -942,7 +942,7 @@ public class BlobClientBase {
      * Opens a blob input stream to query the blob.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/>Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -958,7 +958,7 @@ public class BlobClientBase {
      * Opens a blob input stream to query the blob.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/>Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -981,7 +981,7 @@ public class BlobClientBase {
      * Queries an entire blob into an output stream.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/>Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1000,7 +1000,7 @@ public class BlobClientBase {
      * Queries an entire blob into an output stream.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/>Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *
