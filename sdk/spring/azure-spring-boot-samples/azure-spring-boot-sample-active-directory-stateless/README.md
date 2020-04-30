@@ -1,23 +1,22 @@
-## About this sample
+# Stateless authentication filter sample for Azure AD Spring Boot Starter client library for Java
 
-### Overview
+## Key concepts
+
 This demo project  explains the usage of the stateless authentication filter `AADAppRoleStatelessAuthenticationFilter`.
 This project is composed of a vue.js frontend and a simple backend with three endpoints
 * `/public` (accessible by anyone)
 * `/authorized` (role "user" required)
 * `/admin/demo` (role "admin" required).
 
-### Get started
+## Getting started
 The sample is composed of two layers: vue.js client and Spring Boot RESTful Web Service. You need to make some changes 
 to get it working with your Azure AD tenant on both sides.
 
-### How to configure
-
-#### Register your application with your Azure Active Directory Tenant
+### Register your application with your Azure Active Directory Tenant
 
 Follow the guide [here](https://docs.microsoft.com/azure/active-directory/develop/v1-protocols-openid-connect-code#register-your-application-with-your-ad-tenant).
 
-#### Configure appRoles
+### Configure appRoles
 
 In order to use only the `id_token` for our authentication and authorization purposes we will use the
 `appRoles` feature which AAD provides. Follow the guide 
@@ -60,6 +59,9 @@ Furthermore enable the implicit flow in the manifest for the demo application
 "oauth2AllowImplicitFlow": "true",
 ```
 
+## Examples
+### Configure the sample
+
 #### Configure application.properties
 
 You have to activate the stateless app-role auth filter and configure the `client-id`of your application registration:
@@ -73,23 +75,21 @@ azure.aad.app-role.client-id=xxxxxx-your-client-id-xxxxxx
 
 Add your `tenant-id` and `client-id` in `src/main/resources/static/index.html`:
 
-```
-      data: {
-        clientId: 'xxxxxxxx-your-client-id-xxxxxxxxxxxx',
-        tenantId: 'xxxxxxxx-your-tenant-id-xxxxxxxxxxxx',
-        tokenType: 'id_token',
-        token: null,
-        log: null
-      },
+```json
+data: {
+  clientId: 'xxxxxxxx-your-client-id-xxxxxxxxxxxx',
+  tenantId: 'xxxxxxxx-your-tenant-id-xxxxxxxxxxxx',
+  tokenType: 'id_token',
+  token: null,
+  log: null
+},
 ``` 
 
-### How to run
+### Run with Maven
 
-   - Use Maven 
-
-     ```
-     mvn clean package spring-boot:run
-     ```
+```shell
+mvn clean package spring-boot:run
+```
 
 ### Check the authentication and authorization
 	
@@ -104,4 +104,6 @@ Add your `tenant-id` and `client-id` in `src/main/resources/static/index.html`:
 #### Demo
 ![demoonstration video](docs/demo.webp "Demo Video")
 
-
+## Troubleshooting
+## Next steps
+## Contributing
