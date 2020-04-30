@@ -72,6 +72,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     private static final CreateBatchOptions DEFAULT_BATCH_OPTIONS =  new CreateBatchOptions();
 
     private final ClientLogger logger = new ClientLogger(ServiceBusSenderAsyncClient.class);
+    private final AtomicReference<String> linkName = new AtomicReference<>();
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final TracerProvider tracerProvider;
     private final MessageSerializer messageSerializer;
@@ -306,7 +307,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
                 return connectionProcessor
                     .flatMap(connection -> connection.getManagementNode(entityName, entityType))
-                    .flatMap(managementNode -> managementNode.schedule(message, scheduledEnqueueTime, maxSize));
+                    .flatMap(managementNode -> managementNode.schedule(message, scheduledEnqueueTime, maxSize,
+                        link.getLinkName()));
             }));
     }
 
@@ -326,7 +328,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityName, entityType))
-            .flatMap(managementNode -> managementNode.cancelScheduledMessage(sequenceNumber));
+            .flatMap(managementNode -> managementNode.cancelScheduledMessage(sequenceNumber, linkName.get()));
     }
 
     /**
@@ -359,14 +361,13 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         return eventBatches
             .flatMap(this::send)
             .then()
-            .doOnError(error -> {
-                logger.error("Error sending batch.", error);
-            });
+            .doOnError(error -> logger.error("Error sending batch.", error));
     }
 
     private Mono<AmqpSendLink> getSendLink() {
         return connectionProcessor
-            .flatMap(connection -> connection.createSendLink(entityName, entityName, retryOptions));
+            .flatMap(connection -> connection.createSendLink(entityName, entityName, retryOptions))
+            .doOnNext(next -> linkName.compareAndSet(null, next.getLinkName()));
     }
 
     private static class AmqpMessageCollector implements Collector<ServiceBusMessage, List<ServiceBusMessageBatch>,

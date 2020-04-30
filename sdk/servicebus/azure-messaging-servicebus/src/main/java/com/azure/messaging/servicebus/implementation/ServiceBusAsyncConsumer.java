@@ -35,19 +35,20 @@ public class ServiceBusAsyncConsumer implements AutoCloseable {
     private static final String DEAD_LETTER_ERROR_DESCRIPTION = "DeadLetterErrorDescription";
 
     private final AtomicBoolean isDisposed = new AtomicBoolean();
+    private final String linkName;
     private final ServiceBusReceiveLinkProcessor amqpReceiveLinkProcessor;
     private final MessageSerializer messageSerializer;
     private final ServiceBusMessageProcessor processor;
 
-    public ServiceBusAsyncConsumer(ServiceBusReceiveLinkProcessor amqpReceiveLinkProcessor,
+    public ServiceBusAsyncConsumer(String linkName, ServiceBusReceiveLinkProcessor amqpReceiveLinkProcessor,
         MessageSerializer messageSerializer, boolean isAutoComplete, boolean autoLockRenewal,
         Duration maxAutoLockRenewDuration, AmqpRetryOptions retryOptions,
         Function<MessageLockToken, Mono<Void>> onComplete,
         Function<MessageLockToken, Mono<Void>> onAbandon,
         Function<MessageLockToken, Mono<Instant>> onRenewLock) {
+        this.linkName = linkName;
         this.amqpReceiveLinkProcessor = amqpReceiveLinkProcessor;
         this.messageSerializer = messageSerializer;
-
         this.processor = amqpReceiveLinkProcessor
             .map(message -> this.messageSerializer.deserialize(message, ServiceBusReceivedMessage.class))
             .subscribeWith(new ServiceBusMessageProcessor(isAutoComplete, autoLockRenewal, maxAutoLockRenewDuration,
@@ -122,5 +123,14 @@ public class ServiceBusAsyncConsumer implements AutoCloseable {
         }
 
         return amqpReceiveLinkProcessor.updateDisposition(lockToken, state);
+    }
+
+    /**
+     * Gets the receive link name.
+     *
+     * @return The receive link name for the consumer.
+     */
+    public String getLinkName() {
+        return linkName;
     }
 }
