@@ -15,7 +15,6 @@ import com.microsoft.azure.batch.auth.BatchSharedKeyCredentials;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.resources.core.InterceptorManager;
 import com.microsoft.azure.management.resources.core.TestBase;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingInterceptor;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.azure.storage.CloudStorageAccount;
@@ -342,26 +341,28 @@ public class BatchIntegrationTestBase {
     }
 
     static NetworkConfiguration createNetworkConfiguration(){
-        AzureTokenCredentials token = new ApplicationTokenCredentials(
-            System.getenv("CLIENT_ID"),
-            System.getenv("TENANT_ID"),
-            System.getenv("APPLICATION_SECRET"),
-            AzureEnvironment.AZURE);
-        Azure azure = Azure.authenticate(token).withSubscription(System.getenv("AZURE_BATCH_SUBSCRIPTION_ID"));
         String vnetName = "AzureBatchTestVnet";
         String subnetName = "AzureBatchTestSubnet";
-        if (azure.networks().list().size() == 0) {
-            Network virtualNetwork = azure.networks().define(vnetName)
-                .withRegion(System.getenv("AZURE_BATCH_REGION"))
-                .withExistingResourceGroup(System.getenv("AZURE_BATCH_RESOURCE_GROUP"))
-                .withAddressSpace("192.168.0.0/16")
-                .withSubnet(subnetName, "192.168.1.0/24")
-                .create();
+        if(isRecordMode()) {
+            AzureTokenCredentials token = new ApplicationTokenCredentials(
+                System.getenv("CLIENT_ID"),
+                "72f988bf-86f1-41af-91ab-2d7cd011db47",
+                System.getenv("APPLICATION_SECRET"),
+                AzureEnvironment.AZURE);
+            Azure azure = Azure.authenticate(token).withSubscription("677f962b-9abf-4423-a27b-0c2f4094dcec");
+            if (azure.networks().list().size() == 0) {
+                Network virtualNetwork = azure.networks().define(vnetName)
+                    .withRegion("westcentralus")
+                    .withExistingResourceGroup("sdktest2")
+                    .withAddressSpace("192.168.0.0/16")
+                    .withSubnet(subnetName, "192.168.1.0/24")
+                    .create();
+            }
         }
         String vNetResourceId = String.format(
             "/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Network/virtualNetworks/%s/subnets/%s",
-            System.getenv("AZURE_BATCH_SUBSCRIPTION_ID"),
-            System.getenv("AZURE_BATCH_RESOURCE_GROUP"),
+            "677f962b-9abf-4423-a27b-0c2f4094dcec",
+            "sdktest2",
             vnetName,
             subnetName);
         return new NetworkConfiguration().withSubnetId(vNetResourceId);

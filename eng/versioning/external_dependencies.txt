@@ -37,6 +37,9 @@ io.netty:netty-transport-native-unix-common;4.1.45.Final
 io.projectreactor.netty:reactor-netty;0.9.5.RELEASE
 io.projectreactor:reactor-core;3.3.3.RELEASE
 io.reactivex:rxjava;1.2.4
+javax.annotation:javax.annotation-api;1.3.2
+javax.servlet:javax.servlet-api;4.0.1
+javax.validation:validation-api;2.0.1.Final
 org.apache.httpcomponents:httpclient;4.3.6
 org.apache.logging.log4j:log4j-api;2.11.1
 org.apache.logging.log4j:log4j-core;2.11.1
@@ -45,10 +48,28 @@ org.apache.qpid:proton-j;0.33.2
 org.asynchttpclient:async-http-client;2.10.5
 org.codehaus.groovy:groovy-eclipse-batch;2.5.8-01
 org.codehaus.groovy:groovy-eclipse-compiler;3.4.0-01
+org.hibernate.validator:hibernate-validator;6.0.17.Final
 org.powermock:powermock-api-mockito2;2.0.2
 org.powermock:powermock-module-junit4;2.0.2
 org.slf4j:slf4j-api;1.7.28
 org.slf4j:slf4j-simple;1.7.25
+org.springframework.boot:spring-boot-actuator-autoconfigure;2.2.0.RELEASE
+org.springframework.boot:spring-boot-autoconfigure;2.2.0.RELEASE
+org.springframework.boot:spring-boot-autoconfigure-processor;2.2.0.RELEASE
+org.springframework.boot:spring-boot-configuration-processor;2.2.0.RELEASE
+org.springframework.boot:spring-boot-dependencies;2.2.0.RELEASE
+org.springframework.boot:spring-boot-starter;2.2.0.RELEASE
+org.springframework.boot:spring-boot-starter-test;2.2.0.RELEASE
+org.springframework.boot:spring-boot-starter-validation;2.2.0.RELEASE
+org.springframework.boot:spring-boot-starter-web;2.2.0.RELEASE
+org.springframework.security:spring-security-config;5.2.0.RELEASE
+org.springframework.security:spring-security-core;5.2.0.RELEASE
+org.springframework.security:spring-security-web;5.2.0.RELEASE
+org.springframework.security:spring-security-oauth2-client;5.2.0.RELEASE
+org.springframework.security:spring-security-oauth2-core;5.2.0.RELEASE
+org.springframework.security:spring-security-oauth2-jose;5.2.0.RELEASE
+org.springframework:spring-web;5.2.0.RELEASE
+pl.pragmatists:JUnitParams;1.1.1
 
 ## Test dependency versions
 cglib:cglib-nodep;3.2.7
@@ -103,7 +124,7 @@ uk.org.lidalia:slf4j-test;1.2.0
 com.azure:sdk-build-tools;1.0.0
 com.beust:jcommander;1.58
 com.google.code.findbugs:jsr305;3.0.2
-com.nimbusds:nimbus-jose-jwt;6.0.1
+com.nimbusds:nimbus-jose-jwt;7.9
 com.nimbusds:oauth2-oidc-sdk;6.14
 com.puppycrawl.tools:checkstyle;8.29
 commons-io:commons-io;2.5
@@ -188,6 +209,9 @@ eventgrid_commons-io:commons-io;2.6
 # sdk\eventhubs\microsoft-azure-eventhubs-eph\pom.xml
 # sdk\eventhubs\microsoft-azure-eventhubs-extensions\pom.xml
 eventhubs_com.microsoft.azure:msal4j;0.4.0-preview
+
+# sdk\eventhubs\microsoft-azure-eventhubs\pom.xml
+eventhubs_com.nimbusds:nimbus-jose-jwt;6.0.1
 
 # sdk\keyvault\microsoft-azure-keyvault-extensions\pom.xml
 keyvault_org.mockito:mockito-core;1.10.19

@@ -27,6 +27,9 @@ public class TypeSerializationTests {
         String metricAlertInnerJson = adapter.serialize(metricAlertInner, SerializerEncoding.JSON);
         checkOdatatypeJson(metricAlertInnerJson);
 
+        MetricAlertResourceInner metricAlertInner2 = adapter.deserialize(metricAlertInnerJson, MetricAlertResourceInner.class, SerializerEncoding.JSON);
+        Assertions.assertTrue(metricAlertInner2.criteria() instanceof MetricAlertMultipleResourceMultipleMetricCriteria);
+
         AlertRuleResourceInner alertRuleInner = new AlertRuleResourceInner();
         alertRuleInner.withActions(Arrays.asList(new RuleEmailAction()));
         alertRuleInner.withCondition(new ThresholdRuleCondition().withDataSource(new RuleMetricDataSource()));

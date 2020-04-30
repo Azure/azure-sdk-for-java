@@ -5,12 +5,15 @@ package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
+import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.message.Message;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
@@ -19,6 +22,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.azure.core.amqp.implementation.ExceptionUtil.amqpResponseCodeToException;
+import static com.azure.core.amqp.implementation.RequestResponseUtils.getStatusCode;
+import static com.azure.core.amqp.implementation.RequestResponseUtils.getStatusDescription;
+
 public class ClaimsBasedSecurityChannel implements ClaimsBasedSecurityNode {
     static final String PUT_TOKEN_TYPE = "type";
     static final String PUT_TOKEN_AUDIENCE = "name";
@@ -26,6 +33,7 @@ public class ClaimsBasedSecurityChannel implements ClaimsBasedSecurityNode {
     private static final String PUT_TOKEN_OPERATION = "operation";
     private static final String PUT_TOKEN_OPERATION_VALUE = "put-token";
 
+    private final ClientLogger logger = new ClientLogger(ClaimsBasedSecurityChannel.class);
     private final TokenCredential credential;
     private final Mono<RequestResponseChannel> cbsChannelMono;
     private final CbsAuthorizationType authorizationType;
@@ -56,7 +64,17 @@ public class ClaimsBasedSecurityChannel implements ClaimsBasedSecurityNode {
                     request.setApplicationProperties(applicationProperties);
                     request.setBody(new AmqpValue(accessToken.getToken()));
 
-                    return channel.sendWithAck(request).thenReturn(accessToken.getExpiresAt());
+                    return channel.sendWithAck(request).map(message -> {
+                        if (RequestResponseUtils.isSuccessful(message)) {
+                            return accessToken.getExpiresAt();
+                        }
+
+                        final String description = getStatusDescription(message);
+                        final AmqpResponseCode statusCode = getStatusCode(message);
+
+                        throw logger.logExceptionAsError(Exceptions.propagate(amqpResponseCodeToException(
+                            statusCode.getValue(), description, channel.getErrorContext())));
+                    });
                 }));
     }
 

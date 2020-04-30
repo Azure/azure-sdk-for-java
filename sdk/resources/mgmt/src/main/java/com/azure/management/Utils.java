@@ -73,28 +73,4 @@ public final class Utils {
         }
         return s;
     }
-
-    /**
-     * Gets the subscription ID from rest client.
-     * @param restClient the rest client
-     * @return the subscription ID
-     */
-    public static String getSubscriptionIdFromRestClient(RestClient restClient) {
-        if (restClient.getCredential() instanceof AzureTokenCredential) {
-            return ((AzureTokenCredential) restClient.getCredential()).getDefaultSubscriptionId();
-        }
-        return null;
-    }
-
-    /**
-     * Gets the tenant ID from rest client.
-     * @param restClient the rest client
-     * @return the tenant ID
-     */
-    public static String getTenantIdFromRestClient(RestClient restClient) {
-        if (restClient.getCredential() instanceof AzureTokenCredential) {
-            return ((AzureTokenCredential) restClient.getCredential()).getDomain();
-        }
-        return null;
-    }
 }

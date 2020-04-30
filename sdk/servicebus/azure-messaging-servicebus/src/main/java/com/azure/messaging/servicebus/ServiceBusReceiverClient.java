@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -32,6 +33,9 @@ public class ServiceBusReceiverClient implements AutoCloseable {
     private final AtomicInteger idGenerator = new AtomicInteger();
     private final ServiceBusReceiverAsyncClient asyncClient;
     private final Duration operationTimeout;
+    private static final ReceiveAsyncOptions DEFAULT_RECEIVE_OPTIONS = new ReceiveAsyncOptions()
+        .setEnableAutoComplete(false)
+        .setMaxAutoRenewDuration(Duration.ZERO);
 
     /**
      * Creates a synchronous receiver given its asynchronous counterpart.
@@ -172,6 +176,18 @@ public class ServiceBusReceiverClient implements AutoCloseable {
      */
     public void deadLetter(MessageLockToken lockToken, DeadLetterOptions deadLetterOptions) {
         asyncClient.deadLetter(lockToken, deadLetterOptions).block(operationTimeout);
+    }
+
+    /**
+     * Gets the state of a session given its identifier.
+     *
+     * @param sessionId Identifier of session to get.
+     *
+     * @return The session state or null if there is no state set for the session.
+     * @throws IllegalStateException if the receiver is a non-session receiver.
+     */
+    public byte[] getSessionState(String sessionId) {
+        return asyncClient.getSessionState(sessionId).block(operationTimeout);
     }
 
     /**
@@ -335,9 +351,34 @@ public class ServiceBusReceiverClient implements AutoCloseable {
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     * @throws IllegalStateException if the receiver is a session receiver.
      */
     public Instant renewMessageLock(MessageLockToken lockToken) {
         return asyncClient.renewMessageLock(lockToken).block(operationTimeout);
+    }
+
+    /**
+     * Sets the state of a session given its identifier.
+     *
+     * @param sessionId Identifier of session to get.
+     *
+     * @return The next expiration time for the session lock.
+     * @throws IllegalStateException if the receiver is a non-session receiver.
+     */
+    public Instant renewSessionLock(String sessionId) {
+        return asyncClient.renewSessionLock(sessionId).block(operationTimeout);
+    }
+
+    /**
+     * Sets the state of a session given its identifier.
+     *
+     * @param sessionId Identifier of session to get.
+     * @param sessionState State to set on the session.
+     *
+     * @throws IllegalStateException if the receiver is a non-session receiver.
+     */
+    public void setSessionState(String sessionId, byte[] sessionState) {
+        asyncClient.setSessionState(sessionId, sessionState).block(operationTimeout);
     }
 
     /**
@@ -360,6 +401,6 @@ public class ServiceBusReceiverClient implements AutoCloseable {
         final SynchronousMessageSubscriber syncSubscriber = new SynchronousMessageSubscriber(work);
 
         logger.info("[{}]: Started synchronous message subscriber.", id);
-        asyncClient.receive().subscribeWith(syncSubscriber);
+        asyncClient.receive(DEFAULT_RECEIVE_OPTIONS).subscribeWith(syncSubscriber);
     }
 }
