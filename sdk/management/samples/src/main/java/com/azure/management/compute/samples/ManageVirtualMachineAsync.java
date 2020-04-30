@@ -18,7 +18,6 @@ import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.Indexable;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
-import com.azure.management.samples.Utils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
