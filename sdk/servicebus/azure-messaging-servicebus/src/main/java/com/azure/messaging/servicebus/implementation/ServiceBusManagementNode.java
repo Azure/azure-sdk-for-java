@@ -63,7 +63,7 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      * @return The received {@link ServiceBusReceivedMessage} message for given sequence number.
      */
     Flux<ServiceBusReceivedMessage> receiveDeferredMessages(ReceiveMode receiveMode, String sessionId,
-        String associatedLinkName, long... sequenceNumbers);
+        String associatedLinkName, Iterable<Long> sequenceNumbers);
 
     /**
      * Asynchronously renews the lock on the message specified by the lock token. The lock will be renewed based on

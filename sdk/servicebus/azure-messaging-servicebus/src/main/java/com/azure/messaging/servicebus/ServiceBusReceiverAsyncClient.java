@@ -30,6 +30,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -59,7 +60,8 @@ import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPE
  *
  * <p><strong>Rate limiting consumption of messages from Service Bus resource</strong></p>
  * <p>For message receivers that need to limit the number of messages they receive at a given time, they can use
- * {@link BaseSubscriber#request(long)}.</p> {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#basesubscriber}
+ * {@link BaseSubscriber#request(long)}.</p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#basesubscriber}
  *
  * @see ServiceBusClientBuilder
  * @see ServiceBusReceiverClient To communicate with a Service Bus resource using a synchronous client.
@@ -156,7 +158,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
      */
     public Mono<Void> abandon(MessageLockToken lockToken) {
-        return abandon(lockToken, null);
+        return abandon(lockToken, (Map<String, Object>) null);
+    }
+
+    public Mono<Void> abandon(MessageLockToken lockToken, String sessionId) {
+        return null;
     }
 
     /**
@@ -177,6 +183,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return updateDisposition(lockToken, DispositionStatus.ABANDONED, null, null, propertiesToModify);
     }
 
+    public Mono<Void> abandon(MessageLockToken lockToken, Map<String, Object> propertiesToModify, String sessionId) {
+        return null;
+    }
+
     /**
      * Completes a {@link ServiceBusReceivedMessage message} using its lock token. This will delete the message from the
      * service.
@@ -193,6 +203,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return updateDisposition(lockToken, DispositionStatus.COMPLETED, null, null, null);
     }
 
+    public Mono<Void> complete(MessageLockToken lockToken, String sessionId) {
+        return null;
+    }
+
     /**
      * Defers a {@link ServiceBusReceivedMessage message} using its lock token. This will move message into the deferred
      * subqueue.
@@ -207,7 +221,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
     public Mono<Void> defer(MessageLockToken lockToken) {
-        return defer(lockToken, null);
+        return defer(lockToken, (Map<String, Object>) null);
+    }
+
+    public Mono<Void> defer(MessageLockToken lockToken, String sessionId) {
+        return null;
     }
 
     /**
@@ -228,6 +246,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return updateDisposition(lockToken, DispositionStatus.DEFERRED, null, null, propertiesToModify);
     }
 
+    public Mono<Void> defer(MessageLockToken lockToken, Map<String, Object> propertiesToModify, String sessionId) {
+        return null;
+    }
+
     /**
      * Moves a {@link ServiceBusReceivedMessage message} to the deadletter sub-queue.
      *
@@ -243,6 +265,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Mono<Void> deadLetter(MessageLockToken lockToken) {
         return deadLetter(lockToken, DEFAULT_DEAD_LETTER_OPTIONS);
+    }
+
+    public Mono<Void> deadLetter(MessageLockToken lockToken, String sessionId) {
+        return null;
     }
 
     /**
@@ -265,6 +291,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         return updateDisposition(lockToken, DispositionStatus.SUSPENDED, deadLetterOptions.getDeadLetterReason(),
             deadLetterOptions.getDeadLetterErrorDescription(), deadLetterOptions.getPropertiesToModify());
+    }
+
+    public Mono<Void> deadLetter(MessageLockToken lockToken, DeadLetterOptions deadLetterOptions, String sessionId) {
+        return null;
     }
 
     /**
@@ -319,6 +349,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             });
     }
 
+    public Mono<ServiceBusReceivedMessage> peek(String sessionId) {
+        return null;
+    }
+
     /**
      * Starting from the given sequence number, reads next the active message without changing the state of the receiver
      * or the message source.
@@ -337,6 +371,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(node -> node.peek(sequenceNumber, sessionId, getLinkName()));
+    }
+
+    public Mono<ServiceBusReceivedMessage> peekAt(long sequenceNumber, String sessionId) {
+        return null;
     }
 
     /**
@@ -375,6 +413,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             });
     }
 
+    public Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages, String sessionId) {
+        return null;
+    }
+
     /**
      * Starting from the given sequence number, reads the next batch of active messages without changing the state of
      * the receiver or the message source.
@@ -395,6 +437,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMapMany(node -> node.peek(sequenceNumber, sessionId, getLinkName(), maxMessages));
+    }
+
+    public Flux<ServiceBusReceivedMessage> peekBatchAt(int maxMessages, long sequenceNumber, String sessionId) {
+        return null;
     }
 
     /**
@@ -461,7 +507,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     public Mono<ServiceBusReceivedMessage> receiveDeferredMessage(long sequenceNumber) {
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(node -> node.receiveDeferredMessages(receiveMode, sessionId, getLinkName(), sequenceNumber).last())
+            .flatMap(node -> node.receiveDeferredMessages(receiveMode, sessionId, getLinkName(),
+                Collections.singleton(sequenceNumber)).last())
             .map(receivedMessage -> {
                 if (receiveMode == ReceiveMode.PEEK_LOCK && !CoreUtils.isNullOrEmpty(receivedMessage.getLockToken())) {
                     receivedMessage.setLockedUntil(managementNodeLocks.addOrUpdate(receivedMessage.getLockToken(),
@@ -469,6 +516,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 }
                 return receivedMessage;
             });
+    }
+
+    public Mono<ServiceBusReceivedMessage> receiveDeferredMessage(long sequenceNumber, String sessionId) {
+        return Mono.empty();
     }
 
     /**
@@ -479,7 +530,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *
      * @return A {@link Flux} of deferred {@link ServiceBusReceivedMessage messages}.
      */
-    public Flux<ServiceBusReceivedMessage> receiveDeferredMessageBatch(long... sequenceNumbers) {
+    public Flux<ServiceBusReceivedMessage> receiveDeferredMessageBatch(Iterable<Long> sequenceNumbers) {
         if (isDisposed.get()) {
             return fluxError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "receiveDeferredMessageBatch")));
@@ -495,6 +546,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 }
                 return receivedMessage;
             });
+    }
+
+    public Flux<ServiceBusReceivedMessage> receiveDeferredMessageBatch(Iterable<Long> sequenceNumbers, String sessionId) {
+        return Flux.empty();
     }
 
     /**

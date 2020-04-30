@@ -82,6 +82,9 @@ public class ServiceBusReceiverClient implements AutoCloseable {
         asyncClient.abandon(lockToken).block(operationTimeout);
     }
 
+    public void abandon(MessageLockToken lockToken, String sessionId) {
+    }
+
     /**
      * Abandon a {@link ServiceBusReceivedMessage message} with its lock token and updates the message's properties.
      * This will make the message available again for processing. Abandoning a message will increase the delivery count
@@ -99,6 +102,9 @@ public class ServiceBusReceiverClient implements AutoCloseable {
         asyncClient.abandon(lockToken, propertiesToModify).block(operationTimeout);
     }
 
+    public void abandon(MessageLockToken lockToken, Map<String, Object> propertiesToModify, String sessionId) {
+    }
+
     /**
      * Completes a {@link ServiceBusReceivedMessage message} using its lock token. This will delete the message from the
      * service.
@@ -112,6 +118,9 @@ public class ServiceBusReceiverClient implements AutoCloseable {
      */
     public void complete(MessageLockToken lockToken) {
         asyncClient.complete(lockToken).block(operationTimeout);
+    }
+
+    public void complete(MessageLockToken lockToken, String sessionId) {
     }
 
     /**
@@ -130,6 +139,8 @@ public class ServiceBusReceiverClient implements AutoCloseable {
         asyncClient.defer(lockToken).block(operationTimeout);
     }
 
+    public void defer(MessageLockToken lockToken, String sessionId) {}
+
     /**
      * Defers a {@link ServiceBusReceivedMessage message} using its lock token with modified message property. This will
      * move message into the deferred subqueue.
@@ -145,6 +156,9 @@ public class ServiceBusReceiverClient implements AutoCloseable {
      */
     public void defer(MessageLockToken lockToken, Map<String, Object> propertiesToModify) {
         asyncClient.defer(lockToken, propertiesToModify).block(operationTimeout);
+    }
+
+    public void defer(MessageLockToken lockToken, Map<String, Object> propertiesToModify, String sessionId) {
     }
 
     /**
@@ -163,6 +177,8 @@ public class ServiceBusReceiverClient implements AutoCloseable {
         asyncClient.deadLetter(lockToken).block(operationTimeout);
     }
 
+    public void deadLetter(MessageLockToken lockToken, String sessionId) {}
+
     /**
      * Moves a {@link ServiceBusReceivedMessage message} to the deadletter subqueue with deadletter reason, error
      * description, and/or modified properties.
@@ -177,6 +193,10 @@ public class ServiceBusReceiverClient implements AutoCloseable {
      */
     public void deadLetter(MessageLockToken lockToken, DeadLetterOptions deadLetterOptions) {
         asyncClient.deadLetter(lockToken, deadLetterOptions).block(operationTimeout);
+    }
+
+    public void deadLetter(MessageLockToken lockToken, DeadLetterOptions deadLetterOptions, String sessionId) {
+
     }
 
     /**
@@ -203,6 +223,10 @@ public class ServiceBusReceiverClient implements AutoCloseable {
         return asyncClient.peek().block(operationTimeout);
     }
 
+    public ServiceBusReceivedMessage peek(String sessionId) {
+        return null;
+    }
+
     /**
      * Starting from the given sequence number, reads next the active message without changing the state of the receiver
      * or the message source.
@@ -214,6 +238,10 @@ public class ServiceBusReceiverClient implements AutoCloseable {
      */
     public ServiceBusReceivedMessage peekAt(long sequenceNumber) {
         return asyncClient.peekAt(sequenceNumber).block(operationTimeout);
+    }
+
+    public ServiceBusReceivedMessage peekAt(long sequenceNumber, String sessionId) {
+        return null;
     }
 
     /**
@@ -238,6 +266,10 @@ public class ServiceBusReceiverClient implements AutoCloseable {
         messages.subscribe();
 
         return new IterableStream<>(messages);
+    }
+
+    public IterableStream<ServiceBusReceivedMessage> peekBatch(int maxMessages, String sessionId) {
+        return null;
     }
 
     /**
@@ -266,6 +298,11 @@ public class ServiceBusReceiverClient implements AutoCloseable {
         return new IterableStream<>(messages);
     }
 
+    public IterableStream<ServiceBusReceivedMessage> peekBatchAt(int maxMessages, long sequenceNumber,
+        String sessionId) {
+        return null;
+    }
+
     /**
      * Receives an iterable stream of {@link ServiceBusReceivedMessage messages} from the Service Bus entity.
      * The receive operation will wait for a default 1 minute for receiving a message before it times out. You can it
@@ -278,6 +315,10 @@ public class ServiceBusReceiverClient implements AutoCloseable {
      */
     public IterableStream<ServiceBusReceivedMessage> receive(int maxMessages) {
         return receive(maxMessages, operationTimeout);
+    }
+
+    public IterableStream<ServiceBusReceivedMessage> receive(int maxMessages, String sessionId) {
+        return null;
     }
 
     /**
@@ -307,6 +348,10 @@ public class ServiceBusReceiverClient implements AutoCloseable {
         return new IterableStream<>(messages);
     }
 
+    public IterableStream<ServiceBusReceivedMessage> receive(int maxMessages, Duration maxWaitTime, String sessionId) {
+        return null;
+    }
+
     /**
      * Receives a deferred {@link ServiceBusReceivedMessage message}. Deferred messages can only be received by using
      * sequence number.
@@ -320,6 +365,10 @@ public class ServiceBusReceiverClient implements AutoCloseable {
         return asyncClient.receiveDeferredMessage(sequenceNumber).block(operationTimeout);
     }
 
+    public ServiceBusReceivedMessage receiveDeferredMessage(long sequenceNumber, String sessionId) {
+        return null;
+    }
+
     /**
      * Receives a batch of deferred {@link ServiceBusReceivedMessage messages}. Deferred messages can only be received
      * by using sequence number.
@@ -328,7 +377,7 @@ public class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @return An {@link IterableStream} of deferred {@link ServiceBusReceivedMessage messages}.
      */
-    public IterableStream<ServiceBusReceivedMessage> receiveDeferredMessageBatch(long... sequenceNumbers) {
+    public IterableStream<ServiceBusReceivedMessage> receiveDeferredMessageBatch(Iterable<Long> sequenceNumbers) {
         final Flux<ServiceBusReceivedMessage> messages = asyncClient.receiveDeferredMessageBatch(sequenceNumbers)
             .timeout(operationTimeout);
 
@@ -336,6 +385,11 @@ public class ServiceBusReceiverClient implements AutoCloseable {
         messages.subscribe();
 
         return new IterableStream<>(messages);
+    }
+
+    public IterableStream<ServiceBusReceivedMessage> receiveDeferredMessageBatch(Iterable<Long> sequenceNumbers,
+        String sessionId) {
+        return null;
     }
 
     /**

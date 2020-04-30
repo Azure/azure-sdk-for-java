@@ -221,6 +221,16 @@ public final class ServiceBusClientBuilder {
     }
 
     /**
+     * A new instance of {@link ServiceBusSessionReceiverClientBuilder} used to configure <b>session aware</b> Service
+     * Bus message consumers.
+     *
+     * @return A new instance of {@link ServiceBusSessionReceiverClientBuilder}.
+     */
+    public ServiceBusSessionReceiverClientBuilder sessionReceiver() {
+        return new ServiceBusSessionReceiverClientBuilder();
+    }
+
+    /**
      * Called when a child client is closed. Disposes of the shared connection if there are no more clients.
      */
     void onClientClose() {
@@ -654,6 +664,7 @@ public final class ServiceBusClientBuilder {
         private static final String SUBSCRIPTION_ENTITY_PATH_FORMAT = "%s/subscriptions/%s";
 
         private int prefetchCount = DEFAULT_PREFETCH_COUNT;
+        private Integer maxConcurrentSessions = null;
         private String sessionId;
         private String queueName;
         private String subscriptionName;
@@ -738,6 +749,18 @@ public final class ServiceBusClientBuilder {
          */
         public ServiceBusSessionReceiverClientBuilder sessionId(String sessionId) {
             this.sessionId = sessionId;
+            return this;
+        }
+
+        /**
+         * Enables session processing roll-over by processing at most {@code maxConcurrentSessions}.
+         *
+         * @param maxConcurrentSessions Maximum number of concurrent sessions to process at any given time.
+         *
+         * @return The modified {@link ServiceBusReceiverClientBuilder} object.
+         */
+        public ServiceBusSessionReceiverClientBuilder maxConcurrentSessions(int maxConcurrentSessions) {
+            this.maxConcurrentSessions = maxConcurrentSessions;
             return this;
         }
 
