@@ -406,7 +406,7 @@ public final class DocumentsImpl {
         }
         Boolean useFuzzyMatching = null;
         if (suggestOptions != null) {
-            useFuzzyMatching = suggestOptions.useFuzzyMatching();
+            useFuzzyMatching = suggestOptions.isUseFuzzyMatching();
         }
         String highlightPostTag = null;
         if (suggestOptions != null) {
@@ -572,7 +572,7 @@ public final class DocumentsImpl {
         }
         Boolean useFuzzyMatching = null;
         if (autocompleteOptions != null) {
-            useFuzzyMatching = autocompleteOptions.useFuzzyMatching();
+            useFuzzyMatching = autocompleteOptions.isUseFuzzyMatching();
         }
         String highlightPostTag = null;
         if (autocompleteOptions != null) {

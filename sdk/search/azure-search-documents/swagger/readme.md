@@ -125,6 +125,19 @@ directive:
           .replace(/(this.client.getIndexName\(\),)/g, "$1 accept,")
           .replace(/(public Mono\<(.*)\) \{)/g, "$1\n\t\tfinal String accept \= \"application\/json\;odata\.metadata\=none\"\;\n")
 
+    - from: 
+        - DataSourcesImpl.java
+        - IndexersImpl.java
+        - IndexesImpl.java
+        - SkillsetsImpl.java
+        - SynonymMapsImpl.java
+      where: $
+      transform: >-
+          return $
+          .replace(/(\@QueryParam\(\"api\-version\"\) String apiVersion)/g, "$1\, @HeaderParam\(\"accept\"\) String accept")
+          .replace(/(this\.client\.getApiVersion\(\)\,)/g, "$1 accept,")
+          .replace(/(public Mono\<(.*)\) \{)/g, "$1\n\t\tfinal String accept \= \"application\/json\;odata\.metadata\=minimal\"\;\n")
+
     # Use Document rather than Map<String, Object>
     - from:
           - SuggestResult.java
@@ -448,10 +461,11 @@ directive:
         .replace(/(this\.hidden \= hidden\;)/g, "$1\n        retrievable = this.hidden == null ? null : !this.hidden;")
         .replace(/(    \@JsonProperty\(value \= \"hidden\"\))/g, "    @JsonIgnore")
 
-    # Remove access-condition group paremeters
     - from: swagger-document
       where: $.parameters
       transform: >-
-        delete $.IfMatchParameter["x-ms-parameter-grouping"];
-        delete $.IfNoneMatchParameter["x-ms-parameter-grouping"];
+        if ($.IfMatchParameter && $.IfNoneMatchParameter) {
+            delete $.IfMatchParameter["x-ms-parameter-grouping"];
+            delete $.IfNoneMatchParameter["x-ms-parameter-grouping"];
+        }
 ```
