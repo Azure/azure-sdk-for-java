@@ -169,26 +169,6 @@ class AvroParserTest extends Specification {
             .expectNextCount(999)
             .verifyComplete()
     }
-
-    def "Parse QQ small"() {
-        setup:
-        AvroParser parser = new AvroParser()
-        String fileName = "quickquery_small.avro"
-        ClassLoader classLoader = getClass().getClassLoader()
-        File f = new File(classLoader.getResource(fileName).getFile())
-        Path path = Paths.get(f.getAbsolutePath())
-        Flux<ByteBuffer> file = FluxUtil.readFile(AsynchronousFileChannel.open(path, StandardOpenOption.READ))
-
-        when:
-        def sv = StepVerifier.create(file
-            .concatMap({buffer -> parser.parse(buffer)})
-        )
-
-        then:
-        sv
-        .expectNextCount(10)
-        .verifyComplete()
-    }
     /* TODO (gapra) : Once this is in the same branch as QQ and CF, add network tests for both of them. (this could just go in the CF/QQ packages) */
 
 }
