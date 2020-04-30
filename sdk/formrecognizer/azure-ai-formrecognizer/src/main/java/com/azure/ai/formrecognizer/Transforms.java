@@ -66,7 +66,6 @@ final class Transforms {
 
         List<FormPage> formPages = toRecognizedLayout(analyzeResult, includeTextDetails);
 
-        //getLabeledData
         if (!CoreUtils.isNullOrEmpty(documentResults)) {
             extractedFormList = new ArrayList<>();
             for (DocumentResult documentResultItem : documentResults) {

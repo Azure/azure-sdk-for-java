@@ -3,6 +3,7 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.implementation.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.ErrorResponseException;
 import com.azure.ai.formrecognizer.models.FormContentType;
@@ -20,11 +21,10 @@ import static com.azure.ai.formrecognizer.TestUtils.CUSTOM_FORM_LABELED_DATA;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_SOURCE_URL_ERROR;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_URL;
 import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_FILE_LENGTH;
+import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_FORM_DATA;
 import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_FORM_DATA;
-import static com.azure.ai.formrecognizer.TestUtils.getPageResults;
 import static com.azure.ai.formrecognizer.TestUtils.getRawResponse;
-import static com.azure.ai.formrecognizer.TestUtils.getReadResults;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -49,7 +49,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
                 client.beginRecognizeReceiptsFromUrl(sourceUrl);
             syncPoller.waitForCompletion();
-            validateReceiptResultData(syncPoller.getFinalResult(), getRawResponse(RECEIPT_FORM_DATA).getAnalyzeResult(), false);
+            validateReceiptResultData(syncPoller.getFinalResult(),
+                getRawResponse(RECEIPT_FORM_DATA).getAnalyzeResult(), false);
         });
     }
 
@@ -63,7 +64,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
                 client.beginRecognizeReceiptsFromUrl(sourceUrl, includeTextDetails, null);
             syncPoller.waitForCompletion();
-            validateReceiptResultData(syncPoller.getFinalResult(), getRawResponse(RECEIPT_FORM_DATA).getAnalyzeResult(), true);
+            validateReceiptResultData(syncPoller.getFinalResult(),
+                getRawResponse(RECEIPT_FORM_DATA).getAnalyzeResult(), true);
         });
     }
 
@@ -76,7 +78,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
                 client.beginRecognizeReceipts(data, RECEIPT_FILE_LENGTH, FormContentType.IMAGE_JPEG, false, null);
             syncPoller.waitForCompletion();
-            validateReceiptResultData(syncPoller.getFinalResult(), getRawResponse(RECEIPT_FORM_DATA).getAnalyzeResult(), false);
+            validateReceiptResultData(syncPoller.getFinalResult(),
+                getRawResponse(RECEIPT_FORM_DATA).getAnalyzeResult(), false);
         });
     }
 
@@ -99,7 +102,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
                 client.beginRecognizeReceipts(data, RECEIPT_FILE_LENGTH, null, false, null);
             syncPoller.waitForCompletion();
-            validateReceiptResultData(syncPoller.getFinalResult(), getRawResponse(RECEIPT_FORM_DATA).getAnalyzeResult(), false);
+            validateReceiptResultData(syncPoller.getFinalResult(),
+                getRawResponse(RECEIPT_FORM_DATA).getAnalyzeResult(), false);
         });
     }
 
@@ -114,7 +118,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 client.beginRecognizeReceipts(data, RECEIPT_FILE_LENGTH, FormContentType.IMAGE_PNG,
                     includeTextDetails, null);
             syncPoller.waitForCompletion();
-            validateReceiptResultData(syncPoller.getFinalResult(), getRawResponse(RECEIPT_FORM_DATA).getAnalyzeResult(), true);
+            validateReceiptResultData(syncPoller.getFinalResult(),
+                getRawResponse(RECEIPT_FORM_DATA).getAnalyzeResult(), true);
         });
     }
 
@@ -127,7 +132,9 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             SyncPoller<OperationResult, IterableStream<FormPage>> syncPoller =
                 client.beginRecognizeContent(data, LAYOUT_FILE_LENGTH, FormContentType.IMAGE_PNG, null);
             syncPoller.waitForCompletion();
-            validateLayoutDataResults(syncPoller.getFinalResult(), getReadResults(), getPageResults(), false);
+            final AnalyzeResult rawResponse = getRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult();
+            validateLayoutDataResults(syncPoller.getFinalResult(), rawResponse.getReadResults(),
+                rawResponse.getPageResults(), false);
         });
     }
 
@@ -156,7 +163,9 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             SyncPoller<OperationResult, IterableStream<FormPage>> syncPoller =
                 client.beginRecognizeContent(data, LAYOUT_FILE_LENGTH, null, null);
             syncPoller.waitForCompletion();
-            validateLayoutDataResults(syncPoller.getFinalResult(), getReadResults(), getPageResults(), false);
+            final AnalyzeResult rawResponse = getRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult();
+            validateLayoutDataResults(syncPoller.getFinalResult(), rawResponse.getReadResults(),
+                rawResponse.getPageResults(), false);
         });
     }
 
@@ -166,7 +175,9 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             SyncPoller<OperationResult, IterableStream<FormPage>> syncPoller
                 = client.beginRecognizeContentFromUrl(sourceUrl);
             syncPoller.waitForCompletion();
-            validateLayoutDataResults(syncPoller.getFinalResult(), getReadResults(), getPageResults(), false);
+            final AnalyzeResult rawResponse = getRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult();
+            validateLayoutDataResults(syncPoller.getFinalResult(), rawResponse.getReadResults(),
+                rawResponse.getPageResults(), false);
         });
     }
 

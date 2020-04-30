@@ -3,6 +3,7 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.implementation.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.ErrorResponseException;
 import com.azure.ai.formrecognizer.models.FormContentType;
@@ -25,12 +26,11 @@ import static com.azure.ai.formrecognizer.TestUtils.CUSTOM_FORM_LABELED_DATA;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_SOURCE_URL_ERROR;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_URL;
 import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_FILE_LENGTH;
+import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_FORM_DATA;
 import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_FORM_DATA;
 import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_LOCAL_URL;
-import static com.azure.ai.formrecognizer.TestUtils.getPageResults;
 import static com.azure.ai.formrecognizer.TestUtils.getRawResponse;
-import static com.azure.ai.formrecognizer.TestUtils.getReadResults;
 import static com.azure.ai.formrecognizer.TestUtils.getReplayableBufferData;
 import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -174,7 +174,8 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 = client.beginRecognizeContent(toFluxByteBuffer(data),
                 LAYOUT_FILE_LENGTH, FormContentType.IMAGE_JPEG, null).getSyncPoller();
             syncPoller.waitForCompletion();
-            validateLayoutDataResults(syncPoller.getFinalResult(), getReadResults(), getPageResults(), false);
+            final AnalyzeResult rawResponse = getRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult();
+            validateLayoutDataResults(syncPoller.getFinalResult(), rawResponse.getReadResults(), rawResponse.getPageResults(), false);
         });
     }
 
@@ -206,7 +207,8 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 = client.beginRecognizeContent(toFluxByteBuffer(data),
                 LAYOUT_FILE_LENGTH, null, null).getSyncPoller();
             syncPoller.waitForCompletion();
-            validateLayoutDataResults(syncPoller.getFinalResult(), getReadResults(), getPageResults(), false);
+            final AnalyzeResult rawResponse = getRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult();
+            validateLayoutDataResults(syncPoller.getFinalResult(), rawResponse.getReadResults(), rawResponse.getPageResults(), false);
         });
     }
 
@@ -219,7 +221,8 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             SyncPoller<OperationResult, IterableStream<FormPage>> syncPoller
                 = client.beginRecognizeContentFromUrl(sourceUrl).getSyncPoller();
             syncPoller.waitForCompletion();
-            validateLayoutDataResults(syncPoller.getFinalResult(), getReadResults(), getPageResults(), false);
+            final AnalyzeResult rawResponse = getRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult();
+            validateLayoutDataResults(syncPoller.getFinalResult(), rawResponse.getReadResults(), rawResponse.getPageResults(), false);
         });
     }
 

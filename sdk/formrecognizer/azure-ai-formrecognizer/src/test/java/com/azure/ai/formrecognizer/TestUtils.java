@@ -5,21 +5,13 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.implementation.Utility;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
-import com.azure.ai.formrecognizer.implementation.models.PageResult;
-import com.azure.ai.formrecognizer.implementation.models.ReadResult;
 import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelField;
 import com.azure.ai.formrecognizer.models.CustomFormModelStatus;
 import com.azure.ai.formrecognizer.models.CustomFormSubModel;
-import com.azure.ai.formrecognizer.models.DimensionUnit;
-import com.azure.ai.formrecognizer.models.FormLine;
-import com.azure.ai.formrecognizer.models.FormPage;
-import com.azure.ai.formrecognizer.models.FormTable;
-import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.ai.formrecognizer.models.TrainingDocumentInfo;
 import com.azure.ai.formrecognizer.models.TrainingStatus;
-import com.azure.ai.formrecognizer.models.USReceipt;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -42,10 +34,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
-import static com.azure.ai.formrecognizer.Transforms.toReceipt;
 
 /**
  * Contains helper methods for generating inputs for test methods
@@ -92,46 +80,6 @@ final class TestUtils {
             e.printStackTrace();
         }
         return null;
-    }
-
-    static List<List<FormTable>> getPagedTables() {
-        List<PageResult> pageResults = getRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult().getPageResults();
-        List<ReadResult> readResults = getRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult().getReadResults();
-        return IntStream.range(0, pageResults.size())
-            .mapToObj(i -> Transforms.getPageTables(pageResults.get(i), readResults, i + 1))
-            .collect(Collectors.toList());
-    }
-
-    static List<List<FormLine>> getPagedLines() {
-        List<ReadResult> readResults = getRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult().getReadResults();
-        return readResults.stream().map(Transforms::getReadResultFormLines).collect(Collectors.toList());
-    }
-
-    static List<ReadResult> getReadResults() {
-        return getRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult().getReadResults();
-    }
-
-    static List<PageResult> getPageResults() {
-        return getRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult().getPageResults();
-    }
-
-    static IterableStream<RecognizedReceipt> getRawExpectedReceipt(boolean includeTextDetails) {
-        return toReceipt(getRawResponse(RECEIPT_FORM_DATA).getAnalyzeResult(), includeTextDetails);
-    }
-
-    static IterableStream<FormPage> getExpectedFormPages() {
-        FormPage formPage = new FormPage(2200, 0, DimensionUnit.PIXEL, 1700,
-            new IterableStream<FormLine>(getPagedLines().get(0)),
-            new IterableStream<FormTable>(getPagedTables().get(0)));
-        return new IterableStream<>(Collections.singletonList(formPage));
-    }
-
-    static USReceipt getExpectedUSReceipt() {
-        USReceipt usReceipt = null;
-        for (RecognizedReceipt recognizedReceipt : getRawExpectedReceipt(true)) {
-            usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
-        }
-        return usReceipt;
     }
 
     static List<TrainingDocumentInfo> getExpectedTrainingDocuments() {
