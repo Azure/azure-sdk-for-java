@@ -169,6 +169,56 @@ class AvroParserTest extends Specification {
             .expectNextCount(999)
             .verifyComplete()
     }
+
+    def "Parse QQ small"() {
+        setup:
+        AvroParser parser = new AvroParser()
+        String fileName = "query_small.avro"
+        ClassLoader classLoader = getClass().getClassLoader()
+        File f = new File(classLoader.getResource(fileName).getFile())
+        Path path = Paths.get(f.getAbsolutePath())
+        Flux<ByteBuffer> file = FluxUtil.readFile(AsynchronousFileChannel.open(path, StandardOpenOption.READ))
+
+        when:
+        def sv = StepVerifier.create(file
+            .concatMap({buffer -> parser.parse(buffer)})
+        )
+
+        then:
+        sv
+        .expectNextMatches({ o -> ((Map) o).containsKey('$record') && ((Map) o).containsKey('data') && ((Map) o).containsValue('resultData')})
+            .expectNextMatches({ o -> ((Map) o).equals(['$record': 'progress', 'bytesScanned': 1024, 'totalBytes': 1024]) })
+            .expectNextMatches({ o -> ((Map) o).equals(['$record': 'end', 'totalBytes': 1024]) })
+            .verifyComplete()
+    }
+
+    def "Parse QQ large"() {
+        setup:
+        AvroParser parser = new AvroParser()
+        String fileName = "query_large.avro"
+        ClassLoader classLoader = getClass().getClassLoader()
+        File f = new File(classLoader.getResource(fileName).getFile())
+        Path path = Paths.get(f.getAbsolutePath())
+        Flux<ByteBuffer> file = FluxUtil.readFile(AsynchronousFileChannel.open(path, StandardOpenOption.READ))
+
+        when:
+        def sv = StepVerifier.create(file
+            .concatMap({buffer -> parser.parse(buffer)})
+        )
+
+        then:
+        sv
+            .expectNextMatches({ o -> ((Map) o).containsKey('$record') && ((Map) o).containsKey('data') && ((Map) o).containsValue('resultData')})
+            .expectNextMatches({ o -> ((Map) o).equals(['$record': 'progress', 'bytesScanned': 4194304, 'totalBytes': 16384000]) })
+            .expectNextMatches({ o -> ((Map) o).containsKey('$record') && ((Map) o).containsKey('data') && ((Map) o).containsValue('resultData')})
+            .expectNextMatches({ o -> ((Map) o).equals(['$record': 'progress', 'bytesScanned': 8388608, 'totalBytes': 16384000]) })
+            .expectNextMatches({ o -> ((Map) o).containsKey('$record') && ((Map) o).containsKey('data') && ((Map) o).containsValue('resultData')})
+            .expectNextMatches({ o -> ((Map) o).equals(['$record': 'progress', 'bytesScanned': 12582912, 'totalBytes': 16384000]) })
+            .expectNextMatches({ o -> ((Map) o).containsKey('$record') && ((Map) o).containsKey('data') && ((Map) o).containsValue('resultData')})
+            .expectNextMatches({ o -> ((Map) o).equals(['$record': 'progress', 'bytesScanned': 16384000, 'totalBytes': 16384000]) })
+            .expectNextMatches({ o -> ((Map) o).equals(['$record': 'end', 'totalBytes': 16384000]) })
+            .verifyComplete()
+    }
     /* TODO (gapra) : Once this is in the same branch as QQ and CF, add network tests for both of them. (this could just go in the CF/QQ packages) */
 
 }

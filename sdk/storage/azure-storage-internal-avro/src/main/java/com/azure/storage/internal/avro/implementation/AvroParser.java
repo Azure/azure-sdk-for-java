@@ -87,7 +87,7 @@ public class AvroParser {
      * @param ignore null
      */
     private void onBlock(Object ignore) {
-        /* On reading the block, read a header. */
+        /* On reading the block, read another block. */
         AvroBlockSchema blockSchema = new AvroBlockSchema(
             this.objectType,
             o -> this.records.add(o), /* Object result handler. */
