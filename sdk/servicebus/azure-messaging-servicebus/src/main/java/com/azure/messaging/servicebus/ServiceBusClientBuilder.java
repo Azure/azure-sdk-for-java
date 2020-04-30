@@ -256,39 +256,34 @@ public final class ServiceBusClientBuilder {
         }
 
         synchronized (connectionLock) {
-            sharedConnection = createConnection(serializer);
+            if (sharedConnection == null) {
+                final ConnectionOptions connectionOptions = getConnectionOptions();
+                final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
+                    connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
+                    ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
+                final ReactorProvider provider = new ReactorProvider();
+                final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
+
+                final Map<String, String> properties = CoreUtils.getProperties(SERVICE_BUS_PROPERTIES_FILE);
+                final String product = properties.getOrDefault(NAME_KEY, UNKNOWN);
+                final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
+
+                final Flux<ServiceBusAmqpConnection> connectionFlux = Mono.fromCallable(() -> {
+                    final String connectionId = StringUtil.getRandomString("MF");
+
+                    return (ServiceBusAmqpConnection) new ServiceBusReactorAmqpConnection(connectionId,
+                        connectionOptions, provider, handlerProvider, tokenManagerProvider, serializer, product,
+                        clientVersion);
+                }).repeat();
+
+                sharedConnection = connectionFlux.subscribeWith(new ServiceBusConnectionProcessor(
+                    connectionOptions.getFullyQualifiedNamespace(), connectionOptions.getRetry()));
+            }
         }
 
         final int numberOfOpenClients = openClients.incrementAndGet();
         logger.info("# of open clients with shared connection: {}", numberOfOpenClients);
 
-        return sharedConnection;
-    }
-
-    ServiceBusConnectionProcessor createConnection(MessageSerializer serializer) {
-        if (sharedConnection == null) {
-            final ConnectionOptions connectionOptions = getConnectionOptions();
-            final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
-                connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
-                ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
-            final ReactorProvider provider = new ReactorProvider();
-            final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
-
-            final Map<String, String> properties = CoreUtils.getProperties(SERVICE_BUS_PROPERTIES_FILE);
-            final String product = properties.getOrDefault(NAME_KEY, UNKNOWN);
-            final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
-
-            final Flux<ServiceBusAmqpConnection> connectionFlux = Mono.fromCallable(() -> {
-                final String connectionId = StringUtil.getRandomString("MF");
-
-                return (ServiceBusAmqpConnection) new ServiceBusReactorAmqpConnection(connectionId,
-                    connectionOptions, provider, handlerProvider, tokenManagerProvider, serializer, product,
-                    clientVersion);
-            }).repeat();
-
-            sharedConnection = connectionFlux.subscribeWith(new ServiceBusConnectionProcessor(
-                connectionOptions.getFullyQualifiedNamespace(), connectionOptions.getRetry()));
-        }
         return sharedConnection;
     }
 
@@ -511,7 +506,7 @@ public final class ServiceBusClientBuilder {
         private String sessionId;
         private ReceiveMode receiveMode = ReceiveMode.PEEK_LOCK;
 
-        ServiceBusReceiverClientBuilder() {
+        private ServiceBusReceiverClientBuilder() {
         }
 
         /**
