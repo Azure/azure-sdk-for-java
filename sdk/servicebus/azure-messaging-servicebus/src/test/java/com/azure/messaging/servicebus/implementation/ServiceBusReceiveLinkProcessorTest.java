@@ -31,6 +31,9 @@ import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -133,7 +136,7 @@ class ServiceBusReceiveLinkProcessorTest {
 
         final Integer creditValue = value.get();
         // Expecting 1 because it is Long.MAX_VALUE.
-        Assertions.assertEquals(1, creditValue);
+        assertEquals(1, creditValue);
     }
 
     /**
@@ -144,7 +147,6 @@ class ServiceBusReceiveLinkProcessorTest {
         // Arrange
         final int backpressure = 15;
         // Because one message was emitted.
-        final int expected = backpressure - 1;
         ServiceBusReceiveLinkProcessor processor = Flux.<AmqpReceiveLink>create(sink -> sink.next(link1))
             .subscribeWith(linkProcessor);
 
@@ -162,7 +164,8 @@ class ServiceBusReceiveLinkProcessorTest {
         Assertions.assertNotNull(value);
 
         final Integer creditValue = value.get();
-        Assertions.assertEquals(expected, creditValue);
+        final int emittedOne = backpressure - 1;
+        assertTrue(creditValue == emittedOne || creditValue == backpressure);
     }
 
     /**
@@ -192,7 +195,7 @@ class ServiceBusReceiveLinkProcessorTest {
 
         final Integer creditValue = value.get();
         // Expecting 0 because we wouldn't have any requested set.
-        Assertions.assertEquals(0, creditValue);
+        assertEquals(0, creditValue);
     }
 
     /**
@@ -344,8 +347,8 @@ class ServiceBusReceiveLinkProcessorTest {
                 AmqpException exception = (AmqpException) error;
 
                 Assertions.assertFalse(exception.isTransient());
-                Assertions.assertEquals(amqpException.getErrorCondition(), exception.getErrorCondition());
-                Assertions.assertEquals(amqpException.getMessage(), exception.getMessage());
+                assertEquals(amqpException.getErrorCondition(), exception.getErrorCondition());
+                assertEquals(amqpException.getMessage(), exception.getMessage());
             })
             .verify();
 
@@ -534,7 +537,7 @@ class ServiceBusReceiveLinkProcessorTest {
 
         final Integer creditValue = value.get();
         // Expecting 1 because it is Long.MAX_VALUE.
-        Assertions.assertEquals(1, creditValue);
+        assertEquals(1, creditValue);
     }
 
     @Test
@@ -569,7 +572,42 @@ class ServiceBusReceiveLinkProcessorTest {
 
         final Integer creditValue = value.get();
         // Expecting 1 because it is Long.MAX_VALUE.
-        Assertions.assertEquals(1, creditValue);
+        assertEquals(1, creditValue);
+    }
+
+    /**
+     * Verifies that when we request back pressure amounts, if it only requests a certain number of events, only
+     * that number is consumed.
+     */
+    @Test
+    void backpressureRequestOnlyEmitsThatAmount() {
+        // Arrange
+        final int backpressure = 10;
+        ServiceBusReceiveLinkProcessor processor = Flux.just(link1).subscribeWith(linkProcessor);
+        FluxSink<AmqpEndpointState> sink = endpointProcessor.sink();
+
+        when(link1.getCredits()).thenReturn(1);
+
+        // Act & Assert
+        StepVerifier.create(processor, backpressure)
+            .then(() -> {
+                sink.next(AmqpEndpointState.ACTIVE);
+                final int emitted = backpressure + 5;
+                for (int i = 0; i < emitted; i++) {
+                    messageProcessorSink.next(mock(Message.class));
+                }
+            })
+            .expectNextCount(backpressure)
+            .thenAwait(Duration.ofSeconds(1))
+            .thenCancel()
+            .verify();
+
+        Assertions.assertTrue(processor.isTerminated());
+        Assertions.assertFalse(processor.hasError());
+        Assertions.assertNull(processor.getError());
+
+        verify(link1).addCredits(eq(PREFETCH));
+        verify(link1).setEmptyCreditListener(any());
     }
 
     private static Flux<AmqpReceiveLink> createSink(AmqpReceiveLink[] links) {

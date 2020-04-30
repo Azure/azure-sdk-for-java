@@ -32,6 +32,7 @@ import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -570,6 +571,40 @@ class AmqpReceiveLinkProcessorTest {
         final Integer creditValue = value.get();
         // Expecting 1 because it is Long.MAX_VALUE.
         Assertions.assertEquals(1, creditValue);
+    }
+    /**
+     * Verifies that when we request back pressure amounts, if it only requests a certain number of events, only
+     * that number is consumed.
+     */
+    @Test
+    void backpressureRequestOnlyEmitsThatAmount() {
+        // Arrange
+        final int backpressure = 10;
+        AmqpReceiveLinkProcessor processor = Flux.just(link1).subscribeWith(linkProcessor);
+        FluxSink<AmqpEndpointState> sink = endpointProcessor.sink();
+
+        when(link1.getCredits()).thenReturn(1);
+
+        // Act & Assert
+        StepVerifier.create(processor, backpressure)
+            .then(() -> {
+                sink.next(AmqpEndpointState.ACTIVE);
+                final int emitted = backpressure + 5;
+                for (int i = 0; i < emitted; i++) {
+                    messageProcessorSink.next(mock(Message.class));
+                }
+            })
+            .expectNextCount(backpressure)
+            .thenAwait(Duration.ofSeconds(1))
+            .thenCancel()
+            .verify();
+
+        Assertions.assertTrue(processor.isTerminated());
+        Assertions.assertFalse(processor.hasError());
+        Assertions.assertNull(processor.getError());
+
+        verify(link1).addCredits(eq(PREFETCH));
+        verify(link1).setEmptyCreditListener(any());
     }
 
     private static Flux<AmqpReceiveLink> createSink(AmqpReceiveLink[] links) {
