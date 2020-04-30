@@ -57,7 +57,7 @@ public class FieldBuilderTest {
     }
 
     @Test
-    public void hotelWithEmptySynonymMaps(){
+    public void hotelWithEmptySynonymMaps() {
         // We cannot put null in the annotation. So no need to test null case.
         List<Field> actualFields = FieldBuilder.build(HotelWithEmptyInSynonymMaps.class);
         List<Field> expectedFields = Collections.singletonList(new SearchableField("tags", true)

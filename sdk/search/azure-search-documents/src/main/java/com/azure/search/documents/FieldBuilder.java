@@ -3,7 +3,6 @@
 
 package com.azure.search.documents;
 
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.indexes.FieldIgnore;
 import com.azure.search.documents.indexes.SearchableFieldProperty;
@@ -12,20 +11,16 @@ import com.azure.search.documents.models.AnalyzerName;
 import com.azure.search.documents.models.DataType;
 import com.azure.search.documents.models.Field;
 import com.azure.search.documents.models.GeoPoint;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
