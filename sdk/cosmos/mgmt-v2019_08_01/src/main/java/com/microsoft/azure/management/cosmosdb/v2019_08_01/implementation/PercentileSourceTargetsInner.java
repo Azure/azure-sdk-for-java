@@ -34,7 +34,7 @@ public class PercentileSourceTargetsInner {
     /** The Retrofit service to perform REST calls. */
     private PercentileSourceTargetsService service;
     /** The service client containing this operation class. */
-    private CosmosDBImpl client;
+    private CosmosDBManagementClientImpl client;
 
     /**
      * Initializes an instance of PercentileSourceTargetsInner.
@@ -42,7 +42,7 @@ public class PercentileSourceTargetsInner {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public PercentileSourceTargetsInner(Retrofit retrofit, CosmosDBImpl client) {
+    public PercentileSourceTargetsInner(Retrofit retrofit, CosmosDBManagementClientImpl client) {
         this.service = retrofit.create(PercentileSourceTargetsService.class);
         this.client = client;
     }
