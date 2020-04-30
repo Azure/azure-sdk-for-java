@@ -1311,7 +1311,7 @@
                     <echo>Copying ${project.basedir}/README.md to
                       ${packageOutputDirectory}/${project.build.finalName}-readme.md
                     </echo>
-                    <copy file="${project.basedir}/CHANGELOG.md" tofile="${packageOutputDirectory}/${project.build.finalName}-readme.md"/>
+                    <copy file="${project.basedir}/README.md" tofile="${packageOutputDirectory}/${project.build.finalName}-readme.md"/>
                   </target>
                 </configuration>
                 <goals>
