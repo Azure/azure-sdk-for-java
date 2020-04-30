@@ -23,7 +23,6 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.DeviceCodeInfo;
 import com.azure.identity.implementation.util.CertificateUtil;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ClientCredentialParameters;
@@ -103,7 +102,7 @@ public class IdentityClient {
      */
     IdentityClient(String tenantId, String clientId, IdentityClientOptions options) {
         if (tenantId == null) {
-            tenantId = "common";
+            tenantId = "/organizations";
         }
         if (options == null) {
             options = new IdentityClientOptions();
@@ -114,7 +113,7 @@ public class IdentityClient {
         if (clientId == null) {
             this.publicClientApplication = null;
         } else {
-            String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/organizations/" + tenantId;
+            String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + tenantId;
             PublicClientApplication.Builder publicClientApplicationBuilder = PublicClientApplication.builder(clientId);
             try {
                 publicClientApplicationBuilder = publicClientApplicationBuilder.authority(authorityUrl);
@@ -432,59 +431,23 @@ public class IdentityClient {
     }
 
     /**
-     * Asynchronously acquire a token from Active Directory with a device code challenge. Active Directory will provide
-     * a device code for login and the user must meet the challenge by authenticating in a browser on the current or a
-     * different device.
+     * Asynchronously acquire a token from Active Directory with Visual Sutdio cached refresh token.
      *
      * @param request the details of the token request
-     * @return a Publisher that emits an AccessToken when the device challenge is met, or an exception if the device
-     *     code expires
+     * @return a Publisher that emits an AccessToken.
      */
-    public Mono<MsalToken> authenticateWithVsCodeCredential(TokenRequestContext request) {
+    public Mono<MsalToken> authenticateWithVsCodeCredential(TokenRequestContext request, String cloud) {
 
         VisualStudioCacheAccessor accessor = new VisualStudioCacheAccessor();
 
-        JsonNode userSettings = accessor.getUserSettings();
-
-        String tenant = tenantId;
-        String cloud = "Azure";
-
-        if (!userSettings.isNull()) {
-            if (userSettings.has("azure.tenant")) {
-                tenant = userSettings.get("azure.tenant").asText();
-            }
-
-            if (userSettings.has("azure.cloud")) {
-                cloud = userSettings.get("azure.cloud").asText();
-            }
-        }
-
         String credential = accessor.getCredentials("VS Code Azure", cloud);
 
-        String authority = accessor.getAzureAuthHost(cloud).replaceAll("/+$", "")
-            + "/organizations/" + tenant;
-        PublicClientApplication.Builder publicClientApplicationBuilder = PublicClientApplication.builder(clientId);
-        if (httpPipelineAdapter != null) {
-            publicClientApplicationBuilder.httpClient(httpPipelineAdapter);
-        } else if (options.getProxyOptions() != null) {
-            publicClientApplicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
-        }
+        RefreshTokenParameters parameters = RefreshTokenParameters
+                                                .builder(new HashSet<>(request.getScopes()), credential)
+                                                .build();
 
-        try {
-            PublicClientApplication clientApplication =  publicClientApplicationBuilder
-                                                             .authority(authority)
-                                                             .build();
-
-            RefreshTokenParameters parameters = RefreshTokenParameters
-                                                    .builder(new HashSet<>(request.getScopes()), credential)
-                                                    .build();
-
-            return Mono.defer(() -> Mono.fromFuture(clientApplication.acquireToken(parameters))
-                                        .map(ar -> new MsalToken(ar, options)));
-
-        } catch (MalformedURLException e) {
-            return Mono.error(logger.logExceptionAsError(new IllegalStateException(e)));
-        }
+        return Mono.defer(() -> Mono.fromFuture(publicClientApplication.acquireToken(parameters))
+                                    .map(ar -> new MsalToken(ar, options)));
     }
 
     /**

@@ -15,6 +15,8 @@ import com.sun.jna.Platform;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class allows access to Visual Studio Code cached credential data.
@@ -29,11 +31,8 @@ public class VisualStudioCacheAccessor {
      */
     public VisualStudioCacheAccessor() { }
 
-    /**
-     * Get the user configured settings of Visual Studio code.
-     * @return the {@link JsonNode} holding the settings as properties.
-     */
-    public JsonNode getUserSettings() {
+
+    private JsonNode getUserSettings() {
         JsonNode output = null;
         String homeDir = System.getProperty("user.home");
         String settingsPath = "";
@@ -61,6 +60,37 @@ public class VisualStudioCacheAccessor {
     }
 
     /**
+     * Get the user configured settings of Visual Studio code.
+     *
+     * @param tenantId the user specified tenant id.
+     * @return a Map containing vs code user settings
+     */
+    public Map<String, String> getUserSettingsDetails(String tenantId) {
+        JsonNode userSettings = getUserSettings();
+        Map<String, String> details = new HashMap<>();
+
+        String tenant = tenantId;
+
+        String cloud = "Azure";
+
+        if (!userSettings.isNull()) {
+            if (userSettings.has("azure.tenant")) {
+                tenant = userSettings.get("azure.tenant").asText();
+            }
+
+            if (userSettings.has("azure.cloud")) {
+                cloud = userSettings.get("azure.cloud").asText();
+            }
+        }
+
+        details.put("tenant", tenant);
+        details.put("cloud", cloud);
+        return details;
+    }
+
+
+
+    /**
      * Get the credential for the specified service and account name.
      *
      * @param serviceName the name of the service to lookup.
@@ -69,27 +99,50 @@ public class VisualStudioCacheAccessor {
      */
     public String getCredentials(String serviceName, String accountName) {
         String credential;
+
         if (Platform.isWindows()) {
-            WindowsCredentialAccessor winCredAccessor =
-                    new WindowsCredentialAccessor(serviceName, accountName);
-            credential = winCredAccessor.read();
+
+            try {
+                WindowsCredentialAccessor winCredAccessor =
+                        new WindowsCredentialAccessor(serviceName, accountName);
+                credential = winCredAccessor.read();
+            } catch (RuntimeException e) {
+                throw logger.logExceptionAsError(new CredentialUnavailableException(
+                        "Failed to read Vs Code credentials from Windows Credential API.", e));
+            }
+
         } else if (Platform.isMac()) {
-            KeyChainAccessor keyChainAccessor = new KeyChainAccessor(null,
-                    serviceName, accountName);
 
-            byte[] readCreds = keyChainAccessor.read();
-            credential = new String(readCreds, StandardCharsets.UTF_8);
+            try {
+                KeyChainAccessor keyChainAccessor = new KeyChainAccessor(null,
+                        serviceName, accountName);
+
+                byte[] readCreds = keyChainAccessor.read();
+                credential = new String(readCreds, StandardCharsets.UTF_8);
+            } catch (RuntimeException e) {
+                throw logger.logExceptionAsError(new CredentialUnavailableException(
+                        "Failed to read Vs Code credentials from Mac Native Key Chain.", e));
+            }
+
         } else if (Platform.isLinux()) {
-            LinuxKeyRingAccessor keyRingAccessor = new LinuxKeyRingAccessor(
-                    "org.freedesktop.Secret.Generic", "service",
-                    serviceName, "account", accountName);
 
-            byte[] readCreds = keyRingAccessor.read();
-            credential = new String(readCreds, StandardCharsets.UTF_8);
+            try {
+                LinuxKeyRingAccessor keyRingAccessor = new LinuxKeyRingAccessor(
+                        "org.freedesktop.Secret.Generic", "service",
+                        serviceName, "account", accountName);
+
+                byte[] readCreds = keyRingAccessor.read();
+                credential = new String(readCreds, StandardCharsets.UTF_8);
+            } catch (RuntimeException e) {
+                throw logger.logExceptionAsError(new CredentialUnavailableException(
+                        "Failed to read Vs Code credentials from Linux Key Ring.", e));
+            }
+
         } else {
             throw logger.logExceptionAsError(
                 new CredentialUnavailableException(PLATFORM_NOT_SUPPORTED_ERROR));
         }
+
         if (CoreUtils.isNullOrEmpty(credential) || !isRefreshTokenString(credential)) {
             throw logger.logExceptionAsError(
                     new CredentialUnavailableException("Please authenticate via Azure Tools plugin in VS Code IDE."));
@@ -110,12 +163,12 @@ public class VisualStudioCacheAccessor {
 
     /**
      * Get the auth host of the specified {@code azureEnvironment}.
-     * @param azureEnvironment
+     *
      * @return the auth host.
      */
-    public String getAzureAuthHost(String azureEnvironment) {
+    public String getAzureAuthHost(String cloud) {
 
-        switch (azureEnvironment) {
+        switch (cloud) {
             case "Azure":
                 return KnownAuthorityHosts.AZURE_CLOUD;
             case "AzureChina":

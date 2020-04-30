@@ -10,8 +10,10 @@ import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.MsalToken;
+import com.azure.identity.implementation.VisualStudioCacheAccessor;
 import reactor.core.publisher.Mono;
 
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -20,6 +22,7 @@ import java.util.concurrent.atomic.AtomicReference;
 class VisualStudioCodeCredential implements TokenCredential {
     private final IdentityClient identityClient;
     private final AtomicReference<MsalToken> cachedToken;
+    private final String cloudInstance;
 
     /**
      * Creates a public class VisualStudioCodeCredential implements TokenCredential with the given tenant and
@@ -29,11 +32,24 @@ class VisualStudioCodeCredential implements TokenCredential {
      * @param identityClientOptions the options for configuring the identity client
      */
     VisualStudioCodeCredential(String tenantId, IdentityClientOptions identityClientOptions) {
+
+        IdentityClientOptions options = (identityClientOptions == null ? new IdentityClientOptions()
+                                                 : identityClientOptions);
+
+        String tenant = tenantId;
+        if (tenant == null) {
+            tenant = "common";
+        }
+        VisualStudioCacheAccessor accessor = new VisualStudioCacheAccessor();
+        Map<String, String> userSettings = accessor.getUserSettingsDetails(tenant);
+        cloudInstance = userSettings.get("cloud");
+        options.setAuthorityHost(accessor.getAzureAuthHost(cloudInstance));
+
         identityClient = new IdentityClientBuilder()
-                             .clientId("aebc6443-996d-45c2-90f0-388ff96faa56")
-                             .tenantId(tenantId)
-                             .identityClientOptions(identityClientOptions)
-                             .build();
+                .clientId("aebc6443-996d-45c2-90f0-388ff96faa56")
+                .identityClientOptions(options)
+                .build();
+
         this.cachedToken = new AtomicReference<>();
     }
 
@@ -47,7 +63,7 @@ class VisualStudioCodeCredential implements TokenCredential {
                 return Mono.empty();
             }
         }).switchIfEmpty(
-            Mono.defer(() -> identityClient.authenticateWithVsCodeCredential(request)))
+            Mono.defer(() -> identityClient.authenticateWithVsCodeCredential(request, cloudInstance)))
                    .map(msalToken -> {
                        cachedToken.set(msalToken);
                        return msalToken;
