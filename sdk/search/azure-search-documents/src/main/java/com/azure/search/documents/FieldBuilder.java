@@ -98,7 +98,7 @@ public final class FieldBuilder {
         ClientLogger logger) {
         Type type = classField.getGenericType();
 
-        if (isSupportedNoneParameterizedType(type)) {
+        if (SUPPORTED_NONE_PARAMETERIZED_TYPE.containsKey(type)) {
             return buildNoneParameterizedType(classField, logger);
         }
         if (isArrayOrList(type)) {
@@ -110,9 +110,9 @@ public final class FieldBuilder {
         return searchField;
     }
 
-    private static boolean isSupportedNoneParameterizedType(Type type) {
-        return SUPPORTED_NONE_PARAMETERIZED_TYPE.containsKey(type);
-    }
+//    private static boolean isSupportedNoneParameterizedType(Type type) {
+//        return SUPPORTED_NONE_PARAMETERIZED_TYPE.containsKey(type);
+//    }
 
     private static Field buildNoneParameterizedType(java.lang.reflect.Field classField,
         ClientLogger logger) {
@@ -139,7 +139,7 @@ public final class FieldBuilder {
     private static Field buildCollectionField(java.lang.reflect.Field classField,
         Stack<Class<?>> classChain, ClientLogger logger) {
         Type componentOrElementType = getComponentOrElementType(classField.getGenericType(), logger);
-        if (isSupportedNoneParameterizedType(componentOrElementType)) {
+        if (SUPPORTED_NONE_PARAMETERIZED_TYPE.containsKey(componentOrElementType)) {
             Field searchField = convertToBasicSearchField(classField, logger);
             return enrichWithAnnotation(searchField, classField, logger);
         }
