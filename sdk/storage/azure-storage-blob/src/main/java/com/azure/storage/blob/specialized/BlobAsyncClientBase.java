@@ -1648,7 +1648,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.queryWithResponse#String-QueryOptions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.queryWithResponse#String-BlobQueryOptions}
      *
      * @param expression The query expression.
      * @param queryOptions {@link BlobQueryOptions The query options}.

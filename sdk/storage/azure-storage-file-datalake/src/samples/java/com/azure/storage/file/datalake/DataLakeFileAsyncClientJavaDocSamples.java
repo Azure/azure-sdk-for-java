@@ -4,9 +4,15 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.util.Context;
+import com.azure.storage.common.ErrorReceiver;
 import com.azure.storage.common.ParallelTransferOptions;
+import com.azure.storage.common.ProgressReceiver;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
+import com.azure.storage.file.datalake.models.FileQueryDelimitedSerialization;
+import com.azure.storage.file.datalake.models.FileQueryError;
+import com.azure.storage.file.datalake.models.FileQueryJsonSerialization;
+import com.azure.storage.file.datalake.models.FileQueryOptions;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import reactor.core.publisher.Flux;
@@ -18,12 +24,12 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.OpenOption;
 import java.nio.file.StandardOpenOption;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Code snippets for {@link DataLakeFileAsyncClient}
@@ -288,6 +294,62 @@ public class DataLakeFileAsyncClientJavaDocSamples {
             requestConditions).subscribe(response ->
             System.out.printf("Flush data completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.flushWithResponse#long-boolean-boolean-PathHttpHeaders-DataLakeRequestConditions
+    }
+
+    /**
+     * Code snippet for {@link DataLakeFileAsyncClient#query(String)}
+     */
+    public void query() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.query#String
+        ByteArrayOutputStream queryData = new ByteArrayOutputStream();
+        String expression = "SELECT * from BlobStorage";
+        client.query(expression).subscribe(piece -> {
+            try {
+                queryData.write(piece.array());
+            } catch (IOException ex) {
+                throw new UncheckedIOException(ex);
+            }
+        });
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.query#String
+    }
+
+    /**
+     * Code snippet for {@link DataLakeFileAsyncClient#queryWithResponse(String, FileQueryOptions)}
+     */
+    public void queryWithResponse() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.queryWithResponse#String-FileQueryOptions
+        String expression = "SELECT * from BlobStorage";
+        FileQueryJsonSerialization input = new FileQueryJsonSerialization()
+            .setRecordSeparator('\n');
+        FileQueryDelimitedSerialization output = new FileQueryDelimitedSerialization()
+            .setEscapeChar('\0')
+            .setColumnSeparator(',')
+            .setRecordSeparator('\n')
+            .setFieldQuote('\'')
+            .setHeadersPresent(true);
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setLeaseId(leaseId);
+        ErrorReceiver<FileQueryError> errorHandler = System.out::println;
+        ProgressReceiver progressReceiver = bytesTransferred -> System.out.println("total file bytes read: "
+            + bytesTransferred);
+        FileQueryOptions queryOptions = new FileQueryOptions()
+            .setInputSerialization(input)
+            .setOutputSerialization(output)
+            .setRequestConditions(requestConditions)
+            .setErrorReceiver(errorHandler)
+            .setProgressReceiver(progressReceiver);
+
+        client.queryWithResponse(expression, queryOptions)
+            .subscribe(response -> {
+                ByteArrayOutputStream queryData = new ByteArrayOutputStream();
+                response.getValue().subscribe(piece -> {
+                    try {
+                        queryData.write(piece.array());
+                    } catch (IOException ex) {
+                        throw new UncheckedIOException(ex);
+                    }
+                });
+            });
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.queryWithResponse#String-FileQueryOptions
     }
 
 }
