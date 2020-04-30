@@ -33,6 +33,7 @@ import reactor.core.publisher.SynchronousSink;
 import java.nio.BufferOverflowException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -181,7 +182,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
      */
     @Override
     public Flux<ServiceBusReceivedMessage> receiveDeferredMessages(ReceiveMode receiveMode, String sessionId,
-        String associatedLinkName, long... sequenceNumbers) {
+        String associatedLinkName, Iterable<Long> sequenceNumbers) {
 
         return isAuthorized(ManagementConstants.OPERATION_RECEIVE_BY_SEQUENCE_NUMBER)
             .thenMany(createChannel.flatMap(channel -> {
@@ -191,8 +192,10 @@ public class ManagementChannel implements ServiceBusManagementNode {
                 // set mandatory properties on AMQP message body
                 final Map<String, Object> requestBodyMap = new HashMap<>();
 
-                requestBodyMap.put(ManagementConstants.SEQUENCE_NUMBERS, Arrays.stream(sequenceNumbers)
-                    .boxed().toArray(Long[]::new));
+                List<Long> seq = new ArrayList<>();
+                sequenceNumbers.forEach(s -> seq.add(s));
+                Long[] longs = seq.toArray(new Long[0]);
+                requestBodyMap.put(ManagementConstants.SEQUENCE_NUMBERS, longs);
 
                 requestBodyMap.put(ManagementConstants.RECEIVER_SETTLE_MODE,
                     UnsignedInteger.valueOf(receiveMode == ReceiveMode.RECEIVE_AND_DELETE ? 0 : 1));
