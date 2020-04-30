@@ -3,11 +3,14 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
 import com.azure.core.amqp.implementation.TokenManager;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.DeadLetterOptions;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
@@ -36,13 +39,23 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Stream;
 
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.ASSOCIATED_LINK_NAME_KEY;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.DEADLETTER_DESCRIPTION_KEY;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.DEADLETTER_REASON_KEY;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.DISPOSITION_STATUS_KEY;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.LOCK_TOKENS_KEY;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.MANAGEMENT_OPERATION_KEY;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_GET_SESSION_STATE;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_RENEW_SESSION_LOCK;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_SET_SESSION_STATE;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_UPDATE_DISPOSITION;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.PROPERTIES_TO_MODIFY_KEY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -305,9 +318,64 @@ class ManagementChannelTests {
     /**
      * Verifies that the correct properties are sent with the request and response is processed correctly.
      */
-    @Test
-    void updateDisposition() {
+    @MethodSource
+    @ParameterizedTest
+    void updateDisposition(String sessionId, String associatedLinkName) {
+        // Arrange
+        final Map<String, Object> propertiesToModify = new HashMap<>();
+        propertiesToModify.put("test-key", "test-value");
+        final DeadLetterOptions options = new DeadLetterOptions()
+            .setDeadLetterErrorDescription("dlq-description")
+            .setDeadLetterReason("dlq-reason")
+            .setPropertiesToModify(propertiesToModify);
 
+        final boolean isSessioned = !CoreUtils.isNullOrEmpty(sessionId);
+        final boolean hasName = !CoreUtils.isNullOrEmpty(associatedLinkName);
+        final UUID lockToken = UUID.randomUUID();
+
+        // Act & Assert
+        StepVerifier.create(managementChannel.updateDisposition(lockToken.toString(), DispositionStatus.SUSPENDED,
+            options.getDeadLetterReason(), options.getDeadLetterErrorDescription(), options.getPropertiesToModify(),
+            sessionId, associatedLinkName))
+            .verifyComplete();
+
+        // Verify the contents of our request to make sure the correct properties were given.
+        verify(requestResponseChannel).sendWithAck(messageCaptor.capture());
+
+        final Message sentMessage = messageCaptor.getValue();
+
+        // Assert AMQP body
+        assertTrue(sentMessage.getBody() instanceof AmqpValue);
+
+        final AmqpValue amqpValue = (AmqpValue) sentMessage.getBody();
+        @SuppressWarnings("unchecked") final Map<String, Object> body = (Map<String, Object>) amqpValue.getValue();
+
+        assertEquals(DispositionStatus.SUSPENDED.getValue(), body.get(DISPOSITION_STATUS_KEY));
+
+        final UUID[] requestLockTokens = (UUID[]) body.get(LOCK_TOKENS_KEY);
+        assertNotNull(requestLockTokens);
+        assertEquals(1, requestLockTokens.length);
+        assertEquals(lockToken, requestLockTokens[0]);
+
+        assertEquals(options.getDeadLetterReason(), body.get(DEADLETTER_REASON_KEY));
+        assertEquals(options.getDeadLetterErrorDescription(), body.get(DEADLETTER_DESCRIPTION_KEY));
+        assertEquals(options.getPropertiesToModify(), body.get(PROPERTIES_TO_MODIFY_KEY));
+
+        if (isSessioned) {
+            assertEquals(sessionId, body.get(ManagementConstants.SESSION_ID));
+        } else {
+            assertFalse(body.containsKey(ManagementConstants.SESSION_ID));
+        }
+
+        // Assert application properties
+        final Map<String, Object> applicationProperties = sentMessage.getApplicationProperties().getValue();
+        assertEquals(OPERATION_UPDATE_DISPOSITION, applicationProperties.get(MANAGEMENT_OPERATION_KEY));
+
+        if (hasName) {
+            assertEquals(associatedLinkName, applicationProperties.get(ASSOCIATED_LINK_NAME_KEY));
+        } else {
+            assertFalse(applicationProperties.containsKey(ASSOCIATED_LINK_NAME_KEY));
+        }
     }
 
     /**
@@ -315,7 +383,26 @@ class ManagementChannelTests {
      */
     @Test
     void unauthorized() {
+        // Arrange
+        final String sessionId = "A session-id";
+        applicationProperties.put(STATUS_CODE_KEY, AmqpResponseCode.NOT_FOUND.getValue());
 
+        // Act & Assert
+        StepVerifier.create(managementChannel.getSessionState(sessionId, LINK_NAME))
+            .expectErrorSatisfies(error -> {
+                assertTrue(error instanceof AmqpException);
+                assertFalse(((AmqpException) error).isTransient());
+            })
+            .verify();
+    }
+
+    private static Stream<Arguments> updateDisposition() {
+        return Stream.of(Arguments.of(
+            "", "test-link-name",
+            "", null,
+            "test-session", "",
+            null, "test-link-name"
+        ));
     }
 
     private static Stream<Arguments> sessionStates() {

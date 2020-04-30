@@ -377,10 +377,34 @@ public class ManagementChannel implements ServiceBusManagementNode {
         String deadLetterErrorDescription, Map<String, Object> propertiesToModify, String sessionId,
         String associatedLinkName) {
 
-        final UUID token = UUID.fromString(lockToken);
+        final UUID[] lockTokens = new UUID[] { UUID.fromString(lockToken) };
         return isAuthorized(OPERATION_UPDATE_DISPOSITION).then(createChannel.flatMap(channel -> {
-            final Message message = createDispositionMessage(new UUID[]{token}, dispositionStatus,
-                deadLetterReason, deadLetterErrorDescription, propertiesToModify, sessionId, associatedLinkName);
+            logger.verbose("Update disposition of deliveries '{}' to '{}' on entity '{}', session '{}'",
+                Arrays.toString(lockTokens), dispositionStatus, entityPath, sessionId);
+
+            final Message message = createManagementMessage(OPERATION_UPDATE_DISPOSITION, associatedLinkName);
+
+            final Map<String, Object> requestBody = new HashMap<>();
+            requestBody.put(ManagementConstants.LOCK_TOKENS_KEY, lockTokens);
+            requestBody.put(ManagementConstants.DISPOSITION_STATUS_KEY, dispositionStatus.getValue());
+
+            if (deadLetterReason != null) {
+                requestBody.put(ManagementConstants.DEADLETTER_REASON_KEY, deadLetterReason);
+            }
+
+            if (deadLetterErrorDescription != null) {
+                requestBody.put(ManagementConstants.DEADLETTER_DESCRIPTION_KEY, deadLetterErrorDescription);
+            }
+
+            if (propertiesToModify != null && propertiesToModify.size() > 0) {
+                requestBody.put(ManagementConstants.PROPERTIES_TO_MODIFY_KEY, propertiesToModify);
+            }
+
+            if (!CoreUtils.isNullOrEmpty(sessionId)) {
+                requestBody.put(ManagementConstants.SESSION_ID, sessionId);
+            }
+
+            message.setBody(new AmqpValue(requestBody));
 
             return sendWithVerify(channel, message);
         })).then();
@@ -434,39 +458,6 @@ public class ManagementChannel implements ServiceBusManagementNode {
                     sink.complete();
                 }
             });
-    }
-
-    private Message createDispositionMessage(UUID[] lockTokens, DispositionStatus dispositionStatus,
-        String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify,
-        String sessionId, String associatedLinkName) {
-        logger.verbose("Update disposition of deliveries '{}' to '{}' on entity '{}', session '{}'",
-            Arrays.toString(lockTokens), dispositionStatus, entityPath, sessionId);
-
-        final Message message = createManagementMessage(OPERATION_UPDATE_DISPOSITION, associatedLinkName);
-
-        final Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put(ManagementConstants.LOCK_TOKENS_KEY, lockTokens);
-        requestBody.put(ManagementConstants.DISPOSITION_STATUS_KEY, dispositionStatus.getValue());
-
-        if (deadLetterReason != null) {
-            requestBody.put(ManagementConstants.DEADLETTER_REASON_KEY, deadLetterReason);
-        }
-
-        if (deadLetterErrorDescription != null) {
-            requestBody.put(ManagementConstants.DEADLETTER_DESCRIPTION_KEY, deadLetterErrorDescription);
-        }
-
-        if (propertiesToModify != null && propertiesToModify.size() > 0) {
-            requestBody.put(ManagementConstants.PROPERTIES_TO_MODIFY_KEY, propertiesToModify);
-        }
-
-        if (!CoreUtils.isNullOrEmpty(sessionId)) {
-            requestBody.put(ManagementConstants.SESSION_ID, sessionId);
-        }
-
-        message.setBody(new AmqpValue(requestBody));
-
-        return message;
     }
 
     /**
