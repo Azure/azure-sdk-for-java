@@ -75,7 +75,7 @@ public interface SqlUserDefinedFunctionGetResults extends HasInner<SqlUserDefine
         interface WithContainer {
            /**
             * Specifies resourceGroupName, accountName, databaseName, containerName.
-            * @param resourceGroupName Name of an Azure resource group
+            * @param resourceGroupName The name of the resource group. The name is case insensitive
             * @param accountName Cosmos DB database account name
             * @param databaseName Cosmos DB database name
             * @param containerName Cosmos DB container name

@@ -80,7 +80,7 @@ public interface SqlDatabaseGetResults extends HasInner<SqlDatabaseGetResultsInn
         interface WithDatabaseAccount {
            /**
             * Specifies resourceGroupName, accountName.
-            * @param resourceGroupName Name of an Azure resource group
+            * @param resourceGroupName The name of the resource group. The name is case insensitive
             * @param accountName Cosmos DB database account name
             * @return the next definition stage
             */

@@ -107,7 +107,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Gets the notebook workspace resources of an existing Cosmos DB account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -121,7 +121,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Gets the notebook workspace resources of an existing Cosmos DB account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -134,7 +134,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Gets the notebook workspace resources of an existing Cosmos DB account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;NotebookWorkspaceInner&gt; object
@@ -151,7 +151,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Gets the notebook workspace resources of an existing Cosmos DB account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;NotebookWorkspaceInner&gt; object
@@ -196,7 +196,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Gets the notebook workspace for a Cosmos DB account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -210,7 +210,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Gets the notebook workspace for a Cosmos DB account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -223,7 +223,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Gets the notebook workspace for a Cosmos DB account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the NotebookWorkspaceInner object
@@ -240,7 +240,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Gets the notebook workspace for a Cosmos DB account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the NotebookWorkspaceInner object
@@ -281,40 +281,40 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Creates the notebook workspace for a Cosmos DB account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the NotebookWorkspaceInner object if successful.
      */
-    public NotebookWorkspaceInner createOrUpdate(String resourceGroupName, String accountName, NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, accountName, notebookCreateUpdateParameters).toBlocking().last().body();
+    public NotebookWorkspaceInner createOrUpdate(String resourceGroupName, String accountName) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().last().body();
     }
 
     /**
      * Creates the notebook workspace for a Cosmos DB account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<NotebookWorkspaceInner> createOrUpdateAsync(String resourceGroupName, String accountName, NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters, final ServiceCallback<NotebookWorkspaceInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, accountName, notebookCreateUpdateParameters), serviceCallback);
+    public ServiceFuture<NotebookWorkspaceInner> createOrUpdateAsync(String resourceGroupName, String accountName, final ServiceCallback<NotebookWorkspaceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
     }
 
     /**
      * Creates the notebook workspace for a Cosmos DB account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<NotebookWorkspaceInner> createOrUpdateAsync(String resourceGroupName, String accountName, NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, accountName, notebookCreateUpdateParameters).map(new Func1<ServiceResponse<NotebookWorkspaceInner>, NotebookWorkspaceInner>() {
+    public Observable<NotebookWorkspaceInner> createOrUpdateAsync(String resourceGroupName, String accountName) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<NotebookWorkspaceInner>, NotebookWorkspaceInner>() {
             @Override
             public NotebookWorkspaceInner call(ServiceResponse<NotebookWorkspaceInner> response) {
                 return response.body();
@@ -325,12 +325,12 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Creates the notebook workspace for a Cosmos DB account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<NotebookWorkspaceInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String accountName, NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters) {
+    public Observable<ServiceResponse<NotebookWorkspaceInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String accountName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -349,40 +349,40 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Creates the notebook workspace for a Cosmos DB account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the NotebookWorkspaceInner object if successful.
      */
-    public NotebookWorkspaceInner beginCreateOrUpdate(String resourceGroupName, String accountName, NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, accountName, notebookCreateUpdateParameters).toBlocking().single().body();
+    public NotebookWorkspaceInner beginCreateOrUpdate(String resourceGroupName, String accountName) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().body();
     }
 
     /**
      * Creates the notebook workspace for a Cosmos DB account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<NotebookWorkspaceInner> beginCreateOrUpdateAsync(String resourceGroupName, String accountName, NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters, final ServiceCallback<NotebookWorkspaceInner> serviceCallback) {
-        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, accountName, notebookCreateUpdateParameters), serviceCallback);
+    public ServiceFuture<NotebookWorkspaceInner> beginCreateOrUpdateAsync(String resourceGroupName, String accountName, final ServiceCallback<NotebookWorkspaceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
     }
 
     /**
      * Creates the notebook workspace for a Cosmos DB account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the NotebookWorkspaceInner object
      */
-    public Observable<NotebookWorkspaceInner> beginCreateOrUpdateAsync(String resourceGroupName, String accountName, NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, accountName, notebookCreateUpdateParameters).map(new Func1<ServiceResponse<NotebookWorkspaceInner>, NotebookWorkspaceInner>() {
+    public Observable<NotebookWorkspaceInner> beginCreateOrUpdateAsync(String resourceGroupName, String accountName) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<NotebookWorkspaceInner>, NotebookWorkspaceInner>() {
             @Override
             public NotebookWorkspaceInner call(ServiceResponse<NotebookWorkspaceInner> response) {
                 return response.body();
@@ -393,12 +393,12 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Creates the notebook workspace for a Cosmos DB account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the NotebookWorkspaceInner object
      */
-    public Observable<ServiceResponse<NotebookWorkspaceInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String accountName, NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters) {
+    public Observable<ServiceResponse<NotebookWorkspaceInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String accountName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -434,7 +434,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Deletes the notebook workspace for a Cosmos DB account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -447,7 +447,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Deletes the notebook workspace for a Cosmos DB account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -460,7 +460,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Deletes the notebook workspace for a Cosmos DB account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -477,7 +477,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Deletes the notebook workspace for a Cosmos DB account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -501,7 +501,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Deletes the notebook workspace for a Cosmos DB account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -514,7 +514,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Deletes the notebook workspace for a Cosmos DB account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -527,7 +527,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Deletes the notebook workspace for a Cosmos DB account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -544,7 +544,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Deletes the notebook workspace for a Cosmos DB account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -586,7 +586,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Retrieves the connection info for the notebook workspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -600,7 +600,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Retrieves the connection info for the notebook workspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -613,7 +613,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Retrieves the connection info for the notebook workspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the NotebookWorkspaceConnectionInfoResultInner object
@@ -630,7 +630,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Retrieves the connection info for the notebook workspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the NotebookWorkspaceConnectionInfoResultInner object
@@ -671,7 +671,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Regenerates the auth token for the notebook workspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -684,7 +684,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Regenerates the auth token for the notebook workspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -697,7 +697,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Regenerates the auth token for the notebook workspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -714,7 +714,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Regenerates the auth token for the notebook workspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -738,7 +738,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Regenerates the auth token for the notebook workspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -751,7 +751,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Regenerates the auth token for the notebook workspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -764,7 +764,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Regenerates the auth token for the notebook workspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -781,7 +781,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Regenerates the auth token for the notebook workspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -823,7 +823,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Starts the notebook workspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -836,7 +836,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Starts the notebook workspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -849,7 +849,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Starts the notebook workspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -866,7 +866,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Starts the notebook workspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -890,7 +890,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Starts the notebook workspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -903,7 +903,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Starts the notebook workspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -916,7 +916,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Starts the notebook workspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -933,7 +933,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
     /**
      * Starts the notebook workspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
