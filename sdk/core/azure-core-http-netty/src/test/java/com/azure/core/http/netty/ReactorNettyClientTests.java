@@ -94,8 +94,9 @@ public class ReactorNettyClientTests {
             .expectNextCount(0)
             // Reactor netty 0.9.0.RELEASE behavior changed - second subscription returns onComplete() instead
             // of throwing an error
-            //.verifyError(IllegalStateException.class);
-            .verifyComplete();
+            // Reactor netty 0.9.7.RELEASE again changed the behavior to return an error on second subscription.
+            .verifyError(IllegalStateException.class);
+            // .verifyComplete();
     }
 
     @Test
