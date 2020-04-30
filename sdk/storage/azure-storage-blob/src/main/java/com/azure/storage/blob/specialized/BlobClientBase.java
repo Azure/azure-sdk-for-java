@@ -950,7 +950,7 @@ public class BlobClientBase {
      *
      * @param expression The query expression.
      */
-    public final BlobQueryInputStream openQueryInputStream(String expression) {
+    public BlobQueryInputStream openQueryInputStream(String expression) {
         return openQueryInputStream(expression, null);
     }
 
@@ -967,7 +967,7 @@ public class BlobClientBase {
      * @param expression The query expression.
      * @param queryOptions {@link BlobQueryOptions The query options}.
      */
-    public final BlobQueryInputStream openQueryInputStream(String expression, BlobQueryOptions queryOptions) {
+    public BlobQueryInputStream openQueryInputStream(String expression, BlobQueryOptions queryOptions) {
 
         // Data to subscribe to and read from.
         Flux<ByteBuffer> data = client.queryWithResponse(expression, queryOptions)

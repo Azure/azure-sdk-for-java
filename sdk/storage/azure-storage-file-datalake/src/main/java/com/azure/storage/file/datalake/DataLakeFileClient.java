@@ -567,7 +567,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      *
      * @param expression The query expression.
      */
-    public final FileQueryInputStream openQueryInputStream(String expression) {
+    public FileQueryInputStream openQueryInputStream(String expression) {
         return openQueryInputStream(expression, null);
     }
 
@@ -584,7 +584,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @param expression The query expression.
      * @param queryOptions {@link FileQueryOptions The query options}.
      */
-    public final FileQueryInputStream openQueryInputStream(String expression, FileQueryOptions queryOptions) {
+    public FileQueryInputStream openQueryInputStream(String expression, FileQueryOptions queryOptions) {
 
         // Data to subscribe to and read from.
         Flux<ByteBuffer> data = dataLakeFileAsyncClient.queryWithResponse(expression, queryOptions)
