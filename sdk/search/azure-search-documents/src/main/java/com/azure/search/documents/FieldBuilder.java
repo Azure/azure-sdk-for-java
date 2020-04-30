@@ -29,7 +29,7 @@ import java.util.Stack;
 import java.util.stream.Collectors;
 
 /**
- * Helper to convert model class to search field {@link Field}.
+ * Helper to convert model class to Search {@link Field fields}.
  */
 public final class FieldBuilder {
     private static final int MAX_DEPTH = 10000;
