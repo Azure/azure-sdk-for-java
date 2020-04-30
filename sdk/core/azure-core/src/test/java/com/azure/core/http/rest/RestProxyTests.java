@@ -15,12 +15,14 @@ import reactor.test.StepVerifier;
 import java.nio.ByteBuffer;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link RestProxy}.
  */
 public class RestProxyTests {
-    private static final byte[] EXPECTED = new byte[] { 0, 1, 2, 3, 4 };
+    private static final byte[] EXPECTED = new byte[]{0, 1, 2, 3, 4};
 
     @Test
     public void emptyRequestBody() {
@@ -47,10 +49,16 @@ public class RestProxyTests {
             .setBody(EXPECTED);
 
         StepVerifier.create(collectRequest(httpRequest.setHeader("Content-Length", "4")))
-            .verifyError(UnexpectedLengthException.class);
+            .verifyErrorSatisfies(throwable -> {
+                assertTrue(throwable instanceof UnexpectedLengthException);
+                assertEquals("Request body emitted 5 bytes, more than the expected 4 bytes.", throwable.getMessage());
+            });
 
         StepVerifier.create(collectRequest(httpRequest.setHeader("Content-Length", "6")))
-            .verifyError(UnexpectedLengthException.class);
+            .verifyErrorSatisfies(throwable -> {
+                assertTrue(throwable instanceof UnexpectedLengthException);
+                assertEquals("Request body emitted 5 bytes, less than the expected 6 bytes.", throwable.getMessage());
+            });
     }
 
     @Test
