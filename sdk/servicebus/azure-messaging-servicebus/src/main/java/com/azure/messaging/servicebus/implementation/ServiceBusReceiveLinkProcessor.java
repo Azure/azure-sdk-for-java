@@ -326,7 +326,8 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLin
             logger.info("Parent connection is disposed. Not reopening on error.");
         }
 
-        logger.warning("linkName[{}] entityPath[{}]. Non-retryable error occurred in AMQP receive link.", throwable);
+        logger.warning("linkName[{}] entityPath[{}]. Non-retryable error occurred in AMQP receive link.",
+            linkName, entityPath, throwable);
         lastError = throwable;
 
         isTerminated.set(true);

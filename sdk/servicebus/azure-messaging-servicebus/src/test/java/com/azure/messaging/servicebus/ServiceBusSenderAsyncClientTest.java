@@ -54,6 +54,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -68,6 +69,8 @@ import static reactor.core.publisher.Mono.just;
 class ServiceBusSenderAsyncClientTest {
     private static final String NAMESPACE = "my-namespace";
     private static final String ENTITY_NAME = "my-servicebus-entity";
+    private static final String LINK_NAME = "my-link-name";
+    private static final String TEST_CONTENTS = "My message for service bus queue!";
 
     @Mock
     private AmqpSendLink sendLink;
@@ -89,10 +92,8 @@ class ServiceBusSenderAsyncClientTest {
     @Captor
     private ArgumentCaptor<List<Message>> messagesCaptor;
 
-    private MessageSerializer serializer = new ServiceBusMessageSerializer();
-    private TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
-
-    private final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
+    private final MessageSerializer serializer = new ServiceBusMessageSerializer();
+    private final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions()
         .setDelay(Duration.ofMillis(500))
         .setMode(AmqpRetryMode.FIXED)
@@ -102,8 +103,6 @@ class ServiceBusSenderAsyncClientTest {
     private ServiceBusSenderAsyncClient sender;
     private ServiceBusConnectionProcessor connectionProcessor;
     private ConnectionOptions connectionOptions;
-
-    private static final String TEST_CONTENTS = "My message for service bus queue!";
 
     @BeforeAll
     static void beforeAll() {
@@ -119,7 +118,6 @@ class ServiceBusSenderAsyncClientTest {
     void setup() {
         MockitoAnnotations.initMocks(this);
 
-        tracerProvider = new TracerProvider(Collections.emptyList());
         connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, retryOptions,
             ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
@@ -132,22 +130,20 @@ class ServiceBusSenderAsyncClientTest {
                 connectionOptions.getRetry()));
 
         sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionProcessor,
-            retryOptions, tracerProvider, messageSerializer, onClientClose);
+            retryOptions, tracerProvider, serializer, onClientClose);
 
         when(connection.getManagementNode(anyString(), any(MessagingEntityType.class)))
             .thenReturn(just(managementNode));
 
         when(sendLink.getLinkSize()).thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
+        when(sendLink.getLinkName()).thenReturn(LINK_NAME);
+
         doNothing().when(onClientClose).run();
     }
 
     @AfterEach
     void teardown() {
         Mockito.framework().clearInlineMocks();
-        sendLink = null;
-        connection = null;
-        singleMessageCaptor = null;
-        messagesCaptor = null;
     }
 
     /**
@@ -374,7 +370,7 @@ class ServiceBusSenderAsyncClientTest {
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.getLinkSize()).thenReturn(Mono.just(MAX_MESSAGE_LENGTH_BYTES));
-        when(managementNode.schedule(eq(message), eq(instant), any(Integer.class)))
+        when(managementNode.schedule(eq(message), eq(instant), any(Integer.class), any()))
             .thenReturn(just(sequenceNumberReturned));
 
         // Act & Assert
@@ -382,20 +378,18 @@ class ServiceBusSenderAsyncClientTest {
             .expectNext(sequenceNumberReturned)
             .verifyComplete();
 
-        verify(managementNode).schedule(message, instant, MAX_MESSAGE_LENGTH_BYTES);
+        verify(managementNode).schedule(message, instant, MAX_MESSAGE_LENGTH_BYTES, LINK_NAME);
     }
 
     @Test
     void cancelScheduleMessage() {
         // Arrange
         long sequenceNumberReturned = 10;
-        when(managementNode.cancelScheduledMessage(eq(sequenceNumberReturned))).thenReturn(Mono.empty());
+        when(managementNode.cancelScheduledMessage(eq(sequenceNumberReturned), isNull())).thenReturn(Mono.empty());
 
         // Act & Assert
         StepVerifier.create(sender.cancelScheduledMessage(sequenceNumberReturned))
             .verifyComplete();
-
-        verify(managementNode).cancelScheduledMessage(sequenceNumberReturned);
     }
 
     /**
@@ -422,5 +416,4 @@ class ServiceBusSenderAsyncClientTest {
         // Assert
         verify(onClientClose).run();
     }
-
 }
