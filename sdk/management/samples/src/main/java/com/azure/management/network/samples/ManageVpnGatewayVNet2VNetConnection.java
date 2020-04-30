@@ -139,7 +139,10 @@ public final class ManageVpnGatewayVNet2VNetConnection {
             // Create storage container to store troubleshooting results
             String accountKey = storageAccount.getKeys().get(0).value();
             String connectionString = String.format("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s", storageAccount.name(), accountKey);
-            BlobServiceClient blobServiceClient = new BlobServiceClientBuilder().connectionString(connectionString).buildClient();
+            BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
+                .connectionString(connectionString)
+                .httpClient(storageAccount.manager().httpPipeline().getHttpClient())
+                .buildClient();
             BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(storageContainerName);
             containerClient.create();
 

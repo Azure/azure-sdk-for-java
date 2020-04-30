@@ -4,6 +4,7 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.compute.implementation.ComputeManager;
 import com.azure.management.compute.models.VirtualMachineScaleSetInner;
@@ -283,6 +284,15 @@ public interface VirtualMachineScaleSet
      * @return the network interfaces
      */
     PagedIterable<VirtualMachineScaleSetNetworkInterface> listNetworkInterfacesByInstanceId(
+        String virtualMachineInstanceId);
+
+    /**
+     * Lists the network interface associated with a specific virtual machine instance in the scale set asynchronously.
+     *
+     * @param virtualMachineInstanceId the instance ID
+     * @return the network interfaces
+     */
+    PagedFlux<VirtualMachineScaleSetNetworkInterface> listNetworkInterfacesByInstanceIdAsync(
         String virtualMachineInstanceId);
 
     /** @return true if managed disk is used for the virtual machine scale set's disks (os, data) */

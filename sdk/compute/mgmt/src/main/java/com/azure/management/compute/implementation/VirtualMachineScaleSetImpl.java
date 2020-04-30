@@ -3,6 +3,7 @@
 
 package com.azure.management.compute.implementation;
 
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
@@ -599,6 +600,16 @@ public class VirtualMachineScaleSetImpl
             .networkManager
             .networkInterfaces()
             .listByVirtualMachineScaleSetInstanceId(this.resourceGroupName(), this.name(), virtualMachineInstanceId);
+    }
+
+    @Override
+    public PagedFlux<VirtualMachineScaleSetNetworkInterface> listNetworkInterfacesByInstanceIdAsync(
+        String virtualMachineInstanceId) {
+        return this.
+            networkManager
+            .networkInterfaces()
+            .listByVirtualMachineScaleSetInstanceIdAsync(
+                this.resourceGroupName(), this.name(), virtualMachineInstanceId);
     }
 
     // Fluent setters

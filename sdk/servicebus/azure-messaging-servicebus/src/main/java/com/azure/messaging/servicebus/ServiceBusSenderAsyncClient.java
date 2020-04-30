@@ -130,27 +130,33 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * @throws NullPointerException if {@code message} is {@code null}.
      */
     public Mono<Void> send(ServiceBusMessage message) {
-        Objects.requireNonNull(message, "'message' cannot be null.");
-
+        if (Objects.isNull(message)) {
+            return monoError(logger, new NullPointerException("'message' cannot be null."));
+        }
         return sendInternal(Flux.just(message));
     }
 
     /**
-     * Sends a message to a Service Bus queue or topic.
+     * Sends a set of messages to a Service Bus queue or topic using a batched approach. If the size of messages
+     * exceed the maximum size of a single batch, an exception will be triggered and the send will fail.
+     * By default, the message size is the max amount allowed on the link.
      *
-     * @param message Message to be sent to Service Bus queue or topic.
-     * @param sessionId the session id to associate with the message.
+     * @param messages Messages to be sent to Service Bus queue or topic.
      *
-     * @return A {@link Mono} the finishes this operation on service bus resource.
+     * @return A {@link Mono} that completes when all messages have been sent to the Service Bus resource.
      *
-     * @throws NullPointerException if {@code message} or {@code sessionId} is {@code null}.
+     * @throws NullPointerException if {@code messages} is {@code null}.
+     * @throws AmqpException if {@code messages} is larger than the maximum allowed size of a single batch.
      */
-    public Mono<Void> send(ServiceBusMessage message, String sessionId) {
-        Objects.requireNonNull(message, "'message' cannot be null.");
-        Objects.requireNonNull(sessionId, "'sessionId' cannot be null.");
+    public Mono<Void> send(Iterable<ServiceBusMessage> messages) {
+        if (Objects.isNull(messages)) {
+            return monoError(logger, new NullPointerException("'messages' cannot be null."));
+        }
 
-        //TODO (hemanttanwar): Implement session id feature.
-        return Mono.error(new IllegalStateException("Not implemented."));
+        return createBatch().flatMap(messageBatch -> {
+            messages.forEach(message -> messageBatch.tryAdd(message));
+            return send(messageBatch);
+        });
     }
 
     /**
@@ -170,7 +176,9 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * @throws NullPointerException if {@code options} is null.
      */
     public Mono<ServiceBusMessageBatch> createBatch(CreateBatchOptions options) {
-        Objects.requireNonNull(options, "'options' cannot be null.");
+        if (Objects.isNull(options)) {
+            return monoError(logger, new NullPointerException("'options' cannot be null."));
+        }
 
         final int maxSize = options.getMaximumSizeInBytes();
 
@@ -204,7 +212,9 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * @throws NullPointerException if {@code batch} is {@code null}.
      */
     public Mono<Void> send(ServiceBusMessageBatch batch) {
-        Objects.requireNonNull(batch, "'batch' cannot be null.");
+        if (Objects.isNull(batch)) {
+            return monoError(logger, new NullPointerException("'batch' cannot be null."));
+        }
 
         final boolean isTracingEnabled = tracerProvider.isEnabled();
         final AtomicReference<Context> parentContext = isTracingEnabled
@@ -280,8 +290,13 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * @throws NullPointerException if {@code message} or {@code scheduledEnqueueTime} is {@code null}.
      */
     public Mono<Long> scheduleMessage(ServiceBusMessage message, Instant scheduledEnqueueTime) {
-        Objects.requireNonNull(message, "'message' cannot be null.");
-        Objects.requireNonNull(scheduledEnqueueTime, "'scheduledEnqueueTime' cannot be null.");
+        if (Objects.isNull(message)) {
+            return monoError(logger, new NullPointerException("'message' cannot be null."));
+        }
+
+        if (Objects.isNull(scheduledEnqueueTime)) {
+            return monoError(logger, new NullPointerException("'scheduledEnqueueTime' cannot be null."));
+        }
 
         return getSendLink()
             .flatMap(link -> link.getLinkSize().flatMap(size -> {
