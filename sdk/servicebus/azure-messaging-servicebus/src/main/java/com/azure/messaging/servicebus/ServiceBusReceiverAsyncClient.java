@@ -430,9 +430,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Mono<ServiceBusReceivedMessage> receiveDeferredMessage(long sequenceNumber) {
         return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType, sessionId))
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(node -> {
-                return node.receiveDeferredMessage(receiveMode, sequenceNumber);
+                return node.receiveDeferredMessage(receiveMode, sequenceNumber, sessionId);
             })
             .map(receivedMessage -> {
                 if (receiveMode == ReceiveMode.PEEK_LOCK && !CoreUtils.isNullOrEmpty(receivedMessage.getLockToken())) {

@@ -59,13 +59,11 @@ public class ManagementChannel implements ServiceBusManagementNode {
     private final ClientLogger logger;
     private final String entityPath;
     private final AtomicLong lastPeekedSequenceNumber = new AtomicLong();
-    private final String sessionId;
-    private final boolean isSessionEnabled;
 
     private volatile boolean isDisposed;
 
     ManagementChannel(Mono<RequestResponseChannel> createChannel, String fullyQualifiedNamespace,
-        String entityPath, String sessionId, TokenManager tokenManager, MessageSerializer messageSerializer,
+        String entityPath, TokenManager tokenManager, MessageSerializer messageSerializer,
         Duration operationTimeout) {
         this.createChannel = Objects.requireNonNull(createChannel, "'createChannel' cannot be null.");
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
@@ -75,20 +73,17 @@ public class ManagementChannel implements ServiceBusManagementNode {
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.tokenManager = Objects.requireNonNull(tokenManager, "'tokenManager' cannot be null.");
         this.operationTimeout = Objects.requireNonNull(operationTimeout, "'operationTimeout' cannot be null.");
-
-        this.sessionId = sessionId;
-        this.isSessionEnabled = !CoreUtils.isNullOrEmpty(sessionId);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Mono<Void> cancelScheduledMessage(long sequenceNumber) {
+    public Mono<Void> cancelScheduledMessage(long sequenceNumber, String associatedLinkName) {
         return isAuthorized(ManagementConstants.OPERATION_CANCEL_SCHEDULED_MESSAGE)
             .then(createChannel.flatMap(channel -> {
                 final Message requestMessage = createManagementMessage(
-                    ManagementConstants.OPERATION_CANCEL_SCHEDULED_MESSAGE, null);
+                    ManagementConstants.OPERATION_CANCEL_SCHEDULED_MESSAGE, associatedLinkName);
 
                 requestMessage.setBody(new AmqpValue(Collections.singletonMap(ManagementConstants.SEQUENCE_NUMBERS,
                     new Long[]{sequenceNumber})));
@@ -97,11 +92,15 @@ public class ManagementChannel implements ServiceBusManagementNode {
             })).then();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public Mono<byte[]> getSessionState() {
-        if (!isSessionEnabled) {
-            return monoError(logger,
-                new IllegalStateException("Cannot get session state for non-session management node"));
+    public Mono<byte[]> getSessionState(String sessionId, String associatedLinkName) {
+        if (sessionId == null) {
+            return monoError(logger, new NullPointerException("'sessionId' cannot be null."));
+        } else if (sessionId.isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'sessionId' cannot be blank."));
         }
 
         return isAuthorized(ManagementConstants.OPERATION_GET_SESSION_STATE).then(createChannel.flatMap(channel -> {
@@ -140,16 +139,16 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * {@inheritDoc}
      */
     @Override
-    public Mono<ServiceBusReceivedMessage> peek() {
-        return peek(lastPeekedSequenceNumber.get() + 1);
+    public Mono<ServiceBusReceivedMessage> peek(String sessionId, String associatedLinkName) {
+        return peek(lastPeekedSequenceNumber.get() + 1, sessionId, associatedLinkName);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Mono<ServiceBusReceivedMessage> peek(long fromSequenceNumber) {
-        return peek(fromSequenceNumber, 1)
+    public Mono<ServiceBusReceivedMessage> peek(long fromSequenceNumber, String sessionId, String associatedLinkName) {
+        return peek(fromSequenceNumber, 1, sessionId, associatedLinkName)
             .last();
     }
 
@@ -157,38 +156,30 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * {@inheritDoc}
      */
     @Override
-    public Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages) {
-        return peek(this.lastPeekedSequenceNumber.get() + 1, maxMessages);
+    public Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages, String sessionId, String associatedLinkName) {
+        return peekBatch(maxMessages, this.lastPeekedSequenceNumber.get() + 1, sessionId, associatedLinkName);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages, long fromSequenceNumber) {
-        return peek(fromSequenceNumber, maxMessages);
+    public Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages, long fromSequenceNumber, String sessionId,
+        String associatedLinkName) {
+        return peek(fromSequenceNumber, maxMessages, sessionId, associatedLinkName);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Mono<ServiceBusReceivedMessage> receiveDeferredMessage(ReceiveMode receiveMode, long sequenceNumber) {
-        return receiveDeferredMessageBatch(receiveMode, sequenceNumber)
-            .next();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Flux<ServiceBusReceivedMessage> receiveDeferredMessageBatch(ReceiveMode receiveMode,
-        long... sequenceNumbers) {
+    public Flux<ServiceBusReceivedMessage> receiveDeferredMessage(ReceiveMode receiveMode, String sessionId,
+        String associatedLinkName, long... sequenceNumbers) {
 
         return isAuthorized(ManagementConstants.OPERATION_RECEIVE_BY_SEQUENCE_NUMBER)
             .thenMany(createChannel.flatMap(channel -> {
                 final Message message = createManagementMessage(
-                    ManagementConstants.OPERATION_RECEIVE_BY_SEQUENCE_NUMBER, null);
+                    ManagementConstants.OPERATION_RECEIVE_BY_SEQUENCE_NUMBER, associatedLinkName);
 
                 // set mandatory properties on AMQP message body
                 final Map<String, Object> requestBodyMap = new HashMap<>();
@@ -199,7 +190,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
                 requestBodyMap.put(ManagementConstants.RECEIVER_SETTLE_MODE,
                     UnsignedInteger.valueOf(receiveMode == ReceiveMode.RECEIVE_AND_DELETE ? 0 : 1));
 
-                if (isSessionEnabled) {
+                if (!CoreUtils.isNullOrEmpty(sessionId)) {
                     requestBodyMap.put(ManagementConstants.SESSION_ID, sessionId);
                 }
 
@@ -218,7 +209,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * {@inheritDoc}
      */
     @Override
-    public Mono<Instant> renewMessageLock(UUID lockToken) {
+    public Mono<Instant> renewMessageLock(UUID lockToken, String sessionId, String associatedLinkName) {
         return isAuthorized(ManagementConstants.OPERATION_PEEK).then(createChannel.flatMap(channel -> {
             final Message requestMessage = createManagementMessage(ManagementConstants.OPERATION_RENEW_LOCK,
                 null);
@@ -226,7 +217,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
             requestBody.put(ManagementConstants.LOCK_TOKENS_KEY, new UUID[]{lockToken});
 
-            if (isSessionEnabled) {
+            if (!CoreUtils.isNullOrEmpty(sessionId)) {
                 requestBody.put(ManagementConstants.SESSION_ID, sessionId);
             }
 
@@ -246,7 +237,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
     }
 
     @Override
-    public Mono<Instant> renewSessionLock() {
+    public Mono<Instant> renewSessionLock(String sessionId, String associatedLinkName) {
         return isAuthorized(ManagementConstants.OPERATION_RENEW_SESSION_LOCK).then(createChannel.flatMap(channel -> {
             final Message message = createManagementMessage(ManagementConstants.OPERATION_RENEW_SESSION_LOCK, null);
 
@@ -283,7 +274,8 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * {@inheritDoc}
      */
     @Override
-    public Mono<Long> schedule(ServiceBusMessage message, Instant scheduledEnqueueTime, int maxLinkSize) {
+    public Mono<Long> schedule(ServiceBusMessage message, Instant scheduledEnqueueTime, int maxLinkSize,
+        String associatedLinkName) {
         message.setScheduledEnqueueTime(scheduledEnqueueTime);
 
         return isAuthorized(ManagementConstants.OPERATION_SCHEDULE_MESSAGE).then(createChannel.flatMap(channel -> {
@@ -350,7 +342,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
     }
 
     @Override
-    public Mono<Void> setSessionState(byte[] state) {
+    public Mono<Void> setSessionState(byte[] state, String sessionId, String associatedLinkName) {
         return isAuthorized(ManagementConstants.OPERATION_SET_SESSION_STATE).then(createChannel.flatMap(channel -> {
             final Message message = createManagementMessage(ManagementConstants.OPERATION_SET_SESSION_STATE, null);
 
@@ -366,12 +358,13 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
     @Override
     public Mono<Void> updateDisposition(String lockToken, DispositionStatus dispositionStatus, String deadLetterReason,
-        String deadLetterErrorDescription, Map<String, Object> propertiesToModify) {
+        String deadLetterErrorDescription, Map<String, Object> propertiesToModify, String sessionId,
+        String associatedLinkName) {
 
         final UUID token = UUID.fromString(lockToken);
         return isAuthorized(ManagementConstants.OPERATION_UPDATE_DISPOSITION).then(createChannel.flatMap(channel -> {
             final Message message = createDispositionMessage(new UUID[]{token}, dispositionStatus,
-                deadLetterReason, deadLetterErrorDescription, propertiesToModify, null);
+                deadLetterReason, deadLetterErrorDescription, propertiesToModify, sessionId, associatedLinkName);
 
             return sendWithVerify(channel, message);
         })).then();
@@ -410,7 +403,8 @@ public class ManagementChannel implements ServiceBusManagementNode {
         tokenManager.close();
     }
 
-    private Flux<ServiceBusReceivedMessage> peek(long fromSequenceNumber, int maxMessages) {
+    private Flux<ServiceBusReceivedMessage> peek(long fromSequenceNumber, int maxMessages, String sessionId,
+        String associatedLinkName) {
         return isAuthorized(ManagementConstants.OPERATION_PEEK).thenMany(createChannel.flatMap(channel -> {
             final Message message = createManagementMessage(ManagementConstants.OPERATION_PEEK,
                 null);
@@ -420,7 +414,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
             requestBodyMap.put(ManagementConstants.FROM_SEQUENCE_NUMBER, fromSequenceNumber);
             requestBodyMap.put(ManagementConstants.MESSAGE_COUNT_KEY, maxMessages);
 
-            if (isSessionEnabled) {
+            if (!CoreUtils.isNullOrEmpty(sessionId)) {
                 requestBodyMap.put(ManagementConstants.SESSION_ID, sessionId);
             }
 
@@ -460,7 +454,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
     private Message createDispositionMessage(UUID[] lockTokens, DispositionStatus dispositionStatus,
         String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify,
-        String associatedLinkName) {
+        String sessionId, String associatedLinkName) {
         logger.verbose("Update disposition of deliveries '{}' to '{}' on entity '{}', session '{}'",
             Arrays.toString(lockTokens), dispositionStatus, entityPath, "n/a");
 
@@ -483,7 +477,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
             requestBody.put(ManagementConstants.PROPERTIES_TO_MODIFY_KEY, propertiesToModify);
         }
 
-        if (isSessionEnabled) {
+        if (CoreUtils.isNullOrEmpty(sessionId)) {
             requestBody.put(ManagementConstants.SESSION_ID, sessionId);
         }
 

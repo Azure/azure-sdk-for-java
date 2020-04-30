@@ -24,28 +24,29 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      *
      * @return {@link Void} The successful completion represents the pending cancellation.
      */
-    Mono<Void> cancelScheduledMessage(long sequenceNumber);
+    Mono<Void> cancelScheduledMessage(long sequenceNumber, String associatedLinkName);
 
     /**
-     * Gets the current session state.
+     * Gets the session state.
      *
+     * @param sessionId Id of the session.
      * @return The state of the session.
      */
-    Mono<byte[]> getSessionState();
+    Mono<byte[]> getSessionState(String sessionId, String associatedLinkName);
 
     /**
      * This will return next available message to peek.
      *
      * @return {@link Mono} of {@link ServiceBusReceivedMessage}.
      */
-    Mono<ServiceBusReceivedMessage> peek();
+    Mono<ServiceBusReceivedMessage> peek(String sessionId, String associatedLinkName);
 
     /**
      * @param fromSequenceNumber to peek message from.
      *
      * @return {@link Mono} of {@link ServiceBusReceivedMessage}.
      */
-    Mono<ServiceBusReceivedMessage> peek(long fromSequenceNumber);
+    Mono<ServiceBusReceivedMessage> peek(long fromSequenceNumber, String sessionId, String associatedLinkName);
 
     /**
      * Reads the next batch of active messages without changing the state of the receiver or the message source.
@@ -55,7 +56,8 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      *
      * @return The {@link Flux} of {@link ServiceBusReceivedMessage} peeked.
      */
-    Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages, long fromSequenceNumber);
+    Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages, long fromSequenceNumber, String sessionId,
+        String associatedLinkName);
 
     /**
      * Reads the next batch of active messages without changing the state of the receiver or the message source.
@@ -64,27 +66,20 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      *
      * @return The {@link Flux} of {@link ServiceBusReceivedMessage} peeked.
      */
-    Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages);
-
-    /**
-     * Receives a deferred {@link ServiceBusReceivedMessage}. Deferred message can only be received by using sequence
-     * number.
-     *
-     * @param sequenceNumber The {@link ServiceBusReceivedMessage#getSequenceNumber()}.
-     *
-     * @return The received {@link ServiceBusReceivedMessage} message for given sequence number.
-     */
-    Mono<ServiceBusReceivedMessage> receiveDeferredMessage(ReceiveMode receiveMode, long sequenceNumber);
+    Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages, String sessionId, String associatedLinkName);
 
     /**
      * Receives a deferred {@link ServiceBusReceivedMessage}. Deferred messages can only be received by using sequence
      * number.
      *
+     * @param receiveMode Mode to receive messages.
      * @param sequenceNumbers The sequence numbers from the {@link ServiceBusReceivedMessage#getSequenceNumber()}.
+     * @param sessionId Identifier for the session.
      *
      * @return The received {@link ServiceBusReceivedMessage} message for given sequence number.
      */
-    Flux<ServiceBusReceivedMessage> receiveDeferredMessageBatch(ReceiveMode receiveMode, long... sequenceNumbers);
+    Flux<ServiceBusReceivedMessage> receiveDeferredMessage(ReceiveMode receiveMode, String sessionId,
+        String associatedLinkName, long... sequenceNumbers);
 
     /**
      * Asynchronously renews the lock on the message specified by the lock token. The lock will be renewed based on
@@ -96,14 +91,15 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      * @param messageLock The {@link UUID} of the message {@link ServiceBusReceivedMessage} to be renewed.
      * @return {@link Instant} representing the pending renew.
      */
-    Mono<Instant> renewMessageLock(UUID messageLock);
+    Mono<Instant> renewMessageLock(UUID messageLock, String sessionId, String associatedLinkName);
 
     /**
      * Renews the lock on the session.
      *
+     * @param sessionId Identifier for the session.
      * @return The next expiration time for the session.
      */
-    Mono<Instant> renewSessionLock();
+    Mono<Instant> renewSessionLock(String sessionId, String associatedLinkName);
 
     /**
      * Sends a scheduled message to the Azure Service Bus entity this sender is connected to. A scheduled message is
@@ -118,16 +114,18 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      * @return The sequence number representing the pending send, which returns the sequence number of the scheduled
      *     message. This sequence number can be used to cancel the scheduling of the message.
      */
-    Mono<Long> schedule(ServiceBusMessage message, Instant scheduledEnqueueTime, int maxSendLinkSize);
+    Mono<Long> schedule(ServiceBusMessage message, Instant scheduledEnqueueTime, int maxSendLinkSize,
+        String associatedLinkName);
 
     /**
      * Updates the session state.
      *
+     * @param sessionId Identifier for the session.
      * @param state State to update session.
      *
      * @return A Mono that completes when the state is updated.
      */
-    Mono<Void> setSessionState(byte[] state);
+    Mono<Void> setSessionState(byte[] state, String sessionId, String associatedLinkName);
 
     /**
      * Updates the disposition status of a message given its lock token.
@@ -135,7 +133,8 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      * @return Mono that completes successfully when the message is completed. Otherwise, returns an error.
      */
     Mono<Void> updateDisposition(String lockToken, DispositionStatus dispositionStatus, String deadLetterReason,
-        String deadLetterErrorDescription, Map<String, Object> propertiesToModify);
+        String deadLetterErrorDescription, Map<String, Object> propertiesToModify, String sessionId,
+        String associatedLinkName);
 
     @Override
     void close();

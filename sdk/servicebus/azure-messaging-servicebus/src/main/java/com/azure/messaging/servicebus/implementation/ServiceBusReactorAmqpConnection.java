@@ -87,22 +87,13 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
 
     @Override
     public Mono<ServiceBusManagementNode> getManagementNode(String entityPath, MessagingEntityType entityType) {
-        return getManagementNode(entityPath, entityType, "");
-    }
-
-    @Override
-    public Mono<ServiceBusManagementNode> getManagementNode(String entityPath, MessagingEntityType entityType,
-        String sessionId) {
-
         if (isDisposed()) {
             return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
                 "connectionId[%s]: Connection is disposed. Cannot get management instance for '%s'",
                 connectionId, entityPath))));
         }
 
-        final String path = CoreUtils.isNullOrEmpty(sessionId)
-            ? String.join("-", entityPath, entityType.toString())
-            : String.join("-", entityPath, entityType.toString(), sessionId);
+        final String path = String.join("-", entityPath, entityType.toString());
 
         final ServiceBusManagementNode existing = managementNodes.get(path);
         if (existing != null) {
@@ -132,7 +123,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
                         entityPath, address, linkName);
 
                     return new ManagementChannel(createRequestResponseChannel(sessionName, linkName, address),
-                        fullyQualifiedNamespace, entityPath, sessionId, tokenManager, messageSerializer,
+                        fullyQualifiedNamespace, entityPath, tokenManager, messageSerializer,
                         retryOptions.getTryTimeout());
                 }));
             }));
