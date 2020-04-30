@@ -234,7 +234,8 @@ directive:
       where: $
       transform: >-
           return $
-          .replace(/(get(IncludeTotalResultCount|UseFuzzyMatching))/g, "is$2")
+          .replace(/(get(IncludeTotalResultCount))/g, "is$2")
+          .replace(/isUseFuzzyMatching/g, "useFuzzyMatching")
 
     # Mark IndexingResult as Serializable, for use in IndexBatchException
     - from: IndexingResult.java
