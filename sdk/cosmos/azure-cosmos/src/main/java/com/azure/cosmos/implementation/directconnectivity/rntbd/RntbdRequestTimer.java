@@ -10,6 +10,7 @@ import io.netty.util.TimerTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Set;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
@@ -33,7 +34,8 @@ public final class RntbdRequestTimer implements AutoCloseable {
 
     @Override
     public void close() {
-        logger.debug("request expiration tasks cancelled: {}", this.timer.stop().size());
+        final Set<Timeout> cancelledTimeouts = this.timer.stop();
+        logger.debug("request expiration tasks cancelled: {}", cancelledTimeouts.size());
     }
 
     public Timeout newTimeout(final TimerTask task) {
