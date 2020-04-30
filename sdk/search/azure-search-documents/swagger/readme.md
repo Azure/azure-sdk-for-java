@@ -46,6 +46,7 @@ openapi-type: data-plane
 These settings apply only when `--tag=package-2019-05-searchservice-preview` is specified on the command line.
 
 ``` yaml $(tag) == 'package-2019-05-searchservice-preview'
+java: true
 input-file:
 - https://github.com/Azure/azure-rest-api-specs/blob/master/specification/search/data-plane/Azure.Search/preview/2019-05-06-preview/searchservice.json
 title: SearchServiceRestClient
@@ -58,6 +59,7 @@ custom-types: AnalyzeResult,ListDataSourcesResult,ListIndexersResult,ListIndexes
 These settings apply only when `--tag=package-2019-05-searchindex-preview` is specified on the command line.
 
 ``` yaml $(tag) == 'package-2019-05-searchindex-preview'
+java: true
 input-file:
 - https://github.com/Azure/azure-rest-api-specs/blob/master/specification/search/data-plane/Azure.Search/preview/2019-05-06-preview/searchindex.json
 title: SearchIndexRestClient
