@@ -1,0 +1,237 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://gaprahnscanary.blob.core.windows.net/jtfsquerymin0fileapitestquerymin30f757556251916c473?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "f6955880-1d11-4476-9467-27fa8c3cbe05"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-10-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7ED4A3B0BAA48",
+      "Last-Modified" : "Thu, 30 Apr 2020 21:05:37 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "755f3914-901e-0092-6133-1fc976000000",
+      "Date" : "Thu, 30 Apr 2020 21:05:36 GMT",
+      "x-ms-client-request-id" : "f6955880-1d11-4476-9467-27fa8c3cbe05"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://gaprahnscanary.dfs.core.windows.net/jtfsquerymin0fileapitestquerymin30f757556251916c473/javapathquerymin1fileapitestquerymin30f74559ff50ac686?resource=file",
+    "Headers" : {
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.2.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "ff3688a8-cef7-418e-afd6-f88fbd5c60cb"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-10-10",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7ED4A3C402667",
+      "Last-Modified" : "Thu, 30 Apr 2020 21:05:39 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "57955d70-d01f-0077-1033-1f9834000000",
+      "Date" : "Thu, 30 Apr 2020 21:05:38 GMT",
+      "x-ms-client-request-id" : "ff3688a8-cef7-418e-afd6-f88fbd5c60cb"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://gaprahnscanary.dfs.core.windows.net/jtfsquerymin0fileapitestquerymin30f757556251916c473/javapathquerymin1fileapitestquerymin30f74559ff50ac686?resource=file",
+    "Headers" : {
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.2.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "e8ef8175-a885-41ed-8dfc-54d6bf11c7e2"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-10-10",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7ED4A3C83964F",
+      "Last-Modified" : "Thu, 30 Apr 2020 21:05:39 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "f1d5570c-a01f-0020-6633-1f3607000000",
+      "Date" : "Thu, 30 Apr 2020 21:05:38 GMT",
+      "x-ms-client-request-id" : "e8ef8175-a885-41ed-8dfc-54d6bf11c7e2"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "https://gaprahnscanary.dfs.core.windows.net/jtfsquerymin0fileapitestquerymin30f757556251916c473/javapathquerymin1fileapitestquerymin30f74559ff50ac686?position=0&action=append",
+    "Headers" : {
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.2.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "ed8cb7a1-95d8-468e-b589-f3af48af24c2",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-10-10",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-server-encrypted" : "true",
+      "x-ms-request-id" : "063c7603-401f-004a-0833-1fee2f000000",
+      "Date" : "Thu, 30 Apr 2020 21:05:39 GMT",
+      "x-ms-client-request-id" : "ed8cb7a1-95d8-468e-b589-f3af48af24c2"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "https://gaprahnscanary.dfs.core.windows.net/jtfsquerymin0fileapitestquerymin30f757556251916c473/javapathquerymin1fileapitestquerymin30f74559ff50ac686?position=32&retainUncommittedData=false&close=false&action=flush",
+    "Headers" : {
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.2.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "eb0315c3-f411-4605-9fcf-b049f79a0761"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-10-10",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7ED4A3D0C7C4A",
+      "Last-Modified" : "Thu, 30 Apr 2020 21:05:40 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-server-encrypted" : "false",
+      "x-ms-request-id" : "65b90b5c-601f-0010-2033-1f88c8000000",
+      "Date" : "Thu, 30 Apr 2020 21:05:39 GMT",
+      "x-ms-client-request-id" : "eb0315c3-f411-4605-9fcf-b049f79a0761"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://gaprahnscanary.blob.core.windows.net/jtfsquerymin0fileapitestquerymin30f757556251916c473/javapathquerymin1fileapitestquerymin30f74559ff50ac686",
+    "Headers" : {
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "d46f3511-85a3-4c71-9ab5-e14e48b69c34"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-10-10",
+      "x-ms-lease-status" : "unlocked",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-lease-state" : "available",
+      "Last-Modified" : "Thu, 30 Apr 2020 21:05:40 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 30 Apr 2020 21:05:41 GMT",
+      "x-ms-blob-type" : "BlockBlob",
+      "Accept-Ranges" : "bytes",
+      "x-ms-server-encrypted" : "true",
+      "ETag" : "0x8D7ED4A3D0C7C4A",
+      "x-ms-creation-time" : "Thu, 30 Apr 2020 21:05:39 GMT",
+      "Content-Length" : "32",
+      "x-ms-request-id" : "c852d232-d01e-0083-2233-1f53c2000000",
+      "Body" : "[49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 10, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 10]",
+      "x-ms-client-request-id" : "d46f3511-85a3-4c71-9ab5-e14e48b69c34",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://gaprahnscanary.blob.core.windows.net/jtfsquerymin0fileapitestquerymin30f757556251916c473/javapathquerymin1fileapitestquerymin30f74559ff50ac686?comp=query",
+    "Headers" : {
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "e5345875-8f5c-49b9-9dd0-18ba715b10d6",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-lease-status" : "unlocked",
+      "x-ms-version" : "2019-10-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-lease-state" : "available",
+      "Last-Modified" : "Thu, 30 Apr 2020 21:05:40 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 30 Apr 2020 21:05:42 GMT",
+      "x-ms-blob-type" : "BlockBlob",
+      "Accept-Ranges" : "bytes",
+      "ETag" : "0x8D7ED4A3D0C7C4A",
+      "x-ms-creation-time" : "Thu, 30 Apr 2020 21:05:39 GMT",
+      "x-ms-request-id" : "16a950df-701e-008a-7133-1f1611000000",
+      "Body" : "Obj\u0001\u0002\u0016avro.schema�\u001E[\n  {\n    \"type\": \"record\",\n    \"name\": \"com.microsoft.azure.storage.queryBlobContents.resultData\",\n    \"doc\": \"Holds result data in the format specified for this query (CSV, JSON, etc.).\",\n    \"fields\": [\n      {\n        \"name\": \"data\",\n        \"type\": \"bytes\"\n      }\n    ]\n  },\n  {\n    \"type\": \"record\",\n    \"name\": \"com.microsoft.azure.storage.queryBlobContents.error\",\n    \"doc\": \"An error that occurred while processing the query.\",\n    \"fields\": [\n      {\n        \"name\": \"fatal\",\n        \"type\": \"boolean\",\n        \"doc\": \"If true, this error prevents further query processing.  More result data may be returned, but there is no guarantee that all of the original data will be processed.  If false, this error does not prevent further query processing.\"\n      },\n      {\n        \"name\": \"name\",\n        \"type\": \"string\",\n        \"doc\": \"The name of the error\"\n      },\n      {\n        \"name\": \"description\",\n        \"type\": \"string\",\n        \"doc\": \"A description of the error\"\n      },\n      {\n        \"name\": \"position\",\n        \"type\": \"long\",\n        \"doc\": \"The blob offset at which the error occurred\"\n      }\n    ]\n  },\n  {\n    \"type\": \"record\",\n    \"name\": \"com.microsoft.azure.storage.queryBlobContents.progress\",\n    \"doc\": \"Information about the progress of the query\",\n    \"fields\": [\n      {\n        \"name\": \"bytesScanned\",\n        \"type\": \"long\",\n        \"doc\": \"The number of bytes that have been scanned\"\n      },\n      {\n        \"name\": \"totalBytes\",\n        \"type\": \"long\",\n        \"doc\": \"The total number of bytes to be scanned in this query\"\n      }\n    ]\n  },\n  {\n    \"type\": \"record\",\n    \"name\": \"com.microsoft.azure.storage.queryBlobContents.end\",\n    \"doc\": \"Sent as the final message of the response, indicating that all results have been sent.\",\n    \"fields\": [\n      {\n        \"name\": \"totalBytes\",\n        \"type\": \"long\",\n        \"doc\": \"The total number of bytes to be scanned in this query\"\n      }\n    ]\n  }\n]\n\u0000�2,Wr��N���z�\u0005�\u001C\u0002D\u0000@100,200,300,400\n300,400,500,600\n�2,Wr��N���z�\u0005�\u001C\u0002\u0006\u0004@@�2,Wr��N���z�\u0005�\u001C\u0002\u0004\u0006@�2,Wr��N���z�\u0005�\u001C",
+      "x-ms-client-request-id" : "e5345875-8f5c-49b9-9dd0-18ba715b10d6",
+      "Content-Type" : "avro/binary"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://gaprahnscanary.blob.core.windows.net/jtfsquerymin0fileapitestquerymin30f757556251916c473/javapathquerymin1fileapitestquerymin30f74559ff50ac686?comp=query",
+    "Headers" : {
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "b12f6fdb-cdfc-42d9-a6f5-543df76b48f3",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-lease-status" : "unlocked",
+      "x-ms-version" : "2019-10-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-lease-state" : "available",
+      "Last-Modified" : "Thu, 30 Apr 2020 21:05:40 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 30 Apr 2020 21:05:44 GMT",
+      "x-ms-blob-type" : "BlockBlob",
+      "Accept-Ranges" : "bytes",
+      "ETag" : "0x8D7ED4A3D0C7C4A",
+      "x-ms-creation-time" : "Thu, 30 Apr 2020 21:05:39 GMT",
+      "x-ms-request-id" : "543022f2-101e-009c-0233-1fe0c6000000",
+      "Body" : "Obj\u0001\u0002\u0016avro.schema�\u001E[\n  {\n    \"type\": \"record\",\n    \"name\": \"com.microsoft.azure.storage.queryBlobContents.resultData\",\n    \"doc\": \"Holds result data in the format specified for this query (CSV, JSON, etc.).\",\n    \"fields\": [\n      {\n        \"name\": \"data\",\n        \"type\": \"bytes\"\n      }\n    ]\n  },\n  {\n    \"type\": \"record\",\n    \"name\": \"com.microsoft.azure.storage.queryBlobContents.error\",\n    \"doc\": \"An error that occurred while processing the query.\",\n    \"fields\": [\n      {\n        \"name\": \"fatal\",\n        \"type\": \"boolean\",\n        \"doc\": \"If true, this error prevents further query processing.  More result data may be returned, but there is no guarantee that all of the original data will be processed.  If false, this error does not prevent further query processing.\"\n      },\n      {\n        \"name\": \"name\",\n        \"type\": \"string\",\n        \"doc\": \"The name of the error\"\n      },\n      {\n        \"name\": \"description\",\n        \"type\": \"string\",\n        \"doc\": \"A description of the error\"\n      },\n      {\n        \"name\": \"position\",\n        \"type\": \"long\",\n        \"doc\": \"The blob offset at which the error occurred\"\n      }\n    ]\n  },\n  {\n    \"type\": \"record\",\n    \"name\": \"com.microsoft.azure.storage.queryBlobContents.progress\",\n    \"doc\": \"Information about the progress of the query\",\n    \"fields\": [\n      {\n        \"name\": \"bytesScanned\",\n        \"type\": \"long\",\n        \"doc\": \"The number of bytes that have been scanned\"\n      },\n      {\n        \"name\": \"totalBytes\",\n        \"type\": \"long\",\n        \"doc\": \"The total number of bytes to be scanned in this query\"\n      }\n    ]\n  },\n  {\n    \"type\": \"record\",\n    \"name\": \"com.microsoft.azure.storage.queryBlobContents.end\",\n    \"doc\": \"Sent as the final message of the response, indicating that all results have been sent.\",\n    \"fields\": [\n      {\n        \"name\": \"totalBytes\",\n        \"type\": \"long\",\n        \"doc\": \"The total number of bytes to be scanned in this query\"\n      }\n    ]\n  }\n]\n\u0000�p��Y��I���\u0007\u0018h\u0013�\u0002D\u0000@100,200,300,400\n300,400,500,600\n�p��Y��I���\u0007\u0018h\u0013�\u0002\u0006\u0004@@�p��Y��I���\u0007\u0018h\u0013�\u0002\u0004\u0006@�p��Y��I���\u0007\u0018h\u0013�",
+      "x-ms-client-request-id" : "b12f6fdb-cdfc-42d9-a6f5-543df76b48f3",
+      "Content-Type" : "avro/binary"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://gaprahnscanary.blob.core.windows.net?prefix=jtfsquerymin&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "baea6876-7bea-4254-9a48-cc07f9391fe9"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-10-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "c880c3f8-101e-0035-6233-1f21b4000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gaprahnscanary.blob.core.windows.net/\"><Prefix>jtfsquerymin</Prefix><Containers><Container><Name>jtfsquerymin0fileapitestquerymin30f757556251916c473</Name><Properties><Last-Modified>Thu, 30 Apr 2020 21:05:37 GMT</Last-Modified><Etag>\"0x8D7ED4A3B0BAA48\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 30 Apr 2020 21:05:45 GMT",
+      "x-ms-client-request-id" : "baea6876-7bea-4254-9a48-cc07f9391fe9",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://gaprahnscanary.blob.core.windows.net/jtfsquerymin0fileapitestquerymin30f757556251916c473?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "6cf27f7d-8e0b-43ef-975e-d03409a718e3"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-10-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "b3344d32-601e-0096-3833-1f4471000000",
+      "Date" : "Thu, 30 Apr 2020 21:05:46 GMT",
+      "x-ms-client-request-id" : "6cf27f7d-8e0b-43ef-975e-d03409a718e3"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtfsquerymin0fileapitestquerymin30f757556251916c473", "javapathquerymin1fileapitestquerymin30f74559ff50ac686" ]
+}

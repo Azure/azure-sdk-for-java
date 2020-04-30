@@ -1,0 +1,173 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://seanmcccanary.blob.core.windows.net/jtcqueryac0blobbaseapitestqueryacb6647909d2f41ab9723?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "8071180d-42ef-4ced-b46f-b517136c24ff"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-10-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7ED4F0B12E33E",
+      "Last-Modified" : "Thu, 30 Apr 2020 21:40:04 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "6325aa78-901e-0076-4e37-1fc7e8000000",
+      "Date" : "Thu, 30 Apr 2020 21:40:03 GMT",
+      "x-ms-client-request-id" : "8071180d-42ef-4ced-b46f-b517136c24ff"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://seanmcccanary.blob.core.windows.net/jtcqueryac0blobbaseapitestqueryacb6647909d2f41ab9723/javablobqueryac1blobbaseapitestqueryacb6671762f1606faa",
+    "Headers" : {
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "e9ac810c-d1c3-44fb-939f-7be7e30c8cb7",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-10-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "AAAAAAAAAAA=",
+      "x-ms-version-id" : "2020-04-30T21:40:04.4352588Z",
+      "Last-Modified" : "Thu, 30 Apr 2020 21:40:04 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Thu, 30 Apr 2020 21:40:03 GMT",
+      "Content-MD5" : "1B2M2Y8AsgTpgAmY7PhCfg==",
+      "ETag" : "0x8D7ED4F0B523C4C",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "7c9fb191-301e-009b-6d37-1f8ca5000000",
+      "x-ms-client-request-id" : "e9ac810c-d1c3-44fb-939f-7be7e30c8cb7"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://seanmcccanary.blob.core.windows.net/jtcqueryac0blobbaseapitestqueryacb6647909d2f41ab9723/javablobqueryac1blobbaseapitestqueryacb6671762f1606faa?comp=lease",
+    "Headers" : {
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "1de24914-7803-439e-9977-9f794eeb1d55"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-10-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7ED4F0B523C4C",
+      "x-ms-lease-id" : "b0bb36a5-8193-4fe0-8ea1-0d580067a08b",
+      "Last-Modified" : "Thu, 30 Apr 2020 21:40:04 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "4a04a664-f01e-0070-0537-1ff457000000",
+      "Date" : "Thu, 30 Apr 2020 21:40:04 GMT",
+      "x-ms-client-request-id" : "1de24914-7803-439e-9977-9f794eeb1d55"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://seanmcccanary.blob.core.windows.net/jtcqueryac0blobbaseapitestqueryacb6647909d2f41ab9723/javablobqueryac1blobbaseapitestqueryacb6671762f1606faa?comp=query",
+    "Headers" : {
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "4ea8ea0d-d92c-4e7c-a46d-2e38f594e6bf",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-lease-status" : "locked",
+      "x-ms-version" : "2019-10-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-lease-state" : "leased",
+      "Last-Modified" : "Thu, 30 Apr 2020 21:40:04 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 30 Apr 2020 21:40:04 GMT",
+      "x-ms-blob-type" : "BlockBlob",
+      "Accept-Ranges" : "bytes",
+      "ETag" : "0x8D7ED4F0B523C4C",
+      "x-ms-creation-time" : "Thu, 30 Apr 2020 21:40:04 GMT",
+      "x-ms-lease-duration" : "infinite",
+      "x-ms-request-id" : "e94bae7d-501e-0046-0c37-1f7927000000",
+      "Body" : "Obj\u0001\u0002\u0016avro.schema�\u001E[\n  {\n    \"type\": \"record\",\n    \"name\": \"com.microsoft.azure.storage.queryBlobContents.resultData\",\n    \"doc\": \"Holds result data in the format specified for this query (CSV, JSON, etc.).\",\n    \"fields\": [\n      {\n        \"name\": \"data\",\n        \"type\": \"bytes\"\n      }\n    ]\n  },\n  {\n    \"type\": \"record\",\n    \"name\": \"com.microsoft.azure.storage.queryBlobContents.error\",\n    \"doc\": \"An error that occurred while processing the query.\",\n    \"fields\": [\n      {\n        \"name\": \"fatal\",\n        \"type\": \"boolean\",\n        \"doc\": \"If true, this error prevents further query processing.  More result data may be returned, but there is no guarantee that all of the original data will be processed.  If false, this error does not prevent further query processing.\"\n      },\n      {\n        \"name\": \"name\",\n        \"type\": \"string\",\n        \"doc\": \"The name of the error\"\n      },\n      {\n        \"name\": \"description\",\n        \"type\": \"string\",\n        \"doc\": \"A description of the error\"\n      },\n      {\n        \"name\": \"position\",\n        \"type\": \"long\",\n        \"doc\": \"The blob offset at which the error occurred\"\n      }\n    ]\n  },\n  {\n    \"type\": \"record\",\n    \"name\": \"com.microsoft.azure.storage.queryBlobContents.progress\",\n    \"doc\": \"Information about the progress of the query\",\n    \"fields\": [\n      {\n        \"name\": \"bytesScanned\",\n        \"type\": \"long\",\n        \"doc\": \"The number of bytes that have been scanned\"\n      },\n      {\n        \"name\": \"totalBytes\",\n        \"type\": \"long\",\n        \"doc\": \"The total number of bytes to be scanned in this query\"\n      }\n    ]\n  },\n  {\n    \"type\": \"record\",\n    \"name\": \"com.microsoft.azure.storage.queryBlobContents.end\",\n    \"doc\": \"Sent as the final message of the response, indicating that all results have been sent.\",\n    \"fields\": [\n      {\n        \"name\": \"totalBytes\",\n        \"type\": \"long\",\n        \"doc\": \"The total number of bytes to be scanned in this query\"\n      }\n    ]\n  }\n]\n\u0000]�V\u0002B�I�\u0010Z��f�Q\u0002\u0004\u0006\u0000]�V\u0002B�I�\u0010Z��f�Q",
+      "x-ms-client-request-id" : "4ea8ea0d-d92c-4e7c-a46d-2e38f594e6bf",
+      "Content-Type" : "avro/binary"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://seanmcccanary.blob.core.windows.net/jtcqueryac0blobbaseapitestqueryacb6647909d2f41ab9723/javablobqueryac1blobbaseapitestqueryacb6671762f1606faa?comp=query",
+    "Headers" : {
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "e7585170-4278-4f95-a2c1-16ab5e258085",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-lease-status" : "locked",
+      "x-ms-version" : "2019-10-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-lease-state" : "leased",
+      "Last-Modified" : "Thu, 30 Apr 2020 21:40:04 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 30 Apr 2020 21:40:06 GMT",
+      "x-ms-blob-type" : "BlockBlob",
+      "Accept-Ranges" : "bytes",
+      "ETag" : "0x8D7ED4F0B523C4C",
+      "x-ms-creation-time" : "Thu, 30 Apr 2020 21:40:04 GMT",
+      "x-ms-lease-duration" : "infinite",
+      "x-ms-request-id" : "22e9b882-101e-001a-5737-1f2c7f000000",
+      "Body" : "Obj\u0001\u0002\u0016avro.schema�\u001E[\n  {\n    \"type\": \"record\",\n    \"name\": \"com.microsoft.azure.storage.queryBlobContents.resultData\",\n    \"doc\": \"Holds result data in the format specified for this query (CSV, JSON, etc.).\",\n    \"fields\": [\n      {\n        \"name\": \"data\",\n        \"type\": \"bytes\"\n      }\n    ]\n  },\n  {\n    \"type\": \"record\",\n    \"name\": \"com.microsoft.azure.storage.queryBlobContents.error\",\n    \"doc\": \"An error that occurred while processing the query.\",\n    \"fields\": [\n      {\n        \"name\": \"fatal\",\n        \"type\": \"boolean\",\n        \"doc\": \"If true, this error prevents further query processing.  More result data may be returned, but there is no guarantee that all of the original data will be processed.  If false, this error does not prevent further query processing.\"\n      },\n      {\n        \"name\": \"name\",\n        \"type\": \"string\",\n        \"doc\": \"The name of the error\"\n      },\n      {\n        \"name\": \"description\",\n        \"type\": \"string\",\n        \"doc\": \"A description of the error\"\n      },\n      {\n        \"name\": \"position\",\n        \"type\": \"long\",\n        \"doc\": \"The blob offset at which the error occurred\"\n      }\n    ]\n  },\n  {\n    \"type\": \"record\",\n    \"name\": \"com.microsoft.azure.storage.queryBlobContents.progress\",\n    \"doc\": \"Information about the progress of the query\",\n    \"fields\": [\n      {\n        \"name\": \"bytesScanned\",\n        \"type\": \"long\",\n        \"doc\": \"The number of bytes that have been scanned\"\n      },\n      {\n        \"name\": \"totalBytes\",\n        \"type\": \"long\",\n        \"doc\": \"The total number of bytes to be scanned in this query\"\n      }\n    ]\n  },\n  {\n    \"type\": \"record\",\n    \"name\": \"com.microsoft.azure.storage.queryBlobContents.end\",\n    \"doc\": \"Sent as the final message of the response, indicating that all results have been sent.\",\n    \"fields\": [\n      {\n        \"name\": \"totalBytes\",\n        \"type\": \"long\",\n        \"doc\": \"The total number of bytes to be scanned in this query\"\n      }\n    ]\n  }\n]\n\u0000�V����PB�M��I���\u0002\u0004\u0006\u0000�V����PB�M��I���",
+      "x-ms-client-request-id" : "e7585170-4278-4f95-a2c1-16ab5e258085",
+      "Content-Type" : "avro/binary"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://seanmcccanary.blob.core.windows.net?prefix=jtcqueryac&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "261e6ff5-d6d5-4557-a25c-9f159abba79d"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-10-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "62472466-901e-0066-3337-1f0280000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://seanmcccanary.blob.core.windows.net/\"><Prefix>jtcqueryac</Prefix><Containers><Container><Name>jtcqueryac0blobbaseapitestqueryacb6647909d2f41ab9723</Name><Properties><Last-Modified>Thu, 30 Apr 2020 21:40:04 GMT</Last-Modified><Etag>\"0x8D7ED4F0B12E33E\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 30 Apr 2020 21:40:06 GMT",
+      "x-ms-client-request-id" : "261e6ff5-d6d5-4557-a25c-9f159abba79d",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://seanmcccanary.blob.core.windows.net/jtcqueryac0blobbaseapitestqueryacb6647909d2f41ab9723?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "5b6a05ca-c022-4f05-813b-b88b4614b7b7"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-10-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "28073abd-b01e-0013-4d37-1f69ac000000",
+      "Date" : "Thu, 30 Apr 2020 21:40:06 GMT",
+      "x-ms-client-request-id" : "5b6a05ca-c022-4f05-813b-b88b4614b7b7"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtcqueryac0blobbaseapitestqueryacb6647909d2f41ab9723", "javablobqueryac1blobbaseapitestqueryacb6671762f1606faa" ]
+}

@@ -147,7 +147,7 @@ class AvroParserTest extends Specification {
     }
 
     /* TODO (gapra) : Download a CF file with a single record and add a test with that, validate all parts of map are correct. Also chunk the file. */
-    def "Parse CF"() {
+    def "Parse CF large"() {
         setup:
         AvroParser parser = new AvroParser()
         String fileName = "changefeed_large.avro"
@@ -167,9 +167,27 @@ class AvroParserTest extends Specification {
         sv
             .expectNextMatches({t -> t.getT2() == "/blobServices/default/containers/test-container/blobs/" + t.getT1()})
             .expectNextCount(999)
-            .expectComplete()
-            .verify()
+            .verifyComplete()
+    }
 
+    def "Parse QQ small"() {
+        setup:
+        AvroParser parser = new AvroParser()
+        String fileName = "quickquery_small.avro"
+        ClassLoader classLoader = getClass().getClassLoader()
+        File f = new File(classLoader.getResource(fileName).getFile())
+        Path path = Paths.get(f.getAbsolutePath())
+        Flux<ByteBuffer> file = FluxUtil.readFile(AsynchronousFileChannel.open(path, StandardOpenOption.READ))
+
+        when:
+        def sv = StepVerifier.create(file
+            .concatMap({buffer -> parser.parse(buffer)})
+        )
+
+        then:
+        sv
+        .expectNextCount(10)
+        .verifyComplete()
     }
     /* TODO (gapra) : Once this is in the same branch as QQ and CF, add network tests for both of them. (this could just go in the CF/QQ packages) */
 

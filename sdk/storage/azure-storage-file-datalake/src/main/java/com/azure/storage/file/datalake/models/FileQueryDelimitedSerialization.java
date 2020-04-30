@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.models;
+package com.azure.storage.file.datalake.models;
 
 /**
  * Defines the input or output delimited (CSV) serialization for a blob quick query request.
  */
-public class BlobQuickQueryDelimitedSerialization extends
-    BlobQuickQuerySerialization {
+public class FileQueryDelimitedSerialization extends
+    FileQuerySerialization {
 
     /* TODO(gapra) : Consider diff datatype in case future break. */
     private char columnSeparator;
@@ -26,9 +26,9 @@ public class BlobQuickQueryDelimitedSerialization extends
     /**
      * Sets the column separator.
      * @param columnSeparator the column separator.
-     * @return the updated BlobQuickQueryDelimitedSerialization object.
+     * @return the updated FileQueryDelimitedSerialization object.
      */
-    public BlobQuickQueryDelimitedSerialization setColumnSeparator(char columnSeparator) {
+    public FileQueryDelimitedSerialization setColumnSeparator(char columnSeparator) {
         this.columnSeparator = columnSeparator;
         return this;
     }
@@ -44,9 +44,9 @@ public class BlobQuickQueryDelimitedSerialization extends
     /**
      * Sets the field quote.
      * @param fieldQuote the field quote.
-     * @return the updated BlobQuickQueryDelimitedSerialization object.
+     * @return the updated FileQueryDelimitedSerialization object.
      */
-    public BlobQuickQueryDelimitedSerialization setFieldQuote(char fieldQuote) {
+    public FileQueryDelimitedSerialization setFieldQuote(char fieldQuote) {
         this.fieldQuote = fieldQuote;
         return this;
     }
@@ -62,9 +62,9 @@ public class BlobQuickQueryDelimitedSerialization extends
     /**
      * Sets the escape character.
      * @param escapeChar the escape character.
-     * @return the updated BlobQuickQueryDelimitedSerialization object.
+     * @return the updated FileQueryDelimitedSerialization object.
      */
-    public BlobQuickQueryDelimitedSerialization setEscapeChar(char escapeChar) {
+    public FileQueryDelimitedSerialization setEscapeChar(char escapeChar) {
         this.escapeChar = escapeChar;
         return this;
     }
@@ -80,9 +80,9 @@ public class BlobQuickQueryDelimitedSerialization extends
     /**
      * Sets whether or not headers are present.
      * @param headersPresent Whether or not headers are present.
-     * @return the updated BlobQuickQueryDelimitedSerialization object.
+     * @return the updated FileQueryDelimitedSerialization object.
      */
-    public BlobQuickQueryDelimitedSerialization setHeadersPresent(boolean headersPresent) {
+    public FileQueryDelimitedSerialization setHeadersPresent(boolean headersPresent) {
         this.headersPresent = headersPresent;
         return this;
     }
@@ -90,10 +90,10 @@ public class BlobQuickQueryDelimitedSerialization extends
     /**
      * Sets the record separator.
      * @param recordSeparator the record separator.
-     * @return the updated BlobQuickQueryDelimitedSerialization object.
+     * @return the updated FileQueryDelimitedSerialization object.
      */
     @Override
-    public BlobQuickQueryDelimitedSerialization setRecordSeparator(char recordSeparator) {
+    public FileQueryDelimitedSerialization setRecordSeparator(char recordSeparator) {
         this.recordSeparator = recordSeparator;
         return this;
     }

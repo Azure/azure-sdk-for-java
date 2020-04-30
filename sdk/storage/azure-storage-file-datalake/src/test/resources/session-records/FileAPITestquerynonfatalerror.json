@@ -1,0 +1,208 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://gaprahnscanary.blob.core.windows.net/jtfsquerynonfatalerror0fileapitestquerynonfatalerror930093576?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "0337f7b5-b709-4e95-b918-3422d2d33983"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-10-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7ED4A97F24685",
+      "Last-Modified" : "Thu, 30 Apr 2020 21:08:12 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "7ae273db-b01e-0071-6533-1fab8b000000",
+      "Date" : "Thu, 30 Apr 2020 21:08:12 GMT",
+      "x-ms-client-request-id" : "0337f7b5-b709-4e95-b918-3422d2d33983"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://gaprahnscanary.dfs.core.windows.net/jtfsquerynonfatalerror0fileapitestquerynonfatalerror930093576/javapathquerynonfatalerror14612061ed2a29b38e4ed?resource=file",
+    "Headers" : {
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.2.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "f56cbc37-2144-44d2-b05e-1a361f7076c7"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-10-10",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7ED4A9896018F",
+      "Last-Modified" : "Thu, 30 Apr 2020 21:08:13 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "ebccea44-101f-0068-5633-1f2b30000000",
+      "Date" : "Thu, 30 Apr 2020 21:08:13 GMT",
+      "x-ms-client-request-id" : "f56cbc37-2144-44d2-b05e-1a361f7076c7"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://gaprahnscanary.dfs.core.windows.net/jtfsquerynonfatalerror0fileapitestquerynonfatalerror930093576/javapathquerynonfatalerror14612061ed2a29b38e4ed?resource=file",
+    "Headers" : {
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.2.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "0df6d83f-7855-4dd2-8dbf-f9bf6673dcae"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-10-10",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7ED4A98F011BD",
+      "Last-Modified" : "Thu, 30 Apr 2020 21:08:14 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "592a8b89-001f-0080-5a33-1fb2a6000000",
+      "Date" : "Thu, 30 Apr 2020 21:08:14 GMT",
+      "x-ms-client-request-id" : "0df6d83f-7855-4dd2-8dbf-f9bf6673dcae"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "https://gaprahnscanary.dfs.core.windows.net/jtfsquerynonfatalerror0fileapitestquerynonfatalerror930093576/javapathquerynonfatalerror14612061ed2a29b38e4ed?position=0&action=append",
+    "Headers" : {
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.2.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "d80510ea-31dd-4adf-a4cd-5280a9b372cf",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-10-10",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-server-encrypted" : "true",
+      "x-ms-request-id" : "97532916-f01f-0070-5633-1ff457000000",
+      "Date" : "Thu, 30 Apr 2020 21:08:14 GMT",
+      "x-ms-client-request-id" : "d80510ea-31dd-4adf-a4cd-5280a9b372cf"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "https://gaprahnscanary.dfs.core.windows.net/jtfsquerynonfatalerror0fileapitestquerynonfatalerror930093576/javapathquerynonfatalerror14612061ed2a29b38e4ed?position=1024&retainUncommittedData=false&close=false&action=flush",
+    "Headers" : {
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.2.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "90c278f7-fa87-4866-919b-5b95a5017c1a"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-10-10",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7ED4A998907A0",
+      "Last-Modified" : "Thu, 30 Apr 2020 21:08:15 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-server-encrypted" : "false",
+      "x-ms-request-id" : "f19a4df4-401f-0075-6133-1f268c000000",
+      "Date" : "Thu, 30 Apr 2020 21:08:15 GMT",
+      "x-ms-client-request-id" : "90c278f7-fa87-4866-919b-5b95a5017c1a"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://gaprahnscanary.blob.core.windows.net/jtfsquerynonfatalerror0fileapitestquerynonfatalerror930093576/javapathquerynonfatalerror14612061ed2a29b38e4ed?comp=query",
+    "Headers" : {
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "6170a294-0c09-4f6e-8a17-a1045aec6117",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-lease-status" : "unlocked",
+      "x-ms-version" : "2019-10-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-lease-state" : "available",
+      "Last-Modified" : "Thu, 30 Apr 2020 21:08:15 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 30 Apr 2020 21:08:16 GMT",
+      "x-ms-blob-type" : "BlockBlob",
+      "Accept-Ranges" : "bytes",
+      "ETag" : "0x8D7ED4A998907A0",
+      "x-ms-creation-time" : "Thu, 30 Apr 2020 21:08:14 GMT",
+      "x-ms-request-id" : "4cf0edb7-101e-0025-4333-1fe4dc000000",
+      "Body" : "Obj\u0001\u0002\u0016avro.schema�\u001E[\n  {\n    \"type\": \"record\",\n    \"name\": \"com.microsoft.azure.storage.queryBlobContents.resultData\",\n    \"doc\": \"Holds result data in the format specified for this query (CSV, JSON, etc.).\",\n    \"fields\": [\n      {\n        \"name\": \"data\",\n        \"type\": \"bytes\"\n      }\n    ]\n  },\n  {\n    \"type\": \"record\",\n    \"name\": \"com.microsoft.azure.storage.queryBlobContents.error\",\n    \"doc\": \"An error that occurred while processing the query.\",\n    \"fields\": [\n      {\n        \"name\": \"fatal\",\n        \"type\": \"boolean\",\n        \"doc\": \"If true, this error prevents further query processing.  More result data may be returned, but there is no guarantee that all of the original data will be processed.  If false, this error does not prevent further query processing.\"\n      },\n      {\n        \"name\": \"name\",\n        \"type\": \"string\",\n        \"doc\": \"The name of the error\"\n      },\n      {\n        \"name\": \"description\",\n        \"type\": \"string\",\n        \"doc\": \"A description of the error\"\n      },\n      {\n        \"name\": \"position\",\n        \"type\": \"long\",\n        \"doc\": \"The blob offset at which the error occurred\"\n      }\n    ]\n  },\n  {\n    \"type\": \"record\",\n    \"name\": \"com.microsoft.azure.storage.queryBlobContents.progress\",\n    \"doc\": \"Information about the progress of the query\",\n    \"fields\": [\n      {\n        \"name\": \"bytesScanned\",\n        \"type\": \"long\",\n        \"doc\": \"The number of bytes that have been scanned\"\n      },\n      {\n        \"name\": \"totalBytes\",\n        \"type\": \"long\",\n        \"doc\": \"The total number of bytes to be scanned in this query\"\n      }\n    ]\n  },\n  {\n    \"type\": \"record\",\n    \"name\": \"com.microsoft.azure.storage.queryBlobContents.end\",\n    \"doc\": \"Sent as the final message of the response, indicating that all results have been sent.\",\n    \"fields\": [\n      {\n        \"name\": \"totalBytes\",\n        \"type\": \"long\",\n        \"doc\": \"The total number of bytes to be scanned in this query\"\n      }\n    ]\n  }\n]\n\u0000Y\n\r>;��J���zs\n�D\u0002\u0004\u0000\u0000Y\n\r>;��J���zs\n�D\u0002|\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.\u0000Y\n\r>;��J���zs\n�D\u0002|\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row. Y\n\r>;��J���zs\n�D\u0002|\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.@Y\n\r>;��J���zs\n�D\u0002|\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.`Y\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0001Y\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0001Y\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0001Y\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0001Y\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0002Y\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0002Y\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0002Y\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0002Y\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0003Y\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0003Y\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0003Y\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0003Y\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0004Y\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0004Y\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0004Y\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0004Y\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0005Y\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0005Y\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0005Y\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0005Y\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0006Y\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0006Y\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0006Y\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0006Y\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0007Y\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0007Y\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0007Y\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0007Y\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\bY\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\bY\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\bY\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\bY\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\tY\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\tY\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\tY\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\tY\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\nY\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\nY\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\nY\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\nY\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u000BY\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u000BY\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u000BY\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u000BY\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\fY\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\fY\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\fY\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\fY\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\rY\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\rY\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\rY\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\rY\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u000EY\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u000EY\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u000EY\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u000EY\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u000FY\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u000FY\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u000FY\n\r>;��J���zs\n�D\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u000FY\n\r>;��J���zs\n�D\u0002\n\u0004�\u0010�\u0010Y\n\r>;��J���zs\n�D\u0002\u0006\u0006�\u0010Y\n\r>;��J���zs\n�D",
+      "x-ms-client-request-id" : "6170a294-0c09-4f6e-8a17-a1045aec6117",
+      "Content-Type" : "avro/binary"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://gaprahnscanary.blob.core.windows.net/jtfsquerynonfatalerror0fileapitestquerynonfatalerror930093576/javapathquerynonfatalerror14612061ed2a29b38e4ed?comp=query",
+    "Headers" : {
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "60a81404-a50c-4830-89ec-df75e2ca409e",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-lease-status" : "unlocked",
+      "x-ms-version" : "2019-10-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-lease-state" : "available",
+      "Last-Modified" : "Thu, 30 Apr 2020 21:08:15 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 30 Apr 2020 21:08:17 GMT",
+      "x-ms-blob-type" : "BlockBlob",
+      "Accept-Ranges" : "bytes",
+      "ETag" : "0x8D7ED4A998907A0",
+      "x-ms-creation-time" : "Thu, 30 Apr 2020 21:08:14 GMT",
+      "x-ms-request-id" : "64c61205-701e-0023-3e33-1fd763000000",
+      "Body" : "Obj\u0001\u0002\u0016avro.schema�\u001E[\n  {\n    \"type\": \"record\",\n    \"name\": \"com.microsoft.azure.storage.queryBlobContents.resultData\",\n    \"doc\": \"Holds result data in the format specified for this query (CSV, JSON, etc.).\",\n    \"fields\": [\n      {\n        \"name\": \"data\",\n        \"type\": \"bytes\"\n      }\n    ]\n  },\n  {\n    \"type\": \"record\",\n    \"name\": \"com.microsoft.azure.storage.queryBlobContents.error\",\n    \"doc\": \"An error that occurred while processing the query.\",\n    \"fields\": [\n      {\n        \"name\": \"fatal\",\n        \"type\": \"boolean\",\n        \"doc\": \"If true, this error prevents further query processing.  More result data may be returned, but there is no guarantee that all of the original data will be processed.  If false, this error does not prevent further query processing.\"\n      },\n      {\n        \"name\": \"name\",\n        \"type\": \"string\",\n        \"doc\": \"The name of the error\"\n      },\n      {\n        \"name\": \"description\",\n        \"type\": \"string\",\n        \"doc\": \"A description of the error\"\n      },\n      {\n        \"name\": \"position\",\n        \"type\": \"long\",\n        \"doc\": \"The blob offset at which the error occurred\"\n      }\n    ]\n  },\n  {\n    \"type\": \"record\",\n    \"name\": \"com.microsoft.azure.storage.queryBlobContents.progress\",\n    \"doc\": \"Information about the progress of the query\",\n    \"fields\": [\n      {\n        \"name\": \"bytesScanned\",\n        \"type\": \"long\",\n        \"doc\": \"The number of bytes that have been scanned\"\n      },\n      {\n        \"name\": \"totalBytes\",\n        \"type\": \"long\",\n        \"doc\": \"The total number of bytes to be scanned in this query\"\n      }\n    ]\n  },\n  {\n    \"type\": \"record\",\n    \"name\": \"com.microsoft.azure.storage.queryBlobContents.end\",\n    \"doc\": \"Sent as the final message of the response, indicating that all results have been sent.\",\n    \"fields\": [\n      {\n        \"name\": \"totalBytes\",\n        \"type\": \"long\",\n        \"doc\": \"The total number of bytes to be scanned in this query\"\n      }\n    ]\n  }\n]\n\u0000*:�1�RkK��\u0007\u00000��*\u0002\u0004\u0000\u0000*:�1�RkK��\u0007\u00000��*\u0002|\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.\u0000*:�1�RkK��\u0007\u00000��*\u0002|\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row. *:�1�RkK��\u0007\u00000��*\u0002|\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.@*:�1�RkK��\u0007\u00000��*\u0002|\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.`*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0001*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0001*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0001*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0001*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0002*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0002*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0002*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0002*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0003*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0003*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0003*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0003*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0004*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0004*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0004*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0004*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0005*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0005*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0005*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0005*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0006*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0006*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0006*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0006*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0007*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0007*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0007*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u0007*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\b*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\b*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\b*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\b*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\t*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\t*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\t*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\t*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\n*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\n*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\n*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\n*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u000B*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u000B*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u000B*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u000B*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\f*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\f*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\f*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\f*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\r*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\r*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\r*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\r*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u000E*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u000E*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u000E*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u000E*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u000F*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u000F*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u000F*:�1�RkK��\u0007\u00000��*\u0002~\u0002\u0000(InvalidColumnOrdinalJColumn ordinal does not exist in row.�\u000F*:�1�RkK��\u0007\u00000��*\u0002\n\u0004�\u0010�\u0010*:�1�RkK��\u0007\u00000��*\u0002\u0006\u0006�\u0010*:�1�RkK��\u0007\u00000��*",
+      "x-ms-client-request-id" : "60a81404-a50c-4830-89ec-df75e2ca409e",
+      "Content-Type" : "avro/binary"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://gaprahnscanary.blob.core.windows.net?prefix=jtfsquerynonfatalerror&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "b1d21cf0-d3da-4536-8457-aad27f323d1c"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-10-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "6a139957-d01e-0048-7333-1f5097000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gaprahnscanary.blob.core.windows.net/\"><Prefix>jtfsquerynonfatalerror</Prefix><Containers><Container><Name>jtfsquerynonfatalerror0fileapitestquerynonfatalerror930093576</Name><Properties><Last-Modified>Thu, 30 Apr 2020 21:08:12 GMT</Last-Modified><Etag>\"0x8D7ED4A97F24685\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 30 Apr 2020 21:08:18 GMT",
+      "x-ms-client-request-id" : "b1d21cf0-d3da-4536-8457-aad27f323d1c",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://gaprahnscanary.blob.core.windows.net/jtfsquerynonfatalerror0fileapitestquerynonfatalerror930093576?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "aeff44ad-a040-432b-9a44-31ef6d747185"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-10-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "d37beeb8-e01e-0031-3c33-1facb3000000",
+      "Date" : "Thu, 30 Apr 2020 21:08:19 GMT",
+      "x-ms-client-request-id" : "aeff44ad-a040-432b-9a44-31ef6d747185"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtfsquerynonfatalerror0fileapitestquerynonfatalerror930093576", "javapathquerynonfatalerror14612061ed2a29b38e4ed" ]
+}

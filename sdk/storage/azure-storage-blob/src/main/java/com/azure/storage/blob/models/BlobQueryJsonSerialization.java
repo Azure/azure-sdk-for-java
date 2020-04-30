@@ -6,7 +6,7 @@ package com.azure.storage.blob.models;
 /**
  * Defines the input or output JSON serialization for a blob quick query request.
  */
-public class BlobQuickQueryJsonSerialization extends BlobQuickQuerySerialization {
+public class BlobQueryJsonSerialization extends BlobQuerySerialization {
 
     /**
      * Sets the record separator.
@@ -14,7 +14,7 @@ public class BlobQuickQueryJsonSerialization extends BlobQuickQuerySerialization
      * @return the updated BlobQuickQueryJsonSerialization object.
      */
     @Override
-    public BlobQuickQueryJsonSerialization setRecordSeparator(char recordSeparator) {
+    public BlobQueryJsonSerialization setRecordSeparator(char recordSeparator) {
         this.recordSeparator = recordSeparator;
         return this;
     }

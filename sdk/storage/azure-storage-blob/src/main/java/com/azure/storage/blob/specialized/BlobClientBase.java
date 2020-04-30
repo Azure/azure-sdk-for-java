@@ -7,35 +7,32 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobServiceClient;
-import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobCopyInfo;
+import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobHttpHeaders;
-import com.azure.storage.blob.models.BlobQuickQueryAsyncResponse;
-import com.azure.storage.blob.models.BlobQuickQueryError;
-import com.azure.storage.blob.models.BlobQuickQueryResponse;
-import com.azure.storage.blob.models.BlobQuickQuerySerialization;
+import com.azure.storage.blob.models.BlobProperties;
+import com.azure.storage.blob.models.BlobQueryAsyncResponse;
+import com.azure.storage.blob.models.BlobQueryOptions;
+import com.azure.storage.blob.models.BlobQueryResponse;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.DownloadRetryOptions;
-import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
-import com.azure.storage.common.ErrorReceiver;
-import com.azure.storage.common.ProgressReceiver;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.Exceptions;
@@ -953,8 +950,8 @@ public class BlobClientBase {
      *
      * @param expression The query expression.
      */
-    public final BlobQuickQueryInputStream openQueryInputStream(String expression) {
-        return openQueryInputStream(expression, null, null, null, null, null);
+    public final BlobQueryInputStream openQueryInputStream(String expression) {
+        return openQueryInputStream(expression, null);
     }
 
     /**
@@ -965,26 +962,19 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.openQueryInputStream#String-BlobQuickQuerySerialization-BlobQuickQuerySerialization-BlobRequestConditions-ErrorReceiver-ProgressReceiver}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.openQueryInputStream#String-BlobQueryOptions}
      *
      * @param expression The query expression.
-     * @param input {@link BlobQuickQuerySerialization Serialization input}.
-     * @param output {@link BlobQuickQuerySerialization Serialization output}.
-     * @param requestConditions {@link BlobRequestConditions}
-     * @param errorReceiver {@link ErrorReceiver} of {@link BlobQuickQueryError}
-     * @param progressReceiver {@link ProgressReceiver}
+     * @param queryOptions {@link BlobQueryOptions The query options}.
      */
-    public final BlobQuickQueryInputStream openQueryInputStream(String expression, BlobQuickQuerySerialization input,
-        BlobQuickQuerySerialization output, BlobRequestConditions requestConditions,
-        ErrorReceiver<BlobQuickQueryError> errorReceiver, ProgressReceiver progressReceiver) {
+    public final BlobQueryInputStream openQueryInputStream(String expression, BlobQueryOptions queryOptions) {
 
         // Data to subscribe to and read from.
-        Flux<ByteBuffer> data = client.queryWithResponse(expression, input, output, requestConditions, errorReceiver,
-            progressReceiver)
-            .flatMapMany(BlobQuickQueryAsyncResponse::getValue);
+        Flux<ByteBuffer> data = client.queryWithResponse(expression, queryOptions)
+            .flatMapMany(BlobQueryAsyncResponse::getValue);
 
         // Create input stream from the data.
-        return new BlobQuickQueryInputStream(data);
+        return new BlobQueryInputStream(data);
     }
 
     /**
@@ -1003,7 +993,7 @@ public class BlobClientBase {
      * @throws NullPointerException if {@code stream} is null.
      */
     public void query(OutputStream stream, String expression) {
-        queryWithResponse(stream, expression, null, null, null, null, null, null, Context.NONE);
+        queryWithResponse(stream, expression, null, null, Context.NONE);
     }
 
     /**
@@ -1014,28 +1004,22 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.queryWithResponse#OutputStream-String-BlobQuickQuerySerialization-BlobQuickQuerySerialization-BlobRequestConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.queryWithResponse#OutputStream-String-BlobQueryOptions-Duration-Context}
      *
      * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @param expression The query expression.
-     * @param input {@link BlobQuickQuerySerialization Serialization input}.
-     * @param output {@link BlobQuickQuerySerialization Serialization output}.
-     * @param requestConditions {@link BlobRequestConditions}
-     * @param errorReceiver {@link ErrorReceiver} of {@link BlobQuickQueryError}
-     * @param progressReceiver {@link ProgressReceiver}
+     * @param queryOptions {@link BlobQueryOptions The query options}.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      * @throws UncheckedIOException If an I/O error occurs.
      * @throws NullPointerException if {@code stream} is null.
      */
-    public BlobQuickQueryResponse queryWithResponse(OutputStream stream, String expression,
-        BlobQuickQuerySerialization input, BlobQuickQuerySerialization output, BlobRequestConditions requestConditions,
-        ErrorReceiver<BlobQuickQueryError> errorReceiver, ProgressReceiver progressReceiver, Duration timeout,
-        Context context) {
+    public BlobQueryResponse queryWithResponse(OutputStream stream, String expression, BlobQueryOptions queryOptions,
+        Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("stream", stream);
-        Mono<BlobQuickQueryResponse> download = client
-            .queryWithResponse(expression, input, output, requestConditions, errorReceiver, progressReceiver, context)
+        Mono<BlobQueryResponse> download = client
+            .queryWithResponse(expression, queryOptions, context)
             .flatMap(response -> response.getValue().reduce(stream, (outputStream, buffer) -> {
                 try {
                     outputStream.write(FluxUtil.byteBufferToArray(buffer));
@@ -1043,7 +1027,7 @@ public class BlobClientBase {
                 } catch (IOException ex) {
                     throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(ex)));
                 }
-            }).thenReturn(new BlobQuickQueryResponse(response)));
+            }).thenReturn(new BlobQueryResponse(response)));
 
         return blockWithOptionalTimeout(download, timeout);
     }

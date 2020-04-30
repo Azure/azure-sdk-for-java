@@ -4,27 +4,14 @@ import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.util.Context
 import com.azure.core.util.FluxUtil
 import com.azure.identity.DefaultAzureCredentialBuilder
-import com.azure.storage.blob.BlobAsyncClient
-import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
+import com.azure.storage.common.ErrorReceiver
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.ProgressReceiver
-import com.azure.storage.common.Utility
 import com.azure.storage.common.implementation.Constants
-import com.azure.storage.file.datalake.models.AccessTier
-import com.azure.storage.file.datalake.models.DataLakeRequestConditions
-import com.azure.storage.file.datalake.models.DataLakeStorageException
-import com.azure.storage.file.datalake.models.DownloadRetryOptions
-import com.azure.storage.file.datalake.models.FileRange
-import com.azure.storage.file.datalake.models.LeaseStateType
-import com.azure.storage.file.datalake.models.LeaseStatusType
-import com.azure.storage.file.datalake.models.PathAccessControl
-import com.azure.storage.file.datalake.models.PathAccessControlEntry
-import com.azure.storage.file.datalake.models.PathHttpHeaders
-import com.azure.storage.file.datalake.models.PathPermissions
-import com.azure.storage.file.datalake.models.RolePermissions
+import com.azure.storage.file.datalake.models.*
 import reactor.core.Exceptions
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Hooks
@@ -2708,6 +2695,547 @@ class FileAPITest extends APISpec {
 
         cleanup:
         file.delete()
+    }
+
+    /* Quick Query Tests. */
+
+    // Generates and uploads a CSV file
+    def uploadCsv(FileQueryDelimitedSerialization s, int numCopies) {
+        String header = String.join(new String(s.getColumnSeparator()), "rn1", "rn2", "rn3", "rn4")
+            .concat(new String(s.getRecordSeparator()))
+        byte[] headers = header.getBytes()
+
+        String csv = String.join(new String(s.getColumnSeparator()), "100", "200", "300", "400")
+            .concat(new String(s.getRecordSeparator()))
+            .concat(String.join(new String(s.getColumnSeparator()), "300", "400", "500", "600")
+                .concat(new String(s.getRecordSeparator())))
+
+        byte[] csvData = csv.getBytes()
+
+        int headerLength = s.isHeadersPresent() ? headers.length : 0
+        byte[] data = new byte[headerLength + csvData.length * numCopies]
+        if (s.isHeadersPresent()) {
+            System.arraycopy(headers, 0, data, 0, headers.length)
+        }
+
+        for (int i = 0; i < numCopies; i++) {
+            int o = i * csvData.length + headerLength
+            System.arraycopy(csvData, 0, data, o, csvData.length)
+        }
+
+        InputStream inputStream = new ByteArrayInputStream(data)
+
+        fc.create(true)
+        fc.append(inputStream, 0, data.length)
+        fc.flush(data.length)
+    }
+
+    def uploadSmallJson(int numCopies) {
+        StringBuilder b = new StringBuilder()
+        b.append('{\n')
+        for(int i = 0; i < numCopies; i++) {
+            b.append(String.format('\t"name%d": "owner%d",\n', i, i))
+        }
+        b.append('}')
+
+        InputStream inputStream = new ByteArrayInputStream(b.toString().getBytes())
+
+        fc.create(true)
+        fc.append(inputStream, 0, b.length())
+        fc.flush(b.length())
+    }
+
+    byte[] readFromInputStream(InputStream stream, int numBytesToRead) {
+        byte[] queryData = new byte[numBytesToRead]
+
+        def totalRead = 0
+        def bytesRead = 0
+        def length = numBytesToRead
+
+        while (bytesRead != -1 && totalRead < numBytesToRead) {
+            bytesRead = stream.read(queryData, totalRead, length)
+            if (bytesRead != -1) {
+                totalRead += bytesRead
+                length -= bytesRead
+            }
+        }
+
+        stream.close()
+        return queryData
+    }
+
+    @Unroll
+    def "Query min"() {
+        setup:
+        FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
+            .setRecordSeparator('\n' as char)
+            .setColumnSeparator(',' as char)
+            .setEscapeChar('\0' as char)
+            .setFieldQuote('\0' as char)
+            .setHeadersPresent(false)
+        uploadCsv(ser, numCopies)
+        def expression = "SELECT * from BlobStorage"
+
+        ByteArrayOutputStream downloadData = new ByteArrayOutputStream()
+        fc.read(downloadData)
+        byte[] downloadedData = downloadData.toByteArray()
+
+        /* Input Stream. */
+        when:
+        InputStream qqStream = fc.openQueryInputStream(expression)
+        byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
+
+        then:
+        notThrown(IOException)
+        for (int j = 0; j < downloadedData.length; j++) {
+            assert queryData[j] == downloadedData[j]
+        }
+
+        /* Output Stream. */
+        when:
+        OutputStream os = new ByteArrayOutputStream()
+        fc.query(os, expression)
+        byte[] osData = os.toByteArray()
+
+        then:
+        notThrown(BlobStorageException)
+        for (int j = 0; j < downloadedData.length; j++) {
+            assert osData[j] == downloadedData[j]
+        }
+
+        // To calculate the size of data being tested = numCopies * 32 bytes
+        where:
+        numCopies | _
+        1         | _ // 32 bytes
+        32        | _ // 1 KB
+        256       | _ // 8 KB
+        400       | _ // 12 ish KB
+        4000      | _ // 125 KB
+    }
+
+    /* Note: Input delimited tested everywhere else. */
+    @Unroll
+    def "Query Input json"() {
+        setup:
+        FileQueryJsonSerialization ser = new FileQueryJsonSerialization()
+            .setRecordSeparator(recordSeparator as char)
+        uploadSmallJson(numCopies)
+        def expression = "SELECT * from BlobStorage"
+
+        ByteArrayOutputStream downloadData = new ByteArrayOutputStream()
+        fc.read(downloadData)
+        byte[] downloadedData = downloadData.toByteArray()
+        FileQueryOptions options = new FileQueryOptions().setInputSerialization(ser).setOutputSerialization(ser)
+
+        /* Input Stream. */
+        when:
+        InputStream qqStream = fc.openQueryInputStream(expression, options)
+        byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
+
+        then:
+        notThrown(IOException)
+        for (int j = 0; j < downloadedData.length; j++) {
+            assert queryData[j] == downloadedData[j]
+        }
+
+        /* Output Stream. */
+        when:
+        OutputStream os = new ByteArrayOutputStream()
+        fc.queryWithResponse(os, expression, options, null, null)
+        byte[] osData = os.toByteArray()
+
+        then:
+        notThrown(DataLakeStorageException)
+        for (int j = 0; j < downloadedData.length; j++) {
+            assert osData[j] == downloadedData[j]
+        }
+
+        where:
+        numCopies | recordSeparator || _
+        0         | '\n'            || _
+        10        | '\n'            || _
+        100       | '\n'            || _
+        1000      | '\n'            || _
+    }
+
+    def "Query Input csv Output json"() {
+        setup:
+        FileQueryDelimitedSerialization inSer = new FileQueryDelimitedSerialization()
+            .setRecordSeparator('\n' as char)
+            .setColumnSeparator(',' as char)
+            .setEscapeChar('\0' as char)
+            .setFieldQuote('\0' as char)
+            .setHeadersPresent(false)
+        uploadCsv(inSer, 1)
+        FileQueryJsonSerialization outSer = new FileQueryJsonSerialization()
+            .setRecordSeparator('\n' as char)
+        def expression = "SELECT * from BlobStorage"
+        byte[] expectedData = "{\"_1\":\"100\",\"_2\":\"200\",\"_3\":\"300\",\"_4\":\"400\"}".getBytes()
+        FileQueryOptions options = new FileQueryOptions().setInputSerialization(inSer).setOutputSerialization(outSer)
+
+        /* Input Stream. */
+        when:
+        InputStream qqStream = fc.openQueryInputStream(expression, options)
+        byte[] queryData = readFromInputStream(qqStream, expectedData.length)
+
+        then:
+        notThrown(IOException)
+        for (int j = 0; j < expectedData.length; j++) {
+            assert queryData[j] == expectedData[j]
+        }
+
+        /* Output Stream. */
+        when:
+        OutputStream os = new ByteArrayOutputStream()
+        fc.queryWithResponse(os, expression, options, null, null)
+        byte[] osData = os.toByteArray()
+
+        then:
+        notThrown(BlobStorageException)
+        for (int j = 0; j < expectedData.length; j++) {
+            assert osData[j] == expectedData[j]
+        }
+    }
+
+    def "Query Input json Output csv"() {
+        setup:
+        FileQueryJsonSerialization inSer = new FileQueryJsonSerialization()
+            .setRecordSeparator('\n' as char)
+        uploadSmallJson(2)
+        FileQueryDelimitedSerialization outSer = new FileQueryDelimitedSerialization()
+            .setRecordSeparator('\n' as char)
+            .setColumnSeparator(',' as char)
+            .setEscapeChar('\0' as char)
+            .setFieldQuote('\0' as char)
+            .setHeadersPresent(false)
+        def expression = "SELECT * from BlobStorage"
+        byte[] expectedData = "owner0,owner1\n".getBytes()
+        FileQueryOptions options = new FileQueryOptions().setInputSerialization(inSer).setOutputSerialization(outSer)
+
+        /* Input Stream. */
+        when:
+        InputStream qqStream = fc.openQueryInputStream(expression, options)
+        byte[] queryData = readFromInputStream(qqStream, expectedData.length)
+
+        then:
+        notThrown(IOException)
+        for (int j = 0; j < expectedData.length; j++) {
+            assert queryData[j] == expectedData[j]
+        }
+
+        /* Output Stream. */
+        when:
+        OutputStream os = new ByteArrayOutputStream()
+        fc.queryWithResponse(os, expression, options, null, null)
+        byte[] osData = os.toByteArray()
+
+        then:
+        notThrown(DataLakeStorageException)
+        for (int j = 0; j < expectedData.length; j++) {
+            assert osData[j] == expectedData[j]
+        }
+    }
+
+    def "Query non fatal error"() {
+        setup:
+        FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization()
+            .setRecordSeparator('\n' as char)
+            .setEscapeChar('\0' as char)
+            .setFieldQuote('\0' as char)
+            .setHeadersPresent(false)
+        uploadCsv(base.setColumnSeparator('.' as char), 32)
+        MockErrorReceiver receiver = new MockErrorReceiver("InvalidColumnOrdinal")
+        def expression = "SELECT _1 from BlobStorage WHERE _2 > 250"
+        FileQueryOptions options = new FileQueryOptions()
+            .setInputSerialization(base.setColumnSeparator(',' as char))
+            .setOutputSerialization(base.setColumnSeparator(',' as char))
+            .setErrorReceiver(receiver)
+
+        /* Input Stream. */
+        when:
+        InputStream qqStream = fc.openQueryInputStream(expression, options)
+        readFromInputStream(qqStream, Constants.KB)
+
+        then:
+        receiver.numErrors > 0
+        notThrown(IOException)
+
+        /* Output Stream. */
+        when:
+        receiver = new MockErrorReceiver("InvalidColumnOrdinal")
+        options = new FileQueryOptions()
+            .setInputSerialization(base.setColumnSeparator(',' as char))
+            .setOutputSerialization(base.setColumnSeparator(',' as char))
+            .setErrorReceiver(receiver)
+        fc.queryWithResponse(new ByteArrayOutputStream(), expression, options, null, null)
+
+        then:
+        notThrown(IOException)
+        receiver.numErrors > 0
+    }
+
+    def "Query fatal error"() {
+        setup:
+        FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization()
+            .setRecordSeparator('\n' as char)
+            .setEscapeChar('\0' as char)
+            .setFieldQuote('\0' as char)
+            .setHeadersPresent(true)
+        uploadCsv(base.setColumnSeparator('.' as char), 32)
+        def expression = "SELECT * from BlobStorage"
+        FileQueryOptions options = new FileQueryOptions()
+            .setInputSerialization(new FileQueryJsonSerialization())
+
+        /* Input Stream. */
+        when:
+        InputStream qqStream = fc.openQueryInputStream(expression, options)
+        readFromInputStream(qqStream, Constants.KB)
+
+        then:
+        thrown(IOException)
+
+        /* Output Stream. */
+        when:
+        fc.queryWithResponse(new ByteArrayOutputStream(), expression, options, null, null)
+
+        then:
+        thrown(UncheckedIOException)
+    }
+
+    def "Query progress receiver"() {
+        setup:
+        FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization()
+            .setRecordSeparator('\n' as char)
+            .setEscapeChar('\0' as char)
+            .setFieldQuote('\0' as char)
+            .setHeadersPresent(false)
+
+        uploadCsv(base.setColumnSeparator('.' as char), 32)
+
+        def mockReceiver = new MockProgressReceiver()
+        def sizeofBlobToRead = fc.getProperties().getFileSize()
+        def expression = "SELECT * from BlobStorage"
+        FileQueryOptions options = new FileQueryOptions()
+            .setProgressReceiver(mockReceiver as ProgressReceiver)
+
+        /* Input Stream. */
+        when:
+        InputStream qqStream = fc.openQueryInputStream(expression, options)
+
+        /* The QQ Avro stream has the following pattern
+           n * (data record -> progress record) -> end record */
+        // 1KB of data will only come back as a single data record.
+        /* Pretend to read more data because the input stream will not parse records following the data record if it
+         doesn't need to. */
+        readFromInputStream(qqStream, Constants.MB)
+
+        then:
+        // At least the size of blob to read will be in the progress list
+        mockReceiver.progressList.contains(sizeofBlobToRead)
+
+        /* Output Stream. */
+        when:
+        mockReceiver = new MockProgressReceiver()
+        options = new FileQueryOptions()
+            .setProgressReceiver(mockReceiver as ProgressReceiver)
+        fc.queryWithResponse(new ByteArrayOutputStream(), expression, options, null, null)
+
+        then:
+        mockReceiver.progressList.contains(sizeofBlobToRead)
+    }
+
+    @Requires( { liveMode() } ) // Large amount of data.
+    def "Query multiple records with progress receiver"() {
+        setup:
+        FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
+            .setRecordSeparator('\n' as char)
+            .setColumnSeparator(',' as char)
+            .setEscapeChar('\0' as char)
+            .setFieldQuote('\0' as char)
+            .setHeadersPresent(false)
+        uploadCsv(ser, 512000)
+
+        def mockReceiver = new MockProgressReceiver()
+        def expression = "SELECT * from BlobStorage"
+        FileQueryOptions options = new FileQueryOptions()
+            .setProgressReceiver(mockReceiver as ProgressReceiver)
+
+        /* Input Stream. */
+        when:
+        InputStream qqStream = fc.openQueryInputStream(expression, options)
+
+        /* The Avro stream has the following pattern
+           n * (data record -> progress record) -> end record */
+        // 1KB of data will only come back as a single data record.
+        /* Pretend to read more data because the input stream will not parse records following the data record if it
+         doesn't need to. */
+        readFromInputStream(qqStream, 16 * Constants.MB)
+
+        then:
+        long temp = 0
+        // Make sure theyre all increasingly bigger
+        for (long progress : mockReceiver.progressList) {
+            assert progress >= temp
+            temp = progress
+        }
+
+        /* Output Stream. */
+        when:
+        mockReceiver = new MockProgressReceiver()
+        temp = 0
+        options = new FileQueryOptions()
+            .setProgressReceiver(mockReceiver as ProgressReceiver)
+        fc.queryWithResponse(new ByteArrayOutputStream(), expression, options, null, null)
+
+        then:
+        // Make sure theyre all increasingly bigger
+        for (long progress : mockReceiver.progressList) {
+            assert progress >= temp
+            temp = progress
+        }
+    }
+
+    class MockProgressReceiver implements ProgressReceiver {
+
+        List<Long> progressList
+
+        MockProgressReceiver() {
+            this.progressList = new ArrayList<>()
+        }
+
+        @Override
+        void reportProgress(long bytesRead) {
+            progressList.add(bytesRead)
+        }
+    }
+
+    class MockErrorReceiver implements ErrorReceiver<FileQueryError> {
+
+        String expectedType
+        int numErrors
+
+        MockErrorReceiver(String expectedType) {
+            this.expectedType = expectedType
+            this.numErrors = 0
+        }
+
+        @Override
+        void reportError(FileQueryError error) {
+            assert !error.isFatal()
+            assert error.getName() == expectedType
+            numErrors++
+        }
+    }
+
+    @Unroll
+    def "Query input output IA"() {
+        setup:
+        /* Mock random impl of QQ Serialization*/
+        FileQuerySerialization ser = Spy() {
+            return '\n'
+        }
+        def inSer = input ? ser : null
+        def outSer = output ? ser : null
+        def expression = "SELECT * from BlobStorage"
+        FileQueryOptions options = new FileQueryOptions()
+            .setInputSerialization(inSer)
+            .setOutputSerialization(outSer)
+
+        when:
+        InputStream stream = fc.openQueryInputStream(expression, options)
+        stream.read()
+        stream.close()
+
+        then:
+        thrown(IllegalArgumentException)
+
+        when:
+        fc.queryWithResponse(new ByteArrayOutputStream(), expression, options, null, null)
+
+        then:
+        thrown(IllegalArgumentException)
+
+        where:
+        input   | output   || _
+        true    | false    || _
+        false   | true     || _
+    }
+
+    @Unroll
+    def "Query AC"() {
+        setup:
+        match = setupPathMatchCondition(fc, match)
+        leaseID = setupPathLeaseCondition(fc, leaseID)
+        def bac = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+        def expression = "SELECT * from BlobStorage"
+        FileQueryOptions options = new FileQueryOptions()
+            .setRequestConditions(bac)
+
+        when:
+        InputStream stream = fc.openQueryInputStream(expression, options)
+        stream.read()
+        stream.close()
+
+        then:
+        notThrown(DataLakeStorageException)
+
+        when:
+        fc.queryWithResponse(new ByteArrayOutputStream(), expression, options,null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Unroll
+    def "Query AC fail"() {
+        setup:
+        setupPathLeaseCondition(fc, leaseID)
+        def bac = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(fc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+        def expression = "SELECT * from BlobStorage"
+        FileQueryOptions options = new FileQueryOptions()
+            .setRequestConditions(bac)
+
+        when:
+        InputStream stream = fc.openQueryInputStream(expression, options)
+        stream.read()
+        stream.close()
+
+        then:
+        def e = thrown(IOException)
+        assert e.getCause() instanceof DataLakeStorageException
+
+        when:
+        fc.queryWithResponse(new ByteArrayOutputStream(), expression, options, null, null)
+
+        then:
+        thrown(DataLakeStorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
     }
 
 }

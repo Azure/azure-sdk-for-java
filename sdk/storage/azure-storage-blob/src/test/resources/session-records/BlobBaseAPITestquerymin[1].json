@@ -1,0 +1,207 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://seanmcccanary.blob.core.windows.net/jtcquerymin0blobbaseapitestquerymin617750282bad8b4e3a?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "69066360-c027-4627-9c53-13208b047122"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-10-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7ED4ED3850962",
+      "Last-Modified" : "Thu, 30 Apr 2020 21:38:30 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "edeb37f9-601e-0072-6337-1f4aef000000",
+      "Date" : "Thu, 30 Apr 2020 21:38:30 GMT",
+      "x-ms-client-request-id" : "69066360-c027-4627-9c53-13208b047122"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://seanmcccanary.blob.core.windows.net/jtcquerymin0blobbaseapitestquerymin617750282bad8b4e3a/javablobquerymin1blobbaseapitestquerymin61736036c988b33",
+    "Headers" : {
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "d2b926c9-5c3c-4062-973a-01e1b56b8963",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-10-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "AAAAAAAAAAA=",
+      "x-ms-version-id" : "2020-04-30T21:38:31.2270713Z",
+      "Last-Modified" : "Thu, 30 Apr 2020 21:38:31 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Thu, 30 Apr 2020 21:38:30 GMT",
+      "Content-MD5" : "1B2M2Y8AsgTpgAmY7PhCfg==",
+      "ETag" : "0x8D7ED4ED3C3A462",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "d2561370-c01e-0044-7737-1fc79f000000",
+      "x-ms-client-request-id" : "d2b926c9-5c3c-4062-973a-01e1b56b8963"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://seanmcccanary.blob.core.windows.net/jtcquerymin0blobbaseapitestquerymin617750282bad8b4e3a/javablobquerymin1blobbaseapitestquerymin61736036c988b33",
+    "Headers" : {
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "55d3f8c4-9db1-4819-bc7b-9df30cf4047d",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-10-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "qWWGs5Hamvo=",
+      "x-ms-version-id" : "2020-04-30T21:38:31.6743885Z",
+      "Last-Modified" : "Thu, 30 Apr 2020 21:38:31 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Thu, 30 Apr 2020 21:38:31 GMT",
+      "Content-MD5" : "vDCMhAvvo34oZHeMW+ZcXg==",
+      "ETag" : "0x8D7ED4ED407E5BD",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "513b7107-f01e-002d-3237-1ffed3000000",
+      "x-ms-client-request-id" : "55d3f8c4-9db1-4819-bc7b-9df30cf4047d"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://seanmcccanary.blob.core.windows.net/jtcquerymin0blobbaseapitestquerymin617750282bad8b4e3a/javablobquerymin1blobbaseapitestquerymin61736036c988b33",
+    "Headers" : {
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "91e1d031-20cc-4524-a634-4248c1c0eff2"
+    },
+    "Response" : {
+      "x-ms-is-current-version" : "true",
+      "x-ms-version" : "2019-10-10",
+      "x-ms-lease-status" : "unlocked",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-lease-state" : "available",
+      "x-ms-version-id" : "2020-04-30T21:38:31.6743885Z",
+      "Last-Modified" : "Thu, 30 Apr 2020 21:38:31 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 30 Apr 2020 21:38:31 GMT",
+      "x-ms-blob-type" : "BlockBlob",
+      "Content-MD5" : "vDCMhAvvo34oZHeMW+ZcXg==",
+      "Accept-Ranges" : "bytes",
+      "x-ms-server-encrypted" : "true",
+      "ETag" : "0x8D7ED4ED407E5BD",
+      "x-ms-creation-time" : "Thu, 30 Apr 2020 21:38:31 GMT",
+      "Content-Length" : "1024",
+      "x-ms-request-id" : "6247033a-901e-0066-0637-1f0280000000",
+      "Body" : "[49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 10, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 10, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 10, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 10, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 10, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 10, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 10, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 10, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 10, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 10, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 10, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 10, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 10, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 10, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 10, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 10, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 10, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 10, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 10, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 10, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 10, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 10, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 10, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 10, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 10, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 10, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 10, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 10, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 10, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 10, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 10, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 10, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 10, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 10, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 10, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 10, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 10, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 10, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 10, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 10, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 10, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 10, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 10, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 10, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 10, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 10, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 10, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 10, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 10, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 10, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 10, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 10, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 10, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 10, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 10, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 10, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 10, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 10, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 10, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 10, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 10, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 10, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 10, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 10]",
+      "x-ms-client-request-id" : "91e1d031-20cc-4524-a634-4248c1c0eff2",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://seanmcccanary.blob.core.windows.net/jtcquerymin0blobbaseapitestquerymin617750282bad8b4e3a/javablobquerymin1blobbaseapitestquerymin61736036c988b33?comp=query",
+    "Headers" : {
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "dbb1d2bf-0ede-4e85-ba9f-389ad17158b9",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-lease-status" : "unlocked",
+      "x-ms-version" : "2019-10-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-lease-state" : "available",
+      "Last-Modified" : "Thu, 30 Apr 2020 21:38:31 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 30 Apr 2020 21:38:32 GMT",
+      "x-ms-blob-type" : "BlockBlob",
+      "Accept-Ranges" : "bytes",
+      "ETag" : "0x8D7ED4ED407E5BD",
+      "x-ms-creation-time" : "Thu, 30 Apr 2020 21:38:31 GMT",
+      "x-ms-request-id" : "2806c788-b01e-0013-1537-1f69ac000000",
+      "Body" : "Obj\u0001\u0002\u0016avro.schema�\u001E[\n  {\n    \"type\": \"record\",\n    \"name\": \"com.microsoft.azure.storage.queryBlobContents.resultData\",\n    \"doc\": \"Holds result data in the format specified for this query (CSV, JSON, etc.).\",\n    \"fields\": [\n      {\n        \"name\": \"data\",\n        \"type\": \"bytes\"\n      }\n    ]\n  },\n  {\n    \"type\": \"record\",\n    \"name\": \"com.microsoft.azure.storage.queryBlobContents.error\",\n    \"doc\": \"An error that occurred while processing the query.\",\n    \"fields\": [\n      {\n        \"name\": \"fatal\",\n        \"type\": \"boolean\",\n        \"doc\": \"If true, this error prevents further query processing.  More result data may be returned, but there is no guarantee that all of the original data will be processed.  If false, this error does not prevent further query processing.\"\n      },\n      {\n        \"name\": \"name\",\n        \"type\": \"string\",\n        \"doc\": \"The name of the error\"\n      },\n      {\n        \"name\": \"description\",\n        \"type\": \"string\",\n        \"doc\": \"A description of the error\"\n      },\n      {\n        \"name\": \"position\",\n        \"type\": \"long\",\n        \"doc\": \"The blob offset at which the error occurred\"\n      }\n    ]\n  },\n  {\n    \"type\": \"record\",\n    \"name\": \"com.microsoft.azure.storage.queryBlobContents.progress\",\n    \"doc\": \"Information about the progress of the query\",\n    \"fields\": [\n      {\n        \"name\": \"bytesScanned\",\n        \"type\": \"long\",\n        \"doc\": \"The number of bytes that have been scanned\"\n      },\n      {\n        \"name\": \"totalBytes\",\n        \"type\": \"long\",\n        \"doc\": \"The total number of bytes to be scanned in this query\"\n      }\n    ]\n  },\n  {\n    \"type\": \"record\",\n    \"name\": \"com.microsoft.azure.storage.queryBlobContents.end\",\n    \"doc\": \"Sent as the final message of the response, indicating that all results have been sent.\",\n    \"fields\": [\n      {\n        \"name\": \"totalBytes\",\n        \"type\": \"long\",\n        \"doc\": \"The total number of bytes to be scanned in this query\"\n      }\n    ]\n  }\n]\n\u0000B�-�qs{M�\u0010/\u001F�[�v\u0002�\u0010\u0000�\u0010100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\nB�-�qs{M�\u0010/\u001F�[�v\u0002\n\u0004�\u0010�\u0010B�-�qs{M�\u0010/\u001F�[�v\u0002\u0006\u0006�\u0010B�-�qs{M�\u0010/\u001F�[�v",
+      "x-ms-client-request-id" : "dbb1d2bf-0ede-4e85-ba9f-389ad17158b9",
+      "Content-Type" : "avro/binary"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://seanmcccanary.blob.core.windows.net/jtcquerymin0blobbaseapitestquerymin617750282bad8b4e3a/javablobquerymin1blobbaseapitestquerymin61736036c988b33?comp=query",
+    "Headers" : {
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "3417d418-3dcd-4806-9af1-deb39e79cefd",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-lease-status" : "unlocked",
+      "x-ms-version" : "2019-10-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-lease-state" : "available",
+      "Last-Modified" : "Thu, 30 Apr 2020 21:38:31 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 30 Apr 2020 21:38:33 GMT",
+      "x-ms-blob-type" : "BlockBlob",
+      "Accept-Ranges" : "bytes",
+      "ETag" : "0x8D7ED4ED407E5BD",
+      "x-ms-creation-time" : "Thu, 30 Apr 2020 21:38:31 GMT",
+      "x-ms-request-id" : "0ea69b8f-001e-0074-0d37-1f7950000000",
+      "Body" : "Obj\u0001\u0002\u0016avro.schema�\u001E[\n  {\n    \"type\": \"record\",\n    \"name\": \"com.microsoft.azure.storage.queryBlobContents.resultData\",\n    \"doc\": \"Holds result data in the format specified for this query (CSV, JSON, etc.).\",\n    \"fields\": [\n      {\n        \"name\": \"data\",\n        \"type\": \"bytes\"\n      }\n    ]\n  },\n  {\n    \"type\": \"record\",\n    \"name\": \"com.microsoft.azure.storage.queryBlobContents.error\",\n    \"doc\": \"An error that occurred while processing the query.\",\n    \"fields\": [\n      {\n        \"name\": \"fatal\",\n        \"type\": \"boolean\",\n        \"doc\": \"If true, this error prevents further query processing.  More result data may be returned, but there is no guarantee that all of the original data will be processed.  If false, this error does not prevent further query processing.\"\n      },\n      {\n        \"name\": \"name\",\n        \"type\": \"string\",\n        \"doc\": \"The name of the error\"\n      },\n      {\n        \"name\": \"description\",\n        \"type\": \"string\",\n        \"doc\": \"A description of the error\"\n      },\n      {\n        \"name\": \"position\",\n        \"type\": \"long\",\n        \"doc\": \"The blob offset at which the error occurred\"\n      }\n    ]\n  },\n  {\n    \"type\": \"record\",\n    \"name\": \"com.microsoft.azure.storage.queryBlobContents.progress\",\n    \"doc\": \"Information about the progress of the query\",\n    \"fields\": [\n      {\n        \"name\": \"bytesScanned\",\n        \"type\": \"long\",\n        \"doc\": \"The number of bytes that have been scanned\"\n      },\n      {\n        \"name\": \"totalBytes\",\n        \"type\": \"long\",\n        \"doc\": \"The total number of bytes to be scanned in this query\"\n      }\n    ]\n  },\n  {\n    \"type\": \"record\",\n    \"name\": \"com.microsoft.azure.storage.queryBlobContents.end\",\n    \"doc\": \"Sent as the final message of the response, indicating that all results have been sent.\",\n    \"fields\": [\n      {\n        \"name\": \"totalBytes\",\n        \"type\": \"long\",\n        \"doc\": \"The total number of bytes to be scanned in this query\"\n      }\n    ]\n  }\n]\n\u0000�hA\u0006\r��G��r�Y@�\u000E\u0002�\u0010\u0000�\u0010100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n100,200,300,400\n300,400,500,600\n�hA\u0006\r��G��r�Y@�\u000E\u0002\n\u0004�\u0010�\u0010�hA\u0006\r��G��r�Y@�\u000E\u0002\u0006\u0006�\u0010�hA\u0006\r��G��r�Y@�\u000E",
+      "x-ms-client-request-id" : "3417d418-3dcd-4806-9af1-deb39e79cefd",
+      "Content-Type" : "avro/binary"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://seanmcccanary.blob.core.windows.net?prefix=jtcquerymin&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "4921a552-ad84-4dd4-9a08-9dab00ee3bf7"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-10-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "3611ba45-501e-001b-0a37-1f73a3000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://seanmcccanary.blob.core.windows.net/\"><Prefix>jtcquerymin</Prefix><Containers><Container><Name>jtcquerymin0blobbaseapitestquerymin617750282bad8b4e3a</Name><Properties><Last-Modified>Thu, 30 Apr 2020 21:38:30 GMT</Last-Modified><Etag>\"0x8D7ED4ED3850962\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 30 Apr 2020 21:38:32 GMT",
+      "x-ms-client-request-id" : "4921a552-ad84-4dd4-9a08-9dab00ee3bf7",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://seanmcccanary.blob.core.windows.net/jtcquerymin0blobbaseapitestquerymin617750282bad8b4e3a?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-10-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "985ca2eb-26d8-4632-8f52-abfd155c9ce4"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-10-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "51ea27ed-a01e-007d-2e37-1f3c83000000",
+      "Date" : "Thu, 30 Apr 2020 21:38:33 GMT",
+      "x-ms-client-request-id" : "985ca2eb-26d8-4632-8f52-abfd155c9ce4"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtcquerymin0blobbaseapitestquerymin617750282bad8b4e3a", "javablobquerymin1blobbaseapitestquerymin61736036c988b33" ]
+}

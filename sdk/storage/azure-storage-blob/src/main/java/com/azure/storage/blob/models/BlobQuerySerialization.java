@@ -5,9 +5,9 @@ package com.azure.storage.blob.models;
 
 /**
  * Defines the input and output serialization for a blob quick query request.
- * either {@link BlobQuickQueryJsonSerialization} or {@link BlobQuickQueryDelimitedSerialization}
+ * either {@link BlobQueryJsonSerialization} or {@link BlobQueryDelimitedSerialization}
  */
-public abstract class BlobQuickQuerySerialization {
+public abstract class BlobQuerySerialization {
 
     protected char recordSeparator;
 
@@ -20,5 +20,5 @@ public abstract class BlobQuickQuerySerialization {
         return recordSeparator;
     }
 
-    abstract BlobQuickQuerySerialization setRecordSeparator(char recordSeparator);
+    abstract BlobQuerySerialization setRecordSeparator(char recordSeparator);
 }

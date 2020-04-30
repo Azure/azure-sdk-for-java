@@ -13,10 +13,11 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobProperties;
-import com.azure.storage.blob.models.BlobQuickQueryDelimitedSerialization;
-import com.azure.storage.blob.models.BlobQuickQueryError;
-import com.azure.storage.blob.models.BlobQuickQueryJsonSerialization;
-import com.azure.storage.blob.models.BlobQuickQuerySerialization;
+import com.azure.storage.blob.models.BlobQueryDelimitedSerialization;
+import com.azure.storage.blob.models.BlobQueryError;
+import com.azure.storage.blob.models.BlobQueryJsonSerialization;
+import com.azure.storage.blob.models.BlobQueryOptions;
+import com.azure.storage.blob.models.BlobQuerySerialization;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
@@ -448,30 +449,34 @@ public class BlobClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobClientBase#openQueryInputStream(String, BlobQuickQuerySerialization, BlobQuickQuerySerialization, BlobRequestConditions, ErrorReceiver, ProgressReceiver)}
+     * Code snippet for {@link BlobClientBase#openQueryInputStream(String, BlobQueryOptions)}
      */
     public void openQueryInputStream2() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.openQueryInputStream#String-BlobQuickQuerySerialization-BlobQuickQuerySerialization-BlobRequestConditions-ErrorReceiver-ProgressReceiver
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.openQueryInputStream#String-BlobQueryOptions
         String expression = "SELECT * from BlobStorage";
-        BlobQuickQuerySerialization input = new BlobQuickQueryDelimitedSerialization()
+        BlobQuerySerialization input = new BlobQueryDelimitedSerialization()
             .setColumnSeparator(',')
             .setEscapeChar('\n')
             .setRecordSeparator('\n')
             .setHeadersPresent(true)
             .setFieldQuote('"');
-        BlobQuickQuerySerialization output = new BlobQuickQueryJsonSerialization()
+        BlobQuerySerialization output = new BlobQueryJsonSerialization()
             .setRecordSeparator('\n');
         BlobRequestConditions requestConditions = new BlobRequestConditions()
             .setLeaseId("leaseId");
-
-        ErrorReceiver<BlobQuickQueryError> errorHandler = System.out::println;
+        ErrorReceiver<BlobQueryError> errorHandler = System.out::println;
         ProgressReceiver progressReceiver = bytesTransferred -> System.out.println("total blob bytes read: "
             + bytesTransferred);
+        BlobQueryOptions queryOptions = new BlobQueryOptions()
+            .setInputSerialization(input)
+            .setOutputSerialization(output)
+            .setRequestConditions(requestConditions)
+            .setErrorReceiver(errorHandler)
+            .setProgressReceiver(progressReceiver);
 
-        InputStream inputStream = client.openQueryInputStream(expression, input, output, requestConditions,
-            errorHandler, progressReceiver);
+        InputStream inputStream = client.openQueryInputStream(expression, queryOptions);
         // Now you can read from the input stream like you would normally.
-        // END: com.azure.storage.blob.specialized.BlobClientBase.openQueryInputStream#String-BlobQuickQuerySerialization-BlobQuickQuerySerialization-BlobRequestConditions-ErrorReceiver-ProgressReceiver
+        // END: com.azure.storage.blob.specialized.BlobClientBase.openQueryInputStream#String-BlobQueryOptions
     }
 
     /**
@@ -487,27 +492,33 @@ public class BlobClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobClientBase#queryWithResponse(OutputStream, String, BlobQuickQuerySerialization, BlobQuickQuerySerialization, BlobRequestConditions, ErrorReceiver, ProgressReceiver, Duration, Context)}
+     * Code snippet for {@link BlobClientBase#queryWithResponse(OutputStream, String, BlobQueryOptions, Duration, Context)}
      */
     public void queryWithResponse() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.queryWithResponse#OutputStream-String-BlobQuickQuerySerialization-BlobQuickQuerySerialization-BlobRequestConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.queryWithResponse#OutputStream-String-BlobQueryOptions-Duration-Context
         ByteArrayOutputStream queryData = new ByteArrayOutputStream();
         String expression = "SELECT * from BlobStorage";
-        BlobQuickQueryJsonSerialization input = new BlobQuickQueryJsonSerialization()
+        BlobQueryJsonSerialization input = new BlobQueryJsonSerialization()
             .setRecordSeparator('\n');
-        BlobQuickQueryDelimitedSerialization output = new BlobQuickQueryDelimitedSerialization()
+        BlobQueryDelimitedSerialization output = new BlobQueryDelimitedSerialization()
             .setEscapeChar('\0')
             .setColumnSeparator(',')
             .setRecordSeparator('\n')
             .setFieldQuote('\'')
             .setHeadersPresent(true);
         BlobRequestConditions requestConditions = new BlobRequestConditions().setLeaseId(leaseId);
-        ErrorReceiver<BlobQuickQueryError> errorHandler = System.out::println;
+        ErrorReceiver<BlobQueryError> errorHandler = System.out::println;
         ProgressReceiver progressReceiver = bytesTransferred -> System.out.println("total blob bytes read: "
             + bytesTransferred);
+        BlobQueryOptions queryOptions = new BlobQueryOptions()
+            .setInputSerialization(input)
+            .setOutputSerialization(output)
+            .setRequestConditions(requestConditions)
+            .setErrorReceiver(errorHandler)
+            .setProgressReceiver(progressReceiver);
         System.out.printf("Query completed with status %d%n",
-            client.queryWithResponse(queryData, expression, input, output, requestConditions, errorHandler,
-                progressReceiver, timeout, new Context(key1, value1)).getStatusCode());
-        // END: com.azure.storage.blob.specialized.BlobClientBase.queryWithResponse#OutputStream-String-BlobQuickQuerySerialization-BlobQuickQuerySerialization-BlobRequestConditions-Duration-Context
+            client.queryWithResponse(queryData, expression, queryOptions, timeout, new Context(key1, value1))
+                .getStatusCode());
+        // END: com.azure.storage.blob.specialized.BlobClientBase.queryWithResponse#OutputStream-String-BlobQueryOptions-Duration-Context
     }
 }

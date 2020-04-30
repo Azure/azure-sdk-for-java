@@ -40,11 +40,12 @@ import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobProperties;
-import com.azure.storage.blob.models.BlobQuickQueryAsyncResponse;
-import com.azure.storage.blob.models.BlobQuickQueryDelimitedSerialization;
-import com.azure.storage.blob.models.BlobQuickQueryError;
-import com.azure.storage.blob.models.BlobQuickQueryJsonSerialization;
-import com.azure.storage.blob.models.BlobQuickQuerySerialization;
+import com.azure.storage.blob.models.BlobQueryAsyncResponse;
+import com.azure.storage.blob.models.BlobQueryDelimitedSerialization;
+import com.azure.storage.blob.models.BlobQueryError;
+import com.azure.storage.blob.models.BlobQueryJsonSerialization;
+import com.azure.storage.blob.models.BlobQueryOptions;
+import com.azure.storage.blob.models.BlobQuerySerialization;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
@@ -1634,8 +1635,8 @@ public class BlobAsyncClientBase {
      * @return A reactive response containing the queried data.
      */
     public Flux<ByteBuffer> query(String expression) {
-        return queryWithResponse(expression, null, null, null, null, null)
-            .flatMapMany(BlobQuickQueryAsyncResponse::getValue);
+        return queryWithResponse(expression, null)
+            .flatMapMany(BlobQueryAsyncResponse::getValue);
     }
 
     /**
@@ -1646,36 +1647,29 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.queryWithResponse#String-BlobQuickQuerySerialization-BlobQuickQuerySerialization-BlobRequestConditions-ErrorReceiver-ProgressReceiver
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.queryWithResponse#String-QueryOptions
      *
      * @param expression The query expression.
-     * @param input {@link BlobQuickQuerySerialization Serialization input}
-     * @param output {@link BlobQuickQuerySerialization Serialization output}
-     * @param requestConditions {@link BlobRequestConditions}
-     * @param errorReceiver {@link ErrorReceiver } of {@link BlobQuickQueryError }
-     * @param progressReceiver {@link ProgressReceiver }
+     * @param queryOptions {@link BlobQueryOptions The query options}.
      * @return A reactive response containing the queried data.
      */
-    public Mono<BlobQuickQueryAsyncResponse> queryWithResponse(String expression, BlobQuickQuerySerialization input,
-        BlobQuickQuerySerialization output, BlobRequestConditions requestConditions,
-        ErrorReceiver<BlobQuickQueryError> errorReceiver, ProgressReceiver progressReceiver) {
+    public Mono<BlobQueryAsyncResponse> queryWithResponse(String expression, BlobQueryOptions queryOptions) {
         try {
             return withContext(context ->
-                queryWithResponse(expression, input, output, requestConditions, errorReceiver, progressReceiver,
-                    context));
+                queryWithResponse(expression, queryOptions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<BlobQuickQueryAsyncResponse> queryWithResponse(String expression, BlobQuickQuerySerialization input,
-        BlobQuickQuerySerialization output, BlobRequestConditions requestConditions,
-        ErrorReceiver<BlobQuickQueryError> errorReceiver, ProgressReceiver progressReceiver, Context context) {
+    Mono<BlobQueryAsyncResponse> queryWithResponse(String expression, BlobQueryOptions queryOptions, Context context) {
 
-        requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+        BlobQueryOptions finalQueryOptions = queryOptions == null ? new BlobQueryOptions() : queryOptions;
+        BlobRequestConditions requestConditions = finalQueryOptions.getRequestConditions() == null
+            ? new BlobRequestConditions() : finalQueryOptions.getRequestConditions();
 
-        QuickQuerySerialization in = transformSerialization(input, logger);
-        QuickQuerySerialization out = transformSerialization(output, logger);
+        QuickQuerySerialization in = transformSerialization(finalQueryOptions.getInputSerialization(), logger);
+        QuickQuerySerialization out = transformSerialization(finalQueryOptions.getOutputSerialization(), logger);
 
         QueryRequest qr = new QueryRequest()
             .setExpression(expression)
@@ -1686,9 +1680,10 @@ public class BlobAsyncClientBase {
             getSnapshotId(), null, requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), null, getCustomerProvidedKey(), context)
-            .map(response -> new BlobQuickQueryAsyncResponse(response.getRequest(), response.getStatusCode(),
+            .map(response -> new BlobQueryAsyncResponse(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(),
-                parse(response.getValue(), o -> this.parseRecord(o, errorReceiver, progressReceiver)),
+                parse(response.getValue(), o -> this.parseRecord(o, finalQueryOptions.getErrorReceiver(),
+                    finalQueryOptions.getProgressReceiver())),
                 response.getDeserializedHeaders()));
     }
 
@@ -1714,7 +1709,7 @@ public class BlobAsyncClientBase {
      * @param progressReceiver The progress receiver.
      * @return The optional data in the record.
      */
-    private Mono<ByteBuffer> parseRecord(Object quickQueryRecord, ErrorReceiver<BlobQuickQueryError> errorReceiver,
+    private Mono<ByteBuffer> parseRecord(Object quickQueryRecord, ErrorReceiver<BlobQueryError> errorReceiver,
         ProgressReceiver progressReceiver) {
         if (!(quickQueryRecord instanceof Map)) {
             return Mono.error(new IllegalArgumentException("Expected object to be of type Map"));
@@ -1800,7 +1795,7 @@ public class BlobAsyncClientBase {
      * @param errorReceiver The error receiver.
      * @return Mono.empty or Mono.error
      */
-    private Mono<ByteBuffer> parseError(Map<?, ?> errorRecord, ErrorReceiver<BlobQuickQueryError> errorReceiver) {
+    private Mono<ByteBuffer> parseError(Map<?, ?> errorRecord, ErrorReceiver<BlobQueryError> errorReceiver) {
         Object fatal = errorRecord.get("fatal");
         Object name = errorRecord.get("name");
         Object description = errorRecord.get("description");
@@ -1812,7 +1807,7 @@ public class BlobAsyncClientBase {
             AvroSchema.checkType("description", description, String.class);
             AvroSchema.checkType("position", position, Long.class);
 
-            BlobQuickQueryError error = new BlobQuickQueryError((Boolean) fatal, (String) name,
+            BlobQueryError error = new BlobQueryError((Boolean) fatal, (String) name,
                 (String) description, (Long) position);
 
             if (errorReceiver != null) {
@@ -1842,33 +1837,33 @@ public class BlobAsyncClientBase {
 
     /**
      * Transforms a generic BlobQuickQuerySerialization into a QuickQuerySerialization.
-     * @param userSerialization {@link BlobQuickQuerySerialization}
+     * @param userSerialization {@link BlobQuerySerialization}
      * @param logger {@link ClientLogger}
      * @return {@link QuickQuerySerialization}
      */
-    private static QuickQuerySerialization transformSerialization(BlobQuickQuerySerialization userSerialization,
+    private static QuickQuerySerialization transformSerialization(BlobQuerySerialization userSerialization,
         ClientLogger logger) {
         if (userSerialization == null) {
             return null;
         }
 
         QuickQueryFormat generatedFormat = new QuickQueryFormat();
-        if (userSerialization instanceof BlobQuickQueryDelimitedSerialization) {
+        if (userSerialization instanceof BlobQueryDelimitedSerialization) {
 
             generatedFormat.setType(QuickQueryFormatType.DELIMITED);
             generatedFormat.setDelimitedTextConfiguration(transformDelimited(
-                (BlobQuickQueryDelimitedSerialization) userSerialization));
+                (BlobQueryDelimitedSerialization) userSerialization));
 
-        } else if (userSerialization instanceof BlobQuickQueryJsonSerialization) {
+        } else if (userSerialization instanceof BlobQueryJsonSerialization) {
 
             generatedFormat.setType(QuickQueryFormatType.JSON);
             generatedFormat.setJsonTextConfiguration(transformJson(
-                (BlobQuickQueryJsonSerialization) userSerialization));
+                (BlobQueryJsonSerialization) userSerialization));
 
         } else {
             throw logger.logExceptionAsError(new IllegalArgumentException(
-                String.format("'input' must be one of %s or %s", BlobQuickQueryJsonSerialization.class.getSimpleName(),
-                    BlobQuickQueryDelimitedSerialization.class.getSimpleName())));
+                String.format("'input' must be one of %s or %s", BlobQueryJsonSerialization.class.getSimpleName(),
+                    BlobQueryDelimitedSerialization.class.getSimpleName())));
         }
         return new QuickQuerySerialization().setFormat(generatedFormat);
     }
@@ -1876,11 +1871,11 @@ public class BlobAsyncClientBase {
     /**
      * Transforms a BlobQuickQueryDelimitedSerialization into a DelimitedTextConfiguration.
      *
-     * @param delimitedSerialization {@link BlobQuickQueryDelimitedSerialization}
+     * @param delimitedSerialization {@link BlobQueryDelimitedSerialization}
      * @return {@link DelimitedTextConfiguration}
      */
     private static DelimitedTextConfiguration transformDelimited(
-        BlobQuickQueryDelimitedSerialization delimitedSerialization) {
+        BlobQueryDelimitedSerialization delimitedSerialization) {
         if (delimitedSerialization == null) {
             return null;
         }
@@ -1895,10 +1890,10 @@ public class BlobAsyncClientBase {
     /**
      * Transforms a BlobQuickQueryJsonSerialization into a JsonTextConfiguration.
      *
-     * @param jsonSerialization {@link BlobQuickQueryJsonSerialization}
+     * @param jsonSerialization {@link BlobQueryJsonSerialization}
      * @return {@link JsonTextConfiguration}
      */
-    private static JsonTextConfiguration transformJson(BlobQuickQueryJsonSerialization jsonSerialization) {
+    private static JsonTextConfiguration transformJson(BlobQueryJsonSerialization jsonSerialization) {
         if (jsonSerialization == null) {
             return null;
         }

@@ -5,13 +5,13 @@ import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;
 
-public class BlobQuickQueryInputStream extends FluxInputStream {
+public class BlobQueryInputStream extends FluxInputStream {
     /**
-     * Creates a new FluxInputStream
+     * Creates a new BlobQueryInputStream
      *
      * @param data The data to subscribe to and read from.
      */
-    public BlobQuickQueryInputStream(Flux<ByteBuffer> data) {
+    public BlobQueryInputStream(Flux<ByteBuffer> data) {
         super(data);
     }
 }

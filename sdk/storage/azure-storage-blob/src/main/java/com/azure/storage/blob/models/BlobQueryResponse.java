@@ -8,13 +8,13 @@ import com.azure.core.http.rest.ResponseBase;
 /**
  * This class contains the response information return from the server when quick querying a blob.
  */
-public final class BlobQuickQueryResponse extends ResponseBase<BlobQuickQueryHeaders, Void> {
+public final class BlobQueryResponse extends ResponseBase<BlobQuickQueryHeaders, Void> {
     /**
-     * Constructs a {@link BlobQuickQueryResponse}.
+     * Constructs a {@link BlobQueryResponse}.
      *
      * @param response Response returned from the service.
      */
-    public BlobQuickQueryResponse(BlobQuickQueryAsyncResponse response) {
+    public BlobQueryResponse(BlobQueryAsyncResponse response) {
         super(response.getRequest(), response.getStatusCode(), response.getHeaders(), null,
             response.getDeserializedHeaders());
     }
