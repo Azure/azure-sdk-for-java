@@ -63,7 +63,7 @@ public class VisualStudioCacheAccessor {
      * Get the user configured settings of Visual Studio code.
      *
      * @param tenantId the user specified tenant id.
-     * @return a Map containing vs code user settings
+     * @return a Map containing Vs Code user settings
      */
     public Map<String, String> getUserSettingsDetails(String tenantId) {
         JsonNode userSettings = getUserSettings();
