@@ -2264,34 +2264,8 @@ class BlobAPITest extends APISpec {
         return queryData
     }
 
-    def "Query IS min"() {
-        setup:
-        BlobQuickQueryDelimitedSerialization ser = new BlobQuickQueryDelimitedSerialization()
-            .setRecordSeparator('\n' as char)
-            .setColumnSeparator(',' as char)
-            .setEscapeChar('\0' as char)
-            .setFieldQuote('\0' as char)
-            .setHeadersPresent(false)
-        uploadCsv(ser, 32)
-
-        ByteArrayOutputStream downloadData = new ByteArrayOutputStream()
-        bc.download(downloadData)
-        byte[] downloadedData = downloadData.toByteArray()
-
-        when:
-        InputStream qqStream = bc.openQueryInputStream("SELECT * from BlobStorage")
-
-        byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
-
-        then:
-        notThrown(IOException)
-        for (int j = 0; j < downloadedData.length; j++) {
-            assert queryData[j] == downloadedData[j]
-        }
-    }
-
     @Unroll
-    def "Query IS different sizes"() {
+    def "Query min"() {
         setup:
         BlobQuickQueryDelimitedSerialization ser = new BlobQuickQueryDelimitedSerialization()
             .setRecordSeparator('\n' as char)
@@ -2300,20 +2274,33 @@ class BlobAPITest extends APISpec {
             .setFieldQuote('\0' as char)
             .setHeadersPresent(false)
         uploadCsv(ser, numCopies)
+        def expression = "SELECT * from BlobStorage"
 
         ByteArrayOutputStream downloadData = new ByteArrayOutputStream()
         bc.download(downloadData)
         byte[] downloadedData = downloadData.toByteArray()
 
+        /* Input Stream. */
         when:
-        InputStream qqStream = bc.openQueryInputStream("SELECT * from BlobStorage")
-
+        InputStream qqStream = bc.openQueryInputStream(expression)
         byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
 
         then:
         notThrown(IOException)
         for (int j = 0; j < downloadedData.length; j++) {
             assert queryData[j] == downloadedData[j]
+        }
+
+        /* Output Stream. */
+        when:
+        OutputStream os = new ByteArrayOutputStream()
+        bc.query(os, expression)
+        byte[] osData = os.toByteArray()
+
+        then:
+        notThrown(BlobStorageException)
+        for (int j = 0; j < downloadedData.length; j++) {
+            assert osData[j] == downloadedData[j]
         }
 
         // To calculate the size of data being tested = numCopies * 32 bytes
@@ -2326,27 +2313,40 @@ class BlobAPITest extends APISpec {
         4000      | _ // 125 KB
     }
 
-    /* Note: Input delimited tested everywhere. */
+    /* Note: Input delimited tested everywhere else. */
     @Unroll
-    def "Input json"() {
+    def "Query Input json"() {
         setup:
         BlobQuickQueryJsonSerialization ser = new BlobQuickQueryJsonSerialization()
             .setRecordSeparator(recordSeparator as char)
         uploadSmallJson(numCopies)
+        def expression = "SELECT * from BlobStorage"
 
         ByteArrayOutputStream downloadData = new ByteArrayOutputStream()
         bc.download(downloadData)
         byte[] downloadedData = downloadData.toByteArray()
 
+        /* Input Stream. */
         when:
-        InputStream qqStream = bc.openQueryInputStream("SELECT * from BlobStorage", ser, ser, null, null, null)
-
+        InputStream qqStream = bc.openQueryInputStream(expression, ser, ser, null, null, null)
         byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
 
         then:
         notThrown(IOException)
         for (int j = 0; j < downloadedData.length; j++) {
             assert queryData[j] == downloadedData[j]
+        }
+
+        /* Output Stream. */
+        when:
+        OutputStream os = new ByteArrayOutputStream()
+        bc.queryWithResponse(os, expression, ser, ser, null, null, null, null, null)
+        byte[] osData = os.toByteArray()
+
+        then:
+        notThrown(BlobStorageException)
+        for (int j = 0; j < downloadedData.length; j++) {
+            assert osData[j] == downloadedData[j]
         }
 
         where:
@@ -2357,52 +2357,142 @@ class BlobAPITest extends APISpec {
         1000      | '\n'            || _
     }
 
-    def "Non fatal error"() {
+    def "Query Input csv Output json"() {
+        setup:
+        BlobQuickQueryDelimitedSerialization inSer = new BlobQuickQueryDelimitedSerialization()
+            .setRecordSeparator('\n' as char)
+            .setColumnSeparator(',' as char)
+            .setEscapeChar('\0' as char)
+            .setFieldQuote('\0' as char)
+            .setHeadersPresent(false)
+        uploadCsv(inSer, 1)
+        BlobQuickQueryJsonSerialization outSer = new BlobQuickQueryJsonSerialization()
+            .setRecordSeparator('\n' as char)
+        def expression = "SELECT * from BlobStorage"
+        byte[] expectedData = "{\"_1\":\"100\",\"_2\":\"200\",\"_3\":\"300\",\"_4\":\"400\"}".getBytes()
+
+        /* Input Stream. */
+        when:
+        InputStream qqStream = bc.openQueryInputStream(expression, inSer, outSer, null, null, null)
+        byte[] queryData = readFromInputStream(qqStream, expectedData.length)
+
+        then:
+        notThrown(IOException)
+        for (int j = 0; j < expectedData.length; j++) {
+            assert queryData[j] == expectedData[j]
+        }
+
+        /* Output Stream. */
+        when:
+        OutputStream os = new ByteArrayOutputStream()
+        bc.queryWithResponse(os, expression, inSer, outSer, null, null, null, null, null)
+        byte[] osData = os.toByteArray()
+
+        then:
+        notThrown(BlobStorageException)
+        for (int j = 0; j < expectedData.length; j++) {
+            assert osData[j] == expectedData[j]
+        }
+    }
+
+    def "Query Input json Output csv"() {
+        setup:
+        BlobQuickQueryJsonSerialization inSer = new BlobQuickQueryJsonSerialization()
+            .setRecordSeparator('\n' as char)
+        uploadSmallJson(2)
+        BlobQuickQueryDelimitedSerialization outSer = new BlobQuickQueryDelimitedSerialization()
+            .setRecordSeparator('\n' as char)
+            .setColumnSeparator(',' as char)
+            .setEscapeChar('\0' as char)
+            .setFieldQuote('\0' as char)
+            .setHeadersPresent(false)
+        def expression = "SELECT * from BlobStorage"
+        byte[] expectedData = "owner0,owner1\n".getBytes()
+
+        /* Input Stream. */
+        when:
+        InputStream qqStream = bc.openQueryInputStream(expression, inSer, outSer, null, null, null)
+        byte[] queryData = readFromInputStream(qqStream, expectedData.length)
+
+        then:
+        notThrown(IOException)
+        for (int j = 0; j < expectedData.length; j++) {
+            assert queryData[j] == expectedData[j]
+        }
+
+        /* Output Stream. */
+        when:
+        OutputStream os = new ByteArrayOutputStream()
+        bc.queryWithResponse(os, expression, inSer, outSer, null, null, null, null, null)
+        byte[] osData = os.toByteArray()
+
+        then:
+        notThrown(BlobStorageException)
+        for (int j = 0; j < expectedData.length; j++) {
+            assert osData[j] == expectedData[j]
+        }
+    }
+
+    def "Query non fatal error"() {
         setup:
         BlobQuickQueryDelimitedSerialization base = new BlobQuickQueryDelimitedSerialization()
             .setRecordSeparator('\n' as char)
             .setEscapeChar('\0' as char)
             .setFieldQuote('\0' as char)
             .setHeadersPresent(false)
-
         uploadCsv(base.setColumnSeparator('.' as char), 32)
-
         MockErrorReceiver receiver = new MockErrorReceiver("InvalidColumnOrdinal")
+        def expression = "SELECT _1 from BlobStorage WHERE _2 > 250"
 
+        /* Input Stream. */
         when:
-        InputStream qqStream = bc.openQueryInputStream("SELECT _1 from BlobStorage WHERE _2 > 250",
+        InputStream qqStream = bc.openQueryInputStream(expression,
             base.setColumnSeparator(',' as char), base.setColumnSeparator(',' as char), null,
             receiver, null)
-
-
         readFromInputStream(qqStream, Constants.KB)
 
         then:
         receiver.numErrors > 0
-        notThrown(BlobStorageException)
+        notThrown(IOException)
+
+        /* Output Stream. */
+        when:
+        bc.queryWithResponse(new ByteArrayOutputStream(), expression, base.setColumnSeparator(',' as char), base.setColumnSeparator(',' as char), null,
+            receiver, null, null, null)
+
+        then:
+        notThrown(IOException)
+        receiver.numErrors > 0
     }
 
-    def "Fatal error"() {
+    def "Query fatal error"() {
         setup:
         BlobQuickQueryDelimitedSerialization base = new BlobQuickQueryDelimitedSerialization()
             .setRecordSeparator('\n' as char)
             .setEscapeChar('\0' as char)
             .setFieldQuote('\0' as char)
             .setHeadersPresent(true)
-
         uploadCsv(base.setColumnSeparator('.' as char), 32)
+        def expression = "SELECT * from BlobStorage"
 
+        /* Input Stream. */
         when:
-        InputStream qqStream = bc.openQueryInputStream("SELECT * from BlobStorage",
+        InputStream qqStream = bc.openQueryInputStream(expression,
             new BlobQuickQueryJsonSerialization(), null, null, null, null)
-
         readFromInputStream(qqStream, Constants.KB)
 
         then:
         thrown(IOException)
+
+        /* Output Stream. */
+        when:
+        bc.queryWithResponse(new ByteArrayOutputStream(), expression, new BlobQuickQueryJsonSerialization(), null, null, null, null, null, null)
+
+        then:
+        thrown(UncheckedIOException)
     }
 
-    def "Progress receiver"() {
+    def "Query progress receiver"() {
         setup:
         BlobQuickQueryDelimitedSerialization base = new BlobQuickQueryDelimitedSerialization()
             .setRecordSeparator('\n' as char)
@@ -2414,9 +2504,11 @@ class BlobAPITest extends APISpec {
 
         def mockReceiver = new MockProgressReceiver()
         def sizeofBlobToRead = bc.getProperties().getBlobSize()
+        def expression = "SELECT * from BlobStorage"
 
+        /* Input Stream. */
         when:
-        InputStream qqStream = bc.openQueryInputStream("SELECT * from BlobStorage",
+        InputStream qqStream = bc.openQueryInputStream(expression,
             null, null, null, null, mockReceiver as com.azure.storage.common.ProgressReceiver)
 
         /* The QQ Avro stream has the following pattern
@@ -2429,10 +2521,19 @@ class BlobAPITest extends APISpec {
         then:
         // At least the size of blob to read will be in the progress list
         mockReceiver.progressList.contains(sizeofBlobToRead)
+
+        /* Output Stream. */
+        when:
+        mockReceiver = new MockProgressReceiver()
+        bc.queryWithResponse(new ByteArrayOutputStream(), expression,
+            null, null, null, null, mockReceiver as com.azure.storage.common.ProgressReceiver, null, null)
+
+        then:
+        mockReceiver.progressList.contains(sizeofBlobToRead)
     }
 
     @Requires( { liveMode() } ) // Large amount of data.
-    def "Multiple records with progress receiver"() {
+    def "Query multiple records with progress receiver"() {
         setup:
         BlobQuickQueryDelimitedSerialization ser = new BlobQuickQueryDelimitedSerialization()
             .setRecordSeparator('\n' as char)
@@ -2443,9 +2544,11 @@ class BlobAPITest extends APISpec {
         uploadCsv(ser, 512000)
 
         def mockReceiver = new MockProgressReceiver()
+        def expression = "SELECT * from BlobStorage"
 
+        /* Input Stream. */
         when:
-        InputStream qqStream = bc.openQueryInputStream("SELECT * from BlobStorage",
+        InputStream qqStream = bc.openQueryInputStream(expression,
             null, null, null, null, mockReceiver as com.azure.storage.common.ProgressReceiver)
 
         /* The Avro stream has the following pattern
@@ -2457,6 +2560,20 @@ class BlobAPITest extends APISpec {
 
         then:
         long temp = 0
+        // Make sure theyre all increasingly bigger
+        for (long progress : mockReceiver.progressList) {
+            assert progress >= temp
+            temp = progress
+        }
+
+        /* Output Stream. */
+        when:
+        mockReceiver = new MockProgressReceiver()
+        temp = 0
+        bc.queryWithResponse(new ByteArrayOutputStream(), expression,
+            null, null, null, null, mockReceiver as com.azure.storage.common.ProgressReceiver, null, null)
+
+        then:
         // Make sure theyre all increasingly bigger
         for (long progress : mockReceiver.progressList) {
             assert progress >= temp
@@ -2496,7 +2613,7 @@ class BlobAPITest extends APISpec {
         }
     }
 
-    def "Query IS snapshot"() {
+    def "Query snapshot"() {
         setup:
         BlobQuickQueryDelimitedSerialization ser = new BlobQuickQueryDelimitedSerialization()
             .setRecordSeparator('\n' as char)
@@ -2505,6 +2622,7 @@ class BlobAPITest extends APISpec {
             .setFieldQuote('\0' as char)
             .setHeadersPresent(false)
         uploadCsv(ser, 32)
+        def expression = "SELECT * from BlobStorage"
 
         /* Create snapshot of blob. */
         def snapshotClient = bc.createSnapshot()
@@ -2514,9 +2632,9 @@ class BlobAPITest extends APISpec {
         snapshotClient.download(downloadData)
         byte[] downloadedData = downloadData.toByteArray()
 
+        /* Input Stream. */
         when:
-        InputStream qqStream = snapshotClient.openQueryInputStream("SELECT * from BlobStorage")
-
+        InputStream qqStream = snapshotClient.openQueryInputStream(expression)
         byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
 
         then:
@@ -2524,24 +2642,45 @@ class BlobAPITest extends APISpec {
         for (int j = 0; j < downloadedData.length; j++) {
             assert queryData[j] == downloadedData[j]
         }
+
+        /* Output Stream. */
+        when:
+        OutputStream os = new ByteArrayOutputStream()
+        snapshotClient.query(os, expression)
+        byte[] osData = os.toByteArray()
+
+        then:
+        notThrown(BlobStorageException)
+        for (int j = 0; j < downloadedData.length; j++) {
+            assert osData[j] == downloadedData[j]
+        }
     }
 
     @Unroll
     def "Query input output IA"() {
-        when:
+        setup:
         /* Mock random impl of QQ Serialization*/
         BlobQuickQuerySerialization ser = Spy() {
             return '\n'
         }
         def inSer = input ? ser : null
         def outSer = output ? ser : null
+        def expression = "SELECT * from BlobStorage"
 
-        InputStream stream = bc.openQueryInputStream("SELECT * from BlobStorage", inSer, outSer, null, null, null)
+        when:
+        InputStream stream = bc.openQueryInputStream(expression, inSer, outSer, null, null, null)
         stream.read()
         stream.close()
 
         then:
         def e = thrown(IOException)
+        assert e.getCause() instanceof IllegalArgumentException
+
+        when:
+        bc.queryWithResponse(new ByteArrayOutputStream(), expression, inSer, outSer, null, null, null, null, null)
+
+        then:
+        e = thrown(IOException)
         assert e.getCause() instanceof IllegalArgumentException
 
         where:
@@ -2561,11 +2700,18 @@ class BlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+        def expression = "SELECT * from BlobStorage"
 
         when:
-        InputStream stream = bc.openQueryInputStream("SELECT * from BlobStorage", null, null, bac, null, null)
+        InputStream stream = bc.openQueryInputStream(expression, null, null, bac, null, null)
         stream.read()
         stream.close()
+
+        then:
+        notThrown(BlobStorageException)
+
+        when:
+        bc.queryWithResponse(new ByteArrayOutputStream(), expression, null, null, bac, null, null, null, null)
 
         then:
         notThrown(BlobStorageException)
@@ -2590,15 +2736,22 @@ class BlobAPITest extends APISpec {
             .setIfNoneMatch(setupBlobMatchCondition(bc, noneMatch))
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+        def expression = "SELECT * from BlobStorage"
 
         when:
-        InputStream stream = bc.openQueryInputStream("SELECT * from BlobStorage", null, null, bac, null, null)
+        InputStream stream = bc.openQueryInputStream(expression, null, null, bac, null, null)
         stream.read()
         stream.close()
 
         then:
         def e = thrown(IOException)
         assert e.getCause() instanceof BlobStorageException
+
+        when:
+        bc.queryWithResponse(new ByteArrayOutputStream(), expression, null, null, bac, null, null, null, null)
+
+        then:
+        thrown(BlobStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID

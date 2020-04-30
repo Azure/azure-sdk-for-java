@@ -992,7 +992,7 @@ public class BlobClientBase {
      * @throws UncheckedIOException If an I/O error occurs.
      * @throws NullPointerException if {@code stream} is null.
      */
-    void query(OutputStream stream, String expression) {
+    public void query(OutputStream stream, String expression) {
         queryWithResponse(stream, expression, null, null, null, null, null, null, Context.NONE);
     }
 
@@ -1016,7 +1016,7 @@ public class BlobClientBase {
      * @throws UncheckedIOException If an I/O error occurs.
      * @throws NullPointerException if {@code stream} is null.
      */
-    BlobQuickQueryResponse queryWithResponse(OutputStream stream, String expression,
+    public BlobQuickQueryResponse queryWithResponse(OutputStream stream, String expression,
         BlobQuickQuerySerialization input, BlobQuickQuerySerialization output, BlobRequestConditions requestConditions,
         ErrorReceiver<BlobQuickQueryError> errorReceiver, ProgressReceiver progressReceiver, Duration timeout,
         Context context) {
