@@ -12,22 +12,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Cosmos DB resource throughput object. Either throughput is required or
- * autopilotSettings is required, but not both.
+ * provisionedThroughputSettings is required, but not both.
  */
 public class ThroughputSettingsResource {
     /**
      * Value of the Cosmos DB resource throughput. Either throughput is
-     * required or autopilotSettings is required, but not both.
+     * required or provisionedThroughputSettings is required, but not both.
      */
     @JsonProperty(value = "throughput")
     private Integer throughput;
 
     /**
-     * Cosmos DB resource for Autopilot settings. Either throughput is required
-     * or autopilotSettings is required, but not both.
+     * Cosmos DB resource for provisioned throughput settings. Either
+     * throughput is required or provisionedThroughputSettings is required, but
+     * not both.
      */
-    @JsonProperty(value = "autopilotSettings")
-    private AutopilotSettingsResource autopilotSettings;
+    @JsonProperty(value = "provisionedThroughputSettings")
+    private ProvisionedThroughputSettingsResource provisionedThroughputSettings;
 
     /**
      * The minimum throughput of the resource.
@@ -42,7 +43,7 @@ public class ThroughputSettingsResource {
     private String offerReplacePending;
 
     /**
-     * Get value of the Cosmos DB resource throughput. Either throughput is required or autopilotSettings is required, but not both.
+     * Get value of the Cosmos DB resource throughput. Either throughput is required or provisionedThroughputSettings is required, but not both.
      *
      * @return the throughput value
      */
@@ -51,7 +52,7 @@ public class ThroughputSettingsResource {
     }
 
     /**
-     * Set value of the Cosmos DB resource throughput. Either throughput is required or autopilotSettings is required, but not both.
+     * Set value of the Cosmos DB resource throughput. Either throughput is required or provisionedThroughputSettings is required, but not both.
      *
      * @param throughput the throughput value to set
      * @return the ThroughputSettingsResource object itself.
@@ -62,22 +63,22 @@ public class ThroughputSettingsResource {
     }
 
     /**
-     * Get cosmos DB resource for Autopilot settings. Either throughput is required or autopilotSettings is required, but not both.
+     * Get cosmos DB resource for provisioned throughput settings. Either throughput is required or provisionedThroughputSettings is required, but not both.
      *
-     * @return the autopilotSettings value
+     * @return the provisionedThroughputSettings value
      */
-    public AutopilotSettingsResource autopilotSettings() {
-        return this.autopilotSettings;
+    public ProvisionedThroughputSettingsResource provisionedThroughputSettings() {
+        return this.provisionedThroughputSettings;
     }
 
     /**
-     * Set cosmos DB resource for Autopilot settings. Either throughput is required or autopilotSettings is required, but not both.
+     * Set cosmos DB resource for provisioned throughput settings. Either throughput is required or provisionedThroughputSettings is required, but not both.
      *
-     * @param autopilotSettings the autopilotSettings value to set
+     * @param provisionedThroughputSettings the provisionedThroughputSettings value to set
      * @return the ThroughputSettingsResource object itself.
      */
-    public ThroughputSettingsResource withAutopilotSettings(AutopilotSettingsResource autopilotSettings) {
-        this.autopilotSettings = autopilotSettings;
+    public ThroughputSettingsResource withProvisionedThroughputSettings(ProvisionedThroughputSettingsResource provisionedThroughputSettings) {
+        this.provisionedThroughputSettings = provisionedThroughputSettings;
         return this;
     }
 
