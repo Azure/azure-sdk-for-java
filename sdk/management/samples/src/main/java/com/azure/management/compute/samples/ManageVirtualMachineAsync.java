@@ -1,27 +1,27 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-package com.microsoft.azure.management.compute.samples;
+package com.azure.management.compute.samples;
 
-import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.compute.Disk;
-import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
-import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
-import com.microsoft.azure.management.compute.VirtualMachine;
-import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
-import com.microsoft.azure.management.network.Network;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
-import com.microsoft.azure.management.samples.Utils;
-import com.microsoft.rest.LogLevel;
-import rx.Observable;
-import rx.functions.Func1;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.management.Azure;
+import com.azure.management.compute.Disk;
+import com.azure.management.compute.KnownLinuxVirtualMachineImage;
+import com.azure.management.compute.KnownWindowsVirtualMachineImage;
+import com.azure.management.compute.VirtualMachine;
+import com.azure.management.compute.VirtualMachineSizeTypes;
+import com.azure.management.network.Network;
+import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.model.Creatable;
+import com.azure.management.resources.fluentcore.model.Indexable;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
+import com.azure.management.samples.Utils;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-import java.io.File;
 import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
@@ -47,9 +47,9 @@ public final class ManageVirtualMachineAsync {
      */
     public static boolean runSample(final Azure azure) {
         final Region region = Region.US_WEST_CENTRAL;
-        final String windowsVMName = Utils.createRandomName("wVM");
-        final String linuxVMName = Utils.createRandomName("lVM");
-        final String rgName = Utils.createRandomName("rgCOMV");
+        final String windowsVMName = azure.sdkContext().randomResourceName("wVM", 15);
+        final String linuxVMName = azure.sdkContext().randomResourceName("lVM", 15);
+        final String rgName = azure.sdkContext().randomResourceName("rgCOMV", 15);
         final String userName = "tirekicker";
         // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
         final String password = "12NewPA$$w0rd!";
@@ -65,7 +65,7 @@ public final class ManageVirtualMachineAsync {
             //
             final Date t1 = new Date();
 
-            final Creatable<Disk> dataDiskCreatable = azure.disks().define(Utils.createRandomName("dsk-"))
+            final Creatable<Disk> dataDiskCreatable = azure.disks().define(azure.sdkContext().randomResourceName("dsk-", 15))
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withData()
@@ -73,7 +73,7 @@ public final class ManageVirtualMachineAsync {
 
             // Create a data disk to attach to VM
             //
-            Observable<Indexable> dataDiskObservable = azure.disks().define(Utils.createRandomName("dsk-"))
+            Flux<Indexable> dataDiskFlux = azure.disks().define(azure.sdkContext().randomResourceName("dsk-", 15))
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withData()
@@ -82,78 +82,71 @@ public final class ManageVirtualMachineAsync {
 
             final Map<String, VirtualMachine> createdVms = new TreeMap<>();
 
-            dataDiskObservable.flatMap(new Func1<Indexable, Observable<Indexable>>() {
-                        @Override
-                        public Observable<Indexable> call(Indexable createdResource) {
-                            if (createdResource instanceof Disk) {
-                                System.out.println("Creating a Windows VM");
+            dataDiskFlux.flatMap(
+                createdResource -> {
+                    if (createdResource instanceof Disk) {
+                        System.out.println("Creating a Windows VM");
 
-                                return azure.virtualMachines().define(windowsVMName)
-                                        .withRegion(region)
-                                        .withNewResourceGroup(rgName)
-                                        .withNewPrimaryNetwork("10.0.0.0/28")
-                                        .withPrimaryPrivateIPAddressDynamic()
-                                        .withoutPrimaryPublicIPAddress()
-                                        .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-                                        .withAdminUsername(userName)
-                                        .withAdminPassword(password)
-                                        .withNewDataDisk(10)
-                                        .withNewDataDisk(dataDiskCreatable)
-                                        .withExistingDataDisk((Disk) createdResource)
-                                        .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
-                                        .createAsync();
-                            }
-                            return Observable.just(createdResource);
-                        }
-                    }).flatMap(new Func1<Indexable, Observable<Indexable>>() {
-                        @Override
-                        public Observable<Indexable> call(Indexable createdResource) {
-                            if (createdResource instanceof Network) {
-                                // Once Network object is created we can start creation of Linux VM in the same network
-                                Network network = (Network) createdResource;
-                                System.out.println("Created Network");
-                                Utils.print(network);
-                                System.out.println("Creating a Linux VM in the same network");
+                        return azure.virtualMachines().define(windowsVMName)
+                            .withRegion(region)
+                            .withNewResourceGroup(rgName)
+                            .withNewPrimaryNetwork("10.0.0.0/28")
+                            .withPrimaryPrivateIPAddressDynamic()
+                            .withoutPrimaryPublicIPAddress()
+                            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
+                            .withAdminUsername(userName)
+                            .withAdminPassword(password)
+                            .withNewDataDisk(10)
+                            .withNewDataDisk(dataDiskCreatable)
+                            .withExistingDataDisk((Disk) createdResource)
+                            .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                            .createAsync();
+                    }
+                    return Flux.just(createdResource);
+                }).flatMap(createdResource -> {
+                    if (createdResource instanceof Network) {
+                        // Once Network object is created we can start creation of Linux VM in the same network
+                        Network network = (Network) createdResource;
+                        System.out.println("Created Network: " + network.id());
 
-                                return azure.virtualMachines().define(linuxVMName)
-                                        .withRegion(region)
-                                        .withExistingResourceGroup(rgName)
-                                        .withExistingPrimaryNetwork(network)
-                                        .withSubnet("subnet1") // Referencing the default subnet name when no name specified at creation
-                                        .withPrimaryPrivateIPAddressDynamic()
-                                        .withoutPrimaryPublicIPAddress()
-                                        .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                                        .withRootUsername(userName)
-                                        .withRootPassword(password)
-                                        .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
-                                        .createAsync();
-                            }
-                            return Observable.just(createdResource);
+                        System.out.println("Creating a Linux VM in the same network");
+
+                        return azure.virtualMachines().define(linuxVMName)
+                            .withRegion(region)
+                            .withExistingResourceGroup(rgName)
+                            .withExistingPrimaryNetwork(network)
+                            .withSubnet("subnet1") // Referencing the default subnet name when no name specified at creation
+                            .withPrimaryPrivateIPAddressDynamic()
+                            .withoutPrimaryPublicIPAddress()
+                            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                            .withRootUsername(userName)
+                            .withRootPassword(password)
+                            .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                            .createAsync();
+                    }
+                    return Flux.just(createdResource);
+                }
+            ).map(
+                createdResource -> {
+                    if (createdResource instanceof VirtualMachine) {
+                        Date t2 = new Date();
+                        VirtualMachine virtualMachine = (VirtualMachine) createdResource;
+                        if (isWindowsVM(virtualMachine)) {
+                            createdVms.put(windowsVmKey, virtualMachine);
+                            System.out.println("Created Windows VM: "
+                                + virtualMachine.id());
+                        } else {
+                            createdVms.put(linuxVmKey, virtualMachine);
+                            System.out.println("Created a Linux VM (in the same virtual network): "
+                                + virtualMachine.id());
                         }
-                    }).map(new Func1<Indexable, Indexable>() {
-                        @Override
-                        public Indexable call(Indexable createdResource) {
-                            if (createdResource instanceof VirtualMachine) {
-                                Date t2 = new Date();
-                                VirtualMachine virtualMachine = (VirtualMachine) createdResource;
-                                if (isWindowsVM(virtualMachine)) {
-                                    createdVms.put(windowsVmKey, virtualMachine);
-                                    System.out.println("Created Windows VM: "
-                                            + virtualMachine.id());
-                                } else {
-                                    createdVms.put(linuxVmKey, virtualMachine);
-                                    System.out.println("Created a Linux VM (in the same virtual network): "
-                                            + virtualMachine.id());
-                                }
-                                System.out.println("Virtual machine creation took "
-                                        + ((t2.getTime() - t1.getTime()) / 1000)
-                                        + " seconds");
-                                // Print virtual machine details
-                                Utils.print(virtualMachine);
-                            }
-                            return createdResource;
-                        }
-                    }).toBlocking().subscribe();
+                        System.out.println("Virtual machine creation took "
+                            + ((t2.getTime() - t1.getTime()) / 1000)
+                            + " seconds");
+                    }
+                    return createdResource;
+                }
+            ).last().block();
 
             final VirtualMachine windowsVM = createdVms.get(windowsVmKey);
             final VirtualMachine linuxVM = createdVms.get(linuxVmKey);
@@ -162,44 +155,37 @@ public final class ManageVirtualMachineAsync {
             // Update virtual machines
 
             // - Tag the virtual machine on Linux VM
-            Observable<VirtualMachine> updateLinuxVMChain = linuxVM.update()
+            Mono<VirtualMachine> updateLinuxVMChain = linuxVM.update()
                     .withTag("who-rocks-on-linux", "java")
                     .withTag("where", "on azure")
                     .applyAsync()
-                    .map(new Func1<VirtualMachine, VirtualMachine>() {
-                        @Override
-                        public VirtualMachine call(VirtualMachine virtualMachine) {
-                            System.out.println("Tagged Linux VM: " + virtualMachine.id());
-                            return virtualMachine;
-                        }
+                    .map(virtualMachine -> {
+                        System.out.println("Tagged Linux VM: " + virtualMachine.id());
+                        return virtualMachine;
                     });
 
             // - Add a data disk on Windows VM.
-            Observable<VirtualMachine> updateWindowsVMChain = windowsVM.update()
+            Mono<VirtualMachine> updateWindowsVMChain = windowsVM.update()
                     .withNewDataDisk(200)
                     .applyAsync();
 
-            Observable.merge(updateLinuxVMChain, updateWindowsVMChain)
-                    .toBlocking().subscribe();
+            Flux.merge(updateLinuxVMChain, updateWindowsVMChain)
+                    .last().block();
 
             //=============================================================
             // List virtual machines and print details
             azure.virtualMachines().listByResourceGroupAsync(rgName)
-                    .map(new Func1<VirtualMachine, VirtualMachine>() {
-                        @Override
-                        public VirtualMachine call(VirtualMachine virtualMachine) {
-                            System.out.println("Retrieved details for VM: " + virtualMachine.id());
-                            Utils.print(virtualMachine);
-                            return virtualMachine;
-                        }
-                    }).toBlocking().subscribe();
+                    .map(virtualMachine -> {
+                        System.out.println("Retrieved details for VM: " + virtualMachine.id());
+                        return virtualMachine;
+                    }).last().block();
 
             //=============================================================
             // Delete the virtual machines in parallel
-            Observable.merge(
-                    azure.virtualMachines().deleteByIdAsync(windowsVM.id()).toObservable(),
-                    azure.virtualMachines().deleteByIdAsync(linuxVM.id()).toObservable())
-                    .toBlocking().subscribe();
+            Flux.merge(
+                    azure.virtualMachines().deleteByIdAsync(windowsVM.id()),
+                    azure.virtualMachines().deleteByIdAsync(linuxVM.id()))
+                    .singleOrEmpty().block();
 
             return true;
         } catch (Exception f) {
@@ -211,7 +197,7 @@ public final class ManageVirtualMachineAsync {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
                 azure.resourceGroups().deleteByNameAsync(rgName)
-                        .await();
+                        .block();
                 System.out.println("Deleted Resource Group: " + rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -238,12 +224,16 @@ public final class ManageVirtualMachineAsync {
             //=============================================================
             // Authenticate
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
-            Azure azure = Azure.configure()
-                    .withLogLevel(LogLevel.BASIC)
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+            Azure azure = Azure
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());

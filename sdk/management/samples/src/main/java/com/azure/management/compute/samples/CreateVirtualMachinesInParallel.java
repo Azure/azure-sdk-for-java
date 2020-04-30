@@ -1,27 +1,25 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-package com.microsoft.azure.management.compute.samples;
+package com.azure.management.compute.samples;
 
-import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
-import com.microsoft.azure.management.compute.VirtualMachine;
-import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
-import com.microsoft.azure.management.network.Network;
-import com.microsoft.azure.management.network.PublicIPAddress;
-import com.microsoft.azure.management.resources.ResourceGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
-import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
-import com.microsoft.azure.management.storage.StorageAccount;
-import com.microsoft.azure.management.trafficmanager.TrafficManagerProfile;
-import com.microsoft.rest.LogLevel;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.management.Azure;
+import com.azure.management.compute.KnownLinuxVirtualMachineImage;
+import com.azure.management.compute.VirtualMachine;
+import com.azure.management.compute.VirtualMachineSizeTypes;
+import com.azure.management.network.Network;
+import com.azure.management.network.PublicIPAddress;
+import com.azure.management.resources.ResourceGroup;
+import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.model.Creatable;
+import com.azure.management.resources.fluentcore.model.CreatedResources;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
+import com.azure.management.storage.StorageAccount;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,7 +38,7 @@ public final class CreateVirtualMachinesInParallel {
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure) {
-        final String rgName = SdkContext.randomResourceName("rgCOPD", 24);
+        final String rgName = azure.sdkContext().randomResourceName("rgCOPD", 24);
         final String userName = "tirekicker";
         final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
 
@@ -90,7 +88,7 @@ public final class CreateVirtualMachinesInParallel {
                 // Create 1 network creatable per region
                 // Prepare Creatable Network definition (Where all the virtual machines get added to)
                 //
-                String networkName = SdkContext.randomResourceName("vnetCOPD-", 20);
+                String networkName = azure.sdkContext().randomResourceName("vnetCOPD-", 20);
                 Creatable<Network> networkCreatable = azure.networks().define(networkName)
                         .withRegion(region)
                         .withExistingResourceGroup(resourceGroup)
@@ -99,12 +97,12 @@ public final class CreateVirtualMachinesInParallel {
                 //=============================================================
                 // Create 1 storage creatable per region (For storing VMs disk)
                 //
-                String storageAccountName = SdkContext.randomResourceName("stgcopd", 20);
+                String storageAccountName = azure.sdkContext().randomResourceName("stgcopd", 20);
                 Creatable<StorageAccount> storageAccountCreatable = azure.storageAccounts().define(storageAccountName)
                         .withRegion(region)
                         .withExistingResourceGroup(resourceGroup);
 
-                String linuxVMNamePrefix = SdkContext.randomResourceName("vm-", 15);
+                String linuxVMNamePrefix = azure.sdkContext().randomResourceName("vm-", 15);
                 for (int i = 1; i <= vmCount; i++) {
 
                     //=============================================================
@@ -114,7 +112,7 @@ public final class CreateVirtualMachinesInParallel {
                             .define(String.format("%s-%d", linuxVMNamePrefix, i))
                                 .withRegion(region)
                                 .withExistingResourceGroup(resourceGroup)
-                                .withLeafDomainLabel(SdkContext.randomResourceName("pip", 10));
+                                .withLeafDomainLabel(azure.sdkContext().randomResourceName("pip", 10));
 
                     publicIpCreatableKeys.add(publicIPAddressCreatable.key());
 
@@ -161,41 +159,41 @@ public final class CreateVirtualMachinesInParallel {
                 publicIpResourceIds.add(pip.id());
             }
 
-            //=============================================================
-            // Create 1 Traffic Manager Profile
-            //
-            String trafficManagerName = SdkContext.randomResourceName("tra", 15);
-            TrafficManagerProfile.DefinitionStages.WithEndpoint profileWithEndpoint = azure.trafficManagerProfiles().define(trafficManagerName)
-                    .withExistingResourceGroup(resourceGroup)
-                    .withLeafDomainLabel(trafficManagerName)
-                    .withPerformanceBasedRouting();
-
-            int endpointPriority = 1;
-            TrafficManagerProfile.DefinitionStages.WithCreate profileWithCreate = null;
-            for (String publicIpResourceId : publicIpResourceIds) {
-                String endpointName = String.format("azendpoint-%d", endpointPriority);
-                if (endpointPriority == 1) {
-                    profileWithCreate = profileWithEndpoint.defineAzureTargetEndpoint(endpointName)
-                            .toResourceId(publicIpResourceId)
-                            .withRoutingPriority(endpointPriority)
-                            .attach();
-                } else {
-                    profileWithCreate = profileWithCreate.defineAzureTargetEndpoint(endpointName)
-                            .toResourceId(publicIpResourceId)
-                            .withRoutingPriority(endpointPriority)
-                            .attach();
-                }
-                endpointPriority++;
-            }
-
-            System.out.println("Creating a traffic manager profile for the VMs");
-            stopwatch.reset();
-            stopwatch.start();
-
-            TrafficManagerProfile trafficManagerProfile = profileWithCreate.create();
-
-            stopwatch.stop();
-            System.out.println("Created a traffic manager profile (took " + (stopwatch.getTime() / 1000) + " seconds to create): " + trafficManagerProfile.id());
+//            //=============================================================
+//            // Create 1 Traffic Manager Profile
+//            //
+//            String trafficManagerName = azure.sdkContext().randomResourceName("tra", 15);
+//            TrafficManagerProfile.DefinitionStages.WithEndpoint profileWithEndpoint = azure.trafficManagerProfiles().define(trafficManagerName)
+//                    .withExistingResourceGroup(resourceGroup)
+//                    .withLeafDomainLabel(trafficManagerName)
+//                    .withPerformanceBasedRouting();
+//
+//            int endpointPriority = 1;
+//            TrafficManagerProfile.DefinitionStages.WithCreate profileWithCreate = null;
+//            for (String publicIpResourceId : publicIpResourceIds) {
+//                String endpointName = String.format("azendpoint-%d", endpointPriority);
+//                if (endpointPriority == 1) {
+//                    profileWithCreate = profileWithEndpoint.defineAzureTargetEndpoint(endpointName)
+//                            .toResourceId(publicIpResourceId)
+//                            .withRoutingPriority(endpointPriority)
+//                            .attach();
+//                } else {
+//                    profileWithCreate = profileWithCreate.defineAzureTargetEndpoint(endpointName)
+//                            .toResourceId(publicIpResourceId)
+//                            .withRoutingPriority(endpointPriority)
+//                            .attach();
+//                }
+//                endpointPriority++;
+//            }
+//
+//            System.out.println("Creating a traffic manager profile for the VMs");
+//            stopwatch.reset();
+//            stopwatch.start();
+//
+//            TrafficManagerProfile trafficManagerProfile = profileWithCreate.create();
+//
+//            stopwatch.stop();
+//            System.out.println("Created a traffic manager profile (took " + (stopwatch.getTime() / 1000) + " seconds to create): " + trafficManagerProfile.id());
             return true;
         } catch (Exception f) {
 
@@ -227,14 +225,16 @@ public final class CreateVirtualMachinesInParallel {
             //=============================================================
             // Authenticate
             //
-            System.out.println("AZURE_AUTH_LOCATION_2=" + System.getenv("AZURE_AUTH_LOCATION_2"));
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION_2"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
             Azure azure = Azure
-                    .configure()
-                    .withLogLevel(LogLevel.NONE)
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());

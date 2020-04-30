@@ -1,26 +1,26 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-package com.microsoft.azure.management.compute.samples;
+package com.azure.management.compute.samples;
 
-import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.compute.CachingTypes;
-import com.microsoft.azure.management.compute.Disk;
-import com.microsoft.azure.management.compute.DiskSkuTypes;
-import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
-import com.microsoft.azure.management.compute.OperatingSystemTypes;
-import com.microsoft.azure.management.compute.VirtualMachine;
-import com.microsoft.azure.management.compute.VirtualMachineDataDisk;
-import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
-import com.microsoft.azure.management.compute.VirtualMachineUnmanagedDataDisk;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.samples.Utils;
-import com.microsoft.rest.LogLevel;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.management.Azure;
+import com.azure.management.compute.CachingTypes;
+import com.azure.management.compute.Disk;
+import com.azure.management.compute.DiskSkuTypes;
+import com.azure.management.compute.KnownLinuxVirtualMachineImage;
+import com.azure.management.compute.OperatingSystemTypes;
+import com.azure.management.compute.VirtualMachine;
+import com.azure.management.compute.VirtualMachineDataDisk;
+import com.azure.management.compute.VirtualMachineSizeTypes;
+import com.azure.management.compute.VirtualMachineUnmanagedDataDisk;
+import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
+import com.azure.management.samples.Utils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,13 +38,13 @@ public class CreateVirtualMachineUsingSpecializedDiskFromVhd {
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure) {
-        final String linuxVMName1 = Utils.createRandomName("VM1");
-        final String linuxVMName2 = Utils.createRandomName("VM2");
-        final String managedOSDiskName = Utils.createRandomName("ds-os-");
-        final String managedDataDiskNamePrefix = Utils.createRandomName("ds-data-");
-        final String rgName = Utils.createRandomName("rgCOMV");
-        final String publicIpDnsLabel = Utils.createRandomName("pip");
-        final String storageAccountName = Utils.createRandomName("stg");
+        final String linuxVMName1 = azure.sdkContext().randomResourceName("VM1", 15);
+        final String linuxVMName2 = azure.sdkContext().randomResourceName("VM2", 15);
+        final String managedOSDiskName = azure.sdkContext().randomResourceName("ds-os-", 15);
+        final String managedDataDiskNamePrefix = azure.sdkContext().randomResourceName("ds-data-", 15);
+        final String rgName = azure.sdkContext().randomResourceName("rgCOMV", 15);
+        final String publicIpDnsLabel = azure.sdkContext().randomResourceName("pip", 15);
+        final String storageAccountName = azure.sdkContext().randomResourceName("stg", 15);
         final String userName = "tirekicker";
         // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
         final String password = "12NewPA$$w0rd!";
@@ -222,13 +222,16 @@ public class CreateVirtualMachineUsingSpecializedDiskFromVhd {
             //=============================================================
             // Authenticate
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
             Azure azure = Azure
-                    .configure()
-                    .withLogLevel(LogLevel.BODY)
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());

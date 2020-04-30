@@ -1,30 +1,29 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-package com.microsoft.azure.management.compute.samples;
+package com.azure.management.compute.samples;
 
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.compute.ImageReference;
-import com.microsoft.azure.management.compute.VirtualMachineScaleSetVM;
-import com.microsoft.azure.management.network.LoadBalancerInboundNatRule;
-import com.microsoft.azure.management.network.Network;
-import com.microsoft.azure.management.network.PublicIPAddress;
-import com.microsoft.azure.management.network.LoadBalancer;
-import com.microsoft.azure.management.network.TransportProtocol;
-import com.microsoft.azure.management.compute.VirtualMachineScaleSet;
-import com.microsoft.azure.management.compute.VirtualMachineScaleSetSkuTypes;
-import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInterface;
-import com.microsoft.azure.management.network.VirtualMachineScaleSetNicIPConfiguration;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
-import com.microsoft.azure.management.samples.Utils;
-import com.microsoft.rest.LogLevel;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.management.Azure;
+import com.azure.management.compute.ImageReference;
+import com.azure.management.compute.VirtualMachineScaleSetVM;
+import com.azure.management.network.LoadBalancerInboundNatRule;
+import com.azure.management.network.Network;
+import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.LoadBalancer;
+import com.azure.management.network.TransportProtocol;
+import com.azure.management.compute.VirtualMachineScaleSet;
+import com.azure.management.compute.VirtualMachineScaleSetSkuTypes;
+import com.azure.management.network.VirtualMachineScaleSetNetworkInterface;
+import com.azure.management.network.VirtualMachineScaleSetNicIPConfiguration;
+import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
+import com.azure.management.samples.Utils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -50,9 +49,9 @@ public final class ManageVirtualMachineScaleSetWithUnmanagedDisks {
      */
     public static boolean runSample(Azure azure) {
         final Region region = Region.US_EAST2;
-        final String rgName = SdkContext.randomResourceName("rgCOVS", 15);
-        final String vnetName = SdkContext.randomResourceName("vnet", 24);
-        final String loadBalancerName1 = SdkContext.randomResourceName("intlb" + "-", 18);
+        final String rgName = azure.sdkContext().randomResourceName("rgCOVS", 15);
+        final String vnetName = azure.sdkContext().randomResourceName("vnet", 24);
+        final String loadBalancerName1 = azure.sdkContext().randomResourceName("intlb" + "-", 18);
         final String publicIpName = "pip-" + loadBalancerName1;
         final String frontendName = loadBalancerName1 + "-FE1";
         final String backendPoolName1 = loadBalancerName1 + "-BAP1";
@@ -65,10 +64,10 @@ public final class ManageVirtualMachineScaleSetWithUnmanagedDisks {
         final String natPool50XXto22 = "natPool50XXto22";
         final String natPool60XXto23 = "natPool60XXto23";
 
-        final String vmssName =  SdkContext.randomResourceName("vmss", 24);
-        final String storageAccountName1 = SdkContext.randomResourceName("stg1", 24);
-        final String storageAccountName2 = SdkContext.randomResourceName("stg2", 24);
-        final String storageAccountName3 = SdkContext.randomResourceName("stg3", 24);
+        final String vmssName =  azure.sdkContext().randomResourceName("vmss", 24);
+        final String storageAccountName1 = azure.sdkContext().randomResourceName("stg1", 24);
+        final String storageAccountName2 = azure.sdkContext().randomResourceName("stg2", 24);
+        final String storageAccountName3 = azure.sdkContext().randomResourceName("stg3", 24);
 
         final String userName = "tirekicker";
         final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
@@ -247,7 +246,7 @@ public final class ManageVirtualMachineScaleSetWithUnmanagedDisks {
             // List virtual machine scale set network interfaces
 
             System.out.println("Listing scale set network interfaces ...");
-            PagedList<VirtualMachineScaleSetNetworkInterface> vmssNics = virtualMachineScaleSet.listNetworkInterfaces();
+            PagedIterable<VirtualMachineScaleSetNetworkInterface> vmssNics = virtualMachineScaleSet.listNetworkInterfaces();
             for (VirtualMachineScaleSetNetworkInterface vmssNic : vmssNics) {
                 System.out.println(vmssNic.id());
             }
@@ -259,9 +258,9 @@ public final class ManageVirtualMachineScaleSetWithUnmanagedDisks {
             for (VirtualMachineScaleSetVM instance : virtualMachineScaleSet.virtualMachines().list()) {
                 System.out.println("Scale set virtual machine instance #" + instance.instanceId());
                 System.out.println(instance.id());
-                PagedList<VirtualMachineScaleSetNetworkInterface> networkInterfaces = instance.listNetworkInterfaces();
+                PagedIterable<VirtualMachineScaleSetNetworkInterface> networkInterfaces = instance.listNetworkInterfaces();
                 // Pick the first NIC
-                VirtualMachineScaleSetNetworkInterface networkInterface = networkInterfaces.get(0);
+                VirtualMachineScaleSetNetworkInterface networkInterface = networkInterfaces.iterator().next();
                 for (VirtualMachineScaleSetNicIPConfiguration ipConfig :networkInterface.ipConfigurations().values()) {
                     if (ipConfig.isPrimary()) {
                         List<LoadBalancerInboundNatRule> natRules = ipConfig.listAssociatedLoadBalancerInboundNatRules();
@@ -345,13 +344,16 @@ public final class ManageVirtualMachineScaleSetWithUnmanagedDisks {
             //=============================================================
             // Authenticate
 
-            System.out.println(System.getenv("AZURE_AUTH_LOCATION"));
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
-            Azure azure = Azure.configure()
-                    .withLogLevel(LogLevel.BASIC)
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+            Azure azure = Azure
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());

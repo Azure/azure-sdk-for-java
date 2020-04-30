@@ -1,35 +1,34 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-package com.microsoft.azure.management.compute.samples;
+package com.azure.management.compute.samples;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.jcraft.jsch.JSchException;
-import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.compute.CachingTypes;
-import com.microsoft.azure.management.compute.Disk;
-import com.microsoft.azure.management.compute.DiskSkuTypes;
-import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
-import com.microsoft.azure.management.compute.OperatingSystemTypes;
-import com.microsoft.azure.management.compute.Snapshot;
-import com.microsoft.azure.management.compute.VirtualMachine;
-import com.microsoft.azure.management.compute.VirtualMachineCustomImage;
-import com.microsoft.azure.management.compute.VirtualMachineDataDisk;
-import com.microsoft.azure.management.compute.VirtualMachineScaleSet;
-import com.microsoft.azure.management.compute.VirtualMachineScaleSetSkuTypes;
-import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
-import com.microsoft.azure.management.network.LoadBalancer;
-import com.microsoft.azure.management.network.Network;
-import com.microsoft.azure.management.network.PublicIPAddress;
-import com.microsoft.azure.management.network.TransportProtocol;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
-import com.microsoft.azure.management.samples.SSHShell;
-import com.microsoft.azure.management.samples.Utils;
-import com.microsoft.rest.LogLevel;
-import java.io.File;
+import com.azure.management.Azure;
+import com.azure.management.compute.CachingTypes;
+import com.azure.management.compute.Disk;
+import com.azure.management.compute.DiskSkuTypes;
+import com.azure.management.compute.KnownLinuxVirtualMachineImage;
+import com.azure.management.compute.OperatingSystemTypes;
+import com.azure.management.compute.Snapshot;
+import com.azure.management.compute.VirtualMachine;
+import com.azure.management.compute.VirtualMachineCustomImage;
+import com.azure.management.compute.VirtualMachineDataDisk;
+import com.azure.management.compute.VirtualMachineScaleSet;
+import com.azure.management.compute.VirtualMachineScaleSetSkuTypes;
+import com.azure.management.compute.VirtualMachineSizeTypes;
+import com.azure.management.network.LoadBalancer;
+import com.azure.management.network.Network;
+import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.TransportProtocol;
+import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.samples.SSHShell;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +45,7 @@ public final class ManageManagedDisks {
      */
     public static boolean runSample(Azure azure) {
         final Region region = Region.US_SOUTH_CENTRAL;
-        final String rgName = Utils.createRandomName("rgCOMV");
+        final String rgName = azure.sdkContext().randomResourceName("rgCOMV", 15);
         final String userName = "tirekicker";
         final String sshkey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
 
@@ -57,8 +56,8 @@ public final class ManageManagedDisks {
 
             System.out.println("Creating VM [with an implicit Managed OS disk and explicit Managed data disk]");
 
-            final String linuxVM1Name = SdkContext.randomResourceName("vm" + "-", 18);
-            final String linuxVM1Pip = SdkContext.randomResourceName("pip" + "-", 18);
+            final String linuxVM1Name = azure.sdkContext().randomResourceName("vm" + "-", 18);
+            final String linuxVM1Pip = azure.sdkContext().randomResourceName("pip" + "-", 18);
             VirtualMachine linuxVM1 = azure.virtualMachines()
                     .define(linuxVM1Name)
                     .withRegion(region)
@@ -81,7 +80,7 @@ public final class ManageManagedDisks {
 
             System.out.println("Creating VMSS [with implicit managed OS disks and explicit managed data disks]");
 
-            final String vmScaleSetName = SdkContext.randomResourceName("vmss" + "-", 18);
+            final String vmScaleSetName = azure.sdkContext().randomResourceName("vmss" + "-", 18);
             VirtualMachineScaleSet vmScaleSet = azure.virtualMachineScaleSets()
                     .define(vmScaleSetName)
                         .withRegion(region)
@@ -108,7 +107,7 @@ public final class ManageManagedDisks {
 
             System.out.println("Creating empty data disk [to attach to a VM]");
 
-            final String diskName = SdkContext.randomResourceName("dsk" + "-", 18);
+            final String diskName = azure.sdkContext().randomResourceName("dsk" + "-", 18);
             Disk dataDisk = azure.disks().define(diskName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
@@ -120,8 +119,8 @@ public final class ManageManagedDisks {
 
             System.out.println("Creating VM [with new managed data disks and disk attached]");
 
-            final String linuxVM2Name = SdkContext.randomResourceName("vm" + "-", 10);
-            final String linuxVM2Pip = SdkContext.randomResourceName("pip" + "-", 18);
+            final String linuxVM2Name = azure.sdkContext().randomResourceName("vm" + "-", 10);
+            final String linuxVM2Pip = azure.sdkContext().randomResourceName("pip" + "-", 18);
             VirtualMachine linuxVM2 = azure.virtualMachines().define(linuxVM2Name)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
@@ -162,7 +161,7 @@ public final class ManageManagedDisks {
 
             System.out.println("Creating custom image from specialized virtual machine");
 
-            final String customImageName = SdkContext.randomResourceName("cimg" + "-", 10);
+            final String customImageName = azure.sdkContext().randomResourceName("cimg" + "-", 10);
             VirtualMachineCustomImage virtualMachineCustomImage = azure.virtualMachineCustomImages()
                     .define(customImageName)
                         .withRegion(region)
@@ -174,7 +173,7 @@ public final class ManageManagedDisks {
 
             System.out.println("Creating VM [from custom image]");
 
-            final String linuxVM3Name = SdkContext.randomResourceName("vm" + "-", 10);
+            final String linuxVM3Name = azure.sdkContext().randomResourceName("vm" + "-", 10);
             VirtualMachine linuxVM3 = azure.virtualMachines().define(linuxVM3Name)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
@@ -191,7 +190,7 @@ public final class ManageManagedDisks {
 
             // Create a VM from a VHD (Create Virtual Machine Using Specialized VHD)
 
-            final String linuxVMName4 = SdkContext.randomResourceName("vm" + "-", 10);
+            final String linuxVMName4 = azure.sdkContext().randomResourceName("vm" + "-", 10);
             final String specializedVhd = linuxVM.osUnmanagedDiskVhdUri();
 
             azure.virtualMachines().deleteById(linuxVM.id());
@@ -231,7 +230,7 @@ public final class ManageManagedDisks {
             System.out.println("Creating snapshot [from managed OS disk]");
 
             // Create a managed snapshot for an OS disk
-            final String managedOSSnapshotName = SdkContext.randomResourceName("snp" + "-", 10);
+            final String managedOSSnapshotName = azure.sdkContext().randomResourceName("snp" + "-", 10);
             Snapshot osSnapshot = azure.snapshots().define(managedOSSnapshotName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
@@ -243,7 +242,7 @@ public final class ManageManagedDisks {
             System.out.println("Creating managed OS disk [from snapshot]");
 
             // Create a managed disk from the managed snapshot for the OS disk
-            final String managedNewOSDiskName = SdkContext.randomResourceName("dsk" + "-", 10);
+            final String managedNewOSDiskName = azure.sdkContext().randomResourceName("dsk" + "-", 10);
             Disk newOSDisk = azure.disks().define(managedNewOSDiskName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
@@ -256,7 +255,7 @@ public final class ManageManagedDisks {
             System.out.println("Creating managed data snapshot [from managed data disk]");
 
             // Create a managed snapshot for a data disk
-            final String managedDataDiskSnapshotName = SdkContext.randomResourceName("dsk" + "-", 10);
+            final String managedDataDiskSnapshotName = azure.sdkContext().randomResourceName("dsk" + "-", 10);
             Snapshot dataSnapshot = azure.snapshots().define(managedDataDiskSnapshotName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
@@ -269,7 +268,7 @@ public final class ManageManagedDisks {
             System.out.println("Creating managed data disk [from managed snapshot]");
 
             // Create a managed disk from the managed snapshot for the data disk
-            final String managedNewDataDiskName = SdkContext.randomResourceName("dsk" + "-", 10);
+            final String managedNewDataDiskName = azure.sdkContext().randomResourceName("dsk" + "-", 10);
             Disk newDataDisk = azure.disks().define(managedNewDataDiskName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
@@ -281,7 +280,7 @@ public final class ManageManagedDisks {
 
             System.out.println("Creating VM [with specialized OS managed disk]");
 
-            final String linuxVM6Name = SdkContext.randomResourceName("vm" + "-", 10);
+            final String linuxVM6Name = azure.sdkContext().randomResourceName("vm" + "-", 10);
             VirtualMachine linuxVM6 = azure.virtualMachines().define(linuxVM6Name)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
@@ -299,8 +298,8 @@ public final class ManageManagedDisks {
 
             System.out.println("Creating VM [with un-managed disk for migration]");
 
-            final String linuxVM7Name = SdkContext.randomResourceName("vm" + "-", 10);
-            final String linuxVM7Pip = SdkContext.randomResourceName("pip" + "-", 18);
+            final String linuxVM7Name = azure.sdkContext().randomResourceName("vm" + "-", 10);
+            final String linuxVM7Pip = azure.sdkContext().randomResourceName("pip" + "-", 18);
             VirtualMachine linuxVM7 = azure.virtualMachines().define(linuxVM7Name)
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
@@ -360,12 +359,16 @@ public final class ManageManagedDisks {
             //=============================================================
             // Authenticate
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
-            Azure azure = Azure.configure()
-                    .withLogLevel(LogLevel.BASIC)
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+            Azure azure = Azure
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());
@@ -381,8 +384,8 @@ public final class ManageManagedDisks {
         final String userName = "tirekicker";
         // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
         final String password = "12NewPA$$w0rd!";
-        final String linuxVMName1 = SdkContext.randomResourceName("vm" + "-", 10);
-        final String publicIpDnsLabel = SdkContext.randomResourceName("pip" + "-", 20);
+        final String linuxVMName1 = azure.sdkContext().randomResourceName("vm" + "-", 10);
+        final String publicIpDnsLabel = azure.sdkContext().randomResourceName("pip" + "-", 20);
 
         VirtualMachine linuxVM = azure.virtualMachines().define(linuxVMName1)
                 .withRegion(region)
@@ -420,8 +423,8 @@ public final class ManageManagedDisks {
         final String userName = "tirekicker";
         // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
         final String password = "12NewPA$$w0rd!";
-        final String linuxVMName1 = SdkContext.randomResourceName("vm" + "-", 10);
-        final String publicIPDnsLabel = SdkContext.randomResourceName("pip" + "-", 20);
+        final String linuxVMName1 = azure.sdkContext().randomResourceName("vm" + "-", 10);
+        final String publicIPDnsLabel = azure.sdkContext().randomResourceName("pip" + "-", 20);
 
         VirtualMachine linuxVM = azure.virtualMachines().define(linuxVMName1)
                 .withRegion(region)
@@ -471,7 +474,7 @@ public final class ManageManagedDisks {
     }
 
     private static Network prepareNetwork(Azure azure, Region region, String rgName) {
-        final String vnetName = SdkContext.randomResourceName("vnet", 24);
+        final String vnetName = azure.sdkContext().randomResourceName("vnet", 24);
 
         Network network = azure.networks().define(vnetName)
                 .withRegion(region)
@@ -485,7 +488,7 @@ public final class ManageManagedDisks {
     }
 
     private static LoadBalancer prepareLoadBalancer(Azure azure, Region region, String rgName) {
-        final String loadBalancerName1 = SdkContext.randomResourceName("intlb" + "-", 18);
+        final String loadBalancerName1 = azure.sdkContext().randomResourceName("intlb" + "-", 18);
         final String frontendName = loadBalancerName1 + "-FE1";
         final String backendPoolName1 = loadBalancerName1 + "-BAP1";
         final String backendPoolName2 = loadBalancerName1 + "-BAP2";

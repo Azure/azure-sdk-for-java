@@ -1,23 +1,24 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
-package com.microsoft.azure.management.graphrbac.samples;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
+package com.azure.management.graphrbac.samples;
+
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.ClientCertificateCredentialBuilder;
+import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.google.common.io.ByteStreams;
-import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.credentials.ApplicationTokenCredentials;
-import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.graphrbac.BuiltInRole;
-import com.microsoft.azure.management.graphrbac.RoleAssignment;
-import com.microsoft.azure.management.graphrbac.ServicePrincipal;
-import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
-import com.microsoft.azure.management.samples.Utils;
-import com.microsoft.rest.LogLevel;
-import org.joda.time.Duration;
+import com.azure.management.Azure;
+import com.azure.management.graphrbac.BuiltInRole;
+import com.azure.management.graphrbac.RoleAssignment;
+import com.azure.management.graphrbac.ServicePrincipal;
+import com.azure.management.resources.fluentcore.utils.SdkContext;
+import com.azure.management.samples.Utils;
 
-import java.io.File;
+import java.time.Duration;
 
 /**
  * Azure service principal sample for managing its credentials.
@@ -34,20 +35,19 @@ public final class ManageServicePrincipalCredentials {
      * Main function which runs the actual sample.
      *
      * @param authenticated instance of Authenticated
-     * @param defaultSubscription default subscription id
-     * @param environment the environment the sample is running in
+     * @param profile the profile the sample is running in
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure.Authenticated authenticated, String defaultSubscription, AzureEnvironment environment) {
-        final String spName         = Utils.createRandomName("sp");
-        final String appName        = SdkContext.randomResourceName("app", 20);
+    public static boolean runSample(Azure.Authenticated authenticated, AzureProfile profile) {
+        final String spName         = authenticated.sdkContext().randomResourceName("sp", 20);
+        final String appName        = authenticated.sdkContext().randomResourceName("app", 20);
         final String appUrl         = "https://" + appName;
-        final String passwordName1  = SdkContext.randomResourceName("password", 20);
+        final String passwordName1  = authenticated.sdkContext().randomResourceName("password", 20);
         final String password1      = "P@ssw0rd";
-        final String passwordName2  = SdkContext.randomResourceName("password", 20);
+        final String passwordName2  = authenticated.sdkContext().randomResourceName("password", 20);
         final String password2      = "StrongP@ss!12";
-        final String certName1      = SdkContext.randomResourceName("cert", 20);
-        final String raName         = SdkContext.randomUuid();
+        final String certName1      = authenticated.sdkContext().randomResourceName("cert", 20);
+        final String raName         = authenticated.sdkContext().randomUuid();
         String servicePrincipalId = "";
         try {
             // ============================================================
@@ -67,7 +67,7 @@ public final class ManageServicePrincipalCredentials {
                     .defineCertificateCredential(certName1)
                         .withAsymmetricX509Certificate()
                         .withPublicKey(ByteStreams.toByteArray(ManageServicePrincipalCredentials.class.getResourceAsStream("/myTest.cer")))
-                        .withDuration(Duration.standardDays(1))
+                        .withDuration(Duration.ofDays(1))
                         .attach()
                     .create();
 
@@ -86,7 +86,7 @@ public final class ManageServicePrincipalCredentials {
                     .define(raName)
                     .forServicePrincipal(servicePrincipal)
                     .withBuiltInRole(BuiltInRole.CONTRIBUTOR)
-                    .withSubscriptionScope(defaultSubscription)
+                    .withSubscriptionScope(profile.subscriptionId())
                     .create();
 
             System.out.println("Created role assignment " + raName + ".");
@@ -97,10 +97,14 @@ public final class ManageServicePrincipalCredentials {
 
             System.out.println("Verifying password credential " + passwordName1 + " is valid...");
 
-            ApplicationTokenCredentials testCredential = new ApplicationTokenCredentials(
-                    servicePrincipal.applicationId(), authenticated.tenantId(), password1, environment);
+            TokenCredential testCredential = new ClientSecretCredentialBuilder()
+                .tenantId(authenticated.tenantId())
+                .clientId(servicePrincipal.applicationId())
+                .clientSecret(password1)
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
             try {
-                Azure.authenticate(testCredential).withDefaultSubscription();
+                Azure.authenticate(testCredential, profile).withDefaultSubscription();
 
                 System.out.println("Verified " + passwordName1 + " is valid.");
             } catch (Exception e) {
@@ -109,10 +113,14 @@ public final class ManageServicePrincipalCredentials {
 
             System.out.println("Verifying password credential " + passwordName2 + " is valid...");
 
-            testCredential = new ApplicationTokenCredentials(
-                    servicePrincipal.applicationId(), authenticated.tenantId(), password2, environment);
+            testCredential = new ClientSecretCredentialBuilder()
+                .tenantId(authenticated.tenantId())
+                .clientId(servicePrincipal.applicationId())
+                .clientSecret(password2)
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
             try {
-                Azure.authenticate(testCredential).withDefaultSubscription();
+                Azure.authenticate(testCredential, profile).withDefaultSubscription();
 
                 System.out.println("Verified " + passwordName2 + " is valid.");
             } catch (Exception e) {
@@ -121,14 +129,14 @@ public final class ManageServicePrincipalCredentials {
 
             System.out.println("Verifying certificate credential " + certName1 + " is valid...");
 
-            testCredential = new ApplicationTokenCredentials(
-                    servicePrincipal.applicationId(),
-                    authenticated.tenantId(),
-                    ByteStreams.toByteArray(ManageServicePrincipalCredentials.class.getResourceAsStream("/myTest.pfx")),
-                    "Abc123",
-                    environment);
+            testCredential = new ClientCertificateCredentialBuilder()
+                .tenantId(authenticated.tenantId())
+                .clientId(servicePrincipal.applicationId())
+                .pfxCertificate(ManageServicePrincipalCredentials.class.getResource("/myTest.pfx").toString(), "Abc123")
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
             try {
-                Azure.authenticate(testCredential).withDefaultSubscription();
+                Azure.authenticate(testCredential, profile).withDefaultSubscription();
 
                 System.out.println("Verified " + certName1 + " is valid.");
             } catch (Exception e) {
@@ -152,10 +160,14 @@ public final class ManageServicePrincipalCredentials {
 
             System.out.println("Verifying password credential " + passwordName1 + " is revoked...");
 
-            testCredential = new ApplicationTokenCredentials(
-                    servicePrincipal.applicationId(), authenticated.tenantId(), password1, environment);
+            testCredential = new ClientSecretCredentialBuilder()
+                .tenantId(authenticated.tenantId())
+                .clientId(servicePrincipal.applicationId())
+                .clientSecret(password1)
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
             try {
-                Azure.authenticate(testCredential).withDefaultSubscription();
+                Azure.authenticate(testCredential, profile).withDefaultSubscription();
 
                 System.out.println("Failed to verify " + passwordName1 + " is revoked.");
             } catch (Exception e) {
@@ -176,10 +188,14 @@ public final class ManageServicePrincipalCredentials {
 
             System.out.println("Verifying password credential " + passwordName2 + " has no access to subscription...");
 
-            testCredential = new ApplicationTokenCredentials(
-                    servicePrincipal.applicationId(), authenticated.tenantId(), password2, environment);
+            testCredential = new ClientSecretCredentialBuilder()
+                .tenantId(authenticated.tenantId())
+                .clientId(servicePrincipal.applicationId())
+                .clientSecret(password2)
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
             try {
-                Azure.authenticate(testCredential).withDefaultSubscription()
+                Azure.authenticate(testCredential, profile).withDefaultSubscription()
                         .resourceGroups().list();
 
                 System.out.println("Failed to verify " + passwordName2 + " has no access to subscription.");
@@ -197,8 +213,7 @@ public final class ManageServicePrincipalCredentials {
                 System.out.println("Deleting application: " + appName);
                 authenticated.servicePrincipals().deleteById(servicePrincipalId);
                 System.out.println("Deleted application: " + appName);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("Did not create applications in Azure. No clean up is necessary");
             }
         }
@@ -212,13 +227,16 @@ public final class ManageServicePrincipalCredentials {
      */
     public static void main(String[] args) {
         try {
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
-            ApplicationTokenCredentials credentials = ApplicationTokenCredentials.fromFile(credFile);
-            Azure.Authenticated authenticated = Azure.configure()
-                    .withLogLevel(LogLevel.BASIC)
-                    .authenticate(credentials);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
-            runSample(authenticated, credentials.defaultSubscriptionId(), credentials.environment());
+            Azure.Authenticated authenticated = Azure
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile);
+            runSample(authenticated, profile);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

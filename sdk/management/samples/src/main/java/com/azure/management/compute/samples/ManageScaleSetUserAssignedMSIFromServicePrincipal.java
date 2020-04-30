@@ -1,34 +1,28 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
-package com.microsoft.azure.management.compute.samples;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.AzureResponseBuilder;
-import com.microsoft.azure.CloudException;
-import com.microsoft.azure.credentials.ApplicationTokenCredentials;
-import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
-import com.microsoft.azure.management.compute.VirtualMachineScaleSet;
-import com.microsoft.azure.management.compute.VirtualMachineScaleSetSkuTypes;
-import com.microsoft.azure.management.compute.implementation.ComputeManager;
-import com.microsoft.azure.management.graphrbac.BuiltInRole;
-import com.microsoft.azure.management.graphrbac.ServicePrincipal;
-import com.microsoft.azure.management.msi.Identity;
-import com.microsoft.azure.management.network.Network;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
-import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
-import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
-import com.microsoft.azure.serializer.AzureJacksonAdapter;
-import com.microsoft.rest.LogLevel;
-import com.microsoft.rest.RestClient;
-import com.microsoft.rest.interceptors.LoggingInterceptor;
+package com.azure.management.compute.samples;
 
-import java.io.File;
-import java.util.concurrent.TimeUnit;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.core.management.CloudException;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.ClientSecretCredential;
+import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.management.Azure;
+import com.azure.management.compute.KnownLinuxVirtualMachineImage;
+import com.azure.management.compute.VirtualMachineScaleSet;
+import com.azure.management.compute.VirtualMachineScaleSetSkuTypes;
+import com.azure.management.compute.implementation.ComputeManager;
+import com.azure.management.graphrbac.BuiltInRole;
+import com.azure.management.graphrbac.ServicePrincipal;
+import com.azure.management.msi.Identity;
+import com.azure.management.network.Network;
+import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
+import com.azure.management.resources.fluentcore.utils.Utils;
 
 /**
  * Azure Compute sample for assigning service identity to virtual machine scale set using newly created service principal
@@ -38,6 +32,7 @@ import java.util.concurrent.TimeUnit;
  *  - Login using created service principle and verify it can assign/remove identity #1, but not #2
  */
 public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
+    private static final ClientLogger LOGGER = new ClientLogger(ManageScaleSetUserAssignedMSIFromServicePrincipal.class);
     /**
      * Main function which runs the actual sample.
      *
@@ -46,11 +41,11 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
      */
     public static boolean runSample(Azure.Authenticated authenticated) {
         Region region = Region.US_WEST_CENTRAL;
-        String vmssName = SdkContext.randomResourceName("vmss", 15);
-        String spName1 = SdkContext.randomResourceName("sp1", 21);
-        String rgName = SdkContext.randomResourceName("rg", 22);
-        String identityName1 = SdkContext.randomResourceName("msi-id1", 15);
-        String identityName2 = SdkContext.randomResourceName("msi-id1", 15);
+        String vmssName = authenticated.sdkContext().randomResourceName("vmss", 15);
+        String spName1 = authenticated.sdkContext().randomResourceName("sp1", 21);
+        String rgName = authenticated.sdkContext().randomResourceName("rg", 22);
+        String identityName1 = authenticated.sdkContext().randomResourceName("msi-id1", 15);
+        String identityName2 = authenticated.sdkContext().randomResourceName("msi-id1", 15);
         ServicePrincipal servicePrincipal = null;
         String subscription = "0b1f6471-1bf0-4dda-aec3-cb9272f09590";
 
@@ -116,18 +111,14 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
 
             // ============================================================
             // Login using created service principle and verify it can assign/remove identity #1, but not #2
-            ApplicationTokenCredentials credentials = new ApplicationTokenCredentials(servicePrincipal.applicationId(), servicePrincipal.manager().tenantId(), "StrongPass!12",  AzureEnvironment.AZURE);
-
-            RestClient.Builder builder = new RestClient.Builder()
-                    .withBaseUrl(AzureEnvironment.AZURE.url(AzureEnvironment.Endpoint.RESOURCE_MANAGER))
-                    .withSerializerAdapter(new AzureJacksonAdapter())
-                    .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
-                    .withInterceptor(new ProviderRegistrationInterceptor(credentials))
-                    .withCredentials(credentials)
-                    .withLogLevel(LogLevel.NONE)
-                    .withReadTimeout(3, TimeUnit.MINUTES)
-                    .withNetworkInterceptor(new LoggingInterceptor(LogLevel.BODY_AND_HEADERS));
-            ComputeManager computeManager1 = ComputeManager.authenticate(builder.build(), subscription);
+            ClientSecretCredential credential = new ClientSecretCredentialBuilder()
+                .clientId(servicePrincipal.applicationId())
+                .tenantId(servicePrincipal.manager().tenantId())
+                .clientSecret("\"StrongPass!12\"")
+                .authorityHost(AzureEnvironment.AZURE.getActiveDirectoryEndpoint())
+                .build();
+            AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, false).withSubscriptionId(subscription);
+            ComputeManager computeManager1 = ComputeManager.authenticate(credential, profile);
 
             VirtualMachineScaleSet vmss = computeManager1.virtualMachineScaleSets().getById(virtualMachineScaleSet1.id());
 
@@ -140,7 +131,9 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
                 vmss.update()
                         .withExistingUserAssignedManagedServiceIdentity(identity2)
                         .apply();
-                throw new RuntimeException("Should not be able to assign identity #2 as service principal does not have permissions");
+                throw LOGGER.logExceptionAsError(
+                    new RuntimeException("Should not be able to assign identity #2 as service principal does not have permissions")
+                );
             } catch (CloudException ex) {
                 ex.printStackTrace();
             }
@@ -169,11 +162,15 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
             //=============================================================
             // Authenticate
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
-            Azure.Authenticated authenticated = Azure.configure()
-                    .withLogLevel(LogLevel.BODY_AND_HEADERS)
-                    .authenticate(credFile);
+            Azure.Authenticated authenticated = Azure
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile);
 
             runSample(authenticated);
         } catch (Exception e) {

@@ -1,36 +1,33 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-package com.microsoft.azure.management.compute.samples;
+package com.azure.management.compute.samples;
 
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.compute.CachingTypes;
-import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
-import com.microsoft.azure.management.compute.StorageAccountTypes;
-import com.microsoft.azure.management.compute.VirtualMachineScaleSet;
-import com.microsoft.azure.management.compute.VirtualMachineScaleSetSkuTypes;
-import com.microsoft.azure.management.compute.VirtualMachineScaleSetVM;
-import com.microsoft.azure.management.network.LoadBalancer;
-import com.microsoft.azure.management.network.LoadBalancerInboundNatRule;
-import com.microsoft.azure.management.network.Network;
-import com.microsoft.azure.management.network.PublicIPAddress;
-import com.microsoft.azure.management.network.TransportProtocol;
-import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInterface;
-import com.microsoft.azure.management.network.VirtualMachineScaleSetNicIPConfiguration;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
-import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
-import com.microsoft.azure.management.samples.Utils;
-import com.microsoft.rest.LogLevel;
-import rx.Observable;
-import rx.functions.Action1;
-import rx.functions.Func1;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.management.Azure;
+import com.azure.management.compute.CachingTypes;
+import com.azure.management.compute.KnownLinuxVirtualMachineImage;
+import com.azure.management.compute.StorageAccountTypes;
+import com.azure.management.compute.VirtualMachineScaleSet;
+import com.azure.management.compute.VirtualMachineScaleSetSkuTypes;
+import com.azure.management.network.LoadBalancer;
+import com.azure.management.network.LoadBalancerInboundNatRule;
+import com.azure.management.network.Network;
+import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.TransportProtocol;
+import com.azure.management.network.VirtualMachineScaleSetNetworkInterface;
+import com.azure.management.network.VirtualMachineScaleSetNicIPConfiguration;
+import com.azure.management.resources.ResourceGroup;
+import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.model.Indexable;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
+import com.azure.management.samples.Utils;
+import reactor.core.publisher.Flux;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -55,9 +52,9 @@ public final class ManageVirtualMachineScaleSetAsync {
      */
     public static boolean runSample(final Azure azure) {
         final Region region = Region.US_WEST_CENTRAL;
-        final String rgName = SdkContext.randomResourceName("rgCOVS", 15);
-        final String vnetName = SdkContext.randomResourceName("vnet", 24);
-        final String loadBalancerName1 = SdkContext.randomResourceName("intlb" + "-", 18);
+        final String rgName = azure.sdkContext().randomResourceName("rgCOVS", 15);
+        final String vnetName = azure.sdkContext().randomResourceName("vnet", 24);
+        final String loadBalancerName1 = azure.sdkContext().randomResourceName("intlb" + "-", 18);
         final String publicIpName = "pip-" + loadBalancerName1;
         final String frontendName = loadBalancerName1 + "-FE1";
         final String backendPoolName1 = loadBalancerName1 + "-BAP1";
@@ -69,7 +66,7 @@ public final class ManageVirtualMachineScaleSetAsync {
         final String httpsLoadBalancingRule = "httpsRule";
         final String natPool50XXto22 = "natPool50XXto22";
         final String natPool60XXto23 = "natPool60XXto23";
-        final String vmssName =  SdkContext.randomResourceName("vmss", 24);
+        final String vmssName =  azure.sdkContext().randomResourceName("vmss", 24);
 
         final String userName = "tirekicker";
         final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
@@ -88,10 +85,14 @@ public final class ManageVirtualMachineScaleSetAsync {
 
             final List<Indexable> createdResources = new ArrayList<>();
 
-            Observable.merge(
+            azure.resourceGroups().define(rgName)
+                .withRegion(region)
+                .create();
+
+            Flux.merge(
                     azure.networks().define(vnetName)
                             .withRegion(region)
-                            .withNewResourceGroup(rgName)
+                            .withExistingResourceGroup(rgName)
                             .withAddressSpace("172.16.0.0/16")
                             .defineSubnet("Front-end")
                                 .withAddressPrefix("172.16.1.0/24")
@@ -102,98 +103,91 @@ public final class ManageVirtualMachineScaleSetAsync {
                             .withExistingResourceGroup(rgName)
                             .withLeafDomainLabel(publicIpName)
                             .createAsync()
-                            .flatMap(new Func1<Indexable, Observable<Indexable>>() {
-                                @Override
-                                public Observable<Indexable> call(Indexable indexable) {
-                                    if (indexable instanceof PublicIPAddress) {
-                                        PublicIPAddress publicIp = (PublicIPAddress) indexable;
-                                        //=============================================================
-                                        // Create an Internet facing load balancer with
-                                        // One frontend IP address
-                                        // Two backend address pools which contain network interfaces for the virtual
-                                        //  machines to receive HTTP and HTTPS network traffic from the load balancer
-                                        // Two load balancing rules for HTTP and HTTPS to map public ports on the load
-                                        //  balancer to ports in the backend address pool
-                                        // Two probes which contain HTTP and HTTPS health probes used to check availability
-                                        //  of virtual machines in the backend address pool
-                                        // Three inbound NAT rules which contain rules that map a public port on the load
-                                        //  balancer to a port for a specific virtual machine in the backend address pool
-                                        //  - this provides direct VM connectivity for SSH to port 22 and TELNET to port 23
+                            .flatMap(indexable -> {
+                                if (indexable instanceof PublicIPAddress) {
+                                    PublicIPAddress publicIp = (PublicIPAddress) indexable;
+                                    //=============================================================
+                                    // Create an Internet facing load balancer with
+                                    // One frontend IP address
+                                    // Two backend address pools which contain network interfaces for the virtual
+                                    //  machines to receive HTTP and HTTPS network traffic from the load balancer
+                                    // Two load balancing rules for HTTP and HTTPS to map public ports on the load
+                                    //  balancer to ports in the backend address pool
+                                    // Two probes which contain HTTP and HTTPS health probes used to check availability
+                                    //  of virtual machines in the backend address pool
+                                    // Three inbound NAT rules which contain rules that map a public port on the load
+                                    //  balancer to a port for a specific virtual machine in the backend address pool
+                                    //  - this provides direct VM connectivity for SSH to port 22 and TELNET to port 23
 
-                                        System.out.println("Creating a Internet facing load balancer with ...");
-                                        System.out.println("- A frontend IP address");
-                                        System.out.println("- Two backend address pools which contain network interfaces for the virtual\n"
-                                                + "  machines to receive HTTP and HTTPS network traffic from the load balancer");
-                                        System.out.println("- Two load balancing rules for HTTP and HTTPS to map public ports on the load\n"
-                                                + "  balancer to ports in the backend address pool");
-                                        System.out.println("- Two probes which contain HTTP and HTTPS health probes used to check availability\n"
-                                                + "  of virtual machines in the backend address pool");
-                                        System.out.println("- Two inbound NAT rules which contain rules that map a public port on the load\n"
-                                                + "  balancer to a port for a specific virtual machine in the backend address pool\n"
-                                                + "  - this provides direct VM connectivity for SSH to port 22 and TELNET to port 23");
+                                    System.out.println("Creating a Internet facing load balancer with ...");
+                                    System.out.println("- A frontend IP address");
+                                    System.out.println("- Two backend address pools which contain network interfaces for the virtual\n"
+                                        + "  machines to receive HTTP and HTTPS network traffic from the load balancer");
+                                    System.out.println("- Two load balancing rules for HTTP and HTTPS to map public ports on the load\n"
+                                        + "  balancer to ports in the backend address pool");
+                                    System.out.println("- Two probes which contain HTTP and HTTPS health probes used to check availability\n"
+                                        + "  of virtual machines in the backend address pool");
+                                    System.out.println("- Two inbound NAT rules which contain rules that map a public port on the load\n"
+                                        + "  balancer to a port for a specific virtual machine in the backend address pool\n"
+                                        + "  - this provides direct VM connectivity for SSH to port 22 and TELNET to port 23");
 
-                                        return Observable.merge(
-                                                Observable.just(indexable),
-                                                azure.loadBalancers().define(loadBalancerName1)
-                                                    .withRegion(region)
-                                                    .withExistingResourceGroup(rgName)
-                                                    // Add two rules that uses above backend and probe
-                                                    .defineLoadBalancingRule(httpLoadBalancingRule)
-                                                        .withProtocol(TransportProtocol.TCP)
-                                                        .fromFrontend(frontendName)
-                                                        .fromFrontendPort(80)
-                                                        .toBackend(backendPoolName1)
-                                                        .withProbe(httpProbe)
-                                                        .attach()
-                                                    .defineLoadBalancingRule(httpsLoadBalancingRule)
-                                                        .withProtocol(TransportProtocol.TCP)
-                                                        .fromFrontend(frontendName)
-                                                        .fromFrontendPort(443)
-                                                        .toBackend(backendPoolName2)
-                                                        .withProbe(httpsProbe)
-                                                        .attach()
-                                                    // Add nat pools to enable direct VM connectivity for
-                                                    //  SSH to port 22 and TELNET to port 23
-                                                    .defineInboundNatPool(natPool50XXto22)
-                                                        .withProtocol(TransportProtocol.TCP)
-                                                        .fromFrontend(frontendName)
-                                                        .fromFrontendPortRange(5000, 5099)
-                                                        .toBackendPort(22)
-                                                        .attach()
-                                                    .defineInboundNatPool(natPool60XXto23)
-                                                        .withProtocol(TransportProtocol.TCP)
-                                                        .fromFrontend(frontendName)
-                                                        .fromFrontendPortRange(6000, 6099)
-                                                        .toBackendPort(23)
-                                                        .attach()
+                                    return Flux.merge(
+                                        Flux.just(indexable),
+                                        azure.loadBalancers().define(loadBalancerName1)
+                                            .withRegion(region)
+                                            .withExistingResourceGroup(rgName)
+                                            // Add two rules that uses above backend and probe
+                                            .defineLoadBalancingRule(httpLoadBalancingRule)
+                                            .withProtocol(TransportProtocol.TCP)
+                                            .fromFrontend(frontendName)
+                                            .fromFrontendPort(80)
+                                            .toBackend(backendPoolName1)
+                                            .withProbe(httpProbe)
+                                            .attach()
+                                            .defineLoadBalancingRule(httpsLoadBalancingRule)
+                                            .withProtocol(TransportProtocol.TCP)
+                                            .fromFrontend(frontendName)
+                                            .fromFrontendPort(443)
+                                            .toBackend(backendPoolName2)
+                                            .withProbe(httpsProbe)
+                                            .attach()
+                                            // Add nat pools to enable direct VM connectivity for
+                                            //  SSH to port 22 and TELNET to port 23
+                                            .defineInboundNatPool(natPool50XXto22)
+                                            .withProtocol(TransportProtocol.TCP)
+                                            .fromFrontend(frontendName)
+                                            .fromFrontendPortRange(5000, 5099)
+                                            .toBackendPort(22)
+                                            .attach()
+                                            .defineInboundNatPool(natPool60XXto23)
+                                            .withProtocol(TransportProtocol.TCP)
+                                            .fromFrontend(frontendName)
+                                            .fromFrontendPortRange(6000, 6099)
+                                            .toBackendPort(23)
+                                            .attach()
 
-                                                    // Explicitly define the frontend
-                                                    .definePublicFrontend(frontendName)
-                                                        .withExistingPublicIPAddress(publicIp)
-                                                        .attach()
+                                            // Explicitly define the frontend
+                                            .definePublicFrontend(frontendName)
+                                            .withExistingPublicIPAddress(publicIp)
+                                            .attach()
 
-                                                    // Add two probes one per rule
-                                                    .defineHttpProbe(httpProbe)
-                                                        .withRequestPath("/")
-                                                        .withPort(80)
-                                                        .attach()
-                                                    .defineHttpProbe(httpsProbe)
-                                                        .withRequestPath("/")
-                                                        .withPort(443)
-                                                        .attach()
-
-                                                    .createAsync());
-                                    }
-                                    return Observable.just(indexable);
+                                            // Add two probes one per rule
+                                            .defineHttpProbe(httpProbe)
+                                            .withRequestPath("/")
+                                            .withPort(80)
+                                            .attach()
+                                            .defineHttpProbe(httpsProbe)
+                                            .withRequestPath("/")
+                                            .withPort(443)
+                                            .attach()
+                                            .createAsync());
                                 }
-                            }))
-                    .toBlocking()
-                    .subscribe(new Action1<Indexable>() {
-                        @Override
-                        public void call(Indexable indexable) {
-                            createdResources.add(indexable);
-                        }
-                    });
+                                return Flux.just(indexable);
+                            })
+            ).flatMap(indexable -> {
+                createdResources.add(indexable);
+                return Flux.just(indexable);
+            }).last().block();
 
             Network network = null;
             PublicIPAddress publicIPAddress = null;
@@ -254,18 +248,15 @@ public final class ManageVirtualMachineScaleSetAsync {
                             .withPublicSetting("commandToExecute", installCommand)
                             .attach()
                     .createAsync()
-                    .map(new Func1<Indexable, Indexable>() {
-                        @Override
-                        public Indexable call(Indexable indexable) {
-                            Date t2 = new Date();
-                            System.out.println("Created a virtual machine scale set with "
-                                    + "3 Linux VMs & Apache Web servers on them: (took "
-                                    + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) ");
-                            System.out.println();
-                            return indexable;
-                        }
+                    .map(indexable -> {
+                        Date t2 = new Date();
+                        System.out.println("Created a virtual machine scale set with "
+                            + "3 Linux VMs & Apache Web servers on them: (took "
+                            + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) ");
+                        System.out.println();
+                        return indexable;
                     })
-                    .toBlocking().last();
+                    .last().block();
 
             final String pipFqdn = publicIPAddress.fqdn();
             //=============================================================
@@ -274,31 +265,30 @@ public final class ManageVirtualMachineScaleSetAsync {
             System.out.println("Listing scale set virtual machine instance network interfaces and SSH connection string...");
             virtualMachineScaleSet.virtualMachines()
                     .listAsync()
-                    .map(new Func1<VirtualMachineScaleSetVM, VirtualMachineScaleSetVM>() {
-                        @Override
-                        public VirtualMachineScaleSetVM call(VirtualMachineScaleSetVM instance) {
-                            System.out.println("Scale set virtual machine instance #" + instance.instanceId());
-                            System.out.println(instance.id());
+                    .map(instance -> {
+                        System.out.println("Scale set virtual machine instance #" + instance.instanceId());
+                        System.out.println(instance.id());
 
-                            PagedList<VirtualMachineScaleSetNetworkInterface> networkInterfaces = instance.listNetworkInterfaces();
-                            // Pick the first NIC
-                            VirtualMachineScaleSetNetworkInterface networkInterface = networkInterfaces.get(0);
-                            for (VirtualMachineScaleSetNicIPConfiguration ipConfig :networkInterface.ipConfigurations().values()) {
-                                if (ipConfig.isPrimary()) {
-                                    List<LoadBalancerInboundNatRule> natRules = ipConfig.listAssociatedLoadBalancerInboundNatRules();
-                                    for (LoadBalancerInboundNatRule natRule : natRules) {
-                                        if (natRule.backendPort() == 22) {
-                                            System.out.println("SSH connection string: " + userName + "@" + pipFqdn + ":" + natRule.frontendPort());
-                                            break;
+                        instance.listNetworkInterfacesAsync()
+                            .single()
+                            .map(networkInterface -> {
+                                for (VirtualMachineScaleSetNicIPConfiguration ipConfig :networkInterface.ipConfigurations().values()) {
+                                    if (ipConfig.isPrimary()) {
+                                        List<LoadBalancerInboundNatRule> natRules = ipConfig.listAssociatedLoadBalancerInboundNatRules();
+                                        for (LoadBalancerInboundNatRule natRule : natRules) {
+                                            if (natRule.backendPort() == 22) {
+                                                System.out.println("SSH connection string: " + userName + "@" + pipFqdn + ":" + natRule.frontendPort());
+                                                break;
+                                            }
                                         }
+                                        break;
                                     }
-                                    break;
                                 }
-                            }
-                            return instance;
-                        }
+                                return networkInterface;
+                            });
+                        return instance;
                     })
-                    .toBlocking().subscribe();
+                    .last().block();
 
             //=============================================================
             // Stop the virtual machine scale set
@@ -311,22 +301,17 @@ public final class ManageVirtualMachineScaleSetAsync {
                     .concatWith(virtualMachineScaleSet.deallocateAsync())
                     // Start the virtual machine scale set
                     .concatWith(virtualMachineScaleSet.startAsync())
-                    .toObservable()
                     // Update the virtual machine scale set by removing and adding disk
                     .concatWith(virtualMachineScaleSet.update()
-                            .withCapacity(6)
-                            .withoutDataDisk(0)
-                            .withoutDataDisk(200)
-                            .applyAsync()
-                            .flatMap(new Func1<VirtualMachineScaleSet, Observable<Void>>() {
-                                @Override
-                                public Observable<Void> call(VirtualMachineScaleSet virtualMachineScaleSet) {
-                                    System.out.println("Updated virtual machine scale set");
-                                    // Restart the virtual machine scale set
-                                    return virtualMachineScaleSet.restartAsync().toObservable();
-                                }
-                            }))
-                    .toBlocking().subscribe();
+                        .withCapacity(6)
+                        .withoutDataDisk(0)
+                        .withoutDataDisk(200)
+                        .applyAsync()
+                        .flatMap(vmss -> {
+                            System.out.println("Updated virtual machine scale set");
+                            // Restart the virtual machine scale set
+                            return vmss.restartAsync();
+                        })).singleOrEmpty().block();
 
             return true;
         } catch (Exception f) {
@@ -359,13 +344,16 @@ public final class ManageVirtualMachineScaleSetAsync {
             //=============================================================
             // Authenticate
 
-            System.out.println(System.getenv("AZURE_AUTH_LOCATION"));
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
-            Azure azure = Azure.configure()
-                    .withLogLevel(LogLevel.BASIC)
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+            Azure azure = Azure
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());

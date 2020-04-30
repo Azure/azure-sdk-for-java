@@ -1,23 +1,22 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
-package com.microsoft.azure.management.graphrbac.samples;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-import com.microsoft.azure.credentials.ApplicationTokenCredentials;
-import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.graphrbac.ActiveDirectoryGroup;
-import com.microsoft.azure.management.graphrbac.ActiveDirectoryUser;
-import com.microsoft.azure.management.graphrbac.BuiltInRole;
-import com.microsoft.azure.management.graphrbac.RoleAssignment;
-import com.microsoft.azure.management.graphrbac.RoleDefinition;
-import com.microsoft.azure.management.graphrbac.ServicePrincipal;
-import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
-import com.microsoft.azure.management.samples.Utils;
-import com.microsoft.rest.LogLevel;
+package com.azure.management.graphrbac.samples;
 
-import java.io.File;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
+import com.azure.management.Azure;
+import com.azure.management.graphrbac.ActiveDirectoryGroup;
+import com.azure.management.graphrbac.ActiveDirectoryUser;
+import com.azure.management.graphrbac.BuiltInRole;
+import com.azure.management.graphrbac.RoleAssignment;
+import com.azure.management.graphrbac.RoleDefinition;
+import com.azure.management.graphrbac.ServicePrincipal;
+import com.azure.management.resources.fluentcore.utils.SdkContext;
+import com.azure.management.samples.Utils;
 
 /**
  * Azure Users, Groups and Roles sample.
@@ -35,17 +34,17 @@ public final class ManageUsersGroupsAndRoles {
      * Main function which runs the actual sample.
      *
      * @param authenticated instance of Authenticated
-     * @param defaultSubscription default subscription id
+     * @param profile the profile works with sample
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure.Authenticated authenticated, String defaultSubscription) {
-        final String userEmail = Utils.createRandomName("test");
+    public static boolean runSample(Azure.Authenticated authenticated, AzureProfile profile) {
+        final String userEmail = authenticated.sdkContext().randomResourceName("test", 15);
         final String userName = userEmail.replace("test", "Test ");
-        final String spName = Utils.createRandomName("sp");
-        final String raName1 = SdkContext.randomUuid();
-        final String raName2 = SdkContext.randomUuid();
-        final String groupEmail1 = Utils.createRandomName("group1");
-        final String groupEmail2 = Utils.createRandomName("group2");
+        final String spName = authenticated.sdkContext().randomResourceName("sp", 15);
+        final String raName1 = authenticated.sdkContext().randomUuid();
+        final String raName2 = authenticated.sdkContext().randomUuid();
+        final String groupEmail1 = authenticated.sdkContext().randomResourceName("group1", 15);
+        final String groupEmail2 = authenticated.sdkContext().randomResourceName("group2", 15);
         final String groupName1 = groupEmail1.replace("group1", "Group ");
         final String groupName2 = groupEmail2.replace("group2", "Group ");
         String spId = "";
@@ -71,7 +70,7 @@ public final class ManageUsersGroupsAndRoles {
                     .define(raName1)
                     .forUser(user)
                     .withBuiltInRole(BuiltInRole.READER)
-                    .withSubscriptionScope(defaultSubscription)
+                    .withSubscriptionScope(profile.subscriptionId())
                     .create();
             System.out.println("Created Role Assignment:");
             Utils.print(roleAssignment1);
@@ -86,7 +85,7 @@ public final class ManageUsersGroupsAndRoles {
             // Get role by scope and role name
 
             RoleDefinition roleDefinition = authenticated.roleDefinitions()
-                    .getByScopeAndRoleName("subscriptions/" + defaultSubscription, "Contributor");
+                    .getByScopeAndRoleName("subscriptions/" + profile.subscriptionId(), "Contributor");
             Utils.print(roleDefinition);
 
             // ============================================================
@@ -108,7 +107,7 @@ public final class ManageUsersGroupsAndRoles {
                     .define(raName2)
                     .forServicePrincipal(sp)
                     .withBuiltInRole(BuiltInRole.CONTRIBUTOR)
-                    .withSubscriptionScope(defaultSubscription)
+                    .withSubscriptionScope(profile.subscriptionId())
                     .create();
             System.out.println("Created Role Assignment:");
             Utils.print(roleAssignment2);
@@ -152,8 +151,7 @@ public final class ManageUsersGroupsAndRoles {
                 System.out.println("Deleting Service Principal: " + spName);
                 authenticated.servicePrincipals().deleteById(spId);
                 System.out.println("Deleted Service Principal: " + spName);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("Did not create Service Principal in Azure. No clean up is necessary");
             }
         }
@@ -167,13 +165,16 @@ public final class ManageUsersGroupsAndRoles {
      */
     public static void main(String[] args) {
         try {
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
-            ApplicationTokenCredentials credentials = ApplicationTokenCredentials.fromFile(credFile);
-            Azure.Authenticated authenticated = Azure.configure()
-                    .withLogLevel(LogLevel.BODY)
-                    .authenticate(credentials);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
-            runSample(authenticated, credentials.defaultSubscriptionId());
+            Azure.Authenticated authenticated = Azure
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile);
+            runSample(authenticated, profile);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

@@ -5,4 +5,4 @@
 /**
  * This package contains the classes for compute samples.
  */
-package com.microsoft.azure.management.compute.samples;
+package com.azure.management.compute.samples;

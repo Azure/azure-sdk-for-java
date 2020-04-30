@@ -1,31 +1,30 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-package com.microsoft.azure.management.dns.samples;
+package com.azure.management.dns.samples;
 
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.appservice.PricingTier;
-import com.microsoft.azure.management.appservice.CustomHostNameDnsRecordType;
-import com.microsoft.azure.management.appservice.WebApp;
-import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
-import com.microsoft.azure.management.compute.VirtualMachine;
-import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
-import com.microsoft.azure.management.dns.ARecordSet;
-import com.microsoft.azure.management.dns.CNameRecordSet;
-import com.microsoft.azure.management.dns.DnsRecordSet;
-import com.microsoft.azure.management.dns.DnsZone;
-import com.microsoft.azure.management.network.PublicIPAddress;
-import com.microsoft.azure.management.resources.ResourceGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
-import com.microsoft.azure.management.samples.Utils;
-import com.microsoft.rest.LogLevel;
-
-import java.io.File;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.management.Azure;
+import com.azure.management.appservice.PricingTier;
+import com.azure.management.appservice.CustomHostNameDnsRecordType;
+import com.azure.management.appservice.WebApp;
+import com.azure.management.compute.KnownWindowsVirtualMachineImage;
+import com.azure.management.compute.VirtualMachine;
+import com.azure.management.compute.VirtualMachineSizeTypes;
+import com.azure.management.dns.ARecordSet;
+import com.azure.management.dns.CNameRecordSet;
+import com.azure.management.dns.DnsRecordSet;
+import com.azure.management.dns.DnsZone;
+import com.azure.management.network.PublicIPAddress;
+import com.azure.management.resources.ResourceGroup;
+import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
+import com.azure.management.resources.fluentcore.utils.SdkContext;
+import com.azure.management.samples.Utils;
 
 /**
  * Azure DNS sample for managing DNS zones.
@@ -49,9 +48,9 @@ public class ManageDns {
      */
     public static boolean runSample(Azure azure) {
         final String customDomainName         = "THE CUSTOM DOMAIN THAT YOU OWN (e.g. contoso.com)";
-        final String rgName                   = SdkContext.randomResourceName("rgNEMV_", 24);
-        final String appServicePlanName       = SdkContext.randomResourceName("jplan1_", 15);
-        final String webAppName               = SdkContext.randomResourceName("webapp1-", 20);
+        final String rgName                   = azure.sdkContext().randomResourceName("rgNEMV_", 24);
+        final String appServicePlanName       = azure.sdkContext().randomResourceName("jplan1_", 15);
+        final String webAppName               = azure.sdkContext().randomResourceName("webapp1-", 20);
 
         try {
             ResourceGroup resourceGroup = azure.resourceGroups().define(rgName)
@@ -133,12 +132,12 @@ public class ManageDns {
 
             System.out.println("Creating a virtual machine with public IP...");
             VirtualMachine virtualMachine1 = azure.virtualMachines()
-                    .define(SdkContext.randomResourceName("employeesvm-", 20))
+                    .define(azure.sdkContext().randomResourceName("employeesvm-", 20))
                         .withRegion(Region.US_EAST)
                         .withExistingResourceGroup(resourceGroup)
                         .withNewPrimaryNetwork("10.0.0.0/28")
                         .withPrimaryPrivateIPAddressDynamic()
-                        .withNewPrimaryPublicIPAddress(SdkContext.randomResourceName("empip-", 20))
+                        .withNewPrimaryPublicIPAddress(azure.sdkContext().randomResourceName("empip-", 20))
                         .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                         .withAdminUsername("testuser")
                         .withAdminPassword("12NewPA$$w0rd!")
@@ -162,7 +161,7 @@ public class ManageDns {
             // Prints the CName and A Records in the root DNS zone
             //
             System.out.println("Getting CName record set in the root DNS zone " + customDomainName + "...");
-            PagedList<CNameRecordSet> cnameRecordSets = rootDnsZone
+            PagedIterable<CNameRecordSet> cnameRecordSets = rootDnsZone
                     .cNameRecordSets()
                     .list();
 
@@ -171,7 +170,7 @@ public class ManageDns {
             }
 
             System.out.println("Getting ARecord record set in the root DNS zone " + customDomainName + "...");
-            PagedList<ARecordSet> aRecordSets = rootDnsZone
+            PagedIterable<ARecordSet> aRecordSets = rootDnsZone
                     .aRecordSets()
                     .list();
 
@@ -215,12 +214,12 @@ public class ManageDns {
 
             System.out.println("Creating a virtual machine with public IP...");
             VirtualMachine virtualMachine2 = azure.virtualMachines()
-                    .define(SdkContext.randomResourceName("partnersvm-", 20))
+                    .define(azure.sdkContext().randomResourceName("partnersvm-", 20))
                         .withRegion(Region.US_EAST)
                         .withExistingResourceGroup(resourceGroup)
                         .withNewPrimaryNetwork("10.0.0.0/28")
                         .withPrimaryPrivateIPAddressDynamic()
-                        .withNewPrimaryPublicIPAddress(SdkContext.randomResourceName("ptnerpip-", 20))
+                        .withNewPrimaryPublicIPAddress(azure.sdkContext().randomResourceName("ptnerpip-", 20))
                         .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                         .withAdminUsername("testuser")
                         .withAdminPassword("12NewPA$$w0rd!")
@@ -285,12 +284,16 @@ public class ManageDns {
             //=============================================================
             // Authenticate
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
-            Azure azure = Azure.configure()
-                    .withLogLevel(LogLevel.BASIC)
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+            Azure azure = Azure
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());

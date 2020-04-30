@@ -1,25 +1,24 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-package com.microsoft.azure.management.compute.samples;
+package com.azure.management.compute.samples;
 
- import com.microsoft.azure.management.Azure;
- import com.microsoft.azure.management.compute.AvailabilitySet;
- import com.microsoft.azure.management.compute.AvailabilitySetSkuTypes;
- import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
- import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
- import com.microsoft.azure.management.compute.VirtualMachine;
- import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
- import com.microsoft.azure.management.network.Network;
- import com.microsoft.azure.management.resources.fluentcore.arm.Region;
- import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
- import com.microsoft.azure.management.samples.Utils;
- import com.microsoft.rest.LogLevel;
-
- import java.io.File;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.management.Azure;
+import com.azure.management.compute.AvailabilitySet;
+import com.azure.management.compute.AvailabilitySetSkuTypes;
+import com.azure.management.compute.KnownLinuxVirtualMachineImage;
+import com.azure.management.compute.KnownWindowsVirtualMachineImage;
+import com.azure.management.compute.VirtualMachine;
+import com.azure.management.compute.VirtualMachineSizeTypes;
+import com.azure.management.network.Network;
+import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.model.Creatable;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
+import com.azure.management.samples.Utils;
 
 /**
  * Azure Compute sample for managing availability sets -
@@ -41,12 +40,12 @@ public final class ManageAvailabilitySet {
      */
     public static boolean runSample(Azure azure) {
         final Region region = Region.US_WEST_CENTRAL;
-        final String rgName = Utils.createRandomName("rgCOMA");
-        final String availSetName1 = Utils.createRandomName("av1");
-        final String availSetName2 = Utils.createRandomName("av2");
-        final String vm1Name = Utils.createRandomName("vm1");
-        final String vm2Name = Utils.createRandomName("vm2");
-        final String vnetName = Utils.createRandomName("vnet");
+        final String rgName = azure.sdkContext().randomResourceName("rgCOMA", 15);
+        final String availSetName1 = azure.sdkContext().randomResourceName("av1", 15);
+        final String availSetName2 = azure.sdkContext().randomResourceName("av2", 15);
+        final String vm1Name = azure.sdkContext().randomResourceName("vm1", 15);
+        final String vm2Name = azure.sdkContext().randomResourceName("vm2", 15);
+        final String vnetName = azure.sdkContext().randomResourceName("vnet", 15);
 
         final String userName = "tirekicker";
         // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
@@ -203,12 +202,16 @@ public final class ManageAvailabilitySet {
             //=============================================================
             // Authenticate
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
-            Azure azure = Azure.configure()
-                    .withLogLevel(LogLevel.BASIC)
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+            Azure azure = Azure
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());

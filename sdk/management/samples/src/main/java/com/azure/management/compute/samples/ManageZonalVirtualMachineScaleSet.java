@@ -1,28 +1,28 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-package com.microsoft.azure.management.compute.samples;
+package com.azure.management.compute.samples;
 
-import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
-import com.microsoft.azure.management.compute.VirtualMachineScaleSet;
-import com.microsoft.azure.management.compute.VirtualMachineScaleSetSkuTypes;
-import com.microsoft.azure.management.network.LoadBalancer;
-import com.microsoft.azure.management.network.LoadBalancerSkuType;
-import com.microsoft.azure.management.network.Network;
-import com.microsoft.azure.management.network.PublicIPAddress;
-import com.microsoft.azure.management.network.PublicIPSkuType;
-import com.microsoft.azure.management.network.TransportProtocol;
-import com.microsoft.azure.management.resources.ResourceGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.samples.Utils;
-import com.microsoft.rest.LogLevel;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.management.Azure;
+import com.azure.management.compute.KnownLinuxVirtualMachineImage;
+import com.azure.management.compute.VirtualMachineScaleSet;
+import com.azure.management.compute.VirtualMachineScaleSetSkuTypes;
+import com.azure.management.network.LoadBalancer;
+import com.azure.management.network.LoadBalancerSkuType;
+import com.azure.management.network.Network;
+import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIPSkuType;
+import com.azure.management.network.TransportProtocol;
+import com.azure.management.resources.ResourceGroup;
+import com.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
+import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
+import com.azure.management.samples.Utils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,16 +42,16 @@ public final class ManageZonalVirtualMachineScaleSet {
      */
     public static boolean runSample(Azure azure) {
         final Region region = Region.US_EAST2;
-        final String rgName = Utils.createRandomName("rgCOMV");
-        final String loadBalancerName = Utils.createRandomName("extlb");
+        final String rgName = azure.sdkContext().randomResourceName("rgCOMV", 15);
+        final String loadBalancerName = azure.sdkContext().randomResourceName("extlb", 15);
         final String publicIPName = "pip-" + loadBalancerName;
         final String frontendName = loadBalancerName + "-FE1";
         final String backendPoolName1 = loadBalancerName + "-BAP1";
         final String backendPoolName2 = loadBalancerName + "-BAP2";
         final String natPoolName1 = loadBalancerName + "-INP1";
         final String natPoolName2 = loadBalancerName + "-INP2";
-        final String vmssName1 = Utils.createRandomName("vmss1");
-        final String vmssName2 = Utils.createRandomName("vmss2");
+        final String vmssName1 = azure.sdkContext().randomResourceName("vmss1", 15);
+        final String vmssName2 = azure.sdkContext().randomResourceName("vmss2", 15);
 
         final String userName = "tirekicker";
         // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
@@ -240,12 +240,16 @@ public final class ManageZonalVirtualMachineScaleSet {
             //=============================================================
             // Authenticate
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
-            Azure azure = Azure.configure()
-                    .withLogLevel(LogLevel.BODY_AND_HEADERS)
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+            Azure azure = Azure
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());

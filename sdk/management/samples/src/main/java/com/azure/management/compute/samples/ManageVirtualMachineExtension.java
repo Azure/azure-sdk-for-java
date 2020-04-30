@@ -1,22 +1,21 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-package com.microsoft.azure.management.compute.samples;
+package com.azure.management.compute.samples;
 
-import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
-import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
-import com.microsoft.azure.management.compute.VirtualMachine;
-import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
-import com.microsoft.azure.management.samples.Utils;
-import com.microsoft.rest.LogLevel;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.management.Azure;
+import com.azure.management.compute.KnownLinuxVirtualMachineImage;
+import com.azure.management.compute.KnownWindowsVirtualMachineImage;
+import com.azure.management.compute.VirtualMachine;
+import com.azure.management.compute.VirtualMachineSizeTypes;
+import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
+import com.azure.management.samples.Utils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,11 +36,11 @@ public final class ManageVirtualMachineExtension {
      */
     public static boolean runSample(Azure azure) {
         final Region region = Region.US_WEST_CENTRAL;
-        final String linuxVMName = SdkContext.randomResourceName("lVM", 10);
-        final String windowsVMName = SdkContext.randomResourceName("wVM", 10);
-        final String rgName = SdkContext.randomResourceName("rgCOVE", 15);
-        final String pipDnsLabelLinuxVM = SdkContext.randomResourceName("rgPip1", 25);
-        final String pipDnsLabelWindowsVM = SdkContext.randomResourceName("rgPip2", 25);
+        final String linuxVMName = azure.sdkContext().randomResourceName("lVM", 10);
+        final String windowsVMName = azure.sdkContext().randomResourceName("wVM", 10);
+        final String rgName = azure.sdkContext().randomResourceName("rgCOVE", 15);
+        final String pipDnsLabelLinuxVM = azure.sdkContext().randomResourceName("rgPip1", 25);
+        final String pipDnsLabelWindowsVM = azure.sdkContext().randomResourceName("rgPip2", 25);
 
         // Linux configurations
         //
@@ -312,12 +311,16 @@ public final class ManageVirtualMachineExtension {
             //=============================================================
             // Authenticate
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
-            Azure azure = Azure.configure()
-                    .withLogLevel(LogLevel.BASIC)
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+            Azure azure = Azure
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());

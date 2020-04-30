@@ -1,24 +1,24 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-package com.microsoft.azure.management.compute.samples;
+package com.azure.management.compute.samples;
 
-import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.compute.Disk;
-import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
-import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
-import com.microsoft.azure.management.compute.VirtualMachine;
-import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
-import com.microsoft.azure.management.network.Network;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.samples.Utils;
-import com.microsoft.rest.LogLevel;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.management.Azure;
+import com.azure.management.compute.Disk;
+import com.azure.management.compute.KnownLinuxVirtualMachineImage;
+import com.azure.management.compute.KnownWindowsVirtualMachineImage;
+import com.azure.management.compute.VirtualMachine;
+import com.azure.management.compute.VirtualMachineSizeTypes;
+import com.azure.management.network.Network;
+import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.model.Creatable;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
+import com.azure.management.samples.Utils;
 
-import java.io.File;
 import java.util.Date;
 
 /**
@@ -43,9 +43,9 @@ public final class ManageVirtualMachine {
      */
     public static boolean runSample(Azure azure) {
         final Region region = Region.US_WEST_CENTRAL;
-        final String windowsVMName = Utils.createRandomName("wVM");
-        final String linuxVMName = Utils.createRandomName("lVM");
-        final String rgName = Utils.createRandomName("rgCOMV");
+        final String windowsVMName = azure.sdkContext().randomResourceName("wVM", 15);
+        final String linuxVMName = azure.sdkContext().randomResourceName("lVM", 15);
+        final String rgName = azure.sdkContext().randomResourceName("rgCOMV", 15);
         final String userName = "tirekicker";
         // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
         final String password = "12NewPA$$w0rd!";
@@ -57,7 +57,7 @@ public final class ManageVirtualMachine {
 
             // Prepare a creatable data disk for VM
             //
-            Creatable<Disk> dataDiskCreatable = azure.disks().define(Utils.createRandomName("dsk-"))
+            Creatable<Disk> dataDiskCreatable = azure.disks().define(azure.sdkContext().randomResourceName("dsk-", 15))
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withData()
@@ -66,7 +66,7 @@ public final class ManageVirtualMachine {
             // Create a data disk to attach to VM
             //
             Disk dataDisk = azure.disks()
-                    .define(Utils.createRandomName("dsk-"))
+                    .define(azure.sdkContext().randomResourceName("dsk-", 15))
                         .withRegion(region)
                         .withNewResourceGroup(rgName)
                         .withData()
@@ -113,9 +113,9 @@ public final class ManageVirtualMachine {
             //=============================================================
             // Update - Add data disk
 
-                windowsVM.update()
-                        .withNewDataDisk(10)
-                        .apply();
+            windowsVM.update()
+                    .withNewDataDisk(10)
+                    .apply();
 
 
             System.out.println("Added a data disk to VM" + windowsVM.id());
@@ -125,9 +125,9 @@ public final class ManageVirtualMachine {
             //=============================================================
             // Update - detach data disk
 
-                windowsVM.update()
-                        .withoutDataDisk(0)
-                        .apply();
+            windowsVM.update()
+                    .withoutDataDisk(0)
+                    .apply();
 
             System.out.println("Detached data disk at lun 0 from VM " + windowsVM.id());
 
@@ -226,12 +226,16 @@ public final class ManageVirtualMachine {
             //=============================================================
             // Authenticate
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
-            Azure azure = Azure.configure()
-                    .withLogLevel(LogLevel.BASIC)
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+            Azure azure = Azure
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());

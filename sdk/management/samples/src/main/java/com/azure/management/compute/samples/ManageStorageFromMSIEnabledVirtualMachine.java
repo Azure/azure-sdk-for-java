@@ -1,23 +1,23 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-package com.microsoft.azure.management.compute.samples;
+package com.azure.management.compute.samples;
 
-import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.compute.CachingTypes;
-import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
-import com.microsoft.azure.management.compute.VirtualMachine;
-import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
-import com.microsoft.azure.management.graphrbac.BuiltInRole;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.samples.Utils;
-import com.microsoft.azure.management.storage.StorageAccount;
-import com.microsoft.rest.LogLevel;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.management.Azure;
+import com.azure.management.compute.CachingTypes;
+import com.azure.management.compute.KnownLinuxVirtualMachineImage;
+import com.azure.management.compute.VirtualMachine;
+import com.azure.management.compute.VirtualMachineSizeTypes;
+import com.azure.management.graphrbac.BuiltInRole;
+import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
+import com.azure.management.samples.Utils;
+import com.azure.management.storage.StorageAccount;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,9 +37,9 @@ public final class ManageStorageFromMSIEnabledVirtualMachine {
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure) {
-        final String linuxVMName = Utils.createRandomName("VM1");
-        final String rgName = Utils.createRandomName("rgCOMV");
-        final String pipName = Utils.createRandomName("pip1");
+        final String linuxVMName = azure.sdkContext().randomResourceName("VM1", 15);
+        final String rgName = azure.sdkContext().randomResourceName("rgCOMV", 15);
+        final String pipName = azure.sdkContext().randomResourceName("pip1", 15);
         final String userName = "tirekicker";
         // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
         final String password = "12NewPA$$w0rd!";
@@ -77,7 +77,7 @@ public final class ManageStorageFromMSIEnabledVirtualMachine {
 
             // Prepare custom script t install az cli that uses MSI to create a storage account
             //
-            final String stgName = Utils.createRandomName("st44");
+            final String stgName = azure.sdkContext().randomResourceName("st44", 15);
             installCommand = installCommand.replace("{stgName}", stgName)
                     .replace("{rgName}", rgName)
                     .replace("{location}", region.name());
@@ -132,12 +132,16 @@ public final class ManageStorageFromMSIEnabledVirtualMachine {
             //=============================================================
             // Authenticate
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
-            Azure azure = Azure.configure()
-                    .withLogLevel(LogLevel.BODY_AND_HEADERS)
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+            Azure azure = Azure
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());

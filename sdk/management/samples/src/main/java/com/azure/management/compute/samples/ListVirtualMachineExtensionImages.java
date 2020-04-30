@@ -1,20 +1,20 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
-package com.microsoft.azure.management.compute.samples;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.compute.VirtualMachineExtensionImage;
-import com.microsoft.azure.management.compute.VirtualMachineExtensionImageType;
-import com.microsoft.azure.management.compute.VirtualMachineExtensionImageVersion;
-import com.microsoft.azure.management.compute.VirtualMachinePublisher;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.rest.LogLevel;
+package com.azure.management.compute.samples;
 
-import java.io.File;
-import java.util.List;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.management.Azure;
+import com.azure.management.compute.VirtualMachineExtensionImage;
+import com.azure.management.compute.VirtualMachineExtensionImageType;
+import com.azure.management.compute.VirtualMachineExtensionImageVersion;
+import com.azure.management.compute.VirtualMachinePublisher;
+import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 
 /**
  * List all virtual machine extension image publishers and
@@ -37,7 +37,7 @@ public final class ListVirtualMachineExtensionImages {
         // published by Microsoft.OSTCExtensions and Microsoft.Azure.Extensions
         // by browsing through extension image publishers, types, and versions
 
-        List<VirtualMachinePublisher> publishers = azure
+        PagedIterable<VirtualMachinePublisher> publishers = azure
                 .virtualMachineImages()
                 .publishers()
                 .listByRegion(region);
@@ -90,12 +90,16 @@ public final class ListVirtualMachineExtensionImages {
             //=================================================================
             // Authenticate
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
-            Azure azure = Azure.configure()
-                    .withLogLevel(LogLevel.NONE)
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+            Azure azure = Azure
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             runSample(azure);
         } catch (Exception e) {
