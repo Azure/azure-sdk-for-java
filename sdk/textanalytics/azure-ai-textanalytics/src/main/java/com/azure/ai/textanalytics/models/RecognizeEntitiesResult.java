@@ -8,7 +8,7 @@ import com.azure.core.util.IterableStream;
 /**
  * The {@link RecognizeEntitiesResult} model.
  */
-public interface RecognizeEntitiesResult extends DocumentResult {
+public interface RecognizeEntitiesResult extends TextAnalyticsResult {
     /**
      * Get an {@link IterableStream} of {@link CategorizedEntity}.
      *

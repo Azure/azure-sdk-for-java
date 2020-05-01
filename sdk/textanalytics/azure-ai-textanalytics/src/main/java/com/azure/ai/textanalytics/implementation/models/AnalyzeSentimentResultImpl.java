@@ -15,7 +15,7 @@ import com.azure.core.util.IterableStream;
  * The {@link AnalyzeSentimentResultImpl} model.
  */
 @Immutable
-public final class AnalyzeSentimentResultImpl extends DocumentResultImpl implements AnalyzeSentimentResult {
+public final class AnalyzeSentimentResultImpl extends TextAnalyticsResultImpl implements AnalyzeSentimentResult {
     private final DocumentSentiment documentSentiment;
 
     /**

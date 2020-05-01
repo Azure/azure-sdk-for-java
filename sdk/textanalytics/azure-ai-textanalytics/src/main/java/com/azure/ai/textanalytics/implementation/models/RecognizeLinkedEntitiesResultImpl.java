@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * The {@link RecognizeLinkedEntitiesResultImpl} model.
  */
 @Immutable
-public final class RecognizeLinkedEntitiesResultImpl extends DocumentResultImpl
+public final class RecognizeLinkedEntitiesResultImpl extends TextAnalyticsResultImpl
     implements RecognizeLinkedEntitiesResult {
     private final IterableStream<LinkedEntity> entities;
 

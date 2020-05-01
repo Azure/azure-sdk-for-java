@@ -8,7 +8,7 @@ import com.azure.core.util.IterableStream;
 /**
  * The {@link RecognizeLinkedEntitiesResult} model.
  */
-public interface RecognizeLinkedEntitiesResult extends DocumentResult {
+public interface RecognizeLinkedEntitiesResult extends TextAnalyticsResult {
     /**
      * Get an {@link IterableStream} of {@link LinkedEntity}.
      *

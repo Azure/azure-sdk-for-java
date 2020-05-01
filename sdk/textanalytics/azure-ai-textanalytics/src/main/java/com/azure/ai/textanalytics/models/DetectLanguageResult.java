@@ -5,7 +5,7 @@ package com.azure.ai.textanalytics.models;
 /**
  * The {@link DetectLanguageResult} model.
  */
-public interface DetectLanguageResult extends DocumentResult {
+public interface DetectLanguageResult extends TextAnalyticsResult {
     /**
      * Get the detected primary language.
      *

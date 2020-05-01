@@ -8,7 +8,7 @@ import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
-import com.azure.ai.textanalytics.models.DocumentResult;
+import com.azure.ai.textanalytics.models.TextAnalyticsResult;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
@@ -389,7 +389,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     static void validateDetectLanguage(boolean showStatistics, TextAnalyticsPagedResponse<DetectLanguageResult> expected,
         TextAnalyticsPagedResponse<DetectLanguageResult> actual) {
-        validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
+        validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
             validatePrimaryLanguage(expectedItem.getPrimaryLanguage(), actualItem.getPrimaryLanguage()));
     }
 
@@ -397,7 +397,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         TextAnalyticsPagedResponse<RecognizeEntitiesResult> expected,
         TextAnalyticsPagedResponse<RecognizeEntitiesResult> actual) {
 
-        validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
+        validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
             validateCategorizedEntities(
                 expectedItem.getEntities().stream().collect(Collectors.toList()),
                 actualItem.getEntities().stream().collect(Collectors.toList())));
@@ -411,7 +411,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     static void validateLinkedEntitiesWithPagedResponse(boolean showStatistics,
         TextAnalyticsPagedResponse<RecognizeLinkedEntitiesResult> expected,
         TextAnalyticsPagedResponse<RecognizeLinkedEntitiesResult> actual) {
-        validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
+        validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
             validateLinkedEntities(
                 expectedItem.getEntities().stream().collect(Collectors.toList()),
                 actualItem.getEntities().stream().collect(Collectors.toList())));
@@ -420,7 +420,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     static void validateExtractKeyPhraseWithPagedResponse(boolean showStatistics,
         TextAnalyticsPagedResponse<ExtractKeyPhraseResult> expected,
         TextAnalyticsPagedResponse<ExtractKeyPhraseResult> actual) {
-        validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
+        validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
             validateKeyPhrases(
                 expectedItem.getKeyPhrases().stream().collect(Collectors.toList()),
                 actualItem.getKeyPhrases().stream().collect(Collectors.toList())));
@@ -429,7 +429,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     static void validateSentimentWithPagedResponse(boolean showStatistics,
         TextAnalyticsPagedResponse<AnalyzeSentimentResult> expected,
         TextAnalyticsPagedResponse<AnalyzeSentimentResult> actual) {
-        validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
+        validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
             validateAnalyzedSentiment(expectedItem.getDocumentSentiment(), actualItem.getDocumentSentiment()));
     }
 
@@ -574,16 +574,16 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     /**
-     * Helper method to verify {@link DocumentResult documents} returned in a batch request.
+     * Helper method to verify {@link TextAnalyticsResult documents} returned in a batch request.
      */
-    private static <T extends DocumentResult> void validateDocumentResult(boolean showStatistics,
+    private static <T extends TextAnalyticsResult> void validateTextAnalyticsResult(boolean showStatistics,
         TextAnalyticsPagedResponse<T> expectedResults, TextAnalyticsPagedResponse<T> actualResults,
         BiConsumer<T, T> additionalAssertions) {
 
         final Map<String, T> expected = expectedResults.getElements().stream().collect(
-            Collectors.toMap(DocumentResult::getId, r -> r));
+            Collectors.toMap(TextAnalyticsResult::getId, r -> r));
         final Map<String, T> actual = actualResults.getElements().stream().collect(
-            Collectors.toMap(DocumentResult::getId, r -> r));
+            Collectors.toMap(TextAnalyticsResult::getId, r -> r));
 
         assertEquals(expected.size(), actual.size());
 

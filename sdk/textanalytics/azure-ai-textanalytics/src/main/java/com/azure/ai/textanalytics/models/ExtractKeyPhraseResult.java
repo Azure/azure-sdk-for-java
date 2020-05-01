@@ -8,7 +8,7 @@ import com.azure.core.util.IterableStream;
 /**
  * The {@link ExtractKeyPhraseResult} model.
  */
-public interface ExtractKeyPhraseResult extends DocumentResult {
+public interface ExtractKeyPhraseResult extends TextAnalyticsResult {
     /**
      * Get a {@link IterableStream} of key phrase string.
      *

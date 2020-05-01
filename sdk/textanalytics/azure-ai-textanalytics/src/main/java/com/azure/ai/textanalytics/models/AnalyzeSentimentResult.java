@@ -6,7 +6,7 @@ package com.azure.ai.textanalytics.models;
 /**
  * The {@link AnalyzeSentimentResult} model.
  */
-public interface AnalyzeSentimentResult extends DocumentResult {
+public interface AnalyzeSentimentResult extends TextAnalyticsResult {
     /**
      * Get the document sentiment.
      *

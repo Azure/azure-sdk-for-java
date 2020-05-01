@@ -5,9 +5,9 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link DocumentResult} model.
+ * The {@link TextAnalyticsResult} model.
  */
-public interface DocumentResult {
+public interface TextAnalyticsResult {
     /**
      * Get the document id.
      *

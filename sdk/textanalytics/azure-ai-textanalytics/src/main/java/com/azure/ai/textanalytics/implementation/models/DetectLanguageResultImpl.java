@@ -14,7 +14,7 @@ import com.azure.core.util.IterableStream;
  * The {@link DetectLanguageResultImpl} model.
  */
 @Immutable
-public final class DetectLanguageResultImpl extends DocumentResultImpl implements DetectLanguageResult {
+public final class DetectLanguageResultImpl extends TextAnalyticsResultImpl implements DetectLanguageResult {
     private final DetectedLanguage primaryLanguage;
 
     /**

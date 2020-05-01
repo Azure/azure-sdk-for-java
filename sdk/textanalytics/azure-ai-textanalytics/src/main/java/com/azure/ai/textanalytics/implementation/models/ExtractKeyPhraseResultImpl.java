@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * The {@link ExtractKeyPhraseResultImpl} model.
  */
 @Immutable
-public final class ExtractKeyPhraseResultImpl extends DocumentResultImpl implements ExtractKeyPhraseResult {
+public final class ExtractKeyPhraseResultImpl extends TextAnalyticsResultImpl implements ExtractKeyPhraseResult {
     private final IterableStream<String> keyPhrases;
 
     /**

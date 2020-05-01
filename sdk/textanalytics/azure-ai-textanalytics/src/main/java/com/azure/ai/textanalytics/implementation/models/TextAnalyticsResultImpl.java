@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.ai.textanalytics.implementation.models;
 
-import com.azure.ai.textanalytics.models.DocumentResult;
+import com.azure.ai.textanalytics.models.TextAnalyticsResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
@@ -14,11 +14,11 @@ import com.azure.core.util.logging.ClientLogger;
 import java.util.Locale;
 
 /**
- * The {@link DocumentResultImpl} model.
+ * The {@link TextAnalyticsResultImpl} model.
  */
 @Immutable
-public class DocumentResultImpl implements DocumentResult {
-    private final ClientLogger logger = new ClientLogger(DocumentResultImpl.class);
+public class TextAnalyticsResultImpl implements TextAnalyticsResult {
+    private final ClientLogger logger = new ClientLogger(TextAnalyticsResultImpl.class);
 
     private final String id;
     private final TextDocumentStatistics textDocumentStatistics;
@@ -27,16 +27,16 @@ public class DocumentResultImpl implements DocumentResult {
     private final boolean isError;
 
     /**
-     * Create a {@link DocumentResultImpl} model that maintains document id, information about the document payload,
-     * and document error.
+     * Create a {@link TextAnalyticsResultImpl} model that maintains document id, information about the document
+     * payload, and document error.
      *
      * @param id Unique, non-empty document identifier.
      * @param textDocumentStatistics The text document statistics.
      * @param error The document error.
      *
      */
-    DocumentResultImpl(String id, TextDocumentStatistics textDocumentStatistics, TextAnalyticsError error,
-                       IterableStream<TextAnalyticsWarning> warnings) {
+    TextAnalyticsResultImpl(String id, TextDocumentStatistics textDocumentStatistics, TextAnalyticsError error,
+                            IterableStream<TextAnalyticsWarning> warnings) {
         this.id = id;
         this.error = error;
         this.isError = error != null;
