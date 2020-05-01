@@ -554,7 +554,7 @@ public class DataLakeFileClient extends DataLakePathClient {
         return new SimpleResponse<>(resp, new DataLakeFileClient(resp.getValue()));
     }
 
-    /* TODO : Populate Rest Api docs for quick query. */
+    /* TODO (gapra): Populate Rest Api docs for quick query. */
     /**
      * Opens an input stream to query the file.
      *

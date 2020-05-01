@@ -298,6 +298,7 @@ public class DataLakeFileAsyncClientJavaDocSamples {
 
     /**
      * Code snippet for {@link DataLakeFileAsyncClient#query(String)}
+     * @throws UncheckedIOException for IOExceptions.
      */
     public void query() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.query#String
@@ -315,6 +316,7 @@ public class DataLakeFileAsyncClientJavaDocSamples {
 
     /**
      * Code snippet for {@link DataLakeFileAsyncClient#queryWithResponse(String, FileQueryOptions)}
+     * @throws UncheckedIOException for IOExceptions.
      */
     public void queryWithResponse() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.queryWithResponse#String-FileQueryOptions
