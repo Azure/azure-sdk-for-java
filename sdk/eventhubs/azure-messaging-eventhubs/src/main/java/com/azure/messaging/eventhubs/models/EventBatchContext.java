@@ -6,20 +6,20 @@ package com.azure.messaging.eventhubs.models;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
-import java.util.Objects;
+import java.util.List;
 import java.util.function.Consumer;
 import reactor.core.publisher.Mono;
 
 /**
- * A class that contains {@link EventData} and the partition information the event belongs to. This is given to the
- * {@link EventProcessorClientBuilder#processEvent(Consumer) processEvent} handler each time an event is received from
- * the Event Hub. This class also includes methods to update checkpoint in {@link CheckpointStore} and retrieve the last
- * enqueued event information.
+ * A class that contains a batch of {@link EventData} and the partition information the event batch belongs to. This is
+ * given to the {@link EventProcessorClientBuilder#processEventBatch(Consumer, int) processEventBatch} handler each
+ * time an event batch is received from the Event Hub. This class also includes methods to update checkpoint in
+ * {@link CheckpointStore} and retrieve the last enqueued event information.
  */
-public class EventContext {
+public class EventBatchContext {
 
     private final PartitionContext partitionContext;
-    private final EventData eventData;
+    private final List<EventData> events;
     private final CheckpointStore checkpointStore;
     private final LastEnqueuedEventProperties lastEnqueuedEventProperties;
 
@@ -27,19 +27,19 @@ public class EventContext {
      * Creates an instance of {@link EventContext}.
      *
      * @param partitionContext The partition information associated with the received event.
-     * @param eventData The event received from Event Hub.
+     * @param events The list of events received from Event Hub.
      * @param checkpointStore The checkpoint store that is used for updating checkpoints.
      * @param lastEnqueuedEventProperties The properties of the last enqueued event in this partition. If {@link
      * EventProcessorClientBuilder#trackLastEnqueuedEventProperties(boolean)} is set to {@code false}, this will be
      * {@code null}.
      * @throws NullPointerException If {@code partitionContext}, {@code eventData} or {@code checkpointStore} is null.
      */
-    public EventContext(PartitionContext partitionContext, EventData eventData,
+    public EventBatchContext(PartitionContext partitionContext, List<EventData> events,
         CheckpointStore checkpointStore, LastEnqueuedEventProperties lastEnqueuedEventProperties) {
-        this.partitionContext = Objects.requireNonNull(partitionContext, "'partitionContext' cannot be null.");
-        this.eventData = eventData;
-        this.checkpointStore = Objects.requireNonNull(checkpointStore, "'checkpointStore' cannot be null.");
+        this.checkpointStore = checkpointStore;
+        this.events = events;
         this.lastEnqueuedEventProperties = lastEnqueuedEventProperties;
+        this.partitionContext = partitionContext;
     }
 
     /**
@@ -52,50 +52,55 @@ public class EventContext {
     }
 
     /**
-     * Returns the event data received from Event Hub.
+     * Returns a list of event data received from Event Hub.
      *
-     * @return The event data received from Event Hub.
+     * @return The list of event data received from Event Hub.
      */
-    public EventData getEventData() {
-        return eventData;
+    public List<EventData> getEvents() {
+        return events;
     }
 
     /**
      * Returns the properties of the last enqueued event in this partition. If {@link
-     * EventProcessorClientBuilder#trackLastEnqueuedEventProperties(boolean)} is set to {@code false}, this method will
-     * return {@code null}.
+     * EventProcessorClientBuilder#trackLastEnqueuedEventProperties(boolean)} is set to {@code false} or if
+     * {@link #getEvents()} is empty, this method will return {@code null}.
      *
      * @return The properties of the last enqueued event in this partition. If
      * {@link EventProcessorClientBuilder#trackLastEnqueuedEventProperties(boolean)} is
-     * set to {@code false}, this method will return {@code null}.
+     * set to {@code false} or if {@link #getEvents()} is empty, this method will return {@code null}.
      */
     public LastEnqueuedEventProperties getLastEnqueuedEventProperties() {
         return lastEnqueuedEventProperties;
     }
 
     /**
-     * Updates the checkpoint asynchronously for this partition using the event data in this {@link EventContext}. This
-     * will serve as the last known successfully processed event in this partition if the update is successful.
+     * Updates the checkpoint asynchronously for this partition using the last event in the list provided by
+     * {@link #getEvents()}. This will serve as the last known successfully processed event in this partition
+     * if the update is successful. If {@link #getEvents()} returns an empty, no update to checkpoint will be
+     * done.
      *
      * @return a representation of deferred execution of this call.
      */
     public Mono<Void> updateCheckpointAsync() {
-        if (eventData == null) {
+        if (this.events == null || this.events.isEmpty()) {
             return Mono.empty();
         }
+        // update checkpoint of the last event in the batch
         Checkpoint checkpoint = new Checkpoint()
             .setFullyQualifiedNamespace(partitionContext.getFullyQualifiedNamespace())
             .setEventHubName(partitionContext.getEventHubName())
             .setConsumerGroup(partitionContext.getConsumerGroup())
             .setPartitionId(partitionContext.getPartitionId())
-            .setSequenceNumber(eventData.getSequenceNumber())
-            .setOffset(eventData.getOffset());
+            .setSequenceNumber(events.get(events.size() - 1).getSequenceNumber())
+            .setOffset(events.get(events.size() - 1).getOffset());
         return this.checkpointStore.updateCheckpoint(checkpoint);
     }
 
     /**
-     * Updates the checkpoint synchronously for this partition using the event data. This will serve as the last known
-     * successfully processed event in this partition if the update is successful.
+     * Updates the checkpoint synchronously for this partition using the last event in the list provided by
+     * {@link #getEvents()}. This will serve as the last known successfully processed event in this partition
+     * if the update is successful. If {@link #getEvents()} returns an empty, no update to checkpoint will be
+     * done.
      */
     public void updateCheckpoint() {
         this.updateCheckpointAsync().block();
