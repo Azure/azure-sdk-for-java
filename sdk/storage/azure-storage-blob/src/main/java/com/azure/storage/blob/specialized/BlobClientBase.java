@@ -937,7 +937,7 @@ public class BlobClientBase {
         return this.client.generateSas(blobServiceSasSignatureValues);
     }
 
-    /* TODO : Populate Rest Api docs for quick query. */
+    /* TODO (gapra): Populate Rest Api docs for quick query. */
     /**
      * Opens a blob input stream to query the blob.
      *
@@ -949,6 +949,7 @@ public class BlobClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.openQueryInputStream#String}
      *
      * @param expression The query expression.
+     * @return An <code>InputStream</code> object that represents the stream to use for reading the query response.
      */
     public BlobQueryInputStream openQueryInputStream(String expression) {
         return openQueryInputStream(expression, null);
@@ -966,6 +967,7 @@ public class BlobClientBase {
      *
      * @param expression The query expression.
      * @param queryOptions {@link BlobQueryOptions The query options}.
+     * @return An <code>InputStream</code> object that represents the stream to use for reading the query response.
      */
     public BlobQueryInputStream openQueryInputStream(String expression, BlobQueryOptions queryOptions) {
 

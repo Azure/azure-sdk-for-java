@@ -1621,7 +1621,7 @@ public class BlobAsyncClientBase {
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()));
     }
 
-    /* TODO : Quick Query service docs. */
+    /* TODO (gapra): Quick Query service docs. */
     /**
      * Queries the entire blob.
      *
@@ -1729,8 +1729,8 @@ public class BlobAsyncClientBase {
             case "error":
                 return parseError(record, errorReceiver);
             default:
-                return Mono.error(new UncheckedIOException(new IOException(String.format("Unknown record type %s " +
-                    "while parsing query response. ", recordSchema.toString()))));
+                return Mono.error(new UncheckedIOException(new IOException(String.format("Unknown record type %s "
+                    + "while parsing query response. ", recordSchema.toString()))));
         }
     }
 
@@ -1746,7 +1746,8 @@ public class BlobAsyncClientBase {
             AvroSchema.checkType("data", data, List.class);
             return Mono.just(ByteBuffer.wrap(AvroSchema.getBytes((List<?>) data)));
         } else {
-            return Mono.error(new IllegalArgumentException("Failed to parse result data record from blob query response stream."));
+            return Mono.error(new IllegalArgumentException("Failed to parse result data record from "
+                + "query response stream."));
         }
     }
 
@@ -1764,7 +1765,8 @@ public class BlobAsyncClientBase {
                 AvroSchema.checkType("total", total, Long.class);
                 progressReceiver.reportProgress((Long) total);
             } else {
-                return Mono.error(new IllegalArgumentException("Failed to parse end record from blob query response stream."));
+                return Mono.error(new IllegalArgumentException("Failed to parse end record from query "
+                    + "response stream."));
             }
         }
         return Mono.empty();
@@ -1784,7 +1786,8 @@ public class BlobAsyncClientBase {
                 AvroSchema.checkType("bytesScanned", bytesScanned, Long.class);
                 progressReceiver.reportProgress((Long) bytesScanned);
             } else {
-                return Mono.error(new IllegalArgumentException("Failed to parse progress record from blob query response stream."));
+                return Mono.error(new IllegalArgumentException("Failed to parse progress record from "
+                    + "query response stream."));
             }
         }
         return Mono.empty();
@@ -1815,11 +1818,12 @@ public class BlobAsyncClientBase {
                 errorReceiver.reportError(error);
             } else {
                 return Mono.error(new UncheckedIOException(
-                    new IOException("An error was reported during blob quick query response processing, "
+                    new IOException("An error was reported during query response processing, "
                         + System.lineSeparator() + error.toString())));
             }
         } else {
-            return Mono.error(new IllegalArgumentException("Failed to parse error record from blob query response stream."));
+            return Mono.error(new IllegalArgumentException("Failed to parse error record from "
+                + "query response stream."));
         }
         return Mono.empty();
     }

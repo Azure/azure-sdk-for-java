@@ -479,6 +479,7 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
 
     /**
      * Code snippet for {@link BlobAsyncClientBase#query(String)}
+     * @throws UncheckedIOException for IOExceptions.
      */
     public void query() {
         // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.query#String
@@ -496,6 +497,7 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
 
     /**
      * Code snippet for {@link BlobAsyncClientBase#queryWithResponse(String, BlobQueryOptions)}
+     * @throws UncheckedIOException for IOExceptions.
      */
     public void queryWithResponse() {
         // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.queryWithResponse#String-BlobQueryOptions
@@ -521,15 +523,15 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
 
         client.queryWithResponse(expression, queryOptions)
             .subscribe(response -> {
-            ByteArrayOutputStream queryData = new ByteArrayOutputStream();
-            response.getValue().subscribe(piece -> {
-                try {
-                    queryData.write(piece.array());
-                } catch (IOException ex) {
-                    throw new UncheckedIOException(ex);
-                }
+                ByteArrayOutputStream queryData = new ByteArrayOutputStream();
+                response.getValue().subscribe(piece -> {
+                    try {
+                        queryData.write(piece.array());
+                    } catch (IOException ex) {
+                        throw new UncheckedIOException(ex);
+                    }
+                });
             });
-        });
         // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.queryWithResponse#String-BlobQueryOptions
     }
 }

@@ -8,10 +8,10 @@ package com.azure.storage.file.datalake.models;
  */
 public class FileQueryError {
 
-    private boolean fatal;
-    private String name;
-    private String description;
-    private long position;
+    private final boolean fatal;
+    private final String name;
+    private final String description;
+    private final long position;
 
     /**
      * Creates a new FileQueryError object.

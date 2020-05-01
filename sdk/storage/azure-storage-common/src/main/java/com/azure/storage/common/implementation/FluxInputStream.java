@@ -214,8 +214,7 @@ public class FluxInputStream extends InputStream {
             this.fluxComplete = true;
             this.waitingForData = false;
             dataAvailable.signal();
-        }
-        finally {
+        } finally {
             lock.unlock();
         }
     }

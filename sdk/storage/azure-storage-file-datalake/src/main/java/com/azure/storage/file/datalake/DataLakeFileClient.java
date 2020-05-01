@@ -566,6 +566,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.openQueryInputStream#String}
      *
      * @param expression The query expression.
+     * @return An <code>InputStream</code> object that represents the stream to use for reading the query response.
      */
     public FileQueryInputStream openQueryInputStream(String expression) {
         return openQueryInputStream(expression, null);
@@ -583,6 +584,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      *
      * @param expression The query expression.
      * @param queryOptions {@link FileQueryOptions The query options}.
+     * @return An <code>InputStream</code> object that represents the stream to use for reading the query response.
      */
     public FileQueryInputStream openQueryInputStream(String expression, FileQueryOptions queryOptions) {
 
