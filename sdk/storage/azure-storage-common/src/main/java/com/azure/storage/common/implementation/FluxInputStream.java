@@ -219,16 +219,16 @@ public class FluxInputStream extends InputStream {
      */
     private void validateParameters(byte[] b, int off, int len) {
         if (b == null) {
-            throw new NullPointerException("'b' cannot be null");
+            throw logger.logExceptionAsError(new NullPointerException("'b' cannot be null"));
         }
         if (off < 0) {
-            throw new IndexOutOfBoundsException("'off' cannot be less than 0");
+            throw logger.logExceptionAsError(new IndexOutOfBoundsException("'off' cannot be less than 0"));
         }
         if (len < 0) {
-            throw new IndexOutOfBoundsException("'len' cannot be less than 0");
+            throw logger.logExceptionAsError(new IndexOutOfBoundsException("'len' cannot be less than 0"));
         }
         if (len > (b.length - off)) {
-            throw new IndexOutOfBoundsException("'len' cannot be greater than 'b'.length - 'off'");
+            throw logger.logExceptionAsError(new IndexOutOfBoundsException("'len' cannot be greater than 'b'.length - 'off'"));
         }
     }
 }
