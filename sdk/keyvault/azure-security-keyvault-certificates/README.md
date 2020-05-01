@@ -251,7 +251,7 @@ Delete an existing certificate by calling `beginDeleteCertificate`.
 ```java
 certificateAsyncClient.beginDeleteCertificate("<certificate-name>")
     .subscribe(pollResponse -> {
-        System.out.printf("Deletetion status: %s\n", pollResponse.getStatus().toString());
+        System.out.printf("Deletion status: %s\n", pollResponse.getStatus().toString());
         System.out.printf("Deleted certificate name: %s\n", pollResponse.getValue().getName());
         System.out.printf("Certificate deletion date: %s\n", pollResponse.getValue().getDeletedOn().toString());
     });
