@@ -597,6 +597,14 @@
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
 
+  <!-- This is a false positive. Exception is thrown and caught to map to a different type of exception-->
+  <Match>
+    <Or>
+      <Class name="com.azure.messaging.eventhubs.PartitionPumpManager"/>
+    </Or>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+
   <!-- Names defined in the service. -->
   <Match>
     <Class name="com.azure.data.appconfiguration.models.ConfigurationSetting"/>
