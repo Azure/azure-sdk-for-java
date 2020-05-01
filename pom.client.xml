@@ -604,6 +604,10 @@
                 <packages>com.azure.storage.blob.batch*</packages>
               </group>
               <group>
+                <title>Azure Storage Blobs - Changefeed</title>
+                <packages>com.azure.storage.blob.changefeed*</packages>
+              </group>
+              <group>
                 <title>Azure Storage Blobs - Cryptography</title>
                 <packages>com.azure.storage.blob.cryptography*</packages>
               </group>
@@ -1475,6 +1479,7 @@
     <module>sdk/servicebus/azure-messaging-servicebus</module>
     <module>sdk/storage/azure-storage-blob</module>
     <module>sdk/storage/azure-storage-blob-batch</module>
+    <module>sdk/storage/azure-storage-blob-changefeed</module>
     <module>sdk/storage/azure-storage-blob-cryptography</module>
     <module>sdk/storage/azure-storage-blob-nio</module>
     <module>sdk/storage/azure-storage-common</module>

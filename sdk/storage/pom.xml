@@ -15,6 +15,7 @@
     <module>azure-storage-common</module>
     <module>azure-storage-blob</module>
     <module>azure-storage-blob-batch</module>
+    <module>azure-storage-blob-changefeed</module>
     <module>azure-storage-blob-cryptography</module>
     <module>azure-storage-blob-nio</module>
     <module>azure-storage-file-share</module>
