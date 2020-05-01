@@ -26,11 +26,6 @@ public class VisualStudioCacheAccessor {
                                                + " credential authentication.";
     private final ClientLogger logger = new ClientLogger(VisualStudioCacheAccessor.class);
 
-    /**
-     * Creates an instance of {@link VisualStudioCacheAccessor}
-     */
-    public VisualStudioCacheAccessor() { }
-
 
     private JsonNode getUserSettings() {
         JsonNode output = null;
