@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!--
+  ~ Copyright (c) Microsoft Corporation. All rights reserved.
+  ~ Licensed under the MIT License.
+  -->
+
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  
+  <parent>
+    <groupId>com.azure</groupId>
+    <artifactId>schemaregistry-serde</artifactId>
+    <version>0.5-preview</version>
+  </parent>
+
+  <groupId>com.azure</groupId>
+  <artifactId>schemaregistry-serde-kafka-avro</artifactId>
+  <version>0.5-preview</version>
+  <name>schemaregistry-serde-kafka-avro</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.kafka</groupId>
+      <artifactId>kafka_2.12</artifactId>
+      <version>2.3.1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>schemaregistry-serde-common</artifactId>
+      <version>0.5-preview</version>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>schemaregistry-codec-avro</artifactId>
+      <version>0.5-preview</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+</project>
