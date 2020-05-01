@@ -38,7 +38,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * This is almost a carbon copy of AmqpReceiveLinkProcessor. When we can abstract it from proton-j, it would be nice to
  * unify this.
  */
-public class ServiceBusReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Message> implements Subscription {
+public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusReceiveLink, Message> implements Subscription {
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiveLinkProcessor.class);
     private final Object lock = new Object();
     private final AtomicBoolean isTerminated = new AtomicBoolean();
@@ -46,19 +46,19 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLin
     private final Deque<Message> messageQueue = new ConcurrentLinkedDeque<>();
     private final AtomicBoolean hasFirstLink = new AtomicBoolean();
     private final AtomicBoolean linkCreditsAdded = new AtomicBoolean();
+    private final AtomicReference<String> linkName = new AtomicReference<>();
 
     private final AtomicReference<CoreSubscriber<? super Message>> downstream = new AtomicReference<>();
     private final AtomicInteger wip = new AtomicInteger();
 
     private final int prefetch;
-    private final String linkName;
     private final AmqpRetryPolicy retryPolicy;
     private final Disposable parentConnection;
     private final AmqpErrorContext errorContext;
 
     private volatile Throwable lastError;
     private volatile boolean isCancelled;
-    private volatile AmqpReceiveLink currentLink;
+    private volatile ServiceBusReceiveLink currentLink;
     private volatile Disposable currentLinkSubscriptions;
     private volatile Disposable retrySubscription;
 
@@ -82,10 +82,8 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLin
      * @throws NullPointerException if {@code retryPolicy} is null.
      * @throws IllegalArgumentException if {@code prefetch} is less than 0.
      */
-    public ServiceBusReceiveLinkProcessor(String linkName, int prefetch, AmqpRetryPolicy retryPolicy,
+    public ServiceBusReceiveLinkProcessor(int prefetch, AmqpRetryPolicy retryPolicy,
         Disposable parentConnection, AmqpErrorContext errorContext) {
-        this.linkName = linkName;
-
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
         this.parentConnection = Objects.requireNonNull(parentConnection, "'parentConnection' cannot be null.");
         this.errorContext = errorContext;
@@ -96,6 +94,10 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLin
         }
 
         this.prefetch = prefetch;
+    }
+
+    public String getLinkName() {
+        return linkName.get();
     }
 
     /**
@@ -113,17 +115,13 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLin
                 "lockToken[%s]. state[%s]. Cannot update disposition on closed processor.", lockToken, deliveryState)));
         }
 
-        final AmqpReceiveLink link = currentLink;
+        final ServiceBusReceiveLink link = currentLink;
         if (link == null) {
             return monoError(logger, new IllegalStateException(String.format(
                 "lockToken[%s]. state[%s]. Cannot update disposition with no link.", lockToken, deliveryState)));
-        } else if (!(link instanceof ServiceBusReactorReceiver)) {
-            return monoError(logger, new IllegalStateException(String.format(
-                "lockToken[%s]. state[%s]. Cannot update disposition with non Service Bus receive link.",
-                lockToken, deliveryState)));
         }
 
-        return ((ServiceBusReactorReceiver) link).updateDisposition(lockToken, deliveryState);
+        return link.updateDisposition(lockToken, deliveryState);
     }
 
     /**
@@ -173,7 +171,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLin
      * @param next The next AMQP receive link.
      */
     @Override
-    public void onNext(AmqpReceiveLink next) {
+    public void onNext(ServiceBusReceiveLink next) {
         Objects.requireNonNull(next, "'next' cannot be null.");
 
         if (isTerminated()) {
@@ -534,9 +532,5 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLin
 
         // If there is no back pressure, always add 1. Otherwise, add whatever is requested.
         return r == Long.MAX_VALUE ? 1 : Long.valueOf(r).intValue();
-    }
-
-    public String getLinkName() {
-        return linkName;
     }
 }
