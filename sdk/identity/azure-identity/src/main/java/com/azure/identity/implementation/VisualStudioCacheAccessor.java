@@ -73,7 +73,7 @@ public class VisualStudioCacheAccessor {
 
         String cloud = "Azure";
 
-        if (!userSettings.isNull()) {
+        if (userSettings != null && !userSettings.isNull()) {
             if (userSettings.has("azure.tenant") && CoreUtils.isNullOrEmpty(tenant)) {
                 tenant = userSettings.get("azure.tenant").asText();
             }
