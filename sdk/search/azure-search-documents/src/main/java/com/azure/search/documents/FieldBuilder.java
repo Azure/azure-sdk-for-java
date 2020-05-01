@@ -202,6 +202,13 @@ public final class FieldBuilder {
                 .setFacetable(searchableFieldPropertyAnnotation.isFacetable())
                 .setKey(searchableFieldPropertyAnnotation.isKey())
                 .setHidden(searchableFieldPropertyAnnotation.isHidden());
+            String analyzer = searchableFieldPropertyAnnotation.analyzer();
+            String searchAnalyzer = searchableFieldPropertyAnnotation.searchAnalyzer();
+            String indexAnalyzer = searchableFieldPropertyAnnotation.indexAnalyzer();
+            if (!analyzer.isEmpty() && (!searchAnalyzer.isEmpty() || !indexAnalyzer.isEmpty())) {
+                throw logger.logExceptionAsError(new RuntimeException(
+                    "Please specify either analyzer or both searchAnalyzer and indexAnalyzer."));
+            }
             if (!searchableFieldPropertyAnnotation.analyzer().isEmpty()) {
                 searchField.setAnalyzer(AnalyzerName.fromString((searchableFieldPropertyAnnotation.analyzer())));
             }

@@ -12,7 +12,7 @@ public class SearchableField extends SimpleField {
     private AnalyzerName analyzer;
     private AnalyzerName searchAnalyzer;
     private AnalyzerName indexAnalyzer;
-    private List<String> synonymMaps;
+    private List<String> synonymMapNames;
 
     /**
      * Initializes a new instance of the {@link SearchableField} class.
@@ -104,8 +104,8 @@ public class SearchableField extends SimpleField {
      *
      * @return List of names of synonym maps to associate with this field.
      */
-    public List<String> getSynonymMaps() {
-        return synonymMaps;
+    public List<String> getSynonymMapNames() {
+        return synonymMapNames;
     }
 
     /**
@@ -115,11 +115,11 @@ public class SearchableField extends SimpleField {
      * Assigning a synonym map to a field ensures that query terms targeting that field are expanded at query-time using
      * the rules in the synonym map. This attribute can be changed on existing fields.
      *
-     * @param synonymMaps list of names of synonym maps to associate with this field.
+     * @param synonymMapNames list of names of synonym maps to associate with this field.
      * @return The SearchableField object itself.
      */
-    public SearchableField setSynonymMaps(List<String> synonymMaps) {
-        this.synonymMaps = synonymMaps;
+    public SearchableField setSynonymMapNames(List<String> synonymMapNames) {
+        this.synonymMapNames = synonymMapNames;
         return this;
     }
 
@@ -141,6 +141,6 @@ public class SearchableField extends SimpleField {
             .setAnalyzer(this.analyzer)
             .setSearchAnalyzer(this.searchAnalyzer)
             .setIndexAnalyzer(this.indexAnalyzer)
-            .setSynonymMaps(this.synonymMaps);
+            .setSynonymMaps(this.synonymMapNames);
     }
 }

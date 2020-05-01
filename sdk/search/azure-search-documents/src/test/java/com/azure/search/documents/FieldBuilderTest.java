@@ -10,6 +10,7 @@ import com.azure.search.documents.models.Field;
 import com.azure.search.documents.models.SearchableField;
 import com.azure.search.documents.models.SimpleField;
 import com.azure.search.documents.test.environment.models.Hotel;
+import com.azure.search.documents.test.environment.models.HotelAnalyzerException;
 import com.azure.search.documents.test.environment.models.HotelCircularDependencies;
 import com.azure.search.documents.test.environment.models.HotelSearchException;
 import com.azure.search.documents.test.environment.models.HotelSearchableExceptionOnList;
@@ -21,7 +22,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -61,7 +61,7 @@ public class FieldBuilderTest {
         // We cannot put null in the annotation. So no need to test null case.
         List<Field> actualFields = FieldBuilder.build(HotelWithEmptyInSynonymMaps.class);
         List<Field> expectedFields = Collections.singletonList(new SearchableField("tags", true)
-            .setSynonymMaps(Arrays.asList("asynonymMaps", "maps")).build());
+            .setSynonymMapNames(Arrays.asList("asynonymMaps", "maps")).build());
         assertListFieldEquals(expectedFields, actualFields);
     }
 
@@ -69,6 +69,14 @@ public class FieldBuilderTest {
     public void hotelWithTwoDimensionalType() {
         Exception exception = assertThrows(RuntimeException.class, () -> FieldBuilder.build(HotelTwoDimensional.class));
         assertExceptionMassageAndDataType(exception, null, "single-dimensional");
+    }
+
+    @Test
+    public void hotelAnalyzerException() {
+        Exception exception = assertThrows(RuntimeException.class, () ->
+            FieldBuilder.build(HotelAnalyzerException.class));
+        assertExceptionMassageAndDataType(exception, null,
+            "either analyzer or both searchAnalyzer and indexAnalyzer");
     }
 
     private void assertListFieldEquals(List<Field> expected, List<Field> actual) {
@@ -123,7 +131,7 @@ public class FieldBuilderTest {
         Field city = new SearchableField("city", false).setFilterable(true).build();
         Field stateProvince = new SearchableField("stateProvince", false).build();
         Field country = new SearchableField("country", false)
-            .setSynonymMaps(Arrays.asList("America -> USA", "USA -> US")).build();
+            .setSynonymMapNames(Arrays.asList("America -> USA", "USA -> US")).build();
         Field postalCode = new SimpleField("postalCode", DataType.EDM_STRING, false).build();
         return Arrays.asList(streetAddress, city, stateProvince, country, postalCode);
     }

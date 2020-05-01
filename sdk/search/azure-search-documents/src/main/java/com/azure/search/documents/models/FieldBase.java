@@ -23,7 +23,7 @@ public abstract class FieldBase {
      */
     protected FieldBase(String name, DataType dataType) {
         if (CoreUtils.isNullOrEmpty(name)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("The name of field cannot be null"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("The name of the field cannot be null"));
         }
         this.dataType = Objects.requireNonNull(dataType, "'dataType' cannot be null.");
         this.name = name;
