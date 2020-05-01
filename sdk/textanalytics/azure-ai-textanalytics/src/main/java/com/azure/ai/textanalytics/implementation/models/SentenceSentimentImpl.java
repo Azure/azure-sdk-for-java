@@ -14,7 +14,7 @@ import com.azure.core.annotation.Immutable;
  */
 @Immutable
 public final class SentenceSentimentImpl implements SentenceSentiment {
-    private String text;
+    private final String text;
     private final int graphemeLength;
     private final int graphemeOffset;
     private final SentimentConfidenceScores confidenceScores;
