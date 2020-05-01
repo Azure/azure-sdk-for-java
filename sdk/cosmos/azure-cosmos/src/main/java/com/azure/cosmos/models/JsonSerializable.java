@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.Strings;
@@ -22,6 +23,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -36,7 +38,7 @@ import java.util.Map;
 public class JsonSerializable {
     private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
     private static final Logger LOGGER = LoggerFactory.getLogger(JsonSerializable.class);
-    transient ObjectNode propertyBag = null;
+    transient ObjectNode propertyBag;
     private ObjectMapper om;
 
     protected JsonSerializable() {
@@ -568,13 +570,14 @@ public class JsonSerializable {
      * @param <T> the type of the object.
      * @param c the class of the object, either a POJO class or JsonNode. If c is a POJO class, it must be a member
      * (and not an anonymous or local) and a static one.
+     * @param jsonSerializer The {@link JsonSerializer} to handle deserializing to the object class.
      * @return the POJO.
      * @throws IllegalArgumentException thrown if an error occurs
      * @throws IllegalStateException thrown when objectmapper is unable to read tree
      */
     @SuppressWarnings("unchecked")
     // Implicit or explicit cast to T is done after checking values are assignable from Class<T>.
-    protected <T> T toObject(Class<T> c) {
+    protected <T> T toObject(Class<T> c, JsonSerializer jsonSerializer) {
         // TODO: We have to remove this if we do not want to support CosmosItemProperties anymore, and change all the
         //  tests accordingly
         if (CosmosItemProperties.class.isAssignableFrom(c)) {
@@ -602,6 +605,10 @@ public class JsonSerializable {
             }
             return c.cast(this.propertyBag);
         } else {
+            if (jsonSerializer != null) {
+                return jsonSerializer.deserialize(propertyBag.toString().getBytes(StandardCharsets.UTF_8), c);
+            }
+
             // POJO
             JsonSerializable.checkForValidPOJO(c);
             try {

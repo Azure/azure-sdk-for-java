@@ -442,8 +442,9 @@ public final class ModelBridgeInternal {
         return jsonSerializable.serializeJsonToByteBuffer();
     }
 
-    public static <T> T toObjectFromJsonSerializable(JsonSerializable jsonSerializable, Class<T> c) {
-        return jsonSerializable.toObject(c);
+    public static <T> T toObjectFromJsonSerializable(JsonSerializable jsonSerializable, Class<T> c,
+        JsonSerializer jsonSerializer) {
+        return jsonSerializable.toObject(c, jsonSerializer);
     }
 
     public static Object getObjectFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {

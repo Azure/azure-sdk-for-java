@@ -3,11 +3,13 @@
 package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetrics;
 import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
@@ -28,9 +30,8 @@ import java.util.List;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
 
 /**
- * Provides a client-side logical representation of the Azure Cosmos database service.
- * This asynchronous client is used to configure and execute requests
- * against the service.
+ * Provides a client-side logical representation of the Azure Cosmos database service. This asynchronous client is used
+ * to configure and execute requests against the service.
  */
 @ServiceClient(
     builder = CosmosClientBuilder.class,
@@ -62,18 +63,21 @@ public final class CosmosAsyncClient implements Closeable {
         this.cosmosKeyCredential = builder.getKeyCredential();
         this.sessionCapturingOverride = builder.isSessionCapturingOverrideEnabled();
         this.enableTransportClientSharing = builder.isConnectionReuseAcrossClientsEnabled();
-        this.jsonSerializer = builder.jsonSerializer();
+        this.jsonSerializer = (builder.jsonSerializer() == null)
+            ? new JacksonJsonSerializerBuilder().serializer(Utils.getSimpleObjectMapper()).build()
+            : builder.jsonSerializer();
         this.asyncDocumentClient = new AsyncDocumentClient.Builder()
-                                       .withServiceEndpoint(this.serviceEndpoint)
-                                       .withMasterKeyOrResourceToken(this.keyOrResourceToken)
-                                       .withConnectionPolicy(this.connectionPolicy)
-                                       .withConsistencyLevel(this.desiredConsistencyLevel)
-                                       .withSessionCapturingOverride(this.sessionCapturingOverride)
-                                       .withConfigs(this.configs)
-                                       .withTokenResolver(this.cosmosAuthorizationTokenResolver)
-                                       .withCosmosKeyCredential(this.cosmosKeyCredential)
-                                       .withTransportClientSharing(this.enableTransportClientSharing)
-                                       .build();
+            .withServiceEndpoint(this.serviceEndpoint)
+            .withMasterKeyOrResourceToken(this.keyOrResourceToken)
+            .withConnectionPolicy(this.connectionPolicy)
+            .withConsistencyLevel(this.desiredConsistencyLevel)
+            .withSessionCapturingOverride(this.sessionCapturingOverride)
+            .withConfigs(this.configs)
+            .withTokenResolver(this.cosmosAuthorizationTokenResolver)
+            .withCosmosKeyCredential(this.cosmosKeyCredential)
+            .withTransportClientSharing(this.enableTransportClientSharing)
+            .withJsonSerializer(this.jsonSerializer)
+            .build();
     }
 
     AsyncDocumentClient getContextClient() {
@@ -175,25 +179,22 @@ public final class CosmosAsyncClient implements Closeable {
     /**
      * CREATE a Database if it does not already exist on the service
      * <p>
-     * The {@link Mono} upon successful completion will contain a single cosmos database response with the
-     * created or existing database.
+     * The {@link Mono} upon successful completion will contain a single cosmos database response with the created or
+     * existing database.
      *
      * @param databaseSettings CosmosDatabaseProperties
-     * @return a {@link Mono} containing the cosmos database response with the created or existing database or
-     * an error.
+     * @return a {@link Mono} containing the cosmos database response with the created or existing database or an error.
      */
     public Mono<CosmosAsyncDatabaseResponse> createDatabaseIfNotExists(CosmosDatabaseProperties databaseSettings) {
         return createDatabaseIfNotExistsInternal(getDatabase(databaseSettings.getId()));
     }
 
     /**
-     * CREATE a Database if it does not already exist on the service
-     * The {@link Mono} upon successful completion will contain a single cosmos database response with the
-     * created or existing database.
+     * CREATE a Database if it does not already exist on the service The {@link Mono} upon successful completion will
+     * contain a single cosmos database response with the created or existing database.
      *
      * @param id the id of the database
-     * @return a {@link Mono} containing the cosmos database response with the created or existing database or
-     * an error
+     * @return a {@link Mono} containing the cosmos database response with the created or existing database or an error
      */
     public Mono<CosmosAsyncDatabaseResponse> createDatabaseIfNotExists(String id) {
         return createDatabaseIfNotExistsInternal(getDatabase(id));
@@ -216,35 +217,31 @@ public final class CosmosAsyncClient implements Closeable {
     /**
      * Creates a database.
      * <p>
-     * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response with the
-     * created database.
-     * In case of failure the {@link Mono} will error.
+     * After subscription the operation will be performed. The {@link Mono} upon successful completion will contain a
+     * single resource response with the created database. In case of failure the {@link Mono} will error.
      *
      * @param databaseSettings {@link CosmosDatabaseProperties}
      * @param options {@link CosmosDatabaseRequestOptions}
      * @return an {@link Mono} containing the single cosmos database response with the created database or an error.
      */
     public Mono<CosmosAsyncDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseSettings,
-                                                            CosmosDatabaseRequestOptions options) {
+        CosmosDatabaseRequestOptions options) {
         if (options == null) {
             options = new CosmosDatabaseRequestOptions();
         }
         Database wrappedDatabase = new Database();
         wrappedDatabase.setId(databaseSettings.getId());
         return asyncDocumentClient.createDatabase(wrappedDatabase, ModelBridgeInternal.toRequestOptions(options))
-                   .map(databaseResourceResponse -> ModelBridgeInternal.createCosmosAsyncDatabaseResponse(databaseResourceResponse,
-                       this))
-                   .single();
+            .map(databaseResourceResponse -> ModelBridgeInternal.createCosmosAsyncDatabaseResponse(databaseResourceResponse,
+                this))
+            .single();
     }
 
     /**
      * Creates a database.
      * <p>
-     * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response with the
-     * created database.
-     * In case of failure the {@link Mono} will error.
+     * After subscription the operation will be performed. The {@link Mono} upon successful completion will contain a
+     * single resource response with the created database. In case of failure the {@link Mono} will error.
      *
      * @param databaseSettings {@link CosmosDatabaseProperties}
      * @return an {@link Mono} containing the single cosmos database response with the created database or an error.
@@ -256,10 +253,8 @@ public final class CosmosAsyncClient implements Closeable {
     /**
      * Creates a database.
      * <p>
-     * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response with the
-     * created database.
-     * In case of failure the {@link Mono} will error.
+     * After subscription the operation will be performed. The {@link Mono} upon successful completion will contain a
+     * single resource response with the created database. In case of failure the {@link Mono} will error.
      *
      * @param id id of the database
      * @return a {@link Mono} containing the single cosmos database response with the created database or an error.
@@ -271,10 +266,8 @@ public final class CosmosAsyncClient implements Closeable {
     /**
      * Creates a database.
      * <p>
-     * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response with the
-     * created database.
-     * In case of failure the {@link Mono} will error.
+     * After subscription the operation will be performed. The {@link Mono} upon successful completion will contain a
+     * single resource response with the created database. In case of failure the {@link Mono} will error.
      *
      * @param databaseSettings {@link CosmosDatabaseProperties}
      * @param throughput the throughput for the database
@@ -282,8 +275,8 @@ public final class CosmosAsyncClient implements Closeable {
      * @return an {@link Mono} containing the single cosmos database response with the created database or an error.
      */
     public Mono<CosmosAsyncDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseSettings,
-                                                            int throughput,
-                                                            CosmosDatabaseRequestOptions options) {
+        int throughput,
+        CosmosDatabaseRequestOptions options) {
         if (options == null) {
             options = new CosmosDatabaseRequestOptions();
         }
@@ -291,18 +284,16 @@ public final class CosmosAsyncClient implements Closeable {
         Database wrappedDatabase = new Database();
         wrappedDatabase.setId(databaseSettings.getId());
         return asyncDocumentClient.createDatabase(wrappedDatabase, ModelBridgeInternal.toRequestOptions(options))
-                   .map(databaseResourceResponse -> ModelBridgeInternal.createCosmosAsyncDatabaseResponse(databaseResourceResponse,
-                       this))
-                   .single();
+            .map(databaseResourceResponse -> ModelBridgeInternal.createCosmosAsyncDatabaseResponse(databaseResourceResponse,
+                this))
+            .single();
     }
 
     /**
      * Creates a database.
      * <p>
-     * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response with the
-     * created database.
-     * In case of failure the {@link Mono} will error.
+     * After subscription the operation will be performed. The {@link Mono} upon successful completion will contain a
+     * single resource response with the created database. In case of failure the {@link Mono} will error.
      *
      * @param databaseSettings {@link CosmosDatabaseProperties}
      * @param throughput the throughput for the database
@@ -317,10 +308,8 @@ public final class CosmosAsyncClient implements Closeable {
     /**
      * Creates a database.
      * <p>
-     * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response with the
-     * created database.
-     * In case of failure the {@link Mono} will error.
+     * After subscription the operation will be performed. The {@link Mono} upon successful completion will contain a
+     * single resource response with the created database. In case of failure the {@link Mono} will error.
      *
      * @param id id of the database
      * @param throughput the throughput for the database
@@ -335,9 +324,8 @@ public final class CosmosAsyncClient implements Closeable {
     /**
      * Reads all databases.
      * <p>
-     * After subscription the operation will be performed.
-     * The {@link CosmosPagedFlux} will contain one or several feed response of the read databases.
-     * In case of failure the {@link CosmosPagedFlux} will error.
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will contain one or several feed
+     * response of the read databases. In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param options {@link FeedOptions}
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of read databases or an error.
@@ -346,19 +334,18 @@ public final class CosmosAsyncClient implements Closeable {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().readDatabases(options)
-                                        .map(response ->
-                                            BridgeInternal.createFeedResponse(
-                                                ModelBridgeInternal.getCosmosDatabasePropertiesFromV2Results(response.getResults()),
-                                                response.getResponseHeaders()));
+                .map(response ->
+                    BridgeInternal.createFeedResponse(
+                        ModelBridgeInternal.getCosmosDatabasePropertiesFromV2Results(response.getResults()),
+                        response.getResponseHeaders()));
         });
     }
 
     /**
      * Reads all databases.
      * <p>
-     * After subscription the operation will be performed.
-     * The {@link CosmosPagedFlux} will contain one or several feed response of the read databases.
-     * In case of failure the {@link CosmosPagedFlux} will error.
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will contain one or several feed
+     * response of the read databases. In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of read databases or an error.
      */
@@ -370,9 +357,8 @@ public final class CosmosAsyncClient implements Closeable {
     /**
      * Query for databases.
      * <p>
-     * After subscription the operation will be performed.
-     * The {@link CosmosPagedFlux} will contain one or several feed response of the read databases.
-     * In case of failure the {@link CosmosPagedFlux} will error.
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will contain one or several feed
+     * response of the read databases. In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param query the query.
      * @param options the feed options.
@@ -385,9 +371,8 @@ public final class CosmosAsyncClient implements Closeable {
     /**
      * Query for databases.
      * <p>
-     * After subscription the operation will be performed.
-     * The {@link CosmosPagedFlux} will contain one or several feed response of the read databases.
-     * In case of failure the {@link CosmosPagedFlux} will error.
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will contain one or several feed
+     * response of the read databases. In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param querySpec the SQL query specification.
      * @param options the feed options.
@@ -397,9 +382,9 @@ public final class CosmosAsyncClient implements Closeable {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryDatabases(querySpec, options)
-                                        .map(response -> BridgeInternal.createFeedResponse(
-                                            ModelBridgeInternal.getCosmosDatabasePropertiesFromV2Results(response.getResults()),
-                                            response.getResponseHeaders()));
+                .map(response -> BridgeInternal.createFeedResponse(
+                    ModelBridgeInternal.getCosmosDatabasePropertiesFromV2Results(response.getResults()),
+                    response.getResponseHeaders()));
         });
     }
 

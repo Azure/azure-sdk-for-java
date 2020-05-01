@@ -207,7 +207,7 @@ public interface AsyncDocumentClient {
                 "cannot buildAsyncClient client without key credential");
 
             JsonSerializer buildJsonSerializer = (jsonSerializer == null)
-                ? new JacksonJsonSerializerBuilder().build()
+                ? new JacksonJsonSerializerBuilder().serializer(Utils.getSimpleObjectMapper()).build()
                 : jsonSerializer;
 
             RxDocumentClientImpl client = new RxDocumentClientImpl(serviceEndpoint,

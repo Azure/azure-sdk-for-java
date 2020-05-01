@@ -98,7 +98,7 @@ public class CosmosItemProperties extends Resource {
     }
 
     static <T> List<T> getTypedResultsFromV2Results(List<Document> results, Class<T> klass) {
-        return results.stream().map(document -> ModelBridgeInternal.toObjectFromJsonSerializable(document, klass))
+        return results.stream().map(document -> ModelBridgeInternal.toObjectFromJsonSerializable(document, klass, null))
                    .collect(Collectors.toList());
     }
 

@@ -13,6 +13,7 @@ import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.util.CosmosPagedIterable;
@@ -22,6 +23,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
+import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -42,7 +44,10 @@ public class CosmosItemCustomSerializerTests extends TestSuiteBase {
     @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosItemTest() {
         assertThat(this.client).isNull();
-        this.client = getClientBuilder().jsonSerializer(new GsonJsonSerializerBuilder().build()).buildClient();
+        this.client = getClientBuilder().connectionPolicy(new ConnectionPolicy().setConnectionMode(ConnectionMode.GATEWAY)
+            .setProxy(new InetSocketAddress("localhost", 8888)))
+            .jsonSerializer(new GsonJsonSerializerBuilder().build())
+            .buildClient();
         CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
         container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
     }
@@ -55,12 +60,12 @@ public class CosmosItemCustomSerializerTests extends TestSuiteBase {
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void createItem() {
-        GsonPojo gsonPojo = createItem(UUID.randomUUID().toString());
+        GsonPojo gsonPojo = createItem(UUID.randomUUID().toString(), UUID.randomUUID().toString());
         CosmosItemResponse<GsonPojo> itemResponse = container.createItem(gsonPojo);
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
         validateItemResponse(itemResponse.getItem(), gsonPojo);
 
-        GsonPojo gsonPojo1 = createItem(UUID.randomUUID().toString());
+        GsonPojo gsonPojo1 = createItem(UUID.randomUUID().toString(), UUID.randomUUID().toString());
         CosmosItemResponse<GsonPojo> itemResponse1 = container.createItem(gsonPojo1, new CosmosItemRequestOptions());
         validateItemResponse(itemResponse1.getItem(), gsonPojo1);
 
@@ -68,11 +73,11 @@ public class CosmosItemCustomSerializerTests extends TestSuiteBase {
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void createItem_alreadyExists() {
-        GsonPojo gsonPojo = createItem(UUID.randomUUID().toString());
+        GsonPojo gsonPojo = createItem(UUID.randomUUID().toString(), UUID.randomUUID().toString());
         CosmosItemResponse<GsonPojo> itemResponse = container.createItem(gsonPojo);
         validateItemResponse(itemResponse.getItem(), gsonPojo);
 
-        gsonPojo = createItem(UUID.randomUUID().toString());
+        gsonPojo = createItem(UUID.randomUUID().toString(), UUID.randomUUID().toString());
         CosmosItemResponse<GsonPojo> itemResponse1 = container.createItem(gsonPojo, new CosmosItemRequestOptions());
         validateItemResponse(itemResponse1.getItem(), gsonPojo);
 
@@ -87,47 +92,48 @@ public class CosmosItemCustomSerializerTests extends TestSuiteBase {
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void readItem() {
-        GsonPojo gsonPojo = createItem(UUID.randomUUID().toString());
+        GsonPojo gsonPojo = createItem(UUID.randomUUID().toString(), UUID.randomUUID().toString());
         container.createItem(gsonPojo);
 
-        CosmosItemResponse<GsonPojo> readResponse1 = container.readItem(gsonPojo.getId(), null,
-            new CosmosItemRequestOptions(), GsonPojo.class);
+        CosmosItemResponse<GsonPojo> readResponse1 = container.readItem(gsonPojo.getId(),
+            new PartitionKey(gsonPojo.getMypk()), new CosmosItemRequestOptions(), GsonPojo.class);
         validateItemResponse(readResponse1.getItem(), gsonPojo);
 
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void replaceItem() {
-        GsonPojo gsonPojo = createItem(UUID.randomUUID().toString());
+        GsonPojo gsonPojo = createItem(UUID.randomUUID().toString(), UUID.randomUUID().toString());
         CosmosItemResponse<GsonPojo> itemResponse = container.createItem(gsonPojo);
         validateItemResponse(itemResponse.getItem(), gsonPojo);
 
-        gsonPojo = new GsonPojo(gsonPojo.getId(), "Jane", "Doe", "I don't like pizza...");
+        gsonPojo = new GsonPojo(gsonPojo.getId(), gsonPojo.getMypk(), "Jane", "Doe", "I don't like pizza...");
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         // replace document
         CosmosItemResponse<GsonPojo> replace = container.replaceItem(gsonPojo, gsonPojo.getId(),
-            null, options);
+            new PartitionKey(gsonPojo.getMypk()), options);
 
         validateItemResponse(replace.getItem(), gsonPojo);
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void deleteItem() {
-        GsonPojo gsonPojo = createItem(UUID.randomUUID().toString());
+        GsonPojo gsonPojo = createItem(UUID.randomUUID().toString(), UUID.randomUUID().toString());
         container.createItem(gsonPojo);
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
 
-        CosmosItemResponse<?> deleteResponse = container.deleteItem(gsonPojo.getId(), null, options);
+        CosmosItemResponse<?> deleteResponse = container.deleteItem(gsonPojo.getId(),
+            new PartitionKey(gsonPojo.getMypk()), options);
         assertThat(deleteResponse.getStatusCode()).isEqualTo(204);
     }
 
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void readAllItems() {
-        GsonPojo gsonPojo = createItem(UUID.randomUUID().toString());
+        GsonPojo gsonPojo = createItem(UUID.randomUUID().toString(), UUID.randomUUID().toString());
         container.createItem(gsonPojo);
 
-        FeedOptions feedOptions = new FeedOptions();
+        FeedOptions feedOptions = new FeedOptions().setPartitionKey(new PartitionKey(gsonPojo.getMypk()));
 
         CosmosPagedIterable<GsonPojo> feedResponseIterator3 = container.readAllItems(feedOptions, GsonPojo.class);
         Iterator<GsonPojo> pojoIterator = feedResponseIterator3.iterator();
@@ -140,11 +146,11 @@ public class CosmosItemCustomSerializerTests extends TestSuiteBase {
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void queryItems() {
-        GsonPojo gsonPojo = createItem(UUID.randomUUID().toString());
+        GsonPojo gsonPojo = createItem(UUID.randomUUID().toString(), UUID.randomUUID().toString());
         container.createItem(gsonPojo);
 
         String query = String.format("SELECT * from c where c.id = '%s'", gsonPojo.getId());
-        FeedOptions feedOptions = new FeedOptions();
+        FeedOptions feedOptions = new FeedOptions().setPartitionKey(new PartitionKey(gsonPojo.getMypk()));
 
         CosmosPagedIterable<GsonPojo> feedResponseIterator1 =
             container.queryItems(query, feedOptions, GsonPojo.class);
@@ -166,20 +172,21 @@ public class CosmosItemCustomSerializerTests extends TestSuiteBase {
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void queryItemsWithContinuationTokenAndPageSize() {
         List<String> actualIds = new ArrayList<>();
-        GsonPojo properties = createItem(UUID.randomUUID().toString());
+        String partitionKey = UUID.randomUUID().toString();
+        GsonPojo properties = createItem(UUID.randomUUID().toString(), partitionKey);
         container.createItem(properties);
         actualIds.add(properties.getId());
-        properties = createItem(UUID.randomUUID().toString());
+        properties = createItem(UUID.randomUUID().toString(), partitionKey);
         container.createItem(properties);
         actualIds.add(properties.getId());
-        properties = createItem(UUID.randomUUID().toString());
+        properties = createItem(UUID.randomUUID().toString(), partitionKey);
         container.createItem(properties);
         actualIds.add(properties.getId());
 
 
         String query = String.format("SELECT * from c where c.id in ('%s', '%s', '%s')", actualIds.get(0),
             actualIds.get(1), actualIds.get(2));
-        FeedOptions feedOptions = new FeedOptions();
+        FeedOptions feedOptions = new FeedOptions().setPartitionKey(new PartitionKey(partitionKey));
         String continuationToken = null;
         int pageSize = 1;
 
@@ -204,8 +211,8 @@ public class CosmosItemCustomSerializerTests extends TestSuiteBase {
 
     }
 
-    private static GsonPojo createItem(String id) {
-        return new GsonPojo(id, "John", "Doe", "I like pizza!");
+    private static GsonPojo createItem(String id, String mypk) {
+        return new GsonPojo(id, mypk, "John", "Doe", "I like pizza!");
     }
 
     private static void validateItemResponse(GsonPojo actual, GsonPojo expected) {
@@ -220,16 +227,19 @@ public class CosmosItemCustomSerializerTests extends TestSuiteBase {
         private String id;
 
         @Expose
+        private String mypk;
+
+        @Expose
         private String firstName;
 
         @Expose
         private String lastName;
 
-        @Expose(serialize = false, deserialize = false)
-        private String secret;
+        private transient String secret;
 
-        private GsonPojo(String id, String firstName, String lastName, String secret) {
+        private GsonPojo(String id, String mypk, String firstName, String lastName, String secret) {
             this.id = id;
+            this.mypk = mypk;
             this.firstName = firstName;
             this.lastName = lastName;
             this.secret = secret;
@@ -237,6 +247,10 @@ public class CosmosItemCustomSerializerTests extends TestSuiteBase {
 
         public String getId() {
             return id;
+        }
+
+        public String getMypk() {
+            return mypk;
         }
 
         public String getFirstName() {

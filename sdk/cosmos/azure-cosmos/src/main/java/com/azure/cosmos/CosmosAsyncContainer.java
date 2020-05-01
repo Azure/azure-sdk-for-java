@@ -25,7 +25,6 @@ import com.azure.cosmos.util.UtilBridgeInternal;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
@@ -384,14 +383,9 @@ public class CosmosAsyncContainer {
     }
 
     private <T> FeedResponse<T> prepareFeedResponse(FeedResponse<Document> response, Class<T> classType) {
-        return BridgeInternal.createFeedResponseWithQueryMetrics(
-            // TODO (alzimmer): Need to figure out if 'response' can change to FeedResponse<String>.
-            // Change the logic so we get back a list of JSON object strings that can be parsed based on 'classType'.
-            //response.getResults().stream().map(document -> ModelBridgeInternal.toObjectFromJsonSerializable(document, classType))
-            response.getElements().stream().map(document -> jsonSerializer()
-                .deserialize(document.toJson().getBytes(StandardCharsets.UTF_8), classType))
-                .collect(Collectors.toList()), response.getResponseHeaders(),
-            ModelBridgeInternal.queryMetrics(response));
+        return BridgeInternal.createFeedResponseWithQueryMetrics(response.getElements().stream()
+            .map(document -> ModelBridgeInternal.toObjectFromJsonSerializable(document, classType, jsonSerializer()))
+            .collect(Collectors.toList()), response.getResponseHeaders(), ModelBridgeInternal.queryMetrics(response));
     }
 
 

@@ -4,7 +4,6 @@ package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.serializer.json.jackson.JacksonJsonSerializer;
-import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -16,7 +15,6 @@ import java.util.List;
 /**
  * Helper class to buildAsyncClient {@link CosmosAsyncClient} instances
  * as logical representation of the Azure Cosmos database service.
- *
  * <pre>
  * {@code
  * ConnectionPolicy connectionPolicy = new ConnectionPolicy();
@@ -337,10 +335,6 @@ public class CosmosClientBuilder {
                 + "cosmos key credential");
         ifThrowIllegalArgException(cosmosKeyCredential != null && StringUtils.isEmpty(cosmosKeyCredential.getKey()),
             "cannot buildAsyncClient client without key credential");
-
-        if (jsonSerializer == null) {
-            jsonSerializer = new JacksonJsonSerializerBuilder().build();
-        }
     }
 
     /**
