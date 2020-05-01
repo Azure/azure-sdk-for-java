@@ -75,6 +75,11 @@ jobs:
       vmImage: $(OSVmImage)
 
     steps:
+      # https://github.com/actions/virtual-environments/issues/798
+      - script: sudo ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf
+        displayName: Bypass local DNS server to workaround issue resolving cognitiveservices names
+        condition: and(succeededOrFailed(), eq(variables['OSVmImage'], 'ubuntu-18.04'))
+
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
         - template: /eng/common/TestResources/deploy-test-resources.yml
           parameters:
@@ -110,6 +115,8 @@ jobs:
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
         - template: /eng/common/TestResources/remove-test-resources.yml
+          parameters:
+            ServiceDirectory: '${{ parameters.ServiceDirectory }}'
 
 
       - task: PublishTestResults@2

@@ -253,7 +253,7 @@ public abstract class TestBase {
             }
             httpPipeline = HttpPipelineProvider.buildHttpPipeline(
                 credential, profile, null, new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS),
-                null, new RetryPolicy(), policies, null);
+                null, new RetryPolicy(), policies, generateHttpClientWithProxy(null));
 
             interceptorManager.addTextReplacementRule(profile.subscriptionId(), ZERO_SUBSCRIPTION);
             interceptorManager.addTextReplacementRule(profile.tenantId(), ZERO_TENANT);

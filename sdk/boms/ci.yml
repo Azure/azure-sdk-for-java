@@ -33,7 +33,7 @@ pr:
       - sdk/boms/
 
 stages:
-  - template: ../../eng/pipelines/templates/stages/archetype-sdk-bom.yml
+  - template: ../../eng/pipelines/templates/stages/archetype-sdk-pom-only.yml
     parameters:
       ServiceDirectory: boms
       Artifacts:
