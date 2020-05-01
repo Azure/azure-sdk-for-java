@@ -172,11 +172,14 @@ public class FluxInputStream extends InputStream {
                 // ByteBuffer consumer
                 byteBuffer -> {
                     lock.lock();
-                    this.buffer = new ByteArrayInputStream(FluxUtil.byteBufferToArray(byteBuffer));
-                    this.waitingForData = false;
-                    // Signal the consumer when data is available.
-                    dataAvailable.signal();
-                    lock.unlock();
+                    try {
+                        this.buffer = new ByteArrayInputStream(FluxUtil.byteBufferToArray(byteBuffer));
+                        this.waitingForData = false;
+                        // Signal the consumer when data is available.
+                        dataAvailable.signal();
+                    } finally {
+                        lock.unlock();
+                    }
                 },
                 // Error consumer
                 throwable -> {
