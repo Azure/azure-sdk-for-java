@@ -88,7 +88,7 @@ public class FluxInputStream extends InputStream {
            was emitted by the Flux. */
         if (this.buffer == null) { // Only executed on first subscription.
             if (this.lastError != null) {
-                throw lastError;
+                throw logger.logExceptionAsError(new RuntimeException(this.lastError.getMessage()));
             }
             if (this.fluxComplete) {
                 return -1;
@@ -116,8 +116,8 @@ public class FluxInputStream extends InputStream {
         if (this.fluxComplete) {
             return -1;
         } else {
-            throw new IllegalStateException("An unexpected error occurred. No data was read from the stream but the "
-                + "stream did not indicate completion.");
+            throw logger.logExceptionAsError(new IllegalStateException("An unexpected error occurred. No data was "
+                + "read from the stream but the stream did not indicate completion."));
         }
     }
 
@@ -129,7 +129,7 @@ public class FluxInputStream extends InputStream {
         }
         super.close();
         if (this.lastError != null) {
-            throw this.lastError;
+            throw logger.logExceptionAsError(new RuntimeException(this.lastError.getMessage()));
         }
     }
 
