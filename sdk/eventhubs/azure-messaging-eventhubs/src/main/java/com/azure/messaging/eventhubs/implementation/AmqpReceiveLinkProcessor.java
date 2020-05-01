@@ -484,7 +484,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         final CoreSubscriber<? super Message> subscriber = downstream.get();
         final long r = requested;
         if (subscriber == null || r == 0) {
-            logger.info("Not adding credits. No downstream subscribers or items requested.");
+            logger.verbose("Not adding credits. No downstream subscribers or items requested.");
             linkCreditsAdded.set(false);
             return 0;
         }
