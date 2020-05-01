@@ -1,7 +1,10 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
-- Change `createOrUpdate*` and `delete*` APIs in `SearchServiceClient` to use boolean `onlyIfUnchanged` instead of `MatchConditioans`.
+## 1.0.0-beta.3 (2020-05-05)
+- Replaced `isRetrievable` API to `isHidden`. Boolean value flips over from `retrievable` to `hidden`.
+- Changed search version from `2019-05-06` to `2019-05-06-Preview`
+- Changed `createOrUpdate*` and `delete*` APIs in `SearchServiceClient` to use boolean `onlyIfUnchanged` instead of `MatchConditioans`.
+- Updated reactor core to `3.3.5.RELEASE` and reactor netty to `0.9.7.0.9.7.RELEASE`
 
 ## 1.0.0-beta.2 (2020-04-06)
 
