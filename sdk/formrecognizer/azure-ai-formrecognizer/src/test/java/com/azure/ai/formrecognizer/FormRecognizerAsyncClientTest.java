@@ -258,17 +258,17 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     void recognizeCustomFormLabeledData() {
         customFormDataRunner(data ->
             beginTrainingLabeledRunner((storageSASUrl, useLabelFile) -> {
-                SyncPoller<OperationResult, CustomFormModel> syncPoller =
+                SyncPoller<OperationResult, CustomFormModel> trainingPoller =
                     client.getFormTrainingAsyncClient().beginTraining(storageSASUrl, useLabelFile).getSyncPoller();
-                syncPoller.waitForCompletion();
+                trainingPoller.waitForCompletion();
 
-                SyncPoller<OperationResult, IterableStream<RecognizedForm>> syncPollers
+                SyncPoller<OperationResult, IterableStream<RecognizedForm>> syncPoller
                     = client.beginRecognizeCustomForms(toFluxByteBuffer(data),
-                    syncPoller.getFinalResult().getModelId(),
+                    trainingPoller.getFinalResult().getModelId(),
                     CUSTOM_FORM_FILE_LENGTH, FormContentType.APPLICATION_PDF, true, null)
                     .getSyncPoller();
                 syncPoller.waitForCompletion();
-                validateRecognizedResult(syncPollers.getFinalResult(),
+                validateRecognizedResult(syncPoller.getFinalResult(),
                     getRawResponse(CUSTOM_FORM_LABELED_DATA).getAnalyzeResult(), true, true);
             }));
     }
@@ -304,17 +304,17 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     void recognizeCustomFormLabeledDataWithContentTypeAutoDetection() {
         customFormDataRunner(data ->
             beginTrainingLabeledRunner((storageSASUrl, useLabelFile) -> {
-                SyncPoller<OperationResult, CustomFormModel> syncPoller =
+                SyncPoller<OperationResult, CustomFormModel> trainingPoller =
                     client.getFormTrainingAsyncClient().beginTraining(storageSASUrl, useLabelFile).getSyncPoller();
-                syncPoller.waitForCompletion();
+                trainingPoller.waitForCompletion();
 
-                SyncPoller<OperationResult, IterableStream<RecognizedForm>> syncPollers
+                SyncPoller<OperationResult, IterableStream<RecognizedForm>> syncPoller
                     = client.beginRecognizeCustomForms(toFluxByteBuffer(data),
-                    syncPoller.getFinalResult().getModelId(),
+                    trainingPoller.getFinalResult().getModelId(),
                     CUSTOM_FORM_FILE_LENGTH, null, true, null)
                     .getSyncPoller();
                 syncPoller.waitForCompletion();
-                validateRecognizedResult(syncPollers.getFinalResult(),
+                validateRecognizedResult(syncPoller.getFinalResult(),
                     getRawResponse(CUSTOM_FORM_LABELED_DATA).getAnalyzeResult(), true, true);
             }));
     }
@@ -326,17 +326,17 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     void recognizeCustomFormUnlabeledData() {
         customFormDataRunner(data ->
             beginTrainingUnlabeledRunner((storageSASUrl, useLabelFile) -> {
-                SyncPoller<OperationResult, CustomFormModel> syncPoller =
+                SyncPoller<OperationResult, CustomFormModel> trainingPoller =
                     client.getFormTrainingAsyncClient().beginTraining(storageSASUrl, useLabelFile).getSyncPoller();
-                syncPoller.waitForCompletion();
+                trainingPoller.waitForCompletion();
 
-                SyncPoller<OperationResult, IterableStream<RecognizedForm>> syncPollers
+                SyncPoller<OperationResult, IterableStream<RecognizedForm>> syncPoller
                     = client.beginRecognizeCustomForms(toFluxByteBuffer(data),
-                    syncPoller.getFinalResult().getModelId(),
+                    trainingPoller.getFinalResult().getModelId(),
                     CUSTOM_FORM_FILE_LENGTH, FormContentType.APPLICATION_PDF, false, null)
                     .getSyncPoller();
                 syncPoller.waitForCompletion();
-                validateRecognizedResult(syncPollers.getFinalResult(),
+                validateRecognizedResult(syncPoller.getFinalResult(),
                     getRawResponse(CUSTOM_FORM_DATA).getAnalyzeResult(), false, false);
             }));
     }
