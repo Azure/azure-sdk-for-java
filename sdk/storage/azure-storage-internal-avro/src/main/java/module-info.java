@@ -4,7 +4,6 @@
 module com.azure.storage.internal.avro {
     requires transitive com.azure.storage.common;
     requires com.azure.core;
-
     exports com.azure.storage.internal.avro.implementation
         to com.azure.storage.blob;
 
