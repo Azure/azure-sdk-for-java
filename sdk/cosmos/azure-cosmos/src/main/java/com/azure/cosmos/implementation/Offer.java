@@ -63,7 +63,7 @@ public class Offer extends Resource {
      * @param throughput the throughput
      * @return the offer
      */
-    public static Offer createFixedOffer(int throughput) {
+    public static Offer createManualOffer(int throughput) {
         return new Offer(throughput);
     }
 
@@ -100,7 +100,7 @@ public class Offer extends Resource {
      *
      * @return the max autoscale throughput
      */
-    public int getMaxAutoscaleThroughput() {
+    public int getAutoscaleMaxThroughput() {
         OfferAutoscaleSettings offerAutoscaleSettings = this.getOfferAutoScaleSettings();
         if (offerAutoscaleSettings != null) {
             return offerAutoscaleSettings.getMaxThroughput();
@@ -112,12 +112,12 @@ public class Offer extends Resource {
     /**
      * Sets max autoscale throughput.
      *
-     * @param maxAutoscaleThroughput the max autoscale throughput
+     * @param autoscaleMaxThroughput the max autoscale throughput
      */
-    public void setMaxAutoscaleThroughput(int maxAutoscaleThroughput) {
+    public void setAutoscaleMaxThroughput(int autoscaleMaxThroughput) {
         OfferAutoscaleSettings offerAutoscaleSettings = this.getOfferAutoScaleSettings();
         if (offerAutoscaleSettings != null) {
-            offerAutoscaleSettings.setMaxThroughput(maxAutoscaleThroughput);
+            offerAutoscaleSettings.setMaxThroughput(autoscaleMaxThroughput);
         }
     }
 

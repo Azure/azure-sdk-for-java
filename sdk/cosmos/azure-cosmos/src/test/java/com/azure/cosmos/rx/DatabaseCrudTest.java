@@ -4,8 +4,6 @@ package com.azure.cosmos.rx;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.implementation.Offer;
-import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDatabaseForTest;
@@ -116,22 +114,45 @@ public class DatabaseCrudTest extends TestSuiteBase {
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void readReplaceAutoscaleThroughput() throws Exception {
-        safeDeleteDatabase(client.getDatabase("newTestDatabase"));
+        final String databaseName = CosmosDatabaseForTest.generateId();
         int initalThroughput = 5000;
-        ThroughputProperties properties = ThroughputProperties.createAutoScaledProvisionedThroughput(initalThroughput,
-                                                                                                     50);
-        CosmosAsyncDatabase database = client.createDatabase("newTestDatabase", properties)
+        ThroughputProperties properties = ThroughputProperties.createAutoScaledThroughput(initalThroughput);
+        CosmosAsyncDatabase database = client.createDatabase(databaseName, properties)
                                            .block()
                                            .getDatabase();
 
         ThroughputResponse readThroughputResponse = database.readThroughput().block();
-        assertThat(readThroughputResponse.getProperties().getMaxAutoscaleThroughput()).isEqualTo(initalThroughput);
+        assertThat(readThroughputResponse.getProperties().getAutoscaleMaxThroughput()).isEqualTo(initalThroughput);
         database.createContainer("testCol", "/myPk").block();
         int tagetThroughput = 6000;
-        properties = ThroughputProperties.createAutoScaledProvisionedThroughput(tagetThroughput);
+        properties = ThroughputProperties.createAutoScaledThroughput(tagetThroughput);
         ThroughputResponse replaceResponse = database.replaceThroughput(properties).block();
-        assertThat(replaceResponse.getProperties().getMaxAutoscaleThroughput()).isEqualTo(tagetThroughput);
+        assertThat(replaceResponse.getProperties().getAutoscaleMaxThroughput()).isEqualTo(tagetThroughput);
+        safeDeleteDatabase(client.getDatabase(databaseName));
+
     }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void readReplaceManualThroughput() throws Exception {
+        final String databaseName = CosmosDatabaseForTest.generateId();
+        int initalThroughput = 5000;
+        ThroughputProperties properties = ThroughputProperties.createManualThroughput(initalThroughput);
+        CosmosAsyncDatabase database = client.createDatabase(databaseName, properties)
+                                           .block()
+                                           .getDatabase();
+
+        ThroughputResponse readThroughputResponse = database.readThroughput().block();
+        assertThat(readThroughputResponse.getProperties().getManualThroughput()).isEqualTo(initalThroughput);
+        database.createContainer("testCol", "/myPk").block();
+        int tagetThroughput = 6000;
+        properties = ThroughputProperties.createManualThroughput(tagetThroughput);
+        ThroughputResponse replaceResponse = database.replaceThroughput(properties).block();
+        assertThat(replaceResponse.getProperties().getManualThroughput()).isEqualTo(tagetThroughput);
+        safeDeleteDatabase(client.getDatabase(databaseName));
+
+    }
+
+
 
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void before_DatabaseCrudTest() {

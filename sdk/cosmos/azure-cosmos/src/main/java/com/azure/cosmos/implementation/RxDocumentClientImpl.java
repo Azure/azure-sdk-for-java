@@ -907,10 +907,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (options.getOfferThroughput() == null) {
             if (options.getThroughputProperties() != null) {
                 Offer offer = ModelBridgeInternal.getOfferFromThroughputProperties(options.getThroughputProperties());
-                final OfferAutoscaleAutoUpgradeProperties autoscaleAutoUpgradeProperties
-                    = offer.getOfferAutoScaleSettings().getAutoscaleAutoUpgradeProperties();
+                final OfferAutoscaleSettings offerAutoscaleSettings = offer.getOfferAutoScaleSettings();
+                OfferAutoscaleAutoUpgradeProperties autoscaleAutoUpgradeProperties = null;
+                if (offerAutoscaleSettings != null) {
+                     autoscaleAutoUpgradeProperties
+                        = offer.getOfferAutoScaleSettings().getAutoscaleAutoUpgradeProperties();
+                }
                 if (offer.hasOfferThroughput() &&
-                        (offer.getOfferAutoScaleSettings().getMaxThroughput() >= 0 ||
+                        (offerAutoscaleSettings != null && offerAutoscaleSettings.getMaxThroughput() >= 0 ||
                              autoscaleAutoUpgradeProperties != null &&
                                  autoscaleAutoUpgradeProperties
                                      .getAutoscaleThroughputProperties()
@@ -920,14 +924,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 }
 
                 if (offer.hasOfferThroughput()) {
-                    headers.put(HttpConstants.HttpHeaders.OFFER_THROUGHPUT, options.getOfferThroughput().toString());
+                    headers.put(HttpConstants.HttpHeaders.OFFER_THROUGHPUT, String.valueOf(offer.getThroughput()));
                 } else if (offer.getOfferAutoScaleSettings() != null) {
                     headers.put(HttpConstants.HttpHeaders.OFFER_AUTOPILOT_SETTINGS,
                                 ModelBridgeInternal.toJsonFromJsonSerializable(offer.getOfferAutoScaleSettings()));
                 }
             }
         }
-
 
         if (options.isPopulateQuotaInfo()) {
             headers.put(HttpConstants.HttpHeaders.POPULATE_QUOTA_INFO, String.valueOf(true));

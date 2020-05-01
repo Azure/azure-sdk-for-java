@@ -16,6 +16,7 @@ import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.ThroughputProperties;
@@ -24,6 +25,9 @@ import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
+
+import java.util.Collections;
+import java.util.List;
 
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
 
@@ -692,10 +696,9 @@ public class CosmosAsyncDatabase {
     public Mono<ThroughputResponse> replaceThroughput(ThroughputProperties throughputProperties) {
         return this.read()
                    .flatMap(response -> this.getDocClientWrapper()
-                                            .queryOffers("select * from c where c.offerResourceId = '"
-                                                             + response.getProperties()
-                                                                   .getResourceId()
-                                                             + "'", new FeedOptions())
+                                            .queryOffers(getOfferQuerySpecFromResourceId(response.getProperties()
+                                                                                             .getResourceId()),
+                                                         new FeedOptions())
                                             .single()
                                             .flatMap(offerFeedResponse -> {
                                                 if (offerFeedResponse.getResults().isEmpty()) {
@@ -725,10 +728,8 @@ public class CosmosAsyncDatabase {
     public Mono<ThroughputResponse> readThroughput() {
         return this.read()
                    .flatMap(response -> getDocClientWrapper()
-                                            .queryOffers("select * from c where c.offerResourceId = '"
-                                                             + response
-                                                                   .getProperties()
-                                                                   .getResourceId() + "'",
+                                            .queryOffers(getOfferQuerySpecFromResourceId(response.getProperties()
+                                                                                            .getResourceId()),
                                                          new FeedOptions())
                                             .single()
                                             .flatMap(offerFeedResponse -> {
@@ -746,6 +747,15 @@ public class CosmosAsyncDatabase {
                                                            .single();
                                             })
                                             .map(ModelBridgeInternal::createThroughputRespose));
+    }
+
+    SqlQuerySpec getOfferQuerySpecFromResourceId(String resourceId) {
+        String queryText = "select * from c where c.offerResourceId = @resourceId";
+        SqlQuerySpec querySpec = new SqlQuerySpec(queryText);
+        List<SqlParameter> parameters = Collections
+                                            .singletonList(new SqlParameter("@resourceId", resourceId));
+        querySpec.setParameters(parameters);
+        return querySpec;
     }
 
     CosmosAsyncClient getClient() {

@@ -21,32 +21,32 @@ public class ThroughputProperties {
      * @param throughput the throughput
      * @return the throughput properties
      */
-    public static ThroughputProperties createFixedThroughput(int throughput) {
-        return new ThroughputProperties(Offer.createFixedOffer(throughput));
+    public static ThroughputProperties createManualThroughput(int throughput) {
+        return new ThroughputProperties(Offer.createManualOffer(throughput));
     }
 
     /**
      * Create auto scale throughput properties.
      *
-     * @param maxAutoScaleThroughput the max auto scale throughput
+     * @param autoScaleMaxThroughput the max auto scale throughput
      * @param autoUpgradethroughputIncrementPercentage the auto upgrade max throughput increment percentage
      * @return the throughput properties
      */
-    public static ThroughputProperties createAutoScaledProvisionedThroughput(
-        int maxAutoScaleThroughput,
+    static ThroughputProperties createAutoScaledThroughput(
+        int autoScaleMaxThroughput,
         int autoUpgradethroughputIncrementPercentage) {
-        return new ThroughputProperties(Offer.createAutoscaleOffer(maxAutoScaleThroughput,
+        return new ThroughputProperties(Offer.createAutoscaleOffer(autoScaleMaxThroughput,
                                                                    autoUpgradethroughputIncrementPercentage));
     }
 
     /**
      * Create auto scaled provisioned throughput throughput properties.
      *
-     * @param maxAutoScaleThroughput the max auto scale throughput
+     * @param autoScaleMaxThroughput the max auto scale throughput
      * @return the throughput properties
      */
-    public static ThroughputProperties createAutoScaledProvisionedThroughput(int maxAutoScaleThroughput) {
-        return new ThroughputProperties(Offer.createAutoscaleOffer(maxAutoScaleThroughput,
+    public static ThroughputProperties createAutoScaledThroughput(int autoScaleMaxThroughput) {
+        return new ThroughputProperties(Offer.createAutoscaleOffer(autoScaleMaxThroughput,
                                                                    0));
     }
 
@@ -55,7 +55,7 @@ public class ThroughputProperties {
      *
      * @return the offer throughput
      */
-    public Integer getOfferThroughput() {
+    public Integer getManualThroughput() {
         return offer.getThroughput();
     }
 
@@ -64,7 +64,7 @@ public class ThroughputProperties {
      *
      * @return the offer autoscale properties
      */
-    public OfferAutoscaleSettings getOfferAutoscaleProperties() {
+    OfferAutoscaleSettings getOfferAutoscaleProperties() {
         return this.offer.getOfferAutoScaleSettings();
     }
 
@@ -73,8 +73,8 @@ public class ThroughputProperties {
      *
      * @return the max autoscale throughput
      */
-    public int getMaxAutoscaleThroughput() {
-        return this.offer.getMaxAutoscaleThroughput();
+    public int getAutoscaleMaxThroughput() {
+        return this.offer.getAutoscaleMaxThroughput();
     }
 
 
@@ -86,13 +86,11 @@ public class ThroughputProperties {
      * Get an updated offer based on the properties.
      */
     Offer updateOfferFromProperties(Offer offer) {
-        /*
-        if autoscale is set then update autoscale values
-        else update fixedthroughput
-         */
 
-        if (this.getMaxAutoscaleThroughput() > 0) {
-            offer.updateAutoscaleThroughput(this.getMaxAutoscaleThroughput());
+        if (this.getAutoscaleMaxThroughput() > 0) {
+            offer.updateAutoscaleThroughput(this.getAutoscaleMaxThroughput());
+        } else {
+            offer.setThroughput(this.getManualThroughput());
         }
         return offer;
     }

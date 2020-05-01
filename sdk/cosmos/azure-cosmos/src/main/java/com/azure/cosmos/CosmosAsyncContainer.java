@@ -672,10 +672,10 @@ public class CosmosAsyncContainer {
     public Mono<ThroughputResponse> replaceThroughput(ThroughputProperties throughputProperties) {
         return this.read()
                    .flatMap(response -> this.database.getDocClientWrapper()
-                                            .queryOffers("select * from c where c.offerResourceId = '"
-                                                             + response.getProperties()
-                                                                   .getResourceId()
-                                                             + "'", new FeedOptions())
+                                            .queryOffers(database.getOfferQuerySpecFromResourceId(response
+                                                                                                      .getProperties()
+                                                                                                      .getResourceId())
+                                                , new FeedOptions())
                                             .single()
                                             .flatMap(offerFeedResponse -> {
                                                 if (offerFeedResponse.getResults().isEmpty()) {
@@ -703,11 +703,10 @@ public class CosmosAsyncContainer {
     public Mono<ThroughputResponse> readThroughput() {
         return this.read()
                    .flatMap(response -> this.database.getDocClientWrapper()
-                                            .queryOffers("select * from c where c.offerResourceId = '"
-                                                             + response
-                                                                   .getProperties()
-                                                                   .getResourceId() + "'",
-                                                         new FeedOptions())
+                                            .queryOffers(database.getOfferQuerySpecFromResourceId(response
+                                                                                                      .getProperties()
+                                                                                                      .getResourceId())
+                                                , new FeedOptions())
                                             .single()
                                             .flatMap(offerFeedResponse -> {
                                                 if (offerFeedResponse.getResults().isEmpty()) {
