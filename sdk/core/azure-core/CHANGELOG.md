@@ -9,6 +9,7 @@
 - Deprecated `ClientLogger.logThowableAsWarning`, replaced with `ClientLogger.logThrowableAsWarning`.
 - Added utility method `FluxUtil.toFluxByteBuffer` which converts an `InputStream` into `Flux<ByteBuffer>`.
 - Updated Reactor Core dependency.
+- Added support for serialization and deserialization of discriminator types.
 
 ## 1.4.0 (2020-04-03)
 
