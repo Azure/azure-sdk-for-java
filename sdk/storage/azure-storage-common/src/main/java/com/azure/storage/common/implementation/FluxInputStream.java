@@ -138,25 +138,28 @@ public class FluxInputStream extends InputStream {
      */
     private void blockForData() {
         lock.lock();
-        waitingForData = true;
-        if (!subscribed) {
-            subscribeToData();
-        } else {
-            subscription.request(1);
-        }
-        // Block current thread until data is available.
-        while (waitingForData) {
-            if (fluxComplete) {
-                break;
+        try {
+            waitingForData = true;
+            if (!subscribed) {
+                subscribeToData();
             } else {
-                try {
-                    dataAvailable.await();
-                } catch (InterruptedException e) {
-                    throw logger.logExceptionAsError(new RuntimeException(e));
+                subscription.request(1);
+            }
+            // Block current thread until data is available.
+            while (waitingForData) {
+                if (fluxComplete) {
+                    break;
+                } else {
+                    try {
+                        dataAvailable.await();
+                    } catch (InterruptedException e) {
+                        throw logger.logExceptionAsError(new RuntimeException(e));
+                    }
                 }
             }
+        } finally {
+            lock.unlock();
         }
-        lock.unlock();
     }
 
     /**
@@ -204,10 +207,14 @@ public class FluxInputStream extends InputStream {
      */
     private void signalOnCompleteOrError() {
         lock.lock();
-        this.fluxComplete = true;
-        this.waitingForData = false;
-        dataAvailable.signal();
-        lock.unlock();
+        try {
+            this.fluxComplete = true;
+            this.waitingForData = false;
+            dataAvailable.signal();
+        }
+        finally {
+            lock.unlock();
+        }
     }
 
     /**
