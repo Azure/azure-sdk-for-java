@@ -84,18 +84,32 @@ public class ReactorNettyClientTests {
     }
 
     @Test
+    @Disabled
     public void testMultipleSubscriptionsEmitsError() {
+        /*
+         * This test is being disabled as there is a possible race condition on what is being tested.
+         *
+         * Reactor Netty will throw an exception when multiple subscriptions are made to the same network response at
+         * the same time. An exception won't be thrown if the first subscription has already been completed and cleaned
+         * up when the second subscription is made. In addition to that potential race scenario, there is additional
+         * complexity added when dealing with the response in an EventLoop. When in the EventLoop the subscription isn't
+         * cleaned up synchronously but instead is added as an execution for the EventLoop to trigger some time in the
+         * future. Given that this test will be disabled.
+         */
         HttpResponse response = getResponse(SHORT_BODY_PATH);
         // Subscription:1
-        response.getBodyAsByteArray().block();
+        StepVerifier.create(response.getBodyAsByteArray())
+            .assertNext(bytes -> assertEquals(SHORT_BODY, new String(bytes, StandardCharsets.UTF_8)))
+            .verifyComplete();
 
         // Subscription:2
         StepVerifier.create(response.getBodyAsByteArray())
             .expectNextCount(0)
             // Reactor netty 0.9.0.RELEASE behavior changed - second subscription returns onComplete() instead
             // of throwing an error
-            //.verifyError(IllegalStateException.class);
-            .verifyComplete();
+            // Reactor netty 0.9.7.RELEASE again changed the behavior to return an error on second subscription.
+            .verifyError(IllegalStateException.class);
+            // .verifyComplete();
     }
 
     @Test

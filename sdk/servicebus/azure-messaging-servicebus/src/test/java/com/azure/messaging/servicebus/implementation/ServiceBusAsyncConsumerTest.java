@@ -42,6 +42,7 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 class ServiceBusAsyncConsumerTest {
+    private static final String LINK_NAME = "some-link";
     private final EmitterProcessor<Message> messageProcessor = EmitterProcessor.create();
     private final FluxSink<Message> messageProcessorSink = messageProcessor.sink();
     private final EmitterProcessor<AmqpEndpointState> endpointProcessor = EmitterProcessor.create();
@@ -111,7 +112,7 @@ class ServiceBusAsyncConsumerTest {
     void receiveAutoComplete() {
         // Arrange
         final boolean isAutoComplete = true;
-        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(linkProcessor, serializer,
+        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
             isAutoComplete, false, renewDuration, retryOptions, onComplete, onAbandon,
             onRenewLock);
 
@@ -149,7 +150,7 @@ class ServiceBusAsyncConsumerTest {
     void receiveNoAutoComplete() {
         // Arrange
         final boolean isAutoComplete = false;
-        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(linkProcessor, serializer,
+        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
             isAutoComplete, false, renewDuration, retryOptions, onComplete, onAbandon,
             onRenewLock);
 
@@ -168,13 +169,9 @@ class ServiceBusAsyncConsumerTest {
 
         // Act and Assert
         StepVerifier.create(consumer.receive())
-            .then(() -> {
-                messageProcessorSink.next(message1);
-            })
+            .then(() -> messageProcessorSink.next(message1))
             .expectNext(receivedMessage1)
-            .then(() -> {
-                messageProcessorSink.next(message2);
-            })
+            .then(() -> messageProcessorSink.next(message2))
             .expectNext(receivedMessage2)
             .thenCancel()
             .verify();
@@ -193,7 +190,7 @@ class ServiceBusAsyncConsumerTest {
             Assertions.fail("Should not complete");
             return Mono.empty();
         };
-        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(linkProcessor, serializer,
+        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
             isAutoComplete, false, renewDuration, retryOptions, onComplete, onAbandon,
             onRenewLock);
 

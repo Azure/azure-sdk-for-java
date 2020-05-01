@@ -19,7 +19,6 @@ import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
@@ -87,24 +86,15 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
 
     @Override
     public Mono<ServiceBusManagementNode> getManagementNode(String entityPath, MessagingEntityType entityType) {
-        return getManagementNode(entityPath, entityType, "");
-    }
-
-    @Override
-    public Mono<ServiceBusManagementNode> getManagementNode(String entityPath, MessagingEntityType entityType,
-        String sessionId) {
-
         if (isDisposed()) {
             return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
                 "connectionId[%s]: Connection is disposed. Cannot get management instance for '%s'",
                 connectionId, entityPath))));
         }
 
-        final String path = CoreUtils.isNullOrEmpty(sessionId)
-            ? String.join("-", entityPath, entityType.toString())
-            : String.join("-", entityPath, entityType.toString(), sessionId);
+        final String entityTypePath = String.join("-", entityType.toString(), entityPath);
 
-        final ServiceBusManagementNode existing = managementNodes.get(path);
+        final ServiceBusManagementNode existing = managementNodes.get(entityTypePath);
         if (existing != null) {
             return Mono.just(existing);
         }
@@ -115,7 +105,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
                     fullyQualifiedNamespace, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE)
                     .getTokenManager(getClaimsBasedSecurityNode(), entityPath);
 
-                return tokenManager.authorize().thenReturn(managementNodes.compute(entityPath, (key, current) -> {
+                return tokenManager.authorize().thenReturn(managementNodes.compute(entityTypePath, (key, current) -> {
                     if (current != null) {
                         logger.info("A management node exists already, returning it.");
 
@@ -132,7 +122,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
                         entityPath, address, linkName);
 
                     return new ManagementChannel(createRequestResponseChannel(sessionName, linkName, address),
-                        fullyQualifiedNamespace, entityPath, sessionId, tokenManager, messageSerializer,
+                        fullyQualifiedNamespace, entityPath, tokenManager, messageSerializer,
                         retryOptions.getTryTimeout());
                 }));
             }));

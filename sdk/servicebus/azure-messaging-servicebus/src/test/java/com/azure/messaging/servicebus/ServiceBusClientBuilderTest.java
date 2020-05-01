@@ -259,7 +259,7 @@ class ServiceBusClientBuilderTest {
 
         Mockito.doReturn(amqpConnection).when(builderSpy).getServiceBusReactorAmqpConnection(
             any(MessageSerializer.class), any(ConnectionOptions.class), any(TokenManagerProvider.class),
-            any(ReactorProvider.class), any(ReactorHandlerProvider.class), anyString(), anyString(),anyString());
+            any(ReactorProvider.class), any(ReactorHandlerProvider.class), anyString(), anyString(), anyString());
 
         ServiceBusClientBuilder.ServiceBusSenderClientBuilder senderBuilder = builderSpy.sender();
         senderBuilder.queueName("queue-name");
@@ -275,8 +275,8 @@ class ServiceBusClientBuilderTest {
         receiverBuilder.buildClient();
 
         Mockito.verify(builderSpy, times(1)).getServiceBusReactorAmqpConnection(
-            any(MessageSerializer.class),any(ConnectionOptions.class), any(TokenManagerProvider.class),
-            any(ReactorProvider.class), any(ReactorHandlerProvider.class), anyString(), anyString(),anyString());
+            any(MessageSerializer.class), any(ConnectionOptions.class), any(TokenManagerProvider.class),
+            any(ReactorProvider.class), any(ReactorHandlerProvider.class), anyString(), anyString(), anyString());
     }
 
     private static URI getUri(String endpointFormat, String namespace, String domainName) {
