@@ -120,7 +120,7 @@ public class IdentityClient {
             return publicClientApplication;
         } else if (clientId == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
-                "A non-null value for client ID must be providedfor user authentication."));
+                "A non-null value for client ID must be provided for user authentication."));
         } else {
             String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/organizations/" + tenantId;
             PublicClientApplication.Builder publicClientApplicationBuilder = PublicClientApplication.builder(clientId);
@@ -549,7 +549,7 @@ public class IdentityClient {
                         }
                     }
 
-                    if (set.size() == 0) {
+                    if (set.isEmpty()) {
                         return Mono.error(new CredentialUnavailableException("SharedTokenCacheCredential "
                                 + "authentication unavailable. No accounts were found in the cache."));
                     }
@@ -561,7 +561,7 @@ public class IdentityClient {
                     }
 
                     if (accounts.size() != 1) {
-                        if (accounts.size() == 0) {
+                        if (accounts.isEmpty()) {
                             return Mono.error(new CredentialUnavailableException(
                                     String.format("SharedTokenCacheCredential authentication "
                                             + "unavailable. No account matching the specified username %s was found "
