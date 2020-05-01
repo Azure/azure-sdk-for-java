@@ -20,11 +20,6 @@
     <version>0.5-preview</version>
     <name>schemaregistry-codec</name>
 
-    <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-    </properties>
-
     <modules>
         <module>codec-avro</module>
     </modules>
