@@ -525,7 +525,8 @@
               com.azure.tools.checkstyle*:
               com.azure.core.test*:
               com.azure.endtoend*:
-              com.azure.perf*
+              com.azure.perf*:
+              com.azure.storage.internal.avro*
             </excludePackageNames>
             <!-- CosmosSkip - This is temporary, BridgeInternal gets converted to implementation -->
             <sourceFileExcludes>
@@ -1479,6 +1480,7 @@
     <module>sdk/storage/azure-storage-common</module>
     <module>sdk/storage/azure-storage-file-share</module>
     <module>sdk/storage/azure-storage-file-datalake</module>
+    <module>sdk/storage/azure-storage-internal-avro</module>
     <module>sdk/storage/azure-storage-perf</module>
     <module>sdk/storage/azure-storage-queue</module>
     <module>sdk/textanalytics/azure-ai-textanalytics</module>
