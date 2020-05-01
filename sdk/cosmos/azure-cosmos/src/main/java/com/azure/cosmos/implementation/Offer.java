@@ -49,6 +49,15 @@ public class Offer extends Resource {
     }
 
     /**
+     * Instantiates a new Offer from object node.
+     *
+     * @param objectNode the object node
+     */
+    public Offer(ObjectNode objectNode) {
+        super(objectNode);
+    }
+
+    /**
      * Create fixed offer offer.
      *
      * @param throughput the throughput

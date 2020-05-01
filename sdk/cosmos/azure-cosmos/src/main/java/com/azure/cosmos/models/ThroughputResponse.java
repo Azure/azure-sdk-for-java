@@ -22,7 +22,9 @@ public class ThroughputResponse extends CosmosResponse<ThroughputProperties> {
     @Override
     public ThroughputProperties getProperties(){
         if (throughputProperties == null){
-            throughputProperties = new ThroughputProperties(offerResourceResponse.getResource());
+            Offer offer =
+                new Offer(ModelBridgeInternal.getPropertyBagFromJsonSerializable(offerResourceResponse.getResource()));
+            throughputProperties = new ThroughputProperties(offer);
         }
         return throughputProperties;
     }
