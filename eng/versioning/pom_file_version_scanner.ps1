@@ -46,8 +46,8 @@ $StartTime = $(get-date)
 
 # This is the for the bannedDependencies include exceptions. All <include> entries need to be of the
 # form <include>groupId:artifactId:[version]</include> which locks to a specific version. The exception
-# to this is the blanket, wildcard include for com.azure libraries.
-$ComAzureWhitelistInclude = "com.azure:*"
+# to this is the blanket, wildcard include for com.azure and com.microsoft.azure libraries.
+$ComAzureWhitelistIncludes = ("com.azure:*", "com.microsoft.azure:*")
 
 function Write-Error-With-Color([string]$msg)
 {
@@ -561,10 +561,11 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
             # These entries will not and should not have an update tag
             elseif ($split.Count -eq 2)
             {
-                if ($rawIncludeText -ne $ComAzureWhitelistInclude)
+                if ($ComAzureWhitelistIncludes -notcontains $rawIncludeText)
                 {
                     $script:FoundError = $true
-                    Write-Error-With-Color "Error:  $($rawIncludeText) is not a valid <include> entry. With the exception of the $($ComAzureWhitelistInclude), every <include> entry must be of the form <include>groupId:artifactId:[version]<include>"
+                    $WhiteListIncludeForError = $ComAzureWhitelistIncludes -join " and "
+                    Write-Error-With-Color "Error:  $($rawIncludeText) is not a valid <include> entry. With the exception of the $($WhiteListIncludeForError), every <include> entry must be of the form <include>groupId:artifactId:[version]<include>"
                 }
             }
             else

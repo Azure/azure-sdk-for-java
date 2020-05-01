@@ -3,6 +3,7 @@
 
 package com.azure.management.network.implementation;
 
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.network.NetworkInterface;
 import com.azure.management.network.NetworkInterfaceDnsSettings;
@@ -53,6 +54,14 @@ class NetworkInterfacesImpl
         VirtualMachineScaleSetNetworkInterfacesImpl scaleSetNetworkInterfaces =
             new VirtualMachineScaleSetNetworkInterfacesImpl(resourceGroupName, scaleSetName, this.manager());
         return scaleSetNetworkInterfaces.listByVirtualMachineInstanceId(instanceId);
+    }
+
+    @Override
+    public PagedFlux<VirtualMachineScaleSetNetworkInterface> listByVirtualMachineScaleSetInstanceIdAsync(
+        String resourceGroupName, String scaleSetName, String instanceId) {
+        VirtualMachineScaleSetNetworkInterfacesImpl scaleSetNetworkInterfaces =
+            new VirtualMachineScaleSetNetworkInterfacesImpl(resourceGroupName, scaleSetName, this.manager());
+        return scaleSetNetworkInterfaces.listByVirtualMachineInstanceIdAsync(instanceId);
     }
 
     @Override

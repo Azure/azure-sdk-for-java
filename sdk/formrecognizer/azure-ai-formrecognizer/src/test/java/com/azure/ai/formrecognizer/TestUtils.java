@@ -5,22 +5,14 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.implementation.Utility;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
-import com.azure.ai.formrecognizer.implementation.models.PageResult;
-import com.azure.ai.formrecognizer.implementation.models.ReadResult;
+import com.azure.ai.formrecognizer.implementation.models.Model;
 import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelField;
 import com.azure.ai.formrecognizer.models.CustomFormModelStatus;
 import com.azure.ai.formrecognizer.models.CustomFormSubModel;
-import com.azure.ai.formrecognizer.models.DimensionUnit;
-import com.azure.ai.formrecognizer.models.FormLine;
-import com.azure.ai.formrecognizer.models.FormPage;
-import com.azure.ai.formrecognizer.models.FormTable;
-import com.azure.ai.formrecognizer.models.RecognizedForm;
-import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.ai.formrecognizer.models.TrainingDocumentInfo;
 import com.azure.ai.formrecognizer.models.TrainingStatus;
-import com.azure.ai.formrecognizer.models.USReceipt;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -43,11 +35,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
-import static com.azure.ai.formrecognizer.Transforms.toReceipt;
-import static com.azure.ai.formrecognizer.Transforms.toRecognizedForm;
 
 /**
  * Contains helper methods for generating inputs for test methods
@@ -75,17 +62,18 @@ final class TestUtils {
         + ".com/Azure/azure-sdk-for-java/master/sdk/formrecognizer/azure-ai-formrecognizer/src/test/resources"
         + "/sample_files/Test/layout1.jpg";
 
-    private static final String CUSTOM_FORM_LABELED_DATA = "src/test/resources/sample_files/Content"
+    static final String CUSTOM_FORM_LABELED_DATA = "src/test/resources/sample_files/Content"
         + "/customFormLabeledContent.json";
-    private static final String CUSTOM_FORM_DATA = "src/test/resources/sample_files/Content/customFormContent.json";
-    private static final String RECEIPT_FORM_DATA = "src/test/resources/sample_files/Content/receiptContent.json";
-    private static final String LAYOUT_FORM_DATA = "src/test/resources/sample_files/Content/layoutContent.json";
-
+    static final String CUSTOM_FORM_DATA = "src/test/resources/sample_files/Content/customFormContent.json";
+    static final String RECEIPT_FORM_DATA = "src/test/resources/sample_files/Content/receiptContent.json";
+    static final String LAYOUT_FORM_DATA = "src/test/resources/sample_files/Content/layoutContent.json";
+    static final String LABELED_MODEL_DATA = "src/test/resources/sample_files/Content/labeledModelContent.json";
+    static final String UNLABELED_MODEL_DATA = "src/test/resources/sample_files/Content/unlabeledModelContent.json";
 
     private TestUtils() {
     }
 
-    static AnalyzeOperationResult getRawResponse(String filePath) {
+    static AnalyzeOperationResult getAnalyzeRawResponse(String filePath) {
         String content;
         try {
             content = new String(Files.readAllBytes(Paths.get(filePath)));
@@ -96,49 +84,15 @@ final class TestUtils {
         return null;
     }
 
-    static List<List<FormTable>> getPagedTables() {
-        List<PageResult> pageResults = getRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult().getPageResults();
-        List<ReadResult> readResults = getRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult().getReadResults();
-        return IntStream.range(0, pageResults.size())
-            .mapToObj(i -> Transforms.getPageTables(pageResults.get(i), readResults, i + 1))
-            .collect(Collectors.toList());
-    }
-
-    static List<List<FormLine>> getPagedLines() {
-        List<ReadResult> readResults = getRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult().getReadResults();
-        return readResults.stream().map(Transforms::getReadResultFormLines).collect(Collectors.toList());
-    }
-
-    static IterableStream<RecognizedReceipt> getRawExpectedReceipt(boolean includeTextDetails) {
-        return toReceipt(getRawResponse(RECEIPT_FORM_DATA).getAnalyzeResult(), includeTextDetails);
-    }
-
-    static IterableStream<FormPage> getExpectedFormPages() {
-        FormPage formPage = new FormPage(2200, 0, DimensionUnit.PIXEL, 1700,
-            new IterableStream<FormLine>(getPagedLines().get(0)),
-            new IterableStream<FormTable>(getPagedTables().get(0)));
-        return new IterableStream<>(Collections.singletonList(formPage));
-    }
-
-    static IterableStream<RecognizedReceipt> getExpectedReceipts(boolean includeTextDetails) {
-        return getRawExpectedReceipt(includeTextDetails);
-    }
-
-    static USReceipt getExpectedUSReceipt() {
-        USReceipt usReceipt = null;
-        for (RecognizedReceipt recognizedReceipt : getRawExpectedReceipt(true)) {
-            usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
+    static Model getModelRawResponse(String filePath) {
+        String content;
+        try {
+            content = new String(Files.readAllBytes(Paths.get(filePath)));
+            return getSerializerAdapter().deserialize(content, Model.class, SerializerEncoding.JSON);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return usReceipt;
-    }
-
-    static IterableStream<RecognizedForm> getExpectedRecognizedForms() {
-        return new IterableStream<RecognizedForm>(toRecognizedForm(getRawResponse(CUSTOM_FORM_DATA).getAnalyzeResult(), false));
-    }
-
-    static IterableStream<RecognizedForm> getExpectedRecognizedLabeledForms() {
-        return new IterableStream<RecognizedForm>(
-            toRecognizedForm(getRawResponse(CUSTOM_FORM_LABELED_DATA).getAnalyzeResult(), true));
+        return null;
     }
 
     static List<TrainingDocumentInfo> getExpectedTrainingDocuments() {
