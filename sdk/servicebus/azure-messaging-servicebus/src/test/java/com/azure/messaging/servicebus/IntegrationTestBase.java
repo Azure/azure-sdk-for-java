@@ -41,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public abstract class IntegrationTestBase extends TestBase {
-    protected static final Duration TIMEOUT = Duration.ofSeconds(75);
+    protected static final Duration TIMEOUT = Duration.ofSeconds(60);
     protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
     protected final ClientLogger logger;
 

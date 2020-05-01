@@ -4,6 +4,7 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.network.implementation.NetworkManager;
 import com.azure.management.network.models.NetworkInterfacesInner;
@@ -73,5 +74,16 @@ public interface NetworkInterfaces
      * @return list of network interfaces
      */
     PagedIterable<VirtualMachineScaleSetNetworkInterface> listByVirtualMachineScaleSetInstanceId(
+        String resourceGroupName, String scaleSetName, String instanceId);
+
+    /**
+     * List the network interfaces associated with a specific virtual machine instance in a scale set asynchronously.
+     *
+     * @param resourceGroupName virtual machine scale set resource group name
+     * @param scaleSetName scale set name
+     * @param instanceId the virtual machine scale set vm instance id
+     * @return list of network interfaces
+     */
+    PagedFlux<VirtualMachineScaleSetNetworkInterface> listByVirtualMachineScaleSetInstanceIdAsync(
         String resourceGroupName, String scaleSetName, String instanceId);
 }

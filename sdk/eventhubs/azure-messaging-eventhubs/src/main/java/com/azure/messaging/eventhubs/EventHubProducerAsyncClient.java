@@ -298,10 +298,19 @@ public class EventHubProducerAsyncClient implements Closeable {
      * maximum size of a single batch, an exception will be triggered and the send will fail. By default, the message
      * size is the max amount allowed on the link.
      *
+     * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducerclient.send#Iterable}
+     *
+     * <p>
+     * For more information regarding the maximum event size allowed, see
+     * <a href="https://docs.microsoft.com/azure/event-hubs/event-hubs-quotas">Azure Event Hubs Quotas and
+     * Limits</a>.
+     * </p>
+     *
      * @param events Events to send to the service.
      * @return A {@link Mono} that completes when all events are pushed to the service.
+     * @throws AmqpException if the size of {@code events} exceed the maximum size of a single batch.
      */
-    Mono<Void> send(Iterable<EventData> events) {
+    public Mono<Void> send(Iterable<EventData> events) {
         if (events == null) {
             return monoError(logger, new NullPointerException("'events' cannot be null."));
         }
@@ -314,11 +323,20 @@ public class EventHubProducerAsyncClient implements Closeable {
      * maximum size of a single batch, an exception will be triggered and the send will fail. By default, the message
      * size is the max amount allowed on the link.
      *
+     * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducerclient.send#Iterable-SendOptions}
+     *
+     * <p>
+     * For more information regarding the maximum event size allowed, see
+     * <a href="https://docs.microsoft.com/azure/event-hubs/event-hubs-quotas">Azure Event Hubs Quotas and
+     * Limits</a>.
+     * </p>
+     *
      * @param events Events to send to the service.
      * @param options The set of options to consider when sending this batch.
      * @return A {@link Mono} that completes when all events are pushed to the service.
+     * @throws AmqpException if the size of {@code events} exceed the maximum size of a single batch.
      */
-    Mono<Void> send(Iterable<EventData> events, SendOptions options) {
+    public Mono<Void> send(Iterable<EventData> events, SendOptions options) {
         if (events == null) {
             return monoError(logger, new NullPointerException("'events' cannot be null."));
         } else if (options == null) {
