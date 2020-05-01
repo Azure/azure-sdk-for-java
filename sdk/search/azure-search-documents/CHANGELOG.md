@@ -4,7 +4,7 @@
 - Replaced `isRetrievable` API with `isHidden`, parameter name changed from `retrievable` to `hidden`.
 - Changed Azure Search service version from `2019-05-06` to `2019-05-06-Preview`
 - Changed `createOrUpdate` and `delete` APIs in `SearchServiceClient` to use boolean `onlyIfUnchanged` instead of `MatchConditions`.
-- Updated reactor core to `3.3.5.RELEASE` and reactor netty to `0.9.7.0.9.7.RELEASE`
+- Updated reactor core to `3.3.5.RELEASE`.
 
 ## 1.0.0-beta.2 (2020-04-06)
 
