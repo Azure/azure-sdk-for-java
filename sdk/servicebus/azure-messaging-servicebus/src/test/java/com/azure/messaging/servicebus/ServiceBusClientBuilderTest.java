@@ -6,27 +6,47 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.implementation.ConnectionOptions;
+import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ReactorHandlerProvider;
+import com.azure.core.amqp.implementation.ReactorProvider;
+import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.util.Configuration;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSenderClientBuilder;
+import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import com.azure.messaging.servicebus.models.ReceiveMode;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import reactor.test.StepVerifier;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Duration;
 import java.util.Locale;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.times;
 
 class ServiceBusClientBuilderTest {
+
+    private static final String AZURE_SERVICE_BUS_CONNECTION_STRING = "AZURE_SERVICE_BUS_CONNECTION_STRING";
     private static final String NAMESPACE_NAME = "dummyNamespaceName";
     private static final String DEFAULT_DOMAIN_NAME = "servicebus.windows.net/";
     private static final String ENDPOINT_FORMAT = "sb://%s.%s";
@@ -43,6 +63,24 @@ class ServiceBusClientBuilderTest {
     private static final String ENTITY_PATH_CONNECTION_STRING = String.format("Endpoint=%s;SharedAccessKeyName=%s;SharedAccessKey=%s;EntityPath=%s",
         ENDPOINT, SHARED_ACCESS_KEY_NAME, SHARED_ACCESS_KEY, QUEUE_NAME);
     private static final Proxy PROXY_ADDRESS = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, Integer.parseInt(PROXY_PORT)));
+
+    @Mock
+    private ServiceBusReactorAmqpConnection amqpConnection;
+
+    @BeforeAll
+    static void beforeAll() {
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(100));
+    }
+
+    @AfterAll
+    static void afterAll() {
+        StepVerifier.resetDefaultTimeout();
+    }
+
+    @BeforeEach
+    void setup(TestInfo testInfo) {
+        MockitoAnnotations.initMocks(this);
+    }
 
     @Test
     void missingConnectionString() {
@@ -203,6 +241,42 @@ class ServiceBusClientBuilderTest {
             Arguments.of("https://username:password@sub.example.com", true)
         );
 
+    }
+
+    /**
+     * Connection is shared between senders and receivers when created with same builder.
+     */
+    @Test
+    void sharedConnectionTest() {
+        // Arrange
+        Configuration configuration =  new Configuration();
+        configuration.put(AZURE_SERVICE_BUS_CONNECTION_STRING, NAMESPACE_CONNECTION_STRING);
+
+        ServiceBusClientBuilder builder =  new  ServiceBusClientBuilder();
+        builder.configuration(configuration);
+
+        ServiceBusClientBuilder builderSpy = Mockito.spy(builder);
+
+        Mockito.doReturn(amqpConnection).when(builderSpy).getServiceBusReactorAmqpConnection(
+            any(MessageSerializer.class), any(ConnectionOptions.class), any(TokenManagerProvider.class),
+            any(ReactorProvider.class), any(ReactorHandlerProvider.class), anyString(), anyString(),anyString());
+
+        ServiceBusClientBuilder.ServiceBusSenderClientBuilder senderBuilder = builderSpy.sender();
+        senderBuilder.queueName("queue-name");
+
+        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = builderSpy.receiver();
+        receiverBuilder.queueName("queue-name");
+
+        // Act & Assert
+        senderBuilder.buildAsyncClient();
+        senderBuilder.buildClient();
+
+        receiverBuilder.buildAsyncClient();
+        receiverBuilder.buildClient();
+
+        Mockito.verify(builderSpy, times(1)).getServiceBusReactorAmqpConnection(
+            any(MessageSerializer.class),any(ConnectionOptions.class), any(TokenManagerProvider.class),
+            any(ReactorProvider.class), any(ReactorHandlerProvider.class), anyString(), anyString(),anyString());
     }
 
     private static URI getUri(String endpointFormat, String namespace, String domainName) {
