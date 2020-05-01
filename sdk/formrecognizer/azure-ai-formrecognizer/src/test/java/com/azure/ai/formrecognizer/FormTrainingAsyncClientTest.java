@@ -17,10 +17,11 @@ import java.time.Duration;
 
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID_ERROR;
+import static com.azure.ai.formrecognizer.TestUtils.LABELED_MODEL_DATA;
 import static com.azure.ai.formrecognizer.TestUtils.NULL_SOURCE_URL_ERROR;
+import static com.azure.ai.formrecognizer.TestUtils.UNLABELED_MODEL_DATA;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedAccountProperties;
-import static com.azure.ai.formrecognizer.TestUtils.getExpectedLabeledModel;
-import static com.azure.ai.formrecognizer.TestUtils.getExpectedUnlabeledModel;
+import static com.azure.ai.formrecognizer.TestUtils.getModelRawResponse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -81,7 +82,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             StepVerifier.create(client.getCustomModelWithResponse(trainedModel.getModelId(),
                 Context.NONE)).assertNext(customFormModelResponse -> {
                     assertEquals(customFormModelResponse.getStatusCode(), HttpResponseStatus.OK.code());
-                    validateCustomModel(trainedModel, customFormModelResponse.getValue());
+                    validateCustomModelData(syncPoller.getFinalResult(), getModelRawResponse(UNLABELED_MODEL_DATA), false);
                 });
         });
     }
@@ -97,7 +98,8 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             syncPoller.waitForCompletion();
             CustomFormModel trainedUnlabeledModel = syncPoller.getFinalResult();
             StepVerifier.create(client.getCustomModel(trainedUnlabeledModel.getModelId()))
-                .assertNext(customFormModel -> validateCustomModel(trainedUnlabeledModel, customFormModel));
+                .assertNext(customFormModel -> validateCustomModelData(syncPoller.getFinalResult(),
+                    getModelRawResponse(UNLABELED_MODEL_DATA), false));
         });
     }
 
@@ -112,7 +114,8 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             syncPoller.waitForCompletion();
             CustomFormModel trainedLabeledModel = syncPoller.getFinalResult();
             StepVerifier.create(client.getCustomModel(trainedLabeledModel.getModelId()))
-                .assertNext(customFormModel -> validateCustomModel(trainedLabeledModel, customFormModel));
+                .assertNext(customFormModel -> validateCustomModelData(syncPoller.getFinalResult(),
+                    getModelRawResponse(LABELED_MODEL_DATA), true));
         });
     }
 
@@ -213,20 +216,20 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
                 client.beginTraining(storageSASUrl, useLabelFile).getSyncPoller();
             syncPoller.waitForCompletion();
-            validateCustomModel(getExpectedLabeledModel(), syncPoller.getFinalResult());
+            validateCustomModelData(syncPoller.getFinalResult(), getModelRawResponse(LABELED_MODEL_DATA), true);
         });
     }
 
     /**
      * Verifies the result of the training operation for a valid unlabeled model Id and training set Url.
      */
-    @Test
-    void beginTrainingUnlabeledResult() {
-        beginTrainingUnlabeledResultRunner((storageSASUrl, useLabelFile) -> {
-            SyncPoller<OperationResult, CustomFormModel> syncPoller =
-                client.beginTraining(storageSASUrl, useLabelFile).getSyncPoller();
-            syncPoller.waitForCompletion();
-            validateCustomModel(getExpectedUnlabeledModel(), syncPoller.getFinalResult());
-        });
-    }
+    // @Test
+    // void beginTrainingUnlabeledResult() {
+    //     beginTrainingUnlabeledResultRunner((storageSASUrl, useLabelFile) -> {
+    //         SyncPoller<OperationResult, CustomFormModel> syncPoller =
+    //             client.beginTraining(storageSASUrl, useLabelFile).getSyncPoller();
+    //         syncPoller.waitForCompletion();
+    //         validateCustomModelData(syncPoller.getFinalResult(), getModelRawResponse(UNLABELED_MODEL_DATA), false);
+    //     });
+    // }
 }

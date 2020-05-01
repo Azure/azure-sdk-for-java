@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.implementation.Utility;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
+import com.azure.ai.formrecognizer.implementation.models.Model;
 import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelField;
@@ -66,16 +67,28 @@ final class TestUtils {
     static final String CUSTOM_FORM_DATA = "src/test/resources/sample_files/Content/customFormContent.json";
     static final String RECEIPT_FORM_DATA = "src/test/resources/sample_files/Content/receiptContent.json";
     static final String LAYOUT_FORM_DATA = "src/test/resources/sample_files/Content/layoutContent.json";
-
+    static final String LABELED_MODEL_DATA = "src/test/resources/sample_files/Content/labeledModelContent.json";
+    static final String UNLABELED_MODEL_DATA = "src/test/resources/sample_files/Content/unlabeledModelContent.json";
 
     private TestUtils() {
     }
 
-    static AnalyzeOperationResult getRawResponse(String filePath) {
+    static AnalyzeOperationResult getAnalyzeRawResponse(String filePath) {
         String content;
         try {
             content = new String(Files.readAllBytes(Paths.get(filePath)));
             return getSerializerAdapter().deserialize(content, AnalyzeOperationResult.class, SerializerEncoding.JSON);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    static Model getModelRawResponse(String filePath) {
+        String content;
+        try {
+            content = new String(Files.readAllBytes(Paths.get(filePath)));
+            return getSerializerAdapter().deserialize(content, Model.class, SerializerEncoding.JSON);
         } catch (IOException e) {
             e.printStackTrace();
         }

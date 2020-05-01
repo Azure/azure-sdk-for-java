@@ -48,24 +48,11 @@ import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
-import com.azure.storage.blob.BlobContainerClient;
-import com.azure.storage.blob.BlobServiceClient;
-import com.azure.storage.blob.BlobServiceClientBuilder;
-import com.azure.storage.blob.sas.BlobContainerSasPermission;
-import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
-import com.azure.storage.blob.specialized.BlockBlobClient;
-import com.azure.storage.common.StorageSharedKeyCredential;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiConsumer;
@@ -87,6 +74,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     private static final String FORM_RECOGNIZER_PROPERTIES = "azure-ai-formrecognizer.properties";
     private static final String VERSION = "version";
     private static final Pattern NON_DIGIT_PATTERN = Pattern.compile("[^0-9]+");
+    public static final String FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL =
+        "FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL";
 
     private final HttpLogOptions httpLogOptions = new HttpLogOptions();
     private final Map<String, String> properties = CoreUtils.getProperties(FORM_RECOGNIZER_PROPERTIES);
@@ -377,7 +366,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
     private static void validateReceiptItemsData(List<FieldValue> expectedReceiptItemList,
         List<USReceiptItem> actualReceiptItems, List<ReadResult> readResults, boolean includeTextDetails) {
-        List<USReceiptItem> actualReceiptItemList = actualReceiptItems.stream().collect(Collectors.toList());
+        List<USReceiptItem> actualReceiptItemList = new ArrayList<>(actualReceiptItems);
         assertEquals(expectedReceiptItemList.size(), actualReceiptItemList.size());
         for (int i = 0; i < expectedReceiptItemList.size(); i++) {
             FieldValue expectedReceiptItem = expectedReceiptItemList.get(i);
@@ -545,37 +534,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             return "https://isPlaybackmode";
         } else {
-            String accountName = Configuration.getGlobalConfiguration().get("PRIMARY_STORAGE_ACCOUNT_NAME");
-            String accountKey = Configuration.getGlobalConfiguration().get("PRIMARY_STORAGE_ACCOUNT_KEY");
-            StorageSharedKeyCredential credential = new StorageSharedKeyCredential(accountName, accountKey);
-            String endpoint = String.format(Locale.ROOT, "https://%s.blob.core.windows.net", accountName);
-            BlobServiceClient storageClient =
-                new BlobServiceClientBuilder().endpoint(endpoint).credential(credential).buildClient();
-            BlobContainerClient blobContainerClient =
-                storageClient.getBlobContainerClient(this.testResourceNamer.randomName("testFR", 16));
-            blobContainerClient.create();
-            BlockBlobClient blobClient;
-            File folder = new File(folderPath);
-            File[] listOfFiles = folder.listFiles();
-            for (File listOfFile : listOfFiles) {
-                InputStream dataStream = null;
-                try {
-                    dataStream = new ByteArrayInputStream(Files.readAllBytes(listOfFile.toPath()));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                blobClient = blobContainerClient.getBlobClient(listOfFile.getName()).getBlockBlobClient();
-                blobClient.upload(dataStream, listOfFile.length());
-            }
-            BlobContainerSasPermission blobContainerSasPermission = new BlobContainerSasPermission()
-                .setAddPermission(true)
-                .setCreatePermission(true)
-                .setReadPermission(true)
-                .setListPermission(true);
-            String sasToken = blobContainerClient.generateSas(
-                new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1), blobContainerSasPermission)
-            );
-            return blobContainerClient.getBlobContainerUrl() + "?" + sasToken;
+            return Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL);
         }
     }
 }

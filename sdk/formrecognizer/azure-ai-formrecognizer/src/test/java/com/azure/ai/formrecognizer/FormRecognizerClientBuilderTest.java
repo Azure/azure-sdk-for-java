@@ -21,7 +21,7 @@ import java.util.function.Function;
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.validateLayoutDataResults;
 import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_FORM_DATA;
 import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_URL;
-import static com.azure.ai.formrecognizer.TestUtils.getRawResponse;
+import static com.azure.ai.formrecognizer.TestUtils.getAnalyzeRawResponse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
@@ -45,7 +45,7 @@ public class FormRecognizerClientBuilderTest extends TestBase {
      */
     @Test
     public void clientBuilderWithRotateToValidKey() {
-        final AnalyzeResult rawResponse = getRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult();
+        final AnalyzeResult rawResponse = getAnalyzeRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult();
         clientBuilderWithRotateToValidKeyRunner(clientBuilder -> (input) ->
             validateLayoutDataResults(clientBuilder.buildClient().beginRecognizeContentFromUrl(input).getFinalResult(),
                 rawResponse.getReadResults(), rawResponse.getPageResults(), false));
@@ -65,7 +65,7 @@ public class FormRecognizerClientBuilderTest extends TestBase {
      */
     @Test
     public void clientBuilderWithNullServiceVersion() {
-        final AnalyzeResult rawResponse = getRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult();
+        final AnalyzeResult rawResponse = getAnalyzeRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult();
         clientBuilderWithNullServiceVersionRunner(clientBuilder -> (input) ->
             validateLayoutDataResults(clientBuilder.buildClient().beginRecognizeContentFromUrl(input).getFinalResult(),
                 rawResponse.getReadResults(), rawResponse.getPageResults(), false));
@@ -76,7 +76,7 @@ public class FormRecognizerClientBuilderTest extends TestBase {
      */
     @Test
     public void clientBuilderWithDefaultPipeline() {
-        final AnalyzeResult rawResponse = getRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult();
+        final AnalyzeResult rawResponse = getAnalyzeRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult();
         clientBuilderWithDefaultPipelineRunner(clientBuilder -> (input) ->
             validateLayoutDataResults(clientBuilder.buildClient().beginRecognizeContentFromUrl(input).getFinalResult(),
                 rawResponse.getReadResults(), rawResponse.getPageResults(), false));
