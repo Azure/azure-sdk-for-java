@@ -267,7 +267,7 @@ public final class IdentityClientOptions {
      *
      * @return The updated identity client options.
      */
-    public IdentityClientOptions enableSharedTokenCache(boolean enabled) {
+    public IdentityClientOptions enablePersistentCache(boolean enabled) {
         this.sharedTokenCacheEnabled = enabled;
         return this;
     }

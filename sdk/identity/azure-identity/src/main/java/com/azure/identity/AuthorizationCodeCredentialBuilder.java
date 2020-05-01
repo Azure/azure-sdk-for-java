@@ -67,8 +67,8 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
      *
      * @return An updated instance of this builder with if the shared token cache enabled specified.
      */
-    public AuthorizationCodeCredentialBuilder enableSharedTokenCache(boolean enabled) {
-        this.identityClientOptions.enableSharedTokenCache(enabled);
+    public AuthorizationCodeCredentialBuilder enablePersistentCache(boolean enabled) {
+        this.identityClientOptions.enablePersistentCache(enabled);
         return this;
     }
 

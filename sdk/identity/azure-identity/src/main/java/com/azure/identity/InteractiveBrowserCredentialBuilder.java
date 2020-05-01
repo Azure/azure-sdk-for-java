@@ -47,8 +47,8 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
      *
      * @return An updated instance of this builder with if the shared token cache enabled specified.
      */
-    public InteractiveBrowserCredentialBuilder enableSharedTokenCache(boolean enabled) {
-        this.identityClientOptions.enableSharedTokenCache(enabled);
+    public InteractiveBrowserCredentialBuilder enablePersistentCache(boolean enabled) {
+        this.identityClientOptions.enablePersistentCache(enabled);
         return this;
     }
 

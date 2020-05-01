@@ -532,7 +532,7 @@ public class IdentityClient {
     /**
      * Gets token from shared token cache
      * */
-    public Mono<AccessToken> authenticateWithSharedTokenCache(TokenRequestContext request, String username) {
+    public Mono<MsalToken> authenticateWithSharedTokenCache(TokenRequestContext request, String username) {
         // find if the Public Client app with the requested username exists
         return Mono.fromFuture(() -> getPublicClientApplication(true).getAccounts())
                 .onErrorMap(t -> new CredentialUnavailableException(

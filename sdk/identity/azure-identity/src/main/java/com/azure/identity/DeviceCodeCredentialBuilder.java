@@ -49,8 +49,8 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
      *
      * @return An updated instance of this builder with if the shared token cache enabled specified.
      */
-    public DeviceCodeCredentialBuilder enableSharedTokenCache(boolean enabled) {
-        this.identityClientOptions.enableSharedTokenCache(enabled);
+    public DeviceCodeCredentialBuilder enablePersistentCache(boolean enabled) {
+        this.identityClientOptions.enablePersistentCache(enabled);
         return this;
     }
 

@@ -10,7 +10,10 @@ import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
+import com.azure.identity.implementation.MsalToken;
 import reactor.core.publisher.Mono;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * A credential provider that provides token credentials from the MSAL shared token cache.
@@ -21,6 +24,7 @@ public class SharedTokenCacheCredential implements TokenCredential {
     private final String username;
     private final String clientId;
     private final String tenantId;
+    private final AtomicReference<MsalToken> cachedToken;
 
     private final IdentityClient identityClient;
 
@@ -56,6 +60,7 @@ public class SharedTokenCacheCredential implements TokenCredential {
                 .clientId(this.clientId)
                 .identityClientOptions(identityClientOptions)
                 .build();
+        this.cachedToken = new AtomicReference<>();
     }
 
     /**
@@ -63,6 +68,18 @@ public class SharedTokenCacheCredential implements TokenCredential {
      * */
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
-        return identityClient.authenticateWithSharedTokenCache(request, username);
+        return Mono.defer(() -> {
+            if (cachedToken.get() != null) {
+                return identityClient.authenticateWithMsalAccount(request, cachedToken.get().getAccount())
+                    .onErrorResume(t -> Mono.empty());
+            } else {
+                return Mono.empty();
+            }
+        }).switchIfEmpty(
+            Mono.defer(() -> identityClient.authenticateWithSharedTokenCache(request, username)))
+            .map(msalToken -> {
+                cachedToken.set(msalToken);
+                return msalToken;
+            });
     }
 }
