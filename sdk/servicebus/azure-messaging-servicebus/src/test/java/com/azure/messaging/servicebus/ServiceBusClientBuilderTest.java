@@ -69,7 +69,7 @@ class ServiceBusClientBuilderTest {
 
     @BeforeAll
     static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(100));
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(60));
     }
 
     @AfterAll

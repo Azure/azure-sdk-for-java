@@ -88,12 +88,13 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
     }
 
+
     /**
      * Verifies that we can not receive from a session enabled receiver which try to connect to non session entity.
      */
     @MethodSource("messagingEntityProvider")
     @ParameterizedTest
-    void createSessionReceiverForNonSessiondEntity(MessagingEntityType entityType) {
+    void createSessionReceiverForNonSessionEntity(MessagingEntityType entityType) {
         // Arrange
         String sessionId = "test-session-id";
         ServiceBusReceiverClientBuilder builder = createBuilder()
