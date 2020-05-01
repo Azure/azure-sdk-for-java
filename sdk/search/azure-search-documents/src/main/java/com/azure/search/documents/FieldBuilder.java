@@ -132,7 +132,7 @@ public final class FieldBuilder {
     private static Field buildCollectionField(java.lang.reflect.Field classField,
         Stack<Class<?>> classChain, ClientLogger logger) {
         Type componentOrElementType = getComponentOrElementType(classField.getGenericType(), logger);
-        validateType(componentOrElementType.getClass(), true, logger);
+        validateType(componentOrElementType, true, logger);
         if (SUPPORTED_NONE_PARAMETERIZED_TYPE.containsKey(componentOrElementType)) {
             Field searchField = convertToBasicSearchField(classField, logger);
             return enrichWithAnnotation(searchField, classField, logger);
@@ -220,30 +220,30 @@ public final class FieldBuilder {
         return searchField;
     }
 
-    private static void validateType(Class<?> type, boolean hasArrayOrCollectionWrapped, ClientLogger logger) {
-        if (Map.class.isAssignableFrom(type)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Map and its subclasses are not supported"));
-        }
-        if (UNSUPPORTED_TYPES.contains(type)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format("%s is not supported",
-                    type.getName())));
-        }
-
-        if (!Collection.class.isAssignableFrom(type)) {
+    private static void validateType(Type type, boolean hasArrayOrCollectionWrapped, ClientLogger logger) {
+        if (!(type instanceof ParameterizedType)) {
+            if (UNSUPPORTED_TYPES.contains(type)) {
+                throw logger.logExceptionAsError(new IllegalArgumentException(String.format("%s is not supported",
+                    type.getTypeName())));
+            }
             return;
+        }
+        ParameterizedType parameterizedType = (ParameterizedType) type;
+        if (Map.class.isAssignableFrom((Class<?>) parameterizedType.getRawType())) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Map and its subclasses are not supported"));
         }
         if (hasArrayOrCollectionWrapped) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "Only single-dimensional array is supported."));
         }
-        if (!List.class.isAssignableFrom(type)) {
+        if (!List.class.isAssignableFrom((Class<?>) parameterizedType.getRawType())) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
-                String.format("Collection type %s is not supported", type.getName())));
+                String.format("Collection type %s is not supported", type.getTypeName())));
         }
     }
 
     private static DataType covertToDataType(Type type, boolean hasArrayOrCollectionWrapped, ClientLogger logger) {
-        validateType(type.getClass(), hasArrayOrCollectionWrapped, logger);
+        validateType(type, hasArrayOrCollectionWrapped, logger);
         if (SUPPORTED_NONE_PARAMETERIZED_TYPE.containsKey(type)) {
             return SUPPORTED_NONE_PARAMETERIZED_TYPE.get(type);
         }

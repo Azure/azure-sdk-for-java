@@ -39,14 +39,14 @@ public class FieldBuilderTest {
     public void hotelSearchableThrowException() {
         Exception exception = assertThrows(RuntimeException.class, () ->
             FieldBuilder.build(HotelSearchException.class));
-        assertExceptionMassageAndDataType(exception, "hotelId", DataType.EDM_INT32);
+        assertExceptionMassageAndDataType(exception, DataType.EDM_INT32, "hotelId");
     }
 
     @Test
     public void hotelListFieldSearchableThrowException() {
         Exception exception = assertThrows(RuntimeException.class, () ->
             FieldBuilder.build(HotelSearchableExceptionOnList.class));
-        assertExceptionMassageAndDataType(exception, "passcode", DataType.collection(DataType.EDM_INT32));
+        assertExceptionMassageAndDataType(exception, DataType.collection(DataType.EDM_INT32), "passcode");
     }
 
     @Test
@@ -68,7 +68,7 @@ public class FieldBuilderTest {
     @Test
     public void hotelWithTwoDimensionalType() {
         Exception exception = assertThrows(RuntimeException.class, () -> FieldBuilder.build(HotelTwoDimensional.class));
-        assertExceptionMassageAndDataType(exception, "matrix", DataType.collection(DataType.EDM_INT32));
+        assertExceptionMassageAndDataType(exception, null, "single-dimensional");
     }
 
     private void assertListFieldEquals(List<Field> expected, List<Field> actual) {
@@ -78,9 +78,11 @@ public class FieldBuilderTest {
         }
     }
 
-    private void assertExceptionMassageAndDataType(Exception exception, String msg, DataType dataType) {
+    private void assertExceptionMassageAndDataType(Exception exception, DataType dataType, String msg) {
         assertTrue(exception.getMessage().contains(msg));
-        assertTrue(exception.getMessage().contains(dataType.toString()));
+        if (dataType != null) {
+            assertTrue(exception.getMessage().contains(dataType.toString()));
+        }
     }
 
     private List<Field> buildHotelCircularDependenciesModel() {
