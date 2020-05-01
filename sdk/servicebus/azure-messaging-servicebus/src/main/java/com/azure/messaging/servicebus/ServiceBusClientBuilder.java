@@ -271,8 +271,9 @@ public final class ServiceBusClientBuilder {
                 final Flux<ServiceBusAmqpConnection> connectionFlux = Mono.fromCallable(() -> {
                     final String connectionId = StringUtil.getRandomString("MF");
 
-                    return (ServiceBusAmqpConnection) getServiceBusReactorAmqpConnection(serializer, connectionOptions,
-                        tokenManagerProvider, provider, handlerProvider, product, clientVersion, connectionId);
+                    return (ServiceBusAmqpConnection) new ServiceBusReactorAmqpConnection(connectionId,
+                        connectionOptions, provider, handlerProvider, tokenManagerProvider, serializer, product,
+                        clientVersion);
                 }).repeat();
 
                 sharedConnection = connectionFlux.subscribeWith(new ServiceBusConnectionProcessor(
@@ -284,14 +285,6 @@ public final class ServiceBusClientBuilder {
         logger.info("# of open clients with shared connection: {}", numberOfOpenClients);
 
         return sharedConnection;
-    }
-
-    ServiceBusReactorAmqpConnection getServiceBusReactorAmqpConnection(MessageSerializer serializer,
-        ConnectionOptions connectionOptions, TokenManagerProvider tokenManagerProvider, ReactorProvider provider,
-        ReactorHandlerProvider handlerProvider, String product, String clientVersion, String connectionId) {
-        return new ServiceBusReactorAmqpConnection(connectionId,
-            connectionOptions, provider, handlerProvider, tokenManagerProvider, serializer, product,
-            clientVersion);
     }
 
     private ConnectionOptions getConnectionOptions() {
