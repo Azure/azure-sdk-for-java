@@ -99,7 +99,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can send a list of messages to a non-session entity.
      */
-    @MethodSource("receiverTypesProvider")
+    @MethodSource("messagingEntityProvider")
     @ParameterizedTest
     void nonSessionEntitySendMessageList(MessagingEntityType entityType) {
         // Arrange
