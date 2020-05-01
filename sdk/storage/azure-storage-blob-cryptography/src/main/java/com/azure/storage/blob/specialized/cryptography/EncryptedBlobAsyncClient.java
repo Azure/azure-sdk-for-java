@@ -12,8 +12,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobQueryAsyncResponse;
+import com.azure.storage.blob.models.BlobQueryOptions;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.ParallelTransferOptions;
@@ -446,5 +448,23 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         } catch (InvalidKeyException e) {
             throw logger.logExceptionAsError(Exceptions.propagate(e));
         }
+    }
+
+    /**
+     * Unsupported.
+     */
+    @Override
+    public Flux<ByteBuffer> query(String expression) {
+        throw logger.logExceptionAsError(new UnsupportedOperationException(
+            "Cannot query a client side encrypted client"));
+    }
+
+    /**
+     * Unsupported.
+     */
+    @Override
+    public Mono<BlobQueryAsyncResponse> queryWithResponse(String expression, BlobQueryOptions queryOptions) {
+        throw logger.logExceptionAsError(new UnsupportedOperationException(
+            "Cannot query a client side encrypted client"));
     }
 }
