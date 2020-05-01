@@ -57,7 +57,7 @@ public class EventProcessorClientWithBatchReceiveSample {
             .connectionString(EH_CONNECTION_STRING)
             .processEventBatch(processEventBatch, 50, Duration.ofSeconds(30))
             .processError(processError)
-            .checkpointStore(new InMemoryCheckpointStore());
+            .checkpointStore(new SampleCheckpointStore());
 
         EventProcessorClient eventProcessorClient = eventProcessorClientBuilder.buildEventProcessorClient();
         System.out.println("Starting event processor");

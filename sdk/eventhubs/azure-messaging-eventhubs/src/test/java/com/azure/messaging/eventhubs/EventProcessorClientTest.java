@@ -350,7 +350,7 @@ public class EventProcessorClientTest {
         when(eventData2.getOffset()).thenReturn(100L);
         when(eventData3.getOffset()).thenReturn(150L);
 
-        final InMemoryCheckpointStore checkpointStore = new InMemoryCheckpointStore();
+        final SampleCheckpointStore checkpointStore = new SampleCheckpointStore();
         final TestPartitionProcessor testPartitionProcessor = new TestPartitionProcessor();
         CountDownLatch countDownLatch = new CountDownLatch(3);
         testPartitionProcessor.countDownLatch = countDownLatch;
@@ -392,7 +392,7 @@ public class EventProcessorClientTest {
         when(eventData2.getOffset()).thenReturn(100L);
         when(eventData3.getOffset()).thenReturn(150L);
 
-        final InMemoryCheckpointStore checkpointStore = new InMemoryCheckpointStore();
+        final SampleCheckpointStore checkpointStore = new SampleCheckpointStore();
         final TestPartitionProcessor testPartitionProcessor = new TestPartitionProcessor();
         CountDownLatch countDownLatch = new CountDownLatch(1);
         testPartitionProcessor.countDownLatch = countDownLatch;
@@ -456,7 +456,7 @@ public class EventProcessorClientTest {
             }
         );
 
-        final InMemoryCheckpointStore checkpointStore = new InMemoryCheckpointStore();
+        final SampleCheckpointStore checkpointStore = new SampleCheckpointStore();
         final TestPartitionProcessor testPartitionProcessor = new TestPartitionProcessor();
         CountDownLatch countDownLatch = new CountDownLatch(1);
         testPartitionProcessor.countDownLatch = countDownLatch;

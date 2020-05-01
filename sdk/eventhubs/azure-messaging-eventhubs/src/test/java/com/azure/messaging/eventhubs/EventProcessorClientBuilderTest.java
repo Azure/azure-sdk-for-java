@@ -83,7 +83,7 @@ public class EventProcessorClientBuilderTest {
     public void testEventProcessorBuilderWithBothSingleAndBatchConsumers() {
         assertThrows(IllegalArgumentException.class, () -> {
             EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
-                .checkpointStore(new InMemoryCheckpointStore())
+                .checkpointStore(new SampleCheckpointStore())
                 .consumerGroup("consumer-group")
                 .processEvent(eventContext -> {
                     System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
@@ -110,7 +110,7 @@ public class EventProcessorClientBuilderTest {
     public void testEventProcessorBuilderWithNoProcessEventConsumer() {
         assertThrows(IllegalArgumentException.class, () -> {
             EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
-                .checkpointStore(new InMemoryCheckpointStore())
+                .checkpointStore(new SampleCheckpointStore())
                 .consumerGroup("consumer-group")
                 .processError(errorContext -> {
                     System.out.printf("Error occurred in partition processor for partition {}, {}",
@@ -138,7 +138,7 @@ public class EventProcessorClientBuilderTest {
                     errorContext.getPartitionContext().getPartitionId(),
                     errorContext.getThrowable());
             })
-            .checkpointStore(new InMemoryCheckpointStore())
+            .checkpointStore(new SampleCheckpointStore())
             .buildEventProcessorClient();
 
         assertNotNull(eventProcessorClient);

@@ -48,7 +48,7 @@ public class EventProcessorBuilderJavaDocCodeSamples {
         // BEGIN: com.azure.messaging.eventhubs.eventprocessorclientbuilder.batchreceive
         EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
             .consumerGroup("consumer-group")
-            .checkpointStore(new InMemoryCheckpointStore())
+            .checkpointStore(new SampleCheckpointStore())
             .processEventBatch(eventBatchContext -> {
                 eventBatchContext.getEvents().forEach(eventData -> {
                     System.out.println("Partition id = " + eventBatchContext.getPartitionContext().getPartitionId()
