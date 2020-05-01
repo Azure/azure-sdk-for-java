@@ -70,23 +70,22 @@ public final class FieldBuilder {
     /**
      * Recursive class to build complex data type.
      *
-     * @param curClass Current class to be built.
-     * @param classChain A class chain from {@code modelClass} to prior of {@code curClass}.
+     * @param currentClass Current class to be built.
+     * @param classChain A class chain from {@code modelClass} to prior of {@code currentClass}.
      * @param logger {@link ClientLogger}.
-     * @return A list of {@link Field} that curClass is built to.
+     * @return A list of {@link Field} that currentClass is built to.
      */
-    private static List<Field> build(Class<?> curClass, Stack<Class<?>> classChain, ClientLogger logger) {
-        if (classChain.contains(curClass)) {
-            logger.warning(String.format("There is circular dependencies %s, %s", classChain, curClass));
+    private static List<Field> build(Class<?> currentClass, Stack<Class<?>> classChain, ClientLogger logger) {
+        if (classChain.contains(currentClass)) {
+            logger.warning(String.format("There is circular dependencies %s, %s", classChain, currentClass));
             return null;
         }
         if (classChain.size() > MAX_DEPTH) {
             throw logger.logExceptionAsError(new RuntimeException(
                 "The dependency graph is too deep. Please review your schema."));
         }
-        classChain.push(curClass);
-        List<java.lang.reflect.Field> classFields = Arrays.asList(curClass.getDeclaredFields());
-        List<Field> searchFields = classFields.stream()
+        classChain.push(currentClass);
+        List<Field> searchFields = Arrays.stream(currentClass.getDeclaredFields())
             .filter(classField -> !classField.isAnnotationPresent(FieldIgnore.class))
             .map(classField -> buildField(classField, classChain, logger))
             .collect(Collectors.toList());
@@ -110,10 +109,6 @@ public final class FieldBuilder {
         return searchField;
     }
 
-//    private static boolean isSupportedNoneParameterizedType(Type type) {
-//        return SUPPORTED_NONE_PARAMETERIZED_TYPE.containsKey(type);
-//    }
-
     private static Field buildNoneParameterizedType(java.lang.reflect.Field classField,
         ClientLogger logger) {
         Field searchField = convertToBasicSearchField(classField, logger);
@@ -122,23 +117,22 @@ public final class FieldBuilder {
 
 
     private static boolean isArrayOrList(Type type) {
-        if (type.getClass().isArray()) {
-            return true;
-        }
-        return isList(type);
+        return type.getClass().isArray() || isList(type);
     }
 
     private static boolean isList(Type type) {
-        if (type instanceof ParameterizedType) {
-            Type rawType = ((ParameterizedType) type).getRawType();
-            return List.class.isAssignableFrom((Class<?>) rawType);
+        if (!(type instanceof ParameterizedType)) {
+            return false;
         }
-        return false;
+
+        Type rawType = ((ParameterizedType) type).getRawType();
+        return List.class.isAssignableFrom((Class<?>) rawType);
     }
 
     private static Field buildCollectionField(java.lang.reflect.Field classField,
         Stack<Class<?>> classChain, ClientLogger logger) {
         Type componentOrElementType = getComponentOrElementType(classField.getGenericType(), logger);
+        validateType(componentOrElementType.getClass(), true, logger);
         if (SUPPORTED_NONE_PARAMETERIZED_TYPE.containsKey(componentOrElementType)) {
             Field searchField = convertToBasicSearchField(classField, logger);
             return enrichWithAnnotation(searchField, classField, logger);
@@ -157,8 +151,8 @@ public final class FieldBuilder {
             ParameterizedType pt = (ParameterizedType) arrayOrListType;
             return pt.getActualTypeArguments()[0];
         }
-        throw logger.logExceptionAsError(new RuntimeException("We currently do not support the collection type: "
-                + arrayOrListType.getTypeName()));
+        throw logger.logExceptionAsError(new RuntimeException(String.format(
+            "Collection type %s is not supported.", arrayOrListType.getTypeName())));
     }
 
     private static Field convertToBasicSearchField(java.lang.reflect.Field classField,
@@ -234,14 +228,17 @@ public final class FieldBuilder {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format("%s is not supported",
                     type.getName())));
         }
-        if (Collection.class.isAssignableFrom(type)) {
-            if (!List.class.isAssignableFrom(type)) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(
-                    String.format("%s is not supported", type.getName())));
-            }
-            if (hasArrayOrCollectionWrapped) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(""));
-            }
+
+        if (!Collection.class.isAssignableFrom(type)) {
+            return;
+        }
+        if (hasArrayOrCollectionWrapped) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Only single-dimensional array is supported."));
+        }
+        if (!List.class.isAssignableFrom(type)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("Collection type %s is not supported", type.getName())));
         }
     }
 

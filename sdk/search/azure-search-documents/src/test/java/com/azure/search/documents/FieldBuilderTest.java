@@ -13,11 +13,13 @@ import com.azure.search.documents.test.environment.models.Hotel;
 import com.azure.search.documents.test.environment.models.HotelCircularDependencies;
 import com.azure.search.documents.test.environment.models.HotelSearchException;
 import com.azure.search.documents.test.environment.models.HotelSearchableExceptionOnList;
+import com.azure.search.documents.test.environment.models.HotelTwoDimensional;
 import com.azure.search.documents.test.environment.models.HotelWithEmptyInSynonymMaps;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,17 +37,15 @@ public class FieldBuilderTest {
 
     @Test
     public void hotelSearchableThrowException() {
-        Exception exception = assertThrows(RuntimeException.class, () -> {
-            FieldBuilder.build(HotelSearchException.class);
-        });
+        Exception exception = assertThrows(RuntimeException.class, () ->
+            FieldBuilder.build(HotelSearchException.class));
         assertExceptionMassageAndDataType(exception, "hotelId", DataType.EDM_INT32);
     }
 
     @Test
     public void hotelListFieldSearchableThrowException() {
-        Exception exception = assertThrows(RuntimeException.class, () -> {
-            FieldBuilder.build(HotelSearchableExceptionOnList.class);
-        });
+        Exception exception = assertThrows(RuntimeException.class, () ->
+            FieldBuilder.build(HotelSearchableExceptionOnList.class));
         assertExceptionMassageAndDataType(exception, "passcode", DataType.collection(DataType.EDM_INT32));
     }
 
@@ -63,6 +63,12 @@ public class FieldBuilderTest {
         List<Field> expectedFields = Collections.singletonList(new SearchableField("tags", true)
             .setSynonymMaps(Arrays.asList("asynonymMaps", "maps")).build());
         assertListFieldEquals(expectedFields, actualFields);
+    }
+
+    @Test
+    public void hotelWithTwoDimensionalType() {
+        Exception exception = assertThrows(RuntimeException.class, () -> FieldBuilder.build(HotelTwoDimensional.class));
+        assertExceptionMassageAndDataType(exception, "matrix", DataType.collection(DataType.EDM_INT32));
     }
 
     private void assertListFieldEquals(List<Field> expected, List<Field> actual) {
@@ -133,6 +139,7 @@ public class FieldBuilderTest {
     }
 
     private List<Field> sortByFieldName(List<Field> fields) {
-        return fields.stream().sorted((o1, o2) -> o1.getName().compareTo(o2.getName())).collect(Collectors.toList());
+        Collections.sort(fields, Comparator.comparing(Field::getName));
+        return fields;
     }
 }
