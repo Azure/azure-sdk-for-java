@@ -34,7 +34,6 @@ import com.azure.core.util.IterableStream;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -88,11 +87,8 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         } else {
             modelRawResponse.getKeys().getClusters().forEach((clusterId, fields) -> {
                 assertTrue(subModelList.get(Integer.parseInt(clusterId)).getFormType().endsWith(clusterId));
-                final List<String> customFormFieldList = new ArrayList<String>();
-                subModelList.get(Integer.parseInt(clusterId)).getFieldMap().values().forEach(customFormModelField -> customFormFieldList.add(customFormModelField.getLabel()));
-                Collections.sort(fields);
-                Collections.sort(customFormFieldList);
-                assertEquals(fields, customFormFieldList);
+                subModelList.get(Integer.parseInt(clusterId)).getFieldMap().values().forEach(customFormModelField ->
+                    assertTrue(fields.contains(customFormModelField.getLabel())));
             });
         }
     }

@@ -63,17 +63,5 @@
       <version>5.4.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
-      <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-storage-common</artifactId>
-          <version>12.6.0</version>  <!-- {x-version-update;com.azure:azure-storage-common;dependency} -->
-          <scope>test</scope>
-      </dependency>
-      <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-storage-blob</artifactId>
-          <version>12.6.0</version>  <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
-          <scope>test</scope>
-      </dependency>
   </dependencies>
 </project>
