@@ -6,6 +6,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
+import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
@@ -27,10 +28,12 @@ public final class RecognizeLinkedEntitiesResultImpl extends DocumentResultImpl
      * @param textDocumentStatistics The text document statistics.
      * @param error The document error.
      * @param entities An {@link IterableStream} of {@link LinkedEntity}.
+     * @param warnings A {@link IterableStream} of {@link TextAnalyticsWarning}.
      */
     public RecognizeLinkedEntitiesResultImpl(String id, TextDocumentStatistics textDocumentStatistics,
-                                             TextAnalyticsError error, IterableStream<LinkedEntity> entities) {
-        super(id, textDocumentStatistics, error);
+        TextAnalyticsError error, IterableStream<LinkedEntity> entities,
+        IterableStream<TextAnalyticsWarning> warnings) {
+        super(id, textDocumentStatistics, error, warnings);
         this.entities = entities == null ? new IterableStream<>(new ArrayList<>()) : entities;
     }
 

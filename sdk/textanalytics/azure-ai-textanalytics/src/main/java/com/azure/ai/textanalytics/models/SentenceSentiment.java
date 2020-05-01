@@ -8,6 +8,12 @@ package com.azure.ai.textanalytics.models;
  * label, length of the sentence and offset of the sentence within a document.
  */
 public interface SentenceSentiment {
+    /**
+     * Get the text property: The sentence text.
+     *
+     * @return the text value.
+     */
+    String getText();
 
     /**
      * Get the grapheme length of the sentence.

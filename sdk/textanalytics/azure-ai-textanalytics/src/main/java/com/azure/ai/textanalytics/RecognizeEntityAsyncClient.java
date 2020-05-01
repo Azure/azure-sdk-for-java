@@ -9,6 +9,7 @@ import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.RecognizeEntitiesResultImpl;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsErrorException;
+import com.azure.ai.textanalytics.implementation.models.TextAnalyticsWarningImpl;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
@@ -162,11 +163,15 @@ class RecognizeEntityAsyncClient {
                 new IterableStream<>(documentEntities.getEntities().stream().map(entity ->
                     new CategorizedEntityImpl(entity.getText(), EntityCategory.fromString(entity.getCategory()),
                         entity.getSubcategory(), entity.getOffset(), entity.getLength(), entity.getConfidenceScore()))
-                    .collect(Collectors.toList())))));
+                    .collect(Collectors.toList())),
+                new IterableStream<>(documentEntities.getWarnings().stream().map(warning ->
+                    new TextAnalyticsWarningImpl(warning.getCode(), warning.getMessage()))
+                    .collect(Collectors.toList()))
+            )));
         // Document errors
         entitiesResult.getErrors().forEach(documentError -> recognizeEntitiesResults.add(
             new RecognizeEntitiesResultImpl(documentError.getId(), null,
-                toTextAnalyticsError(documentError.getError()), null)));
+                toTextAnalyticsError(documentError.getError()), null, null)));
 
         return new TextAnalyticsPagedResponse<>(
             response.getRequest(), response.getStatusCode(), response.getHeaders(),

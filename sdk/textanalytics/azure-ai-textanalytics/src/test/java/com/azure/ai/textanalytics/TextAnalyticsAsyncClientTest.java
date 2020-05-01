@@ -4,6 +4,7 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.models.DetectedLanguageImpl;
+import com.azure.ai.textanalytics.implementation.models.DocumentSentimentImpl;
 import com.azure.ai.textanalytics.implementation.models.LinkedEntityImpl;
 import com.azure.ai.textanalytics.implementation.models.LinkedEntityMatchImpl;
 import com.azure.ai.textanalytics.implementation.models.SentenceSentimentImpl;
@@ -411,11 +412,11 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void analyseSentimentForTextInput() {
-        final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(TextSentiment.MIXED,
+        final DocumentSentiment expectedDocumentSentiment = new DocumentSentimentImpl(TextSentiment.MIXED,
             new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentimentImpl(TextSentiment.NEGATIVE, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0), 31, 0),
-                new SentenceSentimentImpl(TextSentiment.POSITIVE, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0), 35, 32)
+                new SentenceSentimentImpl("", TextSentiment.NEGATIVE, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0), 31, 0),
+                new SentenceSentimentImpl("", TextSentiment.POSITIVE, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0), 35, 32)
             )));
 
         StepVerifier
@@ -438,12 +439,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void analyseSentimentForFaultyText() {
-        final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(
+        final DocumentSentiment expectedDocumentSentiment = new DocumentSentimentImpl(
             TextSentiment.NEUTRAL,
             new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentimentImpl(TextSentiment.NEUTRAL, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0), 1, 0),
-                new SentenceSentimentImpl(TextSentiment.NEUTRAL, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0), 4, 1)
+                new SentenceSentimentImpl("", TextSentiment.NEUTRAL, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0), 1, 0),
+                new SentenceSentimentImpl("", TextSentiment.NEUTRAL, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0), 4, 1)
             )));
 
         StepVerifier.create(client.analyzeSentiment("!@#%%"))

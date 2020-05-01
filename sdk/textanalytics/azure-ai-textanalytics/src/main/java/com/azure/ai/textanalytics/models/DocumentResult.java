@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.ai.textanalytics.models;
 
+import com.azure.core.util.IterableStream;
+
 /**
  * The {@link DocumentResult} model.
  */
@@ -33,4 +35,11 @@ public interface DocumentResult {
      * @return A boolean indicates if the document result is error or not.
      */
     boolean isError();
+
+    /**
+     * Get a {@link IterableStream} of {@link TextAnalyticsWarning}.
+     *
+     * @return a {@link IterableStream} of {@link TextAnalyticsWarning}.
+     */
+    IterableStream<TextAnalyticsWarning> getWarnings();
 }

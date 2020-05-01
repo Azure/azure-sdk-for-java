@@ -9,6 +9,7 @@ import com.azure.ai.textanalytics.implementation.models.MultiLanguageInput;
 import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsErrorImpl;
+import com.azure.ai.textanalytics.implementation.models.TextDocumentBatchStatisticsImpl;
 import com.azure.ai.textanalytics.implementation.models.TextDocumentStatisticsImpl;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
@@ -70,7 +71,7 @@ final class Transforms {
      * @return the {@link TextDocumentBatchStatistics} returned by the SDK.
      */
     static TextDocumentBatchStatistics toBatchStatistics(RequestStatistics statistics) {
-        return new TextDocumentBatchStatistics(statistics.getDocumentsCount(), statistics.getValidDocumentsCount(),
+        return new TextDocumentBatchStatisticsImpl(statistics.getDocumentsCount(), statistics.getValidDocumentsCount(),
             statistics.getErroneousDocumentsCount(), statistics.getTransactionsCount());
     }
 

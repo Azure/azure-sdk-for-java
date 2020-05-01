@@ -11,6 +11,7 @@ import com.azure.ai.textanalytics.implementation.models.DocumentLanguage;
 import com.azure.ai.textanalytics.implementation.models.LanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.LanguageResult;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsErrorException;
+import com.azure.ai.textanalytics.implementation.models.TextAnalyticsWarningImpl;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
@@ -19,11 +20,13 @@ import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
@@ -107,17 +110,21 @@ class DetectLanguageAsyncClient {
         for (DocumentLanguage documentLanguage : languageResult.getDocuments()) {
             com.azure.ai.textanalytics.implementation.models.DetectedLanguage detectedLanguage =
                 documentLanguage.getDetectedLanguage();
-            detectLanguageResults.add(new DetectLanguageResultImpl(documentLanguage.getId(),
+            detectLanguageResults.add(new DetectLanguageResultImpl(
+                documentLanguage.getId(),
                 documentLanguage.getStatistics() == null
                     ? null : Transforms.toTextDocumentStatistics(documentLanguage.getStatistics()),
                 null,
                 new DetectedLanguageImpl(detectedLanguage.getName(),
-                    detectedLanguage.getIso6391Name(), detectedLanguage.getConfidenceScore())));
+                    detectedLanguage.getIso6391Name(), detectedLanguage.getConfidenceScore()),
+                new IterableStream<>(documentLanguage.getWarnings().stream().map(warning ->
+                    new TextAnalyticsWarningImpl(warning.getCode(), warning.getMessage()))
+                    .collect(Collectors.toList()))));
         }
 
         for (DocumentError documentError : languageResult.getErrors()) {
             detectLanguageResults.add(new DetectLanguageResultImpl(documentError.getId(), null,
-                toTextAnalyticsError(documentError.getError()), null));
+                toTextAnalyticsError(documentError.getError()), null, null));
         }
 
         return new TextAnalyticsPagedResponse<>(

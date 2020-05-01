@@ -10,9 +10,9 @@ import com.azure.core.util.IterableStream;
  */
 public interface ExtractKeyPhraseResult extends DocumentResult {
     /**
-     * Get a list of key phrase string.
+     * Get a {@link IterableStream} of key phrase string.
      *
-     * @return A list of key phrase string.
+     * @return A {@link IterableStream} of key phrase string.
      */
     IterableStream<String> getKeyPhrases();
 }

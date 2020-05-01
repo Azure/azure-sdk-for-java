@@ -5,6 +5,7 @@ package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
+import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
@@ -25,10 +26,11 @@ public final class ExtractKeyPhraseResultImpl extends DocumentResultImpl impleme
      * @param textDocumentStatistics The text document statistics.
      * @param error The document error.
      * @param keyPhrases A list of key phrases string.
+     * @param warnings A {@link IterableStream} of {@link TextAnalyticsWarning}.
      */
     public ExtractKeyPhraseResultImpl(String id, TextDocumentStatistics textDocumentStatistics,
-                                      TextAnalyticsError error, IterableStream<String> keyPhrases) {
-        super(id, textDocumentStatistics, error);
+        TextAnalyticsError error, IterableStream<String> keyPhrases, IterableStream<TextAnalyticsWarning> warnings) {
+        super(id, textDocumentStatistics, error, warnings);
         this.keyPhrases = keyPhrases == null ? new IterableStream<>(new ArrayList<>()) : keyPhrases;
     }
 

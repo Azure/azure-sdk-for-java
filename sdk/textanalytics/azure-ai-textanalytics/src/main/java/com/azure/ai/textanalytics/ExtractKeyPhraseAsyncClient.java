@@ -10,6 +10,7 @@ import com.azure.ai.textanalytics.implementation.models.ExtractKeyPhraseResultIm
 import com.azure.ai.textanalytics.implementation.models.KeyPhraseResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsErrorException;
+import com.azure.ai.textanalytics.implementation.models.TextAnalyticsWarningImpl;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
@@ -157,7 +158,10 @@ class ExtractKeyPhraseAsyncClient {
                 documentId,
                 documentKeyPhrases.getStatistics() == null ? null
                     : toTextDocumentStatistics(documentKeyPhrases.getStatistics()), null,
-                new IterableStream<>(documentKeyPhrases.getKeyPhrases())));
+                new IterableStream<>(documentKeyPhrases.getKeyPhrases()),
+                new IterableStream<>(documentKeyPhrases.getWarnings().stream().map(warning ->
+                    new TextAnalyticsWarningImpl(warning.getCode(), warning.getMessage()))
+                    .collect(Collectors.toList()))));
         }
 
         for (DocumentError documentError : keyPhraseResult.getErrors()) {
@@ -167,7 +171,7 @@ class ExtractKeyPhraseAsyncClient {
             final String documentId = documentError.getId();
 
             keyPhraseResultList.add(new ExtractKeyPhraseResultImpl(
-                documentId, null, error, null));
+                documentId, null, error, null, null));
         }
 
         return new TextAnalyticsPagedResponse<>(

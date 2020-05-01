@@ -10,6 +10,7 @@ import com.azure.ai.textanalytics.implementation.models.LinkedEntityMatchImpl;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.RecognizeLinkedEntitiesResultImpl;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsErrorException;
+import com.azure.ai.textanalytics.implementation.models.TextAnalyticsWarningImpl;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
@@ -158,11 +159,15 @@ class RecognizeLinkedEntityAsyncClient {
                 documentLinkedEntities.getStatistics() == null ? null
                     : toTextDocumentStatistics(documentLinkedEntities.getStatistics()),
                 null,
-                mapLinkedEntity(documentLinkedEntities.getEntities()))));
+                mapLinkedEntity(documentLinkedEntities.getEntities()),
+                new IterableStream<>(documentLinkedEntities.getWarnings().stream().map(warning ->
+                    new TextAnalyticsWarningImpl(warning.getCode(), warning.getMessage()))
+                    .collect(Collectors.toList()))
+            )));
         // Document errors
         entityLinkingResult.getErrors().forEach(documentError -> linkedEntitiesResults.add(
             new RecognizeLinkedEntitiesResultImpl(documentError.getId(), null,
-                toTextAnalyticsError(documentError.getError()), null)));
+                toTextAnalyticsError(documentError.getError()), null, null)));
 
         return new TextAnalyticsPagedResponse<>(
             response.getRequest(), response.getStatusCode(), response.getHeaders(),

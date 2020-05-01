@@ -5,8 +5,10 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.ai.textanalytics.models.DocumentResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
+import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Locale;
@@ -21,6 +23,7 @@ public class DocumentResultImpl implements DocumentResult {
     private final String id;
     private final TextDocumentStatistics textDocumentStatistics;
     private final TextAnalyticsError error;
+    private final IterableStream<TextAnalyticsWarning> warnings;
     private final boolean isError;
 
     /**
@@ -30,12 +33,15 @@ public class DocumentResultImpl implements DocumentResult {
      * @param id Unique, non-empty document identifier.
      * @param textDocumentStatistics The text document statistics.
      * @param error The document error.
+     *
      */
-    DocumentResultImpl(String id, TextDocumentStatistics textDocumentStatistics, TextAnalyticsError error) {
+    DocumentResultImpl(String id, TextDocumentStatistics textDocumentStatistics, TextAnalyticsError error,
+                       IterableStream<TextAnalyticsWarning> warnings) {
         this.id = id;
         this.error = error;
         this.isError = error != null;
         this.textDocumentStatistics = textDocumentStatistics;
+        this.warnings = warnings;
     }
 
     /**
@@ -73,6 +79,15 @@ public class DocumentResultImpl implements DocumentResult {
      */
     public boolean isError() {
         return isError;
+    }
+
+    /**
+     * Get a {@link IterableStream} of {@link com.azure.ai.textanalytics.models.TextAnalyticsWarning}.
+     *
+     * @return a {@link IterableStream} of {@link com.azure.ai.textanalytics.models.TextAnalyticsWarning}.
+     */
+    public IterableStream<TextAnalyticsWarning> getWarnings() {
+        return warnings;
     }
 
     /**

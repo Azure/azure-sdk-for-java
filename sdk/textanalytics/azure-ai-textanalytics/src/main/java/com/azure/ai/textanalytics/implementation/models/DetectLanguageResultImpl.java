@@ -5,8 +5,10 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
+import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.IterableStream;
 
 /**
  * The {@link DetectLanguageResultImpl} model.
@@ -22,10 +24,11 @@ public final class DetectLanguageResultImpl extends DocumentResultImpl implement
      * @param textDocumentStatistics The text document statistics.
      * @param error The document error.
      * @param primaryLanguage The detected primary language.
+     * @param warnings A {@link IterableStream} of {@link TextAnalyticsWarning}.
      */
     public DetectLanguageResultImpl(String id, TextDocumentStatistics textDocumentStatistics,
-                                    TextAnalyticsError error, DetectedLanguage primaryLanguage) {
-        super(id, textDocumentStatistics, error);
+        TextAnalyticsError error, DetectedLanguage primaryLanguage, IterableStream<TextAnalyticsWarning> warnings) {
+        super(id, textDocumentStatistics, error, warnings);
         this.primaryLanguage = primaryLanguage;
     }
 

@@ -14,6 +14,7 @@ import com.azure.core.annotation.Immutable;
  */
 @Immutable
 public final class SentenceSentimentImpl implements SentenceSentiment {
+    private String text;
     private final int graphemeLength;
     private final int graphemeOffset;
     private final SentimentConfidenceScores confidenceScores;
@@ -22,18 +23,29 @@ public final class SentenceSentimentImpl implements SentenceSentiment {
     /**
      * Creates a {@link SentenceSentimentImpl} model that describes the sentiment analysis of sentence.
      *
+     * @param text The sentence text
      * @param sentiment The sentiment label of the sentence.
      * @param confidenceScores The sentiment confidence score (Softmax score) between 0 and 1, for each sentiment label.
      *   Higher values signify higher confidence.
      * @param graphemeLength The grapheme length of the sentence.
      * @param graphemeOffset The grapheme offset, start position for the sentence sentiment.
      */
-    public SentenceSentimentImpl(TextSentiment sentiment, SentimentConfidenceScores confidenceScores,
+    public SentenceSentimentImpl(String text, TextSentiment sentiment, SentimentConfidenceScores confidenceScores,
                                  int graphemeLength, int graphemeOffset) {
+        this.text = text;
         this.sentiment = sentiment;
         this.confidenceScores = confidenceScores;
         this.graphemeLength = graphemeLength;
         this.graphemeOffset = graphemeOffset;
+    }
+
+    /**
+     * Get the text property: The sentence text.
+     *
+     * @return the text value.
+     */
+    public String getText() {
+        return this.text;
     }
 
     /**
