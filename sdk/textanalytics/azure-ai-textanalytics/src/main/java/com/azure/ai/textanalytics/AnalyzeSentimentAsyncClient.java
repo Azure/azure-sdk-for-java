@@ -28,16 +28,15 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
+import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
@@ -70,18 +69,12 @@ class AnalyzeSentimentAsyncClient {
      */
     TextAnalyticsPagedFlux<AnalyzeSentimentResult> analyzeSentimentBatch(Iterable<TextDocumentInput> documents,
         TextAnalyticsRequestOptions options) {
-        Objects.requireNonNull(documents, "'documents' cannot be null.");
-        final Iterator<TextDocumentInput> iterator = documents.iterator();
-        if (!iterator.hasNext()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'documents' cannot be empty."));
-        }
-
         try {
+            inputDocumentsValidation(documents);
             return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> withContext(context ->
                 getAnalyzedSentimentResponseInPage(documents, options, context)).flux());
         } catch (RuntimeException ex) {
-            return new TextAnalyticsPagedFlux<>(() ->
-                (continuationToken, pageSize) -> fluxError(logger, ex));
+            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> fluxError(logger, ex));
         }
     }
 
@@ -97,14 +90,13 @@ class AnalyzeSentimentAsyncClient {
      */
     TextAnalyticsPagedFlux<AnalyzeSentimentResult> analyzeSentimentBatchWithContext(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
-        Objects.requireNonNull(documents, "'documents' cannot be null.");
-        final Iterator<TextDocumentInput> iterator = documents.iterator();
-        if (!iterator.hasNext()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'documents' cannot be empty."));
+        try {
+            inputDocumentsValidation(documents);
+            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
+                getAnalyzedSentimentResponseInPage(documents, options, context).flux());
+        } catch (RuntimeException ex) {
+            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> fluxError(logger, ex));
         }
-
-        return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
-            getAnalyzedSentimentResponseInPage(documents, options, context).flux());
     }
 
     /**

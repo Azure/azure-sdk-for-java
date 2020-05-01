@@ -30,6 +30,7 @@ import java.util.Collections;
 import java.util.Objects;
 
 import static com.azure.ai.textanalytics.Transforms.mapByIndex;
+import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsException;
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
@@ -162,15 +163,19 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DetectedLanguage> detectLanguage(String document, String countryHint) {
-        Objects.requireNonNull(document, "'document' cannot be null.");
-        return detectLanguageBatch(Collections.singletonList(document), countryHint, null)
-            .map(detectLanguageResult -> {
-                if (detectLanguageResult.isError()) {
-                    throw logger.logExceptionAsError(
-                        Transforms.toTextAnalyticsException(detectLanguageResult.getError()));
-                }
-                return detectLanguageResult.getPrimaryLanguage();
-            }).last();
+        try {
+            Objects.requireNonNull(document, "'document' cannot be null.");
+            return detectLanguageBatch(Collections.singletonList(document), countryHint, null)
+                .map(detectLanguageResult -> {
+                    if (detectLanguageResult.isError()) {
+                        // TODO: throw HttpResponseException instead
+                        throw logger.logExceptionAsError(toTextAnalyticsException(detectLanguageResult.getError()));
+                    }
+                    return detectLanguageResult.getPrimaryLanguage();
+                }).last();
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -346,7 +351,6 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedFlux<CategorizedEntity> recognizeEntities(String document, String language) {
-        Objects.requireNonNull(document, "'document' cannot be null.");
         return recognizeEntityAsyncClient.recognizeEntities(document, language);
     }
 
@@ -512,7 +516,6 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedFlux<LinkedEntity> recognizeLinkedEntities(String document, String language) {
-        Objects.requireNonNull(document, "'document' cannot be null.");
         return recognizeLinkedEntityAsyncClient.recognizeLinkedEntities(document, language);
     }
 
@@ -683,7 +686,6 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedFlux<String> extractKeyPhrases(String document, String language) {
-        Objects.requireNonNull(document, "'document' cannot be null.");
         return extractKeyPhraseAsyncClient.extractKeyPhrasesSingleText(document, language);
     }
 
@@ -824,11 +826,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentSentiment> analyzeSentiment(String document) {
-        try {
-            return analyzeSentiment(document, defaultLanguage);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return analyzeSentiment(document, defaultLanguage);
     }
 
     /**
@@ -853,15 +851,19 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentSentiment> analyzeSentiment(String document, String language) {
-        Objects.requireNonNull(document, "'document' cannot be null.");
-        return analyzeSentimentBatch(Collections.singletonList(document), language, null)
-            .map(sentimentResult -> {
-                if (sentimentResult.isError()) {
-                    throw logger.logExceptionAsError(Transforms.toTextAnalyticsException(sentimentResult.getError()));
-                }
-
-                return sentimentResult.getDocumentSentiment();
-            }).last();
+        try {
+            Objects.requireNonNull(document, "'document' cannot be null.");
+            return analyzeSentimentBatch(Collections.singletonList(document), language, null)
+                .map(sentimentResult -> {
+                    if (sentimentResult.isError()) {
+                        // TODO: throw HttpResponseException instead
+                        throw logger.logExceptionAsError(toTextAnalyticsException(sentimentResult.getError()));
+                    }
+                    return sentimentResult.getDocumentSentiment();
+                }).last();
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**

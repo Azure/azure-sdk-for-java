@@ -34,7 +34,9 @@ import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRAC
 import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
+import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsException;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
+import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
@@ -66,30 +68,33 @@ class RecognizeEntityAsyncClient {
      * @return The {@link TextAnalyticsPagedFlux} of {@link CategorizedEntity}.
      */
     TextAnalyticsPagedFlux<CategorizedEntity> recognizeEntities(String document, String language) {
-        Objects.requireNonNull(document, "'document' cannot be null.");
-        return new TextAnalyticsPagedFlux<>(() ->
-            (continuationToken, pageSize) -> recognizeEntitiesBatch(
-                Collections.singletonList(new TextDocumentInput("0", document, language)), null)
-                .byPage()
-                .map(resOfResult -> {
-                    Iterator<RecognizeEntitiesResult> iterator = resOfResult.getValue().iterator();
-                    // Collection will never empty
-                    if (!iterator.hasNext()) {
-                        throw logger.logExceptionAsError(new IllegalStateException(
-                            "An empty collection returned which is an unexpected error."));
-                    }
+        try {
+            Objects.requireNonNull(document, "'document' cannot be null.");
+            return new TextAnalyticsPagedFlux<>(() ->
+                (continuationToken, pageSize) -> recognizeEntitiesBatch(
+                    Collections.singletonList(new TextDocumentInput("0", document, language)), null)
+                    .byPage()
+                    .map(resOfResult -> {
+                        Iterator<RecognizeEntitiesResult> iterator = resOfResult.getValue().iterator();
+                        // Collection will never empty
+                        if (!iterator.hasNext()) {
+                            throw logger.logExceptionAsError(new IllegalStateException(
+                                "An empty collection returned which is an unexpected error."));
+                        }
 
-                    final RecognizeEntitiesResult entitiesResult = iterator.next();
-                    if (entitiesResult.isError()) {
-                        throw logger.logExceptionAsError(
-                            Transforms.toTextAnalyticsException(entitiesResult.getError()));
-                    }
+                        final RecognizeEntitiesResult entitiesResult = iterator.next();
+                        if (entitiesResult.isError()) {
+                            throw logger.logExceptionAsError(toTextAnalyticsException(entitiesResult.getError()));
+                        }
 
-                    return new TextAnalyticsPagedResponse<>(
-                        resOfResult.getRequest(), resOfResult.getStatusCode(), resOfResult.getHeaders(),
-                        entitiesResult.getEntities().stream().collect(Collectors.toList()), null,
-                        resOfResult.getModelVersion(), resOfResult.getStatistics());
-                }));
+                        return new TextAnalyticsPagedResponse<>(
+                            resOfResult.getRequest(), resOfResult.getStatusCode(), resOfResult.getHeaders(),
+                            entitiesResult.getEntities().stream().collect(Collectors.toList()), null,
+                            resOfResult.getModelVersion(), resOfResult.getStatistics());
+                    }));
+        } catch (RuntimeException ex) {
+            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> fluxError(logger, ex));
+        }
     }
 
     /**
@@ -103,18 +108,12 @@ class RecognizeEntityAsyncClient {
      */
     TextAnalyticsPagedFlux<RecognizeEntitiesResult> recognizeEntitiesBatch(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
-        Objects.requireNonNull(documents, "'documents' cannot be null.");
-        final Iterator<TextDocumentInput> iterator = documents.iterator();
-        if (!iterator.hasNext()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'documents' cannot be empty."));
-        }
-
         try {
+            inputDocumentsValidation(documents);
             return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> withContext(context ->
                 getRecognizedEntitiesResponseInPage(documents, options, context)).flux());
         } catch (RuntimeException ex) {
-            return new TextAnalyticsPagedFlux<>(() ->
-                (continuationToken, pageSize) -> fluxError(logger, ex));
+            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> fluxError(logger, ex));
         }
     }
 
@@ -131,14 +130,13 @@ class RecognizeEntityAsyncClient {
      */
     TextAnalyticsPagedFlux<RecognizeEntitiesResult> recognizeEntitiesBatchWithContext(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
-        Objects.requireNonNull(documents, "'documents' cannot be null.");
-        final Iterator<TextDocumentInput> iterator = documents.iterator();
-        if (!iterator.hasNext()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'documents' cannot be empty."));
+        try {
+            inputDocumentsValidation(documents);
+            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
+                getRecognizedEntitiesResponseInPage(documents, options, context).flux());
+        } catch (RuntimeException ex) {
+            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> fluxError(logger, ex));
         }
-
-        return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
-            getRecognizedEntitiesResponseInPage(documents, options, context).flux());
     }
 
     /**

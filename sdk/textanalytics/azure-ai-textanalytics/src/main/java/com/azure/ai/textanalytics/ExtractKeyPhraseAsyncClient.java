@@ -34,7 +34,9 @@ import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRAC
 import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
+import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsException;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
+import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
@@ -66,29 +68,32 @@ class ExtractKeyPhraseAsyncClient {
      * @return The {@link TextAnalyticsPagedFlux} of extracted key phrases strings.
      */
     TextAnalyticsPagedFlux<String> extractKeyPhrasesSingleText(String document, String language) {
-        Objects.requireNonNull(document, "'document' cannot be null.");
-        return new TextAnalyticsPagedFlux<>(() ->
-            (continuationToken, pageSize) -> extractKeyPhrases(
-                Collections.singletonList(new TextDocumentInput("0", document, language)), null).byPage()
-                .map(resOfResult -> {
-                    Iterator<ExtractKeyPhraseResult> iterator = resOfResult.getValue().iterator();
-                    // Collection will never empty
-                    if (!iterator.hasNext()) {
-                        throw logger.logExceptionAsError(new IllegalStateException(
-                            "An empty collection returned which is an unexpected error."));
-                    }
+        try {
+            Objects.requireNonNull(document, "'document' cannot be null.");
+            return new TextAnalyticsPagedFlux<>(() ->
+                (continuationToken, pageSize) -> extractKeyPhrases(
+                    Collections.singletonList(new TextDocumentInput("0", document, language)), null).byPage()
+                    .map(resOfResult -> {
+                        final Iterator<ExtractKeyPhraseResult> iterator = resOfResult.getValue().iterator();
+                        // Collection will never empty
+                        if (!iterator.hasNext()) {
+                            throw logger.logExceptionAsError(new IllegalStateException(
+                                "An empty collection returned which is an unexpected error."));
+                        }
 
-                    final ExtractKeyPhraseResult keyPhraseResult = iterator.next();
-                    if (keyPhraseResult.isError()) {
-                        throw logger.logExceptionAsError(
-                            Transforms.toTextAnalyticsException(keyPhraseResult.getError()));
-                    }
+                        final ExtractKeyPhraseResult keyPhraseResult = iterator.next();
+                        if (keyPhraseResult.isError()) {
+                            throw logger.logExceptionAsError(toTextAnalyticsException(keyPhraseResult.getError()));
+                        }
 
-                    return new TextAnalyticsPagedResponse<>(
-                        resOfResult.getRequest(), resOfResult.getStatusCode(), resOfResult.getHeaders(),
-                        keyPhraseResult.getKeyPhrases().stream().collect(Collectors.toList()),
-                        null, resOfResult.getModelVersion(), resOfResult.getStatistics());
-                }));
+                        return new TextAnalyticsPagedResponse<>(
+                            resOfResult.getRequest(), resOfResult.getStatusCode(), resOfResult.getHeaders(),
+                            keyPhraseResult.getKeyPhrases().stream().collect(Collectors.toList()),
+                            null, resOfResult.getModelVersion(), resOfResult.getStatistics());
+                    }));
+        } catch (RuntimeException ex) {
+            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> fluxError(logger, ex));
+        }
     }
 
     /**
@@ -102,18 +107,12 @@ class ExtractKeyPhraseAsyncClient {
      */
     TextAnalyticsPagedFlux<ExtractKeyPhraseResult> extractKeyPhrases(Iterable<TextDocumentInput> documents,
         TextAnalyticsRequestOptions options) {
-        Objects.requireNonNull(documents, "'documents' cannot be null.");
-        final Iterator<TextDocumentInput> iterator = documents.iterator();
-        if (!iterator.hasNext()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'documents' cannot be empty."));
-        }
-
         try {
+            inputDocumentsValidation(documents);
             return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> withContext(context ->
                 getExtractedKeyPhrasesResponseInPage(documents, options, context)).flux());
         } catch (RuntimeException ex) {
-            return new TextAnalyticsPagedFlux<>(() ->
-                (continuationToken, pageSize) -> fluxError(logger, ex));
+            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> fluxError(logger, ex));
         }
     }
 
@@ -129,14 +128,13 @@ class ExtractKeyPhraseAsyncClient {
      */
     TextAnalyticsPagedFlux<ExtractKeyPhraseResult> extractKeyPhrasesBatchWithContext(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
-        Objects.requireNonNull(documents, "'documents' cannot be null.");
-        final Iterator<TextDocumentInput> iterator = documents.iterator();
-        if (!iterator.hasNext()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'documents' cannot be empty."));
+        try {
+            inputDocumentsValidation(documents);
+            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
+                getExtractedKeyPhrasesResponseInPage(documents, options, context).flux());
+        } catch (RuntimeException ex) {
+            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> fluxError(logger, ex));
         }
-
-        return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
-            getExtractedKeyPhrasesResponseInPage(documents, options, context).flux());
     }
 
     /**

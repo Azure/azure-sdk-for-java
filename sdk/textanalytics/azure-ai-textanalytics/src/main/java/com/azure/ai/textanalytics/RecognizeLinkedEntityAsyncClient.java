@@ -35,6 +35,7 @@ import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsException;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
+import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
@@ -66,29 +67,33 @@ class RecognizeLinkedEntityAsyncClient {
      * @return The {@link TextAnalyticsPagedFlux} of {@link LinkedEntity}.
      */
     TextAnalyticsPagedFlux<LinkedEntity> recognizeLinkedEntities(String document, String language) {
-        Objects.requireNonNull(document, "'document' cannot be null.");
-        return new TextAnalyticsPagedFlux<>(() ->
-            (continuationToken, pageSize) -> recognizeLinkedEntitiesBatch(
-                Collections.singletonList(new TextDocumentInput("0", document, language)), null)
-                .byPage()
-                .map(resOfResult -> {
-                    final Iterator<RecognizeLinkedEntitiesResult> iterator = resOfResult.getValue().iterator();
-                    // Collection will never empty
-                    if (!iterator.hasNext()) {
-                        throw logger.logExceptionAsError(new IllegalStateException(
-                            "An empty collection returned which is an unexpected error."));
-                    }
+        try {
+            Objects.requireNonNull(document, "'document' cannot be null.");
+            return new TextAnalyticsPagedFlux<>(() ->
+                (continuationToken, pageSize) -> recognizeLinkedEntitiesBatch(
+                    Collections.singletonList(new TextDocumentInput("0", document, language)), null)
+                    .byPage()
+                    .map(resOfResult -> {
+                        final Iterator<RecognizeLinkedEntitiesResult> iterator = resOfResult.getValue().iterator();
+                        // Collection will never be empty
+                        if (!iterator.hasNext()) {
+                            throw logger.logExceptionAsError(new IllegalStateException(
+                                "An empty collection returned which is an unexpected error."));
+                        }
 
-                    final RecognizeLinkedEntitiesResult entitiesResult = iterator.next();
-                    if (entitiesResult.isError()) {
-                        throw logger.logExceptionAsError(toTextAnalyticsException(entitiesResult.getError()));
-                    }
+                        final RecognizeLinkedEntitiesResult entitiesResult = iterator.next();
+                        if (entitiesResult.isError()) {
+                            throw logger.logExceptionAsError(toTextAnalyticsException(entitiesResult.getError()));
+                        }
 
-                    return new TextAnalyticsPagedResponse<>(
-                        resOfResult.getRequest(), resOfResult.getStatusCode(), resOfResult.getHeaders(),
-                        entitiesResult.getEntities().stream().collect(Collectors.toList()),
-                        null, resOfResult.getModelVersion(), resOfResult.getStatistics());
-                }));
+                        return new TextAnalyticsPagedResponse<>(
+                            resOfResult.getRequest(), resOfResult.getStatusCode(), resOfResult.getHeaders(),
+                            entitiesResult.getEntities().stream().collect(Collectors.toList()),
+                            null, resOfResult.getModelVersion(), resOfResult.getStatistics());
+                    }));
+        } catch (RuntimeException ex) {
+            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> fluxError(logger, ex));
+        }
     }
 
     /**
@@ -102,13 +107,8 @@ class RecognizeLinkedEntityAsyncClient {
      */
     TextAnalyticsPagedFlux<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesBatch(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
-        Objects.requireNonNull(documents, "'documents' cannot be null.");
-        final Iterator<TextDocumentInput> iterator = documents.iterator();
-        if (!iterator.hasNext()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'documents' cannot be empty."));
-        }
-
         try {
+            inputDocumentsValidation(documents);
             return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> withContext(context ->
                 getRecognizedLinkedEntitiesResponseInPage(documents, options, context)).flux());
         } catch (RuntimeException ex) {
@@ -129,14 +129,13 @@ class RecognizeLinkedEntityAsyncClient {
      */
     TextAnalyticsPagedFlux<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesBatchWithContext(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
-        Objects.requireNonNull(documents, "'documents' cannot be null.");
-        final Iterator<TextDocumentInput> iterator = documents.iterator();
-        if (!iterator.hasNext()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'documents' cannot be empty."));
+        try {
+            inputDocumentsValidation(documents);
+            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
+                getRecognizedLinkedEntitiesResponseInPage(documents, options, context).flux());
+        } catch (RuntimeException ex) {
+            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> fluxError(logger, ex));
         }
-
-        return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
-            getRecognizedLinkedEntitiesResponseInPage(documents, options, context).flux());
     }
 
     /**

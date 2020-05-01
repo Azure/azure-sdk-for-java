@@ -23,6 +23,10 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.Context;
 
+import java.util.Objects;
+
+import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
+
 /**
  * This class provides a synchronous client that contains all the operations that apply to Azure Text Analytics.
  * Operations allowed by the client are language detection, entities recognition, linked entities recognition,
@@ -147,6 +151,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<DetectLanguageResult> detectLanguageBatch(Iterable<String> documents) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(client.detectLanguageBatch(documents));
     }
 
@@ -172,6 +177,7 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<DetectLanguageResult> detectLanguageBatch(
         Iterable<String> documents, String countryHint) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(client.detectLanguageBatch(documents, countryHint));
     }
 
@@ -199,6 +205,7 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<DetectLanguageResult> detectLanguageBatch(
         Iterable<String> documents, String countryHint, TextAnalyticsRequestOptions options) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(client.detectLanguageBatch(documents, countryHint, options));
     }
 
@@ -225,6 +232,7 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<DetectLanguageResult> detectLanguageBatch(
         Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(
             client.detectLanguageAsyncClient.detectLanguageBatchWithContext(documents, options, context));
     }
@@ -281,6 +289,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<CategorizedEntity> recognizeEntities(String document, String language) {
+        Objects.requireNonNull(document, "'document' cannot be null.");
         return new TextAnalyticsPagedIterable<>(client.recognizeEntities(document, language));
     }
 
@@ -305,8 +314,8 @@ public final class TextAnalyticsClient {
      * @throws NullPointerException if {@code documents} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedIterable<RecognizeEntitiesResult> recognizeEntitiesBatch(
-        Iterable<String> documents) {
+    public TextAnalyticsPagedIterable<RecognizeEntitiesResult> recognizeEntitiesBatch(Iterable<String> documents) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(client.recognizeEntitiesBatch(documents));
     }
 
@@ -330,6 +339,7 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<RecognizeEntitiesResult> recognizeEntitiesBatch(
         Iterable<String> documents, String language) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(client.recognizeEntitiesBatch(documents, language));
     }
 
@@ -356,8 +366,8 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<RecognizeEntitiesResult> recognizeEntitiesBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
-        return new TextAnalyticsPagedIterable<>(
-            client.recognizeEntitiesBatch(documents, language, options));
+        inputDocumentsValidation(documents);
+        return new TextAnalyticsPagedIterable<>(client.recognizeEntitiesBatch(documents, language, options));
     }
 
     /**
@@ -384,9 +394,9 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<RecognizeEntitiesResult> recognizeEntitiesBatch(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(
-            client.recognizeEntityAsyncClient.recognizeEntitiesBatchWithContext(documents, options,
-                context));
+            client.recognizeEntityAsyncClient.recognizeEntitiesBatchWithContext(documents, options, context));
     }
 
     // Linked Entities
@@ -441,6 +451,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<LinkedEntity> recognizeLinkedEntities(String document, String language) {
+        Objects.requireNonNull(document, "'document' cannot be null.");
         return new TextAnalyticsPagedIterable<>(client.recognizeLinkedEntities(document, language));
     }
 
@@ -468,6 +479,7 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesBatch(
         Iterable<String> documents) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(client.recognizeLinkedEntitiesBatch(documents));
     }
 
@@ -496,6 +508,7 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesBatch(
         Iterable<String> documents, String language) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(client.recognizeLinkedEntitiesBatch(documents, language));
     }
 
@@ -526,6 +539,7 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(client.recognizeLinkedEntitiesBatch(documents, language, options));
     }
 
@@ -555,6 +569,7 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesBatch(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(
             client.recognizeLinkedEntityAsyncClient.recognizeLinkedEntitiesBatchWithContext(
                 documents, options, context));
@@ -607,6 +622,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<String> extractKeyPhrases(String document, String language) {
+        Objects.requireNonNull(document, "'document' cannot be null.");
         return new TextAnalyticsPagedIterable<>(client.extractKeyPhrases(document, language));
     }
 
@@ -632,6 +648,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<ExtractKeyPhraseResult> extractKeyPhrasesBatch(Iterable<String> documents) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(client.extractKeyPhrasesBatch(documents));
     }
 
@@ -658,6 +675,7 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<ExtractKeyPhraseResult> extractKeyPhrasesBatch(
         Iterable<String> documents, String language) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(client.extractKeyPhrasesBatch(documents, language));
     }
 
@@ -687,6 +705,7 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<ExtractKeyPhraseResult> extractKeyPhrasesBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(client.extractKeyPhrasesBatch(documents, language, options));
     }
 
@@ -715,6 +734,7 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<ExtractKeyPhraseResult> extractKeyPhrasesBatch(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(
             client.extractKeyPhraseAsyncClient.extractKeyPhrasesBatchWithContext(documents, options, context));
     }
@@ -767,6 +787,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentSentiment analyzeSentiment(String document, String language) {
+        Objects.requireNonNull(document, "'document' cannot be null.");
         return client.analyzeSentiment(document, language).block();
     }
 
@@ -793,6 +814,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<AnalyzeSentimentResult> analyzeSentimentBatch(Iterable<String> documents) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(client.analyzeSentimentBatch(documents));
     }
 
@@ -818,6 +840,7 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<AnalyzeSentimentResult> analyzeSentimentBatch(
         Iterable<String> documents, String language) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(client.analyzeSentimentBatch(documents, language));
     }
 
@@ -845,6 +868,7 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<AnalyzeSentimentResult> analyzeSentimentBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(client.analyzeSentimentBatch(documents, language, options));
     }
 
@@ -872,6 +896,7 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedIterable<AnalyzeSentimentResult> analyzeSentimentBatch(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        inputDocumentsValidation(documents);
         return new TextAnalyticsPagedIterable<>(
             client.analyzeSentimentAsyncClient.analyzeSentimentBatchWithContext(documents, options, context));
     }

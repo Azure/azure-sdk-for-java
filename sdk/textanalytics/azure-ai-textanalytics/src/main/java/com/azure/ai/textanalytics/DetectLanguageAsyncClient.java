@@ -13,7 +13,6 @@ import com.azure.ai.textanalytics.implementation.models.LanguageResult;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsErrorException;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
-import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
@@ -24,13 +23,13 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.toLanguageInput;
+import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
+import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
@@ -63,13 +62,8 @@ class DetectLanguageAsyncClient {
      */
     TextAnalyticsPagedFlux<DetectLanguageResult> detectLanguageBatch(Iterable<DetectLanguageInput> documents,
         TextAnalyticsRequestOptions options) {
-        Objects.requireNonNull(documents, "'documents' cannot be null.");
-        final Iterator<DetectLanguageInput> iterator = documents.iterator();
-        if (!iterator.hasNext()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'documents' cannot be empty."));
-        }
-
         try {
+            inputDocumentsValidation(documents);
             return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> withContext(context ->
                 getDetectedLanguageResponseInPage(documents, options, context)).flux());
         } catch (RuntimeException ex) {
@@ -89,14 +83,13 @@ class DetectLanguageAsyncClient {
      */
     TextAnalyticsPagedFlux<DetectLanguageResult> detectLanguageBatchWithContext(
         Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options, Context context) {
-        Objects.requireNonNull(documents, "'documents' cannot be null.");
-        final Iterator<DetectLanguageInput> iterator = documents.iterator();
-        if (!iterator.hasNext()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'documents' cannot be empty."));
+        try {
+            inputDocumentsValidation(documents);
+            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
+                getDetectedLanguageResponseInPage(documents, options, context).flux());
+        } catch (RuntimeException ex) {
+            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> fluxError(logger, ex));
         }
-
-        return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
-            getDetectedLanguageResponseInPage(documents, options, context).flux());
     }
 
     /**
@@ -109,9 +102,7 @@ class DetectLanguageAsyncClient {
      */
     private TextAnalyticsPagedResponse<DetectLanguageResult> toTextAnalyticsPagedResponse(
         SimpleResponse<LanguageResult> response) {
-
         final LanguageResult languageResult = response.getValue();
-
         final List<DetectLanguageResult> detectLanguageResults = new ArrayList<>();
         for (DocumentLanguage documentLanguage : languageResult.getDocuments()) {
             com.azure.ai.textanalytics.implementation.models.DetectedLanguage detectedLanguage =
@@ -125,11 +116,8 @@ class DetectLanguageAsyncClient {
         }
 
         for (DocumentError documentError : languageResult.getErrors()) {
-            TextAnalyticsError error =
-                Transforms.toTextAnalyticsError(documentError.getError());
-            final String documentId = documentError.getId();
-
-            detectLanguageResults.add(new DetectLanguageResultImpl(documentId, null, error, null));
+            detectLanguageResults.add(new DetectLanguageResultImpl(documentError.getId(), null,
+                toTextAnalyticsError(documentError.getError()), null));
         }
 
         return new TextAnalyticsPagedResponse<>(
