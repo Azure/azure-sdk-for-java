@@ -197,8 +197,8 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 <!-- LINKS -->
 
 [api_documentation]: https://aka.ms/java-docs
-[search]: https://azure.microsoft.com/en-us/services/search/
-[search_docs]: https://docs.microsoft.com/en-us/azure/search/
+[search]: https://azure.microsoft.com/services/search/
+[search_docs]: https://docs.microsoft.com/azure/search/
 [azure_subscription]: https://azure.microsoft.com/free
 [maven]: https://maven.apache.org/
 [package]: https://search.maven.org/artifact/com.azure/azure-search-documents
@@ -211,6 +211,6 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 [add_headers_from_context_policy]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/http/policy/AddHeadersFromContextPolicy.java
-[rest_api]: https://docs.microsoft.com/en-us/rest/api/searchservice/http-status-codes
+[rest_api]: https://docs.microsoft.com/rest/api/searchservice/http-status-codes
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fsearch%2Fazure-search-documents%2FREADME.png)
