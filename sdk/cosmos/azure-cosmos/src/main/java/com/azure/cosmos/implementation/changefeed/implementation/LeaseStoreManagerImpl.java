@@ -181,8 +181,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                     return null;
                 }
 
-                CosmosItemProperties document = ((CosmosAsyncItemResponseImpl<?>) documentResourceResponse)
-                    .getProperties();
+                CosmosItemProperties document = CosmosAsyncItemResponseImpl.getProperties(documentResourceResponse);
 
                 logger.info("Created lease for partition {}.", leaseToken);
 
@@ -264,8 +263,8 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
                 return Mono.error(ex);
             })
-            .map( documentResourceResponse -> ServiceItemLease
-                .fromDocument(((CosmosAsyncItemResponseImpl<?>) documentResourceResponse).getProperties()))
+            .map(documentResourceResponse -> ServiceItemLease
+                .fromDocument(CosmosAsyncItemResponseImpl.getProperties(documentResourceResponse)))
             .flatMap( refreshedLease -> this.leaseUpdater.updateLease(
                 refreshedLease,
                 lease.getId(),
@@ -312,7 +311,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                 return Mono.error(ex);
             })
             .map(documentResourceResponse -> ServiceItemLease
-                .fromDocument(((CosmosAsyncItemResponseImpl<?>) documentResourceResponse).getProperties()))
+                .fromDocument(CosmosAsyncItemResponseImpl.getProperties(documentResourceResponse)))
             .flatMap( refreshedLease -> this.leaseUpdater.updateLease(
                 refreshedLease,
                 lease.getId(),
@@ -371,7 +370,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                                                  this.requestOptionsFactory.createRequestOptions(lease),
                                                  CosmosItemProperties.class)
             .map( documentResourceResponse -> ServiceItemLease
-                .fromDocument(((CosmosAsyncItemResponseImpl<?>) documentResourceResponse).getProperties()))
+                .fromDocument(CosmosAsyncItemResponseImpl.getProperties(documentResourceResponse)))
             .flatMap( refreshedLease -> this.leaseUpdater.updateLease(
                 refreshedLease,
                 lease.getId(), new PartitionKey(lease.getId()),

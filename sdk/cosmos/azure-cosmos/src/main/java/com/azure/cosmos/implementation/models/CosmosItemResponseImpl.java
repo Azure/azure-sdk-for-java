@@ -27,6 +27,10 @@ public class CosmosItemResponseImpl<T> implements CosmosItemResponse<T> {
         return new CosmosItemResponseImpl<>(asyncResponse);
     }
 
+    public static CosmosItemProperties getProperties(CosmosItemResponse<?> itemResponse) {
+        return ((CosmosItemResponseImpl<?>) itemResponse).getProperties();
+    }
+
     @Override
     public T getItem() {
         return responseWrapper.getItem();

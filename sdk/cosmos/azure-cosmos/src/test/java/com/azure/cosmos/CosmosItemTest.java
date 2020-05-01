@@ -8,7 +8,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.models.CosmosAsyncItemResponseImpl;
+import com.azure.cosmos.implementation.models.CosmosItemResponseImpl;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.FeedOptions;
@@ -117,7 +117,8 @@ public class CosmosItemTest extends TestSuiteBase {
             properties.getId(),
             new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
             options);
-        assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(((CosmosAsyncItemResponseImpl<?>) replace).getProperties(), "newProp")).isEqualTo(newPropValue);
+        assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(CosmosItemResponseImpl.getProperties(replace), "newProp"))
+            .isEqualTo(newPropValue);
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
@@ -219,8 +220,8 @@ public class CosmosItemTest extends TestSuiteBase {
     private void validateItemResponse(CosmosItemProperties containerProperties,
         CosmosItemResponse<CosmosItemProperties> createResponse) {
         // Basic validation
-        assertThat(((CosmosAsyncItemResponseImpl<?>) createResponse).getProperties().getId()).isNotNull();
-        assertThat(((CosmosAsyncItemResponseImpl<?>) createResponse).getProperties().getId())
+        assertThat(CosmosItemResponseImpl.getProperties(createResponse).getId()).isNotNull();
+        assertThat(CosmosItemResponseImpl.getProperties(createResponse).getId())
             .as("check Resource Id")
             .isEqualTo(containerProperties.getId());
     }

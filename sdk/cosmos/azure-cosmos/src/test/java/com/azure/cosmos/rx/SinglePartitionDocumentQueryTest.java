@@ -258,8 +258,9 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
 
     public CosmosItemProperties createDocument(CosmosAsyncContainer cosmosContainer, int cnt) {
         CosmosItemProperties docDefinition = getDocumentDefinition(cnt);
-        return ((CosmosAsyncItemResponseImpl<?>) cosmosContainer.createItem(docDefinition, new CosmosItemRequestOptions()).block())
-            .getProperties();
+        return cosmosContainer.createItem(docDefinition, new CosmosItemRequestOptions())
+            .map(CosmosAsyncItemResponseImpl::getProperties)
+            .block();
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)

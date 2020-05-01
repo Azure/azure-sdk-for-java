@@ -356,7 +356,7 @@ public class CollectionCrudTest extends TestSuiteBase {
             logger.info("Client 2 READ Document Client Side Request Statistics {}", readDocumentResponse.getResponseDiagnostics());
             logger.info("Client 2 READ Document Latency {}", readDocumentResponse.getRequestLatency());
 
-            CosmosItemProperties readDocument = ((CosmosAsyncItemResponseImpl<?>) readDocumentResponse).getProperties();
+            CosmosItemProperties readDocument = CosmosAsyncItemResponseImpl.getProperties(readDocumentResponse);
 
             assertThat(readDocument.getId().equals(newDocument.getId())).isTrue();
             assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(readDocument, "name")

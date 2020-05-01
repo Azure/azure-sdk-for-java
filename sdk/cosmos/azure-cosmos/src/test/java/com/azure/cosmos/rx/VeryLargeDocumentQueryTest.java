@@ -79,10 +79,10 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
             createdCollection.createItem(docDefinition, new CosmosItemRequestOptions());
 
         StepVerifier.create(createObservable.subscribeOn(Schedulers.single()))
-                    .expectNextMatches(cosmosItemResponse -> ((CosmosAsyncItemResponseImpl<?>) cosmosItemResponse)
-                        .getProperties().getId().equals(docDefinition.getId()))
-                    .expectComplete()
-                    .verify(Duration.ofMillis(subscriberValidationTimeout));
+            .expectNextMatches(cosmosItemResponse -> CosmosAsyncItemResponseImpl.getProperties(cosmosItemResponse)
+                .getId().equals(docDefinition.getId()))
+            .expectComplete()
+            .verify(Duration.ofMillis(subscriberValidationTimeout));
     }
 
     // TODO (DANOBLE) beforeClass method intermittently times out within the SETUP_TIMEOUT interval.

@@ -95,14 +95,16 @@ public class UniqueIndexTest extends TestSuiteBase {
 
         collection = database.createContainer(collectionDefinition).block().getContainer();
 
-        CosmosItemProperties properties = ((CosmosAsyncItemResponseImpl<?>) collection.createItem(doc1).block()).getProperties();
+        CosmosItemProperties properties = collection.createItem(doc1)
+            .map(CosmosAsyncItemResponseImpl::getProperties)
+            .block();
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        CosmosItemProperties itemSettings =
-            ((CosmosAsyncItemResponseImpl<?>) collection.readItem(properties.getId(), PartitionKey.NONE, options,
-                CosmosItemProperties.class)
-                .block())
-                .getProperties();
+        CosmosItemProperties itemSettings = collection.readItem(properties.getId(), PartitionKey.NONE, options,
+            CosmosItemProperties.class)
+            .map(CosmosAsyncItemResponseImpl::getProperties)
+            .block();
+
         assertThat(itemSettings.getId()).isEqualTo(doc1.get("id").textValue());
 
         try {
@@ -138,17 +140,18 @@ public class UniqueIndexTest extends TestSuiteBase {
         ObjectNode doc3 = om.readValue("{\"name\":\"Rabindranath Tagore\",\"description\":\"poet\",\"id\": \""+ UUID.randomUUID().toString() +"\"}", ObjectNode.class);
         ObjectNode doc2 = om.readValue("{\"name\":\"عمر خیّام\",\"description\":\"mathematician\",\"id\": \""+ UUID.randomUUID().toString() +"\"}", ObjectNode.class);
 
-        CosmosItemProperties doc1Inserted =
-            ((CosmosAsyncItemResponseImpl<?>) collection.createItem(doc1, new CosmosItemRequestOptions()).block())
-                .getProperties();
+        CosmosItemProperties doc1Inserted = collection.createItem(doc1, new CosmosItemRequestOptions())
+            .map(CosmosAsyncItemResponseImpl::getProperties)
+            .block();
 
-        ((CosmosAsyncItemResponseImpl<?>) collection.replaceItem(doc1Inserted, doc1.get("id").asText(), PartitionKey.NONE, new CosmosItemRequestOptions())
-            .block()).getProperties();     // REPLACE with same values -- OK.
+        collection.replaceItem(doc1Inserted, doc1.get("id").asText(), PartitionKey.NONE, new CosmosItemRequestOptions())
+            .map(CosmosAsyncItemResponseImpl::getProperties)
+            .block();     // REPLACE with same values -- OK.
 
-        CosmosItemProperties doc2Inserted = ((CosmosAsyncItemResponseImpl<?>) collection
-            .createItem(doc2, new CosmosItemRequestOptions())
-            .block())
-            .getProperties();
+        CosmosItemProperties doc2Inserted = collection.createItem(doc2, new CosmosItemRequestOptions())
+            .map(CosmosAsyncItemResponseImpl::getProperties)
+            .block();
+
         CosmosItemProperties doc2Replacement = new CosmosItemProperties(ModelBridgeInternal.toJsonFromJsonSerializable(doc1Inserted));
         doc2Replacement.setId( doc2Inserted.getId());
 

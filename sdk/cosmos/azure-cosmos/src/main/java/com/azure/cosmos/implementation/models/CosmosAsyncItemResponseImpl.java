@@ -20,6 +20,7 @@ import java.util.Map;
 
 /**
  * Internal implementation of {@link CosmosAsyncItemResponse}.
+ *
  * @param <T> The type parameter.
  */
 public class CosmosAsyncItemResponseImpl<T> implements CosmosAsyncItemResponse<T> {
@@ -27,8 +28,10 @@ public class CosmosAsyncItemResponseImpl<T> implements CosmosAsyncItemResponse<T
     private final JsonSerializer jsonSerializer;
     private final byte[] responseBodyAsByteArray;
     private T item;
+    private boolean itemSet;
     private final ResourceResponse<Document> resourceResponse;
     private CosmosItemProperties props;
+    private boolean propsSet;
 
     private CosmosAsyncItemResponseImpl(ResourceResponse<Document> response, Class<T> classType,
         JsonSerializer jsonSerializer) {
@@ -43,44 +46,46 @@ public class CosmosAsyncItemResponseImpl<T> implements CosmosAsyncItemResponse<T
         return new CosmosAsyncItemResponseImpl<>(response, classType, jsonSerializer);
     }
 
+    public static CosmosItemProperties getProperties(CosmosAsyncItemResponse<?> itemResponse) {
+        return ((CosmosAsyncItemResponseImpl<?>) itemResponse).getProperties();
+    }
+
     @Override
     @SuppressWarnings("unchecked") // Casting getProperties() to T is safe given T is of CosmosItemProperties.
     public T getItem() {
-        if (item != null) {
-            return item;
-        }
-
-        SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(this.getResponseDiagnostics());
-        if (item == null && this.itemClassType == CosmosItemProperties.class) {
-            ZonedDateTime serializationStartTime = ZonedDateTime.now(ZoneOffset.UTC);
-            item =(T) getProperties();
-            ZonedDateTime serializationEndTime = ZonedDateTime.now(ZoneOffset.UTC);
-            SerializationDiagnosticsContext.SerializationDiagnostics diagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
-                serializationStartTime,
-                serializationEndTime,
-                SerializationDiagnosticsContext.SerializationType.ITEM_DESERIALIZATION
-            );
-            serializationDiagnosticsContext.addSerializationDiagnostics(diagnostics);
-            return item;
-        }
-
-        if (item == null) {
-            synchronized (this) {
-                if (item == null && !Utils.isEmpty(responseBodyAsByteArray)) {
-                    ZonedDateTime serializationStartTime = ZonedDateTime.now(ZoneOffset.UTC);
-                    item = jsonSerializer.deserialize(responseBodyAsByteArray, itemClassType);
-                    ZonedDateTime serializationEndTime = ZonedDateTime.now(ZoneOffset.UTC);
-                    SerializationDiagnosticsContext.SerializationDiagnostics diagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
-                        serializationStartTime,
-                        serializationEndTime,
-                        SerializationDiagnosticsContext.SerializationType.ITEM_DESERIALIZATION
-                    );
-                    serializationDiagnosticsContext.addSerializationDiagnostics(diagnostics);
-                }
+        synchronized (this) {
+            if (itemSet) {
+                return item;
             }
-        }
 
-        return item;
+            itemSet = true;
+            SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal
+                .getSerializationDiagnosticsContext(this.getResponseDiagnostics());
+
+
+            if (this.itemClassType == CosmosItemProperties.class) {
+                ZonedDateTime serializationStartTime = ZonedDateTime.now(ZoneOffset.UTC);
+                item = (T) getProperties();
+                ZonedDateTime serializationEndTime = ZonedDateTime.now(ZoneOffset.UTC);
+                SerializationDiagnosticsContext.SerializationDiagnostics diagnostics =
+                    new SerializationDiagnosticsContext.SerializationDiagnostics(serializationStartTime,
+                        serializationEndTime,
+                        SerializationDiagnosticsContext.SerializationType.ITEM_DESERIALIZATION);
+                serializationDiagnosticsContext.addSerializationDiagnostics(diagnostics);
+                return item;
+            } else if (!Utils.isEmpty(responseBodyAsByteArray)) {
+                ZonedDateTime serializationStartTime = ZonedDateTime.now(ZoneOffset.UTC);
+                item = jsonSerializer.deserialize(responseBodyAsByteArray, itemClassType);
+                ZonedDateTime serializationEndTime = ZonedDateTime.now(ZoneOffset.UTC);
+                SerializationDiagnosticsContext.SerializationDiagnostics diagnostics =
+                    new SerializationDiagnosticsContext.SerializationDiagnostics(serializationStartTime,
+                        serializationEndTime,
+                        SerializationDiagnosticsContext.SerializationType.ITEM_DESERIALIZATION);
+                serializationDiagnosticsContext.addSerializationDiagnostics(diagnostics);
+            }
+
+            return item;
+        }
     }
 
     /**
@@ -89,18 +94,17 @@ public class CosmosAsyncItemResponseImpl<T> implements CosmosAsyncItemResponse<T
      * @return the itemProperties
      */
     public CosmosItemProperties getProperties() {
-        ensureCosmosItemPropertiesInitialized();
-        return props;
-    }
-
-    private void ensureCosmosItemPropertiesInitialized() {
         synchronized (this) {
-            if (Utils.isEmpty(responseBodyAsByteArray)) {
-                props = null;
-            } else {
-                props = new CosmosItemProperties(responseBodyAsByteArray);
+            if (!propsSet) {
+                propsSet = true;
+                if (Utils.isEmpty(responseBodyAsByteArray)) {
+                    props = null;
+                } else {
+                    props = new CosmosItemProperties(responseBodyAsByteArray);
+                }
             }
 
+            return props;
         }
     }
 

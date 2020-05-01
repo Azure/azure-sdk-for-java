@@ -369,7 +369,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
     public CosmosItemProperties createDocument(CosmosAsyncContainer cosmosContainer, Map<String, Object> keyValueProps)
             throws CosmosClientException {
         CosmosItemProperties docDefinition = getDocumentDefinition(keyValueProps);
-        return ((CosmosAsyncItemResponseImpl<?>) cosmosContainer.createItem(docDefinition).block()).getProperties();
+        return cosmosContainer.createItem(docDefinition).map(CosmosAsyncItemResponseImpl::getProperties).block();
     }
 
     public List<CosmosItemProperties> bulkInsert(CosmosAsyncContainer cosmosContainer, List<Map<String, Object>> keyValuePropsList) {

@@ -466,7 +466,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     public static CosmosItemProperties createDocument(CosmosAsyncContainer cosmosContainer, CosmosItemProperties item) {
-        return ((CosmosAsyncItemResponseImpl<?>) cosmosContainer.createItem(item).block()).getProperties();
+        return cosmosContainer.createItem(item).map(CosmosAsyncItemResponseImpl::getProperties).block();
     }
 
     public Flux<CosmosAsyncItemResponse<CosmosItemProperties>> bulkInsert(CosmosAsyncContainer cosmosContainer,
@@ -493,7 +493,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                                        List<CosmosItemProperties> documentDefinitionList) {
         bulkInsert(cosmosContainer, documentDefinitionList, DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL)
             .publishOn(Schedulers.parallel())
-            .map(itemResponse -> ((CosmosAsyncItemResponseImpl<?>) itemResponse).getProperties())
+            .map(CosmosAsyncItemResponseImpl::getProperties)
             .then()
             .block();
     }

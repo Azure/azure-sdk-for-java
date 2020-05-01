@@ -81,8 +81,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                         return Mono.error(throwable);
                     })
                     .map(cosmosItemResponse -> {
-                        CosmosItemProperties document =
-                            ((CosmosAsyncItemResponseImpl<?>) cosmosItemResponse).getProperties();
+                        CosmosItemProperties document = CosmosAsyncItemResponseImpl.getProperties(cosmosItemResponse);
                         ServiceItemLease serverLease = ServiceItemLease.fromDocument(document);
                         logger.info(
                             "Partition {} update failed because the lease with token '{}' was updated by owner '{}' with token '{}'.",
@@ -125,7 +124,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
     private Mono<CosmosItemProperties> tryReplaceLease(Lease lease, String itemId, PartitionKey partitionKey)
                                                                                         throws LeaseLostException {
         return this.client.replaceItem(itemId, partitionKey, lease, this.getCreateIfMatchOptions(lease))
-            .map(cosmosItemResponse -> ((CosmosAsyncItemResponseImpl<?>) cosmosItemResponse).getProperties())
+            .map(CosmosAsyncItemResponseImpl::getProperties)
             .onErrorResume(re -> {
                 if (re instanceof CosmosClientException) {
                     CosmosClientException ex = (CosmosClientException) re;

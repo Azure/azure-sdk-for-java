@@ -57,10 +57,7 @@ class DocumentServiceLeaseStore implements LeaseStore {
             ServiceItemLease.fromDocument(doc));
 
         return this.client.readItem(markerDocId, new PartitionKey(markerDocId), requestOptions, CosmosItemProperties.class)
-            .flatMap(documentResourceResponse -> {
-                CosmosAsyncItemResponseImpl<?> responseImpl = (CosmosAsyncItemResponseImpl<?>) documentResourceResponse;
-                return Mono.just(responseImpl.getProperties() != null);
-            })
+            .map(documentResourceResponse -> CosmosAsyncItemResponseImpl.getProperties(documentResourceResponse) != null)
             .onErrorResume(throwable -> {
                 if (throwable instanceof CosmosClientException) {
                     CosmosClientException e = (CosmosClientException) throwable;
@@ -104,8 +101,7 @@ class DocumentServiceLeaseStore implements LeaseStore {
 
         return this.client.createItem(this.leaseCollectionLink, containerDocument, new CosmosItemRequestOptions(), false)
             .map(documentResourceResponse -> {
-                CosmosItemProperties itemProperties = ((CosmosAsyncItemResponseImpl<?>) documentResourceResponse)
-                    .getProperties();
+                CosmosItemProperties itemProperties = CosmosAsyncItemResponseImpl.getProperties(documentResourceResponse);
                 if (itemProperties != null) {
                     this.lockETag = itemProperties.getETag();
                     return true;

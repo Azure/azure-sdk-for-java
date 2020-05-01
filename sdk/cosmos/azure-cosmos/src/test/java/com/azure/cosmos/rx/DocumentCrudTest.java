@@ -188,12 +188,11 @@ public class DocumentCrudTest extends TestSuiteBase {
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        CosmosItemProperties readDocument = ((CosmosAsyncItemResponseImpl<?>) container.readItem(docDefinition.getId(),
+        CosmosItemProperties readDocument = container.readItem(docDefinition.getId(),
             new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(docDefinition, "mypk")),
-            options,
-            CosmosItemProperties.class)
-            .block())
-            .getProperties();
+            options, CosmosItemProperties.class)
+            .map(CosmosAsyncItemResponseImpl::getProperties)
+            .block();
         Thread.sleep(1000);
         OffsetDateTime after = OffsetDateTime.now();
 
@@ -349,9 +348,9 @@ public class DocumentCrudTest extends TestSuiteBase {
     public void upsertDocument_ReplaceDocument(String documentId) {
 
         CosmosItemProperties properties = getDocumentDefinition(documentId);
-        properties =
-            ((CosmosAsyncItemResponseImpl<?>) container.createItem(properties, new CosmosItemRequestOptions()).block())
-                .getProperties();
+        properties = container.createItem(properties, new CosmosItemRequestOptions())
+            .map(CosmosAsyncItemResponseImpl::getProperties)
+            .block();
 
         String newPropValue = UUID.randomUUID().toString();
         BridgeInternal.setProperty(properties, "newProp", newPropValue);

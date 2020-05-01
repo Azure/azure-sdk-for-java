@@ -501,7 +501,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
         CosmosItemProperties docDefinition = getDocumentDefinition(cnt);
 
-        return ((CosmosAsyncItemResponseImpl<?>) cosmosContainer.createItem(docDefinition).block()).getProperties();
+        return cosmosContainer.createItem(docDefinition).map(CosmosAsyncItemResponseImpl::getProperties).block();
     }
 
     private void queryWithContinuationTokensAndPageSizes(String query, int[] pageSizes, List<CosmosItemProperties> expectedDocs) {
