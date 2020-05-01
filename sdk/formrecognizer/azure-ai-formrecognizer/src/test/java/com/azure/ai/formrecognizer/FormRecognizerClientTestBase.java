@@ -62,6 +62,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.formrecognizer.FormRecognizerClientBuilder.OCP_APIM_SUBSCRIPTION_KEY;
+import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL;
+import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL;
 import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_LOCAL_URL;
 import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_LOCAL_URL;
 import static com.azure.ai.formrecognizer.TestUtils.getFileData;
@@ -74,8 +76,6 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     private static final String FORM_RECOGNIZER_PROPERTIES = "azure-ai-formrecognizer.properties";
     private static final String VERSION = "version";
     private static final Pattern NON_DIGIT_PATTERN = Pattern.compile("[^0-9]+");
-    public static final String FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL =
-        "FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL";
 
     private final HttpLogOptions httpLogOptions = new HttpLogOptions();
     private final Map<String, String> properties = CoreUtils.getProperties(FORM_RECOGNIZER_PROPERTIES);
@@ -274,13 +274,15 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         documentResult.getFields().forEach((label, expectedFieldValue) -> {
             final FormField<?> actualFormField = actualForm.getFields().get(label);
             assertEquals(label, actualFormField.getName());
-            assertEquals(expectedFieldValue.getPage(), actualFormField.getPageNumber());
-            if (expectedFieldValue.getConfidence() != null) {
-                assertEquals(expectedFieldValue.getConfidence(), actualFormField.getConfidence());
-            } else {
-                assertEquals(1.0f, actualFormField.getConfidence());
+            if (expectedFieldValue != null) {
+                assertEquals(expectedFieldValue.getPage(), actualFormField.getPageNumber());
+                if (expectedFieldValue.getConfidence() != null) {
+                    assertEquals(expectedFieldValue.getConfidence(), actualFormField.getConfidence());
+                } else {
+                    assertEquals(1.0f, actualFormField.getConfidence());
+                }
+                validateFieldValueTransforms(expectedFieldValue, actualFormField, readResults, includeTextDetails);
             }
-            validateFieldValueTransforms(expectedFieldValue, actualFormField, readResults, includeTextDetails);
         });
     }
 
@@ -460,11 +462,11 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     }
 
     void beginTrainingUnlabeledRunner(BiConsumer<String, Boolean> testRunner) {
-        testRunner.accept(createStorageAndGenerateSas("src/test/resources/sample_files/Train"), false);
+        testRunner.accept(getTrainingSasUri(), false);
     }
 
     void beginTrainingLabeledRunner(BiConsumer<String, Boolean> testRunner) {
-        testRunner.accept(createStorageAndGenerateSas("src/test/resources/sample_files/TrainLabeled"), true);
+        testRunner.accept(getTrainingSasUri(), true);
     }
 
     protected <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
@@ -530,11 +532,19 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             : Configuration.getGlobalConfiguration().get("AZURE_FORM_RECOGNIZER_ENDPOINT");
     }
 
-    private String createStorageAndGenerateSas(String folderPath) {
+    private String getTrainingSasUri() {
         if (interceptorManager.isPlaybackMode()) {
             return "https://isPlaybackmode";
         } else {
             return Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL);
+        }
+    }
+
+    private String getTestingSasUri() {
+        if (interceptorManager.isPlaybackMode()) {
+            return "https://isPlaybackmode";
+        } else {
+            return Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL);
         }
     }
 }

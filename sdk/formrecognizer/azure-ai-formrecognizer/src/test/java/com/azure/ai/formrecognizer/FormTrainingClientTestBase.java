@@ -51,6 +51,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public abstract class FormTrainingClientTestBase extends TestBase {
     public static final String FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL =
         "FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL";
+    public static final String FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL =
+        "FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL";
     private static final String AZURE_FORM_RECOGNIZER_API_KEY = "AZURE_FORM_RECOGNIZER_API_KEY";
     private static final String NAME = "name";
     private static final String FORM_RECOGNIZER_PROPERTIES = "azure-ai-formrecognizer.properties";
@@ -231,19 +233,19 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     @Test
     abstract void beginTrainingLabeledResult();
 
-    // @Test
-    // abstract void beginTrainingUnlabeledResult();
+    @Test
+    abstract void beginTrainingUnlabeledResult();
 
     void getCustomModelInvalidModelIdRunner(Consumer<String> testRunner) {
         testRunner.accept(TestUtils.INVALID_MODEL_ID);
     }
 
     void beginTrainingLabeledResultRunner(BiConsumer<String, Boolean> testRunner) {
-        testRunner.accept(createStorageAndGenerateSas("src/test/resources/sample_files/TrainLabeled"), true);
+        testRunner.accept(getTrainingSasUri(), true);
     }
 
     void beginTrainingUnlabeledResultRunner(BiConsumer<String, Boolean> testRunner) {
-        testRunner.accept(createStorageAndGenerateSas("src/test/resources/sample_files/Train"), false);
+        testRunner.accept(getTrainingSasUri(), false);
     }
 
     <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
@@ -309,11 +311,19 @@ public abstract class FormTrainingClientTestBase extends TestBase {
             : Configuration.getGlobalConfiguration().get("AZURE_FORM_RECOGNIZER_ENDPOINT");
     }
 
-    private String createStorageAndGenerateSas(String folderPath) {
+    private String getTrainingSasUri() {
         if (interceptorManager.isPlaybackMode()) {
             return "https://isPlaybackmode";
         } else {
             return Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL);
+        }
+    }
+
+    private String getTestingSasUri() {
+        if (interceptorManager.isPlaybackMode()) {
+            return "https://isPlaybackmode";
+        } else {
+            return Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL);
         }
     }
 }

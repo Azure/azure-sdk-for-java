@@ -196,13 +196,13 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
     /**
      * Verifies the result of the training operation for a valid unlabeled model Id and training set Url.
      */
-    // @Test
-    // void beginTrainingUnlabeledResult() {
-    //     beginTrainingUnlabeledResultRunner((storageSASUrl, useLabelFile) -> {
-    //         SyncPoller<OperationResult, CustomFormModel> syncPoller =
-    //             client.beginTraining(storageSASUrl, useLabelFile);
-    //         syncPoller.waitForCompletion();
-    //         validateCustomModelData(syncPoller.getFinalResult(), getModelRawResponse(UNLABELED_MODEL_DATA), false);
-    //     });
-    // }
+    @Test
+    void beginTrainingUnlabeledResult() {
+        beginTrainingUnlabeledResultRunner((storageSASUrl, useLabelFile) -> {
+            SyncPoller<OperationResult, CustomFormModel> syncPoller =
+                client.beginTraining(storageSASUrl, useLabelFile);
+            syncPoller.waitForCompletion();
+            validateCustomModelData(syncPoller.getFinalResult(), getModelRawResponse(UNLABELED_MODEL_DATA), false);
+        });
+    }
 }
