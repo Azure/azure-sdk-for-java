@@ -2,15 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.implementation;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.SqlParameter;
-import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseStore;
@@ -20,6 +14,12 @@ import com.azure.cosmos.implementation.changefeed.RequestOptionsFactory;
 import com.azure.cosmos.implementation.changefeed.ServiceItemLease;
 import com.azure.cosmos.implementation.changefeed.ServiceItemLeaseUpdater;
 import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
+import com.azure.cosmos.implementation.models.CosmosAsyncItemResponseImpl;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.SqlQuerySpec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -181,7 +181,8 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                     return null;
                 }
 
-                CosmosItemProperties document = BridgeInternal.getProperties(documentResourceResponse);
+                CosmosItemProperties document = ((CosmosAsyncItemResponseImpl<?>) documentResourceResponse)
+                    .getProperties();
 
                 logger.info("Created lease for partition {}.", leaseToken);
 
@@ -263,7 +264,8 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
                 return Mono.error(ex);
             })
-            .map( documentResourceResponse -> ServiceItemLease.fromDocument(BridgeInternal.getProperties(documentResourceResponse)))
+            .map( documentResourceResponse -> ServiceItemLease
+                .fromDocument(((CosmosAsyncItemResponseImpl<?>) documentResourceResponse).getProperties()))
             .flatMap( refreshedLease -> this.leaseUpdater.updateLease(
                 refreshedLease,
                 lease.getId(),
@@ -309,7 +311,8 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
                 return Mono.error(ex);
             })
-            .map( documentResourceResponse -> ServiceItemLease.fromDocument(BridgeInternal.getProperties(documentResourceResponse)))
+            .map(documentResourceResponse -> ServiceItemLease
+                .fromDocument(((CosmosAsyncItemResponseImpl<?>) documentResourceResponse).getProperties()))
             .flatMap( refreshedLease -> this.leaseUpdater.updateLease(
                 refreshedLease,
                 lease.getId(),
@@ -367,7 +370,8 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                                                  new PartitionKey(lease.getId()),
                                                  this.requestOptionsFactory.createRequestOptions(lease),
                                                  CosmosItemProperties.class)
-            .map( documentResourceResponse -> ServiceItemLease.fromDocument(BridgeInternal.getProperties(documentResourceResponse)))
+            .map( documentResourceResponse -> ServiceItemLease
+                .fromDocument(((CosmosAsyncItemResponseImpl<?>) documentResourceResponse).getProperties()))
             .flatMap( refreshedLease -> this.leaseUpdater.updateLease(
                 refreshedLease,
                 lease.getId(), new PartitionKey(lease.getId()),

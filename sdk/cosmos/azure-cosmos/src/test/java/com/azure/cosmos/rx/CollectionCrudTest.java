@@ -3,20 +3,24 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.models.CompositePath;
-import com.azure.cosmos.models.CompositePathSortOrder;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.models.CosmosAsyncContainerResponse;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosDatabaseForTest;
+import com.azure.cosmos.CosmosResponseValidator;
+import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.Database;
+import com.azure.cosmos.implementation.FailureValidator;
+import com.azure.cosmos.implementation.RetryAnalyzer;
+import com.azure.cosmos.implementation.models.CosmosAsyncItemResponseImpl;
+import com.azure.cosmos.models.CompositePath;
+import com.azure.cosmos.models.CompositePathSortOrder;
+import com.azure.cosmos.models.CosmosAsyncContainerResponse;
+import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
-import com.azure.cosmos.CosmosDatabaseForTest;
-import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -24,9 +28,6 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SpatialSpec;
 import com.azure.cosmos.models.SpatialType;
-import com.azure.cosmos.implementation.Database;
-import com.azure.cosmos.implementation.FailureValidator;
-import com.azure.cosmos.implementation.RetryAnalyzer;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -355,7 +356,7 @@ public class CollectionCrudTest extends TestSuiteBase {
             logger.info("Client 2 READ Document Client Side Request Statistics {}", readDocumentResponse.getResponseDiagnostics());
             logger.info("Client 2 READ Document Latency {}", readDocumentResponse.getRequestLatency());
 
-            CosmosItemProperties readDocument = BridgeInternal.getProperties(readDocumentResponse);
+            CosmosItemProperties readDocument = ((CosmosAsyncItemResponseImpl<?>) readDocumentResponse).getProperties();
 
             assertThat(readDocument.getId().equals(newDocument.getId())).isTrue();
             assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(readDocument, "name")

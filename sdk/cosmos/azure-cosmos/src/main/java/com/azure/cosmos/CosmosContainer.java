@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.models.CosmosItemResponseImpl;
 import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
@@ -10,7 +11,6 @@ import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.FeedOptions;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -223,9 +223,7 @@ public class CosmosContainer {
     <T> CosmosItemResponse<T> mapItemResponseAndBlock(Mono<CosmosAsyncItemResponse<T>> itemMono) throws
         CosmosClientException {
         try {
-            return itemMono
-                .map(this::convertResponse)
-                .block();
+            return itemMono.map(CosmosItemResponseImpl::fromAsyncResponse).block();
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosClientException) {
@@ -239,9 +237,7 @@ public class CosmosContainer {
     private CosmosItemResponse<Object> mapDeleteItemResponseAndBlock(Mono<CosmosAsyncItemResponse<Object>> deleteItemMono)
         throws CosmosClientException {
         try {
-            return deleteItemMono
-                       .map(this::convertResponse)
-                       .block();
+            return deleteItemMono.map(CosmosItemResponseImpl::fromAsyncResponse).block();
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosClientException) {
@@ -370,16 +366,6 @@ public class CosmosContainer {
     }
 
     // TODO: should make partitionkey public in CosmosAsyncItem and fix the below call
-
-    /**
-     * Convert response cosmos sync item response.
-     *
-     * @param response the cosmos item response
-     * @return the cosmos sync item response
-     */
-    private <T> CosmosItemResponse<T> convertResponse(CosmosAsyncItemResponse<T> response) {
-        return ModelBridgeInternal.<T>createCosmosItemResponse(response);
-    }
 
     private <T> CosmosPagedIterable<T> getCosmosPagedIterable(CosmosPagedFlux<T> cosmosPagedFlux) {
         return UtilBridgeInternal.createCosmosPagedIterable(cosmosPagedFlux);

@@ -9,7 +9,6 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosAsyncStoredProcedure;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosKeyCredential;
-import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.BaseAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CosmosItemProperties;
@@ -28,8 +27,10 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
+import com.azure.cosmos.implementation.models.CosmosAsyncItemResponseImpl;
 import com.azure.cosmos.rx.CosmosItemResponseValidator;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import io.netty.handler.codec.http.HttpMethod;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -164,7 +165,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         CosmosAsyncItemResponse<CosmosItemProperties> response = createdContainer.readItem(createdItemId, PartitionKey.NONE,
                                                                                CosmosItemProperties.class)
                                                                                               .block();
-        CosmosItemProperties itemSettingsToReplace = ModelBridgeInternal.getCosmosItemProperties(response);
+        CosmosItemProperties itemSettingsToReplace = ((CosmosAsyncItemResponseImpl<?>) response).getProperties();
         String replacedItemId = UUID.randomUUID().toString();
         itemSettingsToReplace.setId(replacedItemId);
         Mono<CosmosAsyncItemResponse<CosmosItemProperties>> replaceMono = createdContainer.replaceItem(itemSettingsToReplace,

@@ -9,7 +9,7 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.implementation.models.CosmosAsyncItemResponseImpl;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -92,7 +92,7 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
             CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
             ModelBridgeInternal.setPartitionKey(cosmosItemRequestOptions, new PartitionKey("wrongPartitionKey"));
             CosmosItemResponse<CosmosItemProperties> readResponse =
-                container.readItem(BridgeInternal.getProperties(createResponse).getId(),
+                container.readItem(((CosmosAsyncItemResponseImpl<?>) createResponse).getProperties().getId(),
                     new PartitionKey("wrongPartitionKey"),
                     CosmosItemProperties.class);
             fail("request should fail as partition key is wrong");
@@ -157,7 +157,7 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
             CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
             ModelBridgeInternal.setPartitionKey(cosmosItemRequestOptions, new PartitionKey("wrongPartitionKey"));
             CosmosItemResponse<CosmosItemProperties> readResponse =
-                cosmosContainer.readItem(BridgeInternal.getProperties(createResponse).getId(),
+                cosmosContainer.readItem(((CosmosAsyncItemResponseImpl<?>) createResponse).getProperties().getId(),
                     new PartitionKey("wrongPartitionKey"),
                     CosmosItemProperties.class);
             fail("request should fail as partition key is wrong");

@@ -2,22 +2,21 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.implementation;
 
-import com.azure.cosmos.models.AccessCondition;
-import com.azure.cosmos.models.AccessConditionType;
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.ServiceItemLease;
 import com.azure.cosmos.implementation.changefeed.ServiceItemLeaseUpdater;
 import com.azure.cosmos.implementation.changefeed.exceptions.LeaseConflictException;
 import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
+import com.azure.cosmos.implementation.models.CosmosAsyncItemResponseImpl;
+import com.azure.cosmos.models.AccessCondition;
+import com.azure.cosmos.models.AccessConditionType;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.PartitionKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.ZoneId;
@@ -83,7 +82,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                     })
                     .map(cosmosItemResponse -> {
                         CosmosItemProperties document =
-                            BridgeInternal.getProperties(cosmosItemResponse);
+                            ((CosmosAsyncItemResponseImpl<?>) cosmosItemResponse).getProperties();
                         ServiceItemLease serverLease = ServiceItemLease.fromDocument(document);
                         logger.info(
                             "Partition {} update failed because the lease with token '{}' was updated by owner '{}' with token '{}'.",
@@ -126,7 +125,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
     private Mono<CosmosItemProperties> tryReplaceLease(Lease lease, String itemId, PartitionKey partitionKey)
                                                                                         throws LeaseLostException {
         return this.client.replaceItem(itemId, partitionKey, lease, this.getCreateIfMatchOptions(lease))
-            .map(cosmosItemResponse -> BridgeInternal.getProperties(cosmosItemResponse))
+            .map(cosmosItemResponse -> ((CosmosAsyncItemResponseImpl<?>) cosmosItemResponse).getProperties())
             .onErrorResume(re -> {
                 if (re instanceof CosmosClientException) {
                     CosmosClientException ex = (CosmosClientException) re;

@@ -2,25 +2,25 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.implementation.guava25.collect.Lists;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.FeedOptions;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.SqlParameter;
-import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import com.azure.cosmos.implementation.TestUtils;
+import com.azure.cosmos.implementation.guava25.collect.Lists;
+import com.azure.cosmos.implementation.models.CosmosAsyncItemResponseImpl;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import io.reactivex.subscribers.TestSubscriber;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -258,8 +258,8 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
 
     public CosmosItemProperties createDocument(CosmosAsyncContainer cosmosContainer, int cnt) {
         CosmosItemProperties docDefinition = getDocumentDefinition(cnt);
-        return BridgeInternal
-                   .getProperties(cosmosContainer.createItem(docDefinition, new CosmosItemRequestOptions()).block());
+        return ((CosmosAsyncItemResponseImpl<?>) cosmosContainer.createItem(docDefinition, new CosmosItemRequestOptions()).block())
+            .getProperties();
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)

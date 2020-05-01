@@ -10,25 +10,26 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.util.CosmosPagedFlux;
-import com.azure.cosmos.implementation.ItemOperations;
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
-import com.azure.cosmos.models.FeedOptions;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
+import com.azure.cosmos.implementation.ItemOperations;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.TestUtils;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
+import com.azure.cosmos.implementation.guava27.Strings;
+import com.azure.cosmos.implementation.models.CosmosAsyncItemResponseImpl;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.azure.cosmos.implementation.guava27.Strings;
 import io.reactivex.subscribers.TestSubscriber;
 import org.assertj.core.groups.Tuple;
 import org.testng.SkipException;
@@ -500,7 +501,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
         CosmosItemProperties docDefinition = getDocumentDefinition(cnt);
 
-        return BridgeInternal.getProperties(cosmosContainer.createItem(docDefinition).block());
+        return ((CosmosAsyncItemResponseImpl<?>) cosmosContainer.createItem(docDefinition).block()).getProperties();
     }
 
     private void queryWithContinuationTokensAndPageSizes(String query, int[] pageSizes, List<CosmosItemProperties> expectedDocs) {

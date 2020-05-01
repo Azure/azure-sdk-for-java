@@ -73,14 +73,6 @@ public final class ModelBridgeInternal {
         return new CosmosAsyncDatabaseResponse(response, client);
     }
 
-    public static <T> CosmosAsyncItemResponse<T> createCosmosAsyncItemResponse(ResourceResponse<Document> response, Class<T> classType, JsonSerializer jsonSerializer) {
-        return new CosmosAsyncItemResponse<>(response, classType, jsonSerializer);
-    }
-
-    public static CosmosAsyncItemResponse<Object> createCosmosAsyncItemResponseWithObjectType(ResourceResponse<Document> response, JsonSerializer jsonSerializer) {
-        return new CosmosAsyncItemResponse<>(response, Object.class, jsonSerializer);
-    }
-
     public static CosmosAsyncPermissionResponse createCosmosAsyncPermissionResponse(ResourceResponse<Permission> response,
                                                                                     CosmosAsyncUser cosmosUser) {
         return new CosmosAsyncPermissionResponse(response, cosmosUser);
@@ -128,10 +120,6 @@ public final class ModelBridgeInternal {
         return new CosmosUserResponse(response, database);
     }
 
-    public static <T> CosmosItemResponse<T> createCosmosItemResponse(CosmosAsyncItemResponse<T> response) {
-        return new CosmosItemResponse<>(response);
-    }
-
     public static CosmosDatabaseResponse createCosmosDatabaseResponse(CosmosAsyncDatabaseResponse response, CosmosClient client) {
         return new CosmosDatabaseResponse(response, client);
     }
@@ -165,14 +153,6 @@ public final class ModelBridgeInternal {
 
     public static List<CosmosDatabaseProperties> getCosmosDatabasePropertiesFromV2Results(List<Database> results) {
         return CosmosDatabaseProperties.getFromV2Results(results);
-    }
-
-    public static <T> CosmosItemProperties getCosmosItemProperties(CosmosAsyncItemResponse<T> cosmosItemResponse) {
-        return cosmosItemResponse.getProperties();
-    }
-
-    public static <T> CosmosItemProperties getCosmosItemProperties(CosmosItemResponse<T> cosmosItemResponse) {
-        return cosmosItemResponse.getProperties();
     }
 
     public static Permission getV2Permissions(CosmosPermissionProperties permissionSettings) {

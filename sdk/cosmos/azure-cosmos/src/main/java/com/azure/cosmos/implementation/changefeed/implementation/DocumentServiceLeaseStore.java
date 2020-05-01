@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.implementation;
 
+import com.azure.cosmos.implementation.models.CosmosAsyncItemResponseImpl;
 import com.azure.cosmos.models.AccessCondition;
 import com.azure.cosmos.models.AccessConditionType;
 import com.azure.cosmos.BridgeInternal;
@@ -56,7 +57,10 @@ class DocumentServiceLeaseStore implements LeaseStore {
             ServiceItemLease.fromDocument(doc));
 
         return this.client.readItem(markerDocId, new PartitionKey(markerDocId), requestOptions, CosmosItemProperties.class)
-            .flatMap(documentResourceResponse -> Mono.just(BridgeInternal.getProperties(documentResourceResponse) != null))
+            .flatMap(documentResourceResponse -> {
+                CosmosAsyncItemResponseImpl<?> responseImpl = (CosmosAsyncItemResponseImpl<?>) documentResourceResponse;
+                return Mono.just(responseImpl.getProperties() != null);
+            })
             .onErrorResume(throwable -> {
                 if (throwable instanceof CosmosClientException) {
                     CosmosClientException e = (CosmosClientException) throwable;
@@ -100,8 +104,10 @@ class DocumentServiceLeaseStore implements LeaseStore {
 
         return this.client.createItem(this.leaseCollectionLink, containerDocument, new CosmosItemRequestOptions(), false)
             .map(documentResourceResponse -> {
-                if (BridgeInternal.getProperties(documentResourceResponse) != null) {
-                    this.lockETag = BridgeInternal.getProperties(documentResourceResponse).getETag();
+                CosmosItemProperties itemProperties = ((CosmosAsyncItemResponseImpl<?>) documentResourceResponse)
+                    .getProperties();
+                if (itemProperties != null) {
+                    this.lockETag = itemProperties.getETag();
                     return true;
                 } else {
                     return false;

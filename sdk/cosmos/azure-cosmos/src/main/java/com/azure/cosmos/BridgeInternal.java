@@ -6,7 +6,6 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.ChangeFeedOptions;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
-import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -25,9 +24,7 @@ import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.models.CosmosError;
-import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
@@ -442,14 +439,6 @@ public final class BridgeInternal {
 
     public static PartitionKeyInternal getPartitionKeyInternal(PartitionKey partitionKey) {
         return ModelBridgeInternal.getPartitionKeyInternal(partitionKey);
-    }
-
-    public static <T> CosmosItemProperties getProperties(CosmosAsyncItemResponse<T> cosmosItemResponse) {
-        return ModelBridgeInternal.getCosmosItemProperties(cosmosItemResponse);
-    }
-
-    public static <T> CosmosItemProperties getProperties(CosmosItemResponse<T> cosmosItemResponse) {
-        return ModelBridgeInternal.getCosmosItemProperties(cosmosItemResponse);
     }
 
     public static int getHashCode(CosmosKeyCredential keyCredential) {

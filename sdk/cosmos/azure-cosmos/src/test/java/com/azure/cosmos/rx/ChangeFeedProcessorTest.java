@@ -2,14 +2,17 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ChangeFeedProcessor;
-import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.changefeed.ServiceItemLease;
+import com.azure.cosmos.implementation.models.CosmosAsyncItemResponseImpl;
+import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -17,9 +20,6 @@ import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.changefeed.ServiceItemLease;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -278,7 +278,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                                 leaseDocument.setOwner("TEMP_OWNER");
                                 CosmosItemRequestOptions options = new CosmosItemRequestOptions();
                                 return createdLeaseCollection.replaceItem(doc, doc.getId(), new PartitionKey(doc.getId()), options)
-                                    .map(itemResponse -> BridgeInternal.getProperties(itemResponse));
+                                    .map(itemResponse -> ((CosmosAsyncItemResponseImpl<?>) itemResponse).getProperties());
                             })
                             .map(ServiceItemLease::fromDocument)
                             .map(leaseDocument -> {

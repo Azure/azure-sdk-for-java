@@ -5,12 +5,13 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.models.CosmosAsyncItemResponseImpl;
+import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -52,7 +53,7 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
         }
 
         FeedOptions options = new FeedOptions();
-        
+
         CosmosPagedFlux<CosmosItemProperties> feedResponseFlux = createdCollection.queryItems("SELECT * FROM r",
             options, CosmosItemProperties.class);
 
@@ -74,11 +75,12 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
         int size = (int) (ONE_MB * 1.999);
         BridgeInternal.setProperty(docDefinition, "largeString", StringUtils.repeat("x", size));
 
-        Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createObservable = 
+        Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createObservable =
             createdCollection.createItem(docDefinition, new CosmosItemRequestOptions());
 
         StepVerifier.create(createObservable.subscribeOn(Schedulers.single()))
-                    .expectNextMatches(cosmosItemResponse -> BridgeInternal.getProperties(cosmosItemResponse).getId().equals(docDefinition.getId()))
+                    .expectNextMatches(cosmosItemResponse -> ((CosmosAsyncItemResponseImpl<?>) cosmosItemResponse)
+                        .getProperties().getId().equals(docDefinition.getId()))
                     .expectComplete()
                     .verify(Duration.ofMillis(subscriberValidationTimeout));
     }

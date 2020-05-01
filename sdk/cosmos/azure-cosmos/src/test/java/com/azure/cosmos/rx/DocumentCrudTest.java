@@ -9,6 +9,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.FailureValidator;
+import com.azure.cosmos.implementation.models.CosmosAsyncItemResponseImpl;
 import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -187,11 +188,12 @@ public class DocumentCrudTest extends TestSuiteBase {
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        CosmosItemProperties readDocument = BridgeInternal.getProperties(container.readItem(docDefinition.getId(),
+        CosmosItemProperties readDocument = ((CosmosAsyncItemResponseImpl<?>) container.readItem(docDefinition.getId(),
             new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(docDefinition, "mypk")),
             options,
             CosmosItemProperties.class)
-            .block());
+            .block())
+            .getProperties();
         Thread.sleep(1000);
         OffsetDateTime after = OffsetDateTime.now();
 
@@ -348,7 +350,8 @@ public class DocumentCrudTest extends TestSuiteBase {
 
         CosmosItemProperties properties = getDocumentDefinition(documentId);
         properties =
-            BridgeInternal.getProperties(container.createItem(properties, new CosmosItemRequestOptions()).block());
+            ((CosmosAsyncItemResponseImpl<?>) container.createItem(properties, new CosmosItemRequestOptions()).block())
+                .getProperties();
 
         String newPropValue = UUID.randomUUID().toString();
         BridgeInternal.setProperty(properties, "newProp", newPropValue);
