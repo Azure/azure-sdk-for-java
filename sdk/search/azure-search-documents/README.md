@@ -106,7 +106,7 @@ There are several types of operations that can be executed against the service:
 
 ### Create an index
 
-Create Index using `${searchServiceClient}` create in above [section](create-a-searchserviceclient)
+Create Index using `${searchServiceClient}` create in above [section](#create-a-searchserviceclient)
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L96-L107 -->
 ```java
@@ -125,7 +125,7 @@ searchServiceClient.createIndex(newIndex);
 ```
 ### Upload a Document
 
-Upload hotel document to Search Index using `${searchIndexClient}` create in above [section](create-a-searchindexclient)
+Upload hotel document to Search Index using `${searchIndexClient}` create in above [section](#create-a-searchindexclient)
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L111-L116 -->
 ```java
@@ -139,7 +139,7 @@ searchIndexClient.uploadDocuments(hotels);
 
 ### Search on hotel name
 
-Search hotel using keyword using `${searchIndexClient}` create in above [section](create-a-searchindexclient)
+Search hotel using keyword using `${searchIndexClient}` create in above [section](#create-a-searchindexclient)
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L120-L130 -->
 ```java
