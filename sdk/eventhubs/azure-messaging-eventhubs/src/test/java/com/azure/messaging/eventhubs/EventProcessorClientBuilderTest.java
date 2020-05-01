@@ -45,7 +45,7 @@ public class EventProcessorClientBuilderTest {
     public void testEventProcessorBuilderMissingProperties() {
         assertThrows(NullPointerException.class, () -> {
             EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
-                .checkpointStore(new InMemoryCheckpointStore())
+                .checkpointStore(new SampleCheckpointStore())
                 .processEvent(eventContext -> {
                     System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
                         + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
@@ -73,7 +73,7 @@ public class EventProcessorClientBuilderTest {
                     errorContext.getPartitionContext().getPartitionId(),
                     errorContext.getThrowable());
             })
-            .checkpointStore(new InMemoryCheckpointStore())
+            .checkpointStore(new SampleCheckpointStore())
             .buildEventProcessorClient();
 
         assertNotNull(eventProcessorClient);

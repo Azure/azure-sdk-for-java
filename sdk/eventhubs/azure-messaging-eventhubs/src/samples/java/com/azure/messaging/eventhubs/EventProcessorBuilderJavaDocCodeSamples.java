@@ -22,7 +22,7 @@ public class EventProcessorBuilderJavaDocCodeSamples {
 
         EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
             .consumerGroup("consumer-group")
-            .checkpointStore(new InMemoryCheckpointStore())
+            .checkpointStore(new SampleCheckpointStore())
             .processEvent(eventContext -> {
                 System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId()
                     + "and sequence number of event = " + eventContext.getEventData().getSequenceNumber());

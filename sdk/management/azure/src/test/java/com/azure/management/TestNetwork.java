@@ -15,21 +15,15 @@ import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.CreatedResources;
-import org.junit.jupiter.api.Assertions;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.junit.jupiter.api.Assertions;
 
-
-/**
- * Test of virtual network management.
- */
+/** Test of virtual network management. */
 public class TestNetwork {
-    /**
-     * Test of network with subnets.
-     */
+    /** Test of network with subnets. */
     public class WithSubnets extends TestTemplate<Network, Networks> {
         @Override
         public Network createResource(Networks networks) throws Exception {
@@ -40,13 +34,19 @@ public class TestNetwork {
             String groupName = "rg" + postFix;
 
             // Create an NSG
-            NetworkSecurityGroup nsg = networks.manager().networkSecurityGroups().define("nsg" + postFix)
+            NetworkSecurityGroup nsg =
+                networks
+                    .manager()
+                    .networkSecurityGroups()
+                    .define("nsg" + postFix)
                     .withRegion(region)
                     .withNewResourceGroup(groupName)
                     .create();
 
             // Create a network
-            final Network network = networks.define(newName)
+            final Network network =
+                networks
+                    .define(newName)
                     .withRegion(region)
                     .withNewResourceGroup(groupName)
                     .withAddressSpace("10.0.0.0/28")
@@ -87,12 +87,18 @@ public class TestNetwork {
 
         @Override
         public Network updateResource(Network resource) throws Exception {
-            NetworkSecurityGroup nsg = resource.manager().networkSecurityGroups().define(resource.manager().getSdkContext().randomResourceName("nsgB", 10))
+            NetworkSecurityGroup nsg =
+                resource
+                    .manager()
+                    .networkSecurityGroups()
+                    .define(resource.manager().getSdkContext().randomResourceName("nsgB", 10))
                     .withRegion(resource.region())
                     .withExistingResourceGroup(resource.resourceGroupName())
                     .create();
 
-            resource = resource.update()
+            resource =
+                resource
+                    .update()
                     .withTag("tag1", "value1")
                     .withTag("tag2", "value2")
                     .withAddressSpace("141.25.0.0/16")
@@ -142,9 +148,7 @@ public class TestNetwork {
         }
     }
 
-    /**
-     * Test of network with subnets configured to have access from azure service.
-     */
+    /** Test of network with subnets configured to have access from azure service. */
     public class WithAccessFromServiceToSubnet extends TestTemplate<Network, Networks> {
 
         @Override
@@ -154,9 +158,10 @@ public class TestNetwork {
             Region region = Region.US_WEST;
             String groupName = "rg" + postfix;
 
-
             // Create a network
-            final Network network = networks.define(newName)
+            final Network network =
+                networks
+                    .define(newName)
                     .withRegion(region)
                     .withNewResourceGroup(groupName)
                     .withAddressSpace("10.0.0.0/28")
@@ -186,7 +191,9 @@ public class TestNetwork {
 
         @Override
         public Network updateResource(Network resource) throws Exception {
-            resource = resource.update()
+            resource =
+                resource
+                    .update()
                     .withTag("tag1", "value1")
                     .withTag("tag2", "value2")
                     .withAddressSpace("141.25.0.0/16")
@@ -238,40 +245,45 @@ public class TestNetwork {
         }
     }
 
-    /**
-     * Test of network peerings.
-     */
+    /** Test of network peerings. */
     public class WithPeering extends TestTemplate<Network, Networks> {
         @Override
         public Network createResource(Networks networks) throws Exception {
             Region region = Region.US_EAST;
             String groupName = networks.manager().getSdkContext().randomResourceName("rg", 10);
-            ;
 
             String networkName = networks.manager().getSdkContext().randomResourceName("net", 15);
             String networkName2 = networks.manager().getSdkContext().randomResourceName("net", 15);
 
-            Creatable<Network> remoteNetworkDefinition = networks.define(networkName2)
+            Creatable<Network> remoteNetworkDefinition =
+                networks
+                    .define(networkName2)
                     .withRegion(region)
                     .withNewResourceGroup(groupName)
                     .withAddressSpace("10.1.0.0/27")
                     .withSubnet("subnet3", "10.1.0.0/27");
 
-            Creatable<Network> localNetworkDefinition = networks.define(networkName)
+            Creatable<Network> localNetworkDefinition =
+                networks
+                    .define(networkName)
                     .withRegion(region)
                     .withNewResourceGroup(groupName)
                     .withAddressSpace("10.0.0.0/27")
                     .withSubnet("subnet1", "10.0.0.0/28")
                     .withSubnet("subnet2", "10.0.0.16/28");
 
-            CreatedResources<Network> createdNetworks = networks.create(Arrays.asList(remoteNetworkDefinition, localNetworkDefinition));
+            CreatedResources<Network> createdNetworks =
+                networks.create(Arrays.asList(remoteNetworkDefinition, localNetworkDefinition));
             Network localNetwork = createdNetworks.get(localNetworkDefinition.key());
             Network remoteNetwork = createdNetworks.get(remoteNetworkDefinition.key());
             Assertions.assertNotNull(localNetwork);
             Assertions.assertNotNull(remoteNetwork);
 
             // Create peering
-            NetworkPeering localPeering = localNetwork.peerings().define("peer0")
+            NetworkPeering localPeering =
+                localNetwork
+                    .peerings()
+                    .define("peer0")
                     .withRemoteNetwork(remoteNetwork)
 
                     // Optionals
@@ -322,11 +334,12 @@ public class TestNetwork {
             String remoteTestIP = remoteAvailableIPs.iterator().next();
             Assertions.assertFalse(resource.isPrivateIPAddressAvailable(remoteTestIP));
 
-            localPeering.update()
-                    .withoutTrafficForwardingFromEitherNetwork()
-                    .withAccessBetweenBothNetworks()
-                    .withoutAnyGatewayUse()
-                    .apply();
+            localPeering
+                .update()
+                .withoutTrafficForwardingFromEitherNetwork()
+                .withAccessBetweenBothNetworks()
+                .withoutAnyGatewayUse()
+                .apply();
 
             // Verify local peering changes
             Assertions.assertFalse(localPeering.isTrafficForwardingFromRemoteNetworkAllowed());
@@ -356,9 +369,7 @@ public class TestNetwork {
         }
     }
 
-    /**
-     * Test of network with DDoS protection plan.
-     */
+    /** Test of network with DDoS protection plan. */
     public class WithDDosProtectionPlanAndVmProtection extends TestTemplate<Network, Networks> {
         @Override
         public Network createResource(Networks networks) throws Exception {
@@ -367,7 +378,9 @@ public class TestNetwork {
 
             String networkName = networks.manager().getSdkContext().randomResourceName("net", 15);
 
-            Network network = networks.define(networkName)
+            Network network =
+                networks
+                    .define(networkName)
                     .withRegion(region)
                     .withNewResourceGroup(groupName)
                     .withNewDdosProtectionPlan()
@@ -382,10 +395,7 @@ public class TestNetwork {
 
         @Override
         public Network updateResource(Network network) throws Exception {
-            network.update()
-                    .withoutDdosProtectionPlan()
-                    .withoutVmProtection()
-                    .apply();
+            network.update().withoutDdosProtectionPlan().withoutVmProtection().apply();
             Assertions.assertFalse(network.isDdosProtectionEnabled());
             Assertions.assertNull(network.ddosProtectionPlanId());
             Assertions.assertFalse(network.isVmProtectionEnabled());
@@ -398,9 +408,7 @@ public class TestNetwork {
         }
     }
 
-    /**
-     * Test of network updateTags functionality.
-     */
+    /** Test of network updateTags functionality. */
     public class WithUpdateTags extends TestTemplate<Network, Networks> {
         @Override
         public Network createResource(Networks networks) throws Exception {
@@ -409,7 +417,9 @@ public class TestNetwork {
 
             String networkName = networks.manager().getSdkContext().randomResourceName("net", 15);
 
-            Network network = networks.define(networkName)
+            Network network =
+                networks
+                    .define(networkName)
                     .withRegion(region)
                     .withNewResourceGroup(groupName)
                     .withTag("tag1", "value1")
@@ -420,10 +430,7 @@ public class TestNetwork {
 
         @Override
         public Network updateResource(Network network) throws Exception {
-            network.updateTags()
-                    .withoutTag("tag1")
-                    .withTag("tag2", "value2")
-                    .applyTags();
+            network.updateTags().withoutTag("tag1").withTag("tag2", "value2").applyTags();
             Assertions.assertFalse(network.tags().containsKey("tag1"));
             Assertions.assertEquals("value2", network.tags().get("tag2"));
             return network;
@@ -442,18 +449,29 @@ public class TestNetwork {
      */
     public static void printNetwork(Network resource) {
         StringBuilder info = new StringBuilder();
-        info.append("Network: ").append(resource.id())
-                .append("Name: ").append(resource.name())
-                .append("\n\tResource group: ").append(resource.resourceGroupName())
-                .append("\n\tRegion: ").append(resource.region())
-                .append("\n\tTags: ").append(resource.tags())
-                .append("\n\tAddress spaces: ").append(resource.addressSpaces())
-                .append("\n\tDNS server IPs: ").append(resource.dnsServerIPs());
+        info
+            .append("Network: ")
+            .append(resource.id())
+            .append("Name: ")
+            .append(resource.name())
+            .append("\n\tResource group: ")
+            .append(resource.resourceGroupName())
+            .append("\n\tRegion: ")
+            .append(resource.region())
+            .append("\n\tTags: ")
+            .append(resource.tags())
+            .append("\n\tAddress spaces: ")
+            .append(resource.addressSpaces())
+            .append("\n\tDNS server IPs: ")
+            .append(resource.dnsServerIPs());
 
         // Output subnets
         for (Subnet subnet : resource.subnets().values()) {
-            info.append("\n\tSubnet: ").append(subnet.name())
-                    .append("\n\t\tAddress prefix: ").append(subnet.addressPrefix());
+            info
+                .append("\n\tSubnet: ")
+                .append(subnet.name())
+                .append("\n\t\tAddress prefix: ")
+                .append(subnet.addressPrefix());
 
             // Show associated NSG
             NetworkSecurityGroup nsg = subnet.getNetworkSecurityGroup();
@@ -472,21 +490,29 @@ public class TestNetwork {
             if (services.size() > 0) {
                 info.append("\n\tServices with access");
                 for (Map.Entry<ServiceEndpointType, List<Region>> service : services.entrySet()) {
-                    info.append("\n\t\tService: ")
-                            .append(service.getKey())
-                            .append(" Regions: " + service.getValue() + "");
+                    info
+                        .append("\n\t\tService: ")
+                        .append(service.getKey())
+                        .append(" Regions: " + service.getValue() + "");
                 }
             }
         }
 
         // Output peerings
         for (NetworkPeering peering : resource.peerings().list()) {
-            info.append("\n\tPeering: ").append(peering.name())
-                    .append("\n\t\tRemote network ID: ").append(peering.remoteNetworkId())
-                    .append("\n\t\tPeering state: ").append(peering.state())
-                    .append("\n\t\tIs traffic forwarded from remote network allowed? ").append(peering.isTrafficForwardingFromRemoteNetworkAllowed())
-                    //TODO .append("\n\t\tIs access from remote network allowed? ").append(peering.isAccessBetweenNetworksAllowed())
-                    .append("\n\t\tGateway use: ").append(peering.gatewayUse());
+            info
+                .append("\n\tPeering: ")
+                .append(peering.name())
+                .append("\n\t\tRemote network ID: ")
+                .append(peering.remoteNetworkId())
+                .append("\n\t\tPeering state: ")
+                .append(peering.state())
+                .append("\n\t\tIs traffic forwarded from remote network allowed? ")
+                .append(peering.isTrafficForwardingFromRemoteNetworkAllowed())
+                // TODO (weidxu) .append("\n\t\tIs access from remote network allowed?
+                // ").append(peering.isAccessBetweenNetworksAllowed())
+                .append("\n\t\tGateway use: ")
+                .append(peering.gatewayUse());
         }
 
         System.out.println(info.toString());

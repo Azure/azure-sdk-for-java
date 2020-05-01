@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The LogProfileCollection model.
- */
+/** The LogProfileCollection model. */
 @Fluent
 public final class LogProfileCollectionInner {
     /*
@@ -21,7 +19,7 @@ public final class LogProfileCollectionInner {
 
     /**
      * Get the value property: the values of the log profiles.
-     * 
+     *
      * @return the value value.
      */
     public List<LogProfileResourceInner> value() {
@@ -30,7 +28,7 @@ public final class LogProfileCollectionInner {
 
     /**
      * Set the value property: the values of the log profiles.
-     * 
+     *
      * @param value the value value to set.
      * @return the LogProfileCollectionInner object itself.
      */

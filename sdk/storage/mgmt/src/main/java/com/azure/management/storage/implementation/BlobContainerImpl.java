@@ -13,14 +13,13 @@ import com.azure.management.storage.LegalHoldProperties;
 import com.azure.management.storage.PublicAccess;
 import com.azure.management.storage.models.BlobContainerInner;
 import com.azure.management.storage.models.BlobContainersInner;
-import reactor.core.publisher.Mono;
-
-
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import reactor.core.publisher.Mono;
 
-class BlobContainerImpl extends CreatableUpdatableImpl<BlobContainer, BlobContainerInner, BlobContainerImpl> implements BlobContainer, BlobContainer.Definition, BlobContainer.Update {
+class BlobContainerImpl extends CreatableUpdatableImpl<BlobContainer, BlobContainerInner, BlobContainerImpl>
+    implements BlobContainer, BlobContainer.Definition, BlobContainer.Update {
     private final StorageManager manager;
     private String resourceGroupName;
     private String accountName;
@@ -58,28 +57,30 @@ class BlobContainerImpl extends CreatableUpdatableImpl<BlobContainer, BlobContai
     @Override
     public Mono<BlobContainer> createResourceAsync() {
         BlobContainersInner client = this.manager().inner().blobContainers();
-        return client.createAsync(this.resourceGroupName, this.accountName, this.containerName, cpublicAccess, cmetadata)
-                .map(innerToFluentMap(this));
+        return client
+            .createAsync(this.resourceGroupName, this.accountName, this.containerName,
+                this.inner().withPublicAccess(cpublicAccess).withMetadata(cmetadata))
+            .map(innerToFluentMap(this));
     }
 
     @Override
     public Mono<BlobContainer> updateResourceAsync() {
         BlobContainersInner client = this.manager().inner().blobContainers();
-        return client.updateAsync(this.resourceGroupName, this.accountName, this.containerName, upublicAccess, umetadata)
-                .map(innerToFluentMap(this));
+        return client
+            .updateAsync(this.resourceGroupName, this.accountName, this.containerName,
+                this.inner().withPublicAccess(upublicAccess).withMetadata(umetadata))
+            .map(innerToFluentMap(this));
     }
 
     @Override
     protected Mono<BlobContainerInner> getInnerAsync() {
-        BlobContainersInner client = this.manager().inner().blobContainers();
-        return null; // NOP getInnerAsync implementation as get is not supported
+        return this.manager().inner().blobContainers().getAsync(resourceGroupName, accountName, containerName);
     }
 
     @Override
     public boolean isInCreateMode() {
         return this.inner().getId() == null;
     }
-
 
     @Override
     public String etag() {

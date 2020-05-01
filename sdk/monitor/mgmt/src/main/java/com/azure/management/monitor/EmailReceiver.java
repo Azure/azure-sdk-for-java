@@ -7,9 +7,7 @@ package com.azure.management.monitor;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The EmailReceiver model.
- */
+/** The EmailReceiver model. */
 @Fluent
 public final class EmailReceiver {
     /*
@@ -38,9 +36,9 @@ public final class EmailReceiver {
     private ReceiverStatus status;
 
     /**
-     * Get the name property: The name of the email receiver. Names must be
-     * unique across all receivers within an action group.
-     * 
+     * Get the name property: The name of the email receiver. Names must be unique across all receivers within an action
+     * group.
+     *
      * @return the name value.
      */
     public String name() {
@@ -48,9 +46,9 @@ public final class EmailReceiver {
     }
 
     /**
-     * Set the name property: The name of the email receiver. Names must be
-     * unique across all receivers within an action group.
-     * 
+     * Set the name property: The name of the email receiver. Names must be unique across all receivers within an action
+     * group.
+     *
      * @param name the name value to set.
      * @return the EmailReceiver object itself.
      */
@@ -61,7 +59,7 @@ public final class EmailReceiver {
 
     /**
      * Get the emailAddress property: The email address of this receiver.
-     * 
+     *
      * @return the emailAddress value.
      */
     public String emailAddress() {
@@ -70,7 +68,7 @@ public final class EmailReceiver {
 
     /**
      * Set the emailAddress property: The email address of this receiver.
-     * 
+     *
      * @param emailAddress the emailAddress value to set.
      * @return the EmailReceiver object itself.
      */
@@ -80,9 +78,8 @@ public final class EmailReceiver {
     }
 
     /**
-     * Get the useCommonAlertSchema property: Indicates whether to use common
-     * alert schema.
-     * 
+     * Get the useCommonAlertSchema property: Indicates whether to use common alert schema.
+     *
      * @return the useCommonAlertSchema value.
      */
     public boolean useCommonAlertSchema() {
@@ -90,9 +87,8 @@ public final class EmailReceiver {
     }
 
     /**
-     * Set the useCommonAlertSchema property: Indicates whether to use common
-     * alert schema.
-     * 
+     * Set the useCommonAlertSchema property: Indicates whether to use common alert schema.
+     *
      * @param useCommonAlertSchema the useCommonAlertSchema value to set.
      * @return the EmailReceiver object itself.
      */
@@ -103,7 +99,7 @@ public final class EmailReceiver {
 
     /**
      * Get the status property: The receiver status of the e-mail.
-     * 
+     *
      * @return the status value.
      */
     public ReceiverStatus status() {

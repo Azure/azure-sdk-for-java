@@ -49,10 +49,9 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
     private final Deque<ServiceBusReceivedMessage> messageQueue = new ConcurrentLinkedDeque<>();
     private final boolean isAutoRenewLock;
     private final Duration maxAutoLockRenewal;
-    private final MessageLockContainer messageLockContainer;
 
     ServiceBusMessageProcessor(boolean isAutoComplete, boolean isAutoRenewLock, Duration maxAutoLockRenewal,
-        AmqpRetryOptions retryOptions, MessageLockContainer messageLockContainer, AmqpErrorContext errorContext,
+        AmqpRetryOptions retryOptions, AmqpErrorContext errorContext,
         Function<MessageLockToken, Mono<Void>> onComplete,
         Function<MessageLockToken, Mono<Void>> onAbandon,
         Function<MessageLockToken, Mono<Instant>> onRenewLock) {
@@ -64,8 +63,6 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
         this.completeFunction = Objects.requireNonNull(onComplete, "'onComplete' cannot be null.");
         this.onAbandon = Objects.requireNonNull(onAbandon, "'onAbandon' cannot be null.");
         this.onRenewLock = Objects.requireNonNull(onRenewLock, "'onRenewLock' cannot be null.");
-        this.messageLockContainer = Objects.requireNonNull(messageLockContainer,
-            "'messageLockContainer' cannot be null.");
 
         this.isAutoComplete = isAutoComplete;
         this.isAutoRenewLock = isAutoRenewLock;
@@ -323,9 +320,7 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
     private void next(ServiceBusReceivedMessage message) {
         final long sequenceNumber = message.getSequenceNumber();
         final String lockToken = message.getLockToken();
-        final Instant initialLockedUntil = !CoreUtils.isNullOrEmpty(lockToken)
-            ? messageLockContainer.addOrUpdate(lockToken, message.getLockedUntil())
-            : message.getLockedUntil();
+        final Instant initialLockedUntil = message.getLockedUntil();
 
         if (isAutoComplete && CoreUtils.isNullOrEmpty(lockToken)) {
             throw logger.logExceptionAsError(new IllegalStateException(
@@ -387,14 +382,27 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
         final long sequenceNumber = message.getSequenceNumber();
         final String lockToken = message.getLockToken();
 
-        if (isAutoComplete && initialLockedUntil == null) {
+        if (initialLockedUntil == null) {
             throw logger.logExceptionAsError(new IllegalStateException(
                 "Cannot renew lock token without a value for 'message.getLockedUntil()'"));
         }
 
-        final Duration initialInterval = Duration.between(Instant.now(), initialLockedUntil);
+        final Instant now = Instant.now();
+        Duration initialInterval = Duration.between(now, initialLockedUntil);
+        if (initialInterval.isNegative()) {
+            logger.info("Duration was negative. now[{}] lockedUntil[{}]", now, initialLockedUntil);
+            initialInterval = Duration.ZERO;
+        } else {
+            final Duration adjusted = MessageUtils.adjustServerTimeout(initialInterval);
+            if (adjusted.isNegative()) {
+                logger.info("Adjusted duration is negative. Adjusted: {}ms", initialInterval.toMillis());
+            } else {
+                initialInterval = adjusted;
+            }
+        }
 
-        logger.info("lock[{}]. lockedUntil[{}]. interval[{}]", lockToken, initialLockedUntil, initialInterval);
+        logger.info("lockToken[{}]. lockedUntil[{}]. firstInterval[{}].", lockToken, initialLockedUntil,
+            initialInterval);
 
         final EmitterProcessor<Duration> emitterProcessor = EmitterProcessor.create();
         final FluxSink<Duration> sink = emitterProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
@@ -412,18 +420,20 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
             });
 
         final Disposable renewLockSubscription = Flux.switchOnNext(emitterProcessor.map(i -> Flux.interval(i)))
-            .flatMap(delay -> onRenewLock.apply(message))
+            .flatMap(delay -> {
+                logger.info("lockToken[{}]. now[{}]. Starting lock renewal.", lockToken, Instant.now());
+                return onRenewLock.apply(message);
+            })
             .map(instant -> {
-                final Instant updated = messageLockContainer.addOrUpdate(lockToken, instant);
-                final Duration next = Duration.between(Instant.now(), updated);
-                logger.info("lockToken[{}]. given[{}]. updated[{}]. Next renewal: [{}]",
-                    lockToken, instant, updated, next);
+                final Duration next = Duration.between(Instant.now(), instant);
+                logger.info("lockToken[{}]. nextExpiration[{}]. Next renewal: [{}]",
+                    lockToken, instant, next);
 
                 sink.next(MessageUtils.adjustServerTimeout(next));
-                return updated;
+                return instant;
             })
             .subscribe(lockedUntil -> {
-                logger.verbose("seq[{}]. lockToken[{}]. lockedUntil[{}]. Lock renewal successful.",
+                logger.verbose("lockToken[{}]. lockedUntil[{}]. Lock renewal successful.",
                     sequenceNumber, lockToken, lockedUntil);
             },
                 error -> {

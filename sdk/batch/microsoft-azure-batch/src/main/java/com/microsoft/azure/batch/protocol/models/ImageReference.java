@@ -47,19 +47,15 @@ public class ImageReference {
     private String version;
 
     /**
-     * The ARM resource identifier of the Virtual Machine Image or Shared Image
-     * Gallery Image. Computes Compute Nodes of the Pool will be created using
-     * this Image Id. This is of either the form
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/images/{imageName}
-     * for Virtual Machine Image or
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageDefinitionName}/versions/{versionId}
-     * for SIG image.
+     * The ARM resource identifier of the Shared Image Gallery Image. Compute
+     * Nodes in the Pool will be created using this Image Id. This is of the
+     * form/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageDefinitionName}/versions/{versionId}.
      * This property is mutually exclusive with other ImageReference
      * properties. For Virtual Machine Image it must be in the same region and
-     * subscription as the Azure Batch account. For SIG image it must have
-     * replicas in the same region as the Azure Batch account. For information
-     * about the firewall settings for the Batch Compute Node agent to
-     * communicate with the Batch service see
+     * subscription as the Azure Batch account. The Shared Image Gallery Image
+     * must have replicas in the same region as the Azure Batch account. For
+     * information about the firewall settings for the Batch Compute Node agent
+     * to communicate with the Batch service see
      * https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
      */
     @JsonProperty(value = "virtualMachineImageId")
@@ -146,7 +142,7 @@ public class ImageReference {
     }
 
     /**
-     * Get this property is mutually exclusive with other ImageReference properties. For Virtual Machine Image it must be in the same region and subscription as the Azure Batch account. For SIG image it must have replicas in the same region as the Azure Batch account. For information about the firewall settings for the Batch Compute Node agent to communicate with the Batch service see https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
+     * Get this property is mutually exclusive with other ImageReference properties. For Virtual Machine Image it must be in the same region and subscription as the Azure Batch account. The Shared Image Gallery Image must have replicas in the same region as the Azure Batch account. For information about the firewall settings for the Batch Compute Node agent to communicate with the Batch service see https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
      *
      * @return the virtualMachineImageId value
      */
@@ -155,7 +151,7 @@ public class ImageReference {
     }
 
     /**
-     * Set this property is mutually exclusive with other ImageReference properties. For Virtual Machine Image it must be in the same region and subscription as the Azure Batch account. For SIG image it must have replicas in the same region as the Azure Batch account. For information about the firewall settings for the Batch Compute Node agent to communicate with the Batch service see https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
+     * Set this property is mutually exclusive with other ImageReference properties. For Virtual Machine Image it must be in the same region and subscription as the Azure Batch account. The Shared Image Gallery Image must have replicas in the same region as the Azure Batch account. For information about the firewall settings for the Batch Compute Node agent to communicate with the Batch service see https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
      *
      * @param virtualMachineImageId the virtualMachineImageId value to set
      * @return the ImageReference object itself.

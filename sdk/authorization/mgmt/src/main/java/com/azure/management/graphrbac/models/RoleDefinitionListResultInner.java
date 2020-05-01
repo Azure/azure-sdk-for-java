@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The RoleDefinitionListResult model.
- */
+/** The RoleDefinitionListResult model. */
 @Fluent
 public final class RoleDefinitionListResultInner {
     /*
@@ -27,7 +25,7 @@ public final class RoleDefinitionListResultInner {
 
     /**
      * Get the value property: Role definition list.
-     * 
+     *
      * @return the value value.
      */
     public List<RoleDefinitionInner> value() {
@@ -36,7 +34,7 @@ public final class RoleDefinitionListResultInner {
 
     /**
      * Set the value property: Role definition list.
-     * 
+     *
      * @param value the value value to set.
      * @return the RoleDefinitionListResultInner object itself.
      */
@@ -46,9 +44,8 @@ public final class RoleDefinitionListResultInner {
     }
 
     /**
-     * Get the nextLink property: The URL to use for getting the next set of
-     * results.
-     * 
+     * Get the nextLink property: The URL to use for getting the next set of results.
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -56,9 +53,8 @@ public final class RoleDefinitionListResultInner {
     }
 
     /**
-     * Set the nextLink property: The URL to use for getting the next set of
-     * results.
-     * 
+     * Set the nextLink property: The URL to use for getting the next set of results.
+     *
      * @param nextLink the nextLink value to set.
      * @return the RoleDefinitionListResultInner object itself.
      */

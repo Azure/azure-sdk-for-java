@@ -124,7 +124,7 @@ public class EventProcessorClientTest {
         when(eventData1.getOffset()).thenReturn(1L);
         when(eventData2.getOffset()).thenReturn(100L);
 
-        final InMemoryCheckpointStore checkpointStore = new InMemoryCheckpointStore();
+        final SampleCheckpointStore checkpointStore = new SampleCheckpointStore();
         final TestPartitionProcessor testPartitionProcessor = new TestPartitionProcessor();
 
         final long beforeTest = System.currentTimeMillis();
@@ -235,7 +235,7 @@ public class EventProcessorClientTest {
             }
         );
 
-        final InMemoryCheckpointStore checkpointStore = new InMemoryCheckpointStore();
+        final SampleCheckpointStore checkpointStore = new SampleCheckpointStore();
 
         //Act
         EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
@@ -295,7 +295,7 @@ public class EventProcessorClientTest {
         when(eventData4.getSequenceNumber()).thenReturn(1L);
         when(eventData4.getOffset()).thenReturn(1L);
 
-        final InMemoryCheckpointStore checkpointStore = new InMemoryCheckpointStore();
+        final SampleCheckpointStore checkpointStore = new SampleCheckpointStore();
         final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
 
         // Act

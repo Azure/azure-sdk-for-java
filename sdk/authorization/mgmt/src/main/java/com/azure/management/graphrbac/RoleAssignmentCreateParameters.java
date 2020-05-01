@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The RoleAssignmentCreateParameters model.
- */
+/** The RoleAssignmentCreateParameters model. */
 @JsonFlatten
 @Fluent
 public class RoleAssignmentCreateParameters {
@@ -35,9 +33,8 @@ public class RoleAssignmentCreateParameters {
     private Boolean canDelegate;
 
     /**
-     * Get the roleDefinitionId property: The role definition ID used in the
-     * role assignment.
-     * 
+     * Get the roleDefinitionId property: The role definition ID used in the role assignment.
+     *
      * @return the roleDefinitionId value.
      */
     public String roleDefinitionId() {
@@ -45,9 +42,8 @@ public class RoleAssignmentCreateParameters {
     }
 
     /**
-     * Set the roleDefinitionId property: The role definition ID used in the
-     * role assignment.
-     * 
+     * Set the roleDefinitionId property: The role definition ID used in the role assignment.
+     *
      * @param roleDefinitionId the roleDefinitionId value to set.
      * @return the RoleAssignmentCreateParameters object itself.
      */
@@ -57,10 +53,9 @@ public class RoleAssignmentCreateParameters {
     }
 
     /**
-     * Get the principalId property: The principal ID assigned to the role.
-     * This maps to the ID inside the Active Directory. It can point to a user,
-     * service principal, or security group.
-     * 
+     * Get the principalId property: The principal ID assigned to the role. This maps to the ID inside the Active
+     * Directory. It can point to a user, service principal, or security group.
+     *
      * @return the principalId value.
      */
     public String principalId() {
@@ -68,10 +63,9 @@ public class RoleAssignmentCreateParameters {
     }
 
     /**
-     * Set the principalId property: The principal ID assigned to the role.
-     * This maps to the ID inside the Active Directory. It can point to a user,
-     * service principal, or security group.
-     * 
+     * Set the principalId property: The principal ID assigned to the role. This maps to the ID inside the Active
+     * Directory. It can point to a user, service principal, or security group.
+     *
      * @param principalId the principalId value to set.
      * @return the RoleAssignmentCreateParameters object itself.
      */
@@ -81,9 +75,8 @@ public class RoleAssignmentCreateParameters {
     }
 
     /**
-     * Get the canDelegate property: The delegation flag used for creating a
-     * role assignment.
-     * 
+     * Get the canDelegate property: The delegation flag used for creating a role assignment.
+     *
      * @return the canDelegate value.
      */
     public Boolean canDelegate() {
@@ -91,9 +84,8 @@ public class RoleAssignmentCreateParameters {
     }
 
     /**
-     * Set the canDelegate property: The delegation flag used for creating a
-     * role assignment.
-     * 
+     * Set the canDelegate property: The delegation flag used for creating a role assignment.
+     *
      * @param canDelegate the canDelegate value to set.
      * @return the RoleAssignmentCreateParameters object itself.
      */

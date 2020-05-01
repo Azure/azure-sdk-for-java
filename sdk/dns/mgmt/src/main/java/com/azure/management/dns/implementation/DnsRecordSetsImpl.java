@@ -2,24 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.management.dns.implementation;
 
-import com.azure.management.dns.models.RecordSetInner;
-import com.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesNonCachedImpl;
 import com.azure.management.dns.DnsRecordSet;
 import com.azure.management.dns.DnsZone;
+import com.azure.management.dns.models.RecordSetInner;
+import com.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesNonCachedImpl;
 
-/**
- * Represents an record set collection associated with a DNS zone.
- */
-class DnsRecordSetsImpl extends
-        ExternalChildResourcesNonCachedImpl<DnsRecordSetImpl,
-                        DnsRecordSet,
-                        RecordSetInner,
-                        DnsZoneImpl,
-                        DnsZone> {
-    /**
-     * The default record set ttl in seconds.
-     */
-    private final long defaultTtlInSeconds = 3600;
+/** Represents an record set collection associated with a DNS zone. */
+class DnsRecordSetsImpl
+    extends ExternalChildResourcesNonCachedImpl<DnsRecordSetImpl, DnsRecordSet, RecordSetInner, DnsZoneImpl, DnsZone> {
+    /** The default record set ttl in seconds. */
+    private static final long DEFAULT_TTL_IN_SECONDS = 3600;
 
     /**
      * Creates new DnsRecordSetsImpl.
@@ -41,7 +33,7 @@ class DnsRecordSetsImpl extends
     void withCNameRecordSet(String name, String alias) {
         CNameRecordSetImpl recordSet = CNameRecordSetImpl.newRecordSet(name, this.getParent());
         recordSet.inner().cnameRecord().withCname(alias);
-        setDefaults(prepareInlineDefine(recordSet.withTimeToLive(defaultTtlInSeconds)));
+        setDefaults(prepareInlineDefine(recordSet.withTimeToLive(DEFAULT_TTL_IN_SECONDS)));
     }
 
     DnsRecordSetImpl defineCaaRecordSet(String name) {
@@ -149,6 +141,6 @@ class DnsRecordSetsImpl extends
     }
 
     private DnsRecordSetImpl setDefaults(DnsRecordSetImpl recordSet) {
-        return recordSet.withTimeToLive(defaultTtlInSeconds);
+        return recordSet.withTimeToLive(DEFAULT_TTL_IN_SECONDS);
     }
 }

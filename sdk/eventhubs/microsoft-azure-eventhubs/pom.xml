@@ -8,7 +8,7 @@
     <groupId>com.azure</groupId>
     <artifactId>azure-data-sdk-parent</artifactId>
     <version>1.3.0</version> <!-- {x-version-update;com.azure:azure-data-sdk-parent;current} -->
-    <relativePath>../../../pom.data.xml</relativePath>
+    <relativePath>../../parents/azure-data-sdk-client</relativePath>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -58,7 +58,7 @@
     <dependency>
       <groupId>com.nimbusds</groupId>
       <artifactId>nimbus-jose-jwt</artifactId>
-      <version>6.0.1</version> <!-- {x-version-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
+      <version>6.0.1</version> <!-- {x-version-update;eventhubs_com.nimbusds:nimbus-jose-jwt;external_dependency} -->
     </dependency>
 
     <dependency>

@@ -15,12 +15,10 @@ import com.azure.management.resources.fluentcore.collection.SupportsDeletingById
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-/**
- * Entry point to local network gateways management API in Azure.
- */
+/** Entry point to local network gateways management API in Azure. */
 @Fluent
-public interface LocalNetworkGateways extends
-        SupportsCreating<LocalNetworkGateway.DefinitionStages.Blank>,
+public interface LocalNetworkGateways
+    extends SupportsCreating<LocalNetworkGateway.DefinitionStages.Blank>,
         SupportsListing<LocalNetworkGateway>,
         SupportsListingByResourceGroup<LocalNetworkGateway>,
         SupportsGettingByResourceGroup<LocalNetworkGateway>,

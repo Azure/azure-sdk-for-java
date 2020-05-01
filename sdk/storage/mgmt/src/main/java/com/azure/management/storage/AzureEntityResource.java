@@ -8,9 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The AzureEntityResource model.
- */
+/** The AzureEntityResource model. */
 @Immutable
 public class AzureEntityResource extends ProxyResource {
     /*
@@ -21,7 +19,7 @@ public class AzureEntityResource extends ProxyResource {
 
     /**
      * Get the etag property: Resource Etag.
-     * 
+     *
      * @return the etag value.
      */
     public String etag() {

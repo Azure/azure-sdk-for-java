@@ -8,7 +8,6 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.exception.SessionErrorContext;
-import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
 import com.azure.core.amqp.implementation.RequestResponseUtils;
@@ -20,12 +19,16 @@ import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
+import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.UnsignedInteger;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.message.Message;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SynchronousSink;
 
 import java.nio.BufferOverflowException;
 import java.time.Duration;
@@ -33,33 +36,21 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicLong;
 
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.ASSOCIATED_LINK_NAME_KEY;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.CANCEL_SCHEDULED_MESSAGE_OPERATION;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.FROM_SEQUENCE_NUMBER;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.LOCK_TOKENS_KEY;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.MANAGEMENT_OPERATION_KEY;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.MAX_MESSAGING_AMQP_HEADER_SIZE_BYTES;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.MESSAGE;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.MESSAGES;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.MESSAGE_COUNT_KEY;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.MESSAGE_ID;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.PEEK_OPERATION;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.RECEIVER_SETTLE_MODE;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.RECEIVE_BY_SEQUENCE_NUMBER_OPERATION;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.RENEW_LOCK_OPERATION;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.SCHEDULE_MESSAGE_OPERATION;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.SEQUENCE_NUMBERS;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.SERVER_TIMEOUT;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.UPDATE_DISPOSITION_OPERATION;
+import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_GET_SESSION_STATE;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_PEEK;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_RENEW_SESSION_LOCK;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_SCHEDULE_MESSAGE;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_SET_SESSION_STATE;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_UPDATE_DISPOSITION;
 
 /**
  * Channel responsible for Service Bus related metadata, peek  and management plane operations. Management plane
@@ -69,51 +60,90 @@ public class ManagementChannel implements ServiceBusManagementNode {
     private final MessageSerializer messageSerializer;
     private final TokenManager tokenManager;
     private final Duration operationTimeout;
-    private final Mono<RequestResponseChannel> createRequestResponse;
+    private final Mono<RequestResponseChannel> createChannel;
     private final String fullyQualifiedNamespace;
     private final ClientLogger logger;
     private final String entityPath;
-    private final AtomicLong lastPeekedSequenceNumber = new AtomicLong();
 
     private volatile boolean isDisposed;
 
-    ManagementChannel(Mono<RequestResponseChannel> createRequestResponse, String fullyQualifiedNamespace,
-        String entityPath, TokenManager tokenManager, MessageSerializer messageSerializer, Duration operationTimeout) {
-        this.createRequestResponse = createRequestResponse;
-        this.fullyQualifiedNamespace = fullyQualifiedNamespace;
+    ManagementChannel(Mono<RequestResponseChannel> createChannel, String fullyQualifiedNamespace, String entityPath,
+        TokenManager tokenManager, MessageSerializer messageSerializer, Duration operationTimeout) {
+        this.createChannel = Objects.requireNonNull(createChannel, "'createChannel' cannot be null.");
+        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
+            "'fullyQualifiedNamespace' cannot be null.");
         this.logger = new ClientLogger(String.format("%s<%s>", ManagementChannel.class, entityPath));
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.tokenManager = Objects.requireNonNull(tokenManager, "'tokenManager' cannot be null.");
-        this.operationTimeout = operationTimeout;
-    }
-
-    @Override
-    public Mono<Void> updateDisposition(String lockToken, DispositionStatus dispositionStatus, String deadLetterReason,
-        String deadLetterErrorDescription, Map<String, Object> propertiesToModify) {
-
-        final UUID token = UUID.fromString(lockToken);
-        return isAuthorized(UPDATE_DISPOSITION_OPERATION).then(createRequestResponse.flatMap(channel -> {
-            final Message message = createDispositionMessage(new UUID[] {token}, dispositionStatus,
-                null, null, null, channel.getReceiveLinkName());
-            return channel.sendWithAck(message);
-        }).flatMap(response -> {
-            final int statusCode = RequestResponseUtils.getResponseStatusCode(response);
-            final AmqpResponseCode responseCode = AmqpResponseCode.fromValue(statusCode);
-            if (responseCode == AmqpResponseCode.OK) {
-                return Mono.empty();
-            } else {
-                return Mono.error(ExceptionUtil.amqpResponseCodeToException(statusCode, "", getErrorContext()));
-            }
-        }));
+        this.operationTimeout = Objects.requireNonNull(operationTimeout, "'operationTimeout' cannot be null.");
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Mono<ServiceBusReceivedMessage> peek(long fromSequenceNumber) {
-        return peek(fromSequenceNumber, 1, null)
+    public Mono<Void> cancelScheduledMessage(long sequenceNumber, String associatedLinkName) {
+        return isAuthorized(ManagementConstants.OPERATION_CANCEL_SCHEDULED_MESSAGE)
+            .then(createChannel.flatMap(channel -> {
+                final Message requestMessage = createManagementMessage(
+                    ManagementConstants.OPERATION_CANCEL_SCHEDULED_MESSAGE, associatedLinkName);
+
+                requestMessage.setBody(new AmqpValue(Collections.singletonMap(ManagementConstants.SEQUENCE_NUMBERS,
+                    new Long[]{sequenceNumber})));
+
+                return sendWithVerify(channel, requestMessage);
+            })).then();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Mono<byte[]> getSessionState(String sessionId, String associatedLinkName) {
+        if (sessionId == null) {
+            return monoError(logger, new NullPointerException("'sessionId' cannot be null."));
+        } else if (sessionId.isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'sessionId' cannot be blank."));
+        }
+
+        return isAuthorized(OPERATION_GET_SESSION_STATE).then(createChannel.flatMap(channel -> {
+            final Message message = createManagementMessage(OPERATION_GET_SESSION_STATE, associatedLinkName);
+
+            final Map<String, Object> body = new HashMap<>();
+            body.put(ManagementConstants.SESSION_ID, sessionId);
+
+            message.setBody(new AmqpValue(body));
+
+            return sendWithVerify(channel, message);
+        })).flatMap(response -> {
+            final Object value = ((AmqpValue) response.getBody()).getValue();
+
+            if (!(value instanceof Map)) {
+                return monoError(logger, Exceptions.propagate(new AmqpException(false, String.format(
+                    "Body not expected when renewing session. Id: %s. Value: %s", sessionId, value),
+                    getErrorContext())));
+            }
+
+            @SuppressWarnings("unchecked") final Map<String, Object> map = (Map<String, Object>) value;
+            final Object sessionState = map.get(ManagementConstants.SESSION_STATE);
+
+            if (sessionState == null) {
+                logger.info("sessionId[{}]. Does not have a session state.", sessionId);
+                return Mono.empty();
+            }
+
+            final byte[] state = ((Binary) sessionState).getArray();
+            return Mono.just(state);
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Mono<ServiceBusReceivedMessage> peek(long fromSequenceNumber, String sessionId, String associatedLinkName) {
+        return peek(fromSequenceNumber, sessionId, associatedLinkName, 1)
             .last();
     }
 
@@ -121,319 +151,263 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * {@inheritDoc}
      */
     @Override
-    public Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages) {
-
-        return peek(this.lastPeekedSequenceNumber.get() + 1, maxMessages, null);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages, long fromSequenceNumber) {
-
-        return peek(fromSequenceNumber, maxMessages, null);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Mono<ServiceBusReceivedMessage> receiveDeferredMessage(ReceiveMode receiveMode, long sequenceNumber) {
-        return receiveDeferredMessageBatch(receiveMode, null, sequenceNumber)
-            .next();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Flux<ServiceBusReceivedMessage> receiveDeferredMessageBatch(ReceiveMode receiveMode,
-           long... sequenceNumbers) {
-        return receiveDeferredMessageBatch(receiveMode, null, sequenceNumbers);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Mono<ServiceBusReceivedMessage> peek() {
-        return peek(lastPeekedSequenceNumber.get() + 1);
-    }
-
-    private Flux<ServiceBusReceivedMessage> peek(long fromSequenceNumber, int maxMessages, UUID sessionId) {
-        return isAuthorized(PEEK_OPERATION).thenMany(createRequestResponse.flatMap(channel -> {
-            final Message message = createManagementMessage(PEEK_OPERATION, channel.getReceiveLinkName());
+    public Flux<ServiceBusReceivedMessage> peek(long fromSequenceNumber, String sessionId, String associatedLinkName,
+        int maxMessages) {
+        return isAuthorized(OPERATION_PEEK).thenMany(createChannel.flatMap(channel -> {
+            final Message message = createManagementMessage(OPERATION_PEEK, associatedLinkName);
 
             // set mandatory properties on AMQP message body
-            final HashMap<String, Object> requestBodyMap = new HashMap<>();
-            requestBodyMap.put(FROM_SEQUENCE_NUMBER, fromSequenceNumber);
-            requestBodyMap.put(MESSAGE_COUNT_KEY, maxMessages);
+            final Map<String, Object> requestBody = new HashMap<>();
+            requestBody.put(ManagementConstants.FROM_SEQUENCE_NUMBER, fromSequenceNumber);
+            requestBody.put(ManagementConstants.MESSAGE_COUNT_KEY, maxMessages);
 
-            if (!Objects.isNull(sessionId)) {
-                requestBodyMap.put(ManagementConstants.REQUEST_RESPONSE_SESSION_ID, sessionId);
+            if (!CoreUtils.isNullOrEmpty(sessionId)) {
+                requestBody.put(ManagementConstants.SESSION_ID, sessionId);
             }
 
-            message.setBody(new AmqpValue(requestBodyMap));
+            message.setBody(new AmqpValue(requestBody));
 
-            return channel.sendWithAck(message);
-        }).flatMapMany(amqpMessage -> {
-            final List<ServiceBusReceivedMessage> messageList =
-                messageSerializer.deserializeList(amqpMessage, ServiceBusReceivedMessage.class);
+            return sendWithVerify(channel, message);
+        }).flatMapMany(response -> {
+            final List<ServiceBusReceivedMessage> messages =
+                messageSerializer.deserializeList(response, ServiceBusReceivedMessage.class);
 
-            // Assign the last sequence number so that we can peek from next time
-            if (messageList.size() > 0) {
-                final ServiceBusReceivedMessage receivedMessage = messageList.get(messageList.size() - 1);
-
-                logger.info("Setting last peeked sequence number: {}", receivedMessage.getSequenceNumber());
-
-                if (receivedMessage.getSequenceNumber() > 0) {
-                    this.lastPeekedSequenceNumber.set(receivedMessage.getSequenceNumber());
-                }
-            }
-
-            return Flux.fromIterable(messageList);
+            return Flux.fromIterable(messages);
         }));
     }
 
-    private Flux<ServiceBusReceivedMessage> receiveDeferredMessageBatch(ReceiveMode receiveMode, UUID sessionId,
-            long... fromSequenceNumbers) {
-        return isAuthorized(RECEIVE_BY_SEQUENCE_NUMBER_OPERATION).thenMany(createRequestResponse.flatMap(channel -> {
-            final Message message = createManagementMessage(RECEIVE_BY_SEQUENCE_NUMBER_OPERATION,
-                channel.getReceiveLinkName());
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Flux<ServiceBusReceivedMessage> receiveDeferredMessages(ReceiveMode receiveMode, String sessionId,
+        String associatedLinkName, long... sequenceNumbers) {
 
-            // set mandatory properties on AMQP message body
-            HashMap<String, Object> requestBodyMap = new HashMap<>();
+        return isAuthorized(ManagementConstants.OPERATION_RECEIVE_BY_SEQUENCE_NUMBER)
+            .thenMany(createChannel.flatMap(channel -> {
+                final Message message = createManagementMessage(
+                    ManagementConstants.OPERATION_RECEIVE_BY_SEQUENCE_NUMBER, associatedLinkName);
 
-            requestBodyMap.put(SEQUENCE_NUMBERS, Arrays.stream(fromSequenceNumbers)
-                .boxed().toArray(Long[]::new));
+                // set mandatory properties on AMQP message body
+                final Map<String, Object> requestBodyMap = new HashMap<>();
 
-            requestBodyMap.put(RECEIVER_SETTLE_MODE,
-                UnsignedInteger.valueOf(receiveMode == ReceiveMode.RECEIVE_AND_DELETE ? 0 : 1));
+                requestBodyMap.put(ManagementConstants.SEQUENCE_NUMBERS, Arrays.stream(sequenceNumbers)
+                    .boxed().toArray(Long[]::new));
 
-            if (!Objects.isNull(sessionId)) {
-                requestBodyMap.put(ManagementConstants.REQUEST_RESPONSE_SESSION_ID, sessionId);
-            }
+                requestBodyMap.put(ManagementConstants.RECEIVER_SETTLE_MODE,
+                    UnsignedInteger.valueOf(receiveMode == ReceiveMode.RECEIVE_AND_DELETE ? 0 : 1));
 
-            message.setBody(new AmqpValue(requestBodyMap));
-
-            return channel.sendWithAck(message);
-        }).flatMapMany(amqpMessage -> {
-            final List<ServiceBusReceivedMessage> messageList =
-                messageSerializer.deserializeList(amqpMessage, ServiceBusReceivedMessage.class);
-
-            // Assign the last sequence number so that we can peek from next time
-            if (messageList.size() > 0) {
-                final ServiceBusReceivedMessage receivedMessage = messageList.get(messageList.size() - 1);
-
-                logger.info("Setting last peeked sequence number: {}", receivedMessage.getSequenceNumber());
-
-                if (receivedMessage.getSequenceNumber() > 0) {
-                    this.lastPeekedSequenceNumber.set(receivedMessage.getSequenceNumber());
+                if (!CoreUtils.isNullOrEmpty(sessionId)) {
+                    requestBodyMap.put(ManagementConstants.SESSION_ID, sessionId);
                 }
-            }
 
-            return Flux.fromIterable(messageList);
-        }));
-    }
+                message.setBody(new AmqpValue(requestBodyMap));
 
-    private Mono<Void> isAuthorized(String operation) {
-        return tokenManager.getAuthorizationResults().next().flatMap(response -> {
-            if (response != AmqpResponseCode.ACCEPTED) {
-                return Mono.error(new AmqpException(false, String.format(
-                    "User does not have authorization to perform operation [%s] on entity [%s]", operation, entityPath),
-                    getErrorContext()));
-            } else {
-                return Mono.empty();
-            }
-        });
-    }
+                return sendWithVerify(channel, message);
+            }).flatMapMany(amqpMessage -> {
+                final List<ServiceBusReceivedMessage> messageList =
+                    messageSerializer.deserializeList(amqpMessage, ServiceBusReceivedMessage.class);
 
-    private Message createDispositionMessage(UUID[] lockTokens, DispositionStatus dispositionStatus,
-        String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify,
-        String linkName) {
-
-        logger.verbose("Update disposition of deliveries '{}' to '{}' on entity '{}', session '{}'",
-            Arrays.toString(lockTokens), dispositionStatus, entityPath, "n/a");
-
-        final Message message = createManagementMessage(UPDATE_DISPOSITION_OPERATION, linkName);
-
-        final Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put(LOCK_TOKENS_KEY, lockTokens);
-        requestBody.put(ManagementConstants.DISPOSITION_STATUS_KEY, dispositionStatus.getValue());
-
-        if (deadLetterReason != null) {
-            requestBody.put(ManagementConstants.DEADLETTER_REASON_KEY, deadLetterReason);
-        }
-
-        if (deadLetterErrorDescription != null) {
-            requestBody.put(ManagementConstants.DEADLETTER_DESCRIPTION_KEY, deadLetterErrorDescription);
-        }
-
-        if (propertiesToModify != null && propertiesToModify.size() > 0) {
-            requestBody.put(ManagementConstants.PROPERTIES_TO_MODIFY_KEY, propertiesToModify);
-        }
-
-        message.setBody(new AmqpValue(requestBody));
-
-        return message;
+                return Flux.fromIterable(messageList);
+            }));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Mono<Instant> renewMessageLock(UUID lockToken) {
-        return  isAuthorized(PEEK_OPERATION).then(createRequestResponse.flatMap(channel -> {
+    public Mono<Instant> renewMessageLock(UUID lockToken, String associatedLinkName) {
+        return isAuthorized(OPERATION_PEEK).then(createChannel.flatMap(channel -> {
+            final Message requestMessage = createManagementMessage(ManagementConstants.OPERATION_RENEW_LOCK,
+                associatedLinkName);
+            final Map<String, Object> requestBody = new HashMap<>();
 
-            Message requestMessage = createManagementMessage(RENEW_LOCK_OPERATION,
-                channel.getReceiveLinkName());
+            requestBody.put(ManagementConstants.LOCK_TOKENS_KEY, new UUID[]{lockToken});
 
-            requestMessage.setBody(new AmqpValue(Collections.singletonMap(LOCK_TOKENS_KEY, new UUID[]{lockToken})));
-            return channel.sendWithAck(requestMessage);
+            requestMessage.setBody(new AmqpValue(requestBody));
+
+            return sendWithVerify(channel, requestMessage);
         }).map(responseMessage -> {
-            int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
-            if (statusCode !=  AmqpResponseCode.OK.getValue()) {
-
-                throw logger.logExceptionAsError(new AmqpException(false,
-                    String.format("Could not renew the lock for lock token: '%s'.", lockToken.toString()),
-                    getErrorContext()));
-            }
-            List<Instant> renewTimeList = messageSerializer.deserializeList(responseMessage, Instant.class);
+            final List<Instant> renewTimeList = messageSerializer.deserializeList(responseMessage, Instant.class);
             if (CoreUtils.isNullOrEmpty(renewTimeList)) {
-                throw logger.logExceptionAsError(new AmqpException(false,
-                    String.format("Service bus response empty. "
-                        + "Could not renew message with lock token: '%s'.", lockToken.toString()),
-                    getErrorContext()));
+                throw logger.logExceptionAsError(Exceptions.propagate(new AmqpException(false, String.format(
+                    "Service bus response empty. Could not renew message with lock token: '%s'.", lockToken),
+                    getErrorContext())));
             }
+
             return renewTimeList.get(0);
         }));
     }
 
-    /**
-     * Creates an AMQP message with the required application properties.
-     *
-     * @param operation Management operation to perform (ie. peek, update-disposition, etc.)
-     * @param linkName Name of receiver link associated with operation.
-     *
-     * @return An AMQP message with the required headers.
-     */
-    private Message createManagementMessage(String operation, String linkName) {
-        final Duration serverTimeout = MessageUtils.adjustServerTimeout(operationTimeout);
-        final Map<String, Object> applicationProperties = new HashMap<>();
-        applicationProperties.put(MANAGEMENT_OPERATION_KEY, operation);
-        applicationProperties.put(SERVER_TIMEOUT, serverTimeout.toMillis());
-
-        if (linkName != null && !linkName.isEmpty()) {
-            applicationProperties.put(ASSOCIATED_LINK_NAME_KEY, linkName);
-        }
-
-        final Message message = Proton.message();
-        message.setApplicationProperties(new ApplicationProperties(applicationProperties));
-
-        return message;
-    }
-
-    /**
-     * Create a Amqp key, value map to be used to create Amqp mesage for scheduling purpose.
-     *
-     * @param messageToSchedule The message which needs to be scheduled.
-     * @param maxMessageSize The maximum size allowed on send link.
-     *
-     * @return Map of key and value in Amqp format.
-     * @throws AmqpException When payload exceeded maximum message allowed size.
-     */
-    private Map<String, Object> createScheduleMessgeAmqpValue(ServiceBusMessage messageToSchedule, int maxMessageSize) {
-
-        Message message = messageSerializer.serialize(messageToSchedule);
-
-        // The maxsize allowed logic is from ReactorSender, this logic should be kept in sync.
-        final int payloadSize = messageSerializer.getSize(message);
-        final int allocationSize =
-            Math.min(payloadSize + MAX_MESSAGING_AMQP_HEADER_SIZE_BYTES, maxMessageSize);
-        final byte[] bytes = new byte[allocationSize];
-
-        int encodedSize;
-        try {
-            encodedSize = message.encode(bytes, 0, allocationSize);
-        } catch (BufferOverflowException exception) {
-            final String errorMessage =
-                String.format(Locale.US,
-                    "Error sending. Size of the payload exceeded maximum message size: %s kb",
-                    maxMessageSize / 1024);
-            throw logger.logExceptionAsWarning(new AmqpException(false,
-                AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, errorMessage, exception, getErrorContext()));
-        }
-        HashMap<String, Object> messageEntry = new HashMap<>();
-        messageEntry.put(MESSAGE, new Binary(bytes, 0, encodedSize));
-        messageEntry.put(MESSAGE_ID, message.getMessageId());
-
-        Collection<HashMap<String, Object>> messageList = new LinkedList<>();
-        messageList.add(messageEntry);
-
-        Map<String, Object> requestBodyMap = new HashMap<>();
-        requestBodyMap.put(MESSAGES, messageList);
-        return requestBodyMap;
-    }
-
-    private AmqpErrorContext getErrorContext() {
-        return new SessionErrorContext(fullyQualifiedNamespace, entityPath);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Mono<Void> cancelScheduledMessage(long sequenceNumber) {
-        return isAuthorized(CANCEL_SCHEDULED_MESSAGE_OPERATION).then(createRequestResponse.flatMap(channel -> {
+    public Mono<Instant> renewSessionLock(String sessionId, String associatedLinkName) {
+        if (sessionId == null) {
+            return monoError(logger, new NullPointerException("'sessionId' cannot be null."));
+        } else if (sessionId.isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'sessionId' cannot be blank."));
+        }
 
-            Message requestMessage = createManagementMessage(CANCEL_SCHEDULED_MESSAGE_OPERATION,
-                channel.getReceiveLinkName());
+        return isAuthorized(OPERATION_RENEW_SESSION_LOCK).then(createChannel.flatMap(channel -> {
+            final Message message = createManagementMessage(OPERATION_RENEW_SESSION_LOCK, associatedLinkName);
 
-            requestMessage.setBody(new AmqpValue(Collections.singletonMap(SEQUENCE_NUMBERS,
-                new Long[]{sequenceNumber})));
-            return channel.sendWithAck(requestMessage);
-        }).map(responseMessage -> {
-            int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
+            final Map<String, Object> body = new HashMap<>();
+            body.put(ManagementConstants.SESSION_ID, sessionId);
 
-            if (statusCode == AmqpResponseCode.OK.getValue()) {
-                return Mono.empty();
+            message.setBody(new AmqpValue(body));
+
+            return sendWithVerify(channel, message);
+        })).map(response -> {
+            final Object value = ((AmqpValue) response.getBody()).getValue();
+
+            if (!(value instanceof Map)) {
+                throw logger.logExceptionAsError(Exceptions.propagate(new AmqpException(false, String.format(
+                    "Body not expected when renewing session. Id: %s. Value: %s", sessionId, value),
+                    getErrorContext())));
             }
-            return Mono.error(new AmqpException(false, "Could not cancel scheduled message with sequence number "
-                + sequenceNumber, getErrorContext()));
-        })).then();
+
+            @SuppressWarnings("unchecked") final Map<String, Object> map = (Map<String, Object>) value;
+            final Object expirationValue = map.get(ManagementConstants.EXPIRATION);
+
+            if (!(expirationValue instanceof Date)) {
+                throw logger.logExceptionAsError(Exceptions.propagate(new AmqpException(false, String.format(
+                    "Expiration is not of type Date when renewing session. Id: %s. Value: %s", sessionId,
+                    expirationValue), getErrorContext())));
+            }
+
+            return ((Date) expirationValue).toInstant();
+        });
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Mono<Long> schedule(ServiceBusMessage messageToSchedule, Instant scheduledEnqueueTime, int maxSendLinkSize) {
-        messageToSchedule.setScheduledEnqueueTime(scheduledEnqueueTime);
-        return  isAuthorized(SCHEDULE_MESSAGE_OPERATION).then(createRequestResponse.flatMap(channel -> {
+    public Mono<Long> schedule(ServiceBusMessage message, Instant scheduledEnqueueTime, int maxLinkSize,
+        String associatedLinkName) {
+        message.setScheduledEnqueueTime(scheduledEnqueueTime);
 
-            Message requestMessage = createManagementMessage(SCHEDULE_MESSAGE_OPERATION, channel.getReceiveLinkName());
-            Map<String, Object> requestBodyMap = createScheduleMessgeAmqpValue(messageToSchedule, maxSendLinkSize);
+        return isAuthorized(OPERATION_SCHEDULE_MESSAGE).then(createChannel.flatMap(channel -> {
+            // Serialize the request.
+            final Message amqpMessage = messageSerializer.serialize(message);
+
+            // The maxsize allowed logic is from ReactorSender, this logic should be kept in sync.
+            final int payloadSize = messageSerializer.getSize(amqpMessage);
+            final int allocationSize =
+                Math.min(payloadSize + ManagementConstants.MAX_MESSAGING_AMQP_HEADER_SIZE_BYTES, maxLinkSize);
+            final byte[] bytes = new byte[allocationSize];
+
+            int encodedSize;
+            try {
+                encodedSize = amqpMessage.encode(bytes, 0, allocationSize);
+            } catch (BufferOverflowException exception) {
+                final String errorMessage = String.format(
+                    "Error sending. Size of the payload exceeded maximum message size: %s kb", maxLinkSize / 1024);
+                final AmqpErrorContext errorContext = channel.getErrorContext();
+
+                return monoError(logger, Exceptions.propagate(new AmqpException(false,
+                    AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, errorMessage, exception, errorContext)));
+            }
+
+            final Map<String, Object> messageEntry = new HashMap<>();
+            messageEntry.put(ManagementConstants.MESSAGE, new Binary(bytes, 0, encodedSize));
+            messageEntry.put(ManagementConstants.MESSAGE_ID, amqpMessage.getMessageId());
+
+            final String sessionId = amqpMessage.getGroupId();
+            if (!CoreUtils.isNullOrEmpty(sessionId)) {
+                messageEntry.put(ManagementConstants.SESSION_ID, sessionId);
+            }
+
+            final String partitionKey = message.getPartitionKey();
+            if (!CoreUtils.isNullOrEmpty(partitionKey)) {
+                messageEntry.put(ManagementConstants.PARTITION_KEY, partitionKey);
+            }
+
+            final String viaPartitionKey = message.getViaPartitionKey();
+            if (!CoreUtils.isNullOrEmpty(viaPartitionKey)) {
+                messageEntry.put(ManagementConstants.VIA_PARTITION_KEY, viaPartitionKey);
+            }
+
+            final Collection<Map<String, Object>> messageList = new LinkedList<>();
+            messageList.add(messageEntry);
+
+            final Map<String, Object> requestBodyMap = new HashMap<>();
+            requestBodyMap.put(ManagementConstants.MESSAGES, messageList);
+
+            final Message requestMessage = createManagementMessage(OPERATION_SCHEDULE_MESSAGE, associatedLinkName);
 
             requestMessage.setBody(new AmqpValue(requestBodyMap));
-            return channel.sendWithAck(requestMessage);
-        }).map(responseMessage -> {
-            int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
 
-            if (statusCode != AmqpResponseCode.OK.getValue()) {
-                throw logger.logExceptionAsError(new AmqpException(false,
-                    String.format("Could not schedule message with message id: '%s'.",
-                        messageToSchedule.getMessageId()), getErrorContext()));
-            }
+            return sendWithVerify(channel, requestMessage);
+        }).handle((response, sink) -> {
+            final List<Long> sequenceNumbers = messageSerializer.deserializeList(response, Long.class);
 
-            List<Long> sequenceNumberList = messageSerializer.deserializeList(responseMessage, Long.class);
-            if (CoreUtils.isNullOrEmpty(sequenceNumberList)) {
-                throw logger.logExceptionAsError(new AmqpException(false,
-                    String.format("Service bus response empty. Could not schedule message with message id: '%s'.",
-                        messageToSchedule.getMessageId()), getErrorContext()));
+            if (CoreUtils.isNullOrEmpty(sequenceNumbers)) {
+                sink.error(logger.logExceptionAsError(new AmqpException(false, String.format(
+                    "Service Bus response was empty. Could not schedule message with message id: '%s'.",
+                    message.getMessageId()), getErrorContext())));
+            } else {
+                sink.next(sequenceNumbers.get(0));
             }
-            return sequenceNumberList.get(0);
         }));
+    }
+
+    @Override
+    public Mono<Void> setSessionState(String sessionId, byte[] state, String associatedLinkName) {
+        if (sessionId == null) {
+            return monoError(logger, new NullPointerException("'sessionId' cannot be null."));
+        } else if (sessionId.isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'sessionId' cannot be blank."));
+        }
+
+        return isAuthorized(OPERATION_SET_SESSION_STATE).then(createChannel.flatMap(channel -> {
+            final Message message = createManagementMessage(OPERATION_SET_SESSION_STATE, associatedLinkName);
+
+            final Map<String, Object> body = new HashMap<>();
+            body.put(ManagementConstants.SESSION_ID, sessionId);
+            body.put(ManagementConstants.SESSION_STATE, state == null ? null : new Binary(state));
+
+            message.setBody(new AmqpValue(body));
+
+            return sendWithVerify(channel, message).then();
+        }));
+    }
+
+    @Override
+    public Mono<Void> updateDisposition(String lockToken, DispositionStatus dispositionStatus, String deadLetterReason,
+        String deadLetterErrorDescription, Map<String, Object> propertiesToModify, String sessionId,
+        String associatedLinkName) {
+
+        final UUID[] lockTokens = new UUID[] { UUID.fromString(lockToken) };
+        return isAuthorized(OPERATION_UPDATE_DISPOSITION).then(createChannel.flatMap(channel -> {
+            logger.verbose("Update disposition of deliveries '{}' to '{}' on entity '{}', session '{}'",
+                Arrays.toString(lockTokens), dispositionStatus, entityPath, sessionId);
+
+            final Message message = createManagementMessage(OPERATION_UPDATE_DISPOSITION, associatedLinkName);
+
+            final Map<String, Object> requestBody = new HashMap<>();
+            requestBody.put(ManagementConstants.LOCK_TOKENS_KEY, lockTokens);
+            requestBody.put(ManagementConstants.DISPOSITION_STATUS_KEY, dispositionStatus.getValue());
+
+            if (deadLetterReason != null) {
+                requestBody.put(ManagementConstants.DEADLETTER_REASON_KEY, deadLetterReason);
+            }
+
+            if (deadLetterErrorDescription != null) {
+                requestBody.put(ManagementConstants.DEADLETTER_DESCRIPTION_KEY, deadLetterErrorDescription);
+            }
+
+            if (propertiesToModify != null && propertiesToModify.size() > 0) {
+                requestBody.put(ManagementConstants.PROPERTIES_TO_MODIFY_KEY, propertiesToModify);
+            }
+
+            if (!CoreUtils.isNullOrEmpty(sessionId)) {
+                requestBody.put(ManagementConstants.SESSION_ID, sessionId);
+            }
+
+            message.setBody(new AmqpValue(requestBody));
+
+            return sendWithVerify(channel, message);
+        })).then();
     }
 
     /**
@@ -447,5 +421,70 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
         isDisposed = true;
         tokenManager.close();
+    }
+
+    private Mono<Message> sendWithVerify(RequestResponseChannel channel, Message message) {
+        return channel.sendWithAck(message)
+            .handle((Message response, SynchronousSink<Message> sink) -> {
+                if (RequestResponseUtils.isSuccessful(response)) {
+                    sink.next(response);
+                    return;
+                }
+
+                final AmqpResponseCode statusCode = RequestResponseUtils.getStatusCode(response);
+                final String statusDescription = RequestResponseUtils.getStatusDescription(response);
+                final String errorCondition = RequestResponseUtils.getErrorCondition(response);
+                final Throwable throwable = MessageUtils.toException(
+                    new ErrorCondition(Symbol.getSymbol(errorCondition), statusDescription), channel.getErrorContext());
+
+                logger.warning("status[{}] description[{}] condition[{}] Operation not successful.",
+                    statusCode, statusDescription, errorCondition);
+
+                sink.error(throwable);
+            })
+            .switchIfEmpty(Mono.error(new AmqpException(true, "No response received from management channel.",
+                channel.getErrorContext())));
+    }
+
+    private Mono<Void> isAuthorized(String operation) {
+        return tokenManager.getAuthorizationResults()
+            .next()
+            .handle((response, sink) -> {
+                if (response != AmqpResponseCode.ACCEPTED && response != AmqpResponseCode.OK) {
+                    sink.error(new AmqpException(false, String.format(
+                        "User does not have authorization to perform operation [%s] on entity [%s]. Response: [%s]",
+                        operation, entityPath, response), getErrorContext()));
+                } else {
+                    sink.complete();
+                }
+            });
+    }
+
+    /**
+     * Creates an AMQP message with the required application properties.
+     *
+     * @param operation Management operation to perform (ie. peek, update-disposition, etc.)
+     * @param associatedLinkName Name of the open receive link that first received the message.
+     *
+     * @return An AMQP message with the required headers.
+     */
+    private Message createManagementMessage(String operation, String associatedLinkName) {
+        final Duration serverTimeout = MessageUtils.adjustServerTimeout(operationTimeout);
+        final Map<String, Object> applicationProperties = new HashMap<>();
+        applicationProperties.put(ManagementConstants.MANAGEMENT_OPERATION_KEY, operation);
+        applicationProperties.put(ManagementConstants.SERVER_TIMEOUT, serverTimeout.toMillis());
+
+        if (!CoreUtils.isNullOrEmpty(associatedLinkName)) {
+            applicationProperties.put(ManagementConstants.ASSOCIATED_LINK_NAME_KEY, associatedLinkName);
+        }
+
+        final Message message = Proton.message();
+        message.setApplicationProperties(new ApplicationProperties(applicationProperties));
+
+        return message;
+    }
+
+    private AmqpErrorContext getErrorContext() {
+        return new SessionErrorContext(fullyQualifiedNamespace, entityPath);
     }
 }

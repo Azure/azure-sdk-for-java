@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The EventCategoryCollection model.
- */
+/** The EventCategoryCollection model. */
 @Fluent
 public final class EventCategoryCollectionInner {
     /*
@@ -20,9 +18,8 @@ public final class EventCategoryCollectionInner {
     private List<LocalizableStringInner> value;
 
     /**
-     * Get the value property: the list that includes the Azure event
-     * categories.
-     * 
+     * Get the value property: the list that includes the Azure event categories.
+     *
      * @return the value value.
      */
     public List<LocalizableStringInner> value() {
@@ -30,9 +27,8 @@ public final class EventCategoryCollectionInner {
     }
 
     /**
-     * Set the value property: the list that includes the Azure event
-     * categories.
-     * 
+     * Set the value property: the list that includes the Azure event categories.
+     *
      * @param value the value value to set.
      * @return the EventCategoryCollectionInner object itself.
      */

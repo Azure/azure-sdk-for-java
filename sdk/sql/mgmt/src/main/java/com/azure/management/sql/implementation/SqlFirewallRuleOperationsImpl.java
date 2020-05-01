@@ -166,13 +166,11 @@ public class SqlFirewallRuleOperationsImpl
         List<SqlFirewallRule> firewallRuleSet = new ArrayList<>();
         PagedIterable<FirewallRuleInner> firewallRuleInners =
             this.sqlServerManager.inner().firewallRules().listByServer(resourceGroupName, sqlServerName);
-        if (firewallRuleInners != null) {
-            for (FirewallRuleInner inner : firewallRuleInners) {
-                firewallRuleSet
-                    .add(
-                        new SqlFirewallRuleImpl(
-                            resourceGroupName, sqlServerName, inner.getName(), inner, this.sqlServerManager));
-            }
+        for (FirewallRuleInner inner : firewallRuleInners) {
+            firewallRuleSet
+                .add(
+                    new SqlFirewallRuleImpl(
+                        resourceGroupName, sqlServerName, inner.getName(), inner, this.sqlServerManager));
         }
         return Collections.unmodifiableList(firewallRuleSet);
     }
@@ -194,8 +192,12 @@ public class SqlFirewallRuleOperationsImpl
     public List<SqlFirewallRule> listBySqlServer(SqlServer sqlServer) {
         Objects.requireNonNull(sqlServer);
         List<SqlFirewallRule> firewallRuleSet = new ArrayList<>();
-        for (FirewallRuleInner inner : sqlServer.manager().inner()
-            .firewallRules().listByServer(sqlServer.resourceGroupName(), sqlServer.name())) {
+        for (FirewallRuleInner inner
+            : sqlServer
+                .manager()
+                .inner()
+                .firewallRules()
+                .listByServer(sqlServer.resourceGroupName(), sqlServer.name())) {
             firewallRuleSet
                 .add(new SqlFirewallRuleImpl(inner.getName(), (SqlServerImpl) sqlServer, inner, sqlServer.manager()));
         }

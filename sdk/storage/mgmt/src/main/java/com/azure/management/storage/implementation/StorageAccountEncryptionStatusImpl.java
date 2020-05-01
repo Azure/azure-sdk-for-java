@@ -6,12 +6,9 @@ package com.azure.management.storage.implementation;
 import com.azure.management.storage.EncryptionService;
 import com.azure.management.storage.EncryptionServices;
 import com.azure.management.storage.StorageAccountEncryptionStatus;
-
 import java.time.OffsetDateTime;
 
-/**
- * Shared implementation of StorageAccountEncryptionStatus.
- */
+/** Shared implementation of StorageAccountEncryptionStatus. */
 public abstract class StorageAccountEncryptionStatusImpl implements StorageAccountEncryptionStatus {
     protected final EncryptionServices encryptionServices;
 

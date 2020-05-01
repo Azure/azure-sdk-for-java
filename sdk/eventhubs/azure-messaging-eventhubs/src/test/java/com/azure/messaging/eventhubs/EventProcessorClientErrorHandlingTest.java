@@ -92,7 +92,7 @@ public class EventProcessorClientErrorHandlingTest {
         when(eventHubConsumer.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenReturn(Flux.just(getEvent(eventData1)));
         EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder, "cg",
-            () -> new BadProcessEventHandler(countDownLatch), new InMemoryCheckpointStore(), false,
+            () -> new BadProcessEventHandler(countDownLatch), new SampleCheckpointStore(), false,
             null, errorContext -> { }, new HashMap<>(), 1, null, false);
         client.start();
         boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
@@ -107,7 +107,7 @@ public class EventProcessorClientErrorHandlingTest {
         when(eventHubConsumer.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenReturn(Flux.just(getEvent(eventData1)));
         EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder, "cg",
-            () -> new BadInitHandler(countDownLatch), new InMemoryCheckpointStore(), false,
+            () -> new BadInitHandler(countDownLatch), new SampleCheckpointStore(), false,
             null, errorContext -> { }, new HashMap<>(), 1, null, false);
         client.start();
         boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
@@ -122,7 +122,7 @@ public class EventProcessorClientErrorHandlingTest {
         when(eventHubConsumer.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenReturn(Flux.just(getEvent(eventData1)));
         EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder, "cg",
-            () -> new BadCloseHandler(countDownLatch), new InMemoryCheckpointStore(), false,
+            () -> new BadCloseHandler(countDownLatch), new SampleCheckpointStore(), false,
             null, errorContext -> { }, new HashMap<>(), 1, null, false);
         client.start();
         boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
