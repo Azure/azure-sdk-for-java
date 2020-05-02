@@ -9,6 +9,7 @@ import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEve
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent;
 import com.azure.storage.internal.avro.implementation.AvroParser;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * Gets events for a chunk.
@@ -31,14 +32,17 @@ class Chunk {
 
     private AvroParser parser;
 
+    private boolean collectEvents;
+
     Chunk(BlobContainerAsyncClient client, String chunkPath, BlobChangefeedCursor shardCursor,
         BlobChangefeedCursor userCursor) {
         this.client = client;
         this.chunkPath = chunkPath;
         this.shardCursor = shardCursor;
-        this.eventNumber = -1;
+        this.eventNumber = 0;
         this.userCursor = userCursor;
         this.parser = new AvroParser();
+        this.collectEvents = false;
     }
 
     Flux<BlobChangefeedEventWrapper> getEvents() {
@@ -47,9 +51,25 @@ class Chunk {
         return client.getBlobAsyncClient(chunkPath)
             .download()
             .concatMap(this.parser::parse)
-            .map(object -> {
+            .concatMap(object -> {
                 BlobChangefeedCursor eventCursor = shardCursor.toEventCursor(eventNumber++);
-                return new BlobChangefeedEventWrapper(BlobChangefeedEvent.fromRecord(object), eventCursor);
+                if (userCursor == null) {
+                    collectEvents = true;
+                } else {
+                    if (userCursor.isEventToBeProcessed() == null || !userCursor.isEventToBeProcessed()) {
+                        if (userCursor.equals(eventCursor)) {
+                            userCursor.setEventToBeProcessed(true);
+                        }
+                    } else {
+                        this.collectEvents = true;
+                    }
+                }
+                if (collectEvents) {
+                    return Mono.just(
+                        new BlobChangefeedEventWrapper(BlobChangefeedEvent.fromRecord(object), eventCursor));
+                } else {
+                    return Mono.empty();
+                }
             });
     }
 }
