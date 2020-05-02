@@ -60,8 +60,9 @@ public abstract class IntegrationTestBase extends TestBase {
     private String testName;
     private final Scheduler scheduler = Schedulers.parallel();
 
-    private static final byte[] CONTENTS_BYTES = "Some-contents".getBytes(StandardCharsets.UTF_8);
+    protected static final byte[] CONTENTS_BYTES = "Some-contents".getBytes(StandardCharsets.UTF_8);
     protected String sessionId;
+    protected String sessionId2;
 
     protected IntegrationTestBase(ClientLogger logger) {
         this.logger = logger;
@@ -262,6 +263,11 @@ public abstract class IntegrationTestBase extends TestBase {
             Arguments.of(MessagingEntityType.QUEUE, true),
             Arguments.of(MessagingEntityType.SUBSCRIPTION, true)
         );
+    }
+
+    protected List<ServiceBusMessage> getMessages(String messageId, boolean isSessionEnabled, int numberOfEvents,
+        String sessionId) {
+        return TestUtils.getServiceBusMessages(numberOfEvents, CONTENTS_BYTES, messageId, isSessionEnabled, sessionId);
     }
 
     protected List<ServiceBusMessage> getMessages(String messageId, boolean isSessionEnabled, int numberOfEvents) {

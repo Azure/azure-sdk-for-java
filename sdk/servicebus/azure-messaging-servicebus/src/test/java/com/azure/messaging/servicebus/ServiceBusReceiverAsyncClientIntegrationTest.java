@@ -61,6 +61,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @Override
     protected void beforeTest() {
         sessionId = UUID.randomUUID().toString();
+        sessionId2 = UUID.randomUUID().toString();
     }
 
     @Override
@@ -88,7 +89,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         } catch (Exception e) {
             logger.warning("Error occurred when draining queue.", e);
         } finally {
-            dispose(receiver, sender, receiveAndDeleteReceiver);
+            dispose(receiver, receiver2, sender, receiveAndDeleteReceiver);
         }
 
     }
@@ -437,15 +438,18 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         int count = 4;
         final String messageId = UUID.randomUUID().toString();
-        final List<ServiceBusMessage> messages = getMessages(messageId, isSessionEnabled, count);
+        final List<ServiceBusMessage> messages;
+        if (isSessionEnabled) {
+            messages = getMessages(messageId, isSessionEnabled, count/2, sessionId);
+            messages.addAll(getMessages(messageId, isSessionEnabled, count/2, sessionId2));
+        } else {
+            messages = getMessages(messageId, isSessionEnabled, count);
+        }
+
         final Duration smallDuration = Duration.ofSeconds(5);
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions().setEnableAutoComplete(false);
 
         sendMessage(messages).block(TIMEOUT);
-
-        for (int index = 0; index< count; ++index) {
-            messagesPending.incrementAndGet();
-        }
 
         // Assert & Act
         StepVerifier.create(receiver.receive(options).limitRequest(count/2))
@@ -765,7 +769,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private void setSenderAndReceiver(MessagingEntityType entityType, boolean isSessionEnabled,
         Function<ServiceBusReceiverClientBuilder, ServiceBusReceiverClientBuilder> onReceiverCreate) {
         this.isSessionReceiver = isSessionEnabled;
-        ServiceBusReceiverClientBuilder receiverBuilder;
 
         switch (entityType) {
             case QUEUE:
@@ -777,15 +780,21 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                     .queueName(queueName)
                     .buildAsyncClient();
 
-                receiverBuilder = onReceiverCreate.apply(
+                receiver = onReceiverCreate.apply(
                     createBuilder()
                         .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)))
                         .receiver()
                         .queueName(queueName)
                         .sessionId(isSessionEnabled ? sessionId : null)
-                );
-                receiver = receiverBuilder.buildAsyncClient();
-                receiver2 = receiverBuilder.buildAsyncClient();
+                ).buildAsyncClient();
+
+                receiver2 = onReceiverCreate.apply(
+                    createBuilder()
+                        .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)))
+                        .receiver()
+                        .queueName(queueName)
+                        .sessionId(isSessionEnabled ? sessionId2 : null)
+                ).buildAsyncClient();
 
                 receiveAndDeleteReceiver = createBuilder().receiver()
                     .queueName(queueName)
@@ -803,14 +812,20 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 sender = createBuilder().sender()
                     .topicName(topicName)
                     .buildAsyncClient();
-                receiverBuilder = onReceiverCreate.apply(
+
+                receiver = onReceiverCreate.apply(
                     createBuilder()
                         .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)))
                         .receiver()
                         .topicName(topicName).subscriptionName(subscriptionName)
-                        .sessionId(isSessionEnabled ? sessionId : null));
-                receiver = receiverBuilder.buildAsyncClient();
-                receiver2 = receiverBuilder.buildAsyncClient();
+                        .sessionId(isSessionEnabled ? sessionId : null)).buildAsyncClient();
+
+                receiver2 = onReceiverCreate.apply(
+                    createBuilder()
+                        .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)))
+                        .receiver()
+                        .topicName(topicName).subscriptionName(subscriptionName)
+                        .sessionId(isSessionEnabled ? sessionId2 : null)).buildAsyncClient();
 
                 receiveAndDeleteReceiver = createBuilder().receiver()
                     .topicName(topicName).subscriptionName(subscriptionName)
