@@ -143,7 +143,8 @@ final class TestUtils {
                 put("InvoiceVatId", new CustomFormModelField(null, "InvoiceVatId", 1.0f));
             }
         };
-        CustomFormSubModel customFormSubModel = new CustomFormSubModel(0.973f, fieldMap, "form-" + "{labeled_model_Id}");
+        CustomFormSubModel customFormSubModel = new CustomFormSubModel(0.973f, fieldMap, "form-" + "{labeled_model_Id" +
+            "}");
         return new CustomFormModel("{labeled_model_Id}", CustomFormModelStatus.READY,
             OffsetDateTime.parse("2020-04-09T18:24:49Z"),
             OffsetDateTime.parse("2020-04-09T18:24:56Z"),
@@ -179,7 +180,7 @@ final class TestUtils {
         });
     }
 
-     static SerializerAdapter getSerializerAdapter() {
+    static SerializerAdapter getSerializerAdapter() {
         return JacksonAdapter.createDefaultSerializerAdapter();
     }
 }

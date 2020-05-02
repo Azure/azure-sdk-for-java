@@ -67,10 +67,8 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     private final String clientName = properties.getOrDefault(NAME, "UnknownName");
     private final String clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
 
-    private static void validateTrainingDocumentsData
-        (List<com.azure.ai.formrecognizer.implementation.models.TrainingDocumentInfo> expectedTrainingDocuments,
+    private static void validateTrainingDocumentsData(List<com.azure.ai.formrecognizer.implementation.models.TrainingDocumentInfo> expectedTrainingDocuments,
             List<TrainingDocumentInfo> actualTrainingDocuments) {
-
         assertEquals(expectedTrainingDocuments.size(), actualTrainingDocuments.size());
         for (int i = 0; i < actualTrainingDocuments.size(); i++) {
             com.azure.ai.formrecognizer.implementation.models.TrainingDocumentInfo expectedTrainingDocument =
