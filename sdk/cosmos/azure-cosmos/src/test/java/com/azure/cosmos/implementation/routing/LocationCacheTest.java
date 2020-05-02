@@ -68,7 +68,7 @@ public class LocationCacheTest {
         }
     };
 
-    private UnmodifiableList<String> preferredLocations;
+    private UnmodifiableList<String> preferredRegions;
     private DatabaseAccount databaseAccount;
     private LocationCache cache;
     private GlobalEndpointManager endpointManager;
@@ -138,12 +138,12 @@ public class LocationCacheTest {
         this.mockedClient = new DatabaseAccountManagerInternalMock();
         this.databaseAccount = LocationCacheTest.createDatabaseAccount(useMultipleWriteLocations);
 
-        this.preferredLocations = isPreferredLocationsListEmpty ?
+        this.preferredRegions = isPreferredLocationsListEmpty ?
                 new UnmodifiableList<>(Collections.emptyList()) :
                 new UnmodifiableList<>(ImmutableList.of("location1", "location2", "location3"));
 
         this.cache = new LocationCache(
-                this.preferredLocations,
+                this.preferredRegions,
                 LocationCacheTest.DefaultEndpoint,
                 enableEndpointDiscovery,
                 useMultipleWriteLocations,
@@ -154,7 +154,7 @@ public class LocationCacheTest {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
         connectionPolicy.setEndpointDiscoveryEnabled(enableEndpointDiscovery);
         BridgeInternal.setUseMultipleWriteLocations(connectionPolicy, useMultipleWriteLocations);
-        connectionPolicy.setPreferredLocations(this.preferredLocations);
+        connectionPolicy.setPreferredRegions(this.preferredRegions);
 
         this.endpointManager = new GlobalEndpointManager(mockedClient, connectionPolicy, configs);
     }
@@ -222,12 +222,12 @@ public class LocationCacheTest {
                 Map<String, URI> readEndpointByLocation = toStream(this.databaseAccount.getReadableLocations())
                         .collect(Collectors.toMap(i -> i.getName(), i -> createUrl(i.getEndpoint())));
 
-                URI[] preferredAvailableWriteEndpoints = toStream(this.preferredLocations).skip(writeLocationIndex)
+                URI[] preferredAvailableWriteEndpoints = toStream(this.preferredRegions).skip(writeLocationIndex)
                         .filter(location -> writeEndpointByLocation.containsKey(location))
                         .map(location -> writeEndpointByLocation.get(location))
                         .collect(Collectors.toList()).toArray(new URI[0]);
 
-                URI[] preferredAvailableReadEndpoints = toStream(this.preferredLocations).skip(readLocationIndex)
+                URI[] preferredAvailableReadEndpoints = toStream(this.preferredRegions).skip(readLocationIndex)
                         .filter(location -> readEndpointByLocation.containsKey(location))
                         .map(location -> readEndpointByLocation.get(location))
                         .collect(Collectors.toList()).toArray(new URI[0]);
@@ -279,8 +279,8 @@ public class LocationCacheTest {
         boolean isMostPreferredLocationUnavailableForRead = isFirstReadEndpointUnavailable;
         boolean isMostPreferredLocationUnavailableForWrite = useMultipleWriteLocations ?
                 false : isFirstWriteEndpointUnavailable;
-        if (this.preferredLocations.size() > 0) {
-            String mostPreferredReadLocationName = this.preferredLocations.stream()
+        if (this.preferredRegions.size() > 0) {
+            String mostPreferredReadLocationName = this.preferredRegions.stream()
                     .filter(location -> toStream(databaseAccount.getReadableLocations())
                             .anyMatch(readLocation -> readLocation.getName().equals(location)))
                     .findFirst().orElse(null);
@@ -289,7 +289,7 @@ public class LocationCacheTest {
             isMostPreferredLocationUnavailableForRead = preferredAvailableReadEndpoints.length == 0 ?
                     true : (!areEqual(preferredAvailableReadEndpoints[0], mostPreferredReadEndpoint));
 
-            String mostPreferredWriteLocationName = this.preferredLocations.stream()
+            String mostPreferredWriteLocationName = this.preferredRegions.stream()
                     .filter(location -> toStream(databaseAccount.getWritableLocations())
                             .anyMatch(writeLocation -> writeLocation.getName().equals(location)))
                     .findFirst().orElse(null);
@@ -377,12 +377,12 @@ public class LocationCacheTest {
 
         if (!endpointDiscoveryEnabled) {
             firstAvailableReadEndpoint = LocationCacheTest.DefaultEndpoint;
-        } else if (this.preferredLocations.size() == 0) {
+        } else if (this.preferredRegions.size() == 0) {
             firstAvailableReadEndpoint = firstAvailableWriteEndpoint;
         } else if (availableReadEndpoints.length > 0) {
             firstAvailableReadEndpoint = availableReadEndpoints[0];
         } else {
-            firstAvailableReadEndpoint = LocationCacheTest.EndpointByLocation.get(this.preferredLocations.get(0));
+            firstAvailableReadEndpoint = LocationCacheTest.EndpointByLocation.get(this.preferredRegions.get(0));
         }
 
         URI firstWriteEnpoint = !endpointDiscoveryEnabled ?
