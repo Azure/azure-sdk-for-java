@@ -33,6 +33,7 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static com.azure.core.amqp.ProxyOptions.PROXY_PASSWORD;
@@ -261,6 +262,11 @@ public abstract class IntegrationTestBase extends TestBase {
             Arguments.of(MessagingEntityType.QUEUE, true),
             Arguments.of(MessagingEntityType.SUBSCRIPTION, true)
         );
+    }
+
+    protected List<ServiceBusMessage> getMessages(String messageId, boolean isSessionEnabled, int numberOfEvents) {
+
+        return TestUtils.getServiceBusMessages(numberOfEvents, CONTENTS_BYTES, messageId, isSessionEnabled, sessionId);
     }
 
     protected ServiceBusMessage getMessage(String messageId, boolean isSessionEnabled) {

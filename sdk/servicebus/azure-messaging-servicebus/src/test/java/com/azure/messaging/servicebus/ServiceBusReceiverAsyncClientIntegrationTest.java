@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
@@ -12,12 +13,14 @@ import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -41,6 +44,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private final AtomicInteger messagesPending = new AtomicInteger();
 
     private ServiceBusReceiverAsyncClient receiver;
+    private ServiceBusReceiverAsyncClient receiver2;
+
     private ServiceBusSenderAsyncClient sender;
     private boolean isSessionReceiver;
 
@@ -62,7 +67,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     protected void afterTest() {
         final int pending = messagesPending.get();
         if (pending < 1) {
-            dispose(receiver, sender, receiveAndDeleteReceiver);
+            dispose(receiver, receiver2, sender, receiveAndDeleteReceiver);
             return;
         }
 
@@ -422,6 +427,51 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
+     * Send multiple message and receive from multiple receivers.
+     */
+    @MethodSource("messagingEntityWithSessions")
+    @ParameterizedTest
+    void multipleReceiverAndComplete(MessagingEntityType entityType, boolean isSessionEnabled) {
+        // Arrange
+        setSenderAndReceiver(entityType, isSessionEnabled);
+
+        int count = 4;
+        final String messageId = UUID.randomUUID().toString();
+        final List<ServiceBusMessage> messages = getMessages(messageId, isSessionEnabled, count);
+        final Duration smallDuration = Duration.ofSeconds(5);
+        final ReceiveAsyncOptions options = new ReceiveAsyncOptions().setEnableAutoComplete(false);
+
+        sendMessage(messages).block(TIMEOUT);
+
+        for (int index = 0; index< count; ++index) {
+            messagesPending.incrementAndGet();
+        }
+
+        // Assert & Act
+        StepVerifier.create(receiver.receive(options).limitRequest(count/2))
+            .assertNext(message -> {
+                receiver.complete(message).block(smallDuration);
+                messagesPending.decrementAndGet();
+            })
+            .assertNext(message -> {
+                receiver.complete(message).block(smallDuration);
+                messagesPending.decrementAndGet();
+            })
+            .verifyComplete();
+
+       StepVerifier.create(receiver2.receive(options).limitRequest(count - count/2))
+            .assertNext(message -> {
+                receiver2.complete(message).block(smallDuration);
+                messagesPending.decrementAndGet();
+            })
+            .assertNext(message -> {
+                receiver2.complete(message).block(smallDuration);
+                messagesPending.decrementAndGet();
+            })
+            .verifyComplete();
+    }
+
+    /**
      * Verifies that we can renew message lock on a non-session receiver.
      */
     @MethodSource("messagingEntityProvider")
@@ -715,6 +765,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private void setSenderAndReceiver(MessagingEntityType entityType, boolean isSessionEnabled,
         Function<ServiceBusReceiverClientBuilder, ServiceBusReceiverClientBuilder> onReceiverCreate) {
         this.isSessionReceiver = isSessionEnabled;
+        ServiceBusReceiverClientBuilder receiverBuilder;
 
         switch (entityType) {
             case QUEUE:
@@ -725,11 +776,16 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 sender = createBuilder().sender()
                     .queueName(queueName)
                     .buildAsyncClient();
-                receiver = onReceiverCreate.apply(
-                    createBuilder().receiver()
+
+                receiverBuilder = onReceiverCreate.apply(
+                    createBuilder()
+                        .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)))
+                        .receiver()
                         .queueName(queueName)
                         .sessionId(isSessionEnabled ? sessionId : null)
-                ).buildAsyncClient();
+                );
+                receiver = receiverBuilder.buildAsyncClient();
+                receiver2 = receiverBuilder.buildAsyncClient();
 
                 receiveAndDeleteReceiver = createBuilder().receiver()
                     .queueName(queueName)
@@ -747,11 +803,14 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 sender = createBuilder().sender()
                     .topicName(topicName)
                     .buildAsyncClient();
-                receiver = onReceiverCreate.apply(
-                    createBuilder().receiver()
+                receiverBuilder = onReceiverCreate.apply(
+                    createBuilder()
+                        .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)))
+                        .receiver()
                         .topicName(topicName).subscriptionName(subscriptionName)
-                        .sessionId(isSessionEnabled ? sessionId : null))
-                    .buildAsyncClient();
+                        .sessionId(isSessionEnabled ? sessionId : null));
+                receiver = receiverBuilder.buildAsyncClient();
+                receiver2 = receiverBuilder.buildAsyncClient();
 
                 receiveAndDeleteReceiver = createBuilder().receiver()
                     .topicName(topicName).subscriptionName(subscriptionName)
