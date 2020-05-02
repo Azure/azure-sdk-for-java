@@ -64,7 +64,7 @@ public interface VirtualNetworkRule extends HasInner<VirtualNetworkRuleInner>, I
         interface WithNamespace {
            /**
             * Specifies resourceGroupName, namespaceName.
-            * @param resourceGroupName Name of the resource group within the Azure subscription
+            * @param resourceGroupName Name of the resource group within the azure subscription
             * @param namespaceName The Namespace name
             * @return the next definition stage
             */
