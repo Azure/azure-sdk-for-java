@@ -74,7 +74,7 @@ public class TestSuiteBase extends DocumentClientTest {
     protected static final int WAIT_REPLICA_CATCH_UP_IN_MILLIS = 4000;
 
     protected final static ConsistencyLevel accountConsistency;
-    protected static final ImmutableList<String> preferredRegions;
+    protected static final ImmutableList<String> preferredLocations;
     private static final ImmutableList<ConsistencyLevel> desiredConsistencies;
     private static final ImmutableList<Protocol> protocols;
 
@@ -93,7 +93,7 @@ public class TestSuiteBase extends DocumentClientTest {
         desiredConsistencies = immutableListOrNull(
                 ObjectUtils.defaultIfNull(parseDesiredConsistencies(TestConfigurations.DESIRED_CONSISTENCIES),
                                           allEqualOrLowerConsistencies(accountConsistency)));
-        preferredRegions = immutableListOrNull(parsePreferredRegions(TestConfigurations.PREFERRED_REGIONS));
+        preferredLocations = immutableListOrNull(parsePreferredLocation(TestConfigurations.PREFERRED_LOCATIONS));
         protocols = ObjectUtils.defaultIfNull(immutableListOrNull(parseProtocols(TestConfigurations.PROTOCOLS)),
                                               ImmutableList.of(Protocol.HTTPS, Protocol.TCP));
         //  Object mapper configuration
@@ -749,17 +749,17 @@ public class TestSuiteBase extends DocumentClientTest {
         throw new IllegalStateException("INVALID configured test consistency " + consistency);
     }
 
-    static List<String> parsePreferredRegions(String preferredRegions) {
-        if (StringUtils.isEmpty(preferredRegions)) {
+    static List<String> parsePreferredLocation(String preferredLocations) {
+        if (StringUtils.isEmpty(preferredLocations)) {
             return null;
         }
 
         try {
-            return objectMapper.readValue(preferredRegions, new TypeReference<List<String>>() {
+            return objectMapper.readValue(preferredLocations, new TypeReference<List<String>>() {
             });
         } catch (Exception e) {
-            logger.error("INVALID configured test preferredRegions [{}].", preferredRegions);
-            throw new IllegalStateException("INVALID configured test preferredRegions " + preferredRegions);
+            logger.error("INVALID configured test preferredLocations [{}].", preferredLocations);
+            throw new IllegalStateException("INVALID configured test preferredLocations " + preferredLocations);
         }
     }
 
@@ -795,7 +795,7 @@ public class TestSuiteBase extends DocumentClientTest {
         logger.info("Max test consistency to use is [{}]", accountConsistency);
         List<ConsistencyLevel> testConsistencies = ImmutableList.of(ConsistencyLevel.EVENTUAL);
 
-        boolean isMultiMasterEnabled = preferredRegions != null && accountConsistency == ConsistencyLevel.SESSION;
+        boolean isMultiMasterEnabled = preferredLocations != null && accountConsistency == ConsistencyLevel.SESSION;
 
         List<Builder> builders = new ArrayList<>();
         builders.add(createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null));
@@ -804,7 +804,7 @@ public class TestSuiteBase extends DocumentClientTest {
             testConsistencies.forEach(consistencyLevel -> builders.add(createDirectRxDocumentClient(consistencyLevel,
                                                                                                     protocol,
                                                                                                     isMultiMasterEnabled,
-                                                                                                    preferredRegions)));
+                                                                                                    preferredLocations)));
         }
 
         builders.forEach(b -> logger.info("Will Use ConnectionMode [{}], Consistency [{}], Protocol [{}]",
@@ -885,16 +885,16 @@ public class TestSuiteBase extends DocumentClientTest {
     }
 
     private static Object[][] clientBuildersWithDirect(List<ConsistencyLevel> testConsistencies, Protocol... protocols) {
-        boolean isMultiMasterEnabled = preferredRegions != null && accountConsistency == ConsistencyLevel.SESSION;
+        boolean isMultiMasterEnabled = preferredLocations != null && accountConsistency == ConsistencyLevel.SESSION;
 
         List<Builder> builders = new ArrayList<>();
-        builders.add(createGatewayRxDocumentClient(ConsistencyLevel.SESSION, isMultiMasterEnabled, preferredRegions));
+        builders.add(createGatewayRxDocumentClient(ConsistencyLevel.SESSION, isMultiMasterEnabled, preferredLocations));
 
         for (Protocol protocol : protocols) {
             testConsistencies.forEach(consistencyLevel -> builders.add(createDirectRxDocumentClient(consistencyLevel,
                                                                                                     protocol,
                                                                                                     isMultiMasterEnabled,
-                                                                                                    preferredRegions)));
+                                                                                                    preferredLocations)));
         }
 
         builders.forEach(b -> logger.info("Will Use ConnectionMode [{}], Consistency [{}], Protocol [{}]",
@@ -918,11 +918,11 @@ public class TestSuiteBase extends DocumentClientTest {
                 .withConsistencyLevel(ConsistencyLevel.SESSION);
     }
 
-    static protected Builder createGatewayRxDocumentClient(ConsistencyLevel consistencyLevel, boolean multiMasterEnabled, List<String> preferredRegions) {
+    static protected Builder createGatewayRxDocumentClient(ConsistencyLevel consistencyLevel, boolean multiMasterEnabled, List<String> preferredLocations) {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
         connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
         connectionPolicy.setUsingMultipleWriteRegions(multiMasterEnabled);
-        connectionPolicy.setPreferredRegions(preferredRegions);
+        connectionPolicy.setPreferredRegions(preferredLocations);
         return new Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)

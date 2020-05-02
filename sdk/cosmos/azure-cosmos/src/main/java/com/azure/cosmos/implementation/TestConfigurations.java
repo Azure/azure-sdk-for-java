@@ -58,7 +58,7 @@ public final class TestConfigurations {
                                StringUtils.defaultString(Strings.emptyToNull(
                                        System.getenv().get("ACCOUNT_CONSISTENCY")), "Strong"));
 
-    public final static String PREFERRED_REGIONS =
+    public final static String PREFERRED_LOCATIONS =
         properties.getProperty("PREFERRED_LOCATIONS",
                                StringUtils.defaultString(Strings.emptyToNull(
                                        System.getenv().get("PREFERRED_LOCATIONS")), null));

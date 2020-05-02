@@ -104,7 +104,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     protected static final int WAIT_REPLICA_CATCH_UP_IN_MILLIS = 4000;
 
     protected final static ConsistencyLevel accountConsistency;
-    protected static final ImmutableList<String> preferredRegions;
+    protected static final ImmutableList<String> preferredLocations;
     private static final ImmutableList<ConsistencyLevel> desiredConsistencies;
     private static final ImmutableList<Protocol> protocols;
 
@@ -147,7 +147,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         desiredConsistencies = immutableListOrNull(
             ObjectUtils.defaultIfNull(parseDesiredConsistencies(TestConfigurations.DESIRED_CONSISTENCIES),
                 allEqualOrLowerConsistencies(accountConsistency)));
-        preferredRegions = immutableListOrNull(parsePreferredLocation(TestConfigurations.PREFERRED_REGIONS));
+        preferredLocations = immutableListOrNull(parsePreferredLocation(TestConfigurations.PREFERRED_LOCATIONS));
         protocols = ObjectUtils.defaultIfNull(immutableListOrNull(parseProtocols(TestConfigurations.PROTOCOLS)),
             ImmutableList.of(Protocol.HTTPS, Protocol.TCP));
 
@@ -912,7 +912,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         logger.info("Max test consistency to use is [{}]", accountConsistency);
         List<ConsistencyLevel> testConsistencies = ImmutableList.of(ConsistencyLevel.EVENTUAL);
 
-        boolean isMultiMasterEnabled = preferredRegions != null && accountConsistency == ConsistencyLevel.SESSION;
+        boolean isMultiMasterEnabled = preferredLocations != null && accountConsistency == ConsistencyLevel.SESSION;
 
         List<CosmosClientBuilder> cosmosConfigurations = new ArrayList<>();
 
@@ -921,7 +921,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                 consistencyLevel,
                 protocol,
                 isMultiMasterEnabled,
-                preferredRegions)));
+                preferredLocations)));
         }
 
         cosmosConfigurations.forEach(c -> {
@@ -1009,7 +1009,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     private static Object[][] clientBuildersWithDirect(List<ConsistencyLevel> testConsistencies, Protocol... protocols) {
-        boolean isMultiMasterEnabled = preferredRegions != null && accountConsistency == ConsistencyLevel.SESSION;
+        boolean isMultiMasterEnabled = preferredLocations != null && accountConsistency == ConsistencyLevel.SESSION;
 
         List<CosmosClientBuilder> cosmosConfigurations = new ArrayList<>();
 
@@ -1017,7 +1017,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             testConsistencies.forEach(consistencyLevel -> cosmosConfigurations.add(createDirectRxDocumentClient(consistencyLevel,
                 protocol,
                 isMultiMasterEnabled,
-                preferredRegions)));
+                preferredLocations)));
         }
 
         cosmosConfigurations.forEach(c -> {
@@ -1030,7 +1030,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             );
         });
 
-        cosmosConfigurations.add(createGatewayRxDocumentClient(ConsistencyLevel.SESSION, isMultiMasterEnabled, preferredRegions));
+        cosmosConfigurations.add(createGatewayRxDocumentClient(ConsistencyLevel.SESSION, isMultiMasterEnabled, preferredLocations));
 
         return cosmosConfigurations.stream().map(c -> new Object[]{c}).collect(Collectors.toList()).toArray(new Object[0][]);
     }
