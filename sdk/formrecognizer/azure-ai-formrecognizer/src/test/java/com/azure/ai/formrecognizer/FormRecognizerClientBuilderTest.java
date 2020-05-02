@@ -19,6 +19,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.validateLayoutDataResults;
+import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_API_KEY;
+import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_FORM_DATA;
 import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_URL;
 import static com.azure.ai.formrecognizer.TestUtils.getAnalyzeRawResponse;
@@ -28,9 +30,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * Tests for Form Recognizer client builder
  */
 public class FormRecognizerClientBuilderTest extends TestBase {
-    private static final String AZURE_FORM_RECOGNIZER_API_KEY = "AZURE_FORM_RECOGNIZER_API_KEY";
-    private static final String INVALID_KEY = "invalid key";
-
     /**
      * Test client builder with invalid API key
      */

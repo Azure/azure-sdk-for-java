@@ -17,11 +17,8 @@ import java.time.Duration;
 
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID_ERROR;
-import static com.azure.ai.formrecognizer.TestUtils.LABELED_MODEL_DATA;
 import static com.azure.ai.formrecognizer.TestUtils.NULL_SOURCE_URL_ERROR;
-import static com.azure.ai.formrecognizer.TestUtils.UNLABELED_MODEL_DATA;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedAccountProperties;
-import static com.azure.ai.formrecognizer.TestUtils.getModelRawResponse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -82,7 +79,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             StepVerifier.create(client.getCustomModelWithResponse(trainedModel.getModelId(),
                 Context.NONE)).assertNext(customFormModelResponse -> {
                     assertEquals(customFormModelResponse.getStatusCode(), HttpResponseStatus.OK.code());
-                    validateCustomModelData(syncPoller.getFinalResult(), getModelRawResponse(UNLABELED_MODEL_DATA), false);
+                    validateCustomModelData(syncPoller.getFinalResult(), false);
                 });
         });
     }
@@ -99,7 +96,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             CustomFormModel trainedUnlabeledModel = syncPoller.getFinalResult();
             StepVerifier.create(client.getCustomModel(trainedUnlabeledModel.getModelId()))
                 .assertNext(customFormModel -> validateCustomModelData(syncPoller.getFinalResult(),
-                    getModelRawResponse(UNLABELED_MODEL_DATA), false));
+                    false));
         });
     }
 
@@ -115,7 +112,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             CustomFormModel trainedLabeledModel = syncPoller.getFinalResult();
             StepVerifier.create(client.getCustomModel(trainedLabeledModel.getModelId()))
                 .assertNext(customFormModel -> validateCustomModelData(syncPoller.getFinalResult(),
-                    getModelRawResponse(LABELED_MODEL_DATA), true));
+                    true));
         });
     }
 
@@ -216,7 +213,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
                 client.beginTraining(storageSASUrl, useLabelFile).getSyncPoller();
             syncPoller.waitForCompletion();
-            validateCustomModelData(syncPoller.getFinalResult(), getModelRawResponse(LABELED_MODEL_DATA), true);
+            validateCustomModelData(syncPoller.getFinalResult(), true);
         });
     }
 
@@ -229,7 +226,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
                 client.beginTraining(storageSASUrl, useLabelFile).getSyncPoller();
             syncPoller.waitForCompletion();
-            validateCustomModelData(syncPoller.getFinalResult(), getModelRawResponse(UNLABELED_MODEL_DATA), false);
+            validateCustomModelData(syncPoller.getFinalResult(), false);
         });
     }
 }

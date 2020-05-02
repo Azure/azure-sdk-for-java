@@ -69,6 +69,7 @@ final class TestUtils {
     static final String LAYOUT_FORM_DATA = "src/test/resources/sample_files/Content/layoutContent.json";
     static final String LABELED_MODEL_DATA = "src/test/resources/sample_files/Content/labeledModelContent.json";
     static final String UNLABELED_MODEL_DATA = "src/test/resources/sample_files/Content/unlabeledModelContent.json";
+    static final String INVALID_KEY = "invalid key";
 
     private TestUtils() {
     }
@@ -178,7 +179,7 @@ final class TestUtils {
         });
     }
 
-    private static SerializerAdapter getSerializerAdapter() {
+     static SerializerAdapter getSerializerAdapter() {
         return JacksonAdapter.createDefaultSerializerAdapter();
     }
 }

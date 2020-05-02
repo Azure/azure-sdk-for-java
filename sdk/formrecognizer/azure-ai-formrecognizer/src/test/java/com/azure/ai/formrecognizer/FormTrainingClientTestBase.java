@@ -28,11 +28,14 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
+import com.azure.core.util.serializer.SerializerEncoding;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -43,58 +46,30 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.formrecognizer.FormRecognizerClientBuilder.OCP_APIM_SUBSCRIPTION_KEY;
+import static com.azure.ai.formrecognizer.TestUtils.getSerializerAdapter;
+import static com.azure.ai.formrecognizer.implementation.models.ModelStatus.READY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class FormTrainingClientTestBase extends TestBase {
-    public static final String FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL =
+    static final String FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL =
         "FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL";
-    public static final String FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL =
+    static final String FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL =
         "FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL";
-    private static final String AZURE_FORM_RECOGNIZER_API_KEY = "AZURE_FORM_RECOGNIZER_API_KEY";
-    private static final String NAME = "name";
-    private static final String FORM_RECOGNIZER_PROPERTIES = "azure-ai-formrecognizer.properties";
-    private static final String VERSION = "version";
+    static final String AZURE_FORM_RECOGNIZER_API_KEY = "AZURE_FORM_RECOGNIZER_API_KEY";
+    static final String NAME = "name";
+    static final String FORM_RECOGNIZER_PROPERTIES = "azure-ai-formrecognizer.properties";
+    static final String VERSION = "version";
+    static final String AZURE_FORM_RECOGNIZER_ENDPOINT = "AZURE_FORM_RECOGNIZER_ENDPOINT";
     private final HttpLogOptions httpLogOptions = new HttpLogOptions();
     private final Map<String, String> properties = CoreUtils.getProperties(FORM_RECOGNIZER_PROPERTIES);
     private final String clientName = properties.getOrDefault(NAME, "UnknownName");
     private final String clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
 
-    static void validateCustomModelData(CustomFormModel actualCustomModel, Model modelRawResponse,
-        boolean isLabeled) {
-        assertEquals(modelRawResponse.getModelInfo().getStatus().toString(),
-            actualCustomModel.getModelStatus().toString());
-        validateErrorData(modelRawResponse.getTrainResult().getErrors(), actualCustomModel.getModelError());
-        assertNotNull(actualCustomModel.getCreatedOn());
-        assertNotNull(actualCustomModel.getLastUpdatedOn());
-        validateTrainingDocumentsData(modelRawResponse.getTrainResult().getTrainingDocuments(),
-            actualCustomModel.getTrainingDocuments());
-        final List<CustomFormSubModel> subModelList =
-            actualCustomModel.getSubModels().stream().collect(Collectors.toList());
-        if (isLabeled) {
-            final List<FormFieldsReport> fields = modelRawResponse.getTrainResult().getFields();
-            for (final FormFieldsReport expectedField : fields) {
-                final CustomFormModelField actualFormField =
-                    subModelList.get(0).getFieldMap().get(expectedField.getFieldName());
-                assertEquals(expectedField.getFieldName(), actualFormField.getName());
-                assertEquals(expectedField.getAccuracy(), actualFormField.getAccuracy());
-
-            }
-            assertTrue(subModelList.get(0).getFormType().startsWith("form-"));
-            assertEquals(modelRawResponse.getTrainResult().getAverageModelAccuracy(),
-                subModelList.get(0).getAccuracy());
-        } else {
-            modelRawResponse.getKeys().getClusters().forEach((clusterId, fields) -> {
-                assertTrue(subModelList.get(Integer.parseInt(clusterId)).getFormType().endsWith(clusterId));
-                subModelList.get(Integer.parseInt(clusterId)).getFieldMap().values().forEach(customFormModelField ->
-                    assertTrue(fields.contains(customFormModelField.getLabel())));
-            });
-        }
-    }
-
-    private static void validateTrainingDocumentsData(List<com.azure.ai.formrecognizer.implementation.models.TrainingDocumentInfo> expectedTrainingDocuments,
-        List<TrainingDocumentInfo> actualTrainingDocuments) {
+    private static void validateTrainingDocumentsData
+        (List<com.azure.ai.formrecognizer.implementation.models.TrainingDocumentInfo> expectedTrainingDocuments,
+            List<TrainingDocumentInfo> actualTrainingDocuments) {
 
         assertEquals(expectedTrainingDocuments.size(), actualTrainingDocuments.size());
         for (int i = 0; i < actualTrainingDocuments.size(); i++) {
@@ -150,7 +125,8 @@ public abstract class FormTrainingClientTestBase extends TestBase {
             assertEquals(expectedTrainingDocument.getName(), actualTrainingDocument.getName());
             assertEquals(expectedTrainingDocument.getPageCount(), actualTrainingDocument.getPageCount());
             assertEquals(expectedTrainingDocument.getTrainingStatus(), actualTrainingDocument.getTrainingStatus());
-            validateErrors(expectedTrainingDocument.getDocumentErrors(), actualTrainingDocument.getDocumentErrors());
+            validateErrors(expectedTrainingDocument.getDocumentErrors(),
+                actualTrainingDocument.getDocumentErrors());
         }
     }
 
@@ -188,6 +164,59 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         assertEquals(expectedFieldMap.size(), actualFieldMap.size());
         expectedFieldMap.entrySet().stream().allMatch(stringFieldEntry ->
             stringFieldEntry.getValue().equals(actualFieldMap.get(stringFieldEntry.getKey())));
+    }
+
+    void validateCustomModelData(CustomFormModel actualCustomModel, boolean isLabeled) {
+        Model modelRawResponse = getRawResponse(Model.class);
+        assertEquals(modelRawResponse.getModelInfo().getStatus().toString(),
+            actualCustomModel.getModelStatus().toString());
+        validateErrorData(modelRawResponse.getTrainResult().getErrors(), actualCustomModel.getModelError());
+        assertNotNull(actualCustomModel.getCreatedOn());
+        assertNotNull(actualCustomModel.getLastUpdatedOn());
+        validateTrainingDocumentsData(modelRawResponse.getTrainResult().getTrainingDocuments(),
+            actualCustomModel.getTrainingDocuments());
+        final List<CustomFormSubModel> subModelList =
+            actualCustomModel.getSubModels().stream().collect(Collectors.toList());
+        if (isLabeled) {
+            final List<FormFieldsReport> fields = modelRawResponse.getTrainResult().getFields();
+            for (final FormFieldsReport expectedField : fields) {
+                final CustomFormModelField actualFormField =
+                    subModelList.get(0).getFieldMap().get(expectedField.getFieldName());
+                assertEquals(expectedField.getFieldName(), actualFormField.getName());
+                assertEquals(expectedField.getAccuracy(), actualFormField.getAccuracy());
+
+            }
+            assertTrue(subModelList.get(0).getFormType().startsWith("form-"));
+            assertEquals(modelRawResponse.getTrainResult().getAverageModelAccuracy(),
+                subModelList.get(0).getAccuracy());
+        } else {
+            modelRawResponse.getKeys().getClusters().forEach((clusterId, fields) -> {
+                assertTrue(subModelList.get(Integer.parseInt(clusterId)).getFormType().endsWith(clusterId));
+                subModelList.get(Integer.parseInt(clusterId)).getFieldMap().values().forEach(customFormModelField ->
+                    assertTrue(fields.contains(customFormModelField.getLabel())));
+            });
+        }
+    }
+
+    private Model getRawResponse(Class<Model> modelClass) {
+        try {
+            final NetworkCallRecord networkCallRecord =
+                interceptorManager.getRecordedData().findFirstAndRemoveNetworkCall(record -> {
+                    Model rawModelResponse = null;
+                    try {
+                        rawModelResponse = getSerializerAdapter().deserialize(record.getResponse().get("Body"),
+                            modelClass, SerializerEncoding.JSON);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    return rawModelResponse != null && rawModelResponse.getModelInfo().getStatus() == READY;
+
+                });
+            return getSerializerAdapter().deserialize(networkCallRecord.getResponse().get("Body"),
+                modelClass, SerializerEncoding.JSON);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to deserialize service response.");
+        }
     }
 
     @Test
@@ -304,7 +333,7 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     String getEndpoint() {
         return interceptorManager.isPlaybackMode()
             ? "https://localhost:8080"
-            : Configuration.getGlobalConfiguration().get("AZURE_FORM_RECOGNIZER_ENDPOINT");
+            : Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_ENDPOINT);
     }
 
     private String getTrainingSasUri() {

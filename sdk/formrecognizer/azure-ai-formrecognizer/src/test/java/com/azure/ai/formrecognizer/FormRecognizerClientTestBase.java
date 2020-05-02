@@ -62,8 +62,13 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.formrecognizer.FormRecognizerClientBuilder.OCP_APIM_SUBSCRIPTION_KEY;
+import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_API_KEY;
+import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_ENDPOINT;
+import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_PROPERTIES;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL;
+import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.NAME;
+import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.VERSION;
 import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_LOCAL_URL;
 import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_LOCAL_URL;
 import static com.azure.ai.formrecognizer.TestUtils.getFileData;
@@ -71,10 +76,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public abstract class FormRecognizerClientTestBase extends TestBase {
-    private static final String AZURE_FORM_RECOGNIZER_API_KEY = "AZURE_FORM_RECOGNIZER_API_KEY";
-    private static final String NAME = "name";
-    private static final String FORM_RECOGNIZER_PROPERTIES = "azure-ai-formrecognizer.properties";
-    private static final String VERSION = "version";
     private static final Pattern NON_DIGIT_PATTERN = Pattern.compile("[^0-9]+");
 
     private final HttpLogOptions httpLogOptions = new HttpLogOptions();
@@ -377,7 +378,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
                 actualReceiptItem.getName(), readResults, includeTextDetails);
             validateFieldValueTransforms(expectedReceiptItem.getValueObject().get(ReceiptItemType.QUANTITY.toString()), actualReceiptItem.getQuantity(), readResults, includeTextDetails);
             validateFieldValueTransforms(expectedReceiptItem.getValueObject().get(ReceiptItemType.TOTAL_PRICE.toString()), actualReceiptItem.getTotalPrice(), readResults, includeTextDetails);
-            validateFieldValueTransforms(expectedReceiptItem.getValueObject().get(ReceiptItemType.PRICE.toString()), actualReceiptItem.getPrice(), readResults, includeTextDetails);
+            validateFieldValueTransforms(expectedReceiptItem.getValueObject().get(ReceiptItemType.PRICE.toString()),
+                actualReceiptItem.getPrice(), readResults, includeTextDetails);
         }
     }
 
@@ -529,7 +531,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     protected String getEndpoint() {
         return interceptorManager.isPlaybackMode()
             ? "https://localhost:8080"
-            : Configuration.getGlobalConfiguration().get("AZURE_FORM_RECOGNIZER_ENDPOINT");
+            : Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_ENDPOINT);
     }
 
     private String getTrainingSasUri() {
