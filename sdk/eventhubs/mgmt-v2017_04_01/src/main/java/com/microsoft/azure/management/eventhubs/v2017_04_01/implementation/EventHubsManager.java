@@ -16,11 +16,11 @@ import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
-import com.microsoft.azure.management.eventhubs.v2017_04_01.Operations;
 import com.microsoft.azure.management.eventhubs.v2017_04_01.Namespaces;
 import com.microsoft.azure.management.eventhubs.v2017_04_01.DisasterRecoveryConfigs;
 import com.microsoft.azure.management.eventhubs.v2017_04_01.EventHubs;
 import com.microsoft.azure.management.eventhubs.v2017_04_01.ConsumerGroups;
+import com.microsoft.azure.management.eventhubs.v2017_04_01.Operations;
 import com.microsoft.azure.management.eventhubs.v2017_04_01.Regions;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
@@ -29,11 +29,11 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  * Entry point to Azure EventHubs resource management.
  */
 public final class EventHubsManager extends ManagerCore<EventHubsManager, EventHubManagementClientImpl> {
-    private Operations operations;
     private Namespaces namespaces;
     private DisasterRecoveryConfigs disasterRecoveryConfigs;
     private EventHubs eventHubs;
     private ConsumerGroups consumerGroups;
+    private Operations operations;
     private Regions regions;
     /**
     * Get a Configurable instance that can be used to create EventHubsManager with optional configuration.
@@ -83,16 +83,6 @@ public final class EventHubsManager extends ManagerCore<EventHubsManager, EventH
     }
 
     /**
-     * @return Entry point to manage Operations.
-     */
-    public Operations operations() {
-        if (this.operations == null) {
-            this.operations = new OperationsImpl(this);
-        }
-        return this.operations;
-    }
-
-    /**
      * @return Entry point to manage Namespaces.
      */
     public Namespaces namespaces() {
@@ -130,6 +120,16 @@ public final class EventHubsManager extends ManagerCore<EventHubsManager, EventH
             this.consumerGroups = new ConsumerGroupsImpl(this);
         }
         return this.consumerGroups;
+    }
+
+    /**
+     * @return Entry point to manage Operations.
+     */
+    public Operations operations() {
+        if (this.operations == null) {
+            this.operations = new OperationsImpl(this);
+        }
+        return this.operations;
     }
 
     /**

@@ -11,7 +11,7 @@ package com.microsoft.azure.management.eventhubs.v2017_04_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The MessagingRegionsProperties model.
+ * Properties of Messaging Region.
  */
 public class MessagingRegionsProperties {
     /**
