@@ -332,7 +332,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         final AmqpReceiveLink link = currentLink;
         if (link != null && !linkCreditsAdded.getAndSet(true)) {
             int credits = getCreditsToAdd();
-            logger.info("Link credits not yet added. Adding: {}", credits);
+            logger.verbose("Link credits not yet added. Adding: {}", credits);
             link.addCredits(credits);
         }
 
