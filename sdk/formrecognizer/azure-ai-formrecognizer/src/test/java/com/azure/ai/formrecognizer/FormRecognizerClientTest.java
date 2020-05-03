@@ -3,7 +3,6 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.implementation.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.ErrorResponseException;
 import com.azure.ai.formrecognizer.models.FormContentType;
@@ -15,16 +14,15 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Test;
 
-import static com.azure.ai.formrecognizer.TestUtils.CUSTOM_FORM_DATA;
 import static com.azure.ai.formrecognizer.TestUtils.CUSTOM_FORM_FILE_LENGTH;
-import static com.azure.ai.formrecognizer.TestUtils.CUSTOM_FORM_LABELED_DATA;
+import static com.azure.ai.formrecognizer.TestUtils.FORM_LOCAL_URL;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_SOURCE_URL_ERROR;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_URL;
 import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_FILE_LENGTH;
-import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_FORM_DATA;
+import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_LOCAL_URL;
 import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_FILE_LENGTH;
-import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_FORM_DATA;
-import static com.azure.ai.formrecognizer.TestUtils.getAnalyzeRawResponse;
+import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_LOCAL_URL;
+import static com.azure.ai.formrecognizer.TestUtils.getContentDetectionFileData;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -49,8 +47,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
                 client.beginRecognizeReceiptsFromUrl(sourceUrl);
             syncPoller.waitForCompletion();
-            validateReceiptResultData(syncPoller.getFinalResult(),
-                getAnalyzeRawResponse(RECEIPT_FORM_DATA).getAnalyzeResult(), false);
+            validateReceiptResultData(syncPoller.getFinalResult(), false);
         });
     }
 
@@ -64,8 +61,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
                 client.beginRecognizeReceiptsFromUrl(sourceUrl, includeTextDetails, null);
             syncPoller.waitForCompletion();
-            validateReceiptResultData(syncPoller.getFinalResult(),
-                getAnalyzeRawResponse(RECEIPT_FORM_DATA).getAnalyzeResult(), true);
+            validateReceiptResultData(syncPoller.getFinalResult(), true);
         });
     }
 
@@ -78,8 +74,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
                 client.beginRecognizeReceipts(data, RECEIPT_FILE_LENGTH, FormContentType.IMAGE_JPEG, false, null);
             syncPoller.waitForCompletion();
-            validateReceiptResultData(syncPoller.getFinalResult(),
-                getAnalyzeRawResponse(RECEIPT_FORM_DATA).getAnalyzeResult(), false);
+            validateReceiptResultData(syncPoller.getFinalResult(), false);
         });
     }
 
@@ -98,13 +93,11 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @Test
     void recognizeReceiptDataWithContentTypeAutoDetection() {
-        receiptDataRunner((data) -> {
-            SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
-                client.beginRecognizeReceipts(data, RECEIPT_FILE_LENGTH, null, false, null);
-            syncPoller.waitForCompletion();
-            validateReceiptResultData(syncPoller.getFinalResult(),
-                getAnalyzeRawResponse(RECEIPT_FORM_DATA).getAnalyzeResult(), false);
-        });
+        SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
+            client.beginRecognizeReceipts(getContentDetectionFileData(RECEIPT_LOCAL_URL), RECEIPT_FILE_LENGTH,
+                null, false, null);
+        syncPoller.waitForCompletion();
+        validateReceiptResultData(syncPoller.getFinalResult(), false);
     }
 
     /**
@@ -118,8 +111,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 client.beginRecognizeReceipts(data, RECEIPT_FILE_LENGTH, FormContentType.IMAGE_PNG,
                     includeTextDetails, null);
             syncPoller.waitForCompletion();
-            validateReceiptResultData(syncPoller.getFinalResult(),
-                getAnalyzeRawResponse(RECEIPT_FORM_DATA).getAnalyzeResult(), true);
+            validateReceiptResultData(syncPoller.getFinalResult(), true);
         });
     }
 
@@ -132,9 +124,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             SyncPoller<OperationResult, IterableStream<FormPage>> syncPoller =
                 client.beginRecognizeContent(data, LAYOUT_FILE_LENGTH, FormContentType.IMAGE_PNG, null);
             syncPoller.waitForCompletion();
-            final AnalyzeResult rawResponse = getAnalyzeRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult();
-            validateLayoutDataResults(syncPoller.getFinalResult(), rawResponse.getReadResults(),
-                rawResponse.getPageResults(), false);
+            validateLayoutDataResults(syncPoller.getFinalResult(), false);
         });
     }
 
@@ -147,7 +137,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             SyncPoller<OperationResult, IterableStream<FormPage>> syncPoller =
                 client.beginRecognizeContent(data, LAYOUT_FILE_LENGTH, FormContentType.IMAGE_PNG, null);
             syncPoller.waitForCompletion();
-
             assertThrows(RuntimeException.class, () ->
                 client.beginRecognizeContent(null, LAYOUT_FILE_LENGTH, FormContentType.IMAGE_JPEG, null));
         });
@@ -159,14 +148,10 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @Test
     void recognizeLayoutDataWithContentTypeAutoDetection() {
-        layoutDataRunner((data) -> {
-            SyncPoller<OperationResult, IterableStream<FormPage>> syncPoller =
-                client.beginRecognizeContent(data, LAYOUT_FILE_LENGTH, null, null);
-            syncPoller.waitForCompletion();
-            final AnalyzeResult rawResponse = getAnalyzeRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult();
-            validateLayoutDataResults(syncPoller.getFinalResult(), rawResponse.getReadResults(),
-                rawResponse.getPageResults(), false);
-        });
+        SyncPoller<OperationResult, IterableStream<FormPage>> syncPoller =
+            client.beginRecognizeContent(getContentDetectionFileData(LAYOUT_LOCAL_URL), LAYOUT_FILE_LENGTH, null, null);
+        syncPoller.waitForCompletion();
+        validateLayoutDataResults(syncPoller.getFinalResult(), false);
     }
 
     @Test
@@ -175,9 +160,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             SyncPoller<OperationResult, IterableStream<FormPage>> syncPoller
                 = client.beginRecognizeContentFromUrl(sourceUrl);
             syncPoller.waitForCompletion();
-            final AnalyzeResult rawResponse = getAnalyzeRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult();
-            validateLayoutDataResults(syncPoller.getFinalResult(), rawResponse.getReadResults(),
-                rawResponse.getPageResults(), false);
+            validateLayoutDataResults(syncPoller.getFinalResult(), false);
         });
     }
 
@@ -224,8 +207,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                     = client.beginRecognizeCustomForms(data, trainingPoller.getFinalResult().getModelId(),
                     CUSTOM_FORM_FILE_LENGTH, FormContentType.APPLICATION_PDF, true, null);
                 syncPoller.waitForCompletion();
-                validateRecognizedResult(syncPoller.getFinalResult(),
-                    getAnalyzeRawResponse(CUSTOM_FORM_LABELED_DATA).getAnalyzeResult(), true, true);
+                validateRecognizedResult(syncPoller.getFinalResult(), true, true);
             }));
     }
 
@@ -256,19 +238,18 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @Test
     void recognizeCustomFormLabeledDataWithContentTypeAutoDetection() {
-        customFormDataRunner(data ->
-            beginTrainingLabeledRunner((storageSASUrl, useLabelFile) -> {
-                SyncPoller<OperationResult, CustomFormModel> trainingPoller =
-                    client.getFormTrainingClient().beginTraining(storageSASUrl, useLabelFile);
-                trainingPoller.waitForCompletion();
+        beginTrainingLabeledRunner((storageSASUrl, useLabelFile) -> {
+            SyncPoller<OperationResult, CustomFormModel> trainingPoller =
+                client.getFormTrainingClient().beginTraining(storageSASUrl, useLabelFile);
+            trainingPoller.waitForCompletion();
 
-                SyncPoller<OperationResult, IterableStream<RecognizedForm>> syncPoller
-                    = client.beginRecognizeCustomForms(data, trainingPoller.getFinalResult().getModelId(),
-                    CUSTOM_FORM_FILE_LENGTH, null, true, null);
-                syncPoller.waitForCompletion();
-                validateRecognizedResult(syncPoller.getFinalResult(),
-                    getAnalyzeRawResponse(CUSTOM_FORM_LABELED_DATA).getAnalyzeResult(), true, true);
-            }));
+            SyncPoller<OperationResult, IterableStream<RecognizedForm>> syncPoller
+                = client.beginRecognizeCustomForms(getContentDetectionFileData(FORM_LOCAL_URL),
+                trainingPoller.getFinalResult().getModelId(),
+                CUSTOM_FORM_FILE_LENGTH, null, true, null);
+            syncPoller.waitForCompletion();
+            validateRecognizedResult(syncPoller.getFinalResult(), true, true);
+        });
     }
 
     /**
@@ -286,8 +267,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                     = client.beginRecognizeCustomForms(data, trainingPoller.getFinalResult().getModelId(),
                     CUSTOM_FORM_FILE_LENGTH, FormContentType.APPLICATION_PDF, false, null);
                 syncPoller.waitForCompletion();
-                validateRecognizedResult(syncPoller.getFinalResult(),
-                    getAnalyzeRawResponse(CUSTOM_FORM_DATA).getAnalyzeResult(), false, false);
+                validateRecognizedResult(syncPoller.getFinalResult(), false, false);
             }));
     }
 }

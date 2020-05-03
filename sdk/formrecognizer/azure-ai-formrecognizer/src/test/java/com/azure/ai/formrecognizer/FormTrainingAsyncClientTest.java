@@ -70,8 +70,8 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
      */
     @Test
     void getCustomModelWithResponse() {
-        beginTrainingUnlabeledResultRunner((unLabeledContainerSasUrl, useLabelFile) -> {
-            SyncPoller<OperationResult, CustomFormModel> syncPoller = client.beginTraining(unLabeledContainerSasUrl,
+        beginTrainingUnlabeledRunner((trainingDataSASUrl, useLabelFile) -> {
+            SyncPoller<OperationResult, CustomFormModel> syncPoller = client.beginTraining(trainingDataSASUrl,
                 useLabelFile).getSyncPoller();
             syncPoller.waitForCompletion();
             CustomFormModel trainedModel = syncPoller.getFinalResult();
@@ -89,9 +89,9 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
      */
     @Test
     void getCustomModelUnlabeled() {
-        beginTrainingUnlabeledResultRunner((unlabeledContainerSasUrl, useLabelFile) -> {
+        beginTrainingUnlabeledRunner((trainingDataSASUrl, useLabelFile) -> {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
-                client.beginTraining(unlabeledContainerSasUrl, useLabelFile).getSyncPoller();
+                client.beginTraining(trainingDataSASUrl, useLabelFile).getSyncPoller();
             syncPoller.waitForCompletion();
             CustomFormModel trainedUnlabeledModel = syncPoller.getFinalResult();
             StepVerifier.create(client.getCustomModel(trainedUnlabeledModel.getModelId()))
@@ -105,9 +105,9 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
      */
     @Test
     void getCustomModelLabeled() {
-        beginTrainingLabeledResultRunner((labeledContainerSasUrl, useLabelFile) -> {
+        beginTrainingLabeledRunner((trainingDataSASUrl, useLabelFile) -> {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
-                client.beginTraining(labeledContainerSasUrl, useLabelFile).getSyncPoller();
+                client.beginTraining(trainingDataSASUrl, useLabelFile).getSyncPoller();
             syncPoller.waitForCompletion();
             CustomFormModel trainedLabeledModel = syncPoller.getFinalResult();
             StepVerifier.create(client.getCustomModel(trainedLabeledModel.getModelId()))
@@ -151,7 +151,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
 
     @Test
     void deleteModelValidModelIdWithResponse() {
-        beginTrainingLabeledResultRunner((storageSASUrl, useLabelFile) -> {
+        beginTrainingLabeledRunner((storageSASUrl, useLabelFile) -> {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
                 client.beginTraining(storageSASUrl, useLabelFile).getSyncPoller();
             syncPoller.waitForCompletion();
@@ -209,7 +209,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
      */
     @Test
     void beginTrainingLabeledResult() {
-        beginTrainingLabeledResultRunner((storageSASUrl, useLabelFile) -> {
+        beginTrainingLabeledRunner((storageSASUrl, useLabelFile) -> {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
                 client.beginTraining(storageSASUrl, useLabelFile).getSyncPoller();
             syncPoller.waitForCompletion();
@@ -222,7 +222,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
      */
     @Test
     void beginTrainingUnlabeledResult() {
-        beginTrainingUnlabeledResultRunner((storageSASUrl, useLabelFile) -> {
+        beginTrainingUnlabeledRunner((storageSASUrl, useLabelFile) -> {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
                 client.beginTraining(storageSASUrl, useLabelFile).getSyncPoller();
             syncPoller.waitForCompletion();

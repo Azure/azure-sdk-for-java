@@ -31,7 +31,7 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.IterableStream;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import org.junit.jupiter.api.Test;
 
@@ -68,7 +68,7 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     private final String clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
 
     private static void validateTrainingDocumentsData(List<com.azure.ai.formrecognizer.implementation.models.TrainingDocumentInfo> expectedTrainingDocuments,
-            List<TrainingDocumentInfo> actualTrainingDocuments) {
+        List<TrainingDocumentInfo> actualTrainingDocuments) {
         assertEquals(expectedTrainingDocuments.size(), actualTrainingDocuments.size());
         for (int i = 0; i < actualTrainingDocuments.size(); i++) {
             com.azure.ai.formrecognizer.implementation.models.TrainingDocumentInfo expectedTrainingDocument =
@@ -95,77 +95,28 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         }
     }
 
-    static void validateCustomModel(CustomFormModel expectedModel, CustomFormModel actualCustomModel) {
-        assertNotNull(actualCustomModel.getModelId());
-        assertEquals(expectedModel.getModelStatus(), actualCustomModel.getModelStatus());
-        validateErrors(expectedModel.getModelError(), actualCustomModel.getModelError());
-        assertNotNull(actualCustomModel.getCreatedOn());
-        assertNotNull(actualCustomModel.getLastUpdatedOn());
-        validateSubModels(expectedModel.getSubModels(), actualCustomModel.getSubModels());
-        validateTrainingDocuments(expectedModel.getTrainingDocuments(), actualCustomModel.getTrainingDocuments());
-    }
-
     static void validateAccountProperties(AccountProperties expectedAccountProperties,
         AccountProperties actualAccountProperties) {
         assertEquals(expectedAccountProperties.getLimit(), actualAccountProperties.getLimit());
         assertNotNull(actualAccountProperties.getCount());
     }
 
-    private static void validateTrainingDocuments(List<TrainingDocumentInfo> expectedTrainingDocuments,
-        List<TrainingDocumentInfo> actualTrainingDocuments) {
-        List<TrainingDocumentInfo> actualTrainingList = new ArrayList<>(actualTrainingDocuments);
-        List<TrainingDocumentInfo> expectedTrainingList =
-            new ArrayList<>(expectedTrainingDocuments);
-        assertEquals(expectedTrainingList.size(), actualTrainingList.size());
-        for (int i = 0; i < actualTrainingList.size(); i++) {
-            TrainingDocumentInfo expectedTrainingDocument = expectedTrainingList.get(i);
-            TrainingDocumentInfo actualTrainingDocument = actualTrainingList.get(i);
-            assertEquals(expectedTrainingDocument.getName(), actualTrainingDocument.getName());
-            assertEquals(expectedTrainingDocument.getPageCount(), actualTrainingDocument.getPageCount());
-            assertEquals(expectedTrainingDocument.getTrainingStatus(), actualTrainingDocument.getTrainingStatus());
-            validateErrors(expectedTrainingDocument.getDocumentErrors(),
-                actualTrainingDocument.getDocumentErrors());
+    /**
+     * Deserialize test data from service.
+     *
+     * @return the deserialized raw response test data
+     */
+    static <T> T deserializeRawResponse(SerializerAdapter serializerAdapter, NetworkCallRecord record, Class<T> clazz) {
+        try {
+            return serializerAdapter.deserialize(record.getResponse().get("Body"),
+                clazz, SerializerEncoding.JSON);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to deserialize service response.");
         }
-    }
-
-    private static void validateErrors(List<FormRecognizerError> expectedErrors,
-        List<FormRecognizerError> actualErrors) {
-        if (expectedErrors != null && actualErrors != null) {
-            List<FormRecognizerError> actualErrorList = new ArrayList<>(actualErrors);
-            List<FormRecognizerError> expectedErrorList = new ArrayList<>(expectedErrors);
-            assertEquals(expectedErrorList.size(), actualErrorList.size());
-            for (int i = 0; i < actualErrorList.size(); i++) {
-                FormRecognizerError expectedError = expectedErrorList.get(i);
-                FormRecognizerError actualError = actualErrorList.get(i);
-                assertEquals(expectedError.getCode(), actualError.getCode());
-                assertEquals(expectedError.getMessage(), actualError.getMessage());
-            }
-        }
-    }
-
-    private static void validateSubModels(IterableStream<CustomFormSubModel> expectedSubModels,
-        IterableStream<CustomFormSubModel> actualSubModels) {
-        List<CustomFormSubModel> actualSubModelList = actualSubModels.stream().collect(Collectors.toList());
-        List<CustomFormSubModel> expectedSubModelList = expectedSubModels.stream().collect(Collectors.toList());
-        assertEquals(expectedSubModelList.size(), actualSubModelList.size());
-        for (int i = 0; i < expectedSubModelList.size(); i++) {
-            CustomFormSubModel expectedSubModel = expectedSubModelList.get(i);
-            CustomFormSubModel actualSubModel = actualSubModelList.get(i);
-            assertNotNull(actualSubModel.getFormType());
-            assertEquals(expectedSubModel.getAccuracy(), actualSubModel.getAccuracy());
-            validateModelFieldMap(expectedSubModel.getFieldMap(), actualSubModel.getFieldMap());
-        }
-    }
-
-    private static void validateModelFieldMap(Map<String, CustomFormModelField> expectedFieldMap, Map<String,
-        CustomFormModelField> actualFieldMap) {
-        assertEquals(expectedFieldMap.size(), actualFieldMap.size());
-        expectedFieldMap.entrySet().stream().allMatch(stringFieldEntry ->
-            stringFieldEntry.getValue().equals(actualFieldMap.get(stringFieldEntry.getKey())));
     }
 
     void validateCustomModelData(CustomFormModel actualCustomModel, boolean isLabeled) {
-        Model modelRawResponse = getRawResponse(Model.class);
+        Model modelRawResponse = getRawModelResponse();
         assertEquals(modelRawResponse.getModelInfo().getStatus().toString(),
             actualCustomModel.getModelStatus().toString());
         validateErrorData(modelRawResponse.getTrainResult().getErrors(), actualCustomModel.getModelError());
@@ -196,25 +147,20 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         }
     }
 
-    private Model getRawResponse(Class<Model> modelClass) {
-        try {
-            final NetworkCallRecord networkCallRecord =
-                interceptorManager.getRecordedData().findFirstAndRemoveNetworkCall(record -> {
-                    Model rawModelResponse = null;
-                    try {
-                        rawModelResponse = getSerializerAdapter().deserialize(record.getResponse().get("Body"),
-                            modelClass, SerializerEncoding.JSON);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    return rawModelResponse != null && rawModelResponse.getModelInfo().getStatus() == READY;
-
-                });
-            return getSerializerAdapter().deserialize(networkCallRecord.getResponse().get("Body"),
-                modelClass, SerializerEncoding.JSON);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to deserialize service response.");
-        }
+    /**
+     * Prepare the expected test data from service raw response.
+     *
+     * @return the {@link Model} test data
+     */
+    private Model getRawModelResponse() {
+        final SerializerAdapter serializerAdapter = getSerializerAdapter();
+        final NetworkCallRecord networkCallRecord =
+            interceptorManager.getRecordedData().findFirstAndRemoveNetworkCall(record -> {
+                Model rawModelResponse = deserializeRawResponse(serializerAdapter, record, Model.class);
+                return rawModelResponse != null && rawModelResponse.getModelInfo().getStatus() == READY;
+            });
+        interceptorManager.getRecordedData().addNetworkCall(networkCallRecord);
+        return deserializeRawResponse(serializerAdapter, networkCallRecord, Model.class);
     }
 
     @Test
@@ -263,11 +209,11 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         testRunner.accept(TestUtils.INVALID_MODEL_ID);
     }
 
-    void beginTrainingLabeledResultRunner(BiConsumer<String, Boolean> testRunner) {
+    void beginTrainingLabeledRunner(BiConsumer<String, Boolean> testRunner) {
         testRunner.accept(getTrainingSasUri(), true);
     }
 
-    void beginTrainingUnlabeledResultRunner(BiConsumer<String, Boolean> testRunner) {
+    void beginTrainingUnlabeledRunner(BiConsumer<String, Boolean> testRunner) {
         testRunner.accept(getTrainingSasUri(), false);
     }
 
@@ -335,18 +281,14 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     }
 
     private String getTrainingSasUri() {
-        if (interceptorManager.isPlaybackMode()) {
-            return "https://isPlaybackmode";
-        } else {
-            return Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL);
-        }
+        return interceptorManager.isPlaybackMode()
+            ? "https://isPlaybackmode"
+            : Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL);
     }
 
     private String getTestingSasUri() {
-        if (interceptorManager.isPlaybackMode()) {
-            return "https://isPlaybackmode";
-        } else {
-            return Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL);
-        }
+        return interceptorManager.isPlaybackMode()
+            ? "https://isPlaybackmode"
+            : Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL);
     }
 }
