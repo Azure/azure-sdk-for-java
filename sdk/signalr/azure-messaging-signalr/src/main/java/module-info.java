@@ -4,9 +4,7 @@
 module com.azure.messaging.signalr {
     requires transitive com.azure.core;
 
-    // FIXME nimbus would be preferred, but it was causing problems with key length
-//    requires nimbus.jose.jwt;
-    requires jjwt.api;
+    requires nimbus.jose.jwt;
 
     exports com.azure.messaging.signalr;
 }
