@@ -1,8 +1,11 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.signalr.client;
 
 import com.azure.core.util.Configuration;
-import com.azure.messaging.signalr.SignalRClient;
 import com.azure.messaging.signalr.SignalRClientBuilder;
+import com.azure.messaging.signalr.SignalRGroupClient;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
@@ -21,22 +24,22 @@ import java.awt.event.WindowEvent;
 public class ChatApp {
     private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("SIGNALR_WS_ENDPOINT");
     private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration().get("SIGNALR_CS");
-
-    private static final String webSocketURL = ENDPOINT + "/ws/client/?user=JGApp";
+    private static final String WEB_SOCKET_URL = ENDPOINT + "/ws/client/?user=JGApp";
 
     private static SimpleChatClient wsClient;
-    private static SignalRClient signalrClient;
+    private static SignalRGroupClient signalrClient;
 
     private static boolean useWebSocketForSending = false;
 
     public static void main(String[] args) {
         // This is a direct websocket connection to the service
         wsClient = new SimpleChatClient();
-        wsClient.connect(webSocketURL);
+        wsClient.connect(WEB_SOCKET_URL);
 
         signalrClient = new SignalRClientBuilder()
             .connectionString(CONNECTION_STRING)
-            .buildClient();
+            .buildClient()
+            .getGroupClient("chat_app");
 
         JFrame frame = new JFrame("Chat App");
         frame.addWindowListener(new WindowAdapter() {
@@ -44,7 +47,7 @@ public class ChatApp {
                 super.windowClosing(e);
                 System.out.println("Closing connections...");
                 wsClient.closeConnection();
-//                signalrClient.closeConnection(); // FIXME what connection ID to use?
+//                signalrClient.closeConnection(); // TODO (jgiles) what connection ID to use?
                 System.out.println("Done closing connections");
                 System.exit(0);
             }
@@ -92,7 +95,7 @@ public class ChatApp {
         if (useWebSocketForSending) {
             wsClient.sendMessage(message);
         } else {
-            signalrClient.sendToAll(message);
+            signalrClient.broadcast(message);
         }
     }
 }

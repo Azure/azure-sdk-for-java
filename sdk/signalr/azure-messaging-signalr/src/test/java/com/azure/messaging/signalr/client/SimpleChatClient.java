@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.signalr.client;
 
 import org.glassfish.tyrus.client.ClientManager;
@@ -14,7 +17,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 import java.util.function.Consumer;
 
 @ClientEndpoint
@@ -47,8 +49,9 @@ public class SimpleChatClient {
 
     @OnMessage
     public String onMessage(String message, Session session) {
-        if (message == null) return null;
-        if (message.equals("OK")) return null;
+        if (message == null || message.equals("OK")) {
+            return null;
+        }
 
         if (messageListeners != null) {
             messageListeners.forEach(consumer -> consumer.accept(message));
