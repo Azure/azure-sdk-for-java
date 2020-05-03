@@ -17,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * This class allows access to Visual Studio Code cached credential data.
@@ -25,6 +26,7 @@ public class VisualStudioCacheAccessor {
     private static final String PLATFORM_NOT_SUPPORTED_ERROR = "Platform could not be determined for VS Code"
                                                + " credential authentication.";
     private final ClientLogger logger = new ClientLogger(VisualStudioCacheAccessor.class);
+    private static final Pattern REFRESH_TOKEN_PATTERN = Pattern.compile("^[-_.a-zA-Z0-9]+$");
 
 
     private JsonNode getUserSettings() {
@@ -146,14 +148,7 @@ public class VisualStudioCacheAccessor {
     }
 
     private boolean isRefreshTokenString(String str) {
-        for (int i = 0; i < str.length(); i++) {
-            char ch = str.charAt(i);
-            if ((ch < '0' || ch > '9') && (ch < 'A' || ch > 'Z') && (ch < 'a' || ch > 'z')
-                        && ch != '_' && ch != '-' && ch != '.') {
-                return false;
-            }
-        }
-        return true;
+        return REFRESH_TOKEN_PATTERN.matcher(str).matches();
     }
 
     /**
