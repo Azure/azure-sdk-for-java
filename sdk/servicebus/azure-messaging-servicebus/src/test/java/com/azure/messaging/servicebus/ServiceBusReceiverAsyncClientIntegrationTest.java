@@ -550,7 +550,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         try{ TimeUnit.SECONDS.sleep(5); } catch (Exception e) {}
 
-        receiver.close();
+        // Since we received error, the receiver is terminated.
+        dispose(receiver, receiver2, sender);
         setSenderAndReceiver(entityType, isSessionEnabled);
 
         // Assert & Act
@@ -575,6 +576,72 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 messagesPending.decrementAndGet();
             })
             .verifyComplete();
+    }
+
+    /**
+     * Verifies that we can renew session lock on a session receiver with multiple receiver.
+     */
+    @MethodSource("messagingEntityProvider")
+    @ParameterizedTest
+    void multipleReceiverRenewSessionLock(MessagingEntityType entityType) {
+        // Arrange
+        boolean isSessionEnabled = true;
+        int firstBatch = 1;
+        int secondBatch = 1;
+
+        setSenderAndReceiver(entityType, isSessionEnabled);
+
+        final String messageId = UUID.randomUUID().toString();
+        final List<ServiceBusMessage> messages = getMessages(messageId, isSessionEnabled, firstBatch, sessionId);
+
+        messages.addAll(getMessages(messageId, isSessionEnabled, secondBatch, sessionId2));
+
+        final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
+            .setEnableAutoComplete(false);
+
+        // Blocking here because it is not part of the scenario we want to test.
+        sendMessage(messages).block(TIMEOUT);
+
+        ServiceBusReceivedMessage receivedMessage = receiver.receive(options).next().block(TIMEOUT);
+        assertNotNull(receivedMessage);
+
+        logger.info("Received message. Seq: {}.", receivedMessage.getSequenceNumber());
+
+        // Assert & Act
+        try {
+            ServiceBusReceivedMessage finalReceivedMessage1 = receivedMessage;
+            StepVerifier.create(Mono.delay(Duration.ofSeconds(10))
+                .then(Mono.defer(() -> receiver.renewSessionLock(finalReceivedMessage1.getSessionId()))))
+                .assertNext(lockedUntil -> {
+                    assertNotNull(lockedUntil, "Could not renew session lock.");
+                })
+                .verifyComplete();
+        } finally {
+            logger.info("Completing message. Seq: {}.", receivedMessage.getSequenceNumber());
+
+            receiver.complete(receivedMessage)
+                .doOnSuccess(aVoid -> messagesPending.decrementAndGet())
+                .block(TIMEOUT);
+        }
+
+        receivedMessage = receiver2.receive(options).next().block(TIMEOUT);
+        assertNotNull(receivedMessage);
+
+        try {
+            ServiceBusReceivedMessage finalReceivedMessage = receivedMessage;
+            StepVerifier.create(Mono.delay(Duration.ofSeconds(10))
+                .then(Mono.defer(() -> receiver2.renewSessionLock(finalReceivedMessage.getSessionId()))))
+                .assertNext(lockedUntil -> {
+                    assertNotNull(lockedUntil, "Could not renew session lock.");
+                })
+                .verifyComplete();
+        } finally {
+            logger.info("Completing message. Seq: {}.", receivedMessage.getSequenceNumber());
+
+            receiver2.complete(receivedMessage)
+                .doOnSuccess(aVoid -> messagesPending.decrementAndGet())
+                .block(TIMEOUT);
+        }
     }
 
     /**
