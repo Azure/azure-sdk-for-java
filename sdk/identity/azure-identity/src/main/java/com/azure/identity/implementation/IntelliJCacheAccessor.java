@@ -55,7 +55,7 @@ public class IntelliJCacheAccessor {
     /**
      * Creates an instance of {@link IntelliJCacheAccessor}
      *
-     * @param keePassDatabasePath the kee pass database path.
+     * @param keePassDatabasePath the KeePass database path.
      */
     public IntelliJCacheAccessor(String keePassDatabasePath) {
         this.keePassDatabasePath = keePassDatabasePath;
@@ -135,7 +135,7 @@ public class IntelliJCacheAccessor {
     private JsonNode getCredentialFromKdbx() throws IOException {
         if (CoreUtils.isNullOrEmpty(keePassDatabasePath)) {
             throw logger.logExceptionAsError(
-                    new CredentialUnavailableException("The kee pass database path is either empty or not configured."
+                    new CredentialUnavailableException("The keePass database path is either empty or not configured."
                            + " Please configure it on the builder. It is required to use "
                            + "IntelliJ credential on the windows platform."));
         }
@@ -174,7 +174,7 @@ public class IntelliJCacheAccessor {
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readTree(entries.get(0).getPassword());
         } catch (Exception e) {
-            throw logger.logExceptionAsError(new RuntimeException("Failed to read kee pass database.", e));
+            throw logger.logExceptionAsError(new RuntimeException("Failed to read keePass database.", e));
         }
     }
 
@@ -210,7 +210,7 @@ public class IntelliJCacheAccessor {
 
     /**
      * Get the auth host of the specified {@code azureEnvironment}.
-     * @param azureEnvironment
+     * @param azureEnvironment the specified Azure Environment
      * @return the auth host.
      */
     public String getAzureAuthHost(String azureEnvironment) {

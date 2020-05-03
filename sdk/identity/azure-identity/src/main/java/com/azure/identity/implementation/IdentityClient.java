@@ -153,7 +153,7 @@ public class IdentityClient {
 
     public Mono<MsalToken> authenticateWithIntelliJ(TokenRequestContext request) {
         try {
-            IntelliJCacheAccessor cacheAccessor = new IntelliJCacheAccessor(options.getKeepPassDatabasePath());
+            IntelliJCacheAccessor cacheAccessor = new IntelliJCacheAccessor(options.getIntelliJKeePassDatabasePath());
             IntelliJAuthMethodDetails authDetails = cacheAccessor.getAuthDetailsIfAvailable();
             String authType = authDetails.getAuthMethod();
             if (authType.equalsIgnoreCase("SP")) {

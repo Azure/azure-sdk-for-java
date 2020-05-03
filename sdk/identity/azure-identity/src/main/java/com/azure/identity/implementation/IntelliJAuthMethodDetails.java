@@ -23,7 +23,7 @@ public class IntelliJAuthMethodDetails {
     }
 
     /**
-     * Get the service principal cred file path.
+     * Get the Service Principal cred file path.
      * @return the cred file path.
      */
     public String getCredFilePath() {
@@ -40,7 +40,7 @@ public class IntelliJAuthMethodDetails {
     }
 
     /**
-     * Get the azure env used.
+     * Get the Azure env used.
      *
      * @return the Azure env used.
      */

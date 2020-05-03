@@ -23,6 +23,7 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 @Immutable
 class IntelliJCredential implements TokenCredential {
+    private static final String AZURE_TOOLS_FOR_INTELLIJ_CLIENT_ID = "61d65f5a-6e3b-468b-af73-a033f5098c5c";
     private final IdentityClient identityClient;
     private final AtomicReference<MsalToken> cachedToken;
 
@@ -32,7 +33,7 @@ class IntelliJCredential implements TokenCredential {
      */
     IntelliJCredential(IdentityClientOptions identityClientOptions) {
         identityClient = new IdentityClientBuilder().identityClientOptions(identityClientOptions)
-                             .clientId("61d65f5a-6e3b-468b-af73-a033f5098c5c").build();
+                             .clientId(AZURE_TOOLS_FOR_INTELLIJ_CLIENT_ID).build();
 
         this.cachedToken = new AtomicReference<>();
     }

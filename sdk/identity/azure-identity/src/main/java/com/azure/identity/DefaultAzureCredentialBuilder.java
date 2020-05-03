@@ -37,24 +37,24 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
 
 
     /**
-     * Specifies the kee pass database path to read the cached credentials of Azure toolkit for IntelliJ plugin.
-     * The {@code databasePath} is required on windows platform. For mac and linux platform native key chain /
+     * Specifies the KeePass database path to read the cached credentials of Azure toolkit for IntelliJ plugin.
+     * The {@code databasePath} is required on Windows platform. For macOS and Linux platform native key chain /
      * key ring will be accessed respectively to retrieve the cached credentials.
      *
      * <p>This path can be located in the IntelliJ IDE.
      * Windows: File -&gt; Settings -&gt; Appearance &amp; Behavior -&gt; System Settings -&gt; Passwords. </p>
      *
-     * @param databasePath the path to the kee pass database.
+     * @param databasePath the path to the keePass database.
      * @throws IllegalArgumentException if {@code databasePath is either not specified or is empty}
-     * @return An updated instance of this builder with the kee pass database path set as specified.
+     * @return An updated instance of this builder with the keePass database path set as specified.
      */
-    public DefaultAzureCredentialBuilder keePassDatabasePath(String databasePath) {
+    public DefaultAzureCredentialBuilder intelliJKeePassDatabasePath(String databasePath) {
         if (CoreUtils.isNullOrEmpty(databasePath)) {
             throw logger.logExceptionAsError(
-                new IllegalArgumentException("The kee pass database path is either empty or not configured."
+                new IllegalArgumentException("The keePass database path is either empty or not configured."
                                                    + " Please configure it on the builder."));
         }
-        this.identityClientOptions.setKeepPassDatabasePath(databasePath);
+        this.identityClientOptions.setKeePassDatabasePath(databasePath);
         return this;
     }
 
