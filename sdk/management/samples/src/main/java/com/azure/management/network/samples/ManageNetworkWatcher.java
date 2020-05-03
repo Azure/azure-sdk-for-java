@@ -257,7 +257,10 @@ public final class ManageNetworkWatcher {
             String connectionString = String.format("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s",
                     storageAccount.name(), accountKey);
 
-            BlobServiceClient blobServiceClient = new BlobServiceClientBuilder().connectionString(connectionString).buildClient();
+            BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
+                .connectionString(connectionString)
+                .httpClient(storageAccount.manager().httpPipeline().getHttpClient())
+                .buildClient();
             BlobContainerClient blobContainerClient = blobServiceClient.getBlobContainerClient(packetCaptureStorageContainer);
             // iterate over subfolders structure to get the file
             BlobItem item = blobContainerClient.listBlobs().iterator().next();

@@ -4,6 +4,7 @@
 package com.azure.management.appservice.samples;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
@@ -80,7 +81,7 @@ public final class ManageWebAppStorageAccountConnection {
 
             System.out.println("Uploading 2 blobs to container " + containerName + "...");
 
-            BlobContainerClient container = setUpStorageAccount(connectionString, containerName);
+            BlobContainerClient container = setUpStorageAccount(connectionString, containerName, storageAccount.manager().httpPipeline().getHttpClient());
             uploadFileToContainer(container, "helloworld.war", ManageWebAppStorageAccountConnection.class.getResource("/helloworld.war").getPath());
             uploadFileToContainer(container, "install_apache.sh", ManageWebAppStorageAccountConnection.class.getResource("/install_apache.sh").getPath());
 
@@ -171,10 +172,11 @@ public final class ManageWebAppStorageAccountConnection {
         }
     }
 
-    private static BlobContainerClient setUpStorageAccount(String connectionString, String containerName) {
+    private static BlobContainerClient setUpStorageAccount(String connectionString, String containerName, HttpClient httpClient) {
         BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
                 .connectionString(connectionString)
                 .containerName(containerName)
+                .httpClient(httpClient)
                 .buildClient();
 
         blobContainerClient.create();
