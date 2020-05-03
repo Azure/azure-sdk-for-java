@@ -7,7 +7,6 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.LinkErrorContext;
-import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.StringUtil;
@@ -18,8 +17,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessageLockContainer;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
-import com.azure.messaging.servicebus.implementation.ServiceBusAsyncConsumer;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
+import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
 import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
@@ -31,7 +30,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
@@ -58,7 +56,8 @@ import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPE
  *
  * <p><strong>Rate limiting consumption of messages from Service Bus resource</strong></p>
  * <p>For message receivers that need to limit the number of messages they receive at a given time, they can use
- * {@link BaseSubscriber#request(long)}.</p> {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#basesubscriber}
+ * {@link BaseSubscriber#request(long)}.</p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#basesubscriber}
  *
  * @see ServiceBusClientBuilder
  * @see ServiceBusReceiverClient To communicate with a Service Bus resource using a synchronous client.
@@ -68,6 +67,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private static final DeadLetterOptions DEFAULT_DEAD_LETTER_OPTIONS = new DeadLetterOptions();
 
     private final AtomicBoolean isDisposed = new AtomicBoolean();
+    private final MessageLockContainer managementNodeLocks;
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClient.class);
     private final String fullyQualifiedNamespace;
     private final String entityPath;
@@ -77,7 +77,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private final MessageSerializer messageSerializer;
     private final int prefetch;
     private final ReceiveMode receiveMode;
-    private final MessageLockContainer managementNodeLocks;
     private final ReceiveAsyncOptions defaultReceiveOptions;
     private final Runnable onClientClose;
     private final String sessionId;
@@ -527,24 +526,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 String.format("Cannot renew message lock [%s] for a session receiver.", lockToken.getLockToken())));
         }
 
-        final UUID lockTokenUuid;
-        try {
-            lockTokenUuid = UUID.fromString(lockToken.getLockToken());
-        } catch (IllegalArgumentException ex) {
-            return monoError(logger, ex);
-        }
-
-        return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(serviceBusManagementNode ->
-                serviceBusManagementNode.renewMessageLock(lockTokenUuid, getLinkName()))
-            .map(instant -> {
-                if (lockToken instanceof ServiceBusReceivedMessage) {
-                    ((ServiceBusReceivedMessage) lockToken).setLockedUntil(instant);
-                }
-
-                return managementNodeLocks.addOrUpdate(lockToken.getLockToken(), instant);
-            });
+        return renewMessageLock(lockToken, getLinkName());
     }
 
     /**
@@ -608,19 +590,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         onClientClose.run();
     }
 
-    /**
-     * Gets whether or not the management node contains the message lock token and it has not expired. Lock tokens are
-     * held by the management node when they are received from the management node or management operations are
-     * performed using that {@code lockToken}.
-     *
-     * @param lockToken Lock token to check for.
-     *
-     * @return {@code true} if the management node contains the lock token and false otherwise.
-     */
-    private boolean isManagementToken(String lockToken) {
-        return managementNodeLocks.contains(lockToken);
-    }
-
     private Mono<Void> updateDisposition(MessageLockToken message, DispositionStatus dispositionStatus,
         String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify) {
 
@@ -676,7 +645,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         final String linkName = StringUtil.getRandomString(entityPath);
         logger.info("{}: Creating consumer for link '{}'", entityPath, linkName);
 
-        final Flux<AmqpReceiveLink> receiveLink =
+        final Flux<ServiceBusReceiveLink> receiveLink =
             connectionProcessor.flatMap(connection -> connection.createReceiveLink(linkName, entityPath,
                 receiveMode, null, entityType, sessionId))
                 .doOnNext(next -> {
@@ -690,13 +659,14 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         final LinkErrorContext context = new LinkErrorContext(fullyQualifiedNamespace, entityPath, linkName, null);
         final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionProcessor.getRetryOptions());
         final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLink.subscribeWith(
-            new ServiceBusReceiveLinkProcessor(linkName, prefetch, retryPolicy, connectionProcessor, context));
+            new ServiceBusReceiveLinkProcessor(prefetch, retryPolicy, connectionProcessor, context));
         final boolean isAutoLockRenewal = options.getMaxAutoRenewDuration() != null
             && !options.getMaxAutoRenewDuration().isZero();
 
         final ServiceBusAsyncConsumer newConsumer = new ServiceBusAsyncConsumer(linkName, linkMessageProcessor,
-            messageSerializer, options.isEnableAutoComplete(), isAutoLockRenewal, options.getMaxAutoRenewDuration(),
-            connectionProcessor.getRetryOptions(), this::complete, this::abandon, this::renewMessageLock);
+            messageSerializer, options.isEnableAutoComplete(), isAutoLockRenewal,
+            options.getMaxAutoRenewDuration(), connectionProcessor.getRetryOptions(),
+            (token, associatedLinkName) -> renewMessageLock(token, associatedLinkName));
 
         // There could have been multiple threads trying to create this async consumer when the result was null.
         // If another one had set the value while we were creating this resource, dispose of newConsumer.
@@ -706,6 +676,35 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             newConsumer.close();
             return consumer.get();
         }
+    }
+
+    /**
+     * Renews the message lock, and updates its value in the container.
+     */
+    private Mono<Instant> renewMessageLock(MessageLockToken lockToken, String linkName) {
+        return connectionProcessor
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+            .flatMap(serviceBusManagementNode ->
+                serviceBusManagementNode.renewMessageLock(lockToken.getLockToken(), linkName))
+            .map(instant -> {
+                if (lockToken instanceof ServiceBusReceivedMessage) {
+                    ((ServiceBusReceivedMessage) lockToken).setLockedUntil(instant);
+                }
+                return instant;
+            });
+    }
+
+    /**
+     * Gets whether or not the management node contains the message lock token and it has not expired. Lock tokens are
+     * held by the management node when they are received from the management node or management operations are
+     * performed using that {@code lockToken}.
+     *
+     * @param lockToken Lock token to check for.
+     *
+     * @return {@code true} if the management node contains the lock token and false otherwise.
+     */
+    private boolean isManagementToken(String lockToken) {
+        return managementNodeLocks.contains(lockToken);
     }
 
     /**
