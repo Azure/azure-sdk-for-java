@@ -653,7 +653,7 @@ public final class ServiceBusClientBuilder {
             }
 
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
-            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount, null);
+            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount, sessionId, false, 5);
 
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
                 entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
