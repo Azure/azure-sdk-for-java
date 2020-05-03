@@ -25,19 +25,19 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
-class SessionReceiver implements AutoCloseable {
+class UnnamedSessionReceiver implements AutoCloseable {
     // Start the peek from before the beginning of the stream.
     private final AtomicLong lastPeekedSequenceNumber = new AtomicLong(-1);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final MessageLockContainer lockContainer;
     private final AtomicReference<Instant> sessionLockedUntil = new AtomicReference<>();
     private final AtomicReference<String> sessionId = new AtomicReference<>();
-    private final ClientLogger logger = new ClientLogger(SessionReceiver.class);
+    private final ClientLogger logger = new ClientLogger(UnnamedSessionReceiver.class);
     private final ServiceBusReceiveLink receiveLink;
     private final Disposable.Composite subscriptions;
     private final Flux<ServiceBusReceivedMessageContext> receivedMessages;
 
-    SessionReceiver(ServiceBusReceiveLink receiveLink, MessageSerializer messageSerializer, boolean isAutoComplete,
+    UnnamedSessionReceiver(ServiceBusReceiveLink receiveLink, MessageSerializer messageSerializer, boolean isAutoComplete,
         boolean autoLockRenewal, Duration maxAutoLockRenewDuration, AmqpRetryOptions retryOptions) {
         this.receiveLink = receiveLink;
         this.lockContainer = new MessageLockContainer(ServiceBusConstants.OPERATION_TIMEOUT);

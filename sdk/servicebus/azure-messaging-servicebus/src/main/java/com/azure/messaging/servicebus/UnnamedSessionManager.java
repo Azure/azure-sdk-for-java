@@ -48,11 +48,11 @@ import static reactor.core.scheduler.Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE;
 /**
  * Package-private class that manages session aware message receiving.
  */
-class SessionManager implements AutoCloseable {
+class UnnamedSessionManager implements AutoCloseable {
     // Time to delay before trying to accept another session.
     private static final Duration SLEEP_DURATION_ON_ACCEPT_SESSION_EXCEPTION = Duration.ofMinutes(1);
 
-    private final ClientLogger logger = new ClientLogger(SessionManager.class);
+    private final ClientLogger logger = new ClientLogger(UnnamedSessionManager.class);
     private final String entityPath;
     private final MessagingEntityType entityType;
     private final ReceiverOptions receiverOptions;
@@ -65,7 +65,7 @@ class SessionManager implements AutoCloseable {
     private final AtomicBoolean isStarted = new AtomicBoolean();
     private final List<Scheduler> schedulers;
     private final Map<String, Scheduler> sessionIdToScheduler = new HashMap<>();
-    private final ConcurrentHashMap<String, SessionReceiver> sessionReceivers = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, UnnamedSessionReceiver> sessionReceivers = new ConcurrentHashMap<>();
 
     private final EmitterProcessor<Flux<ServiceBusReceivedMessageContext>> processor = EmitterProcessor.create();
     private final FluxSink<Flux<ServiceBusReceivedMessageContext>> sessionReceiveSink = processor.sink();
@@ -73,7 +73,7 @@ class SessionManager implements AutoCloseable {
 
     private volatile ReceiveAsyncOptions receiveAsyncOptions;
 
-    SessionManager(String entityPath, MessagingEntityType entityType, ServiceBusConnectionProcessor connectionProcessor,
+    UnnamedSessionManager(String entityPath, MessagingEntityType entityType, ServiceBusConnectionProcessor connectionProcessor,
         Duration operationTimeout, TracerProvider tracerProvider, MessageSerializer messageSerializer,
         ReceiverOptions receiverOptions) {
 
@@ -147,7 +147,7 @@ class SessionManager implements AutoCloseable {
     Mono<byte[]> getSessionState(String sessionId) {
         return validateParameter(sessionId, "sessionId").then(
             getManagementNode().flatMap(channel -> {
-                final SessionReceiver receiver = sessionReceivers.get(sessionId);
+                final UnnamedSessionReceiver receiver = sessionReceivers.get(sessionId);
                 final String associatedLinkName = receiver != null ? receiver.getLinkName() : null;
 
                 return channel.getSessionState(sessionId, associatedLinkName);
@@ -155,7 +155,7 @@ class SessionManager implements AutoCloseable {
     }
 
     Mono<ServiceBusReceivedMessage> peek(String sessionId) {
-        final SessionReceiver receiver = sessionReceivers.get(sessionId);
+        final UnnamedSessionReceiver receiver = sessionReceivers.get(sessionId);
         final long sequenceNumber = receiver != null ? receiver.getLastPeekedSequenceNumber() : -1;
 
         return peekAt(sequenceNumber, sessionId);
@@ -165,7 +165,7 @@ class SessionManager implements AutoCloseable {
         return validateParameter(sessionId, "sessionId")
             .then(connectionProcessor.flatMap(connection -> connection.getManagementNode(entityPath, entityType))
                 .flatMap(channel -> {
-                    final SessionReceiver receiver = sessionReceivers.get(sessionId);
+                    final UnnamedSessionReceiver receiver = sessionReceivers.get(sessionId);
                     final String linkName = receiver != null ? receiver.getLinkName() : null;
 
                     return channel.peek(sequenceNumber, sessionId, linkName);
@@ -173,7 +173,7 @@ class SessionManager implements AutoCloseable {
     }
 
     Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages, String sessionId) {
-        final SessionReceiver receiver = sessionReceivers.get(sessionId);
+        final UnnamedSessionReceiver receiver = sessionReceivers.get(sessionId);
         final long sequenceNumber = receiver != null ? receiver.getLastPeekedSequenceNumber() : -1;
 
         return peekBatchAt(maxMessages, sequenceNumber, sessionId);
@@ -182,7 +182,7 @@ class SessionManager implements AutoCloseable {
     Flux<ServiceBusReceivedMessage> peekBatchAt(int maxMessages, long sequenceNumber, String sessionId) {
         return validateParameter(sessionId, "sessionId").thenMany(
             getManagementNode().flatMapMany(channel -> {
-                final SessionReceiver receiver = sessionReceivers.get(sessionId);
+                final UnnamedSessionReceiver receiver = sessionReceivers.get(sessionId);
                 final String linkName = receiver != null ? receiver.getLinkName() : null;
 
                 return channel.peek(sequenceNumber, sessionId, linkName, maxMessages)
@@ -210,7 +210,7 @@ class SessionManager implements AutoCloseable {
      */
     Mono<Instant> renewSessionLock(String sessionId) {
         return validateParameter(sessionId, "sessionId").then(getManagementNode().flatMap(channel -> {
-            final SessionReceiver receiver = sessionReceivers.get(sessionId);
+            final UnnamedSessionReceiver receiver = sessionReceivers.get(sessionId);
             final String associatedLinkName = receiver != null ? receiver.getLinkName() : null;
 
             return channel.renewSessionLock(sessionId, associatedLinkName).handle((instant, sink) -> {
@@ -233,7 +233,7 @@ class SessionManager implements AutoCloseable {
      */
     Mono<Void> setSessionState(String sessionId, byte[] sessionState) {
         return validateParameter(sessionId, "sessionId").then(getManagementNode().flatMap(channel -> {
-            final SessionReceiver receiver = sessionReceivers.get(sessionId);
+            final UnnamedSessionReceiver receiver = sessionReceivers.get(sessionId);
             final String associatedLinkName = receiver != null ? receiver.getLinkName() : null;
 
             return channel.setSessionState(sessionId, sessionState, associatedLinkName);
@@ -262,11 +262,11 @@ class SessionManager implements AutoCloseable {
      * @param lockToken Lock token to check for.
      * @return {@code true} a  contains the lock token and false otherwise.
      */
-    private SessionReceiver getMatchingReceiver(String lockToken) {
-        Optional<SessionReceiver> matching = sessionReceivers.entrySet()
+    private UnnamedSessionReceiver getMatchingReceiver(String lockToken) {
+        Optional<UnnamedSessionReceiver> matching = sessionReceivers.entrySet()
             .parallelStream()
             .filter(entry -> {
-                SessionReceiver value = entry.getValue();
+                UnnamedSessionReceiver value = entry.getValue();
                 return value != null && value.containsLockToken(lockToken);
             })
             .map(entry -> entry.getValue())
@@ -281,9 +281,9 @@ class SessionManager implements AutoCloseable {
      * @param options Receive options.
      * @return A Mono that completes with an unnamed session receiver.
      */
-    private Mono<SessionReceiver> getSession(ReceiveAsyncOptions options) {
+    private Mono<UnnamedSessionReceiver> getSession(ReceiveAsyncOptions options) {
         return getActiveLink()
-            .map(link -> new SessionReceiver(link, messageSerializer, options.isEnableAutoComplete(),
+            .map(link -> new UnnamedSessionReceiver(link, messageSerializer, options.isEnableAutoComplete(),
                 false, null, connectionProcessor.getRetryOptions()));
     }
 
@@ -345,7 +345,7 @@ class SessionManager implements AutoCloseable {
         return Mono.when(validateParameter(lockToken.getLockToken(), "lockToken.getLockToken()"),
             validateParameter(sessionId, "'sessionId'")).then(Mono.defer(() -> {
 
-            final SessionReceiver receiver = sessionReceivers.get(sessionId);
+            final UnnamedSessionReceiver receiver = sessionReceivers.get(sessionId);
             if (receiver == null) {
                 return Mono.just(false);
             }
