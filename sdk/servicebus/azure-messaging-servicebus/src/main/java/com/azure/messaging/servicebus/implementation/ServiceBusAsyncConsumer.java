@@ -26,7 +26,7 @@ public class ServiceBusAsyncConsumer implements AutoCloseable {
     private final ClientLogger logger = new ClientLogger(ServiceBusAsyncConsumer.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final String linkName;
-    private final ServiceBusReceiveLinkProcessor amqpReceiveLinkProcessor;
+    private final ServiceBusReceiveLinkProcessor linkProcessor;
     private final MessageSerializer messageSerializer;
     private final ServiceBusMessageProcessor processor;
 
@@ -34,7 +34,7 @@ public class ServiceBusAsyncConsumer implements AutoCloseable {
         Mono<ServiceBusManagementNode> managementNode, MessageSerializer messageSerializer, boolean isAutoComplete,
         boolean autoLockRenewal, Duration maxAutoLockRenewDuration, AmqpRetryOptions retryOptions) {
         this.linkName = linkName;
-        this.amqpReceiveLinkProcessor = linkProcessor;
+        this.linkProcessor = linkProcessor;
         this.messageSerializer = messageSerializer;
 
         final MessageManagement messageManagement = new MessageManagement(linkProcessor, managementNode);
@@ -52,7 +52,7 @@ public class ServiceBusAsyncConsumer implements AutoCloseable {
     public void close() {
         if (!isDisposed.getAndSet(true)) {
             processor.onComplete();
-            amqpReceiveLinkProcessor.cancel();
+            linkProcessor.cancel();
         }
     }
 
@@ -76,7 +76,7 @@ public class ServiceBusAsyncConsumer implements AutoCloseable {
                 new IllegalArgumentException("'dispositionStatus' is not known. status: " + dispositionStatus));
         }
 
-        return amqpReceiveLinkProcessor.updateDisposition(lockToken, deliveryState);
+        return linkProcessor.updateDisposition(lockToken, deliveryState);
     }
 
     /**
