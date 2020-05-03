@@ -72,10 +72,10 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      * Queue/Subscription creation (LockDuration). If processing of the message requires longer than this duration,
      * the lock needs to be renewed. For each renewal, the lock is reset to the entity's LockDuration value.
      *
-     * @param messageLock The {@link UUID} of the message {@link ServiceBusReceivedMessage} to be renewed.
+     * @param lockToken The {@link UUID} of the message {@link ServiceBusReceivedMessage} to be renewed.
      * @return {@link Instant} representing the pending renew.
      */
-    Mono<Instant> renewMessageLock(UUID messageLock, String associatedLinkName);
+    Mono<Instant> renewMessageLock(String lockToken, String associatedLinkName);
 
     /**
      * Renews the lock on the session.

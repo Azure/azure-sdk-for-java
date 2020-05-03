@@ -216,14 +216,12 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * {@inheritDoc}
      */
     @Override
-    public Mono<Instant> renewMessageLock(UUID lockToken, String associatedLinkName) {
+    public Mono<Instant> renewMessageLock(String lockToken, String associatedLinkName) {
         return isAuthorized(OPERATION_PEEK).then(createChannel.flatMap(channel -> {
             final Message requestMessage = createManagementMessage(ManagementConstants.OPERATION_RENEW_LOCK,
                 associatedLinkName);
             final Map<String, Object> requestBody = new HashMap<>();
-
-            requestBody.put(ManagementConstants.LOCK_TOKENS_KEY, new UUID[]{lockToken});
-
+            requestBody.put(ManagementConstants.LOCK_TOKENS_KEY, new UUID[]{UUID.fromString(lockToken)});
             requestMessage.setBody(new AmqpValue(requestBody));
 
             return sendWithVerify(channel, requestMessage);
@@ -377,7 +375,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
         String deadLetterErrorDescription, Map<String, Object> propertiesToModify, String sessionId,
         String associatedLinkName) {
 
-        final UUID[] lockTokens = new UUID[] { UUID.fromString(lockToken) };
+        final UUID[] lockTokens = new UUID[]{UUID.fromString(lockToken)};
         return isAuthorized(OPERATION_UPDATE_DISPOSITION).then(createChannel.flatMap(channel -> {
             logger.verbose("Update disposition of deliveries '{}' to '{}' on entity '{}', session '{}'",
                 Arrays.toString(lockTokens), dispositionStatus, entityPath, sessionId);
