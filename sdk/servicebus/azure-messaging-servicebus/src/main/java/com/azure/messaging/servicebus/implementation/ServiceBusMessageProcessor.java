@@ -181,7 +181,7 @@ public class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceived
             return;
         }
 
-        logger.info("Cancelling subscription.");
+        logger.verbose("Cancelling subscription.");
         isCancelled = true;
         drain();
     }
