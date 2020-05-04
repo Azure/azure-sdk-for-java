@@ -552,18 +552,25 @@ public final class ServiceBusClientBuilder {
          * @param maxConcurrentSessions Maximum number of concurrent sessions to process at any given time.
          *
          * @return The modified {@link ServiceBusReceiverClientBuilder} object.
+         * @throws IllegalArgumentException if {@code maxConcurrentSessions} is less than 1.
          */
         public ServiceBusSessionReceiverClientBuilder maxConcurrentSessions(int maxConcurrentSessions) {
+            if (maxConcurrentSessions < 1) {
+                throw logger.logExceptionAsError(new IllegalArgumentException(
+                    "maxConcurrentSessions cannot be less than 1."));
+            }
+
             this.maxConcurrentSessions = maxConcurrentSessions;
             return this;
         }
 
         /**
-         * Sets the prefetch count of the receiver. Prefetch speeds up the message flow by aiming to have a message
-         * readily available for local retrieval when and before the application asks for one using {@link
-         * ServiceBusReceiverAsyncClient#receive()}. Setting a non-zero value will prefetch that number of messages.
-         * Setting the value to zero turns prefetch off. For both {@link ReceiveMode#PEEK_LOCK PEEK_LOCK} and {@link
+         * Sets the prefetch count of the receiver. For both {@link ReceiveMode#PEEK_LOCK PEEK_LOCK} and {@link
          * ReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} modes the default value is 1.
+         *
+         * Prefetch speeds up the message flow by aiming to have a message readily available for local retrieval when
+         * and before the application asks for one using {@link ServiceBusReceiverAsyncClient#receive()}. Setting a
+         * non-zero value will prefetch that number of messages. Setting the value to zero turns prefetch off.
          *
          * @param prefetchCount The prefetch count.
          *
@@ -611,7 +618,8 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
-         * Sets the name of the subscription in the topic to listen to.
+         * Sets the name of the subscription in the topic to listen to. <b>{@link #topicName(String)} must also be set.
+         * </b>
          *
          * @param subscriptionName Name of the subscription.
          *
@@ -624,7 +632,7 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
-         * Sets the name of the topic.
+         * Sets the name of the topic. <b>{@link #subscriptionName(String)} must also be set.</b>
          *
          * @param topicName Name of the topic.
          *
@@ -721,11 +729,12 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
-         * Sets the prefetch count of the receiver. Prefetch speeds up the message flow by aiming to have a message
-         * readily available for local retrieval when and before the application asks for one using {@link
-         * ServiceBusReceiverAsyncClient#receive()}. Setting a non-zero value will prefetch that number of messages.
-         * Setting the value to zero turns prefetch off. For both {@link ReceiveMode#PEEK_LOCK PEEK_LOCK} and {@link
+         * Sets the prefetch count of the receiver. For both {@link ReceiveMode#PEEK_LOCK PEEK_LOCK} and {@link
          * ReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} modes the default value is 1.
+         *
+         * Prefetch speeds up the message flow by aiming to have a message readily available for local retrieval when
+         * and before the application asks for one using {@link ServiceBusReceiverAsyncClient#receive()}. Setting a
+         * non-zero value will prefetch that number of messages. Setting the value to zero turns prefetch off.
          *
          * @param prefetchCount The prefetch count.
          *
@@ -761,7 +770,8 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
-         * Sets the name of the subscription in the topic to listen to.
+         * Sets the name of the subscription in the topic to listen to. <b>{@link #topicName(String)} must also be set.
+         * </b>
          *
          * @param subscriptionName Name of the subscription.
          *
@@ -774,7 +784,7 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
-         * Sets the name of the topic.
+         * Sets the name of the topic. <b>{@link #subscriptionName(String)} must also be set.</b>
          *
          * @param topicName Name of the topic.
          *
