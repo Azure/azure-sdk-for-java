@@ -76,7 +76,7 @@ class UnnamedSessionManager implements AutoCloseable {
 
     private final EmitterProcessor<Flux<ServiceBusReceivedMessageContext>> processor = EmitterProcessor.create();
     private final FluxSink<Flux<ServiceBusReceivedMessageContext>> sessionReceiveSink = processor.sink();
-    private final Flux<ServiceBusReceivedMessageContext> receiveFlux = Flux.merge(processor);
+    private final Flux<ServiceBusReceivedMessageContext> receiveFlux;
 
     private volatile ReceiveAsyncOptions receiveAsyncOptions;
 
@@ -97,6 +97,7 @@ class UnnamedSessionManager implements AutoCloseable {
         final int numberOfSessions = receiverOptions.isRollingSessionReceiver()
             ? receiverOptions.getMaxConcurrentSessions()
             : 1;
+        receiveFlux = Flux.merge(processor);
 
         this.nextSessionSubscriber = new NextSessionSubscriber(numberOfSessions);
         final List<Scheduler> schedulerList = IntStream.range(0, numberOfSessions)
@@ -319,7 +320,7 @@ class UnnamedSessionManager implements AutoCloseable {
     private Flux<ServiceBusReceivedMessageContext> getSession(ReceiveAsyncOptions options, Scheduler scheduler) {
         return getActiveLink()
             .map(link -> new UnnamedSessionReceiver(link, messageSerializer, options.isEnableAutoComplete(),
-                null, connectionProcessor.getRetryOptions()))
+                null, connectionProcessor.getRetryOptions(), this::renewSessionLock))
             .flatMapMany(session -> {
                 session.getSessionId();
                 return session.receive();
