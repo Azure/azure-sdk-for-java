@@ -376,7 +376,16 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
                 final Flux<ServiceBusReceivedMessage> messages =
                     node.peek(nextSequenceNumber, receiverOptions.getSessionId(), getLinkName(), maxMessages);
-                final Mono<ServiceBusReceivedMessage> handle = messages.last()
+
+                // To prevent it from throwing NoSuchElementException in .last(), we produce an empty message with
+                // the same sequence number.
+                final Mono<ServiceBusReceivedMessage> handle = messages
+                    .switchIfEmpty(Mono.fromCallable(() -> {
+                        ServiceBusReceivedMessage emptyMessage = new ServiceBusReceivedMessage(new byte[0]);
+                        emptyMessage.setSequenceNumber(lastPeekedSequenceNumber.get());
+                        return emptyMessage;
+                    }))
+                    .last()
                     .handle((last, sink) -> {
                         final long current = lastPeekedSequenceNumber
                             .updateAndGet(value -> Math.max(value, last.getSequenceNumber()));
