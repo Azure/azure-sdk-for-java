@@ -59,5 +59,4 @@ public class ServiceBusMessageTest {
         Assertions.assertNotNull(serviceBusMessageData.getBody());
         Assertions.assertEquals(PAYLOAD, new String(serviceBusMessageData.getBody(), UTF_8));
     }
-
 }

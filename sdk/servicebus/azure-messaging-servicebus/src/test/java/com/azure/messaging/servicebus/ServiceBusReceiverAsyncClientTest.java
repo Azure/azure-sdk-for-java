@@ -50,6 +50,7 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -159,11 +160,11 @@ class ServiceBusReceiverAsyncClientTest {
                     connectionOptions.getRetry()));
 
         receiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, null), connectionProcessor, CLEANUP_INTERVAL,
+            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH), connectionProcessor, CLEANUP_INTERVAL,
             tracerProvider, messageSerializer, onClientClose);
 
         sessionReceiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, SESSION_ID), connectionProcessor, CLEANUP_INTERVAL,
+            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH), connectionProcessor, CLEANUP_INTERVAL,
             tracerProvider, messageSerializer, onClientClose);
     }
 
@@ -260,7 +261,7 @@ class ServiceBusReceiverAsyncClientTest {
     @Test
     void receivesAndAutoCompletes() throws InterruptedException {
         // Arrange
-        final ReceiverOptions options = new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, null);
+        final ReceiverOptions options = new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH);
         final ServiceBusReceiverAsyncClient consumer2 = new ServiceBusReceiverAsyncClient(
             NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE, options, connectionProcessor, CLEANUP_INTERVAL,
             tracerProvider, messageSerializer, onClientClose);
@@ -295,7 +296,8 @@ class ServiceBusReceiverAsyncClientTest {
                 messageSink.next(message);
                 messageSink.next(message2);
             })
-            .expectNext(receivedMessage, receivedMessage2)
+            .assertNext(context -> Assertions.assertEquals(receivedMessage, context.getMessage()))
+            .assertNext(context -> Assertions.assertEquals(receivedMessage2, context.getMessage()))
             .verifyComplete();
 
         TimeUnit.SECONDS.sleep(2);
@@ -311,7 +313,7 @@ class ServiceBusReceiverAsyncClientTest {
     @Test
     void receivesAndAutoCompleteWithoutLockTokenErrors() {
         // Arrange
-        final ReceiverOptions options = new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, null);
+        final ReceiverOptions options = new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH);
         final ServiceBusReceiverAsyncClient consumer2 = new ServiceBusReceiverAsyncClient(
             NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE, options, connectionProcessor, CLEANUP_INTERVAL,
             tracerProvider, messageSerializer, onClientClose);
@@ -385,7 +387,7 @@ class ServiceBusReceiverAsyncClientTest {
      */
     @Test
     void completeInReceiveAndDeleteMode() {
-        final ReceiverOptions options = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, PREFETCH, null);
+        final ReceiverOptions options = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, PREFETCH);
         ServiceBusReceiverAsyncClient client = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, options, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
             messageSerializer, onClientClose);
@@ -467,7 +469,7 @@ class ServiceBusReceiverAsyncClientTest {
         // Act & Assert
         StepVerifier.create(receiver.receive()
             .take(1)
-            .flatMap(m -> receiver.deadLetter(m, deadLetterOptions)))
+            .flatMap(context -> receiver.deadLetter(context.getMessage(), deadLetterOptions)))
             .then(() -> messageSink.next(message))
             .expectNext()
             .verifyComplete();
@@ -502,7 +504,19 @@ class ServiceBusReceiverAsyncClientTest {
         when(connection.getManagementNode(eq(ENTITY_PATH), eq(ENTITY_TYPE)))
             .thenReturn(Mono.just(managementNode));
 
-        when(managementNode.receiveDeferredMessages(ReceiveMode.PEEK_LOCK, null, null, sequenceNumber, sequenceNumber2))
+        when(managementNode.receiveDeferredMessages(eq(ReceiveMode.PEEK_LOCK), isNull(), isNull(), argThat(arg -> {
+            boolean foundFirst = false;
+            boolean foundSecond = false;
+            for (Long seq : arg) {
+                if (!foundFirst && sequenceNumber == seq) {
+                    foundFirst = true;
+                } else if (!foundSecond && sequenceNumber2 == seq) {
+                    foundSecond = true;
+                }
+            }
+
+            return foundFirst && foundSecond;
+        })))
             .thenReturn(Flux.just(receivedMessage, receivedMessage2));
 
         when(managementNode.updateDisposition(lockToken1, dispositionStatus, null, null, null, null, null))
@@ -512,7 +526,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         // Pretend we receive these before. This is to simulate that so that the receiver keeps track of them in
         // the lock map.
-        StepVerifier.create(receiver.receiveDeferredMessageBatch(sequenceNumber, sequenceNumber2))
+        StepVerifier.create(receiver.receiveDeferredMessageBatch(Arrays.asList(sequenceNumber, sequenceNumber2)))
             .expectNext(receivedMessage, receivedMessage2)
             .verifyComplete();
 
@@ -551,8 +565,7 @@ class ServiceBusReceiverAsyncClientTest {
         final int fromSequenceNumber = 10;
         final ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
 
-        when(managementNode.receiveDeferredMessages(RECEIVE_MODE, null, null,
-            fromSequenceNumber)).thenReturn(Flux.just(receivedMessage));
+        when(managementNode.receiveDeferredMessages(any(), any(),any(), any())).thenReturn(Flux.just(receivedMessage));
 
         // Act & Assert
         StepVerifier.create(receiver.receiveDeferredMessage(fromSequenceNumber))
@@ -566,14 +579,14 @@ class ServiceBusReceiverAsyncClientTest {
     @Test
     void receiveDeferredBatchFromSequenceNumber() {
         // Arrange
-        final int fromSequenceNumber1 = 10;
-        final int fromSequenceNumber2 = 11;
+        final long fromSequenceNumber1 = 10;
+        final long fromSequenceNumber2 = 11;
 
-        when(managementNode.receiveDeferredMessages(RECEIVE_MODE, null, null, fromSequenceNumber1, fromSequenceNumber2))
+        when(managementNode.receiveDeferredMessages(any(), any(),any(), any()))
             .thenReturn(Flux.fromArray(new ServiceBusReceivedMessage[]{receivedMessage, receivedMessage2}));
 
         // Act & Assert
-        StepVerifier.create(receiver.receiveDeferredMessageBatch(fromSequenceNumber1, fromSequenceNumber2))
+        StepVerifier.create(receiver.receiveDeferredMessageBatch(Arrays.asList(fromSequenceNumber1, fromSequenceNumber2)))
             .expectNext(receivedMessage)
             .expectNext(receivedMessage2)
             .verifyComplete();
