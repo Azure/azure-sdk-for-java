@@ -54,8 +54,13 @@ public final class ServiceBusClientBuilder {
     private static final String AZURE_SERVICE_BUS_CONNECTION_STRING = "AZURE_SERVICE_BUS_CONNECTION_STRING";
     private static final AmqpRetryOptions DEFAULT_RETRY =
         new AmqpRetryOptions().setTryTimeout(ServiceBusConstants.OPERATION_TIMEOUT);
-
     private static final String SERVICE_BUS_PROPERTIES_FILE = "azure-messaging-servicebus.properties";
+    private static final String SUBSCRIPTION_ENTITY_PATH_FORMAT = "%s/subscriptions/%s";
+
+    // Using 0 pre-fetch count for both receive modes, to avoid message lock lost exceptions in application
+    // receiving messages at a slow rate. Applications can set it to a higher value if they need better performance.
+    private static final int DEFAULT_PREFETCH_COUNT = 1;
+
     private static final String NAME_KEY = "name";
     private static final String VERSION_KEY = "version";
     private static final String UNKNOWN = "UNKNOWN";
@@ -410,6 +415,31 @@ public final class ServiceBusClientBuilder {
         return entityType;
     }
 
+    private static String getEntityPath(ClientLogger logger, MessagingEntityType entityType, String queueName,
+        String topicName, String subscriptionName) {
+
+        final String entityPath;
+        switch (entityType) {
+            case QUEUE:
+                entityPath = queueName;
+                break;
+            case SUBSCRIPTION:
+                if (isNullOrEmpty(subscriptionName)) {
+                    throw logger.logExceptionAsError(new IllegalStateException(String.format(
+                        "topicName (%s) must have a subscriptionName associated with it.", topicName)));
+                }
+
+                entityPath = String.format(Locale.ROOT, SUBSCRIPTION_ENTITY_PATH_FORMAT, topicName,
+                    subscriptionName);
+                break;
+            default:
+                throw logger.logExceptionAsError(
+                    new IllegalArgumentException("Unknown entity type: " + entityType));
+        }
+
+        return entityPath;
+    }
+
     /**
      * Builder for creating {@link ServiceBusSenderClient} and {@link ServiceBusSenderAsyncClient} to publish messages
      * to Service Bus.
@@ -504,18 +534,14 @@ public final class ServiceBusClientBuilder {
      */
     @ServiceClientBuilder(serviceClients = {ServiceBusReceiverClient.class, ServiceBusReceiverAsyncClient.class})
     public final class ServiceBusSessionReceiverClientBuilder {
-        // Using 0 pre-fetch count for both receive modes, to avoid message lock lost exceptions in application
-        // receiving messages at a slow rate. Applications can set it to a higher value if they need better performance.
-        private static final int DEFAULT_PREFETCH_COUNT = 1;
-        private static final String SUBSCRIPTION_ENTITY_PATH_FORMAT = "%s/subscriptions/%s";
 
-        private int prefetchCount = DEFAULT_PREFETCH_COUNT;
         private Integer maxConcurrentSessions = null;
-        private String sessionId;
+        private int prefetchCount = DEFAULT_PREFETCH_COUNT;
         private String queueName;
+        private ReceiveMode receiveMode = ReceiveMode.PEEK_LOCK;
+        private String sessionId;
         private String subscriptionName;
         private String topicName;
-        private ReceiveMode receiveMode = ReceiveMode.PEEK_LOCK;
 
         private ServiceBusSessionReceiverClientBuilder() {
         }
@@ -611,8 +637,8 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
-         * Creates an <b>asynchronous</b>, <b>session-aware</b> Service Bus receiver responsible for reading
-         * {@link ServiceBusMessage messages} from a specific queue or topic.
+         * Creates an <b>asynchronous</b>, <b>session-aware</b> Service Bus receiver responsible for reading {@link
+         * ServiceBusMessage messages} from a specific queue or topic.
          *
          * @return An new {@link ServiceBusReceiverAsyncClient} that receives messages from a queue or topic.
          * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
@@ -626,26 +652,7 @@ public final class ServiceBusClientBuilder {
         public ServiceBusReceiverAsyncClient buildAsyncClient() {
             final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
                 queueName);
-
-            final String entityPath;
-            switch (entityType) {
-                case QUEUE:
-                    entityPath = queueName;
-                    break;
-                case SUBSCRIPTION:
-                    if (isNullOrEmpty(subscriptionName)) {
-                        throw logger.logExceptionAsError(new IllegalStateException(String.format(
-                            "topicName (%s) must have a subscriptionName associated with it.", topicName)));
-                    }
-
-                    entityPath = String.format(Locale.ROOT,
-                        SUBSCRIPTION_ENTITY_PATH_FORMAT, topicName, subscriptionName);
-
-                    break;
-                default:
-                    throw logger.logExceptionAsError(
-                        new IllegalArgumentException("Unknown entity type: " + entityType));
-            }
+            final String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName);
 
             if (prefetchCount < 1) {
                 throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
@@ -654,16 +661,26 @@ public final class ServiceBusClientBuilder {
 
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount, sessionId,
-                false, 5);
+                isRollingSessionReceiver(), maxConcurrentSessions);
 
-            return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
-                entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
-                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose);
+            if (isNullOrEmpty(sessionId)) {
+                final UnnamedSessionManager manager = new UnnamedSessionManager(entityPath, entityType,
+                    connectionProcessor, retryOptions.getTryTimeout(), tracerProvider, messageSerializer,
+                    receiverOptions);
+
+                return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
+                    entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
+                    tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose, manager);
+            } else {
+                return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
+                    entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
+                    tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose);
+            }
         }
 
         /**
-         * Creates a <b>synchronous</b>, <b>session-aware</b> Service Bus receiver responsible for reading
-         * {@link ServiceBusMessage messages} from a specific queue or topic.
+         * Creates a <b>synchronous</b>, <b>session-aware</b> Service Bus receiver responsible for reading {@link
+         * ServiceBusMessage messages} from a specific queue or topic.
          *
          * @return An new {@link ServiceBusReceiverClient} that receives messages from a queue or topic.
          * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
@@ -677,6 +694,25 @@ public final class ServiceBusClientBuilder {
         public ServiceBusReceiverClient buildClient() {
             return new ServiceBusReceiverClient(buildAsyncClient(), retryOptions.getTryTimeout());
         }
+
+        /**
+         * This is a rolling session receiver only if maxConcurrentSessions is > 0 AND sessionId is null or empty. If
+         * there is a sessionId, this is going to be a single, named session receiver.
+         *
+         * @return {@code true} if this is an unnamed rolling session receiver; {@code false} otherwise.
+         */
+        private boolean isRollingSessionReceiver() {
+            if (maxConcurrentSessions == null) {
+                return false;
+            }
+
+            if (maxConcurrentSessions < 1) {
+                throw logger.logExceptionAsError(
+                    new IllegalArgumentException("Maximum number of concurrent sessions must be positive."));
+            }
+
+            return CoreUtils.isNullOrEmpty(sessionId);
+        }
     }
 
     /**
@@ -685,20 +721,11 @@ public final class ServiceBusClientBuilder {
      */
     @ServiceClientBuilder(serviceClients = {ServiceBusReceiverClient.class, ServiceBusReceiverAsyncClient.class})
     public final class ServiceBusReceiverClientBuilder {
-        // Using 0 pre-fetch count for both receive modes, to avoid message lock lost exceptions in application
-        // receiving messages at a slow rate. Applications can set it to a higher value if they need better performance.
-        private static final int DEFAULT_PREFETCH_COUNT = 1;
-        // By default, this is -1, saying that we don't want a sessionful receiver.
-        private static final int DEFAULT_CONCURRENT_SESSIONS = Integer.MIN_VALUE;
-        private static final String SUBSCRIPTION_ENTITY_PATH_FORMAT = "%s/subscriptions/%s";
-
         private int prefetchCount = DEFAULT_PREFETCH_COUNT;
         private String queueName;
+        private ReceiveMode receiveMode = ReceiveMode.PEEK_LOCK;
         private String subscriptionName;
         private String topicName;
-        private String sessionId;
-        private int maxConcurrentSessions = DEFAULT_CONCURRENT_SESSIONS;
-        private ReceiveMode receiveMode = ReceiveMode.PEEK_LOCK;
 
         private ServiceBusReceiverClientBuilder() {
         }
@@ -770,30 +797,6 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
-         * Sets the session id.
-         *
-         * @param sessionId session id.
-         *
-         * @return The modified {@link ServiceBusReceiverClientBuilder} object.
-         */
-        public ServiceBusReceiverClientBuilder sessionId(String sessionId) {
-            this.sessionId = sessionId;
-            return this;
-        }
-
-        /**
-         * Max number of concurrent sessions processed at any given time.
-         *
-         * @param maxConcurrentSessions Max number of concurrent sessions to process at one time.
-         *
-         * @return The modified {@link ServiceBusReceiverClientBuilder} object.
-         */
-        public ServiceBusReceiverClientBuilder maxConcurrentSessions(int maxConcurrentSessions) {
-            this.maxConcurrentSessions = maxConcurrentSessions;
-            return this;
-        }
-
-        /**
          * Creates an <b>asynchronous</b> Service Bus receiver responsible for reading {@link ServiceBusMessage
          * messages} from a specific queue or topic.
          *
@@ -809,36 +812,15 @@ public final class ServiceBusClientBuilder {
         public ServiceBusReceiverAsyncClient buildAsyncClient() {
             final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
                 queueName);
-
-            final String entityPath;
-            switch (entityType) {
-                case QUEUE:
-                    entityPath = queueName;
-                    break;
-                case SUBSCRIPTION:
-                    if (isNullOrEmpty(subscriptionName)) {
-                        throw logger.logExceptionAsError(new IllegalStateException(String.format(
-                            "topicName (%s) must have a subscriptionName associated with it.", topicName)));
-                    }
-
-                    entityPath = String.format(Locale.ROOT,
-                        SUBSCRIPTION_ENTITY_PATH_FORMAT, topicName, subscriptionName);
-
-                    break;
-                default:
-                    throw logger.logExceptionAsError(
-                        new IllegalArgumentException("Unknown entity type: " + entityType));
-            }
+            final String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName);
 
             if (prefetchCount < 1) {
                 throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
                     "prefetchCount (%s) cannot be less than 1.", prefetchCount)));
             }
 
-            final boolean isRollingSessionReceiver = isRollingSessionReceiver();
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
-            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
-                sessionId, isRollingSessionReceiver, maxConcurrentSessions);
+            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount);
 
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
                 entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
@@ -859,31 +841,7 @@ public final class ServiceBusClientBuilder {
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         public ServiceBusReceiverClient buildClient() {
-            if (isRollingSessionReceiver()) {
-                throw logger.logExceptionAsError(
-                    new IllegalStateException("Cannot create rolling session receiver with synchronous client."));
-            }
-
             return new ServiceBusReceiverClient(buildAsyncClient(), retryOptions.getTryTimeout());
-        }
-
-        /**
-         * This is a rolling session receiver only if maxConcurrentSessions is > 0 AND sessionId is null or empty.
-         * If there is a sessionId, this is going to be a single, named session receiver.
-         *
-         * @return {@code true} if this is an unnamed rolling session receiver; {@code false} otherwise.
-         */
-        private boolean isRollingSessionReceiver() {
-            if (maxConcurrentSessions == DEFAULT_CONCURRENT_SESSIONS) {
-                return false;
-            }
-
-            if (maxConcurrentSessions < 1) {
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Maximum number of concurrent sessions must be positive."));
-            }
-
-            return CoreUtils.isNullOrEmpty(sessionId);
         }
     }
 }

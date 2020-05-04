@@ -34,7 +34,6 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.TimeoutException;
@@ -68,6 +67,10 @@ class UnnamedSessionManager implements AutoCloseable {
     private final AtomicBoolean isStarted = new AtomicBoolean();
     private final List<Scheduler> schedulers;
     private final Deque<Scheduler> availableSchedulers = new ConcurrentLinkedDeque<>();
+
+    /**
+     * SessionId to receiver mapping.
+     */
     private final ConcurrentHashMap<String, UnnamedSessionReceiver> sessionReceivers = new ConcurrentHashMap<>();
     private final NextSessionSubscriber nextSessionSubscriber;
 
@@ -149,6 +152,7 @@ class UnnamedSessionManager implements AutoCloseable {
      * Gets the state of a session given its identifier.
      *
      * @param sessionId Identifier of session to get.
+     *
      * @return The session state or an empty Mono if there is no state set for the session.
      * @throws IllegalStateException if the receiver is a non-session receiver.
      */
@@ -161,7 +165,6 @@ class UnnamedSessionManager implements AutoCloseable {
                 return channel.getSessionState(sessionId, associatedLinkName);
             }));
     }
-
 
     Mono<ServiceBusReceivedMessage> peek(String sessionId) {
         final UnnamedSessionReceiver receiver = sessionReceivers.get(sessionId);
@@ -208,6 +211,7 @@ class UnnamedSessionManager implements AutoCloseable {
      * Renews the session lock.
      *
      * @param sessionId Identifier of session to get.
+     *
      * @return The next expiration time for the session lock.
      * @throws IllegalStateException if the receiver is a non-session receiver.
      */
@@ -232,6 +236,7 @@ class UnnamedSessionManager implements AutoCloseable {
      *
      * @param sessionId Identifier of session to get.
      * @param sessionState State to set on the session.
+     *
      * @return A Mono that completes when the session is set
      * @throws IllegalStateException if the receiver is a non-session receiver.
      */
@@ -258,26 +263,6 @@ class UnnamedSessionManager implements AutoCloseable {
 
     private AmqpErrorContext getErrorContext() {
         return new SessionErrorContext(connectionProcessor.getFullyQualifiedNamespace(), entityPath);
-    }
-
-    /**
-     * Gets whether or not the link contains the message lock token and it has not expired. Lock tokens are held by the
-     * receive link when an unsettled delivery exists on the link.
-     *
-     * @param lockToken Lock token to check for.
-     * @return {@code true} a  contains the lock token and false otherwise.
-     */
-    private UnnamedSessionReceiver getMatchingReceiver(String lockToken) {
-        Optional<UnnamedSessionReceiver> matching = sessionReceivers.entrySet()
-            .parallelStream()
-            .filter(entry -> {
-                UnnamedSessionReceiver value = entry.getValue();
-                return value != null && value.containsLockToken(lockToken);
-            })
-            .map(entry -> entry.getValue())
-            .findFirst();
-
-        return matching.orElse(null);
     }
 
     /**
@@ -328,13 +313,17 @@ class UnnamedSessionManager implements AutoCloseable {
      * {@code scheduler}.
      *
      * @param options Receive options.
+     *
      * @return A Mono that completes with an unnamed session receiver.
      */
     private Flux<ServiceBusReceivedMessageContext> getSession(ReceiveAsyncOptions options, Scheduler scheduler) {
         return getActiveLink()
             .map(link -> new UnnamedSessionReceiver(link, messageSerializer, options.isEnableAutoComplete(),
                 null, connectionProcessor.getRetryOptions()))
-            .flatMapMany(session -> session.receive()).publishOn(scheduler);
+            .flatMapMany(session -> {
+                session.getSessionId();
+                return session.receive();
+            }).publishOn(scheduler);
     }
 
     private Mono<Boolean> updateDisposition(MessageLockToken lockToken, String sessionId,
@@ -392,7 +381,9 @@ class UnnamedSessionManager implements AutoCloseable {
             }
 
             logger.info("Emitting session number: {}", i);
-            sessionReceiveSink.next(getSession(receiveAsyncOptions, scheduler));
+            Flux<ServiceBusReceivedMessageContext> session = getSession(receiveAsyncOptions, scheduler);
+
+            sessionReceiveSink.next(session);
         }
     }
 

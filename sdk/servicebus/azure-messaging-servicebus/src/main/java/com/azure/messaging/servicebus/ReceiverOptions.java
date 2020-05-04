@@ -13,15 +13,26 @@ class ReceiverOptions {
     private final int prefetchCount;
     private final String sessionId;
     private final boolean isRollingSessionReceiver;
-    private final int maxConcurrentSessions;
+    private final Integer maxConcurrentSessions;
+    private final boolean isSessionReceiver;
+
+    ReceiverOptions(ReceiveMode receiveMode, int prefetchCount) {
+        this.receiveMode = receiveMode;
+        this.prefetchCount = prefetchCount;
+        this.sessionId = null;
+        this.isRollingSessionReceiver = false;
+        this.maxConcurrentSessions = null;
+        this.isSessionReceiver = false;
+    }
 
     ReceiverOptions(ReceiveMode receiveMode, int prefetchCount, String sessionId,
-        boolean isRollingSessionReceiver, int maxConcurrentSessions) {
+        boolean isRollingSessionReceiver, Integer maxConcurrentSessions) {
         this.receiveMode = receiveMode;
         this.prefetchCount = prefetchCount;
         this.sessionId = sessionId;
         this.isRollingSessionReceiver = isRollingSessionReceiver;
         this.maxConcurrentSessions = maxConcurrentSessions;
+        this.isSessionReceiver = true;
     }
 
     /**
@@ -51,6 +62,10 @@ class ReceiverOptions {
         return prefetchCount;
     }
 
+    boolean isSessionReceiver() {
+        return isSessionReceiver;
+    }
+
     /**
      * Gets whether or not this receiver should roll over when a session has completed processing.
      *
@@ -66,7 +81,7 @@ class ReceiverOptions {
      *
      * @return The maximum number of concurrent sessions to process.
      */
-    public int getMaxConcurrentSessions() {
+    public Integer getMaxConcurrentSessions() {
         return maxConcurrentSessions;
     }
 }
