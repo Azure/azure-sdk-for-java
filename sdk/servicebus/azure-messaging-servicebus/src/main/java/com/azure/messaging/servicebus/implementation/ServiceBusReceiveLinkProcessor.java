@@ -57,7 +57,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
 
     private volatile Throwable lastError;
     private volatile boolean isCancelled;
-    private volatile AmqpReceiveLink currentLink;
+    private volatile ServiceBusReceiveLink currentLink;
     private volatile Disposable currentLinkSubscriptions;
     private volatile Disposable retrySubscription;
 
@@ -105,13 +105,14 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         return errorContext;
     }
 
+
     public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState) {
         if (isDisposed()) {
             return monoError(logger, new IllegalStateException(String.format(
                 "lockToken[%s]. state[%s]. Cannot update disposition on closed processor.", lockToken, deliveryState)));
         }
 
-        final AmqpReceiveLink link = currentLink;
+        final ServiceBusReceiveLink link = currentLink;
         if (link == null) {
             return monoError(logger, new IllegalStateException(String.format(
                 "lockToken[%s]. state[%s]. Cannot update disposition with no link.", lockToken, deliveryState)));
@@ -121,7 +122,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                 lockToken, deliveryState)));
         }
 
-        return ((ServiceBusReactorReceiver) link).updateDisposition(lockToken, deliveryState);
+        return link.updateDisposition(lockToken, deliveryState);
     }
 
     /**

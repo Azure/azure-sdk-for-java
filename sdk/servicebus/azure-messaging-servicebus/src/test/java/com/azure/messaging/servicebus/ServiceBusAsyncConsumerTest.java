@@ -94,7 +94,7 @@ class ServiceBusAsyncConsumerTest {
             new AmqpErrorContext("a-namespace")));
 
         when(connection.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
-        when(onComplete.apply(any(ServiceBusReceivedMessage.class))).thenReturn(Mono.empty());
+        when(link.updateDisposition(anyString(), any(DeliveryState.class))).thenReturn(Mono.empty());
     }
 
     @AfterEach

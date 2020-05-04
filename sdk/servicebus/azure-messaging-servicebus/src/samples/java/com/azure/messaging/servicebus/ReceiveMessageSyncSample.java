@@ -35,11 +35,11 @@ public class ReceiveMessageSyncSample {
             .queueName("<<queue-name>>")
             .buildClient();
 
-        final IterableStream<ServiceBusReceivedMessage> receivedMessages =  receiverClient.receive(5);
+        final IterableStream<ServiceBusReceivedMessageContext> receivedMessages =  receiverClient.receive(5);
 
-        receivedMessages.stream().forEach(message -> {
-            System.out.println("Received Message Id: " + message.getMessageId());
-            System.out.println("Received Message: " + new String(message.getBody()));
+        receivedMessages.stream().forEach(context -> {
+            System.out.println("Received Message Id: " + context.getMessage().getMessageId());
+            System.out.println("Received Message: " + new String(context.getMessage().getBody()));
         });
 
         // Close the receiver.
