@@ -15,7 +15,6 @@ import com.azure.identity.implementation.IntelliJCacheAccessor;
 import com.azure.identity.implementation.MsalToken;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -43,14 +42,15 @@ class IntelliJCredential implements TokenCredential {
         IntelliJCacheAccessor accessor =
                 new IntelliJCacheAccessor(options.getIntelliJKeePassDatabasePath());
 
-        IntelliJAuthMethodDetails authMethodDetails;
+        IntelliJAuthMethodDetails authMethodDetails = null;
         try {
             authMethodDetails = accessor.getAuthDetailsIfAvailable();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            authMethodDetails = null;
         }
 
-        String cloudInstance = accessor.getAzureAuthHost(authMethodDetails.getAzureEnv());
+        String azureEnv = authMethodDetails != null ? authMethodDetails.getAzureEnv() : "";
+        String cloudInstance = accessor.getAzureAuthHost(azureEnv);
         options.setAuthorityHost(cloudInstance);
 
         String tenant = tenantId;

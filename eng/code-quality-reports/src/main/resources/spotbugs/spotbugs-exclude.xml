@@ -60,6 +60,12 @@
       <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
   
+  <!-- Exception needs to be caught here.-->
+  <Match>
+      <Class name="~com\.azure\.identity\.IntelliJCredential"/>
+      <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+  
   <!-- Accesses native api, doesn't follow java style.-->
   <Match>
       <Class name="~com\.azure\.identity\.implementation\.LinuxKeyRingAccessor(.+)"/>
