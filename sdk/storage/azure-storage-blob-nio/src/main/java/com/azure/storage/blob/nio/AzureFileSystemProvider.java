@@ -202,9 +202,6 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * request the same size chunk of several MB to prevent network thrashing on small reads. Mark and reset are
      * supported.
      * <p>
-     * Please see the documentation on {@link com.azure.storage.blob.specialized.BlobInputStream} for more information
-     * on the behavior of each method.
-     * <p>
      * Only {@link StandardOpenOption#READ} is supported. Any other option will throw.
      *
      * {@inheritDoc}
