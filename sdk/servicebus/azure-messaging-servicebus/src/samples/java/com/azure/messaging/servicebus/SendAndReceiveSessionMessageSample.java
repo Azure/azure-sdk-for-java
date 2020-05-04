@@ -49,7 +49,7 @@ public class SendAndReceiveSessionMessageSample {
             .buildAsyncClient();
 
         // Instantiate a client that will be used to receive messages from the session.
-        ServiceBusReceiverAsyncClient receiver = builder.receiver()
+        ServiceBusReceiverAsyncClient receiver = builder.sessionReceiver()
             .receiveMode(ReceiveMode.PEEK_LOCK)
             .queueName(queueName)
             .sessionId(sessionId)

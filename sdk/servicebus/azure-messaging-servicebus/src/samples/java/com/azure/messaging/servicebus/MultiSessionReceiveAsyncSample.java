@@ -40,7 +40,7 @@ public class MultiSessionReceiveAsyncSample {
         // namespace.
         ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .connectionString(connectionString)
-            .receiver()
+            .sessionReceiver()
             .maxConcurrentSessions(3)
             .receiveMode(ReceiveMode.PEEK_LOCK)
             .queueName("<<queue-name>>")
