@@ -3,7 +3,11 @@
 package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClient;
-import com.azure.cosmos.implementation.*;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.CosmosAuthorizationTokenResolver;
+import com.azure.cosmos.implementation.Database;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetrics;
 import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
