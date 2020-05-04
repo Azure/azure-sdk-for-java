@@ -10,6 +10,9 @@ import reactor.core.publisher.Mono;
 import java.time.Instant;
 import java.util.UUID;
 
+/**
+ * Interface for settling and renewing messages.
+ */
 public interface MessageManagementOperations {
     /**
      * Updates the disposition status of a message given its lock token.

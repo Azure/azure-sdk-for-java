@@ -49,6 +49,7 @@ org.asynchttpclient:async-http-client;2.10.5
 org.codehaus.groovy:groovy-eclipse-batch;2.5.8-01
 org.codehaus.groovy:groovy-eclipse-compiler;3.4.0-01
 org.hibernate.validator:hibernate-validator;6.0.17.Final
+org.linguafranca.pwdb:KeePassJava2;2.1.4
 org.powermock:powermock-api-mockito2;2.0.2
 org.powermock:powermock-module-junit4;2.0.2
 org.slf4j:slf4j-api;1.7.28

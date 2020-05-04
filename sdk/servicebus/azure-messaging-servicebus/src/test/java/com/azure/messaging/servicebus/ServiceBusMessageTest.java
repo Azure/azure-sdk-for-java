@@ -13,7 +13,6 @@ public class ServiceBusMessageTest {
     // Create a giant payload with 10000 characters that are "a".
     private static final String PAYLOAD = new String(new char[10000]).replace("\0", "a");
     private static final byte[] PAYLOAD_BYTES = PAYLOAD.getBytes(UTF_8);
-    private static final String PAYLOAD_STRING = new String(PAYLOAD_BYTES);
 
     @Test
     public void byteArrayNotNull() {
@@ -60,5 +59,4 @@ public class ServiceBusMessageTest {
         Assertions.assertNotNull(serviceBusMessageData.getBody());
         Assertions.assertEquals(PAYLOAD, new String(serviceBusMessageData.getBody(), UTF_8));
     }
-
 }

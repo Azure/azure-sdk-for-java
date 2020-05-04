@@ -54,13 +54,13 @@ public final class ServiceBusClientBuilder {
     private static final String AZURE_SERVICE_BUS_CONNECTION_STRING = "AZURE_SERVICE_BUS_CONNECTION_STRING";
     private static final AmqpRetryOptions DEFAULT_RETRY =
         new AmqpRetryOptions().setTryTimeout(ServiceBusConstants.OPERATION_TIMEOUT);
+
     private static final String SERVICE_BUS_PROPERTIES_FILE = "azure-messaging-servicebus.properties";
     private static final String SUBSCRIPTION_ENTITY_PATH_FORMAT = "%s/subscriptions/%s";
 
     // Using 0 pre-fetch count for both receive modes, to avoid message lock lost exceptions in application
     // receiving messages at a slow rate. Applications can set it to a higher value if they need better performance.
     private static final int DEFAULT_PREFETCH_COUNT = 1;
-
     private static final String NAME_KEY = "name";
     private static final String VERSION_KEY = "version";
     private static final String UNKNOWN = "UNKNOWN";
@@ -123,8 +123,8 @@ public final class ServiceBusClientBuilder {
     /**
      * Sets the configuration store that is used during construction of the service client.
      *
-     * If not specified, the default configuration store is used to configure Service Bus clients. Use {@link
-     * Configuration#NONE} to bypass using configuration settings during construction.
+     * If not specified, the default configuration store is used to configure Service Bus clients. Use
+     * {@link Configuration#NONE} to bypass using configuration settings during construction.
      *
      * @param configuration The configuration store used to configure Service Bus clients.
      *
@@ -217,6 +217,15 @@ public final class ServiceBusClientBuilder {
     }
 
     /**
+     * A new instance of {@link ServiceBusReceiverClientBuilder} used to configure Service Bus message consumers.
+     *
+     * @return A new instance of {@link ServiceBusReceiverClientBuilder}.
+     */
+    public ServiceBusReceiverClientBuilder receiver() {
+        return new ServiceBusReceiverClientBuilder();
+    }
+
+    /**
      * A new instance of {@link ServiceBusSessionReceiverClientBuilder} used to configure <b>session aware</b> Service
      * Bus message consumers.
      *
@@ -224,15 +233,6 @@ public final class ServiceBusClientBuilder {
      */
     public ServiceBusSessionReceiverClientBuilder sessionReceiver() {
         return new ServiceBusSessionReceiverClientBuilder();
-    }
-
-    /**
-     * A new instance of {@link ServiceBusReceiverClientBuilder} used to configure Service Bus message consumers.
-     *
-     * @return A new instance of {@link ServiceBusReceiverClientBuilder}.
-     */
-    public ServiceBusReceiverClientBuilder receiver() {
-        return new ServiceBusReceiverClientBuilder();
     }
 
     /**
@@ -552,18 +552,25 @@ public final class ServiceBusClientBuilder {
          * @param maxConcurrentSessions Maximum number of concurrent sessions to process at any given time.
          *
          * @return The modified {@link ServiceBusReceiverClientBuilder} object.
+         * @throws IllegalArgumentException if {@code maxConcurrentSessions} is less than 1.
          */
         public ServiceBusSessionReceiverClientBuilder maxConcurrentSessions(int maxConcurrentSessions) {
+            if (maxConcurrentSessions < 1) {
+                throw logger.logExceptionAsError(new IllegalArgumentException(
+                    "maxConcurrentSessions cannot be less than 1."));
+            }
+
             this.maxConcurrentSessions = maxConcurrentSessions;
             return this;
         }
 
         /**
-         * Sets the prefetch count of the receiver. Prefetch speeds up the message flow by aiming to have a message
-         * readily available for local retrieval when and before the application asks for one using {@link
-         * ServiceBusReceiverAsyncClient#receive()}. Setting a non-zero value will prefetch that number of messages.
-         * Setting the value to zero turns prefetch off. For both {@link ReceiveMode#PEEK_LOCK PEEK_LOCK} and {@link
+         * Sets the prefetch count of the receiver. For both {@link ReceiveMode#PEEK_LOCK PEEK_LOCK} and {@link
          * ReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} modes the default value is 1.
+         *
+         * Prefetch speeds up the message flow by aiming to have a message readily available for local retrieval when
+         * and before the application asks for one using {@link ServiceBusReceiverAsyncClient#receive()}. Setting a
+         * non-zero value will prefetch that number of messages. Setting the value to zero turns prefetch off.
          *
          * @param prefetchCount The prefetch count.
          *
@@ -611,7 +618,8 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
-         * Sets the name of the subscription in the topic to listen to.
+         * Sets the name of the subscription in the topic to listen to. <b>{@link #topicName(String)} must also be set.
+         * </b>
          *
          * @param subscriptionName Name of the subscription.
          *
@@ -624,7 +632,7 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
-         * Sets the name of the topic.
+         * Sets the name of the topic. <b>{@link #subscriptionName(String)} must also be set.</b>
          *
          * @param topicName Name of the topic.
          *
@@ -637,8 +645,8 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
-         * Creates an <b>asynchronous</b>, <b>session-aware</b> Service Bus receiver responsible for reading {@link
-         * ServiceBusMessage messages} from a specific queue or topic.
+         * Creates an <b>asynchronous</b>, <b>session-aware</b> Service Bus receiver responsible for reading
+         * {@link ServiceBusMessage messages} from a specific queue or topic.
          *
          * @return An new {@link ServiceBusReceiverAsyncClient} that receives messages from a queue or topic.
          * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
@@ -663,24 +671,14 @@ public final class ServiceBusClientBuilder {
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount, sessionId,
                 isRollingSessionReceiver(), maxConcurrentSessions);
 
-            if (isNullOrEmpty(sessionId)) {
-                final UnnamedSessionManager manager = new UnnamedSessionManager(entityPath, entityType,
-                    connectionProcessor, retryOptions.getTryTimeout(), tracerProvider, messageSerializer,
-                    receiverOptions);
-
-                return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
-                    entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
-                    tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose, manager);
-            } else {
-                return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
-                    entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
-                    tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose);
-            }
+            return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
+                entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
+                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose);
         }
 
         /**
-         * Creates a <b>synchronous</b>, <b>session-aware</b> Service Bus receiver responsible for reading {@link
-         * ServiceBusMessage messages} from a specific queue or topic.
+         * Creates a <b>synchronous</b>, <b>session-aware</b> Service Bus receiver responsible for reading
+         * {@link ServiceBusMessage messages} from a specific queue or topic.
          *
          * @return An new {@link ServiceBusReceiverClient} that receives messages from a queue or topic.
          * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
@@ -731,11 +729,12 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
-         * Sets the prefetch count of the receiver. Prefetch speeds up the message flow by aiming to have a message
-         * readily available for local retrieval when and before the application asks for one using {@link
-         * ServiceBusReceiverAsyncClient#receive()}. Setting a non-zero value will prefetch that number of messages.
-         * Setting the value to zero turns prefetch off. For both {@link ReceiveMode#PEEK_LOCK PEEK_LOCK} and {@link
+         * Sets the prefetch count of the receiver. For both {@link ReceiveMode#PEEK_LOCK PEEK_LOCK} and {@link
          * ReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} modes the default value is 1.
+         *
+         * Prefetch speeds up the message flow by aiming to have a message readily available for local retrieval when
+         * and before the application asks for one using {@link ServiceBusReceiverAsyncClient#receive()}. Setting a
+         * non-zero value will prefetch that number of messages. Setting the value to zero turns prefetch off.
          *
          * @param prefetchCount The prefetch count.
          *
@@ -771,7 +770,8 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
-         * Sets the name of the subscription in the topic to listen to.
+         * Sets the name of the subscription in the topic to listen to. <b>{@link #topicName(String)} must also be set.
+         * </b>
          *
          * @param subscriptionName Name of the subscription.
          *
@@ -784,7 +784,7 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
-         * Sets the name of the topic.
+         * Sets the name of the topic. <b>{@link #subscriptionName(String)} must also be set.</b>
          *
          * @param topicName Name of the topic.
          *

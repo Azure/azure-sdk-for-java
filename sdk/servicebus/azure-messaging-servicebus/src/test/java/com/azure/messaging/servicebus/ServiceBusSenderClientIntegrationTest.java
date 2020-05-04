@@ -10,6 +10,7 @@ import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 
@@ -18,6 +19,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 /**
  * Integration tests for the {@link ServiceBusSenderClient}.
@@ -36,11 +38,11 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
         dispose(sender);
 
         try {
-            receiver.receive(new ReceiveAsyncOptions().setEnableAutoComplete(false))
+            receiver.receive(new ReceiveAsyncOptions().setIsAutoCompleteEnabled(false))
                 .take(messagesPending.get())
-                .map(context -> {
-                    logger.info("Message received: {}", context.getMessage().getSequenceNumber());
-                    return context;
+                .map(message -> {
+                    logger.info("Message received: {}", message.getMessage().getSequenceNumber());
+                    return message;
                 })
                 .timeout(Duration.ofSeconds(5), Mono.empty())
                 .blockLast();
@@ -51,10 +53,17 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
         }
     }
 
+    static Stream<Arguments> receiverTypesProvider() {
+        return Stream.of(
+            Arguments.of(MessagingEntityType.QUEUE),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION)
+        );
+    }
+
     /**
      * Verifies that we can send a message to a non-session queue.
      */
-    @MethodSource("messagingEntityProvider")
+    @MethodSource("receiverTypesProvider")
     @ParameterizedTest
     void nonSessionQueueSendMessage(MessagingEntityType entityType) {
         // Arrange
@@ -73,7 +82,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can send a {@link ServiceBusMessageBatch} to a non-session queue.
      */
-    @MethodSource("messagingEntityProvider")
+    @MethodSource("receiverTypesProvider")
     @ParameterizedTest
     void nonSessionMessageBatch(MessagingEntityType entityType) {
         // Arrange
@@ -99,7 +108,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can send a list of messages to a non-session entity.
      */
-    @MethodSource("messagingEntityProvider")
+    @MethodSource("receiverTypesProvider")
     @ParameterizedTest
     void nonSessionEntitySendMessageList(MessagingEntityType entityType) {
         // Arrange
@@ -116,7 +125,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can schedule a message to a non-session entity.
      */
-    @MethodSource("messagingEntityProvider")
+    @MethodSource("receiverTypesProvider")
     @ParameterizedTest
     void nonSessionScheduleMessage(MessagingEntityType entityType) {
         // Arrange
@@ -139,7 +148,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can cancel a scheduled a message to a non-session entity.
      */
-    @MethodSource("messagingEntityProvider")
+    @MethodSource("receiverTypesProvider")
     @ParameterizedTest
     void nonSessionCancelScheduleMessage(MessagingEntityType entityType) {
         // Arrange
@@ -166,10 +175,10 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
 
                 Assertions.assertNotNull(queueName, "'queueName' cannot be null.");
 
-                sender = createBuilder().sender()
+                sender = getBuilder().sender()
                     .queueName(queueName)
                     .buildClient();
-                receiver = createBuilder().receiver()
+                receiver = getBuilder().receiver()
                     .queueName(queueName)
                     .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                     .buildAsyncClient();
@@ -181,10 +190,10 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
                 Assertions.assertNotNull(topicName, "'topicName' cannot be null.");
                 Assertions.assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
 
-                sender = createBuilder().sender()
+                sender = getBuilder().sender()
                     .topicName(topicName)
                     .buildClient();
-                receiver = createBuilder().receiver()
+                receiver = getBuilder().receiver()
                     .topicName(topicName)
                     .subscriptionName(subscriptionName)
                     .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)

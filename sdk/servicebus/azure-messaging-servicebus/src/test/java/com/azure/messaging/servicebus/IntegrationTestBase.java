@@ -21,6 +21,7 @@ import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
@@ -191,6 +192,115 @@ public abstract class IntegrationTestBase extends TestBase {
         return properties;
     }
 
+    /**
+     * Creates a new instance of {@link ServiceBusClientBuilder} with the default integration test settings and uses a
+     * connection string to authenticate.
+     */
+    protected ServiceBusClientBuilder getBuilder() {
+        return getBuilder(false);
+    }
+
+    /**
+     * Creates a new instance of {@link ServiceBusClientBuilder} with the default integration test settings and uses a
+     * connection string to authenticate if {@code useCredentials} is false. Otherwise, uses a service principal through
+     * {@link com.azure.identity.ClientSecretCredential}.
+     */
+    protected ServiceBusClientBuilder getBuilder(boolean useCredentials) {
+        final ServiceBusClientBuilder builder = new ServiceBusClientBuilder()
+            .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
+            .retryOptions(RETRY_OPTIONS)
+            .transportType(AmqpTransportType.AMQP)
+            .scheduler(scheduler);
+
+        if (useCredentials) {
+            final String fqdn = getFullyQualifiedDomainName();
+
+            assumeTrue(fqdn != null && !fqdn.isEmpty(),
+                AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME + " variable needs to be set when using credentials.");
+
+            final ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
+                .clientId(System.getenv("AZURE_CLIENT_ID"))
+                .clientSecret(System.getenv("AZURE_CLIENT_SECRET"))
+                .tenantId(System.getenv("AZURE_TENANT_ID"))
+                .build();
+
+            return builder.credential(fqdn, clientSecretCredential);
+        } else {
+            return builder.connectionString(getConnectionString());
+        }
+    }
+
+    protected ServiceBusSenderClientBuilder getSenderBuilder(boolean useCredentials, MessagingEntityType entityType, boolean isSessionAware) {
+
+        switch (entityType) {
+            case QUEUE:
+                final String queueName = isSessionAware ? getSessionQueueName() : getQueueName();
+                assertNotNull(queueName, "'queueName' cannot be null.");
+
+                return getBuilder(useCredentials).sender()
+                    .queueName(queueName);
+            case SUBSCRIPTION:
+                final String topicName = getTopicName();
+                final String subscriptionName = isSessionAware ? getSessionSubscriptionName() : getSubscriptionName();
+                assertNotNull(topicName, "'topicName' cannot be null.");
+                assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
+
+                return getBuilder(useCredentials).sender()
+                    .topicName(topicName);
+            default:
+                throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
+        }
+    }
+
+    protected ServiceBusReceiverClientBuilder getReceiverBuilder(boolean useCredentials,
+        MessagingEntityType entityType) {
+        switch (entityType) {
+            case QUEUE:
+                final String queueName = getQueueName();
+                assertNotNull(queueName, "'queueName' cannot be null.");
+
+                return getBuilder(useCredentials).receiver()
+                    .queueName(queueName);
+            case SUBSCRIPTION:
+                final String topicName = getTopicName();
+                final String subscriptionName = getSubscriptionName();
+                assertNotNull(topicName, "'topicName' cannot be null.");
+                assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
+
+                return getBuilder(useCredentials).receiver()
+                    .topicName(topicName).subscriptionName(subscriptionName);
+            default:
+                throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
+        }
+    }
+
+    protected ServiceBusSessionReceiverClientBuilder getSessionReceiverBuilder(boolean useCredentials,
+        MessagingEntityType entityType,
+        Function<ServiceBusSessionReceiverClientBuilder, ServiceBusSessionReceiverClientBuilder> onReceiverCreate) {
+        switch (entityType) {
+            case QUEUE:
+                final String queueName = getSessionQueueName();
+                assertNotNull(queueName, "'queueName' cannot be null.");
+
+                final ServiceBusSessionReceiverClientBuilder builder = getBuilder(useCredentials)
+                    .sessionReceiver()
+                    .queueName(queueName);
+                return onReceiverCreate.apply(builder);
+
+            case SUBSCRIPTION:
+                final String topicName = getTopicName();
+                final String subscriptionName = getSessionSubscriptionName();
+                assertNotNull(topicName, "'topicName' cannot be null.");
+                assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
+
+                final ServiceBusSessionReceiverClientBuilder builder2 = getBuilder(useCredentials).sessionReceiver()
+                    .topicName(topicName).subscriptionName(subscriptionName);
+                return onReceiverCreate.apply(builder2);
+            default:
+                throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
+        }
+    }
+
     protected static Stream<Arguments> messagingEntityProvider() {
         return Stream.of(
             Arguments.of(MessagingEntityType.QUEUE),
@@ -216,115 +326,6 @@ public abstract class IntegrationTestBase extends TestBase {
             Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.COMPLETED),
             Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.SUSPENDED)
         );
-    }
-
-    /**
-     * Creates a new instance of {@link ServiceBusClientBuilder} with the default integration test settings and uses a
-     * connection string to authenticate.
-     */
-    protected ServiceBusClientBuilder createBuilder() {
-        return createBuilder(false);
-    }
-
-    /**
-     * Creates a new instance of {@link ServiceBusClientBuilder} with the default integration test settings and uses a
-     * connection string to authenticate if {@code useCredentials} is false. Otherwise, uses a service principal through
-     * {@link com.azure.identity.ClientSecretCredential}.
-     */
-    protected ServiceBusClientBuilder createBuilder(boolean useCredentials) {
-        final ServiceBusClientBuilder builder = new ServiceBusClientBuilder()
-            .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
-            .retryOptions(RETRY_OPTIONS)
-            .transportType(AmqpTransportType.AMQP)
-            .scheduler(scheduler);
-
-        if (useCredentials) {
-            final String fqdn = getFullyQualifiedDomainName();
-
-            assumeTrue(fqdn != null && !fqdn.isEmpty(),
-                AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME + " variable needs to be set when using credentials.");
-
-            final ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
-                .clientId(System.getenv("AZURE_CLIENT_ID"))
-                .clientSecret(System.getenv("AZURE_CLIENT_SECRET"))
-                .tenantId(System.getenv("AZURE_TENANT_ID"))
-                .build();
-
-            return builder.credential(fqdn, clientSecretCredential);
-        } else {
-            return builder.connectionString(getConnectionString());
-        }
-    }
-
-    protected ServiceBusSenderClientBuilder getSenderBuilder(boolean useCredentials, MessagingEntityType entityType) {
-
-        switch (entityType) {
-            case QUEUE:
-                final String queueName = getQueueName();
-                assertNotNull(queueName, "'queueName' cannot be null.");
-
-                return createBuilder(useCredentials).sender()
-                    .queueName(queueName);
-            case SUBSCRIPTION:
-                final String topicName = getTopicName();
-                final String subscriptionName = getSubscriptionName();
-                assertNotNull(topicName, "'topicName' cannot be null.");
-                assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
-
-                return createBuilder(useCredentials).sender()
-                    .topicName(topicName);
-            default:
-                throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
-        }
-    }
-
-    protected ServiceBusReceiverClientBuilder getReceiverBuilder(boolean useCredentials,
-        MessagingEntityType entityType) {
-        switch (entityType) {
-            case QUEUE:
-                final String queueName = getQueueName();
-                assertNotNull(queueName, "'queueName' cannot be null.");
-
-                return createBuilder(useCredentials).receiver()
-                    .queueName(queueName);
-            case SUBSCRIPTION:
-                final String topicName = getTopicName();
-                final String subscriptionName = getSubscriptionName();
-                assertNotNull(topicName, "'topicName' cannot be null.");
-                assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
-
-                return createBuilder(useCredentials).receiver()
-                    .topicName(topicName).subscriptionName(subscriptionName);
-            default:
-                throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
-        }
-    }
-
-    protected ServiceBusSessionReceiverClientBuilder getSessionReceiverBuilder(boolean useCredentials,
-        MessagingEntityType entityType,
-        Function<ServiceBusSessionReceiverClientBuilder, ServiceBusSessionReceiverClientBuilder> onReceiverCreate) {
-        switch (entityType) {
-            case QUEUE:
-                final String queueName = getSessionQueueName();
-                assertNotNull(queueName, "'queueName' cannot be null.");
-
-                final ServiceBusSessionReceiverClientBuilder builder = createBuilder(useCredentials)
-                    .sessionReceiver()
-                    .queueName(queueName);
-                return onReceiverCreate.apply(builder);
-
-            case SUBSCRIPTION:
-                final String topicName = getTopicName();
-                final String subscriptionName = getSessionSubscriptionName();
-                assertNotNull(topicName, "'topicName' cannot be null.");
-                assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
-
-                final ServiceBusSessionReceiverClientBuilder builder2 = createBuilder(useCredentials).sessionReceiver()
-                    .topicName(topicName).subscriptionName(subscriptionName);
-                return onReceiverCreate.apply(builder2);
-            default:
-                throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
-        }
     }
 
     /**
@@ -357,25 +358,19 @@ public abstract class IntegrationTestBase extends TestBase {
         return isSessionEnabled ? message.setSessionId(sessionId) : message;
     }
 
-    protected void assertMessageEquals(ServiceBusReceivedMessageContext message, String messageId,
+    protected void assertMessageEquals(ServiceBusReceivedMessageContext context, String messageId,
         boolean isSessionEnabled) {
-        assertMessageEquals(message.getMessage(), messageId, isSessionEnabled);
+        Assertions.assertNotNull(context);
+        Assertions.assertNotNull(context.getMessage());
+        assertMessageEquals(context.getMessage(), messageId, isSessionEnabled);
     }
 
     protected void assertMessageEquals(ServiceBusReceivedMessage message, String messageId, boolean isSessionEnabled) {
-        // Disabling message ID assertion. Since we do multiple operations on the same queue/topic, it's possible
-        // the queue or topic contains messages from previous test cases.
-        assertMessageEquals(message, messageId, isSessionEnabled, false);
-    }
-
-    protected void assertMessageEquals(ServiceBusReceivedMessage message, String messageId, boolean isSessionEnabled,
-        boolean verifyMessageId) {
-
         assertArrayEquals(CONTENTS_BYTES, message.getBody());
 
-        if (verifyMessageId) {
-            assertEquals(messageId, message.getMessageId());
-        }
+        // Disabling message ID assertion. Since we do multiple operations on the same queue/topic, it's possible
+        // the queue or topic contains messages from previous test cases.
+        // assertEquals(messageId, message.getMessageId());
 
         if (isSessionEnabled) {
             assertEquals(sessionId, message.getSessionId());

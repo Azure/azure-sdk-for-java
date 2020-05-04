@@ -110,6 +110,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         return errorContext;
     }
 
+
     public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState) {
         if (isDisposed()) {
             return monoError(logger, new IllegalStateException(String.format(
@@ -316,9 +317,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             logger.warning("linkName[{}] entityPath[{}]. Transient error occurred. Attempt: {}. Retrying after {} ms.",
                 linkName, entityPath, attempt, retryInterval.toMillis(), throwable);
 
-            retrySubscription = Mono.delay(retryInterval).subscribe(i -> {
-                requestUpstream();
-            });
+            retrySubscription = Mono.delay(retryInterval).subscribe(i -> requestUpstream());
 
             return;
         }

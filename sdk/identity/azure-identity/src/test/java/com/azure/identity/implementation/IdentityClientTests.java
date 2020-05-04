@@ -169,7 +169,8 @@ public class IdentityClientTests {
         mockForDeviceCodeFlow(request, accessToken, expiresOn);
 
         // test
-        IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).build();
+        IdentityClientOptions options = new IdentityClientOptions();
+        IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).identityClientOptions(options).build();
         AccessToken token = client.authenticateWithDeviceCode(request, deviceCodeChallenge -> { /* do nothing */ }).block();
         Assert.assertEquals(accessToken, token.getToken());
         Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
@@ -237,7 +238,8 @@ public class IdentityClientTests {
         mockForAuthorizationCodeFlow(token1, request, expiresAt);
 
         // test
-        IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).build();
+        IdentityClientOptions options = new IdentityClientOptions();
+        IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).identityClientOptions(options).build();
         StepVerifier.create(client.authenticateWithAuthorizationCode(request, authCode1, redirectUri))
             .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
                                                   && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
@@ -256,8 +258,9 @@ public class IdentityClientTests {
         mockForUserRefreshTokenFlow(token2, request2, expiresAt);
 
         // test
-        IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).build();
-        StepVerifier.create(client.authenticateWithUserRefreshToken(request2, TestUtils.getMockMsalToken(token1, expiresAt).block()))
+        IdentityClientOptions options = new IdentityClientOptions();
+        IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).identityClientOptions(options).build();
+        StepVerifier.create(client.authenticateWithMsalAccount(request2, TestUtils.getMockMsalAccount(token1, expiresAt).block()))
             .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
                                                   && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
             .verifyComplete();
@@ -276,7 +279,8 @@ public class IdentityClientTests {
         mockForUsernamePasswordCodeFlow(token, request, expiresOn);
 
         // test
-        IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).build();
+        IdentityClientOptions options = new IdentityClientOptions();
+        IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).identityClientOptions(options).build();
         StepVerifier.create(client.authenticateWithUsernamePassword(request, username, password))
             .expectNextMatches(accessToken -> token.equals(accessToken.getToken())
                                                   && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond())
@@ -297,7 +301,8 @@ public class IdentityClientTests {
         mocForBrowserAuthenticationCodeFlow();
 
         // test
-        IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).build();
+        IdentityClientOptions options = new IdentityClientOptions();
+        IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).identityClientOptions(options).build();
         StepVerifier.create(client.authenticateWithBrowserInteraction(request, 4567))
             .expectNextMatches(accessToken -> token.equals(accessToken.getToken())
                                                   && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond())

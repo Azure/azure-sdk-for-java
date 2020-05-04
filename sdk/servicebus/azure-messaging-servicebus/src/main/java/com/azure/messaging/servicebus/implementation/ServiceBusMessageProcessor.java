@@ -192,7 +192,7 @@ public class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceived
             return;
         }
 
-        logger.info("Disposing subscription.");
+        logger.verbose("Disposing subscription.");
         isDone = true;
         drain();
     }
@@ -381,7 +381,6 @@ public class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceived
             return Disposables.disposed();
         }
 
-        final long sequenceNumber = message.getSequenceNumber();
         final String lockToken = message.getLockToken();
 
         if (initialLockedUntil == null) {
@@ -435,7 +434,7 @@ public class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceived
                 return instant;
             })
             .subscribe(lockedUntil -> {
-                logger.verbose("lockToken[{}]. lockedUntil[{}]. Lock renewal successful.", sequenceNumber, lockToken,
+                logger.verbose("lockToken[{}]. lockedUntil[{}]. Lock renewal successful.", lockToken,
                     lockedUntil);
             },
                 error -> {
