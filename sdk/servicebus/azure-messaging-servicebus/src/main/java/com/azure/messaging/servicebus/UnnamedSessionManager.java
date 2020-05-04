@@ -18,8 +18,6 @@ import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
-import org.reactivestreams.Subscription;
-import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -72,8 +70,6 @@ class UnnamedSessionManager implements AutoCloseable {
      * SessionId to receiver mapping.
      */
     private final ConcurrentHashMap<String, UnnamedSessionReceiver> sessionReceivers = new ConcurrentHashMap<>();
-    private final NextSessionSubscriber nextSessionSubscriber;
-
     private final EmitterProcessor<Flux<ServiceBusReceivedMessageContext>> processor = EmitterProcessor.create();
     private final FluxSink<Flux<ServiceBusReceivedMessageContext>> sessionReceiveSink = processor.sink();
     private final Flux<ServiceBusReceivedMessageContext> receiveFlux;
@@ -97,9 +93,8 @@ class UnnamedSessionManager implements AutoCloseable {
         final int numberOfSessions = receiverOptions.isRollingSessionReceiver()
             ? receiverOptions.getMaxConcurrentSessions()
             : 1;
-        receiveFlux = Flux.merge(processor);
+        receiveFlux = Flux.merge(processor, receiverOptions.getMaxConcurrentSessions());
 
-        this.nextSessionSubscriber = new NextSessionSubscriber(numberOfSessions);
         final List<Scheduler> schedulerList = IntStream.range(0, numberOfSessions)
             .mapToObj(index -> Schedulers.newBoundedElastic(DEFAULT_BOUNDED_ELASTIC_SIZE,
                 DEFAULT_BOUNDED_ELASTIC_QUEUESIZE, "receiver-" + index))
@@ -122,7 +117,6 @@ class UnnamedSessionManager implements AutoCloseable {
 
         if (!isStarted.getAndSet(true)) {
             receiveAsyncOptions = options;
-            processor.subscribeWith(nextSessionSubscriber);
         }
 
         return receiveFlux;
@@ -318,13 +312,23 @@ class UnnamedSessionManager implements AutoCloseable {
      * @return A Mono that completes with an unnamed session receiver.
      */
     private Flux<ServiceBusReceivedMessageContext> getSession(ReceiveAsyncOptions options, Scheduler scheduler) {
-        return getActiveLink()
-            .map(link -> new UnnamedSessionReceiver(link, messageSerializer, options.isEnableAutoComplete(),
-                null, connectionProcessor.getRetryOptions(), this::renewSessionLock))
+        return getActiveLink().flatMap(link -> link.getSessionId()
+            .map(linkName -> sessionReceivers.compute(linkName, (key, existing) -> {
+                if (existing != null) {
+                    return existing;
+                }
+
+                return new UnnamedSessionReceiver(link, messageSerializer, options.isEnableAutoComplete(),
+                    null, connectionProcessor.getRetryOptions(), this::renewSessionLock);
+            })))
             .flatMapMany(session -> {
                 session.getSessionId();
-                return session.receive();
-            }).publishOn(scheduler);
+                return session.receive().doFinally(signalType -> {
+                    logger.verbose("Adding scheduler back to pool.");
+                    availableSchedulers.push(scheduler);
+                });
+            })
+            .publishOn(scheduler);
     }
 
     private Mono<Boolean> updateDisposition(MessageLockToken lockToken, String sessionId,
@@ -399,22 +403,6 @@ class UnnamedSessionManager implements AutoCloseable {
                 parameterName)));
         } else {
             return Mono.empty();
-        }
-    }
-
-    /**
-     * Subscriber that requests another session to be emitted.
-     */
-    private static final class NextSessionSubscriber extends BaseSubscriber<Flux<ServiceBusReceivedMessageContext>> {
-        private final long initialSessions;
-
-        private NextSessionSubscriber(long initialSessions) {
-            this.initialSessions = initialSessions;
-        }
-
-        @Override
-        protected void hookOnSubscribe(Subscription subscription) {
-            this.request(initialSessions);
         }
     }
 }
