@@ -9,6 +9,8 @@ import com.azure.core.util.Context;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SignalRClientTests {
@@ -59,39 +61,47 @@ public class SignalRClientTests {
 
     @Test
     public void testBroadcastString() {
-        assertResponse(client.broadcast("Hello World - Broadcast test!"), 202);
+        assertResponse(client.broadcastWithResponse(
+            "Hello World - Broadcast test!",
+            Collections.emptyList(),
+            Context.NONE),
+            202);
     }
 
     @Test
     public void testBroadcastBytes() {
         byte[] bytes = "Hello World - Broadcast test!".getBytes();
-        assertResponse(client.broadcast(bytes), 202);
+        assertResponse(client.broadcastWithResponse(bytes,
+            Collections.emptyList(),
+            Context.NONE),
+            202);
     }
 
     @Test
     public void testSendToUserString() {
-        assertResponse(client.sendToUser("test_user", "Hello World!"), 202);
+        assertResponse(client.sendToUserWithResponse("test_user", "Hello World!", Context.NONE), 202);
     }
 
     @Test
     public void testSendToUserBytes() {
-        assertResponse(client.sendToUser("test_user", "Hello World!".getBytes()), 202);
+        assertResponse(client.sendToUserWithResponse("test_user", "Hello World!".getBytes(), Context.NONE), 202);
     }
 
     @Test
     public void testSendToConnectionString() {
-        assertResponse(client.sendToConnection("test_connection", "Hello World!"), 202);
+        assertResponse(client.sendToConnectionWithResponse("test_connection", "Hello World!", Context.NONE), 202);
     }
 
     @Test
     public void testSendToConnectionBytes() {
-        assertResponse(client.sendToConnection("test_connection", "Hello World!".getBytes()), 202);
+        assertResponse(client.sendToConnectionWithResponse("test_connection", "Hello World!".getBytes(), Context.NONE), 202);
     }
 
     @Test
     public void testRemoveNonExistentUserFromHub() {
         // TODO (jogiles) can we determine if this user exists anywhere in the current hub?
-        Response<Void> removeUserResponse = client.removeUserFromAllGroups("testRemoveNonExistentUserFromHub");
+        Response<Void> removeUserResponse =
+            client.removeUserFromAllGroupsWithResponse("testRemoveNonExistentUserFromHub", Context.NONE);
         assertEquals(200, removeUserResponse.getStatusCode());
     }
 
@@ -104,7 +114,7 @@ public class SignalRClientTests {
         SignalRGroupClient javaGroup = client.getGroupClient("java");
 
         assertFalse(javaGroup.doesUserExist("testRemoveNonExistentUserFromGroup"));
-        Response<Void> removeUserResponse = javaGroup.removeUser("testRemoveNonExistentUserFromGroup");
+        Response<Void> removeUserResponse = javaGroup.removeUserWithResponse("testRemoveNonExistentUserFromGroup", Context.NONE);
         assertEquals(202, removeUserResponse.getStatusCode());
         assertFalse(javaGroup.doesUserExist("testRemoveNonExistentUserFromGroup"));
     }
@@ -116,10 +126,10 @@ public class SignalRClientTests {
 
         // TODO (jogiles) don't block
         assertFalse(javaGroup.doesUserExist("Jonathan"));
-        Response<Void> addUserResponse = javaGroup.addUser("Jonathan", Context.NONE);
+        Response<Void> addUserResponse = javaGroup.addUserWithResponse("Jonathan", null, Context.NONE);
         assertEquals(202, addUserResponse.getStatusCode());
         assertTrue(javaGroup.doesUserExist("Jonathan"));
-        Response<Void> removeUserResponse = javaGroup.removeUser("Jonathan", Context.NONE);
+        Response<Void> removeUserResponse = javaGroup.removeUserWithResponse("Jonathan", Context.NONE);
         assertEquals(202, removeUserResponse.getStatusCode());
         assertFalse(javaGroup.doesUserExist("Jonathan"));
     }

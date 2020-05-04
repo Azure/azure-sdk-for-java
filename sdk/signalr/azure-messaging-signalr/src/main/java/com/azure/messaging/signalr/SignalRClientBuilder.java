@@ -74,6 +74,9 @@ public final class SignalRClientBuilder {
     private SignalRServiceVersion version;
     private String hub;
 
+    /**
+     * Creates a new builder instance with all values set to their default value.
+     */
     public SignalRClientBuilder() {
         policies = new ArrayList<>();
         httpLogOptions = new HttpLogOptions();

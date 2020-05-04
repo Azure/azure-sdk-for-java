@@ -7,7 +7,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.signalr.implementation.client.AzureWebSocketServiceRestAPI;
@@ -16,6 +15,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -56,6 +56,8 @@ public final class SignalRGroupAsyncClient {
      *
      * @param data The message to send.
      * @param excludedUsers An optional var-args of user IDs to not broadcast the message to.
+     * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
+     *     representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> broadcast(final String data, final String... excludedUsers) {
@@ -69,6 +71,8 @@ public final class SignalRGroupAsyncClient {
      *
      * @param data The message to send.
      * @param excludedUsers An optional list of user IDs to not broadcast the message to.
+     * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
+     *     representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> broadcast(final String data, final List<String> excludedUsers) {
@@ -88,6 +92,8 @@ public final class SignalRGroupAsyncClient {
      *
      * @param data The binary message to send.
      * @param excludedUsers An optional var-args of user IDs to not broadcast the message to.
+     * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
+     *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> broadcast(final byte[] data, final String... excludedUsers) {
@@ -101,6 +107,8 @@ public final class SignalRGroupAsyncClient {
      *
      * @param data The binary message to send.
      * @param excludedUsers An optional list of user IDs to not broadcast the message to.
+     * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
+     *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> broadcast(final byte[] data, final List<String> excludedUsers) {
@@ -117,19 +125,41 @@ public final class SignalRGroupAsyncClient {
     }
 
     /**
-     * Add a user to this group
+     * Add a user to this group that will remain in the group until they are manually removed.
      *
-     * @param userId The user name to add
+     * @param userId The user name to add.
+     * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
+     *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> addUser(final String userId) {
-        return addUserWithResponse(userId, Context.NONE);
+        return addUserWithResponse(userId, null, Context.NONE);
+    }
+
+    /**
+     * Add a user to this group with a specified time-to-live before that user will be removed. A null time to live will
+     * mean that the user remains in the group indefinitely.
+     *
+     * @param userId The user name to add
+     * @param timeToLive Specifies the duration that the user exists in the group. If not set, the user lives in the
+     * group forever.
+     * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
+     *      representing the response from the service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> addUser(final String userId, final Duration timeToLive) {
+        return addUserWithResponse(userId, timeToLive, Context.NONE);
     }
 
     // package-private
-    Mono<Response<Void>> addUserWithResponse(final String userId, final Context context) {
-        // TODO (jgiles) null TTL
-        return api.putAddUserToGroupWithResponseAsync(hub, group, userId, null, configureTracing(context))
+    Mono<Response<Void>> addUserWithResponse(final String userId, final Duration timeToLive, final Context context) {
+        // TODO (jogiles) How to handle TTL > Integer.MAX_VALUE?
+        // The user can set a TTL for how long the added user may last in the group. We must null check it (as that
+        // means 'indefinitely', but we also must be careful with the Duration object, as its 'getSeconds()' methods
+        // returns a long value. If the long value exceeds Integer.MAX_VALUE, then we will just use Integer.MAX_VALUE.
+        final Integer ttl = timeToLive == null ? null : (int) Math.min(Integer.MAX_VALUE, timeToLive.getSeconds());
+
+        return api.putAddUserToGroupWithResponseAsync(hub, group, userId, ttl, configureTracing(context))
            .doOnSubscribe(ignoredValue -> logger.info("Adding user '{}'", userId))
            .doOnSuccess(response -> logger.info("Added user '{}', response: {}", userId, response.getValue()))
            .doOnError(error -> logger.warning("Failed to add user '{}', response: {}", userId, error));
@@ -138,7 +168,9 @@ public final class SignalRGroupAsyncClient {
     /**
      * Remove a user from this group.
      *
-     * @param userId The user name to remove
+     * @param userId The user name to remove.
+     * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
+     *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeUser(final String userId) {
@@ -156,26 +188,31 @@ public final class SignalRGroupAsyncClient {
     /**
      * Check if a user is in this group
      *
-     * @param userId The user name to check for
+     * @param userId The user name to check for.
+     * @return A {@link Mono} containing a Boolean value representing whether the user exists in this group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> doesUserExist(final String userId) {
-        return doesUserExistWithResponse(userId).map(SimpleResponse::getValue);
+        return doesUserExistWithResponse(userId).map(Response::getValue);
     }
 
     /**
      * Check if a user is in this group
      *
-     * @param userId The user name to check for
+     * @param userId The user name to check for.
+     * @return A {@link Mono} containing a {@link Response} with a Boolean value representing whether the user exists in
+     *     this group, as well as status code and response headers representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Boolean>> doesUserExistWithResponse(final String userId) {
+    public Mono<Response<Boolean>> doesUserExistWithResponse(final String userId) {
         return doesUserExistWithResponse(userId, Context.NONE);
     }
 
     // package-private
-    Mono<SimpleResponse<Boolean>> doesUserExistWithResponse(final String userId, final Context context) {
+    Mono<Response<Boolean>> doesUserExistWithResponse(final String userId, final Context context) {
+        // TODO (jogiles) autorest should not return SimpleBoolean, Response should be sufficient
         return api.headCheckUserExistenceInGroupWithResponseAsync(hub, group, userId, configureTracing(context))
+           .map(simpleResponse -> (Response<Boolean>) simpleResponse)
            .doOnSubscribe(ignoredValue -> logger.info("Checking if user '{}' exists", userId))
            .doOnSuccess(response -> logger.info("Checked if user '{}' exists, response: {}",
                userId, response.getValue()))
@@ -186,6 +223,8 @@ public final class SignalRGroupAsyncClient {
      * Add a specific connection to this group.
      *
      * @param connectionId The connection id to add to this group.
+     * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
+     *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> addConnection(final String connectionId) {
@@ -205,6 +244,8 @@ public final class SignalRGroupAsyncClient {
      * Remove a specific connection from this group.
      *
      * @param connectionId The connection id to remove from this group.
+     * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
+     *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeConnection(final String connectionId) {
