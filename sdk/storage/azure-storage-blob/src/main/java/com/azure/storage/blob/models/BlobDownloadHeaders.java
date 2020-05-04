@@ -21,11 +21,23 @@ import java.util.HashMap;
 @Fluent
 public final class BlobDownloadHeaders {
 
+    /**
+     * Instantiates an empty {@code BlobDownloadHeaders}.
+     */
     public BlobDownloadHeaders() {
 
     }
 
+    /**
+     * Instantiates a {@code BlobDownloadHeaders} object based on the generated, internal version of the type.
+     * @param headers The generated headers type from which to extract values.
+     */
     public BlobDownloadHeaders(com.azure.storage.blob.implementation.models.BlobDownloadHeaders headers) {
+        /*
+        We have these two types because we needed to update this interface in a way that could not be generated
+        (getObjectReplicationSourcePolicies), so we switched to generating BlobDownloadHeaders into implementation and
+        wrapping it. Because it's headers type, we couldn't change the name of the generated type.
+         */
         this.lastModified = headers.getLastModified();
         this.metadata = headers.getMetadata();
         this.eTag = headers.getETag();
@@ -457,7 +469,6 @@ public final class BlobDownloadHeaders {
      * @return the objectReplicationRuleStatus value.
      */
     public Map<String, ObjectReplicationPolicy> getObjectReplicationSourcePolicies() {
-
         return this.objectReplicationSourcePolicies;
     }
 
