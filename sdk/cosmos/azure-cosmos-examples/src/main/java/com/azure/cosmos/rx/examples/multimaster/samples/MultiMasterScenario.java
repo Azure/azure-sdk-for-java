@@ -51,8 +51,8 @@ public class MultiMasterScenario {
 
         for (String region : regions) {
             ConnectionPolicy policy = new ConnectionPolicy();
-            policy.setUsingMultipleWriteLocations(true);
-            policy.setPreferredLocations(Collections.singletonList(region));
+            policy.setUsingMultipleWriteRegions(true);
+            policy.setPreferredRegions(Collections.singletonList(region));
 
             AsyncDocumentClient client =
                     new AsyncDocumentClient.Builder()
