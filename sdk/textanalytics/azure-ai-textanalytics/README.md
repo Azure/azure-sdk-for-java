@@ -251,7 +251,7 @@ textAnalyticsClient.recognizeLinkedEntities(document).forEach(linkedEntity -> {
     System.out.println("Linked Entities:");
     System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
         linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(), linkedEntity.getDataSource());
-    linkedEntity.getLinkedEntityMatches().forEach(linkedEntityMatch ->
+    linkedEntity.getMatches().forEach(linkedEntityMatch ->
         System.out.printf("Text: %s, score: %f.%n", linkedEntityMatch.getText(), linkedEntityMatch.getConfidenceScore()));
 });
 ```
