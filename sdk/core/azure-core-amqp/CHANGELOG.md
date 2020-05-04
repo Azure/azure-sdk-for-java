@@ -1,5 +1,8 @@
 # Release History
 
+## 1.2.0-beta.1 (Unreleased)
+
+
 ## 1.1.0 (2020-05-04)
 
 - Update proton-j dependencies to support larger web socket frame and module name.
