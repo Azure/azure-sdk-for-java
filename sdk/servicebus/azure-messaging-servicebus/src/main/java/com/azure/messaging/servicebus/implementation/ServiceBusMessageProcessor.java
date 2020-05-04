@@ -9,6 +9,7 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
+import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
 import reactor.core.Disposable;

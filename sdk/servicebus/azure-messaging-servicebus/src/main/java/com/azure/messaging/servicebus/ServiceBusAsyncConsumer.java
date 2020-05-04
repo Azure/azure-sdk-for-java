@@ -4,55 +4,82 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
+import com.azure.messaging.servicebus.implementation.MessageManagementOperations;
+import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.implementation.ServiceBusMessageProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
-import org.apache.qpid.proton.amqp.Symbol;
-import org.apache.qpid.proton.amqp.messaging.Accepted;
-import org.apache.qpid.proton.amqp.messaging.Modified;
-import org.apache.qpid.proton.amqp.messaging.Rejected;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
-import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Function;
+import java.util.function.BiFunction;
+
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * A package-private consumer responsible for reading {@link ServiceBusMessage} from a specific Service Bus link.
  */
 class ServiceBusAsyncConsumer implements AutoCloseable {
-    private static final Symbol DEAD_LETTER_OPERATION = Symbol.getSymbol(AmqpConstants.VENDOR + ":dead-letter");
-    private static final String DEAD_LETTER_REASON = "DeadLetterReason";
-    private static final String DEAD_LETTER_ERROR_DESCRIPTION = "DeadLetterErrorDescription";
-
+    private final ClientLogger logger = new ClientLogger(ServiceBusAsyncConsumer.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final String linkName;
-    private final ServiceBusReceiveLinkProcessor amqpReceiveLinkProcessor;
+    private final ServiceBusReceiveLinkProcessor linkProcessor;
     private final MessageSerializer messageSerializer;
     private final ServiceBusMessageProcessor processor;
 
-    public ServiceBusAsyncConsumer(String linkName, ServiceBusReceiveLinkProcessor amqpReceiveLinkProcessor,
+    ServiceBusAsyncConsumer(String linkName, ServiceBusReceiveLinkProcessor linkProcessor,
         MessageSerializer messageSerializer, boolean isAutoComplete, boolean autoLockRenewal,
         Duration maxAutoLockRenewDuration, AmqpRetryOptions retryOptions,
-        Function<MessageLockToken, Mono<Void>> onComplete,
-        Function<MessageLockToken, Mono<Void>> onAbandon,
-        Function<MessageLockToken, Mono<Instant>> onRenewLock) {
+        BiFunction<MessageLockToken, String, Mono<Instant>> renewMessageLock) {
         this.linkName = linkName;
-        this.amqpReceiveLinkProcessor = amqpReceiveLinkProcessor;
+        this.linkProcessor = linkProcessor;
         this.messageSerializer = messageSerializer;
-        this.processor = amqpReceiveLinkProcessor
+
+        final MessageManagement messageManagement = new MessageManagement(linkProcessor, renewMessageLock);
+
+        this.processor = linkProcessor
             .map(message -> this.messageSerializer.deserialize(message, ServiceBusReceivedMessage.class))
-            .subscribeWith(new ServiceBusMessageProcessor(isAutoComplete, autoLockRenewal, maxAutoLockRenewDuration,
-                retryOptions, amqpReceiveLinkProcessor.getErrorContext(), onComplete, onAbandon, onRenewLock));
+            .subscribeWith(new ServiceBusMessageProcessor(linkName, isAutoComplete, autoLockRenewal,
+                maxAutoLockRenewDuration, retryOptions, linkProcessor.getErrorContext(), messageManagement));
+    }
+
+    /**
+     * Gets the receive link name.
+     *
+     * @return The receive link name for the consumer.
+     */
+    String getLinkName() {
+        return linkName;
+    }
+
+    /**
+     * Begin consuming events until there are no longer any subscribers.
+     *
+     * @return A stream of events received from the partition.
+     */
+    Flux<ServiceBusReceivedMessage> receive() {
+        return processor;
+    }
+
+    Mono<Void> updateDisposition(String lockToken, DispositionStatus dispositionStatus, String deadLetterReason,
+        String deadLetterErrorDescription, Map<String, Object> propertiesToModify) {
+
+        final DeliveryState deliveryState = MessageUtils.getDeliveryState(dispositionStatus, deadLetterReason,
+            deadLetterErrorDescription, propertiesToModify);
+
+        if (deliveryState == null) {
+            return monoError(logger,
+                new IllegalArgumentException("'dispositionStatus' is not known. status: " + dispositionStatus));
+        }
+
+        return linkProcessor.updateDisposition(lockToken, deliveryState);
     }
 
     /**
@@ -62,75 +89,28 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
     public void close() {
         if (!isDisposed.getAndSet(true)) {
             processor.onComplete();
-            amqpReceiveLinkProcessor.cancel();
+            linkProcessor.cancel();
         }
     }
 
-    /**
-     * Begin consuming events until there are no longer any subscribers.
-     *
-     * @return A stream of events received from the partition.
-     */
-    public Flux<ServiceBusReceivedMessage> receive() {
-        return processor;
-    }
+    private static final class MessageManagement implements MessageManagementOperations {
+        private final ServiceBusReceiveLinkProcessor link;
+        private final BiFunction<MessageLockToken, String, Mono<Instant>> renewMessageLock;
 
-    public Mono<Void> updateDisposition(String lockToken, DispositionStatus dispositionStatus, String deadLetterReason,
-        String deadLetterErrorDescription, Map<String, Object> propertiesToModify) {
-
-        final DeliveryState state;
-        switch (dispositionStatus) {
-            case COMPLETED:
-                state = Accepted.getInstance();
-                break;
-            case SUSPENDED:
-                final Rejected rejected = new Rejected();
-                final ErrorCondition error = new ErrorCondition(DEAD_LETTER_OPERATION, null);
-                final Map<String, Object> errorInfo = new HashMap<>();
-                if (!CoreUtils.isNullOrEmpty(deadLetterReason)) {
-                    errorInfo.put(DEAD_LETTER_REASON, deadLetterReason);
-                }
-                if (!CoreUtils.isNullOrEmpty(deadLetterErrorDescription)) {
-                    errorInfo.put(DEAD_LETTER_ERROR_DESCRIPTION, deadLetterErrorDescription);
-                }
-                if (propertiesToModify != null) {
-                    errorInfo.putAll(propertiesToModify);
-                }
-                error.setInfo(errorInfo);
-                rejected.setError(error);
-
-                state = rejected;
-                break;
-            case ABANDONED:
-                final Modified outcome = new Modified();
-                if (propertiesToModify != null) {
-                    outcome.setMessageAnnotations(propertiesToModify);
-                }
-
-                state = outcome;
-                break;
-            case DEFERRED:
-                final Modified deferredOutcome = new Modified();
-                deferredOutcome.setUndeliverableHere(true);
-                if (propertiesToModify != null) {
-                    deferredOutcome.setMessageAnnotations(propertiesToModify);
-                }
-
-                state = deferredOutcome;
-                break;
-            default:
-                return Mono.error(new IllegalArgumentException("Unknown disposition status: " + dispositionStatus));
+        private MessageManagement(ServiceBusReceiveLinkProcessor link,
+            BiFunction<MessageLockToken, String, Mono<Instant>> renewMessageLock) {
+            this.link = link;
+            this.renewMessageLock = renewMessageLock;
         }
 
-        return amqpReceiveLinkProcessor.updateDisposition(lockToken, state);
-    }
+        @Override
+        public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState) {
+            return link.updateDisposition(lockToken, deliveryState);
+        }
 
-    /**
-     * Gets the receive link name.
-     *
-     * @return The receive link name for the consumer.
-     */
-    public String getLinkName() {
-        return linkName;
+        @Override
+        public Mono<Instant> renewMessageLock(String lockToken, String associatedLinkName) {
+            return renewMessageLock.apply(MessageLockToken.fromString(lockToken), associatedLinkName);
+        }
     }
 }
