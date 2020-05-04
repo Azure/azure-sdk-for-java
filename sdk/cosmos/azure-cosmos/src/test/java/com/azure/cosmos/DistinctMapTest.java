@@ -4,11 +4,18 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.query.DistinctHash;
 import com.azure.cosmos.implementation.query.DistinctMap;
 import com.azure.cosmos.implementation.query.DistinctQueryType;
+import com.azure.cosmos.implementation.routing.UInt128;
+import com.azure.cosmos.models.JsonSerializable;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -17,7 +24,7 @@ public class DistinctMapTest {
     @DataProvider(name = "distinctMapArgProvider")
     public Object[][] distinctMapArgProvider() {
         return new Object[][] {
-            {DistinctQueryType.ORDERED},
+//            {DistinctQueryType.ORDERED},
             {DistinctQueryType.UNORDERED},
         };
     }
@@ -27,7 +34,7 @@ public class DistinctMapTest {
         String doc = String.format("{ " + "\"id\": \"%s\", \"prop\": %d }", UUID.randomUUID().toString(), 5);
         Document resource = new Document(doc);
         DistinctMap distinctMap = DistinctMap.create(queryType, null);
-        Utils.ValueHolder<String> outHash = new Utils.ValueHolder<>();
+        Utils.ValueHolder<UInt128> outHash = new Utils.ValueHolder<>();
         boolean add = distinctMap.add(resource, outHash);
         assertThat(add).as("Value should be added first time").isTrue();
         boolean add2 = distinctMap.add(resource, outHash);
@@ -38,9 +45,32 @@ public class DistinctMapTest {
         assertThat(add3).as("different value should be added again").isTrue();
     }
 
+    @Test(groups = "unit")
+    public void someTest() throws IOException, NoSuchAlgorithmException {
+        String resource1 = String.format("{ "
+                                             + "\"id\": \"12345\","
+                                             + "\"mypk\": \"abcde\""
+                                             + "} ");
+
+        String resource2 = String.format("{ "
+                                             + "\"mypk\": \"abcde\","
+                                             + "\"id\": \"12345\""
+                                             + "} ");
+
+        Document doc1 = new Document(resource1);
+        Document doc2 = new Document(resource2);
+        ByteBuffer byteBuffer1 = ModelBridgeInternal.serializeJsonToByteBuffer((JsonSerializable) doc1);
+        ByteBuffer byteBuffer2 = ModelBridgeInternal.serializeJsonToByteBuffer((JsonSerializable) doc2);
+        UInt128 dHash1 = DistinctHash.getHash(doc1);
+        System.out.println("byteBuffer1.equals(byteBuffer2); = " + byteBuffer1.equals(byteBuffer2));
+        UInt128 dHash2 = DistinctHash.getHash(doc2);
+        System.out.println("dHash1.equals(dHash2) = " + dHash1.equals(dHash2));
+
+    }
+
     @Test(groups = "unit", dataProvider = "distinctMapArgProvider")
     public void stringValue(DistinctQueryType queryType) {
-        String resourceString = String.format("{ " + "\"id\": \"a\" }");        Utils.ValueHolder<String> outHash = new Utils.ValueHolder<>();
+        String resourceString = String.format("{ " + "\"id\": \"a\" }");        Utils.ValueHolder<UInt128> outHash = new Utils.ValueHolder<>();
 
         Document resource = new Document(resourceString);
         DistinctMap distinctMap = DistinctMap.create(queryType, null);
@@ -65,7 +95,7 @@ public class DistinctMapTest {
         Document resource = new Document(resourceString);
         DistinctMap distinctMap = DistinctMap.create(queryType, null);
 
-        Utils.ValueHolder<String> outHash = new Utils.ValueHolder<>();
+        Utils.ValueHolder<UInt128> outHash = new Utils.ValueHolder<>();
         boolean add = distinctMap.add(resource, outHash);
         assertThat(add).as("Value should be added first time").isTrue();
         boolean add2 = distinctMap.add(resource, outHash);
@@ -90,7 +120,7 @@ public class DistinctMapTest {
         Document resource = new Document(resourceString);
         DistinctMap distinctMap = DistinctMap.create(queryType, null);
 
-        Utils.ValueHolder<String> outHash = new Utils.ValueHolder<>();
+        Utils.ValueHolder<UInt128> outHash = new Utils.ValueHolder<>();
         boolean add = distinctMap.add(resource, outHash);
         assertThat(add).as("Value should be added first time").isTrue();
         boolean add2 = distinctMap.add(resource, outHash);
@@ -108,7 +138,7 @@ public class DistinctMapTest {
     @Test(groups = "unit", dataProvider = "distinctMapArgProvider")
     public void nullValue(DistinctQueryType queryType) {
         DistinctMap distinctMap = DistinctMap.create(queryType, null);
-        Utils.ValueHolder<String> outHash = new Utils.ValueHolder<>();
+        Utils.ValueHolder<UInt128> outHash = new Utils.ValueHolder<>();
         boolean add = distinctMap.add(null, outHash);
         assertThat(add).as("Value should be added first time").isTrue();
         boolean add2 = distinctMap.add(null, outHash);
@@ -130,12 +160,12 @@ public class DistinctMapTest {
 
         DistinctMap distinctMap = DistinctMap.create(queryType, null);
 
-        Utils.ValueHolder<String> outHash = new Utils.ValueHolder<>();
+        Utils.ValueHolder<UInt128> outHash = new Utils.ValueHolder<>();
         boolean add = distinctMap.add(resource, outHash);
         assertThat(add).as("Value should be added first time").isTrue();
         resource = new Document(resource2);
         boolean add2 = distinctMap.add(resource, outHash);
-        assertThat(add2).as("Order of objects in map should be treated same").isFalse();
+        assertThat(add2).as("Order of properties should not matter, so should not add").isFalse();
     }
 
 }

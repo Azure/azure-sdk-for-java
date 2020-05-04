@@ -91,6 +91,8 @@ public class DocumentQueryExecutionContextFactory {
                           QueryInfo queryInfo =
                               partitionedQueryExecutionInfo.getQueryInfo();
 
+                          System.out.println("queryInfo = " + queryInfo);
+
                           Mono<List<PartitionKeyRange>> partitionKeyRanges;
                           // The partitionKeyRangeIdInternal is no more a public API on
                           // FeedOptions, but have the below condition

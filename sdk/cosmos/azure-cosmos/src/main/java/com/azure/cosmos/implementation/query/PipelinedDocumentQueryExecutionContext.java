@@ -54,6 +54,8 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
 
         QueryInfo queryInfo = partitionedQueryExecutionInfo.getQueryInfo();
 
+        System.out.println("queryInfo.hasGroupBy() = " + queryInfo.hasGroupBy());
+
         if (queryInfo.hasOrderBy()) {
             createBaseComponentFunction = (continuationToken) -> {
                 FeedOptions orderByFeedOptions = new FeedOptions(feedOptions);
@@ -75,7 +77,7 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
         }
 
         Function<String, Flux<IDocumentQueryExecutionComponent<T>>> createAggregateComponentFunction;
-        if (queryInfo.hasAggregates()) {
+        if (queryInfo.hasAggregates() && !queryInfo.hasGroupBy()) {
             createAggregateComponentFunction = (continuationToken) -> {
                 return AggregateDocumentQueryExecutionContext.createAsync(createBaseComponentFunction,
                         queryInfo.getAggregates(), continuationToken);
@@ -94,15 +96,28 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
             createDistinctComponentFunction = createAggregateComponentFunction;
         }
 
+        Function<String, Flux<IDocumentQueryExecutionComponent<T>>> createGroupByComponentFunction;
+        if (queryInfo.hasGroupBy()) {
+            createGroupByComponentFunction = (continuationToken) -> {
+                return GroupByDocumentQueryExecutionContext.createAsync(createDistinctComponentFunction,
+                                                                        continuationToken,
+                                                                        queryInfo.getGroupByAliasToAggregateType(),
+                                                                        queryInfo.getGroupByAliases(),
+                                                                        queryInfo.hasSelectValue());
+            };
+        } else{
+            createGroupByComponentFunction = createDistinctComponentFunction;
+        }
+
         Function<String, Flux<IDocumentQueryExecutionComponent<T>>> createSkipComponentFunction;
         if (queryInfo.hasOffset()) {
             createSkipComponentFunction = (continuationToken) -> {
-                return SkipDocumentQueryExecutionContext.createAsync(createDistinctComponentFunction,
+                return SkipDocumentQueryExecutionContext.createAsync(createGroupByComponentFunction,
                                                                      queryInfo.getOffset(),
                                                                      continuationToken);
             };
         } else {
-            createSkipComponentFunction = createDistinctComponentFunction;
+            createSkipComponentFunction = createGroupByComponentFunction;
         }
 
         Function<String, Flux<IDocumentQueryExecutionComponent<T>>> createTopComponentFunction;

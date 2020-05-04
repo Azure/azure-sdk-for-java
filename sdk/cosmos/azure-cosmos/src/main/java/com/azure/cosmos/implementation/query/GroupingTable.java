@@ -1,0 +1,74 @@
+package com.azure.cosmos.implementation.query;
+
+import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.query.aggregation.AggregateOperator;
+import com.azure.cosmos.implementation.routing.UInt128;
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+public class GroupingTable {
+    private static final List<AggregateOperator> EmptyAggregateOperators = new ArrayList<>();
+
+    private final Map<UInt128, SingleGroupAggregator> table;
+    private final Map<String, AggregateOperator> groupByAliasToAggregateType;
+    private final List<String> orderedAliases;
+    private final boolean hasSelectValue;
+
+    public GroupingTable(
+        Map<String, AggregateOperator> groupByAliasToAggregateType, List<String> orderedAliases,
+        boolean hasSelectValue) {
+        this.table = new HashMap<>();
+        this.groupByAliasToAggregateType = groupByAliasToAggregateType;
+        this.orderedAliases = orderedAliases;
+        this.hasSelectValue = hasSelectValue;
+    }
+
+    public void addPayLoad(GroupByDocumentQueryExecutionContext.RewrittenGroupByProjection rewrittenGroupByProjection) {
+        try {
+            final UInt128 groupByKeysHash = DistinctHash.getHash(rewrittenGroupByProjection.getGroupByItems());
+            SingleGroupAggregator singleGroupAggregator;
+            if (!this.table.containsKey(groupByKeysHash)) {
+                singleGroupAggregator = SingleGroupAggregator.create(EmptyAggregateOperators,
+                                                                     this.groupByAliasToAggregateType,
+                                                                     this.orderedAliases,
+                                                                     this.hasSelectValue,
+                                                                      null);
+                this.table.put(groupByKeysHash, singleGroupAggregator);
+            } else {
+                singleGroupAggregator = table.get(groupByKeysHash);
+            }
+
+            singleGroupAggregator.addValues(rewrittenGroupByProjection.getPayload());
+
+        } catch (JsonProcessingException | NoSuchAlgorithmException e) {
+            //TODO: User logger instead
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Document> drain(int maxItemCount) {
+        //TODO: Check if this can to be improved?
+        Collection<UInt128> keys = this.table.keySet().stream().limit(maxItemCount).collect(Collectors.toList());
+        List<SingleGroupAggregator> singleGroupAggregators = new ArrayList<>(keys.size());
+        for (UInt128 key : keys) {
+            singleGroupAggregators.add(this.table.get(key));
+            this.table.remove(key);
+        }
+        List<Document> results = new ArrayList<>();
+        for (SingleGroupAggregator singleGroupAggregator : singleGroupAggregators) {
+            results.add(singleGroupAggregator.getResult());
+        }
+
+        return results;
+    }
+}

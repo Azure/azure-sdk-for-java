@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.FeedResponseValidator;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.query.UnorderedDistinctMap;
+import com.azure.cosmos.implementation.routing.UInt128;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -208,7 +209,7 @@ public class DistinctQueryTests extends TestSuiteBase {
 
 
             Iterator<FeedResponse<CosmosItemProperties>> iterator = queryObservable.byPage().toIterable().iterator();
-            Utils.ValueHolder<String> outHash = new Utils.ValueHolder<>();
+            Utils.ValueHolder<UInt128> outHash = new Utils.ValueHolder<>();
             UnorderedDistinctMap distinctMap = new UnorderedDistinctMap();
 
             while (iterator.hasNext()) {
@@ -333,59 +334,4 @@ public class DistinctQueryTests extends TestSuiteBase {
         waitIfNeededForReplicasToCatchUp(this.getClientBuilder());
     }
 
-    public enum City {
-        NEW_YORK,
-        LOS_ANGELES,
-        SEATTLE
-    }
-
-    public final class Pet extends JsonSerializable {
-        @JsonProperty("name")
-        public String name;
-
-        @JsonProperty("age")
-        public int age;
-
-        public Pet(String name, int age) {
-            this.name = name;
-            this.age = age;
-        }
-    }
-
-    public final class Person extends JsonSerializable {
-        @JsonProperty("name")
-        public String name;
-
-        @JsonProperty("id")
-        public String id;
-
-        @JsonProperty("city")
-        public City city;
-
-        @JsonProperty("income")
-        public double income;
-
-        @JsonProperty("children")
-        public List<Person> children;
-
-        @JsonProperty("age")
-        public int age;
-
-        @JsonProperty("pet")
-        public Pet pet;
-
-        @JsonProperty("guid")
-        public UUID guid;
-
-        public Person(String name, City city, double income, List<Person> children, int age, Pet pet, UUID guid) {
-            this.name = name;
-            this.city = city;
-            this.income = income;
-            this.children = children;
-            this.age = age;
-            this.pet = pet;
-            this.guid = guid;
-            this.id = UUID.randomUUID().toString();
-        }
-    }
 }

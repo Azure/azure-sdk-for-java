@@ -21,7 +21,9 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.UniqueKey;
 import com.azure.cosmos.models.UniqueKeyPolicy;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -157,6 +159,15 @@ public class JsonSerializable {
     @SuppressWarnings("unchecked")
     public Map<String, Object> getMap() {
         return getMapper().convertValue(this.propertyBag, HashMap.class);
+    }
+
+    protected <T> Map<String, T> getMap(String propertyKey) {
+        if (this.propertyBag.has(propertyKey)) {
+            Object value = this.get(propertyKey);
+            return getMapper().convertValue(value, new TypeReference<Map<String, T>>() {
+            });
+        }
+        return null;
     }
 
     /**
@@ -398,7 +409,7 @@ public class JsonSerializable {
     // Implicit or explicit cast to T is done only after checking values are assignable from Class<T>.
     public <T> List<T> getList(String propertyName, Class<T> c, boolean... convertFromCamelCase) {
         if (this.propertyBag.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
-            ArrayNode jsonArray = (ArrayNode) this.propertyBag.get(propertyName);
+            JsonNode jsonArray = this.propertyBag.get(propertyName);
             ArrayList<T> result = new ArrayList<T>();
 
             boolean isBaseClass = false;
@@ -573,6 +584,11 @@ public class JsonSerializable {
     public ByteBuffer serializeJsonToByteBuffer() {
         this.populatePropertyBag();
         return Utils.serializeJsonToByteBuffer(getMapper(), propertyBag);
+    }
+
+    protected ByteBuffer serializeJsonToByteBuffer(ObjectMapper objectMapper) {
+        this.populatePropertyBag();
+        return Utils.serializeJsonToByteBuffer(objectMapper, propertyBag);
     }
 
     private String toJson(Object object) {

@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.routing.UInt128;
 import com.azure.cosmos.implementation.JsonSerializable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +16,7 @@ public class DistinctContinuationToken extends JsonSerializable {
 
     private static final Logger logger = LoggerFactory.getLogger(TakeContinuationToken.class);
 
-    public DistinctContinuationToken(String lastHash, String sourceToken) {
+    public DistinctContinuationToken(UInt128 lastHash, String sourceToken) {
         this.setLastHash(lastHash);
         this.setSourceToken(sourceToken);
     }
@@ -60,8 +61,8 @@ public class DistinctContinuationToken extends JsonSerializable {
         BridgeInternal.setProperty(this, SOURCE_TOKEN_PROPERTY_NAME, sourceToken);
     }
 
-    String getLastHash() {
-        return super.getString(LAST_HASH_PROPERTY_NAME);
+    UInt128 getLastHash() {
+        return super.getObject(LAST_HASH_PROPERTY_NAME, UInt128.class);
     }
 
     /**
@@ -69,7 +70,7 @@ public class DistinctContinuationToken extends JsonSerializable {
      *
      * @param lastHash Value to set for property 'lastHash'.
      */
-    public void setLastHash(String lastHash) {
+    public void setLastHash(UInt128 lastHash) {
         BridgeInternal.setProperty(this, LAST_HASH_PROPERTY_NAME, lastHash);
     }
 
