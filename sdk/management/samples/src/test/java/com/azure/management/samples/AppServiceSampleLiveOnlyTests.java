@@ -67,12 +67,12 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     public void testManageWebAppCosmosDbByMsi() {
-        Assertions.assertTrue(ManageWebAppCosmosDbByMsi.runSample(azure));
+        Assertions.assertTrue(ManageWebAppCosmosDbByMsi.runSample(azure, credentialFromFile(), clientIdFromFile()));
     }
 
     @Test
     public void testManageWebAppCosmosDbThroughKeyVault() {
-        Assertions.assertTrue(ManageWebAppCosmosDbThroughKeyVault.runSample(azure));
+        Assertions.assertTrue(ManageWebAppCosmosDbThroughKeyVault.runSample(azure, clientIdFromFile()));
     }
 
     @Test

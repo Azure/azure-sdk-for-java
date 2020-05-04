@@ -38,9 +38,6 @@ public class AuthorizationCodeCredential implements TokenCredential {
      */
     AuthorizationCodeCredential(String clientId, String tenantId, String authCode, URI redirectUri,
                                 IdentityClientOptions identityClientOptions) {
-        if (tenantId == null) {
-            tenantId = "common";
-        }
         identityClient = new IdentityClientBuilder()
             .tenantId(tenantId)
             .clientId(clientId)

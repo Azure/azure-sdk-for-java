@@ -20,6 +20,8 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.List;
+import java.util.UUID;
 
 import static com.azure.messaging.servicebus.ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -36,6 +38,9 @@ public class ServiceBusSenderClientTest {
 
     @Captor
     private ArgumentCaptor<ServiceBusMessage> singleMessageCaptor;
+
+    @Captor
+    private ArgumentCaptor<List<ServiceBusMessage>> messageListCaptor;
 
     @Captor
     private ArgumentCaptor<Instant> scheduleMessageCaptor;
@@ -70,6 +75,7 @@ public class ServiceBusSenderClientTest {
     void teardown() {
         sender.close();
         singleMessageCaptor = null;
+        messageListCaptor = null;
         Mockito.framework().clearInlineMocks();
     }
 
@@ -142,6 +148,31 @@ public class ServiceBusSenderClientTest {
 
         //Assert
         Assertions.assertEquals(batch, messageBatch);
+    }
+
+    /**
+     * Verifies that sending an array of message will result in calling sender.send(Message...).
+     */
+    @Test
+    void sendMessageList() {
+        // Arrange
+        final int count = 4;
+        final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString(),
+            contents);
+
+        when(asyncSender.send(messages)).thenReturn(Mono.empty());
+
+        // Act
+        sender.send(messages);
+
+        // Assert
+        verify(asyncSender, times(1)).send(messages);
+        verify(asyncSender).send(messageListCaptor.capture());
+
+        final List<ServiceBusMessage> sentMessages = messageListCaptor.getValue();
+        Assertions.assertEquals(count, sentMessages.size());
+        sentMessages.forEach(serviceBusMessage -> Assertions.assertArrayEquals(contents, serviceBusMessage.getBody()));
     }
 
     /**

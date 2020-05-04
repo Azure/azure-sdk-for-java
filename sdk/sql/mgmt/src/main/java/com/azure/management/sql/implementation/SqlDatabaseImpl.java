@@ -774,7 +774,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
         if (this.parentId() == null) {
             return ResourceUtils
                 .constructResourceId(
-                    this.sqlServerManager.getSubscriptionId(),
+                    this.sqlServerManager.subscriptionId(),
                     this.resourceGroupName,
                     "Microsoft.Sql",
                     "elasticPools",
