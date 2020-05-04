@@ -143,7 +143,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *
      * @param lockToken Lock token of the message.
      *
-     * @return A {@link Mono} that completes when the Service Bus operation finishes.
+     * @return A {@link Mono} that completes when the Service Bus abandon operation completes.
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
@@ -160,6 +160,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @param lockToken Lock token of the message.
      * @param sessionId Session id of the message to abandon. {@code null} if there is no session.
      *
+     * @return A {@link Mono} that completes when the Service Bus abandon operation completes.
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
@@ -196,6 +197,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @param propertiesToModify Properties to modify on the message.
      * @param sessionId Session id of the message to abandon. {@code null} if there is no session.
      *
+     * @return A {@link Mono} that completes when the Service Bus abandon operation completes.
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
@@ -212,7 +214,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *
      * @param lockToken Lock token of the message.
      *
-     * @return A {@link Mono} that completes when the Service Bus operation finishes.
+     * @return A {@link Mono} that finishes when the message is completed on Service Bus.
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
@@ -229,6 +231,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @param lockToken Lock token of the message.
      * @param sessionId Session id of the message to complete. {@code null} if there is no session.
      *
+     * @return A {@link Mono} that finishes when the message is completed on Service Bus.
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
@@ -245,7 +248,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *
      * @param lockToken Lock token of the message.
      *
-     * @return A {@link Mono} that completes when the Service Bus operation finishes.
+     * @return A {@link Mono} that completes when the Service Bus defer operation finishes.
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
@@ -263,6 +266,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @param lockToken Lock token of the message.
      * @param sessionId Session id of the message to defer. {@code null} if there is no session.
      *
+     * @return A {@link Mono} that completes when the defer operation finishes.
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
@@ -280,7 +284,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @param lockToken Lock token of the message.
      * @param propertiesToModify Message properties to modify.
      *
-     * @return A {@link Mono} that completes when the Service Bus operation finishes.
+     * @return A {@link Mono} that completes when the defer operation finishes.
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
@@ -299,6 +303,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @param propertiesToModify Message properties to modify.
      * @param sessionId Session id of the message to defer. {@code null} if there is no session.
      *
+     * @return A {@link Mono} that completes when the Service Bus defer operation finishes.
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
@@ -315,7 +320,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *
      * @param lockToken Lock token of the message.
      *
-     * @return A {@link Mono} that completes when the Service Bus operation finishes.
+     * @return A {@link Mono} that completes when the dead letter operation finishes.
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
@@ -333,6 +338,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @param lockToken Lock token of the message.
      * @param sessionId Session id of the message to deadletter. {@code null} if there is no session.
      *
+     * @return A {@link Mono} that completes when the dead letter operation finishes.
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
@@ -351,7 +357,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @param lockToken Lock token of the message.
      * @param deadLetterOptions The options to specify when moving message to the deadletter sub-queue.
      *
-     * @return A {@link Mono} that completes when the Service Bus operation finishes.
+     * @return A {@link Mono} that completes when the dead letter operation finishes.
      * @throws NullPointerException if {@code lockToken} or {@code deadLetterOptions} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
@@ -369,6 +375,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @param deadLetterOptions The options to specify when moving message to the deadletter sub-queue.
      * @param sessionId Session id of the message to deadletter. {@code null} if there is no session.
      *
+     * @return A {@link Mono} that completes when the dead letter operation finishes.
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
