@@ -128,14 +128,21 @@ public class DefaultAzureCredentialTest {
         PowerMockito.whenNew(AzureCliCredential.class).withAnyArguments()
             .thenReturn(azureCliCredential);
 
+        VisualStudioCodeCredential vscodeCredential = PowerMockito.mock(VisualStudioCodeCredential.class);
+        when(vscodeCredential.getToken(request))
+                .thenReturn(Mono.error(new CredentialUnavailableException("Cannot get token from VS Code credential")));
+        PowerMockito.whenNew(VisualStudioCodeCredential.class).withAnyArguments()
+                .thenReturn(vscodeCredential);
+
 
         // test
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         StepVerifier.create(credential.getToken(request))
             .expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage()
                                       .matches("Tried EnvironmentCredential, ManagedIdentityCredential, "
-                                                   + "SharedTokenCacheCredential"
-                                                   + "[\\$\\w]+\\$\\d*,\\s+AzureCliCredential[\\$\\w\\s\\.]+"))
+                                                   + "SharedTokenCacheCredential[\\$\\w]+\\$\\d*,\\s+"
+                                                   + "AzureCliCredential[\\$\\w]+\\$\\d*,\\s+"
+                                                   + "VisualStudioCodeCredential[\\$\\w]+\\$\\d* but [\\$\\w\\s\\.]+"))
             .verify();
     }
 
@@ -146,6 +153,7 @@ public class DefaultAzureCredentialTest {
                                                 .excludeAzureCliCredential()
                                                 .excludeManagedIdentityCredential()
                                                 .excludeSharedTokenCacheCredential()
+                                                .excludeVSCodeCredential()
                                                 .build();
     }
 
@@ -155,6 +163,11 @@ public class DefaultAzureCredentialTest {
         // setup
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
 
+        VisualStudioCodeCredential vscodeCredential = PowerMockito.mock(VisualStudioCodeCredential.class);
+        when(vscodeCredential.getToken(request))
+                .thenReturn(Mono.error(new CredentialUnavailableException("Cannot get token from VS Code credential")));
+        PowerMockito.whenNew(VisualStudioCodeCredential.class).withAnyArguments()
+                .thenReturn(vscodeCredential);
 
         ManagedIdentityCredential managedIdentityCredential = PowerMockito.mock(ManagedIdentityCredential.class);
         when(managedIdentityCredential.getToken(request))
@@ -171,7 +184,8 @@ public class DefaultAzureCredentialTest {
             .expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage()
                   .matches("Tried ManagedIdentityCredential[\\$\\w]+\\$\\d*,"
                                + " SharedTokenCacheCredential, "
-                               + "AzureCliCredential[\\$\\w\\s\\.]+"))
+                               + "AzureCliCredential, "
+                               + "VisualStudioCodeCredential[\\$\\w]+\\$\\d* but [\\$\\w\\s\\.]+"))
             .verify();
     }
 
@@ -181,15 +195,22 @@ public class DefaultAzureCredentialTest {
 
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
 
+        VisualStudioCodeCredential vscodeCredential = PowerMockito.mock(VisualStudioCodeCredential.class);
+        when(vscodeCredential.getToken(request))
+                .thenReturn(Mono.error(new CredentialUnavailableException("Cannot get token from VS Code credential")));
+        PowerMockito.whenNew(VisualStudioCodeCredential.class).withAnyArguments()
+                .thenReturn(vscodeCredential);
+
         // test
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
                                                 .excludeManagedIdentityCredential()
                                                 .build();
         StepVerifier.create(credential.getToken(request))
             .expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage()
-                                      .startsWith("Tried EnvironmentCredential, "
+                                      .matches("Tried EnvironmentCredential, "
                                                    + "SharedTokenCacheCredential, "
-                                                   + "AzureCliCredential"))
+                                                   + "AzureCliCredential, "
+                                                   + "VisualStudioCodeCredential[\\$\\w]+\\$\\d* but [\\$\\w\\s\\.]+"))
             .verify();
     }
 
@@ -205,6 +226,12 @@ public class DefaultAzureCredentialTest {
         PowerMockito.whenNew(ManagedIdentityCredential.class).withAnyArguments()
             .thenReturn(managedIdentityCredential);
 
+        VisualStudioCodeCredential vscodeCredential = PowerMockito.mock(VisualStudioCodeCredential.class);
+        when(vscodeCredential.getToken(request))
+                .thenReturn(Mono.error(new CredentialUnavailableException("Cannot get token from VS Code credential")));
+        PowerMockito.whenNew(VisualStudioCodeCredential.class).withAnyArguments()
+                .thenReturn(vscodeCredential);
+
 
         // test
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
@@ -213,8 +240,9 @@ public class DefaultAzureCredentialTest {
         StepVerifier.create(credential.getToken(request))
             .expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage()
                                       .matches("Tried EnvironmentCredential, "
-                                                      + "ManagedIdentityCredential[\\$\\w]+\\$\\d*, "
-                                                      + "AzureCliCredential[\\$\\w\\s\\.]+"))
+                                                  + "ManagedIdentityCredential[\\$\\w]+\\$\\d*, "
+                                                  + "AzureCliCredential, "
+                                                  + "VisualStudioCodeCredential[\\$\\w]+\\$\\d* but [\\$\\w\\s\\.]+"))
             .verify();
     }
 
@@ -230,6 +258,12 @@ public class DefaultAzureCredentialTest {
         PowerMockito.whenNew(ManagedIdentityCredential.class).withAnyArguments()
             .thenReturn(managedIdentityCredential);
 
+        VisualStudioCodeCredential vscodeCredential = PowerMockito.mock(VisualStudioCodeCredential.class);
+        when(vscodeCredential.getToken(request))
+                .thenReturn(Mono.error(new CredentialUnavailableException("Cannot get token from VS Code credential")));
+        PowerMockito.whenNew(VisualStudioCodeCredential.class).withAnyArguments()
+                .thenReturn(vscodeCredential);
+
 
         // test
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
@@ -238,8 +272,9 @@ public class DefaultAzureCredentialTest {
         StepVerifier.create(credential.getToken(request))
             .expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage()
                                       .matches("Tried EnvironmentCredential, "
-                                                      + "ManagedIdentityCredential[\\$\\w]+\\$\\d*, "
-                                                      + "SharedTokenCacheCredential but[\\$\\w\\s\\.]+"))
+                                                   + "ManagedIdentityCredential[\\$\\w]+\\$\\d*, "
+                                                   + "SharedTokenCacheCredential, "
+                                                   + "VisualStudioCodeCredential[\\$\\w]+\\$\\d* but [\\$\\w\\s\\.]+"))
             .verify();
     }
 
@@ -257,15 +292,22 @@ public class DefaultAzureCredentialTest {
         PowerMockito.whenNew(ManagedIdentityCredential.class).withAnyArguments()
             .thenReturn(managedIdentityCredential);
 
+        VisualStudioCodeCredential vscodeCredential = PowerMockito.mock(VisualStudioCodeCredential.class);
+        when(vscodeCredential.getToken(request))
+                .thenReturn(Mono.error(new CredentialUnavailableException("Cannot get token from VS Code credential")));
+        PowerMockito.whenNew(VisualStudioCodeCredential.class).withAnyArguments()
+                .thenReturn(vscodeCredential);
+
         // test
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
                                                 .build();
         StepVerifier.create(credential.getToken(request))
             .expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage()
                                         .matches("Tried EnvironmentCredential, "
-                                                        + "ManagedIdentityCredential[\\$\\w]+\\$\\d*, "
-                                                        + "SharedTokenCacheCredential, "
-                                                        + "AzureCliCredential but[\\$\\w\\s\\.]+"))
+                                                    + "ManagedIdentityCredential[\\$\\w]+\\$\\d*, "
+                                                    + "SharedTokenCacheCredential, "
+                                                    + "AzureCliCredential, "
+                                                    + "VisualStudioCodeCredential[\\$\\w]+\\$\\d* but [\\$\\w\\s\\.]+"))
             .verify();
     }
 }

@@ -1,5 +1,8 @@
 # Release History
 
+## 1.0.0-beta.2 (Unreleased)
+
+
 ## 1.0.0-beta.1 (2020-04-23)
 Version 1.0.0-beta.1 is a preview of our efforts in creating a Azure Form Recognizer client library that is developer-friendly
 and idiomatic to the Java ecosystem. The principles that guide

@@ -3,6 +3,8 @@
 
 package com.azure.core.util.polling;
 
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -724,6 +726,30 @@ public class PollerTests {
         PollResponse<Response> pollResponse = poller.waitUntil(matchStatus);
         Assertions.assertEquals(matchStatus, pollResponse.getStatus());
         Assertions.assertEquals(2, invocationCount[0]);
+    }
+
+    @Test
+    public void testPollerFluxError() throws InterruptedException {
+        IllegalArgumentException expectedException = new IllegalArgumentException();
+        PollerFlux<String, String> pollerFlux = PollerFlux.error(expectedException);
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        pollerFlux.subscribe(
+            response -> Assertions.fail("Did not expect a response"),
+            ex -> {
+                countDownLatch.countDown();
+                Assertions.assertSame(expectedException, ex);
+            },
+            () -> Assertions.fail("Did not expect the flux to complete")
+        );
+        boolean completed = countDownLatch.await(1, TimeUnit.SECONDS);
+        Assertions.assertTrue(completed);
+    }
+
+    @Test
+    public void testSyncPollerError() {
+        PollerFlux<String, String> pollerFlux = PollerFlux.error(new IllegalArgumentException());
+        // should getSyncPoller() be lazy?
+        Assertions.assertThrows(IllegalArgumentException.class, () -> pollerFlux.getSyncPoller());
     }
 
     public static class Response {

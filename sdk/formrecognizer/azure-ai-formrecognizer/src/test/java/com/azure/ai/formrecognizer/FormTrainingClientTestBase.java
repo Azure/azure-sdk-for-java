@@ -3,10 +3,13 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.implementation.models.FormFieldsReport;
+import com.azure.ai.formrecognizer.implementation.models.Model;
 import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelField;
 import com.azure.ai.formrecognizer.models.CustomFormSubModel;
+import com.azure.ai.formrecognizer.models.ErrorInformation;
 import com.azure.ai.formrecognizer.models.FormRecognizerError;
 import com.azure.ai.formrecognizer.models.TrainingDocumentInfo;
 import com.azure.core.credential.AzureKeyCredential;
@@ -28,24 +31,11 @@ import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
-import com.azure.storage.blob.BlobContainerClient;
-import com.azure.storage.blob.BlobServiceClient;
-import com.azure.storage.blob.BlobServiceClientBuilder;
-import com.azure.storage.blob.sas.BlobContainerSasPermission;
-import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
-import com.azure.storage.blob.specialized.BlockBlobClient;
-import com.azure.storage.common.StorageSharedKeyCredential;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiConsumer;
@@ -56,17 +46,83 @@ import java.util.stream.Collectors;
 import static com.azure.ai.formrecognizer.FormRecognizerClientBuilder.OCP_APIM_SUBSCRIPTION_KEY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class FormTrainingClientTestBase extends TestBase {
+    public static final String FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL =
+        "FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL";
     private static final String AZURE_FORM_RECOGNIZER_API_KEY = "AZURE_FORM_RECOGNIZER_API_KEY";
     private static final String NAME = "name";
     private static final String FORM_RECOGNIZER_PROPERTIES = "azure-ai-formrecognizer.properties";
     private static final String VERSION = "version";
-
     private final HttpLogOptions httpLogOptions = new HttpLogOptions();
     private final Map<String, String> properties = CoreUtils.getProperties(FORM_RECOGNIZER_PROPERTIES);
     private final String clientName = properties.getOrDefault(NAME, "UnknownName");
     private final String clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
+
+    static void validateCustomModelData(CustomFormModel actualCustomModel, Model modelRawResponse,
+        boolean isLabeled) {
+        assertEquals(modelRawResponse.getModelInfo().getStatus().toString(),
+            actualCustomModel.getModelStatus().toString());
+        validateErrorData(modelRawResponse.getTrainResult().getErrors(), actualCustomModel.getModelError());
+        assertNotNull(actualCustomModel.getCreatedOn());
+        assertNotNull(actualCustomModel.getLastUpdatedOn());
+        validateTrainingDocumentsData(modelRawResponse.getTrainResult().getTrainingDocuments(),
+            actualCustomModel.getTrainingDocuments());
+        final List<CustomFormSubModel> subModelList =
+            actualCustomModel.getSubModels().stream().collect(Collectors.toList());
+        if (isLabeled) {
+            final List<FormFieldsReport> fields = modelRawResponse.getTrainResult().getFields();
+            for (final FormFieldsReport expectedField : fields) {
+                final CustomFormModelField actualFormField =
+                    subModelList.get(0).getFieldMap().get(expectedField.getFieldName());
+                assertEquals(expectedField.getFieldName(), actualFormField.getName());
+                assertEquals(expectedField.getAccuracy(), actualFormField.getAccuracy());
+
+            }
+            assertTrue(subModelList.get(0).getFormType().startsWith("form-"));
+            assertEquals(modelRawResponse.getTrainResult().getAverageModelAccuracy(),
+                subModelList.get(0).getAccuracy());
+        } else {
+            modelRawResponse.getKeys().getClusters().forEach((clusterId, fields) -> {
+                assertTrue(subModelList.get(Integer.parseInt(clusterId)).getFormType().endsWith(clusterId));
+                final List<String> customFormFieldList = new ArrayList<String>();
+                subModelList.get(Integer.parseInt(clusterId)).getFieldMap().values().forEach(customFormModelField -> customFormFieldList.add(customFormModelField.getLabel()));
+                Collections.sort(fields);
+                Collections.sort(customFormFieldList);
+                assertEquals(fields, customFormFieldList);
+            });
+        }
+    }
+
+    private static void validateTrainingDocumentsData(List<com.azure.ai.formrecognizer.implementation.models.TrainingDocumentInfo> expectedTrainingDocuments,
+        List<TrainingDocumentInfo> actualTrainingDocuments) {
+
+        assertEquals(expectedTrainingDocuments.size(), actualTrainingDocuments.size());
+        for (int i = 0; i < actualTrainingDocuments.size(); i++) {
+            com.azure.ai.formrecognizer.implementation.models.TrainingDocumentInfo expectedTrainingDocument =
+                expectedTrainingDocuments.get(i);
+            TrainingDocumentInfo actualTrainingDocument = actualTrainingDocuments.get(i);
+            assertEquals(expectedTrainingDocument.getDocumentName(), actualTrainingDocument.getName());
+            assertEquals(expectedTrainingDocument.getPages(), actualTrainingDocument.getPageCount());
+            assertEquals(expectedTrainingDocument.getStatus().toString(),
+                actualTrainingDocument.getTrainingStatus().toString());
+            validateErrorData(expectedTrainingDocument.getErrors(), actualTrainingDocument.getDocumentErrors());
+        }
+    }
+
+    private static void validateErrorData(List<ErrorInformation> expectedErrors,
+        List<FormRecognizerError> actualErrors) {
+        if (expectedErrors != null && actualErrors != null) {
+            assertEquals(expectedErrors.size(), actualErrors.size());
+            for (int i = 0; i < actualErrors.size(); i++) {
+                ErrorInformation expectedError = expectedErrors.get(i);
+                FormRecognizerError actualError = actualErrors.get(i);
+                assertEquals(expectedError.getCode(), actualError.getCode());
+                assertEquals(expectedError.getMessage(), actualError.getMessage());
+            }
+        }
+    }
 
     static void validateCustomModel(CustomFormModel expectedModel, CustomFormModel actualCustomModel) {
         assertNotNull(actualCustomModel.getModelId());
@@ -86,9 +142,9 @@ public abstract class FormTrainingClientTestBase extends TestBase {
 
     private static void validateTrainingDocuments(List<TrainingDocumentInfo> expectedTrainingDocuments,
         List<TrainingDocumentInfo> actualTrainingDocuments) {
-        List<TrainingDocumentInfo> actualTrainingList = actualTrainingDocuments.stream().collect(Collectors.toList());
+        List<TrainingDocumentInfo> actualTrainingList = new ArrayList<>(actualTrainingDocuments);
         List<TrainingDocumentInfo> expectedTrainingList =
-            expectedTrainingDocuments.stream().collect(Collectors.toList());
+            new ArrayList<>(expectedTrainingDocuments);
         assertEquals(expectedTrainingList.size(), actualTrainingList.size());
         for (int i = 0; i < actualTrainingList.size(); i++) {
             TrainingDocumentInfo expectedTrainingDocument = expectedTrainingList.get(i);
@@ -103,8 +159,8 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     private static void validateErrors(List<FormRecognizerError> expectedErrors,
         List<FormRecognizerError> actualErrors) {
         if (expectedErrors != null && actualErrors != null) {
-            List<FormRecognizerError> actualErrorList = actualErrors.stream().collect(Collectors.toList());
-            List<FormRecognizerError> expectedErrorList = expectedErrors.stream().collect(Collectors.toList());
+            List<FormRecognizerError> actualErrorList = new ArrayList<>(actualErrors);
+            List<FormRecognizerError> expectedErrorList = new ArrayList<>(expectedErrors);
             assertEquals(expectedErrorList.size(), actualErrorList.size());
             for (int i = 0; i < actualErrorList.size(); i++) {
                 FormRecognizerError expectedError = expectedErrorList.get(i);
@@ -175,8 +231,8 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     @Test
     abstract void beginTrainingLabeledResult();
 
-    @Test
-    abstract void beginTrainingUnlabeledResult();
+    // @Test
+    // abstract void beginTrainingUnlabeledResult();
 
     void getCustomModelInvalidModelIdRunner(Consumer<String> testRunner) {
         testRunner.accept(TestUtils.INVALID_MODEL_ID);
@@ -257,37 +313,8 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             return "https://isPlaybackmode";
         } else {
-            String accountName = Configuration.getGlobalConfiguration().get("PRIMARY_STORAGE_ACCOUNT_NAME");
-            String accountKey = Configuration.getGlobalConfiguration().get("PRIMARY_STORAGE_ACCOUNT_KEY");
-            StorageSharedKeyCredential credential = new StorageSharedKeyCredential(accountName, accountKey);
-            String endpoint = String.format(Locale.ROOT, "https://%s.blob.core.windows.net", accountName);
-            BlobServiceClient storageClient =
-                new BlobServiceClientBuilder().endpoint(endpoint).credential(credential).buildClient();
-            BlobContainerClient blobContainerClient =
-                storageClient.getBlobContainerClient(this.testResourceNamer.randomName("testFr", 16));
-            blobContainerClient.create();
-            BlockBlobClient blobClient;
-            File folder = new File(folderPath);
-            File[] listOfFiles = folder.listFiles();
-            for (File listOfFile : listOfFiles) {
-                InputStream dataStream = null;
-                try {
-                    dataStream = new ByteArrayInputStream(Files.readAllBytes(listOfFile.toPath()));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                blobClient = blobContainerClient.getBlobClient(listOfFile.getName()).getBlockBlobClient();
-                blobClient.upload(dataStream, listOfFile.length());
-            }
-            BlobContainerSasPermission blobContainerSasPermission = new BlobContainerSasPermission()
-                .setAddPermission(true)
-                .setCreatePermission(true)
-                .setReadPermission(true)
-                .setListPermission(true);
-            String sasToken = blobContainerClient.generateSas(
-                new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1), blobContainerSasPermission)
-            );
-            return blobContainerClient.getBlobContainerUrl() + "?" + sasToken;
+            return Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL);
+
         }
     }
 }

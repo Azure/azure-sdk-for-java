@@ -102,7 +102,7 @@ public class TestApplicationGateway {
             creationThread.join();
 
             // Get the resource as created so far
-            String resourceId = createResourceId(resources.manager().getSubscriptionId());
+            String resourceId = createResourceId(resources.manager().subscriptionId());
             ApplicationGateway appGateway = resources.manager().applicationGateways().getById(resourceId);
             Assertions.assertTrue(appGateway != null);
             Assertions.assertTrue(ApplicationGatewayTier.STANDARD.equals(appGateway.tier()));
@@ -293,7 +293,7 @@ public class TestApplicationGateway {
             creationThread.join();
 
             // Get the resource as created so far
-            String resourceId = createResourceId(resources.manager().getSubscriptionId());
+            String resourceId = createResourceId(resources.manager().subscriptionId());
             ApplicationGateway appGateway = resources.manager().applicationGateways().getById(resourceId);
             Assertions.assertNotNull(appGateway);
             Assertions.assertEquals(ApplicationGatewayTier.STANDARD, appGateway.tier());
@@ -531,7 +531,7 @@ public class TestApplicationGateway {
             creationThread.join();
 
             // Get the resource as created so far
-            String resourceId = createResourceId(resources.manager().getSubscriptionId());
+            String resourceId = createResourceId(resources.manager().subscriptionId());
             ApplicationGateway appGateway = resources.getById(resourceId);
             Assertions.assertNotNull(appGateway);
             Assertions.assertEquals(ApplicationGatewayTier.STANDARD, appGateway.tier());
@@ -974,7 +974,7 @@ public class TestApplicationGateway {
             creationThread.join();
 
             // Get the resource as created so far
-            String resourceId = createResourceId(resources.manager().getSubscriptionId());
+            String resourceId = createResourceId(resources.manager().subscriptionId());
             ApplicationGateway appGateway = resources.getById(resourceId);
             Assertions.assertNotNull(appGateway);
             Assertions.assertTrue(appGateway.isPublic());
@@ -1244,7 +1244,7 @@ public class TestApplicationGateway {
             creationThread.join();
 
             // Get the resource as created so far
-            String resourceId = createResourceId(resources.manager().getSubscriptionId());
+            String resourceId = createResourceId(resources.manager().subscriptionId());
             ApplicationGateway appGateway = resources.manager().applicationGateways().getById(resourceId);
             Assertions.assertTrue(appGateway != null);
             Assertions.assertTrue(ApplicationGatewayTier.STANDARD.equals(appGateway.tier()));
