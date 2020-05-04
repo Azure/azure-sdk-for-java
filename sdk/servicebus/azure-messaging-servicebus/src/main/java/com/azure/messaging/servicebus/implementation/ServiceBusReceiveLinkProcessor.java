@@ -51,6 +51,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLin
     private final AtomicInteger wip = new AtomicInteger();
 
     private final int prefetch;
+    private final String linkName;
     private final AmqpRetryPolicy retryPolicy;
     private final Disposable parentConnection;
     private final AmqpErrorContext errorContext;
@@ -81,8 +82,9 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLin
      * @throws NullPointerException if {@code retryPolicy} is null.
      * @throws IllegalArgumentException if {@code prefetch} is less than 0.
      */
-    public ServiceBusReceiveLinkProcessor(int prefetch, AmqpRetryPolicy retryPolicy, Disposable parentConnection,
-        AmqpErrorContext errorContext) {
+    public ServiceBusReceiveLinkProcessor(String linkName, int prefetch, AmqpRetryPolicy retryPolicy,
+        Disposable parentConnection, AmqpErrorContext errorContext) {
+        this.linkName = linkName;
 
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
         this.parentConnection = Objects.requireNonNull(parentConnection, "'parentConnection' cannot be null.");
@@ -532,5 +534,9 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLin
 
         // If there is no back pressure, always add 1. Otherwise, add whatever is requested.
         return r == Long.MAX_VALUE ? 1 : Long.valueOf(r).intValue();
+    }
+
+    public String getLinkName() {
+        return linkName;
     }
 }

@@ -690,7 +690,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         final LinkErrorContext context = new LinkErrorContext(fullyQualifiedNamespace, entityPath, linkName, null);
         final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionProcessor.getRetryOptions());
         final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLink.subscribeWith(
-            new ServiceBusReceiveLinkProcessor(prefetch, retryPolicy, connectionProcessor, context));
+            new ServiceBusReceiveLinkProcessor(linkName, prefetch, retryPolicy, connectionProcessor, context));
         final boolean isAutoLockRenewal = options.getMaxAutoRenewDuration() != null
             && !options.getMaxAutoRenewDuration().isZero();
 

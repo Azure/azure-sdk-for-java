@@ -17,54 +17,58 @@ import java.util.function.Function;
 
 public class SessionReceiver {
     private final ServiceBusMessageProcessor processor;
+    private final ServiceBusReceiveLinkProcessor linkProcessor;
+    private final ServiceBusManagementNode managementNode;
     private final AmqpRetryOptions retryOptions;
-    private final Function<String, Mono<Instant>> onRenewSessionLock;
     private final AtomicReference<Instant> currentExpiry = new AtomicReference<>();
-    private final Mono<String> sessionIdMono;
+    private final AtomicReference<String> sessionId = new AtomicReference<>();
     private final ClientLogger logger = new ClientLogger(SessionReceiver.class);
 
-    public SessionReceiver(ServiceBusReceiveLinkProcessor linkProcessor,
+    public SessionReceiver(ServiceBusReceiveLinkProcessor linkProcessor, ServiceBusManagementNode managementNode,
         MessageSerializer messageSerializer, boolean isAutoComplete, boolean autoLockRenewal,
-        Duration maxAutoLockRenewDuration, AmqpRetryOptions retryOptions,
-        Function<MessageLockToken, Mono<Void>> onComplete,
-        Function<MessageLockToken, Mono<Void>> onAbandon,
-        Function<String, Mono<Instant>> onRenewSessionLock) {
-
+        Duration maxAutoLockRenewDuration, AmqpRetryOptions retryOptions) {
+        this.linkProcessor = linkProcessor;
+        this.managementNode = managementNode;
         this.retryOptions = retryOptions;
-        this.onRenewSessionLock = onRenewSessionLock;
         this.processor = linkProcessor
             .map(message -> messageSerializer.deserialize(message, ServiceBusReceivedMessage.class))
             .subscribeWith(new ServiceBusMessageProcessor(isAutoComplete, autoLockRenewal, maxAutoLockRenewDuration,
-                retryOptions, linkProcessor.getErrorContext(), onComplete, onAbandon,
+                retryOptions, linkProcessor.getErrorContext(), this::complete, this::abandon,
                 SessionReceiver::renewMessageLock));
 
-        sessionIdMono = processor.next().map(first -> {
+        processor.next().subscribe(first -> {
             logger.info("Setting session id: {}", first.getSessionId());
-            return first.getSessionId();
-        }).cache(e -> Duration.ofMillis(Long.MAX_VALUE),
-            error -> {
-                logger.error("Error occurred when getting session id.", error);
-                return Duration.ZERO;
-            }, () -> {
-                logger.warning("Completed without emitting a session item.");
-                return Duration.ZERO;
-            });
+
+            if (!sessionId.compareAndSet(null, first.getSessionId())) {
+                logger.warning("Session id already set. Existing: {}", sessionId.get());
+            }
+        });
     }
 
     public Flux<ServiceBusReceivedMessage> receive() {
         return processor;
     }
 
-    public Mono<Void> setSessionState(byte[] state) {
-        return Mono.empty();
+    public Mono<Void> setSessionState(String sessionId, byte[] state) {
+        return managementNode.setSessionState(sessionId, state, linkProcessor.getLinkName());
     }
 
     public Mono<byte[]> getSessionState() {
-        return Mono.empty();
+        return managementNode.getSessionState(sessionId.get(), linkProcessor.getLinkName());
     }
 
     public Mono<Void> renewSessionLock() {
-        return Mono.empty();
+        return managementNode.renewSessionLock()
+    }
+
+    private Mono<Void> complete(MessageLockToken token) {
+        return managementNode.updateDisposition(token.getLockToken(), DispositionStatus.COMPLETED, null,
+            null, null, sessionId.get(), linkProcessor.getLinkName());
+    }
+
+    private Mono<Void> abandon(MessageLockToken token) {
+        return managementNode.updateDisposition(token.getLockToken(), DispositionStatus.ABANDONED, null,
+            null, null, sessionId.get(), linkProcessor.getLinkName());
     }
 
     /**
