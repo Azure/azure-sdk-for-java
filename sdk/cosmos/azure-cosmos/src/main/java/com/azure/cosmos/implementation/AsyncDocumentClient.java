@@ -180,9 +180,9 @@ public interface AsyncDocumentClient {
             ifThrowIllegalArgException(this.serviceEndpoint == null, "cannot buildAsyncClient client without service endpoint");
             ifThrowIllegalArgException(
                     this.masterKeyOrResourceToken == null && (permissionFeed == null || permissionFeed.isEmpty())
-                        && this.cosmosAuthorizationTokenResolver == null && this.cosmosKeyCredential == null,
+                        && this.cosmosKeyCredential == null,
                     "cannot buildAsyncClient client without any one of masterKey, " +
-                        "resource token, permissionFeed, tokenResolver and cosmos key credential");
+                        "resource token, permissionFeed and cosmos key credential");
             ifThrowIllegalArgException(cosmosKeyCredential != null && StringUtils.isEmpty(cosmosKeyCredential.getKey()),
                 "cannot buildAsyncClient client without key credential");
 
