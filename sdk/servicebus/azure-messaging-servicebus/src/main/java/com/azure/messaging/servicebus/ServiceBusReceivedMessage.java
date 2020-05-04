@@ -86,10 +86,20 @@ public final class ServiceBusReceivedMessage implements MessageLockToken {
         return correlationId;
     }
 
+    /**
+     * Gets the description for a message that has been dead-lettered.
+     *
+     * @return The description for a message that has been dead-lettered.
+     */
     public String getDeadLetterDescription() {
         return deadLetterDescription;
     }
 
+    /**
+     * Gets the reason for a message that has been dead-lettered.
+     *
+     * @return The reason for a message that has been dead-lettered.
+     */
     public String getDeadLetterReason() {
         return deadLetterReason;
     }
@@ -383,10 +393,20 @@ public final class ServiceBusReceivedMessage implements MessageLockToken {
         this.contentType = contentType;
     }
 
+    /**
+     * Sets the dead letter description.
+     *
+     * @param deadLetterDescription Dead letter description.
+     */
     void setDeadLetterDescription(String deadLetterDescription) {
         this.deadLetterDescription = deadLetterDescription;
     }
 
+    /**
+     * Sets the dead letter reason.
+     *
+     * @param deadLetterReason Dead letter reason.
+     */
     void setDeadLetterReason(String deadLetterReason) {
         this.deadLetterReason = deadLetterReason;
     }
