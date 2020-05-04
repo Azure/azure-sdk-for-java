@@ -381,7 +381,6 @@ public class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceived
             return Disposables.disposed();
         }
 
-        final long sequenceNumber = message.getSequenceNumber();
         final String lockToken = message.getLockToken();
 
         if (initialLockedUntil == null) {

@@ -564,7 +564,7 @@ class ServiceBusReceiverAsyncClientTest {
         final int fromSequenceNumber = 10;
         final ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
 
-        when(managementNode.receiveDeferredMessages(any(), any(),any(), any())).thenReturn(Flux.just(receivedMessage));
+        when(managementNode.receiveDeferredMessages(any(), any(), any(), any())).thenReturn(Flux.just(receivedMessage));
 
         // Act & Assert
         StepVerifier.create(receiver.receiveDeferredMessage(fromSequenceNumber))
@@ -581,7 +581,7 @@ class ServiceBusReceiverAsyncClientTest {
         final long fromSequenceNumber1 = 10;
         final long fromSequenceNumber2 = 11;
 
-        when(managementNode.receiveDeferredMessages(any(), any(),any(), any()))
+        when(managementNode.receiveDeferredMessages(any(), any(), any(), any()))
             .thenReturn(Flux.fromArray(new ServiceBusReceivedMessage[]{receivedMessage, receivedMessage2}));
 
         // Act & Assert

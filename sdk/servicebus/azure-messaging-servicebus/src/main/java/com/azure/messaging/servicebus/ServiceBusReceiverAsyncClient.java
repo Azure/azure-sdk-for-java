@@ -627,7 +627,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         if (Objects.isNull(options)) {
             return fluxError(logger, new NullPointerException("'options' cannot be null"));
-        } else if (options.getMaxAutoLockRenewalDuration() != null && options.getMaxAutoLockRenewalDuration().isNegative()) {
+        } else if (options.getMaxAutoLockRenewalDuration() != null
+            && options.getMaxAutoLockRenewalDuration().isNegative()) {
             return fluxError(logger, new IllegalArgumentException("'maxAutoRenewDuration' cannot be negative."));
         }
 
