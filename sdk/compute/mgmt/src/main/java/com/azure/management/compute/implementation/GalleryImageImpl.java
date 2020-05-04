@@ -20,6 +20,8 @@ import com.azure.management.compute.ResourceRange;
 import com.azure.management.compute.models.GalleryImageInner;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import reactor.core.publisher.Mono;
+
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,7 +29,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import reactor.core.publisher.Mono;
 
 /** The implementation for GalleryImage and its create and update interfaces. */
 class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImageInner, GalleryImageImpl>
@@ -484,7 +485,7 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
         Iterator<String> itr = iterable.iterator();
         while (itr.hasNext()) {
             String part = itr.next();
-            if (part != null && part.trim() != "") {
+            if (part != null && !part.trim().isEmpty()) {
                 if (part.equalsIgnoreCase(name)) {
                     if (itr.hasNext()) {
                         return itr.next();

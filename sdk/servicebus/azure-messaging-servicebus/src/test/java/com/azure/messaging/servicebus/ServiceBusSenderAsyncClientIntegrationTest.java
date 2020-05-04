@@ -37,9 +37,14 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     protected void afterTest() {
         dispose(sender);
 
+        final int numberOfMessages = messagesPending.get();
+        if (numberOfMessages < 1) {
+            return;
+        }
+
         try {
             receiver.receive(new ReceiveAsyncOptions().setEnableAutoComplete(false))
-                .take(messagesPending.get())
+                .take(numberOfMessages)
                 .map(message -> {
                     logger.info("Message received: {}", message.getSequenceNumber());
                     return message;
@@ -75,6 +80,25 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Assert & Act
         StepVerifier.create(sender.send(message).doOnSuccess(aVoid -> messagesPending.incrementAndGet()))
+            .verifyComplete();
+    }
+
+    /**
+     * Verifies that we can send a list of messages to a non-session entity.
+     */
+    @MethodSource("receiverTypesProvider")
+    @ParameterizedTest
+    void nonSessionEntitySendMessageList(MessagingEntityType entityType) {
+        // Arrange
+        setSenderAndReceiver(entityType, false);
+        int count = 4;
+
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString());
+
+        // Assert & Act
+        StepVerifier.create(sender.send(messages).doOnSuccess(aVoid -> {
+            messages.forEach(serviceBusMessage -> messagesPending.incrementAndGet());
+        }))
             .verifyComplete();
     }
 

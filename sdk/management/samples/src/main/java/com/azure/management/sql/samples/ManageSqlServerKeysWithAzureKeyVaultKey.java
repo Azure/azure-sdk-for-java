@@ -4,17 +4,17 @@
 package com.azure.management.sql.samples;
 
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.management.serializer.AzureJacksonAdapter;
-import com.azure.management.ApplicationTokenCredential;
+import com.azure.core.util.Configuration;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
-import com.azure.management.RestClient;
-import com.azure.management.RestClientBuilder;
 import com.azure.management.keyvault.Key;
 import com.azure.management.keyvault.KeyPermissions;
 import com.azure.management.keyvault.Vault;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.samples.Utils;
 import com.azure.management.sql.SqlServer;
@@ -22,7 +22,6 @@ import com.azure.management.sql.SqlServerKey;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyType;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -156,21 +155,22 @@ public class ManageSqlServerKeysWithAzureKeyVaultKey {
      */
     public static void main(String[] args) {
         try {
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
+            final Configuration configuration = Configuration.getGlobalConfiguration();
 
-            ApplicationTokenCredential credentials = ApplicationTokenCredential.fromFile(credFile);
-            RestClient restClient = new RestClientBuilder()
-                    .withBaseUrl(AzureEnvironment.AZURE, AzureEnvironment.Endpoint.RESOURCE_MANAGER)
-                    .withSerializerAdapter(new AzureJacksonAdapter())
-//                .withReadTimeout(150, TimeUnit.SECONDS)
-                    .withLogLevel(HttpLogDetailLevel.BASIC)
-                    .withCredential(credentials).buildClient();
-            Azure azure = Azure.authenticate(restClient, credentials.getDomain(), credentials.getDefaultSubscriptionId()).withDefaultSubscription();
+            Azure azure = Azure
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());
 
-            runSample(azure, credentials.getClientId());
+            runSample(azure, configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID));
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

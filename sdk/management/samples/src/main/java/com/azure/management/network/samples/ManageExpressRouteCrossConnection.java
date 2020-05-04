@@ -3,12 +3,13 @@
 package com.azure.management.network.samples;
 
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
 import com.azure.management.network.ExpressRouteCrossConnection;
-
-import java.io.File;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 
 /**
  * Azure Network sample for managing express route cross connections.
@@ -32,7 +33,10 @@ public final class ManageExpressRouteCrossConnection {
         try {
             //============================================================
             // list Express Route Cross Connections
-            PagedIterable<ExpressRouteCrossConnection> connections = azure.expressRouteCrossConnections().list();
+            System.out.println("List express route cross connection...");
+            azure.expressRouteCrossConnections().list().forEach(expressRouteCrossConnection ->
+                System.out.println(expressRouteCrossConnection.name()));
+            System.out.println();
 
             //============================================================
             // get Express Route Cross Connection by id
@@ -45,7 +49,7 @@ public final class ManageExpressRouteCrossConnection {
                     .withPrimaryPeerAddressPrefix("10.0.0.0/30")
                     .withSecondaryPeerAddressPrefix("10.0.0.4/30")
                     .withVlanId(100)
-                    .withPeerAsn(500)
+                    .withPeerASN(500)
                     .withSharedKey("A1B2C3D4")
                     .create();
 
@@ -59,7 +63,7 @@ public final class ManageExpressRouteCrossConnection {
                     .withPrimaryPeerAddressPrefix("10.0.0.0/30")
                     .withSecondaryPeerAddressPrefix("10.0.0.4/30")
                     .withVlanId(600)
-                    .withPeerAsn(500)
+                    .withPeerASN(500)
                     .withSharedKey("A1B2C3D4")
                     .defineIpv6Config()
                     .withAdvertisedPublicPrefix("3FFE:FFFF:0:CD31::/120")
@@ -108,12 +112,16 @@ public final class ManageExpressRouteCrossConnection {
         try {
             //=============================================================
             // Authenticate
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
-            Azure azure = Azure.configure()
-                    .withLogLevel(HttpLogDetailLevel.BASIC)
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+            Azure azure = Azure
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());

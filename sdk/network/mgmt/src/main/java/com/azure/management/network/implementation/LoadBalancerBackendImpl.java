@@ -75,18 +75,16 @@ class LoadBalancerBackendImpl extends ChildResourceImpl<BackendAddressPoolInner,
     public Set<String> getVirtualMachineIds() {
         Set<String> vmIds = new HashSet<>();
         Map<String, String> nicConfigs = this.backendNicIPConfigurationNames();
-        if (nicConfigs != null) {
-            for (String nicId : nicConfigs.keySet()) {
-                try {
-                    NetworkInterface nic = this.parent().manager().networkInterfaces().getById(nicId);
-                    if (nic == null || nic.virtualMachineId() == null) {
-                        continue;
-                    } else {
-                        vmIds.add(nic.virtualMachineId());
-                    }
-                } catch (CloudException | IllegalArgumentException e) {
+        for (String nicId : nicConfigs.keySet()) {
+            try {
+                NetworkInterface nic = this.parent().manager().networkInterfaces().getById(nicId);
+                if (nic == null || nic.virtualMachineId() == null) {
                     continue;
+                } else {
+                    vmIds.add(nic.virtualMachineId());
                 }
+            } catch (CloudException | IllegalArgumentException e) {
+                continue;
             }
         }
 

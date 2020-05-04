@@ -149,7 +149,7 @@ public class ClientLoggerTests {
 
         String originalLogLevel = setupLogLevel(logLevelToConfigure.getLogLevel());
         try {
-            throw new ClientLogger(ClientLoggerTests.class).logThowableAsWarning(ioException);
+            throw new ClientLogger(ClientLoggerTests.class).logThrowableAsWarning(ioException);
         } catch (Throwable throwable) {
             assertTrue(throwable instanceof IOException);
         }

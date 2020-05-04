@@ -46,11 +46,12 @@ openapi-type: data-plane
 These settings apply only when `--tag=package-2019-05-searchservice-preview` is specified on the command line.
 
 ``` yaml $(tag) == 'package-2019-05-searchservice-preview'
+java: true
 input-file:
 - https://github.com/Azure/azure-rest-api-specs/blob/master/specification/search/data-plane/Azure.Search/preview/2019-05-06-preview/searchservice.json
 title: SearchServiceRestClient
 custom-types-subpackage: implementation.models
-custom-types: AnalyzeResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListSkillsetsResult,ListSynonymMapsResult,AccessCondition
+custom-types: AnalyzeResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListSkillsetsResult,ListSynonymMapsResult
 ```
 
 ### Tag: package-2019-05-searchindex-preview
@@ -58,6 +59,7 @@ custom-types: AnalyzeResult,ListDataSourcesResult,ListIndexersResult,ListIndexes
 These settings apply only when `--tag=package-2019-05-searchindex-preview` is specified on the command line.
 
 ``` yaml $(tag) == 'package-2019-05-searchindex-preview'
+java: true
 input-file:
 - https://github.com/Azure/azure-rest-api-specs/blob/master/specification/search/data-plane/Azure.Search/preview/2019-05-06-preview/searchindex.json
 title: SearchIndexRestClient
@@ -124,6 +126,19 @@ directive:
           .replace(/(\@HostParam\(\"indexName\"\) String indexName)/g, "$1\, @HeaderParam\(\"accept\"\) String accept")
           .replace(/(this.client.getIndexName\(\),)/g, "$1 accept,")
           .replace(/(public Mono\<(.*)\) \{)/g, "$1\n\t\tfinal String accept \= \"application\/json\;odata\.metadata\=none\"\;\n")
+
+    - from: 
+        - DataSourcesImpl.java
+        - IndexersImpl.java
+        - IndexesImpl.java
+        - SkillsetsImpl.java
+        - SynonymMapsImpl.java
+      where: $
+      transform: >-
+          return $
+          .replace(/(\@QueryParam\(\"api\-version\"\) String apiVersion)/g, "$1\, @HeaderParam\(\"accept\"\) String accept")
+          .replace(/(this\.client\.getApiVersion\(\)\,)/g, "$1 accept,")
+          .replace(/(public Mono\<(.*)\) \{)/g, "$1\n\t\tfinal String accept \= \"application\/json\;odata\.metadata\=minimal\"\;\n")
 
     # Use Document rather than Map<String, Object>
     - from:
@@ -221,7 +236,8 @@ directive:
       where: $
       transform: >-
           return $
-          .replace(/(get(IncludeTotalResultCount|UseFuzzyMatching))/g, "is$2")
+          .replace(/(get(IncludeTotalResultCount))/g, "is$2")
+          .replace(/isUseFuzzyMatching/g, "useFuzzyMatching")
 
     # Mark IndexingResult as Serializable, for use in IndexBatchException
     - from: IndexingResult.java
@@ -274,11 +290,9 @@ directive:
       where: $
       transform: >-
         return $
-        .replace(/(import com\.azure\.search\.documents\.implementation\.models\.AccessCondition\;)/g, "import com.azure.core.http.MatchConditions;")
         .replace(/(this.getSearchServiceName)/g, "this.client.getSearchServiceName")
         .replace(/(this.getEndpoint)/g, "this.client.getEndpoint")
         .replace(/(this.getSearchDnsSuffix)/g, "this.client.getSearchDnsSuffix")
-        .replace(/(AccessCondition)/g, "MatchConditions")
 
     # Add RestProxy import
     - from:
@@ -449,4 +463,12 @@ directive:
         .replace(/(        return this\.hidden\;)/g, "        return retrievable == null ? null : !retrievable;")
         .replace(/(this\.hidden \= hidden\;)/g, "$1\n        retrievable = this.hidden == null ? null : !this.hidden;")
         .replace(/(    \@JsonProperty\(value \= \"hidden\"\))/g, "    @JsonIgnore")
+
+    - from: swagger-document
+      where: $.parameters
+      transform: >-
+        if ($.IfMatchParameter && $.IfNoneMatchParameter) {
+            delete $.IfMatchParameter["x-ms-parameter-grouping"];
+            delete $.IfNoneMatchParameter["x-ms-parameter-grouping"];
+        }
 ```

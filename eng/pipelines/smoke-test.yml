@@ -148,3 +148,5 @@ jobs:
           AZURE_LOG_LEVEL: 2
 
       - template: /eng/common/TestResources/remove-test-resources.yml
+        parameters:
+          ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'

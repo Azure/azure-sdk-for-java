@@ -33,15 +33,20 @@ import java.util.Map;
 import java.util.Objects;
 
 import static com.azure.messaging.servicebus.implementation.MessageUtils.adjustServerTimeout;
+
 /**
  * An AMQP session for Service Bus.
  */
 class ServiceBusReactorSession extends ReactorSession implements ServiceBusSession {
+    static final Symbol SESSION_FILTER = Symbol.getSymbol(AmqpConstants.VENDOR + ":session-filter");
+    static final Symbol LOCKED_UNTIL_UTC = Symbol.getSymbol(AmqpConstants.VENDOR + ":locked-until-utc");
+
     private static final Symbol LINK_TIMEOUT_PROPERTY = Symbol.getSymbol(AmqpConstants.VENDOR + ":timeout");
     private static final Symbol ENTITY_TYPE_PROPERTY = Symbol.getSymbol(AmqpConstants.VENDOR + ":entity-type");
-    private static final Symbol SESSION_FILTER = Symbol.getSymbol(AmqpConstants.VENDOR + ":session-filter");
 
     private final ClientLogger logger = new ClientLogger(ServiceBusReactorSession.class);
+    private final Duration openTimeout;
+    private final AmqpRetryPolicy retryPolicy;
 
     /**
      * Creates a new AMQP session using proton-j.
@@ -57,16 +62,18 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
      * @param openTimeout Timeout to wait for the session operation to complete.
      */
     ServiceBusReactorSession(Session session, SessionHandler sessionHandler, String sessionName,
-                             ReactorProvider provider, ReactorHandlerProvider handlerProvider,
-                             Mono<ClaimsBasedSecurityNode> cbsNodeSupplier, TokenManagerProvider tokenManagerProvider,
-                             Duration openTimeout, MessageSerializer messageSerializer) {
+        ReactorProvider provider, ReactorHandlerProvider handlerProvider, Mono<ClaimsBasedSecurityNode> cbsNodeSupplier,
+        TokenManagerProvider tokenManagerProvider, Duration openTimeout, MessageSerializer messageSerializer,
+        AmqpRetryPolicy retryPolicy) {
         super(session, sessionHandler, sessionName, provider, handlerProvider, cbsNodeSupplier, tokenManagerProvider,
             messageSerializer, openTimeout);
+        this.openTimeout = openTimeout;
+        this.retryPolicy = retryPolicy;
     }
 
     @Override
     public Mono<AmqpReceiveLink> createConsumer(String linkName, String entityPath, MessagingEntityType entityType,
-         Duration timeout, AmqpRetryPolicy retry, ReceiveMode receiveMode) {
+        Duration timeout, AmqpRetryPolicy retry, ReceiveMode receiveMode) {
         return createConsumer(linkName, entityPath, entityType, timeout, retry, receiveMode, null);
     }
 
@@ -115,6 +122,6 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
     protected ReactorReceiver createConsumer(String entityPath, Receiver receiver,
         ReceiveLinkHandler receiveLinkHandler, TokenManager tokenManager, ReactorProvider reactorProvider) {
         return new ServiceBusReactorReceiver(entityPath, receiver, receiveLinkHandler, tokenManager,
-            reactorProvider.getReactorDispatcher());
+            reactorProvider, openTimeout, retryPolicy);
     }
 }

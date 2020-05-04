@@ -29,6 +29,7 @@ public final class IdentityClientOptions {
     private ExecutorService executorService;
     private Duration tokenRefreshOffset = Duration.ofMinutes(2);
     private HttpClient httpClient;
+    private String keePassDatabasePath;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -193,5 +194,23 @@ public final class IdentityClientOptions {
     public IdentityClientOptions setHttpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
+    }
+
+    /**
+     * Specifies the database to extract IntelliJ cached credentials from.
+     * @param keePassDatabasePath the database to extract intellij credentials from.
+     * @return IdentityClientOptions
+     */
+    public IdentityClientOptions setIntelliJKeePassDatabasePath(String keePassDatabasePath) {
+        this.keePassDatabasePath = keePassDatabasePath;
+        return this;
+    }
+
+    /**
+     * Get the KeePass database path.
+     * @return the KeePass database path to extract inellij credentials from.
+     */
+    public String getIntelliJKeePassDatabasePath() {
+        return keePassDatabasePath;
     }
 }

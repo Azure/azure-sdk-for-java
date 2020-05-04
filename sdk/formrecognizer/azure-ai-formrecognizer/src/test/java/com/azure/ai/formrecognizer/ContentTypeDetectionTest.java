@@ -27,11 +27,11 @@ public class ContentTypeDetectionTest {
     /**
      * Test for JPG file content type detection for {@link Utility#detectContentType} method.
      *
-     * @throws  IOException if an I/O error occurs reading from the stream
+     * @throws IOException if an I/O error occurs reading from the stream
      */
     @Test
     public void jpgContentDetectionTest() throws IOException {
-        File sourceFile = new File("src/test/resources/sample-files/contoso-allinone.jpg");
+        File sourceFile = new File("src/test/resources/sample_files/Test/contoso-allinone.jpg");
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
         assertEquals(ContentType.IMAGE_JPEG, detectContentType(buffer).block());
     }
@@ -39,11 +39,11 @@ public class ContentTypeDetectionTest {
     /**
      * Test for PDF file content type detection for {@link Utility#detectContentType} method.
      *
-     * @throws  IOException if an I/O error occurs reading from the stream
+     * @throws IOException if an I/O error occurs reading from the stream
      */
     @Test
     public void pdfContentDetectionTest() throws IOException {
-        File sourceFile = new File("src/test/resources/sample-files/sample.pdf");
+        File sourceFile = new File("src/test/resources/sample_files/Test/Invoice_6.pdf");
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
         assertEquals(ContentType.APPLICATION_PDF, detectContentType(buffer).block());
     }
@@ -51,11 +51,11 @@ public class ContentTypeDetectionTest {
     /**
      * Test for PNG file content type detection for {@link Utility#detectContentType} method.
      *
-     * @throws  IOException if an I/O error occurs reading from the stream
+     * @throws IOException if an I/O error occurs reading from the stream
      */
     @Test
     public void pngContentDetectionTest() throws IOException {
-        File sourceFile = new File("src/test/resources/sample-files/pngFile.png");
+        File sourceFile = new File("src/test/resources/sample_files/Test/pngFile.png");
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
         assertEquals(ContentType.IMAGE_PNG, detectContentType(buffer).block());
     }
@@ -63,11 +63,11 @@ public class ContentTypeDetectionTest {
     /**
      * Test for TIFF file content type detection for {@link Utility#detectContentType} method.
      *
-     * @throws  IOException if an I/O error occurs reading from the stream
+     * @throws IOException if an I/O error occurs reading from the stream
      */
     @Test
     public void tiffContentDetectionTest() throws IOException {
-        File sourceFile = new File("src/test/resources/sample-files/cell.tif");
+        File sourceFile = new File("src/test/resources/sample_files/Test/cell.tif");
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
         assertEquals(ContentType.IMAGE_TIFF, detectContentType(buffer).block());
     }
@@ -75,11 +75,11 @@ public class ContentTypeDetectionTest {
     /**
      * Test for not supported file content type detection for {@link Utility#detectContentType} method.
      *
-     * @throws  IOException if an I/O error occurs reading from the stream
+     * @throws IOException if an I/O error occurs reading from the stream
      */
     @Test
     public void notSupportContentDetectionTest() throws IOException {
-        File sourceFile = new File("src/test/resources/sample-files/docFile.doc");
+        File sourceFile = new File("src/test/resources/sample_files/Test/docFile.doc");
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
         assertThrows(RuntimeException.class, () -> detectContentType(buffer).block());
     }

@@ -3,7 +3,6 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.implementation.Utility;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.USReceipt;
 import com.azure.core.credential.AzureKeyCredential;
@@ -17,6 +16,8 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.time.Duration;
+
+import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
 
 /**
  * Code snippet for {@link FormRecognizerAsyncClient}
@@ -114,7 +115,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#Flux-string-long-FormContentType
         File sourceFile = new File("{file_source_url}");
         String modelId = "{model_id}";
-        Flux<ByteBuffer> buffer = Utility.convertStreamToByteBuffer(
+        Flux<ByteBuffer> buffer = toFluxByteBuffer(
             new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
 
         formRecognizerAsyncClient.beginRecognizeCustomForms(buffer, modelId, sourceFile.length(),
@@ -144,7 +145,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         File sourceFile = new File("{file_source_url}");
         String modelId = "{model_id}";
         boolean includeTextDetails = true;
-        Flux<ByteBuffer> buffer = Utility.convertStreamToByteBuffer(
+        Flux<ByteBuffer> buffer = toFluxByteBuffer(
             new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
 
         formRecognizerAsyncClient.beginRecognizeCustomForms(buffer, modelId, sourceFile.length(),
@@ -218,7 +219,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
     public void beginRecognizeContent() throws IOException {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-long-FormContentType
         File sourceFile = new File("{file_source_url}");
-        Flux<ByteBuffer> buffer = Utility.convertStreamToByteBuffer(
+        Flux<ByteBuffer> buffer = toFluxByteBuffer(
             new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
 
         formRecognizerAsyncClient.beginRecognizeContent(buffer, sourceFile.length(), FormContentType.APPLICATION_PDF)
@@ -243,13 +244,13 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginRecognizeContentWithOptions() throws IOException {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-FormContentType-long-Duration
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-long-FormContentType-Duration
         File sourceFile = new File("{file_source_url}");
-        Flux<ByteBuffer> buffer = Utility.convertStreamToByteBuffer(
+        Flux<ByteBuffer> buffer = toFluxByteBuffer(
             new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
 
-        formRecognizerAsyncClient.beginRecognizeContent(buffer, FormContentType.APPLICATION_PDF, sourceFile.length(),
-            Duration.ofSeconds(5)).subscribe(recognizePollingOperation ->
+        formRecognizerAsyncClient.beginRecognizeContent(buffer, sourceFile.length(), FormContentType.APPLICATION_PDF,
+                Duration.ofSeconds(5)).subscribe(recognizePollingOperation ->
                 recognizePollingOperation.getFinalResult().subscribe(layoutPageResults ->
                     layoutPageResults.forEach(recognizedForm -> {
                         System.out.printf("Page Angle: %s%n", recognizedForm.getTextAngle());
@@ -261,7 +262,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                                 System.out.printf("%s ", recognizedTableCell.getText())));
                     })
                 ));
-        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-FormContentType-long-Duration
+        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-long-FormContentType-Duration
     }
 
     // Recognize Receipts
@@ -333,7 +334,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
     public void beginRecognizeReceipts() throws IOException {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long-FormContentType
         File sourceFile = new File("{file_source_url}");
-        Flux<ByteBuffer> buffer = Utility.convertStreamToByteBuffer(
+        Flux<ByteBuffer> buffer = toFluxByteBuffer(
             new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
         formRecognizerAsyncClient.beginRecognizeReceipts(buffer, sourceFile.length(), FormContentType.IMAGE_JPEG)
             .subscribe(recognizePollingOperation -> {
@@ -369,7 +370,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long-FormContentType-boolean-Duration
         File sourceFile = new File("{file_source_url}");
         boolean includeTextDetails = true;
-        Flux<ByteBuffer> buffer = Utility.convertStreamToByteBuffer(
+        Flux<ByteBuffer> buffer = toFluxByteBuffer(
             new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
         formRecognizerAsyncClient.beginRecognizeReceipts(buffer, sourceFile.length(), FormContentType.IMAGE_JPEG,
             includeTextDetails, Duration.ofSeconds(5)).subscribe(recognizePollingOperation -> {

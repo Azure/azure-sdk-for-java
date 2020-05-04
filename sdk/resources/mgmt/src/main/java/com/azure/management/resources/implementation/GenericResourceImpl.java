@@ -61,6 +61,10 @@ final class GenericResourceImpl
 
     @Override
     public String apiVersion() {
+        if (apiVersion == null) {
+            apiVersion = ResourceUtils.defaultApiVersion(
+                id(), manager().providers().getByName(ResourceUtils.resourceProviderFromResourceId(id())));
+        }
         return apiVersion;
     }
 

@@ -8,6 +8,7 @@ import com.azure.management.network.models.ApplicationGatewaySslCertificateInner
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Base64;
 
@@ -53,7 +54,7 @@ class ApplicationGatewaySslCertificateImpl
 
     @Override
     public ApplicationGatewaySslCertificateImpl withPfxFromBytes(byte[] pfxData) {
-        String encoded = new String(Base64.getEncoder().encode(pfxData));
+        String encoded = new String(Base64.getEncoder().encode(pfxData), StandardCharsets.UTF_8);
         this.inner().withData(encoded);
         return this;
     }
@@ -65,7 +66,7 @@ class ApplicationGatewaySslCertificateImpl
         }
 
         byte[] content = Files.readAllBytes(pfxFile.toPath());
-        return (content != null) ? withPfxFromBytes(content) : null;
+        return withPfxFromBytes(content);
     }
 
     @Override

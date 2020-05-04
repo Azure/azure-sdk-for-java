@@ -32,8 +32,7 @@ public class RecognizeReceiptsFromUrlAsync {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
-        String receiptUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media/contoso"
-            + "-allinone.jpg";
+        String receiptUrl = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/receipts/contoso-allinone.jpg";
         PollerFlux<OperationResult, IterableStream<RecognizedReceipt>> analyzeReceiptPoller =
             client.beginRecognizeReceiptsFromUrl(receiptUrl);
 

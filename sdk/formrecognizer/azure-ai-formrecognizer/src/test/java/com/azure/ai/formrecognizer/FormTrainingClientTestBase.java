@@ -3,10 +3,13 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.implementation.models.FormFieldsReport;
+import com.azure.ai.formrecognizer.implementation.models.Model;
 import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelField;
 import com.azure.ai.formrecognizer.models.CustomFormSubModel;
+import com.azure.ai.formrecognizer.models.ErrorInformation;
 import com.azure.ai.formrecognizer.models.FormRecognizerError;
 import com.azure.ai.formrecognizer.models.TrainingDocumentInfo;
 import com.azure.core.credential.AzureKeyCredential;
@@ -31,6 +34,7 @@ import com.azure.core.util.IterableStream;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -42,26 +46,160 @@ import java.util.stream.Collectors;
 import static com.azure.ai.formrecognizer.FormRecognizerClientBuilder.OCP_APIM_SUBSCRIPTION_KEY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class FormTrainingClientTestBase extends TestBase {
+    public static final String FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL =
+        "FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL";
     private static final String AZURE_FORM_RECOGNIZER_API_KEY = "AZURE_FORM_RECOGNIZER_API_KEY";
     private static final String NAME = "name";
     private static final String FORM_RECOGNIZER_PROPERTIES = "azure-ai-formrecognizer.properties";
     private static final String VERSION = "version";
-
     private final HttpLogOptions httpLogOptions = new HttpLogOptions();
     private final Map<String, String> properties = CoreUtils.getProperties(FORM_RECOGNIZER_PROPERTIES);
     private final String clientName = properties.getOrDefault(NAME, "UnknownName");
     private final String clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
 
-    @Test
-    abstract void getCustomModelInvalidStatusModel();
+    static void validateCustomModelData(CustomFormModel actualCustomModel, Model modelRawResponse,
+        boolean isLabeled) {
+        assertEquals(modelRawResponse.getModelInfo().getStatus().toString(),
+            actualCustomModel.getModelStatus().toString());
+        validateErrorData(modelRawResponse.getTrainResult().getErrors(), actualCustomModel.getModelError());
+        assertNotNull(actualCustomModel.getCreatedOn());
+        assertNotNull(actualCustomModel.getLastUpdatedOn());
+        validateTrainingDocumentsData(modelRawResponse.getTrainResult().getTrainingDocuments(),
+            actualCustomModel.getTrainingDocuments());
+        final List<CustomFormSubModel> subModelList =
+            actualCustomModel.getSubModels().stream().collect(Collectors.toList());
+        if (isLabeled) {
+            final List<FormFieldsReport> fields = modelRawResponse.getTrainResult().getFields();
+            for (final FormFieldsReport expectedField : fields) {
+                final CustomFormModelField actualFormField =
+                    subModelList.get(0).getFieldMap().get(expectedField.getFieldName());
+                assertEquals(expectedField.getFieldName(), actualFormField.getName());
+                assertEquals(expectedField.getAccuracy(), actualFormField.getAccuracy());
+
+            }
+            assertTrue(subModelList.get(0).getFormType().startsWith("form-"));
+            assertEquals(modelRawResponse.getTrainResult().getAverageModelAccuracy(),
+                subModelList.get(0).getAccuracy());
+        } else {
+            modelRawResponse.getKeys().getClusters().forEach((clusterId, fields) -> {
+                assertTrue(subModelList.get(Integer.parseInt(clusterId)).getFormType().endsWith(clusterId));
+                final List<String> customFormFieldList = new ArrayList<String>();
+                subModelList.get(Integer.parseInt(clusterId)).getFieldMap().values().forEach(customFormModelField -> customFormFieldList.add(customFormModelField.getLabel()));
+                Collections.sort(fields);
+                Collections.sort(customFormFieldList);
+                assertEquals(fields, customFormFieldList);
+            });
+        }
+    }
+
+    private static void validateTrainingDocumentsData(List<com.azure.ai.formrecognizer.implementation.models.TrainingDocumentInfo> expectedTrainingDocuments,
+        List<TrainingDocumentInfo> actualTrainingDocuments) {
+
+        assertEquals(expectedTrainingDocuments.size(), actualTrainingDocuments.size());
+        for (int i = 0; i < actualTrainingDocuments.size(); i++) {
+            com.azure.ai.formrecognizer.implementation.models.TrainingDocumentInfo expectedTrainingDocument =
+                expectedTrainingDocuments.get(i);
+            TrainingDocumentInfo actualTrainingDocument = actualTrainingDocuments.get(i);
+            assertEquals(expectedTrainingDocument.getDocumentName(), actualTrainingDocument.getName());
+            assertEquals(expectedTrainingDocument.getPages(), actualTrainingDocument.getPageCount());
+            assertEquals(expectedTrainingDocument.getStatus().toString(),
+                actualTrainingDocument.getTrainingStatus().toString());
+            validateErrorData(expectedTrainingDocument.getErrors(), actualTrainingDocument.getDocumentErrors());
+        }
+    }
+
+    private static void validateErrorData(List<ErrorInformation> expectedErrors,
+        List<FormRecognizerError> actualErrors) {
+        if (expectedErrors != null && actualErrors != null) {
+            assertEquals(expectedErrors.size(), actualErrors.size());
+            for (int i = 0; i < actualErrors.size(); i++) {
+                ErrorInformation expectedError = expectedErrors.get(i);
+                FormRecognizerError actualError = actualErrors.get(i);
+                assertEquals(expectedError.getCode(), actualError.getCode());
+                assertEquals(expectedError.getMessage(), actualError.getMessage());
+            }
+        }
+    }
+
+    static void validateCustomModel(CustomFormModel expectedModel, CustomFormModel actualCustomModel) {
+        assertNotNull(actualCustomModel.getModelId());
+        assertEquals(expectedModel.getModelStatus(), actualCustomModel.getModelStatus());
+        validateErrors(expectedModel.getModelError(), actualCustomModel.getModelError());
+        assertNotNull(actualCustomModel.getCreatedOn());
+        assertNotNull(actualCustomModel.getLastUpdatedOn());
+        validateSubModels(expectedModel.getSubModels(), actualCustomModel.getSubModels());
+        validateTrainingDocuments(expectedModel.getTrainingDocuments(), actualCustomModel.getTrainingDocuments());
+    }
+
+    static void validateAccountProperties(AccountProperties expectedAccountProperties,
+        AccountProperties actualAccountProperties) {
+        assertEquals(expectedAccountProperties.getLimit(), actualAccountProperties.getLimit());
+        assertNotNull(actualAccountProperties.getCount());
+    }
+
+    private static void validateTrainingDocuments(List<TrainingDocumentInfo> expectedTrainingDocuments,
+        List<TrainingDocumentInfo> actualTrainingDocuments) {
+        List<TrainingDocumentInfo> actualTrainingList = new ArrayList<>(actualTrainingDocuments);
+        List<TrainingDocumentInfo> expectedTrainingList =
+            new ArrayList<>(expectedTrainingDocuments);
+        assertEquals(expectedTrainingList.size(), actualTrainingList.size());
+        for (int i = 0; i < actualTrainingList.size(); i++) {
+            TrainingDocumentInfo expectedTrainingDocument = expectedTrainingList.get(i);
+            TrainingDocumentInfo actualTrainingDocument = actualTrainingList.get(i);
+            assertEquals(expectedTrainingDocument.getName(), actualTrainingDocument.getName());
+            assertEquals(expectedTrainingDocument.getPageCount(), actualTrainingDocument.getPageCount());
+            assertEquals(expectedTrainingDocument.getTrainingStatus(), actualTrainingDocument.getTrainingStatus());
+            validateErrors(expectedTrainingDocument.getDocumentErrors(), actualTrainingDocument.getDocumentErrors());
+        }
+    }
+
+    private static void validateErrors(List<FormRecognizerError> expectedErrors,
+        List<FormRecognizerError> actualErrors) {
+        if (expectedErrors != null && actualErrors != null) {
+            List<FormRecognizerError> actualErrorList = new ArrayList<>(actualErrors);
+            List<FormRecognizerError> expectedErrorList = new ArrayList<>(expectedErrors);
+            assertEquals(expectedErrorList.size(), actualErrorList.size());
+            for (int i = 0; i < actualErrorList.size(); i++) {
+                FormRecognizerError expectedError = expectedErrorList.get(i);
+                FormRecognizerError actualError = actualErrorList.get(i);
+                assertEquals(expectedError.getCode(), actualError.getCode());
+                assertEquals(expectedError.getMessage(), actualError.getMessage());
+            }
+        }
+    }
+
+    private static void validateSubModels(IterableStream<CustomFormSubModel> expectedSubModels,
+        IterableStream<CustomFormSubModel> actualSubModels) {
+        List<CustomFormSubModel> actualSubModelList = actualSubModels.stream().collect(Collectors.toList());
+        List<CustomFormSubModel> expectedSubModelList = expectedSubModels.stream().collect(Collectors.toList());
+        assertEquals(expectedSubModelList.size(), actualSubModelList.size());
+        for (int i = 0; i < expectedSubModelList.size(); i++) {
+            CustomFormSubModel expectedSubModel = expectedSubModelList.get(i);
+            CustomFormSubModel actualSubModel = actualSubModelList.get(i);
+            assertNotNull(actualSubModel.getFormType());
+            assertEquals(expectedSubModel.getAccuracy(), actualSubModel.getAccuracy());
+            validateModelFieldMap(expectedSubModel.getFieldMap(), actualSubModel.getFieldMap());
+        }
+    }
+
+    private static void validateModelFieldMap(Map<String, CustomFormModelField> expectedFieldMap, Map<String,
+        CustomFormModelField> actualFieldMap) {
+        assertEquals(expectedFieldMap.size(), actualFieldMap.size());
+        expectedFieldMap.entrySet().stream().allMatch(stringFieldEntry ->
+            stringFieldEntry.getValue().equals(actualFieldMap.get(stringFieldEntry.getKey())));
+    }
 
     @Test
     abstract void getCustomModelNullModelId();
 
     @Test
-    abstract void getCustomModelValidModelId();
+    abstract void getCustomModelLabeled();
+
+    @Test
+    abstract void getCustomModelUnlabeled();
 
     @Test
     abstract void getCustomModelInvalidModelId();
@@ -93,31 +231,19 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     @Test
     abstract void beginTrainingLabeledResult();
 
-    @Test
-    abstract void beginTrainingUnlabeledResult();
-
-    void getCustomModelInvalidStatusModelRunner(Consumer<String> testRunner) {
-        testRunner.accept(TestUtils.INVALID_STATUS_MODEL_ID);
-    }
-
-    void getCustomModelValidModelIdRunner(Consumer<String> testRunner) {
-        testRunner.accept(TestUtils.VALID_MODEL_ID);
-    }
+    // @Test
+    // abstract void beginTrainingUnlabeledResult();
 
     void getCustomModelInvalidModelIdRunner(Consumer<String> testRunner) {
         testRunner.accept(TestUtils.INVALID_MODEL_ID);
     }
 
-    void getCustomModelWithResponseRunner(Consumer<String> testRunner) {
-        testRunner.accept(TestUtils.LABELED_MODEL_ID);
-    }
-
     void beginTrainingLabeledResultRunner(BiConsumer<String, Boolean> testRunner) {
-        testRunner.accept(TestUtils.VALID_LABELED_DATA_SAS_URL, true);
+        testRunner.accept(createStorageAndGenerateSas("src/test/resources/sample_files/TrainLabeled"), true);
     }
 
     void beginTrainingUnlabeledResultRunner(BiConsumer<String, Boolean> testRunner) {
-        testRunner.accept(TestUtils.VALID_UNLABELED_DATA_SAS_URL, false);
+        testRunner.accept(createStorageAndGenerateSas("src/test/resources/sample_files/Train"), false);
     }
 
     <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
@@ -134,7 +260,8 @@ public abstract class FormTrainingClientTestBase extends TestBase {
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, buildConfiguration));
+        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
+            buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
 
@@ -182,65 +309,12 @@ public abstract class FormTrainingClientTestBase extends TestBase {
             : Configuration.getGlobalConfiguration().get("AZURE_FORM_RECOGNIZER_ENDPOINT");
     }
 
-    static void validateCustomModel(CustomFormModel expectedModel, CustomFormModel actualCustomModel) {
-        assertNotNull(actualCustomModel.getModelId());
-        assertEquals(expectedModel.getModelStatus(), actualCustomModel.getModelStatus());
-        validateErrors(expectedModel.getModelError(), actualCustomModel.getModelError());
-        assertNotNull(actualCustomModel.getCreatedOn());
-        assertNotNull(actualCustomModel.getLastUpdatedOn());
-        validateSubModels(expectedModel.getSubModels(), actualCustomModel.getSubModels());
-        validateTrainingDocuments(expectedModel.getTrainingDocuments(), actualCustomModel.getTrainingDocuments());
-    }
+    private String createStorageAndGenerateSas(String folderPath) {
+        if (interceptorManager.isPlaybackMode()) {
+            return "https://isPlaybackmode";
+        } else {
+            return Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL);
 
-    static void validateAccountProperties(AccountProperties expectedAccountProperties, AccountProperties actualAccountProperties) {
-        assertEquals(expectedAccountProperties.getLimit(), actualAccountProperties.getLimit());
-        assertNotNull(actualAccountProperties.getCount());
-    }
-
-    private static void validateTrainingDocuments(List<TrainingDocumentInfo> expectedTrainingDocuments, List<TrainingDocumentInfo> actualTrainingDocuments) {
-        List<TrainingDocumentInfo> actualTrainingList = actualTrainingDocuments.stream().collect(Collectors.toList());
-        List<TrainingDocumentInfo> expectedTrainingList = expectedTrainingDocuments.stream().collect(Collectors.toList());
-        assertEquals(expectedTrainingList.size(), actualTrainingList.size());
-        for (int i = 0; i < actualTrainingList.size(); i++) {
-            TrainingDocumentInfo expectedTrainingDocument = expectedTrainingList.get(i);
-            TrainingDocumentInfo actualTrainingDocument = actualTrainingList.get(i);
-            assertEquals(expectedTrainingDocument.getName(), actualTrainingDocument.getName());
-            assertEquals(expectedTrainingDocument.getPageCount(), actualTrainingDocument.getPageCount());
-            assertEquals(expectedTrainingDocument.getTrainingStatus(), actualTrainingDocument.getTrainingStatus());
-            validateErrors(expectedTrainingDocument.getDocumentErrors(), actualTrainingDocument.getDocumentErrors());
         }
-    }
-
-    private static void validateErrors(List<FormRecognizerError> expectedErrors, List<FormRecognizerError> actualErrors) {
-        if (expectedErrors != null && actualErrors != null) {
-            List<FormRecognizerError> actualErrorList = actualErrors.stream().collect(Collectors.toList());
-            List<FormRecognizerError> expectedErrorList = expectedErrors.stream().collect(Collectors.toList());
-            assertEquals(expectedErrorList.size(), actualErrorList.size());
-            for (int i = 0; i < actualErrorList.size(); i++) {
-                FormRecognizerError expectedError = expectedErrorList.get(i);
-                FormRecognizerError actualError = actualErrorList.get(i);
-                assertEquals(expectedError.getCode(), actualError.getCode());
-                assertEquals(expectedError.getMessage(), actualError.getMessage());
-            }
-        }
-    }
-
-    private static void validateSubModels(IterableStream<CustomFormSubModel> expectedSubModels, IterableStream<CustomFormSubModel> actualSubModels) {
-        List<CustomFormSubModel> actualSubModelList = actualSubModels.stream().collect(Collectors.toList());
-        List<CustomFormSubModel> expectedSubModelList = expectedSubModels.stream().collect(Collectors.toList());
-        assertEquals(expectedSubModelList.size(), actualSubModelList.size());
-        for (int i = 0; i < expectedSubModelList.size(); i++) {
-            CustomFormSubModel expectedSubModel = expectedSubModelList.get(i);
-            CustomFormSubModel actualSubModel = actualSubModelList.get(i);
-            assertNotNull(actualSubModel.getFormType());
-            assertEquals(expectedSubModel.getAccuracy(), actualSubModel.getAccuracy());
-            validateModelFieldMap(expectedSubModel.getFieldMap(), actualSubModel.getFieldMap());
-        }
-    }
-
-    private static void validateModelFieldMap(Map<String, CustomFormModelField> expectedFieldMap, Map<String, CustomFormModelField> actualFieldMap) {
-        assertEquals(expectedFieldMap.size(), actualFieldMap.size());
-        expectedFieldMap.entrySet().stream().allMatch(stringFieldEntry ->
-            stringFieldEntry.getValue().equals(actualFieldMap.get(stringFieldEntry.getKey())));
     }
 }

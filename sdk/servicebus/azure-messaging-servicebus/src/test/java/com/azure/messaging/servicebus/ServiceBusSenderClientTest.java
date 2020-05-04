@@ -19,6 +19,9 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.time.Instant;
+import java.util.List;
+import java.util.UUID;
 
 import static com.azure.messaging.servicebus.ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -35,6 +38,15 @@ public class ServiceBusSenderClientTest {
 
     @Captor
     private ArgumentCaptor<ServiceBusMessage> singleMessageCaptor;
+
+    @Captor
+    private ArgumentCaptor<List<ServiceBusMessage>> messageListCaptor;
+
+    @Captor
+    private ArgumentCaptor<Instant> scheduleMessageCaptor;
+
+    @Captor
+    private ArgumentCaptor<Long> cancelScheduleMessageCaptor;
 
     private ServiceBusSenderClient sender;
 
@@ -63,6 +75,7 @@ public class ServiceBusSenderClientTest {
     void teardown() {
         sender.close();
         singleMessageCaptor = null;
+        messageListCaptor = null;
         Mockito.framework().clearInlineMocks();
     }
 
@@ -138,6 +151,31 @@ public class ServiceBusSenderClientTest {
     }
 
     /**
+     * Verifies that sending an array of message will result in calling sender.send(Message...).
+     */
+    @Test
+    void sendMessageList() {
+        // Arrange
+        final int count = 4;
+        final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString(),
+            contents);
+
+        when(asyncSender.send(messages)).thenReturn(Mono.empty());
+
+        // Act
+        sender.send(messages);
+
+        // Assert
+        verify(asyncSender, times(1)).send(messages);
+        verify(asyncSender).send(messageListCaptor.capture());
+
+        final List<ServiceBusMessage> sentMessages = messageListCaptor.getValue();
+        Assertions.assertEquals(count, sentMessages.size());
+        sentMessages.forEach(serviceBusMessage -> Assertions.assertArrayEquals(contents, serviceBusMessage.getBody()));
+    }
+
+    /**
      * Verifies that sending a single message will result in calling sender.send(Message).
      */
     @Test
@@ -157,5 +195,53 @@ public class ServiceBusSenderClientTest {
 
         final ServiceBusMessage message = singleMessageCaptor.getValue();
         Assertions.assertArrayEquals(testData.getBody(), message.getBody());
+    }
+
+    /**
+     * Verifies that scheduling a message will result in calling asyncSender.scheduleMessage().
+     */
+    @Test
+    void scheduleMessage() {
+        // Arrange
+        final ServiceBusMessage testData =
+            new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
+        final Instant scheduledEnqueueTime = Instant.now();
+        final long sequenceNumber = 1;
+
+        when(asyncSender.scheduleMessage(testData, scheduledEnqueueTime)).thenReturn(Mono.just(sequenceNumber));
+
+        // Act
+        sender.scheduleMessage(testData, scheduledEnqueueTime);
+
+        // Assert
+        verify(asyncSender, times(1)).scheduleMessage(testData, scheduledEnqueueTime);
+        verify(asyncSender).scheduleMessage(singleMessageCaptor.capture(), scheduleMessageCaptor.capture());
+
+        final ServiceBusMessage message = singleMessageCaptor.getValue();
+        Assertions.assertArrayEquals(testData.getBody(), message.getBody());
+
+        final Instant scheduledEnqueueTimeActual = scheduleMessageCaptor.getValue();
+        Assertions.assertEquals(scheduledEnqueueTime, scheduledEnqueueTimeActual);
+    }
+
+    /**
+     * Verifies that cancel a scheduled message will result in calling asyncSender.cancelScheduledMessage().
+     */
+    @Test
+    void cancelScheduleMessage() {
+        // Arrange
+        final long sequenceNumber = 1;
+
+        when(asyncSender.cancelScheduledMessage(sequenceNumber)).thenReturn(Mono.empty());
+
+        // Act
+        sender.cancelScheduledMessage(sequenceNumber);
+
+        // Assert
+        verify(asyncSender, times(1)).cancelScheduledMessage(sequenceNumber);
+        verify(asyncSender).cancelScheduledMessage(cancelScheduleMessageCaptor.capture());
+
+        final long sequenceNumberActual = cancelScheduleMessageCaptor.getValue();
+        Assertions.assertEquals(sequenceNumber, sequenceNumberActual);
     }
 }
