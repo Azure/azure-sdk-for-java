@@ -218,7 +218,7 @@ public class IdentityClient {
                                                         .builder(new HashSet<>(request.getScopes()), refreshToken)
                                                         .build();
 
-                return Mono.defer(() -> Mono.fromFuture(publicClientApplication.acquireToken(parameters))
+                return Mono.defer(() -> Mono.fromFuture(getPublicClientApplication(false).acquireToken(parameters))
                                     .map(ar -> new MsalToken(ar, options)));
 
             } else {
@@ -542,7 +542,7 @@ public class IdentityClient {
                                                 .builder(new HashSet<>(request.getScopes()), credential)
                                                 .build();
 
-        return Mono.defer(() -> Mono.fromFuture(publicClientApplication.acquireToken(parameters))
+        return Mono.defer(() -> Mono.fromFuture(getPublicClientApplication(false).acquireToken(parameters))
                                     .map(ar -> new MsalToken(ar, options)));
     }
 
