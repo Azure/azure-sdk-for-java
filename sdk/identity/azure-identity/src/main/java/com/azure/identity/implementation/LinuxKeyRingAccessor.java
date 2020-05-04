@@ -26,8 +26,7 @@ public class LinuxKeyRingAccessor {
     private Pointer libSecretSchema;
 
     /**
-     * Creates an instance of the {@link com.azure.identity.implementation.LinuxKeyRingAccessor} with
-     * specified attributes and schema.
+     * Creates an instance of the {@link LinuxKeyRingAccessor} with specified attributes and schema.
      *
      * @param keyringSchemaName the key ring schema to access.
      * @param attributeKey1 the key value of the attribute to lookup

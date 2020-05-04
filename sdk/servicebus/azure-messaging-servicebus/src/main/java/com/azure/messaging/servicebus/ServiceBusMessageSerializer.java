@@ -59,6 +59,9 @@ class ServiceBusMessageSerializer implements MessageSerializer {
     private static final String VIA_PARTITION_KEY_NAME = "x-opt-via-partition-key";
     private static final String DEAD_LETTER_SOURCE_NAME = "x-opt-deadletter-source";
 
+    // This one appears to always be 0, but is always returned with each message.
+    private static final String ENQUEUED_SEQUENCE_NUMBER = "x-opt-enqueue-sequence-number";
+
     private final ClientLogger logger = new ClientLogger(ServiceBusMessageSerializer.class);
 
     /**
@@ -370,6 +373,8 @@ class ServiceBusMessageSerializer implements MessageSerializer {
                             break;
                         case DEAD_LETTER_SOURCE_NAME:
                             brokeredMessage.setDeadLetterSource((String) value);
+                            break;
+                        case ENQUEUED_SEQUENCE_NUMBER:
                             break;
                         default:
                             logger.info("Unrecognised key: {}, value: {}", key, value);

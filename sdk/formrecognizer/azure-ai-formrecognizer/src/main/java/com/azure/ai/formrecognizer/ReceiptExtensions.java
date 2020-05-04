@@ -55,7 +55,8 @@ public final class ReceiptExtensions {
             FormField<?> fieldValue = entry.getValue();
             switch (key) {
                 case "ReceiptType":
-                    receiptType = new USReceiptType(key, fieldValue.getConfidence());
+                    receiptType = new USReceiptType(((FormField<String>) fieldValue).getFieldValue(),
+                        fieldValue.getConfidence());
                     break;
                 case "MerchantName":
                     merchantName = (FormField<String>) fieldValue;

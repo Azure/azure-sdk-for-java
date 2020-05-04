@@ -10,9 +10,12 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
+import com.azure.identity.implementation.IntelliJAuthMethodDetails;
+import com.azure.identity.implementation.IntelliJCacheAccessor;
 import com.azure.identity.implementation.MsalToken;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -30,10 +33,37 @@ class IntelliJCredential implements TokenCredential {
     /**
      * Creates an {@link IntelliJCredential} with default identity client options.
      * @param identityClientOptions the options to configure the identity client
+     * @param tenantId the user specified tenant id.
      */
-    IntelliJCredential(IdentityClientOptions identityClientOptions) {
-        identityClient = new IdentityClientBuilder().identityClientOptions(identityClientOptions)
-                             .clientId(AZURE_TOOLS_FOR_INTELLIJ_CLIENT_ID).build();
+    IntelliJCredential(String tenantId, IdentityClientOptions identityClientOptions) {
+
+        IdentityClientOptions options =
+                identityClientOptions == null ? new IdentityClientOptions() : identityClientOptions;
+
+        IntelliJCacheAccessor accessor =
+                new IntelliJCacheAccessor(options.getIntelliJKeePassDatabasePath());
+
+        IntelliJAuthMethodDetails authMethodDetails;
+        try {
+            authMethodDetails = accessor.getAuthDetailsIfAvailable();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        String cloudInstance = accessor.getAzureAuthHost(authMethodDetails.getAzureEnv());
+        options.setAuthorityHost(cloudInstance);
+
+        String tenant = tenantId;
+
+        if (tenant == null) {
+            tenant = "common";
+        }
+
+        identityClient = new IdentityClientBuilder()
+                             .identityClientOptions(options)
+                             .tenantId(tenant)
+                             .clientId(AZURE_TOOLS_FOR_INTELLIJ_CLIENT_ID)
+                             .build();
 
         this.cachedToken = new AtomicReference<>();
     }

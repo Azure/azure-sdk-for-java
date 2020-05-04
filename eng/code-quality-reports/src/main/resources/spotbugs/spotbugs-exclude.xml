@@ -45,6 +45,32 @@
     <Field name="defaultEncryptionAlgorithm"/>
     <Bug pattern="UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD"/>
   </Match>
+  
+  <!-- Defines native api, doesn't follow java style.-->
+  <Match>
+      <Class name="~com\.azure\.identity\.implementation\.WindowsCredentialApi(.+)"/>
+      <Bug pattern="UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD,
+      UWF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD,
+      NM_FIELD_NAMING_CONVENTION"/>
+  </Match>
+  
+  <!-- Exception needs to be caught here.-->
+  <Match>
+      <Class name="~com\.azure\.identity\.implementation\.VisualStudioCacheAccessor"/>
+      <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+  
+  <!-- Accesses native api, doesn't follow java style.-->
+  <Match>
+      <Class name="~com\.azure\.identity\.implementation\.LinuxKeyRingAccessor(.+)"/>
+      <Bug pattern="UWF_UNWRITTEN_FIELD"/>
+  </Match>
+  
+  <!-- Accesses native api, doesn't follow java style.-->
+  <Match>
+      <Class name="com.azure.identity.implementation.WindowsCredentialAccessor"/>
+      <Bug pattern="NP_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD"/>
+  </Match>
 
   <!-- Public field already exists in the public API surface. -->
   <Match>
@@ -595,6 +621,14 @@
       <Class name="com.azure.identity.implementation.AuthorizationCodeListener"/>
     </Or>
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+
+  <!-- This is a false positive. Exception is thrown and caught to map to a different type of exception-->
+  <Match>
+    <Or>
+      <Class name="com.azure.messaging.eventhubs.PartitionPumpManager"/>
+    </Or>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
 
   <!-- Names defined in the service. -->

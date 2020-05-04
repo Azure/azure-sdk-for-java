@@ -75,8 +75,11 @@ import com.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.azure.management.resources.fluentcore.utils.Utils;
 import com.azure.management.storage.StorageAccount;
 import com.azure.management.storage.implementation.StorageManager;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.introspect.Annotated;
+import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -322,6 +325,16 @@ class VirtualMachineImpl
                 captureResultInner -> {
                     try {
                         ObjectMapper mapper = new ObjectMapper();
+                        mapper.setAnnotationIntrospector(new JacksonAnnotationIntrospector() {
+                            @Override
+                            public JsonProperty.Access findPropertyAccess(Annotated annotated) {
+                                JsonProperty.Access access = super.findPropertyAccess(annotated);
+                                if (access == JsonProperty.Access.WRITE_ONLY) {
+                                    return JsonProperty.Access.AUTO;
+                                }
+                                return access;
+                            }
+                        });
                         return mapper.writeValueAsString(captureResultInner);
                     } catch (JsonProcessingException ex) {
                         throw logger.logExceptionAsError(Exceptions.propagate(ex));

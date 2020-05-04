@@ -3,8 +3,8 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.implementation.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.models.ErrorResponseException;
-import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -12,15 +12,16 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.IterableStream;
 import org.junit.jupiter.api.Test;
 
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.validateLayoutResult;
+import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.validateLayoutDataResults;
+import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_FORM_DATA;
 import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_URL;
-import static com.azure.ai.formrecognizer.TestUtils.getExpectedFormPages;
+import static com.azure.ai.formrecognizer.TestUtils.getAnalyzeRawResponse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
@@ -44,9 +45,10 @@ public class FormRecognizerClientBuilderTest extends TestBase {
      */
     @Test
     public void clientBuilderWithRotateToValidKey() {
-        clientBuilderWithRotateToValidKeyRunner(clientBuilder -> (input, output) ->
-            validateLayoutResult(output,
-                clientBuilder.buildClient().beginRecognizeContentFromUrl(input).getFinalResult()));
+        final AnalyzeResult rawResponse = getAnalyzeRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult();
+        clientBuilderWithRotateToValidKeyRunner(clientBuilder -> (input) ->
+            validateLayoutDataResults(clientBuilder.buildClient().beginRecognizeContentFromUrl(input).getFinalResult(),
+                rawResponse.getReadResults(), rawResponse.getPageResults(), false));
     }
 
     /**
@@ -63,9 +65,10 @@ public class FormRecognizerClientBuilderTest extends TestBase {
      */
     @Test
     public void clientBuilderWithNullServiceVersion() {
-        clientBuilderWithNullServiceVersionRunner(clientBuilder -> (input, output) ->
-            validateLayoutResult(output,
-                clientBuilder.buildClient().beginRecognizeContentFromUrl(input).getFinalResult()));
+        final AnalyzeResult rawResponse = getAnalyzeRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult();
+        clientBuilderWithNullServiceVersionRunner(clientBuilder -> (input) ->
+            validateLayoutDataResults(clientBuilder.buildClient().beginRecognizeContentFromUrl(input).getFinalResult(),
+                rawResponse.getReadResults(), rawResponse.getPageResults(), false));
     }
 
     /**
@@ -73,9 +76,10 @@ public class FormRecognizerClientBuilderTest extends TestBase {
      */
     @Test
     public void clientBuilderWithDefaultPipeline() {
-        clientBuilderWithDefaultPipelineRunner(clientBuilder -> (input, output) ->
-            validateLayoutResult(output,
-                clientBuilder.buildClient().beginRecognizeContentFromUrl(input).getFinalResult()));
+        final AnalyzeResult rawResponse = getAnalyzeRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult();
+        clientBuilderWithDefaultPipelineRunner(clientBuilder -> (input) ->
+            validateLayoutDataResults(clientBuilder.buildClient().beginRecognizeContentFromUrl(input).getFinalResult(),
+                rawResponse.getReadResults(), rawResponse.getPageResults(), false));
     }
 
     // Client builder runner
@@ -96,30 +100,30 @@ public class FormRecognizerClientBuilderTest extends TestBase {
     }
 
     void clientBuilderWithRotateToValidKeyRunner(
-        Function<FormRecognizerClientBuilder, BiConsumer<String, IterableStream<FormPage>>> testRunner) {
+        Function<FormRecognizerClientBuilder, Consumer<String>> testRunner) {
         final AzureKeyCredential credential = new AzureKeyCredential(INVALID_KEY);
         final FormRecognizerClientBuilder clientBuilder = createClientBuilder(getEndpoint(), credential);
         // Update to valid key
         credential.update(getApiKey());
-        testRunner.apply(clientBuilder).accept(LAYOUT_URL, getExpectedFormPages());
+        testRunner.apply(clientBuilder).accept(LAYOUT_URL);
     }
 
     void clientBuilderWithNullServiceVersionRunner(
-        Function<FormRecognizerClientBuilder, BiConsumer<String, IterableStream<FormPage>>> testRunner) {
+        Function<FormRecognizerClientBuilder, Consumer<String>> testRunner) {
         final FormRecognizerClientBuilder clientBuilder =
             createClientBuilder(getEndpoint(), new AzureKeyCredential(getApiKey()))
                 .retryPolicy(new RetryPolicy())
                 .serviceVersion(null);
-        testRunner.apply(clientBuilder).accept(LAYOUT_URL, getExpectedFormPages());
+        testRunner.apply(clientBuilder).accept(LAYOUT_URL);
     }
 
     void clientBuilderWithDefaultPipelineRunner(
-        Function<FormRecognizerClientBuilder, BiConsumer<String, IterableStream<FormPage>>> testRunner) {
+        Function<FormRecognizerClientBuilder, Consumer<String>> testRunner) {
         final FormRecognizerClientBuilder clientBuilder =
             createClientBuilder(getEndpoint(), new AzureKeyCredential(getApiKey()))
                 .configuration(Configuration.getGlobalConfiguration())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
-        testRunner.apply(clientBuilder).accept(LAYOUT_URL, getExpectedFormPages());
+        testRunner.apply(clientBuilder).accept(LAYOUT_URL);
     }
 
     String getEndpoint() {

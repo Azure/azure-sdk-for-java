@@ -9,15 +9,16 @@ import com.azure.management.monitor.samples.QueryMetricsAndActivityLogs;
 import com.azure.management.monitor.samples.SecurityBreachOrRiskActivityLogAlerts;
 import com.azure.management.monitor.samples.WebAppPerformanceMonitoringAlerts;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class MonitorTests extends SamplesTestBase {
 
     @Test
-    @Disabled("Live only sample due to the need to call non-management endpoints.")
     public void testQueryMetricsAndActivityLogs() {
-        Assertions.assertTrue(QueryMetricsAndActivityLogs.runSample(azure));
+        // Skip test in "playback" mode due to HTTP calls made outside of the management plane which can not be recorded at this time
+        if (!isPlaybackMode()) {
+            Assertions.assertTrue(QueryMetricsAndActivityLogs.runSample(azure));
+        }
     }
 
     @Test
@@ -31,8 +32,10 @@ public class MonitorTests extends SamplesTestBase {
     }
 
     @Test
-    @Disabled("Live only sample due to the need to call non-management endpoints.")
     public void testAutoscaleSettingsBasedOnPerformanceOrSchedule() {
-        Assertions.assertTrue(AutoscaleSettingsBasedOnPerformanceOrSchedule.runSample(azure));
+        // Skip test in "playback" mode due to HTTP calls made outside of the management plane which can not be recorded at this time
+        if (!isPlaybackMode()) {
+            Assertions.assertTrue(AutoscaleSettingsBasedOnPerformanceOrSchedule.runSample(azure));
+        }
     }
 }

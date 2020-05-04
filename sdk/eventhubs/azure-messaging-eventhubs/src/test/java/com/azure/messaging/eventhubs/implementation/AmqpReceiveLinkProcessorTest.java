@@ -32,6 +32,7 @@ import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -105,9 +106,10 @@ class AmqpReceiveLinkProcessorTest {
     @Test
     void createNewLink() {
         // Arrange
-        final int maximumPrefetchValue = 100;
         AmqpReceiveLinkProcessor processor = Flux.<AmqpReceiveLink>create(sink -> sink.next(link1))
             .subscribeWith(linkProcessor);
+
+        when(link1.getCredits()).thenReturn(1);
 
         // Act & Assert
         StepVerifier.create(processor)
@@ -131,7 +133,8 @@ class AmqpReceiveLinkProcessorTest {
         Assertions.assertNotNull(value);
 
         final Integer creditValue = value.get();
-        Assertions.assertEquals(maximumPrefetchValue, creditValue);
+        // Expecting 1 because it is Long.MAX_VALUE.
+        Assertions.assertEquals(1, creditValue);
     }
 
     /**
@@ -141,6 +144,8 @@ class AmqpReceiveLinkProcessorTest {
     void respectsBackpressureInRange() {
         // Arrange
         final int backpressure = 15;
+        // Because one message was emitted.
+        final int expected = backpressure - 1;
         AmqpReceiveLinkProcessor processor = Flux.<AmqpReceiveLink>create(sink -> sink.next(link1))
             .subscribeWith(linkProcessor);
 
@@ -158,7 +163,7 @@ class AmqpReceiveLinkProcessorTest {
         Assertions.assertNotNull(value);
 
         final Integer creditValue = value.get();
-        Assertions.assertEquals(backpressure, creditValue);
+        Assertions.assertEquals(expected, creditValue);
     }
 
     /**
@@ -170,6 +175,7 @@ class AmqpReceiveLinkProcessorTest {
         final int backpressure = -1;
         AmqpReceiveLinkProcessor processor = Flux.<AmqpReceiveLink>create(sink -> sink.next(link1))
             .subscribeWith(linkProcessor);
+        when(link1.getCredits()).thenReturn(1);
 
         // Act
         processor.subscribe(
@@ -186,7 +192,8 @@ class AmqpReceiveLinkProcessorTest {
         Assertions.assertNotNull(value);
 
         final Integer creditValue = value.get();
-        Assertions.assertEquals(1, creditValue);
+        // Expecting 0 because we wouldn't have any requested set.
+        Assertions.assertEquals(0, creditValue);
     }
 
     /**
@@ -225,7 +232,6 @@ class AmqpReceiveLinkProcessorTest {
         final FluxSink<AmqpEndpointState> connection2Endpoint =
             connection2EndpointProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
         final DirectProcessor<Message> link2Receive = DirectProcessor.create();
-        final FluxSink<Message> link2ReceiveSink = link2Receive.sink();
 
         when(link2.getEndpointStates()).thenReturn(connection2EndpointProcessor);
         when(link2.receive()).thenReturn(Flux.create(sink -> sink.next(message2)));
@@ -235,6 +241,10 @@ class AmqpReceiveLinkProcessorTest {
             sink.next(message3);
             sink.next(message4);
         }));
+
+        when(link1.getCredits()).thenReturn(1);
+        when(link2.getCredits()).thenReturn(1);
+        when(link3.getCredits()).thenReturn(1);
 
         // Act & Assert
         StepVerifier.create(processor)
@@ -465,6 +475,136 @@ class AmqpReceiveLinkProcessorTest {
 
         Assertions.assertThrows(NullPointerException.class,
             () -> linkProcessor.onError(null));
+    }
+
+    /**
+     * Verifies that we respect the back pressure request and stop emitting.
+     */
+    @Test
+    void stopsEmittingAfterBackPressure() {
+        // Arrange
+        final int backpressure = 5;
+        AmqpReceiveLinkProcessor processor = Flux.<AmqpReceiveLink>create(sink -> sink.next(link1))
+            .subscribeWith(linkProcessor);
+
+        when(link1.getCredits()).thenReturn(0, 5, 4, 3, 2, 1);
+
+        // Act & Assert
+        StepVerifier.create(processor, backpressure)
+            .then(() -> {
+                for (int i = 0; i < backpressure + 2; i++) {
+                    messageProcessorSink.next(message2);
+                }
+            })
+            .expectNextCount(backpressure)
+            .thenAwait(Duration.ofSeconds(2))
+            .thenCancel()
+            .verify();
+    }
+
+    @Test
+    void receivesUntilFirstLinkClosed() {
+        // Arrange
+        AmqpReceiveLinkProcessor processor = Flux.just(link1).subscribeWith(linkProcessor);
+        FluxSink<AmqpEndpointState> sink = endpointProcessor.sink();
+
+        when(link1.getCredits()).thenReturn(1);
+
+        // Act & Assert
+        StepVerifier.create(processor)
+            .then(() -> {
+                sink.next(AmqpEndpointState.ACTIVE);
+                messageProcessorSink.next(message1);
+                messageProcessorSink.next(message2);
+            })
+            .expectNext(message1)
+            .expectNext(message2)
+            .then(() -> sink.complete())
+            .expectComplete()
+            .verify();
+
+        Assertions.assertTrue(processor.isTerminated());
+        Assertions.assertFalse(processor.hasError());
+        Assertions.assertNull(processor.getError());
+
+        verify(link1).addCredits(eq(PREFETCH));
+        verify(link1).setEmptyCreditListener(creditSupplierCaptor.capture());
+
+        Supplier<Integer> value = creditSupplierCaptor.getValue();
+        Assertions.assertNotNull(value);
+
+        final Integer creditValue = value.get();
+        // Expecting 1 because it is Long.MAX_VALUE.
+        Assertions.assertEquals(1, creditValue);
+    }
+
+    @Test
+    void receivesFromFirstLink() {
+        // Arrange
+        AmqpReceiveLinkProcessor processor = Flux.just(link1).subscribeWith(linkProcessor);
+        FluxSink<AmqpEndpointState> sink = endpointProcessor.sink();
+
+        when(link1.getCredits()).thenReturn(1);
+
+        // Act & Assert
+        StepVerifier.create(processor)
+            .then(() -> {
+                sink.next(AmqpEndpointState.ACTIVE);
+                messageProcessorSink.next(message1);
+                messageProcessorSink.next(message2);
+            })
+            .expectNext(message1)
+            .expectNext(message2)
+            .thenCancel()
+            .verify();
+
+        Assertions.assertTrue(processor.isTerminated());
+        Assertions.assertFalse(processor.hasError());
+        Assertions.assertNull(processor.getError());
+
+        verify(link1).addCredits(eq(PREFETCH));
+        verify(link1).setEmptyCreditListener(creditSupplierCaptor.capture());
+
+        Supplier<Integer> value = creditSupplierCaptor.getValue();
+        Assertions.assertNotNull(value);
+
+        final Integer creditValue = value.get();
+        // Expecting 1 because it is Long.MAX_VALUE.
+        Assertions.assertEquals(1, creditValue);
+    }
+    /**
+     * Verifies that when we request back pressure amounts, if it only requests a certain number of events, only
+     * that number is consumed.
+     */
+    @Test
+    void backpressureRequestOnlyEmitsThatAmount() {
+        // Arrange
+        final int backpressure = 10;
+        AmqpReceiveLinkProcessor processor = Flux.just(link1).subscribeWith(linkProcessor);
+        FluxSink<AmqpEndpointState> sink = endpointProcessor.sink();
+
+        when(link1.getCredits()).thenReturn(1);
+
+        // Act & Assert
+        StepVerifier.create(processor, backpressure)
+            .then(() -> {
+                sink.next(AmqpEndpointState.ACTIVE);
+                final int emitted = backpressure + 5;
+                for (int i = 0; i < emitted; i++) {
+                    messageProcessorSink.next(mock(Message.class));
+                }
+            })
+            .expectNextCount(backpressure)
+            .thenAwait(Duration.ofSeconds(1))
+            .thenCancel()
+            .verify();
+
+        Assertions.assertTrue(processor.isTerminated());
+        Assertions.assertFalse(processor.hasError());
+        Assertions.assertNull(processor.getError());
+
+        verify(link1).addCredits(eq(PREFETCH));
+        verify(link1).setEmptyCreditListener(any());
     }
 
     private static Flux<AmqpReceiveLink> createSink(AmqpReceiveLink[] links) {
