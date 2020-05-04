@@ -7,10 +7,10 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorContext;
-import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
+import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterAll;
@@ -56,7 +56,7 @@ class ServiceBusAsyncConsumerTest {
     @Mock
     private ServiceBusAmqpConnection connection;
     @Mock
-    private AmqpReceiveLink link;
+    private ServiceBusReceiveLink link;
     @Mock
     private AmqpRetryPolicy retryPolicy;
     @Mock
@@ -88,7 +88,7 @@ class ServiceBusAsyncConsumerTest {
 
         when(link.getEndpointStates()).thenReturn(endpointProcessor);
         when(link.receive()).thenReturn(messageProcessor);
-        linkProcessor = Flux.<AmqpReceiveLink>create(sink -> sink.onRequest(requested -> {
+        linkProcessor = Flux.<ServiceBusReceiveLink>create(sink -> sink.onRequest(requested -> {
             logger.info("Requested link: {}", requested);
             sink.next(link);
         })).subscribeWith(new ServiceBusReceiveLinkProcessor(10, retryPolicy, parentConnection,
