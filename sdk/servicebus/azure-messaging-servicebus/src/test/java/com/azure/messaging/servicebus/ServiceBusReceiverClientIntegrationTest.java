@@ -20,7 +20,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -562,58 +561,25 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         }
     }
 
+    /**
+     * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
+     */
     private void setSenderAndReceiver(MessagingEntityType entityType, boolean isSessionEnabled) {
-        setSenderAndReceiver(entityType, isSessionEnabled, Function.identity());
-    }
+        sender = getSenderBuilder(false, entityType).buildClient();
 
-    private void setSenderAndReceiver(MessagingEntityType entityType, boolean isSessionEnabled,
-        Function<ServiceBusClientBuilder.ServiceBusReceiverClientBuilder, ServiceBusClientBuilder.ServiceBusReceiverClientBuilder> onReceiverCreate) {
+        if (isSessionEnabled) {
+            assertNotNull(sessionId, "'sessionId' should have been set.");
 
-        switch (entityType) {
-            case QUEUE:
-                final String queueName = isSessionEnabled ? getSessionQueueName() : getQueueName();
-
-                assertNotNull(queueName, "'queueName' cannot be null.");
-
-                sender = createBuilder().sender()
-                    .queueName(queueName)
-                    .buildClient();
-                receiver = onReceiverCreate.apply(
-                    createBuilder().receiver()
-                        .queueName(queueName)
-                        .sessionId(isSessionEnabled ? sessionId : null)
-                ).buildClient();
-
-                receiveAndDeleteReceiver = createBuilder().receiver()
-                    .queueName(queueName)
-                    .sessionId(isSessionEnabled ? sessionId : null)
-                    .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
-                    .buildClient();
-                break;
-            case SUBSCRIPTION:
-                final String topicName = getTopicName();
-                final String subscriptionName = isSessionEnabled ? getSessionSubscriptionName() : getSubscriptionName();
-
-                assertNotNull(topicName, "'topicName' cannot be null.");
-                assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
-
-                sender = createBuilder().sender()
-                    .topicName(topicName)
-                    .buildClient();
-                receiver = onReceiverCreate.apply(
-                    createBuilder().receiver()
-                        .topicName(topicName).subscriptionName(subscriptionName)
-                        .sessionId(isSessionEnabled ? sessionId : null))
-                    .buildClient();
-
-                receiveAndDeleteReceiver = createBuilder().receiver()
-                    .topicName(topicName).subscriptionName(subscriptionName)
-                    .sessionId(isSessionEnabled ? sessionId : null)
-                    .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
-                    .buildClient();
-                break;
-            default:
-                throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
+            receiver = getSessionReceiverBuilder(false, entityType,
+                builder -> builder.sessionId(sessionId)).buildClient();
+            receiveAndDeleteReceiver = getSessionReceiverBuilder(false, entityType,
+                builder -> builder.sessionId(sessionId).receiveMode(ReceiveMode.RECEIVE_AND_DELETE))
+                .buildClient();
+        } else {
+            receiver = getReceiverBuilder(false, entityType).buildClient();
+            receiveAndDeleteReceiver = getSessionReceiverBuilder(false, entityType,
+                builder -> builder.sessionId(sessionId).receiveMode(ReceiveMode.RECEIVE_AND_DELETE))
+                .buildClient();
         }
     }
 

@@ -4,11 +4,11 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
@@ -22,7 +22,6 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
-import java.util.function.Function;
 
 import static com.azure.messaging.servicebus.TestUtils.MESSAGE_POSITION_ID;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -40,7 +39,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
     private ServiceBusReceiverAsyncClient receiver;
     private ServiceBusSenderAsyncClient sender;
-    private boolean isSessionReceiver;
+    private boolean isSessionEnabled;
 
     /**
      * Receiver used to clean up resources in {@link #afterTest()}.
@@ -66,7 +65,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // In the case that this test failed... we're going to drain the queue or subscription.
         try {
-            if (isSessionReceiver) {
+            if (isSessionEnabled) {
                 logger.info("Sessioned receiver. It is probably locked until some time.");
                 TimeUnit.SECONDS.sleep(20);
             }
@@ -652,59 +651,32 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .verifyComplete();
     }
 
-    private void setSenderAndReceiver(MessagingEntityType entityType, boolean isSessionEnabled) {
-        setSenderAndReceiver(entityType, isSessionEnabled, Function.identity());
+    /**
+     * Tests that we can receive from a single unnamed session.
+     */
+    @Test
+    void singleUnnamedSession() {
+
     }
 
-    private void setSenderAndReceiver(MessagingEntityType entityType, boolean isSessionEnabled,
-        Function<ServiceBusReceiverClientBuilder, ServiceBusReceiverClientBuilder> onReceiverCreate) {
-        this.isSessionReceiver = isSessionEnabled;
+    /**
+     * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
+     */
+    private void setSenderAndReceiver(MessagingEntityType entityType, boolean isSessionEnabled) {
+        this.sender = getSenderBuilder(false, entityType).buildAsyncClient();
+        this.isSessionEnabled = isSessionEnabled;
 
-        switch (entityType) {
-            case QUEUE:
-                final String queueName = isSessionEnabled ? getSessionQueueName() : getQueueName();
-
-                assertNotNull(queueName, "'queueName' cannot be null.");
-
-                sender = createBuilder().sender()
-                    .queueName(queueName)
-                    .buildAsyncClient();
-                receiver = onReceiverCreate.apply(
-                    createBuilder().receiver()
-                        .queueName(queueName)
-                        .sessionId(isSessionEnabled ? sessionId : null)
-                ).buildAsyncClient();
-
-                receiveAndDeleteReceiver = createBuilder().receiver()
-                    .queueName(queueName)
-                    .sessionId(isSessionEnabled ? sessionId : null)
-                    .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
-                    .buildAsyncClient();
-                break;
-            case SUBSCRIPTION:
-                final String topicName = getTopicName();
-                final String subscriptionName = isSessionEnabled ? getSessionSubscriptionName() : getSubscriptionName();
-
-                assertNotNull(topicName, "'topicName' cannot be null.");
-                assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
-
-                sender = createBuilder().sender()
-                    .topicName(topicName)
-                    .buildAsyncClient();
-                receiver = onReceiverCreate.apply(
-                    createBuilder().receiver()
-                        .topicName(topicName).subscriptionName(subscriptionName)
-                        .sessionId(isSessionEnabled ? sessionId : null))
-                    .buildAsyncClient();
-
-                receiveAndDeleteReceiver = createBuilder().receiver()
-                    .topicName(topicName).subscriptionName(subscriptionName)
-                    .sessionId(isSessionEnabled ? sessionId : null)
-                    .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
-                    .buildAsyncClient();
-                break;
-            default:
-                throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
+        if (isSessionEnabled) {
+            assertNotNull(sessionId, "'sessionId' should have been set.");
+            this.receiver = getSessionReceiverBuilder(false, entityType,
+                builder -> builder.sessionId(sessionId)).buildAsyncClient();
+            this.receiveAndDeleteReceiver = getSessionReceiverBuilder(false, entityType,
+                builder -> builder.sessionId(sessionId).receiveMode(ReceiveMode.RECEIVE_AND_DELETE))
+                .buildAsyncClient();
+        } else {
+            this.receiver = getReceiverBuilder(false, entityType).buildAsyncClient();
+            this.receiveAndDeleteReceiver = getReceiverBuilder(false, entityType)
+                .buildAsyncClient();
         }
     }
 

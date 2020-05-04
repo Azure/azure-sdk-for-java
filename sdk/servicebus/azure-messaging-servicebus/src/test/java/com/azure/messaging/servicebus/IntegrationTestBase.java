@@ -14,6 +14,9 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
+import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSenderClientBuilder;
+import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import org.junit.jupiter.api.AfterAll;
@@ -32,12 +35,14 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static com.azure.core.amqp.ProxyOptions.PROXY_PASSWORD;
 import static com.azure.core.amqp.ProxyOptions.PROXY_USERNAME;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public abstract class IntegrationTestBase extends TestBase {
@@ -248,6 +253,77 @@ public abstract class IntegrationTestBase extends TestBase {
             return builder.credential(fqdn, clientSecretCredential);
         } else {
             return builder.connectionString(getConnectionString());
+        }
+    }
+
+    protected ServiceBusSenderClientBuilder getSenderBuilder(boolean useCredentials, MessagingEntityType entityType) {
+
+        switch (entityType) {
+            case QUEUE:
+                final String queueName = getQueueName();
+                assertNotNull(queueName, "'queueName' cannot be null.");
+
+                return createBuilder(useCredentials).sender()
+                    .queueName(queueName);
+            case SUBSCRIPTION:
+                final String topicName = getTopicName();
+                final String subscriptionName = getSubscriptionName();
+                assertNotNull(topicName, "'topicName' cannot be null.");
+                assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
+
+                return createBuilder(useCredentials).sender()
+                    .topicName(topicName);
+            default:
+                throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
+        }
+    }
+
+    protected ServiceBusReceiverClientBuilder getReceiverBuilder(boolean useCredentials,
+        MessagingEntityType entityType) {
+        switch (entityType) {
+            case QUEUE:
+                final String queueName = getQueueName();
+                assertNotNull(queueName, "'queueName' cannot be null.");
+
+                return createBuilder(useCredentials).receiver()
+                    .queueName(queueName);
+            case SUBSCRIPTION:
+                final String topicName = getTopicName();
+                final String subscriptionName = getSubscriptionName();
+                assertNotNull(topicName, "'topicName' cannot be null.");
+                assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
+
+                return createBuilder(useCredentials).receiver()
+                    .topicName(topicName).subscriptionName(subscriptionName);
+            default:
+                throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
+        }
+    }
+
+    protected ServiceBusSessionReceiverClientBuilder getSessionReceiverBuilder(boolean useCredentials,
+        MessagingEntityType entityType,
+        Function<ServiceBusSessionReceiverClientBuilder, ServiceBusSessionReceiverClientBuilder> onReceiverCreate) {
+        switch (entityType) {
+            case QUEUE:
+                final String queueName = getSessionQueueName();
+                assertNotNull(queueName, "'queueName' cannot be null.");
+
+                final ServiceBusSessionReceiverClientBuilder builder = createBuilder(useCredentials)
+                    .sessionReceiver()
+                    .queueName(queueName);
+                return onReceiverCreate.apply(builder);
+
+            case SUBSCRIPTION:
+                final String topicName = getTopicName();
+                final String subscriptionName = getSessionSubscriptionName();
+                assertNotNull(topicName, "'topicName' cannot be null.");
+                assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
+
+                final ServiceBusSessionReceiverClientBuilder builder2 = createBuilder(useCredentials).sessionReceiver()
+                    .topicName(topicName).subscriptionName(subscriptionName);
+                return onReceiverCreate.apply(builder2);
+            default:
+                throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
         }
     }
 
