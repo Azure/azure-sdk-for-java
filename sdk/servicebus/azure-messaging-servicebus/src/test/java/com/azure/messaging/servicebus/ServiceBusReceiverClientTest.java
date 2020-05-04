@@ -31,6 +31,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -100,7 +102,8 @@ class ServiceBusReceiverClientTest {
     @Test
     void abandonMessageWithProperties() {
         // Arrange
-        when(asyncClient.abandon(any(MessageLockToken.class), any(Map.class))).thenReturn(Mono.empty());
+        when(asyncClient.abandon(any(MessageLockToken.class), anyMap())).thenReturn(Mono.empty());
+        when(asyncClient.abandon(any(MessageLockToken.class), any(), anyString())).thenReturn(Mono.empty());
 
         // Act
         client.abandon(messageLockToken, propertiesToModify);
@@ -136,7 +139,8 @@ class ServiceBusReceiverClientTest {
     @Test
     void deferMessageWithProperties() {
         // Arrange
-        when(asyncClient.defer(any(MessageLockToken.class), any(Map.class))).thenReturn(Mono.empty());
+        when(asyncClient.defer(any(MessageLockToken.class), anyMap())).thenReturn(Mono.empty());
+        when(asyncClient.defer(any(MessageLockToken.class), any(), anyString())).thenReturn(Mono.empty());
 
         // Act
         client.defer(messageLockToken, propertiesToModify);

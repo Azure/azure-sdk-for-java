@@ -912,8 +912,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             && !options.getMaxAutoLockRenewalDuration().isZero();
 
         final ServiceBusAsyncConsumer newConsumer = new ServiceBusAsyncConsumer(linkName, linkMessageProcessor,
-            messageSerializer, options.isAutoCompleteEnabled(), isAutoLockRenewal, options.getMaxAutoLockRenewalDuration(),
-            connectionProcessor.getRetryOptions(), (token, associatedLinkName) -> renewMessageLock(token, associatedLinkName));
+            messageSerializer, options.isAutoCompleteEnabled(), isAutoLockRenewal,
+            options.getMaxAutoLockRenewalDuration(), connectionProcessor.getRetryOptions(),
+            (token, associatedLinkName) -> renewMessageLock(token, associatedLinkName));
 
         // There could have been multiple threads trying to create this async consumer when the result was null.
         // If another one had set the value while we were creating this resource, dispose of newConsumer.
