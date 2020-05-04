@@ -15,8 +15,6 @@ import com.azure.core.annotation.Immutable;
 @Immutable
 public final class SentenceSentimentImpl implements SentenceSentiment {
     private final String text;
-    private final int graphemeLength;
-    private final int graphemeOffset;
     private final SentimentConfidenceScores confidenceScores;
     private final TextSentiment sentiment;
 
@@ -27,16 +25,11 @@ public final class SentenceSentimentImpl implements SentenceSentiment {
      * @param sentiment The sentiment label of the sentence.
      * @param confidenceScores The sentiment confidence score (Softmax score) between 0 and 1, for each sentiment label.
      *   Higher values signify higher confidence.
-     * @param graphemeLength The grapheme length of the sentence.
-     * @param graphemeOffset The grapheme offset, start position for the sentence sentiment.
      */
-    public SentenceSentimentImpl(String text, TextSentiment sentiment, SentimentConfidenceScores confidenceScores,
-                                 int graphemeLength, int graphemeOffset) {
+    public SentenceSentimentImpl(String text, TextSentiment sentiment, SentimentConfidenceScores confidenceScores) {
         this.text = text;
         this.sentiment = sentiment;
         this.confidenceScores = confidenceScores;
-        this.graphemeLength = graphemeLength;
-        this.graphemeOffset = graphemeOffset;
     }
 
     /**
@@ -46,24 +39,6 @@ public final class SentenceSentimentImpl implements SentenceSentiment {
      */
     public String getText() {
         return this.text;
-    }
-
-    /**
-     * Get the grapheme length of the sentence.
-     *
-     * @return The grapheme length of the sentence.
-     */
-    public int getGraphemeLength() {
-        return graphemeLength;
-    }
-
-    /**
-     * Get the grapheme offset property: start position for the sentence sentiment.
-     *
-     * @return The grapheme offset of sentence sentiment.
-     */
-    public int getGraphemeOffset() {
-        return graphemeOffset;
     }
 
     /**

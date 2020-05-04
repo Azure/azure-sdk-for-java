@@ -21,18 +21,4 @@ public interface LinkedEntityMatch {
      * @return The text value.
      */
     String getText();
-
-    /**
-     * Get the offset property: Grapheme start position for the entity match text.
-     *
-     * @return The offset value.
-     */
-    int getGraphemeOffset();
-
-    /**
-     * Get the length property: Grapheme Length for the entity match text.
-     *
-     * @return The length value.
-     */
-    int getGraphemeLength();
 }

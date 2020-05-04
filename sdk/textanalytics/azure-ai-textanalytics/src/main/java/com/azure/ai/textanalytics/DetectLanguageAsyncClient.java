@@ -15,6 +15,7 @@ import com.azure.ai.textanalytics.implementation.models.TextAnalyticsWarningImpl
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.ai.textanalytics.models.WarningCodeValue;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
 import com.azure.core.exception.HttpResponseException;
@@ -118,7 +119,8 @@ class DetectLanguageAsyncClient {
                 new DetectedLanguageImpl(detectedLanguage.getName(),
                     detectedLanguage.getIso6391Name(), detectedLanguage.getConfidenceScore()),
                 new IterableStream<>(documentLanguage.getWarnings().stream().map(warning ->
-                    new TextAnalyticsWarningImpl(warning.getCode(), warning.getMessage()))
+                    new TextAnalyticsWarningImpl(WarningCodeValue.fromString(warning.getCode().toString()),
+                        warning.getMessage()))
                     .collect(Collectors.toList()))));
         }
 

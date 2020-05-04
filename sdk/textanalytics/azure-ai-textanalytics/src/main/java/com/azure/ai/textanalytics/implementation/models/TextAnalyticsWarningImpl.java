@@ -4,6 +4,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
+import com.azure.ai.textanalytics.models.WarningCodeValue;
 import com.azure.core.annotation.Immutable;
 
 /**

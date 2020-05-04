@@ -16,7 +16,7 @@ public final class TextDocumentStatisticsImpl implements TextDocumentStatistics 
     /*
      * Number of text elements recognized in the document.
      */
-    private final int graphemeCount;
+    private final int characterCount;
 
     /*
      * Number of transactions for the document.
@@ -26,21 +26,21 @@ public final class TextDocumentStatisticsImpl implements TextDocumentStatistics 
     /**
      * Creates a {@link TextDocumentStatisticsImpl} model that describes the statistics of text document.
      *
-     * @param graphemeCount The number of text elements recognized in the document.
+     * @param characterCount The number of text elements recognized in the document.
      * @param transactionCount The number of transactions for the document.
      */
-    public TextDocumentStatisticsImpl(int graphemeCount, int transactionCount) {
-        this.graphemeCount = graphemeCount;
+    public TextDocumentStatisticsImpl(int characterCount, int transactionCount) {
+        this.characterCount = characterCount;
         this.transactionCount = transactionCount;
     }
 
     /**
-     * Get the {@code graphemeCount} property: Number of text elements recognized in the document.
+     * Get the {@code characterCount} property: Number of text elements recognized in the document.
      *
-     * @return The {@code graphemeCount} value.
+     * @return The {@code characterCount} value.
      */
-    public int getGraphemeCount() {
-        return this.graphemeCount;
+    public int getCharacterCount() {
+        return this.characterCount;
     }
 
     /**

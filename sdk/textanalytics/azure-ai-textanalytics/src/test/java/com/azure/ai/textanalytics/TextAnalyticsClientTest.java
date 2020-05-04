@@ -250,7 +250,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeLinkedEntitiesForTextInput() {
-        final LinkedEntityMatch linkedEntityMatch1 = new LinkedEntityMatchImpl("Seattle", 0.0, 7, 26);
+        final LinkedEntityMatch linkedEntityMatch1 = new LinkedEntityMatchImpl("Seattle", 0.0);
         final LinkedEntity linkedEntity1 = new LinkedEntityImpl("Seattle",
             new IterableStream<>(Collections.singletonList(linkedEntityMatch1)),
             "en", "Seattle", "https://en.wikipedia.org/wiki/Seattle", "Wikipedia");
@@ -387,8 +387,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             TextSentiment.MIXED,
             new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentimentImpl("", TextSentiment.NEGATIVE, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0), 31, 0),
-                new SentenceSentimentImpl("", TextSentiment.POSITIVE, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0), 35, 32)
+                new SentenceSentimentImpl("", TextSentiment.NEGATIVE, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0)),
+                new SentenceSentimentImpl("", TextSentiment.POSITIVE, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0))
             )));
         DocumentSentiment analyzeSentimentResult =
             client.analyzeSentiment("The hotel was dark and unclean. The restaurant had amazing gnocchi.");
@@ -413,8 +413,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         final DocumentSentiment expectedDocumentSentiment = new DocumentSentimentImpl(TextSentiment.NEUTRAL,
             new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentimentImpl("", TextSentiment.NEUTRAL, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0), 1, 0),
-                new SentenceSentimentImpl("", TextSentiment.NEUTRAL, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0), 4, 1)
+                new SentenceSentimentImpl("", TextSentiment.NEUTRAL, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0)),
+                new SentenceSentimentImpl("", TextSentiment.NEUTRAL, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0))
             )));
 
         DocumentSentiment analyzeSentimentResult = client.analyzeSentiment("!@#%%");

@@ -20,6 +20,7 @@ import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextSentiment;
+import com.azure.ai.textanalytics.models.WarningCodeValue;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
 import com.azure.core.exception.HttpResponseException;
@@ -166,9 +167,7 @@ class AnalyzeSentimentAsyncClient {
                 return new SentenceSentimentImpl(sentenceSentiment.getText(),
                     sentenceSentimentLabel,
                     new SentimentConfidenceScoresImpl(confidenceScorePerSentence.getNegative(),
-                        confidenceScorePerSentence.getNeutral(), confidenceScorePerSentence.getPositive()),
-                    sentenceSentiment.getLength(),
-                    sentenceSentiment.getOffset());
+                        confidenceScorePerSentence.getNeutral(), confidenceScorePerSentence.getPositive()));
             }).collect(Collectors.toList());
 
         return new AnalyzeSentimentResultImpl(
@@ -184,7 +183,8 @@ class AnalyzeSentimentAsyncClient {
                     confidenceScorePerLabel.getPositive()),
                 new IterableStream<>(sentenceSentiments)),
                 new IterableStream<>(documentSentiment.getWarnings().stream().map(warning ->
-                    new TextAnalyticsWarningImpl(warning.getCode(), warning.getMessage()))
+                    new TextAnalyticsWarningImpl(WarningCodeValue.fromString(warning.getCode().toString()),
+                        warning.getMessage()))
                     .collect(Collectors.toList()))
         );
     }

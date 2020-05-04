@@ -167,9 +167,9 @@ final class TestUtils {
      * Helper method to get the expected Categorized Entities List 1
      */
     static List<CategorizedEntity> getCategorizedEntitiesList1() {
-        CategorizedEntity categorizedEntity1 = new CategorizedEntityImpl("trip", EntityCategory.EVENT, null, 18, 4, 0.0);
-        CategorizedEntity categorizedEntity2 = new CategorizedEntityImpl("Seattle", EntityCategory.LOCATION, "GPE", 26, 7, 0.0);
-        CategorizedEntity categorizedEntity3 = new CategorizedEntityImpl("last week", EntityCategory.DATE_TIME, "DateRange", 34, 9, 0.0);
+        CategorizedEntity categorizedEntity1 = new CategorizedEntityImpl("trip", EntityCategory.EVENT, null, 0.0);
+        CategorizedEntity categorizedEntity2 = new CategorizedEntityImpl("Seattle", EntityCategory.LOCATION, "GPE", 0.0);
+        CategorizedEntity categorizedEntity3 = new CategorizedEntityImpl("last week", EntityCategory.DATE_TIME, "DateRange", 0.0);
         return Arrays.asList(categorizedEntity1, categorizedEntity2, categorizedEntity3);
     }
 
@@ -177,7 +177,7 @@ final class TestUtils {
      * Helper method to get the expected Categorized Entities List 2
      */
     static List<CategorizedEntity> getCategorizedEntitiesList2() {
-        CategorizedEntity categorizedEntity3 = new CategorizedEntityImpl("Microsoft", EntityCategory.ORGANIZATION, null, 10, 9, 0.0);
+        CategorizedEntity categorizedEntity3 = new CategorizedEntityImpl("Microsoft", EntityCategory.ORGANIZATION, null, 0.0);
         return Arrays.asList(categorizedEntity3);
     }
 
@@ -205,8 +205,8 @@ final class TestUtils {
      * Helper method to get the expected Batch Linked Entities
      */
     static TextAnalyticsPagedResponse<RecognizeLinkedEntitiesResult> getExpectedBatchLinkedEntities() {
-        LinkedEntityMatch linkedEntityMatch1 = new LinkedEntityMatchImpl("Seattle", 0.0, 7, 26);
-        LinkedEntityMatch linkedEntityMatch2 = new LinkedEntityMatchImpl("Microsoft", 0.0, 9, 10);
+        LinkedEntityMatch linkedEntityMatch1 = new LinkedEntityMatchImpl("Seattle", 0.0);
+        LinkedEntityMatch linkedEntityMatch2 = new LinkedEntityMatchImpl("Microsoft", 0.0);
 
         LinkedEntity linkedEntity1 = new LinkedEntityImpl(
             "Seattle", new IterableStream<>(Collections.singletonList(linkedEntityMatch1)),
@@ -259,15 +259,15 @@ final class TestUtils {
         final DocumentSentiment expectedDocumentSentiment = new DocumentSentimentImpl(TextSentiment.MIXED,
             new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentimentImpl("", TextSentiment.NEGATIVE, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0), 31, 0),
-                new SentenceSentimentImpl("", TextSentiment.POSITIVE, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0), 35, 32)
+                new SentenceSentimentImpl("", TextSentiment.NEGATIVE, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0)),
+                new SentenceSentimentImpl("", TextSentiment.POSITIVE, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0))
             )));
 
         final DocumentSentiment expectedDocumentSentiment2 = new DocumentSentimentImpl(TextSentiment.MIXED,
             new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentimentImpl("", TextSentiment.POSITIVE, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0), 35, 0),
-                new SentenceSentimentImpl("", TextSentiment.NEGATIVE, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0), 31, 36)
+                new SentenceSentimentImpl("", TextSentiment.POSITIVE, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0)),
+                new SentenceSentimentImpl("", TextSentiment.NEGATIVE, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0))
             )));
 
         final AnalyzeSentimentResult analyzeSentimentResult1 = new AnalyzeSentimentResultImpl("0",

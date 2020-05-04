@@ -77,7 +77,7 @@ public final class LinkedEntityImpl implements LinkedEntity {
      *
      * @return The linkedEntityMatches value.
      */
-    public IterableStream<LinkedEntityMatch> getLinkedEntityMatches() {
+    public IterableStream<LinkedEntityMatch> getMatches() {
         return this.linkedEntityMatches;
     }
 

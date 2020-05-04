@@ -29,20 +29,6 @@ public interface CategorizedEntity {
     String getSubcategory();
 
     /**
-     * Get the offset property: Grapheme start position for the entity text.
-     *
-     * @return The offset value.
-     */
-    int getGraphemeOffset();
-
-    /**
-     * Get the length property: Grapheme length for the entity text.
-     *
-     * @return The length value.
-     */
-    int getGraphemeLength();
-
-    /**
      * Get the score property: Confidence score between 0 and 1 of the extracted entity.
      *
      * @return The score value.

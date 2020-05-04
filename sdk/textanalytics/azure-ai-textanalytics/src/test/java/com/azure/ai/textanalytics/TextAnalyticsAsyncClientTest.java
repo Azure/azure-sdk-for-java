@@ -266,7 +266,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     // Linked Entities
     @Test
     public void recognizeLinkedEntitiesForTextInput() {
-        final LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatchImpl("Seattle", 0.0, 7, 26);
+        final LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatchImpl("Seattle", 0.0);
         final LinkedEntity linkedEntity = new LinkedEntityImpl("Seattle", new IterableStream<>(Collections.singletonList(linkedEntityMatch)), "en", "Seattle", "https://en.wikipedia.org/wiki/Seattle", "Wikipedia");
 
         StepVerifier.create(client.recognizeLinkedEntities("I had a wonderful trip to Seattle last week."))
@@ -415,8 +415,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         final DocumentSentiment expectedDocumentSentiment = new DocumentSentimentImpl(TextSentiment.MIXED,
             new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentimentImpl("", TextSentiment.NEGATIVE, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0), 31, 0),
-                new SentenceSentimentImpl("", TextSentiment.POSITIVE, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0), 35, 32)
+                new SentenceSentimentImpl("", TextSentiment.NEGATIVE, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0)),
+                new SentenceSentimentImpl("", TextSentiment.POSITIVE, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0))
             )));
 
         StepVerifier
@@ -443,8 +443,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             TextSentiment.NEUTRAL,
             new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentimentImpl("", TextSentiment.NEUTRAL, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0), 1, 0),
-                new SentenceSentimentImpl("", TextSentiment.NEUTRAL, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0), 4, 1)
+                new SentenceSentimentImpl("", TextSentiment.NEUTRAL, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0)),
+                new SentenceSentimentImpl("", TextSentiment.NEUTRAL, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0))
             )));
 
         StepVerifier.create(client.analyzeSentiment("!@#%%"))

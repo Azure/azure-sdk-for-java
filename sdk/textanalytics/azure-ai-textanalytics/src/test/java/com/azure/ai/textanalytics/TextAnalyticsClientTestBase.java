@@ -8,7 +8,6 @@ import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
-import com.azure.ai.textanalytics.models.TextAnalyticsResult;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
@@ -18,6 +17,7 @@ import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.ai.textanalytics.models.TextAnalyticsResult;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
@@ -62,7 +62,6 @@ import static com.azure.ai.textanalytics.TestUtils.getDuplicateTextDocumentInput
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class TextAnalyticsClientTestBase extends TestBase {
     private static final String NAME = "name";
@@ -453,8 +452,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      */
     static void validateCategorizedEntity(
         CategorizedEntity expectedCategorizedEntity, CategorizedEntity actualCategorizedEntity) {
-        assertEquals(expectedCategorizedEntity.getGraphemeLength() > 0, actualCategorizedEntity.getGraphemeLength() > 0);
-        assertEquals(expectedCategorizedEntity.getGraphemeOffset(), actualCategorizedEntity.getGraphemeOffset());
         assertEquals(expectedCategorizedEntity.getSubcategory(), actualCategorizedEntity.getSubcategory());
         assertEquals(expectedCategorizedEntity.getText(), actualCategorizedEntity.getText());
         assertEquals(expectedCategorizedEntity.getCategory(), actualCategorizedEntity.getCategory());
@@ -473,8 +470,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expectedLinkedEntity.getLanguage(), actualLinkedEntity.getLanguage());
         assertEquals(expectedLinkedEntity.getUrl(), actualLinkedEntity.getUrl());
         assertEquals(expectedLinkedEntity.getDataSourceEntityId(), actualLinkedEntity.getDataSourceEntityId());
-        validateLinkedEntityMatches(expectedLinkedEntity.getLinkedEntityMatches().stream().collect(Collectors.toList()),
-            actualLinkedEntity.getLinkedEntityMatches().stream().collect(Collectors.toList()));
+        validateLinkedEntityMatches(expectedLinkedEntity.getMatches().stream().collect(Collectors.toList()),
+            actualLinkedEntity.getMatches().stream().collect(Collectors.toList()));
     }
 
     /**
@@ -555,9 +552,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      */
     static void validateSentenceSentiment(SentenceSentiment expectedSentiment, SentenceSentiment actualSentiment) {
         assertEquals(expectedSentiment.getSentiment(), actualSentiment.getSentiment());
-        // score per label doesn't need to verify since service can return it with different values
-        assertEquals(expectedSentiment.getGraphemeOffset(), actualSentiment.getGraphemeOffset());
-        assertTrue(actualSentiment.getGraphemeLength() > 0);
     }
 
     /**
@@ -633,7 +627,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * @param actual the value returned by API.
      */
     private static void validateDocumentStatistics(TextDocumentStatistics expected, TextDocumentStatistics actual) {
-        assertEquals(expected.getGraphemeCount(), actual.getGraphemeCount());
+        assertEquals(expected.getCharacterCount(), actual.getCharacterCount());
         assertEquals(expected.getTransactionCount(), actual.getTransactionCount());
     }
 
@@ -653,8 +647,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             LinkedEntityMatch expectedLinkedEntity = expectedLinkedEntityMatches.get(i);
             LinkedEntityMatch actualLinkedEntity = actualLinkedEntityMatches.get(i);
             assertEquals(expectedLinkedEntity.getText(), actualLinkedEntity.getText());
-            assertEquals(expectedLinkedEntity.getGraphemeLength() > 0, actualLinkedEntity.getGraphemeLength() > 0);
-            assertEquals(expectedLinkedEntity.getGraphemeOffset(), actualLinkedEntity.getGraphemeOffset());
             assertNotNull(actualLinkedEntity.getConfidenceScore());
         }
     }

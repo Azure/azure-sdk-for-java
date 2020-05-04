@@ -15,6 +15,7 @@ import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.models.WarningCodeValue;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
 import com.azure.core.exception.HttpResponseException;
@@ -162,10 +163,11 @@ class RecognizeEntityAsyncClient {
                 null,
                 new IterableStream<>(documentEntities.getEntities().stream().map(entity ->
                     new CategorizedEntityImpl(entity.getText(), EntityCategory.fromString(entity.getCategory()),
-                        entity.getSubcategory(), entity.getOffset(), entity.getLength(), entity.getConfidenceScore()))
+                        entity.getSubcategory(), entity.getConfidenceScore()))
                     .collect(Collectors.toList())),
                 new IterableStream<>(documentEntities.getWarnings().stream().map(warning ->
-                    new TextAnalyticsWarningImpl(warning.getCode(), warning.getMessage()))
+                    new TextAnalyticsWarningImpl(WarningCodeValue.fromString(warning.getCode().toString()),
+                        warning.getMessage()))
                     .collect(Collectors.toList()))
             )));
         // Document errors

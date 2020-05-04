@@ -33,12 +33,12 @@ public final class DetectedLanguageImpl implements DetectedLanguage {
      *
      * @param name The name of a detected language.
      * @param iso6391Name A two letter representation of the detected language according to the ISO 639-1 standard.
-     * @param score A confidence score between 0 and 1.
+     * @param confidenceScore A confidence score between 0 and 1.
      */
-    public DetectedLanguageImpl(String name, String iso6391Name, double score) {
+    public DetectedLanguageImpl(String name, String iso6391Name, double confidenceScore) {
         this.name = name;
         this.iso6391Name = iso6391Name;
-        this.confidenceScore = score;
+        this.confidenceScore = confidenceScore;
     }
 
     /**

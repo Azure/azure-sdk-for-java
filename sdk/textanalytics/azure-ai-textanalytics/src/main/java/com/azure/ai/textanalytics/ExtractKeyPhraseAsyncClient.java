@@ -15,6 +15,7 @@ import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.models.WarningCodeValue;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
 import com.azure.core.exception.HttpResponseException;
@@ -160,7 +161,8 @@ class ExtractKeyPhraseAsyncClient {
                     : toTextDocumentStatistics(documentKeyPhrases.getStatistics()), null,
                 new IterableStream<>(documentKeyPhrases.getKeyPhrases()),
                 new IterableStream<>(documentKeyPhrases.getWarnings().stream().map(warning ->
-                    new TextAnalyticsWarningImpl(warning.getCode(), warning.getMessage()))
+                    new TextAnalyticsWarningImpl(WarningCodeValue.fromString(warning.getCode().toString()),
+                        warning.getMessage()))
                     .collect(Collectors.toList()))));
         }
 

@@ -332,7 +332,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
                 linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
                 linkedEntity.getDataSource());
-            linkedEntity.getLinkedEntityMatches().forEach(entityMatch -> System.out.printf(
+            linkedEntity.getMatches().forEach(entityMatch -> System.out.printf(
                 "Matched entity: %s, score: %f.%n", entityMatch.getText(), entityMatch.getConfidenceScore()));
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#string
@@ -351,7 +351,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
                     linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
                     linkedEntity.getDataSource());
-                linkedEntity.getLinkedEntityMatches().forEach(entityMatch -> System.out.printf(
+                linkedEntity.getMatches().forEach(entityMatch -> System.out.printf(
                     "Matched entity: %s, score: %f.%n", entityMatch.getText(), entityMatch.getConfidenceScore()));
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#string-string
@@ -380,7 +380,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
                         linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
                         linkedEntity.getDataSource());
-                    linkedEntity.getLinkedEntityMatches().forEach(entityMatch -> System.out.printf(
+                    linkedEntity.getMatches().forEach(entityMatch -> System.out.printf(
                         "Matched entity: %s, score: %f.%n", entityMatch.getText(), entityMatch.getConfidenceScore()));
                 }));
         });
@@ -412,7 +412,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                         System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
                             linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
                             linkedEntity.getDataSource());
-                        linkedEntity.getLinkedEntityMatches().forEach(entityMatch -> System.out.printf(
+                        linkedEntity.getMatches().forEach(entityMatch -> System.out.printf(
                             "Matched entity: %s, score: %f.%n", entityMatch.getText(), entityMatch.getConfidenceScore()));
                     }));
             });
@@ -443,7 +443,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                         System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
                             linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
                             linkedEntity.getDataSource());
-                        linkedEntity.getLinkedEntityMatches().forEach(entityMatch -> System.out.printf(
+                        linkedEntity.getMatches().forEach(entityMatch -> System.out.printf(
                             "Matched entity: %s, score: %f.%n", entityMatch.getText(), entityMatch.getConfidenceScore()));
                     }));
             });
@@ -476,7 +476,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                         System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
                             linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
                             linkedEntity.getDataSource());
-                        linkedEntity.getLinkedEntityMatches().forEach(entityMatch -> System.out.printf(
+                        linkedEntity.getMatches().forEach(entityMatch -> System.out.printf(
                             "Matched entity: %s, score: %.2f.%n", entityMatch.getText(), entityMatch.getConfidenceScore()));
                     }));
             });

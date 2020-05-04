@@ -16,20 +16,6 @@ public interface SentenceSentiment {
     String getText();
 
     /**
-     * Get the grapheme length of the sentence.
-     *
-     * @return The grapheme length of the sentence.
-     */
-    int getGraphemeLength();
-
-    /**
-     * Get the grapheme offset property: start position for the sentence sentiment.
-     *
-     * @return The grapheme offset of sentence sentiment.
-     */
-    int getGraphemeOffset();
-
-    /**
      * Get the text sentiment label: POSITIVE, NEGATIVE, or NEUTRAL.
      *
      * @return The {@link TextSentiment}.

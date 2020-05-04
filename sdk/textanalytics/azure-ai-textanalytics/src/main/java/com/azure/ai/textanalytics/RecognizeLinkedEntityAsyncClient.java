@@ -15,6 +15,7 @@ import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.models.WarningCodeValue;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
 import com.azure.core.exception.HttpResponseException;
@@ -161,7 +162,8 @@ class RecognizeLinkedEntityAsyncClient {
                 null,
                 mapLinkedEntity(documentLinkedEntities.getEntities()),
                 new IterableStream<>(documentLinkedEntities.getWarnings().stream().map(warning ->
-                    new TextAnalyticsWarningImpl(warning.getCode(), warning.getMessage()))
+                    new TextAnalyticsWarningImpl(WarningCodeValue.fromString(warning.getCode().toString()),
+                        warning.getMessage()))
                     .collect(Collectors.toList()))
             )));
         // Document errors
@@ -183,7 +185,7 @@ class RecognizeLinkedEntityAsyncClient {
             linkedEntitiesList.add(new LinkedEntityImpl(
                 linkedEntity.getName(),
                 new IterableStream<>(linkedEntity.getMatches().stream().map(match -> new LinkedEntityMatchImpl(
-                    match.getText(), match.getConfidenceScore(), match.getLength(), match.getOffset()))
+                    match.getText(), match.getConfidenceScore()))
                     .collect(Collectors.toList())),
                 linkedEntity.getLanguage(),
                 linkedEntity.getId(), linkedEntity.getUrl(), linkedEntity.getDataSource()));

@@ -3,8 +3,6 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
-
 /**
  * The {@link TextAnalyticsWarning} model.
  */

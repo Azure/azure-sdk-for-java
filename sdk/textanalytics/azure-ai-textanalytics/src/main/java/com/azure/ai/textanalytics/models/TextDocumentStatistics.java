@@ -9,11 +9,11 @@ package com.azure.ai.textanalytics.models;
  */
 public interface TextDocumentStatistics {
     /**
-     * Get the {@code graphemeCount} property: Number of text elements recognized in the document.
+     * Get the {@code characterCount} property: Number of text elements recognized in the document.
      *
-     * @return The {@code graphemeCount} value.
+     * @return The {@code characterCount} value.
      */
-    int getGraphemeCount();
+    int getCharacterCount();
 
     /**
      * Get the {@code transactionsCount} property: Number of transactions for the document.

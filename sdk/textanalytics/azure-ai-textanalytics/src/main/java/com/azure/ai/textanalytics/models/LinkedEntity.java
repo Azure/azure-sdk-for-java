@@ -21,7 +21,7 @@ public interface LinkedEntity {
      *
      * @return The linkedEntityMatches value.
      */
-    IterableStream<LinkedEntityMatch> getLinkedEntityMatches();
+    IterableStream<LinkedEntityMatch> getMatches();
 
     /**
      * Get the language property: Language used in the data source.
