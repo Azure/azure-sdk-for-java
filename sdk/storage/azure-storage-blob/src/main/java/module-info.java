@@ -22,7 +22,7 @@ module com.azure.storage.blob {
 
     exports com.azure.storage.blob.implementation.util to
         com.azure.storage.blob.cryptography,
-        com.azure.storage.file.datalake;
+        com.azure.storage.file.datalake, com.azure.storage.blob.changefeed;
 
     opens com.azure.storage.blob.models to
         com.fasterxml.jackson.databind,

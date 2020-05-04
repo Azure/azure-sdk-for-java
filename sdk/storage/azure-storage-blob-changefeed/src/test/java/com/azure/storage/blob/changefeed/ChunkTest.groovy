@@ -22,12 +22,12 @@ import java.nio.file.StandardOpenOption
 class ChunkTest extends Specification {
 
     BlobContainerAsyncClient mockContainer
-    String blobName
+    String chunkPath
 
     def setup() {
-        blobName = "changefeed_1000.avro"
+        chunkPath = "changefeed_1000.avro"
         ClassLoader classLoader = getClass().getClassLoader()
-        File f = new File(classLoader.getResource(blobName).getFile())
+        File f = new File(classLoader.getResource(chunkPath).getFile())
         Path path = Paths.get(f.getAbsolutePath())
 
         BlobAsyncClient mockBlob = Mockito.mock(BlobAsyncClient.class);
@@ -35,16 +35,16 @@ class ChunkTest extends Specification {
             .thenReturn(FluxUtil.readFile(AsynchronousFileChannel.open(path, StandardOpenOption.READ)))
 
         mockContainer = Mockito.mock(BlobContainerAsyncClient.class)
-        Mockito.when(mockContainer.getBlobAsyncClient(blobName))
+        Mockito.when(mockContainer.getBlobAsyncClient(chunkPath))
             .thenReturn(mockBlob)
     }
 
     @Unroll
-    def "getEvents min"() {
+    def "getEvents"() {
         setup:
-        def shardCursor = new BlobChangefeedCursor("endTime", "segmentTime", "shardPath", "chunkPath", null)
+        def shardCursor = new BlobChangefeedCursor("endTime", "segmentTime", "shardPath", chunkPath, null)
         def userCursor = cursorOffset == 0 ? null : shardCursor.toEventCursor(cursorOffset - 1)
-        Chunk c = new Chunk(mockContainer, blobName, shardCursor, userCursor)
+        Chunk c = new Chunk(mockContainer, chunkPath, shardCursor, userCursor)
 
         when:
         def sv = StepVerifier.create(
@@ -53,23 +53,23 @@ class ChunkTest extends Specification {
         )
 
         then:
-        if (count > 0) {
+        int counter = 0
+        while (counter < count) {
             assert sv
                 .expectNextMatches({ tuple -> this.&verifyTuple(tuple, shardCursor, cursorOffset) })
-                .expectNextCount(count)
-                .verifyComplete()
-        } else {
-            assert sv.verifyComplete()
+            counter++
         }
-
+        assert sv.verifyComplete()
 
         where:
         cursorOffset || count
-        0            || 999     /* All events */
-        1            || 998
-        101          || 898
-        500          || 499
-        1000         || 0       /* No events */
+        0            || 1000     /* All events (min case) */
+        1            || 999      /* Tests that cursor validation works. */
+        101          || 899
+        500          || 500
+        899          || 101
+        999          || 1
+        1000         || 0        /* No events */
     }
 
     boolean verifyTuple(Tuple2<Long, BlobChangefeedEventWrapper> tuple2, BlobChangefeedCursor shardCursor, long cursorOffset) {

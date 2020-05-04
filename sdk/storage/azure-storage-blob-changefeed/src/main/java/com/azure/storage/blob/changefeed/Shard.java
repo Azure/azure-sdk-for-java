@@ -50,14 +50,15 @@ class Shard  {
     /**
      * Lists chunks in a shard.
      */
-    private Flux<BlobItem> listChunks() {
-        return this.client.listBlobs(new ListBlobsOptions().setPrefix(shardPath));
+    private Flux<String> listChunks() {
+        return this.client.listBlobs(new ListBlobsOptions().setPrefix(shardPath))
+            .map(BlobItem::getName);
     }
 
     /**
      * Get events for a chunk.
      */
-    private Flux<BlobChangefeedEventWrapper> getEventsForChunk(BlobItem chunk) {
-        return new Chunk(client, chunk.getName(), segmentCursor.toChunkCursor(chunk.getName()), userCursor).getEvents();
+    Flux<BlobChangefeedEventWrapper> getEventsForChunk(String chunk) {
+        return new Chunk(client, chunk, segmentCursor.toChunkCursor(chunk), userCursor).getEvents();
     }
 }

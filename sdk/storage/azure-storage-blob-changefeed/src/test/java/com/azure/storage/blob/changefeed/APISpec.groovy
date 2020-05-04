@@ -27,6 +27,7 @@ import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Timeout
 
+import java.nio.ByteBuffer
 import java.time.Duration
 import java.util.concurrent.TimeUnit
 
@@ -231,6 +232,21 @@ class APISpec extends Specification {
             .containerClient(containerClient)
             .leaseId(leaseId)
             .buildClient()
+    }
+
+    byte[] getRandomByteArray(int size) {
+        long seed = UUID.fromString(resourceNamer.randomUuid()).getMostSignificantBits() & Long.MAX_VALUE
+        Random rand = new Random(seed)
+        byte[] data = new byte[size]
+        rand.nextBytes(data)
+        return data
+    }
+
+    /*
+     Size must be an int because ByteBuffer sizes can only be an int. Long is not supported.
+     */
+    ByteBuffer getRandomData(int size) {
+        return ByteBuffer.wrap(getRandomByteArray(size))
     }
 
 }

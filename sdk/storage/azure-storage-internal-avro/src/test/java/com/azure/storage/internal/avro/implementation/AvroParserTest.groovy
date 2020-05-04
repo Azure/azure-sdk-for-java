@@ -80,9 +80,13 @@ class AvroParserTest extends Specification {
             .concatMap({ buffer -> parser.parse(buffer) })
         )
         then:
-        verifier.expectNextMatches(predicate)
-            .expectNextCount(9)
-            .verifyComplete()
+        int counter = 0
+        while (counter < 10) {
+            assert verifier
+                .expectNextMatches(predicate)
+            counter++
+        }
+        assert verifier.verifyComplete()
 
         where:
         testCase | predicate
@@ -133,9 +137,13 @@ class AvroParserTest extends Specification {
             .concatMap({ buffer -> parser.parse(buffer) })
         )
         then:
-        verifier.expectNextMatches({ o -> ((Map) o).equals(['$record': 'Test', 'f': 5]) })
-            .expectNextCount(9)
-            .verifyComplete()
+        int counter = 0
+        while (counter < 10) {
+            assert verifier
+                .expectNextMatches({ o -> ((Map) o).equals(['$record': 'Test', 'f': 5]) })
+            counter++
+        }
+        assert verifier.verifyComplete()
 
         /* The record avro file is 157 bytes long. */
         where:
@@ -164,10 +172,13 @@ class AvroParserTest extends Specification {
         )
 
         then:
-        sv
-            .expectNextMatches({t -> t.getT2() == "/blobServices/default/containers/test-container/blobs/" + t.getT1()})
-            .expectNextCount(999)
-            .verifyComplete()
+        int counter = 0
+        while (counter < 1000) {
+            assert sv
+                .expectNextMatches({t -> t.getT2() == "/blobServices/default/containers/test-container/blobs/" + t.getT1()})
+            counter++
+        }
+        assert sv.verifyComplete()
     }
 
     def "Parse QQ small"() {
