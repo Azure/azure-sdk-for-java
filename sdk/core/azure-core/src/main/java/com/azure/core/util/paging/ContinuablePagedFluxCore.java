@@ -209,7 +209,16 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
          * @param token the token
          */
         void setLastContinuationToken(C token) {
-            this.isDone = (token == null);
+            if (token == null) {
+                // null continuationToken signals end of pagination.
+                this.isDone = true;
+            } else if (token instanceof String && ((String) token).length() == 0) {
+                // For String continuationToken in addition to null
+                // empty is also used to signal end of pagination.
+                this.isDone = true;
+            } else {
+                this.isDone  = false;
+            }
             this.lastContinuationToken = token;
         }
 
