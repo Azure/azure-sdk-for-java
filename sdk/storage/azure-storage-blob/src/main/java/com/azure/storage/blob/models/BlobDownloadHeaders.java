@@ -7,7 +7,6 @@ package com.azure.storage.blob.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.HeaderCollection;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -25,7 +24,7 @@ public final class BlobDownloadHeaders {
      * Instantiates an empty {@code BlobDownloadHeaders}.
      */
     public BlobDownloadHeaders() {
-
+        objectReplicationSourcePolicies = null;
     }
 
     /**
@@ -389,7 +388,7 @@ public final class BlobDownloadHeaders {
     @JsonProperty(value = "x-ms-error-code")
     private String errorCode;
 
-    private Map<String, ObjectReplicationPolicy> objectReplicationSourcePolicies;
+    private final Map<String, ObjectReplicationPolicy> objectReplicationSourcePolicies;
 
     /**
      * Get the lastModified property: Returns the date and time the container
