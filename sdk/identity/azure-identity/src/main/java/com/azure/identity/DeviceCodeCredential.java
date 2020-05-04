@@ -36,9 +36,6 @@ public class DeviceCodeCredential implements TokenCredential {
     DeviceCodeCredential(String clientId, String tenantId, Consumer<DeviceCodeInfo> challengeConsumer,
                          IdentityClientOptions identityClientOptions) {
         this.challengeConsumer = challengeConsumer;
-        if (tenantId == null) {
-            tenantId = "common";
-        }
         identityClient = new IdentityClientBuilder()
             .tenantId(tenantId)
             .clientId(clientId)
