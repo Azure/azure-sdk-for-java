@@ -54,6 +54,7 @@ public final class IdentityClientOptions {
     private final String[] attributes; // preserve order
     private boolean allowUnencryptedCache;
     private boolean sharedTokenCacheEnabled;
+    private String keePassDatabasePath;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -253,6 +254,16 @@ public final class IdentityClientOptions {
     }
 
     /**
+     * Specifies the database to extract IntelliJ cached credentials from.
+     * @param keePassDatabasePath the database to extract intellij credentials from.
+     * @return IdentityClientOptions
+     */
+    public IdentityClientOptions setIntelliJKeePassDatabasePath(String keePassDatabasePath) {
+        this.keePassDatabasePath = keePassDatabasePath;
+        return this;
+    }
+
+    /**
      * Gets if the shared token cache is disabled.
      * @return if the shared token cache is disabled.
      */
@@ -270,5 +281,13 @@ public final class IdentityClientOptions {
     public IdentityClientOptions enablePersistentCache(boolean enabled) {
         this.sharedTokenCacheEnabled = enabled;
         return this;
+    }
+
+    /*
+     * Get the KeePass database path.
+     * @return the KeePass database path to extract inellij credentials from.
+     */
+    public String getIntelliJKeePassDatabasePath() {
+        return keePassDatabasePath;
     }
 }

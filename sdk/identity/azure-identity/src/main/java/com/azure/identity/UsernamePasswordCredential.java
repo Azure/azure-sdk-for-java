@@ -43,9 +43,6 @@ public class UsernamePasswordCredential implements TokenCredential {
         Objects.requireNonNull(password, "'password' cannot be null.");
         this.username = username;
         this.password = password;
-        if (tenantId == null) {
-            tenantId = "common";
-        }
         identityClient =
             new IdentityClientBuilder()
                 .tenantId(tenantId)

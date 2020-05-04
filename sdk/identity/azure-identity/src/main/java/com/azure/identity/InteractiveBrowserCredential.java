@@ -42,9 +42,6 @@ public class InteractiveBrowserCredential implements TokenCredential {
     InteractiveBrowserCredential(String clientId, String tenantId, int port,
                                  IdentityClientOptions identityClientOptions) {
         this.port = port;
-        if (tenantId == null) {
-            tenantId = "common";
-        }
         identityClient = new IdentityClientBuilder()
             .tenantId(tenantId)
             .clientId(clientId)

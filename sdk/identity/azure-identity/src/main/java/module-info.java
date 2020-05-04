@@ -10,6 +10,9 @@ module com.azure.identity {
     requires com.sun.jna.platform;
     requires nanohttpd;
     requires org.reactivestreams;
+    requires org.linguafranca.pwdb.database;
+    requires org.linguafranca.pwdb.kdbx;
+    requires org.linguafranca.pwdb.kdbx.simple;
 
     exports com.azure.identity;
 
