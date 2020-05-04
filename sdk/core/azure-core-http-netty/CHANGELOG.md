@@ -1,5 +1,8 @@
 # Release History
 
+## 1.6.0-beta.1 (Unreleased)
+
+
 ## 1.5.1 (2020-05-04)
 
 - Updated default retrieval of response body as a `String` to use `CoreUtils.bomAwareToString`.
