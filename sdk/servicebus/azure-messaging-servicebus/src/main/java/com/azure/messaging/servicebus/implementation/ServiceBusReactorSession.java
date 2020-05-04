@@ -6,7 +6,6 @@ package com.azure.messaging.servicebus.implementation;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.implementation.AmqpConstants;
-import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
@@ -72,13 +71,13 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
     }
 
     @Override
-    public Mono<AmqpReceiveLink> createConsumer(String linkName, String entityPath, MessagingEntityType entityType,
+    public Mono<ServiceBusReceiveLink> createConsumer(String linkName, String entityPath, MessagingEntityType entityType,
         Duration timeout, AmqpRetryPolicy retry, ReceiveMode receiveMode) {
         return createConsumer(linkName, entityPath, entityType, timeout, retry, receiveMode, null);
     }
 
     @Override
-    public Mono<AmqpReceiveLink> createConsumer(String linkName, String entityPath, MessagingEntityType entityType,
+    public Mono<ServiceBusReceiveLink> createConsumer(String linkName, String entityPath, MessagingEntityType entityType,
         Duration timeout, AmqpRetryPolicy retry, ReceiveMode receiveMode, String sessionId) {
         Objects.requireNonNull(linkName, "'linkName' cannot be null.");
         Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
@@ -115,7 +114,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
         }
 
         return createConsumer(linkName, entityPath, timeout, retry, filter, linkProperties, null, senderSettleMode,
-            receiverSettleMode);
+            receiverSettleMode).cast(ServiceBusReceiveLink.class);
     }
 
     @Override

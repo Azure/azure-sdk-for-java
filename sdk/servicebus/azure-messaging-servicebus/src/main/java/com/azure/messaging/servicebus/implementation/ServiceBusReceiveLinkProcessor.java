@@ -38,7 +38,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * This is almost a carbon copy of AmqpReceiveLinkProcessor. When we can abstract it from proton-j, it would be nice to
  * unify this.
  */
-public class ServiceBusReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Message> implements Subscription {
+public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusReceiveLink, Message> implements Subscription {
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiveLinkProcessor.class);
     private final Object lock = new Object();
     private final AtomicBoolean isTerminated = new AtomicBoolean();
@@ -171,7 +171,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLin
      * @param next The next AMQP receive link.
      */
     @Override
-    public void onNext(AmqpReceiveLink next) {
+    public void onNext(ServiceBusReceiveLink next) {
         Objects.requireNonNull(next, "'next' cannot be null.");
 
         if (isTerminated()) {
