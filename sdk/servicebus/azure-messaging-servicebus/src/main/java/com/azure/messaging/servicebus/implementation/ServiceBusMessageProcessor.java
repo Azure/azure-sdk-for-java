@@ -8,7 +8,6 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.MessageLockToken;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
@@ -32,7 +31,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
-import java.util.function.Function;
 
 /**
  * Processor that listens to upstream messages, pushes them downstream then completes it if necessary.
@@ -41,28 +39,24 @@ public class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceived
     implements Subscription {
     private final ClientLogger logger = new ClientLogger(ServiceBusMessageProcessor.class);
     private final boolean isAutoComplete;
+    private final String linkName;
     private final AmqpRetryOptions retryOptions;
     private final AmqpErrorContext errorContext;
-    private final Function<MessageLockToken, Mono<Void>> completeFunction;
-    private final Function<MessageLockToken, Mono<Void>> onAbandon;
-    private final Function<MessageLockToken, Mono<Instant>> onRenewLock;
     private final Deque<ServiceBusReceivedMessage> messageQueue = new ConcurrentLinkedDeque<>();
     private final boolean isAutoRenewLock;
     private final Duration maxAutoLockRenewal;
+    private final MessageManagementOperations managementOperations;
 
-    public ServiceBusMessageProcessor(boolean isAutoComplete, boolean isAutoRenewLock, Duration maxAutoLockRenewal,
-        AmqpRetryOptions retryOptions, AmqpErrorContext errorContext,
-        Function<MessageLockToken, Mono<Void>> onComplete,
-        Function<MessageLockToken, Mono<Void>> onAbandon,
-        Function<MessageLockToken, Mono<Instant>> onRenewLock) {
+    public ServiceBusMessageProcessor(String linkName, boolean isAutoComplete, boolean isAutoRenewLock,
+        Duration maxAutoLockRenewal, AmqpRetryOptions retryOptions, AmqpErrorContext errorContext,
+        MessageManagementOperations managementOperations) {
 
         super();
+        this.linkName = linkName;
 
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         this.errorContext = Objects.requireNonNull(errorContext, "'errorContext' cannot be null.");
-        this.completeFunction = Objects.requireNonNull(onComplete, "'onComplete' cannot be null.");
-        this.onAbandon = Objects.requireNonNull(onAbandon, "'onAbandon' cannot be null.");
-        this.onRenewLock = Objects.requireNonNull(onRenewLock, "'onRenewLock' cannot be null.");
+        this.managementOperations = managementOperations;
 
         this.isAutoComplete = isAutoComplete;
         this.isAutoRenewLock = isAutoRenewLock;
@@ -186,7 +180,7 @@ public class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceived
             return;
         }
 
-        logger.info("Cancelling subscription.");
+        logger.verbose("Cancelling subscription.");
         isCancelled = true;
         drain();
     }
@@ -197,7 +191,7 @@ public class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceived
             return;
         }
 
-        logger.info("Disposing subscription.");
+        logger.verbose("Disposing subscription.");
         isDone = true;
         drain();
     }
@@ -338,7 +332,11 @@ public class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceived
 
             if (isAutoComplete) {
                 logger.info("Abandoning message lock: {}", lockToken);
-                onAbandon.apply(message)
+
+                final DeliveryState deliveryState = MessageUtils.getDeliveryState(DispositionStatus.ABANDONED,
+                    null, null, null);
+
+                managementOperations.updateDisposition(lockToken, deliveryState)
                     .onErrorContinue((error, item) -> {
                         logger.warning("Could not abandon message with lock: {}", lockToken, error);
                         setInternalError(error);
@@ -361,7 +359,10 @@ public class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceived
         if (isAutoComplete) {
             logger.info("sequenceNumber[{}]. lock[{}]. Completing message.", sequenceNumber, lockToken);
 
-            completeFunction.apply(message)
+            final DeliveryState deliveryState = MessageUtils.getDeliveryState(DispositionStatus.COMPLETED,
+                null, null, null);
+
+            managementOperations.updateDisposition(lockToken, deliveryState)
                 .onErrorResume(error -> {
                     logger.warning("Could not complete message with lock: {}", lockToken, error);
                     setInternalError(error);
@@ -422,7 +423,7 @@ public class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceived
         final Disposable renewLockSubscription = Flux.switchOnNext(emitterProcessor.map(i -> Flux.interval(i)))
             .flatMap(delay -> {
                 logger.info("lockToken[{}]. now[{}]. Starting lock renewal.", lockToken, Instant.now());
-                return onRenewLock.apply(message);
+                return managementOperations.renewMessageLock(lockToken, linkName);
             })
             .map(instant -> {
                 final Duration next = Duration.between(Instant.now(), instant);
@@ -433,8 +434,8 @@ public class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceived
                 return instant;
             })
             .subscribe(lockedUntil -> {
-                logger.verbose("lockToken[{}]. lockedUntil[{}]. Lock renewal successful.",
-                    sequenceNumber, lockToken, lockedUntil);
+                logger.verbose("lockToken[{}]. lockedUntil[{}]. Lock renewal successful.", lockToken,
+                    lockedUntil);
             },
                 error -> {
                     logger.error("Error occurred while renewing lock token.", error);
