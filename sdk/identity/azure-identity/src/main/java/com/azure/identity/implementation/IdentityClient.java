@@ -29,6 +29,7 @@ import com.microsoft.aad.msal4j.ClientCredentialParameters;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
 import com.microsoft.aad.msal4j.PublicClientApplication;
+import com.microsoft.aad.msal4j.RefreshTokenParameters;
 import com.microsoft.aad.msal4j.SilentParameters;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 import reactor.core.publisher.Mono;
@@ -101,7 +102,7 @@ public class IdentityClient {
      */
     IdentityClient(String tenantId, String clientId, IdentityClientOptions options) {
         if (tenantId == null) {
-            tenantId = "common";
+            tenantId = "organizations";
         }
         if (options == null) {
             options = new IdentityClientOptions();
@@ -112,7 +113,7 @@ public class IdentityClient {
         if (clientId == null) {
             this.publicClientApplication = null;
         } else {
-            String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/organizations/" + tenantId;
+            String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
             PublicClientApplication.Builder publicClientApplicationBuilder = PublicClientApplication.builder(clientId);
             try {
                 publicClientApplicationBuilder = publicClientApplicationBuilder.authority(authorityUrl);
@@ -427,6 +428,26 @@ public class IdentityClient {
                     dc.verificationUri(), OffsetDateTime.now().plusSeconds(dc.expiresIn()), dc.message()))).build();
             return publicClientApplication.acquireToken(parameters);
         }).map(ar -> new MsalToken(ar, options));
+    }
+
+    /**
+     * Asynchronously acquire a token from Active Directory with Visual Sutdio cached refresh token.
+     *
+     * @param request the details of the token request
+     * @return a Publisher that emits an AccessToken.
+     */
+    public Mono<MsalToken> authenticateWithVsCodeCredential(TokenRequestContext request, String cloud) {
+
+        VisualStudioCacheAccessor accessor = new VisualStudioCacheAccessor();
+
+        String credential = accessor.getCredentials("VS Code Azure", cloud);
+
+        RefreshTokenParameters parameters = RefreshTokenParameters
+                                                .builder(new HashSet<>(request.getScopes()), credential)
+                                                .build();
+
+        return Mono.defer(() -> Mono.fromFuture(publicClientApplication.acquireToken(parameters))
+                                    .map(ar -> new MsalToken(ar, options)));
     }
 
     /**
