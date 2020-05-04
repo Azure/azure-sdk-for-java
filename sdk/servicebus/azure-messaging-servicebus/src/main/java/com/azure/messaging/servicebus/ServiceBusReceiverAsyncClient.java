@@ -17,7 +17,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessageLockContainer;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
-import com.azure.messaging.servicebus.implementation.ServiceBusAsyncConsumer;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;

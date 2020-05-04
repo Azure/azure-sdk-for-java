@@ -1,15 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.servicebus.implementation;
+package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.CoreUtils;
-import com.azure.messaging.servicebus.MessageLockToken;
-import com.azure.messaging.servicebus.ServiceBusMessage;
-import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
+import com.azure.messaging.servicebus.implementation.DispositionStatus;
+import com.azure.messaging.servicebus.implementation.ServiceBusMessageProcessor;
+import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.Modified;
@@ -29,7 +29,7 @@ import java.util.function.Function;
 /**
  * A package-private consumer responsible for reading {@link ServiceBusMessage} from a specific Service Bus link.
  */
-public class ServiceBusAsyncConsumer implements AutoCloseable {
+class ServiceBusAsyncConsumer implements AutoCloseable {
     private static final Symbol DEAD_LETTER_OPERATION = Symbol.getSymbol(AmqpConstants.VENDOR + ":dead-letter");
     private static final String DEAD_LETTER_REASON = "DeadLetterReason";
     private static final String DEAD_LETTER_ERROR_DESCRIPTION = "DeadLetterErrorDescription";

@@ -37,7 +37,7 @@ import java.util.function.Function;
 /**
  * Processor that listens to upstream messages, pushes them downstream then completes it if necessary.
  */
-class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage, ServiceBusReceivedMessage>
+public class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage, ServiceBusReceivedMessage>
     implements Subscription {
     private final ClientLogger logger = new ClientLogger(ServiceBusMessageProcessor.class);
     private final boolean isAutoComplete;
@@ -50,7 +50,7 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
     private final boolean isAutoRenewLock;
     private final Duration maxAutoLockRenewal;
 
-    ServiceBusMessageProcessor(boolean isAutoComplete, boolean isAutoRenewLock, Duration maxAutoLockRenewal,
+    public ServiceBusMessageProcessor(boolean isAutoComplete, boolean isAutoRenewLock, Duration maxAutoLockRenewal,
         AmqpRetryOptions retryOptions, AmqpErrorContext errorContext,
         Function<MessageLockToken, Mono<Void>> onComplete,
         Function<MessageLockToken, Mono<Void>> onAbandon,
