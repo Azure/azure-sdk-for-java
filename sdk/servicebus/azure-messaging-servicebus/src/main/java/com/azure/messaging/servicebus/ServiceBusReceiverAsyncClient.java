@@ -78,7 +78,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private final MessageSerializer messageSerializer;
     private final ReceiveAsyncOptions defaultReceiveOptions;
     private final Runnable onClientClose;
-    private final UnnamedSessionManager sessionManager;
+    private final UnnamedSessionManager unnamedSessionManager;
 
     // Starting at -1 because that is before the beginning of the stream.
     private final AtomicLong lastPeekedSequenceNumber = new AtomicLong(-1);
@@ -114,13 +114,13 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         this.defaultReceiveOptions = new ReceiveAsyncOptions()
             .setEnableAutoComplete(true)
             .setMaxAutoRenewDuration(connectionProcessor.getRetryOptions().getTryTimeout());
-        this.sessionManager = null;
+        this.unnamedSessionManager = null;
     }
 
     ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
         ReceiverOptions receiverOptions, ServiceBusConnectionProcessor connectionProcessor, Duration cleanupInterval,
         TracerProvider tracerProvider, MessageSerializer messageSerializer, Runnable onClientClose,
-        UnnamedSessionManager sessionManager) {
+        UnnamedSessionManager unnamedSessionManager) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
@@ -130,7 +130,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         this.tracerProvider = Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
-        this.sessionManager = Objects.requireNonNull(sessionManager, "'sessionManager' cannot be null.");
+        this.unnamedSessionManager = Objects.requireNonNull(unnamedSessionManager, "'sessionManager' cannot be null.");
 
         this.managementNodeLocks = new MessageLockContainer(cleanupInterval);
         this.defaultReceiveOptions = new ReceiveAsyncOptions()
@@ -293,8 +293,12 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "getSessionState")));
-        } else if (!isSessionReceiver()) {
+        } else if (!receiverOptions.isSessionReceiver()) {
             return monoError(logger, new IllegalStateException("Cannot get session state on a non-session receiver."));
+        }
+
+        if (unnamedSessionManager != null) {
+            return unnamedSessionManager.getSessionState(sessionId);
         } else {
             return connectionProcessor
                 .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
@@ -469,7 +473,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 "Auto-complete is not supported on a receiver opened in ReceiveMode.RECEIVE_AND_DELETE.")));
         }
 
-        return getOrCreateConsumer(options).receive().map(message -> new ServiceBusReceivedMessageContext(message));
+        if (unnamedSessionManager != null) {
+            return unnamedSessionManager.receive(options);
+        } else {
+            return getOrCreateConsumer(options).receive().map(message -> new ServiceBusReceivedMessageContext(message));
+        }
     }
 
     /**
@@ -547,7 +555,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return monoError(logger, new NullPointerException("'receivedMessage.lockToken' cannot be null."));
         } else if (lockToken.getLockToken().isEmpty()) {
             return monoError(logger, new IllegalArgumentException("'message.lockToken' cannot be empty."));
-        } else if (isSessionReceiver()) {
+        } else if (receiverOptions.isSessionReceiver()) {
             return monoError(logger, new IllegalStateException(
                 String.format("Cannot renew message lock [%s] for a session receiver.", lockToken.getLockToken())));
         }
@@ -567,8 +575,12 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "renewSessionLock")));
-        } else if (!isSessionReceiver()) {
+        } else if (!receiverOptions.isSessionReceiver()) {
             return monoError(logger, new IllegalStateException("Cannot renew session lock on a non-session receiver."));
+        }
+
+        if (unnamedSessionManager != null) {
+            return unnamedSessionManager.renewSessionLock(sessionId);
         } else {
             return connectionProcessor
                 .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
@@ -589,8 +601,12 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "setSessionState")));
-        } else if (!isSessionReceiver()) {
+        } else if (!receiverOptions.isSessionReceiver()) {
             return monoError(logger, new IllegalStateException("Cannot set session state on a non-session receiver."));
+        }
+
+        if (unnamedSessionManager != null) {
+            return unnamedSessionManager.setSessionState(sessionId, sessionState);
         } else {
             return connectionProcessor
                 .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
@@ -732,10 +748,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     private boolean isManagementToken(String lockToken) {
         return managementNodeLocks.contains(lockToken);
-    }
-
-    private boolean isSessionReceiver() {
-        return receiverOptions.isSessionReceiver() || sessionManager != null;
     }
 
     /**
