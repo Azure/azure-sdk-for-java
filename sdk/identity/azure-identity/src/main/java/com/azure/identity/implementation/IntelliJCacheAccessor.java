@@ -135,7 +135,7 @@ public class IntelliJCacheAccessor {
     private JsonNode getCredentialFromKdbx() throws IOException {
         if (CoreUtils.isNullOrEmpty(keePassDatabasePath)) {
             throw logger.logExceptionAsError(
-                    new CredentialUnavailableException("The keePass database path is either empty or not configured."
+                    new CredentialUnavailableException("The KeePass database path is either empty or not configured."
                            + " Please configure it on the builder. It is required to use "
                            + "IntelliJ credential on the windows platform."));
         }
@@ -174,7 +174,7 @@ public class IntelliJCacheAccessor {
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readTree(entries.get(0).getPassword());
         } catch (Exception e) {
-            throw logger.logExceptionAsError(new RuntimeException("Failed to read keePass database.", e));
+            throw logger.logExceptionAsError(new RuntimeException("Failed to read KeePass database.", e));
         }
     }
 

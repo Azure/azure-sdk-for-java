@@ -201,14 +201,14 @@ public final class IdentityClientOptions {
      * @param keePassDatabasePath the database to extract intellij credentials from.
      * @return IdentityClientOptions
      */
-    public IdentityClientOptions setKeePassDatabasePath(String keePassDatabasePath) {
+    public IdentityClientOptions setIntelliJKeePassDatabasePath(String keePassDatabasePath) {
         this.keePassDatabasePath = keePassDatabasePath;
         return this;
     }
 
     /**
      * Get the KeePass database path.
-     * @return the keePass database path to extract inellij credentials from.
+     * @return the KeePass database path to extract inellij credentials from.
      */
     public String getIntelliJKeePassDatabasePath() {
         return keePassDatabasePath;

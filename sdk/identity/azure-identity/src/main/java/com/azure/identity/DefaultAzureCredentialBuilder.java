@@ -44,17 +44,17 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      * <p>This path can be located in the IntelliJ IDE.
      * Windows: File -&gt; Settings -&gt; Appearance &amp; Behavior -&gt; System Settings -&gt; Passwords. </p>
      *
-     * @param databasePath the path to the keePass database.
+     * @param databasePath the path to the KeePass database.
      * @throws IllegalArgumentException if {@code databasePath is either not specified or is empty}
-     * @return An updated instance of this builder with the keePass database path set as specified.
+     * @return An updated instance of this builder with the KeePass database path set as specified.
      */
     public DefaultAzureCredentialBuilder intelliJKeePassDatabasePath(String databasePath) {
         if (CoreUtils.isNullOrEmpty(databasePath)) {
             throw logger.logExceptionAsError(
-                new IllegalArgumentException("The keePass database path is either empty or not configured."
+                new IllegalArgumentException("The KeePass database path is either empty or not configured."
                                                    + " Please configure it on the builder."));
         }
-        this.identityClientOptions.setKeePassDatabasePath(databasePath);
+        this.identityClientOptions.setIntelliJKeePassDatabasePath(databasePath);
         return this;
     }
 
