@@ -88,7 +88,6 @@ class ServiceBusReceiverAsyncClientTest {
         NAMESPACE, "some-name", "something-else");
     private static final Duration CLEANUP_INTERVAL = Duration.ofSeconds(10);
     private static final String SESSION_ID = "my-session-id";
-    private static final ReceiveMode RECEIVE_MODE = ReceiveMode.PEEK_LOCK;
 
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClientTest.class);
     private final String messageTrackingUUID = UUID.randomUUID().toString();
@@ -164,8 +163,8 @@ class ServiceBusReceiverAsyncClientTest {
             tracerProvider, messageSerializer, onClientClose);
 
         sessionReceiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH), connectionProcessor, CLEANUP_INTERVAL,
-            tracerProvider, messageSerializer, onClientClose);
+            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, "Some-Session", false, null),
+            connectionProcessor, CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose);
     }
 
     @AfterEach

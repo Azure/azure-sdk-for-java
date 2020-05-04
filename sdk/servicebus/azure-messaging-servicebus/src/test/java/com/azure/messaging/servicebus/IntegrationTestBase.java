@@ -230,18 +230,18 @@ public abstract class IntegrationTestBase extends TestBase {
         }
     }
 
-    protected ServiceBusSenderClientBuilder getSenderBuilder(boolean useCredentials, MessagingEntityType entityType) {
+    protected ServiceBusSenderClientBuilder getSenderBuilder(boolean useCredentials, MessagingEntityType entityType, boolean isSessionAware) {
 
         switch (entityType) {
             case QUEUE:
-                final String queueName = getQueueName();
+                final String queueName = isSessionAware ? getSessionQueueName() : getQueueName();
                 assertNotNull(queueName, "'queueName' cannot be null.");
 
                 return getBuilder(useCredentials).sender()
                     .queueName(queueName);
             case SUBSCRIPTION:
                 final String topicName = getTopicName();
-                final String subscriptionName = getSubscriptionName();
+                final String subscriptionName = isSessionAware ? getSessionSubscriptionName() : getSubscriptionName();
                 assertNotNull(topicName, "'topicName' cannot be null.");
                 assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
 

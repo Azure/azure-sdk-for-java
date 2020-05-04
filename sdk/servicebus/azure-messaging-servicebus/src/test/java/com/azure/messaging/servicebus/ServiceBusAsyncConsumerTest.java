@@ -44,6 +44,9 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * Tests for {@link ServiceBusAsyncConsumer}.
+ */
 class ServiceBusAsyncConsumerTest {
     private static final String LINK_NAME = "some-link";
     private final EmitterProcessor<Message> messageProcessor = EmitterProcessor.create();
@@ -138,7 +141,7 @@ class ServiceBusAsyncConsumerTest {
             .expectNext(receivedMessage1, receivedMessage2)
             .verifyComplete();
 
-        verify(linkProcessor).updateDisposition(eq(lockToken1), eq(Accepted.getInstance()));
+        verify(link).updateDisposition(eq(lockToken1), eq(Accepted.getInstance()));
     }
 
     /**
@@ -173,7 +176,7 @@ class ServiceBusAsyncConsumerTest {
             .thenCancel()
             .verify();
 
-        verify(linkProcessor, never()).updateDisposition(anyString(), any(DeliveryState.class));
+        verify(link, never()).updateDisposition(anyString(), any(DeliveryState.class));
     }
 
     /**
@@ -206,6 +209,6 @@ class ServiceBusAsyncConsumerTest {
             .then(() -> consumer.close())
             .verifyComplete();
 
-        verify(linkProcessor, never()).updateDisposition(anyString(), any(DeliveryState.class));
+        verify(link, never()).updateDisposition(anyString(), any(DeliveryState.class));
     }
 }

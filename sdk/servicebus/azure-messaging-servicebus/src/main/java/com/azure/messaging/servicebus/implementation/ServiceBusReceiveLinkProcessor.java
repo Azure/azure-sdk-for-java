@@ -116,10 +116,6 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         if (link == null) {
             return monoError(logger, new IllegalStateException(String.format(
                 "lockToken[%s]. state[%s]. Cannot update disposition with no link.", lockToken, deliveryState)));
-        } else if (!(link instanceof ServiceBusReactorReceiver)) {
-            return monoError(logger, new IllegalStateException(String.format(
-                "lockToken[%s]. state[%s]. Cannot update disposition with non Service Bus receive link.",
-                lockToken, deliveryState)));
         }
 
         return link.updateDisposition(lockToken, deliveryState);
@@ -316,9 +312,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             logger.warning("linkName[{}] entityPath[{}]. Transient error occurred. Attempt: {}. Retrying after {} ms.",
                 linkName, entityPath, attempt, retryInterval.toMillis(), throwable);
 
-            retrySubscription = Mono.delay(retryInterval).subscribe(i -> {
-                requestUpstream();
-            });
+            retrySubscription = Mono.delay(retryInterval).subscribe(i -> requestUpstream());
 
             return;
         }

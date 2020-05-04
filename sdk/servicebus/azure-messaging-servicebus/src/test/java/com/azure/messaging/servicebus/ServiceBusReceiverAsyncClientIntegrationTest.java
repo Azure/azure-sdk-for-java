@@ -66,16 +66,16 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         try {
             if (isSessionEnabled) {
                 logger.info("Sessioned receiver. It is probably locked until some time.");
-                TimeUnit.SECONDS.sleep(20);
+            } else {
+                receiveAndDeleteReceiver.receive(new ReceiveAsyncOptions().setIsAutoCompleteEnabled(false))
+                    .take(pending)
+                    .map(message -> {
+                        logger.info("Message received: {}", message.getMessage().getSequenceNumber());
+                        return message;
+                    })
+                    .timeout(Duration.ofSeconds(5), Mono.empty())
+                    .blockLast();
             }
-            receiveAndDeleteReceiver.receive(new ReceiveAsyncOptions().setIsAutoCompleteEnabled(false))
-                .take(pending)
-                .map(message -> {
-                    logger.info("Message received: {}", message.getMessage().getSequenceNumber());
-                    return message;
-                })
-                .timeout(Duration.ofSeconds(5), Mono.empty())
-                .blockLast();
         } catch (Exception e) {
             logger.warning("Error occurred when draining queue.", e);
         } finally {
@@ -635,10 +635,9 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Act
         StepVerifier.create(receiver.receive()
-            .filter(x -> x.getSessionId().equals(sessionId))
             .take(1)
             .flatMap(m -> {
-                logger.info("SessionId:{}. LockToken: {}. LockedUntil: {}. Message received.",
+                logger.info("SessionId: {}. LockToken: {}. LockedUntil: {}. Message received.",
                     m.getSessionId(), m.getMessage().getLockToken(), m.getMessage().getLockedUntil());
                 return receiver.setSessionState(sessionId, sessionState);
             }))
@@ -657,8 +656,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
      */
     private void setSenderAndReceiver(MessagingEntityType entityType, boolean isSessionEnabled) {
-        this.sender = getSenderBuilder(false, entityType).buildAsyncClient();
         this.isSessionEnabled = isSessionEnabled;
+        this.sender = getSenderBuilder(false, entityType, isSessionEnabled).buildAsyncClient();
 
         if (isSessionEnabled) {
             assertNotNull(sessionId, "'sessionId' should have been set.");

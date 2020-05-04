@@ -273,7 +273,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         IterableStream<ServiceBusReceivedMessage> iterableMessages = receiver.peekBatch(maxMessages);
 
         // Assert
-        Assertions.assertEquals(maxMessages, iterableMessages.stream().collect(Collectors.toList()).size());
+        Assertions.assertEquals(maxMessages, (int) iterableMessages.stream().count());
     }
 
     /**
@@ -565,7 +565,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
      * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
      */
     private void setSenderAndReceiver(MessagingEntityType entityType, boolean isSessionEnabled) {
-        sender = getSenderBuilder(false, entityType).buildClient();
+        sender = getSenderBuilder(false, entityType, isSessionEnabled).buildClient();
 
         if (isSessionEnabled) {
             assertNotNull(sessionId, "'sessionId' should have been set.");
