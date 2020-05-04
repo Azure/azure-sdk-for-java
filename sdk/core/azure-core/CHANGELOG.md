@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.0 (2020-05-01)
+## 1.5.0 (2020-05-04)
 
 - Fixed issue where `FluxUtil.toReactorContext` would include `null` values which aren't allowed in Reactor's `Context`.
 - Added `CoreUtils.bomAwareToString` that handles converting a `byte[]` to a String based on a leading byte order mark or using the passed `Content-Type`.

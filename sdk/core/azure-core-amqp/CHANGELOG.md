@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0 (2020-05-01)
+## 1.1.0 (2020-05-04)
 
 - Update proton-j dependencies to support larger web socket frame and module name.
 - Fixes authorization problems with ClaimsBasedSecurityNode not verifying response.
