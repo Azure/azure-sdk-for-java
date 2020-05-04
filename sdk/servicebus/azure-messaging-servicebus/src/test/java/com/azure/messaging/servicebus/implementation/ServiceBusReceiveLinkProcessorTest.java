@@ -7,7 +7,6 @@ import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -47,11 +46,11 @@ class ServiceBusReceiveLinkProcessorTest {
     private static final int PREFETCH = 5;
 
     @Mock
-    private AmqpReceiveLink link1;
+    private ServiceBusReceiveLink link1;
     @Mock
-    private AmqpReceiveLink link2;
+    private ServiceBusReceiveLink link2;
     @Mock
-    private AmqpReceiveLink link3;
+    private ServiceBusReceiveLink link3;
     @Mock
     private AmqpRetryPolicy retryPolicy;
     @Mock
@@ -111,7 +110,7 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void createNewLink() {
         // Arrange
-        ServiceBusReceiveLinkProcessor processor = Flux.<AmqpReceiveLink>create(sink -> sink.next(link1))
+        ServiceBusReceiveLinkProcessor processor = Flux.<ServiceBusReceiveLink>create(sink -> sink.next(link1))
             .subscribeWith(linkProcessor);
 
         when(link1.getCredits()).thenReturn(1);
@@ -150,7 +149,7 @@ class ServiceBusReceiveLinkProcessorTest {
         // Arrange
         final int backpressure = 15;
         // Because one message was emitted.
-        ServiceBusReceiveLinkProcessor processor = Flux.<AmqpReceiveLink>create(sink -> sink.next(link1))
+        ServiceBusReceiveLinkProcessor processor = Flux.<ServiceBusReceiveLink>create(sink -> sink.next(link1))
             .subscribeWith(linkProcessor);
 
         // Act & Assert
@@ -178,7 +177,7 @@ class ServiceBusReceiveLinkProcessorTest {
     void respectsBackpressureLessThanMinimum() {
         // Arrange
         final int backpressure = -1;
-        ServiceBusReceiveLinkProcessor processor = Flux.<AmqpReceiveLink>create(sink -> sink.next(link1))
+        ServiceBusReceiveLinkProcessor processor = Flux.<ServiceBusReceiveLink>create(sink -> sink.next(link1))
             .subscribeWith(linkProcessor);
         when(link1.getCredits()).thenReturn(1);
 
@@ -207,7 +206,7 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void onSubscribingTwiceThrowsException() {
         // Arrange
-        ServiceBusReceiveLinkProcessor processor = Flux.<AmqpReceiveLink>create(sink -> sink.next(link1))
+        ServiceBusReceiveLinkProcessor processor = Flux.<ServiceBusReceiveLink>create(sink -> sink.next(link1))
             .subscribeWith(linkProcessor);
 
         // Subscribing first time
@@ -226,7 +225,7 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void newLinkOnClose() {
         // Arrange
-        final AmqpReceiveLink[] connections = new AmqpReceiveLink[]{link1, link2, link3};
+        final ServiceBusReceiveLink[] connections = new ServiceBusReceiveLink[]{link1, link2, link3};
 
         final Message message3 = mock(Message.class);
         final Message message4 = mock(Message.class);
@@ -282,7 +281,7 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void newLinkOnRetryableError() {
         // Arrange
-        final AmqpReceiveLink[] connections = new AmqpReceiveLink[]{link1, link2};
+        final ServiceBusReceiveLink[] connections = new ServiceBusReceiveLink[]{link1, link2};
 
         final ServiceBusReceiveLinkProcessor processor = createSink(connections).subscribeWith(linkProcessor);
         final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink();
@@ -320,7 +319,7 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void nonRetryableError() {
         // Arrange
-        final AmqpReceiveLink[] connections = new AmqpReceiveLink[]{link1, link2};
+        final ServiceBusReceiveLink[] connections = new ServiceBusReceiveLink[]{link1, link2};
 
         final ServiceBusReceiveLinkProcessor processor = createSink(connections).subscribeWith(linkProcessor);
         final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink();
@@ -399,7 +398,7 @@ class ServiceBusReceiveLinkProcessorTest {
     void retriesUntilExhausted() {
         // Arrange
         final Duration delay = Duration.ofSeconds(1);
-        final AmqpReceiveLink[] connections = new AmqpReceiveLink[]{link1, link2, link3};
+        final ServiceBusReceiveLink[] connections = new ServiceBusReceiveLink[]{link1, link2, link3};
         final Message message3 = mock(Message.class);
 
         final ServiceBusReceiveLinkProcessor processor = createSink(connections).subscribeWith(linkProcessor);
@@ -447,7 +446,7 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void doNotRetryWhenParentConnectionIsClosed() {
         // Arrange
-        final AmqpReceiveLink[] connections = new AmqpReceiveLink[]{link1, link2};
+        final ServiceBusReceiveLink[] connections = new ServiceBusReceiveLink[]{link1, link2};
 
         final ServiceBusReceiveLinkProcessor processor = createSink(connections).subscribeWith(linkProcessor);
         final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink();
@@ -489,7 +488,7 @@ class ServiceBusReceiveLinkProcessorTest {
     void stopsEmittingAfterBackPressure() {
         // Arrange
         final int backpressure = 5;
-        ServiceBusReceiveLinkProcessor processor = Flux.<AmqpReceiveLink>create(sink -> sink.next(link1))
+        ServiceBusReceiveLinkProcessor processor = Flux.<ServiceBusReceiveLink>create(sink -> sink.next(link1))
             .subscribeWith(linkProcessor);
 
         when(link1.getCredits()).thenReturn(0, 5, 4, 3, 2, 1);
@@ -613,7 +612,7 @@ class ServiceBusReceiveLinkProcessorTest {
         verify(link1).setEmptyCreditListener(any());
     }
 
-    private static Flux<AmqpReceiveLink> createSink(AmqpReceiveLink[] links) {
+    private static Flux<ServiceBusReceiveLink> createSink(ServiceBusReceiveLink[] links) {
         return Flux.create(emitter -> {
             final AtomicInteger counter = new AtomicInteger();
 

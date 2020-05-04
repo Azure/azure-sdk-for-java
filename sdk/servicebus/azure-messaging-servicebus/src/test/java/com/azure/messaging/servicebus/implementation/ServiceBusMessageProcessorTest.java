@@ -28,12 +28,16 @@ import java.util.function.Function;
 
 import static com.azure.messaging.servicebus.TestUtils.createMessageSink;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 class ServiceBusMessageProcessorTest {
+    private static final String LINK_NAME = "some-link";
     @Mock
     private ServiceBusReceivedMessage message1;
     @Mock
@@ -48,7 +52,7 @@ class ServiceBusMessageProcessorTest {
     @Mock
     private Function<MessageLockToken, Mono<Void>> onAbandon;
     @Mock
-    private Function<MessageLockToken, Mono<Instant>> onRenewLock;
+    private MessageManagementOperations messageManagementOperations;
 
     private final AmqpErrorContext errorContext = new LinkErrorContext("foo", "bar", "link-name", 10);
     private final ClientLogger logger = new ClientLogger(ServiceBusMessageProcessorTest.class);
@@ -83,8 +87,8 @@ class ServiceBusMessageProcessorTest {
         when(message4.getLockToken()).thenReturn(lock4);
 
         final ServiceBusMessageProcessor processor = createMessageSink(message1, message2, message3, message4)
-            .subscribeWith(new ServiceBusMessageProcessor(true, false, Duration.ZERO,
-                retryOptions, errorContext, onComplete, onAbandon, onRenewLock));
+            .subscribeWith(new ServiceBusMessageProcessor(LINK_NAME, true, false, Duration.ZERO,
+                retryOptions, errorContext, messageManagementOperations));
 
         // Act & Assert
         StepVerifier.create(processor)
@@ -113,11 +117,12 @@ class ServiceBusMessageProcessorTest {
         when(message2.getLockToken()).thenReturn(lock2);
         when(message2.getLockedUntil()).thenAnswer(invocationOnMock -> Instant.now().plusSeconds(5));
 
-        when(onRenewLock.apply(message1)).thenAnswer(invocationOnMock -> Mono.just(Instant.now().plusSeconds(3)));
+        when(messageManagementOperations.renewMessageLock(lock1, LINK_NAME))
+            .thenAnswer(invocationOnMock -> Mono.just(Instant.now().plusSeconds(3)));
 
         final ServiceBusMessageProcessor processor = createMessageSink(message1, message2)
-            .subscribeWith(new ServiceBusMessageProcessor(true, true, maxRenewDuration,
-                retryOptions, errorContext, onComplete, onAbandon, onRenewLock));
+            .subscribeWith(new ServiceBusMessageProcessor(LINK_NAME, true, true, maxRenewDuration,
+                retryOptions, errorContext, messageManagementOperations));
 
         // Act & Assert
         StepVerifier.create(processor)
@@ -134,7 +139,7 @@ class ServiceBusMessageProcessorTest {
             .expectNext(message2)
             .verifyComplete();
 
-        verify(onRenewLock, atLeast(3)).apply(message1);
+        verify(messageManagementOperations, atLeast(3)).renewMessageLock(lock1, LINK_NAME);
 
         verify(onComplete).apply(message1);
         verify(onComplete).apply(message2);
@@ -147,8 +152,8 @@ class ServiceBusMessageProcessorTest {
     void emitsDoesNotAutoCompleteOrRenew() {
         // Arrange
         final ServiceBusMessageProcessor processor = createMessageSink(message1, message2, message3, message4)
-            .subscribeWith(new ServiceBusMessageProcessor(false, false, Duration.ZERO,
-                retryOptions, errorContext, onComplete, onAbandon, onRenewLock));
+            .subscribeWith(new ServiceBusMessageProcessor(LINK_NAME, false, false, Duration.ZERO,
+                retryOptions, errorContext, messageManagementOperations));
 
         // Act & Assert
         StepVerifier.create(processor)
@@ -175,11 +180,12 @@ class ServiceBusMessageProcessorTest {
 
         when(onComplete.apply(any())).thenReturn(Mono.empty());
 
-        when(onRenewLock.apply(message1)).thenAnswer(invocationOnMock -> Mono.just(Instant.now().plusSeconds(7)));
+        when(messageManagementOperations.renewMessageLock(lock1, LINK_NAME))
+            .thenAnswer(invocationOnMock -> Mono.just(Instant.now().plusSeconds(7)));
 
         final ServiceBusMessageProcessor processor = createMessageSink(message1, message2)
-            .subscribeWith(new ServiceBusMessageProcessor(true, true, maxRenewDuration,
-                retryOptions, errorContext, onComplete, onAbandon, onRenewLock));
+            .subscribeWith(new ServiceBusMessageProcessor(LINK_NAME, true, true, maxRenewDuration,
+                retryOptions, errorContext, messageManagementOperations));
 
         // Act & Assert
         StepVerifier.create(processor)
@@ -199,7 +205,7 @@ class ServiceBusMessageProcessorTest {
             })
             .verify();
 
-        verify(onRenewLock).apply(message1);
+        verify(messageManagementOperations).renewMessageLock(lock1, LINK_NAME);
         verifyZeroInteractions(message2);
         verifyZeroInteractions(onComplete);
     }
@@ -221,11 +227,12 @@ class ServiceBusMessageProcessorTest {
 
         when(onComplete.apply(any())).thenReturn(Mono.empty());
 
-        when(onRenewLock.apply(message1)).thenAnswer(invocationOnMock -> Mono.error(new IllegalArgumentException("Test error occurred.")));
+        when(messageManagementOperations.renewMessageLock(lock1, LINK_NAME))
+            .thenAnswer(invocationOnMock -> Mono.error(new IllegalArgumentException("Test error occurred.")));
 
         final ServiceBusMessageProcessor processor = createMessageSink(message1, message2)
-            .subscribeWith(new ServiceBusMessageProcessor(true, true, maxRenewDuration,
-                retryOptions, errorContext, onComplete, onAbandon, onRenewLock));
+            .subscribeWith(new ServiceBusMessageProcessor(LINK_NAME, true, true, maxRenewDuration,
+                retryOptions, errorContext, messageManagementOperations));
 
         // Act & Assert
         StepVerifier.create(processor)
@@ -239,12 +246,10 @@ class ServiceBusMessageProcessorTest {
                 }
                 logger.info("After: {}", Instant.now());
             })
-            .expectErrorSatisfies(error -> {
-                Assertions.assertTrue(error instanceof IllegalArgumentException);
-            })
+            .expectError(IllegalArgumentException.class)
             .verify();
 
-        verify(onRenewLock).apply(message1);
+        verify(messageManagementOperations).renewMessageLock(lock1, LINK_NAME);
         verifyZeroInteractions(message2);
         verifyZeroInteractions(onComplete);
     }
@@ -265,27 +270,23 @@ class ServiceBusMessageProcessorTest {
         when(message2.getLockedUntil()).thenAnswer(invocationOnMock -> Instant.now().plusSeconds(5));
 
         when(onComplete.apply(message1)).thenAnswer(
-            invocationOnMock -> {
-                return Mono.error(new IllegalArgumentException("Test error occurred."));
-            });
+            invocationOnMock -> Mono.error(new IllegalArgumentException("Test error occurred.")));
 
-        when(onRenewLock.apply(any())).thenReturn(Mono.empty());
+        when(messageManagementOperations.renewMessageLock(anyString(), eq(LINK_NAME))).thenReturn(Mono.empty());
 
         final ServiceBusMessageProcessor processor = createMessageSink(message1, message2)
-            .subscribeWith(new ServiceBusMessageProcessor(true, true, maxRenewDuration,
-                retryOptions, errorContext, onComplete, onAbandon, onRenewLock));
+            .subscribeWith(new ServiceBusMessageProcessor(LINK_NAME, true, true,
+                maxRenewDuration, retryOptions, errorContext, messageManagementOperations));
 
         // Act & Assert
         StepVerifier.create(processor)
             .expectNext(message1)
-            .expectErrorSatisfies(error -> {
-                Assertions.assertTrue(error instanceof IllegalArgumentException);
-            })
+            .expectError(IllegalArgumentException.class)
             .verify();
 
         verify(onComplete).apply(message1);
 
         verifyZeroInteractions(message2);
-        verifyZeroInteractions(onRenewLock);
+        verify(messageManagementOperations, never()).renewMessageLock(anyString(), anyString());
     }
 }

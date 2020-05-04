@@ -18,6 +18,8 @@ import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
+import org.reactivestreams.Subscription;
+import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -29,11 +31,12 @@ import reactor.util.retry.Retry;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.Deque;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
@@ -64,8 +67,9 @@ class UnnamedSessionManager implements AutoCloseable {
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicBoolean isStarted = new AtomicBoolean();
     private final List<Scheduler> schedulers;
-    private final Map<String, Scheduler> sessionIdToScheduler = new HashMap<>();
+    private final Deque<Scheduler> availableSchedulers = new ConcurrentLinkedDeque<>();
     private final ConcurrentHashMap<String, UnnamedSessionReceiver> sessionReceivers = new ConcurrentHashMap<>();
+    private final NextSessionSubscriber nextSessionSubscriber;
 
     private final EmitterProcessor<Flux<ServiceBusReceivedMessageContext>> processor = EmitterProcessor.create();
     private final FluxSink<Flux<ServiceBusReceivedMessageContext>> sessionReceiveSink = processor.sink();
@@ -73,9 +77,9 @@ class UnnamedSessionManager implements AutoCloseable {
 
     private volatile ReceiveAsyncOptions receiveAsyncOptions;
 
-    UnnamedSessionManager(String entityPath, MessagingEntityType entityType, ServiceBusConnectionProcessor connectionProcessor,
-        Duration operationTimeout, TracerProvider tracerProvider, MessageSerializer messageSerializer,
-        ReceiverOptions receiverOptions) {
+    UnnamedSessionManager(String entityPath, MessagingEntityType entityType,
+        ServiceBusConnectionProcessor connectionProcessor, Duration operationTimeout, TracerProvider tracerProvider,
+        MessageSerializer messageSerializer, ReceiverOptions receiverOptions) {
 
         this.entityPath = entityPath;
         this.entityType = entityType;
@@ -87,16 +91,19 @@ class UnnamedSessionManager implements AutoCloseable {
 
         // According to the documentation, if a sequence is not finite, it should be published on their own scheduler.
         // It's possible that some of these sessions have a lot of messages.
-        final int numberSchedulers = receiverOptions.isRollingSessionReceiver()
+        final int numberOfSessions = receiverOptions.isRollingSessionReceiver()
             ? receiverOptions.getMaxConcurrentSessions()
             : 1;
 
-        final List<Scheduler> schedulerList = IntStream.range(0, receiverOptions.getMaxConcurrentSessions())
+        this.nextSessionSubscriber = new NextSessionSubscriber(numberOfSessions);
+        final List<Scheduler> schedulerList = IntStream.range(0, numberOfSessions)
             .mapToObj(index -> Schedulers.newBoundedElastic(DEFAULT_BOUNDED_ELASTIC_SIZE,
                 DEFAULT_BOUNDED_ELASTIC_QUEUESIZE, "receiver-" + index))
             .collect(Collectors.toList());
 
         this.schedulers = Collections.unmodifiableList(schedulerList);
+        this.availableSchedulers.addAll(this.schedulers);
+        this.sessionReceiveSink.onRequest(this::onSessionRequest);
     }
 
     /**
@@ -111,6 +118,7 @@ class UnnamedSessionManager implements AutoCloseable {
 
         if (!isStarted.getAndSet(true)) {
             receiveAsyncOptions = options;
+            processor.subscribeWith(nextSessionSubscriber);
         }
 
         return receiveFlux;
@@ -145,7 +153,7 @@ class UnnamedSessionManager implements AutoCloseable {
      * @throws IllegalStateException if the receiver is a non-session receiver.
      */
     Mono<byte[]> getSessionState(String sessionId) {
-        return validateParameter(sessionId, "sessionId").then(
+        return validateParameter(sessionId, "sessionId", "getSessionState").then(
             getManagementNode().flatMap(channel -> {
                 final UnnamedSessionReceiver receiver = sessionReceivers.get(sessionId);
                 final String associatedLinkName = receiver != null ? receiver.getLinkName() : null;
@@ -153,6 +161,7 @@ class UnnamedSessionManager implements AutoCloseable {
                 return channel.getSessionState(sessionId, associatedLinkName);
             }));
     }
+
 
     Mono<ServiceBusReceivedMessage> peek(String sessionId) {
         final UnnamedSessionReceiver receiver = sessionReceivers.get(sessionId);
@@ -162,7 +171,7 @@ class UnnamedSessionManager implements AutoCloseable {
     }
 
     Mono<ServiceBusReceivedMessage> peekAt(long sequenceNumber, String sessionId) {
-        return validateParameter(sessionId, "sessionId")
+        return validateParameter(sessionId, "sessionId", "peekAt")
             .then(connectionProcessor.flatMap(connection -> connection.getManagementNode(entityPath, entityType))
                 .flatMap(channel -> {
                     final UnnamedSessionReceiver receiver = sessionReceivers.get(sessionId);
@@ -180,47 +189,42 @@ class UnnamedSessionManager implements AutoCloseable {
     }
 
     Flux<ServiceBusReceivedMessage> peekBatchAt(int maxMessages, long sequenceNumber, String sessionId) {
-        return validateParameter(sessionId, "sessionId").thenMany(
+        return validateParameter(sessionId, "sessionId", "peekBatchAt").thenMany(
             getManagementNode().flatMapMany(channel -> {
                 final UnnamedSessionReceiver receiver = sessionReceivers.get(sessionId);
                 final String linkName = receiver != null ? receiver.getLinkName() : null;
 
                 return channel.peek(sequenceNumber, sessionId, linkName, maxMessages)
                     .map(message -> {
-                        receiver.setLastPeekedSequenceNumber(message.getSequenceNumber());
+                        if (receiver != null) {
+                            receiver.setLastPeekedSequenceNumber(message.getSequenceNumber());
+                        }
                         return message;
                     });
             }));
     }
 
-    Mono<ServiceBusReceivedMessage> receiveDeferredMessage(long sequenceNumber, String sessionId) {
-        return receiveDeferredMessage(Collections.singleton(sequenceNumber), sessionId).next();
-    }
-
-    Flux<ServiceBusReceivedMessage> receiveDeferredMessage(Iterable<Long> sequenceNumbers, String sessionId) {
-        return Flux.empty();
-    }
-
     /**
-     * Sets the state of a session given its identifier.
+     * Renews the session lock.
      *
      * @param sessionId Identifier of session to get.
      * @return The next expiration time for the session lock.
      * @throws IllegalStateException if the receiver is a non-session receiver.
      */
     Mono<Instant> renewSessionLock(String sessionId) {
-        return validateParameter(sessionId, "sessionId").then(getManagementNode().flatMap(channel -> {
-            final UnnamedSessionReceiver receiver = sessionReceivers.get(sessionId);
-            final String associatedLinkName = receiver != null ? receiver.getLinkName() : null;
+        return validateParameter(sessionId, "sessionId", "renewSessionLock").then(
+            getManagementNode().flatMap(channel -> {
+                final UnnamedSessionReceiver receiver = sessionReceivers.get(sessionId);
+                final String associatedLinkName = receiver != null ? receiver.getLinkName() : null;
 
-            return channel.renewSessionLock(sessionId, associatedLinkName).handle((instant, sink) -> {
-                if (receiver != null) {
-                    receiver.setSessionLockedUntil(instant);
-                }
+                return channel.renewSessionLock(sessionId, associatedLinkName).handle((instant, sink) -> {
+                    if (receiver != null) {
+                        receiver.setSessionLockedUntil(instant);
+                    }
 
-                sink.next(instant);
-            });
-        }));
+                    sink.next(instant);
+                });
+            }));
     }
 
     /**
@@ -232,12 +236,13 @@ class UnnamedSessionManager implements AutoCloseable {
      * @throws IllegalStateException if the receiver is a non-session receiver.
      */
     Mono<Void> setSessionState(String sessionId, byte[] sessionState) {
-        return validateParameter(sessionId, "sessionId").then(getManagementNode().flatMap(channel -> {
-            final UnnamedSessionReceiver receiver = sessionReceivers.get(sessionId);
-            final String associatedLinkName = receiver != null ? receiver.getLinkName() : null;
+        return validateParameter(sessionId, "sessionId", "setSessionState")
+            .then(getManagementNode().flatMap(channel -> {
+                final UnnamedSessionReceiver receiver = sessionReceivers.get(sessionId);
+                final String associatedLinkName = receiver != null ? receiver.getLinkName() : null;
 
-            return channel.setSessionState(sessionId, sessionState, associatedLinkName);
-        }));
+                return channel.setSessionState(sessionId, sessionState, associatedLinkName);
+            }));
     }
 
     @Override
@@ -276,19 +281,16 @@ class UnnamedSessionManager implements AutoCloseable {
     }
 
     /**
-     * Gets the next available unnamed session with the given receive options.
+     * Creates an unnamed session receive link.
      *
-     * @param options Receive options.
-     * @return A Mono that completes with an unnamed session receiver.
+     * @return A Mono that completes with an unnamed session receive link.
      */
-    private Mono<UnnamedSessionReceiver> getSession(ReceiveAsyncOptions options) {
-        return getActiveLink()
-            .map(link -> new UnnamedSessionReceiver(link, messageSerializer, options.isEnableAutoComplete(),
-                false, null, connectionProcessor.getRetryOptions()));
-    }
+    private Mono<ServiceBusReceiveLink> createSessionReceiveLink() {
+        final String linkName = StringUtil.getRandomString("session-");
 
-    private Flux<ServiceBusReceivedMessageContext> getSession(ReceiveAsyncOptions options, Scheduler scheduler) {
-        return getSession(options).flatMapMany(session -> session.receive()).publishOn(scheduler);
+        return connectionProcessor
+            .flatMap(connection -> connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(),
+                null, entityType, null));
     }
 
     /**
@@ -322,56 +324,105 @@ class UnnamedSessionManager implements AutoCloseable {
     }
 
     /**
-     * Creates an unnamed session receive link.
+     * Gets the next available unnamed session with the given receive options and publishes its contents on the given
+     * {@code scheduler}.
      *
-     * @return A Mono that completes with an unnamed session receive link.
+     * @param options Receive options.
+     * @return A Mono that completes with an unnamed session receiver.
      */
-    private Mono<ServiceBusReceiveLink> createSessionReceiveLink() {
-        final String linkName = StringUtil.getRandomString("session-");
-
-        return connectionProcessor
-            .flatMap(connection -> connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(),
-                null, entityType, null));
+    private Flux<ServiceBusReceivedMessageContext> getSession(ReceiveAsyncOptions options, Scheduler scheduler) {
+        return getActiveLink()
+            .map(link -> new UnnamedSessionReceiver(link, messageSerializer, options.isEnableAutoComplete(),
+                null, connectionProcessor.getRetryOptions()))
+            .flatMapMany(session -> session.receive()).publishOn(scheduler);
     }
 
     private Mono<Boolean> updateDisposition(MessageLockToken lockToken, String sessionId,
         DispositionStatus dispositionStatus, Map<String, Object> propertiesToModify, String deadLetterReason,
         String deadLetterDescription) {
 
-        if (lockToken == null) {
-            return monoError(logger, new NullPointerException("'lockToken' cannot be null."));
-        }
+        final String operation = "updateDisposition";
+        return Mono.when(
+            validateParameter(lockToken, "lockToken", operation),
+            validateParameter(lockToken.getLockToken(), "lockToken.getLockToken()", operation),
+            validateParameter(sessionId, "'sessionId'", operation)).then(
+            Mono.defer(() -> {
+                final String lock = lockToken.getLockToken();
+                final UnnamedSessionReceiver receiver = sessionReceivers.get(sessionId);
+                if (receiver == null || !receiver.containsLockToken(lock)) {
+                    return Mono.just(false);
+                }
 
-        return Mono.when(validateParameter(lockToken.getLockToken(), "lockToken.getLockToken()"),
-            validateParameter(sessionId, "'sessionId'")).then(Mono.defer(() -> {
+                final DeliveryState deliveryState = MessageUtils.getDeliveryState(dispositionStatus, deadLetterReason,
+                    deadLetterDescription, propertiesToModify);
 
-            final UnnamedSessionReceiver receiver = sessionReceivers.get(sessionId);
-            if (receiver == null) {
-                return Mono.just(false);
-            }
-
-            final DeliveryState deliveryState = MessageUtils.getDeliveryState(dispositionStatus, deadLetterReason,
-                deadLetterDescription, propertiesToModify);
-
-            return receiver.updateDisposition(lockToken.getLockToken(), deliveryState).thenReturn(true);
-        }));
+                return receiver.updateDisposition(lock, deliveryState).thenReturn(true);
+            }));
     }
 
     private Mono<ServiceBusManagementNode> getManagementNode() {
         return connectionProcessor.flatMap(connection -> connection.getManagementNode(entityPath, entityType));
     }
 
-    private Mono<Void> validateParameter(String parameter, String parameterName) {
+    /**
+     * Emits a new unnamed active session when it becomes available.
+     *
+     * @param request Number of unnamed active sessions to emit.
+     */
+    private void onSessionRequest(long request) {
+        if (receiveAsyncOptions == null) {
+            sessionReceiveSink.error(new IllegalStateException(
+                "Cannot create receiver when there are no receive options set."));
+            return;
+        }
+
+        logger.info("Requested {} unnamed sessions.");
+        for (int i = 0; i < request; i++) {
+            final Scheduler scheduler = availableSchedulers.poll();
+
+            // if there was no available scheduler and the number of requested items wasn't infinite. We were
+            // expecting a free item. return an error.
+            if (scheduler == null) {
+                if (request != Long.MAX_VALUE) {
+                    sessionReceiveSink.error(new IllegalStateException(
+                        "There should be available schedulers to fetch."));
+                }
+
+                return;
+            }
+
+            logger.info("Emitting session number: {}", i);
+            sessionReceiveSink.next(getSession(receiveAsyncOptions, scheduler));
+        }
+    }
+
+    private <T> Mono<Void> validateParameter(T parameter, String parameterName, String operation) {
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException(
-                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "getSessionState")));
+                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, operation)));
         } else if (parameter == null) {
             return monoError(logger, new NullPointerException(String.format("'%s' cannot be null.", parameterName)));
-        } else if (parameter.isEmpty()) {
+        } else if ((parameter instanceof String) && (((String) parameter).isEmpty())) {
             return monoError(logger, new IllegalArgumentException(String.format("'%s' cannot be an empty string.",
                 parameterName)));
         } else {
             return Mono.empty();
+        }
+    }
+
+    /**
+     * Subscriber that requests another session to be emitted.
+     */
+    private static final class NextSessionSubscriber extends BaseSubscriber<Flux<ServiceBusReceivedMessageContext>> {
+        private final long initialSessions;
+
+        private NextSessionSubscriber(long initialSessions) {
+            this.initialSessions = initialSessions;
+        }
+
+        @Override
+        protected void hookOnSubscribe(Subscription subscription) {
+            this.request(initialSessions);
         }
     }
 }

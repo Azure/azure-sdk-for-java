@@ -34,12 +34,14 @@ class UnnamedSessionReceiver implements AutoCloseable {
     private final AtomicReference<String> sessionId = new AtomicReference<>();
     private final ClientLogger logger = new ClientLogger(UnnamedSessionReceiver.class);
     private final ServiceBusReceiveLink receiveLink;
+    private final Duration maxSessionLockRenewDuration;
     private final Disposable.Composite subscriptions;
     private final Flux<ServiceBusReceivedMessageContext> receivedMessages;
 
-    UnnamedSessionReceiver(ServiceBusReceiveLink receiveLink, MessageSerializer messageSerializer, boolean isAutoComplete,
-        boolean autoLockRenewal, Duration maxAutoLockRenewDuration, AmqpRetryOptions retryOptions) {
+    UnnamedSessionReceiver(ServiceBusReceiveLink receiveLink, MessageSerializer messageSerializer,
+        boolean isAutoComplete, Duration maxSessionLockRenewDuration, AmqpRetryOptions retryOptions) {
         this.receiveLink = receiveLink;
+        this.maxSessionLockRenewDuration = maxSessionLockRenewDuration;
         this.lockContainer = new MessageLockContainer(ServiceBusConstants.OPERATION_TIMEOUT);
 
         final AmqpErrorContext errorContext = new LinkErrorContext(receiveLink.getHostname(),
@@ -49,8 +51,8 @@ class UnnamedSessionReceiver implements AutoCloseable {
         this.receivedMessages = receiveLink
             .receive()
             .map(message -> messageSerializer.deserialize(message, ServiceBusReceivedMessage.class))
-            .subscribeWith(new ServiceBusMessageProcessor(receiveLink.getLinkName(), isAutoComplete, autoLockRenewal,
-                maxAutoLockRenewDuration, retryOptions, errorContext, messageManagement))
+            .subscribeWith(new ServiceBusMessageProcessor(receiveLink.getLinkName(), isAutoComplete, false,
+                Duration.ZERO, retryOptions, errorContext, messageManagement))
             .map(message -> {
                 if (!CoreUtils.isNullOrEmpty(message.getLockToken())) {
                     lockContainer.addOrUpdate(message.getLockToken(), message.getLockedUntil());
