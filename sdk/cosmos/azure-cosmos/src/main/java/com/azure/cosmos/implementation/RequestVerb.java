@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 
-package com.azure.cosmos.models;
+package com.azure.cosmos.implementation;
 
 import java.util.Locale;
 
@@ -28,7 +28,7 @@ public enum  RequestVerb {
      * e.g, get, put, post, delete, head
      * @return lower case form of the verb
      */
-    String toLowerCase() {
+    public String toLowerCase() {
         return lowerCaseStringValue;
     }
 
