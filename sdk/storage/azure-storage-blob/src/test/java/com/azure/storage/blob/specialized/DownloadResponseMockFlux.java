@@ -7,8 +7,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
 import com.azure.storage.blob.APISpec;
 import com.azure.storage.blob.HttpGetterInfo;
+import com.azure.storage.blob.implementation.models.BlobDownloadHeaders;
 import com.azure.storage.blob.implementation.models.BlobsDownloadResponse;
-import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import reactor.core.CoreSubscriber;
@@ -193,7 +193,8 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
     Mono<ReliableDownload> getter(HttpGetterInfo info) {
         this.tryNumber++;
         this.info = info;
-        BlobsDownloadResponse rawResponse = new BlobsDownloadResponse(null, 200, new HttpHeaders(), this, new BlobDownloadHeaders());
+        BlobsDownloadResponse rawResponse = new BlobsDownloadResponse(null, 200, new HttpHeaders(), this,
+            new com.azure.storage.blob.implementation.models.BlobDownloadHeaders());
         ReliableDownload response = new ReliableDownload(rawResponse, options, info, this::getter);
 
         switch (this.scenario) {
