@@ -7,7 +7,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.signalr.implementation.client.AzureWebSocketServiceRestAPI;
@@ -60,6 +59,12 @@ public final class SignalRAsyncClient {
            .addData(AZ_TRACING_NAMESPACE_KEY, SIGNALR_TRACING_NAMESPACE_VALUE);
     }
 
+    /**
+     * Creates a new client for connecting to a specified SignalR group.
+     *
+     * @param group The name of the group.
+     * @return A new client for connecting to a specified SignalR group.
+     */
     public SignalRGroupAsyncClient getGroupClient(final String group) {
         return new SignalRGroupAsyncClient(innerClient, hub, group);
     }
@@ -81,6 +86,8 @@ public final class SignalRAsyncClient {
      *
      * @param data The message to send.
      * @param excludedUsers An optional var-args of user IDs to not broadcast the message to.
+     * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
+     *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> broadcast(final String data, final String... excludedUsers) {
@@ -94,6 +101,8 @@ public final class SignalRAsyncClient {
      *
      * @param data The message to send.
      * @param excludedUsers An optional list of user IDs to not broadcast the message to.
+     * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
+     *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> broadcast(final String data, final List<String> excludedUsers) {
@@ -113,6 +122,8 @@ public final class SignalRAsyncClient {
      *
      * @param data The message to send.
      * @param excludedUsers An optional var-args of user IDs to not broadcast the message to.
+     * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
+     *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> broadcast(final byte[] data, final String... excludedUsers) {
@@ -126,6 +137,8 @@ public final class SignalRAsyncClient {
      *
      * @param data The message to send.
      * @param excludedUsers An optional list of user IDs to not broadcast the message to.
+     * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
+     *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> broadcast(final byte[] data, final List<String> excludedUsers) {
@@ -146,6 +159,8 @@ public final class SignalRAsyncClient {
      *
      * @param userId User name to send to.
      * @param data The message to send.
+     * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
+     *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendToUser(final String userId, final String data) {
@@ -167,6 +182,8 @@ public final class SignalRAsyncClient {
      *
      * @param userId User name to send to.
      * @param data The binary message to send.
+     * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
+     *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendToUser(final String userId, final byte[] data) {
@@ -187,6 +204,8 @@ public final class SignalRAsyncClient {
      *
      * @param connectionId Connection ID to send to.
      * @param data The message to send.
+     * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
+     *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendToConnection(final String connectionId, final String data) {
@@ -208,6 +227,8 @@ public final class SignalRAsyncClient {
      *
      * @param connectionId Connection ID to send to.
      * @param data The binary message to send.
+     * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
+     *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendToConnection(final String connectionId, final byte[] data) {
@@ -230,6 +251,8 @@ public final class SignalRAsyncClient {
      * Remove a specific user from all groups they are joined to.
      *
      * @param userId The user ID to remove from all groups.
+     * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
+     *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeUserFromAllGroups(final String userId) {
@@ -248,25 +271,31 @@ public final class SignalRAsyncClient {
      * Check if a particular user is connected to this hub.
      *
      * @param userId The user name to check for.
+     * @return A {@link Mono} containing a {@link Response} with a Boolean value representing whether the user exists in
+     *      this hub, as well as status code and response headers representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> doesUserExist(final String userId) {
-        return doesUserExistWithResponse(userId).map(SimpleResponse::getValue);
+        return doesUserExistWithResponse(userId).map(Response::getValue);
     }
 
     /**
      * Check if a particular user is connected to this hub.
      *
      * @param userId The user name to check for.
+     * @return A {@link Mono} containing a {@link Response} with a Boolean value representing whether the user exists in
+     *      this hub, as well as status code and response headers representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Boolean>> doesUserExistWithResponse(final String userId) {
+    public Mono<Response<Boolean>> doesUserExistWithResponse(final String userId) {
         return doesUserExistWithResponse(userId, Context.NONE);
     }
 
     // package-private
-    Mono<SimpleResponse<Boolean>> doesUserExistWithResponse(final String userId, final Context context) {
+    Mono<Response<Boolean>> doesUserExistWithResponse(final String userId, final Context context) {
+        // TODO (jogiles) autorest should not return SimpleBoolean, Response should be sufficient
         return api.headCheckUserExistenceWithResponseAsync(hub, userId, configureTracing(context))
+           .map(simpleResponse -> (Response<Boolean>) simpleResponse)
            .doOnSubscribe(ignoredValue -> logger.info("Checking if user '{}' exists", userId))
            .doOnSuccess(response -> logger.info("Checked if user '{}' exists, response: {}",
                userId, response.getValue()))
@@ -277,25 +306,31 @@ public final class SignalRAsyncClient {
      * Check if a particular group exists (i.e. has active connections).
      *
      * @param group The group name to check for.
+     * @return A {@link Mono} containing a {@link Response} with a Boolean value representing whether the group exists,
+     *      as well as status code and response headers representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> doesGroupExist(final String group) {
-        return doesGroupExistWithResponse(group).map(SimpleResponse::getValue);
+        return doesGroupExistWithResponse(group).map(Response::getValue);
     }
 
     /**
      * Check if a particular group exists (i.e. has active connections).
      *
      * @param group The group name to check for.
+     * @return A {@link Mono} containing a {@link Response} with a Boolean value representing whether the group exists,
+     *      as well as status code and response headers representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Boolean>> doesGroupExistWithResponse(final String group) {
+    public Mono<Response<Boolean>> doesGroupExistWithResponse(final String group) {
         return doesGroupExistWithResponse(group, Context.NONE);
     }
 
     // package-private
-    Mono<SimpleResponse<Boolean>> doesGroupExistWithResponse(final String group, final Context context) {
+    Mono<Response<Boolean>> doesGroupExistWithResponse(final String group, final Context context) {
+        // TODO (jogiles) autorest should not return SimpleBoolean, Response should be sufficient
         return api.headCheckUserExistenceWithResponseAsync(hub, group, configureTracing(context))
+           .map(simpleResponse -> (Response<Boolean>) simpleResponse)
            .doOnSubscribe(ignoredValue -> logger.info("Checking if group '{}' exists", group))
            .doOnSuccess(response -> logger.info("Checked if group '{}' exists, response: {}",
                group, response.getValue()))
@@ -306,6 +341,8 @@ public final class SignalRAsyncClient {
      * Close a specific connection to this hub.
      *
      * @param connectionId Connection ID to close.
+     * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
+     *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> closeConnection(final String connectionId) {
@@ -316,6 +353,9 @@ public final class SignalRAsyncClient {
      * Close a specific connection to this hub.
      *
      * @param connectionId Connection ID to close.
+     * @param reason The reason why the connection was closed.
+     * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
+     *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> closeConnection(final String connectionId, final String reason) {
@@ -337,25 +377,31 @@ public final class SignalRAsyncClient {
      * Check if a specific connection is connected to this hub.
      *
      * @param connectionId Connection ID to check.
+     * @return A {@link Mono} containing a {@link Response} with a Boolean value representing whether the connection
+     *     exists in this hub, as well as status code and response headers representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> doesConnectionExist(final String connectionId) {
-        return doesConnectionExistWithResponse(connectionId).map(SimpleResponse::getValue);
+        return doesConnectionExistWithResponse(connectionId).map(Response::getValue);
     }
 
     /**
      * Check if a specific connection is connected to this hub.
      *
      * @param connectionId Connection ID to check.
+     * @return A {@link Mono} containing a {@link Response} with a Boolean value representing whether the connection
+     *     exists in this hub, as well as status code and response headers representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Boolean>> doesConnectionExistWithResponse(final String connectionId) {
+    public Mono<Response<Boolean>> doesConnectionExistWithResponse(final String connectionId) {
         return doesConnectionExistWithResponse(connectionId, Context.NONE);
     }
 
     // package-private
-    Mono<SimpleResponse<Boolean>> doesConnectionExistWithResponse(final String connectionId, final Context context) {
+    Mono<Response<Boolean>> doesConnectionExistWithResponse(final String connectionId, final Context context) {
+        // TODO (jogiles) autorest should not return SimpleBoolean, Response should be sufficient
         return api.headCheckConnectionExistenceWithResponseAsync(hub, connectionId, configureTracing(context))
+           .map(simpleResponse -> (Response<Boolean>) simpleResponse)
            .doOnSubscribe(ignoredValue -> logger.info("Checking if connection '{}' exists", connectionId))
            .doOnSuccess(response -> logger.info("Checked if connection '{}' exists, response: {}",
                connectionId, response.getValue()))

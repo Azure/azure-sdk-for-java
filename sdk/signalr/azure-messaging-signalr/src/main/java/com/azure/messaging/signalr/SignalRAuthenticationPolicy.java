@@ -23,11 +23,30 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
+/**
+ * An {@link HttpPipelinePolicy} for authenticating against the SignalR service. Used in the default HTTP pipeline
+ * when built using the {@link SignalRClientBuilder}, but available here in case an HTTP pipeline is built outside of
+ * the {@link SignalRClientBuilder}.
+ *
+ * @see SignalRClientBuilder
+ */
 public final class SignalRAuthenticationPolicy implements HttpPipelinePolicy {
     private final ClientLogger logger = new ClientLogger(SignalRAuthenticationPolicy.class);
 
     private final AzureKeyCredential credential;
 
+    /**
+     * Creates a new instance of the SignalRAuthenticationPolicy, where it will make use of the provided
+     * {@link AzureKeyCredential} whenever a HTTP request is made to apply the appropriate modifications to the HTTP
+     * request to gain access to the SignalR service.
+     *
+     * <p>Note that whilst the credential passed into the constructor is immutable within this policy, the key contained
+     * within the credential is not, and as such can be updated by calling {@link AzureKeyCredential#update(String)} as
+     * appropriate.</p>
+     *
+     * @param credential THe {@link AzureKeyCredential} that will be used for all outgoing HTTP requests to the
+     * SignalR service.
+     */
     public SignalRAuthenticationPolicy(final AzureKeyCredential credential) {
         this.credential = credential;
     }
