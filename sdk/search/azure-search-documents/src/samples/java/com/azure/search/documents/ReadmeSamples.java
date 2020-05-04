@@ -33,25 +33,25 @@ public class ReadmeSamples {
     private String adminKey = "admin key";
     private String apiKey = "api key";
     private String indexName = "index name";
-    private SearchServiceClient searchClient = new SearchServiceClientBuilder().buildClient();
-    private SearchIndexClient indexClient = new SearchIndexClientBuilder().buildClient();
+    private SearchServiceClient searchServiceClient = new SearchServiceClientBuilder().buildClient();
+    private SearchIndexClient searchIndexClient = new SearchIndexClientBuilder().buildClient();
 
     public void createSearchClient() {
-        SearchServiceClient client = new SearchServiceClientBuilder()
+        SearchServiceClient searchServiceClient = new SearchServiceClientBuilder()
             .endpoint(endpoint)
             .credential(new AzureKeyCredential(adminKey))
             .buildClient();
     }
 
     public void createAsyncSearchClient() {
-        SearchServiceAsyncClient client = new SearchServiceClientBuilder()
+        SearchServiceAsyncClient searchServiceAsyncClient = new SearchServiceClientBuilder()
             .endpoint(endpoint)
             .credential(new AzureKeyCredential(adminKey))
             .buildAsyncClient();
     }
 
     public void createIndexClient() {
-        SearchIndexClient client = new SearchIndexClientBuilder()
+        SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
             .endpoint(endpoint)
             .credential(new AzureKeyCredential(apiKey))
             .indexName(indexName)
@@ -59,7 +59,7 @@ public class ReadmeSamples {
     }
 
     public void createAsyncIndexClient() {
-        SearchIndexAsyncClient client = new SearchIndexClientBuilder()
+        SearchIndexAsyncClient searchIndexAsyncClient = new SearchIndexClientBuilder()
             .endpoint(endpoint)
             .credential(new AzureKeyCredential(apiKey))
             .indexName(indexName)
@@ -73,7 +73,7 @@ public class ReadmeSamples {
         headers.put("my-header3", "my-header3-value");
         // Call API by passing headers in Context.
         Index index = new Index().setName(indexName);
-        searchClient.createIndexWithResponse(
+        searchServiceClient.createIndexWithResponse(
             index,
             new RequestOptions(),
             new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers));
@@ -82,7 +82,7 @@ public class ReadmeSamples {
 
     public void handleErrorsWithSyncClient() {
         try {
-            Iterable<SearchResult> results = indexClient.search("hotel");
+            Iterable<SearchResult> results = searchIndexClient.search("hotel");
         } catch (HttpResponseException ex) {
             // The exception contains the HTTP status code and the detailed message
             // returned from the search service
@@ -104,7 +104,7 @@ public class ReadmeSamples {
                         .setName("Cuisine")
                         .setType(DataType.EDM_STRING)));
         // Create index.
-        searchClient.createIndex(newIndex);
+        searchServiceClient.createIndex(newIndex);
     }
 
     public void uploadDocumentWithSyncClient() {
@@ -113,12 +113,12 @@ public class ReadmeSamples {
         hotels.add(new Hotel().setHotelId("200"));
         hotels.add(new Hotel().setHotelId("300"));
         // Upload hotel.
-        indexClient.uploadDocuments(hotels);
+        searchIndexClient.uploadDocuments(hotels);
     }
 
     public void searchTextWithSyncClient() {
         // Perform a text-based search
-        for (SearchResult result : indexClient.search("luxury hotel",
+        for (SearchResult result : searchIndexClient.search("luxury hotel",
             new SearchOptions(), new RequestOptions(), Context.NONE)) {
 
             // Each result is a dynamic Map

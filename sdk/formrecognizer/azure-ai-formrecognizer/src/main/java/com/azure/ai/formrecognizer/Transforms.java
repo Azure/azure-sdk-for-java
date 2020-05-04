@@ -62,11 +62,10 @@ final class Transforms {
         List<ReadResult> readResults = analyzeResult.getReadResults();
         List<DocumentResult> documentResults = analyzeResult.getDocumentResults();
         List<PageResult> pageResults = analyzeResult.getPageResults();
-        List<RecognizedForm> extractedFormList = null;
+        List<RecognizedForm> extractedFormList;
 
         List<FormPage> formPages = toRecognizedLayout(analyzeResult, includeTextDetails);
 
-        // unlabeled
         if (!CoreUtils.isNullOrEmpty(documentResults)) {
             extractedFormList = new ArrayList<>();
             for (DocumentResult documentResultItem : documentResults) {
@@ -87,8 +86,7 @@ final class Transforms {
                     new IterableStream<>(formPages.subList(pageRange.getStartPageNumber() - 1,
                         pageRange.getEndPageNumber()))));
             }
-        } else if (!CoreUtils.isNullOrEmpty(pageResults)) {
-            // labeled
+        } else {
             extractedFormList = new ArrayList<>();
             for (PageResult pageResultItem : pageResults) {
                 StringBuffer formType = new StringBuffer("form-");

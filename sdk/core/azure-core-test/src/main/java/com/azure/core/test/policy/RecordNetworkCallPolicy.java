@@ -3,6 +3,7 @@
 
 package com.azure.core.test.policy;
 
+import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
@@ -164,7 +165,8 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                 responseData.put(BODY, content);
                 return responseData;
             });
-        } else if (contentType.equalsIgnoreCase("application/octet-stream")) {
+        } else if (contentType.equalsIgnoreCase(ContentType.APPLICATION_OCTET_STREAM)
+            || contentType.equalsIgnoreCase("avro/binary")) {
             return response.getBodyAsByteArray().switchIfEmpty(Mono.just(new byte[0])).map(bytes -> {
                 if (bytes.length == 0) {
                     return responseData;
