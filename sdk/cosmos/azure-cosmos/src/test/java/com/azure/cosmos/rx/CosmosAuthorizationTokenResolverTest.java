@@ -16,7 +16,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PermissionMode;
 import com.azure.cosmos.models.RequestVerb;
 import com.azure.cosmos.models.Resource;
-import com.azure.cosmos.CosmosAuthorizationTokenResolver;
+import com.azure.cosmos.implementation.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;

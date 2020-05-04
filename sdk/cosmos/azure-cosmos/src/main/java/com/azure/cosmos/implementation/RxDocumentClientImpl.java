@@ -18,8 +18,6 @@ import com.azure.cosmos.models.RequestVerb;
 import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.SqlParameter;
-import com.azure.cosmos.CosmosAuthorizationTokenResolver;
-import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;

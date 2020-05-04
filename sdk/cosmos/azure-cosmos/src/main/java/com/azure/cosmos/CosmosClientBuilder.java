@@ -4,7 +4,7 @@ package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.Permission;
+import com.azure.cosmos.implementation.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 
@@ -139,7 +139,7 @@ public class CosmosClientBuilder {
      * @param cosmosAuthorizationTokenResolver the token resolver
      * @return current cosmosClientBuilder
      */
-    public CosmosClientBuilder authorizationTokenResolver(
+    CosmosClientBuilder authorizationTokenResolver(
         CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver) {
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
         return this;
