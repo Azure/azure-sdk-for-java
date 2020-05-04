@@ -40,7 +40,6 @@ import java.time.Instant;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.PriorityQueue;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -434,8 +433,7 @@ class ReactorSender implements AmqpSendLink {
 
             final Duration retryInterval = retry.calculateRetryDelay(exception, retryAttempt);
 
-            if (Objects.isNull(retryInterval)
-                || retryInterval.compareTo(workItem.getTimeoutTracker().remaining()) > 0) {
+            if (retryInterval.compareTo(workItem.getTimeoutTracker().remaining()) > 0) {
                 cleanupFailedSend(workItem, exception);
             } else {
                 workItem.setLastKnownException(exception);

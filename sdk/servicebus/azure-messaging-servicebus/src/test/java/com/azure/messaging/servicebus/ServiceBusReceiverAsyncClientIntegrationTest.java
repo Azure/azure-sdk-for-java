@@ -581,20 +581,19 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can renew session lock on a session receiver with multiple receiver.
      */
-    @MethodSource("messagingEntityProvider")
+    @MethodSource("messagingEntityProvide r")
     @ParameterizedTest
     void multipleReceiverRenewSessionLock(MessagingEntityType entityType) {
         // Arrange
-        boolean isSessionEnabled = true;
-        int firstBatch = 1;
-        int secondBatch = 1;
+        int firstBatchsize = 1;
+        int secondBatchSize = 1;
 
-        setSenderAndReceiver(entityType, isSessionEnabled);
+        setSenderAndReceiver(entityType, true);
 
         final String messageId = UUID.randomUUID().toString();
-        final List<ServiceBusMessage> messages = getMessages(messageId, isSessionEnabled, firstBatch, sessionId);
+        final List<ServiceBusMessage> messages = getMessages(messageId, true, firstBatchsize, sessionId);
 
-        messages.addAll(getMessages(messageId, isSessionEnabled, secondBatch, sessionId2));
+        messages.addAll(getMessages(messageId, true, secondBatchSize, sessionId2));
 
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
             .setEnableAutoComplete(false);
