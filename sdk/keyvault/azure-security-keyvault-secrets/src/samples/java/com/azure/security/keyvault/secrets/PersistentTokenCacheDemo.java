@@ -24,7 +24,7 @@ public class PersistentTokenCacheDemo {
             .build();
 
         SecretClient client = new SecretClientBuilder()
-            .vaultUrl("https://persistentcachedemo.vault.azure.net")
+            .vaultUrl("https://jianghaovaultb.vault.azure.net")
             .credential(defaultCredential)
             .buildClient();
 

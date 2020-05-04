@@ -620,6 +620,11 @@ public class IdentityClient {
                     IAccount requestedAccount;
                     Map<String, IAccount> accounts = new HashMap<>(); // home account id -> account
 
+                    if (set.isEmpty()) {
+                        return Mono.error(new CredentialUnavailableException("SharedTokenCacheCredential "
+                                + "authentication unavailable. No accounts were found in the cache."));
+                    }
+
                     for (IAccount cached : set) {
                         if (username == null || username.equals(cached.username())) {
                             if (!accounts.containsKey(cached.homeAccountId())) { // only put the first one
@@ -628,31 +633,25 @@ public class IdentityClient {
                         }
                     }
 
-                    if (set.isEmpty()) {
-                        return Mono.error(new CredentialUnavailableException("SharedTokenCacheCredential "
-                                + "authentication unavailable. No accounts were found in the cache."));
-                    }
-
-                    if (CoreUtils.isNullOrEmpty(username)) {
-                        return Mono.error(new CredentialUnavailableException("SharedTokenCacheCredential "
-                                + "authentication unavailable. Multiple accounts were found in the cache. Use "
-                                + "username and tenant id to disambiguate."));
-                    }
-
-                    if (accounts.size() != 1) {
-                        if (accounts.isEmpty()) {
-                            return Mono.error(new CredentialUnavailableException(
-                                    String.format("SharedTokenCacheCredential authentication "
-                                            + "unavailable. No account matching the specified username %s was found "
-                                            + "in the cache.", username)));
+                    if (accounts.isEmpty()) {
+                        // no more accounts after filtering, username must be set
+                        return Mono.error(new RuntimeException(String.format("SharedTokenCacheCredential "
+                                + "authentication unavailable. No account matching the specified username: %s was "
+                                + "found in the cache.", username)));
+                    } else if (accounts.size() > 1) {
+                        if (username == null) {
+                            return Mono.error(new RuntimeException("SharedTokenCacheCredential authentication "
+                                    + "unavailable. Multiple accounts were found in the cache. Use username and "
+                                    + "tenant id to disambiguate."));
                         } else {
-                            return Mono.error(new CredentialUnavailableException(String.format(
-                                    "SharedTokenCacheCredential authentication unavailable. Multiple accounts "
-                                    + "matching the specified username %s were found in the cache.", username)));
+                            return Mono.error(new RuntimeException(String.format("SharedTokenCacheCredential "
+                                    + "authentication unavailable. Multiple accounts matching the specified username: "
+                                    + "%s were found in the cache.", username)));
                         }
+                    } else {
+                        requestedAccount = accounts.values().iterator().next();
                     }
 
-                    requestedAccount = accounts.values().iterator().next();
 
                     return authenticateWithMsalAccount(request, requestedAccount);
                 });
