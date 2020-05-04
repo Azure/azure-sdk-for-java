@@ -4,11 +4,11 @@ package com.azure.cosmos.implementation;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.models.CosmosResponse;
+import com.azure.cosmos.models.Resource;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
 
@@ -25,7 +25,6 @@ import java.util.function.Function;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 public class TracerProvider {
-    private final ClientLogger logger = new ClientLogger(TracerProvider.class);
     private final List<Tracer> tracers = new ArrayList<>();
     public final static String DB_TYPE_VALUE = "cosmosdb";
     public final static String DB_TYPE = "db.type";
@@ -38,11 +37,10 @@ public class TracerProvider {
     public static final String COSMOS_CALL_DEPTH = "cosmosCallDepth";
     public static final String MICROSOFT_DOCOMENTDB = "Microsoft.DocumentDB";
 
-    public static final Object ATTRIBUTE_MAP = "span-attributes";
-
-    public static Function<reactor.util.context.Context, reactor.util.context.Context> callDepthAttributeFunc = (
+    public final static Function<reactor.util.context.Context, reactor.util.context.Context> callDepthAttributeFunc = (
         reactor.util.context.Context reactorContext) -> {
         CallDepth callDepth = reactorContext.getOrDefault(COSMOS_CALL_DEPTH, CallDepth.ZERO);
+        assert callDepth != null;
         if (callDepth.equals(CallDepth.ZERO)) {
             return reactorContext.put(COSMOS_CALL_DEPTH, CallDepth.ONE);
         } else if (callDepth.equals(CallDepth.ONE)) {
@@ -53,7 +51,7 @@ public class TracerProvider {
     };
 
     public static Map<String, String> createTracingMap(String databaseId, String serviceEndpoint, String spanName) {
-        return new HashMap() {{
+        return new HashMap<String, String>() {{
             if (databaseId != null) {
                 put(TracerProvider.DB_INSTANCE, databaseId);
             }
@@ -67,7 +65,7 @@ public class TracerProvider {
 
     public TracerProvider(Iterable<Tracer> tracers) {
         Objects.requireNonNull(tracers, "'tracers' cannot be null.");
-        tracers.forEach(e -> this.tracers.add(e));
+        tracers.forEach(this.tracers::add);
     }
 
     public boolean isEnabled() {
@@ -104,7 +102,7 @@ public class TracerProvider {
      * @param context Additional metadata that is passed through the call stack.
      * @param signal  The signal indicates the status and contains the metadata we need to end the tracing span.
      */
-    public void endSpan(Context context, Signal<CosmosResponse> signal, int statusCode) {
+    public <T extends CosmosResponse<? extends Resource>> void endSpan(Context context, Signal<T> signal, int statusCode) {
         Objects.requireNonNull(context, "'context' cannot be null.");
         Objects.requireNonNull(signal, "'signal' cannot be null.");
 
@@ -132,12 +130,12 @@ public class TracerProvider {
         }
     }
 
-    public <T extends CosmosResponse> Mono<T> traceEnabledCosmosResponsePublisher(Mono<T> resultPublisher,
-                                                                                  Map<String, String> tracingAttributes,
-                                                                                  Context context,
-                                                                                  String spanName) {
+    public <T extends CosmosResponse<? extends Resource>> Mono<T> traceEnabledCosmosResponsePublisher(Mono<T> resultPublisher,
+                                                                                                      Map<String, String> tracingAttributes,
+                                                                                                      Context context,
+                                                                                                      String spanName) {
         return traceEnabledPublisher(resultPublisher, tracingAttributes, context, spanName,
-            (T response) -> response.getStatusCode());
+            CosmosResponse::getStatusCode);
     }
 
     public <T> Mono<T> traceEnabledNonCosmosResponsePublisher(Mono<T> resultPublisher,
@@ -152,7 +150,7 @@ public class TracerProvider {
                                                                                         Context context,
                                                                                         String spanName) {
         return traceEnabledPublisher(resultPublisher, tracingAttributes, context, spanName,
-            (CosmosAsyncItemResponse<T> response) -> response.getStatusCode());
+            CosmosAsyncItemResponse::getStatusCode);
     }
 
     public <T> Mono<T> traceEnabledPublisher(Mono<T> resultPublisher,
@@ -169,6 +167,7 @@ public class TracerProvider {
                 if (isTracingEnabled) {
                     CallDepth callDepth = FluxUtil.toReactorContext(context).getOrDefault(COSMOS_CALL_DEPTH,
                         CallDepth.ZERO);
+                    assert callDepth != null;
                     if (!callDepth.equals(CallDepth.TWO_OR_MORE)) {
                         parentContext.set(this.startSpan(spanName,
                             context, tracingAttributes));

@@ -96,6 +96,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             if (pagedFluxOptions.getTracerProvider().isEnabled()) {
                 TracerProvider.CallDepth callDepth = FluxUtil.toReactorContext(context).getOrDefault(TracerProvider.COSMOS_CALL_DEPTH,
                     TracerProvider.CallDepth.ZERO);
+                assert callDepth != null;
                 if (!callDepth.equals(TracerProvider.CallDepth.TWO_OR_MORE)) {
                     parentContext.set(pagedFluxOptions.getTracerProvider().startSpan(pagedFluxOptions.getTracerSpanName(),
                         context, pagedFluxOptions.getTracingAttributes()));

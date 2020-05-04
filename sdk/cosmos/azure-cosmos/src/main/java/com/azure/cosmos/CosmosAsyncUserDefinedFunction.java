@@ -114,10 +114,6 @@ public class CosmosAsyncUserDefinedFunction {
     }
 
     private Mono<CosmosAsyncUserDefinedFunctionResponse> read(Context context) {
-        final boolean isTracingEnabled = this.container.getDatabase().getClient().getTracerProvider().isEnabled();
-        final AtomicReference<Context> parentContext = isTracingEnabled
-            ? new AtomicReference<>(Context.NONE)
-            : null;
         String spanName = "readUDF." + container.getId();
         Map<String, String> tracingAttributes = TracerProvider.createTracingMap(container.getDatabase().getId(),
             container.getDatabase().getClient().getServiceEndpoint(), spanName);
