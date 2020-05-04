@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.1 (2020-05-01)
+## 1.2.1 (2020-05-04)
 
 - Updating dependencies.
 
