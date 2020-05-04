@@ -87,7 +87,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * again for processing. Abandoning a message will increase the delivery count on the message.
      *
      * @param lockToken Lock token of the message.
-     * @param sessionId Session id of the message to abandon.
+     * @param sessionId Session id of the message to abandon. {@code null} if there is no session.
      *
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
@@ -95,6 +95,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
      */
     public void abandon(MessageLockToken lockToken, String sessionId) {
+        asyncClient.abandon(lockToken, sessionId).block(operationTimeout);
     }
 
     /**
@@ -121,7 +122,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @param lockToken Lock token of the message.
      * @param propertiesToModify Properties to modify on the message.
-     * @param sessionId Session id of the message to abandon.
+     * @param sessionId Session id of the message to abandon. {@code null} if there is no session.
      *
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
@@ -152,7 +153,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * service.
      *
      * @param lockToken Lock token of the message.
-     * @param sessionId Session id of the message to complete.
+     * @param sessionId Session id of the message to complete. {@code null} if there is no session.
      *
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
@@ -184,7 +185,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * subqueue.
      *
      * @param lockToken Lock token of the message.
-     * @param sessionId Session id of the message to defer.
+     * @param sessionId Session id of the message to defer. {@code null} if there is no session.
      *
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
@@ -219,7 +220,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @param lockToken Lock token of the message.
      * @param propertiesToModify Message properties to modify.
-     * @param sessionId Session id of the message to defer.
+     * @param sessionId Session id of the message to defer. {@code null} if there is no session.
      *
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
@@ -251,7 +252,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * Moves a {@link ServiceBusReceivedMessage message} to the deadletter sub-queue.
      *
      * @param lockToken Lock token of the message.
-     * @param sessionId Session id of the message to deadletter.
+     * @param sessionId Session id of the message to deadletter. {@code null} if there is no session.
      *
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
@@ -286,7 +287,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @param lockToken Lock token of the message.
      * @param deadLetterOptions The options to specify when moving message to the deadletter sub-queue.
-     * @param sessionId Session id of the message to deadletter.
+     * @param sessionId Session id of the message to deadletter. {@code null} if there is no session.
      *
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
@@ -326,7 +327,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * {@code peek()} fetches the first active message for this receiver. Each subsequent call fetches the subsequent
      * message in the entity.
      *
-     * @param sessionId Session id of the message to peek from.
+     * @param sessionId Session id of the message to peek from. {@code null} if there is no session.
      *
      * @return A peeked {@link ServiceBusReceivedMessage}.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
@@ -353,7 +354,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * or the message source.
      *
      * @param sequenceNumber The sequence number from where to read the message.
-     * @param sessionId Session id of the message to peek from.
+     * @param sessionId Session id of the message to peek from. {@code null} if there is no session.
      *
      * @return A peeked {@link ServiceBusReceivedMessage}.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
@@ -390,7 +391,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * Reads the next batch of active messages without changing the state of the receiver or the message source.
      *
      * @param maxMessages The number of messages.
-     * @param sessionId Session id of the messages to peek from.
+     * @param sessionId Session id of the messages to peek from. {@code null} if there is no session.
      *
      * @return An {@link IterableStream} of {@link ServiceBusReceivedMessage messages} that are peeked.
      * @throws IllegalArgumentException if {@code maxMessages} is not a positive integer.
@@ -443,7 +444,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @param maxMessages The number of messages.
      * @param sequenceNumber The sequence number from where to start reading messages.
-     * @param sessionId Session id of the messages to peek from.
+     * @param sessionId Session id of the messages to peek from. {@code null} if there is no session.
      *
      * @return An {@link IterableStream} of {@link ServiceBusReceivedMessage} peeked.
      * @throws IllegalArgumentException if {@code maxMessages} is not a positive integer.
@@ -556,8 +557,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * by using sequence number.
      *
      * @param sequenceNumbers The sequence numbers of the deferred messages.
-     * @param sessionId Session id of the deferred messages.
-
+     * @param sessionId Session id of the deferred messages. {@code null} if there is no session.
+     *
      * @return An {@link IterableStream} of deferred {@link ServiceBusReceivedMessage messages}.
      */
     public IterableStream<ServiceBusReceivedMessage> receiveDeferredMessageBatch(Iterable<Long> sequenceNumbers,
