@@ -909,18 +909,33 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         final String lockToken = message.getLockToken();
         logger.info("{}: Update started. Disposition: {}. Lock: {}.", entityPath, dispositionStatus, lockToken);
 
+        final Mono<Void> performOnManagement = connectionProcessor
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+            .flatMap(node -> node.updateDisposition(lockToken, dispositionStatus, deadLetterReason,
+                deadLetterErrorDescription, propertiesToModify, sessionId, getLinkName()))
+            .then(Mono.fromRunnable(() -> {
+                logger.info("{}: Update completed. Disposition: {}. Lock: {}.",
+                    entityPath, dispositionStatus, lockToken);
+
+                managementNodeLocks.remove(lockToken);
+            }));
+
+        if (unnamedSessionManager != null) {
+            return unnamedSessionManager.updateDisposition(message, sessionId, dispositionStatus, propertiesToModify,
+                deadLetterReason, deadLetterErrorDescription)
+                .flatMap(isSuccess -> {
+                    if (isSuccess) {
+                        return Mono.empty();
+                    }
+
+                    logger.info("Could not perform on session manger. Performing on management node.");
+                    return performOnManagement;
+                });
+        }
+
         final ServiceBusAsyncConsumer existingConsumer = consumer.get();
         if (isManagementToken(lockToken) || existingConsumer == null) {
-            return connectionProcessor
-                .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-                .flatMap(node -> node.updateDisposition(lockToken, dispositionStatus, deadLetterReason,
-                    deadLetterErrorDescription, propertiesToModify, sessionId, getLinkName()))
-                .then(Mono.fromRunnable(() -> {
-                    logger.info("{}: Update completed. Disposition: {}. Lock: {}.",
-                        entityPath, dispositionStatus, lockToken);
-
-                    managementNodeLocks.remove(lockToken);
-                }));
+            return performOnManagement;
         } else {
             return existingConsumer.updateDisposition(lockToken, dispositionStatus, deadLetterReason,
                 deadLetterErrorDescription, propertiesToModify)

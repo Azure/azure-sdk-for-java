@@ -3,9 +3,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
-import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.LinkErrorContext;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.CoreUtils;
@@ -182,10 +180,6 @@ class UnnamedSessionReceiver implements AutoCloseable {
     }
 
     private Disposable getRenewLockOperation(Instant initialLockedUntil) {
-        if (maxSessionLockRenewDuration == null || maxSessionLockRenewDuration.isZero()) {
-            return Disposables.disposed();
-        }
-
         final Instant now = Instant.now();
         Duration initialInterval = Duration.between(now, initialLockedUntil);
         if (initialInterval.isNegative()) {
@@ -206,17 +200,24 @@ class UnnamedSessionReceiver implements AutoCloseable {
         // Adjust the interval, so we can buffer time for the time it'll take to refresh.
         sink.next(MessageUtils.adjustServerTimeout(initialInterval));
 
-        final Disposable timeoutOperation = Mono.delay(maxSessionLockRenewDuration)
-            .subscribe(l -> {
-                if (!sink.isCancelled()) {
-                    sink.error(new AmqpException(true, AmqpErrorCondition.TIMEOUT_ERROR,
-                        "Could not complete session processing within renewal time. Max session renewal time: "
-                            + maxSessionLockRenewDuration,
-                        new LinkErrorContext(receiveLink.getHostname(), receiveLink.getEntityPath(), null, null)));
-                }
-            });
+        // TODO (conniey): Do we need to stop processing lock renewal after a max duration??
+        // if (maxSessionLockRenewDuration == null || maxSessionLockRenewDuration.isZero()) {
+        //     return Disposables.disposed();
+        // }
+        //
+        // final Disposable timeoutOperation = Mono.delay(maxSessionLockRenewDuration)
+        //     .subscribe(l -> {
+        //         if (!sink.isCancelled()) {
+        //             sink.error(new AmqpException(true, AmqpErrorCondition.TIMEOUT_ERROR,
+        //                 "Could not complete session processing within renewal time. Max session renewal time: "
+        //                     + maxSessionLockRenewDuration,
+        //                 new LinkErrorContext(receiveLink.getHostname(), receiveLink.getEntityPath(), null, null)));
+        //         }
+        //     });
+        //
+        // return Disposables.composite(renewLockSubscription, timeoutOperation);
 
-        final Disposable renewLockSubscription = Flux.switchOnNext(emitterProcessor.map(i -> Flux.interval(i)))
+        return Flux.switchOnNext(emitterProcessor.map(i -> Flux.interval(i)))
             .flatMap(delay -> {
                 final String id = sessionId.get();
 
@@ -245,8 +246,6 @@ class UnnamedSessionReceiver implements AutoCloseable {
                     logger.info("Renewing session lock task completed.");
                     cancelReceiveProcessor.onComplete();
                 });
-
-        return Disposables.composite(renewLockSubscription, timeoutOperation);
     }
 
     private static final class SessionMessageManagement implements MessageManagementOperations {

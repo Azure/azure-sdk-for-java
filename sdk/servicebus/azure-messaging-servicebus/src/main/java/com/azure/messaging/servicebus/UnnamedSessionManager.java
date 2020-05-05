@@ -16,7 +16,6 @@ import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
-import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.publisher.EmitterProcessor;
@@ -102,27 +101,6 @@ class UnnamedSessionManager implements AutoCloseable {
         this.schedulers = Collections.unmodifiableList(schedulerList);
         this.availableSchedulers.addAll(this.schedulers);
         this.sessionReceiveSink.onRequest(this::onSessionRequest);
-    }
-
-    Mono<Boolean> abandon(MessageLockToken lockToken, String sessionId, Map<String, Object> propertiesToModify) {
-        return updateDisposition(lockToken, sessionId, DispositionStatus.ABANDONED, propertiesToModify,
-            null, null);
-    }
-
-    Mono<Boolean> complete(MessageLockToken lockToken, String sessionId) {
-        return updateDisposition(lockToken, sessionId, DispositionStatus.COMPLETED, null,
-            null, null);
-    }
-
-    Mono<Boolean> defer(MessageLockToken lockToken, Map<String, Object> propertiesToModify, String sessionId) {
-        return updateDisposition(lockToken, sessionId, DispositionStatus.DEFERRED, propertiesToModify,
-            null, null);
-    }
-
-    Mono<Boolean> deadLetter(MessageLockToken lockToken, String sessionId, DeadLetterOptions deadLetterOptions) {
-        return updateDisposition(lockToken, sessionId, DispositionStatus.SUSPENDED,
-            deadLetterOptions.getPropertiesToModify(), deadLetterOptions.getDeadLetterReason(),
-            deadLetterOptions.getDeadLetterErrorDescription());
     }
 
     /**
@@ -331,14 +309,14 @@ class UnnamedSessionManager implements AutoCloseable {
             })))
             .flatMapMany(session -> {
                 return session.receive().doFinally(signalType -> {
-                    logger.verbose("Adding scheduler back to pool.");
+                    logger.info("Adding scheduler back to pool.");
                     availableSchedulers.push(scheduler);
                 });
             })
             .publishOn(scheduler);
     }
 
-    private Mono<Boolean> updateDisposition(MessageLockToken lockToken, String sessionId,
+    Mono<Boolean> updateDisposition(MessageLockToken lockToken, String sessionId,
         DispositionStatus dispositionStatus, Map<String, Object> propertiesToModify, String deadLetterReason,
         String deadLetterDescription) {
 
