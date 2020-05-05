@@ -92,7 +92,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = new CosmosContainerProperties(collectionName, "/id");
 
-        containerProperties.setAnalyticalStorageTimeToLiveInSeconds(analyticalTTL);
+        containerProperties.setAnalyticalStoreTimeToLiveInSeconds(analyticalTTL);
         if (analyticalTTL != null && analyticalTTL > 0) {
             containerProperties.setDefaultTimeToLiveInSeconds(analyticalTTL - 1);
         }

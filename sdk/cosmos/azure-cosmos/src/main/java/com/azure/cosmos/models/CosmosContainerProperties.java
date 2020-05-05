@@ -254,7 +254,7 @@ public final class CosmosContainerProperties extends Resource {
      * @param timeToLive the analytical storage time to live in seconds.
      * @return the CosmosContainerProperties.
      */
-    public CosmosContainerProperties setAnalyticalStorageTimeToLiveInSeconds(Integer timeToLive) {
+    public CosmosContainerProperties setAnalyticalStoreTimeToLiveInSeconds(Integer timeToLive) {
         // a "null" value is represented as a missing element on the wire.
         // setting timeToLive to null should remove the property from the property bag.
         if (timeToLive != null) {
