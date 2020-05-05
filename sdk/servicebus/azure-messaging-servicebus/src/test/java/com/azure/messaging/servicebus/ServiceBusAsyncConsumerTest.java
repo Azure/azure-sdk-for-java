@@ -1,21 +1,22 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.servicebus.implementation;
+package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorContext;
-import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.MessageLockToken;
-import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
+import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
+import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
+import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
+import org.apache.qpid.proton.amqp.messaging.Accepted;
+import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,14 +34,19 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.UUID;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+/**
+ * Tests for {@link ServiceBusAsyncConsumer}.
+ */
 class ServiceBusAsyncConsumerTest {
     private static final String LINK_NAME = "some-link";
     private final EmitterProcessor<Message> messageProcessor = EmitterProcessor.create();
@@ -56,7 +62,7 @@ class ServiceBusAsyncConsumerTest {
     @Mock
     private ServiceBusAmqpConnection connection;
     @Mock
-    private AmqpReceiveLink link;
+    private ServiceBusReceiveLink link;
     @Mock
     private AmqpRetryPolicy retryPolicy;
     @Mock
@@ -64,11 +70,7 @@ class ServiceBusAsyncConsumerTest {
     @Mock
     private MessageSerializer serializer;
     @Mock
-    private Function<MessageLockToken, Mono<Void>> onComplete;
-    @Mock
-    private Function<MessageLockToken, Mono<Void>> onAbandon;
-    @Mock
-    private Function<MessageLockToken, Mono<Instant>> onRenewLock;
+    private BiFunction<MessageLockToken, String, Mono<Instant>> renewMessageLock;
 
     @BeforeAll
     static void beforeAll() {
@@ -88,14 +90,14 @@ class ServiceBusAsyncConsumerTest {
 
         when(link.getEndpointStates()).thenReturn(endpointProcessor);
         when(link.receive()).thenReturn(messageProcessor);
-        linkProcessor = Flux.<AmqpReceiveLink>create(sink -> sink.onRequest(requested -> {
+        linkProcessor = Flux.<ServiceBusReceiveLink>create(sink -> sink.onRequest(requested -> {
             logger.info("Requested link: {}", requested);
             sink.next(link);
         })).subscribeWith(new ServiceBusReceiveLinkProcessor(10, retryPolicy, parentConnection,
             new AmqpErrorContext("a-namespace")));
 
         when(connection.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
-        when(onComplete.apply(any(ServiceBusReceivedMessage.class))).thenReturn(Mono.empty());
+        when(link.updateDisposition(anyString(), any(DeliveryState.class))).thenReturn(Mono.empty());
     }
 
     @AfterEach
@@ -112,9 +114,8 @@ class ServiceBusAsyncConsumerTest {
     void receiveAutoComplete() {
         // Arrange
         final boolean isAutoComplete = true;
-        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
-            isAutoComplete, false, renewDuration, retryOptions, onComplete, onAbandon,
-            onRenewLock);
+        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor,
+            serializer, isAutoComplete, false, renewDuration, retryOptions, renewMessageLock);
 
         when(link.getCredits()).thenReturn(1);
 
@@ -140,7 +141,7 @@ class ServiceBusAsyncConsumerTest {
             .expectNext(receivedMessage1, receivedMessage2)
             .verifyComplete();
 
-        verify(onComplete).apply(receivedMessage1);
+        verify(link).updateDisposition(eq(lockToken1), eq(Accepted.getInstance()));
     }
 
     /**
@@ -151,8 +152,7 @@ class ServiceBusAsyncConsumerTest {
         // Arrange
         final boolean isAutoComplete = false;
         final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
-            isAutoComplete, false, renewDuration, retryOptions, onComplete, onAbandon,
-            onRenewLock);
+            isAutoComplete, false, renewDuration, retryOptions, renewMessageLock);
 
         final Message message1 = mock(Message.class);
         final Message message2 = mock(Message.class);
@@ -176,7 +176,7 @@ class ServiceBusAsyncConsumerTest {
             .thenCancel()
             .verify();
 
-        verifyZeroInteractions(onComplete);
+        verify(link, never()).updateDisposition(anyString(), any(DeliveryState.class));
     }
 
     /**
@@ -186,18 +186,17 @@ class ServiceBusAsyncConsumerTest {
     void canDispose() {
         // Arrange
         final boolean isAutoComplete = false;
-        final Function<MessageLockToken, Mono<Void>> onComplete = (message) -> {
-            Assertions.fail("Should not complete");
-            return Mono.empty();
-        };
-        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
-            isAutoComplete, false, renewDuration, retryOptions, onComplete, onAbandon,
-            onRenewLock);
+        final String lockToken = UUID.randomUUID().toString();
+        when(linkProcessor.updateDisposition(lockToken, Accepted.getInstance()))
+            .thenReturn(Mono.error(new IllegalArgumentException("Should not have called complete.")));
+
+        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor,
+            serializer, isAutoComplete, false, renewDuration, retryOptions, renewMessageLock);
 
         final Message message1 = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage1 = mock(ServiceBusReceivedMessage.class);
 
-        when(receivedMessage1.getLockToken()).thenReturn(UUID.randomUUID().toString());
+        when(receivedMessage1.getLockToken()).thenReturn(lockToken);
         when(serializer.deserialize(message1, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage1);
 
         // Act and Assert
@@ -209,5 +208,7 @@ class ServiceBusAsyncConsumerTest {
             .expectNext(receivedMessage1)
             .then(() -> consumer.close())
             .verifyComplete();
+
+        verify(link, never()).updateDisposition(anyString(), any(DeliveryState.class));
     }
 }
