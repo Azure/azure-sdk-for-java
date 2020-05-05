@@ -42,7 +42,6 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collections;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -157,12 +156,13 @@ class UnnamedSessionManagerTest {
         ReceiveAsyncOptions options = new ReceiveAsyncOptions()
             .setMaxAutoLockRenewalDuration(Duration.ofSeconds(20))
             .setIsAutoCompleteEnabled(true);
-        String sessionId = "session-1";
-        String lockToken = "a-lock-token";
-        Instant sessionLockedUntil = Instant.now().plus(Duration.ofSeconds(5));
+        final String sessionId = "session-1";
+        final String lockToken = "a-lock-token";
+        final String linkName = "my-link-name";
+        final Instant sessionLockedUntil = Instant.now().plus(Duration.ofSeconds(60));
 
-        Message message = mock(Message.class);
-        ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
+        final Message message = mock(Message.class);
+        final ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
 
         when(messageSerializer.deserialize(message, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage);
         when(receivedMessage.getSessionId()).thenReturn(sessionId);
@@ -170,15 +170,7 @@ class UnnamedSessionManagerTest {
 
         final int numberOfMessages = 5;
 
-        AtomicInteger numberToEmit = new AtomicInteger(numberOfMessages);
-        messageSink.onRequest(request -> {
-            long emitted = 0;
-            while (emitted < request && numberToEmit.getAndDecrement() > 0) {
-                messageSink.next(message);
-                emitted++;
-            }
-        });
-
+        when(amqpReceiveLink.getLinkName()).thenReturn(linkName);
         when(amqpReceiveLink.getSessionId()).thenReturn(Mono.just(sessionId));
         when(amqpReceiveLink.getSessionLockedUntil())
             .thenAnswer(invocation -> Mono.just(sessionLockedUntil));
@@ -187,8 +179,15 @@ class UnnamedSessionManagerTest {
         when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), any(ReceiveMode.class), isNull(),
             any(MessagingEntityType.class), isNull())).thenReturn(Mono.just(amqpReceiveLink));
 
+        when(managementNode.renewSessionLock(sessionId, linkName)).thenReturn(Mono.empty());
+
         // Act & Assert
         StepVerifier.create(sessionManager.receive(options))
+            .then(() -> {
+                for (int i = 0; i < numberOfMessages; i++) {
+                    messageSink.next(message);
+                }
+            })
             .assertNext(context -> assertMessageEquals(receivedMessage, context))
             .assertNext(context -> assertMessageEquals(receivedMessage, context))
             .assertNext(context -> assertMessageEquals(receivedMessage, context))
@@ -208,31 +207,24 @@ class UnnamedSessionManagerTest {
         sessionManager = new UnnamedSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
             TIMEOUT, tracerProvider, messageSerializer, receiverOptions);
 
-        ReceiveAsyncOptions options = new ReceiveAsyncOptions()
+        final int numberOfMessages = 5;
+        final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
             .setMaxAutoLockRenewalDuration(Duration.ofSeconds(20))
             .setIsAutoCompleteEnabled(true);
-        String sessionId = "session-1";
-        String lockToken = "a-lock-token";
-        Instant sessionLockedUntil = Instant.now().plus(Duration.ofSeconds(5));
+        final String sessionId = "session-1";
+        final String lockToken = "a-lock-token";
+        final String linkName = "my-link-name";
+        final Instant sessionLockedUntil = Instant.now().plus(Duration.ofSeconds(5));
 
-        Message message = mock(Message.class);
-        ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
+        final Message message = mock(Message.class);
+        final ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
 
         when(messageSerializer.deserialize(message, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage);
         when(receivedMessage.getSessionId()).thenReturn(sessionId);
         when(receivedMessage.getLockToken()).thenReturn(lockToken);
 
-        final int numberOfMessages = 5;
 
-        AtomicInteger numberToEmit = new AtomicInteger(numberOfMessages);
-        messageSink.onRequest(request -> {
-            long emitted = 0;
-            while (emitted < request && numberToEmit.getAndDecrement() > 0) {
-                messageSink.next(message);
-                emitted++;
-            }
-        });
-
+        when(amqpReceiveLink.getLinkName()).thenReturn(linkName);
         when(amqpReceiveLink.getSessionId()).thenReturn(Mono.just(sessionId));
         when(amqpReceiveLink.getSessionLockedUntil())
             .thenAnswer(invocation -> Mono.just(sessionLockedUntil));
@@ -241,8 +233,15 @@ class UnnamedSessionManagerTest {
         when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), any(ReceiveMode.class), isNull(),
             any(MessagingEntityType.class), isNull())).thenReturn(Mono.just(amqpReceiveLink));
 
+        when(managementNode.renewSessionLock(sessionId, linkName)).thenReturn(Mono.empty());
+
         // Act & Assert
         StepVerifier.create(sessionManager.receive(options))
+            .then(() -> {
+                for (int i = 0; i < numberOfMessages; i++) {
+                    messageSink.next(message);
+                }
+            })
             .assertNext(context -> assertMessageEquals(receivedMessage, context))
             .assertNext(context -> assertMessageEquals(receivedMessage, context))
             .assertNext(context -> assertMessageEquals(receivedMessage, context))
