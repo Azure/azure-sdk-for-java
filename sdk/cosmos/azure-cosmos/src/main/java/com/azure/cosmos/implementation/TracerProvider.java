@@ -15,9 +15,7 @@ import reactor.core.publisher.Signal;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
@@ -37,7 +35,7 @@ public class TracerProvider {
     public static final String COSMOS_CALL_DEPTH = "cosmosCallDepth";
     public static final String MICROSOFT_DOCOMENTDB = "Microsoft.DocumentDB";
 
-    public final static Function<reactor.util.context.Context, reactor.util.context.Context> callDepthAttributeFunc = (
+    private final static Function<reactor.util.context.Context, reactor.util.context.Context> callDepthAttributeFunc = (
         reactor.util.context.Context reactorContext) -> {
         CallDepth callDepth = reactorContext.getOrDefault(COSMOS_CALL_DEPTH, CallDepth.ZERO);
         assert callDepth != null;
@@ -50,17 +48,12 @@ public class TracerProvider {
         }
     };
 
-    public static Map<String, String> createTracingMap(String databaseId, String serviceEndpoint, String spanName) {
-        return new HashMap<String, String>() {{
-            if (databaseId != null) {
-                put(TracerProvider.DB_INSTANCE, databaseId);
-            }
-
-            put(AZ_TRACING_NAMESPACE_KEY, MICROSOFT_DOCOMENTDB);
-            put(TracerProvider.DB_TYPE, DB_TYPE_VALUE);
-            put(TracerProvider.DB_URL, serviceEndpoint);
-            put(TracerProvider.DB_STATEMENT, spanName);
-        }};
+    public static <T> Mono<T> cosmosWithContext(Mono<T> mono, TracerProvider tracerProvider) {
+        if(tracerProvider.isEnabled()) {
+            return mono.subscriberContext(TracerProvider.callDepthAttributeFunc);
+        } else {
+            return mono;
+        }
     }
 
     public TracerProvider(Iterable<Tracer> tracers) {
@@ -82,14 +75,18 @@ public class TracerProvider {
      * @param context Additional metadata that is passed through the call stack.
      * @return An updated context object.
      */
-    public Context startSpan(String methodName, Context context,  Map<String, String> attributeMap) {
+    public Context startSpan(String methodName, String databaseId, String endpoint, Context context) {
         Context local = Objects.requireNonNull(context, "'context' cannot be null.");
         for (Tracer tracer : tracers) {
             local = tracer.start(methodName, local); // start the span and return the started span
-            Context lambdaContext = local;
-            attributeMap.forEach((key, value) -> {
-                tracer.setAttribute(key, value, lambdaContext); // set attrs on the span
-            });
+            if (databaseId != null) {
+                tracer.setAttribute(TracerProvider.DB_INSTANCE, databaseId, local);
+            }
+
+            tracer.setAttribute(AZ_TRACING_NAMESPACE_KEY, MICROSOFT_DOCOMENTDB, local);
+            tracer.setAttribute(TracerProvider.DB_TYPE, DB_TYPE_VALUE, local);
+            tracer.setAttribute(TracerProvider.DB_URL, endpoint, local);
+            tracer.setAttribute(TracerProvider.DB_STATEMENT, methodName, local);
         }
 
         return local;
@@ -131,54 +128,57 @@ public class TracerProvider {
     }
 
     public <T extends CosmosResponse<? extends Resource>> Mono<T> traceEnabledCosmosResponsePublisher(Mono<T> resultPublisher,
-                                                                                                      Map<String, String> tracingAttributes,
                                                                                                       Context context,
-                                                                                                      String spanName) {
-        return traceEnabledPublisher(resultPublisher, tracingAttributes, context, spanName,
+                                                                                                      String spanName,
+                                                                                                      String databaseId,
+                                                                                                      String endpoint) {
+        return traceEnabledPublisher(resultPublisher,  context, spanName,databaseId, endpoint,
             CosmosResponse::getStatusCode);
     }
 
     public <T> Mono<T> traceEnabledNonCosmosResponsePublisher(Mono<T> resultPublisher,
-                                                              Map<String, String> tracingAttributes,
                                                               Context context,
-                                                              String spanName) {
-        return traceEnabledPublisher(resultPublisher, tracingAttributes, context, spanName, (T response) -> 200);
+                                                              String spanName,
+                                                              String databaseId,
+                                                              String endpoint) {
+        return traceEnabledPublisher(resultPublisher,  context, spanName, databaseId, endpoint, (T response) -> 200);
     }
 
     public <T> Mono<CosmosAsyncItemResponse<T>> traceEnabledCosmosItemResponsePublisher(Mono<CosmosAsyncItemResponse<T>> resultPublisher,
-                                                                                        Map<String, String> tracingAttributes,
                                                                                         Context context,
-                                                                                        String spanName) {
-        return traceEnabledPublisher(resultPublisher, tracingAttributes, context, spanName,
+                                                                                        String spanName,
+                                                                                        String databaseId,
+                                                                                        String endpoint) {
+        return traceEnabledPublisher(resultPublisher, context, spanName,databaseId, endpoint,
             CosmosAsyncItemResponse::getStatusCode);
     }
 
     public <T> Mono<T> traceEnabledPublisher(Mono<T> resultPublisher,
-                                             Map<String, String> tracingAttributes,
                                              Context context,
                                              String spanName,
+                                             String databaseId,
+                                             String endpoint,
                                              Function<T, Integer> statusCodeFunc) {
         final boolean isTracingEnabled = this.isEnabled();
         final AtomicReference<Context> parentContext = isTracingEnabled
             ? new AtomicReference<>(Context.NONE)
             : null;
+        CallDepth callDepth = FluxUtil.toReactorContext(context).getOrDefault(COSMOS_CALL_DEPTH,
+            CallDepth.ZERO);
+        assert callDepth != null;
+        final boolean isNestedCall = callDepth.equals(CallDepth.TWO_OR_MORE);
         return resultPublisher
             .doOnSubscribe(ignoredValue -> {
-                if (isTracingEnabled) {
-                    CallDepth callDepth = FluxUtil.toReactorContext(context).getOrDefault(COSMOS_CALL_DEPTH,
-                        CallDepth.ZERO);
-                    assert callDepth != null;
-                    if (!callDepth.equals(CallDepth.TWO_OR_MORE)) {
-                        parentContext.set(this.startSpan(spanName,
-                            context, tracingAttributes));
-                    }
+                if (isTracingEnabled && !isNestedCall) {
+                    parentContext.set(this.startSpan(spanName, databaseId, endpoint,
+                        context));
                 }
             }).doOnSuccess(response -> {
-                if (isTracingEnabled) {
+                if (isTracingEnabled && !isNestedCall) {
                     this.endSpan(parentContext.get(), Signal.complete(), statusCodeFunc.apply(response));
                 }
             }).doOnError(throwable -> {
-                if (isTracingEnabled) {
+                if (isTracingEnabled && !isNestedCall) {
                     this.endSpan(parentContext.get(), Signal.error(throwable), 0);
                 }
             });

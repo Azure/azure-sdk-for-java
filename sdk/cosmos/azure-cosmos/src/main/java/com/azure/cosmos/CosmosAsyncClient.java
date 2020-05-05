@@ -25,7 +25,6 @@ import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
 import java.util.List;
-import java.util.Map;
 
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
@@ -215,7 +214,8 @@ public final class CosmosAsyncClient implements Closeable {
         Database wrappedDatabase = new Database();
         wrappedDatabase.setId(databaseSettings.getId());
         final CosmosDatabaseRequestOptions requestOptions = options;
-        return withContext(context -> createDatabase(wrappedDatabase, requestOptions, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return TracerProvider.cosmosWithContext(withContext(context -> createDatabase(wrappedDatabase, requestOptions
+            , context)), getTracerProvider());
     }
 
     /**
@@ -271,7 +271,8 @@ public final class CosmosAsyncClient implements Closeable {
         Database wrappedDatabase = new Database();
         wrappedDatabase.setId(databaseSettings.getId());
         final CosmosDatabaseRequestOptions requestOptions = options;
-        return withContext(context -> createDatabase(wrappedDatabase, requestOptions, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return TracerProvider.cosmosWithContext(withContext(context -> createDatabase(wrappedDatabase, requestOptions
+            , context)), getTracerProvider());
     }
 
     /**
@@ -359,7 +360,7 @@ public final class CosmosAsyncClient implements Closeable {
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of read databases or an error.
      */
     public CosmosPagedFlux<CosmosDatabaseProperties> queryDatabases(String query, FeedOptions options) {
-        return queryDatabases(new SqlQuerySpec(query), options);
+        return queryDatabasesInternal(false, new SqlQuerySpec(query), options);
     }
 
     /**
@@ -374,15 +375,7 @@ public final class CosmosAsyncClient implements Closeable {
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of read databases or an error.
      */
     public CosmosPagedFlux<CosmosDatabaseProperties> queryDatabases(SqlQuerySpec querySpec, FeedOptions options) {
-        return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
-            String spanName = "queryDatabases." + querySpec.getQueryText();
-            pagedFluxOptions.setTracerInformation(this.tracerProvider, spanName, this.serviceEndpoint, null);
-            setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
-            return getDocClientWrapper().queryDatabases(querySpec, options)
-                                        .map(response -> BridgeInternal.createFeedResponse(
-                                            ModelBridgeInternal.getCosmosDatabasePropertiesFromV2Results(response.getResults()),
-                                            response.getResponseHeaders()));
-        });
+        return queryDatabasesInternal(true, querySpec, options);
     }
 
     /**
@@ -407,14 +400,32 @@ public final class CosmosAsyncClient implements Closeable {
         return this.tracerProvider;
     }
 
+    private CosmosPagedFlux<CosmosDatabaseProperties> queryDatabasesInternal(boolean isParameterised, SqlQuerySpec querySpec, FeedOptions options){
+        return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
+            String spanName;
+            if (isParameterised) {
+                spanName = "queryDatabases." + querySpec.getQueryText();
+            } else {
+                spanName = "queryDatabases";
+            }
+
+            pagedFluxOptions.setTracerInformation(this.tracerProvider, spanName, this.serviceEndpoint, null);
+            setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
+            return getDocClientWrapper().queryDatabases(querySpec, options)
+                .map(response -> BridgeInternal.createFeedResponse(
+                    ModelBridgeInternal.getCosmosDatabasePropertiesFromV2Results(response.getResults()),
+                    response.getResponseHeaders()));
+        });
+    }
+
     private Mono<CosmosAsyncDatabaseResponse> createDatabaseIfNotExistsInternal(CosmosAsyncDatabase database) {
-        return withContext(context -> createDatabaseIfNotExistsInternal(database, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return TracerProvider.cosmosWithContext(withContext(context -> createDatabaseIfNotExistsInternal(database,
+            context)), getTracerProvider());
     }
 
     private Mono<CosmosAsyncDatabaseResponse> createDatabaseIfNotExistsInternal(CosmosAsyncDatabase database,
                                                                                 Context context) {
         String spanName = "createDatabaseIfNotExistsInternal." + database.getId();
-        Map<String, String> tracingAttributes = TracerProvider.createTracingMap(database.getId(), this.serviceEndpoint, spanName);
         Mono<CosmosAsyncDatabaseResponse> responseMono = database.read().onErrorResume(exception -> {
             final Throwable unwrappedException = Exceptions.unwrap(exception);
             if (unwrappedException instanceof CosmosClientException) {
@@ -426,19 +437,20 @@ public final class CosmosAsyncClient implements Closeable {
             }
             return Mono.error(unwrappedException);
         });
-        return tracerProvider.traceEnabledCosmosResponsePublisher(responseMono, tracingAttributes, context, spanName);
+        return tracerProvider.traceEnabledCosmosResponsePublisher(responseMono, context, spanName, database.getId(),
+            this.serviceEndpoint);
     }
 
     private Mono<CosmosAsyncDatabaseResponse> createDatabase(Database database, CosmosDatabaseRequestOptions options,
                                                              Context context) {
         String spanName = "createDatabase." + database.getId();
-        Map<String, String> tracingAttributes = TracerProvider.createTracingMap(database.getId(),
-            this.serviceEndpoint, spanName);
 
-        Mono<CosmosAsyncDatabaseResponse> responseMono = asyncDocumentClient.createDatabase(database, ModelBridgeInternal.toRequestOptions(options))
+        Mono<CosmosAsyncDatabaseResponse> responseMono = asyncDocumentClient.createDatabase(database,
+            ModelBridgeInternal.toRequestOptions(options))
             .map(databaseResourceResponse -> ModelBridgeInternal.createCosmosAsyncDatabaseResponse(databaseResourceResponse,
                 this))
             .single();
-        return tracerProvider.traceEnabledCosmosResponsePublisher(responseMono, tracingAttributes, context, spanName);
+        return tracerProvider.traceEnabledCosmosResponsePublisher(responseMono, context, spanName, database.getId(),
+            this.serviceEndpoint);
     }
 }

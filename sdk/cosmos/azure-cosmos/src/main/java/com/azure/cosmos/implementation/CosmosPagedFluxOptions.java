@@ -15,9 +15,10 @@ public class CosmosPagedFluxOptions {
 
     private String requestContinuation;
     private Integer maxItemCount;
-    private Map<String, String> tracingAttributes;
     private TracerProvider tracerProvider;
     private String tracerSpanName;
+    private String databaseId;
+    private String serviceEndpoint;
 
 
     public CosmosPagedFluxOptions() {}
@@ -65,14 +66,6 @@ public class CosmosPagedFluxOptions {
     }
 
     /**
-     * Gets the tracing attributes
-     * @return tracingAttributes
-     */
-    public Map<String, String> getTracingAttributes() {
-        return this.tracingAttributes;
-    }
-
-    /**
      * Gets the tracer provider
      * @return tracerProvider
      */
@@ -88,8 +81,25 @@ public class CosmosPagedFluxOptions {
         return tracerSpanName;
     }
 
-    public void setTracerInformation(TracerProvider tracerProvider, String tracerSpanName, String serviceUrl, String databaseId) {
-        this.tracingAttributes = TracerProvider.createTracingMap(databaseId, serviceUrl, tracerSpanName);
+    /**
+     * Gets the databaseId
+     * @return databaseId
+     */
+    public String getDatabaseId() {
+        return databaseId;
+    }
+
+    /**
+     * Gets the service end point
+     * @return serviceEndpoint
+     */
+    public String getServiceEndpoint() {
+        return serviceEndpoint;
+    }
+
+    public void setTracerInformation(TracerProvider tracerProvider, String tracerSpanName, String serviceEndpoint, String databaseId) {
+        this.databaseId = databaseId;
+        this.serviceEndpoint = serviceEndpoint;
         this.tracerSpanName = tracerSpanName;
         this.tracerProvider = tracerProvider;
     }

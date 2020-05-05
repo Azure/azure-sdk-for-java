@@ -17,6 +17,8 @@ import reactor.core.publisher.Signal;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
+import static com.azure.cosmos.implementation.TracerProvider.COSMOS_CALL_DEPTH;
+
 /**
  * Cosmos implementation of {@link ContinuablePagedFlux}.
  * <p>
@@ -91,19 +93,17 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
 
     private Flux<FeedResponse<T>> byPage(CosmosPagedFluxOptions pagedFluxOptions, Context context) {
         final AtomicReference<Context> parentContext =  new AtomicReference<>(Context.NONE);
-
+        TracerProvider.CallDepth callDepth = FluxUtil.toReactorContext(context).getOrDefault(COSMOS_CALL_DEPTH,
+            TracerProvider.CallDepth.ZERO);
+        assert callDepth != null;
+        final boolean isNestedCall = callDepth.equals(TracerProvider.CallDepth.TWO_OR_MORE);
         return this.optionsFluxFunction.apply(pagedFluxOptions).doOnSubscribe(ignoredValue -> {
-            if (pagedFluxOptions.getTracerProvider().isEnabled()) {
-                TracerProvider.CallDepth callDepth = FluxUtil.toReactorContext(context).getOrDefault(TracerProvider.COSMOS_CALL_DEPTH,
-                    TracerProvider.CallDepth.ZERO);
-                assert callDepth != null;
-                if (!callDepth.equals(TracerProvider.CallDepth.TWO_OR_MORE)) {
-                    parentContext.set(pagedFluxOptions.getTracerProvider().startSpan(pagedFluxOptions.getTracerSpanName(),
-                        context, pagedFluxOptions.getTracingAttributes()));
-                }
+            if ( pagedFluxOptions.getTracerProvider().isEnabled() && !isNestedCall) {
+                    parentContext.set(pagedFluxOptions.getTracerProvider().startSpan(pagedFluxOptions.getTracerSpanName(), pagedFluxOptions.getDatabaseId(), pagedFluxOptions.getServiceEndpoint(),
+                        context));
             }
         }).doOnComplete(() -> {
-            if (pagedFluxOptions.getTracerProvider().isEnabled()) {
+            if ( pagedFluxOptions.getTracerProvider().isEnabled() && !isNestedCall) {
                 pagedFluxOptions.getTracerProvider().endSpan(parentContext.get(), Signal.complete(), 200);
             }
         }).doOnError(throwable -> {
