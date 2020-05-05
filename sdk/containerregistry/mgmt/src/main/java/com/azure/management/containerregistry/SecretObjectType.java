@@ -7,18 +7,12 @@ package com.azure.management.containerregistry;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for SecretObjectType.
- */
+/** Defines values for SecretObjectType. */
 public enum SecretObjectType {
-    /**
-     * Enum value Opaque.
-     */
+    /** Enum value Opaque. */
     OPAQUE("Opaque");
 
-    /**
-     * The actual serialized value for a SecretObjectType instance.
-     */
+    /** The actual serialized value for a SecretObjectType instance. */
     private final String value;
 
     SecretObjectType(String value) {
@@ -27,7 +21,7 @@ public enum SecretObjectType {
 
     /**
      * Parses a serialized value to a SecretObjectType instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed SecretObjectType object, or null if unable to parse.
      */

@@ -15,7 +15,7 @@ public class SearchServiceAsyncTests extends SearchServiceTestBase {
         SearchServiceAsyncClient serviceClient = getSearchServiceClientBuilder().buildAsyncClient();
 
         StepVerifier.create(serviceClient.getServiceStatistics())
-            .assertNext(serviceStatistics -> assertObjectEquals(serviceStatistics, getExpectedServiceStatistics(), true))
+            .assertNext(serviceStatistics -> assertObjectEquals(getExpectedServiceStatistics(), serviceStatistics, true))
             .verifyComplete();
     }
 
@@ -24,8 +24,8 @@ public class SearchServiceAsyncTests extends SearchServiceTestBase {
         SearchServiceAsyncClient serviceClient = getSearchServiceClientBuilder().buildAsyncClient();
 
         StepVerifier.create(serviceClient.getServiceStatisticsWithResponse(generateRequestOptions()))
-            .assertNext(serviceStatistics -> assertObjectEquals(serviceStatistics.getValue(),
-                getExpectedServiceStatistics(), true))
+            .assertNext(serviceStatistics -> assertObjectEquals(getExpectedServiceStatistics(),
+                serviceStatistics.getValue(), true))
             .verifyComplete();
     }
 }

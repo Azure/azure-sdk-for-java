@@ -7,9 +7,7 @@ package com.azure.management.keyvault;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The VaultCheckNameAvailabilityParameters model.
- */
+/** The VaultCheckNameAvailabilityParameters model. */
 @Fluent
 public final class VaultCheckNameAvailabilityParameters {
     /*
@@ -24,16 +22,14 @@ public final class VaultCheckNameAvailabilityParameters {
     @JsonProperty(value = "type", required = true)
     private String type;
 
-    /**
-     * Creates an instance of VaultCheckNameAvailabilityParameters class.
-     */
+    /** Creates an instance of VaultCheckNameAvailabilityParameters class. */
     public VaultCheckNameAvailabilityParameters() {
         type = "Microsoft.KeyVault/vaults";
     }
 
     /**
      * Get the name property: The vault name.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -42,7 +38,7 @@ public final class VaultCheckNameAvailabilityParameters {
 
     /**
      * Set the name property: The vault name.
-     * 
+     *
      * @param name the name value to set.
      * @return the VaultCheckNameAvailabilityParameters object itself.
      */
@@ -53,7 +49,7 @@ public final class VaultCheckNameAvailabilityParameters {
 
     /**
      * Get the type property: The type of resource, Microsoft.KeyVault/vaults.
-     * 
+     *
      * @return the type value.
      */
     public String type() {
@@ -62,7 +58,7 @@ public final class VaultCheckNameAvailabilityParameters {
 
     /**
      * Set the type property: The type of resource, Microsoft.KeyVault/vaults.
-     * 
+     *
      * @param type the type value to set.
      * @return the VaultCheckNameAvailabilityParameters object itself.
      */

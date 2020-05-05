@@ -9,9 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The RecoverableManagedDatabase model.
- */
+/** The RecoverableManagedDatabase model. */
 @JsonFlatten
 @Immutable
 public class RecoverableManagedDatabaseInner extends ProxyResource {
@@ -22,9 +20,8 @@ public class RecoverableManagedDatabaseInner extends ProxyResource {
     private String lastAvailableBackupDate;
 
     /**
-     * Get the lastAvailableBackupDate property: The last available backup
-     * date.
-     * 
+     * Get the lastAvailableBackupDate property: The last available backup date.
+     *
      * @return the lastAvailableBackupDate value.
      */
     public String lastAvailableBackupDate() {

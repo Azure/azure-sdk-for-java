@@ -6,11 +6,8 @@ package com.azure.management.monitor;
 import com.azure.management.monitor.models.LocalizableStringInner;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-/**
- * The localizable string class.
- */
-public interface LocalizableString
-        extends HasInner<LocalizableStringInner> {
+/** The localizable string class. */
+public interface LocalizableString extends HasInner<LocalizableStringInner> {
     /**
      * Get the value value.
      *

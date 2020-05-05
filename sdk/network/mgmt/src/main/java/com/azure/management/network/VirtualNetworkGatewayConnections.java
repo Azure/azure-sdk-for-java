@@ -13,12 +13,10 @@ import com.azure.management.resources.fluentcore.collection.SupportsDeletingByNa
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-/**
- * Entry point for virtual network gateway connections management API in Azure.
- */
+/** Entry point for virtual network gateway connections management API in Azure. */
 @Fluent
-public interface VirtualNetworkGatewayConnections extends
-        SupportsCreating<VirtualNetworkGatewayConnection.DefinitionStages.Blank>,
+public interface VirtualNetworkGatewayConnections
+    extends SupportsCreating<VirtualNetworkGatewayConnection.DefinitionStages.Blank>,
         SupportsListing<VirtualNetworkGatewayConnection>,
         SupportsGettingByName<VirtualNetworkGatewayConnection>,
         SupportsGettingById<VirtualNetworkGatewayConnection>,

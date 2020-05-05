@@ -3,6 +3,7 @@
 package com.azure.management.dns;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.management.dns.implementation.DnsZoneManager;
 import com.azure.management.dns.models.ZonesInner;
 import com.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
@@ -15,15 +16,12 @@ import com.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
-import com.azure.management.dns.implementation.DnsZoneManager;
 import reactor.core.publisher.Mono;
 
-/**
- * Entry point to DNS zone management API in Azure.
- */
+/** Entry point to DNS zone management API in Azure. */
 @Fluent
-public interface DnsZones extends
-        SupportsCreating<DnsZone.DefinitionStages.Blank>,
+public interface DnsZones
+    extends SupportsCreating<DnsZone.DefinitionStages.Blank>,
         SupportsListing<DnsZone>,
         SupportsListingByResourceGroup<DnsZone>,
         SupportsGettingByResourceGroup<DnsZone>,
@@ -43,6 +41,16 @@ public interface DnsZones extends
      * @return a representation of the deferred computation this delete call
      */
     Mono<Void> deleteByResourceGroupNameAsync(String resourceGroupName, String zoneName, String eTagValue);
+
+    /**
+     * Asynchronously deletes the zone from Azure, identifying it by its name and its resource group.
+     *
+     * @param resourceGroupName the resource group the resource is part of
+     * @param zoneName the name of the zone
+     * @return a representation of the deferred computation this delete call
+     */
+    Mono<Void> deleteByResourceGroupNameAsync(String resourceGroupName, String zoneName);
+
     /**
      * Asynchronously delete the zone from Azure, identifying it by its resource ID.
      *
@@ -51,6 +59,15 @@ public interface DnsZones extends
      * @return a representation of the deferred computation this delete call
      */
     Mono<Void> deleteByIdAsync(String id, String eTagValue);
+
+    /**
+     * Asynchronously delete the zone from Azure, identifying it by its resource ID.
+     *
+     * @param id the resource ID of the resource to delete
+     * @return a representation of the deferred computation this delete call
+     */
+    Mono<Void> deleteByIdAsync(String id);
+
     /**
      * Deletes the zone from Azure, identifying it by its name and its resource group.
      *
@@ -59,6 +76,15 @@ public interface DnsZones extends
      * @param eTagValue the ETag value to set on IfMatch header for concurrency protection
      */
     void deleteByResourceGroupName(String resourceGroupName, String zoneName, String eTagValue);
+
+    /**
+     * Deletes the zone from Azure, identifying it by its name and its resource group.
+     *
+     * @param resourceGroupName the resource group the resource is part of
+     * @param zoneName the name of the zone
+     */
+    void deleteByResourceGroupName(String resourceGroupName, String zoneName);
+
     /**
      * Deletes a resource from Azure, identifying it by its resource ID.
      *
@@ -66,4 +92,11 @@ public interface DnsZones extends
      * @param eTagValue the ETag value to set on IfMatch header for concurrency protection
      */
     void deleteById(String id, String eTagValue);
+
+    /**
+     * Deletes a resource from Azure, identifying it by its resource ID.
+     *
+     * @param id the resource ID of the resource to delete
+     */
+    void deleteById(String id);
 }

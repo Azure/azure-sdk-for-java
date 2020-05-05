@@ -5,6 +5,7 @@ package com.azure.management.resources.fluentcore.utils;
 
 
 import java.time.OffsetDateTime;
+import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
 
@@ -21,7 +22,8 @@ public class ResourceNamer {
      * @param name the randName
      */
     public ResourceNamer(String name) {
-        this.randName = name.toLowerCase() + UUID.randomUUID().toString().replace("-", "").substring(0, 3).toLowerCase();
+        this.randName = name.toLowerCase(Locale.ROOT)
+            + UUID.randomUUID().toString().replace("-", "").substring(0, 3).toLowerCase(Locale.ROOT);
     }
 
     /**
@@ -32,7 +34,7 @@ public class ResourceNamer {
      * @return the random name
      */
     public String randomName(String prefix, int maxLen) {
-        prefix = prefix.toLowerCase();
+        prefix = prefix.toLowerCase(Locale.ROOT);
         int minRandomnessLength = 5;
         if (maxLen <= minRandomnessLength) {
             return randomString(maxLen);
@@ -75,7 +77,7 @@ public class ResourceNamer {
             str.append(UUID.randomUUID()
                     .toString()
                     .replace("-", "")
-                    .substring(0, Math.min(32, length)).toLowerCase());
+                    .substring(0, Math.min(32, length)).toLowerCase(Locale.ROOT));
         }
         return str.toString();
     }

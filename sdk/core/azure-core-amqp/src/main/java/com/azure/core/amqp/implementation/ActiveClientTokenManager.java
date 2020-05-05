@@ -136,11 +136,13 @@ public class ActiveClientTokenManager implements TokenManager {
                     logger.error("Error occurred while refreshing token that is not retriable. Not scheduling"
                         + " refresh task. Use ActiveClientTokenManager.authorize() to schedule task again. audience[{}]"
                         + " scopes[{}]", tokenAudience, scopes, error);
-                    hasScheduled.set(false);
-                    durationSourceSink.complete();
-                    authorizationResultsSink.error(error);
-                }, () -> {
-                    logger.verbose("Completed refresh token task.");
+
+                    // This hasn't been disposed yet.
+                    if (!hasDisposed.getAndSet(true)) {
+                        hasScheduled.set(false);
+                        durationSourceSink.complete();
+                        authorizationResultsSink.error(error);
+                    }
                 });
     }
 }

@@ -7,9 +7,7 @@ package com.azure.management.storage;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The DateAfterModification model.
- */
+/** The DateAfterModification model. */
 @Fluent
 public final class DateAfterModification {
     /*
@@ -19,9 +17,8 @@ public final class DateAfterModification {
     private float daysAfterModificationGreaterThan;
 
     /**
-     * Get the daysAfterModificationGreaterThan property: Value indicating the
-     * age in days after last modification.
-     * 
+     * Get the daysAfterModificationGreaterThan property: Value indicating the age in days after last modification.
+     *
      * @return the daysAfterModificationGreaterThan value.
      */
     public float daysAfterModificationGreaterThan() {
@@ -29,11 +26,9 @@ public final class DateAfterModification {
     }
 
     /**
-     * Set the daysAfterModificationGreaterThan property: Value indicating the
-     * age in days after last modification.
-     * 
-     * @param daysAfterModificationGreaterThan the
-     * daysAfterModificationGreaterThan value to set.
+     * Set the daysAfterModificationGreaterThan property: Value indicating the age in days after last modification.
+     *
+     * @param daysAfterModificationGreaterThan the daysAfterModificationGreaterThan value to set.
      * @return the DateAfterModification object itself.
      */
     public DateAfterModification withDaysAfterModificationGreaterThan(float daysAfterModificationGreaterThan) {

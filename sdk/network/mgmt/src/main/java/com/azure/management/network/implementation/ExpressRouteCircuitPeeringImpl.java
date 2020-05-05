@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.management.network.implementation;
 
-import com.azure.management.network.ExpressRouteCircuit;
 import com.azure.management.network.ExpressRouteCircuitPeering;
 import com.azure.management.network.ExpressRouteCircuitPeeringConfig;
 import com.azure.management.network.ExpressRoutePeeringState;
@@ -10,24 +9,30 @@ import com.azure.management.network.ExpressRoutePeeringType;
 import com.azure.management.network.Ipv6ExpressRouteCircuitPeeringConfig;
 import com.azure.management.network.models.ExpressRouteCircuitPeeringInner;
 import com.azure.management.network.models.ExpressRouteCircuitPeeringsInner;
+import com.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.azure.management.resources.fluentcore.model.Refreshable;
 import com.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 
-class ExpressRouteCircuitPeeringImpl extends
-        CreatableUpdatableImpl<ExpressRouteCircuitPeering, ExpressRouteCircuitPeeringInner, ExpressRouteCircuitPeeringImpl>
-        implements
-        ExpressRouteCircuitPeering,
-        ExpressRouteCircuitPeering.Definition,
-        ExpressRouteCircuitPeering.Update {
+class ExpressRouteCircuitPeeringImpl
+    <ParentModelT, ParentInnerT,
+        ParentT extends GroupableResource<NetworkManager, ParentInnerT> & Refreshable<ParentModelT>>
+    extends CreatableUpdatableImpl<
+        ExpressRouteCircuitPeering, ExpressRouteCircuitPeeringInner,
+        ExpressRouteCircuitPeeringImpl< ParentModelT, ParentInnerT, ParentT>>
+    implements ExpressRouteCircuitPeering, ExpressRouteCircuitPeering.Definition, ExpressRouteCircuitPeering.Update {
     private final ExpressRouteCircuitPeeringsInner client;
-    private final ExpressRouteCircuit parent;
+    private final ParentT parent;
     private ExpressRouteCircuitStatsImpl stats;
 
-    ExpressRouteCircuitPeeringImpl(ExpressRouteCircuitImpl parent, ExpressRouteCircuitPeeringInner innerObject,
-                                   ExpressRouteCircuitPeeringsInner client, ExpressRoutePeeringType type) {
+    ExpressRouteCircuitPeeringImpl(
+        ParentT parent,
+        ExpressRouteCircuitPeeringInner innerObject,
+        ExpressRouteCircuitPeeringsInner client,
+        ExpressRoutePeeringType type) {
         super(type.toString(), innerObject);
         this.client = client;
         this.parent = parent;
@@ -67,8 +72,8 @@ class ExpressRouteCircuitPeeringImpl extends
     }
 
     @Override
-    public ExpressRouteCircuitPeeringImpl withPeerAsn(long peerAsn) {
-        inner().withPeerASN(peerAsn);
+    public ExpressRouteCircuitPeeringImpl withPeerASN(long peerASN) {
+        inner().withPeerASN(peerASN);
         return this;
     }
 
@@ -84,12 +89,14 @@ class ExpressRouteCircuitPeeringImpl extends
 
     @Override
     public Mono<ExpressRouteCircuitPeering> createResourceAsync() {
-        return this.client.createOrUpdateAsync(parent.resourceGroupName(), parent.name(), this.name(), inner())
-                .flatMap(innerModel -> {
+        return this
+            .client
+            .createOrUpdateAsync(parent.resourceGroupName(), parent.name(), this.name(), inner())
+            .flatMap(
+                innerModel -> {
                     this.setInner(innerModel);
                     stats = new ExpressRouteCircuitStatsImpl(innerModel.stats());
-                    return parent.refreshAsync()
-                        .then(Mono.just(this));
+                    return parent.refreshAsync().then(Mono.just(this));
                 });
     }
 
@@ -111,12 +118,12 @@ class ExpressRouteCircuitPeeringImpl extends
     }
 
     @Override
-    public int azureAsn() {
+    public int azureASN() {
         return Utils.toPrimitiveInt(inner().azureASN());
     }
 
     @Override
-    public long peerAsn() {
+    public long peerASN() {
         return Utils.toPrimitiveLong(inner().peerASN());
     }
 

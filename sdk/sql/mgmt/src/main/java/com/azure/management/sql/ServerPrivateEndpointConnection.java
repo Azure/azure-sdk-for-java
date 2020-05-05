@@ -7,9 +7,7 @@ package com.azure.management.sql;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ServerPrivateEndpointConnection model.
- */
+/** The ServerPrivateEndpointConnection model. */
 @Immutable
 public final class ServerPrivateEndpointConnection {
     /*
@@ -26,7 +24,7 @@ public final class ServerPrivateEndpointConnection {
 
     /**
      * Get the id property: Resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -35,7 +33,7 @@ public final class ServerPrivateEndpointConnection {
 
     /**
      * Get the properties property: Private endpoint connection properties.
-     * 
+     *
      * @return the properties value.
      */
     public PrivateEndpointConnectionProperties properties() {

@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The GeoBackupPolicyListResult model.
- */
+/** The GeoBackupPolicyListResult model. */
 @Fluent
 public final class GeoBackupPolicyListResultInner {
     /*
@@ -21,7 +19,7 @@ public final class GeoBackupPolicyListResultInner {
 
     /**
      * Get the value property: The list of geo backup policies.
-     * 
+     *
      * @return the value value.
      */
     public List<GeoBackupPolicyInner> value() {
@@ -30,7 +28,7 @@ public final class GeoBackupPolicyListResultInner {
 
     /**
      * Set the value property: The list of geo backup policies.
-     * 
+     *
      * @param value the value value to set.
      * @return the GeoBackupPolicyListResultInner object itself.
      */

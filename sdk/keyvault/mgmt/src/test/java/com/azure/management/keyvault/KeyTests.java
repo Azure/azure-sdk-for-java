@@ -4,7 +4,6 @@
 package com.azure.management.keyvault;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.ApplicationTokenCredential;
 import com.azure.management.resources.core.TestBase;
 import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.Region;
@@ -15,18 +14,16 @@ import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyType;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-import java.io.File;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.MessageDigest;
 import java.security.Signature;
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class KeyTests extends KeyVaultManagementTest {
 
@@ -40,7 +37,10 @@ public class KeyTests extends KeyVaultManagementTest {
         String keyName = sdkContext.randomResourceName("key", 20);
 
         // Create
-        Key key = vault.keys().define(keyName)
+        Key key =
+            vault
+                .keys()
+                .define(keyName)
                 .withKeyTypeToCreate(KeyType.RSA)
                 .withKeyOperations(KeyOperation.SIGN, KeyOperation.VERIFY)
                 .create();
@@ -55,14 +55,14 @@ public class KeyTests extends KeyVaultManagementTest {
         Assertions.assertEquals(key.id(), key1.id());
 
         // Update
-        key = key.update()
-                .withKeyOperations(KeyOperation.ENCRYPT)
-                .apply();
+        key = key.update().withKeyOperations(KeyOperation.ENCRYPT).apply();
 
         Assertions.assertEquals(1, key.getJsonWebKey().getKeyOps().size());
 
         // New version
-        key = key.update()
+        key =
+            key
+                .update()
                 .withKeyTypeToCreate(KeyType.RSA)
                 .withKeyOperations(KeyOperation.ENCRYPT, KeyOperation.DECRYPT, KeyOperation.SIGN)
                 .apply();
@@ -79,7 +79,10 @@ public class KeyTests extends KeyVaultManagementTest {
         Vault vault = createVault();
         String keyName = sdkContext.randomResourceName("key", 20);
 
-        Key key = vault.keys().define(keyName)
+        Key key =
+            vault
+                .keys()
+                .define(keyName)
                 .withLocalKeyToImport(JsonWebKey.fromRsa(KeyPairGenerator.getInstance("RSA").generateKeyPair()))
                 .create();
 
@@ -92,7 +95,10 @@ public class KeyTests extends KeyVaultManagementTest {
         Vault vault = createVault();
         String keyName = sdkContext.randomResourceName("key", 20);
 
-        Key key = vault.keys().define(keyName)
+        Key key =
+            vault
+                .keys()
+                .define(keyName)
                 .withLocalKeyToImport(JsonWebKey.fromRsa(KeyPairGenerator.getInstance("RSA").generateKeyPair()))
                 .create();
 
@@ -117,9 +123,7 @@ public class KeyTests extends KeyVaultManagementTest {
 
         KeyPair keyPair = KeyPairGenerator.getInstance("RSA").generateKeyPair();
 
-        Key key = vault.keys().define(keyName)
-                .withLocalKeyToImport(JsonWebKey.fromRsa(keyPair))
-                .create();
+        Key key = vault.keys().define(keyName).withLocalKeyToImport(JsonWebKey.fromRsa(keyPair)).create();
 
         Assertions.assertNotNull(key);
 
@@ -149,9 +153,7 @@ public class KeyTests extends KeyVaultManagementTest {
 
         KeyPair keyPair = KeyPairGenerator.getInstance("RSA").generateKeyPair();
 
-        Key key = vault.keys().define(keyName)
-                .withLocalKeyToImport(JsonWebKey.fromRsa(keyPair))
-                .create();
+        Key key = vault.keys().define(keyName).withLocalKeyToImport(JsonWebKey.fromRsa(keyPair)).create();
 
         Assertions.assertNotNull(key);
 
@@ -176,7 +178,10 @@ public class KeyTests extends KeyVaultManagementTest {
         Vault vault = createVault();
         String keyName = sdkContext.randomResourceName("key", 20);
 
-        Key key = vault.keys().define(keyName)
+        Key key =
+            vault
+                .keys()
+                .define(keyName)
                 .withLocalKeyToImport(JsonWebKey.fromRsa(KeyPairGenerator.getInstance("RSA").generateKeyPair()))
                 .create();
 
@@ -193,15 +198,16 @@ public class KeyTests extends KeyVaultManagementTest {
     private Vault createVault() throws Exception {
         String vaultName = sdkContext.randomResourceName("vault", 20);
 
-        ApplicationTokenCredential credentials = ApplicationTokenCredential.fromFile(new File(System.getenv("AZURE_AUTH_LOCATION")));
-
-        Vault vault = keyVaultManager.vaults().define(vaultName)
+        Vault vault =
+            keyVaultManager
+                .vaults()
+                .define(vaultName)
                 .withRegion(Region.US_WEST)
-                .withNewResourceGroup(RG_NAME)
+                .withNewResourceGroup(rgName)
                 .defineAccessPolicy()
-                    .forServicePrincipal(credentials.getClientId())
-                    .allowKeyAllPermissions()
-                    .attach()
+                .forServicePrincipal(clientIdFromFile())
+                .allowKeyAllPermissions()
+                .attach()
                 .create();
 
         Assertions.assertNotNull(vault);

@@ -10,9 +10,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/**
- * The EncodedTaskStep model.
- */
+/** The EncodedTaskStep model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("EncodedTask")
 @Fluent
@@ -37,9 +35,8 @@ public final class EncodedTaskStep extends TaskStepProperties {
     private List<SetValue> values;
 
     /**
-     * Get the encodedTaskContent property: Base64 encoded value of the
-     * template/definition file content.
-     * 
+     * Get the encodedTaskContent property: Base64 encoded value of the template/definition file content.
+     *
      * @return the encodedTaskContent value.
      */
     public String encodedTaskContent() {
@@ -47,9 +44,8 @@ public final class EncodedTaskStep extends TaskStepProperties {
     }
 
     /**
-     * Set the encodedTaskContent property: Base64 encoded value of the
-     * template/definition file content.
-     * 
+     * Set the encodedTaskContent property: Base64 encoded value of the template/definition file content.
+     *
      * @param encodedTaskContent the encodedTaskContent value to set.
      * @return the EncodedTaskStep object itself.
      */
@@ -59,9 +55,8 @@ public final class EncodedTaskStep extends TaskStepProperties {
     }
 
     /**
-     * Get the encodedValuesContent property: Base64 encoded value of the
-     * parameters/values file content.
-     * 
+     * Get the encodedValuesContent property: Base64 encoded value of the parameters/values file content.
+     *
      * @return the encodedValuesContent value.
      */
     public String encodedValuesContent() {
@@ -69,9 +64,8 @@ public final class EncodedTaskStep extends TaskStepProperties {
     }
 
     /**
-     * Set the encodedValuesContent property: Base64 encoded value of the
-     * parameters/values file content.
-     * 
+     * Set the encodedValuesContent property: Base64 encoded value of the parameters/values file content.
+     *
      * @param encodedValuesContent the encodedValuesContent value to set.
      * @return the EncodedTaskStep object itself.
      */
@@ -81,9 +75,8 @@ public final class EncodedTaskStep extends TaskStepProperties {
     }
 
     /**
-     * Get the values property: The collection of overridable values that can
-     * be passed when running a task.
-     * 
+     * Get the values property: The collection of overridable values that can be passed when running a task.
+     *
      * @return the values value.
      */
     public List<SetValue> values() {
@@ -91,9 +84,8 @@ public final class EncodedTaskStep extends TaskStepProperties {
     }
 
     /**
-     * Set the values property: The collection of overridable values that can
-     * be passed when running a task.
-     * 
+     * Set the values property: The collection of overridable values that can be passed when running a task.
+     *
      * @param values the values value to set.
      * @return the EncodedTaskStep object itself.
      */

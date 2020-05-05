@@ -11,9 +11,7 @@ import com.azure.management.sql.JobTarget;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The JobTargetGroup model.
- */
+/** The JobTargetGroup model. */
 @JsonFlatten
 @Fluent
 public class JobTargetGroupInner extends ProxyResource {
@@ -25,7 +23,7 @@ public class JobTargetGroupInner extends ProxyResource {
 
     /**
      * Get the members property: Members of the target group.
-     * 
+     *
      * @return the members value.
      */
     public List<JobTarget> members() {
@@ -34,7 +32,7 @@ public class JobTargetGroupInner extends ProxyResource {
 
     /**
      * Set the members property: Members of the target group.
-     * 
+     *
      * @param members the members value to set.
      * @return the JobTargetGroupInner object itself.
      */

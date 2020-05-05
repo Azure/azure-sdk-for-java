@@ -8,9 +8,7 @@ import com.azure.management.compute.VirtualMachineSkus;
 import com.azure.management.compute.models.VirtualMachineImagesInner;
 import com.azure.management.resources.fluentcore.arm.Region;
 
-/**
- * The implementation for {@link VirtualMachineOffer}.
- */
+/** The implementation for {@link VirtualMachineOffer}. */
 class VirtualMachineOfferImpl implements VirtualMachineOffer {
     private final VirtualMachinePublisher publisher;
     private final String offerName;

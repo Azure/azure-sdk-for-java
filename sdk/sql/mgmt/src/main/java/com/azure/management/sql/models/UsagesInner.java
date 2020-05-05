@@ -22,26 +22,21 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * Usages.
- */
+/** An instance of this class provides access to all the operations defined in Usages. */
 public final class UsagesInner {
-    /**
-     * The proxy service used to perform REST calls.
-     */
-    private UsagesService service;
+    /** The proxy service used to perform REST calls. */
+    private final UsagesService service;
 
-    /**
-     * The service client containing this operation class.
-     */
-    private SqlManagementClientImpl client;
+    /** The service client containing this operation class. */
+    private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of UsagesInner.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     UsagesInner(SqlManagementClientImpl client) {
@@ -50,60 +45,90 @@ public final class UsagesInner {
     }
 
     /**
-     * The interface defining all the services for SqlManagementClientUsages to
-     * be used by the proxy service to perform REST calls.
+     * The interface defining all the services for SqlManagementClientUsages to be used by the proxy service to perform
+     * REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientUsages")
+    @ServiceInterface(name = "SqlManagementClientU")
     private interface UsagesService {
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/instancePools/{instancePoolName}/usages")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/instancePools/{instancePoolName}/usages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<UsageListResultInner>> listByInstancePool(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("instancePoolName") String instancePoolName, @QueryParam("expandChildren") Boolean expandChildren, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<UsageListResultInner>> listByInstancePool(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("instancePoolName") String instancePoolName,
+            @QueryParam("expandChildren") Boolean expandChildren,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<UsageListResultInner>> listByInstancePoolNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<UsageListResultInner>> listByInstancePoolNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
      * Gets all instance pool usage metrics.
-     * 
-     * @param resourceGroupName 
-     * @param instancePoolName 
-     * @param expandChildren 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param instancePoolName The name of the instance pool to be retrieved.
+     * @param expandChildren Optional request parameter to include managed instance usages within the instance pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all instance pool usage metrics.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<UsageInner>> listByInstancePoolSinglePageAsync(String resourceGroupName, String instancePoolName, Boolean expandChildren) {
+    public Mono<PagedResponse<UsageInner>> listByInstancePoolSinglePageAsync(
+        String resourceGroupName, String instancePoolName, Boolean expandChildren) {
         final String apiVersion = "2018-06-01-preview";
-        return service.listByInstancePool(this.client.getHost(), resourceGroupName, instancePoolName, expandChildren, this.client.getSubscriptionId(), apiVersion)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByInstancePool(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            instancePoolName,
+                            expandChildren,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .<PagedResponse<UsageInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets all instance pool usage metrics.
-     * 
-     * @param resourceGroupName 
-     * @param instancePoolName 
-     * @param expandChildren 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param instancePoolName The name of the instance pool to be retrieved.
+     * @param expandChildren Optional request parameter to include managed instance usages within the instance pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all instance pool usage metrics.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<UsageInner> listByInstancePoolAsync(String resourceGroupName, String instancePoolName, Boolean expandChildren) {
+    public PagedFlux<UsageInner> listByInstancePoolAsync(
+        String resourceGroupName, String instancePoolName, Boolean expandChildren) {
         return new PagedFlux<>(
             () -> listByInstancePoolSinglePageAsync(resourceGroupName, instancePoolName, expandChildren),
             nextLink -> listByInstancePoolNextSinglePageAsync(nextLink));
@@ -111,16 +136,19 @@ public final class UsagesInner {
 
     /**
      * Gets all instance pool usage metrics.
-     * 
-     * @param resourceGroupName 
-     * @param instancePoolName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param instancePoolName The name of the instance pool to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all instance pool usage metrics.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<UsageInner> listByInstancePoolAsync(String resourceGroupName, String instancePoolName) {
         final Boolean expandChildren = null;
+        final Context context = null;
         return new PagedFlux<>(
             () -> listByInstancePoolSinglePageAsync(resourceGroupName, instancePoolName, expandChildren),
             nextLink -> listByInstancePoolNextSinglePageAsync(nextLink));
@@ -128,51 +156,62 @@ public final class UsagesInner {
 
     /**
      * Gets all instance pool usage metrics.
-     * 
-     * @param resourceGroupName 
-     * @param instancePoolName 
-     * @param expandChildren 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param instancePoolName The name of the instance pool to be retrieved.
+     * @param expandChildren Optional request parameter to include managed instance usages within the instance pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all instance pool usage metrics.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<UsageInner> listByInstancePool(String resourceGroupName, String instancePoolName, Boolean expandChildren) {
+    public PagedIterable<UsageInner> listByInstancePool(
+        String resourceGroupName, String instancePoolName, Boolean expandChildren) {
         return new PagedIterable<>(listByInstancePoolAsync(resourceGroupName, instancePoolName, expandChildren));
     }
 
     /**
      * Gets all instance pool usage metrics.
-     * 
-     * @param resourceGroupName 
-     * @param instancePoolName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param instancePoolName The name of the instance pool to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all instance pool usage metrics.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UsageInner> listByInstancePool(String resourceGroupName, String instancePoolName) {
         final Boolean expandChildren = null;
+        final Context context = null;
         return new PagedIterable<>(listByInstancePoolAsync(resourceGroupName, instancePoolName, expandChildren));
     }
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink null
+     *
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of usages.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<UsageInner>> listByInstancePoolNextSinglePageAsync(String nextLink) {
-        return service.listByInstancePoolNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(context -> service.listByInstancePoolNext(nextLink, context))
+            .<PagedResponse<UsageInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 }

@@ -8,9 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The DatabaseUsage model.
- */
+/** The DatabaseUsage model. */
 @Immutable
 public final class DatabaseUsageInner {
     /*
@@ -57,7 +55,7 @@ public final class DatabaseUsageInner {
 
     /**
      * Get the name property: The name of the usage metric.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -66,7 +64,7 @@ public final class DatabaseUsageInner {
 
     /**
      * Get the resourceName property: The name of the resource.
-     * 
+     *
      * @return the resourceName value.
      */
     public String resourceName() {
@@ -75,7 +73,7 @@ public final class DatabaseUsageInner {
 
     /**
      * Get the displayName property: The usage metric display name.
-     * 
+     *
      * @return the displayName value.
      */
     public String displayName() {
@@ -84,7 +82,7 @@ public final class DatabaseUsageInner {
 
     /**
      * Get the currentValue property: The current value of the usage metric.
-     * 
+     *
      * @return the currentValue value.
      */
     public Double currentValue() {
@@ -93,7 +91,7 @@ public final class DatabaseUsageInner {
 
     /**
      * Get the limit property: The current limit of the usage metric.
-     * 
+     *
      * @return the limit value.
      */
     public Double limit() {
@@ -102,7 +100,7 @@ public final class DatabaseUsageInner {
 
     /**
      * Get the unit property: The units of the usage metric.
-     * 
+     *
      * @return the unit value.
      */
     public String unit() {
@@ -110,9 +108,8 @@ public final class DatabaseUsageInner {
     }
 
     /**
-     * Get the nextResetTime property: The next reset time for the usage metric
-     * (ISO8601 format).
-     * 
+     * Get the nextResetTime property: The next reset time for the usage metric (ISO8601 format).
+     *
      * @return the nextResetTime value.
      */
     public OffsetDateTime nextResetTime() {

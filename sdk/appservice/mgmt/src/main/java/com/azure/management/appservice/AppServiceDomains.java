@@ -8,8 +8,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.appservice.implementation.AppServiceManager;
 import com.azure.management.appservice.models.DomainsInner;
 import com.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
-import com.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
+import com.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
 import com.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.azure.management.resources.fluentcore.collection.SupportsCreating;
@@ -17,12 +17,10 @@ import com.azure.management.resources.fluentcore.collection.SupportsDeletingById
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-/**
- * Entry point for domain management API.
- */
+/** Entry point for domain management API. */
 @Fluent
-public interface AppServiceDomains extends
-        SupportsCreating<AppServiceDomain.DefinitionStages.Blank>,
+public interface AppServiceDomains
+    extends SupportsCreating<AppServiceDomain.DefinitionStages.Blank>,
         SupportsListing<AppServiceDomain>,
         SupportsListingByResourceGroup<AppServiceDomain>,
         SupportsDeletingById,

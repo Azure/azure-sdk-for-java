@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
@@ -97,7 +98,7 @@ public class RenameCollectionAwareClientRetryPolicyTest {
         DocumentCollection documentCollection = new DocumentCollection();
         ModelBridgeInternal.setResourceId(documentCollection, "rid_1");
 
-        Mockito.when(rxClientCollectionCache.resolveCollectionAsync(request)).thenReturn(Mono.just(new Utils.ValueHolder<>(documentCollection)));
+        Mockito.when(rxClientCollectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosResponseDiagnostics), request)).thenReturn(Mono.just(new Utils.ValueHolder<>(documentCollection)));
 
         Mono<IRetryPolicy.ShouldRetryResult> singleShouldRetry = renameCollectionAwareClientRetryPolicy
                 .shouldRetry(notFoundException);

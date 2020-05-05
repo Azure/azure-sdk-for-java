@@ -11,9 +11,7 @@ import com.azure.management.sql.ServerVersionCapability;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The LocationCapabilities model.
- */
+/** The LocationCapabilities model. */
 @Fluent
 public final class LocationCapabilitiesInner {
     /*
@@ -48,7 +46,7 @@ public final class LocationCapabilitiesInner {
 
     /**
      * Get the name property: The location name.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -56,9 +54,8 @@ public final class LocationCapabilitiesInner {
     }
 
     /**
-     * Get the supportedServerVersions property: The list of supported server
-     * versions.
-     * 
+     * Get the supportedServerVersions property: The list of supported server versions.
+     *
      * @return the supportedServerVersions value.
      */
     public List<ServerVersionCapability> supportedServerVersions() {
@@ -66,9 +63,8 @@ public final class LocationCapabilitiesInner {
     }
 
     /**
-     * Get the supportedManagedInstanceVersions property: The list of supported
-     * managed instance versions.
-     * 
+     * Get the supportedManagedInstanceVersions property: The list of supported managed instance versions.
+     *
      * @return the supportedManagedInstanceVersions value.
      */
     public List<ManagedInstanceVersionCapability> supportedManagedInstanceVersions() {
@@ -77,7 +73,7 @@ public final class LocationCapabilitiesInner {
 
     /**
      * Get the status property: The status of the capability.
-     * 
+     *
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -85,9 +81,8 @@ public final class LocationCapabilitiesInner {
     }
 
     /**
-     * Get the reason property: The reason for the capability not being
-     * available.
-     * 
+     * Get the reason property: The reason for the capability not being available.
+     *
      * @return the reason value.
      */
     public String reason() {
@@ -95,9 +90,8 @@ public final class LocationCapabilitiesInner {
     }
 
     /**
-     * Set the reason property: The reason for the capability not being
-     * available.
-     * 
+     * Set the reason property: The reason for the capability not being available.
+     *
      * @param reason the reason value to set.
      * @return the LocationCapabilitiesInner object itself.
      */

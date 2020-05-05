@@ -4,6 +4,7 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.network.implementation.NetworkManager;
 import com.azure.management.network.models.NetworkInterfacesInner;
@@ -19,13 +20,10 @@ import com.azure.management.resources.fluentcore.collection.SupportsDeletingById
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-
-/**
- * Entry point to network interface management.
- */
+/** Entry point to network interface management. */
 @Fluent
-public interface NetworkInterfaces  extends
-        SupportsCreating<NetworkInterface.DefinitionStages.Blank>,
+public interface NetworkInterfaces
+    extends SupportsCreating<NetworkInterface.DefinitionStages.Blank>,
         SupportsListing<NetworkInterface>,
         SupportsListingByResourceGroup<NetworkInterface>,
         SupportsGettingByResourceGroup<NetworkInterface>,
@@ -46,7 +44,8 @@ public interface NetworkInterfaces  extends
      * @param name the network interface name
      * @return network interface
      */
-    VirtualMachineScaleSetNetworkInterface getByVirtualMachineScaleSetInstanceId(String resourceGroupName, String scaleSetName, String instanceId, String name);
+    VirtualMachineScaleSetNetworkInterface getByVirtualMachineScaleSetInstanceId(
+        String resourceGroupName, String scaleSetName, String instanceId, String name);
 
     /**
      * List the network interfaces associated with a virtual machine scale set.
@@ -55,7 +54,8 @@ public interface NetworkInterfaces  extends
      * @param scaleSetName scale set name
      * @return list of network interfaces
      */
-    PagedIterable<VirtualMachineScaleSetNetworkInterface> listByVirtualMachineScaleSet(String resourceGroupName, String scaleSetName);
+    PagedIterable<VirtualMachineScaleSetNetworkInterface> listByVirtualMachineScaleSet(
+        String resourceGroupName, String scaleSetName);
 
     /**
      * List the network interfaces associated with a virtual machine scale set.
@@ -73,5 +73,17 @@ public interface NetworkInterfaces  extends
      * @param instanceId the virtual machine scale set vm instance id
      * @return list of network interfaces
      */
-    PagedIterable<VirtualMachineScaleSetNetworkInterface> listByVirtualMachineScaleSetInstanceId(String resourceGroupName, String scaleSetName, String instanceId);
+    PagedIterable<VirtualMachineScaleSetNetworkInterface> listByVirtualMachineScaleSetInstanceId(
+        String resourceGroupName, String scaleSetName, String instanceId);
+
+    /**
+     * List the network interfaces associated with a specific virtual machine instance in a scale set asynchronously.
+     *
+     * @param resourceGroupName virtual machine scale set resource group name
+     * @param scaleSetName scale set name
+     * @param instanceId the virtual machine scale set vm instance id
+     * @return list of network interfaces
+     */
+    PagedFlux<VirtualMachineScaleSetNetworkInterface> listByVirtualMachineScaleSetInstanceIdAsync(
+        String resourceGroupName, String scaleSetName, String instanceId);
 }

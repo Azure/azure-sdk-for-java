@@ -24,7 +24,7 @@ import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.models.Permission;
+import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.ResourceResponseValidator;

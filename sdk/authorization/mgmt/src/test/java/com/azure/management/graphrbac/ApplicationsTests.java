@@ -3,11 +3,9 @@
 
 package com.azure.management.graphrbac;
 
-import com.azure.management.resources.fluentcore.utils.SdkContext;
+import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.time.Duration;
 
 public class ApplicationsTests extends GraphRbacManagementTest {
     @Test
@@ -16,17 +14,20 @@ public class ApplicationsTests extends GraphRbacManagementTest {
 
         ActiveDirectoryApplication application = null;
         try {
-            application = graphRbacManager.applications().define(name)
+            application =
+                graphRbacManager
+                    .applications()
+                    .define(name)
                     .withSignOnUrl("http://easycreate.azure.com/" + name)
                     .definePasswordCredential("passwd")
-                        .withPasswordValue("P@ssw0rd")
-                        .withDuration(Duration.ofDays(700))
-                        .attach()
+                    .withPasswordValue("P@ssw0rd")
+                    .withDuration(Duration.ofDays(700))
+                    .attach()
                     .defineCertificateCredential("cert")
-                        .withAsymmetricX509Certificate()
-                        .withPublicKey(readAllBytes(this.getClass().getResourceAsStream("/myTest.cer")))
-                        .withDuration(Duration.ofDays(100))
-                        .attach()
+                    .withAsymmetricX509Certificate()
+                    .withPublicKey(readAllBytes(this.getClass().getResourceAsStream("/myTest.cer")))
+                    .withDuration(Duration.ofDays(100))
+                    .attach()
                     .create();
             System.out.println(application.id() + " - " + application.applicationId());
             Assertions.assertNotNull(application.id());
@@ -38,9 +39,7 @@ public class ApplicationsTests extends GraphRbacManagementTest {
             Assertions.assertEquals(1, application.identifierUris().size());
             Assertions.assertEquals("http://easycreate.azure.com/" + name, application.signOnUrl().toString());
 
-            application.update()
-                    .withoutCredential("passwd")
-                    .apply();
+            application.update().withoutCredential("passwd").apply();
             System.out.println(application.id() + " - " + application.applicationId());
             Assertions.assertEquals(0, application.passwordCredentials().size());
         } finally {
@@ -49,5 +48,4 @@ public class ApplicationsTests extends GraphRbacManagementTest {
             }
         }
     }
-
 }

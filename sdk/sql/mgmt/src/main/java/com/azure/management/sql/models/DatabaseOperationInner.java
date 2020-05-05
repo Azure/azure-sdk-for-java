@@ -11,9 +11,7 @@ import com.azure.management.sql.ManagementOperationState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The DatabaseOperation model.
- */
+/** The DatabaseOperation model. */
 @JsonFlatten
 @Immutable
 public class DatabaseOperationInner extends ProxyResource {
@@ -102,9 +100,8 @@ public class DatabaseOperationInner extends ProxyResource {
     private Boolean isCancellable;
 
     /**
-     * Get the databaseName property: The name of the database the operation is
-     * being performed on.
-     * 
+     * Get the databaseName property: The name of the database the operation is being performed on.
+     *
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -113,7 +110,7 @@ public class DatabaseOperationInner extends ProxyResource {
 
     /**
      * Get the operation property: The name of operation.
-     * 
+     *
      * @return the operation value.
      */
     public String operation() {
@@ -122,7 +119,7 @@ public class DatabaseOperationInner extends ProxyResource {
 
     /**
      * Get the operationFriendlyName property: The friendly name of operation.
-     * 
+     *
      * @return the operationFriendlyName value.
      */
     public String operationFriendlyName() {
@@ -130,9 +127,8 @@ public class DatabaseOperationInner extends ProxyResource {
     }
 
     /**
-     * Get the percentComplete property: The percentage of the operation
-     * completed.
-     * 
+     * Get the percentComplete property: The percentage of the operation completed.
+     *
      * @return the percentComplete value.
      */
     public Integer percentComplete() {
@@ -141,7 +137,7 @@ public class DatabaseOperationInner extends ProxyResource {
 
     /**
      * Get the serverName property: The name of the server.
-     * 
+     *
      * @return the serverName value.
      */
     public String serverName() {
@@ -150,7 +146,7 @@ public class DatabaseOperationInner extends ProxyResource {
 
     /**
      * Get the startTime property: The operation start time.
-     * 
+     *
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -159,7 +155,7 @@ public class DatabaseOperationInner extends ProxyResource {
 
     /**
      * Get the state property: The operation state.
-     * 
+     *
      * @return the state value.
      */
     public ManagementOperationState state() {
@@ -168,7 +164,7 @@ public class DatabaseOperationInner extends ProxyResource {
 
     /**
      * Get the errorCode property: The operation error code.
-     * 
+     *
      * @return the errorCode value.
      */
     public Integer errorCode() {
@@ -177,7 +173,7 @@ public class DatabaseOperationInner extends ProxyResource {
 
     /**
      * Get the errorDescription property: The operation error description.
-     * 
+     *
      * @return the errorDescription value.
      */
     public String errorDescription() {
@@ -186,7 +182,7 @@ public class DatabaseOperationInner extends ProxyResource {
 
     /**
      * Get the errorSeverity property: The operation error severity.
-     * 
+     *
      * @return the errorSeverity value.
      */
     public Integer errorSeverity() {
@@ -195,7 +191,7 @@ public class DatabaseOperationInner extends ProxyResource {
 
     /**
      * Get the isUserError property: Whether or not the error is a user error.
-     * 
+     *
      * @return the isUserError value.
      */
     public Boolean isUserError() {
@@ -203,9 +199,8 @@ public class DatabaseOperationInner extends ProxyResource {
     }
 
     /**
-     * Get the estimatedCompletionTime property: The estimated completion time
-     * of the operation.
-     * 
+     * Get the estimatedCompletionTime property: The estimated completion time of the operation.
+     *
      * @return the estimatedCompletionTime value.
      */
     public OffsetDateTime estimatedCompletionTime() {
@@ -214,7 +209,7 @@ public class DatabaseOperationInner extends ProxyResource {
 
     /**
      * Get the description property: The operation description.
-     * 
+     *
      * @return the description value.
      */
     public String description() {
@@ -223,7 +218,7 @@ public class DatabaseOperationInner extends ProxyResource {
 
     /**
      * Get the isCancellable property: Whether the operation can be cancelled.
-     * 
+     *
      * @return the isCancellable value.
      */
     public Boolean isCancellable() {

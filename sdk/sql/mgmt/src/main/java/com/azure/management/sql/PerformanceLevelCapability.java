@@ -7,9 +7,7 @@ package com.azure.management.sql;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The PerformanceLevelCapability model.
- */
+/** The PerformanceLevelCapability model. */
 @Immutable
 public final class PerformanceLevelCapability {
     /*
@@ -26,7 +24,7 @@ public final class PerformanceLevelCapability {
 
     /**
      * Get the value property: Performance level value.
-     * 
+     *
      * @return the value value.
      */
     public Double value() {
@@ -35,7 +33,7 @@ public final class PerformanceLevelCapability {
 
     /**
      * Get the unit property: Unit type used to measure performance level.
-     * 
+     *
      * @return the unit value.
      */
     public PerformanceLevelUnit unit() {

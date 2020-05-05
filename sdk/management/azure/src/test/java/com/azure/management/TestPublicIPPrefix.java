@@ -1,19 +1,17 @@
-///**
-// * Copyright (c) Microsoft Corporation. All rights reserved.
-// * Licensed under the MIT License. See License.txt in the project root for
-// * license information.
-// */
-//package com.azure.management;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+//
+// package com.azure.management;
 //
 //
-//import com.azure.core.management.SubResource;
-//import com.azure.management.network.PublicIPPrefixSku;
-//import com.azure.management.resources.fluentcore.arm.Region;
+// import com.azure.core.management.SubResource;
+// import com.azure.management.network.PublicIPPrefixSku;
+// import com.azure.management.resources.fluentcore.arm.Region;
 //
-///**
+/// **
 // * Tests public IP Prefix.
 // */
-//public class TestPublicIPPrefix extends TestTemplate<PublicIPPrefix, PublicIPPrefixes> {
+// public class TestPublicIPPrefix extends TestTemplate<PublicIPPrefix, PublicIPPrefixes> {
 //    @Override
 //    public PublicIPPrefix createResource(PublicIPPrefixes pips) throws Exception {
 //        final String newPipName = "pip" + this.testId;
@@ -69,4 +67,4 @@
 //
 //        System.out.println(info.toString());
 //    }
-//}
+// }

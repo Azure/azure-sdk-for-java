@@ -9,9 +9,7 @@ import com.azure.core.management.ProxyResource;
 import com.azure.management.sql.PrivateLinkResourceProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The PrivateLinkResource model.
- */
+/** The PrivateLinkResource model. */
 @Immutable
 public final class PrivateLinkResourceInner extends ProxyResource {
     /*
@@ -22,7 +20,7 @@ public final class PrivateLinkResourceInner extends ProxyResource {
 
     /**
      * Get the properties property: The private link resource group id.
-     * 
+     *
      * @return the properties value.
      */
     public PrivateLinkResourceProperties properties() {

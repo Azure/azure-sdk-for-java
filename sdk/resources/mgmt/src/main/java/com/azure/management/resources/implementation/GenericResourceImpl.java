@@ -61,6 +61,10 @@ final class GenericResourceImpl
 
     @Override
     public String apiVersion() {
+        if (apiVersion == null) {
+            apiVersion = ResourceUtils.defaultApiVersion(
+                id(), manager().providers().getByName(ResourceUtils.resourceProviderFromResourceId(id())));
+        }
         return apiVersion;
     }
 
@@ -102,7 +106,12 @@ final class GenericResourceImpl
     }
 
     public GenericResourceImpl withPlan(String name, String publisher, String product, String promotionCode) {
-        inner().withPlan(new Plan().withName(name).withPublisher(publisher).withProduct(product).withPromotionCode(promotionCode));
+        inner().withPlan(
+            new Plan()
+                .withName(name)
+                .withPublisher(publisher)
+                .withProduct(product)
+                .withPromotionCode(promotionCode));
         return this;
     }
 

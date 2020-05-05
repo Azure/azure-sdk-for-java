@@ -2,18 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.management.network.models;
 
-import java.util.Map;
-
 import com.azure.core.annotation.Fluent;
 import com.azure.management.network.LoadBalancingRule;
+import java.util.Map;
 
-/**
- * An interface representing a model's ability to reference load balancing rules.
- */
+/** An interface representing a model's ability to reference load balancing rules. */
 @Fluent()
-public interface HasLoadBalancingRules  {
-    /**
-     * @return the associated load balancing rules from this load balancer, indexed by their names
-     */
+public interface HasLoadBalancingRules {
+    /** @return the associated load balancing rules from this load balancer, indexed by their names */
     Map<String, LoadBalancingRule> loadBalancingRules();
 }

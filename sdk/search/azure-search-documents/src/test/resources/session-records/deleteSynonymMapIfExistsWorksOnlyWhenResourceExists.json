@@ -1,57 +1,65 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azs-sdk151822f77b4.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06",
+    "Uri" : "https://azsjava017495ec5c25f161c4de6ba4d0648.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06-Preview",
     "Headers" : {
+      "x-ms-client-request-id" : "a0a73cfd-c494-486d-a78a-7b7d5305a1c5",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "52c6b14f-8046-45cc-9d89-1f35f9c88fe2",
+      "request-id" : "a0a73cfd-c494-486d-a78a-7b7d5305a1c5",
       "StatusCode" : "201",
-      "Date" : "Mon, 24 Feb 2020 20:03:00 GMT",
+      "Date" : "Tue, 21 Apr 2020 19:14:55 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D7B9648CD968A9\"",
-      "elapsed-time" : "78",
+      "client-request-id" : "a0a73cfd-c494-486d-a78a-7b7d5305a1c5",
+      "ETag" : "W/\"0x8D7E62846D6971E\"",
+      "elapsed-time" : "34",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "218",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk151822f77b4.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D7B9648CD968A9\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"word1,word2\",\"encryptionKey\":null}",
+      "Content-Length" : "236",
+      "Body" : "{\"@odata.context\":\"https://azsjava017495ec5c25f161c4de6ba4d0648.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D7E62846D6971E\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"word1,word2\",\"encryptionKey\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk151822f77b4.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06"
+      "Location" : "https://azsjava017495ec5c25f161c4de6ba4d0648.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06-Preview"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdk151822f77b4.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06",
-    "Headers" : { },
+    "Uri" : "https://azsjava017495ec5c25f161c4de6ba4d0648.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "27769aa1-1d2f-400b-8076-cdde62c1d113"
+    },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "35",
+      "client-request-id" : "27769aa1-1d2f-400b-8076-cdde62c1d113",
+      "elapsed-time" : "14",
       "Expires" : "-1",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "67d96864-f55b-4d42-a60a-e7fe1c03bc3d",
+      "request-id" : "27769aa1-1d2f-400b-8076-cdde62c1d113",
       "StatusCode" : "204",
-      "Date" : "Mon, 24 Feb 2020 20:03:00 GMT"
+      "Date" : "Tue, 21 Apr 2020 19:14:55 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdk151822f77b4.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06",
-    "Headers" : { },
+    "Uri" : "https://azsjava017495ec5c25f161c4de6ba4d0648.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "f70b2074-e1d5-4bc2-9b7d-0258ddd10acc"
+    },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "83ad2df1-10b0-4c5b-966a-8685ead3f078",
+      "request-id" : "f70b2074-e1d5-4bc2-9b7d-0258ddd10acc",
       "StatusCode" : "412",
-      "Date" : "Mon, 24 Feb 2020 20:03:00 GMT",
+      "Date" : "Tue, 21 Apr 2020 19:14:55 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
+      "client-request-id" : "f70b2074-e1d5-4bc2-9b7d-0258ddd10acc",
       "elapsed-time" : "4",
       "OData-Version" : "4.0",
       "Expires" : "-1",
@@ -63,5 +71,5 @@
     },
     "Exception" : null
   } ],
-  "variables" : [ "azs-sdk151822f77b4" ]
+  "variables" : [ "azsjava017495ec5c25f161c4de6ba4d0648" ]
 }

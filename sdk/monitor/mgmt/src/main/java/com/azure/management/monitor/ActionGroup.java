@@ -4,23 +4,20 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.management.monitor.models.ActionGroupResourceInner;
 import com.azure.management.monitor.implementation.MonitorManager;
+import com.azure.management.monitor.models.ActionGroupResourceInner;
 import com.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.management.resources.fluentcore.arm.models.Resource;
 import com.azure.management.resources.fluentcore.model.Appliable;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.Refreshable;
 import com.azure.management.resources.fluentcore.model.Updatable;
-
 import java.util.List;
 
-/**
- * An immutable client-side representation of an Azure Action Group.
- */
+/** An immutable client-side representation of an Azure Action Group. */
 @Fluent
-public interface ActionGroup extends
-        GroupableResource<MonitorManager, ActionGroupResourceInner>,
+public interface ActionGroup
+    extends GroupableResource<MonitorManager, ActionGroupResourceInner>,
         Refreshable<ActionGroup>,
         Updatable<ActionGroup.Update> {
     /**
@@ -93,7 +90,6 @@ public interface ActionGroup extends
      */
     List<AzureFunctionReceiver> azureFunctionReceivers();
 
-
     /**
      * Receivers action definition allowing to set each receiver's configuration.
      *
@@ -134,10 +130,11 @@ public interface ActionGroup extends
          * @param region the region value to set
          * @return the next stage of the definition
          */
-        ActionDefinition<ParentT> withItsm(String workspaceId, String connectionId, String ticketConfiguration, String region);
+        ActionDefinition<ParentT> withItsm(
+            String workspaceId, String connectionId, String ticketConfiguration, String region);
 
         /**
-         * Sets the Azure Mobile App Push Notification  receiver.
+         * Sets the Azure Mobile App Push Notification receiver.
          *
          * @param emailAddress the emailAddress value to set
          * @return the next stage of the definition
@@ -153,7 +150,8 @@ public interface ActionGroup extends
          * @param isGlobalRunbook the isGlobalRunbook value to set
          * @return the next stage of the definition
          */
-        ActionDefinition<ParentT> withAutomationRunbook(String automationAccountId, String runbookName, String webhookResourceId, boolean isGlobalRunbook);
+        ActionDefinition<ParentT> withAutomationRunbook(
+            String automationAccountId, String runbookName, String webhookResourceId, boolean isGlobalRunbook);
 
         /**
          * Sets the Voice notification receiver.
@@ -181,7 +179,8 @@ public interface ActionGroup extends
          * @param httpTriggerUrl the httpTriggerUrl value to set
          * @return the next stage of the definition
          */
-        ActionDefinition<ParentT> withAzureFunction(String functionAppResourceId, String functionName, String httpTriggerUrl);
+        ActionDefinition<ParentT> withAzureFunction(
+            String functionAppResourceId, String functionName, String httpTriggerUrl);
 
         /**
          * Attaches the defined receivers to the Action Group configuration.
@@ -191,32 +190,21 @@ public interface ActionGroup extends
         ParentT attach();
     }
 
-    /**
-     * The entirety of a Action Group definition.
-     */
-    interface Definition extends
-            DefinitionStages.Blank,
-            ActionDefinition,
-            DefinitionStages.WithCreate {
+    /** The entirety of a Action Group definition. */
+    interface Definition extends DefinitionStages.Blank, ActionDefinition, DefinitionStages.WithCreate {
     }
 
-    /**
-     * Grouping of Action Group definition stages.
-     */
+    /** Grouping of Action Group definition stages. */
     interface DefinitionStages {
-        /**
-         * The first stage of a Action Group definition allowing the resource group to be specified.
-         */
+        /** The first stage of a Action Group definition allowing the resource group to be specified. */
         interface Blank extends GroupableResource.DefinitionStages.WithGroupAndRegion<WithCreate> {
         }
 
         /**
-         * The stage of the definition which contains all the minimum required inputs for the resource to be created
-         * but also allows for any other optional settings to be specified.
+         * The stage of the definition which contains all the minimum required inputs for the resource to be created but
+         * also allows for any other optional settings to be specified.
          */
-        interface WithCreate extends
-                Creatable<ActionGroup>,
-                DefinitionWithTags<WithCreate> {
+        interface WithCreate extends Creatable<ActionGroup>, DefinitionWithTags<WithCreate> {
 
             /**
              * Begins the definition of Action Group receivers with the specified name prefix.
@@ -227,7 +215,8 @@ public interface ActionGroup extends
             ActionDefinition<ActionGroup.DefinitionStages.WithCreate> defineReceiver(String actionNamePrefix);
 
             /**
-             * Sets the short name of the action group. This will be used in SMS messages. Maximum length cannot exceed 12 symbols.
+             * Sets the short name of the action group. This will be used in SMS messages. Maximum length cannot exceed
+             * 12 symbols.
              *
              * @param shortName short name of the action group. Cannot exceed 12 symbols.
              * @return the next stage of the definition
@@ -236,14 +225,10 @@ public interface ActionGroup extends
         }
     }
 
-    /**
-     * Grouping of Action Group update stages.
-     */
+    /** Grouping of Action Group update stages. */
     interface UpdateStages {
 
-        /**
-         * The stage of update which contains all the top level fields and transition stages to receiver updates.
-         */
+        /** The stage of update which contains all the top level fields and transition stages to receiver updates. */
         interface WithActionDefinition {
             /**
              * Removes all the receivers that contain specified actionNamePrefix string in the name.
@@ -270,18 +255,16 @@ public interface ActionGroup extends
             WithActionUpdateDefinition updateReceiver(String actionNamePrefix);
 
             /**
-             * Sets the short name of the action group. This will be used in SMS messages. Maximum length cannot exceed 12 symbols.
+             * Sets the short name of the action group. This will be used in SMS messages. Maximum length cannot exceed
+             * 12 symbols.
              *
              * @param shortName short name of the action group. Cannot exceed 12 symbols
              * @return the next stage of the update
              */
             Update withShortName(String shortName);
-
         }
 
-        /**
-         * Receivers action update stage allowing to set each receiver's configuration.
-         */
+        /** Receivers action update stage allowing to set each receiver's configuration. */
         interface WithActionUpdateDefinition {
             /**
              * Removes email receiver from current receiver's group.
@@ -380,10 +363,11 @@ public interface ActionGroup extends
              * @param region the region value to set
              * @return the next stage of the update
              */
-            WithActionUpdateDefinition withItsm(String workspaceId, String connectionId, String ticketConfiguration, String region);
+            WithActionUpdateDefinition withItsm(
+                String workspaceId, String connectionId, String ticketConfiguration, String region);
 
             /**
-             * Sets the Azure Mobile App Push Notification  receiver.
+             * Sets the Azure Mobile App Push Notification receiver.
              *
              * @param emailAddress the emailAddress value to set
              * @return the next stage of the update
@@ -399,7 +383,8 @@ public interface ActionGroup extends
              * @param isGlobalRunbook the isGlobalRunbook value to set
              * @return the next stage of the update
              */
-            WithActionUpdateDefinition withAutomationRunbook(String automationAccountId, String runbookName, String webhookResourceId, boolean isGlobalRunbook);
+            WithActionUpdateDefinition withAutomationRunbook(
+                String automationAccountId, String runbookName, String webhookResourceId, boolean isGlobalRunbook);
 
             /**
              * Sets the Voice notification receiver.
@@ -427,7 +412,8 @@ public interface ActionGroup extends
              * @param httpTriggerUrl the httpTriggerUrl value to set
              * @return the next stage of the update
              */
-            WithActionUpdateDefinition withAzureFunction(String functionAppResourceId, String functionName, String httpTriggerUrl);
+            WithActionUpdateDefinition withAzureFunction(
+                String functionAppResourceId, String functionName, String httpTriggerUrl);
 
             /**
              * Returns to the Action Group update flow.
@@ -438,12 +424,8 @@ public interface ActionGroup extends
         }
     }
 
-    /**
-     * The template for an update operation, containing all the settings that can be modified.
-     */
-    interface Update extends
-            Appliable<ActionGroup>,
-            UpdateStages.WithActionDefinition,
-            Resource.UpdateWithTags<Update> {
+    /** The template for an update operation, containing all the settings that can be modified. */
+    interface Update
+        extends Appliable<ActionGroup>, UpdateStages.WithActionDefinition, Resource.UpdateWithTags<Update> {
     }
 }

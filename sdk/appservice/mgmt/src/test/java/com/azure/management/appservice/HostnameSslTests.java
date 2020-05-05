@@ -3,81 +3,81 @@
 
 package com.azure.management.appservice;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
-import com.azure.management.RestClient;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
+import javax.net.ssl.SSLPeerUnverifiedException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import javax.net.ssl.SSLPeerUnverifiedException;
-import java.util.concurrent.TimeUnit;
-
 public class HostnameSslTests extends AppServiceTest {
-    private String WEBAPP_NAME = "";
-    private String APP_SERVICE_PLAN_NAME = "";
-    private String DOMAIN = "";
+    private String webappName = "";
+    private String appServicePlanName = "";
+    private String domainName = "";
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        super.initializeClients(restClient, defaultSubscription, domain);
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
+        super.initializeClients(httpPipeline, profile);
 
-        WEBAPP_NAME = generateRandomResourceName("java-webapp-", 20);
-        APP_SERVICE_PLAN_NAME = generateRandomResourceName("java-asp-", 20);
+        webappName = generateRandomResourceName("java-webapp-", 20);
+        appServicePlanName = generateRandomResourceName("java-asp-", 20);
 
-        DOMAIN = super.domain.name();
+        domainName = super.domain.name();
     }
 
     @Test
     @Disabled("Need a domain and a certificate")
     public void canBindHostnameAndSsl() throws Exception {
         // hostname binding
-        appServiceManager.webApps().define(WEBAPP_NAME)
-                .withRegion(Region.US_WEST)
-                .withNewResourceGroup(RG_NAME)
-                .withNewWindowsPlan(PricingTier.BASIC_B1)
-                .defineHostnameBinding()
-                    .withAzureManagedDomain(domain)
-                    .withSubDomain(WEBAPP_NAME)
-                    .withDnsRecordType(CustomHostNameDnsRecordType.CNAME)
-                    .attach()
-                .create();
+        appServiceManager
+            .webApps()
+            .define(webappName)
+            .withRegion(Region.US_WEST)
+            .withNewResourceGroup(rgName)
+            .withNewWindowsPlan(PricingTier.BASIC_B1)
+            .defineHostnameBinding()
+            .withAzureManagedDomain(domain)
+            .withSubDomain(webappName)
+            .withDnsRecordType(CustomHostNameDnsRecordType.CNAME)
+            .attach()
+            .create();
 
-        WebApp webApp = appServiceManager.webApps().getByResourceGroup(RG_NAME, WEBAPP_NAME);
+        WebApp webApp = appServiceManager.webApps().getByResourceGroup(rgName, webappName);
         Assertions.assertNotNull(webApp);
         if (!isPlaybackMode()) {
-            Response<String> response = curl("http://" + WEBAPP_NAME + "." + DOMAIN);
+            Response<String> response = curl("http://" + webappName + "." + domainName);
             Assertions.assertEquals(200, response.getStatusCode());
             Assertions.assertNotNull(response.getValue());
         }
         // hostname binding shortcut
-        webApp.update()
-                .withManagedHostnameBindings(domain, WEBAPP_NAME + "-1", WEBAPP_NAME + "-2")
-                .apply();
+        webApp.update().withManagedHostnameBindings(domain, webappName + "-1", webappName + "-2").apply();
         if (!isPlaybackMode()) {
-            Response response = curl("http://" + WEBAPP_NAME + "-1." + DOMAIN);
+            Response response = curl("http://" + webappName + "-1." + domainName);
             Assertions.assertEquals(200, response.getStatusCode());
             Assertions.assertNotNull(response.getValue());
-            response = curl("http://" + WEBAPP_NAME + "-2." + DOMAIN);
+            response = curl("http://" + webappName + "-2." + domainName);
             Assertions.assertEquals(200, response.getStatusCode());
             Assertions.assertNotNull(response.getValue());
         }
         // SSL binding
-        webApp.update()
-                .defineSslBinding()
-                    .forHostname(WEBAPP_NAME + "." + DOMAIN)
-                    .withExistingAppServiceCertificateOrder(certificateOrder)
-                    .withSniBasedSsl()
-                    .attach()
-                .apply();
+        webApp
+            .update()
+            .defineSslBinding()
+            .forHostname(webappName + "." + domainName)
+            .withExistingAppServiceCertificateOrder(certificateOrder)
+            .withSniBasedSsl()
+            .attach()
+            .apply();
         if (!isPlaybackMode()) {
             Response<String> response = null;
             int retryCount = 3;
             while (response == null && retryCount > 0) {
-                // FIXME this probably not work after switch from okhttp to azure-core
+                // TODO (weidxu) this probably not work after switch from okhttp to azure-core
                 try {
-                    response = curl("https://" + WEBAPP_NAME + "." + DOMAIN);
+                    response = curl("https://" + webappName + "." + domainName);
                 } catch (SSLPeerUnverifiedException e) {
                     retryCount--;
                     SdkContext.sleep(5000);

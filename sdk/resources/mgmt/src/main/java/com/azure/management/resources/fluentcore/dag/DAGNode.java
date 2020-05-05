@@ -3,6 +3,8 @@
 
 package com.azure.management.resources.fluentcore.dag;
 
+import com.azure.core.util.logging.ClientLogger;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -18,7 +20,7 @@ public class DAGNode<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Node<Da
     /**
      * keys of other nodes those dependents on this node.
      */
-    private List<String> dependentKeys;
+    private final List<String> dependentKeys;
     /**
      * to track the dependency resolution count.
      */
@@ -30,7 +32,11 @@ public class DAGNode<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Node<Da
     /**
      * lock used while performing concurrent safe operation on the node.
      */
-    private ReentrantLock lock;
+    private final ReentrantLock lock;
+
+    private final ClientLogger logger = new ClientLogger(this.getClass());
+    private static final String ERROR_MESSAGE_FORMAT =
+        "invalid state - %s: The dependency '%s' is already reported or there is no such dependencyKey";
 
     /**
      * Creates a DAG node.
@@ -137,7 +143,8 @@ public class DAGNode<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Node<Da
      */
     protected void onSuccessfulResolution(String dependencyKey) {
         if (toBeResolved == 0) {
-            throw new RuntimeException("invalid state - " + this.key() + ": The dependency '" + dependencyKey + "' is already reported or there is no such dependencyKey");
+            throw logger.logExceptionAsError(new RuntimeException(
+                String.format(ERROR_MESSAGE_FORMAT, key(), dependencyKey)));
         }
         toBeResolved--;
     }
@@ -150,7 +157,8 @@ public class DAGNode<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Node<Da
      */
     protected void onFaultedResolution(String dependencyKey, Throwable throwable) {
         if (toBeResolved == 0) {
-            throw new RuntimeException("invalid state - " + this.key() + ": The dependency '" + dependencyKey + "' is already reported or there is no such dependencyKey");
+            throw logger.logExceptionAsError(new RuntimeException(
+                String.format(ERROR_MESSAGE_FORMAT, key(), dependencyKey)));
         }
         toBeResolved--;
     }

@@ -8,12 +8,11 @@ import com.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.azure.management.resources.fluentcore.model.Executable;
 
 /**
- * A client-side representation allowing to verify IP packet flow from specific VM
- * based on direction, protocol, local IP, remote IP, local port and remote port.
+ * A client-side representation allowing to verify IP packet flow from specific VM based on direction, protocol, local
+ * IP, remote IP, local port and remote port.
  */
 @Fluent
-public interface VerificationIPFlow extends Executable<VerificationIPFlow>,
-        HasParent<NetworkWatcher> {
+public interface VerificationIPFlow extends Executable<VerificationIPFlow>, HasParent<NetworkWatcher> {
     /**
      * Get the access value. Indicates whether the traffic is allowed or denied.
      *
@@ -22,18 +21,15 @@ public interface VerificationIPFlow extends Executable<VerificationIPFlow>,
     Access access();
 
     /**
-     * Get the ruleName value. If input is not matched against any security rule, it
-     * is not displayed.
+     * Get the ruleName value. If input is not matched against any security rule, it is not displayed.
      *
      * @return the ruleName value
      */
     String ruleName();
 
-    /**
-     * The entirety of verification ip flow parameters definition.
-     */
-    interface Definition extends
-            DefinitionStages.WithTargetResource,
+    /** The entirety of verification ip flow parameters definition. */
+    interface Definition
+        extends DefinitionStages.WithTargetResource,
             DefinitionStages.WithDirection,
             DefinitionStages.WithProtocol,
             DefinitionStages.WithLocalIP,
@@ -43,14 +39,9 @@ public interface VerificationIPFlow extends Executable<VerificationIPFlow>,
             DefinitionStages.WithExecute {
     }
 
-
-    /**
-     * Grouping of verification ip flow parameters.
-     */
+    /** Grouping of verification ip flow parameters. */
     interface DefinitionStages {
-        /**
-         * The ID of the target resource to perform next-hop on.
-         */
+        /** The ID of the target resource to perform next-hop on. */
         interface WithTargetResource {
             /**
              * Set the targetResourceId value.
@@ -61,9 +52,7 @@ public interface VerificationIPFlow extends Executable<VerificationIPFlow>,
             WithDirection withTargetResourceId(String vmId);
         }
 
-        /**
-         * The direction of the packet represented as a 5-tuple.
-         */
+        /** The direction of the packet represented as a 5-tuple. */
         interface WithDirection {
             /**
              * Set the direction value.
@@ -88,9 +77,7 @@ public interface VerificationIPFlow extends Executable<VerificationIPFlow>,
             WithProtocol outbound();
         }
 
-        /**
-         * Protocol to be verified on. Possible values include: 'TCP', 'UDP'.
-         */
+        /** Protocol to be verified on. Possible values include: 'TCP', 'UDP'. */
         interface WithProtocol extends HasProtocol.DefinitionStages.WithProtocol<WithLocalIP, IpFlowProtocol> {
             /**
              * Set TCP protocol.
@@ -107,9 +94,7 @@ public interface VerificationIPFlow extends Executable<VerificationIPFlow>,
             WithLocalIP withUDP();
         }
 
-        /**
-         * The local IP address. Acceptable values are valid IPv4 addresses.
-         */
+        /** The local IP address. Acceptable values are valid IPv4 addresses. */
         interface WithLocalIP {
             /**
              * Set the localIPAddress value.
@@ -120,9 +105,7 @@ public interface VerificationIPFlow extends Executable<VerificationIPFlow>,
             WithRemoteIP withLocalIPAddress(String localIPAddress);
         }
 
-        /**
-         * The remote IP address. Acceptable values are valid IPv4 addresses.
-         */
+        /** The remote IP address. Acceptable values are valid IPv4 addresses. */
         interface WithRemoteIP {
             /**
              * Set the remoteIPAddress value.
@@ -134,9 +117,8 @@ public interface VerificationIPFlow extends Executable<VerificationIPFlow>,
         }
 
         /**
-         * The local port. Acceptable values are a single integer in the range
-         * (0-65535). Support for * for the source port, which depends on the
-         * direction.
+         * The local port. Acceptable values are a single integer in the range (0-65535). Support for * for the source
+         * port, which depends on the direction.
          */
         interface WithLocalPort {
             /**
@@ -149,9 +131,8 @@ public interface VerificationIPFlow extends Executable<VerificationIPFlow>,
         }
 
         /**
-         * The remote port. Acceptable values are a single integer in the range
-         * (0-65535). Support for * for the source port, which depends on the
-         * direction.
+         * The remote port. Acceptable values are a single integer in the range (0-65535). Support for * for the source
+         * port, which depends on the direction.
          */
         interface WithRemotePort {
             /**
@@ -164,8 +145,8 @@ public interface VerificationIPFlow extends Executable<VerificationIPFlow>,
         }
 
         /**
-         * The NIC ID. (If VM has multiple NICs and IP forwarding is enabled on any
-         * of them, then this parameter must be specified. Otherwise optional).
+         * The NIC ID. (If VM has multiple NICs and IP forwarding is enabled on any of them, then this parameter must be
+         * specified. Otherwise optional).
          */
         interface WithNetworkInterface {
             /**
@@ -178,13 +159,10 @@ public interface VerificationIPFlow extends Executable<VerificationIPFlow>,
         }
 
         /**
-         * The stage of the definition which contains all the minimum required parameters
-         * to execute an action, but also allows
-         * for any other optional settings to be specified.
+         * The stage of the definition which contains all the minimum required parameters to execute an action, but also
+         * allows for any other optional settings to be specified.
          */
-        interface WithExecute extends
-                Executable<VerificationIPFlow>,
-                WithNetworkInterface {
+        interface WithExecute extends Executable<VerificationIPFlow>, WithNetworkInterface {
         }
     }
 }

@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/**
- * The ResourceIdentity model.
- */
+/** The ResourceIdentity model. */
 @Fluent
 public final class ResourceIdentity {
     /*
@@ -25,7 +23,7 @@ public final class ResourceIdentity {
      * the resource.
      */
     @JsonProperty(value = "type")
-    private String type;
+    private IdentityType type;
 
     /*
      * The Azure Active Directory tenant id.
@@ -34,15 +32,8 @@ public final class ResourceIdentity {
     private UUID tenantId;
 
     /**
-     * Creates an instance of ResourceIdentity class.
-     */
-    public ResourceIdentity() {
-        type = "SystemAssigned";
-    }
-
-    /**
      * Get the principalId property: The Azure Active Directory principal id.
-     * 
+     *
      * @return the principalId value.
      */
     public UUID principalId() {
@@ -50,32 +41,30 @@ public final class ResourceIdentity {
     }
 
     /**
-     * Get the type property: The identity type. Set this to 'SystemAssigned'
-     * in order to automatically create and assign an Azure Active Directory
-     * principal for the resource.
-     * 
+     * Get the type property: The identity type. Set this to 'SystemAssigned' in order to automatically create and
+     * assign an Azure Active Directory principal for the resource.
+     *
      * @return the type value.
      */
-    public String type() {
+    public IdentityType type() {
         return this.type;
     }
 
     /**
-     * Set the type property: The identity type. Set this to 'SystemAssigned'
-     * in order to automatically create and assign an Azure Active Directory
-     * principal for the resource.
-     * 
+     * Set the type property: The identity type. Set this to 'SystemAssigned' in order to automatically create and
+     * assign an Azure Active Directory principal for the resource.
+     *
      * @param type the type value to set.
      * @return the ResourceIdentity object itself.
      */
-    public ResourceIdentity withType(String type) {
+    public ResourceIdentity withType(IdentityType type) {
         this.type = type;
         return this;
     }
 
     /**
      * Get the tenantId property: The Azure Active Directory tenant id.
-     * 
+     *
      * @return the tenantId value.
      */
     public UUID tenantId() {

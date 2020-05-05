@@ -10,9 +10,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/**
- * The TaskRunRequest model.
- */
+/** The TaskRunRequest model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("TaskRunRequest")
 @Fluent
@@ -31,9 +29,8 @@ public final class TaskRunRequest extends RunRequest {
     private List<SetValue> values;
 
     /**
-     * Get the taskName property: The name of task against which run has to be
-     * queued.
-     * 
+     * Get the taskName property: The name of task against which run has to be queued.
+     *
      * @return the taskName value.
      */
     public String taskName() {
@@ -41,9 +38,8 @@ public final class TaskRunRequest extends RunRequest {
     }
 
     /**
-     * Set the taskName property: The name of task against which run has to be
-     * queued.
-     * 
+     * Set the taskName property: The name of task against which run has to be queued.
+     *
      * @param taskName the taskName value to set.
      * @return the TaskRunRequest object itself.
      */
@@ -53,9 +49,8 @@ public final class TaskRunRequest extends RunRequest {
     }
 
     /**
-     * Get the values property: The collection of overridable values that can
-     * be passed when running a task.
-     * 
+     * Get the values property: The collection of overridable values that can be passed when running a task.
+     *
      * @return the values value.
      */
     public List<SetValue> values() {
@@ -63,9 +58,8 @@ public final class TaskRunRequest extends RunRequest {
     }
 
     /**
-     * Set the values property: The collection of overridable values that can
-     * be passed when running a task.
-     * 
+     * Set the values property: The collection of overridable values that can be passed when running a task.
+     *
      * @param values the values value to set.
      * @return the TaskRunRequest object itself.
      */

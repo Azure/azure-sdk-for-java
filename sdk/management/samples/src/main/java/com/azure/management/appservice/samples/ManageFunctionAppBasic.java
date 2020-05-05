@@ -3,17 +3,17 @@
 
 package com.azure.management.appservice.samples;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
 import com.azure.management.appservice.AppServicePlan;
 import com.azure.management.appservice.FunctionApp;
 import com.azure.management.appservice.PricingTier;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.samples.Utils;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-
-import java.io.File;
-
 
 /**
  * Azure App Service basic sample for managing function apps.
@@ -46,7 +46,7 @@ public final class ManageFunctionAppBasic {
 
             System.out.println("Creating function app " + app1Name + " in resource group " + rg1Name + "...");
 
-            FunctionApp app1 = azure.appServices().functionApps()
+            FunctionApp app1 = azure.functionApps()
                     .define(app1Name)
                     .withRegion(Region.US_WEST)
                     .withNewResourceGroup(rg1Name)
@@ -59,8 +59,8 @@ public final class ManageFunctionAppBasic {
             // Create a second function app with the same app service plan
 
             System.out.println("Creating another function app " + app2Name + " in resource group " + rg1Name + "...");
-            AppServicePlan plan = azure.appServices().appServicePlans().getById(app1.appServicePlanId());
-            FunctionApp app2 = azure.appServices().functionApps()
+            AppServicePlan plan = azure.appServicePlans().getById(app1.appServicePlanId());
+            FunctionApp app2 = azure.functionApps()
                     .define(app2Name)
                     .withRegion(Region.US_WEST)
                     .withExistingResourceGroup(rg1Name)
@@ -75,7 +75,7 @@ public final class ManageFunctionAppBasic {
             // in a different resource group
 
             System.out.println("Creating another function app " + app3Name + " in resource group " + rg2Name + "...");
-            FunctionApp app3 = azure.appServices().functionApps()
+            FunctionApp app3 = azure.functionApps()
                     .define(app3Name)
                     .withExistingAppServicePlan(plan)
                     .withNewResourceGroup(rg2Name)
@@ -104,13 +104,13 @@ public final class ManageFunctionAppBasic {
 
             System.out.println("Printing list of function apps in resource group " + rg1Name + "...");
 
-            for (FunctionApp functionApp : azure.appServices().functionApps().listByResourceGroup(rg1Name)) {
+            for (FunctionApp functionApp : azure.functionApps().listByResourceGroup(rg1Name)) {
                 Utils.print(functionApp);
             }
 
             System.out.println("Printing list of function apps in resource group " + rg2Name + "...");
 
-            for (FunctionApp functionApp : azure.appServices().functionApps().listByResourceGroup(rg2Name)) {
+            for (FunctionApp functionApp : azure.functionApps().listByResourceGroup(rg2Name)) {
                 Utils.print(functionApp);
             }
 
@@ -118,11 +118,11 @@ public final class ManageFunctionAppBasic {
             // Delete a function app
 
             System.out.println("Deleting function app " + app1Name + "...");
-            azure.appServices().functionApps().deleteByResourceGroup(rg1Name, app1Name);
+            azure.functionApps().deleteByResourceGroup(rg1Name, app1Name);
             System.out.println("Deleted function app " + app1Name + "...");
 
             System.out.println("Printing list of function apps in resource group " + rg1Name + " again...");
-            for (FunctionApp functionApp : azure.appServices().functionApps().listByResourceGroup(rg1Name)) {
+            for (FunctionApp functionApp : azure.functionApps().listByResourceGroup(rg1Name)) {
                 Utils.print(functionApp);
             }
             return true;
@@ -156,12 +156,15 @@ public final class ManageFunctionAppBasic {
             //=============================================================
             // Authenticate
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
             Azure azure = Azure
                     .configure()
-                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-                    .authenticate(credFile)
+                    .withLogLevel(HttpLogDetailLevel.BASIC)
+                    .authenticate(credential, profile)
                     .withDefaultSubscription();
 
             // Print selected subscription

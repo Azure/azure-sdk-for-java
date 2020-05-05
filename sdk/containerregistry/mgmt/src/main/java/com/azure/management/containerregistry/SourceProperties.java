@@ -7,9 +7,7 @@ package com.azure.management.containerregistry;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The SourceProperties model.
- */
+/** The SourceProperties model. */
 @Fluent
 public final class SourceProperties {
     /*
@@ -40,7 +38,7 @@ public final class SourceProperties {
 
     /**
      * Get the sourceControlType property: The type of source control service.
-     * 
+     *
      * @return the sourceControlType value.
      */
     public SourceControlType sourceControlType() {
@@ -49,7 +47,7 @@ public final class SourceProperties {
 
     /**
      * Set the sourceControlType property: The type of source control service.
-     * 
+     *
      * @param sourceControlType the sourceControlType value to set.
      * @return the SourceProperties object itself.
      */
@@ -59,9 +57,8 @@ public final class SourceProperties {
     }
 
     /**
-     * Get the repositoryUrl property: The full URL to the source code
-     * repository.
-     * 
+     * Get the repositoryUrl property: The full URL to the source code repository.
+     *
      * @return the repositoryUrl value.
      */
     public String repositoryUrl() {
@@ -69,9 +66,8 @@ public final class SourceProperties {
     }
 
     /**
-     * Set the repositoryUrl property: The full URL to the source code
-     * repository.
-     * 
+     * Set the repositoryUrl property: The full URL to the source code repository.
+     *
      * @param repositoryUrl the repositoryUrl value to set.
      * @return the SourceProperties object itself.
      */
@@ -82,7 +78,7 @@ public final class SourceProperties {
 
     /**
      * Get the branch property: The branch name of the source code.
-     * 
+     *
      * @return the branch value.
      */
     public String branch() {
@@ -91,7 +87,7 @@ public final class SourceProperties {
 
     /**
      * Set the branch property: The branch name of the source code.
-     * 
+     *
      * @param branch the branch value to set.
      * @return the SourceProperties object itself.
      */
@@ -101,10 +97,9 @@ public final class SourceProperties {
     }
 
     /**
-     * Get the sourceControlAuthProperties property: The authorization
-     * properties for accessing the source code repository and to set up
-     * webhooks for notifications.
-     * 
+     * Get the sourceControlAuthProperties property: The authorization properties for accessing the source code
+     * repository and to set up webhooks for notifications.
+     *
      * @return the sourceControlAuthProperties value.
      */
     public AuthInfo sourceControlAuthProperties() {
@@ -112,12 +107,10 @@ public final class SourceProperties {
     }
 
     /**
-     * Set the sourceControlAuthProperties property: The authorization
-     * properties for accessing the source code repository and to set up
-     * webhooks for notifications.
-     * 
-     * @param sourceControlAuthProperties the sourceControlAuthProperties value
-     * to set.
+     * Set the sourceControlAuthProperties property: The authorization properties for accessing the source code
+     * repository and to set up webhooks for notifications.
+     *
+     * @param sourceControlAuthProperties the sourceControlAuthProperties value to set.
      * @return the SourceProperties object itself.
      */
     public SourceProperties withSourceControlAuthProperties(AuthInfo sourceControlAuthProperties) {

@@ -7,9 +7,7 @@ package com.azure.management.sql;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ExportRequest model.
- */
+/** The ExportRequest model. */
 @Fluent
 public class ExportRequest {
     /*
@@ -51,7 +49,7 @@ public class ExportRequest {
 
     /**
      * Get the storageKeyType property: The type of the storage key to use.
-     * 
+     *
      * @return the storageKeyType value.
      */
     public StorageKeyType storageKeyType() {
@@ -60,7 +58,7 @@ public class ExportRequest {
 
     /**
      * Set the storageKeyType property: The type of the storage key to use.
-     * 
+     *
      * @param storageKeyType the storageKeyType value to set.
      * @return the ExportRequest object itself.
      */
@@ -70,9 +68,9 @@ public class ExportRequest {
     }
 
     /**
-     * Get the storageKey property: The storage key to use.  If storage key
-     * type is SharedAccessKey, it must be preceded with a "?.".
-     * 
+     * Get the storageKey property: The storage key to use. If storage key type is SharedAccessKey, it must be preceded
+     * with a "?.".
+     *
      * @return the storageKey value.
      */
     public String storageKey() {
@@ -80,9 +78,9 @@ public class ExportRequest {
     }
 
     /**
-     * Set the storageKey property: The storage key to use.  If storage key
-     * type is SharedAccessKey, it must be preceded with a "?.".
-     * 
+     * Set the storageKey property: The storage key to use. If storage key type is SharedAccessKey, it must be preceded
+     * with a "?.".
+     *
      * @param storageKey the storageKey value to set.
      * @return the ExportRequest object itself.
      */
@@ -93,7 +91,7 @@ public class ExportRequest {
 
     /**
      * Get the storageUri property: The storage uri to use.
-     * 
+     *
      * @return the storageUri value.
      */
     public String storageUri() {
@@ -102,7 +100,7 @@ public class ExportRequest {
 
     /**
      * Set the storageUri property: The storage uri to use.
-     * 
+     *
      * @param storageUri the storageUri value to set.
      * @return the ExportRequest object itself.
      */
@@ -113,7 +111,7 @@ public class ExportRequest {
 
     /**
      * Get the administratorLogin property: The name of the SQL administrator.
-     * 
+     *
      * @return the administratorLogin value.
      */
     public String administratorLogin() {
@@ -122,7 +120,7 @@ public class ExportRequest {
 
     /**
      * Set the administratorLogin property: The name of the SQL administrator.
-     * 
+     *
      * @param administratorLogin the administratorLogin value to set.
      * @return the ExportRequest object itself.
      */
@@ -132,9 +130,8 @@ public class ExportRequest {
     }
 
     /**
-     * Get the administratorLoginPassword property: The password of the SQL
-     * administrator.
-     * 
+     * Get the administratorLoginPassword property: The password of the SQL administrator.
+     *
      * @return the administratorLoginPassword value.
      */
     public String administratorLoginPassword() {
@@ -142,11 +139,9 @@ public class ExportRequest {
     }
 
     /**
-     * Set the administratorLoginPassword property: The password of the SQL
-     * administrator.
-     * 
-     * @param administratorLoginPassword the administratorLoginPassword value
-     * to set.
+     * Set the administratorLoginPassword property: The password of the SQL administrator.
+     *
+     * @param administratorLoginPassword the administratorLoginPassword value to set.
      * @return the ExportRequest object itself.
      */
     public ExportRequest withAdministratorLoginPassword(String administratorLoginPassword) {
@@ -156,7 +151,7 @@ public class ExportRequest {
 
     /**
      * Get the authenticationType property: The authentication type.
-     * 
+     *
      * @return the authenticationType value.
      */
     public AuthenticationType authenticationType() {
@@ -165,7 +160,7 @@ public class ExportRequest {
 
     /**
      * Set the authenticationType property: The authentication type.
-     * 
+     *
      * @param authenticationType the authenticationType value to set.
      * @return the ExportRequest object itself.
      */

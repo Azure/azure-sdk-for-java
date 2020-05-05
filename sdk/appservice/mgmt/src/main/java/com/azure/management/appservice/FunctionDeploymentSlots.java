@@ -14,12 +14,10 @@ import com.azure.management.resources.fluentcore.collection.SupportsDeletingById
 import com.azure.management.resources.fluentcore.collection.SupportsDeletingByName;
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 
-/**
- * Entry point for Azure function app deployment slot management API.
- */
+/** Entry point for Azure function app deployment slot management API. */
 @Fluent
-public interface FunctionDeploymentSlots extends
-        SupportsCreating<FunctionDeploymentSlot.DefinitionStages.Blank>,
+public interface FunctionDeploymentSlots
+    extends SupportsCreating<FunctionDeploymentSlot.DefinitionStages.Blank>,
         SupportsListing<FunctionDeploymentSlot>,
         SupportsGettingByName<FunctionDeploymentSlot>,
         SupportsGettingById<FunctionDeploymentSlot>,

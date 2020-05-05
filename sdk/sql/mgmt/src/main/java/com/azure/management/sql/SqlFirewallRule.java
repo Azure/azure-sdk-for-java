@@ -14,51 +14,34 @@ import com.azure.management.resources.fluentcore.model.Updatable;
 import com.azure.management.sql.models.FirewallRuleInner;
 import reactor.core.publisher.Mono;
 
-/**
- * An immutable client-side representation of an Azure SQL Server Firewall Rule.
- */
+/** An immutable client-side representation of an Azure SQL Server Firewall Rule. */
 @Fluent
 public interface SqlFirewallRule
-    extends
-        ExternalChildResource<SqlFirewallRule, SqlServer>,
+    extends ExternalChildResource<SqlFirewallRule, SqlServer>,
         HasInner<FirewallRuleInner>,
         HasResourceGroup,
         Refreshable<SqlFirewallRule>,
         Updatable<SqlFirewallRule.Update> {
 
-    /**
-     * @return name of the SQL Server to which this Firewall Rule belongs
-     */
+    /** @return name of the SQL Server to which this Firewall Rule belongs */
     String sqlServerName();
 
-    /**
-     * @return the start IP address (in IPv4 format) of the Azure SQL Server Firewall Rule.
-     */
-    String startIPAddress();
+    /** @return the start Ip address (in Ipv4 format) of the Azure SQL Server Firewall Rule. */
+    String startIpAddress();
 
-    /**
-     * @return the end IP address (in IPv4 format) of the Azure SQL Server Firewall Rule.
-     */
-    String endIPAddress();
+    /** @return the end Ip address (in Ipv4 format) of the Azure SQL Server Firewall Rule. */
+    String endIpAddress();
 
-    /**
-     * @return kind of SQL Server that contains this Firewall Rule.
-     */
+    /** @return kind of SQL Server that contains this Firewall Rule. */
     String kind();
 
-    /**
-     * @return region of SQL Server that contains this Firewall Rule.
-     */
+    /** @return region of SQL Server that contains this Firewall Rule. */
     Region region();
 
-    /**
-     * @return the parent SQL server ID
-     */
+    /** @return the parent SQL server ID */
     String parentId();
 
-    /**
-     * Deletes the firewall rule.
-     */
+    /** Deletes the firewall rule. */
     void delete();
 
     /**
@@ -67,7 +50,6 @@ public interface SqlFirewallRule
      * @return a representation of the deferred computation of this call
      */
     Mono<Void> deleteAsync();
-
 
     /**************************************************************
      * Fluent interfaces to provision a SQL Firewall Rule
@@ -78,102 +60,87 @@ public interface SqlFirewallRule
      *
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
-    interface SqlFirewallRuleDefinition<ParentT> extends
-            SqlFirewallRule.DefinitionStages.Blank<ParentT>,
-            SqlFirewallRule.DefinitionStages.WithIPAddress<ParentT>,
-            SqlFirewallRule.DefinitionStages.WithIPAddressRange<ParentT>,
+    interface SqlFirewallRuleDefinition<ParentT>
+        extends SqlFirewallRule.DefinitionStages.Blank<ParentT>,
+            SqlFirewallRule.DefinitionStages.WithIpAddress<ParentT>,
+            SqlFirewallRule.DefinitionStages.WithIpAddressRange<ParentT>,
             SqlFirewallRule.DefinitionStages.WithAttach<ParentT> {
     }
 
-    /**
-     * Grouping of all the SQL Firewall Rule definition stages.
-     */
+    /** Grouping of all the SQL Firewall Rule definition stages. */
     interface DefinitionStages {
         /**
          * The first stage of the SQL Server Firewall Rule definition.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface Blank<ParentT> extends
-            SqlFirewallRule.DefinitionStages.WithIPAddressRange<ParentT>,
-            SqlFirewallRule.DefinitionStages.WithIPAddress<ParentT> {
+        interface Blank<ParentT>
+            extends SqlFirewallRule.DefinitionStages.WithIpAddressRange<ParentT>,
+                SqlFirewallRule.DefinitionStages.WithIpAddress<ParentT> {
+        }
+
+        /** The SQL Firewall Rule definition to set the Ip address range for the parent SQL Server. */
+        interface WithIpAddressRange<ParentT> {
+            /**
+             * Sets the starting Ip address of SQL server's Firewall Rule.
+             *
+             * @param startIpAddress starting Ip address in Ipv4 format.
+             * @param endIpAddress starting Ip address in Ipv4 format.
+             * @return The next stage of the definition.
+             */
+            WithAttach<ParentT> withIpAddressRange(String startIpAddress, String endIpAddress);
+        }
+
+        /** The SQL Firewall Rule definition to set the Ip address for the parent SQL Server. */
+        interface WithIpAddress<ParentT> {
+            /**
+             * Sets the ending Ip address of SQL server's Firewall Rule.
+             *
+             * @param ipAddress Ip address in Ipv4 format.
+             * @return The next stage of the definition.
+             */
+            WithAttach<ParentT> withIpAddress(String ipAddress);
         }
 
         /**
-         * The SQL Firewall Rule definition to set the IP address range for the parent SQL Server.
-         */
-        interface WithIPAddressRange<ParentT> {
-            /**
-             * Sets the starting IP address of SQL server's Firewall Rule.
-             *
-             * @param startIPAddress starting IP address in IPv4 format.
-             * @param endIPAddress starting IP address in IPv4 format.
-             * @return The next stage of the definition.
-             */
-            WithAttach<ParentT> withIPAddressRange(String startIPAddress, String endIPAddress);
-        }
-
-        /**
-         * The SQL Firewall Rule definition to set the IP address for the parent SQL Server.
-         */
-        interface WithIPAddress<ParentT> {
-            /**
-             * Sets the ending IP address of SQL server's Firewall Rule.
-             *
-             * @param ipAddress IP address in IPv4 format.
-             * @return The next stage of the definition.
-             */
-            WithAttach<ParentT> withIPAddress(String ipAddress);
-        }
-
-        /** The final stage of the SQL Firewall Rule definition.
-         * <p>
-         * At this stage, any remaining optional settings can be specified, or the SQL Firewall Rule definition
-         * can be attached to the parent SQL Server definition.
+         * The final stage of the SQL Firewall Rule definition.
+         *
+         * <p>At this stage, any remaining optional settings can be specified, or the SQL Firewall Rule definition can
+         * be attached to the parent SQL Server definition.
+         *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAttach<ParentT> extends
-            Attachable.InDefinition<ParentT> {
+        interface WithAttach<ParentT> extends Attachable.InDefinition<ParentT> {
         }
     }
 
-    /**
-     * The template for a SQL Firewall Rule update operation, containing all the settings that can be modified.
-     */
-    interface Update extends
-            UpdateStages.WithEndIPAddress,
-            UpdateStages.WithStartIPAddress,
-            Appliable<SqlFirewallRule> {
+    /** The template for a SQL Firewall Rule update operation, containing all the settings that can be modified. */
+    interface Update
+        extends UpdateStages.WithEndIpAddress, UpdateStages.WithStartIpAddress, Appliable<SqlFirewallRule> {
     }
 
-    /**
-     * Grouping of all the SQL Firewall Rule update stages.
-     */
+    /** Grouping of all the SQL Firewall Rule update stages. */
     interface UpdateStages {
-        /**
-         * The SQL Firewall Rule definition to set the starting IP Address for the server.
-         */
-        interface WithStartIPAddress {
+        /** The SQL Firewall Rule definition to set the starting Ip Address for the server. */
+        interface WithStartIpAddress {
             /**
-             * Sets the starting IP address of SQL server's Firewall Rule.
+             * Sets the starting Ip address of SQL server's Firewall Rule.
              *
-             * @param startIPAddress start IP address in IPv4 format.
+             * @param startIpAddress start Ip address in Ipv4 format.
              * @return The next stage of the update.
              */
-            Update withStartIPAddress(String startIPAddress);
+            Update withStartIpAddress(String startIpAddress);
         }
 
-        /**
-         * The SQL Firewall Rule definition to set the starting IP Address for the server.
-         */
-        interface WithEndIPAddress {
+        /** The SQL Firewall Rule definition to set the starting Ip Address for the server. */
+        interface WithEndIpAddress {
             /**
-             * Sets the ending IP address of SQL server's Firewall Rule.
+             * Sets the ending Ip address of SQL server's Firewall Rule.
              *
-             * @param endIPAddress end IP address in IPv4 format.
+             * @param endIpAddress end Ip address in Ipv4 format.
              * @return The next stage of the update.
              */
-            Update withEndIPAddress(String endIPAddress);
+            Update withEndIpAddress(String endIpAddress);
         }
     }
 }

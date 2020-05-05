@@ -9,17 +9,15 @@ import com.azure.management.containerregistry.OverridingValue;
 import com.azure.management.containerregistry.RegistryFileTaskStep;
 import com.azure.management.containerregistry.RegistryTask;
 import com.azure.management.containerregistry.SetValue;
+import com.azure.management.containerregistry.TaskStepProperties;
 import com.azure.management.resources.fluentcore.model.HasInner;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-class RegistryFileTaskStepImpl
-        extends RegistryTaskStepImpl
-        implements
-        RegistryFileTaskStep,
+class RegistryFileTaskStepImpl extends RegistryTaskStepImpl
+    implements RegistryFileTaskStep,
         RegistryFileTaskStep.Definition,
         RegistryFileTaskStep.Update,
         HasInner<FileTaskStep> {
@@ -31,8 +29,9 @@ class RegistryFileTaskStepImpl
     RegistryFileTaskStepImpl(RegistryTaskImpl taskImpl) {
         super(taskImpl.inner().step());
         this.inner = new FileTaskStep();
-        if (taskImpl.inner().step() != null &&  !(taskImpl.inner().step() instanceof FileTaskStep)) {
-            throw new IllegalArgumentException("Constructor for RegistryFileTaskStepImpl invoked for class that is not FileTaskStep");
+        if (taskImpl.inner().step() != null && !(taskImpl.inner().step() instanceof FileTaskStep)) {
+            throw new IllegalArgumentException(
+                "Constructor for RegistryFileTaskStepImpl invoked for class that is not FileTaskStep");
         }
         this.taskImpl = taskImpl;
         this.fileTaskStepUpdateParameters = new FileTaskStepUpdateParameters();
@@ -40,23 +39,32 @@ class RegistryFileTaskStepImpl
 
     @Override
     public String taskFilePath() {
-        FileTaskStep fileTaskStep = (FileTaskStep) this.taskImpl.inner().step();
+        FileTaskStep fileTaskStep = fileTaskStep();
         return fileTaskStep.taskFilePath();
     }
 
     @Override
     public String valuesFilePath() {
-        FileTaskStep fileTaskStep = (FileTaskStep) this.taskImpl.inner().step();
+        FileTaskStep fileTaskStep = fileTaskStep();
         return fileTaskStep.valuesFilePath();
     }
 
     @Override
     public List<SetValue> values() {
-        FileTaskStep fileTaskStep = (FileTaskStep) this.taskImpl.inner().step();
+        FileTaskStep fileTaskStep = fileTaskStep();
         if (fileTaskStep.values() == null) {
             return Collections.unmodifiableList(new ArrayList<SetValue>());
         }
         return Collections.unmodifiableList(fileTaskStep.values());
+    }
+
+    private FileTaskStep fileTaskStep() {
+        TaskStepProperties step = this.taskImpl.inner().step();
+        if (step instanceof FileTaskStep) {
+            return (FileTaskStep) step;
+        } else {
+            return new FileTaskStep();
+        }
     }
 
     @Override
@@ -91,7 +99,6 @@ class RegistryFileTaskStepImpl
             value.withValue(entry.getValue().value());
             value.withIsSecret(entry.getValue().isSecret());
             overridingValuesList.add(value);
-
         }
         if (isInCreateMode()) {
             this.inner.withValues(overridingValuesList);

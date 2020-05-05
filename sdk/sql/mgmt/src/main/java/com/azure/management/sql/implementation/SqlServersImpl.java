@@ -25,24 +25,16 @@ import com.azure.management.sql.models.LocationCapabilitiesInner;
 import com.azure.management.sql.models.ServerInner;
 import com.azure.management.sql.models.ServersInner;
 import com.azure.management.sql.models.SubscriptionUsageInner;
-import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for SqlServers and its parent interfaces.
- */
+/** Implementation for SqlServers and its parent interfaces. */
 class SqlServersImpl
-        extends TopLevelModifiableResourcesImpl<
-                SqlServer,
-                    SqlServerImpl,
-                ServerInner,
-                ServersInner,
-                    SqlServerManager>
-        implements SqlServers {
+    extends TopLevelModifiableResourcesImpl<SqlServer, SqlServerImpl, ServerInner, ServersInner, SqlServerManager>
+    implements SqlServers {
 
     private SqlFirewallRuleOperations firewallRules;
     private SqlVirtualNetworkRuleOperations virtualNetworkRules;
@@ -186,34 +178,38 @@ class SqlServersImpl
 
     @Override
     public Mono<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name) {
-        return this.inner().checkNameAvailabilityAsync(name)
-            .map(checkNameAvailabilityResponseInner -> new CheckNameAvailabilityResultImpl(checkNameAvailabilityResponseInner));
+        return this
+            .inner()
+            .checkNameAvailabilityAsync(name)
+            .map(
+                CheckNameAvailabilityResultImpl::new);
     }
 
     @Override
     public RegionCapabilities getCapabilitiesByRegion(Region region) {
-        LocationCapabilitiesInner capabilitiesInner = this.manager().inner().capabilities()
-            .listByLocation(region.name());
+        LocationCapabilitiesInner capabilitiesInner =
+            this.manager().inner().capabilities().listByLocation(region.name());
         return capabilitiesInner != null ? new RegionCapabilitiesImpl(capabilitiesInner) : null;
     }
 
     @Override
     public Mono<RegionCapabilities> getCapabilitiesByRegionAsync(Region region) {
-        return this.manager().inner().capabilities()
+        return this
+            .manager()
+            .inner()
+            .capabilities()
             .listByLocationAsync(region.name())
-            .map(capabilitiesInner -> new RegionCapabilitiesImpl(capabilitiesInner));
+            .map(RegionCapabilitiesImpl::new);
     }
 
     @Override
     public List<SqlSubscriptionUsageMetric> listUsageByRegion(Region region) {
         Objects.requireNonNull(region);
         List<SqlSubscriptionUsageMetric> subscriptionUsages = new ArrayList<>();
-        PagedIterable<SubscriptionUsageInner> subscriptionUsageInners = this.manager().inner().subscriptionUsages()
-            .listByLocation(region.name());
-        if (subscriptionUsageInners != null) {
-            for (SubscriptionUsageInner inner : subscriptionUsageInners) {
-                subscriptionUsages.add(new SqlSubscriptionUsageMetricImpl(region.name(), inner, this.manager()));
-            }
+        PagedIterable<SubscriptionUsageInner> subscriptionUsageInners =
+            this.manager().inner().subscriptionUsages().listByLocation(region.name());
+        for (SubscriptionUsageInner inner : subscriptionUsageInners) {
+            subscriptionUsages.add(new SqlSubscriptionUsageMetricImpl(region.name(), inner, this.manager()));
         }
         return Collections.unmodifiableList(subscriptionUsages);
     }
@@ -222,8 +218,13 @@ class SqlServersImpl
     public PagedFlux<SqlSubscriptionUsageMetric> listUsageByRegionAsync(final Region region) {
         Objects.requireNonNull(region);
         final SqlServers self = this;
-        return this.manager().inner().subscriptionUsages()
+        return this
+            .manager()
+            .inner()
+            .subscriptionUsages()
             .listByLocationAsync(region.name())
-            .mapPage(subscriptionUsageInner -> new SqlSubscriptionUsageMetricImpl(region.name(), subscriptionUsageInner, self.manager()));
+            .mapPage(
+                subscriptionUsageInner ->
+                    new SqlSubscriptionUsageMetricImpl(region.name(), subscriptionUsageInner, self.manager()));
     }
 }

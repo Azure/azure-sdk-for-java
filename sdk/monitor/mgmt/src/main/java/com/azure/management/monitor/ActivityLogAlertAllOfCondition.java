@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ActivityLogAlertAllOfCondition model.
- */
+/** The ActivityLogAlertAllOfCondition model. */
 @Fluent
 public final class ActivityLogAlertAllOfCondition {
     /*
@@ -21,7 +19,7 @@ public final class ActivityLogAlertAllOfCondition {
 
     /**
      * Get the allOf property: The list of activity log alert conditions.
-     * 
+     *
      * @return the allOf value.
      */
     public List<ActivityLogAlertLeafCondition> allOf() {
@@ -30,7 +28,7 @@ public final class ActivityLogAlertAllOfCondition {
 
     /**
      * Set the allOf property: The list of activity log alert conditions.
-     * 
+     *
      * @param allOf the allOf value to set.
      * @return the ActivityLogAlertAllOfCondition object itself.
      */

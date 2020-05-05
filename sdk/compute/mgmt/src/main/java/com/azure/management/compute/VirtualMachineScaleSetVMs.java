@@ -7,17 +7,13 @@ import com.azure.core.annotation.Fluent;
 import com.azure.management.compute.models.VirtualMachineScaleSetVMsInner;
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
+import java.util.Collection;
 import reactor.core.publisher.Mono;
 
-import java.util.Collection;
-
-/**
- *  Entry point to virtual machine scale set instance management API.
- */
+/** Entry point to virtual machine scale set instance management API. */
 @Fluent
-public interface VirtualMachineScaleSetVMs extends
-        SupportsListing<VirtualMachineScaleSetVM>,
-    HasInner<VirtualMachineScaleSetVMsInner> {
+public interface VirtualMachineScaleSetVMs
+    extends SupportsListing<VirtualMachineScaleSetVM>, HasInner<VirtualMachineScaleSetVMsInner> {
     /**
      * Deletes the specified virtual machine instances from the scale set.
      *
@@ -43,6 +39,7 @@ public interface VirtualMachineScaleSetVMs extends
 
     /**
      * Get the specified virtual machine instance from the scale set.
+     *
      * @param instanceId instance ID of the virtual machine scale set instance to be fetched
      * @return the virtual machine scale set instance.
      */
@@ -50,6 +47,7 @@ public interface VirtualMachineScaleSetVMs extends
 
     /**
      * Get the specified virtual machine instance from the scale set.
+     *
      * @param instanceId instance ID of the virtual machine scale set instance to be fetched.
      * @return the virtual machine scale set instance.
      */

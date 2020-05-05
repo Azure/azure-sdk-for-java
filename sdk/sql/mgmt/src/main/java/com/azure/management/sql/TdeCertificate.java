@@ -9,9 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The TdeCertificate model.
- */
+/** The TdeCertificate model. */
 @JsonFlatten
 @Fluent
 public class TdeCertificate extends ProxyResource {
@@ -28,9 +26,8 @@ public class TdeCertificate extends ProxyResource {
     private String certPassword;
 
     /**
-     * Get the privateBlob property: The base64 encoded certificate private
-     * blob.
-     * 
+     * Get the privateBlob property: The base64 encoded certificate private blob.
+     *
      * @return the privateBlob value.
      */
     public String privateBlob() {
@@ -38,9 +35,8 @@ public class TdeCertificate extends ProxyResource {
     }
 
     /**
-     * Set the privateBlob property: The base64 encoded certificate private
-     * blob.
-     * 
+     * Set the privateBlob property: The base64 encoded certificate private blob.
+     *
      * @param privateBlob the privateBlob value to set.
      * @return the TdeCertificate object itself.
      */
@@ -51,7 +47,7 @@ public class TdeCertificate extends ProxyResource {
 
     /**
      * Get the certPassword property: The certificate password.
-     * 
+     *
      * @return the certPassword value.
      */
     public String certPassword() {
@@ -60,7 +56,7 @@ public class TdeCertificate extends ProxyResource {
 
     /**
      * Set the certPassword property: The certificate password.
-     * 
+     *
      * @param certPassword the certPassword value to set.
      * @return the TdeCertificate object itself.
      */

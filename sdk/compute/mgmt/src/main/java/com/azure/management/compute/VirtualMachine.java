@@ -4,16 +4,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.compute.models.VirtualMachineInner;
-import com.azure.management.network.models.HasNetworkInterfaces;
 import com.azure.management.compute.implementation.ComputeManager;
+import com.azure.management.compute.models.VirtualMachineInner;
 import com.azure.management.graphrbac.BuiltInRole;
 import com.azure.management.msi.Identity;
 import com.azure.management.network.Network;
 import com.azure.management.network.NetworkInterface;
 import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.models.HasNetworkInterfaces;
 import com.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.management.resources.fluentcore.arm.models.Resource;
@@ -22,25 +21,20 @@ import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.Refreshable;
 import com.azure.management.resources.fluentcore.model.Updatable;
 import com.azure.management.storage.StorageAccount;
-import reactor.core.publisher.Mono;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import reactor.core.publisher.Mono;
 
-/**
- * An immutable client-side representation of an Azure virtual machine.
- */
+/** An immutable client-side representation of an Azure virtual machine. */
 @Fluent
-public interface VirtualMachine extends
-        GroupableResource<ComputeManager, VirtualMachineInner>,
+public interface VirtualMachine
+    extends GroupableResource<ComputeManager, VirtualMachineInner>,
         Refreshable<VirtualMachine>,
         Updatable<VirtualMachine.Update>,
         HasNetworkInterfaces {
     // Actions
-    /**
-     * Shuts down the virtual machine and releases the compute resources.
-     */
+    /** Shuts down the virtual machine and releases the compute resources. */
     void deallocate();
 
     /**
@@ -50,9 +44,7 @@ public interface VirtualMachine extends
      */
     Mono<Void> deallocateAsync();
 
-    /**
-     * Generalizes the virtual machine.
-     */
+    /** Generalizes the virtual machine. */
     void generalize();
 
     /**
@@ -62,9 +54,7 @@ public interface VirtualMachine extends
      */
     Mono<Void> generalizeAsync();
 
-    /**
-     * Powers off (stops) the virtual machine.
-     */
+    /** Powers off (stops) the virtual machine. */
     void powerOff();
 
     /**
@@ -74,9 +64,7 @@ public interface VirtualMachine extends
      */
     Mono<Void> powerOffAsync();
 
-    /**
-     * Restarts the virtual machine.
-     */
+    /** Restarts the virtual machine. */
     void restart();
 
     /**
@@ -86,9 +74,7 @@ public interface VirtualMachine extends
      */
     Mono<Void> restartAsync();
 
-    /**
-     * Starts the virtual machine.
-     */
+    /** Starts the virtual machine. */
     void start();
 
     /**
@@ -98,9 +84,7 @@ public interface VirtualMachine extends
      */
     Mono<Void> startAsync();
 
-    /**
-     * Redeploys the virtual machine.
-     */
+    /** Redeploys the virtual machine. */
     void redeploy();
 
     /**
@@ -110,20 +94,16 @@ public interface VirtualMachine extends
      */
     Mono<Void> redeployAsync();
 
-    /**
-     * @return entry point to enabling, disabling and querying disk encryption
-     */
+    /** @return entry point to enabling, disabling and querying disk encryption */
     VirtualMachineEncryption diskEncryption();
 
-    /**
-     * Converts (migrates) the virtual machine with un-managed disks to use managed disk.
-     */
+    /** Converts (migrates) the virtual machine with un-managed disks to use managed disk. */
     void convertToManaged();
 
     /**
      * Converts (migrates) the virtual machine with un-managed disks to use managed disk asynchronously.
      *
-     *  @return a representation of the deferred computation of this call
+     * @return a representation of the deferred computation of this call
      */
     Mono<Void> convertToManagedAsync();
 
@@ -156,8 +136,8 @@ public interface VirtualMachine extends
 
     /**
      * Refreshes the virtual machine instance view to sync with Azure.
-     * <p>
-     * The instance view will be cached for later retrieval using <code>instanceView</code>.
+     *
+     * <p>The instance view will be cached for later retrieval using <code>instanceView</code>.
      *
      * @return the refreshed instance view
      */
@@ -179,7 +159,8 @@ public interface VirtualMachine extends
      * @param scriptParameters script parameters
      * @return result of PowerShell script execution
      */
-    RunCommandResult runPowerShellScript(String groupName, String name, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters);
+    RunCommandResult runPowerShellScript(
+        String groupName, String name, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters);
 
     /**
      * Run shell script in the virtual machine asynchronously.
@@ -188,7 +169,8 @@ public interface VirtualMachine extends
      * @param scriptParameters script parameters
      * @return handle to the asynchronous execution
      */
-    Mono<RunCommandResult> runPowerShellScriptAsync(List<String> scriptLines, List<RunCommandInputParameter> scriptParameters);
+    Mono<RunCommandResult> runPowerShellScriptAsync(
+        List<String> scriptLines, List<RunCommandInputParameter> scriptParameters);
 
     /**
      * Run shell script in the virtual machine.
@@ -199,7 +181,6 @@ public interface VirtualMachine extends
      */
     RunCommandResult runShellScript(List<String> scriptLines, List<RunCommandInputParameter> scriptParameters);
 
-
     /**
      * Run shell script in the virtual machine asynchronously.
      *
@@ -207,7 +188,8 @@ public interface VirtualMachine extends
      * @param scriptParameters script parameters
      * @return handle to the asynchronous execution
      */
-    Mono<RunCommandResult> runShellScriptAsync(List<String> scriptLines, List<RunCommandInputParameter> scriptParameters);
+    Mono<RunCommandResult> runShellScriptAsync(
+        List<String> scriptLines, List<RunCommandInputParameter> scriptParameters);
 
     /**
      * Run commands in the virtual machine.
@@ -228,65 +210,43 @@ public interface VirtualMachine extends
     // Getters
     //
 
-    /**
-     * @return true if managed disks are used for the virtual machine's disks (OS, data)
-     */
+    /** @return true if managed disks are used for the virtual machine's disks (OS, data) */
     boolean isManagedDiskEnabled();
 
-    /**
-     * @return name of this virtual machine
-     */
+    /** @return name of this virtual machine */
     String computerName();
 
-    /**
-     * @return the virtual machine size
-     */
+    /** @return the virtual machine size */
     VirtualMachineSizeTypes size();
 
-    /**
-     * @return the operating system of this virtual machine
-     */
+    /** @return the operating system of this virtual machine */
     OperatingSystemTypes osType();
 
-    /**
-     * @return the URI to the VHD file backing this virtual machine's operating system disk
-     */
+    /** @return the URI to the VHD file backing this virtual machine's operating system disk */
     String osUnmanagedDiskVhdUri();
 
-    /**
-     * @return the operating system disk caching type
-     */
+    /** @return the operating system disk caching type */
     CachingTypes osDiskCachingType();
 
-    /**
-     * @return the size of the operating system disk in GB
-     */
+    /** @return the size of the operating system disk in GB */
     int osDiskSize();
 
-    /**
-     * @return the storage account type of the managed disk backing OS disk
-     */
+    /** @return the storage account type of the managed disk backing OS disk */
     StorageAccountTypes osDiskStorageAccountType();
 
-    /**
-     * @return resource ID of the managed disk backing the OS disk
-     */
+    /** @return resource ID of the managed disk backing the OS disk */
     String osDiskId();
 
-    /**
-     * @return the unmanaged data disks associated with this virtual machine, indexed by LUN number
-     */
+    /** @return the unmanaged data disks associated with this virtual machine, indexed by LUN number */
     Map<Integer, VirtualMachineUnmanagedDataDisk> unmanagedDataDisks();
 
-    /**
-     * @return the managed data disks associated with this virtual machine, indexed by LUN
-     */
+    /** @return the managed data disks associated with this virtual machine, indexed by LUN */
     Map<Integer, VirtualMachineDataDisk> dataDisks();
 
     /**
      * Gets the public IP address associated with this virtual machine's primary network interface.
-     * <p>
-     * Note that this method makes a rest API call to fetch the resource.
+     *
+     * <p>Note that this method makes a rest API call to fetch the resource.
      *
      * @return the public IP of the primary network interface
      */
@@ -297,41 +257,33 @@ public interface VirtualMachine extends
      */
     String getPrimaryPublicIPAddressId();
 
-    /**
-     * @return the resource ID of the availability set associated with this virtual machine
-     */
+    /** @return the resource ID of the availability set associated with this virtual machine */
     String availabilitySetId();
 
-    /**
-     * @return the provisioningState value
-     */
+    /** @return the provisioningState value */
     String provisioningState();
 
-    /**
-     * @return the licenseType value
-     */
+    /** @return the licenseType value */
     String licenseType();
 
     /**
      * Get specifies information about the proximity placement group that the virtual machine scale set should be
      * assigned to.
+     *
      * @return the proximityPlacementGroup.
      */
     ProximityPlacementGroup proximityPlacementGroup();
 
     /**
-     * @return a representation of the deferred computation of this call, returning extensions attached to the virtual machine
+     * @return a representation of the deferred computation of this call, returning extensions attached to the virtual
+     *     machine
      */
     Mono<List<VirtualMachineExtension>> listExtensionsAsync();
 
-    /**
-     * @return extensions attached to the virtual machine
-     */
+    /** @return extensions attached to the virtual machine */
     Map<String, VirtualMachineExtension> listExtensions();
 
-    /**
-     * @return the plan value
-     */
+    /** @return the plan value */
     Plan plan();
 
     /**
@@ -341,102 +293,72 @@ public interface VirtualMachine extends
      */
     StorageProfile storageProfile();
 
-    /**
-     * @return the operating system profile
-     */
+    /** @return the operating system profile */
     OSProfile osProfile();
 
-    /**
-     * @return the diagnostics profile
-     */
+    /** @return the diagnostics profile */
     DiagnosticsProfile diagnosticsProfile();
 
-    /**
-     * @return the virtual machine unique ID.
-     */
+    /** @return the virtual machine unique ID. */
     String vmId();
 
-    /**
-     * @return the power state of the virtual machine
-     */
+    /** @return the power state of the virtual machine */
     PowerState powerState();
 
     /**
      * Get the virtual machine instance view.
-     * <p>
-     * The instance view will be cached for later retrieval using <code>instanceView</code>.
+     *
+     * <p>The instance view will be cached for later retrieval using <code>instanceView</code>.
      *
      * @return the virtual machine's instance view
      */
     VirtualMachineInstanceView instanceView();
 
-    /**
-     * @return the availability zones assigned to the virtual machine
-     */
+    /** @return the availability zones assigned to the virtual machine */
     Set<AvailabilityZoneId> availabilityZones();
 
-    /**
-     * @return true if boot diagnostics is enabled for the virtual machine
-     */
+    /** @return true if boot diagnostics is enabled for the virtual machine */
     boolean isBootDiagnosticsEnabled();
 
-    /**
-     * @return the storage blob endpoint uri if boot diagnostics is enabled for the virtual machine
-     */
+    /** @return the storage blob endpoint uri if boot diagnostics is enabled for the virtual machine */
     String bootDiagnosticsStorageUri();
 
-    /**
-     * @return true if Managed Service Identity is enabled for the virtual machine
-     */
+    /** @return true if Managed Service Identity is enabled for the virtual machine */
     boolean isManagedServiceIdentityEnabled();
 
     /**
-     * @return the System Assigned (Local) Managed Service Identity specific Active Directory tenant ID assigned
-     * to the virtual machine.
+     * @return the System Assigned (Local) Managed Service Identity specific Active Directory tenant ID assigned to the
+     *     virtual machine.
      */
     String systemAssignedManagedServiceIdentityTenantId();
 
     /**
      * @return the System Assigned (Local) Managed Service Identity specific Active Directory service principal ID
-     * assigned to the virtual machine.
+     *     assigned to the virtual machine.
      */
     String systemAssignedManagedServiceIdentityPrincipalId();
 
-    /**
-     * @return the type of Managed Service Identity used for the virtual machine.
-     */
+    /** @return the type of Managed Service Identity used for the virtual machine. */
     ResourceIdentityType managedServiceIdentityType();
 
-    /**
-     * @return the resource ids of User Assigned Managed Service Identities associated with the virtual machine.
-     */
+    /** @return the resource ids of User Assigned Managed Service Identities associated with the virtual machine. */
     Set<String> userAssignedManagedServiceIdentityIds();
 
-    /**
-     * @return the priority for the virtual machine.
-     */
+    /** @return the priority for the virtual machine. */
     VirtualMachinePriorityTypes priority();
 
-
-    /**
-     * @return the eviction policy for the virtual machine.
-     */
+    /** @return the eviction policy for the virtual machine. */
     VirtualMachineEvictionPolicyTypes evictionPolicy();
 
-    /**
-     * @return the billing related details of a low priority virtual machine
-     */
+    /** @return the billing related details of a low priority virtual machine */
     BillingProfile billingProfile();
 
     // Setters
     //
 
-    /**
-     * The virtual machine scale set stages shared between managed and unmanaged based
-     * virtual machine definitions.
-     */
-    interface DefinitionShared extends
-            DefinitionStages.Blank,
+    /** The virtual machine scale set stages shared between managed and unmanaged based virtual machine definitions. */
+    interface DefinitionShared
+        extends DefinitionStages.Blank,
             DefinitionStages.WithGroup,
             DefinitionStages.WithNetwork,
             DefinitionStages.WithSubnet,
@@ -448,11 +370,9 @@ public interface VirtualMachine extends
             DefinitionStages.WithCreate {
     }
 
-    /**
-     * The entirety of the virtual machine definition.
-     */
-    interface DefinitionManagedOrUnmanaged extends
-            DefinitionShared,
+    /** The entirety of the virtual machine definition. */
+    interface DefinitionManagedOrUnmanaged
+        extends DefinitionShared,
             DefinitionStages.WithLinuxRootUsernameManagedOrUnmanaged,
             DefinitionStages.WithLinuxRootPasswordOrPublicKeyManagedOrUnmanaged,
             DefinitionStages.WithWindowsAdminUsernameManagedOrUnmanaged,
@@ -464,11 +384,9 @@ public interface VirtualMachine extends
             DefinitionStages.WithUnmanagedCreate {
     }
 
-    /**
-     * The entirety of the managed disk based virtual machine definition.
-     */
-    interface DefinitionManaged extends
-            DefinitionShared,
+    /** The entirety of the managed disk based virtual machine definition. */
+    interface DefinitionManaged
+        extends DefinitionShared,
             DefinitionStages.WithLinuxRootUsernameManaged,
             DefinitionStages.WithLinuxRootPasswordOrPublicKeyManaged,
             DefinitionStages.WithWindowsAdminUsernameManaged,
@@ -479,11 +397,9 @@ public interface VirtualMachine extends
             DefinitionStages.WithManagedCreate {
     }
 
-    /**
-     * The entirety of the unmanaged disk based virtual machine definition.
-     */
-    interface DefinitionUnmanaged extends
-            DefinitionStages.Blank,
+    /** The entirety of the unmanaged disk based virtual machine definition. */
+    interface DefinitionUnmanaged
+        extends DefinitionStages.Blank,
             DefinitionStages.WithGroup,
             DefinitionStages.WithNetwork,
             DefinitionStages.WithSubnet,
@@ -501,24 +417,19 @@ public interface VirtualMachine extends
             DefinitionStages.WithUnmanagedCreate {
     }
 
-    /**
-     * Grouping of virtual machine definition stages.
-     */
+    /** Grouping of virtual machine definition stages. */
     interface DefinitionStages {
-        /**
-         * The first stage of a virtual machine definition.
-         */
+        /** The first stage of a virtual machine definition. */
         interface Blank extends GroupableResource.DefinitionWithRegion<WithGroup> {
         }
 
-        /**
-         * The stage of a virtual machine definition allowing to specify the resource group.
-         */
+        /** The stage of a virtual machine definition allowing to specify the resource group. */
         interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithNetwork> {
         }
 
         /**
-         * The stage of a virtual machine definition allowing to specify a virtual network with the new primary network interface.
+         * The stage of a virtual machine definition allowing to specify a virtual network with the new primary network
+         * interface.
          */
         interface WithNetwork extends WithPrimaryNetworkInterface {
             /**
@@ -532,9 +443,10 @@ public interface VirtualMachine extends
 
             /**
              * Creates a new virtual network to associate with the virtual machine's primary network interface.
-             * <p>
-             * The virtual network will be created in the same resource group and region as of virtual machine, it will be
-             * created with the specified address space and a default subnet covering the entirety of the network IP address space.
+             *
+             * <p>The virtual network will be created in the same resource group and region as of virtual machine, it
+             * will be created with the specified address space and a default subnet covering the entirety of the
+             * network IP address space.
              *
              * @param addressSpace the address space for the virtual network
              * @return the next stage of the definition
@@ -551,8 +463,8 @@ public interface VirtualMachine extends
         }
 
         /**
-         * The stage of a virtual machine definition allowing to specify the virtual network subnet for a new primary network interface.
-         *
+         * The stage of a virtual machine definition allowing to specify the virtual network subnet for a new primary
+         * network interface.
          */
         interface WithSubnet {
             /**
@@ -565,7 +477,8 @@ public interface VirtualMachine extends
         }
 
         /**
-         * The stage of a virtual machine definition allowing to specify a private IP address within a virtual network subnet.
+         * The stage of a virtual machine definition allowing to specify a private IP address within a virtual network
+         * subnet.
          */
         interface WithPrivateIP {
             /**
@@ -577,8 +490,8 @@ public interface VirtualMachine extends
             WithPublicIPAddress withPrimaryPrivateIPAddressDynamic();
 
             /**
-             * Assigns the specified static private IP address within the specified existing virtual network subnet to the
-             * VM's primary network interface.
+             * Assigns the specified static private IP address within the specified existing virtual network subnet to
+             * the VM's primary network interface.
              *
              * @param staticPrivateIPAddress a static IP address within the specified subnet
              * @return the next stage of the definition
@@ -587,7 +500,8 @@ public interface VirtualMachine extends
         }
 
         /**
-         * The stage of a virtual machine definition allowing to associate a public IP address with its primary network interface.
+         * The stage of a virtual machine definition allowing to associate a public IP address with its primary network
+         * interface.
          */
         interface WithPublicIPAddress {
             /**
@@ -599,10 +513,10 @@ public interface VirtualMachine extends
             WithProximityPlacementGroup withNewPrimaryPublicIPAddress(Creatable<PublicIPAddress> creatable);
 
             /**
-             * Creates a new public IP address in the same region and resource group as the resource, with the specified DNS label
-             * and associates it with the VM's primary network interface.
-             * <p>
-             * The internal name for the public IP address will be derived from the DNS label.
+             * Creates a new public IP address in the same region and resource group as the resource, with the specified
+             * DNS label and associates it with the VM's primary network interface.
+             *
+             * <p>The internal name for the public IP address will be derived from the DNS label.
              *
              * @param leafDnsLabel a leaf domain label
              * @return the next stage of the definition
@@ -625,9 +539,7 @@ public interface VirtualMachine extends
             WithProximityPlacementGroup withoutPrimaryPublicIPAddress();
         }
 
-        /**
-         * The stage of a virtual machine definition allowing to specify the primary network interface.
-         */
+        /** The stage of a virtual machine definition allowing to specify the primary network interface. */
         interface WithPrimaryNetworkInterface {
             /**
              * Creates a new network interface to associate with the virtual machine as its primary network interface,
@@ -648,22 +560,22 @@ public interface VirtualMachine extends
         }
 
         /**
-         * The stage of a virtual machine definition allowing to
-         * set information about the proximity placement group that the virtual machine scale set should
-         * be assigned to.
+         * The stage of a virtual machine definition allowing to set information about the proximity placement group
+         * that the virtual machine scale set should be assigned to.
          */
         interface WithProximityPlacementGroup extends WithOS {
             /**
-             * Set information about the proximity placement group that the virtual machine scale set should
-             * be assigned to.
-             * @param promixityPlacementGroupId The Id of the proximity placement group subResource.
+             * Set information about the proximity placement group that the virtual machine scale set should be assigned
+             * to.
              *
+             * @param promixityPlacementGroupId The Id of the proximity placement group subResource.
              * @return the next stage of the definition.
              */
             WithOS withProximityPlacementGroup(String promixityPlacementGroupId);
 
             /**
              * Creates a new proximity placement gruup witht he specified name and then adds it to the VM.
+             *
              * @param proximityPlacementGroupName The name of the group to be created.
              * @param type the type of the group
              * @return the next stage of the definition.
@@ -671,9 +583,7 @@ public interface VirtualMachine extends
             WithOS withNewProximityPlacementGroup(String proximityPlacementGroupName, ProximityPlacementGroupType type);
         }
 
-        /**
-         * The stage of a virtual machine definition allowing to specify the operating system image.
-         */
+        /** The stage of a virtual machine definition allowing to specify the operating system image. */
         interface WithOS {
             /**
              * Specifies a known marketplace Windows image to be used for the virtual machine's OS.
@@ -681,17 +591,20 @@ public interface VirtualMachine extends
              * @param knownImage a known market-place image
              * @return the next stage of the definition
              */
-            WithWindowsAdminUsernameManagedOrUnmanaged withPopularWindowsImage(KnownWindowsVirtualMachineImage knownImage);
+            WithWindowsAdminUsernameManagedOrUnmanaged withPopularWindowsImage(
+                KnownWindowsVirtualMachineImage knownImage);
 
             /**
-             * Specifies that the latest version of a marketplace Windows image should to be used as the virtual machine's OS.
+             * Specifies that the latest version of a marketplace Windows image should to be used as the virtual
+             * machine's OS.
              *
              * @param publisher specifies the publisher of the image
              * @param offer specifies the offer of the image
              * @param sku specifies the SKU of the image
              * @return the next stage of the definition
              */
-            WithWindowsAdminUsernameManagedOrUnmanaged withLatestWindowsImage(String publisher, String offer, String sku);
+            WithWindowsAdminUsernameManagedOrUnmanaged withLatestWindowsImage(
+                String publisher, String offer, String sku);
 
             /**
              * Specifies a version of a marketplace Windows image to be used as the virtual machine's OS.
@@ -794,9 +707,7 @@ public interface VirtualMachine extends
             WithManagedCreate withSpecializedOSDisk(Disk disk, OperatingSystemTypes osType);
         }
 
-        /**
-         * The stage of a Linux virtual machine definition allowing to specify an SSH root user name.
-         */
+        /** The stage of a Linux virtual machine definition allowing to specify an SSH root user name. */
         interface WithLinuxRootUsernameManagedOrUnmanaged {
             /**
              * Specifies an SSH root user name for the Linux virtual machine.
@@ -807,9 +718,7 @@ public interface VirtualMachine extends
             WithLinuxRootPasswordOrPublicKeyManagedOrUnmanaged withRootUsername(String rootUserName);
         }
 
-        /**
-         * The stage of a Linux virtual machine definition allowing to specify an SSH root user name.
-         */
+        /** The stage of a Linux virtual machine definition allowing to specify an SSH root user name. */
         interface WithLinuxRootUsernameManaged {
             /**
              * Specifies an SSH root user name for the Linux virtual machine.
@@ -820,9 +729,7 @@ public interface VirtualMachine extends
             WithLinuxRootPasswordOrPublicKeyManaged withRootUsername(String rootUserName);
         }
 
-        /**
-         * The stage of a Linux virtual machine definition allowing to specify an SSH root user name.
-         */
+        /** The stage of a Linux virtual machine definition allowing to specify an SSH root user name. */
         interface WithLinuxRootUsernameUnmanaged {
             /**
              * Specifies an SSH root user name for the Linux virtual machine.
@@ -833,9 +740,7 @@ public interface VirtualMachine extends
             WithLinuxRootPasswordOrPublicKeyUnmanaged withRootUsername(String rootUserName);
         }
 
-        /**
-         * The stage of a Linux virtual machine definition allowing to specify an SSH root password or public key.
-         */
+        /** The stage of a Linux virtual machine definition allowing to specify an SSH root password or public key. */
         interface WithLinuxRootPasswordOrPublicKeyManagedOrUnmanaged {
             /**
              * Specifies the SSH root password for the Linux virtual machine.
@@ -847,15 +752,14 @@ public interface VirtualMachine extends
 
             /**
              * Specifies the SSH public key.
+             *
              * @param publicKey an SSH public key in the PEM format.
              * @return the next stage of the definition
              */
             WithLinuxCreateManagedOrUnmanaged withSsh(String publicKey);
         }
 
-        /**
-         * The stage of a Linux virtual machine definition allowing to specify an SSH root password or public key.
-         */
+        /** The stage of a Linux virtual machine definition allowing to specify an SSH root password or public key. */
         interface WithLinuxRootPasswordOrPublicKeyManaged {
             /**
              * Specifies the SSH root password for the Linux virtual machine.
@@ -867,15 +771,14 @@ public interface VirtualMachine extends
 
             /**
              * Specifies an SSH public key.
+             *
              * @param publicKey an SSH public key in the PEM format.
              * @return the next stage of the definition
              */
             WithLinuxCreateManaged withSsh(String publicKey);
         }
 
-        /**
-         * The stage of a Linux virtual machine definition allowing to specify an SSH root password or public key.
-         */
+        /** The stage of a Linux virtual machine definition allowing to specify an SSH root password or public key. */
         interface WithLinuxRootPasswordOrPublicKeyUnmanaged {
             /**
              * Specifies an SSH root password for the Linux virtual machine.
@@ -887,15 +790,14 @@ public interface VirtualMachine extends
 
             /**
              * Specifies an SSH public key.
+             *
              * @param publicKey an SSH public key in the PEM format.
              * @return the next stage of the definition
              */
             WithLinuxCreateUnmanaged withSsh(String publicKey);
         }
 
-        /**
-         * The stage of a Windows virtual machine definition allowing to specify an administrator user name.
-         */
+        /** The stage of a Windows virtual machine definition allowing to specify an administrator user name. */
         interface WithWindowsAdminUsernameManagedOrUnmanaged {
             /**
              * Specifies the administrator user name for the Windows virtual machine.
@@ -906,9 +808,7 @@ public interface VirtualMachine extends
             WithWindowsAdminPasswordManagedOrUnmanaged withAdminUsername(String adminUserName);
         }
 
-        /**
-         * The stage of a Windows virtual machine definition allowing to specify an administrator user name.
-         */
+        /** The stage of a Windows virtual machine definition allowing to specify an administrator user name. */
         interface WithWindowsAdminUsernameManaged {
             /**
              * Specifies the administrator user name for the Windows virtual machine.
@@ -919,9 +819,7 @@ public interface VirtualMachine extends
             WithWindowsAdminPasswordManaged withAdminUsername(String adminUserName);
         }
 
-        /**
-         * The stage of the Windows virtual machine definition allowing to specify an administrator user name.
-         */
+        /** The stage of the Windows virtual machine definition allowing to specify an administrator user name. */
         interface WithWindowsAdminUsernameUnmanaged {
             /**
              * Specifies the administrator user name for the Windows virtual machine.
@@ -932,9 +830,7 @@ public interface VirtualMachine extends
             WithWindowsAdminPasswordUnmanaged withAdminUsername(String adminUserName);
         }
 
-        /**
-         * The stage of a Windows virtual machine definition allowing to specify an administrator password.
-         */
+        /** The stage of a Windows virtual machine definition allowing to specify an administrator password. */
         interface WithWindowsAdminPasswordManagedOrUnmanaged {
             /**
              * Specifies the administrator password for the Windows virtual machine.
@@ -945,9 +841,7 @@ public interface VirtualMachine extends
             WithWindowsCreateManagedOrUnmanaged withAdminPassword(String adminPassword);
         }
 
-        /**
-         * The stage of a Windows virtual machine definition allowing to specify an administrator user name.
-         */
+        /** The stage of a Windows virtual machine definition allowing to specify an administrator user name. */
         interface WithWindowsAdminPasswordManaged {
             /**
              * Specifies the administrator password for the Windows virtual machine.
@@ -958,9 +852,7 @@ public interface VirtualMachine extends
             WithWindowsCreateManaged withAdminPassword(String adminPassword);
         }
 
-        /**
-         * The stage of a Windows virtual machine definition allowing to specify an administrator password.
-         */
+        /** The stage of a Windows virtual machine definition allowing to specify an administrator password. */
         interface WithWindowsAdminPasswordUnmanaged {
             /**
              * Specifies the administrator password for the Windows virtual machine.
@@ -972,18 +864,21 @@ public interface VirtualMachine extends
         }
 
         /**
-         * The stage of a virtual machine definition containing various settings when virtual machine is created from image.
+         * The stage of a virtual machine definition containing various settings when virtual machine is created from
+         * image.
          */
         interface WithFromImageCreateOptionsManagedOrUnmanaged extends WithFromImageCreateOptionsManaged {
             /**
              * Specifies that unmanaged disks will be used.
+             *
              * @return the next stage of the definition
              */
             WithFromImageCreateOptionsUnmanaged withUnmanagedDisks();
         }
 
         /**
-         * The stage of a virtual machine definition containing various settings when virtual machine is created from image.
+         * The stage of a virtual machine definition containing various settings when virtual machine is created from
+         * image.
          */
         interface WithFromImageCreateOptionsManaged extends WithManagedCreate {
 
@@ -1005,7 +900,8 @@ public interface VirtualMachine extends
         }
 
         /**
-         * The stage of a virtual machine definition containing various settings when virtual machine is created from image.
+         * The stage of a virtual machine definition containing various settings when virtual machine is created from
+         * image.
          */
         interface WithFromImageCreateOptionsUnmanaged extends WithUnmanagedCreate {
             /**
@@ -1026,13 +922,13 @@ public interface VirtualMachine extends
         }
 
         /**
-         * The stage of the Linux virtual machine definition which contains all the minimum required inputs for
-         * the resource to be created, but also allows
-         * for any other optional settings to be specified.
+         * The stage of the Linux virtual machine definition which contains all the minimum required inputs for the
+         * resource to be created, but also allows for any other optional settings to be specified.
          */
         interface WithLinuxCreateManagedOrUnmanaged extends WithFromImageCreateOptionsManagedOrUnmanaged {
             /**
              * Specifies an SSH public key.
+             *
              * @param publicKey an SSH public key in the PEM format.
              * @return the next stage of the definition
              */
@@ -1040,14 +936,14 @@ public interface VirtualMachine extends
         }
 
         /**
-         * The stage of a Linux virtual machine definition which contains all the minimum required inputs for
-         * the resource to be created, but also allows for any other optional settings to be specified.
+         * The stage of a Linux virtual machine definition which contains all the minimum required inputs for the
+         * resource to be created, but also allows for any other optional settings to be specified.
          */
         interface WithLinuxCreateManaged extends WithFromImageCreateOptionsManaged {
             /**
              * Specifies the SSH public key.
-             * <p>
-             * Each call to this method adds the given public key to the list of VM's public keys.
+             *
+             * <p>Each call to this method adds the given public key to the list of VM's public keys.
              *
              * @param publicKey the SSH public key in PEM format.
              * @return the stage representing creatable Linux VM definition
@@ -1056,12 +952,13 @@ public interface VirtualMachine extends
         }
 
         /**
-         * The stage of a Linux virtual machine definition which contains all the minimum required inputs for
-         * the resource to be created, but also allows for any other optional settings to be specified.
+         * The stage of a Linux virtual machine definition which contains all the minimum required inputs for the
+         * resource to be created, but also allows for any other optional settings to be specified.
          */
         interface WithLinuxCreateUnmanaged extends WithFromImageCreateOptionsUnmanaged {
             /**
              * Specifies an SSH public key.
+             *
              * @param publicKey an SSH public key in the PEM format.
              * @return the next stage of the definition
              */
@@ -1069,20 +966,21 @@ public interface VirtualMachine extends
         }
 
         /**
-         * The stage of the Windows virtual machine definition allowing to enable unmanaged disks
-         * or continue the definition of the VM with managed disks only.
+         * The stage of the Windows virtual machine definition allowing to enable unmanaged disks or continue the
+         * definition of the VM with managed disks only.
          */
         interface WithWindowsCreateManagedOrUnmanaged extends WithWindowsCreateManaged {
             /**
              * Enables unmanaged disk support on this virtual machine.
+             *
              * @return the next stage of the definition
              */
             WithWindowsCreateUnmanaged withUnmanagedDisks();
         }
 
         /**
-         * The stage of a Windows virtual machine definition which contains all the minimum required inputs for
-         * the resource to be created, but also allows for any other optional settings to be specified.
+         * The stage of a Windows virtual machine definition which contains all the minimum required inputs for the
+         * resource to be created, but also allows for any other optional settings to be specified.
          */
         interface WithWindowsCreateManaged extends WithFromImageCreateOptionsManaged {
             /**
@@ -1108,9 +1006,9 @@ public interface VirtualMachine extends
             WithWindowsCreateManaged withTimeZone(String timeZone);
 
             /**
-             * Specifies  WinRM listener.
-             * <p>
-             * Each call to this method adds the given listener to the list of the VM's WinRM listeners.
+             * Specifies WinRM listener.
+             *
+             * <p>Each call to this method adds the given listener to the list of the VM's WinRM listeners.
              *
              * @param listener a WinRM listener
              * @return the next stage of the definition
@@ -1119,8 +1017,8 @@ public interface VirtualMachine extends
         }
 
         /**
-         * The stage of the Windows virtual machine definition which contains all the minimum required inputs for
-         * the resource to be created, but also allows for any other optional settings to be specified.
+         * The stage of the Windows virtual machine definition which contains all the minimum required inputs for the
+         * resource to be created, but also allows for any other optional settings to be specified.
          */
         interface WithWindowsCreateUnmanaged extends WithFromImageCreateOptionsUnmanaged {
             /**
@@ -1147,8 +1045,8 @@ public interface VirtualMachine extends
 
             /**
              * Specifies the WINRM listener.
-             * <p>
-             * Each call to this method adds the given listener to the list of VM's WinRM listeners.
+             *
+             * <p>Each call to this method adds the given listener to the list of VM's WinRM listeners.
              *
              * @param listener the WinRMListener
              * @return the stage representing creatable Windows VM definition
@@ -1156,9 +1054,7 @@ public interface VirtualMachine extends
             WithWindowsCreateUnmanaged withWinRM(WinRMListener listener);
         }
 
-        /**
-         * The stage of a virtual machine definition allowing to specify OS disk configurations.
-         */
+        /** The stage of a virtual machine definition allowing to specify OS disk configurations. */
         interface WithOSDiskSettings {
             /**
              * Specifies the caching type for the OS disk.
@@ -1203,9 +1099,7 @@ public interface VirtualMachine extends
             WithCreate withOSDiskName(String name);
         }
 
-        /**
-         * The stage of a virtual machine definition allowing to select a VM size.
-         */
+        /** The stage of a virtual machine definition allowing to select a VM size. */
         interface WithVMSize {
             /**
              * Selects the size of the virtual machine.
@@ -1224,9 +1118,7 @@ public interface VirtualMachine extends
             WithCreate withSize(VirtualMachineSizeTypes size);
         }
 
-        /**
-         * The stage of a virtual machine definition allowing to add an unmanaged data disk.
-         */
+        /** The stage of a virtual machine definition allowing to add an unmanaged data disk. */
         interface WithUnmanagedDataDisk {
             /**
              * Attaches a new blank unmanaged data disk to the virtual machine.
@@ -1244,7 +1136,8 @@ public interface VirtualMachine extends
              * @param vhdName the name for the VHD file
              * @return the next stage of the definition
              */
-            WithUnmanagedCreate withExistingUnmanagedDataDisk(String storageAccountName, String containerName, String vhdName);
+            WithUnmanagedCreate withExistingUnmanagedDataDisk(
+                String storageAccountName, String containerName, String vhdName);
 
             /**
              * Begins definition of an unmanaged data disk to be attached to the virtual machine.
@@ -1252,16 +1145,15 @@ public interface VirtualMachine extends
              * @param name the name for the data disk
              * @return the first stage of an unmanaged data disk definition
              */
-            VirtualMachineUnmanagedDataDisk.DefinitionStages.Blank<WithUnmanagedCreate> defineUnmanagedDataDisk(String name);
+            VirtualMachineUnmanagedDataDisk.DefinitionStages.Blank<WithUnmanagedCreate> defineUnmanagedDataDisk(
+                String name);
         }
 
-        /**
-         * The stage of a virtual machine definition allowing to specify a managed data disk.
-         */
+        /** The stage of a virtual machine definition allowing to specify a managed data disk. */
         interface WithManagedDataDisk {
             /**
-             * Specifies that a managed disk should be created explicitly with the given definition and
-             * attached to the virtual machine as a data disk.
+             * Specifies that a managed disk should be created explicitly with the given definition and attached to the
+             * virtual machine as a data disk.
              *
              * @param creatable a creatable disk definition
              * @return the next stage of the definition
@@ -1269,17 +1161,15 @@ public interface VirtualMachine extends
             WithManagedCreate withNewDataDisk(Creatable<Disk> creatable);
 
             /**
-             * Specifies that a managed disk needs to be created explicitly with the given definition and
-             * attach to the virtual machine as data disk.
+             * Specifies that a managed disk needs to be created explicitly with the given definition and attach to the
+             * virtual machine as data disk.
              *
              * @param creatable a creatable disk
              * @param lun the data disk LUN
              * @param cachingType a data disk caching type
              * @return the next stage of the definition
              */
-            WithManagedCreate withNewDataDisk(Creatable<Disk> creatable,
-                                              int lun,
-                                              CachingTypes cachingType);
+            WithManagedCreate withNewDataDisk(Creatable<Disk> creatable, int lun, CachingTypes cachingType);
 
             /**
              * Specifies that a managed disk needs to be created implicitly with the given size.
@@ -1308,10 +1198,8 @@ public interface VirtualMachine extends
              * @param storageAccountType the storage account type
              * @return the next stage of the definition
              */
-            WithManagedCreate withNewDataDisk(int sizeInGB,
-                                              int lun,
-                                              CachingTypes cachingType,
-                                              StorageAccountTypes storageAccountType);
+            WithManagedCreate withNewDataDisk(
+                int sizeInGB, int lun, CachingTypes cachingType, StorageAccountTypes storageAccountType);
 
             /**
              * Associates an existing source managed disk with the virtual machine.
@@ -1329,9 +1217,7 @@ public interface VirtualMachine extends
              * @param cachingType a caching type
              * @return the next stage of the definition
              */
-            WithManagedCreate withExistingDataDisk(Disk disk,
-                                                   int lun,
-                                                   CachingTypes cachingType);
+            WithManagedCreate withExistingDataDisk(Disk disk, int lun, CachingTypes cachingType);
 
             /**
              * Associates an existing source managed disk with the virtual machine and specifies additional settings.
@@ -1342,10 +1228,7 @@ public interface VirtualMachine extends
              * @param cachingType a caching type
              * @return the next stage of the definition
              */
-            WithManagedCreate withExistingDataDisk(Disk disk,
-                                                   int newSizeInGB,
-                                                   int lun,
-                                                   CachingTypes cachingType);
+            WithManagedCreate withExistingDataDisk(Disk disk, int newSizeInGB, int lun, CachingTypes cachingType);
 
             /**
              * Specifies the data disk to be created from the data disk image in the virtual machine image.
@@ -1363,9 +1246,7 @@ public interface VirtualMachine extends
              * @param cachingType a caching type
              * @return the next stage of the definition
              */
-            WithManagedCreate withNewDataDiskFromImage(int imageLun,
-                                                       int newSizeInGB,
-                                                       CachingTypes cachingType);
+            WithManagedCreate withNewDataDiskFromImage(int imageLun, int newSizeInGB, CachingTypes cachingType);
 
             /**
              * Specifies the data disk to be created from the data disk image in the virtual machine image.
@@ -1376,26 +1257,24 @@ public interface VirtualMachine extends
              * @param storageAccountType a storage account type
              * @return the next stage of the definition
              */
-            WithManagedCreate withNewDataDiskFromImage(int imageLun,
-                                                       int newSizeInGB,
-                                                       CachingTypes cachingType,
-                                                       StorageAccountTypes storageAccountType);
+            WithManagedCreate withNewDataDiskFromImage(
+                int imageLun, int newSizeInGB, CachingTypes cachingType, StorageAccountTypes storageAccountType);
         }
 
-        /**
-         * The stage of the virtual machine definition allowing to specify availability set.
-         */
+        /** The stage of the virtual machine definition allowing to specify availability set. */
         interface WithAvailabilitySet {
             /**
              * Specifies the name of a new availability set to associate with the virtual machine.
+             *
              * @param name the name of an availability set
              * @return the next stage of the definition
              */
             WithCreate withNewAvailabilitySet(String name);
 
             /**
-             * Specifies definition of a not-yet-created availability set definition
-             * to associate the virtual machine with.
+             * Specifies definition of a not-yet-created availability set definition to associate the virtual machine
+             * with.
+             *
              * @param creatable a creatable availability set definition
              * @return the next stage of the definition
              */
@@ -1403,21 +1282,20 @@ public interface VirtualMachine extends
 
             /**
              * Specifies an existing availability set to associate with the virtual machine.
+             *
              * @param availabilitySet an existing availability set
              * @return the next stage of the definition
              */
             WithCreate withExistingAvailabilitySet(AvailabilitySet availabilitySet);
         }
 
-        /**
-         * The stage of a virtual machine definition allowing to specify a storage account.
-         */
+        /** The stage of a virtual machine definition allowing to specify a storage account. */
         interface WithStorageAccount {
             /**
              * Specifies the name of a new storage account to put the VM's OS and data disk VHD into.
-             * <p>
-             * Only an OS disk based on a marketplace image will be stored in the new storage account.
-             * An OS disk based on a user image will be stored in the same storage account as the user image.
+             *
+             * <p>Only an OS disk based on a marketplace image will be stored in the new storage account. An OS disk
+             * based on a user image will be stored in the same storage account as the user image.
              *
              * @param name the name for a new storage account
              * @return the next stage of the definition
@@ -1425,11 +1303,10 @@ public interface VirtualMachine extends
             WithCreate withNewStorageAccount(String name);
 
             /**
-             * Specifies the definition of a not-yet-created storage account
-             * to put the VM's OS and data disk VHDs into.
-             * <p>
-             * Only the OS disk based on a marketplace image will be stored in the new storage account.
-             * An OS disk based on a user image will be stored in the same storage account as the user image.
+             * Specifies the definition of a not-yet-created storage account to put the VM's OS and data disk VHDs into.
+             *
+             * <p>Only the OS disk based on a marketplace image will be stored in the new storage account. An OS disk
+             * based on a user image will be stored in the same storage account as the user image.
              *
              * @param creatable a creatable storage account definition
              * @return the next stage of the definition
@@ -1438,9 +1315,9 @@ public interface VirtualMachine extends
 
             /**
              * Specifies an existing storage account to put the VM's OS and data disk VHD in.
-             * <p>
-             * An OS disk based on a marketplace or a user image (generalized image) will be stored in this
-             * storage account.
+             *
+             * <p>An OS disk based on a marketplace or a user image (generalized image) will be stored in this storage
+             * account.
              *
              * @param storageAccount an existing storage account
              * @return the next stage of the definition
@@ -1448,16 +1325,13 @@ public interface VirtualMachine extends
             WithCreate withExistingStorageAccount(StorageAccount storageAccount);
         }
 
-        /**
-         * The stage of a virtual machine definition allowing to specify additional network interfaces.
-         */
+        /** The stage of a virtual machine definition allowing to specify additional network interfaces. */
         interface WithSecondaryNetworkInterface {
             /**
-             * Creates a new network interface to associate with the virtual machine, based on the
-             * provided definition.
-             * <p>
-             * Note this method's effect is additive, i.e. each time it is used, a new secondary
-             * network interface added to the virtual machine.
+             * Creates a new network interface to associate with the virtual machine, based on the provided definition.
+             *
+             * <p>Note this method's effect is additive, i.e. each time it is used, a new secondary network interface
+             * added to the virtual machine.
              *
              * @param creatable a creatable definition for a new network interface
              * @return the next stage of the definition
@@ -1466,9 +1340,9 @@ public interface VirtualMachine extends
 
             /**
              * Associates an existing network interface with the virtual machine.
-             * <p>
-             * Note this method's effect is additive, i.e. each time it is used, the new secondary
-             * network interface added to the virtual machine.
+             *
+             * <p>Note this method's effect is additive, i.e. each time it is used, the new secondary network interface
+             * added to the virtual machine.
              *
              * @param networkInterface an existing network interface
              * @return the next stage of the definition
@@ -1476,9 +1350,7 @@ public interface VirtualMachine extends
             WithCreate withExistingSecondaryNetworkInterface(NetworkInterface networkInterface);
         }
 
-        /**
-         * The stage of the virtual machine definition allowing to specify extensions.
-         */
+        /** The stage of the virtual machine definition allowing to specify extensions. */
         interface WithExtension {
             /**
              * Starts the definition of an extension to be attached to the virtual machine.
@@ -1489,9 +1361,7 @@ public interface VirtualMachine extends
             VirtualMachineExtension.DefinitionStages.Blank<WithCreate> defineNewExtension(String name);
         }
 
-        /**
-         * The stage of a virtual machine definition allowing to specify a purchase plan.
-         */
+        /** The stage of a virtual machine definition allowing to specify a purchase plan. */
         interface WithPlan {
             /**
              * Specifies the purchase plan for the virtual machine.
@@ -1511,9 +1381,7 @@ public interface VirtualMachine extends
             WithCreate withPromotionalPlan(PurchasePlan plan, String promotionCode);
         }
 
-        /**
-         * The stage of the virtual machine definition allowing to enable boot diagnostics.
-         */
+        /** The stage of the virtual machine definition allowing to enable boot diagnostics. */
         interface WithBootDiagnostics {
             /**
              * Specifies that boot diagnostics needs to be enabled in the virtual machine.
@@ -1547,9 +1415,7 @@ public interface VirtualMachine extends
             WithCreate withBootDiagnostics(String storageAccountBlobEndpointUri);
         }
 
-        /**
-         * The stage of the virtual machine definition allowing to specify priority.
-         */
+        /** The stage of the virtual machine definition allowing to specify priority. */
         interface WithPriority {
             /**
              * Specifies the priority of the virtual machine.
@@ -1576,12 +1442,14 @@ public interface VirtualMachine extends
         }
 
         /**
-         * The stage of a virtual machine definition allowing to set the billing related details of a low priority virtual machine.
+         * The stage of a virtual machine definition allowing to set the billing related details of a low priority
+         * virtual machine.
          */
         interface WithBillingProfile {
 
             /**
              * Set the billing related details of a low priority virtual machine. This price is in US Dollars.
+             *
              * @param maxPrice the maxPrice value to set
              * @return the next stage of the definition
              */
@@ -1589,11 +1457,13 @@ public interface VirtualMachine extends
         }
 
         /**
-         * The stage of the virtual machine definition allowing to enable System Assigned (Local) Managed Service Identity.
+         * The stage of the virtual machine definition allowing to enable System Assigned (Local) Managed Service
+         * Identity.
          */
         interface WithSystemAssignedManagedServiceIdentity {
             /**
-             * Specifies that System Assigned (Local) Managed Service Identity needs to be enabled in the virtual machine.
+             * Specifies that System Assigned (Local) Managed Service Identity needs to be enabled in the virtual
+             * machine.
              *
              * @return the next stage of the definition
              */
@@ -1601,60 +1471,65 @@ public interface VirtualMachine extends
         }
 
         /**
-         * The stage of the System Assigned (Local) Managed Service Identity enabled virtual machine allowing to
-         * set access role for the identity.
+         * The stage of the System Assigned (Local) Managed Service Identity enabled virtual machine allowing to set
+         * access role for the identity.
          */
         interface WithSystemAssignedIdentityBasedAccessOrCreate extends WithCreate {
             /**
-             * Specifies that virtual machine's system assigned (local) identity should have the given access
-             * (described by the role) on an ARM resource identified by the resource ID. Applications running
-             * on the virtual machine will have the same permission (role) on the ARM resource.
+             * Specifies that virtual machine's system assigned (local) identity should have the given access (described
+             * by the role) on an ARM resource identified by the resource ID. Applications running on the virtual
+             * machine will have the same permission (role) on the ARM resource.
              *
              * @param resourceId the ARM identifier of the resource
              * @param role access role to assigned to the virtual machine's local identity
              * @return the next stage of the definition
              */
-            WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessTo(String resourceId, BuiltInRole role);
+            WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessTo(
+                String resourceId, BuiltInRole role);
 
             /**
-             * Specifies that virtual machine's system assigned (local) identity should have the given access
-             * (described by the role) on the resource group that virtual machine resides. Applications running
-             * on the virtual machine will have the same permission (role) on the resource group.
+             * Specifies that virtual machine's system assigned (local) identity should have the given access (described
+             * by the role) on the resource group that virtual machine resides. Applications running on the virtual
+             * machine will have the same permission (role) on the resource group.
              *
              * @param role access role to assigned to the virtual machine's local identity
              * @return the next stage of the definition
              */
-            WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(BuiltInRole role);
+            WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(
+                BuiltInRole role);
 
             /**
-             * Specifies that virtual machine's system assigned (local) identity should have the access
-             * (described by the role definition) on an ARM resource identified by the resource ID.
-             * Applications running on the virtual machine will have the same permission (role) on the ARM resource.
+             * Specifies that virtual machine's system assigned (local) identity should have the access (described by
+             * the role definition) on an ARM resource identified by the resource ID. Applications running on the
+             * virtual machine will have the same permission (role) on the ARM resource.
              *
              * @param resourceId scope of the access represented in ARM resource ID format
              * @param roleDefinitionId access role definition to assigned to the virtual machine's local identity
              * @return the next stage of the definition
              */
-            WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessTo(String resourceId, String roleDefinitionId);
+            WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessTo(
+                String resourceId, String roleDefinitionId);
 
             /**
-             * Specifies that virtual machine's system assigned (local) identity should have the access
-             * (described by the role definition) on the resource group that virtual machine resides.
-             * Applications running on the virtual machine will have the same permission (role) on the
-             * resource group.
+             * Specifies that virtual machine's system assigned (local) identity should have the access (described by
+             * the role definition) on the resource group that virtual machine resides. Applications running on the
+             * virtual machine will have the same permission (role) on the resource group.
              *
              * @param roleDefinitionId access role definition to assigned to the virtual machine's local identity
              * @return the next stage of the definition
              */
-            WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(String roleDefinitionId);
+            WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(
+                String roleDefinitionId);
         }
 
         /**
-         * The stage of the virtual machine definition allowing to specify User Assigned (External) Managed Service Identities.
+         * The stage of the virtual machine definition allowing to specify User Assigned (External) Managed Service
+         * Identities.
          */
         interface WithUserAssignedManagedServiceIdentity {
             /**
-             * Specifies the definition of a not-yet-created user assigned identity to be associated with the virtual machine.
+             * Specifies the definition of a not-yet-created user assigned identity to be associated with the virtual
+             * machine.
              *
              * @param creatableIdentity a creatable identity definition
              * @return the next stage of the virtual machine definition
@@ -1671,8 +1546,8 @@ public interface VirtualMachine extends
         }
 
         /**
-         * The stage of the virtual machine definition allowing to specify that the image or disk that is being used was licensed
-         * on-premises. This element is only used for images that contain the Windows Server operating system.
+         * The stage of the virtual machine definition allowing to specify that the image or disk that is being used was
+         * licensed on-premises. This element is only used for images that contain the Windows Server operating system.
          */
         interface WithLicenseType {
             /**
@@ -1684,9 +1559,7 @@ public interface VirtualMachine extends
             WithCreate withLicenseType(String licenseType);
         }
 
-        /**
-         * The stage of the VM definition allowing to specify availability zone.
-         */
+        /** The stage of the VM definition allowing to specify availability zone. */
         interface WithAvailabilityZone {
             /**
              * Specifies the availability zone for the virtual machine.
@@ -1701,10 +1574,7 @@ public interface VirtualMachine extends
          * The stage of the definition which contains all the minimum required inputs for the VM using managed OS disk
          * to be created and optionally allow managed data disks specific settings to be specified.
          */
-        interface WithManagedCreate extends
-                WithManagedDataDisk,
-                WithAvailabilityZone,
-                WithCreate {
+        interface WithManagedCreate extends WithManagedDataDisk, WithAvailabilityZone, WithCreate {
             /**
              * Specifies the storage account type for the managed OS disk.
              *
@@ -1735,9 +1605,7 @@ public interface VirtualMachine extends
          * storage account (unmanaged based OS disk to be created and optionally allow unmanaged data disk and settings
          * specific to unmanaged OS disk to be specified.
          */
-        interface WithUnmanagedCreate extends
-                WithUnmanagedDataDisk,
-                WithCreate {
+        interface WithUnmanagedCreate extends WithUnmanagedDataDisk, WithCreate {
             /**
              * Specifies the name of an OS disk VHD file and its parent container.
              *
@@ -1749,12 +1617,11 @@ public interface VirtualMachine extends
         }
 
         /**
-         * The stage of the definition which contains all the minimum required inputs for
-         * the resource to be created, but also allows
-         * for any other optional settings to be specified.
+         * The stage of the definition which contains all the minimum required inputs for the resource to be created,
+         * but also allows for any other optional settings to be specified.
          */
-        interface WithCreate extends
-                Creatable<VirtualMachine>,
+        interface WithCreate
+            extends Creatable<VirtualMachine>,
                 Resource.DefinitionWithTags<WithCreate>,
                 DefinitionStages.WithOSDiskSettings,
                 DefinitionStages.WithVMSize,
@@ -1772,49 +1639,41 @@ public interface VirtualMachine extends
         }
     }
 
-    /**
-     * Grouping of virtual machine update stages.
-     */
+    /** Grouping of virtual machine update stages. */
     interface UpdateStages {
         /**
-         * The stage of a virtual machine update allowing to
-         * set/remove information about the proximity placement group that the virtual machine scale set should
-         * be assigned to.
+         * The stage of a virtual machine update allowing to set/remove information about the proximity placement group
+         * that the virtual machine scale set should be assigned to.
          */
         interface WithProximityPlacementGroup {
             /**
-             * Set information about the proximity placement group that the virtual machineshould
-             * be assigned to.
-             * @param proximityPlacementGroupId The Id of the proximity placement group subResource.
+             * Set information about the proximity placement group that the virtual machineshould be assigned to.
              *
+             * @param proximityPlacementGroupId The Id of the proximity placement group subResource.
              * @return the next stage of the definition.
              */
             Update withProximityPlacementGroup(String proximityPlacementGroupId);
 
             /**
              * Removes the Proximity placement group from the VM.
+             *
              * @return the next stage of the definition.
              */
             Update withoutProximityPlacementGroup();
         }
 
-        /**
-
-        /**
-         * The stage of the virtual machine update allowing to specify billing profile.
-         */
+        /** /** The stage of the virtual machine update allowing to specify billing profile. */
         interface WithBillingProfile {
             /**
              * Set the billing related details of a low priority virtual machine.
+             *
              * @param maxPrice the maxPrice value to set
              * @return the next stage of the update
              */
             Update withMaxPrice(Double maxPrice);
         }
 
-        /**
-         * The stage of a virtual machine definition allowing to specify unmanaged data disk configuration.
-         */
+        /** The stage of a virtual machine definition allowing to specify unmanaged data disk configuration. */
         interface WithUnmanagedDataDisk {
             /**
              * Specifies that a new blank unmanaged data disk needs to be attached to virtual machine.
@@ -1835,7 +1694,8 @@ public interface VirtualMachine extends
             Update withExistingUnmanagedDataDisk(String storageAccountName, String containerName, String vhdName);
 
             /**
-             * Begins the definition of a blank unmanaged data disk to be attached to the virtual machine along with its configuration.
+             * Begins the definition of a blank unmanaged data disk to be attached to the virtual machine along with its
+             * configuration.
              *
              * @param name the name for the data disk
              * @return the first stage of the data disk definition
@@ -1867,13 +1727,11 @@ public interface VirtualMachine extends
             Update withoutUnmanagedDataDisk(int lun);
         }
 
-        /**
-         * The stage of a virtual machine update allowing to specify a managed data disk.
-         */
+        /** The stage of a virtual machine update allowing to specify a managed data disk. */
         interface WithManagedDataDisk {
             /**
-             * Specifies that a managed disk needs to be created explicitly with the given definition and
-             * attached to the virtual machine as a data disk.
+             * Specifies that a managed disk needs to be created explicitly with the given definition and attached to
+             * the virtual machine as a data disk.
              *
              * @param creatable a creatable disk definition
              * @return the next stage of the update
@@ -1881,8 +1739,8 @@ public interface VirtualMachine extends
             Update withNewDataDisk(Creatable<Disk> creatable);
 
             /**
-             * Specifies that a managed disk needs to be created explicitly with the given definition and
-             * attached to the virtual machine as a data disk.
+             * Specifies that a managed disk needs to be created explicitly with the given definition and attached to
+             * the virtual machine as a data disk.
              *
              * @param creatable a creatable disk definition
              * @param lun the data disk LUN
@@ -1918,10 +1776,8 @@ public interface VirtualMachine extends
              * @param storageAccountType a storage account type
              * @return the next stage of the update
              */
-            Update withNewDataDisk(int sizeInGB,
-                                   int lun,
-                                   CachingTypes cachingType,
-                                   StorageAccountTypes storageAccountType);
+            Update withNewDataDisk(
+                int sizeInGB, int lun, CachingTypes cachingType, StorageAccountTypes storageAccountType);
 
             /**
              * Associates an existing source managed disk with the VM.
@@ -1939,9 +1795,7 @@ public interface VirtualMachine extends
              * @param cachingType a caching type
              * @return the next stage of the update
              */
-            Update withExistingDataDisk(Disk disk,
-                                        int lun,
-                                        CachingTypes cachingType);
+            Update withExistingDataDisk(Disk disk, int lun, CachingTypes cachingType);
 
             /**
              * Specifies an existing source managed disk and settings.
@@ -1952,10 +1806,7 @@ public interface VirtualMachine extends
              * @param cachingType a caching type
              * @return the next stage of the update
              */
-            Update withExistingDataDisk(Disk disk,
-                                        int newSizeInGB,
-                                        int lun,
-                                        CachingTypes cachingType);
+            Update withExistingDataDisk(Disk disk, int newSizeInGB, int lun, CachingTypes cachingType);
 
             /**
              * Detaches a managed data disk with the given LUN from the virtual machine.
@@ -1984,10 +1835,11 @@ public interface VirtualMachine extends
              * @return the next stage of the update
              */
             // TODO: This has been disabled by the Azure REST API
-            //Update withDataDiskUpdated(int lun, int newSizeInGB, CachingTypes cachingType);
+            // Update withDataDiskUpdated(int lun, int newSizeInGB, CachingTypes cachingType);
 
             /**
              * Updates the size, caching type and storage account type of a managed data disk with the given LUN.
+             *
              * @param lun the disk LUN
              * @param newSizeInGB the new size of the disk
              * @param cachingType a caching type
@@ -1995,21 +1847,19 @@ public interface VirtualMachine extends
              * @return the next stage of the update
              */
             // TODO: This has been disabled by the Azure REST API
-            //Update withDataDiskUpdated(int lun,
+            // Update withDataDiskUpdated(int lun,
             //                              int newSizeInGB,
             //                              CachingTypes cachingType,
             //                              StorageAccountTypes storageAccountType);
         }
 
-        /**
-         * The stage of a virtual machine update allowing to specify additional network interfaces.
-         */
+        /** The stage of a virtual machine update allowing to specify additional network interfaces. */
         interface WithSecondaryNetworkInterface {
             /**
              * Creates a new network interface to associate with the virtual machine.
-             * <p>
-             * Note this method's effect is additive, i.e. each time it is used, the new secondary
-             * network interface added to the virtual machine.
+             *
+             * <p>Note this method's effect is additive, i.e. each time it is used, the new secondary network interface
+             * added to the virtual machine.
              *
              * @param creatable a creatable definition for a new network interface
              * @return the next stage of the update
@@ -2019,8 +1869,8 @@ public interface VirtualMachine extends
             /**
              * Associates an existing network interface with the virtual machine.
              *
-             * Note this method's effect is additive, i.e. each time it is used, the new secondary
-             * network interface added to the virtual machine.
+             * <p>Note this method's effect is additive, i.e. each time it is used, the new secondary network interface
+             * added to the virtual machine.
              *
              * @param networkInterface an existing network interface
              * @return the next stage of the update
@@ -2036,9 +1886,7 @@ public interface VirtualMachine extends
             Update withoutSecondaryNetworkInterface(String name);
         }
 
-        /**
-         * The stage of a virtual machine update allowing to specify extensions.
-         */
+        /** The stage of a virtual machine update allowing to specify extensions. */
         interface WithExtension {
             /**
              * Begins the definition of an extension to be attached to the virtual machine.
@@ -2046,9 +1894,7 @@ public interface VirtualMachine extends
              * @param name a reference name for the extension
              * @return the first stage of an extension definition
              */
-            VirtualMachineExtension
-                    .UpdateDefinitionStages
-                    .Blank<Update> defineNewExtension(String name);
+            VirtualMachineExtension.UpdateDefinitionStages.Blank<Update> defineNewExtension(String name);
 
             /**
              * Begins the description of an update of an existing extension of this virtual machine.
@@ -2067,9 +1913,7 @@ public interface VirtualMachine extends
             Update withoutExtension(String name);
         }
 
-        /**
-         * The stage of the virtual machine definition allowing to enable boot diagnostics.
-         */
+        /** The stage of the virtual machine definition allowing to enable boot diagnostics. */
         interface WithBootDiagnostics {
             /**
              * Specifies that boot diagnostics needs to be enabled in the virtual machine.
@@ -2115,8 +1959,8 @@ public interface VirtualMachine extends
          */
         interface WithSystemAssignedManagedServiceIdentity {
             /**
-             * Specifies that System Assigned (Local) Managed Service Identity needs to be enabled in the
-             * virtual machine.
+             * Specifies that System Assigned (Local) Managed Service Identity needs to be enabled in the virtual
+             * machine.
              *
              * @return the next stage of the update
              */
@@ -2131,61 +1975,65 @@ public interface VirtualMachine extends
         }
 
         /**
-         * The stage of the System Assigned (Local) Managed Service Identity enabled virtual machine allowing
-         * to set access role for the identity.
+         * The stage of the System Assigned (Local) Managed Service Identity enabled virtual machine allowing to set
+         * access role for the identity.
          */
         interface WithSystemAssignedIdentityBasedAccessOrUpdate extends Update {
             /**
-             * Specifies that virtual machine's system assigned (local) identity should have the given
-             * access (described by the role) on an ARM resource identified by the resource ID.
-             * Applications running on the virtual machine will have the same permission (role) on
-             * the ARM resource.
+             * Specifies that virtual machine's system assigned (local) identity should have the given access (described
+             * by the role) on an ARM resource identified by the resource ID. Applications running on the virtual
+             * machine will have the same permission (role) on the ARM resource.
              *
              * @param resourceId the ARM identifier of the resource
              * @param role access role to assigned to the virtual machine's local identity
              * @return the next stage of the update
              */
-            WithSystemAssignedIdentityBasedAccessOrUpdate withSystemAssignedIdentityBasedAccessTo(String resourceId, BuiltInRole role);
+            WithSystemAssignedIdentityBasedAccessOrUpdate withSystemAssignedIdentityBasedAccessTo(
+                String resourceId, BuiltInRole role);
 
             /**
-             * Specifies that virtual machine's system assigned (local) identity should have the given access
-             * (described by the role) on the resource group that virtual machine resides. Applications running
-             * on the virtual machine will have the same permission (role) on the resource group.
+             * Specifies that virtual machine's system assigned (local) identity should have the given access (described
+             * by the role) on the resource group that virtual machine resides. Applications running on the virtual
+             * machine will have the same permission (role) on the resource group.
              *
              * @param role access role to assigned to the virtual machine's local identity
              * @return the next stage of the update
              */
-            WithSystemAssignedIdentityBasedAccessOrUpdate withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(BuiltInRole role);
+            WithSystemAssignedIdentityBasedAccessOrUpdate withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(
+                BuiltInRole role);
 
             /**
-             * Specifies that virtual machine's system assigned (local) identity should have the access
-             * (described by the role definition) on an ARM resource identified by the resource ID.
-             * Applications running on the virtual machine will have the same permission (role) on
-             * the ARM resource.
+             * Specifies that virtual machine's system assigned (local) identity should have the access (described by
+             * the role definition) on an ARM resource identified by the resource ID. Applications running on the
+             * virtual machine will have the same permission (role) on the ARM resource.
              *
              * @param resourceId scope of the access represented in ARM resource ID format
              * @param roleDefinitionId access role definition to assigned to the virtual machine's local identity
              * @return the next stage of the update
              */
-            WithSystemAssignedIdentityBasedAccessOrUpdate withSystemAssignedIdentityBasedAccessTo(String resourceId, String roleDefinitionId);
+            WithSystemAssignedIdentityBasedAccessOrUpdate withSystemAssignedIdentityBasedAccessTo(
+                String resourceId, String roleDefinitionId);
 
             /**
-             * Specifies that virtual machine's system assigned (local) identity should have the access (described by the
-             * role definition) on the resource group that virtual machine resides. Applications running
-             * on the virtual machine will have the same permission (role) on the resource group.
+             * Specifies that virtual machine's system assigned (local) identity should have the access (described by
+             * the role definition) on the resource group that virtual machine resides. Applications running on the
+             * virtual machine will have the same permission (role) on the resource group.
              *
              * @param roleDefinitionId access role definition to assigned to the virtual machine's local identity
              * @return the next stage of the update
              */
-            WithSystemAssignedIdentityBasedAccessOrUpdate withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(String roleDefinitionId);
+            WithSystemAssignedIdentityBasedAccessOrUpdate withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(
+                String roleDefinitionId);
         }
 
         /**
-         * The stage of the virtual machine update allowing to add or remove User Assigned (External) Managed Service Identities.
+         * The stage of the virtual machine update allowing to add or remove User Assigned (External) Managed Service
+         * Identities.
          */
         interface WithUserAssignedManagedServiceIdentity {
             /**
-             * Specifies the definition of a not-yet-created user assigned identity to be associated with the virtual machine.
+             * Specifies the definition of a not-yet-created user assigned identity to be associated with the virtual
+             * machine.
              *
              * @param creatableIdentity a creatable identity definition
              * @return the next stage of the virtual machine update
@@ -2194,6 +2042,7 @@ public interface VirtualMachine extends
 
             /**
              * Specifies an existing user assigned identity to be associated with the virtual machine.
+             *
              * @param identity the identity
              * @return the next stage of the virtual machine update
              */
@@ -2209,8 +2058,8 @@ public interface VirtualMachine extends
         }
 
         /**
-         * The stage of the virtual machine update allowing to specify that the image or disk that is being used was licensed
-         * on-premises. This element is only used for images that contain the Windows Server operating system.
+         * The stage of the virtual machine update allowing to specify that the image or disk that is being used was
+         * licensed on-premises. This element is only used for images that contain the Windows Server operating system.
          */
         interface WithLicenseType {
             /**
@@ -2223,11 +2072,9 @@ public interface VirtualMachine extends
         }
     }
 
-    /**
-     * The template for an update operation, containing all the settings that can be modified.
-     */
-    interface Update extends
-            Appliable<VirtualMachine>,
+    /** The template for an update operation, containing all the settings that can be modified. */
+    interface Update
+        extends Appliable<VirtualMachine>,
             Resource.UpdateWithTags<Update>,
             UpdateStages.WithProximityPlacementGroup,
             UpdateStages.WithUnmanagedDataDisk,
@@ -2273,8 +2120,9 @@ public interface VirtualMachine extends
 
         /**
          * Specifies the size of the OS disk in GB.
-         * <p>
-         * Only unmanaged disks may be resized as part of a VM update. Managed disks must be resized separately, using managed disk API.
+         *
+         * <p>Only unmanaged disks may be resized as part of a VM update. Managed disks must be resized separately,
+         * using managed disk API.
          *
          * @param size a disk size.
          * @return the next stage of the update
@@ -2285,8 +2133,9 @@ public interface VirtualMachine extends
 
         /**
          * Specifies the size of the OS disk in GB.
-         * <p>
-         * Only unmanaged disks may be resized as part of a VM update. Managed disks must be resized separately, using managed disk API.
+         *
+         * <p>Only unmanaged disks may be resized as part of a VM update. Managed disks must be resized separately,
+         * using managed disk API.
          *
          * @param size a disk size.
          * @return the next stage of the update

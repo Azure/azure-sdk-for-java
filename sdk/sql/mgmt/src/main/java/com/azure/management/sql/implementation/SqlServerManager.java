@@ -3,40 +3,35 @@
 
 package com.azure.management.sql.implementation;
 
-import com.azure.core.management.AzureEnvironment;
-import com.azure.core.management.serializer.AzureJacksonAdapter;
-import com.azure.management.AzureTokenCredential;
-import com.azure.management.RestClient;
-import com.azure.management.RestClientBuilder;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpPipeline;
 import com.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.management.resources.fluentcore.arm.implementation.Manager;
-import com.azure.management.resources.fluentcore.policy.ProviderRegistrationPolicy;
-import com.azure.management.resources.fluentcore.policy.ResourceManagerThrottlingPolicy;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
+import com.azure.management.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.sql.SqlServers;
 import com.azure.management.sql.models.SqlManagementClientBuilder;
 import com.azure.management.sql.models.SqlManagementClientImpl;
 
-/**
- * Entry point to Azure SQLServer resource management.
- */
+/** Entry point to Azure SQLServer resource management. */
 public class SqlServerManager extends Manager<SqlServerManager, SqlManagementClientImpl> {
     private SqlServers sqlServers;
 
     private final String tenantId;
 
-    protected SqlServerManager(RestClient restClient, String tenantId, String subscriptionId, SdkContext sdkContext) {
+    protected SqlServerManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
         super(
-                restClient,
-                subscriptionId,
-                new SqlManagementClientBuilder()
-                    .pipeline(restClient.getHttpPipeline())
-                    .subscriptionId(subscriptionId)
-                    .host(restClient.getBaseUrl().toString())
-                    .build(),
-                sdkContext);
-        this.tenantId = tenantId;
+            httpPipeline,
+            profile,
+            new SqlManagementClientBuilder()
+                .pipeline(httpPipeline)
+                .subscriptionId(profile.subscriptionId())
+                .host(profile.environment().getResourceManagerEndpoint())
+                .buildClient(),
+            sdkContext);
+        this.tenantId = profile.tenantId();
     }
 
     /**
@@ -51,74 +46,59 @@ public class SqlServerManager extends Manager<SqlServerManager, SqlManagementCli
     /**
      * Creates an instance of SqlServer that exposes Compute resource management API entry points.
      *
-     * @param credential the credentials to use
-     * @param subscriptionId the subscription
+     * @param credential the credential to use
+     * @param profile the profile to use
      * @return the SqlServer
      */
-    public static SqlServerManager authenticate(AzureTokenCredential credential, String subscriptionId) {
-        return authenticate(new RestClientBuilder()
-                .withBaseUrl(credential.getEnvironment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
-                .withCredential(credential)
-                .withSerializerAdapter(new AzureJacksonAdapter())
-                .withPolicy(new ProviderRegistrationPolicy(credential))
-                .withPolicy(new ResourceManagerThrottlingPolicy())
-                .buildClient(), credential.getDomain(), subscriptionId);
+    public static SqlServerManager authenticate(TokenCredential credential, AzureProfile profile) {
+        return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
     /**
      * Creates an instance of SqlServer that exposes Compute resource management API entry points.
      *
-     * @param restClient the RestClient to be used for API calls.
-     * @param tenantId the tenant UUID
-     * @param subscriptionId the subscription
+     * @param httpPipeline the HttpPipeline to be used for API calls.
+     * @param profile the profile to use
      * @return the SqlServer
      */
-    public static SqlServerManager authenticate(RestClient restClient, String tenantId, String subscriptionId) {
-        return authenticate(restClient, tenantId, subscriptionId, new SdkContext());
+    public static SqlServerManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        return authenticate(httpPipeline, profile, new SdkContext());
     }
 
     /**
      * Creates an instance of SqlServer that exposes Compute resource management API entry points.
      *
-     * @param restClient the RestClient to be used for API calls.
-     * @param tenantId the tenant UUID
-     * @param subscriptionId the subscription
+     * @param httpPipeline the HttpPipeline to be used for API calls.
+     * @param profile the profile to use
      * @param sdkContext the sdk context
      * @return the SqlServer
      */
-    public static SqlServerManager authenticate(RestClient restClient, String tenantId, String subscriptionId, SdkContext sdkContext) {
-        return new SqlServerManager(restClient, tenantId, subscriptionId, sdkContext);
+    public static SqlServerManager authenticate(
+        HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+        return new SqlServerManager(httpPipeline, profile, sdkContext);
     }
 
-
-
-    /**
-     * The interface allowing configurations to be set.
-     */
+    /** The interface allowing configurations to be set. */
     public interface Configurable extends AzureConfigurable<Configurable> {
         /**
          * Creates an instance of SqlServer that exposes Compute resource management API entry points.
          *
-         * @param credential the credentials to use
-         * @param subscriptionId the subscription
+         * @param credential the credential to use
+         * @param profile the profile to use
          * @return the SqlServer
          */
-        SqlServerManager authenticate(AzureTokenCredential credential, String subscriptionId);
+        SqlServerManager authenticate(TokenCredential credential, AzureProfile profile);
     }
 
-    /**
-     * The implementation for Configurable interface.
-     */
+    /** The implementation for Configurable interface. */
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         @Override
-        public SqlServerManager authenticate(AzureTokenCredential credential, String subscriptionId) {
-            return SqlServerManager.authenticate(buildRestClient(credential), credential.getDomain(), subscriptionId);
+        public SqlServerManager authenticate(TokenCredential credential, AzureProfile profile) {
+            return SqlServerManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
     }
 
-    /**
-     * @return the SQL Server management API entry point
-     */
+    /** @return the SQL Server management API entry point */
     public SqlServers sqlServers() {
         if (sqlServers == null) {
             sqlServers = new SqlServersImpl(this);
@@ -135,6 +115,4 @@ public class SqlServerManager extends Manager<SqlServerManager, SqlManagementCli
     public String tenantId() {
         return this.tenantId;
     }
-
-
 }

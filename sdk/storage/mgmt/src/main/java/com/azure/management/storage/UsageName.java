@@ -7,9 +7,7 @@ package com.azure.management.storage;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The UsageName model.
- */
+/** The UsageName model. */
 @Immutable
 public final class UsageName {
     /*
@@ -26,7 +24,7 @@ public final class UsageName {
 
     /**
      * Get the value property: Gets a string describing the resource name.
-     * 
+     *
      * @return the value value.
      */
     public String value() {
@@ -34,9 +32,8 @@ public final class UsageName {
     }
 
     /**
-     * Get the localizedValue property: Gets a localized string describing the
-     * resource name.
-     * 
+     * Get the localizedValue property: Gets a localized string describing the resource name.
+     *
      * @return the localizedValue value.
      */
     public String localizedValue() {
