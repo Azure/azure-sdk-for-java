@@ -50,8 +50,8 @@ public class MultiSessionReceiveAsyncSample {
         // By default, after messages are processed, they are completed (ie. removed from the queue/topic). Setting
         // enableAutoComplete to true will tell the processor to complete or abandon the message depending
         ReceiveAsyncOptions options = new ReceiveAsyncOptions()
-            .setEnableAutoComplete(false)
-            .setMaxAutoRenewDuration(Duration.ofSeconds(120));
+            .setIsAutoCompleteEnabled(false)
+            .setMaxAutoLockRenewalDuration(Duration.ofSeconds(120));
 
         Disposable subscription = receiver.receive(options)
             .flatMap(context -> {
