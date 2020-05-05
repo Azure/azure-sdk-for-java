@@ -21,6 +21,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 import static com.azure.messaging.servicebus.TestUtils.MESSAGE_POSITION_ID;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -662,8 +663,10 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         if (isSessionEnabled) {
             assertNotNull(sessionId, "'sessionId' should have been set.");
             this.receiver = getSessionReceiverBuilder(false, entityType,
+                Function.identity(),
                 builder -> builder.sessionId(sessionId)).buildAsyncClient();
             this.receiveAndDeleteReceiver = getSessionReceiverBuilder(false, entityType,
+                Function.identity(),
                 builder -> builder.sessionId(sessionId).receiveMode(ReceiveMode.RECEIVE_AND_DELETE))
                 .buildAsyncClient();
         } else {

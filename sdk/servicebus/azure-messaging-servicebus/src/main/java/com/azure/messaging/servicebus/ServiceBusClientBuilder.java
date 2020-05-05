@@ -671,9 +671,19 @@ public final class ServiceBusClientBuilder {
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount, sessionId,
                 isRollingSessionReceiver(), maxConcurrentSessions);
 
-            return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
-                entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
-                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose);
+            if (CoreUtils.isNullOrEmpty(sessionId)) {
+                final UnnamedSessionManager sessionManager = new UnnamedSessionManager(entityPath, entityType,
+                    connectionProcessor, connectionProcessor.getRetryOptions().getTryTimeout(), tracerProvider,
+                    messageSerializer, receiverOptions);
+
+                return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
+                    entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
+                    tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose, sessionManager);
+            } else {
+                return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
+                    entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
+                    tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose);
+            }
         }
 
         /**

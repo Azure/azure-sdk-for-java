@@ -235,9 +235,7 @@ class ServiceBusMessageProcessorTest {
                 }
                 logger.info("After: {}", Instant.now());
             })
-            .expectErrorSatisfies(error -> {
-                Assertions.assertTrue(error instanceof IllegalArgumentException);
-            })
+            .expectError(IllegalArgumentException.class)
             .verify();
 
         verifyZeroInteractions(message2);
@@ -271,9 +269,7 @@ class ServiceBusMessageProcessorTest {
         // Act & Assert
         StepVerifier.create(processor)
             .expectNext(message1)
-            .expectErrorSatisfies(error -> {
-                Assertions.assertTrue(error instanceof IllegalArgumentException);
-            })
+            .expectError(IllegalArgumentException.class)
             .verify();
 
         verify(messageManagementOperations).updateDisposition(lock1, Accepted.getInstance());

@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -571,13 +572,17 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
             assertNotNull(sessionId, "'sessionId' should have been set.");
 
             receiver = getSessionReceiverBuilder(false, entityType,
+                Function.identity(),
                 builder -> builder.sessionId(sessionId)).buildClient();
             receiveAndDeleteReceiver = getSessionReceiverBuilder(false, entityType,
+                Function.identity(),
                 builder -> builder.sessionId(sessionId).receiveMode(ReceiveMode.RECEIVE_AND_DELETE))
                 .buildClient();
         } else {
             receiver = getReceiverBuilder(false, entityType).buildClient();
+
             receiveAndDeleteReceiver = getSessionReceiverBuilder(false, entityType,
+                Function.identity(),
                 builder -> builder.sessionId(sessionId).receiveMode(ReceiveMode.RECEIVE_AND_DELETE))
                 .buildClient();
         }
