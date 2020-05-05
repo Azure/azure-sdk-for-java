@@ -19,6 +19,7 @@ import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
+import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -46,6 +47,8 @@ class UnnamedSessionReceiver implements AutoCloseable {
     private final Disposable.Composite subscriptions;
     private final Flux<ServiceBusReceivedMessageContext> receivedMessages;
     private final MonoProcessor<ServiceBusReceivedMessageContext> cancelReceiveProcessor = MonoProcessor.create();
+    private final DirectProcessor<String> messageReceivedEmitter = DirectProcessor.create();
+    private final FluxSink<String> messageReceivedSink = messageReceivedEmitter.sink(FluxSink.OverflowStrategy.BUFFER);
 
     UnnamedSessionReceiver(ServiceBusReceiveLink receiveLink, MessageSerializer messageSerializer,
         boolean isAutoComplete, Duration maxSessionLockRenewDuration, AmqpRetryOptions retryOptions,
@@ -72,26 +75,28 @@ class UnnamedSessionReceiver implements AutoCloseable {
 
                 return new ServiceBusReceivedMessageContext(message);
             })
-            .onErrorResume(error -> Mono.just(new ServiceBusReceivedMessageContext(getSessionId(), error)));
+            .onErrorResume(error -> Mono.just(new ServiceBusReceivedMessageContext(getSessionId(), error)))
+            .doOnNext(context -> {
+                if (context.hasError()) {
+                    return;
+                }
+
+                final String token = CoreUtils.isNullOrEmpty(context.getMessage().getLockToken())
+                    ? context.getMessage().getLockToken()
+                    : "";
+                messageReceivedSink.next(token);
+            });
 
         this.receivedMessages = Flux.concat(receivedMessagesFlux, cancelReceiveProcessor);
         this.subscriptions = Disposables.composite();
-        this.subscriptions.add(receivedMessages.next().subscribe(first -> {
-            logger.info("entityPath[{}]. Setting session id: {}", first.getSessionId());
-            if (!sessionId.compareAndSet(null, first.getSessionId())) {
-                logger.warning("entityPath[{}]. Session id already set. Existing: {}", sessionId.get());
-            } else {
-                logger.info("Session id: {}", first.getSessionId());
-            }
-        }));
-        this.subscriptions.add(Flux.switchOnNext(receivedMessages
-            .flatMap(message -> Mono.delay(retryOptions.getTryTimeout())
-                .handle((l, sink) -> {
-                    logger.info("entityPath[{}]. sessionId[{}]. Closing. Did not receive message within timeout.",
-                        receiveLink.getEntityPath(), sessionId.get());
-                    cancelReceiveProcessor.onComplete();
-                    sink.complete();
-                })))
+        this.subscriptions.add(Flux.switchOnNext(messageReceivedEmitter
+            .flatMap(lockToken -> Mono.delay(retryOptions.getTryTimeout()))
+            .handle((l, sink) -> {
+                logger.info("entityPath[{}]. sessionId[{}]. Closing. Did not receive message within timeout.",
+                    receiveLink.getEntityPath(), sessionId.get());
+                cancelReceiveProcessor.onComplete();
+                sink.complete();
+            }))
             .subscribe());
         this.subscriptions.add(receiveLink.getSessionId().subscribe(id -> sessionId.set(id)));
         this.subscriptions.add(receiveLink.getSessionLockedUntil().subscribe(lockedUntil -> {
@@ -107,9 +112,8 @@ class UnnamedSessionReceiver implements AutoCloseable {
      * Gets whether or not the receiver contains the lock token.
      *
      * @param lockToken Lock token for the message.
-     *
      * @return {@code true} if the session receiver contains the lock token to the unsettled delivery; {@code false}
-     *     otherwise.
+     * otherwise.
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws IllegalArgumentException if {@code lockToken} is empty.
      */

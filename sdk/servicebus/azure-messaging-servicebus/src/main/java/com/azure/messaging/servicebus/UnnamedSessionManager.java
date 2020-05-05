@@ -16,6 +16,7 @@ import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
+import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.publisher.EmitterProcessor;
@@ -324,11 +325,10 @@ class UnnamedSessionManager implements AutoCloseable {
                     return existing;
                 }
 
-                return new UnnamedSessionReceiver(link, messageSerializer, options.isEnableAutoComplete(),
+                return new UnnamedSessionReceiver(link, messageSerializer, options.isAutoCompleteEnabled(),
                     null, connectionProcessor.getRetryOptions(), this::renewSessionLock);
             })))
             .flatMapMany(session -> {
-                session.getSessionId();
                 return session.receive().doFinally(signalType -> {
                     logger.verbose("Adding scheduler back to pool.");
                     availableSchedulers.push(scheduler);
