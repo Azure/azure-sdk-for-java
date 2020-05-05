@@ -25,6 +25,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoProcessor;
+import reactor.core.scheduler.Scheduler;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -51,8 +52,8 @@ class UnnamedSessionReceiver implements AutoCloseable {
     private final FluxSink<String> messageReceivedSink = messageReceivedEmitter.sink(FluxSink.OverflowStrategy.BUFFER);
 
     UnnamedSessionReceiver(ServiceBusReceiveLink receiveLink, MessageSerializer messageSerializer,
-        boolean isAutoComplete, Duration maxSessionLockRenewDuration, AmqpRetryOptions retryOptions,
-        Function<String, Mono<Instant>> renewSessionLock) {
+        boolean isAutoComplete, Duration maxSessionLockRenewDuration, AmqpRetryOptions retryOptions, int prefetch,
+        Scheduler scheduler, Function<String, Mono<Instant>> renewSessionLock) {
         this.receiveLink = receiveLink;
         this.maxSessionLockRenewDuration = maxSessionLockRenewDuration;
         this.renewSessionLock = renewSessionLock;
@@ -62,8 +63,15 @@ class UnnamedSessionReceiver implements AutoCloseable {
             receiveLink.getEntityPath(), null, null);
         final SessionMessageManagement messageManagement = new SessionMessageManagement(receiveLink);
 
+        receiveLink.setEmptyCreditListener(() -> 1);
+
         final Flux<ServiceBusReceivedMessageContext> receivedMessagesFlux = receiveLink
             .receive()
+            .publishOn(scheduler)
+            .doOnSubscribe(subscription ->  {
+                logger.verbose("Adding prefetch to receive link.");
+                receiveLink.addCredits(prefetch);
+            })
             .takeUntilOther(cancelReceiveProcessor)
             .map(message -> messageSerializer.deserialize(message, ServiceBusReceivedMessage.class))
             .subscribeWith(new ServiceBusMessageProcessor(receiveLink.getLinkName(), isAutoComplete, false,
@@ -75,7 +83,10 @@ class UnnamedSessionReceiver implements AutoCloseable {
 
                 return new ServiceBusReceivedMessageContext(message);
             })
-            .onErrorResume(error -> Mono.just(new ServiceBusReceivedMessageContext(getSessionId(), error)))
+            .onErrorResume(error -> {
+                logger.warning("sessionId[{}]. Error occurred. Ending session.", sessionId, error);
+                return Mono.just(new ServiceBusReceivedMessageContext(getSessionId(), error));
+            })
             .doOnNext(context -> {
                 if (context.hasError()) {
                     return;

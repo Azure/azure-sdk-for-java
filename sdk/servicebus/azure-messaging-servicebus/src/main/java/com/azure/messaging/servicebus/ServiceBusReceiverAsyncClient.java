@@ -59,8 +59,7 @@ import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPE
  *
  * <p><strong>Rate limiting consumption of messages from Service Bus resource</strong></p>
  * <p>For message receivers that need to limit the number of messages they receive at a given time, they can use
- * {@link BaseSubscriber#request(long)}.</p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#basesubscriber}
+ * {@link BaseSubscriber#request(long)}.</p> {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#basesubscriber}
  *
  * @see ServiceBusClientBuilder
  * @see ServiceBusReceiverClient To communicate with a Service Bus resource using a synchronous client.
@@ -939,16 +938,22 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         final String linkName = StringUtil.getRandomString(entityPath);
         logger.info("{}: Creating consumer for link '{}'", entityPath, linkName);
 
-        final Flux<ServiceBusReceiveLink> receiveLink =
-            connectionProcessor.flatMap(connection -> connection.createReceiveLink(linkName, entityPath,
-                receiverOptions.getReceiveMode(), null, entityType, receiverOptions.getSessionId()))
-                .doOnNext(next -> {
-                    final String format = "Created consumer for Service Bus resource: [{}] mode: [{}]"
-                        + " sessionEnabled? {} transferEntityPath: [{}], entityType: [{}]";
-                    logger.verbose(format, next.getEntityPath(), receiverOptions.getReceiveMode(),
-                        CoreUtils.isNullOrEmpty(receiverOptions.getSessionId()), "N/A", entityType);
-                })
-                .repeat();
+        final Flux<ServiceBusReceiveLink> receiveLink = connectionProcessor.flatMap(connection -> {
+            if (receiverOptions.isSessionReceiver()) {
+                return connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(),
+                    null, entityType, receiverOptions.getSessionId());
+            } else {
+                return connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(),
+                    null, entityType);
+            }
+        })
+            .doOnNext(next -> {
+                final String format = "Created consumer for Service Bus resource: [{}] mode: [{}]"
+                    + " sessionEnabled? {} transferEntityPath: [{}], entityType: [{}]";
+                logger.verbose(format, next.getEntityPath(), receiverOptions.getReceiveMode(),
+                    CoreUtils.isNullOrEmpty(receiverOptions.getSessionId()), "N/A", entityType);
+            })
+            .repeat();
 
         final LinkErrorContext context = new LinkErrorContext(fullyQualifiedNamespace, entityPath, linkName, null);
         final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionProcessor.getRetryOptions());

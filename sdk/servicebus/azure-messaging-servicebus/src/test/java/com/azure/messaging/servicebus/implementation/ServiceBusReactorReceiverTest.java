@@ -102,9 +102,6 @@ class ServiceBusReactorReceiverTest {
 
         reactorReceiver = new ServiceBusReactorReceiver(ENTITY_PATH, receiver, receiveLinkHandler, tokenManager,
             reactorProvider, Duration.ofSeconds(20), retryPolicy);
-
-        sessionReactor = new ServiceBusReactorReceiver(ENTITY_PATH, receiver, receiveLinkHandler, tokenManager,
-            reactorProvider, Duration.ofSeconds(20), retryPolicy, SESSION_ID);
     }
 
     @AfterEach

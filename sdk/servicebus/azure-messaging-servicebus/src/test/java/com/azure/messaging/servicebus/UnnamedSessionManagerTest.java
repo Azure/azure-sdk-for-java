@@ -131,6 +131,19 @@ class UnnamedSessionManagerTest {
         }
     }
 
+    @Test
+    void receiveNull() {
+        // Arrange
+        ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, true, 5);
+        sessionManager = new UnnamedSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+            TIMEOUT, tracerProvider, messageSerializer, receiverOptions);
+
+        // Act & Assert
+        StepVerifier.create(sessionManager.receive(null))
+            .expectError(NullPointerException.class)
+            .verify();
+    }
+
     /**
      * Verify that when we receive for a single, unnamed session, when no more items are emitted, it completes.
      */

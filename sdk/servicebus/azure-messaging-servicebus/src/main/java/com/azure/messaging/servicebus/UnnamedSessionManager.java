@@ -326,7 +326,8 @@ class UnnamedSessionManager implements AutoCloseable {
                 }
 
                 return new UnnamedSessionReceiver(link, messageSerializer, options.isAutoCompleteEnabled(),
-                    null, connectionProcessor.getRetryOptions(), this::renewSessionLock);
+                    options.getMaxAutoLockRenewalDuration(), connectionProcessor.getRetryOptions(),
+                    receiverOptions.getPrefetchCount(), scheduler, this::renewSessionLock);
             })))
             .flatMapMany(session -> {
                 return session.receive().doFinally(signalType -> {
