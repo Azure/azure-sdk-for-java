@@ -10,12 +10,13 @@ import com.azure.management.storage.CorsRules;
 import com.azure.management.storage.DeleteRetentionPolicy;
 import com.azure.management.storage.models.BlobServicePropertiesInner;
 import com.azure.management.storage.models.BlobServicesInner;
-import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.List;
+import reactor.core.publisher.Mono;
 
-class BlobServicePropertiesImpl extends CreatableUpdatableImpl<BlobServiceProperties, BlobServicePropertiesInner, BlobServicePropertiesImpl> implements BlobServiceProperties, BlobServiceProperties.Definition, BlobServiceProperties.Update {
+class BlobServicePropertiesImpl
+    extends CreatableUpdatableImpl<BlobServiceProperties, BlobServicePropertiesInner, BlobServicePropertiesImpl>
+    implements BlobServiceProperties, BlobServiceProperties.Definition, BlobServiceProperties.Update {
     private final StorageManager manager;
     private String resourceGroupName;
     private String accountName;
@@ -47,15 +48,17 @@ class BlobServicePropertiesImpl extends CreatableUpdatableImpl<BlobServiceProper
     @Override
     public Mono<BlobServiceProperties> createResourceAsync() {
         BlobServicesInner client = this.manager().inner().blobServices();
-        return client.setServicePropertiesAsync(this.resourceGroupName, this.accountName, this.inner())
-                .map(innerToFluentMap(this));
+        return client
+            .setServicePropertiesAsync(this.resourceGroupName, this.accountName, this.inner())
+            .map(innerToFluentMap(this));
     }
 
     @Override
     public Mono<BlobServiceProperties> updateResourceAsync() {
         BlobServicesInner client = this.manager().inner().blobServices();
-        return client.setServicePropertiesAsync(this.resourceGroupName, this.accountName, this.inner())
-                .map(innerToFluentMap(this));
+        return client
+            .setServicePropertiesAsync(this.resourceGroupName, this.accountName, this.inner())
+            .map(innerToFluentMap(this));
     }
 
     @Override
@@ -68,7 +71,6 @@ class BlobServicePropertiesImpl extends CreatableUpdatableImpl<BlobServiceProper
     public boolean isInCreateMode() {
         return this.inner().getId() == null;
     }
-
 
     @Override
     public CorsRules cors() {

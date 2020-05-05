@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/**
- * The DeletedVaultProperties model.
- */
+/** The DeletedVaultProperties model. */
 @Immutable
 public final class DeletedVaultProperties {
     /*
@@ -46,7 +44,7 @@ public final class DeletedVaultProperties {
 
     /**
      * Get the vaultId property: The resource id of the original vault.
-     * 
+     *
      * @return the vaultId value.
      */
     public String vaultId() {
@@ -55,7 +53,7 @@ public final class DeletedVaultProperties {
 
     /**
      * Get the location property: The location of the original vault.
-     * 
+     *
      * @return the location value.
      */
     public String location() {
@@ -64,7 +62,7 @@ public final class DeletedVaultProperties {
 
     /**
      * Get the deletionDate property: The deleted date.
-     * 
+     *
      * @return the deletionDate value.
      */
     public OffsetDateTime deletionDate() {
@@ -73,7 +71,7 @@ public final class DeletedVaultProperties {
 
     /**
      * Get the scheduledPurgeDate property: The scheduled purged date.
-     * 
+     *
      * @return the scheduledPurgeDate value.
      */
     public OffsetDateTime scheduledPurgeDate() {
@@ -82,7 +80,7 @@ public final class DeletedVaultProperties {
 
     /**
      * Get the tags property: Tags of the original vault.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> tags() {

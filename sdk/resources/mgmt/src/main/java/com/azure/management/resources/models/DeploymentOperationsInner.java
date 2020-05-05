@@ -24,10 +24,13 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DeploymentOperations. */
 public final class DeploymentOperationsInner {
+    private final ClientLogger logger = new ClientLogger(DeploymentOperationsInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final DeploymentOperationsService service;
 
@@ -101,8 +104,8 @@ public final class DeploymentOperationsInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments"
-                + "/{deploymentName}/operations/{operationId}")
+            "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources"
+                + "/deployments/{deploymentName}/operations/{operationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<DeploymentOperationInner>> getAtManagementGroupScope(
@@ -115,8 +118,8 @@ public final class DeploymentOperationsInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments"
-                + "/{deploymentName}/operations")
+            "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources"
+                + "/deployments/{deploymentName}/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<DeploymentOperationsListResultInner>> listAtManagementGroupScope(
@@ -129,8 +132,8 @@ public final class DeploymentOperationsInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}/operations"
-                + "/{operationId}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}"
+                + "/operations/{operationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<DeploymentOperationInner>> getAtSubscriptionScope(
@@ -142,7 +145,9 @@ public final class DeploymentOperationsInner {
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}/operations")
+        @Get(
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}"
+                + "/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<DeploymentOperationsListResultInner>> listAtSubscriptionScope(
@@ -1072,7 +1077,7 @@ public final class DeploymentOperationsInner {
     /**
      * Get the next page of items.
      *
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1097,7 +1102,7 @@ public final class DeploymentOperationsInner {
     /**
      * Get the next page of items.
      *
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1122,7 +1127,7 @@ public final class DeploymentOperationsInner {
     /**
      * Get the next page of items.
      *
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1148,7 +1153,7 @@ public final class DeploymentOperationsInner {
     /**
      * Get the next page of items.
      *
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1173,7 +1178,7 @@ public final class DeploymentOperationsInner {
     /**
      * Get the next page of items.
      *
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

@@ -1,20 +1,21 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk88572097722.search.windows.net/indexes('data-types-tests-index')/docs/search.index?api-version=2019-05-06",
+    "Uri" : "https://azsjava3387311b813534fa54d94ab233957.search.windows.net/indexes('data-types-tests-index')/docs/search.index?api-version=2019-05-06-Preview",
     "Headers" : {
+      "x-ms-client-request-id" : "5f768c68-823d-45e8-ba82-4e3da233aa37",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "e1a6b454-e676-45d4-a79f-2e0c237370a6",
+      "request-id" : "5f768c68-823d-45e8-ba82-4e3da233aa37",
       "StatusCode" : "200",
-      "Date" : "Fri, 13 Mar 2020 19:32:16 GMT",
+      "Date" : "Tue, 21 Apr 2020 18:59:56 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "e1a6b454-e676-45d4-a79f-2e0c237370a6",
-      "elapsed-time" : "188",
+      "client-request-id" : "5f768c68-823d-45e8-ba82-4e3da233aa37",
+      "elapsed-time" : "296",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "74",
@@ -25,18 +26,20 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azs-sdk88572097722.search.windows.net/indexes('data-types-tests-index')/docs('1')?api-version=2019-05-06",
-    "Headers" : { },
+    "Uri" : "https://azsjava3387311b813534fa54d94ab233957.search.windows.net/indexes('data-types-tests-index')/docs('1')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "0674864a-e3f2-454e-8474-92c18f6da61f"
+    },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "aa06e724-412b-445b-87e3-c5d3db526493",
+      "request-id" : "0674864a-e3f2-454e-8474-92c18f6da61f",
       "StatusCode" : "200",
-      "Date" : "Fri, 13 Mar 2020 19:32:18 GMT",
+      "Date" : "Tue, 21 Apr 2020 18:59:58 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "aa06e724-412b-445b-87e3-c5d3db526493",
-      "elapsed-time" : "13",
+      "client-request-id" : "0674864a-e3f2-454e-8474-92c18f6da61f",
+      "elapsed-time" : "12",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "460",
@@ -46,5 +49,5 @@
     },
     "Exception" : null
   } ],
-  "variables" : [ "azs-sdk88572097722" ]
+  "variables" : [ "azsjava3387311b813534fa54d94ab233957" ]
 }

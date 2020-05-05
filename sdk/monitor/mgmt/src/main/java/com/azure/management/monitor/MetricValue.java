@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The MetricValue model.
- */
+/** The MetricValue model. */
 @Fluent
 public final class MetricValue {
     /*
@@ -51,9 +49,8 @@ public final class MetricValue {
     private Double count;
 
     /**
-     * Get the timeStamp property: the timestamp for the metric value in ISO
-     * 8601 format.
-     * 
+     * Get the timeStamp property: the timestamp for the metric value in ISO 8601 format.
+     *
      * @return the timeStamp value.
      */
     public OffsetDateTime timeStamp() {
@@ -61,9 +58,8 @@ public final class MetricValue {
     }
 
     /**
-     * Set the timeStamp property: the timestamp for the metric value in ISO
-     * 8601 format.
-     * 
+     * Set the timeStamp property: the timestamp for the metric value in ISO 8601 format.
+     *
      * @param timeStamp the timeStamp value to set.
      * @return the MetricValue object itself.
      */
@@ -74,7 +70,7 @@ public final class MetricValue {
 
     /**
      * Get the average property: the average value in the time range.
-     * 
+     *
      * @return the average value.
      */
     public Double average() {
@@ -83,7 +79,7 @@ public final class MetricValue {
 
     /**
      * Set the average property: the average value in the time range.
-     * 
+     *
      * @param average the average value to set.
      * @return the MetricValue object itself.
      */
@@ -94,7 +90,7 @@ public final class MetricValue {
 
     /**
      * Get the minimum property: the least value in the time range.
-     * 
+     *
      * @return the minimum value.
      */
     public Double minimum() {
@@ -103,7 +99,7 @@ public final class MetricValue {
 
     /**
      * Set the minimum property: the least value in the time range.
-     * 
+     *
      * @param minimum the minimum value to set.
      * @return the MetricValue object itself.
      */
@@ -114,7 +110,7 @@ public final class MetricValue {
 
     /**
      * Get the maximum property: the greatest value in the time range.
-     * 
+     *
      * @return the maximum value.
      */
     public Double maximum() {
@@ -123,7 +119,7 @@ public final class MetricValue {
 
     /**
      * Set the maximum property: the greatest value in the time range.
-     * 
+     *
      * @param maximum the maximum value to set.
      * @return the MetricValue object itself.
      */
@@ -134,7 +130,7 @@ public final class MetricValue {
 
     /**
      * Get the total property: the sum of all of the values in the time range.
-     * 
+     *
      * @return the total value.
      */
     public Double total() {
@@ -143,7 +139,7 @@ public final class MetricValue {
 
     /**
      * Set the total property: the sum of all of the values in the time range.
-     * 
+     *
      * @param total the total value to set.
      * @return the MetricValue object itself.
      */
@@ -153,10 +149,9 @@ public final class MetricValue {
     }
 
     /**
-     * Get the count property: the number of samples in the time range. Can be
-     * used to determine the number of values that contributed to the average
-     * value.
-     * 
+     * Get the count property: the number of samples in the time range. Can be used to determine the number of values
+     * that contributed to the average value.
+     *
      * @return the count value.
      */
     public Double count() {
@@ -164,10 +159,9 @@ public final class MetricValue {
     }
 
     /**
-     * Set the count property: the number of samples in the time range. Can be
-     * used to determine the number of values that contributed to the average
-     * value.
-     * 
+     * Set the count property: the number of samples in the time range. Can be used to determine the number of values
+     * that contributed to the average value.
+     *
      * @param count the count value to set.
      * @return the MetricValue object itself.
      */

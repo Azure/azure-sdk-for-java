@@ -6,7 +6,6 @@ package com.azure.management.network;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.Region;
-import com.azure.management.resources.fluentcore.utils.SdkContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +15,10 @@ public class ApplicationSecurityGroupTests extends NetworkManagementTest {
     public void canCRUDApplicationSecurityGroup() throws Exception {
         String asgName = sdkContext.randomResourceName("asg", 15);
 
-        ApplicationSecurityGroup applicationSecurityGroup = networkManager.applicationSecurityGroups().define(asgName)
+        ApplicationSecurityGroup applicationSecurityGroup =
+            networkManager
+                .applicationSecurityGroups()
+                .define(asgName)
                 .withRegion(Region.US_SOUTH_CENTRAL)
                 .withNewResourceGroup(rgName)
                 .withTag("tag1", "value1")

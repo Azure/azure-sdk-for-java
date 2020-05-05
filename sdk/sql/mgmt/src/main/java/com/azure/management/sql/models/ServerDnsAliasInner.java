@@ -9,9 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ServerDnsAlias model.
- */
+/** The ServerDnsAlias model. */
 @JsonFlatten
 @Immutable
 public class ServerDnsAliasInner extends ProxyResource {
@@ -22,9 +20,8 @@ public class ServerDnsAliasInner extends ProxyResource {
     private String azureDnsRecord;
 
     /**
-     * Get the azureDnsRecord property: The fully qualified DNS record for
-     * alias.
-     * 
+     * Get the azureDnsRecord property: The fully qualified DNS record for alias.
+     *
      * @return the azureDnsRecord value.
      */
     public String azureDnsRecord() {

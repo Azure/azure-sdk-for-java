@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The SyncGroupSchemaTable model.
- */
+/** The SyncGroupSchemaTable model. */
 @Fluent
 public final class SyncGroupSchemaTable {
     /*
@@ -27,7 +25,7 @@ public final class SyncGroupSchemaTable {
 
     /**
      * Get the columns property: List of columns in sync group schema.
-     * 
+     *
      * @return the columns value.
      */
     public List<SyncGroupSchemaTableColumn> columns() {
@@ -36,7 +34,7 @@ public final class SyncGroupSchemaTable {
 
     /**
      * Set the columns property: List of columns in sync group schema.
-     * 
+     *
      * @param columns the columns value to set.
      * @return the SyncGroupSchemaTable object itself.
      */
@@ -47,7 +45,7 @@ public final class SyncGroupSchemaTable {
 
     /**
      * Get the quotedName property: Quoted name of sync group schema table.
-     * 
+     *
      * @return the quotedName value.
      */
     public String quotedName() {
@@ -56,7 +54,7 @@ public final class SyncGroupSchemaTable {
 
     /**
      * Set the quotedName property: Quoted name of sync group schema table.
-     * 
+     *
      * @param quotedName the quotedName value to set.
      * @return the SyncGroupSchemaTable object itself.
      */

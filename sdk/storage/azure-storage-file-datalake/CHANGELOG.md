@@ -1,5 +1,8 @@
 # Release History
 
+## 12.2.0-beta.1 (Unreleased)
+
+
 ## 12.1.0 (2020-04-06)
 - Fixed a NPE caused due to deserializing a non existent lastModifiedTime.
 - Added an isDirectory property to PathProperties. 

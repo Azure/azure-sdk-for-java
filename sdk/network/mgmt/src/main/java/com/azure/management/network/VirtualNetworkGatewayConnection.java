@@ -13,15 +13,12 @@ import com.azure.management.resources.fluentcore.model.Appliable;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.Refreshable;
 import com.azure.management.resources.fluentcore.model.Updatable;
-
 import java.util.Collection;
 
-/**
- * Client-side representation of Virtual Network Gateway Connection object, associated with Virtual Network Gateway.
- */
+/** Client-side representation of Virtual Network Gateway Connection object, associated with Virtual Network Gateway. */
 @Fluent
-public interface VirtualNetworkGatewayConnection extends
-        IndependentChildResource<NetworkManager, VirtualNetworkGatewayConnectionInner>,
+public interface VirtualNetworkGatewayConnection
+    extends IndependentChildResource<NetworkManager, VirtualNetworkGatewayConnectionInner>,
         Refreshable<VirtualNetworkGatewayConnection>,
         Updatable<VirtualNetworkGatewayConnection.Update>,
         UpdatableWithTags<VirtualNetworkGatewayConnection>,
@@ -34,19 +31,13 @@ public interface VirtualNetworkGatewayConnection extends
      */
     String authorizationKey();
 
-    /**
-     * @return the reference to virtual network gateway resource
-     */
+    /** @return the reference to virtual network gateway resource */
     String virtualNetworkGateway1Id();
 
-    /**
-     * @return the reference to virtual network gateway resource.
-     */
+    /** @return the reference to virtual network gateway resource. */
     String virtualNetworkGateway2Id();
 
-    /**
-     * @return the reference to local network gateway resource
-     */
+    /** @return the reference to local network gateway resource */
     String localNetworkGateway2Id();
 
     /**
@@ -56,14 +47,10 @@ public interface VirtualNetworkGatewayConnection extends
      */
     VirtualNetworkGatewayConnectionType connectionType();
 
-    /**
-     * @return the routing weight
-     */
+    /** @return the routing weight */
     int routingWeight();
 
-    /**
-     * @return the IPSec shared key
-     */
+    /** @return the IPSec shared key */
     String sharedKey();
 
     /**
@@ -80,46 +67,30 @@ public interface VirtualNetworkGatewayConnection extends
      */
     Collection<TunnelConnectionHealth> tunnelConnectionStatus();
 
-    /**
-     * @return the egress bytes transferred in this connection
-     */
+    /** @return the egress bytes transferred in this connection */
     long egressBytesTransferred();
 
-    /**
-     * @return the egress bytes transferred in this connection.
-     */
+    /** @return the egress bytes transferred in this connection. */
     long ingressBytesTransferred();
 
-    /**
-     * @return the reference to peerings resource
-     */
+    /** @return the reference to peerings resource */
     String peerId();
 
-    /**
-     * @return the enableBgp flag
-     */
+    /** @return the enableBgp flag */
     boolean isBgpEnabled();
 
-    /**
-     * @return if policy-based traffic selectors enabled
-     */
+    /** @return if policy-based traffic selectors enabled */
     boolean usePolicyBasedTrafficSelectors();
 
-    /**
-     * @return the IPSec Policies to be considered by this connection
-     */
+    /** @return the IPSec Policies to be considered by this connection */
     Collection<IpsecPolicy> ipsecPolicies();
 
-    /**
-     * @return the provisioning state of the VirtualNetworkGatewayConnection resource
-     */
+    /** @return the provisioning state of the VirtualNetworkGatewayConnection resource */
     String provisioningState();
 
-    /**
-     * The entirety of the virtual network gateway connection definition.
-     */
-    interface Definition extends
-            DefinitionStages.Blank,
+    /** The entirety of the virtual network gateway connection definition. */
+    interface Definition
+        extends DefinitionStages.Blank,
             DefinitionStages.WithConnectionType,
             DefinitionStages.WithLocalNetworkGateway,
             DefinitionStages.WithSecondVirtualNetworkGateway,
@@ -128,19 +99,13 @@ public interface VirtualNetworkGatewayConnection extends
             DefinitionStages.WithCreate {
     }
 
-    /**
-     * Grouping of virtual network gateway connection definition stages.
-     */
+    /** Grouping of virtual network gateway connection definition stages. */
     interface DefinitionStages {
-        /**
-         * The first stage of virtual network gateway connection definition.
-         */
+        /** The first stage of virtual network gateway connection definition. */
         interface Blank extends WithConnectionType {
         }
 
-        /**
-         * Stage of definition allowing to specify connection type.
-         */
+        /** Stage of definition allowing to specify connection type. */
         interface WithConnectionType {
             /**
              * Create Site-to-Site connection.
@@ -173,9 +138,7 @@ public interface VirtualNetworkGatewayConnection extends
             WithCreate withExpressRoute(ExpressRouteCircuit circuit);
         }
 
-        /**
-         * Stage of definition allowing to specify local network gateway to connect to.
-         */
+        /** Stage of definition allowing to specify local network gateway to connect to. */
         interface WithLocalNetworkGateway {
             /**
              * @param localNetworkGateway local network gateway to connect to
@@ -184,9 +147,7 @@ public interface VirtualNetworkGatewayConnection extends
             WithSharedKey withLocalNetworkGateway(LocalNetworkGateway localNetworkGateway);
         }
 
-        /**
-         * Stage of definition allowing to specify virtual network gateway to connect to.
-         */
+        /** Stage of definition allowing to specify virtual network gateway to connect to. */
         interface WithSecondVirtualNetworkGateway {
             /**
              * @param virtualNetworkGateway2 virtual network gateway to connect to
@@ -195,9 +156,7 @@ public interface VirtualNetworkGatewayConnection extends
             WithSharedKey withSecondVirtualNetworkGateway(VirtualNetworkGateway virtualNetworkGateway2);
         }
 
-        /**
-         * Stage of definition allowing to specify shared key for the connection.
-         */
+        /** Stage of definition allowing to specify shared key for the connection. */
         interface WithSharedKey {
             /**
              * Specify shared key.
@@ -208,9 +167,7 @@ public interface VirtualNetworkGatewayConnection extends
             WithCreate withSharedKey(String sharedKey);
         }
 
-        /**
-         * Stage of definition allowing to enable BGP for the connection.
-         */
+        /** Stage of definition allowing to enable BGP for the connection. */
         interface WithBgp {
             /**
              * Enable BGP for the connection.
@@ -220,13 +177,11 @@ public interface VirtualNetworkGatewayConnection extends
             WithCreate withBgp();
         }
 
-        /**
-         * Stage of definition allowing to add authorization for the connection.
-         */
+        /** Stage of definition allowing to add authorization for the connection. */
         interface WithAuthorization {
             /**
-             * Specify authorization key.
-             * This is required in case of Express Route connection if Express Route circuit and virtual network gateway reside in different subscriptions.
+             * Specify authorization key. This is required in case of Express Route connection if Express Route circuit
+             * and virtual network gateway reside in different subscriptions.
              *
              * @param authorizationKey authorization key to use
              * @return the next stage of the definition
@@ -235,35 +190,29 @@ public interface VirtualNetworkGatewayConnection extends
         }
 
         /**
-         * The stage of a virtual network gateway connection definition with sufficient inputs to create a new connection in the cloud,
-         * but exposing additional optional settings to specify.
+         * The stage of a virtual network gateway connection definition with sufficient inputs to create a new
+         * connection in the cloud, but exposing additional optional settings to specify.
          */
-        interface WithCreate extends
-                Creatable<VirtualNetworkGatewayConnection>,
+        interface WithCreate
+            extends Creatable<VirtualNetworkGatewayConnection>,
                 Resource.DefinitionWithTags<WithCreate>,
                 WithBgp,
                 WithAuthorization {
         }
     }
 
-    /**
-     * Grouping of virtual network gateway connection update stages.
-     */
-    interface Update extends
-            Appliable<VirtualNetworkGatewayConnection>,
+    /** Grouping of virtual network gateway connection update stages. */
+    interface Update
+        extends Appliable<VirtualNetworkGatewayConnection>,
             Resource.UpdateWithTags<Update>,
             UpdateStages.WithBgp,
             UpdateStages.WithSharedKey,
             UpdateStages.WithAuthorization {
     }
 
-    /**
-     * Grouping of virtual network gateway connection update stages.
-     */
+    /** Grouping of virtual network gateway connection update stages. */
     interface UpdateStages {
-        /**
-         * Stage of virtual network gateway connection update allowing to enable or disable BGP for the connection.
-         */
+        /** Stage of virtual network gateway connection update allowing to enable or disable BGP for the connection. */
         interface WithBgp {
             /**
              * Enable BGP for the connection.
@@ -280,9 +229,7 @@ public interface VirtualNetworkGatewayConnection extends
             Update withoutBgp();
         }
 
-        /**
-         * Stage of virtual network gateway connection update allowing to specify shared key for the connection.
-         */
+        /** Stage of virtual network gateway connection update allowing to specify shared key for the connection. */
         interface WithSharedKey {
             /**
              * Specify shared key.
@@ -293,13 +240,11 @@ public interface VirtualNetworkGatewayConnection extends
             Update withSharedKey(String sharedKey);
         }
 
-        /**
-         * Stage of virtual network gateway connection update allowing to add authorization for the connection.
-         */
+        /** Stage of virtual network gateway connection update allowing to add authorization for the connection. */
         interface WithAuthorization {
             /**
-             * Specify authorization key.
-             * This is required in case of Express Route connection if Express Route circuit and virtual network gateway reside in different subscriptions.
+             * Specify authorization key. This is required in case of Express Route connection if Express Route circuit
+             * and virtual network gateway reside in different subscriptions.
              *
              * @param authorizationKey authorization key to use
              * @return the next stage of the update

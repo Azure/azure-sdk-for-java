@@ -11,9 +11,7 @@ import com.azure.management.sql.ServerKeyType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The ServerKey model.
- */
+/** The ServerKey model. */
 @JsonFlatten
 @Fluent
 public class ServerKeyInner extends ProxyResource {
@@ -61,9 +59,8 @@ public class ServerKeyInner extends ProxyResource {
     private OffsetDateTime creationDate;
 
     /**
-     * Get the kind property: Kind of encryption protector. This is metadata
-     * used for the Azure portal experience.
-     * 
+     * Get the kind property: Kind of encryption protector. This is metadata used for the Azure portal experience.
+     *
      * @return the kind value.
      */
     public String kind() {
@@ -71,9 +68,8 @@ public class ServerKeyInner extends ProxyResource {
     }
 
     /**
-     * Set the kind property: Kind of encryption protector. This is metadata
-     * used for the Azure portal experience.
-     * 
+     * Set the kind property: Kind of encryption protector. This is metadata used for the Azure portal experience.
+     *
      * @param kind the kind value to set.
      * @return the ServerKeyInner object itself.
      */
@@ -84,7 +80,7 @@ public class ServerKeyInner extends ProxyResource {
 
     /**
      * Get the location property: Resource location.
-     * 
+     *
      * @return the location value.
      */
     public String location() {
@@ -93,7 +89,7 @@ public class ServerKeyInner extends ProxyResource {
 
     /**
      * Get the subregion property: Subregion of the server key.
-     * 
+     *
      * @return the subregion value.
      */
     public String subregion() {
@@ -101,9 +97,8 @@ public class ServerKeyInner extends ProxyResource {
     }
 
     /**
-     * Get the serverKeyType property: The server key type like
-     * 'ServiceManaged', 'AzureKeyVault'.
-     * 
+     * Get the serverKeyType property: The server key type like 'ServiceManaged', 'AzureKeyVault'.
+     *
      * @return the serverKeyType value.
      */
     public ServerKeyType serverKeyType() {
@@ -111,9 +106,8 @@ public class ServerKeyInner extends ProxyResource {
     }
 
     /**
-     * Set the serverKeyType property: The server key type like
-     * 'ServiceManaged', 'AzureKeyVault'.
-     * 
+     * Set the serverKeyType property: The server key type like 'ServiceManaged', 'AzureKeyVault'.
+     *
      * @param serverKeyType the serverKeyType value to set.
      * @return the ServerKeyInner object itself.
      */
@@ -124,7 +118,7 @@ public class ServerKeyInner extends ProxyResource {
 
     /**
      * Get the uri property: The URI of the server key.
-     * 
+     *
      * @return the uri value.
      */
     public String uri() {
@@ -133,7 +127,7 @@ public class ServerKeyInner extends ProxyResource {
 
     /**
      * Set the uri property: The URI of the server key.
-     * 
+     *
      * @param uri the uri value to set.
      * @return the ServerKeyInner object itself.
      */
@@ -144,7 +138,7 @@ public class ServerKeyInner extends ProxyResource {
 
     /**
      * Get the thumbprint property: Thumbprint of the server key.
-     * 
+     *
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -153,7 +147,7 @@ public class ServerKeyInner extends ProxyResource {
 
     /**
      * Set the thumbprint property: Thumbprint of the server key.
-     * 
+     *
      * @param thumbprint the thumbprint value to set.
      * @return the ServerKeyInner object itself.
      */
@@ -164,7 +158,7 @@ public class ServerKeyInner extends ProxyResource {
 
     /**
      * Get the creationDate property: The server key creation date.
-     * 
+     *
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -173,7 +167,7 @@ public class ServerKeyInner extends ProxyResource {
 
     /**
      * Set the creationDate property: The server key creation date.
-     * 
+     *
      * @param creationDate the creationDate value to set.
      * @return the ServerKeyInner object itself.
      */

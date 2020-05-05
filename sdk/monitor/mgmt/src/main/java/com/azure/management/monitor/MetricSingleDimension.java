@@ -7,9 +7,7 @@ package com.azure.management.monitor;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The MetricSingleDimension model.
- */
+/** The MetricSingleDimension model. */
 @Fluent
 public final class MetricSingleDimension {
     /*
@@ -26,7 +24,7 @@ public final class MetricSingleDimension {
 
     /**
      * Get the name property: Name of the dimension.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -35,7 +33,7 @@ public final class MetricSingleDimension {
 
     /**
      * Set the name property: Name of the dimension.
-     * 
+     *
      * @param name the name value to set.
      * @return the MetricSingleDimension object itself.
      */
@@ -46,7 +44,7 @@ public final class MetricSingleDimension {
 
     /**
      * Get the value property: Value of the dimension.
-     * 
+     *
      * @return the value value.
      */
     public String value() {
@@ -55,7 +53,7 @@ public final class MetricSingleDimension {
 
     /**
      * Set the value property: Value of the dimension.
-     * 
+     *
      * @param value the value value to set.
      * @return the MetricSingleDimension object itself.
      */

@@ -7,9 +7,7 @@ package com.azure.management.containerregistry;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The RunUpdateParameters model.
- */
+/** The RunUpdateParameters model. */
 @Fluent
 public final class RunUpdateParameters {
     /*
@@ -19,9 +17,8 @@ public final class RunUpdateParameters {
     private Boolean isArchiveEnabled;
 
     /**
-     * Get the isArchiveEnabled property: The value that indicates whether
-     * archiving is enabled or not.
-     * 
+     * Get the isArchiveEnabled property: The value that indicates whether archiving is enabled or not.
+     *
      * @return the isArchiveEnabled value.
      */
     public Boolean isArchiveEnabled() {
@@ -29,9 +26,8 @@ public final class RunUpdateParameters {
     }
 
     /**
-     * Set the isArchiveEnabled property: The value that indicates whether
-     * archiving is enabled or not.
-     * 
+     * Set the isArchiveEnabled property: The value that indicates whether archiving is enabled or not.
+     *
      * @param isArchiveEnabled the isArchiveEnabled value to set.
      * @return the RunUpdateParameters object itself.
      */

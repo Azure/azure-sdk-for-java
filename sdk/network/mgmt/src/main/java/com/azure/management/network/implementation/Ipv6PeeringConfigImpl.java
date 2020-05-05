@@ -8,22 +8,19 @@ import com.azure.management.network.ExpressRouteCrossConnectionPeering;
 import com.azure.management.network.Ipv6ExpressRouteCircuitPeeringConfig;
 import com.azure.management.network.Ipv6PeeringConfig;
 import com.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
-
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *  Implementation for Ipv6PeeringConfig.
- */
- class Ipv6PeeringConfigImpl
-        extends IndexableWrapperImpl<Ipv6ExpressRouteCircuitPeeringConfig>
-        implements
-        Ipv6PeeringConfig,
+/** Implementation for Ipv6PeeringConfig. */
+class Ipv6PeeringConfigImpl extends IndexableWrapperImpl<Ipv6ExpressRouteCircuitPeeringConfig>
+    implements Ipv6PeeringConfig,
         Ipv6PeeringConfig.Definition<ExpressRouteCrossConnectionPeering.DefinitionStages.WithCreate>,
         Ipv6PeeringConfig.UpdateDefinition<ExpressRouteCrossConnectionPeering.Update>,
         Ipv6PeeringConfig.Update {
     private final ExpressRouteCrossConnectionPeeringImpl parent;
-    Ipv6PeeringConfigImpl(Ipv6ExpressRouteCircuitPeeringConfig innerObject, ExpressRouteCrossConnectionPeeringImpl parent) {
+
+    Ipv6PeeringConfigImpl(
+        Ipv6ExpressRouteCircuitPeeringConfig innerObject, ExpressRouteCrossConnectionPeeringImpl parent) {
         super(innerObject);
         this.parent = parent;
     }
@@ -33,7 +30,6 @@ import java.util.List;
         ensureMicrosoftPeeringConfig().withAdvertisedPublicPrefixes(publicPrefixes);
         return this;
     }
-
 
     @Override
     public Ipv6PeeringConfigImpl withAdvertisedPublicPrefix(String publicPrefix) {

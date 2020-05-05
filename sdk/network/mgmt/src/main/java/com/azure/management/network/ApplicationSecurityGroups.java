@@ -17,12 +17,10 @@ import com.azure.management.resources.fluentcore.collection.SupportsDeletingById
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-/**
- * Entry point to application security group management.
- */
+/** Entry point to application security group management. */
 @Fluent
-public interface ApplicationSecurityGroups extends
-        SupportsCreating<ApplicationSecurityGroup.DefinitionStages.Blank>,
+public interface ApplicationSecurityGroups
+    extends SupportsCreating<ApplicationSecurityGroup.DefinitionStages.Blank>,
         SupportsListing<ApplicationSecurityGroup>,
         SupportsListingByResourceGroup<ApplicationSecurityGroup>,
         SupportsGettingByResourceGroup<ApplicationSecurityGroup>,

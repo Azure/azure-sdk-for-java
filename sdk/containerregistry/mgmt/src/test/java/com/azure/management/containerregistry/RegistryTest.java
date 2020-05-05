@@ -3,32 +3,25 @@
 
 package com.azure.management.containerregistry;
 
-
-import com.azure.management.RestClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.management.containerregistry.implementation.ContainerRegistryManager;
 import com.azure.management.resources.core.TestBase;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.implementation.ResourceManager;
 
-/**
- * The base for storage manager tests.
- */
+/** The base for storage manager tests. */
 public abstract class RegistryTest extends TestBase {
     protected ResourceManager resourceManager;
     protected ContainerRegistryManager registryManager;
     protected String rgName;
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        resourceManager = ResourceManager
-                .authenticate(restClient)
-                .withSdkContext(sdkContext)
-                .withSubscription(defaultSubscription);
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
+        resourceManager =
+            ResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext).withDefaultSubscription();
 
-        registryManager = ContainerRegistryManager
-                .authenticate(restClient, defaultSubscription, sdkContext);
+        registryManager = ContainerRegistryManager.authenticate(httpPipeline, profile, sdkContext);
 
         rgName = generateRandomResourceName("rgacr", 10);
     }
-
-
 }

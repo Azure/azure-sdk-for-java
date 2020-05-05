@@ -1,7 +1,16 @@
 # Release History
 
-## 7.1.0-beta.1 (Unreleased)
+## 8.1.0-beta.1 (Unreleased)
 
+
+## 8.0.0 (2020-04-27)
+### Features
+- Added ability to encrypt `ComputeNode` disk drives using the new `diskEncryptionConfiguration` property of `VirtualMachineConfiguration`.
+- The `createCertificate` functions on `CertificateOperations` had their parameters updated to more clearly reflect that `password` is optional for PFX formatted certificates.
+- **[Breaking]** The `virtualMachineImageId` property of `ImageReference` can now only refer to a Shared Image Gallery image.
+- **[Breaking]** Pools can now be provisioned without a public IP using the new `PublicIPAddressConfiguration` property of `NetworkConfiguration`.
+    - The `PublicIPs` property of `NetworkConfiguration` has moved in to `PublicIPAddressConfiguration` as well. This property can only be specified if `IPAddressProvisioningType` is `UserManaged`.
+      
 ## 7.0.0
 ### Features
     - Added ability to specify a collection of public IPs on CloudPool via the new PublicIPs property. This guarantees nodes in the Pool will have an IP from the list user provided IPs.

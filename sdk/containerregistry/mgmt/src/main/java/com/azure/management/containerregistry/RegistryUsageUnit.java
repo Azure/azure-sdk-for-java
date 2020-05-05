@@ -8,23 +8,17 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for RegistryUsageUnit.
- */
+/** Defines values for RegistryUsageUnit. */
 public final class RegistryUsageUnit extends ExpandableStringEnum<RegistryUsageUnit> {
-    /**
-     * Static value Count for RegistryUsageUnit.
-     */
+    /** Static value Count for RegistryUsageUnit. */
     public static final RegistryUsageUnit COUNT = fromString("Count");
 
-    /**
-     * Static value Bytes for RegistryUsageUnit.
-     */
+    /** Static value Bytes for RegistryUsageUnit. */
     public static final RegistryUsageUnit BYTES = fromString("Bytes");
 
     /**
      * Creates or finds a RegistryUsageUnit from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding RegistryUsageUnit.
      */
@@ -33,9 +27,7 @@ public final class RegistryUsageUnit extends ExpandableStringEnum<RegistryUsageU
         return fromString(name, RegistryUsageUnit.class);
     }
 
-    /**
-     * @return known RegistryUsageUnit values.
-     */
+    /** @return known RegistryUsageUnit values. */
     public static Collection<RegistryUsageUnit> values() {
         return values(RegistryUsageUnit.class);
     }

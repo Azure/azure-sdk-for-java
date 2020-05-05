@@ -6,7 +6,6 @@ package com.azure.messaging.servicebus.implementation;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpSession;
-import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.CbsAuthorizationType;
@@ -92,7 +91,9 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
                 connectionId, entityPath))));
         }
 
-        final ServiceBusManagementNode existing = managementNodes.get(entityPath);
+        final String entityTypePath = String.join("-", entityType.toString(), entityPath);
+
+        final ServiceBusManagementNode existing = managementNodes.get(entityTypePath);
         if (existing != null) {
             return Mono.just(existing);
         }
@@ -103,7 +104,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
                     fullyQualifiedNamespace, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE)
                     .getTokenManager(getClaimsBasedSecurityNode(), entityPath);
 
-                return tokenManager.authorize().thenReturn(managementNodes.compute(entityPath, (key, current) -> {
+                return tokenManager.authorize().thenReturn(managementNodes.compute(entityTypePath, (key, current) -> {
                     if (current != null) {
                         logger.info("A management node exists already, returning it.");
 
@@ -158,15 +159,41 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * @return A new or existing receive link that is connected to the given {@code entityPath}.
      */
     @Override
-    public Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode,
-        boolean isSession, String transferEntityPath, MessagingEntityType entityType) {
+    public Mono<ServiceBusReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode,
+        String transferEntityPath, MessagingEntityType entityType) {
         return createSession(entityPath).cast(ServiceBusSession.class)
             .flatMap(session -> {
                 logger.verbose("Get or create consumer for path: '{}'", entityPath);
                 final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
                 return session.createConsumer(linkName, entityPath, entityType, retryOptions.getTryTimeout(),
-                    retryPolicy, receiveMode, isSession);
+                    retryPolicy, receiveMode);
+            });
+    }
+
+    /**
+     * Creates or gets an existing receive link. The same link is returned if there is an existing receive link with the
+     * same {@code linkName}. Otherwise, a new link is created and returned.
+     *
+     * @param linkName The name of the link.
+     * @param entityPath The remote address to connect to for the message broker.
+     * @param receiveMode Consumer options to use when creating the link.
+     * @param transferEntityPath to use when creating the link.
+     * @param entityType {@link MessagingEntityType} to use when creating the link.
+     * @param sessionId to use when creating the link.
+     *
+     * @return A new or existing receive link that is connected to the given {@code entityPath}.
+     */
+    @Override
+    public Mono<ServiceBusReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode,
+        String transferEntityPath, MessagingEntityType entityType, String sessionId) {
+        return createSession(entityPath).cast(ServiceBusSession.class)
+            .flatMap(session -> {
+                logger.verbose("Get or create consumer for path: '{}'", entityPath);
+                final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
+
+                return session.createConsumer(linkName, entityPath, entityType, retryOptions.getTryTimeout(),
+                    retryPolicy, receiveMode, sessionId);
             });
     }
 
@@ -182,6 +209,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     @Override
     protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
         return new ServiceBusReactorSession(session, handler, sessionName, reactorProvider, handlerProvider,
-            getClaimsBasedSecurityNode(), tokenManagerProvider, retryOptions.getTryTimeout(), messageSerializer);
+            getClaimsBasedSecurityNode(), tokenManagerProvider, retryOptions.getTryTimeout(), messageSerializer,
+            RetryUtil.getRetryPolicy(retryOptions));
     }
 }

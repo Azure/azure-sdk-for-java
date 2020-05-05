@@ -8,38 +8,26 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for LogSizeUnit.
- */
+/** Defines values for LogSizeUnit. */
 public final class LogSizeUnit extends ExpandableStringEnum<LogSizeUnit> {
-    /**
-     * Static value Megabytes for LogSizeUnit.
-     */
+    /** Static value Megabytes for LogSizeUnit. */
     public static final LogSizeUnit MEGABYTES = fromString("Megabytes");
 
-    /**
-     * Static value Gigabytes for LogSizeUnit.
-     */
+    /** Static value Gigabytes for LogSizeUnit. */
     public static final LogSizeUnit GIGABYTES = fromString("Gigabytes");
 
-    /**
-     * Static value Terabytes for LogSizeUnit.
-     */
+    /** Static value Terabytes for LogSizeUnit. */
     public static final LogSizeUnit TERABYTES = fromString("Terabytes");
 
-    /**
-     * Static value Petabytes for LogSizeUnit.
-     */
+    /** Static value Petabytes for LogSizeUnit. */
     public static final LogSizeUnit PETABYTES = fromString("Petabytes");
 
-    /**
-     * Static value Percent for LogSizeUnit.
-     */
+    /** Static value Percent for LogSizeUnit. */
     public static final LogSizeUnit PERCENT = fromString("Percent");
 
     /**
      * Creates or finds a LogSizeUnit from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding LogSizeUnit.
      */
@@ -48,9 +36,7 @@ public final class LogSizeUnit extends ExpandableStringEnum<LogSizeUnit> {
         return fromString(name, LogSizeUnit.class);
     }
 
-    /**
-     * @return known LogSizeUnit values.
-     */
+    /** @return known LogSizeUnit values. */
     public static Collection<LogSizeUnit> values() {
         return values(LogSizeUnit.class);
     }

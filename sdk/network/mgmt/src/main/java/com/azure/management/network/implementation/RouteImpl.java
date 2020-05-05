@@ -8,13 +8,9 @@ import com.azure.management.network.RouteTable;
 import com.azure.management.network.models.RouteInner;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
-/**
- * Implementation of Route.
- */
-class RouteImpl
-        extends ChildResourceImpl<RouteInner, RouteTableImpl, RouteTable>
-        implements
-        Route,
+/** Implementation of Route. */
+class RouteImpl extends ChildResourceImpl<RouteInner, RouteTableImpl, RouteTable>
+    implements Route,
         Route.Definition<RouteTable.DefinitionStages.WithCreate>,
         Route.UpdateDefinition<RouteTable.Update>,
         Route.Update {
@@ -40,7 +36,7 @@ class RouteImpl
     }
 
     @Override
-    public String nextHopIPAddress() {
+    public String nextHopIpAddress() {
         return this.inner().nextHopIpAddress();
     }
 
@@ -60,9 +56,7 @@ class RouteImpl
 
     @Override
     public RouteImpl withNextHopToVirtualAppliance(String ipAddress) {
-        this.inner()
-                .withNextHopType(RouteNextHopType.VIRTUAL_APPLIANCE)
-                .withNextHopIpAddress(ipAddress);
+        this.inner().withNextHopType(RouteNextHopType.VIRTUAL_APPLIANCE).withNextHopIpAddress(ipAddress);
         return this;
     }
 

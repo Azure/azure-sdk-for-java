@@ -34,7 +34,7 @@ public class PagedListTests {
             // 1st page 0-9
             () -> Mono.just(new PagedResponseBase<>(null, 200, null,
                 IntStream.range(0, pageSize).boxed().collect(Collectors.toList()), Integer.toString(pageSize),
-                (Object)null)),
+                (Object) null)),
             // 2nd page 10-19
             // 3rd page 20-29
             // ...

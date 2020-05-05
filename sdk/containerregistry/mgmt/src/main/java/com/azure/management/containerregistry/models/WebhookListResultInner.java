@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The WebhookListResult model.
- */
+/** The WebhookListResult model. */
 @Fluent
 public final class WebhookListResultInner {
     /*
@@ -27,10 +25,9 @@ public final class WebhookListResultInner {
     private String nextLink;
 
     /**
-     * Get the value property: The list of webhooks. Since this list may be
-     * incomplete, the nextLink field should be used to request the next list
-     * of webhooks.
-     * 
+     * Get the value property: The list of webhooks. Since this list may be incomplete, the nextLink field should be
+     * used to request the next list of webhooks.
+     *
      * @return the value value.
      */
     public List<WebhookInner> value() {
@@ -38,10 +35,9 @@ public final class WebhookListResultInner {
     }
 
     /**
-     * Set the value property: The list of webhooks. Since this list may be
-     * incomplete, the nextLink field should be used to request the next list
-     * of webhooks.
-     * 
+     * Set the value property: The list of webhooks. Since this list may be incomplete, the nextLink field should be
+     * used to request the next list of webhooks.
+     *
      * @param value the value value to set.
      * @return the WebhookListResultInner object itself.
      */
@@ -51,9 +47,8 @@ public final class WebhookListResultInner {
     }
 
     /**
-     * Get the nextLink property: The URI that can be used to request the next
-     * list of webhooks.
-     * 
+     * Get the nextLink property: The URI that can be used to request the next list of webhooks.
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -61,9 +56,8 @@ public final class WebhookListResultInner {
     }
 
     /**
-     * Set the nextLink property: The URI that can be used to request the next
-     * list of webhooks.
-     * 
+     * Set the nextLink property: The URI that can be used to request the next list of webhooks.
+     *
      * @param nextLink the nextLink value to set.
      * @return the WebhookListResultInner object itself.
      */

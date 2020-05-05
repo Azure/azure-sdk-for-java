@@ -2,25 +2,17 @@
 // Licensed under the MIT License.
 package com.azure.management.network;
 
-
 import com.azure.core.annotation.Fluent;
 import com.azure.management.network.models.ConnectionMonitorQueryResultInner;
 import com.azure.management.resources.fluentcore.model.HasInner;
-
 import java.util.List;
 
-/**
- * List of connection states snaphots.
- */
+/** List of connection states snaphots. */
 @Fluent
 public interface ConnectionMonitorQueryResult extends HasInner<ConnectionMonitorQueryResultInner> {
-    /**
-     * @return status of connection monitor source
-     */
+    /** @return status of connection monitor source */
     ConnectionMonitorSourceStatus sourceStatus();
 
-    /**
-     * @return information about connection states
-     */
+    /** @return information about connection states */
     List<ConnectionStateSnapshot> states();
 }

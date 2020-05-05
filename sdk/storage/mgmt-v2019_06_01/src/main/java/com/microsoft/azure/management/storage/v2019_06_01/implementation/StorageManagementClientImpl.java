@@ -226,6 +226,19 @@ public class StorageManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The ObjectReplicationPoliciesInner object to access its operations.
+     */
+    private ObjectReplicationPoliciesInner objectReplicationPolicies;
+
+    /**
+     * Gets the ObjectReplicationPoliciesInner object to access its operations.
+     * @return the ObjectReplicationPoliciesInner object.
+     */
+    public ObjectReplicationPoliciesInner objectReplicationPolicies() {
+        return this.objectReplicationPolicies;
+    }
+
+    /**
      * The EncryptionScopesInner object to access its operations.
      */
     private EncryptionScopesInner encryptionScopes;
@@ -332,6 +345,7 @@ public class StorageManagementClientImpl extends AzureServiceClient {
         this.managementPolicies = new ManagementPoliciesInner(restClient().retrofit(), this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsInner(restClient().retrofit(), this);
         this.privateLinkResources = new PrivateLinkResourcesInner(restClient().retrofit(), this);
+        this.objectReplicationPolicies = new ObjectReplicationPoliciesInner(restClient().retrofit(), this);
         this.encryptionScopes = new EncryptionScopesInner(restClient().retrofit(), this);
         this.blobServices = new BlobServicesInner(restClient().retrofit(), this);
         this.blobContainers = new BlobContainersInner(restClient().retrofit(), this);

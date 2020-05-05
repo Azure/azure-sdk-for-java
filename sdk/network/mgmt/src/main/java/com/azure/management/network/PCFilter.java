@@ -8,38 +8,39 @@ import com.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.azure.management.resources.fluentcore.model.Attachable;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.fluentcore.model.Indexable;
-
 import java.util.List;
 
-/**
- * Client-side representation of packet capture filter.
- */
+/** Client-side representation of packet capture filter. */
 @Fluent
-public interface PCFilter extends Indexable,
-        HasParent<PacketCapture>,
-        HasInner<PacketCaptureFilter> {
-    /**
-     * @return protocol to be filtered on.
-     */
+public interface PCFilter extends Indexable, HasParent<PacketCapture>, HasInner<PacketCaptureFilter> {
+    /** @return protocol to be filtered on. */
     PcProtocol protocol();
 
     /**
-     * @return local IP Address to be filtered on. Notation: "127.0.0.1" for single address entry. "127.0.0.1-127.0.0.255" for range. "127.0.0.1;127.0.0.5"? for multiple entries. Multiple ranges not currently supported. Mixing ranges with multiple entries not currently supported. Default = null.
+     * @return local IP Address to be filtered on. Notation: "127.0.0.1" for single address entry.
+     *     "127.0.0.1-127.0.0.255" for range. "127.0.0.1;127.0.0.5"? for multiple entries. Multiple ranges not currently
+     *     supported. Mixing ranges with multiple entries not currently supported. Default = null.
      */
     String localIPAddress();
 
     /**
-     * @return remote IP Address to be filtered on. Notation: "127.0.0.1" for single address entry. "127.0.0.1-127.0.0.255" for range. "127.0.0.1;127.0.0.5;" for multiple entries. Multiple ranges not currently supported. Mixing ranges with multiple entries not currently supported. Default = null.
+     * @return remote IP Address to be filtered on. Notation: "127.0.0.1" for single address entry.
+     *     "127.0.0.1-127.0.0.255" for range. "127.0.0.1;127.0.0.5;" for multiple entries. Multiple ranges not currently
+     *     supported. Mixing ranges with multiple entries not currently supported. Default = null.
      */
     String remoteIPAddress();
 
     /**
-     * @return local port to be filtered on. Notation: "80" for single port entry."80-85" for range. "80;443;" for multiple entries. Multiple ranges not currently supported. Mixing ranges with multiple entries not currently supported. Default = null.
+     * @return local port to be filtered on. Notation: "80" for single port entry."80-85" for range. "80;443;" for
+     *     multiple entries. Multiple ranges not currently supported. Mixing ranges with multiple entries not currently
+     *     supported. Default = null.
      */
     String localPort();
 
     /**
-     * @return remote port to be filtered on. Notation: "80" for single port entry."80-85" for range. "80;443;" for multiple entries. Multiple ranges not currently supported. Mixing ranges with multiple entries not currently supported. Default = null.
+     * @return remote port to be filtered on. Notation: "80" for single port entry."80-85" for range. "80;443;" for
+     *     multiple entries. Multiple ranges not currently supported. Mixing ranges with multiple entries not currently
+     *     supported. Default = null.
      */
     String remotePort();
 
@@ -48,22 +49,18 @@ public interface PCFilter extends Indexable,
      *
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
-    interface Definition<ParentT> extends
-            PCFilter.DefinitionStages.WithAttach<ParentT> {
+    interface Definition<ParentT> extends PCFilter.DefinitionStages.WithAttach<ParentT> {
     }
 
-    /**
-     * Definition stages for packet capture filter.
-     */
+    /** Definition stages for packet capture filter. */
     interface DefinitionStages {
 
-        interface WithAttach<ParentT> extends
-                Attachable.InDefinition<ParentT>,
-                Blank<ParentT> {
+        interface WithAttach<ParentT> extends Attachable.InDefinition<ParentT>, Blank<ParentT> {
         }
 
-        interface Blank<ParentT> extends
-                HasProtocol.DefinitionStages.WithProtocol<WithAttach<PacketCapture.DefinitionStages.WithCreate>, PcProtocol>,
+        interface Blank<ParentT>
+            extends HasProtocol.DefinitionStages.WithProtocol<
+                    WithAttach<PacketCapture.DefinitionStages.WithCreate>, PcProtocol>,
                 WithLocalIP<ParentT>,
                 WithRemoteIPAddress<ParentT>,
                 WithLocalPort<ParentT>,
@@ -71,9 +68,9 @@ public interface PCFilter extends Indexable,
         }
 
         /**
-         * Set local IP Address to be filtered on.
-         * Notation: "127.0.0.1" for single address entry. "127.0.0.1-127.0.0.255" for range. "127.0.0.1;127.0.0.5" for multiple entries.
-         * Multiple ranges not currently supported. Mixing ranges with multiple entries not currently supported. Default = null.
+         * Set local IP Address to be filtered on. Notation: "127.0.0.1" for single address entry.
+         * "127.0.0.1-127.0.0.255" for range. "127.0.0.1;127.0.0.5" for multiple entries. Multiple ranges not currently
+         * supported. Mixing ranges with multiple entries not currently supported. Default = null.
          */
         interface WithLocalIP<ParentT> {
             /**
@@ -103,9 +100,9 @@ public interface PCFilter extends Indexable,
         }
 
         /**
-         * Set remote IP Address to be filtered on.
-         * Notation: "127.0.0.1" for single address entry. "127.0.0.1-127.0.0.255" for range. "127.0.0.1;127.0.0.5" for multiple entries.
-         * Multiple ranges not currently supported. Mixing ranges with multiple entries not currently supported. Default = null.
+         * Set remote IP Address to be filtered on. Notation: "127.0.0.1" for single address entry.
+         * "127.0.0.1-127.0.0.255" for range. "127.0.0.1;127.0.0.5" for multiple entries. Multiple ranges not currently
+         * supported. Mixing ranges with multiple entries not currently supported. Default = null.
          */
         interface WithRemoteIPAddress<ParentT> {
             /**
@@ -135,8 +132,9 @@ public interface PCFilter extends Indexable,
         }
 
         /**
-         * Set local port to be filtered on. Notation: "80" for single port entry."80-85" for range. "80;443;" for multiple entries.
-         * Multiple ranges not currently supported. Mixing ranges with multiple entries not currently supported. Default = null.
+         * Set local port to be filtered on. Notation: "80" for single port entry."80-85" for range. "80;443;" for
+         * multiple entries. Multiple ranges not currently supported. Mixing ranges with multiple entries not currently
+         * supported. Default = null.
          */
         interface WithLocalPort<ParentT> {
             /**
@@ -166,8 +164,9 @@ public interface PCFilter extends Indexable,
         }
 
         /**
-         * Set local port to be filtered on. Notation: "80" for single port entry."80-85" for range. "80;443;" for multiple entries.
-         * Multiple ranges not currently supported. Mixing ranges with multiple entries not currently supported. Default = null.
+         * Set local port to be filtered on. Notation: "80" for single port entry."80-85" for range. "80;443;" for
+         * multiple entries. Multiple ranges not currently supported. Mixing ranges with multiple entries not currently
+         * supported. Default = null.
          */
         interface WithRemotePort<ParentT> {
             /**

@@ -3,36 +3,38 @@
 
 package com.azure.management.compute;
 
-import com.azure.management.RestClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.Creatable;
-import com.azure.management.resources.fluentcore.utils.SdkContext;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.storage.StorageAccount;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
-    private String RG_NAME = "";
-    private final Region REGION = Region.US_SOUTH_CENTRAL;
-    private final String VMNAME = "javavm";
+    private String rgName = "";
+    private final Region region = Region.US_SOUTH_CENTRAL;
+    private final String vmName = "javavm";
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        RG_NAME = generateRandomResourceName("javacsmrg", 15);
-        super.initializeClients(restClient, defaultSubscription, domain);
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
+        rgName = generateRandomResourceName("javacsmrg", 15);
+        super.initializeClients(httpPipeline, profile);
     }
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().deleteByName(RG_NAME);
+        resourceManager.resourceGroups().deleteByName(rgName);
     }
 
     @Test
     public void canEnableBootDiagnosticsWithImplicitStorageOnManagedVMCreation() {
-        VirtualMachine virtualMachine = computeManager.virtualMachines()
-                .define(VMNAME)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+        VirtualMachine virtualMachine =
+            computeManager
+                .virtualMachines()
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
@@ -50,15 +52,15 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
     @Test
     public void canEnableBootDiagnosticsWithCreatableStorageOnManagedVMCreation() {
         final String storageName = sdkContext.randomResourceName("st", 14);
-        Creatable<StorageAccount> creatableStorageAccount = storageManager.storageAccounts()
-                .define(storageName)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME);
+        Creatable<StorageAccount> creatableStorageAccount =
+            storageManager.storageAccounts().define(storageName).withRegion(region).withNewResourceGroup(rgName);
 
-        VirtualMachine virtualMachine = computeManager.virtualMachines()
-                .define(VMNAME)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+        VirtualMachine virtualMachine =
+            computeManager
+                .virtualMachines()
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
@@ -76,16 +78,20 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
     @Test
     public void canEnableBootDiagnosticsWithExplicitStorageOnManagedVMCreation() {
         final String storageName = sdkContext.randomResourceName("st", 14);
-        StorageAccount storageAccount = storageManager.storageAccounts()
+        StorageAccount storageAccount =
+            storageManager
+                .storageAccounts()
                 .define(storageName)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .create();
 
-        VirtualMachine virtualMachine = computeManager.virtualMachines()
-                .define(VMNAME)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+        VirtualMachine virtualMachine =
+            computeManager
+                .virtualMachines()
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
@@ -103,10 +109,12 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
 
     @Test
     public void canDisableBootDiagnostics() {
-        VirtualMachine virtualMachine = computeManager.virtualMachines()
-                .define(VMNAME)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+        VirtualMachine virtualMachine =
+            computeManager
+                .virtualMachines()
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
@@ -120,9 +128,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
         Assertions.assertTrue(virtualMachine.isBootDiagnosticsEnabled());
         Assertions.assertNotNull(virtualMachine.bootDiagnosticsStorageUri());
 
-        virtualMachine.update()
-                .withoutBootDiagnostics()
-                .apply();
+        virtualMachine.update().withoutBootDiagnostics().apply();
 
         Assertions.assertFalse(virtualMachine.isBootDiagnosticsEnabled());
         // Disabling boot diagnostics will not remove the storage uri from the vm payload.
@@ -131,17 +137,20 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
 
     @Test
     public void bootDiagnosticsShouldUsesOSUnManagedDiskImplicitStorage() {
-        VirtualMachine virtualMachine = computeManager.virtualMachines()
-                .define(VMNAME)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+        VirtualMachine virtualMachine =
+            computeManager
+                .virtualMachines()
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
                 .withRootPassword("abc!@#F0orL")
-                .withUnmanagedDisks()   // The implicit storage account for OS disk should be used for boot diagnostics as well
+                .withUnmanagedDisks() // The implicit storage account for OS disk should be used for boot diagnostics as
+                                      // well
                 .withBootDiagnostics()
                 .create();
 
@@ -149,22 +158,31 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
         Assertions.assertTrue(virtualMachine.isBootDiagnosticsEnabled());
         Assertions.assertNotNull(virtualMachine.bootDiagnosticsStorageUri());
         Assertions.assertNotNull(virtualMachine.osUnmanagedDiskVhdUri());
-        Assertions.assertTrue(virtualMachine.osUnmanagedDiskVhdUri().toLowerCase().startsWith(virtualMachine.bootDiagnosticsStorageUri().toLowerCase()));
+        Assertions
+            .assertTrue(
+                virtualMachine
+                    .osUnmanagedDiskVhdUri()
+                    .toLowerCase()
+                    .startsWith(virtualMachine.bootDiagnosticsStorageUri().toLowerCase()));
     }
 
     @Test
     public void bootDiagnosticsShouldUseUnManagedDisksExplicitStorage() {
         final String storageName = sdkContext.randomResourceName("st", 14);
-        StorageAccount storageAccount = storageManager.storageAccounts()
+        StorageAccount storageAccount =
+            storageManager
+                .storageAccounts()
                 .define(storageName)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .create();
 
-        VirtualMachine virtualMachine = computeManager.virtualMachines()
-                .define(VMNAME)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+        VirtualMachine virtualMachine =
+            computeManager
+                .virtualMachines()
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
@@ -173,7 +191,8 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
                 .withRootPassword("abc!@#F0orL")
                 .withUnmanagedDisks()
                 .withBootDiagnostics()
-                .withExistingStorageAccount(storageAccount) // This storage account must be shared by disk and boot diagnostics
+                .withExistingStorageAccount(
+                    storageAccount) // This storage account must be shared by disk and boot diagnostics
                 .create();
 
         Assertions.assertNotNull(virtualMachine);
@@ -184,10 +203,12 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
 
     @Test
     public void canEnableBootDiagnosticsWithImplicitStorageOnUnManagedVMCreation() {
-        VirtualMachine virtualMachine1 = computeManager.virtualMachines()
-                .define(VMNAME)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+        VirtualMachine virtualMachine1 =
+            computeManager
+                .virtualMachines()
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
@@ -201,36 +222,43 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
         Assertions.assertNotNull(osDiskVhd);
         computeManager.virtualMachines().deleteById(virtualMachine1.id());
 
-        VirtualMachine virtualMachine2 = computeManager.virtualMachines()
-                .define(VMNAME)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+        VirtualMachine virtualMachine2 =
+            computeManager
+                .virtualMachines()
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
                 .withSpecializedOSUnmanagedDisk(osDiskVhd, OperatingSystemTypes.LINUX)
-                .withBootDiagnostics()  // A new storage account should be created and used
+                .withBootDiagnostics() // A new storage account should be created and used
                 .create();
 
         Assertions.assertNotNull(virtualMachine2);
         Assertions.assertTrue(virtualMachine2.isBootDiagnosticsEnabled());
         Assertions.assertNotNull(virtualMachine2.bootDiagnosticsStorageUri());
         Assertions.assertNotNull(virtualMachine2.osUnmanagedDiskVhdUri());
-        Assertions.assertFalse(virtualMachine2.osUnmanagedDiskVhdUri().toLowerCase().startsWith(virtualMachine2.bootDiagnosticsStorageUri().toLowerCase()));
+        Assertions
+            .assertFalse(
+                virtualMachine2
+                    .osUnmanagedDiskVhdUri()
+                    .toLowerCase()
+                    .startsWith(virtualMachine2.bootDiagnosticsStorageUri().toLowerCase()));
     }
 
     @Test
     public void canEnableBootDiagnosticsWithCreatableStorageOnUnManagedVMCreation() {
         final String storageName = sdkContext.randomResourceName("st", 14);
-        Creatable<StorageAccount> creatableStorageAccount = storageManager.storageAccounts()
-                .define(storageName)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME);
+        Creatable<StorageAccount> creatableStorageAccount =
+            storageManager.storageAccounts().define(storageName).withRegion(region).withNewResourceGroup(rgName);
 
-        VirtualMachine virtualMachine = computeManager.virtualMachines()
-                .define(VMNAME)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+        VirtualMachine virtualMachine =
+            computeManager
+                .virtualMachines()
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
@@ -238,13 +266,20 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
                 .withRootUsername("Foo12")
                 .withRootPassword("abc!@#F0orL")
                 .withUnmanagedDisks()
-                .withBootDiagnostics(creatableStorageAccount)  // This storage account should be used for BDiagnostics not OS disk storage account
+                .withBootDiagnostics(
+                    creatableStorageAccount) // This storage account should be used for BDiagnostics not OS disk storage
+                                             // account
                 .create();
         Assertions.assertNotNull(virtualMachine);
         Assertions.assertTrue(virtualMachine.isBootDiagnosticsEnabled());
         Assertions.assertNotNull(virtualMachine.bootDiagnosticsStorageUri());
         Assertions.assertTrue(virtualMachine.bootDiagnosticsStorageUri().contains(storageName));
         // There should be a different storage account created for the OS Disk
-        Assertions.assertFalse(virtualMachine.osUnmanagedDiskVhdUri().toLowerCase().startsWith(virtualMachine.bootDiagnosticsStorageUri().toLowerCase()));
+        Assertions
+            .assertFalse(
+                virtualMachine
+                    .osUnmanagedDiskVhdUri()
+                    .toLowerCase()
+                    .startsWith(virtualMachine.bootDiagnosticsStorageUri().toLowerCase()));
     }
 }

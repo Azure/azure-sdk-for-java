@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The Criteria model.
- */
+/** The Criteria model. */
 @Fluent
 public final class Criteria {
     /*
@@ -27,7 +25,7 @@ public final class Criteria {
 
     /**
      * Get the metricName property: Name of the metric.
-     * 
+     *
      * @return the metricName value.
      */
     public String metricName() {
@@ -36,7 +34,7 @@ public final class Criteria {
 
     /**
      * Set the metricName property: Name of the metric.
-     * 
+     *
      * @param metricName the metricName value to set.
      * @return the Criteria object itself.
      */
@@ -47,7 +45,7 @@ public final class Criteria {
 
     /**
      * Get the dimensions property: List of Dimensions for creating metric.
-     * 
+     *
      * @return the dimensions value.
      */
     public List<Dimension> dimensions() {
@@ -56,7 +54,7 @@ public final class Criteria {
 
     /**
      * Set the dimensions property: List of Dimensions for creating metric.
-     * 
+     *
      * @param dimensions the dimensions value to set.
      * @return the Criteria object itself.
      */

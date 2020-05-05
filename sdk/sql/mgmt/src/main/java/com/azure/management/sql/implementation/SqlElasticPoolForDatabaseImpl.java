@@ -19,12 +19,10 @@ import com.azure.management.sql.SqlElasticPoolStandardMaxEDTUs;
 import com.azure.management.sql.SqlElasticPoolStandardMinEDTUs;
 import com.azure.management.sql.SqlElasticPoolStandardStorage;
 
-/**
- * Implementation for SqlElasticPool as inline definition inside a SqlDatabase definition.
- */
+/** Implementation for SqlElasticPool as inline definition inside a SqlDatabase definition. */
 public class SqlElasticPoolForDatabaseImpl
-    implements
-        SqlElasticPool.SqlElasticPoolDefinition<SqlDatabaseOperations.DefinitionStages.WithExistingDatabaseAfterElasticPool> {
+    implements SqlElasticPool.SqlElasticPoolDefinition<
+        SqlDatabaseOperations.DefinitionStages.WithExistingDatabaseAfterElasticPool> {
 
     private SqlElasticPoolImpl sqlElasticPool;
     private SqlDatabaseImpl sqlDatabase;

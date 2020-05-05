@@ -24,799 +24,1345 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.management.sql.LongTermRetentionDatabaseState;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * LongTermRetentionBackups.
- */
+/** An instance of this class provides access to all the operations defined in LongTermRetentionBackups. */
 public final class LongTermRetentionBackupsInner {
-    /**
-     * The proxy service used to perform REST calls.
-     */
-    private LongTermRetentionBackupsService service;
+    /** The proxy service used to perform REST calls. */
+    private final LongTermRetentionBackupsService service;
 
-    /**
-     * The service client containing this operation class.
-     */
-    private SqlManagementClientImpl client;
+    /** The service client containing this operation class. */
+    private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of LongTermRetentionBackupsInner.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     LongTermRetentionBackupsInner(SqlManagementClientImpl client) {
-        this.service = RestProxy.create(LongTermRetentionBackupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy
+                .create(LongTermRetentionBackupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * SqlManagementClientLongTermRetentionBackups to be used by the proxy
+     * The interface defining all the services for SqlManagementClientLongTermRetentionBackups to be used by the proxy
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientLongTermRetentionBackups")
+    @ServiceInterface(name = "SqlManagementClientL")
     private interface LongTermRetentionBackupsService {
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}"
+                + "/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<LongTermRetentionBackupInner>> getByResourceGroup(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("locationName") String locationName, @PathParam("longTermRetentionServerName") String longTermRetentionServerName, @PathParam("longTermRetentionDatabaseName") String longTermRetentionDatabaseName, @PathParam("backupName") String backupName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<LongTermRetentionBackupInner>> getByResourceGroup(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("locationName") String locationName,
+            @PathParam("longTermRetentionServerName") String longTermRetentionServerName,
+            @PathParam("longTermRetentionDatabaseName") String longTermRetentionDatabaseName,
+            @PathParam("backupName") String backupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}"
+                + "/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> deleteByResourceGroup(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("locationName") String locationName, @PathParam("longTermRetentionServerName") String longTermRetentionServerName, @PathParam("longTermRetentionDatabaseName") String longTermRetentionDatabaseName, @PathParam("backupName") String backupName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> deleteByResourceGroup(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("locationName") String locationName,
+            @PathParam("longTermRetentionServerName") String longTermRetentionServerName,
+            @PathParam("longTermRetentionDatabaseName") String longTermRetentionDatabaseName,
+            @PathParam("backupName") String backupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}"
+                + "/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<LongTermRetentionBackupListResultInner>> listByResourceGroupDatabase(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("locationName") String locationName, @PathParam("longTermRetentionServerName") String longTermRetentionServerName, @PathParam("longTermRetentionDatabaseName") String longTermRetentionDatabaseName, @QueryParam("onlyLatestPerDatabase") Boolean onlyLatestPerDatabase, @QueryParam("databaseState") LongTermRetentionDatabaseState databaseState, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<LongTermRetentionBackupListResultInner>> listByResourceGroupDatabase(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("locationName") String locationName,
+            @PathParam("longTermRetentionServerName") String longTermRetentionServerName,
+            @PathParam("longTermRetentionDatabaseName") String longTermRetentionDatabaseName,
+            @QueryParam("onlyLatestPerDatabase") Boolean onlyLatestPerDatabase,
+            @QueryParam("databaseState") LongTermRetentionDatabaseState databaseState,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionBackups")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/locations/{locationName}/longTermRetentionBackups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<LongTermRetentionBackupListResultInner>> listByResourceGroupLocation(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("locationName") String locationName, @QueryParam("onlyLatestPerDatabase") Boolean onlyLatestPerDatabase, @QueryParam("databaseState") LongTermRetentionDatabaseState databaseState, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<LongTermRetentionBackupListResultInner>> listByResourceGroupLocation(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("locationName") String locationName,
+            @QueryParam("onlyLatestPerDatabase") Boolean onlyLatestPerDatabase,
+            @QueryParam("databaseState") LongTermRetentionDatabaseState databaseState,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionBackups")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}"
+                + "/longTermRetentionBackups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<LongTermRetentionBackupListResultInner>> listByResourceGroupServer(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("locationName") String locationName, @PathParam("longTermRetentionServerName") String longTermRetentionServerName, @QueryParam("onlyLatestPerDatabase") Boolean onlyLatestPerDatabase, @QueryParam("databaseState") LongTermRetentionDatabaseState databaseState, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<LongTermRetentionBackupListResultInner>> listByResourceGroupServer(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("locationName") String locationName,
+            @PathParam("longTermRetentionServerName") String longTermRetentionServerName,
+            @QueryParam("onlyLatestPerDatabase") Boolean onlyLatestPerDatabase,
+            @QueryParam("databaseState") LongTermRetentionDatabaseState databaseState,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}"
+                + "/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases"
+                + "/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<LongTermRetentionBackupInner>> get(@HostParam("$host") String host, @PathParam("locationName") String locationName, @PathParam("longTermRetentionServerName") String longTermRetentionServerName, @PathParam("longTermRetentionDatabaseName") String longTermRetentionDatabaseName, @PathParam("backupName") String backupName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<LongTermRetentionBackupInner>> get(
+            @HostParam("$host") String host,
+            @PathParam("locationName") String locationName,
+            @PathParam("longTermRetentionServerName") String longTermRetentionServerName,
+            @PathParam("longTermRetentionDatabaseName") String longTermRetentionDatabaseName,
+            @PathParam("backupName") String backupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}"
+                + "/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases"
+                + "/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(@HostParam("$host") String host, @PathParam("locationName") String locationName, @PathParam("longTermRetentionServerName") String longTermRetentionServerName, @PathParam("longTermRetentionDatabaseName") String longTermRetentionDatabaseName, @PathParam("backupName") String backupName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
+            @HostParam("$host") String host,
+            @PathParam("locationName") String locationName,
+            @PathParam("longTermRetentionServerName") String longTermRetentionServerName,
+            @PathParam("longTermRetentionDatabaseName") String longTermRetentionDatabaseName,
+            @PathParam("backupName") String backupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}"
+                + "/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases"
+                + "/{longTermRetentionDatabaseName}/longTermRetentionBackups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<LongTermRetentionBackupListResultInner>> listByDatabase(@HostParam("$host") String host, @PathParam("locationName") String locationName, @PathParam("longTermRetentionServerName") String longTermRetentionServerName, @PathParam("longTermRetentionDatabaseName") String longTermRetentionDatabaseName, @QueryParam("onlyLatestPerDatabase") Boolean onlyLatestPerDatabase, @QueryParam("databaseState") LongTermRetentionDatabaseState databaseState, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<LongTermRetentionBackupListResultInner>> listByDatabase(
+            @HostParam("$host") String host,
+            @PathParam("locationName") String locationName,
+            @PathParam("longTermRetentionServerName") String longTermRetentionServerName,
+            @PathParam("longTermRetentionDatabaseName") String longTermRetentionDatabaseName,
+            @QueryParam("onlyLatestPerDatabase") Boolean onlyLatestPerDatabase,
+            @QueryParam("databaseState") LongTermRetentionDatabaseState databaseState,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionBackups")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}"
+                + "/longTermRetentionBackups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<LongTermRetentionBackupListResultInner>> listByLocation(@HostParam("$host") String host, @PathParam("locationName") String locationName, @QueryParam("onlyLatestPerDatabase") Boolean onlyLatestPerDatabase, @QueryParam("databaseState") LongTermRetentionDatabaseState databaseState, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<LongTermRetentionBackupListResultInner>> listByLocation(
+            @HostParam("$host") String host,
+            @PathParam("locationName") String locationName,
+            @QueryParam("onlyLatestPerDatabase") Boolean onlyLatestPerDatabase,
+            @QueryParam("databaseState") LongTermRetentionDatabaseState databaseState,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionBackups")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}"
+                + "/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionBackups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<LongTermRetentionBackupListResultInner>> listByServer(@HostParam("$host") String host, @PathParam("locationName") String locationName, @PathParam("longTermRetentionServerName") String longTermRetentionServerName, @QueryParam("onlyLatestPerDatabase") Boolean onlyLatestPerDatabase, @QueryParam("databaseState") LongTermRetentionDatabaseState databaseState, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<LongTermRetentionBackupListResultInner>> listByServer(
+            @HostParam("$host") String host,
+            @PathParam("locationName") String locationName,
+            @PathParam("longTermRetentionServerName") String longTermRetentionServerName,
+            @QueryParam("onlyLatestPerDatabase") Boolean onlyLatestPerDatabase,
+            @QueryParam("databaseState") LongTermRetentionDatabaseState databaseState,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}"
+                + "/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> beginDeleteByResourceGroup(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("locationName") String locationName, @PathParam("longTermRetentionServerName") String longTermRetentionServerName, @PathParam("longTermRetentionDatabaseName") String longTermRetentionDatabaseName, @PathParam("backupName") String backupName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<Response<Void>> beginDeleteByResourceGroup(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("locationName") String locationName,
+            @PathParam("longTermRetentionServerName") String longTermRetentionServerName,
+            @PathParam("longTermRetentionDatabaseName") String longTermRetentionDatabaseName,
+            @PathParam("backupName") String backupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}"
+                + "/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases"
+                + "/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> beginDelete(@HostParam("$host") String host, @PathParam("locationName") String locationName, @PathParam("longTermRetentionServerName") String longTermRetentionServerName, @PathParam("longTermRetentionDatabaseName") String longTermRetentionDatabaseName, @PathParam("backupName") String backupName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<Response<Void>> beginDelete(
+            @HostParam("$host") String host,
+            @PathParam("locationName") String locationName,
+            @PathParam("longTermRetentionServerName") String longTermRetentionServerName,
+            @PathParam("longTermRetentionDatabaseName") String longTermRetentionDatabaseName,
+            @PathParam("backupName") String backupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<LongTermRetentionBackupListResultInner>> listByResourceGroupDatabaseNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<LongTermRetentionBackupListResultInner>> listByResourceGroupDatabaseNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<LongTermRetentionBackupListResultInner>> listByResourceGroupLocationNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<LongTermRetentionBackupListResultInner>> listByResourceGroupLocationNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<LongTermRetentionBackupListResultInner>> listByResourceGroupServerNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<LongTermRetentionBackupListResultInner>> listByResourceGroupServerNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<LongTermRetentionBackupListResultInner>> listByDatabaseNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<LongTermRetentionBackupListResultInner>> listByDatabaseNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<LongTermRetentionBackupListResultInner>> listByLocationNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<LongTermRetentionBackupListResultInner>> listByLocationNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<LongTermRetentionBackupListResultInner>> listByServerNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<LongTermRetentionBackupListResultInner>> listByServerNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
      * Gets a long term retention backup.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param longTermRetentionServerName 
-     * @param longTermRetentionDatabaseName 
-     * @param backupName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<LongTermRetentionBackupInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+    public Mono<SimpleResponse<LongTermRetentionBackupInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName,
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName) {
         final String apiVersion = "2017-03-01-preview";
-        return service.getByResourceGroup(this.client.getHost(), resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getByResourceGroup(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            locationName,
+                            longTermRetentionServerName,
+                            longTermRetentionDatabaseName,
+                            backupName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a long term retention backup.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param longTermRetentionServerName 
-     * @param longTermRetentionDatabaseName 
-     * @param backupName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LongTermRetentionBackupInner> getByResourceGroupAsync(String resourceGroupName, String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName)
-            .flatMap((SimpleResponse<LongTermRetentionBackupInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+    public Mono<LongTermRetentionBackupInner> getByResourceGroupAsync(
+        String resourceGroupName,
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName) {
+        return getByResourceGroupWithResponseAsync(
+                resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName)
+            .flatMap(
+                (SimpleResponse<LongTermRetentionBackupInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets a long term retention backup.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param longTermRetentionServerName 
-     * @param longTermRetentionDatabaseName 
-     * @param backupName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LongTermRetentionBackupInner getByResourceGroup(String resourceGroupName, String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
-        return getByResourceGroupAsync(resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName).block();
+    public LongTermRetentionBackupInner getByResourceGroup(
+        String resourceGroupName,
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName) {
+        return getByResourceGroupAsync(
+                resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName)
+            .block();
     }
 
     /**
      * Deletes a long term retention backup.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param longTermRetentionServerName 
-     * @param longTermRetentionDatabaseName 
-     * @param backupName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteByResourceGroupWithResponseAsync(String resourceGroupName, String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteByResourceGroupWithResponseAsync(
+        String resourceGroupName,
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName) {
         final String apiVersion = "2017-03-01-preview";
-        return service.deleteByResourceGroup(this.client.getHost(), resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .deleteByResourceGroup(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            locationName,
+                            longTermRetentionServerName,
+                            longTermRetentionDatabaseName,
+                            backupName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Deletes a long term retention backup.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param longTermRetentionServerName 
-     * @param longTermRetentionDatabaseName 
-     * @param backupName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteByResourceGroupAsync(String resourceGroupName, String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = deleteByResourceGroupWithResponseAsync(resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+    public Mono<Void> deleteByResourceGroupAsync(
+        String resourceGroupName,
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            deleteByResourceGroupWithResponseAsync(
+                resourceGroupName,
+                locationName,
+                longTermRetentionServerName,
+                longTermRetentionDatabaseName,
+                backupName);
+        return this
+            .client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Deletes a long term retention backup.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param longTermRetentionServerName 
-     * @param longTermRetentionDatabaseName 
-     * @param backupName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteByResourceGroup(String resourceGroupName, String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
-        deleteByResourceGroupAsync(resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName).block();
+    public void deleteByResourceGroup(
+        String resourceGroupName,
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName) {
+        deleteByResourceGroupAsync(
+                resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName)
+            .block();
     }
 
     /**
      * Lists all long term retention backups for a database.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param longTermRetentionServerName 
-     * @param longTermRetentionDatabaseName 
-     * @param onlyLatestPerDatabase 
-     * @param databaseState 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<LongTermRetentionBackupInner>> listByResourceGroupDatabaseSinglePageAsync(String resourceGroupName, String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, Boolean onlyLatestPerDatabase, LongTermRetentionDatabaseState databaseState) {
+    public Mono<PagedResponse<LongTermRetentionBackupInner>> listByResourceGroupDatabaseSinglePageAsync(
+        String resourceGroupName,
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        Boolean onlyLatestPerDatabase,
+        LongTermRetentionDatabaseState databaseState) {
         final String apiVersion = "2017-03-01-preview";
-        return service.listByResourceGroupDatabase(this.client.getHost(), resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, onlyLatestPerDatabase, databaseState, this.client.getSubscriptionId(), apiVersion)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByResourceGroupDatabase(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            locationName,
+                            longTermRetentionServerName,
+                            longTermRetentionDatabaseName,
+                            onlyLatestPerDatabase,
+                            databaseState,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .<PagedResponse<LongTermRetentionBackupInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Lists all long term retention backups for a database.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param longTermRetentionServerName 
-     * @param longTermRetentionDatabaseName 
-     * @param onlyLatestPerDatabase 
-     * @param databaseState 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<LongTermRetentionBackupInner> listByResourceGroupDatabaseAsync(String resourceGroupName, String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, Boolean onlyLatestPerDatabase, LongTermRetentionDatabaseState databaseState) {
+    public PagedFlux<LongTermRetentionBackupInner> listByResourceGroupDatabaseAsync(
+        String resourceGroupName,
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        Boolean onlyLatestPerDatabase,
+        LongTermRetentionDatabaseState databaseState) {
         return new PagedFlux<>(
-            () -> listByResourceGroupDatabaseSinglePageAsync(resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, onlyLatestPerDatabase, databaseState),
+            () ->
+                listByResourceGroupDatabaseSinglePageAsync(
+                    resourceGroupName,
+                    locationName,
+                    longTermRetentionServerName,
+                    longTermRetentionDatabaseName,
+                    onlyLatestPerDatabase,
+                    databaseState),
             nextLink -> listByResourceGroupDatabaseNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all long term retention backups for a database.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param longTermRetentionServerName 
-     * @param longTermRetentionDatabaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<LongTermRetentionBackupInner> listByResourceGroupDatabaseAsync(String resourceGroupName, String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName) {
+    public PagedFlux<LongTermRetentionBackupInner> listByResourceGroupDatabaseAsync(
+        String resourceGroupName,
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName) {
         final Boolean onlyLatestPerDatabase = null;
         final LongTermRetentionDatabaseState databaseState = null;
+        final Context context = null;
         return new PagedFlux<>(
-            () -> listByResourceGroupDatabaseSinglePageAsync(resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, onlyLatestPerDatabase, databaseState),
+            () ->
+                listByResourceGroupDatabaseSinglePageAsync(
+                    resourceGroupName,
+                    locationName,
+                    longTermRetentionServerName,
+                    longTermRetentionDatabaseName,
+                    onlyLatestPerDatabase,
+                    databaseState),
             nextLink -> listByResourceGroupDatabaseNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all long term retention backups for a database.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param longTermRetentionServerName 
-     * @param longTermRetentionDatabaseName 
-     * @param onlyLatestPerDatabase 
-     * @param databaseState 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LongTermRetentionBackupInner> listByResourceGroupDatabase(String resourceGroupName, String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, Boolean onlyLatestPerDatabase, LongTermRetentionDatabaseState databaseState) {
-        return new PagedIterable<>(listByResourceGroupDatabaseAsync(resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, onlyLatestPerDatabase, databaseState));
+    public PagedIterable<LongTermRetentionBackupInner> listByResourceGroupDatabase(
+        String resourceGroupName,
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        Boolean onlyLatestPerDatabase,
+        LongTermRetentionDatabaseState databaseState) {
+        return new PagedIterable<>(
+            listByResourceGroupDatabaseAsync(
+                resourceGroupName,
+                locationName,
+                longTermRetentionServerName,
+                longTermRetentionDatabaseName,
+                onlyLatestPerDatabase,
+                databaseState));
     }
 
     /**
      * Lists all long term retention backups for a database.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param longTermRetentionServerName 
-     * @param longTermRetentionDatabaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LongTermRetentionBackupInner> listByResourceGroupDatabase(String resourceGroupName, String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName) {
+    public PagedIterable<LongTermRetentionBackupInner> listByResourceGroupDatabase(
+        String resourceGroupName,
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName) {
         final Boolean onlyLatestPerDatabase = null;
         final LongTermRetentionDatabaseState databaseState = null;
-        return new PagedIterable<>(listByResourceGroupDatabaseAsync(resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, onlyLatestPerDatabase, databaseState));
+        final Context context = null;
+        return new PagedIterable<>(
+            listByResourceGroupDatabaseAsync(
+                resourceGroupName,
+                locationName,
+                longTermRetentionServerName,
+                longTermRetentionDatabaseName,
+                onlyLatestPerDatabase,
+                databaseState));
     }
 
     /**
      * Lists the long term retention backups for a given location.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param onlyLatestPerDatabase 
-     * @param databaseState 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<LongTermRetentionBackupInner>> listByResourceGroupLocationSinglePageAsync(String resourceGroupName, String locationName, Boolean onlyLatestPerDatabase, LongTermRetentionDatabaseState databaseState) {
+    public Mono<PagedResponse<LongTermRetentionBackupInner>> listByResourceGroupLocationSinglePageAsync(
+        String resourceGroupName,
+        String locationName,
+        Boolean onlyLatestPerDatabase,
+        LongTermRetentionDatabaseState databaseState) {
         final String apiVersion = "2017-03-01-preview";
-        return service.listByResourceGroupLocation(this.client.getHost(), resourceGroupName, locationName, onlyLatestPerDatabase, databaseState, this.client.getSubscriptionId(), apiVersion)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByResourceGroupLocation(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            locationName,
+                            onlyLatestPerDatabase,
+                            databaseState,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .<PagedResponse<LongTermRetentionBackupInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Lists the long term retention backups for a given location.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param onlyLatestPerDatabase 
-     * @param databaseState 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<LongTermRetentionBackupInner> listByResourceGroupLocationAsync(String resourceGroupName, String locationName, Boolean onlyLatestPerDatabase, LongTermRetentionDatabaseState databaseState) {
+    public PagedFlux<LongTermRetentionBackupInner> listByResourceGroupLocationAsync(
+        String resourceGroupName,
+        String locationName,
+        Boolean onlyLatestPerDatabase,
+        LongTermRetentionDatabaseState databaseState) {
         return new PagedFlux<>(
-            () -> listByResourceGroupLocationSinglePageAsync(resourceGroupName, locationName, onlyLatestPerDatabase, databaseState),
+            () ->
+                listByResourceGroupLocationSinglePageAsync(
+                    resourceGroupName, locationName, onlyLatestPerDatabase, databaseState),
             nextLink -> listByResourceGroupLocationNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the long term retention backups for a given location.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<LongTermRetentionBackupInner> listByResourceGroupLocationAsync(String resourceGroupName, String locationName) {
+    public PagedFlux<LongTermRetentionBackupInner> listByResourceGroupLocationAsync(
+        String resourceGroupName, String locationName) {
         final Boolean onlyLatestPerDatabase = null;
         final LongTermRetentionDatabaseState databaseState = null;
+        final Context context = null;
         return new PagedFlux<>(
-            () -> listByResourceGroupLocationSinglePageAsync(resourceGroupName, locationName, onlyLatestPerDatabase, databaseState),
+            () ->
+                listByResourceGroupLocationSinglePageAsync(
+                    resourceGroupName, locationName, onlyLatestPerDatabase, databaseState),
             nextLink -> listByResourceGroupLocationNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the long term retention backups for a given location.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param onlyLatestPerDatabase 
-     * @param databaseState 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LongTermRetentionBackupInner> listByResourceGroupLocation(String resourceGroupName, String locationName, Boolean onlyLatestPerDatabase, LongTermRetentionDatabaseState databaseState) {
-        return new PagedIterable<>(listByResourceGroupLocationAsync(resourceGroupName, locationName, onlyLatestPerDatabase, databaseState));
+    public PagedIterable<LongTermRetentionBackupInner> listByResourceGroupLocation(
+        String resourceGroupName,
+        String locationName,
+        Boolean onlyLatestPerDatabase,
+        LongTermRetentionDatabaseState databaseState) {
+        return new PagedIterable<>(
+            listByResourceGroupLocationAsync(resourceGroupName, locationName, onlyLatestPerDatabase, databaseState));
     }
 
     /**
      * Lists the long term retention backups for a given location.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LongTermRetentionBackupInner> listByResourceGroupLocation(String resourceGroupName, String locationName) {
+    public PagedIterable<LongTermRetentionBackupInner> listByResourceGroupLocation(
+        String resourceGroupName, String locationName) {
         final Boolean onlyLatestPerDatabase = null;
         final LongTermRetentionDatabaseState databaseState = null;
-        return new PagedIterable<>(listByResourceGroupLocationAsync(resourceGroupName, locationName, onlyLatestPerDatabase, databaseState));
+        final Context context = null;
+        return new PagedIterable<>(
+            listByResourceGroupLocationAsync(resourceGroupName, locationName, onlyLatestPerDatabase, databaseState));
     }
 
     /**
      * Lists the long term retention backups for a given server.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param longTermRetentionServerName 
-     * @param onlyLatestPerDatabase 
-     * @param databaseState 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<LongTermRetentionBackupInner>> listByResourceGroupServerSinglePageAsync(String resourceGroupName, String locationName, String longTermRetentionServerName, Boolean onlyLatestPerDatabase, LongTermRetentionDatabaseState databaseState) {
+    public Mono<PagedResponse<LongTermRetentionBackupInner>> listByResourceGroupServerSinglePageAsync(
+        String resourceGroupName,
+        String locationName,
+        String longTermRetentionServerName,
+        Boolean onlyLatestPerDatabase,
+        LongTermRetentionDatabaseState databaseState) {
         final String apiVersion = "2017-03-01-preview";
-        return service.listByResourceGroupServer(this.client.getHost(), resourceGroupName, locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState, this.client.getSubscriptionId(), apiVersion)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByResourceGroupServer(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            locationName,
+                            longTermRetentionServerName,
+                            onlyLatestPerDatabase,
+                            databaseState,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .<PagedResponse<LongTermRetentionBackupInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Lists the long term retention backups for a given server.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param longTermRetentionServerName 
-     * @param onlyLatestPerDatabase 
-     * @param databaseState 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<LongTermRetentionBackupInner> listByResourceGroupServerAsync(String resourceGroupName, String locationName, String longTermRetentionServerName, Boolean onlyLatestPerDatabase, LongTermRetentionDatabaseState databaseState) {
+    public PagedFlux<LongTermRetentionBackupInner> listByResourceGroupServerAsync(
+        String resourceGroupName,
+        String locationName,
+        String longTermRetentionServerName,
+        Boolean onlyLatestPerDatabase,
+        LongTermRetentionDatabaseState databaseState) {
         return new PagedFlux<>(
-            () -> listByResourceGroupServerSinglePageAsync(resourceGroupName, locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState),
+            () ->
+                listByResourceGroupServerSinglePageAsync(
+                    resourceGroupName, locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState),
             nextLink -> listByResourceGroupServerNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the long term retention backups for a given server.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param longTermRetentionServerName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<LongTermRetentionBackupInner> listByResourceGroupServerAsync(String resourceGroupName, String locationName, String longTermRetentionServerName) {
+    public PagedFlux<LongTermRetentionBackupInner> listByResourceGroupServerAsync(
+        String resourceGroupName, String locationName, String longTermRetentionServerName) {
         final Boolean onlyLatestPerDatabase = null;
         final LongTermRetentionDatabaseState databaseState = null;
+        final Context context = null;
         return new PagedFlux<>(
-            () -> listByResourceGroupServerSinglePageAsync(resourceGroupName, locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState),
+            () ->
+                listByResourceGroupServerSinglePageAsync(
+                    resourceGroupName, locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState),
             nextLink -> listByResourceGroupServerNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the long term retention backups for a given server.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param longTermRetentionServerName 
-     * @param onlyLatestPerDatabase 
-     * @param databaseState 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LongTermRetentionBackupInner> listByResourceGroupServer(String resourceGroupName, String locationName, String longTermRetentionServerName, Boolean onlyLatestPerDatabase, LongTermRetentionDatabaseState databaseState) {
-        return new PagedIterable<>(listByResourceGroupServerAsync(resourceGroupName, locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState));
+    public PagedIterable<LongTermRetentionBackupInner> listByResourceGroupServer(
+        String resourceGroupName,
+        String locationName,
+        String longTermRetentionServerName,
+        Boolean onlyLatestPerDatabase,
+        LongTermRetentionDatabaseState databaseState) {
+        return new PagedIterable<>(
+            listByResourceGroupServerAsync(
+                resourceGroupName, locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState));
     }
 
     /**
      * Lists the long term retention backups for a given server.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param longTermRetentionServerName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LongTermRetentionBackupInner> listByResourceGroupServer(String resourceGroupName, String locationName, String longTermRetentionServerName) {
+    public PagedIterable<LongTermRetentionBackupInner> listByResourceGroupServer(
+        String resourceGroupName, String locationName, String longTermRetentionServerName) {
         final Boolean onlyLatestPerDatabase = null;
         final LongTermRetentionDatabaseState databaseState = null;
-        return new PagedIterable<>(listByResourceGroupServerAsync(resourceGroupName, locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState));
+        final Context context = null;
+        return new PagedIterable<>(
+            listByResourceGroupServerAsync(
+                resourceGroupName, locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState));
     }
 
     /**
      * Gets a long term retention backup.
-     * 
-     * @param locationName 
-     * @param longTermRetentionServerName 
-     * @param longTermRetentionDatabaseName 
-     * @param backupName 
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<LongTermRetentionBackupInner>> getWithResponseAsync(String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+    public Mono<SimpleResponse<LongTermRetentionBackupInner>> getWithResponseAsync(
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName) {
         final String apiVersion = "2017-03-01-preview";
-        return service.get(this.client.getHost(), locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .get(
+                            this.client.getHost(),
+                            locationName,
+                            longTermRetentionServerName,
+                            longTermRetentionDatabaseName,
+                            backupName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a long term retention backup.
-     * 
-     * @param locationName 
-     * @param longTermRetentionServerName 
-     * @param longTermRetentionDatabaseName 
-     * @param backupName 
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LongTermRetentionBackupInner> getAsync(String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
-        return getWithResponseAsync(locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName)
-            .flatMap((SimpleResponse<LongTermRetentionBackupInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+    public Mono<LongTermRetentionBackupInner> getAsync(
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName) {
+        return getWithResponseAsync(
+                locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName)
+            .flatMap(
+                (SimpleResponse<LongTermRetentionBackupInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets a long term retention backup.
-     * 
-     * @param locationName 
-     * @param longTermRetentionServerName 
-     * @param longTermRetentionDatabaseName 
-     * @param backupName 
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LongTermRetentionBackupInner get(String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+    public LongTermRetentionBackupInner get(
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName) {
         return getAsync(locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName).block();
     }
 
     /**
      * Deletes a long term retention backup.
-     * 
-     * @param locationName 
-     * @param longTermRetentionServerName 
-     * @param longTermRetentionDatabaseName 
-     * @param backupName 
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName) {
         final String apiVersion = "2017-03-01-preview";
-        return service.delete(this.client.getHost(), locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .delete(
+                            this.client.getHost(),
+                            locationName,
+                            longTermRetentionServerName,
+                            longTermRetentionDatabaseName,
+                            backupName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Deletes a long term retention backup.
-     * 
-     * @param locationName 
-     * @param longTermRetentionServerName 
-     * @param longTermRetentionDatabaseName 
-     * @param backupName 
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+    public Mono<Void> deleteAsync(
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(
+                locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName);
+        return this
+            .client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Deletes a long term retention backup.
-     * 
-     * @param locationName 
-     * @param longTermRetentionServerName 
-     * @param longTermRetentionDatabaseName 
-     * @param backupName 
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+    public void delete(
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName) {
         deleteAsync(locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName).block();
     }
 
     /**
      * Lists all long term retention backups for a database.
-     * 
-     * @param locationName 
-     * @param longTermRetentionServerName 
-     * @param longTermRetentionDatabaseName 
-     * @param onlyLatestPerDatabase 
-     * @param databaseState 
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<LongTermRetentionBackupInner>> listByDatabaseSinglePageAsync(String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, Boolean onlyLatestPerDatabase, LongTermRetentionDatabaseState databaseState) {
+    public Mono<PagedResponse<LongTermRetentionBackupInner>> listByDatabaseSinglePageAsync(
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        Boolean onlyLatestPerDatabase,
+        LongTermRetentionDatabaseState databaseState) {
         final String apiVersion = "2017-03-01-preview";
-        return service.listByDatabase(this.client.getHost(), locationName, longTermRetentionServerName, longTermRetentionDatabaseName, onlyLatestPerDatabase, databaseState, this.client.getSubscriptionId(), apiVersion)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByDatabase(
+                            this.client.getHost(),
+                            locationName,
+                            longTermRetentionServerName,
+                            longTermRetentionDatabaseName,
+                            onlyLatestPerDatabase,
+                            databaseState,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .<PagedResponse<LongTermRetentionBackupInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Lists all long term retention backups for a database.
-     * 
-     * @param locationName 
-     * @param longTermRetentionServerName 
-     * @param longTermRetentionDatabaseName 
-     * @param onlyLatestPerDatabase 
-     * @param databaseState 
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<LongTermRetentionBackupInner> listByDatabaseAsync(String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, Boolean onlyLatestPerDatabase, LongTermRetentionDatabaseState databaseState) {
+    public PagedFlux<LongTermRetentionBackupInner> listByDatabaseAsync(
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        Boolean onlyLatestPerDatabase,
+        LongTermRetentionDatabaseState databaseState) {
         return new PagedFlux<>(
-            () -> listByDatabaseSinglePageAsync(locationName, longTermRetentionServerName, longTermRetentionDatabaseName, onlyLatestPerDatabase, databaseState),
+            () ->
+                listByDatabaseSinglePageAsync(
+                    locationName,
+                    longTermRetentionServerName,
+                    longTermRetentionDatabaseName,
+                    onlyLatestPerDatabase,
+                    databaseState),
             nextLink -> listByDatabaseNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all long term retention backups for a database.
-     * 
-     * @param locationName 
-     * @param longTermRetentionServerName 
-     * @param longTermRetentionDatabaseName 
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<LongTermRetentionBackupInner> listByDatabaseAsync(String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName) {
+    public PagedFlux<LongTermRetentionBackupInner> listByDatabaseAsync(
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName) {
         final Boolean onlyLatestPerDatabase = null;
         final LongTermRetentionDatabaseState databaseState = null;
+        final Context context = null;
         return new PagedFlux<>(
-            () -> listByDatabaseSinglePageAsync(locationName, longTermRetentionServerName, longTermRetentionDatabaseName, onlyLatestPerDatabase, databaseState),
+            () ->
+                listByDatabaseSinglePageAsync(
+                    locationName,
+                    longTermRetentionServerName,
+                    longTermRetentionDatabaseName,
+                    onlyLatestPerDatabase,
+                    databaseState),
             nextLink -> listByDatabaseNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all long term retention backups for a database.
-     * 
-     * @param locationName 
-     * @param longTermRetentionServerName 
-     * @param longTermRetentionDatabaseName 
-     * @param onlyLatestPerDatabase 
-     * @param databaseState 
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LongTermRetentionBackupInner> listByDatabase(String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, Boolean onlyLatestPerDatabase, LongTermRetentionDatabaseState databaseState) {
-        return new PagedIterable<>(listByDatabaseAsync(locationName, longTermRetentionServerName, longTermRetentionDatabaseName, onlyLatestPerDatabase, databaseState));
+    public PagedIterable<LongTermRetentionBackupInner> listByDatabase(
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        Boolean onlyLatestPerDatabase,
+        LongTermRetentionDatabaseState databaseState) {
+        return new PagedIterable<>(
+            listByDatabaseAsync(
+                locationName,
+                longTermRetentionServerName,
+                longTermRetentionDatabaseName,
+                onlyLatestPerDatabase,
+                databaseState));
     }
 
     /**
      * Lists all long term retention backups for a database.
-     * 
-     * @param locationName 
-     * @param longTermRetentionServerName 
-     * @param longTermRetentionDatabaseName 
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LongTermRetentionBackupInner> listByDatabase(String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName) {
+    public PagedIterable<LongTermRetentionBackupInner> listByDatabase(
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName) {
         final Boolean onlyLatestPerDatabase = null;
         final LongTermRetentionDatabaseState databaseState = null;
-        return new PagedIterable<>(listByDatabaseAsync(locationName, longTermRetentionServerName, longTermRetentionDatabaseName, onlyLatestPerDatabase, databaseState));
+        final Context context = null;
+        return new PagedIterable<>(
+            listByDatabaseAsync(
+                locationName,
+                longTermRetentionServerName,
+                longTermRetentionDatabaseName,
+                onlyLatestPerDatabase,
+                databaseState));
     }
 
     /**
      * Lists the long term retention backups for a given location.
-     * 
-     * @param locationName 
-     * @param onlyLatestPerDatabase 
-     * @param databaseState 
+     *
+     * @param locationName The location of the database.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<LongTermRetentionBackupInner>> listByLocationSinglePageAsync(String locationName, Boolean onlyLatestPerDatabase, LongTermRetentionDatabaseState databaseState) {
+    public Mono<PagedResponse<LongTermRetentionBackupInner>> listByLocationSinglePageAsync(
+        String locationName, Boolean onlyLatestPerDatabase, LongTermRetentionDatabaseState databaseState) {
         final String apiVersion = "2017-03-01-preview";
-        return service.listByLocation(this.client.getHost(), locationName, onlyLatestPerDatabase, databaseState, this.client.getSubscriptionId(), apiVersion)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByLocation(
+                            this.client.getHost(),
+                            locationName,
+                            onlyLatestPerDatabase,
+                            databaseState,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .<PagedResponse<LongTermRetentionBackupInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Lists the long term retention backups for a given location.
-     * 
-     * @param locationName 
-     * @param onlyLatestPerDatabase 
-     * @param databaseState 
+     *
+     * @param locationName The location of the database.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<LongTermRetentionBackupInner> listByLocationAsync(String locationName, Boolean onlyLatestPerDatabase, LongTermRetentionDatabaseState databaseState) {
+    public PagedFlux<LongTermRetentionBackupInner> listByLocationAsync(
+        String locationName, Boolean onlyLatestPerDatabase, LongTermRetentionDatabaseState databaseState) {
         return new PagedFlux<>(
             () -> listByLocationSinglePageAsync(locationName, onlyLatestPerDatabase, databaseState),
             nextLink -> listByLocationNextSinglePageAsync(nextLink));
@@ -824,16 +1370,18 @@ public final class LongTermRetentionBackupsInner {
 
     /**
      * Lists the long term retention backups for a given location.
-     * 
-     * @param locationName 
+     *
+     * @param locationName The location of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LongTermRetentionBackupInner> listByLocationAsync(String locationName) {
         final Boolean onlyLatestPerDatabase = null;
         final LongTermRetentionDatabaseState databaseState = null;
+        final Context context = null;
         return new PagedFlux<>(
             () -> listByLocationSinglePageAsync(locationName, onlyLatestPerDatabase, databaseState),
             nextLink -> listByLocationNextSinglePageAsync(nextLink));
@@ -841,346 +1389,490 @@ public final class LongTermRetentionBackupsInner {
 
     /**
      * Lists the long term retention backups for a given location.
-     * 
-     * @param locationName 
-     * @param onlyLatestPerDatabase 
-     * @param databaseState 
+     *
+     * @param locationName The location of the database.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LongTermRetentionBackupInner> listByLocation(String locationName, Boolean onlyLatestPerDatabase, LongTermRetentionDatabaseState databaseState) {
+    public PagedIterable<LongTermRetentionBackupInner> listByLocation(
+        String locationName, Boolean onlyLatestPerDatabase, LongTermRetentionDatabaseState databaseState) {
         return new PagedIterable<>(listByLocationAsync(locationName, onlyLatestPerDatabase, databaseState));
     }
 
     /**
      * Lists the long term retention backups for a given location.
-     * 
-     * @param locationName 
+     *
+     * @param locationName The location of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LongTermRetentionBackupInner> listByLocation(String locationName) {
         final Boolean onlyLatestPerDatabase = null;
         final LongTermRetentionDatabaseState databaseState = null;
+        final Context context = null;
         return new PagedIterable<>(listByLocationAsync(locationName, onlyLatestPerDatabase, databaseState));
     }
 
     /**
      * Lists the long term retention backups for a given server.
-     * 
-     * @param locationName 
-     * @param longTermRetentionServerName 
-     * @param onlyLatestPerDatabase 
-     * @param databaseState 
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<LongTermRetentionBackupInner>> listByServerSinglePageAsync(String locationName, String longTermRetentionServerName, Boolean onlyLatestPerDatabase, LongTermRetentionDatabaseState databaseState) {
+    public Mono<PagedResponse<LongTermRetentionBackupInner>> listByServerSinglePageAsync(
+        String locationName,
+        String longTermRetentionServerName,
+        Boolean onlyLatestPerDatabase,
+        LongTermRetentionDatabaseState databaseState) {
         final String apiVersion = "2017-03-01-preview";
-        return service.listByServer(this.client.getHost(), locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState, this.client.getSubscriptionId(), apiVersion)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByServer(
+                            this.client.getHost(),
+                            locationName,
+                            longTermRetentionServerName,
+                            onlyLatestPerDatabase,
+                            databaseState,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .<PagedResponse<LongTermRetentionBackupInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Lists the long term retention backups for a given server.
-     * 
-     * @param locationName 
-     * @param longTermRetentionServerName 
-     * @param onlyLatestPerDatabase 
-     * @param databaseState 
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<LongTermRetentionBackupInner> listByServerAsync(String locationName, String longTermRetentionServerName, Boolean onlyLatestPerDatabase, LongTermRetentionDatabaseState databaseState) {
+    public PagedFlux<LongTermRetentionBackupInner> listByServerAsync(
+        String locationName,
+        String longTermRetentionServerName,
+        Boolean onlyLatestPerDatabase,
+        LongTermRetentionDatabaseState databaseState) {
         return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState),
+            () ->
+                listByServerSinglePageAsync(
+                    locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState),
             nextLink -> listByServerNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the long term retention backups for a given server.
-     * 
-     * @param locationName 
-     * @param longTermRetentionServerName 
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<LongTermRetentionBackupInner> listByServerAsync(String locationName, String longTermRetentionServerName) {
+    public PagedFlux<LongTermRetentionBackupInner> listByServerAsync(
+        String locationName, String longTermRetentionServerName) {
         final Boolean onlyLatestPerDatabase = null;
         final LongTermRetentionDatabaseState databaseState = null;
+        final Context context = null;
         return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState),
+            () ->
+                listByServerSinglePageAsync(
+                    locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState),
             nextLink -> listByServerNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the long term retention backups for a given server.
-     * 
-     * @param locationName 
-     * @param longTermRetentionServerName 
-     * @param onlyLatestPerDatabase 
-     * @param databaseState 
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LongTermRetentionBackupInner> listByServer(String locationName, String longTermRetentionServerName, Boolean onlyLatestPerDatabase, LongTermRetentionDatabaseState databaseState) {
-        return new PagedIterable<>(listByServerAsync(locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState));
+    public PagedIterable<LongTermRetentionBackupInner> listByServer(
+        String locationName,
+        String longTermRetentionServerName,
+        Boolean onlyLatestPerDatabase,
+        LongTermRetentionDatabaseState databaseState) {
+        return new PagedIterable<>(
+            listByServerAsync(locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState));
     }
 
     /**
      * Lists the long term retention backups for a given server.
-     * 
-     * @param locationName 
-     * @param longTermRetentionServerName 
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LongTermRetentionBackupInner> listByServer(String locationName, String longTermRetentionServerName) {
+    public PagedIterable<LongTermRetentionBackupInner> listByServer(
+        String locationName, String longTermRetentionServerName) {
         final Boolean onlyLatestPerDatabase = null;
         final LongTermRetentionDatabaseState databaseState = null;
-        return new PagedIterable<>(listByServerAsync(locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState));
+        final Context context = null;
+        return new PagedIterable<>(
+            listByServerAsync(locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState));
     }
 
     /**
      * Deletes a long term retention backup.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param longTermRetentionServerName 
-     * @param longTermRetentionDatabaseName 
-     * @param backupName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteByResourceGroupWithResponseAsync(String resourceGroupName, String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+    public Mono<Response<Void>> beginDeleteByResourceGroupWithResponseAsync(
+        String resourceGroupName,
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName) {
         final String apiVersion = "2017-03-01-preview";
-        return service.beginDeleteByResourceGroup(this.client.getHost(), resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginDeleteByResourceGroup(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            locationName,
+                            longTermRetentionServerName,
+                            longTermRetentionDatabaseName,
+                            backupName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Deletes a long term retention backup.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param longTermRetentionServerName 
-     * @param longTermRetentionDatabaseName 
-     * @param backupName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteByResourceGroupAsync(String resourceGroupName, String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
-        return beginDeleteByResourceGroupWithResponseAsync(resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName)
+    public Mono<Void> beginDeleteByResourceGroupAsync(
+        String resourceGroupName,
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName) {
+        return beginDeleteByResourceGroupWithResponseAsync(
+                resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Deletes a long term retention backup.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param longTermRetentionServerName 
-     * @param longTermRetentionDatabaseName 
-     * @param backupName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteByResourceGroup(String resourceGroupName, String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
-        beginDeleteByResourceGroupAsync(resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName).block();
+    public void beginDeleteByResourceGroup(
+        String resourceGroupName,
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName) {
+        beginDeleteByResourceGroupAsync(
+                resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName)
+            .block();
     }
 
     /**
      * Deletes a long term retention backup.
-     * 
-     * @param locationName 
-     * @param longTermRetentionServerName 
-     * @param longTermRetentionDatabaseName 
-     * @param backupName 
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithResponseAsync(String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+    public Mono<Response<Void>> beginDeleteWithResponseAsync(
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName) {
         final String apiVersion = "2017-03-01-preview";
-        return service.beginDelete(this.client.getHost(), locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginDelete(
+                            this.client.getHost(),
+                            locationName,
+                            longTermRetentionServerName,
+                            longTermRetentionDatabaseName,
+                            backupName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Deletes a long term retention backup.
-     * 
-     * @param locationName 
-     * @param longTermRetentionServerName 
-     * @param longTermRetentionDatabaseName 
-     * @param backupName 
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteAsync(String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
-        return beginDeleteWithResponseAsync(locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName)
+    public Mono<Void> beginDeleteAsync(
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName) {
+        return beginDeleteWithResponseAsync(
+                locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Deletes a long term retention backup.
-     * 
-     * @param locationName 
-     * @param longTermRetentionServerName 
-     * @param longTermRetentionDatabaseName 
-     * @param backupName 
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDelete(String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+    public void beginDelete(
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName) {
         beginDeleteAsync(locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName).block();
     }
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink null
+     *
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<LongTermRetentionBackupInner>> listByResourceGroupDatabaseNextSinglePageAsync(String nextLink) {
-        return service.listByResourceGroupDatabaseNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+    public Mono<PagedResponse<LongTermRetentionBackupInner>> listByResourceGroupDatabaseNextSinglePageAsync(
+        String nextLink) {
+        return FluxUtil
+            .withContext(context -> service.listByResourceGroupDatabaseNext(nextLink, context))
+            .<PagedResponse<LongTermRetentionBackupInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink null
+     *
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<LongTermRetentionBackupInner>> listByResourceGroupLocationNextSinglePageAsync(String nextLink) {
-        return service.listByResourceGroupLocationNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+    public Mono<PagedResponse<LongTermRetentionBackupInner>> listByResourceGroupLocationNextSinglePageAsync(
+        String nextLink) {
+        return FluxUtil
+            .withContext(context -> service.listByResourceGroupLocationNext(nextLink, context))
+            .<PagedResponse<LongTermRetentionBackupInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink null
+     *
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<LongTermRetentionBackupInner>> listByResourceGroupServerNextSinglePageAsync(String nextLink) {
-        return service.listByResourceGroupServerNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+    public Mono<PagedResponse<LongTermRetentionBackupInner>> listByResourceGroupServerNextSinglePageAsync(
+        String nextLink) {
+        return FluxUtil
+            .withContext(context -> service.listByResourceGroupServerNext(nextLink, context))
+            .<PagedResponse<LongTermRetentionBackupInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink null
+     *
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<LongTermRetentionBackupInner>> listByDatabaseNextSinglePageAsync(String nextLink) {
-        return service.listByDatabaseNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(context -> service.listByDatabaseNext(nextLink, context))
+            .<PagedResponse<LongTermRetentionBackupInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink null
+     *
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<LongTermRetentionBackupInner>> listByLocationNextSinglePageAsync(String nextLink) {
-        return service.listByLocationNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(context -> service.listByLocationNext(nextLink, context))
+            .<PagedResponse<LongTermRetentionBackupInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink null
+     *
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<LongTermRetentionBackupInner>> listByServerNextSinglePageAsync(String nextLink) {
-        return service.listByServerNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(context -> service.listByServerNext(nextLink, context))
+            .<PagedResponse<LongTermRetentionBackupInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 }

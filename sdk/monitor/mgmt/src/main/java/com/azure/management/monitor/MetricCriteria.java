@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * The MetricCriteria model.
- */
+/** The MetricCriteria model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "criterionType")
 @JsonTypeName("StaticThresholdCriterion")
 @Fluent
@@ -30,7 +28,7 @@ public final class MetricCriteria extends MultiMetricCriteria {
 
     /**
      * Get the operator property: the criteria operator.
-     * 
+     *
      * @return the operator value.
      */
     public Operator operator() {
@@ -39,7 +37,7 @@ public final class MetricCriteria extends MultiMetricCriteria {
 
     /**
      * Set the operator property: the criteria operator.
-     * 
+     *
      * @param operator the operator value to set.
      * @return the MetricCriteria object itself.
      */
@@ -49,9 +47,8 @@ public final class MetricCriteria extends MultiMetricCriteria {
     }
 
     /**
-     * Get the threshold property: the criteria threshold value that activates
-     * the alert.
-     * 
+     * Get the threshold property: the criteria threshold value that activates the alert.
+     *
      * @return the threshold value.
      */
     public double threshold() {
@@ -59,9 +56,8 @@ public final class MetricCriteria extends MultiMetricCriteria {
     }
 
     /**
-     * Set the threshold property: the criteria threshold value that activates
-     * the alert.
-     * 
+     * Set the threshold property: the criteria threshold value that activates the alert.
+     *
      * @param threshold the threshold value to set.
      * @return the MetricCriteria object itself.
      */

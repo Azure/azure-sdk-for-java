@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The RunFilter model.
- */
+/** The RunFilter model. */
 @Fluent
 public final class RunFilter {
     /*
@@ -65,7 +63,7 @@ public final class RunFilter {
 
     /**
      * Get the runId property: The unique identifier for the run.
-     * 
+     *
      * @return the runId value.
      */
     public String runId() {
@@ -74,7 +72,7 @@ public final class RunFilter {
 
     /**
      * Set the runId property: The unique identifier for the run.
-     * 
+     *
      * @param runId the runId value to set.
      * @return the RunFilter object itself.
      */
@@ -85,7 +83,7 @@ public final class RunFilter {
 
     /**
      * Get the runType property: The type of run.
-     * 
+     *
      * @return the runType value.
      */
     public RunType runType() {
@@ -94,7 +92,7 @@ public final class RunFilter {
 
     /**
      * Set the runType property: The type of run.
-     * 
+     *
      * @param runType the runType value to set.
      * @return the RunFilter object itself.
      */
@@ -105,7 +103,7 @@ public final class RunFilter {
 
     /**
      * Get the status property: The current status of the run.
-     * 
+     *
      * @return the status value.
      */
     public RunStatus status() {
@@ -114,7 +112,7 @@ public final class RunFilter {
 
     /**
      * Set the status property: The current status of the run.
-     * 
+     *
      * @param status the status value to set.
      * @return the RunFilter object itself.
      */
@@ -125,7 +123,7 @@ public final class RunFilter {
 
     /**
      * Get the createTime property: The create time for a run.
-     * 
+     *
      * @return the createTime value.
      */
     public OffsetDateTime createTime() {
@@ -134,7 +132,7 @@ public final class RunFilter {
 
     /**
      * Set the createTime property: The create time for a run.
-     * 
+     *
      * @param createTime the createTime value to set.
      * @return the RunFilter object itself.
      */
@@ -145,7 +143,7 @@ public final class RunFilter {
 
     /**
      * Get the finishTime property: The time the run finished.
-     * 
+     *
      * @return the finishTime value.
      */
     public OffsetDateTime finishTime() {
@@ -154,7 +152,7 @@ public final class RunFilter {
 
     /**
      * Set the finishTime property: The time the run finished.
-     * 
+     *
      * @param finishTime the finishTime value to set.
      * @return the RunFilter object itself.
      */
@@ -164,11 +162,9 @@ public final class RunFilter {
     }
 
     /**
-     * Get the outputImageManifests property: The list of comma-separated image
-     * manifests that were generated from the run. This is applicable if the
-     * run is of
-     * build type.
-     * 
+     * Get the outputImageManifests property: The list of comma-separated image manifests that were generated from the
+     * run. This is applicable if the run is of build type.
+     *
      * @return the outputImageManifests value.
      */
     public String outputImageManifests() {
@@ -176,11 +172,9 @@ public final class RunFilter {
     }
 
     /**
-     * Set the outputImageManifests property: The list of comma-separated image
-     * manifests that were generated from the run. This is applicable if the
-     * run is of
-     * build type.
-     * 
+     * Set the outputImageManifests property: The list of comma-separated image manifests that were generated from the
+     * run. This is applicable if the run is of build type.
+     *
      * @param outputImageManifests the outputImageManifests value to set.
      * @return the RunFilter object itself.
      */
@@ -190,9 +184,8 @@ public final class RunFilter {
     }
 
     /**
-     * Get the isArchiveEnabled property: The value that indicates whether
-     * archiving is enabled or not.
-     * 
+     * Get the isArchiveEnabled property: The value that indicates whether archiving is enabled or not.
+     *
      * @return the isArchiveEnabled value.
      */
     public Boolean isArchiveEnabled() {
@@ -200,9 +193,8 @@ public final class RunFilter {
     }
 
     /**
-     * Set the isArchiveEnabled property: The value that indicates whether
-     * archiving is enabled or not.
-     * 
+     * Set the isArchiveEnabled property: The value that indicates whether archiving is enabled or not.
+     *
      * @param isArchiveEnabled the isArchiveEnabled value to set.
      * @return the RunFilter object itself.
      */
@@ -212,9 +204,8 @@ public final class RunFilter {
     }
 
     /**
-     * Get the taskName property: The name of the task that the run corresponds
-     * to.
-     * 
+     * Get the taskName property: The name of the task that the run corresponds to.
+     *
      * @return the taskName value.
      */
     public String taskName() {
@@ -222,9 +213,8 @@ public final class RunFilter {
     }
 
     /**
-     * Set the taskName property: The name of the task that the run corresponds
-     * to.
-     * 
+     * Set the taskName property: The name of the task that the run corresponds to.
+     *
      * @param taskName the taskName value to set.
      * @return the RunFilter object itself.
      */

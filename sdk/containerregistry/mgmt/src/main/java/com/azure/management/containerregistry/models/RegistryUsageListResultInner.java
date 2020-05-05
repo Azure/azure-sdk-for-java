@@ -9,9 +9,7 @@ import com.azure.management.containerregistry.RegistryUsage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The RegistryUsageListResult model.
- */
+/** The RegistryUsageListResult model. */
 @Fluent
 public final class RegistryUsageListResultInner {
     /*
@@ -22,7 +20,7 @@ public final class RegistryUsageListResultInner {
 
     /**
      * Get the value property: The list of container registry quota usages.
-     * 
+     *
      * @return the value value.
      */
     public List<RegistryUsage> value() {
@@ -31,7 +29,7 @@ public final class RegistryUsageListResultInner {
 
     /**
      * Set the value property: The list of container registry quota usages.
-     * 
+     *
      * @param value the value value to set.
      * @return the RegistryUsageListResultInner object itself.
      */

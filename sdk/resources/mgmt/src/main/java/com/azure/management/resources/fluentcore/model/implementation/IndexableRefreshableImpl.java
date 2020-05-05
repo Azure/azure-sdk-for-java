@@ -5,8 +5,6 @@ package com.azure.management.resources.fluentcore.model.implementation;
 
 import com.azure.management.resources.fluentcore.model.Indexable;
 import com.azure.management.resources.fluentcore.model.Refreshable;
-import com.azure.management.resources.fluentcore.model.Indexable;
-import com.azure.management.resources.fluentcore.model.Refreshable;
 
 /**
  * The implementation for {@link Indexable} and {@link Refreshable}.

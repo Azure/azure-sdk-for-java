@@ -2,9 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.management.compute;
 
-/**
- * The popular Azure Linux images.
- */
+/** The popular Azure Linux images. */
 public enum KnownLinuxVirtualMachineImage {
     /** UbuntuServer 14.04LTS. */
     UBUNTU_SERVER_14_04_LTS("Canonical", "UbuntuServer", "14.04.4-LTS"),
@@ -17,18 +15,20 @@ public enum KnownLinuxVirtualMachineImage {
     /**
      * OpenSUSE-Leap 42.1.
      *
-     * @deprecated for virtual machine use {@link VirtualMachine.DefinitionShared#withLatestLinuxImage(String, String, String)}(String publisher, String offer, String sku)}
-     * and for virtual machine scale set use {@link VirtualMachineScaleSet.DefinitionShared#withLatestLinuxImage(String, String, String)}(String publisher, String offer, String sku)}
-     * with publisher as "SUSE", offer as "openSUSE-Leap" and sku as "42.3")}.
+     * @deprecated for virtual machine use {@link VirtualMachine.DefinitionShared#withLatestLinuxImage(String, String,
+     *     String)}(String publisher, String offer, String sku)} and for virtual machine scale set use {@link
+     *     VirtualMachineScaleSet.DefinitionShared#withLatestLinuxImage(String, String, String)}(String publisher,
+     *     String offer, String sku)} with publisher as "SUSE", offer as "openSUSE-Leap" and sku as "42.3")}.
      */
     @Deprecated
     OPENSUSE_LEAP_42_1("SUSE", "openSUSE-Leap", "42.1"),
     /**
      * SLES 12-SP1.
      *
-     * @deprecated for virtual machine use {@link VirtualMachine.DefinitionShared#withLatestLinuxImage(String, String, String)}(String publisher, String offer, String sku)}
-     * and for virtual machine scale set use {@link VirtualMachineScaleSet.DefinitionShared#withLatestLinuxImage(String, String, String)}(String publisher, String offer, String sku)}
-     * with publisher as "SUSE", offer as "SLES" and sku as "12-SP3")}.
+     * @deprecated for virtual machine use {@link VirtualMachine.DefinitionShared#withLatestLinuxImage(String, String,
+     *     String)}(String publisher, String offer, String sku)} and for virtual machine scale set use {@link
+     *     VirtualMachineScaleSet.DefinitionShared#withLatestLinuxImage(String, String, String)}(String publisher,
+     *     String offer, String sku)} with publisher as "SUSE", offer as "SLES" and sku as "12-SP3")}.
      */
     @Deprecated
     SLES_12_SP1("SUSE", "SLES", "12-SP1");
@@ -43,35 +43,23 @@ public enum KnownLinuxVirtualMachineImage {
         this.sku = sku;
     }
 
-    /**
-     * @return the name of the image publisher
-     */
+    /** @return the name of the image publisher */
     public String publisher() {
         return this.publisher;
     }
 
-    /**
-     * @return the name of the image offer
-     */
+    /** @return the name of the image offer */
     public String offer() {
         return this.offer;
     }
 
-    /**
-     * @return the name of the image SKU
-     */
+    /** @return the name of the image SKU */
     public String sku() {
         return this.sku;
     }
 
-    /**
-     * @return the image reference
-     */
+    /** @return the image reference */
     public ImageReference imageReference() {
-        return new ImageReference()
-                .withPublisher(publisher())
-                .withOffer(offer())
-                .withSku(sku())
-                .withVersion("latest");
+        return new ImageReference().withPublisher(publisher()).withOffer(offer()).withSku(sku()).withVersion("latest");
     }
 }

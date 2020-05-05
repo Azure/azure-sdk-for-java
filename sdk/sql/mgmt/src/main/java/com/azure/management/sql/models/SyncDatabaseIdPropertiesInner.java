@@ -7,9 +7,7 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The SyncDatabaseIdProperties model.
- */
+/** The SyncDatabaseIdProperties model. */
 @Immutable
 public final class SyncDatabaseIdPropertiesInner {
     /*
@@ -20,7 +18,7 @@ public final class SyncDatabaseIdPropertiesInner {
 
     /**
      * Get the id property: ARM resource id of sync database.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {

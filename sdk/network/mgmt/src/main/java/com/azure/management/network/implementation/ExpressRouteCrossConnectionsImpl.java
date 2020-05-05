@@ -12,9 +12,10 @@ import com.azure.management.resources.fluentcore.arm.ResourceId;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import reactor.core.publisher.Mono;
 
-class ExpressRouteCrossConnectionsImpl extends
-        ReadableWrappersImpl<ExpressRouteCrossConnection, ExpressRouteCrossConnectionImpl, ExpressRouteCrossConnectionInner>
-        implements ExpressRouteCrossConnections {
+class ExpressRouteCrossConnectionsImpl
+    extends ReadableWrappersImpl<
+        ExpressRouteCrossConnection, ExpressRouteCrossConnectionImpl, ExpressRouteCrossConnectionInner>
+    implements ExpressRouteCrossConnections {
     private final NetworkManager manager;
 
     ExpressRouteCrossConnectionsImpl(NetworkManager manager) {
@@ -39,7 +40,6 @@ class ExpressRouteCrossConnectionsImpl extends
         ResourceId resourceId = ResourceId.fromString(id);
         return getByResourceGroupAsync(resourceId.resourceGroupName(), resourceId.name());
     }
-
 
     @Override
     public ExpressRouteCrossConnection getByResourceGroup(String resourceGroupName, String name) {

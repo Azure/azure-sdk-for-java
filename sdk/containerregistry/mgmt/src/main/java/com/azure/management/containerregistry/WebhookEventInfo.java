@@ -4,9 +4,7 @@ package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
 
-/**
- * Response containing the primary and secondary admin API keys for a given Azure Search service.
- */
+/** Response containing the primary and secondary admin API keys for a given Azure Search service. */
 @Fluent
 public interface WebhookEventInfo {
     /**
@@ -22,5 +20,4 @@ public interface WebhookEventInfo {
      * @return the event response message value
      */
     EventResponseMessage eventResponseMessage();
-
 }

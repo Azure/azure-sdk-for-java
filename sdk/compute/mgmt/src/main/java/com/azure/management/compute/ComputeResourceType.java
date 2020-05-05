@@ -4,30 +4,20 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.management.resources.fluentcore.arm.ExpandableStringEnum;
+import com.azure.core.util.ExpandableStringEnum;
 
 import java.util.Collection;
 
-/**
- * Compute resource types.
- */
+/** Compute resource types. */
 @Fluent
-public class ComputeResourceType  extends ExpandableStringEnum<ComputeResourceType> {
-    /**
-     * Static value availabilitySets for ComputeResourceType.
-     */
+public class ComputeResourceType extends ExpandableStringEnum<ComputeResourceType> {
+    /** Static value availabilitySets for ComputeResourceType. */
     public static final ComputeResourceType AVAILABILITYSETS = fromString("availabilitySets");
-    /**
-     * Static value disks for ComputeResourceType.
-     */
+    /** Static value disks for ComputeResourceType. */
     public static final ComputeResourceType DISKS = fromString("disks");
-    /**
-     * Static value snapshots for ComputeResourceType.
-     */
+    /** Static value snapshots for ComputeResourceType. */
     public static final ComputeResourceType SNAPSHOTS = fromString("snapshots");
-    /**
-     * Static value virtualMachines for ComputeResourceType.
-     */
+    /** Static value virtualMachines for ComputeResourceType. */
     public static final ComputeResourceType VIRTUALMACHINES = fromString("virtualMachines");
 
     /**
@@ -40,9 +30,7 @@ public class ComputeResourceType  extends ExpandableStringEnum<ComputeResourceTy
         return fromString(str, ComputeResourceType.class);
     }
 
-    /**
-     * @return known compute resource types
-     */
+    /** @return known compute resource types */
     public static Collection<ComputeResourceType> values() {
         return values(ComputeResourceType.class);
     }

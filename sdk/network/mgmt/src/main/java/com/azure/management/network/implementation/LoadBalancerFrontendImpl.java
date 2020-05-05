@@ -21,7 +21,6 @@ import com.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.azure.management.resources.fluentcore.model.Creatable;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -29,13 +28,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-/**
- * Implementation for LoadBalancerPublicFrontend.
- */
-class LoadBalancerFrontendImpl
-        extends ChildResourceImpl<FrontendIPConfigurationInner, LoadBalancerImpl, LoadBalancer>
-        implements
-        LoadBalancerFrontend,
+/** Implementation for LoadBalancerPublicFrontend. */
+class LoadBalancerFrontendImpl extends ChildResourceImpl<FrontendIPConfigurationInner, LoadBalancerImpl, LoadBalancer>
+    implements LoadBalancerFrontend,
         LoadBalancerPrivateFrontend,
         LoadBalancerPrivateFrontend.Definition<LoadBalancer.DefinitionStages.WithCreate>,
         LoadBalancerPrivateFrontend.UpdateDefinition<LoadBalancer.Update>,
@@ -153,11 +148,12 @@ class LoadBalancerFrontendImpl
 
     @Override
     public LoadBalancerFrontendImpl withExistingSubnet(String parentNetworkResourceId, String subnetName) {
-        SubnetInner subnetRef = (SubnetInner) new SubnetInner()
-                .setId(parentNetworkResourceId + "/subnets/" + subnetName);
-        this.inner()
-                .withSubnet(subnetRef)
-                .withPublicIPAddress(null); // Ensure no conflicting public and private settings
+        SubnetInner subnetRef = new SubnetInner();
+        subnetRef.setId(parentNetworkResourceId + "/subnets/" + subnetName);
+        this
+            .inner()
+            .withSubnet(subnetRef)
+            .withPublicIPAddress(null); // Ensure no conflicting public and private settings
         return this;
     }
 
@@ -185,13 +181,14 @@ class LoadBalancerFrontendImpl
     @Override
     public LoadBalancerFrontendImpl withExistingPublicIPAddress(String resourceId) {
         PublicIPAddressInner pipRef = new PublicIPAddressInner().withId(resourceId);
-        this.inner()
-                .withPublicIPAddress(pipRef)
+        this
+            .inner()
+            .withPublicIPAddress(pipRef)
 
-                // Ensure no conflicting public and private settings
-                .withSubnet(null)
-                .withPrivateIPAddress(null)
-                .withPrivateIPAllocationMethod(null);
+            // Ensure no conflicting public and private settings
+            .withSubnet(null)
+            .withPrivateIPAddress(null)
+            .withPrivateIPAllocationMethod(null);
         return this;
     }
 
@@ -203,23 +200,25 @@ class LoadBalancerFrontendImpl
 
     @Override
     public LoadBalancerFrontendImpl withPrivateIPAddressDynamic() {
-        this.inner()
-                .withPrivateIPAddress(null)
-                .withPrivateIPAllocationMethod(IPAllocationMethod.DYNAMIC)
+        this
+            .inner()
+            .withPrivateIPAddress(null)
+            .withPrivateIPAllocationMethod(IPAllocationMethod.DYNAMIC)
 
-                // Ensure no conflicting public and private settings
-                .withPublicIPAddress(null);
+            // Ensure no conflicting public and private settings
+            .withPublicIPAddress(null);
         return this;
     }
 
     @Override
     public LoadBalancerFrontendImpl withPrivateIPAddressStatic(String ipAddress) {
-        this.inner()
-                .withPrivateIPAddress(ipAddress)
-                .withPrivateIPAllocationMethod(IPAllocationMethod.STATIC)
+        this
+            .inner()
+            .withPrivateIPAddress(ipAddress)
+            .withPrivateIPAllocationMethod(IPAllocationMethod.STATIC)
 
-                // Ensure no conflicting public and private settings
-                .withPublicIPAddress(null);
+            // Ensure no conflicting public and private settings
+            .withPublicIPAddress(null);
         return this;
     }
 
@@ -274,4 +273,3 @@ class LoadBalancerFrontendImpl
         return Collections.unmodifiableSet(zones);
     }
 }
-

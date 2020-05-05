@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The EditionCapability model.
- */
+/** The EditionCapability model. */
 @Fluent
 public final class EditionCapability {
     /*
@@ -57,7 +55,7 @@ public final class EditionCapability {
 
     /**
      * Get the name property: The database edition name.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -65,9 +63,8 @@ public final class EditionCapability {
     }
 
     /**
-     * Get the supportedServiceLevelObjectives property: The list of supported
-     * service objectives for the edition.
-     * 
+     * Get the supportedServiceLevelObjectives property: The list of supported service objectives for the edition.
+     *
      * @return the supportedServiceLevelObjectives value.
      */
     public List<ServiceObjectiveCapability> supportedServiceLevelObjectives() {
@@ -75,9 +72,8 @@ public final class EditionCapability {
     }
 
     /**
-     * Get the zoneRedundant property: Whether or not zone redundancy is
-     * supported for the edition.
-     * 
+     * Get the zoneRedundant property: Whether or not zone redundancy is supported for the edition.
+     *
      * @return the zoneRedundant value.
      */
     public Boolean zoneRedundant() {
@@ -86,7 +82,7 @@ public final class EditionCapability {
 
     /**
      * Get the readScale property: The read scale capability for the edition.
-     * 
+     *
      * @return the readScale value.
      */
     public ReadScaleCapability readScale() {
@@ -94,9 +90,8 @@ public final class EditionCapability {
     }
 
     /**
-     * Get the supportedStorageCapabilities property: The list of supported
-     * storage capabilities for this edition.
-     * 
+     * Get the supportedStorageCapabilities property: The list of supported storage capabilities for this edition.
+     *
      * @return the supportedStorageCapabilities value.
      */
     public List<StorageCapability> supportedStorageCapabilities() {
@@ -105,7 +100,7 @@ public final class EditionCapability {
 
     /**
      * Get the status property: The status of the capability.
-     * 
+     *
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -113,9 +108,8 @@ public final class EditionCapability {
     }
 
     /**
-     * Get the reason property: The reason for the capability not being
-     * available.
-     * 
+     * Get the reason property: The reason for the capability not being available.
+     *
      * @return the reason value.
      */
     public String reason() {
@@ -123,9 +117,8 @@ public final class EditionCapability {
     }
 
     /**
-     * Set the reason property: The reason for the capability not being
-     * available.
-     * 
+     * Set the reason property: The reason for the capability not being available.
+     *
      * @param reason the reason value to set.
      * @return the EditionCapability object itself.
      */

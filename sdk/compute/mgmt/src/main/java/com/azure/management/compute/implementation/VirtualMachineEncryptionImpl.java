@@ -12,9 +12,7 @@ import com.azure.management.compute.VirtualMachineEncryption;
 import com.azure.management.compute.WindowsVMDiskEncryptionConfiguration;
 import reactor.core.publisher.Mono;
 
-/**
- * Implementation of VirtualMachineEncryption.
- */
+/** Implementation of VirtualMachineEncryption. */
 class VirtualMachineEncryptionImpl implements VirtualMachineEncryption {
     private final VirtualMachine virtualMachine;
     private final VirtualMachineEncryptionHelper virtualMachineEncryptionHelper;

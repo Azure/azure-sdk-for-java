@@ -2,12 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.management.sql;
 
-
 import com.azure.core.annotation.Fluent;
 
-/**
- * The reserved eDTUs value range for a "Basic" edition of an Azure SQL Elastic Pool.
- */
+/** The reserved eDTUs value range for a "Basic" edition of an Azure SQL Elastic Pool. */
 @Fluent
 public enum SqlElasticPoolBasicEDTUs {
     /** 50 eDTUs available to the pool. */
@@ -38,9 +35,7 @@ public enum SqlElasticPoolBasicEDTUs {
         this.value = eDTU;
     }
 
-    /**
-     * @return the reserved eDTU for the SQL Elastic Pool
-     */
+    /** @return the reserved eDTU for the SQL Elastic Pool */
     public int value() {
         return this.value;
     }

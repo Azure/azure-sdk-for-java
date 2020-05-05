@@ -27,7 +27,8 @@ public abstract class IndependentChildResourceImpl<
         FluentModelT extends IndependentChildResource<ManagerT, InnerModelT>,
         FluentParentModelT extends Resource & HasResourceGroup,
         InnerModelT extends com.azure.core.management.Resource,
-        FluentModelImplT extends IndependentChildResourceImpl<FluentModelT, FluentParentModelT, InnerModelT, FluentModelImplT, ManagerT>,
+        FluentModelImplT extends IndependentChildResourceImpl<FluentModelT, FluentParentModelT,
+                                                              InnerModelT, FluentModelImplT, ManagerT>,
         ManagerT>
         extends
         IndependentChildImpl<FluentModelT, FluentParentModelT, InnerModelT, FluentModelImplT, ManagerT>

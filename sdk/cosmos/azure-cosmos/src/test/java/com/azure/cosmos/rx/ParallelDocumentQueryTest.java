@@ -80,7 +80,6 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     public void queryDocuments(boolean qmEnabled) {
         String query = "SELECT * from c where c.prop = 99";
         FeedOptions options = new FeedOptions();
-        options.setMaxItemCount(5);
 
         options.setPopulateQueryMetrics(qmEnabled);
         options.setMaxDegreeOfParallelism(2);
@@ -97,20 +96,19 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
             .hasValidQueryMetrics(qmEnabled)
             .build();
 
-        validateQuerySuccess(queryObservable.byPage(), validator, TIMEOUT);
+        validateQuerySuccess(queryObservable.byPage(5), validator, TIMEOUT);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryMetricEquality() throws Exception {
         String query = "SELECT * from c where c.prop = 99";
         FeedOptions options = new FeedOptions();
-        options.setMaxItemCount(5);
 
         options.setPopulateQueryMetrics(true);
         options.setMaxDegreeOfParallelism(0);
 
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
-        List<FeedResponse<CosmosItemProperties>> resultList1 = queryObservable.byPage().collectList().block();
+        List<FeedResponse<CosmosItemProperties>> resultList1 = queryObservable.byPage(5).collectList().block();
 
         options.setMaxDegreeOfParallelism(4);
         CosmosPagedFlux<CosmosItemProperties> threadedQueryObs = createdCollection.queryItems(query, options, CosmosItemProperties.class);
@@ -158,7 +156,6 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         String query = "SELECT * from root";
         FeedOptions options = new FeedOptions();
         int pageSize = 3;
-        options.setMaxItemCount(pageSize);
         options.setMaxDegreeOfParallelism(-1);
 
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
@@ -178,7 +175,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
                 .pageSizeIsLessThanOrEqualTo(pageSize)
                 .build())
             .build();
-        validateQuerySuccess(queryObservable.byPage(), validator, 2 * subscriberValidationTimeout);
+        validateQuerySuccess(queryObservable.byPage(pageSize), validator, 2 * subscriberValidationTimeout);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -529,14 +526,12 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         List<CosmosItemProperties> receivedDocuments = new ArrayList<CosmosItemProperties>();
         do {
             FeedOptions options = new FeedOptions();
-            options.setMaxItemCount(pageSize);
 
             options.setMaxDegreeOfParallelism(2);
-            options.setRequestContinuation(requestContinuation);
             CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
             TestSubscriber<FeedResponse<CosmosItemProperties>> testSubscriber = new TestSubscriber<>();
-            queryObservable.byPage().subscribe(testSubscriber);
+            queryObservable.byPage(requestContinuation, pageSize).subscribe(testSubscriber);
             testSubscriber.awaitTerminalEvent(TIMEOUT, TimeUnit.MILLISECONDS);
             testSubscriber.assertNoErrors();
             testSubscriber.assertComplete();

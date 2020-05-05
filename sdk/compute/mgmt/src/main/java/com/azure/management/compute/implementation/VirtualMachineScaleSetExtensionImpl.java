@@ -2,32 +2,28 @@
 // Licensed under the MIT License.
 package com.azure.management.compute.implementation;
 
-import com.azure.management.compute.models.VirtualMachineScaleSetExtensionInner;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.azure.management.compute.VirtualMachineExtensionImage;
 import com.azure.management.compute.VirtualMachineScaleSet;
 import com.azure.management.compute.VirtualMachineScaleSetExtension;
+import com.azure.management.compute.models.VirtualMachineScaleSetExtensionInner;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * Implementation of {@link VirtualMachineScaleSetExtension}.
- */
+/** Implementation of {@link VirtualMachineScaleSetExtension}. */
 public class VirtualMachineScaleSetExtensionImpl
-        extends ChildResourceImpl<VirtualMachineScaleSetExtensionInner, VirtualMachineScaleSetImpl, VirtualMachineScaleSet>
-        implements
-        VirtualMachineScaleSetExtension,
+    extends ChildResourceImpl<VirtualMachineScaleSetExtensionInner, VirtualMachineScaleSetImpl, VirtualMachineScaleSet>
+    implements VirtualMachineScaleSetExtension,
         VirtualMachineScaleSetExtension.Definition<VirtualMachineScaleSet.DefinitionStages.WithCreate>,
         VirtualMachineScaleSetExtension.UpdateDefinition<VirtualMachineScaleSet.UpdateStages.WithApply>,
         VirtualMachineScaleSetExtension.Update {
 
-    protected VirtualMachineScaleSetExtensionImpl(VirtualMachineScaleSetExtensionInner inner,
-                                                  VirtualMachineScaleSetImpl parent) {
+    protected VirtualMachineScaleSetExtensionImpl(
+        VirtualMachineScaleSetExtensionInner inner, VirtualMachineScaleSetImpl parent) {
         super(inner, parent);
     }
 
@@ -98,9 +94,11 @@ public class VirtualMachineScaleSetExtensionImpl
 
     @Override
     public VirtualMachineScaleSetExtensionImpl withImage(VirtualMachineExtensionImage image) {
-        this.inner().withPublisher(image.publisherName())
-                .withType(image.typeName())
-                .withTypeHandlerVersion(image.versionName());
+        this
+            .inner()
+            .withPublisher(image.publisherName())
+            .withType(image.typeName())
+            .withTypeHandlerVersion(image.versionName());
         return this;
     }
 
@@ -159,7 +157,8 @@ public class VirtualMachineScaleSetExtensionImpl
     //
     //       VMSS extensions are inline child resources hence all extensions are always part of VMSS PUT payload
     //       i.e including the one that user didn't choose to update. ensurePublicSettings and ensureProtectedSettings
-    //       are used to ensure we initialize settings/protectedSettings of an extension only if user choose to update it.
+    //       are used to ensure we initialize settings/protectedSettings of an extension only if user choose to update
+    // it.
     //
     private HashMap<String, Object> ensurePublicSettings() {
         if (this.inner().settings() == null) {

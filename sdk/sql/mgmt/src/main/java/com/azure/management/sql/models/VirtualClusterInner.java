@@ -10,9 +10,7 @@ import com.azure.core.management.Resource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The VirtualCluster model.
- */
+/** The VirtualCluster model. */
 @JsonFlatten
 @Fluent
 public class VirtualClusterInner extends Resource {
@@ -37,7 +35,7 @@ public class VirtualClusterInner extends Resource {
 
     /**
      * Get the subnetId property: Subnet resource ID for the virtual cluster.
-     * 
+     *
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -45,9 +43,9 @@ public class VirtualClusterInner extends Resource {
     }
 
     /**
-     * Get the family property: If the service has different generations of
-     * hardware, for the same SKU, then that can be captured here.
-     * 
+     * Get the family property: If the service has different generations of hardware, for the same SKU, then that can be
+     * captured here.
+     *
      * @return the family value.
      */
     public String family() {
@@ -55,9 +53,9 @@ public class VirtualClusterInner extends Resource {
     }
 
     /**
-     * Set the family property: If the service has different generations of
-     * hardware, for the same SKU, then that can be captured here.
-     * 
+     * Set the family property: If the service has different generations of hardware, for the same SKU, then that can be
+     * captured here.
+     *
      * @param family the family value to set.
      * @return the VirtualClusterInner object itself.
      */
@@ -67,9 +65,8 @@ public class VirtualClusterInner extends Resource {
     }
 
     /**
-     * Get the childResources property: List of resources in this virtual
-     * cluster.
-     * 
+     * Get the childResources property: List of resources in this virtual cluster.
+     *
      * @return the childResources value.
      */
     public List<String> childResources() {

@@ -1,4 +1,4 @@
-# Azure core test client library for Java
+# Azure Core Test shared library for Java
 
 Library containing core classes used to test Azure SDK client libraries.
 
@@ -18,7 +18,7 @@ To use this package, add the following to your _pom.xml_.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-test</artifactId>
-  <version>1.1.0</version>
+  <version>1.2.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
