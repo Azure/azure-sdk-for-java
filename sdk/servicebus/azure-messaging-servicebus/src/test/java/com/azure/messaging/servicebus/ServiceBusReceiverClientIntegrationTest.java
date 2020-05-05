@@ -103,23 +103,23 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     void receiveByTwoSubscriber(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSenderAndReceiver(entityType, isSessionEnabled);
-        final int maxMessages = 2;
-        final int total = 2;
+        final int maxMessages = 5;
+        final int totalReceive = 3;
         final Duration shortTimeOut = Duration.ofSeconds(5);
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
 
-        sendMessage(message);
-        sendMessage(message);
-        sendMessage(message);
-        sendMessage(message);
+        for (int i = 0; i < totalReceive * maxMessages; ++i) {
+            sendMessage(message);
+        }
 
         // Act & Assert
         IterableStream<ServiceBusReceivedMessageContext> messages;
 
         int receivedMessageCount;
-        for (int i = 0; i < total; ++i) {
+        int totalReceivedCount = 0;
+        for (int i = 0; i < totalReceive; ++i) {
             messages = receiver.receive(maxMessages, shortTimeOut);
             receivedMessageCount = 0;
             for (ServiceBusReceivedMessageContext receivedMessage : messages) {
@@ -129,7 +129,10 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
                 ++receivedMessageCount;
             }
             assertEquals(maxMessages, receivedMessageCount);
+            totalReceivedCount += receivedMessageCount;
         }
+
+        assertEquals(totalReceive * maxMessages, totalReceivedCount);
     }
 
     /**

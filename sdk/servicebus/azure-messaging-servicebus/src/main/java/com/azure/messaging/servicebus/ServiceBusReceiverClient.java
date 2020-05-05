@@ -640,8 +640,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     }
 
     /**
-     * Given an {@code emitter}, subscribes to {@link ServiceBusReceivedMessageContext}  and receive messages from
-     * Service Bus. If the message subscriber has not been created, will initialise it.
+     * Given an {@code emitter}, creates a {@link EmitterProcessor} to receive messages from Service Bus. If the
+     * message processor has not been created, will initialise it.
      */
     private void queueWork(int maximumMessageCount, Duration maxWaitTime,
         FluxSink<ServiceBusReceivedMessageContext> emitter) {
@@ -653,7 +653,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
 
         if (messageProcessor.get() == null) {
             EmitterProcessor<ServiceBusReceivedMessageContext> processor = asyncClient.receive(DEFAULT_RECEIVE_OPTIONS)
-                .subscribeWith(EmitterProcessor.create(maximumMessageCount, false));
+                .subscribeWith(EmitterProcessor.create(false));
 
             if (!messageProcessor.compareAndSet(null, processor)) {
                 processor.dispose();
