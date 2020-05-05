@@ -251,13 +251,11 @@ class UnnamedSessionManager implements AutoCloseable {
      * @throws AmqpException if the session manager is already disposed.
      */
     private Mono<ServiceBusReceiveLink> getActiveLink() {
-        return Mono.defer(() -> {
-            return createSessionReceiveLink()
-                .flatMap(link -> link.getEndpointStates()
-                    .takeUntil(e -> e == AmqpEndpointState.ACTIVE)
-                    .timeout(operationTimeout)
-                    .then(Mono.just(link)));
-        })
+        return Mono.defer(() -> createSessionReceiveLink()
+            .flatMap(link -> link.getEndpointStates()
+                .takeUntil(e -> e == AmqpEndpointState.ACTIVE)
+                .timeout(operationTimeout)
+                .then(Mono.just(link))))
             .retryWhen(Retry.from(retrySignals -> retrySignals.flatMap(signal -> {
                 final Throwable failure = signal.failure();
                 logger.info("entityPath[{}] attempt[{}]. Error occurred while getting unnamed session.",
