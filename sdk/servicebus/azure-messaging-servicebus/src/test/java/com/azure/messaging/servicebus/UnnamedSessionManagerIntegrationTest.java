@@ -19,9 +19,10 @@ import reactor.test.StepVerifier;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -37,7 +38,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Integration tests for {@link UnnamedSessionManager}.
  */
 class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
-    private final ConcurrentHashMap<String, Instant> sessionsLockedUntil = new ConcurrentHashMap<>();
     private final AtomicInteger messagesPending = new AtomicInteger();
 
     private ServiceBusReceiverAsyncClient receiver;
@@ -98,27 +98,37 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
         }
     }
 
+    /**
+     * Verifies that we can roll over to a next session.
+     */
     @Test
     void multipleSessions() {
         // Arrange
         final String messageId = "singleUnnamedSession";
         final String now = Instant.now().toString();
         final List<String> sessionIds = IntStream.range(0, 3)
-            .mapToObj(number -> String.join("-", String.valueOf(number), "singleUnnamedSession"))
+            .mapToObj(number -> String.join("-", String.valueOf(number), "singleUnnamedSession", now))
             .collect(Collectors.toList());
+
+        logger.info("------ Session ids ------");
+        for (int i = 0; i < sessionIds.size(); i++) {
+            logger.info("[{}]: {}", i, sessionIds.get(i));
+        }
 
         final String contents = "hello world";
         final int numberToSend = 3;
-        final int totalSent = sessionIds.size() * numberToSend;
+        final int maxMessages = numberToSend * sessionIds.size();
+        final int maxConcurrency = 2;
+        final Set<String> set = new HashSet<>();
         final ReceiveAsyncOptions receiveOptions = new ReceiveAsyncOptions()
             .setMaxAutoLockRenewalDuration(Duration.ofMinutes(2))
             .setIsAutoCompleteEnabled(true);
 
         setSenderAndReceiver(MessagingEntityType.SUBSCRIPTION, Duration.ofSeconds(20),
-            builder -> builder.maxConcurrentSessions(2));
+            builder -> builder.maxConcurrentSessions(maxConcurrency));
 
         final Disposable subscription = Flux.interval(Duration.ofMillis(500))
-            .take(numberToSend)
+            .take(maxMessages)
             .flatMap(index -> {
                 final int i = (int) (index % sessionIds.size());
                 final String id = sessionIds.get(i);
@@ -134,27 +144,37 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
         // Act & Assert
         try {
             StepVerifier.create(receiver.receive(receiveOptions))
-                .assertNext(context -> assertFromSession(sessionIds, messageId, contents, context))
-                .assertNext(context -> assertFromSession(sessionIds, messageId, contents, context))
-                .assertNext(context -> assertFromSession(sessionIds, messageId, contents, context))
+                .assertNext(context -> assertFromSession(sessionIds, set, maxConcurrency, messageId, contents, context))
+                .assertNext(context -> assertFromSession(sessionIds, set, maxConcurrency, messageId, contents, context))
+                .assertNext(context -> assertFromSession(sessionIds, set, maxConcurrency, messageId, contents, context))
 
-                .assertNext(context -> assertFromSession(sessionIds, messageId, contents, context))
-                .assertNext(context -> assertFromSession(sessionIds, messageId, contents, context))
-                .assertNext(context -> assertFromSession(sessionIds, messageId, contents, context))
+                .assertNext(context -> assertFromSession(sessionIds, set, maxConcurrency, messageId, contents, context))
+                .assertNext(context -> assertFromSession(sessionIds, set, maxConcurrency, messageId, contents, context))
+                .assertNext(context -> assertFromSession(sessionIds, set, maxConcurrency, messageId, contents, context))
 
-                .assertNext(context -> assertFromSession(sessionIds, messageId, contents, context))
-                .assertNext(context -> assertFromSession(sessionIds, messageId, contents, context))
-                .assertNext(context -> assertFromSession(sessionIds, messageId, contents, context))
-                .expectComplete()
+                .assertNext(context -> assertFromSession(sessionIds, set, maxConcurrency + 1, messageId, contents, context))
+                .assertNext(context -> assertFromSession(sessionIds, set, maxConcurrency + 1, messageId, contents, context))
+                .assertNext(context -> assertFromSession(sessionIds, set, maxConcurrency + 1, messageId, contents, context))
+                .thenCancel()
                 .verify(Duration.ofMinutes(2));
         } finally {
             subscription.dispose();
         }
     }
 
-    private void assertFromSession(List<String> sessionIds, String messageId, String contents,
-        ServiceBusReceivedMessageContext context) {
+    private void assertFromSession(List<String> sessionIds, Set<String> currentSessions, int maxSize,
+        String messageId, String contents, ServiceBusReceivedMessageContext context) {
+        logger.info("Verifying message: {}", context.getSessionId());
+
+        assertNotNull(context.getSessionId());
         assertTrue(sessionIds.contains(context.getSessionId()));
+
+        if (currentSessions.add(context.getSessionId())) {
+            logger.info("Adding sessionId: {}", context.getSessionId());
+        }
+
+        assertTrue(currentSessions.size() <= maxSize, String.format(
+            "Current size (%s) is larger than max (%s).", currentSessions.size(), maxSize));
         assertMessageEquals(null, messageId, contents, context);
     }
 

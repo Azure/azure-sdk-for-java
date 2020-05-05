@@ -3,6 +3,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpEndpointState;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.SessionErrorContext;
@@ -267,6 +268,9 @@ class UnnamedSessionManager implements AutoCloseable {
                         getErrorContext()));
                 } else if (failure instanceof TimeoutException) {
                     return Mono.delay(SLEEP_DURATION_ON_ACCEPT_SESSION_EXCEPTION);
+                } else if (failure instanceof AmqpException
+                    && ((AmqpException) failure).getErrorCondition() == AmqpErrorCondition.TIMEOUT_ERROR) {
+                    return Mono.delay(SLEEP_DURATION_ON_ACCEPT_SESSION_EXCEPTION);
                 } else {
                     return Mono.<Long>error(failure);
                 }
@@ -292,12 +296,11 @@ class UnnamedSessionManager implements AutoCloseable {
                     options.getMaxAutoLockRenewalDuration(), connectionProcessor.getRetryOptions(),
                     receiverOptions.getPrefetchCount(), scheduler, this::renewSessionLock);
             })))
-            .flatMapMany(session -> {
-                return session.receive().doFinally(signalType -> {
-                    logger.info("Adding scheduler back to pool.");
-                    availableSchedulers.push(scheduler);
-                });
-            })
+            .flatMapMany(session -> session.receive().doFinally(signalType -> {
+                logger.info("Adding scheduler back to pool.");
+                availableSchedulers.push(scheduler);
+                onSessionRequest(1L);
+            }))
             .publishOn(scheduler);
     }
 
