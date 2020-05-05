@@ -19,7 +19,7 @@ public interface Configurations extends HasInner<ConfigurationsInner> {
     /**
      * Replace all specified Event Hubs Cluster settings with those contained in the request body. Leaves the settings not specified in the request body unmodified.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -29,7 +29,7 @@ public interface Configurations extends HasInner<ConfigurationsInner> {
     /**
      * Get all Event Hubs Cluster settings - a collection of key/value pairs which represent the quotas and settings imposed on the cluster.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
