@@ -16,7 +16,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * A <b>synchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage} from a specific queue or
@@ -31,12 +31,12 @@ import java.util.concurrent.atomic.AtomicReference;
 @ServiceClient(builder = ServiceBusClientBuilder.class)
 public final class ServiceBusReceiverClient implements AutoCloseable {
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverClient.class);
+    private final AtomicInteger idGenerator = new AtomicInteger();
     private final ServiceBusReceiverAsyncClient asyncClient;
     private final Duration operationTimeout;
     private static final ReceiveAsyncOptions DEFAULT_RECEIVE_OPTIONS = new ReceiveAsyncOptions()
         .setIsAutoCompleteEnabled(false)
         .setMaxAutoLockRenewalDuration(Duration.ZERO);
-    private final AtomicReference<ContinuesMessageSubscriber> continuesMessageSubscriber = new AtomicReference<>();
 
     /**
      * Creates a synchronous receiver given its asynchronous counterpart.
@@ -622,36 +622,20 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     @Override
     public void close() {
         asyncClient.close();
-
-        if (continuesMessageSubscriber.get() != null) {
-            continuesMessageSubscriber.get().dispose();
-        }
     }
 
     /**
-     * Given an {@code emitter}, subscribes {@link ContinuesMessageSubscriber} to receive messages from Service Bus.
-     * If the message subscriber has not been created, will initialise it.
+     * Given an {@code emitter}, queues that work in {@link SynchronousMessageSubscriber}. If the synchronous job has
+     * not been created, will initialise it.
      */
     private void queueWork(int maximumMessageCount, Duration maxWaitTime,
         FluxSink<ServiceBusReceivedMessageContext> emitter) {
+        final long id = idGenerator.getAndIncrement();
+        final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, maxWaitTime,
+            emitter);
+        final SynchronousMessageSubscriber syncSubscriber = new SynchronousMessageSubscriber(work);
 
-        if (continuesMessageSubscriber.get() != null && continuesMessageSubscriber.get().isDisposed()) {
-            logger.error("[{}]: Can not receive messaged because client is closed.", asyncClient.getEntityPath());
-            return;
-        }
-
-        if (continuesMessageSubscriber.get() == null) {
-            ContinuesMessageSubscriber messageSubscriber = asyncClient.receive(DEFAULT_RECEIVE_OPTIONS)
-                .subscribeWith(new ContinuesMessageSubscriber(maximumMessageCount, emitter));
-
-            if (!continuesMessageSubscriber.compareAndSet(null, messageSubscriber)) {
-                messageSubscriber.dispose();
-            }
-
-            logger.info("[{}]: Started ContinuesMessageSubscriber message subscriber for entity.",
-                asyncClient.getEntityPath());
-        } else {
-            continuesMessageSubscriber.get().request(maximumMessageCount, emitter);
-        }
+        logger.info("[{}]: Started synchronous message subscriber.", id);
+        asyncClient.receive(DEFAULT_RECEIVE_OPTIONS).subscribeWith(syncSubscriber);
     }
 }

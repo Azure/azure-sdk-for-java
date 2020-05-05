@@ -7,9 +7,11 @@ import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
 import reactor.core.Exceptions;
+import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.FluxProcessor;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Operators;
+import reactor.core.publisher.UnicastProcessor;
 import reactor.util.context.Context;
 
 import java.util.Deque;

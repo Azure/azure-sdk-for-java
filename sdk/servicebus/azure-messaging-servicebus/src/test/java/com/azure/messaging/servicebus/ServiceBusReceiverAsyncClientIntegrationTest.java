@@ -816,7 +816,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             })
             .subscribe();
 
-        try{
+        try {
             TimeUnit.SECONDS.sleep(5);
         } catch (Exception e) {
 

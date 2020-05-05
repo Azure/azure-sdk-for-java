@@ -9,6 +9,7 @@ import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -98,6 +99,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can only call receive() multiple times.
      */
+    @Disabled("Will be fixed with issue #9400")
     @MethodSource("messagingEntityWithSessions")
     @ParameterizedTest
     void receiveByTwoSubscriber(MessagingEntityType entityType, boolean isSessionEnabled) {
@@ -117,7 +119,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         IterableStream<ServiceBusReceivedMessageContext> messages;
 
         int receivedMessageCount = 0;
-        for (int i = 0 ; i < total; ++i) {
+        for (int i = 0; i < total; ++i) {
             messages = receiver.receive(maxMessages, shortTimeOut);
             receivedMessageCount = 0;
             for (ServiceBusReceivedMessageContext receivedMessage : messages) {
