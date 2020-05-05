@@ -297,7 +297,7 @@ class UnnamedSessionManager implements AutoCloseable {
                     receiverOptions.getPrefetchCount(), scheduler, this::renewSessionLock);
             })))
             .flatMapMany(session -> session.receive().doFinally(signalType -> {
-                logger.info("Adding scheduler back to pool.");
+                logger.verbose("Adding scheduler back to pool.");
                 availableSchedulers.push(scheduler);
                 onSessionRequest(1L);
             }))
@@ -325,7 +325,7 @@ class UnnamedSessionManager implements AutoCloseable {
             return;
         }
 
-        logger.info("Requested {} unnamed sessions.", request);
+        logger.verbose("Requested {} unnamed sessions.", request);
         for (int i = 0; i < request; i++) {
             final Scheduler scheduler = availableSchedulers.poll();
 
@@ -333,13 +333,12 @@ class UnnamedSessionManager implements AutoCloseable {
             // expecting a free item. return an error.
             if (scheduler == null) {
                 if (request != Long.MAX_VALUE) {
-                    logger.info("request[{}]: There are no available schedulers to fetch.", request);
+                    logger.verbose("request[{}]: There are no available schedulers to fetch.", request);
                 }
 
                 return;
             }
 
-            logger.info("Emitting session number: {}", i);
             Flux<ServiceBusReceivedMessageContext> session = getSession(receiveAsyncOptions, scheduler);
 
             sessionReceiveSink.next(session);

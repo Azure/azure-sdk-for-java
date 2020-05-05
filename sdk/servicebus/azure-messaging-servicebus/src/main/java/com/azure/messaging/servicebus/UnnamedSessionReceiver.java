@@ -101,8 +101,8 @@ class UnnamedSessionReceiver implements AutoCloseable {
         this.subscriptions.add(Flux.switchOnNext(messageReceivedEmitter
             .flatMap(lockToken -> Mono.delay(retryOptions.getTryTimeout()))
             .handle((l, sink) -> {
-                logger.info("entityPath[{}]. sessionId[{}]. Closing. Did not receive message within timeout.",
-                    receiveLink.getEntityPath(), sessionId.get());
+                logger.info("entityPath[{}]. sessionId[{}]. Did not a receive message within timeout {}.",
+                    receiveLink.getEntityPath(), sessionId.get(), retryOptions.getTryTimeout());
                 cancelReceiveProcessor.onComplete();
                 sink.complete();
             }))
@@ -236,7 +236,7 @@ class UnnamedSessionReceiver implements AutoCloseable {
                     cancelReceiveProcessor.onNext(new ServiceBusReceivedMessageContext(sessionId.get(), error));
                 },
                 () -> {
-                    logger.info("Renewing session lock task completed.");
+                    logger.verbose("Renewing session lock task completed.");
                     cancelReceiveProcessor.onComplete();
                 });
     }

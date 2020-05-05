@@ -369,7 +369,7 @@ public class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceived
                     setInternalError(error);
                     return Mono.empty();
                 })
-                .doFinally(signal -> logger.info("lock[{}]. Complete status: [{}]", lockToken, signal))
+                .doFinally(signal -> logger.verbose("lock[{}]. Complete status: [{}]", lockToken, signal))
                 .block(retryOptions.getTryTimeout());
         }
     }
