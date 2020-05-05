@@ -71,7 +71,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         if (pending > 0) {
             try {
                 IterableStream<ServiceBusReceivedMessage> removedMessage = receiveAndDeleteReceiver.receive(
-                    pending , Duration.ofSeconds(15));
+                    pending, Duration.ofSeconds(15));
 
                 removedMessage.stream().forEach(receivedMessage -> {
                     logger.info("Removed Message Seq: {} ", receivedMessage.getSequenceNumber());
@@ -105,7 +105,6 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     void receiveByTwoSubscriber(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSenderAndReceiver(entityType, isSessionEnabled);
-
         final int maxMessages = 1;
         final Duration shortTimeOut = Duration.ofSeconds(5);
 

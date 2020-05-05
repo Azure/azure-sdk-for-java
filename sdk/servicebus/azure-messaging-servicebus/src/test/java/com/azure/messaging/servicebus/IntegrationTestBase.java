@@ -259,20 +259,10 @@ public abstract class IntegrationTestBase extends TestBase {
     protected static Stream<Arguments> messagingEntityWithSessions() {
         return Stream.of(
             Arguments.of(MessagingEntityType.QUEUE, false),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, false)//,
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, false),
             Arguments.of(MessagingEntityType.QUEUE, true),
             Arguments.of(MessagingEntityType.SUBSCRIPTION, true)
         );
-    }
-
-    protected List<ServiceBusMessage> getMessages(String messageId, boolean isSessionEnabled, int numberOfEvents,
-        String sessionId) {
-        return TestUtils.getServiceBusMessages(numberOfEvents, CONTENTS_BYTES, messageId, isSessionEnabled, sessionId);
-    }
-
-    protected List<ServiceBusMessage> getMessages(String messageId, boolean isSessionEnabled, int numberOfEvents) {
-
-        return TestUtils.getServiceBusMessages(numberOfEvents, CONTENTS_BYTES, messageId, isSessionEnabled, sessionId);
     }
 
     protected ServiceBusMessage getMessage(String messageId, boolean isSessionEnabled) {

@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
@@ -13,10 +12,8 @@ import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-import reactor.test.StepVerifierOptions;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -90,33 +87,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         } finally {
             dispose(receiver, receiver2, sender, receiveAndDeleteReceiver);
         }
-
-    }
-
-
-    /**
-     * Verifies that we can not receive from a session enabled receiver which try to connect to non session entity.
-     */
-    @MethodSource("messagingEntityProvider")
-    @ParameterizedTest
-    void createSessionReceiverForNonSessionEntity(MessagingEntityType entityType) {
-        // Arrange
-        String sessionId = "test-session-id";
-        ServiceBusReceiverClientBuilder builder = createBuilder()
-            .receiver();
-
-        if (entityType == MessagingEntityType.QUEUE) {
-            builder.queueName(getQueueName());
-        } else if (entityType == MessagingEntityType.SUBSCRIPTION) {
-            builder.topicName(getTopicName());
-            builder.subscriptionName(getSubscriptionName());
-        }
-
-        ServiceBusReceiverAsyncClient invalidReceiver = builder.sessionId(sessionId).buildAsyncClient();
-
-        // Assert & Act
-        StepVerifier.create(invalidReceiver.receive())
-            .verifyErrorMatches(error -> error instanceof UnsupportedOperationException);
     }
 
     /**
@@ -165,47 +135,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .verify();
 
         messagesPending.decrementAndGet();
-    }
-
-    /**
-     * Verifies that we can send messaged with some delay and receive a message without receiver dying.
-     */
-    @MethodSource("messagingEntityWithSessions")
-    @ParameterizedTest
-    void receiveSlowMultipleMessageAutoComplete(MessagingEntityType entityType, boolean isSessionEnabled) {
-        // Arrange
-        int count = 3;
-        setSenderAndReceiver(entityType, isSessionEnabled);
-        Duration delayPublishing = Duration.ofMillis(1000);
-
-        final String messageId = UUID.randomUUID().toString();
-
-        Flux.just(
-            getMessage(messageId, isSessionEnabled),
-            getMessage(messageId, isSessionEnabled),
-            getMessage(messageId, isSessionEnabled)
-        )
-            .delayElements(delayPublishing)
-            .map(message -> sender.send(message).subscribe())
-            .subscribe();
-
-        // Assert & Act
-        StepVerifier.create(receiver.receive())
-            .assertNext(receivedMessage -> {
-                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-            })
-            .assertNext(receivedMessage -> {
-                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-            })
-            .assertNext(receivedMessage -> {
-                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-            })
-            .thenCancel()
-            .verify();
-
-        for (int index = 0; index < count; ++index) {
-            messagesPending.incrementAndGet();
-        }
     }
 
     /**
@@ -427,226 +356,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Send multiple message and receive from multiple receivers and autocomplete is off.
-     */
-    @MethodSource("messagingEntityWithSessions")
-    @ParameterizedTest
-    void multipleReceiverAndClientComplete(MessagingEntityType entityType, boolean isSessionEnabled) {
-        // Arrange
-        setSenderAndReceiver(entityType, isSessionEnabled);
-
-        int firstBatch = 2;
-        int secondBatch = 2;
-        final String messageId = UUID.randomUUID().toString();
-        final List<ServiceBusMessage> messages;
-        if (isSessionEnabled) {
-            messages = getMessages(messageId, isSessionEnabled, firstBatch, sessionId);
-            messages.addAll(getMessages(messageId, isSessionEnabled, secondBatch, sessionId2));
-        } else {
-            messages = getMessages(messageId, isSessionEnabled, firstBatch + secondBatch);
-        }
-
-        final Duration smallDuration = Duration.ofSeconds(5);
-        final ReceiveAsyncOptions options = new ReceiveAsyncOptions().setEnableAutoComplete(false);
-
-        sendMessage(messages).block(TIMEOUT);
-
-        // Assert & Act
-        StepVerifier.create(receiver.receive(options).limitRequest(firstBatch))
-            .assertNext(message -> {
-                receiver.complete(message).block(smallDuration);
-                messagesPending.decrementAndGet();
-            })
-            .assertNext(message -> {
-                receiver.complete(message).block(smallDuration);
-                messagesPending.decrementAndGet();
-            })
-            .verifyComplete();
-
-       StepVerifier.create(receiver2.receive(options).limitRequest(secondBatch))
-            .assertNext(message -> {
-                receiver2.complete(message).block(smallDuration);
-                messagesPending.decrementAndGet();
-            })
-            .assertNext(message -> {
-                receiver2.complete(message).block(smallDuration);
-                messagesPending.decrementAndGet();
-            })
-            .verifyComplete();
-    }
-
-    /**
-     * Send multiple message and receive from multiple receivers with autocomplete.
-     */
-    @MethodSource("messagingEntityWithSessions")
-    @ParameterizedTest
-    void multipleReceiverAndAutoComplete(MessagingEntityType entityType, boolean isSessionEnabled) {
-        // Arrange
-        setSenderAndReceiver(entityType, isSessionEnabled);
-
-        int firstBatch = 2;
-        int secondBatch = 2;
-        final String messageId = UUID.randomUUID().toString();
-        final List<ServiceBusMessage> messages;
-        if (isSessionEnabled) {
-            messages = getMessages(messageId, isSessionEnabled, firstBatch, sessionId);
-            messages.addAll(getMessages(messageId, isSessionEnabled, secondBatch, sessionId2));
-        } else {
-            messages = getMessages(messageId, isSessionEnabled, firstBatch + secondBatch);
-        }
-
-        sendMessage(messages).block(TIMEOUT);
-
-        // Assert & Act
-        StepVerifier.create(receiver.receive(), firstBatch)
-            .assertNext(message -> {
-                messagesPending.decrementAndGet();
-            })
-            .assertNext(message -> {
-                messagesPending.decrementAndGet();
-            })
-            .thenCancel()
-            .verify();
-
-        StepVerifier.create(receiver2.receive(), secondBatch)
-            .assertNext(message -> {
-                messagesPending.decrementAndGet();
-            })
-            .assertNext(message -> {
-                messagesPending.decrementAndGet();
-            })
-            .thenCancel()
-            .verify();
-    }
-
-    /**
-     * Send multiple message and receive from multiple receivers with autocomplete.
-     * When a exception is raised the message is abandoned. And abandoned message is received again.
-     */
-    @MethodSource("messagingEntityWithSessions")
-    @ParameterizedTest
-    void multipleReceiverAndAbandonOnException(MessagingEntityType entityType, boolean isSessionEnabled) throws InterruptedException {
-        // Arrange
-        setSenderAndReceiver(entityType, isSessionEnabled);
-
-        int firstBatch = 2;
-        int secondBatch = 2;
-        final String messageId = UUID.randomUUID().toString();
-
-        final List<ServiceBusMessage> messages;
-        if (isSessionEnabled) {
-            messages = getMessages(messageId, isSessionEnabled, firstBatch, sessionId);
-            messages.addAll(getMessages(messageId, isSessionEnabled, secondBatch, sessionId2));
-        } else {
-            messages = getMessages(messageId, isSessionEnabled, firstBatch + secondBatch);
-        }
-
-        sendMessage(messages).block(TIMEOUT);
-
-        // cause one of the message to abandon because of exception.
-        receiver.receive()
-            .limitRequest(1)
-            .map(receivedMessage -> {
-                throw new RuntimeException("Fake: Fail to process message.Trigger abandon.");
-            })
-            .subscribe();
-
-        try{ TimeUnit.SECONDS.sleep(5); } catch (Exception e) {}
-
-        // Since we received error, the receiver is terminated.
-        dispose(receiver, receiver2, sender);
-        setSenderAndReceiver(entityType, isSessionEnabled);
-
-        // Assert & Act
-        StepVerifier.create(receiver.receive().limitRequest(firstBatch))
-            .assertNext(message -> {
-                assertNotNull(message);
-                messagesPending.decrementAndGet();
-            })
-            .assertNext(message -> {
-                assertNotNull(message);
-                messagesPending.decrementAndGet();
-            })
-            .verifyComplete();
-
-        StepVerifier.create(receiver2.receive().limitRequest(secondBatch))
-            .assertNext(message -> {
-                assertNotNull(message);
-                messagesPending.decrementAndGet();
-            })
-            .assertNext(message -> {
-                assertNotNull(message);
-                messagesPending.decrementAndGet();
-            })
-            .verifyComplete();
-    }
-
-    /**
-     * Verifies that we can renew session lock on a session receiver with multiple receiver.
-     */
-    @MethodSource("messagingEntityProvide r")
-    @ParameterizedTest
-    void multipleReceiverRenewSessionLock(MessagingEntityType entityType) {
-        // Arrange
-        int firstBatchsize = 1;
-        int secondBatchSize = 1;
-
-        setSenderAndReceiver(entityType, true);
-
-        final String messageId = UUID.randomUUID().toString();
-        final List<ServiceBusMessage> messages = getMessages(messageId, true, firstBatchsize, sessionId);
-
-        messages.addAll(getMessages(messageId, true, secondBatchSize, sessionId2));
-
-        final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
-            .setEnableAutoComplete(false);
-
-        // Blocking here because it is not part of the scenario we want to test.
-        sendMessage(messages).block(TIMEOUT);
-
-        ServiceBusReceivedMessage receivedMessage = receiver.receive(options).next().block(TIMEOUT);
-        assertNotNull(receivedMessage);
-
-        logger.info("Received message. Seq: {}.", receivedMessage.getSequenceNumber());
-
-        // Assert & Act
-        try {
-            ServiceBusReceivedMessage finalReceivedMessage1 = receivedMessage;
-            StepVerifier.create(Mono.delay(Duration.ofSeconds(10))
-                .then(Mono.defer(() -> receiver.renewSessionLock(finalReceivedMessage1.getSessionId()))))
-                .assertNext(lockedUntil -> {
-                    assertNotNull(lockedUntil, "Could not renew session lock.");
-                })
-                .verifyComplete();
-        } finally {
-            logger.info("Completing message. Seq: {}.", receivedMessage.getSequenceNumber());
-
-            receiver.complete(receivedMessage)
-                .doOnSuccess(aVoid -> messagesPending.decrementAndGet())
-                .block(TIMEOUT);
-        }
-
-        receivedMessage = receiver2.receive(options).next().block(TIMEOUT);
-        assertNotNull(receivedMessage);
-
-        try {
-            ServiceBusReceivedMessage finalReceivedMessage = receivedMessage;
-            StepVerifier.create(Mono.delay(Duration.ofSeconds(10))
-                .then(Mono.defer(() -> receiver2.renewSessionLock(finalReceivedMessage.getSessionId()))))
-                .assertNext(lockedUntil -> {
-                    assertNotNull(lockedUntil, "Could not renew session lock.");
-                })
-                .verifyComplete();
-        } finally {
-            logger.info("Completing message. Seq: {}.", receivedMessage.getSequenceNumber());
-
-            receiver2.complete(receivedMessage)
-                .doOnSuccess(aVoid -> messagesPending.decrementAndGet())
-                .block(TIMEOUT);
-        }
-    }
-
-    /**
      * Verifies that we can renew message lock on a non-session receiver.
      */
     @MethodSource("messagingEntityProvider")
@@ -662,7 +371,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Blocking here because it is not part of the scenario we want to test.
         sendMessage(message).block(TIMEOUT);
-
         ServiceBusReceivedMessage receivedMessage = receiver.receive(options).next().block(TIMEOUT);
         assertNotNull(receivedMessage);
         assertNotNull(receivedMessage.getLockedUntil());
