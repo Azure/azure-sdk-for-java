@@ -23,11 +23,13 @@ import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
@@ -52,7 +54,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class UnnamedSessionManagerTest {
-    private static final String PAYLOAD = "hello";
     private static final Duration TIMEOUT = Duration.ofSeconds(10);
 
     private static final String NAMESPACE = "my-namespace-foo.net";
@@ -67,7 +68,7 @@ class UnnamedSessionManagerTest {
     private final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
 
     private ServiceBusConnectionProcessor connectionProcessor;
-    private ServiceBusReceiverAsyncClient receiver;
+    private UnnamedSessionManager sessionManager;
 
     @Mock
     private ServiceBusReceiveLink amqpReceiveLink;
@@ -79,7 +80,6 @@ class UnnamedSessionManagerTest {
     private MessageSerializer messageSerializer;
     @Mock
     private ServiceBusManagementNode managementNode;
-
 
     @BeforeAll
     static void beforeAll() {
@@ -93,7 +93,7 @@ class UnnamedSessionManagerTest {
 
     @BeforeEach
     void beforeEach(TestInfo testInfo) {
-        logger.info("[{}] Setting up.", testInfo.getDisplayName());
+        logger.info("===== [{}] Setting up. =====", testInfo.getDisplayName());
 
         MockitoAnnotations.initMocks(this);
 
@@ -121,15 +121,80 @@ class UnnamedSessionManagerTest {
                     connectionOptions.getRetry()));
     }
 
+    @AfterEach
+    void afterEach(TestInfo testInfo) {
+        logger.info("===== [{}] Tearing down. =====", testInfo.getDisplayName());
+        Mockito.framework().clearInlineMocks();
+
+        if (sessionManager != null) {
+            sessionManager.close();
+        }
+    }
+
     /**
      * Verify that when we receive for a single, unnamed session, when no more items are emitted, it completes.
      */
     @Test
     void singleUnnamedSession() {
-        // Act
+        // Arrange
         ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, false, null);
-        UnnamedSessionManager sessionManager = new UnnamedSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+        sessionManager = new UnnamedSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
             TIMEOUT, tracerProvider, messageSerializer, receiverOptions);
+
+        ReceiveAsyncOptions options = new ReceiveAsyncOptions()
+            .setMaxAutoLockRenewalDuration(Duration.ofSeconds(20))
+            .setIsAutoCompleteEnabled(true);
+        String sessionId = "session-1";
+        String lockToken = "a-lock-token";
+        Instant sessionLockedUntil = Instant.now().plus(Duration.ofSeconds(5));
+
+        Message message = mock(Message.class);
+        ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
+
+        when(messageSerializer.deserialize(message, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage);
+        when(receivedMessage.getSessionId()).thenReturn(sessionId);
+        when(receivedMessage.getLockToken()).thenReturn(lockToken);
+
+        final int numberOfMessages = 5;
+
+        AtomicInteger numberToEmit = new AtomicInteger(numberOfMessages);
+        messageSink.onRequest(request -> {
+            long emitted = 0;
+            while (emitted < request && numberToEmit.getAndDecrement() > 0) {
+                messageSink.next(message);
+                emitted++;
+            }
+        });
+
+        when(amqpReceiveLink.getSessionId()).thenReturn(Mono.just(sessionId));
+        when(amqpReceiveLink.getSessionLockedUntil())
+            .thenAnswer(invocation -> Mono.just(sessionLockedUntil));
+        when(amqpReceiveLink.updateDisposition(lockToken, Accepted.getInstance())).thenReturn(Mono.empty());
+
+        when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), any(ReceiveMode.class), isNull(),
+            any(MessagingEntityType.class), isNull())).thenReturn(Mono.just(amqpReceiveLink));
+
+        // Act & Assert
+        StepVerifier.create(sessionManager.receive(options))
+            .assertNext(context -> assertMessageEquals(receivedMessage, context))
+            .assertNext(context -> assertMessageEquals(receivedMessage, context))
+            .assertNext(context -> assertMessageEquals(receivedMessage, context))
+            .assertNext(context -> assertMessageEquals(receivedMessage, context))
+            .assertNext(context -> assertMessageEquals(receivedMessage, context))
+            .expectComplete()
+            .verify();
+    }
+
+    /**
+     * Verify that when we receive multiple sessions, it'll change to the next session when one is complete.
+     */
+    @Test
+    void multipleSessions() {
+        // Arrange
+        ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, false, null);
+        sessionManager = new UnnamedSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+            TIMEOUT, tracerProvider, messageSerializer, receiverOptions);
+
         ReceiveAsyncOptions options = new ReceiveAsyncOptions()
             .setMaxAutoLockRenewalDuration(Duration.ofSeconds(20))
             .setIsAutoCompleteEnabled(true);
