@@ -720,7 +720,7 @@
           <configuration>
             <useSystemClassLoader>false</useSystemClassLoader>
             <properties>
-              <configurationParameters>
+              <configurationParameters combine.children="append">
                 junit.jupiter.extensions.autodetection.enabled = true
               </configurationParameters>
             </properties>

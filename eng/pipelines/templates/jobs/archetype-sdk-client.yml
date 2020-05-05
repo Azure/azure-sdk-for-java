@@ -4,7 +4,7 @@ parameters:
   Artifacts: []
   AdditionalModules: []
   PreTestSteps: []
-  TestOptions: '$(DefaultOptions) -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true'
+  TestOptions: '$(DefaultOptions) -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dparallel-test-playback'
   TestGoals: verify
   TestMatrix:
     Linux - Java 8:
@@ -105,7 +105,7 @@ jobs:
           RootFolder: $(Build.SourcesDirectory)
           BuildSHA: $(Build.SourceVersion)
           RepoId: 'Azure/azure-sdk-for-java'
-        
+
       - template: ../steps/generate-project-list.yml
         parameters:
           Artifacts: ${{parameters.Artifacts}}
