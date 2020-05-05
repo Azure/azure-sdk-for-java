@@ -126,11 +126,11 @@ class AvroParserTest extends Specification {
         2        | 59          || { o -> ((String) o).equals("adsfasdf09809dsf-=adsf") } // String
         3        | 58          || { o -> this.&bytesEqual(o, '12345abcd'.getBytes()) } // Bytes
         4        | 56          || { o -> ((Integer) o).equals(1234) } // Integer
-        5        | 57         || { o -> ((Long) o).equals(1234L) } // Long
+        5        | 57          || { o -> ((Long) o).equals(1234L) } // Long
         6        | 58          || { o -> ((Float) o).equals(1234.0 as Float) } // Float
         7        | 59          || { o -> ((Double) o).equals(1234.0 as Double) } // Double
         8        | 95          || { o -> this.&bytesEqual(o, 'B'.getBytes()) } // Fixed
-        9        | 106          || { o -> ((String) o).equals("B") } // Enum
+        9        | 106         || { o -> ((String) o).equals("B") } // Enum
         10       | 85          || { o -> ((List) o).equals([1, 3, 2]) } // Array
         11       | 84          || { o -> ((Map) o).equals(['a': 1, 'b': 3, 'c': 2])} // Map
         12       | 77          || { o -> o instanceof AvroNullSchema.Null } // Union
@@ -249,7 +249,7 @@ class AvroParserTest extends Specification {
         Path path = Paths.get(f.getAbsolutePath())
         AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(path, StandardOpenOption.READ)
 
-        /* Normal use case. */
+        /* Special use case for Changefeed - parse header and block separate. */
         when:
         AvroParser complexParser = new AvroParser()
         Flux<ByteBuffer> header = FluxUtil.readFile(fileChannel, 0, 5 * Constants.KB)
@@ -287,7 +287,69 @@ class AvroParserTest extends Specification {
         462744      | 167        || _
         528587      | 48         || _
         555167      | 0          || _
+    }
 
+    def "Parse CF small"() {
+        setup:
+        String fileName = "changefeed_small.avro"
+        ClassLoader classLoader = getClass().getClassLoader()
+        File f = new File(classLoader.getResource(fileName).getFile())
+        Path path = Paths.get(f.getAbsolutePath())
+        AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(path, StandardOpenOption.READ)
+
+        /* Normal use case. */
+        when:
+        AvroParser simpleParser = new AvroParser()
+        Flux<ByteBuffer> data = FluxUtil.readFile(fileChannel)
+        def simpleVerifier = StepVerifier.create(data
+            .concatMap({buffer -> simpleParser.parse(buffer)})
+            .map({tuple3 -> tuple3.getT3()})
+        )
+
+        then:
+        simpleVerifier.expectNextMatches({ t -> this.&verifyChangefeedEvent(t) })
+        .verifyComplete()
+
+    }
+
+    boolean verifyChangefeedEvent(Object record) {
+        boolean valid = true;
+        valid &= record instanceof Map
+        Map<?, ?> r = (Map<?, ?>) record
+        valid &= r.get('$record') == "BlobChangeEvent"
+        valid &= r.get("schemaVersion") == 3
+        valid &= r.get("topic") == "/subscriptions/ba45b233-e2ef-4169-8808-49eb0d8eba0d/resourceGroups/XClient/providers/Microsoft.Storage/storageAccounts/seanchangefeedstage"
+        valid &= r.get("subject") == "/blobServices/default/containers/myblobscontainer9/blobs/myblob"
+        valid &= r.get("eventType") == "BlobCreated"
+        valid &= r.get("eventTime") == "2020-03-28T05:05:46.6636036Z"
+        valid &= r.get("id") == "ecc8f58e-301e-0022-18be-045724067dce"
+        valid &= verifyChangefeedData(r.get("data"))
+        return valid
+    }
+
+    boolean verifyChangefeedData(Object record) {
+        boolean valid = true;
+        valid &= record instanceof Map
+        Map<?, ?> r = (Map<?, ?>) record
+        valid &= r.get('$record') == "BlobChangeEventData"
+        valid &= r.get('api') == "PutBlob"
+        valid &= r.get('clientRequestId') == "c8a34806-70b1-11ea-a4b0-001a7dda7113"
+        valid &= r.get('requestId') == "ecc8f58e-301e-0022-18be-045724000000"
+        valid &= r.get('etag') == "0x8D7D2D5ACE2CC31"
+        valid &= r.get("contentType") == "application/octet-stream"
+        valid &= r.get("contentLength") == 55
+        valid &= r.get("blobType") == "BlockBlob"
+        valid &= r.get("url") == ""
+        valid &= r.get("sequencer") == "00000000000000000000000000001839000000000001a9dc"
+        valid &= r.get("previousInfo") instanceof AvroNullSchema.Null
+        valid &= r.get("snapshot") instanceof AvroNullSchema.Null
+        valid &= r.get("blobPropertiesUpdated") instanceof AvroNullSchema.Null
+        valid &= r.get("storageDiagnostics") instanceof Map
+        Map<?, ?> sd = (Map<?, ?>) r.get("storageDiagnostics")
+        valid &= sd.get("bid") == "6148d063-2006-0001-00be-04cde7000000"
+        valid &= sd.get("sid") == "5083feab-0027-eed2-bf03-0d533fee5677"
+        valid &= sd.get("seq") == "(6201,22103,109020,108961)"
+        return valid
     }
 
     def "Parse QQ small"() {

@@ -8,7 +8,7 @@ class ChangefeedTest extends APISpec {
 //        setup:
 //        primaryBlobServiceClient.getBlobContainerClient(BlobChangefeedAsyncClient.CHANGEFEED_CONTAINER_NAME)
 //        .getBlobClient("log/00/2020/03/28/0500/00000.avro")
-//        .downloadToFile("C:\\Users\\gapra\\Desktop\\changefeed_1.avro")
+//        .downloadToFile("C:\\Users\\gapra\\Desktop\\changefeed_small.avro")
         when:
         def sv = StepVerifier.create(
             new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
