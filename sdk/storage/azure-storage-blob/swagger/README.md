@@ -936,9 +936,10 @@ directive:
 ``` yaml
 directive:
 - from: swagger-document
-  where: $.parameters.ListContainersInclude.items
+  where: $.parameters.ListContainersInclude
   transform: >
-    $["x-ms-enum"].name = "ListBlobContainersIncludeType";
+    $["x-ms-client-name"] = "ListBlobContainersIncludeType";
+    $["items"]["x-ms-enum"].name = "ListBlobContainersIncludeType";
 ```
 
 ### /?comp=list
