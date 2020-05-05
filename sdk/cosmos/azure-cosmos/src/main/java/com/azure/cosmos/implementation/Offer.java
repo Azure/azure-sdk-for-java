@@ -58,7 +58,7 @@ public class Offer extends Resource {
     }
 
     /**
-     * Create fixed offer offer.
+     * Create fixed offer.
      *
      * @param throughput the throughput
      * @return the offer
@@ -68,7 +68,7 @@ public class Offer extends Resource {
     }
 
     /**
-     * Create autoscale offer offer.
+     * Create autoscale offer.
      *
      * @param startingMaxThroughput the starting max throughput
      * @param autoUpgradeMaxThroughputIncrementPercentage the auto upgrade max throughput increment percentage

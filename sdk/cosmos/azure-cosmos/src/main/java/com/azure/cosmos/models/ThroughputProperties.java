@@ -32,7 +32,7 @@ public class ThroughputProperties {
      * @param autoUpgradethroughputIncrementPercentage the auto upgrade max throughput increment percentage
      * @return the throughput properties
      */
-    static ThroughputProperties createAutoScaledThroughput(
+    static ThroughputProperties createAutoscaledThroughput(
         int autoScaleMaxThroughput,
         int autoUpgradethroughputIncrementPercentage) {
         return new ThroughputProperties(Offer.createAutoscaleOffer(autoScaleMaxThroughput,
@@ -45,7 +45,7 @@ public class ThroughputProperties {
      * @param autoScaleMaxThroughput the max auto scale throughput
      * @return the throughput properties
      */
-    public static ThroughputProperties createAutoScaledThroughput(int autoScaleMaxThroughput) {
+    public static ThroughputProperties createAutoscaledThroughput(int autoScaleMaxThroughput) {
         return new ThroughputProperties(Offer.createAutoscaleOffer(autoScaleMaxThroughput,
                                                                    0));
     }

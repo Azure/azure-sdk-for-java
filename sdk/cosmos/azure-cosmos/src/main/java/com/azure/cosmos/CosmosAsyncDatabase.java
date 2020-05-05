@@ -706,7 +706,7 @@ public class CosmosAsyncDatabase {
                                                                           .createCosmosClientException(
                                                                               HttpConstants.StatusCodes.BADREQUEST,
                                                                               "No offers found for the " +
-                                                                                  "resource"));
+                                                                                  "resource " + this.getId()));
                                                 }
 
                                                 Offer existingOffer = offerFeedResponse.getResults().get(0);
@@ -738,7 +738,7 @@ public class CosmosAsyncDatabase {
                                                                           .createCosmosClientException(
                                                                               HttpConstants.StatusCodes.BADREQUEST,
                                                                               "No offers found for the " +
-                                                                                  "resource"));
+                                                                                  "resource " + this.getId()));
                                                 }
                                                 return getDocClientWrapper()
                                                            .readOffer(offerFeedResponse.getResults()

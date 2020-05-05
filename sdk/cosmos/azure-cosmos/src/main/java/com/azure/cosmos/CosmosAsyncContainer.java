@@ -683,7 +683,7 @@ public class CosmosAsyncContainer {
                                                                           .createCosmosClientException(
                                                                               HttpConstants.StatusCodes.BADREQUEST,
                                                                               "No offers found for the " +
-                                                                                  "resource"));
+                                                                                  "resource " + this.getId()));
                                                 }
 
                                                 Offer existingOffer = offerFeedResponse.getResults().get(0);
@@ -713,7 +713,8 @@ public class CosmosAsyncContainer {
                                                     return Mono.error(BridgeInternal
                                                                           .createCosmosClientException(
                                                                               HttpConstants.StatusCodes.BADREQUEST,
-                                                                              "No offers found for the resource"));
+                                                                              "No offers found for the resource "
+                                                                                  + this.getId()));
                                                 }
                                                 return this.database.getDocClientWrapper()
                                                            .readOffer(offerFeedResponse.getResults()
