@@ -95,7 +95,7 @@ public class DefaultAzureCredentialTest {
                 && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
             .verifyComplete();
     }
-    
+
     @Test
     public void testUseAzureCliCredential() throws Exception {
         // setup

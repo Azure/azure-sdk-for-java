@@ -118,6 +118,30 @@
         <configuration>
           <showWarnings>true</showWarnings>
           <failOnWarning>true</failOnWarning>
+          <compilerArgs>
+            <!-- Turn off annotation processing -->
+            <arg>-proc:none</arg>
+
+            <!-- https://docs.oracle.com/javase/7/docs/technotes/tools/windows/javac.html#xlintwarnings -->
+            <arg>-Xlint:cast</arg>
+            <arg>-Xlint:classfile</arg>
+            <!-- <arg>-Xlint:deprecation</arg> --> <!-- FIXME: We should enable this ASAP -->
+            <arg>-Xlint:dep-ann</arg>
+            <arg>-Xlint:divzero</arg>
+            <arg>-Xlint:empty</arg>
+            <arg>-Xlint:fallthrough</arg>
+            <arg>-Xlint:finally</arg>
+            <arg>-Xlint:options</arg>
+            <arg>-Xlint:overrides</arg>
+            <arg>-Xlint:path</arg>
+            <!-- <arg>-Xlint:processing</arg> -->
+            <arg>-Xlint:rawtypes</arg>
+            <!-- <arg>-Xlint:serial</arg> -->
+            <arg>-Xlint:static</arg>
+            <arg>-Xlint:try</arg>
+            <arg>-Xlint:unchecked</arg>
+            <arg>-Xlint:varargs</arg>
+          </compilerArgs>
         </configuration>
       </plugin>
 
@@ -202,6 +226,9 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+        <configuration>
+          <quiet>true</quiet>
+        </configuration>
         <executions>
           <execution>
             <id>attach-javadocs</id>
@@ -604,7 +631,6 @@
             <failOnError>true</failOnError>
             <failOnWarnings>true</failOnWarnings>
             <doclint>all</doclint>
-            <quiet>true</quiet>
           </configuration>
         </plugin>
 
@@ -680,9 +706,14 @@
           <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
           <configuration>
             <useSystemClassLoader>false</useSystemClassLoader>
+            <forkCount>1</forkCount>
+            <testFailureIgnore>false</testFailureIgnore>
             <properties>
               <configurationParameters>
                 junit.jupiter.extensions.autodetection.enabled = true
+                junit.jupiter.execution.parallel.enabled = true
+                junit.jupiter.execution.parallel.mode.default = concurrent
+                junit.jupiter.execution.parallel.mode.classes.default = concurrent
               </configurationParameters>
             </properties>
           </configuration>
@@ -865,6 +896,8 @@
       <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
+        <maven.compiler.testSource>8</maven.compiler.testSource>
+        <maven.compiler.testTarget>8</maven.compiler.testTarget>
       </properties>
       <build>
         <resources>
@@ -880,73 +913,36 @@
             <artifactId>maven-compiler-plugin</artifactId>
             <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
-              <compilerArgs>
-                <!-- Turn off annotation processing -->
-                <arg>-proc:none</arg>
-
-                <!-- https://docs.oracle.com/javase/7/docs/technotes/tools/windows/javac.html#xlintwarnings -->
-                <arg>-Xlint:cast</arg>
-                <arg>-Xlint:classfile</arg>
-                <!-- <arg>-Xlint:deprecation</arg> --> <!-- FIXME: We should enable this ASAP -->
-                <arg>-Xlint:dep-ann</arg>
-                <arg>-Xlint:divzero</arg>
-                <arg>-Xlint:empty</arg>
-                <arg>-Xlint:fallthrough</arg>
-                <arg>-Xlint:finally</arg>
-                <arg>-Xlint:options</arg>
-                <arg>-Xlint:overrides</arg>
-                <arg>-Xlint:path</arg>
-                <!-- <arg>-Xlint:processing</arg> -->
-                <arg>-Xlint:rawtypes</arg>
-                <!-- <arg>-Xlint:serial</arg> -->
-                <arg>-Xlint:static</arg>
-                <arg>-Xlint:try</arg>
-                <arg>-Xlint:unchecked</arg>
-                <arg>-Xlint:varargs</arg>
-              </compilerArgs>
+              <!-- Avoid errors from module-info -->
+              <excludes>
+                <exclude>module-info.java</exclude>
+              </excludes>
             </configuration>
-            <executions>
-              <execution>
-                <id>default-compile</id>
-                <goals>
-                  <goal>compile</goal>
-                </goals>
-                <configuration>
-                  <source>1.8</source>
-                  <target>1.8</target>
-                  <excludes>
-                    <exclude>module-info.java</exclude>
-                  </excludes>
-                </configuration>
-              </execution>
-            </executions>
           </plugin>
-          <!-- Avoid errors from module-info -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
             <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration>
+              <!-- Avoid errors from module-info -->
               <sourceFileExcludes>
                 <sourceFileExclude>module-info.java</sourceFileExclude>
               </sourceFileExcludes>
-              <quiet>true</quiet>
             </configuration>
           </plugin>
         </plugins>
       </build>
       <reporting>
         <plugins>
-          <!-- Avoid errors from module-info -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
             <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration>
+              <!-- Avoid errors from module-info -->
               <sourceFileExcludes>
                 <sourceFileExclude>module-info.java</sourceFileExclude>
               </sourceFileExcludes>
-              <quiet>true</quiet>
             </configuration>
           </plugin>
         </plugins>
@@ -959,6 +955,12 @@
       <activation>
         <jdk>[11,)</jdk>
       </activation>
+      <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.testSource>11</maven.compiler.testSource>
+        <maven.compiler.testTarget>11</maven.compiler.testTarget>
+      </properties>
       <build>
         <resources>
           <resource>
@@ -973,28 +975,6 @@
             <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <compilerArgs>
-                <!-- Turn off annotation processing -->
-                <arg>-proc:none</arg>
-
-                <!-- https://docs.oracle.com/javase/7/docs/technotes/tools/windows/javac.html#xlintwarnings -->
-                <arg>-Xlint:cast</arg>
-                <arg>-Xlint:classfile</arg>
-                <!-- <arg>-Xlint:deprecation</arg> --> <!-- FIXME: We should enable this ASAP -->
-                <arg>-Xlint:dep-ann</arg>
-                <arg>-Xlint:divzero</arg>
-                <arg>-Xlint:empty</arg>
-                <arg>-Xlint:fallthrough</arg>
-                <arg>-Xlint:finally</arg>
-                <arg>-Xlint:options</arg>
-                <arg>-Xlint:overrides</arg>
-                <arg>-Xlint:path</arg>
-                <!-- <arg>-Xlint:processing</arg> -->
-                <arg>-Xlint:rawtypes</arg>
-                <!-- <arg>-Xlint:serial</arg> -->
-                <arg>-Xlint:static</arg>
-                <arg>-Xlint:try</arg>
-                <arg>-Xlint:unchecked</arg>
-                <arg>-Xlint:varargs</arg>
                 <arg>-Xlint:-module</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
                 <arg>-Xlint:-requires-transitive-automatic</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
               </compilerArgs>
@@ -1006,9 +986,6 @@
                 <goals>
                   <goal>compile</goal>
                 </goals>
-                <configuration>
-                  <release>11</release>
-                </configuration>
               </execution>
               <!-- then compile without module-info for Java 8 -->
               <execution>
@@ -1087,9 +1064,6 @@
                 --add-opens com.azure.core/com.azure.core.implementation.entities=com.fasterxml.jackson.databind
                 --add-opens com.azure.core/com.azure.core.implementation.entities=ALL-UNNAMED
               </argLine>
-              <useSystemClassLoader>false</useSystemClassLoader>
-              <forkCount>1</forkCount>
-              <testFailureIgnore>false</testFailureIgnore>
               <systemPropertyVariables>
                 <jacoco-agent.destfile>${project.build.directory}/jacoco.exec</jacoco-agent.destfile>
               </systemPropertyVariables>
@@ -1146,7 +1120,6 @@
             <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration combine.children="append">
               <overview>${project.basedir}/readme_overview.html</overview>
-              <quiet>true</quiet>
             </configuration>
           </plugin>
         </plugins>

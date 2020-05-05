@@ -208,6 +208,9 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files=".*[/\\]com[/\\]azure[/\\]core[/\\]test[/\\].*"/>
 
+  <!-- Suppress external dependency Checkstyle on Test Watcher package -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.testing.AzureTestWatcher"/>
+
   <!-- Temporary suppressions -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.core.util.serializer.JacksonAdapter"/>
@@ -246,6 +249,9 @@
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="CertificateUtil.java"/>
   <!-- Requires static access to logger to report errors while loading i18n messages (from within a static initializer )-->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="Messages.java"/>
+
+  <!-- Azure Test Watcher -->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.testing.AzureTestWatcher"/>
 
   <!-- Report AMQP retry attempts in static withRetry method. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
