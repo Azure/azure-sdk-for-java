@@ -8,10 +8,10 @@ import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedCur
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.internal.avro.implementation.AvroParser;
+import com.azure.storage.internal.avro.implementation.AvroObject;
+import com.azure.storage.internal.avro.implementation.AvroReader;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.util.function.Tuple3;
 
 import java.nio.ByteBuffer;
 
@@ -26,7 +26,6 @@ class Chunk {
 
     private final BlobContainerAsyncClient client; /* Changefeed container */
     private final String chunkPath; /* Chunk location. */
-    private AvroParser parser; /* Avro parser for this chunk. */
     private final BlobChangefeedCursor shardCursor; /* Cursor associated with parent shard. */
     private long eventNumber; /* Keeps track of the event number to associate with each event in the chunk. */
     private final BlobChangefeedCursor userCursor; /* Cursor provided by user. */
@@ -42,40 +41,20 @@ class Chunk {
         this.shardCursor = shardCursor;
         this.eventNumber = 0;
         this.userCursor = userCursor;
-        this.parser = new AvroParser();
         this.collectEvents = false;
     }
 
     Flux<BlobChangefeedEventWrapper> getEvents() {
-        /* Download the chunk Avro File. */
-        return downloadChunk()
-            /* Parse the file using the Avro Parser. */
-            .concatMap(this.parser::parse)
-            .map(Tuple3::getT3)
+        return AvroReader.readAvro(downloadChunk())
+            .map(AvroObject::getObject)
             /* Map each object into an event. */
             .concatMap(this::parseRecord);
     }
 
     private Flux<ByteBuffer> downloadChunk() {
-
         return new BlobLazyDownloader(client.getBlobAsyncClient(chunkPath), Constants.MB, 0)
             .download();
     }
-
-    /*
-    * Flux<ByteBuffer> header = FluxUtil.readFile(fileChannel, 0, 5 * Constants.KB)
-        Flux<ByteBuffer> body = FluxUtil.readFile(fileChannel, blockOffset, fileChannel.size())
-        def complexVerifier = StepVerifier.create(
-            header
-                .concatMap({ buffer -> complexParser.parse(buffer) })
-                .then(Mono.defer( { -> complexParser.prepareParserToReadBlock(blockOffset) } ))
-                .thenMany(body.concatMap({buffer -> complexParser.parse(buffer)} )
-                    .map({tuple3 -> tuple3.getT3()})
-                )
-                .map({o -> (String)((Map<String, Object>) o).get("subject")})
-                .index()
-                .map({ tuple2 -> Tuples.of(tuple2.getT1() + 1000 - numObjects, tuple2.getT2()) })
-        )*/
 
     private Mono<BlobChangefeedEventWrapper> parseRecord(Object record) {
         BlobChangefeedCursor eventCursor = shardCursor.toEventCursor(eventNumber++);

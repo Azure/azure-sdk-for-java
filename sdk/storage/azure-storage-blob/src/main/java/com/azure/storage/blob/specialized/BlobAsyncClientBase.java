@@ -65,14 +65,14 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.internal.avro.implementation.AvroConstants;
-import com.azure.storage.internal.avro.implementation.AvroParser;
+import com.azure.storage.internal.avro.implementation.AvroObject;
+import com.azure.storage.internal.avro.implementation.AvroReader;
 import com.azure.storage.internal.avro.implementation.schema.AvroSchema;
 import com.azure.storage.internal.avro.implementation.schema.primitive.AvroNullSchema;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
 import reactor.core.scheduler.Schedulers;
-import reactor.util.function.Tuple3;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -1602,10 +1602,8 @@ public class BlobAsyncClientBase {
      * @return The parsed quick query reactive stream.
      */
     private Flux<ByteBuffer> parse(Flux<ByteBuffer> avro, Function<Object, Mono<ByteBuffer>> objectHandler) {
-        AvroParser parser = new AvroParser();
-        return avro
-            .concatMap(parser::parse)
-            .map(Tuple3::getT3)
+        return AvroReader.readAvro(avro)
+            .map(AvroObject::getObject)
             .concatMap(objectHandler);
     }
 

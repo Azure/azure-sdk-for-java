@@ -12,8 +12,6 @@ import com.azure.storage.internal.avro.implementation.schema.file.AvroBlockSchem
 import com.azure.storage.internal.avro.implementation.schema.file.AvroHeaderSchema;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.util.function.Tuple3;
-import reactor.util.function.Tuples;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -46,9 +44,8 @@ public class AvroParser {
        A BlockSchema uses this type to determine what type of Objects to read in the block. */
     private AvroType objectType;
 
-    /* Holds objects collected so far. <blockOffset, objectIndex, object>
-       Tuple3 is needed for Changefeed optimizations. */
-    private List<Tuple3<Long, Long, Object>> objects;
+    /* Holds objects collected so far. */
+    private List<AvroObject> objects;
 
     private boolean readSeparate; /* Whether or not the Avro Parser will read the Header and Block off different
                                      streams. This is custom functionality for Changefeed. */
@@ -57,13 +54,9 @@ public class AvroParser {
     private long blockOffset; /* Offset of block. */
 
     /**
-     * Default constructor. Use this if you want to read an Avro stream from start to finish.
+     * Constructs a new Avro Parser object.
      */
-    public AvroParser() {
-        this(false);
-    }
-
-    public AvroParser(boolean readSeparate) {
+    AvroParser(boolean readSeparate) {
         this.state = new AvroParserState();
         this.objects = new ArrayList<>();
         this.readSeparate = readSeparate;
@@ -76,16 +69,16 @@ public class AvroParser {
         headerSchema.pushToStack();
     }
 
-    public Mono<Void> prepareParserToReadBlock(long sourceOffset) {
+    Mono<Void> prepareParserToReadBody(long bodyOffset) {
         if (!this.readSeparate) {
             return Mono.error(new IllegalStateException("This method should only be called when parsing header "
-                + "and blocks separately."));
+                + "and body separately."));
         }
         if (this.objectType == null || this.syncMarker == null) {
             return Mono.error(new IllegalStateException("Expected to read entire header before preparing "
-                + "parser to read block."));
+                + "parser to read body."));
         }
-        this.state = new AvroParserState(sourceOffset);
+        this.state = new AvroParserState(bodyOffset);
         this.objects = new ArrayList<>();
         /* Read a block. */
         onBlock(null);
@@ -128,7 +121,7 @@ public class AvroParser {
         this.objectBlockIndex = 0;
         AvroBlockSchema blockSchema = new AvroBlockSchema(
             this.objectType,
-            o -> this.objects.add(Tuples.of(blockOffset, objectBlockIndex++, o)), /* Object result handler. */
+            o -> this.objects.add(new AvroObject(blockOffset, objectBlockIndex++, o)), /* Object result handler. */
             this.syncMarker,
             this.state,
             this::onBlock
@@ -142,7 +135,7 @@ public class AvroParser {
      * @param buffer {@link ByteBuffer} that is part of an Avro file.
      * @return A reactive stream of Objects found in this buffer.
      */
-    public Flux<Tuple3<Long, Long, Object>> parse(ByteBuffer buffer) {
+    public Flux<AvroObject> parse(ByteBuffer buffer) {
         /* Write a deep-copied buffer to the state's cache.
            As needed, bytes will be consumed from the cache by schemas.
            The bytes of a schema could be spread across any number of ByteBuffers in the stream, so we cache
@@ -186,7 +179,7 @@ public class AvroParser {
         }
 
         /* Convert the records collected so far into a Flux. */
-        Flux<Tuple3<Long, Long, Object>> result;
+        Flux<AvroObject> result;
         if (this.objects.isEmpty()) {
             result = Flux.empty();
         } else {
