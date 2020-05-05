@@ -42,9 +42,6 @@ public class InteractiveBrowserCredential implements TokenCredential {
     InteractiveBrowserCredential(String clientId, String tenantId, int port,
                                  IdentityClientOptions identityClientOptions) {
         this.port = port;
-        if (tenantId == null) {
-            tenantId = "common";
-        }
         identityClient = new IdentityClientBuilder()
             .tenantId(tenantId)
             .clientId(clientId)
@@ -57,7 +54,7 @@ public class InteractiveBrowserCredential implements TokenCredential {
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return Mono.defer(() -> {
             if (cachedToken.get() != null) {
-                return identityClient.authenticateWithUserRefreshToken(request, cachedToken.get())
+                return identityClient.authenticateWithMsalAccount(request, cachedToken.get().getAccount())
                     .onErrorResume(t -> Mono.empty());
             } else {
                 return Mono.empty();

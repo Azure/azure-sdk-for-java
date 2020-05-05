@@ -49,10 +49,10 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         }
 
         try {
-            receiver.receive(new ReceiveAsyncOptions().setEnableAutoComplete(false))
+            receiver.receive(new ReceiveAsyncOptions().setIsAutoCompleteEnabled(false))
                 .take(numberOfMessages)
                 .map(message -> {
-                    logger.info("Message received: {}", message.getSequenceNumber());
+                    logger.info("Message received: {}", message.getMessage().getSequenceNumber());
                     return message;
                 })
                 .timeout(Duration.ofSeconds(5), Mono.empty())
@@ -126,7 +126,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
             .verifyComplete();
 
         // Make sure no message is received by a session enabled receiver
-        StepVerifier.create(receiver.receive(new ReceiveAsyncOptions().setEnableAutoComplete(false))
+        StepVerifier.create(receiver.receive(new ReceiveAsyncOptions().setIsAutoCompleteEnabled(false))
             .take(1).timeout(shortDuration))
             .expectTimeout(shortDuration)
             .verify();
@@ -226,14 +226,22 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
 
                 Assertions.assertNotNull(queueName, "'queueName' cannot be null.");
 
-                sender = createBuilder(useCredentials).sender()
+                sender = getBuilder(useCredentials).sender()
                     .queueName(queueName)
                     .buildAsyncClient();
-                receiver = createBuilder(useCredentials).receiver()
-                    .queueName(queueName)
-                    .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
-                    .sessionId(isSessionEnabled ? sessionId : null)
-                    .buildAsyncClient();
+                if (isSessionEnabled) {
+                    receiver = getBuilder(useCredentials).sessionReceiver()
+                        .queueName(queueName)
+                        .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+                        .sessionId(isSessionEnabled ? sessionId : null)
+                        .buildAsyncClient();
+                } else {
+                    receiver = getBuilder(useCredentials).sessionReceiver()
+                        .queueName(queueName)
+                        .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+                        .sessionId(isSessionEnabled ? sessionId : null)
+                        .buildAsyncClient();
+                }
                 break;
             case SUBSCRIPTION:
                 final String topicName = getTopicName();
@@ -242,15 +250,23 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
                 Assertions.assertNotNull(topicName, "'topicName' cannot be null.");
                 Assertions.assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
 
-                sender = createBuilder(useCredentials).sender()
+                sender = getBuilder(useCredentials).sender()
                     .topicName(topicName)
                     .buildAsyncClient();
-                receiver = createBuilder(useCredentials).receiver()
-                    .topicName(topicName)
-                    .subscriptionName(subscriptionName)
-                    .sessionId(isSessionEnabled ? sessionId : null)
-                    .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
-                    .buildAsyncClient();
+                if (isSessionEnabled) {
+                    receiver = getBuilder(useCredentials).sessionReceiver()
+                        .topicName(topicName)
+                        .subscriptionName(subscriptionName)
+                        .sessionId(isSessionEnabled ? sessionId : null)
+                        .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+                        .buildAsyncClient();
+                } else {
+                    receiver = getBuilder(useCredentials).receiver()
+                        .topicName(topicName)
+                        .subscriptionName(subscriptionName)
+                        .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+                        .buildAsyncClient();
+                }
                 break;
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));

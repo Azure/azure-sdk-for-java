@@ -16,7 +16,6 @@ import java.util.Deque;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
@@ -24,19 +23,19 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 /**
  * Processor that listens to upstream messages, pushes them downstream then completes it if necessary.
  */
-class ContinuesMessageSubscriber extends FluxProcessor<ServiceBusReceivedMessage, ServiceBusReceivedMessage> implements Subscription{
+class ContinuesMessageSubscriber extends FluxProcessor<ServiceBusReceivedMessageContext,
+    ServiceBusReceivedMessageContext> implements Subscription {
 
     private final ClientLogger logger = new ClientLogger(ContinuesMessageSubscriber.class);
 
     private volatile boolean isDone;
-    private volatile FluxSink<ServiceBusReceivedMessage> downstream;
+    private volatile FluxSink<ServiceBusReceivedMessageContext> downstream;
 
     private volatile boolean isCancelled;
-    private final Deque<ServiceBusReceivedMessage> messageQueue = new ConcurrentLinkedDeque<>();
-    private int maximumMessageCount;
-    private AtomicInteger remaining = new AtomicInteger(0);
+    private final Deque<ServiceBusReceivedMessageContext> messageQueue = new ConcurrentLinkedDeque<>();
+    private final int maximumMessageCount;
 
-    ContinuesMessageSubscriber(int maximumMessageCount, FluxSink<ServiceBusReceivedMessage> emitter){
+    ContinuesMessageSubscriber(int maximumMessageCount, FluxSink<ServiceBusReceivedMessageContext> emitter) {
         super();
         this.maximumMessageCount = maximumMessageCount;
         this.downstream = emitter;
@@ -86,7 +85,7 @@ class ContinuesMessageSubscriber extends FluxProcessor<ServiceBusReceivedMessage
     }
 
     @Override
-    public void onNext(ServiceBusReceivedMessage message) {
+    public void onNext(ServiceBusReceivedMessageContext message) {
         if (isTerminated()) {
             final Context context = downstream == null ? currentContext() : downstream.currentContext();
             Operators.onNextDropped(message, context);
@@ -134,7 +133,7 @@ class ContinuesMessageSubscriber extends FluxProcessor<ServiceBusReceivedMessage
     }
 
     @Override
-    public void subscribe(CoreSubscriber<? super ServiceBusReceivedMessage> downstream) {
+    public void subscribe(CoreSubscriber<? super ServiceBusReceivedMessageContext> downstream) {
         Objects.requireNonNull(downstream, "'downstream' cannot be null.");
         if (once == 0 && ONCE.compareAndSet(this, 0, 1)) {
             if (isCancelled) {
@@ -148,7 +147,7 @@ class ContinuesMessageSubscriber extends FluxProcessor<ServiceBusReceivedMessage
         }
     }
 
-    void request(long request, FluxSink<ServiceBusReceivedMessage> emitter) {
+    void request(long request, FluxSink<ServiceBusReceivedMessageContext> emitter) {
         this.downstream = emitter;
         request(request);
     }
@@ -250,7 +249,7 @@ class ContinuesMessageSubscriber extends FluxProcessor<ServiceBusReceivedMessage
                 return numberEmitted;
             }
 
-            final ServiceBusReceivedMessage message = messageQueue.poll();
+            final ServiceBusReceivedMessageContext message = messageQueue.poll();
             if (message == null) {
                 break;
             }
@@ -263,7 +262,6 @@ class ContinuesMessageSubscriber extends FluxProcessor<ServiceBusReceivedMessage
 
             try {
                 next(message);
-                remaining.decrementAndGet();
             } catch (Exception e) {
                 setInternalError(e);
                 break;
@@ -273,7 +271,7 @@ class ContinuesMessageSubscriber extends FluxProcessor<ServiceBusReceivedMessage
         return numberEmitted;
     }
 
-    private void next(ServiceBusReceivedMessage message) {
+    private void next(ServiceBusReceivedMessageContext message) {
 
         final AtomicBoolean hasError = new AtomicBoolean();
 
@@ -284,15 +282,7 @@ class ContinuesMessageSubscriber extends FluxProcessor<ServiceBusReceivedMessage
             logger.error("Exception occurred while handling downstream onNext operation.", e);
 
             setInternalError(e);
-        } finally {
-
         }
-
-        // An error occurred in downstream.onNext or timed out while processing. We return.
-        if (hasError.get()) {
-            return;
-        }
-
     }
 
     private void setInternalError(Throwable error) {

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.util.serializer;
+package com.azure.core.implementation.serializer;
 
 /**
  * Generic interface covering basic JSON serialization and deserialization methods.

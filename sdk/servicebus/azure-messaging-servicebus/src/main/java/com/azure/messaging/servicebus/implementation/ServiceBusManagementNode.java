@@ -11,7 +11,6 @@ import reactor.core.publisher.Mono;
 
 import java.time.Instant;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * The management node for performing Service Bus metadata operations, scheduling, and inspecting messages.
@@ -63,7 +62,7 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      * @return The received {@link ServiceBusReceivedMessage} message for given sequence number.
      */
     Flux<ServiceBusReceivedMessage> receiveDeferredMessages(ReceiveMode receiveMode, String sessionId,
-        String associatedLinkName, long... sequenceNumbers);
+        String associatedLinkName, Iterable<Long> sequenceNumbers);
 
     /**
      * Asynchronously renews the lock on the message specified by the lock token. The lock will be renewed based on
@@ -72,10 +71,10 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      * Queue/Subscription creation (LockDuration). If processing of the message requires longer than this duration,
      * the lock needs to be renewed. For each renewal, the lock is reset to the entity's LockDuration value.
      *
-     * @param messageLock The {@link UUID} of the message {@link ServiceBusReceivedMessage} to be renewed.
+     * @param messageLock The lock token of the message {@link ServiceBusReceivedMessage} to be renewed.
      * @return {@link Instant} representing the pending renew.
      */
-    Mono<Instant> renewMessageLock(UUID messageLock, String associatedLinkName);
+    Mono<Instant> renewMessageLock(String messageLock, String associatedLinkName);
 
     /**
      * Renews the lock on the session.
