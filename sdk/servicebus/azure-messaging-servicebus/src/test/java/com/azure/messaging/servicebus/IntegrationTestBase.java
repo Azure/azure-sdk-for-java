@@ -259,7 +259,7 @@ public abstract class IntegrationTestBase extends TestBase {
     protected static Stream<Arguments> messagingEntityWithSessions() {
         return Stream.of(
             Arguments.of(MessagingEntityType.QUEUE, false),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, false),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, false)//,
             Arguments.of(MessagingEntityType.QUEUE, true),
             Arguments.of(MessagingEntityType.SUBSCRIPTION, true)
         );

@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
@@ -70,7 +71,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         if (pending > 0) {
             try {
                 IterableStream<ServiceBusReceivedMessage> removedMessage = receiveAndDeleteReceiver.receive(
-                    pending + BUFFER_MESSAGES_TO_REMOVE, Duration.ofSeconds(15));
+                    pending , Duration.ofSeconds(15));
 
                 removedMessage.stream().forEach(receivedMessage -> {
                     logger.info("Removed Message Seq: {} ", receivedMessage.getSequenceNumber());
@@ -97,24 +98,43 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Verifies that we can only call receive() once only.
+     * Verifies that we can only call receive() multiple times.
      */
     @MethodSource("messagingEntityWithSessions")
     @ParameterizedTest
     void receiveByTwoSubscriber(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSenderAndReceiver(entityType, isSessionEnabled);
+
         final int maxMessages = 1;
         final Duration shortTimeOut = Duration.ofSeconds(5);
 
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
+
+        sendMessage(message);
+        sendMessage(message);
+
         // Act & Assert
         IterableStream<ServiceBusReceivedMessage> messages = receiver.receive(maxMessages, shortTimeOut);
+        int receivedMessageCount = 0;
+        for (ServiceBusReceivedMessage receivedMessage : messages) {
+            assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+            receiver.complete(receivedMessage);
+            messagesPending.decrementAndGet();
+            ++receivedMessageCount;
+        }
+        assertEquals(maxMessages, receivedMessageCount);
 
-        final long receivedMessages = messages.stream().count();
-        assertEquals(0L, receivedMessages);
-
-        // Second time user try to receive, it should throw exception.
-        assertThrows(IllegalStateException.class, () -> receiver.receive(maxMessages, shortTimeOut));
+        IterableStream<ServiceBusReceivedMessage> messages2 = receiver.receive(maxMessages, shortTimeOut);
+        receivedMessageCount = 0;
+        for (ServiceBusReceivedMessage receivedMessage : messages2) {
+            assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+            receiver.complete(receivedMessage);
+            messagesPending.decrementAndGet();
+            ++receivedMessageCount;
+        }
+        assertEquals(maxMessages, receivedMessageCount);
     }
 
     /**
