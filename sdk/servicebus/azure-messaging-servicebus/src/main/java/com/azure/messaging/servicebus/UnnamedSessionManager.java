@@ -70,8 +70,8 @@ class UnnamedSessionManager implements AutoCloseable {
      * SessionId to receiver mapping.
      */
     private final ConcurrentHashMap<String, UnnamedSessionReceiver> sessionReceivers = new ConcurrentHashMap<>();
-    private final EmitterProcessor<Flux<ServiceBusReceivedMessageContext>> processor = EmitterProcessor.create();
-    private final FluxSink<Flux<ServiceBusReceivedMessageContext>> sessionReceiveSink = processor.sink();
+    private final EmitterProcessor<Flux<ServiceBusReceivedMessageContext>> processor;
+    private final FluxSink<Flux<ServiceBusReceivedMessageContext>> sessionReceiveSink;
 
     private volatile Flux<ServiceBusReceivedMessageContext> receiveFlux;
     private volatile ReceiveAsyncOptions receiveAsyncOptions;
@@ -100,7 +100,21 @@ class UnnamedSessionManager implements AutoCloseable {
 
         this.schedulers = Collections.unmodifiableList(schedulerList);
         this.availableSchedulers.addAll(this.schedulers);
-        this.sessionReceiveSink.onRequest(this::onSessionRequest);
+
+        this.processor = EmitterProcessor.create(numberOfSchedulers, false);
+        this.sessionReceiveSink = processor.sink();
+    }
+
+    /**
+     * Gets the link name with the matching {@code sessionId}.
+     *
+     * @param sessionId Session id to get link name for.
+     *
+     * @return The name of the link, or {@code null} if there is no open link with that {@code sessionId}.
+     */
+    String getLinkName(String sessionId) {
+        final UnnamedSessionReceiver receiver = sessionReceivers.get(sessionId);
+        return receiver != null ? receiver.getLinkName() : null;
     }
 
     /**
@@ -121,47 +135,6 @@ class UnnamedSessionManager implements AutoCloseable {
             }));
     }
 
-    Mono<ServiceBusReceivedMessage> peek(String sessionId) {
-        final UnnamedSessionReceiver receiver = sessionReceivers.get(sessionId);
-        final long sequenceNumber = receiver != null ? receiver.getLastPeekedSequenceNumber() : -1;
-
-        return peekAt(sequenceNumber, sessionId);
-    }
-
-    Mono<ServiceBusReceivedMessage> peekAt(long sequenceNumber, String sessionId) {
-        return validateParameter(sessionId, "sessionId", "peekAt")
-            .then(connectionProcessor.flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-                .flatMap(channel -> {
-                    final UnnamedSessionReceiver receiver = sessionReceivers.get(sessionId);
-                    final String linkName = receiver != null ? receiver.getLinkName() : null;
-
-                    return channel.peek(sequenceNumber, sessionId, linkName);
-                }));
-    }
-
-    Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages, String sessionId) {
-        final UnnamedSessionReceiver receiver = sessionReceivers.get(sessionId);
-        final long sequenceNumber = receiver != null ? receiver.getLastPeekedSequenceNumber() : -1;
-
-        return peekBatchAt(maxMessages, sequenceNumber, sessionId);
-    }
-
-    Flux<ServiceBusReceivedMessage> peekBatchAt(int maxMessages, long sequenceNumber, String sessionId) {
-        return validateParameter(sessionId, "sessionId", "peekBatchAt").thenMany(
-            getManagementNode().flatMapMany(channel -> {
-                final UnnamedSessionReceiver receiver = sessionReceivers.get(sessionId);
-                final String linkName = receiver != null ? receiver.getLinkName() : null;
-
-                return channel.peek(sequenceNumber, sessionId, linkName, maxMessages)
-                    .map(message -> {
-                        if (receiver != null) {
-                            receiver.setLastPeekedSequenceNumber(message.getSequenceNumber());
-                        }
-                        return message;
-                    });
-            }));
-    }
-
     /**
      * Gets a stream of messages from different sessions.
      *
@@ -174,6 +147,8 @@ class UnnamedSessionManager implements AutoCloseable {
 
         if (!isStarted.getAndSet(true)) {
             receiveAsyncOptions = options;
+            this.sessionReceiveSink.onRequest(this::onSessionRequest);
+
             if (!receiverOptions.isRollingSessionReceiver()) {
                 receiveFlux = getSession(options, schedulers.get(0));
             } else {
@@ -209,21 +184,31 @@ class UnnamedSessionManager implements AutoCloseable {
     }
 
     /**
-     * Sets the state of a session given its identifier.
+     * Tries to update the message disposition on a session aware receive link.
      *
-     * @param sessionId Identifier of session to get.
-     * @param sessionState State to set on the session.
-     *
-     * @return A Mono that completes when the session is set
-     * @throws IllegalStateException if the receiver is a non-session receiver.
+     * @return {@code true} if the {@code lockToken} was updated on receive link. {@code false} otherwise. This means
+     *     there isn't an open link with that {@code sessionId}.
      */
-    Mono<Void> setSessionState(String sessionId, byte[] sessionState) {
-        return validateParameter(sessionId, "sessionId", "setSessionState")
-            .then(getManagementNode().flatMap(channel -> {
-                final UnnamedSessionReceiver receiver = sessionReceivers.get(sessionId);
-                final String associatedLinkName = receiver != null ? receiver.getLinkName() : null;
+    Mono<Boolean> updateDisposition(MessageLockToken lockToken, String sessionId,
+        DispositionStatus dispositionStatus, Map<String, Object> propertiesToModify, String deadLetterReason,
+        String deadLetterDescription) {
 
-                return channel.setSessionState(sessionId, sessionState, associatedLinkName);
+        final String operation = "updateDisposition";
+        return Mono.when(
+            validateParameter(lockToken, "lockToken", operation),
+            validateParameter(lockToken.getLockToken(), "lockToken.getLockToken()", operation),
+            validateParameter(sessionId, "'sessionId'", operation)).then(
+            Mono.defer(() -> {
+                final String lock = lockToken.getLockToken();
+                final UnnamedSessionReceiver receiver = sessionReceivers.get(sessionId);
+                if (receiver == null || !receiver.containsLockToken(lock)) {
+                    return Mono.just(false);
+                }
+
+                final DeliveryState deliveryState = MessageUtils.getDeliveryState(dispositionStatus, deadLetterReason,
+                    deadLetterDescription, propertiesToModify);
+
+                return receiver.updateDisposition(lock, deliveryState).thenReturn(true);
             }));
     }
 
@@ -316,29 +301,6 @@ class UnnamedSessionManager implements AutoCloseable {
             .publishOn(scheduler);
     }
 
-    Mono<Boolean> updateDisposition(MessageLockToken lockToken, String sessionId,
-        DispositionStatus dispositionStatus, Map<String, Object> propertiesToModify, String deadLetterReason,
-        String deadLetterDescription) {
-
-        final String operation = "updateDisposition";
-        return Mono.when(
-            validateParameter(lockToken, "lockToken", operation),
-            validateParameter(lockToken.getLockToken(), "lockToken.getLockToken()", operation),
-            validateParameter(sessionId, "'sessionId'", operation)).then(
-            Mono.defer(() -> {
-                final String lock = lockToken.getLockToken();
-                final UnnamedSessionReceiver receiver = sessionReceivers.get(sessionId);
-                if (receiver == null || !receiver.containsLockToken(lock)) {
-                    return Mono.just(false);
-                }
-
-                final DeliveryState deliveryState = MessageUtils.getDeliveryState(dispositionStatus, deadLetterReason,
-                    deadLetterDescription, propertiesToModify);
-
-                return receiver.updateDisposition(lock, deliveryState).thenReturn(true);
-            }));
-    }
-
     private Mono<ServiceBusManagementNode> getManagementNode() {
         return connectionProcessor.flatMap(connection -> connection.getManagementNode(entityPath, entityType));
     }
@@ -360,7 +322,7 @@ class UnnamedSessionManager implements AutoCloseable {
             return;
         }
 
-        logger.info("Requested {} unnamed sessions.");
+        logger.info("Requested {} unnamed sessions.", request);
         for (int i = 0; i < request; i++) {
             final Scheduler scheduler = availableSchedulers.poll();
 
@@ -368,8 +330,7 @@ class UnnamedSessionManager implements AutoCloseable {
             // expecting a free item. return an error.
             if (scheduler == null) {
                 if (request != Long.MAX_VALUE) {
-                    sessionReceiveSink.error(new IllegalStateException(
-                        "There should be available schedulers to fetch."));
+                    logger.info("request[{}]: There are no available schedulers to fetch.", request);
                 }
 
                 return;

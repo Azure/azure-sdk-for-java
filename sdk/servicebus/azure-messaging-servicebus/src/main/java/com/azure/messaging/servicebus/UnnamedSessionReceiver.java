@@ -28,13 +28,13 @@ import reactor.core.scheduler.Scheduler;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
+/**
+ * Represents an session that is received when "any" session is accepted from the service.
+ */
 class UnnamedSessionReceiver implements AutoCloseable {
-    // Start the peek from before the beginning of the stream.
-    private final AtomicLong lastPeekedSequenceNumber = new AtomicLong(-1);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final MessageLockContainer lockContainer;
     private final AtomicReference<Instant> sessionLockedUntil = new AtomicReference<>();
@@ -157,14 +157,6 @@ class UnnamedSessionReceiver implements AutoCloseable {
         sessionLockedUntil.set(lockedUntil);
     }
 
-    long getLastPeekedSequenceNumber() {
-        return lastPeekedSequenceNumber.get();
-    }
-
-    void setLastPeekedSequenceNumber(long sequenceNumber) {
-        lastPeekedSequenceNumber.set(sequenceNumber);
-    }
-
     Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState) {
         return receiveLink.updateDisposition(lockToken, deliveryState);
     }
@@ -218,6 +210,7 @@ class UnnamedSessionReceiver implements AutoCloseable {
         // return Disposables.composite(renewLockSubscription, timeoutOperation);
 
         return Flux.switchOnNext(emitterProcessor.map(i -> Flux.interval(i)))
+            .takeUntilOther(cancelReceiveProcessor)
             .flatMap(delay -> {
                 final String id = sessionId.get();
 
