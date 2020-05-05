@@ -43,6 +43,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -325,7 +326,8 @@ public final class BlobServiceAsyncClient {
 
         return StorageImplUtils.applyOptionalTimeout(
             this.azureBlobStorage.services().listBlobContainersSegmentWithRestResponseAsync(
-                options.getPrefix(), marker, options.getMaxResultsPerPage(), options.getDetails().toIncludeType(), null,
+                options.getPrefix(), marker, options.getMaxResultsPerPage(),
+                Collections.singletonList(options.getDetails().toIncludeType()), null,
                 null, Context.NONE), timeout);
     }
 

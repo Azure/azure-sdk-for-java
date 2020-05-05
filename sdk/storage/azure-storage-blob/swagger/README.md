@@ -936,7 +936,7 @@ directive:
 ``` yaml
 directive:
 - from: swagger-document
-  where: $.parameters.ListContainersInclude
+  where: $.parameters.ListContainersInclude.items
   transform: >
     $["x-ms-enum"].name = "ListBlobContainersIncludeType";
 ```
