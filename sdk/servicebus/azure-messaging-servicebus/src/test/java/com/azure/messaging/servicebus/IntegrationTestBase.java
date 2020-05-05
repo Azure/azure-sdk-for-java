@@ -274,8 +274,8 @@ public abstract class IntegrationTestBase extends TestBase {
         }
     }
 
-    protected ServiceBusSessionReceiverClientBuilder getSessionReceiverBuilder(boolean useCredentials,
-        MessagingEntityType entityType,
+    protected ServiceBusSessionReceiverClientBuilder getSessionReceiverBuilder(
+        boolean useCredentials, MessagingEntityType entityType,
         Function<ServiceBusSessionReceiverClientBuilder, ServiceBusSessionReceiverClientBuilder> onReceiverCreate) {
         switch (entityType) {
             case QUEUE:
