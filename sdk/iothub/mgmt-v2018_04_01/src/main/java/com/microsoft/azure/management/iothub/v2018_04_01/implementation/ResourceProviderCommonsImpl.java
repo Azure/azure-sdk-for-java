@@ -17,14 +17,14 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.management.iothub.v2018_04_01.UserSubscriptionQuota;
 
 class ResourceProviderCommonsImpl extends WrapperImpl<ResourceProviderCommonsInner> implements ResourceProviderCommons {
-    private final IoTHubManager manager;
+    private final DevicesManager manager;
 
-    ResourceProviderCommonsImpl(IoTHubManager manager) {
+    ResourceProviderCommonsImpl(DevicesManager manager) {
         super(manager.inner().resourceProviderCommons());
         this.manager = manager;
     }
 
-    public IoTHubManager manager() {
+    public DevicesManager manager() {
         return this.manager;
     }
 
