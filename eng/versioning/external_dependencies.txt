@@ -102,11 +102,11 @@ org.hamcrest:hamcrest-library;2.2
 # https://youtrack.jetbrains.com/issue/IDEA-223700
 # org.junit:junit-bom;5.4.2 is a pom file that will add its dependencyManagement section to parent pom's which
 # effectively means that each dependency needs to be listed here.
-org.junit.jupiter:junit-jupiter;5.4.2
-org.junit.jupiter:junit-jupiter-api;5.4.2
-org.junit.jupiter:junit-jupiter-engine;5.4.2
-org.junit.jupiter:junit-jupiter-migrationsupport;5.4.2
-org.junit.jupiter:junit-jupiter-params;5.4.2
+org.junit.jupiter:junit-jupiter;5.6.2
+org.junit.jupiter:junit-jupiter-api;5.6.2
+org.junit.jupiter:junit-jupiter-engine;5.6.2
+org.junit.jupiter:junit-jupiter-migrationsupport;5.6.2
+org.junit.jupiter:junit-jupiter-params;5.6.2
 org.junit.platform:junit-platform-commons;1.4.2
 org.junit.platform:junit-platform-console;1.4.2
 org.junit.platform:junit-platform-engine;1.4.2
