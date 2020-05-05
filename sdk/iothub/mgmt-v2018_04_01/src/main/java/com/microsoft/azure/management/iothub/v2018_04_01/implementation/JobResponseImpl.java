@@ -17,18 +17,18 @@ import com.microsoft.azure.management.iothub.v2018_04_01.JobStatus;
 import com.microsoft.azure.management.iothub.v2018_04_01.JobType;
 
 class JobResponseImpl extends WrapperImpl<JobResponseInner> implements JobResponse {
-    private final IoTHubManager manager;
+    private final DevicesManager manager;
     private String resourceGroupName;
     private String resourceName;
     private String jobId;
 
-    JobResponseImpl(JobResponseInner inner,  IoTHubManager manager) {
+    JobResponseImpl(JobResponseInner inner,  DevicesManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public IoTHubManager manager() {
+    public DevicesManager manager() {
         return this.manager;
     }
 

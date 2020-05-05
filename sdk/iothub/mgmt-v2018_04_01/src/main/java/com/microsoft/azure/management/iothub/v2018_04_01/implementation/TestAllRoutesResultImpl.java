@@ -14,14 +14,14 @@ import java.util.List;
 import com.microsoft.azure.management.iothub.v2018_04_01.MatchedRoute;
 
 class TestAllRoutesResultImpl extends WrapperImpl<TestAllRoutesResultInner> implements TestAllRoutesResult {
-    private final IoTHubManager manager;
-    TestAllRoutesResultImpl(TestAllRoutesResultInner inner, IoTHubManager manager) {
+    private final DevicesManager manager;
+    TestAllRoutesResultImpl(TestAllRoutesResultInner inner, DevicesManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public IoTHubManager manager() {
+    public DevicesManager manager() {
         return this.manager;
     }
 
