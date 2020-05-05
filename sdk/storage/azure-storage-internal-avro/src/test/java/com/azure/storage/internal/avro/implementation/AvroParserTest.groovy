@@ -1,9 +1,12 @@
 package com.azure.storage.internal.avro.implementation
 
 import com.azure.core.util.FluxUtil
+import com.azure.storage.common.implementation.Constants
 import com.azure.storage.internal.avro.implementation.schema.primitive.AvroNullSchema
 import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
+import reactor.util.function.Tuples
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -71,39 +74,67 @@ class AvroParserTest extends Specification {
     @Unroll
     def "Parse"() {
         setup:
-        AvroParser parser = new AvroParser()
         Path path = Paths.get(getTestCasePath(testCase))
-        Flux<ByteBuffer> file = FluxUtil.readFile(AsynchronousFileChannel.open(path, StandardOpenOption.READ))
+        AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(path, StandardOpenOption.READ)
 
+        /* Normal use case. */
         when:
-        def verifier = StepVerifier.create(file
-            .concatMap({ buffer -> parser.parse(buffer) })
+        AvroParser simpleParser = new AvroParser()
+        Flux<ByteBuffer> data = FluxUtil.readFile(fileChannel)
+        def simpleVerifier = StepVerifier.create(
+            data
+            .concatMap({ buffer -> simpleParser.parse(buffer) })
+            .map({tuple3 -> tuple3.getT3()})
         )
         then:
-        int counter = 0
-        while (counter < 10) {
-            assert verifier
+        int simpleCounter = 0
+        while (simpleCounter < 10) {
+            assert simpleVerifier
                 .expectNextMatches(predicate)
-            counter++
+            simpleCounter++
         }
-        assert verifier.verifyComplete()
+        assert simpleVerifier.verifyComplete()
+
+        /* Special use case for Changefeed - parse header and block separate. */
+        when:
+        def complexParser = new AvroParser(true)
+        Flux<ByteBuffer> header = FluxUtil.readFile(fileChannel)
+        Flux<ByteBuffer> body = FluxUtil.readFile(fileChannel, blockOffset, fileChannel.size())
+        def complexVerifier = StepVerifier.create(
+            header
+            .concatMap({ buffer -> complexParser.parse(buffer) })
+            .then(Mono.defer( { -> complexParser.prepareParserToReadBlock(blockOffset) } ))
+            .thenMany(body.concatMap({buffer -> complexParser.parse(buffer)} )
+                .map({tuple3 -> tuple3.getT3()})
+            )
+        )
+
+        then:
+        int complexCounter = 0
+        while (complexCounter < 10) {
+            assert complexVerifier
+                .expectNextMatches(predicate)
+            complexCounter++
+        }
+        assert complexVerifier.verifyComplete()
 
         where:
-        testCase | predicate
-        0        | { o -> o instanceof AvroNullSchema.Null } // Null
-        1        | { o -> (Boolean) o } // Boolean
-        2        | { o -> ((String) o).equals("adsfasdf09809dsf-=adsf") } // String
-        3        | { o -> this.&bytesEqual(o, '12345abcd'.getBytes()) } // Bytes
-        4        | { o -> ((Integer) o).equals(1234) } // Integer
-        5        | { o -> ((Long) o).equals(1234L) } // Long
-        6        | { o -> ((Float) o).equals(1234.0 as Float) } // Float
-        7        | { o -> ((Double) o).equals(1234.0 as Double) } // Double
-        8        | { o -> this.&bytesEqual(o, 'B'.getBytes()) } // Fixed
-        9        | { o -> ((String) o).equals("B") } // Enum
-        10       | { o -> ((List) o).equals([1, 3, 2]) } // Array
-        11       | { o -> ((Map) o).equals(['a': 1, 'b': 3, 'c': 2])} // Map
-        12       | { o -> o instanceof AvroNullSchema.Null } // Union
-        13       | { o -> ((Map) o).equals(['$record': 'Test', 'f': 5]) } // Record
+        /* blockOffsets were manually extracted from a run. */
+        testCase | blockOffset || predicate
+        0        | 57          || { o -> o instanceof AvroNullSchema.Null } // Null
+        1        | 60          || { o -> (Boolean) o } // Boolean
+        2        | 59          || { o -> ((String) o).equals("adsfasdf09809dsf-=adsf") } // String
+        3        | 58          || { o -> this.&bytesEqual(o, '12345abcd'.getBytes()) } // Bytes
+        4        | 56          || { o -> ((Integer) o).equals(1234) } // Integer
+        5        | 57         || { o -> ((Long) o).equals(1234L) } // Long
+        6        | 58          || { o -> ((Float) o).equals(1234.0 as Float) } // Float
+        7        | 59          || { o -> ((Double) o).equals(1234.0 as Double) } // Double
+        8        | 95          || { o -> this.&bytesEqual(o, 'B'.getBytes()) } // Fixed
+        9        | 106          || { o -> ((String) o).equals("B") } // Enum
+        10       | 85          || { o -> ((List) o).equals([1, 3, 2]) } // Array
+        11       | 84          || { o -> ((Map) o).equals(['a': 1, 'b': 3, 'c': 2])} // Map
+        12       | 77          || { o -> o instanceof AvroNullSchema.Null } // Union
+        13       | 129         || { o -> ((Map) o).equals(['$record': 'Test', 'f': 5]) } // Record
         /* TODO (gapra) : Not necessary for QQ or CF but case 14 tests the ability to reference named types as a type in a record. */
     }
 
@@ -127,23 +158,48 @@ class AvroParserTest extends Specification {
     @Unroll
     def "Parse chunk size"() {
         setup:
-        AvroParser parser = new AvroParser()
         Path path = Paths.get(getTestCasePath(13))
-        Flux<ByteBuffer> file = FluxUtil.readFile(AsynchronousFileChannel.open(path, StandardOpenOption.READ),
-            chunkSize, 0, 157)
+        AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(path, StandardOpenOption.READ)
 
+        /* Normal use case. */
         when:
-        def verifier = StepVerifier.create(file
-            .concatMap({ buffer -> parser.parse(buffer) })
+        AvroParser simpleParser = new AvroParser()
+        Flux<ByteBuffer> data = FluxUtil.readFile(fileChannel, chunkSize, 0, 157)
+        def simpleVerifier = StepVerifier.create(data
+            .concatMap({ buffer -> simpleParser.parse(buffer) })
+            .map({tuple3 -> tuple3.getT3()})
         )
         then:
         int counter = 0
         while (counter < 10) {
-            assert verifier
+            assert simpleVerifier
                 .expectNextMatches({ o -> ((Map) o).equals(['$record': 'Test', 'f': 5]) })
             counter++
         }
-        assert verifier.verifyComplete()
+        assert simpleVerifier.verifyComplete()
+
+        /* Special use case for Changefeed - parse header and block separate. */
+        when:
+        def complexParser = new AvroParser(true)
+        Flux<ByteBuffer> header = FluxUtil.readFile(fileChannel)
+        Flux<ByteBuffer> body = FluxUtil.readFile(fileChannel, chunkSize, 129, fileChannel.size())
+        def complexVerifier = StepVerifier.create(
+            header
+                .concatMap({ buffer -> complexParser.parse(buffer) })
+                .then(Mono.defer( { -> complexParser.prepareParserToReadBlock(129) } ))
+                .thenMany(body.concatMap({buffer -> complexParser.parse(buffer)} )
+                    .map({tuple3 -> tuple3.getT3()})
+                )
+        )
+
+        then:
+        int complexCounter = 0
+        while (complexCounter < 10) {
+            assert complexVerifier
+                .expectNextMatches({ o -> ((Map) o).equals(['$record': 'Test', 'f': 5]) })
+            complexCounter++
+        }
+        assert complexVerifier.verifyComplete()
 
         /* The record avro file is 157 bytes long. */
         where:
@@ -157,28 +213,81 @@ class AvroParserTest extends Specification {
     /* TODO (gapra) : Download a CF file with a single record and add a test with that, validate all parts of map are correct. Also chunk the file. */
     def "Parse CF large"() {
         setup:
-        AvroParser parser = new AvroParser()
         String fileName = "changefeed_large.avro"
         ClassLoader classLoader = getClass().getClassLoader()
         File f = new File(classLoader.getResource(fileName).getFile())
         Path path = Paths.get(f.getAbsolutePath())
-        Flux<ByteBuffer> file = FluxUtil.readFile(AsynchronousFileChannel.open(path, StandardOpenOption.READ))
+        AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(path, StandardOpenOption.READ)
 
+        /* Normal use case. */
         when:
-        def sv = StepVerifier.create(file
-            .concatMap({buffer -> parser.parse(buffer)})
+        AvroParser simpleParser = new AvroParser()
+        Flux<ByteBuffer> data = FluxUtil.readFile(fileChannel)
+        def simpleVerifier = StepVerifier.create(data
+            .concatMap({buffer -> simpleParser.parse(buffer)})
+            .map({tuple3 -> tuple3.getT3()})
             .map({o -> (String)((Map<String, Object>) o).get("subject")})
             .index()
         )
 
         then:
-        int counter = 0
-        while (counter < 1000) {
-            assert sv
+        int simpleCounter = 0
+        while (simpleCounter < 1000) {
+            assert simpleVerifier
                 .expectNextMatches({t -> t.getT2() == "/blobServices/default/containers/test-container/blobs/" + t.getT1()})
-            counter++
+            simpleCounter++
         }
-        assert sv.verifyComplete()
+        assert simpleVerifier.verifyComplete()
+    }
+
+    @Unroll
+    def "Parse CF large blockOffset"() {
+        setup:
+        String fileName = "changefeed_large.avro"
+        ClassLoader classLoader = getClass().getClassLoader()
+        File f = new File(classLoader.getResource(fileName).getFile())
+        Path path = Paths.get(f.getAbsolutePath())
+        AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(path, StandardOpenOption.READ)
+
+        /* Normal use case. */
+        when:
+        AvroParser complexParser = new AvroParser()
+        Flux<ByteBuffer> header = FluxUtil.readFile(fileChannel, 0, 5 * Constants.KB)
+        Flux<ByteBuffer> body = FluxUtil.readFile(fileChannel, blockOffset, fileChannel.size())
+        def complexVerifier = StepVerifier.create(
+            header
+                .concatMap({ buffer -> complexParser.parse(buffer) })
+                .then(Mono.defer( { -> complexParser.prepareParserToReadBlock(blockOffset) } ))
+                .thenMany(body.concatMap({buffer -> complexParser.parse(buffer)} )
+                    .map({tuple3 -> tuple3.getT3()})
+                )
+                .map({o -> (String)((Map<String, Object>) o).get("subject")})
+                .index()
+                .map({ tuple2 -> Tuples.of(tuple2.getT1() + 1000 - numObjects, tuple2.getT2()) })
+        )
+
+        then:
+        int complexCounter = 0
+        while (complexCounter < numObjects) {
+            assert complexVerifier
+                .expectNextMatches({t -> t.getT2() == "/blobServices/default/containers/test-container/blobs/" + t.getT1()})
+            complexCounter++
+        }
+        assert complexVerifier.verifyComplete()
+
+        where:
+        blockOffset | numObjects || _
+        1953        | 1000       || _
+        67686       | 881        || _
+        133529      | 762        || _
+        199372      | 643        || _
+        265215      | 524        || _
+        331058      | 405        || _
+        396901      | 286        || _
+        462744      | 167        || _
+        528587      | 48         || _
+        555167      | 0          || _
+
     }
 
     def "Parse QQ small"() {
@@ -193,6 +302,7 @@ class AvroParserTest extends Specification {
         when:
         def sv = StepVerifier.create(file
             .concatMap({buffer -> parser.parse(buffer)})
+            .map({tuple3 -> tuple3.getT3()})
         )
 
         then:
@@ -215,6 +325,7 @@ class AvroParserTest extends Specification {
         when:
         def sv = StepVerifier.create(file
             .concatMap({buffer -> parser.parse(buffer)})
+            .map({tuple3 -> tuple3.getT3()})
         )
 
         then:

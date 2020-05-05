@@ -72,6 +72,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
 import reactor.core.scheduler.Schedulers;
+import reactor.util.function.Tuple3;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -1604,6 +1605,7 @@ public class BlobAsyncClientBase {
         AvroParser parser = new AvroParser();
         return avro
             .concatMap(parser::parse)
+            .map(Tuple3::getT3)
             .concatMap(objectHandler);
     }
 

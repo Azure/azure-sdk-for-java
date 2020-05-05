@@ -11,6 +11,7 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.internal.avro.implementation.AvroParser;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple3;
 
 import java.nio.ByteBuffer;
 
@@ -50,14 +51,31 @@ class Chunk {
         return downloadChunk()
             /* Parse the file using the Avro Parser. */
             .concatMap(this.parser::parse)
+            .map(Tuple3::getT3)
             /* Map each object into an event. */
             .concatMap(this::parseRecord);
     }
 
     private Flux<ByteBuffer> downloadChunk() {
-        return new BlobLazyDownloader(client.getBlobAsyncClient(chunkPath), Constants.KB, 0)
+
+        return new BlobLazyDownloader(client.getBlobAsyncClient(chunkPath), Constants.MB, 0)
             .download();
     }
+
+    /*
+    * Flux<ByteBuffer> header = FluxUtil.readFile(fileChannel, 0, 5 * Constants.KB)
+        Flux<ByteBuffer> body = FluxUtil.readFile(fileChannel, blockOffset, fileChannel.size())
+        def complexVerifier = StepVerifier.create(
+            header
+                .concatMap({ buffer -> complexParser.parse(buffer) })
+                .then(Mono.defer( { -> complexParser.prepareParserToReadBlock(blockOffset) } ))
+                .thenMany(body.concatMap({buffer -> complexParser.parse(buffer)} )
+                    .map({tuple3 -> tuple3.getT3()})
+                )
+                .map({o -> (String)((Map<String, Object>) o).get("subject")})
+                .index()
+                .map({ tuple2 -> Tuples.of(tuple2.getT1() + 1000 - numObjects, tuple2.getT2()) })
+        )*/
 
     private Mono<BlobChangefeedEventWrapper> parseRecord(Object record) {
         BlobChangefeedCursor eventCursor = shardCursor.toEventCursor(eventNumber++);

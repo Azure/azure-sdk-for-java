@@ -25,14 +25,23 @@ public class AvroParserState {
     private Stack<AvroSchema> stack;
     private List<ByteBuffer> cache;
     private long size;
+    private long sourceOffset; /* Keeps track of number of bytes read from the source. */
 
     /**
      * Creates a new instance of an AvroParserState.
      */
     AvroParserState() {
+        this(0);
+    }
+
+    /**
+     * Creates a new instance of an AvroParserState with a given source offset.
+     */
+    AvroParserState(long sourceOffset) {
         this.stack = new Stack<>();
         this.cache = new LinkedList<>();
         this.size = 0;
+        this.sourceOffset = sourceOffset;
     }
 
     /**
@@ -64,6 +73,15 @@ public class AvroParserState {
     }
 
     /**
+     * Determines if the stack is empty or not.
+     *
+     * @return Whether or not the stack is empty.
+     */
+    boolean isStackEmpty() {
+        return this.stack.isEmpty();
+    }
+
+    /**
      * Pops off the Schema at the top of the stack. the state's stack of schemas to process.
      *
      */
@@ -79,6 +97,15 @@ public class AvroParserState {
      */
     public boolean sizeGreaterThan(long sizeRequired) {
         return this.size >= sizeRequired;
+    }
+
+    /**
+     * Gets the source offset.
+     *
+     * @return the source offset.
+     */
+    public long getSourceOffset() {
+        return this.sourceOffset;
     }
 
     /**
@@ -101,9 +128,11 @@ public class AvroParserState {
                 bufferIterator.remove();
                 needed -= current.remaining();
                 this.size -= current.remaining();
+                this.sourceOffset += current.remaining();
             } else {
                 ByteBuffer dup = current.duplicate();
                 this.size -= (int) needed;
+                this.sourceOffset += (int) needed;
                 dup.limit(dup.position() + (int) needed);
                 current.position(dup.position() + (int) needed);
                 needed = 0;
@@ -128,6 +157,7 @@ public class AvroParserState {
             iterator.remove();
         }
         this.size--;
+        this.sourceOffset++;
         return b;
     }
 }
