@@ -9,6 +9,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
+import reactor.core.Disposable;
+import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 
@@ -17,6 +19,7 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * A <b>synchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage} from a specific queue or
@@ -38,6 +41,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         .setIsAutoCompleteEnabled(false)
         .setMaxAutoLockRenewalDuration(Duration.ZERO);
 
+    private final AtomicReference<EmitterProcessor<ServiceBusReceivedMessageContext>> messageProcessor = new AtomicReference<>();
+    private final AtomicReference<Disposable> messageProcessorSubscription = new AtomicReference<>();
     /**
      * Creates a synchronous receiver given its asynchronous counterpart.
      *
@@ -622,20 +627,62 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     @Override
     public void close() {
         asyncClient.close();
+
+        if (messageProcessor.get() != null) {
+            messageProcessor.get().dispose();
+        }
+
+        Disposable activeSubscription = messageProcessorSubscription.get();
+        if (activeSubscription != null) {
+            activeSubscription.dispose();;
+        }
     }
+
+
 
     /**
      * Given an {@code emitter}, queues that work in {@link SynchronousMessageSubscriber}. If the synchronous job has
      * not been created, will initialise it.
      */
+    /**
+     * Given an {@code emitter}, subscribes {@link ContinuesMessageSubscriber} to receive messages from Service Bus.
+     * If the message subscriber has not been created, will initialise it.
+     */
     private void queueWork(int maximumMessageCount, Duration maxWaitTime,
-        FluxSink<ServiceBusReceivedMessageContext> emitter) {
-        final long id = idGenerator.getAndIncrement();
-        final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, maxWaitTime,
-            emitter);
-        final SynchronousMessageSubscriber syncSubscriber = new SynchronousMessageSubscriber(work);
+                           FluxSink<ServiceBusReceivedMessageContext> emitter) {
 
-        logger.info("[{}]: Started synchronous message subscriber.", id);
-        asyncClient.receive(DEFAULT_RECEIVE_OPTIONS).subscribeWith(syncSubscriber);
+        if (messageProcessor.get() != null && messageProcessor.get().isDisposed()) {
+            logger.error("[{}]: Can not receive messaged because client is closed.", asyncClient.getEntityPath());
+            return;
+        }
+
+        if (messageProcessor.get() == null) {
+            EmitterProcessor<ServiceBusReceivedMessageContext> processor = asyncClient.receive(DEFAULT_RECEIVE_OPTIONS)
+                .subscribeWith(EmitterProcessor.create(maximumMessageCount, false));
+
+            if (!messageProcessor.compareAndSet(null, processor)) {
+                processor.dispose();
+            }
+
+            logger.info("[{}]: Started ContinuesMessageSubscriber message subscriber for entity.",
+                asyncClient.getEntityPath());
+        }
+
+        Disposable newSubscription = messageProcessor.get()
+            .take(maximumMessageCount)
+            .timeout(maxWaitTime)
+            .doOnNext(messageContext -> {
+                emitter.next(messageContext);
+            })
+            .doOnError(throwable -> {
+                emitter.error(throwable);
+            })
+            .doOnComplete(emitter::complete)
+        .subscribe();
+
+        Disposable oldSubscription = messageProcessorSubscription.getAndSet(newSubscription);
+        if (oldSubscription != null) {
+            oldSubscription.dispose();;
+        }
     }
 }

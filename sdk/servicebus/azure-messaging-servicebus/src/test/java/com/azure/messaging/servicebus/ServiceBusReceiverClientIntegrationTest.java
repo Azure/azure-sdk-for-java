@@ -70,7 +70,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         if (pending > 0) {
             try {
                 IterableStream<ServiceBusReceivedMessageContext> removedMessage = receiveAndDeleteReceiver.receive(
-                    pending + BUFFER_MESSAGES_TO_REMOVE, Duration.ofSeconds(15));
+                    pending, Duration.ofSeconds(15));
 
                 removedMessage.stream().forEach(context -> {
                     ServiceBusReceivedMessage message = context.getMessage();
@@ -97,24 +97,40 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Verifies that we can only call receive() once only.
+     * Verifies that we can only call receive() multiple times.
      */
     @MethodSource("messagingEntityWithSessions")
     @ParameterizedTest
     void receiveByTwoSubscriber(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSenderAndReceiver(entityType, isSessionEnabled);
-        final int maxMessages = 1;
+        final int maxMessages = 2;
+        final int total = 2;
         final Duration shortTimeOut = Duration.ofSeconds(5);
 
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
+
+        sendMessage(message);
+        sendMessage(message);
+        sendMessage(message);
+        sendMessage(message);
+
         // Act & Assert
-        final IterableStream<ServiceBusReceivedMessageContext> messages = receiver.receive(maxMessages, shortTimeOut);
+        IterableStream<ServiceBusReceivedMessageContext> messages;
 
-        final long receivedMessages = messages.stream().count();
-        assertEquals(0L, receivedMessages);
-
-        // Second time user try to receive, it should throw exception.
-        assertThrows(IllegalStateException.class, () -> receiver.receive(maxMessages, shortTimeOut));
+        int receivedMessageCount;
+        for (int i = 0; i < total; ++i) {
+            messages = receiver.receive(maxMessages, shortTimeOut);
+            receivedMessageCount = 0;
+            for (ServiceBusReceivedMessageContext receivedMessage : messages) {
+                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+                receiver.complete(receivedMessage.getMessage());
+                messagesPending.decrementAndGet();
+                ++receivedMessageCount;
+            }
+            assertEquals(maxMessages, receivedMessageCount);
+        }
     }
 
     /**
