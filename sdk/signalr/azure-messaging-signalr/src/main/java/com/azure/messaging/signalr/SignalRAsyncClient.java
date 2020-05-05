@@ -65,7 +65,7 @@ public final class SignalRAsyncClient {
      * @param group The name of the group.
      * @return A new client for connecting to a specified SignalR group.
      */
-    public SignalRGroupAsyncClient getGroupClient(final String group) {
+    public SignalRGroupAsyncClient getGroupAsyncClient(final String group) {
         return new SignalRGroupAsyncClient(innerClient, hub, group);
     }
 
