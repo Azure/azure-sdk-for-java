@@ -16,8 +16,7 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
-import com.microsoft.azure.management.iothub.v2019_03_22_preview.ErrorDetails;
-import com.microsoft.azure.management.iothub.v2019_03_22_preview.ErrorDetailsException;
+import com.microsoft.azure.management.iothub.v2019_03_22_preview.ErrorDetailsInnerException;
 import com.microsoft.azure.management.iothub.v2019_03_22_preview.ExportDevicesRequest;
 import com.microsoft.azure.management.iothub.v2019_03_22_preview.ImportDevicesRequest;
 import com.microsoft.azure.management.iothub.v2019_03_22_preview.OperationInputs;
@@ -220,7 +219,7 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the IotHubDescriptionInner object if successful.
      */
@@ -296,10 +295,10 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
             });
     }
 
-    private ServiceResponse<IotHubDescriptionInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<IotHubDescriptionInner, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<IotHubDescriptionInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<IotHubDescriptionInner, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<IotHubDescriptionInner>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
@@ -311,7 +310,7 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
      * @param resourceName The name of the IoT hub.
      * @param iotHubDescription The IoT hub metadata and security metadata.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the IotHubDescriptionInner object if successful.
      */
@@ -393,7 +392,7 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
      * @param iotHubDescription The IoT hub metadata and security metadata.
      * @param ifMatch ETag of the IoT Hub. Do not specify for creating a brand new IoT Hub. Required to update an existing IoT Hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the IotHubDescriptionInner object if successful.
      */
@@ -477,7 +476,7 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
      * @param resourceName The name of the IoT hub.
      * @param iotHubDescription The IoT hub metadata and security metadata.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the IotHubDescriptionInner object if successful.
      */
@@ -570,7 +569,7 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
      * @param iotHubDescription The IoT hub metadata and security metadata.
      * @param ifMatch ETag of the IoT Hub. Do not specify for creating a brand new IoT Hub. Required to update an existing IoT Hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the IotHubDescriptionInner object if successful.
      */
@@ -656,11 +655,11 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
             });
     }
 
-    private ServiceResponse<IotHubDescriptionInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<IotHubDescriptionInner, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<IotHubDescriptionInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<IotHubDescriptionInner, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<IotHubDescriptionInner>() { }.getType())
                 .register(201, new TypeToken<IotHubDescriptionInner>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
@@ -1009,7 +1008,7 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Object object if successful.
      */
@@ -1082,7 +1081,7 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Object object if successful.
      */
@@ -1158,13 +1157,13 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
             });
     }
 
-    private ServiceResponse<Object> beginDeleteDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Object, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Object> beginDeleteDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Object, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<IotHubDescriptionInner>() { }.getType())
                 .register(202, new TypeToken<IotHubDescriptionInner>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
-                .register(404, new TypeToken<ErrorDetails>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .register(404, new TypeToken<ErrorDetailsInner>() { }.getType())
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
@@ -1173,7 +1172,7 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
      * Get all the IoT hubs in a subscription.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;IotHubDescriptionInner&gt; object if successful.
      */
@@ -1273,10 +1272,10 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
             });
     }
 
-    private ServiceResponse<PageImpl<IotHubDescriptionInner>> listDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<IotHubDescriptionInner>, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<IotHubDescriptionInner>> listDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<IotHubDescriptionInner>, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<IotHubDescriptionInner>>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
@@ -1286,7 +1285,7 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;IotHubDescriptionInner&gt; object if successful.
      */
@@ -1393,10 +1392,10 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
             });
     }
 
-    private ServiceResponse<PageImpl<IotHubDescriptionInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<IotHubDescriptionInner>, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<IotHubDescriptionInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<IotHubDescriptionInner>, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<IotHubDescriptionInner>>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
@@ -1407,7 +1406,7 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RegistryStatisticsInner object if successful.
      */
@@ -1483,10 +1482,10 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
             });
     }
 
-    private ServiceResponse<RegistryStatisticsInner> getStatsDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<RegistryStatisticsInner, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<RegistryStatisticsInner> getStatsDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<RegistryStatisticsInner, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RegistryStatisticsInner>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
@@ -1497,7 +1496,7 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;IotHubSkuDescriptionInner&gt; object if successful.
      */
@@ -1611,10 +1610,10 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
             });
     }
 
-    private ServiceResponse<PageImpl<IotHubSkuDescriptionInner>> getValidSkusDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<IotHubSkuDescriptionInner>, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<IotHubSkuDescriptionInner>> getValidSkusDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<IotHubSkuDescriptionInner>, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<IotHubSkuDescriptionInner>>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
@@ -1626,7 +1625,7 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
      * @param resourceName The name of the IoT hub.
      * @param eventHubEndpointName The name of the Event Hub-compatible endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;EventHubConsumerGroupInfoInner&gt; object if successful.
      */
@@ -1747,10 +1746,10 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
             });
     }
 
-    private ServiceResponse<PageImpl<EventHubConsumerGroupInfoInner>> listEventHubConsumerGroupsDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<EventHubConsumerGroupInfoInner>, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<EventHubConsumerGroupInfoInner>> listEventHubConsumerGroupsDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<EventHubConsumerGroupInfoInner>, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<EventHubConsumerGroupInfoInner>>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
@@ -1763,7 +1762,7 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
      * @param eventHubEndpointName The name of the Event Hub-compatible endpoint in the IoT hub.
      * @param name The name of the consumer group to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the EventHubConsumerGroupInfoInner object if successful.
      */
@@ -1851,10 +1850,10 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
             });
     }
 
-    private ServiceResponse<EventHubConsumerGroupInfoInner> getEventHubConsumerGroupDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<EventHubConsumerGroupInfoInner, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<EventHubConsumerGroupInfoInner> getEventHubConsumerGroupDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<EventHubConsumerGroupInfoInner, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<EventHubConsumerGroupInfoInner>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
@@ -1867,7 +1866,7 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
      * @param eventHubEndpointName The name of the Event Hub-compatible endpoint in the IoT hub.
      * @param name The name of the consumer group to add.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the EventHubConsumerGroupInfoInner object if successful.
      */
@@ -1955,10 +1954,10 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
             });
     }
 
-    private ServiceResponse<EventHubConsumerGroupInfoInner> createEventHubConsumerGroupDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<EventHubConsumerGroupInfoInner, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<EventHubConsumerGroupInfoInner> createEventHubConsumerGroupDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<EventHubConsumerGroupInfoInner, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<EventHubConsumerGroupInfoInner>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
@@ -1971,7 +1970,7 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
      * @param eventHubEndpointName The name of the Event Hub-compatible endpoint in the IoT hub.
      * @param name The name of the consumer group to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void deleteEventHubConsumerGroup(String resourceGroupName, String resourceName, String eventHubEndpointName, String name) {
@@ -2058,10 +2057,10 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
             });
     }
 
-    private ServiceResponse<Void> deleteEventHubConsumerGroupDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Void> deleteEventHubConsumerGroupDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
@@ -2072,7 +2071,7 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;JobResponseInner&gt; object if successful.
      */
@@ -2186,10 +2185,10 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
             });
     }
 
-    private ServiceResponse<PageImpl<JobResponseInner>> listJobsDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<JobResponseInner>, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<JobResponseInner>> listJobsDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<JobResponseInner>, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<JobResponseInner>>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
@@ -2201,7 +2200,7 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
      * @param resourceName The name of the IoT hub.
      * @param jobId The job identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the JobResponseInner object if successful.
      */
@@ -2283,10 +2282,10 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
             });
     }
 
-    private ServiceResponse<JobResponseInner> getJobDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<JobResponseInner, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<JobResponseInner> getJobDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<JobResponseInner, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<JobResponseInner>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
@@ -2297,7 +2296,7 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;IotHubQuotaMetricInfoInner&gt; object if successful.
      */
@@ -2411,10 +2410,10 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
             });
     }
 
-    private ServiceResponse<PageImpl<IotHubQuotaMetricInfoInner>> getQuotaMetricsDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<IotHubQuotaMetricInfoInner>, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<IotHubQuotaMetricInfoInner>> getQuotaMetricsDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<IotHubQuotaMetricInfoInner>, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<IotHubQuotaMetricInfoInner>>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
@@ -2425,7 +2424,7 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
      * @param resourceGroupName the String value
      * @param iotHubName the String value
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;EndpointHealthDataInner&gt; object if successful.
      */
@@ -2539,10 +2538,10 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
             });
     }
 
-    private ServiceResponse<PageImpl<EndpointHealthDataInner>> getEndpointHealthDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<EndpointHealthDataInner>, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<EndpointHealthDataInner>> getEndpointHealthDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<EndpointHealthDataInner>, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<EndpointHealthDataInner>>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
@@ -2552,7 +2551,7 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
      *
      * @param name The name of the IoT hub to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the IotHubNameAvailabilityInfoInner object if successful.
      */
@@ -2624,10 +2623,10 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
             });
     }
 
-    private ServiceResponse<IotHubNameAvailabilityInfoInner> checkNameAvailabilityDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<IotHubNameAvailabilityInfoInner, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<IotHubNameAvailabilityInfoInner> checkNameAvailabilityDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<IotHubNameAvailabilityInfoInner, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<IotHubNameAvailabilityInfoInner>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
@@ -2639,7 +2638,7 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
      * @param resourceGroupName resource group which Iot Hub belongs to
      * @param input Input for testing all routes
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TestAllRoutesResultInner object if successful.
      */
@@ -2722,10 +2721,10 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
             });
     }
 
-    private ServiceResponse<TestAllRoutesResultInner> testAllRoutesDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<TestAllRoutesResultInner, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<TestAllRoutesResultInner> testAllRoutesDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<TestAllRoutesResultInner, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<TestAllRoutesResultInner>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
@@ -2737,7 +2736,7 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
      * @param resourceGroupName resource group which Iot Hub belongs to
      * @param input Route that needs to be tested
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TestRouteResultInner object if successful.
      */
@@ -2820,10 +2819,10 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
             });
     }
 
-    private ServiceResponse<TestRouteResultInner> testRouteDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<TestRouteResultInner, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<TestRouteResultInner> testRouteDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<TestRouteResultInner, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<TestRouteResultInner>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
@@ -2834,7 +2833,7 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SharedAccessSignatureAuthorizationRuleInner&gt; object if successful.
      */
@@ -2948,10 +2947,10 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
             });
     }
 
-    private ServiceResponse<PageImpl<SharedAccessSignatureAuthorizationRuleInner>> listKeysDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<SharedAccessSignatureAuthorizationRuleInner>, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<SharedAccessSignatureAuthorizationRuleInner>> listKeysDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SharedAccessSignatureAuthorizationRuleInner>, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SharedAccessSignatureAuthorizationRuleInner>>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
@@ -2963,7 +2962,7 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
      * @param resourceName The name of the IoT hub.
      * @param keyName The name of the shared access policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SharedAccessSignatureAuthorizationRuleInner object if successful.
      */
@@ -3045,10 +3044,10 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
             });
     }
 
-    private ServiceResponse<SharedAccessSignatureAuthorizationRuleInner> getKeysForKeyNameDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<SharedAccessSignatureAuthorizationRuleInner, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<SharedAccessSignatureAuthorizationRuleInner> getKeysForKeyNameDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SharedAccessSignatureAuthorizationRuleInner, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SharedAccessSignatureAuthorizationRuleInner>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
@@ -3060,7 +3059,7 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
      * @param resourceName The name of the IoT hub.
      * @param exportDevicesParameters The parameters that specify the export devices operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the JobResponseInner object if successful.
      */
@@ -3143,10 +3142,10 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
             });
     }
 
-    private ServiceResponse<JobResponseInner> exportDevicesDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<JobResponseInner, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<JobResponseInner> exportDevicesDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<JobResponseInner, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<JobResponseInner>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
@@ -3158,7 +3157,7 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
      * @param resourceName The name of the IoT hub.
      * @param importDevicesParameters The parameters that specify the import devices operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the JobResponseInner object if successful.
      */
@@ -3241,10 +3240,10 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
             });
     }
 
-    private ServiceResponse<JobResponseInner> importDevicesDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<JobResponseInner, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<JobResponseInner> importDevicesDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<JobResponseInner, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<JobResponseInner>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
@@ -3254,7 +3253,7 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;IotHubDescriptionInner&gt; object if successful.
      */
@@ -3357,10 +3356,10 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
             });
     }
 
-    private ServiceResponse<PageImpl<IotHubDescriptionInner>> listNextDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<IotHubDescriptionInner>, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<IotHubDescriptionInner>> listNextDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<IotHubDescriptionInner>, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<IotHubDescriptionInner>>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
@@ -3370,7 +3369,7 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;IotHubDescriptionInner&gt; object if successful.
      */
@@ -3473,10 +3472,10 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
             });
     }
 
-    private ServiceResponse<PageImpl<IotHubDescriptionInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<IotHubDescriptionInner>, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<IotHubDescriptionInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<IotHubDescriptionInner>, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<IotHubDescriptionInner>>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
@@ -3486,7 +3485,7 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;IotHubSkuDescriptionInner&gt; object if successful.
      */
@@ -3589,10 +3588,10 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
             });
     }
 
-    private ServiceResponse<PageImpl<IotHubSkuDescriptionInner>> getValidSkusNextDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<IotHubSkuDescriptionInner>, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<IotHubSkuDescriptionInner>> getValidSkusNextDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<IotHubSkuDescriptionInner>, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<IotHubSkuDescriptionInner>>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
@@ -3602,7 +3601,7 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;EventHubConsumerGroupInfoInner&gt; object if successful.
      */
@@ -3705,10 +3704,10 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
             });
     }
 
-    private ServiceResponse<PageImpl<EventHubConsumerGroupInfoInner>> listEventHubConsumerGroupsNextDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<EventHubConsumerGroupInfoInner>, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<EventHubConsumerGroupInfoInner>> listEventHubConsumerGroupsNextDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<EventHubConsumerGroupInfoInner>, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<EventHubConsumerGroupInfoInner>>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
@@ -3718,7 +3717,7 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;JobResponseInner&gt; object if successful.
      */
@@ -3821,10 +3820,10 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
             });
     }
 
-    private ServiceResponse<PageImpl<JobResponseInner>> listJobsNextDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<JobResponseInner>, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<JobResponseInner>> listJobsNextDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<JobResponseInner>, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<JobResponseInner>>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
@@ -3834,7 +3833,7 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;IotHubQuotaMetricInfoInner&gt; object if successful.
      */
@@ -3937,10 +3936,10 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
             });
     }
 
-    private ServiceResponse<PageImpl<IotHubQuotaMetricInfoInner>> getQuotaMetricsNextDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<IotHubQuotaMetricInfoInner>, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<IotHubQuotaMetricInfoInner>> getQuotaMetricsNextDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<IotHubQuotaMetricInfoInner>, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<IotHubQuotaMetricInfoInner>>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
@@ -3950,7 +3949,7 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;EndpointHealthDataInner&gt; object if successful.
      */
@@ -4053,10 +4052,10 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
             });
     }
 
-    private ServiceResponse<PageImpl<EndpointHealthDataInner>> getEndpointHealthNextDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<EndpointHealthDataInner>, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<EndpointHealthDataInner>> getEndpointHealthNextDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<EndpointHealthDataInner>, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<EndpointHealthDataInner>>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
@@ -4066,7 +4065,7 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SharedAccessSignatureAuthorizationRuleInner&gt; object if successful.
      */
@@ -4169,10 +4168,10 @@ public class IotHubResourcesInner implements InnerSupportsGet<IotHubDescriptionI
             });
     }
 
-    private ServiceResponse<PageImpl<SharedAccessSignatureAuthorizationRuleInner>> listKeysNextDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<SharedAccessSignatureAuthorizationRuleInner>, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<SharedAccessSignatureAuthorizationRuleInner>> listKeysNextDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SharedAccessSignatureAuthorizationRuleInner>, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SharedAccessSignatureAuthorizationRuleInner>>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
