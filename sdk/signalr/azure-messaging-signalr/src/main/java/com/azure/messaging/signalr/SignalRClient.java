@@ -36,7 +36,7 @@ public final class SignalRClient {
      * @return A new client for connecting to a specified SignalR group.
      */
     public SignalRGroupClient getGroupClient(final String group) {
-        return new SignalRGroupClient(asyncClient.getGroupClient(group));
+        return new SignalRGroupClient(asyncClient.getGroupAsyncClient(group));
     }
 
     /**
