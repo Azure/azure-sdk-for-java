@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.3 (2020-05-05)
+## 1.0.0-beta.3 (2020-05-06)
 - Replaced `isRetrievable` API with `isHidden`, parameter name changed from `retrievable` to `hidden`.
 - Changed Azure Search service version from `2019-05-06` to `2019-05-06-Preview`
 - Changed `createOrUpdate` and `delete` APIs in `SearchServiceClient` to use boolean `onlyIfUnchanged` instead of `MatchConditions`.
