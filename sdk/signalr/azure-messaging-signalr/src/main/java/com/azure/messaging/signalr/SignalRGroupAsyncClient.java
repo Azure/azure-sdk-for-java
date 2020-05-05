@@ -24,7 +24,7 @@ import static com.azure.messaging.signalr.SignalRAsyncClient.configureTracing;
 
 /**
  * Async client for connecting to a SignalR group. Created from calling
- * {@link SignalRAsyncClient#getGroupClient(String)} on a {@link SignalRAsyncClient} instance.
+ * {@link SignalRAsyncClient#getGroupAsyncClient(String)} on a {@link SignalRAsyncClient} instance.
  *
  * @see SignalRAsyncClient
  */

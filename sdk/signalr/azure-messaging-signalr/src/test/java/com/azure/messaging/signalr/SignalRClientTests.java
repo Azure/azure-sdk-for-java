@@ -37,7 +37,7 @@ public class SignalRClientTests {
           .connectionString(CONNECTION_STRING)
           .hub("test")
           .buildAsyncClient();
-        this.asyncGroupClient = asyncClient.getGroupClient("test_async_group");
+        this.asyncGroupClient = asyncClient.getGroupAsyncClient("test_async_group");
     }
 
     private void assertResponse(Response<?> response, int expectedCode) {
