@@ -10,7 +10,6 @@ import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -181,9 +180,9 @@ public interface AsyncDocumentClient {
             ifThrowIllegalArgException(this.serviceEndpoint == null, "cannot buildAsyncClient client without service endpoint");
             ifThrowIllegalArgException(
                     this.masterKeyOrResourceToken == null && (permissionFeed == null || permissionFeed.isEmpty())
-                        && this.cosmosAuthorizationTokenResolver == null && this.cosmosKeyCredential == null,
+                        && this.cosmosKeyCredential == null,
                     "cannot buildAsyncClient client without any one of masterKey, " +
-                        "resource token, permissionFeed, tokenResolver and cosmos key credential");
+                        "resource token, permissionFeed and cosmos key credential");
             ifThrowIllegalArgException(cosmosKeyCredential != null && StringUtils.isEmpty(cosmosKeyCredential.getKey()),
                 "cannot buildAsyncClient client without key credential");
 
