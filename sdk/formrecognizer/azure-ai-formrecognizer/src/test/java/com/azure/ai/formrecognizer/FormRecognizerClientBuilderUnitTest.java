@@ -54,7 +54,7 @@ public class FormRecognizerClientBuilderUnitTest {
     public void nullApiKey() {
         assertThrows(NullPointerException.class, () -> {
             final FormRecognizerClientBuilder builder = new FormRecognizerClientBuilder();
-            builder.endpoint(VALID_HTTPS_LOCALHOST).apiKey(null);
+            builder.endpoint(VALID_HTTPS_LOCALHOST).credential(null);
         });
     }
 

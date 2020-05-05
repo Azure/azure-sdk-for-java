@@ -48,32 +48,10 @@ public class TextAnalyticsClientBuilderUnitTest {
     }
 
     /**
-     * Test for null API key
-     */
-    @Test
-    public void nullApiKey() {
-        assertThrows(NullPointerException.class, () -> {
-            final TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder();
-            builder.endpoint(VALID_HTTPS_LOCALHOST).apiKey(null);
-        });
-    }
-
-    /**
      * Test for empty Api Key without any other authentication
      */
     @Test
     public void emptyApiKey() {
         assertThrows(IllegalArgumentException.class, () -> new AzureKeyCredential(""));
-    }
-
-    /**
-     * Test for null AAD credential
-     */
-    @Test
-    public void nullAADCredential() {
-        assertThrows(NullPointerException.class, () -> {
-            final TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder();
-            builder.endpoint(VALID_HTTPS_LOCALHOST).credential(null);
-        });
     }
 }

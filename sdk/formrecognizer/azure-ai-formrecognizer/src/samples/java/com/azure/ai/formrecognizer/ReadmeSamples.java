@@ -35,7 +35,7 @@ public class ReadmeSamples {
      */
     public void useApiKeySyncClient() {
         FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildClient();
     }
@@ -46,7 +46,7 @@ public class ReadmeSamples {
     public void rotatingApiKey() {
         AzureKeyCredential credential = new AzureKeyCredential("{api_key}");
         FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
-            .apiKey(credential)
+            .credential(credential)
             .endpoint("{endpoint}")
             .buildClient();
 

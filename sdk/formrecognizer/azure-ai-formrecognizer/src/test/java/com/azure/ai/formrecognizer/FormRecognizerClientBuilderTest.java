@@ -133,7 +133,7 @@ public class FormRecognizerClientBuilderTest extends TestBase {
      */
     FormRecognizerClientBuilder createClientBuilder(String endpoint, AzureKeyCredential credential) {
         final FormRecognizerClientBuilder clientBuilder = new FormRecognizerClientBuilder()
-            .apiKey(credential)
+            .credential(credential)
             .endpoint(endpoint);
 
         if (interceptorManager.isPlaybackMode()) {

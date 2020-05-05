@@ -79,7 +79,7 @@ Use the API key as the credential parameter to authenticate the client:
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L43-L46 -->
 ```java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .apiKey(new AzureKeyCredential("{api_key}"))
+    .credential(new AzureKeyCredential("{api_key}"))
     .endpoint("{endpoint}")
     .buildClient();
 ```
@@ -89,7 +89,7 @@ The Azure Text Analytics client library provides a way to **rotate the existing 
 ```java
 AzureKeyCredential credential = new AzureKeyCredential("{api_key}");
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .apiKey(credential)
+    .credential(credential)
     .endpoint("{endpoint}")
     .buildClient();
 
@@ -202,14 +202,14 @@ Text analytics support both synchronous and asynchronous client creation by usin
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L43-L46 -->
 ``` java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .apiKey(new AzureKeyCredential("{api_key}"))
+    .credential(new AzureKeyCredential("{api_key}"))
     .endpoint("{endpoint}")
     .buildClient();
 ```
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L53-L56 -->
 ``` java
 TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .apiKey(new AzureKeyCredential("{api_key}"))
+    .credential(new AzureKeyCredential("{api_key}"))
     .endpoint("{endpoint}")
     .buildAsyncClient();
 ```

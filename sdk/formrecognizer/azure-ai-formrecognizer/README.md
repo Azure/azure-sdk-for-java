@@ -77,7 +77,7 @@ Use the API key as the credential parameter to authenticate the client:
 <!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L37-L40 -->
 ```java
 FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
-    .apiKey(new AzureKeyCredential("{api_key}"))
+    .credential(new AzureKeyCredential("{api_key}"))
     .endpoint("{endpoint}")
     .buildClient();
 ```
@@ -87,7 +87,7 @@ The Azure Form Recognizer client library provides a way to **rotate the existing
 ```java
 AzureKeyCredential credential = new AzureKeyCredential("{api_key}");
 FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
-    .apiKey(credential)
+    .credential(credential)
     .endpoint("{endpoint}")
     .buildClient();
 

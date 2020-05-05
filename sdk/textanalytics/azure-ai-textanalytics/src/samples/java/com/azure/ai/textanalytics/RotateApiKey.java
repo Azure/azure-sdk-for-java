@@ -19,7 +19,7 @@ public class RotateApiKey {
     public static void main(String[] args) {
         AzureKeyCredential credential = new AzureKeyCredential("{api_key}");
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .apiKey(credential)
+            .credential(credential)
             .endpoint("{endpoint}")
             .buildClient();
 
