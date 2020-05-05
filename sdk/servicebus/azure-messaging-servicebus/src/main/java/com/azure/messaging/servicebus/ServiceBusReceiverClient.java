@@ -41,7 +41,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         .setIsAutoCompleteEnabled(false)
         .setMaxAutoLockRenewalDuration(Duration.ZERO);
 
-    private final AtomicReference<EmitterProcessor<ServiceBusReceivedMessageContext>> messageProcessor = new AtomicReference<>();
+    private final AtomicReference<EmitterProcessor<ServiceBusReceivedMessageContext>> messageProcessor =
+        new AtomicReference<>();
     private final AtomicReference<Disposable> messageProcessorSubscription = new AtomicReference<>();
     /**
      * Creates a synchronous receiver given its asynchronous counterpart.
@@ -634,22 +635,16 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
 
         Disposable activeSubscription = messageProcessorSubscription.get();
         if (activeSubscription != null) {
-            activeSubscription.dispose();;
+            activeSubscription.dispose();
         }
     }
 
-
-
     /**
-     * Given an {@code emitter}, queues that work in {@link SynchronousMessageSubscriber}. If the synchronous job has
-     * not been created, will initialise it.
-     */
-    /**
-     * Given an {@code emitter}, subscribes {@link ContinuesMessageSubscriber} to receive messages from Service Bus.
-     * If the message subscriber has not been created, will initialise it.
+     * Given an {@code emitter}, subscribes to {@link ServiceBusReceivedMessageContext}  and receive messages from
+     * Service Bus. If the message subscriber has not been created, will initialise it.
      */
     private void queueWork(int maximumMessageCount, Duration maxWaitTime,
-                           FluxSink<ServiceBusReceivedMessageContext> emitter) {
+        FluxSink<ServiceBusReceivedMessageContext> emitter) {
 
         if (messageProcessor.get() != null && messageProcessor.get().isDisposed()) {
             logger.error("[{}]: Can not receive messaged because client is closed.", asyncClient.getEntityPath());
@@ -678,11 +673,11 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
                 emitter.error(throwable);
             })
             .doOnComplete(emitter::complete)
-        .subscribe();
+            .subscribe();
 
         Disposable oldSubscription = messageProcessorSubscription.getAndSet(newSubscription);
         if (oldSubscription != null) {
-            oldSubscription.dispose();;
+            oldSubscription.dispose();
         }
     }
 }
