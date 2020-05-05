@@ -101,7 +101,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         assertThat(containerResponse.getRequestCharge()).isGreaterThan(0);
         validateContainerResponse(containerProperties, containerResponse);
 
-        assertThat(containerResponse.getProperties().getAnalyticalStorageTimeToLiveInSeconds()).isEqualTo(analyticalTTL);
+        assertThat(containerResponse.getProperties().getAnalyticalStoreTimeToLiveInSeconds()).isEqualTo(analyticalTTL);
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
