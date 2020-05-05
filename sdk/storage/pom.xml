@@ -19,6 +19,7 @@
     <module>azure-storage-blob-nio</module>
     <module>azure-storage-file-share</module>
     <module>azure-storage-file-datalake</module>
+    <module>azure-storage-internal-avro</module>
     <module>azure-storage-queue</module>
     <module>azure-storage-perf</module>
   </modules>

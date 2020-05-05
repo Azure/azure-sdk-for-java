@@ -1088,7 +1088,10 @@ public class BlobAsyncClientBase {
             response.getDeserializedHeaders().isServerEncrypted(), null, null, null, null, null,
             response.getDeserializedHeaders().getEncryptionKeySha256(), null,
             response.getDeserializedHeaders().getMetadata(),
-            response.getDeserializedHeaders().getBlobCommittedBlockCount());
+            response.getDeserializedHeaders().getBlobCommittedBlockCount(),
+            response.getDeserializedHeaders().getVersionId(), null,
+            response.getDeserializedHeaders().getObjectReplicationSourcePolicies(),
+            response.getDeserializedHeaders().getObjectReplicationDestinationPolicyId());
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), properties);
     }
 
@@ -1227,7 +1230,8 @@ public class BlobAsyncClientBase {
                     hd.isIncrementalCopy(), hd.getDestinationSnapshot(), AccessTier.fromString(hd.getAccessTier()),
                     hd.isAccessTierInferred(), ArchiveStatus.fromString(hd.getArchiveStatus()),
                     hd.getEncryptionKeySha256(), hd.getAccessTierChangeTime(), hd.getMetadata(),
-                    hd.getBlobCommittedBlockCount(), hd.getVersionId(), hd.isCurrentVersion());
+                    hd.getBlobCommittedBlockCount(), hd.getVersionId(), hd.isCurrentVersion(),
+                    hd.getObjectReplicationRuleStatus());
                 return new SimpleResponse<>(rb, properties);
             });
     }
