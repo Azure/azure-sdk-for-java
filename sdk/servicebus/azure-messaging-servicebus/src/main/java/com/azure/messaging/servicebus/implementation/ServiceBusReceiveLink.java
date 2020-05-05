@@ -14,15 +14,6 @@ import java.time.Instant;
  */
 public interface ServiceBusReceiveLink extends AmqpReceiveLink {
     /**
-     * Updates the disposition status of a message with corresponding lock token.
-     *
-     * @param lockToken Lock token of message.
-     * @param deliveryState Delivery state of message.
-     * @return A Mono that completes when the state is successfully updated and acknowledged by message broker.
-     */
-    Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState);
-
-    /**
      * Gets the session id associated with the link.
      *
      * @return The session id associated with the link or an empty mono if this is not a session link.
