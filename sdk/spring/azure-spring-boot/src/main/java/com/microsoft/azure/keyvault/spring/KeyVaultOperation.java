@@ -26,7 +26,7 @@ public class KeyVaultOperation {
     private final List<String> secretKeys;
 
     private final Object refreshLock = new Object();
-    private final SecretClient keyVaultClient;
+    private final SecretClient secretClient;
     private final String vaultUri;
 
     private ArrayList<String> propertyNames = new ArrayList<>();
@@ -35,13 +35,13 @@ public class KeyVaultOperation {
     private final AtomicLong lastUpdateTime = new AtomicLong();
     private final ReadWriteLock rwLock = new ReentrantReadWriteLock();
 
-    public KeyVaultOperation(final SecretClient keyVaultClient,
+    public KeyVaultOperation(final SecretClient secretClient,
                              String vaultUri,
                              final long refreshInterval,
                              final List<String> secretKeys) {
         this.cacheRefreshIntervalInMs = refreshInterval;
         this.secretKeys = secretKeys;
-        this.keyVaultClient = keyVaultClient;
+        this.secretClient = secretClient;
         // TODO(pan): need to validate why last '/' need to be truncated.
         this.vaultUri = StringUtils.trimTrailingCharacter(vaultUri.trim(), '/');
         fillSecretsList();
@@ -95,7 +95,7 @@ public class KeyVaultOperation {
             refreshPropertyNames();
         }
         if (this.propertyNames.contains(secretName)) {
-            final KeyVaultSecret secret = this.keyVaultClient.getSecret(secretName);
+            final KeyVaultSecret secret = this.secretClient.getSecret(secretName);
             return secret == null ? null : secret.getValue();
         } else {
             return null;
@@ -116,22 +116,22 @@ public class KeyVaultOperation {
     private void fillSecretsList() {
         try {
             this.rwLock.writeLock().lock();
-            if (this.secretKeys == null || secretKeys.size() == 0) {
+            if (this.secretKeys == null || this.secretKeys.size() == 0) {
                 this.propertyNames.clear();
 
-                final PagedIterable<SecretProperties> secretProperties = keyVaultClient.listPropertiesOfSecrets();
+                final PagedIterable<SecretProperties> secretProperties = this.secretClient.listPropertiesOfSecrets();
                 secretProperties.forEach(s -> {
-                    final String secretName = s.getName().replace(vaultUri + "/secrets/", "");
+                    final String secretName = s.getName().replace(this.vaultUri + "/secrets/", "");
                     addSecretIfNotExist(secretName);
                 });
 
                 this.lastUpdateTime.set(System.currentTimeMillis());
             } else {
-                for (final String secretKey : secretKeys) {
+                for (final String secretKey : this.secretKeys) {
                     addSecretIfNotExist(secretKey);
                 }
             }
-            propertyNamesArr = propertyNames.toArray(new String[0]);
+            this.propertyNamesArr = this.propertyNames.toArray(new String[0]);
         } finally {
             this.rwLock.writeLock().unlock();
         }

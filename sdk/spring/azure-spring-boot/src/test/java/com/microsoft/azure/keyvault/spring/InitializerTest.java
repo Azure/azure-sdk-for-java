@@ -3,7 +3,6 @@
 
 package com.microsoft.azure.keyvault.spring;
 
-
 import com.microsoft.azure.utils.Constants;
 import org.junit.Test;
 import org.junit.runner.RunWith;

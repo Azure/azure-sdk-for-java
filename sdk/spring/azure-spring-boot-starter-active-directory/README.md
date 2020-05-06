@@ -25,7 +25,7 @@ The authorization flow is composed of 3 phrases:
 `azure-spring-boot-starter-active-directory` is published on Maven Central Repository.
 If you are using Maven, add the following dependency.
 
-[//]: # "{x-version-update-start;com.azure:azure-spring-boot-starter-active-directory;dependency}"
+[//]: # "{x-version-update-start;com.azure:azure-spring-boot-starter-active-directory;current}"
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
