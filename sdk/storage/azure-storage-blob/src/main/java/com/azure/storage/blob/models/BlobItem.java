@@ -24,7 +24,7 @@ public final class BlobItem {
      * Initializes a new BlobItem.
      */
     public BlobItem() {
-
+        tags = null;
     }
 
     /**
@@ -80,7 +80,7 @@ public final class BlobItem {
     @JsonProperty(value = "Metadata")
     private Map<String, String> metadata;
 
-    private Map<String, String> tags;
+    private final Map<String, String> tags;
 
     /*
      * The versionId property.

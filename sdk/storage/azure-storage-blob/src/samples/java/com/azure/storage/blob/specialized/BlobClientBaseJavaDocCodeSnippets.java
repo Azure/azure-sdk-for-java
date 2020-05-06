@@ -435,8 +435,8 @@ public class BlobClientBaseJavaDocCodeSnippets {
     public void setTagsWithResponse() {
         // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.setTagsWithResponse#Map-Duration-Context
         System.out.printf("Set metadata completed with status %d%n",
-        client.setTagsWithResponse(Collections.singletonMap("tag", "value"), timeout, new Context(key1, value1))
-            .getStatusCode());
+            client.setTagsWithResponse(Collections.singletonMap("tag", "value"), timeout, new Context(key1, value1))
+                .getStatusCode());
         // END: com.azure.storage.blob.specialized.BlobClientBase.setTagsWithResponse#Map-Duration-Context
     }
 

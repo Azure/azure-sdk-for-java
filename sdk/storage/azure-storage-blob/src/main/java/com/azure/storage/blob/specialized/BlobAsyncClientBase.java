@@ -556,7 +556,7 @@ public class BlobAsyncClientBase {
             }
         }
 
-        sb.deleteCharAt(sb.length()-1); // Remove the last '&'
+        sb.deleteCharAt(sb.length() - 1); // Remove the last '&'
         return sb.toString();
     }
 
@@ -1472,7 +1472,7 @@ public class BlobAsyncClientBase {
             versionId, context)
             .map(response -> {
                 Map<String, String> tags = new HashMap<>();
-                for(BlobTag tag : response.getValue().getBlobTagSet()) {
+                for (BlobTag tag : response.getValue().getBlobTagSet()) {
                     tags.put(tag.getKey(), tag.getValue());
                 }
                 return new SimpleResponse<>(response, tags);
