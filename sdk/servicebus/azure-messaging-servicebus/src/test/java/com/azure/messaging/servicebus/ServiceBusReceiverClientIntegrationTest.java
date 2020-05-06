@@ -104,7 +104,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         setSenderAndReceiver(entityType, isSessionEnabled);
         final int maxMessages = 1;
-        final int totalReceive = 2;
+        final int totalReceive = 3;
         final Duration shortTimeOut = Duration.ofSeconds(8);
 
         final String messageId = UUID.randomUUID().toString();
@@ -122,9 +122,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         for (int i = 0; i < totalReceive; ++i) {
             messages = receiver.receive(maxMessages, shortTimeOut);
             receivedMessageCount = 0;
-            System.out.println(i + "!!! Receiving " );
             for (ServiceBusReceivedMessageContext receivedMessage : messages) {
-                System.out.println("!!! Received " + receivedMessage.getMessage().getSequenceNumber());
                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                 receiver.complete(receivedMessage.getMessage());
                 messagesPending.decrementAndGet();
