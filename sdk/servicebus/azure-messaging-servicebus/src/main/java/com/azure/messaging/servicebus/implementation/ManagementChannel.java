@@ -33,6 +33,7 @@ import reactor.core.publisher.SynchronousSink;
 import java.nio.BufferOverflowException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -181,7 +182,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
      */
     @Override
     public Flux<ServiceBusReceivedMessage> receiveDeferredMessages(ReceiveMode receiveMode, String sessionId,
-        String associatedLinkName, long... sequenceNumbers) {
+        String associatedLinkName, Iterable<Long> sequenceNumbers) {
 
         return isAuthorized(ManagementConstants.OPERATION_RECEIVE_BY_SEQUENCE_NUMBER)
             .thenMany(createChannel.flatMap(channel -> {
@@ -191,8 +192,10 @@ public class ManagementChannel implements ServiceBusManagementNode {
                 // set mandatory properties on AMQP message body
                 final Map<String, Object> requestBodyMap = new HashMap<>();
 
-                requestBodyMap.put(ManagementConstants.SEQUENCE_NUMBERS, Arrays.stream(sequenceNumbers)
-                    .boxed().toArray(Long[]::new));
+                final List<Long> numbers = new ArrayList<>();
+                sequenceNumbers.forEach(s -> numbers.add(s));
+                Long[] longs = numbers.toArray(new Long[0]);
+                requestBodyMap.put(ManagementConstants.SEQUENCE_NUMBERS, longs);
 
                 requestBodyMap.put(ManagementConstants.RECEIVER_SETTLE_MODE,
                     UnsignedInteger.valueOf(receiveMode == ReceiveMode.RECEIVE_AND_DELETE ? 0 : 1));
@@ -216,14 +219,12 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * {@inheritDoc}
      */
     @Override
-    public Mono<Instant> renewMessageLock(UUID lockToken, String associatedLinkName) {
+    public Mono<Instant> renewMessageLock(String lockToken, String associatedLinkName) {
         return isAuthorized(OPERATION_PEEK).then(createChannel.flatMap(channel -> {
             final Message requestMessage = createManagementMessage(ManagementConstants.OPERATION_RENEW_LOCK,
                 associatedLinkName);
             final Map<String, Object> requestBody = new HashMap<>();
-
-            requestBody.put(ManagementConstants.LOCK_TOKENS_KEY, new UUID[]{lockToken});
-
+            requestBody.put(ManagementConstants.LOCK_TOKENS_KEY, new UUID[]{UUID.fromString(lockToken)});
             requestMessage.setBody(new AmqpValue(requestBody));
 
             return sendWithVerify(channel, requestMessage);
@@ -377,7 +378,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
         String deadLetterErrorDescription, Map<String, Object> propertiesToModify, String sessionId,
         String associatedLinkName) {
 
-        final UUID[] lockTokens = new UUID[] { UUID.fromString(lockToken) };
+        final UUID[] lockTokens = new UUID[]{UUID.fromString(lockToken)};
         return isAuthorized(OPERATION_UPDATE_DISPOSITION).then(createChannel.flatMap(channel -> {
             logger.verbose("Update disposition of deliveries '{}' to '{}' on entity '{}', session '{}'",
                 Arrays.toString(lockTokens), dispositionStatus, entityPath, sessionId);

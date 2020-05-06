@@ -102,6 +102,10 @@
     "source": "specification/datamigration/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "datashare/resource-manager": {
+    "source": "specification/datashare/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "devtestlabs/resource-manager" : {
     "source": "specification/devtestlabs/resource-manager/readme.md",
     "args": "--multiapi --fluent"

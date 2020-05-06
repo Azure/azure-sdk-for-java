@@ -38,10 +38,10 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
         dispose(sender);
 
         try {
-            receiver.receive(new ReceiveAsyncOptions().setEnableAutoComplete(false))
+            receiver.receive(new ReceiveAsyncOptions().setIsAutoCompleteEnabled(false))
                 .take(messagesPending.get())
                 .map(message -> {
-                    logger.info("Message received: {}", message.getSequenceNumber());
+                    logger.info("Message received: {}", message.getMessage().getSequenceNumber());
                     return message;
                 })
                 .timeout(Duration.ofSeconds(5), Mono.empty())
@@ -175,10 +175,10 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
 
                 Assertions.assertNotNull(queueName, "'queueName' cannot be null.");
 
-                sender = createBuilder().sender()
+                sender = getBuilder().sender()
                     .queueName(queueName)
                     .buildClient();
-                receiver = createBuilder().receiver()
+                receiver = getBuilder().receiver()
                     .queueName(queueName)
                     .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                     .buildAsyncClient();
@@ -190,10 +190,10 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
                 Assertions.assertNotNull(topicName, "'topicName' cannot be null.");
                 Assertions.assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
 
-                sender = createBuilder().sender()
+                sender = getBuilder().sender()
                     .topicName(topicName)
                     .buildClient();
-                receiver = createBuilder().receiver()
+                receiver = getBuilder().receiver()
                     .topicName(topicName)
                     .subscriptionName(subscriptionName)
                     .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)

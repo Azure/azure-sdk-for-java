@@ -74,7 +74,7 @@ public class EventProcessorClientErrorHandlingTest {
             Assertions.assertEquals("NONE", errorContext.getPartitionContext().getPartitionId());
             Assertions.assertEquals("cg", errorContext.getPartitionContext().getConsumerGroup());
             Assertions.assertTrue(errorContext.getThrowable() instanceof IllegalStateException);
-        }, new HashMap<>());
+        }, new HashMap<>(), 1, null, false);
         client.start();
         boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
         try {
@@ -93,7 +93,7 @@ public class EventProcessorClientErrorHandlingTest {
             .thenReturn(Flux.just(getEvent(eventData1)));
         EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder, "cg",
             () -> new BadProcessEventHandler(countDownLatch), new SampleCheckpointStore(), false,
-            null, errorContext -> { }, new HashMap<>());
+            null, errorContext -> { }, new HashMap<>(), 1, null, false);
         client.start();
         boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
         client.stop();
@@ -108,7 +108,7 @@ public class EventProcessorClientErrorHandlingTest {
             .thenReturn(Flux.just(getEvent(eventData1)));
         EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder, "cg",
             () -> new BadInitHandler(countDownLatch), new SampleCheckpointStore(), false,
-            null, errorContext -> { }, new HashMap<>());
+            null, errorContext -> { }, new HashMap<>(), 1, null, false);
         client.start();
         boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
         client.stop();
@@ -123,7 +123,7 @@ public class EventProcessorClientErrorHandlingTest {
             .thenReturn(Flux.just(getEvent(eventData1)));
         EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder, "cg",
             () -> new BadCloseHandler(countDownLatch), new SampleCheckpointStore(), false,
-            null, errorContext -> { }, new HashMap<>());
+            null, errorContext -> { }, new HashMap<>(), 1, null, false);
         client.start();
         boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
         client.stop();

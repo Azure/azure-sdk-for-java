@@ -416,6 +416,69 @@ private static void onEvent(EventContext eventContext) {
     System.out.println("Contents: " + new String(event.getBody(), StandardCharsets.UTF_8));
 }
 ```
+#### V3 Checkpoints
+In order to align with the goal of supporting cross-language checkpoints and a more efficient means of tracking 
+partition ownership, V5 Event Processor Client does not consider or apply checkpoints created with the legacy Event
+Processor Host family of types. To migrate the checkpoints created by the V3 Event Processor Host, the new Event 
+Processor Client provides an option to do a one-time initialization of checkpoints as shown in the sample below.
+
+```java
+private static void main(String[] args) {
+    BlobContainerAsyncClient blobClient = new BlobContainerClientBuilder()
+            .connectionString("storage-connection-string")
+            .containerName("storage-container-name")
+            .buildAsyncClient();
+  
+    // Get the legacy checkpoint offsets and convert them into a map of partitionId and EventPosition
+    Map<String, EventPosition> initialPartitionEventPosition = getLegacyPartitionOffsetMap()
+                .entrySet()
+                .stream()
+                .map(partitionOffsetEntry -> new AbstractMap.SimpleEntry<>(partitionOffsetEntry.getKey(),
+                    EventPosition.fromOffset(partitionOffsetEntry.getValue())))
+                .collect(Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue));
+  
+    // Set the initial partition event positions in EventProcessorClientBuilder
+    EventProcessorClient processor = new EventProcessorClientBuilder()
+            .connectionString("connection-string-for-an-event-hub")
+            .consumerGroup("my-consumer-group")
+            .checkpointStore(new BlobCheckpointStore(blobClient))
+            .initialPartitionEventPosition(initialPartitionEventPosition)
+            .processEvent(eventContext -> onEvent(eventContext))
+            .processError(context -> {
+                System.err.printf("Error occurred on partition: %s. Error: %s%n",
+                        context.getPartitionContext().getPartitionId(), context.getThrowable());
+            })
+            .processPartitionInitialization(initializationContext -> {
+                System.out.printf("Started receiving on partition: %s%n",
+                        initializationContext.getPartitionContext().getPartitionId());
+            })
+            .processPartitionClose(closeContext -> {
+                System.out.printf("Stopped receiving on partition: %s. Reason: %s%n",
+                        closeContext.getPartitionContext().getPartitionId(),
+                        closeContext.getCloseReason());
+            })
+            .buildEventProcessorClient();
+
+    processor.start();
+
+    // When you are finished processing events.
+    processor.stop();
+}
+
+private static Map<String, Long> getLegacyPartitionOffsetMap() {
+    // read the offsets of legacy checkpoint for each partition from blob storage and
+    // return a map of partitionId-offset
+}
+
+private static void onEvent(EventContext eventContext) {
+    PartitionContext partition = eventContext.getPartitionContext();
+    System.out.println("Received events from partition: " + partition.getPartitionId());
+
+    EventData event = eventContext.getEventData();
+    System.out.println("Sequence number: " + event.getSequenceNumber());
+    System.out.println("Contents: " + new String(event.getBody(), StandardCharsets.UTF_8));
+}
+```
 
 ## Additional samples
 
