@@ -7,6 +7,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.util.CoreUtils;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
@@ -49,9 +50,11 @@ class IntelliJCredential implements TokenCredential {
             authMethodDetails = null;
         }
 
-        String azureEnv = authMethodDetails != null ? authMethodDetails.getAzureEnv() : "";
-        String cloudInstance = accessor.getAzureAuthHost(azureEnv);
-        options.setAuthorityHost(cloudInstance);
+        if (CoreUtils.isNullOrEmpty(options.getAuthorityHost())) {
+            String azureEnv = authMethodDetails != null ? authMethodDetails.getAzureEnv() : "";
+            String cloudInstance = accessor.getAzureAuthHost(azureEnv);
+            options.setAuthorityHost(cloudInstance);
+        }
 
         String tenant = tenantId;
 
