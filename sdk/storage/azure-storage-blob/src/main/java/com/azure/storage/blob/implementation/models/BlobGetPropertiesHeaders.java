@@ -52,10 +52,10 @@ public final class BlobGetPropertiesHeaders {
     private String objectReplicationPolicyId;
 
     /*
-     * The objectReplicationRuleStatus property.
+     * The objectReplicationRules property.
      */
     @HeaderCollection("x-ms-or-")
-    private Map<String, String> objectReplicationRuleStatus;
+    private Map<String, String> objectReplicationRules;
 
     /*
      * The blob's type. Possible values include: 'BlockBlob', 'PageBlob',
@@ -344,6 +344,24 @@ public final class BlobGetPropertiesHeaders {
     private Boolean isCurrentVersion;
 
     /*
+     * The number of tags associated with the blob
+     */
+    @JsonProperty(value = "x-ms-tag-count")
+    private Long tagCount;
+
+    /*
+     * The time this blob will expire.
+     */
+    @JsonProperty(value = "x-ms-expiry-time")
+    private DateTimeRfc1123 expiresOn;
+
+    /*
+     * If this blob has been sealed
+     */
+    @JsonProperty(value = "x-ms-blob-sealed")
+    private Boolean isSealed;
+
+    /*
      * The errorCode property.
      */
     @JsonProperty(value = "x-ms-error-code")
@@ -457,25 +475,24 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the objectReplicationRuleStatus property: The
-     * objectReplicationRuleStatus property.
+     * Get the objectReplicationRules property: The objectReplicationRules
+     * property.
      *
-     * @return the objectReplicationRuleStatus value.
+     * @return the objectReplicationRules value.
      */
-    public Map<String, String> getObjectReplicationRuleStatus() {
-        return this.objectReplicationRuleStatus;
+    public Map<String, String> getObjectReplicationRules() {
+        return this.objectReplicationRules;
     }
 
     /**
-     * Set the objectReplicationRuleStatus property: The
-     * objectReplicationRuleStatus property.
+     * Set the objectReplicationRules property: The objectReplicationRules
+     * property.
      *
-     * @param objectReplicationRuleStatus the objectReplicationRuleStatus value
-     * to set.
+     * @param objectReplicationRules the objectReplicationRules value to set.
      * @return the BlobGetPropertiesHeaders object itself.
      */
-    public BlobGetPropertiesHeaders setObjectReplicationRuleStatus(Map<String, String> objectReplicationRuleStatus) {
-        this.objectReplicationRuleStatus = objectReplicationRuleStatus;
+    public BlobGetPropertiesHeaders setObjectReplicationRules(Map<String, String> objectReplicationRules) {
+        this.objectReplicationRules = objectReplicationRules;
         return this;
     }
 
@@ -1391,6 +1408,73 @@ public final class BlobGetPropertiesHeaders {
      */
     public BlobGetPropertiesHeaders setIsCurrentVersion(Boolean isCurrentVersion) {
         this.isCurrentVersion = isCurrentVersion;
+        return this;
+    }
+
+    /**
+     * Get the tagCount property: The number of tags associated with the blob.
+     *
+     * @return the tagCount value.
+     */
+    public Long getTagCount() {
+        return this.tagCount;
+    }
+
+    /**
+     * Set the tagCount property: The number of tags associated with the blob.
+     *
+     * @param tagCount the tagCount value to set.
+     * @return the BlobGetPropertiesHeaders object itself.
+     */
+    public BlobGetPropertiesHeaders setTagCount(Long tagCount) {
+        this.tagCount = tagCount;
+        return this;
+    }
+
+    /**
+     * Get the expiresOn property: The time this blob will expire.
+     *
+     * @return the expiresOn value.
+     */
+    public OffsetDateTime getExpiresOn() {
+        if (this.expiresOn == null) {
+            return null;
+        }
+        return this.expiresOn.getDateTime();
+    }
+
+    /**
+     * Set the expiresOn property: The time this blob will expire.
+     *
+     * @param expiresOn the expiresOn value to set.
+     * @return the BlobGetPropertiesHeaders object itself.
+     */
+    public BlobGetPropertiesHeaders setExpiresOn(OffsetDateTime expiresOn) {
+        if (expiresOn == null) {
+            this.expiresOn = null;
+        } else {
+            this.expiresOn = new DateTimeRfc1123(expiresOn);
+        }
+        return this;
+    }
+
+    /**
+     * Get the isSealed property: If this blob has been sealed.
+     *
+     * @return the isSealed value.
+     */
+    public Boolean isSealed() {
+        return this.isSealed;
+    }
+
+    /**
+     * Set the isSealed property: If this blob has been sealed.
+     *
+     * @param isSealed the isSealed value to set.
+     * @return the BlobGetPropertiesHeaders object itself.
+     */
+    public BlobGetPropertiesHeaders setIsSealed(Boolean isSealed) {
+        this.isSealed = isSealed;
         return this;
     }
 

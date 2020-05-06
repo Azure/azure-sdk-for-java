@@ -222,7 +222,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         return this.azureBlobStorage.blockBlobs().uploadWithRestResponseAsync(null,
             null, data, length, null, contentMd5, metadata, requestConditions.getLeaseId(), tier,
             requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
-            requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), null, headers, getCustomerProvidedKey(),
+            requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), null,
+            null, headers, getCustomerProvidedKey(),
             encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 BlockBlobUploadHeaders hd = rb.getDeserializedHeaders();
@@ -534,7 +535,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         return this.azureBlobStorage.blockBlobs().commitBlockListWithRestResponseAsync(null, null,
             new BlockLookupList().setLatest(base64BlockIds), null, null, null, metadata, requestConditions.getLeaseId(),
             tier, requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
-            requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), null, headers, getCustomerProvidedKey(),
+            requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), null,
+            null, headers, getCustomerProvidedKey(),
             encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 BlockBlobCommitBlockListHeaders hd = rb.getDeserializedHeaders();

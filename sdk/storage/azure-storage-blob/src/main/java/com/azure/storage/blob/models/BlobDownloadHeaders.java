@@ -74,8 +74,8 @@ public final class BlobDownloadHeaders {
         this.errorCode = headers.getErrorCode();
 
         this.objectReplicationSourcePolicies = new HashMap<>();
-        this.objectReplicationRuleStatus = headers.getObjectReplicationRuleStatus() == null ? new HashMap<>()
-            : headers.getObjectReplicationRuleStatus();
+        this.objectReplicationRuleStatus = headers.getObjectReplicationRules() == null ? new HashMap<>()
+            : headers.getObjectReplicationRules();
         this.objectReplicationDestinationPolicyId = this.objectReplicationRuleStatus.getOrDefault("policy-id", null);
         /*
         If there is no destination policy, then we are a source. If ORS is enabled. If it is not enabled, the loop will

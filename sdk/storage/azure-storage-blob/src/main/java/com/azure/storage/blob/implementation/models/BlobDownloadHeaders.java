@@ -46,10 +46,10 @@ public final class BlobDownloadHeaders {
     private String objectReplicationPolicyId;
 
     /*
-     * The objectReplicationRuleStatus property.
+     * The objectReplicationRules property.
      */
     @HeaderCollection("x-ms-or-")
-    private Map<String, String> objectReplicationRuleStatus;
+    private Map<String, String> objectReplicationRules;
 
     /*
      * The number of bytes present in the response body.
@@ -300,6 +300,18 @@ public final class BlobDownloadHeaders {
     private byte[] blobContentMD5;
 
     /*
+     * The number of tags associated with the blob
+     */
+    @JsonProperty(value = "x-ms-tag-count")
+    private Long tagCount;
+
+    /*
+     * If this blob has been sealed
+     */
+    @JsonProperty(value = "x-ms-blob-sealed")
+    private Boolean isSealed;
+
+    /*
      * If the request is to read a specified range and the
      * x-ms-range-get-content-crc64 is set to true, then the request returns a
      * crc64 for the range, as long as the range size is less than or equal to
@@ -394,25 +406,24 @@ public final class BlobDownloadHeaders {
     }
 
     /**
-     * Get the objectReplicationRuleStatus property: The
-     * objectReplicationRuleStatus property.
+     * Get the objectReplicationRules property: The objectReplicationRules
+     * property.
      *
-     * @return the objectReplicationRuleStatus value.
+     * @return the objectReplicationRules value.
      */
-    public Map<String, String> getObjectReplicationRuleStatus() {
-        return this.objectReplicationRuleStatus;
+    public Map<String, String> getObjectReplicationRules() {
+        return this.objectReplicationRules;
     }
 
     /**
-     * Set the objectReplicationRuleStatus property: The
-     * objectReplicationRuleStatus property.
+     * Set the objectReplicationRules property: The objectReplicationRules
+     * property.
      *
-     * @param objectReplicationRuleStatus the objectReplicationRuleStatus value
-     * to set.
+     * @param objectReplicationRules the objectReplicationRules value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders setObjectReplicationRuleStatus(Map<String, String> objectReplicationRuleStatus) {
-        this.objectReplicationRuleStatus = objectReplicationRuleStatus;
+    public BlobDownloadHeaders setObjectReplicationRules(Map<String, String> objectReplicationRules) {
+        this.objectReplicationRules = objectReplicationRules;
         return this;
     }
 
@@ -1195,6 +1206,46 @@ public final class BlobDownloadHeaders {
      */
     public BlobDownloadHeaders setBlobContentMD5(byte[] blobContentMD5) {
         this.blobContentMD5 = CoreUtils.clone(blobContentMD5);
+        return this;
+    }
+
+    /**
+     * Get the tagCount property: The number of tags associated with the blob.
+     *
+     * @return the tagCount value.
+     */
+    public Long getTagCount() {
+        return this.tagCount;
+    }
+
+    /**
+     * Set the tagCount property: The number of tags associated with the blob.
+     *
+     * @param tagCount the tagCount value to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders setTagCount(Long tagCount) {
+        this.tagCount = tagCount;
+        return this;
+    }
+
+    /**
+     * Get the isSealed property: If this blob has been sealed.
+     *
+     * @return the isSealed value.
+     */
+    public Boolean isSealed() {
+        return this.isSealed;
+    }
+
+    /**
+     * Set the isSealed property: If this blob has been sealed.
+     *
+     * @param isSealed the isSealed value to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders setIsSealed(Boolean isSealed) {
+        this.isSealed = isSealed;
         return this;
     }
 
