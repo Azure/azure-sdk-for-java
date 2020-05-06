@@ -125,8 +125,8 @@ public final class TextAnalyticsClientBuilder {
      * </p>
      *
      * @return A {@link TextAnalyticsClient} with the options set from the builder.
-     * @throws NullPointerException if {@link #endpoint(String) endpoint} or {@link #credential(AzureKeyCredential) apiKey}
-     * has not been set.
+     * @throws NullPointerException if {@link #endpoint(String) endpoint} or
+     *  {@link #credential(AzureKeyCredential) apiKey} has not been set.
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
      */
     public TextAnalyticsClient buildClient() {
@@ -143,8 +143,8 @@ public final class TextAnalyticsClientBuilder {
      * </p>
      *
      * @return A {@link TextAnalyticsAsyncClient} with the options set from the builder.
-     * @throws NullPointerException if {@link #endpoint(String) endpoint} or {@link #credential(AzureKeyCredential) apiKey}
-     * has not been set.
+     * @throws NullPointerException if {@link #endpoint(String) endpoint} or
+     *  {@link #credential(AzureKeyCredential) apiKey} has not been set.
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
      */
     public TextAnalyticsAsyncClient buildAsyncClient() {

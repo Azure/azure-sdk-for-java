@@ -376,10 +376,10 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void extractKeyPhrasesWarning() {
         extractKeyPhrasesWarningRunner(input ->
-            client.extractKeyPhrases(input).getWarnings().forEach(warning-> {
-                    assertTrue(WARNING_TOO_LONG_DOCUMENT_INPUT_MESSAGE.equals(warning.getMessage()));
-                    assertTrue(LONG_WORDS_IN_DOCUMENT.equals(warning.getCode()));
-                }));
+            client.extractKeyPhrases(input).getWarnings().forEach(warning -> {
+                assertTrue(WARNING_TOO_LONG_DOCUMENT_INPUT_MESSAGE.equals(warning.getMessage()));
+                assertTrue(LONG_WORDS_IN_DOCUMENT.equals(warning.getCode()));
+            }));
     }
 
     @Test
