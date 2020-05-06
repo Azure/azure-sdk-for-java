@@ -9,7 +9,7 @@ parameters:
   TestMatrix:
     Linux - Java 8:
       OSName: 'Linux'
-      OSVmImage: 'ubuntu-18.04'
+      OSVmImage: 'ubuntu-16.04'
       JavaVersion: '1.8'
       RunTitle: 'Linux on Java 1.8'
     macOS - Java 8:
@@ -24,7 +24,7 @@ parameters:
       RunTitle: 'Windows on Java 1.8'
     Linux - Java 11:
       OSName: 'Linux'
-      OSVmImage: 'ubuntu-18.04'
+      OSVmImage: 'ubuntu-16.04'
       JavaVersion: '1.11'
       RunTitle: 'Linux on Java 1.11'
     macOS - Java 11:
