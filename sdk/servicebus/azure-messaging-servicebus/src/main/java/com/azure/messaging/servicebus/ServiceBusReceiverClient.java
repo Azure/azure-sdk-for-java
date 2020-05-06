@@ -18,6 +18,7 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * A <b>synchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage} from a specific queue or
@@ -39,7 +40,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         .setIsAutoCompleteEnabled(false)
         .setMaxAutoLockRenewalDuration(Duration.ZERO);
 
-    private EmitterProcessor<ServiceBusReceivedMessageContext> messageProcessor;
+    private final AtomicReference<EmitterProcessor<ServiceBusReceivedMessageContext>> messageProcessor =
+        new AtomicReference<>();
 
     /**
      * Creates a synchronous receiver given its asynchronous counterpart.
@@ -610,8 +612,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     public void close() {
         asyncClient.close();
 
-        if (messageProcessor != null) {
-            messageProcessor.onComplete();
+        if (messageProcessor.get() != null) {
+            messageProcessor.get().onComplete();
         }
     }
 
@@ -626,11 +628,11 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         final SynchronousMessageSubscriber syncSubscriber = new SynchronousMessageSubscriber(work);
         logger.info("[{}]: Started synchronous message subscriber.", id);
 
-        if (messageProcessor ==  null) {
-            messageProcessor = this.asyncClient.receive(DEFAULT_RECEIVE_OPTIONS)
-                .subscribeWith(EmitterProcessor.create(false));
+        if (messageProcessor.get() ==  null) {
+            messageProcessor.set(this.asyncClient.receive(DEFAULT_RECEIVE_OPTIONS)
+                .subscribeWith(EmitterProcessor.create(false)));
         }
 
-        messageProcessor.subscribe(syncSubscriber);
+        messageProcessor.get().subscribe(syncSubscriber);
     }
 }
