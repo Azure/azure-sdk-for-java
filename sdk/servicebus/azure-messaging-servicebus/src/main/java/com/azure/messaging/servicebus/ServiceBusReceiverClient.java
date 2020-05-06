@@ -39,7 +39,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         .setIsAutoCompleteEnabled(false)
         .setMaxAutoLockRenewalDuration(Duration.ZERO);
 
-    private final EmitterProcessor<ServiceBusReceivedMessageContext> messageProcessor;
+    private EmitterProcessor<ServiceBusReceivedMessageContext> messageProcessor;
 
     /**
      * Creates a synchronous receiver given its asynchronous counterpart.
@@ -49,8 +49,6 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     ServiceBusReceiverClient(ServiceBusReceiverAsyncClient asyncClient, Duration operationTimeout) {
         this.asyncClient = Objects.requireNonNull(asyncClient, "'asyncClient' cannot be null.");
         this.operationTimeout = Objects.requireNonNull(operationTimeout, "'operationTimeout' cannot be null.");
-        messageProcessor = this.asyncClient.receive(DEFAULT_RECEIVE_OPTIONS)
-            .subscribeWith(EmitterProcessor.create(false));
     }
 
     /**
@@ -628,20 +626,27 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     public void close() {
         asyncClient.close();
 
-        messageProcessor.onComplete();
+        if (messageProcessor != null) {
+            messageProcessor.onComplete();
+        }
     }
 
     /**
      * Given an {@code emitter}, creates a {@link SynchronousMessageSubscriber} to receive messages from Service Bus.
      */
-    private void queueWork(int maximumMessageCount, Duration maxWaitTime,
+    private synchronized void queueWork(int maximumMessageCount, Duration maxWaitTime,
         FluxSink<ServiceBusReceivedMessageContext> emitter) {
-
         final long id = idGenerator.getAndIncrement();
-        final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, maxWaitTime, emitter);
+        final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, maxWaitTime,
+            emitter);
         final SynchronousMessageSubscriber syncSubscriber = new SynchronousMessageSubscriber(work);
-
         logger.info("[{}]: Started synchronous message subscriber.", id);
+
+        if (messageProcessor ==  null) {
+            messageProcessor = this.asyncClient.receive(DEFAULT_RECEIVE_OPTIONS)
+                .subscribeWith(EmitterProcessor.create(false));
+        }
+
         messageProcessor.subscribe(syncSubscriber);
     }
 }
