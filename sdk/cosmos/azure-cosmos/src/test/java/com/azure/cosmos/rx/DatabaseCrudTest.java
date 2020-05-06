@@ -112,7 +112,7 @@ public class DatabaseCrudTest extends TestSuiteBase {
         validateFailure(deleteObservable, validator);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readReplaceAutoscaleThroughput() throws Exception {
         final String databaseName = CosmosDatabaseForTest.generateId();
         int initalThroughput = 5000;
