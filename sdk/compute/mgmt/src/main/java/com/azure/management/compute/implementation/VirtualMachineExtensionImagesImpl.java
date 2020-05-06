@@ -12,11 +12,8 @@ import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Mono;
 
-/**
- * The implementation for {@link VirtualMachineExtensionImages}.
- */
-class VirtualMachineExtensionImagesImpl
-        implements VirtualMachineExtensionImages {
+/** The implementation for {@link VirtualMachineExtensionImages}. */
+class VirtualMachineExtensionImagesImpl implements VirtualMachineExtensionImages {
     private final VirtualMachinePublishers publishers;
 
     VirtualMachineExtensionImagesImpl(VirtualMachinePublishers publishers) {
@@ -40,10 +37,17 @@ class VirtualMachineExtensionImagesImpl
 
     @Override
     public PagedFlux<VirtualMachineExtensionImage> listByRegionAsync(String regionName) {
-        return PagedConverter.flatMapPage(publishers.listByRegionAsync(regionName), virtualMachinePublisher -> virtualMachinePublisher.extensionTypes().listAsync()
-                .onErrorResume(e -> Mono.empty())
-                .flatMap(virtualMachineExtensionImageType -> virtualMachineExtensionImageType.versions().listAsync())
-                .flatMap(VirtualMachineExtensionImageVersion::getImageAsync));
+        return PagedConverter
+            .flatMapPage(
+                publishers.listByRegionAsync(regionName),
+                virtualMachinePublisher ->
+                    virtualMachinePublisher
+                        .extensionTypes()
+                        .listAsync()
+                        .onErrorResume(e -> Mono.empty())
+                        .flatMap(
+                            virtualMachineExtensionImageType -> virtualMachineExtensionImageType.versions().listAsync())
+                        .flatMap(VirtualMachineExtensionImageVersion::getImageAsync));
     }
 
     @Override

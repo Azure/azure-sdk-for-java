@@ -14,10 +14,12 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Base class for creatable resource collection,
@@ -80,16 +82,15 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
      * @param <ResourceT> the type of the resources in the batch.
      */
     private class CreatedResourcesImpl<ResourceT extends Indexable>
-            extends HashMap<String, ResourceT>
             implements CreatedResources<ResourceT> {
         private final ClientLogger logger = new ClientLogger(this.getClass());
-        private static final long serialVersionUID = -1360746896732289907L;
         private CreatableUpdatableResourcesRoot<ResourceT> creatableUpdatableResourcesRoot;
+        private Map<String, ResourceT> resources = new HashMap<>();
 
         CreatedResourcesImpl(CreatableUpdatableResourcesRoot<ResourceT> creatableUpdatableResourcesRoot) {
             this.creatableUpdatableResourcesRoot = creatableUpdatableResourcesRoot;
             for (ResourceT resource : this.creatableUpdatableResourcesRoot.createdTopLevelResources()) {
-                super.put(resource.key(), resource);
+                resources.put(resource.key(), resource);
             }
         }
 
@@ -101,6 +102,46 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
         @Override
         public void clear() {
             throw logger.logExceptionAsError(new UnsupportedOperationException());
+        }
+
+        @Override
+        public Set<String> keySet() {
+            return resources.keySet();
+        }
+
+        @Override
+        public Collection<ResourceT> values() {
+            return resources.values();
+        }
+
+        @Override
+        public Set<Entry<String, ResourceT>> entrySet() {
+            return resources.entrySet();
+        }
+
+        @Override
+        public int size() {
+            return resources.size();
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return resources.isEmpty();
+        }
+
+        @Override
+        public boolean containsKey(Object key) {
+            return resources.containsKey(key);
+        }
+
+        @Override
+        public boolean containsValue(Object value) {
+            return resources.containsValue(value);
+        }
+
+        @Override
+        public ResourceT get(Object key) {
+            return resources.get(key);
         }
 
         @Override

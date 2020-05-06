@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import reactor.core.publisher.Mono;
 
@@ -68,7 +69,7 @@ class PublicIPAddressImpl
 
     @Override
     public PublicIPAddressImpl withLeafDomainLabel(String dnsName) {
-        this.inner().dnsSettings().withDomainNameLabel((dnsName == null) ? null : dnsName.toLowerCase());
+        this.inner().dnsSettings().withDomainNameLabel((dnsName == null) ? null : dnsName.toLowerCase(Locale.ROOT));
         return this;
     }
 
@@ -103,7 +104,7 @@ class PublicIPAddressImpl
 
     @Override
     public PublicIPAddressImpl withReverseFqdn(String reverseFqdn) {
-        this.inner().dnsSettings().withReverseFqdn(reverseFqdn != null ? reverseFqdn.toLowerCase() : null);
+        this.inner().dnsSettings().withReverseFqdn(reverseFqdn != null ? reverseFqdn.toLowerCase(Locale.ROOT) : null);
         return this;
     }
 

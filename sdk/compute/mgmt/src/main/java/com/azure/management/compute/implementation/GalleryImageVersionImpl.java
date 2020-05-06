@@ -23,11 +23,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-/**
- * The implementation for GalleryImageVersion and its create and update interfaces.
- */
-class GalleryImageVersionImpl extends CreatableUpdatableImpl<GalleryImageVersion, GalleryImageVersionInner, GalleryImageVersionImpl>
-        implements GalleryImageVersion, GalleryImageVersion.Definition, GalleryImageVersion.Update {
+/** The implementation for GalleryImageVersion and its create and update interfaces. */
+class GalleryImageVersionImpl
+    extends CreatableUpdatableImpl<GalleryImageVersion, GalleryImageVersionInner, GalleryImageVersionImpl>
+    implements GalleryImageVersion, GalleryImageVersion.Definition, GalleryImageVersion.Update {
     private final ComputeManager manager;
     private String resourceGroupName;
     private String galleryName;
@@ -62,19 +61,38 @@ class GalleryImageVersionImpl extends CreatableUpdatableImpl<GalleryImageVersion
 
     @Override
     public Mono<GalleryImageVersion> createResourceAsync() {
-        return manager().inner().galleryImageVersions().createOrUpdateAsync(this.resourceGroupName, this.galleryName, this.galleryImageName, this.galleryImageVersionName, this.inner())
-                .map(innerToFluentMap(this));
+        return manager()
+            .inner()
+            .galleryImageVersions()
+            .createOrUpdateAsync(
+                this.resourceGroupName,
+                this.galleryName,
+                this.galleryImageName,
+                this.galleryImageVersionName,
+                this.inner())
+            .map(innerToFluentMap(this));
     }
 
     @Override
     public Mono<GalleryImageVersion> updateResourceAsync() {
-        return manager().inner().galleryImageVersions().createOrUpdateAsync(this.resourceGroupName, this.galleryName, this.galleryImageName, this.galleryImageVersionName, this.inner())
-                .map(innerToFluentMap(this));
+        return manager()
+            .inner()
+            .galleryImageVersions()
+            .createOrUpdateAsync(
+                this.resourceGroupName,
+                this.galleryName,
+                this.galleryImageName,
+                this.galleryImageVersionName,
+                this.inner())
+            .map(innerToFluentMap(this));
     }
 
     @Override
     protected Mono<GalleryImageVersionInner> getInnerAsync() {
-        return manager().inner().galleryImageVersions().getAsync(this.resourceGroupName, this.galleryName, this.galleryImageName, this.galleryImageVersionName);
+        return manager()
+            .inner()
+            .galleryImageVersions()
+            .getAsync(this.resourceGroupName, this.galleryName, this.galleryImageName, this.galleryImageVersionName);
     }
 
     @Override
@@ -112,7 +130,11 @@ class GalleryImageVersionImpl extends CreatableUpdatableImpl<GalleryImageVersion
         List<TargetRegion> regions = new ArrayList<TargetRegion>();
         if (this.inner().publishingProfile() != null && this.inner().publishingProfile().targetRegions() != null) {
             for (TargetRegion targetRegion : this.inner().publishingProfile().targetRegions()) {
-                regions.add(new TargetRegion().withName(targetRegion.name()).withRegionalReplicaCount(targetRegion.regionalReplicaCount()));
+                regions
+                    .add(
+                        new TargetRegion()
+                            .withName(targetRegion.name())
+                            .withRegionalReplicaCount(targetRegion.regionalReplicaCount()));
             }
         }
         return Collections.unmodifiableList(regions);
@@ -157,7 +179,8 @@ class GalleryImageVersionImpl extends CreatableUpdatableImpl<GalleryImageVersion
     }
 
     @Override
-    public GalleryImageVersionImpl withExistingImage(String resourceGroupName, String galleryName, String galleryImageName) {
+    public GalleryImageVersionImpl withExistingImage(
+        String resourceGroupName, String galleryName, String galleryImageName) {
         this.resourceGroupName = resourceGroupName;
         this.galleryName = galleryName;
         this.galleryImageName = galleryImageName;
@@ -215,9 +238,8 @@ class GalleryImageVersionImpl extends CreatableUpdatableImpl<GalleryImageVersion
             }
         }
         if (!found) {
-            TargetRegion targetRegion = new TargetRegion()
-                    .withName(newRegionName)
-                    .withRegionalReplicaCount(replicaCount);
+            TargetRegion targetRegion =
+                new TargetRegion().withName(newRegionName).withRegionalReplicaCount(replicaCount);
             this.inner().publishingProfile().targetRegions().add(targetRegion);
         }
         //
@@ -234,7 +256,8 @@ class GalleryImageVersionImpl extends CreatableUpdatableImpl<GalleryImageVersion
             }
         }
         if (!found) {
-            TargetRegion defaultTargetRegion = new TargetRegion()
+            TargetRegion defaultTargetRegion =
+                new TargetRegion()
                     .withName(this.location())
                     .withRegionalReplicaCount(null); // null means default where service default to 1 replica
             this.inner().publishingProfile().targetRegions().add(defaultTargetRegion);
@@ -263,7 +286,8 @@ class GalleryImageVersionImpl extends CreatableUpdatableImpl<GalleryImageVersion
             }
         }
         if (!found) {
-            TargetRegion defaultTargetRegion = new TargetRegion()
+            TargetRegion defaultTargetRegion =
+                new TargetRegion()
                     .withName(this.location())
                     .withRegionalReplicaCount(null); // null means default where service default to 1 replica
             this.inner().publishingProfile().targetRegions().add(defaultTargetRegion);
@@ -305,7 +329,6 @@ class GalleryImageVersionImpl extends CreatableUpdatableImpl<GalleryImageVersion
         return this;
     }
 
-
     @Override
     public GalleryImageVersionImpl withExcludedFromLatest() {
         if (this.inner().publishingProfile() == null) {
@@ -338,7 +361,7 @@ class GalleryImageVersionImpl extends CreatableUpdatableImpl<GalleryImageVersion
         Iterator<String> itr = iterable.iterator();
         while (itr.hasNext()) {
             String part = itr.next();
-            if (part != null && part.trim() != "") {
+            if (part != null && !part.trim().isEmpty()) {
                 if (part.equalsIgnoreCase(name)) {
                     if (itr.hasNext()) {
                         return itr.next();

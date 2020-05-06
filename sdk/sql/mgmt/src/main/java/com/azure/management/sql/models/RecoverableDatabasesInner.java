@@ -55,8 +55,8 @@ public final class RecoverableDatabasesInner {
     private interface RecoverableDatabasesService {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/recoverableDatabases/{databaseName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/recoverableDatabases/{databaseName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<RecoverableDatabaseInner>> get(
@@ -70,8 +70,8 @@ public final class RecoverableDatabasesInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/recoverableDatabases")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/recoverableDatabases")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<RecoverableDatabaseListResultInner>> listByServer(

@@ -4,27 +4,18 @@ package com.azure.management.dns.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.dns.models.RecordSetInner;
-import com.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.azure.management.dns.DnsRecordSets;
 import com.azure.management.dns.RecordType;
+import com.azure.management.dns.models.RecordSetInner;
+import com.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 
-/**
- * The base implementation for Dns Record sets.
- */
+/** The base implementation for Dns Record sets. */
 abstract class DnsRecordSetsBaseImpl<RecordSetT, RecordSetImplT extends RecordSetT>
-    extends
-        ReadableWrappersImpl<RecordSetT, RecordSetImplT, RecordSetInner>
-    implements
-        DnsRecordSets<RecordSetT> {
-    /**
-     * the parent DNS zone of the record set.
-     */
+    extends ReadableWrappersImpl<RecordSetT, RecordSetImplT, RecordSetInner> implements DnsRecordSets<RecordSetT> {
+    /** the parent DNS zone of the record set. */
     protected final DnsZoneImpl dnsZone;
-    /**
-     * the record type in the record set.
-     */
-    protected  final RecordType recordType;
+    /** the record type in the record set. */
+    protected final RecordType recordType;
 
     /**
      * Creates DnsRecordSetsBaseImpl.
@@ -83,5 +74,6 @@ abstract class DnsRecordSetsBaseImpl<RecordSetT, RecordSetImplT extends RecordSe
     }
 
     protected abstract PagedIterable<RecordSetT> listIntern(String recordSetNameSuffix, Integer pageSize);
+
     protected abstract PagedFlux<RecordSetT> listInternAsync(String recordSetNameSuffix, Integer pageSize);
 }

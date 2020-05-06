@@ -9,13 +9,13 @@ import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeReceiptAsyncResponse;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeWithCustomModelResponse;
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
-import com.azure.ai.formrecognizer.implementation.models.ErrorResponseException;
 import com.azure.ai.formrecognizer.implementation.models.Model;
 import com.azure.ai.formrecognizer.implementation.models.ModelInfo;
 import com.azure.ai.formrecognizer.implementation.models.Models;
 import com.azure.ai.formrecognizer.implementation.models.SourcePath;
 import com.azure.ai.formrecognizer.implementation.models.TrainCustomModelAsyncResponse;
 import com.azure.ai.formrecognizer.implementation.models.TrainRequest;
+import com.azure.ai.formrecognizer.models.ErrorResponseException;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -54,7 +54,7 @@ public final class FormRecognizerClientImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private FormRecognizerClientService service;
+    private final FormRecognizerClientService service;
 
     /**
      * Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus2.api.cognitive.microsoft.com).
@@ -63,7 +63,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Gets Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus2.api.cognitive.microsoft.com).
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -72,7 +72,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Sets Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus2.api.cognitive.microsoft.com).
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the service client itself.
      */
@@ -88,7 +88,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -104,7 +104,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Initializes an instance of FormRecognizerClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
     public FormRecognizerClientImpl(HttpPipeline httpPipeline) {
@@ -197,7 +197,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Create and train a custom model. The request must include a source parameter that is either an externally accessible Azure storage blob container Uri (preferably a Shared Access Signature Uri) or valid path to a data folder in a locally mounted drive. When local paths are specified, they must follow the Linux/Unix path format and be an absolute path rooted to the input mount configuration setting value e.g., if '{Mounts:Input}' configuration setting value is '/input' then a valid source path would be '/input/contosodataset'. All data to be trained is expected to be under the source folder or sub folders under it. Models are trained using documents that are of the following content type - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff'. Other type of content is ignored.
-     *
+     * 
      * @param trainRequest Request parameter to train a new custom model.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -211,7 +211,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Create and train a custom model. The request must include a source parameter that is either an externally accessible Azure storage blob container Uri (preferably a Shared Access Signature Uri) or valid path to a data folder in a locally mounted drive. When local paths are specified, they must follow the Linux/Unix path format and be an absolute path rooted to the input mount configuration setting value e.g., if '{Mounts:Input}' configuration setting value is '/input' then a valid source path would be '/input/contosodataset'. All data to be trained is expected to be under the source folder or sub folders under it. Models are trained using documents that are of the following content type - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff'. Other type of content is ignored.
-     *
+     * 
      * @param trainRequest Request parameter to train a new custom model.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -226,7 +226,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Get detailed information about a custom model.
-     *
+     * 
      * @param modelId Model identifier.
      * @param includeKeys Include list of extracted keys in model information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -241,7 +241,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Get detailed information about a custom model.
-     *
+     * 
      * @param modelId Model identifier.
      * @param context The context to associate with this operation.
      * @param includeKeys Include list of extracted keys in model information.
@@ -257,7 +257,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Mark model for deletion. Model artifacts will be permanently removed within a predetermined period.
-     *
+     * 
      * @param modelId Model identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -271,7 +271,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Mark model for deletion. Model artifacts will be permanently removed within a predetermined period.
-     *
+     * 
      * @param modelId Model identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -286,7 +286,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param modelId Model identifier.
      * @param contentType Content type for upload.
      * @param fileStream Uri or local path to source data.
@@ -304,7 +304,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param modelId Model identifier.
      * @param contentType Content type for upload.
      * @param fileStream Uri or local path to source data.
@@ -323,7 +323,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param modelId Model identifier.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param fileStream Uri or local path to source data.
@@ -339,7 +339,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param modelId Model identifier.
      * @param context The context to associate with this operation.
      * @param includeTextDetails Include text lines and element references in the result.
@@ -356,7 +356,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Obtain current status and the result of the analyze form operation.
-     *
+     * 
      * @param modelId Model identifier.
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -371,7 +371,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Obtain current status and the result of the analyze form operation.
-     *
+     * 
      * @param modelId Model identifier.
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
@@ -387,7 +387,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param contentType Content type for upload.
      * @param fileStream Uri or local path to source data.
      * @param contentLength The contentLength parameter.
@@ -404,7 +404,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param contentType Content type for upload.
      * @param fileStream Uri or local path to source data.
      * @param contentLength The contentLength parameter.
@@ -422,7 +422,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param includeTextDetails Include text lines and element references in the result.
      * @param fileStream Uri or local path to source data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -437,7 +437,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param fileStream Uri or local path to source data.
@@ -453,7 +453,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Track the progress and obtain the result of the analyze receipt operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -467,7 +467,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Track the progress and obtain the result of the analyze receipt operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -482,7 +482,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Extract text and layout information from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param contentType Content type for upload.
      * @param fileStream Uri or local path to source data.
      * @param contentLength The contentLength parameter.
@@ -498,7 +498,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Extract text and layout information from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param contentType Content type for upload.
      * @param fileStream Uri or local path to source data.
      * @param contentLength The contentLength parameter.
@@ -515,7 +515,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Extract text and layout information from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param fileStream Uri or local path to source data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -529,7 +529,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Extract text and layout information from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @param fileStream Uri or local path to source data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -544,7 +544,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Track the progress and obtain the result of the analyze layout operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -558,7 +558,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Track the progress and obtain the result of the analyze layout operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -573,7 +573,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Get information about all custom models.
-     *
+     * 
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about all custom models.
@@ -593,7 +593,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Get information about all custom models.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -615,7 +615,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Get information about all custom models.
-     *
+     * 
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about all custom models.
@@ -628,7 +628,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Get information about all custom models.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -643,7 +643,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -664,7 +664,7 @@ public final class FormRecognizerClientImpl {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

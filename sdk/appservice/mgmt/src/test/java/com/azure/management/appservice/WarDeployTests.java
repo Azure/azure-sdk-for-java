@@ -3,10 +3,12 @@
 
 package com.azure.management.appservice;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
-import com.azure.management.RestClient;
 import com.azure.management.resources.fluentcore.arm.Region;
 import java.io.File;
+
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -14,10 +16,10 @@ public class WarDeployTests extends AppServiceTest {
     private String webappName = "";
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         webappName = "JAVA" + generateRandomResourceName("webapp-", 20);
 
-        super.initializeClients(restClient, defaultSubscription, domain);
+        super.initializeClients(httpPipeline, profile);
     }
 
     @Test
@@ -77,7 +79,7 @@ public class WarDeployTests extends AppServiceTest {
             Assertions.assertNotNull(body);
             Assertions.assertTrue(body.contains("Azure Samples Hello World"));
 
-            response = curl("http://" + webappName + "." + "azurewebsites.net/app2");
+            response = curl("http://" + webappName + "." + "azurewebsites.net/app2/");
             Assertions.assertEquals(200, response.getStatusCode());
             body = response.getValue();
             Assertions.assertNotNull(body);

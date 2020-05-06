@@ -28,6 +28,31 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
     }
 
     /**
+     * Sets whether to use an unprotected file specified by <code>cacheFileLocation()</code> instead of
+     * Gnome keyring on Linux. This is false by default.
+     *
+     * @param allowUnencryptedCache whether to use an unprotected file for cache storage.
+     *
+     * @return An updated instance of this builder with the unprotected token cache setting set as specified.
+     */
+    public InteractiveBrowserCredentialBuilder allowUnencryptedCache(boolean allowUnencryptedCache) {
+        this.identityClientOptions.allowUnencryptedCache(allowUnencryptedCache);
+        return this;
+    }
+
+    /**
+     * Sets whether to enable using the shared token cache. This is disabled by default.
+     *
+     * @param enabled whether to enabled using the shared token cache.
+     *
+     * @return An updated instance of this builder with if the shared token cache enabled specified.
+     */
+    public InteractiveBrowserCredentialBuilder enablePersistentCache(boolean enabled) {
+        this.identityClientOptions.enablePersistentCache(enabled);
+        return this;
+    }
+
+    /**
      * Creates a new {@link InteractiveBrowserCredential} with the current configurations.
      *
      * @return a {@link InteractiveBrowserCredential} with the current configurations.

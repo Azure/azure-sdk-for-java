@@ -75,8 +75,8 @@ public final class SyncGroupsInner {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/refreshHubSchema")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/refreshHubSchema")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> refreshHubSchema(
@@ -91,8 +91,8 @@ public final class SyncGroupsInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/hubSchemas")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/hubSchemas")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<SyncFullSchemaPropertiesListResultInner>> listHubSchemas(
@@ -107,8 +107,8 @@ public final class SyncGroupsInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/logs")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/logs")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<SyncGroupLogListResultInner>> listLogs(
@@ -127,8 +127,8 @@ public final class SyncGroupsInner {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/cancelSync")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/cancelSync")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<Response<Void>> cancelSync(
@@ -143,8 +143,8 @@ public final class SyncGroupsInner {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/triggerSync")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/triggerSync")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<Response<Void>> triggerSync(
@@ -159,8 +159,8 @@ public final class SyncGroupsInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<SyncGroupInner>> get(
@@ -175,8 +175,8 @@ public final class SyncGroupsInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(
@@ -192,8 +192,8 @@ public final class SyncGroupsInner {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
@@ -208,8 +208,8 @@ public final class SyncGroupsInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> update(
@@ -225,8 +225,8 @@ public final class SyncGroupsInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/databases/{databaseName}/syncGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<SyncGroupListResultInner>> listByDatabase(
@@ -240,8 +240,8 @@ public final class SyncGroupsInner {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/refreshHubSchema")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/refreshHubSchema")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<Response<Void>> beginRefreshHubSchema(
@@ -256,8 +256,8 @@ public final class SyncGroupsInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<SyncGroupInner>> beginCreateOrUpdate(
@@ -273,8 +273,8 @@ public final class SyncGroupsInner {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<Response<Void>> beginDelete(
@@ -289,8 +289,8 @@ public final class SyncGroupsInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<SyncGroupInner>> beginUpdate(

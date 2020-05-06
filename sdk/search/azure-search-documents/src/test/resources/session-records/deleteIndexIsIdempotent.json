@@ -1,21 +1,24 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdk412339c214d.search.windows.net/indexes('hotels')?api-version=2019-05-06",
-    "Headers" : { },
+    "Uri" : "https://azsjavadeleteindexisidempotent6e67888980b2a1adddf.search.windows.net/indexes('hotels')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "1440bd3a-2e80-472e-b5a3-634996f2a34e"
+    },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "b5ea198c-2856-442d-a2a5-cd25bf132bdf",
+      "request-id" : "1440bd3a-2e80-472e-b5a3-634996f2a34e",
       "StatusCode" : "404",
-      "Date" : "Mon, 24 Feb 2020 19:42:18 GMT",
+      "Date" : "Tue, 21 Apr 2020 18:58:52 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "35",
+      "client-request-id" : "1440bd3a-2e80-472e-b5a3-634996f2a34e",
+      "elapsed-time" : "190",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "116",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No index with the name 'hotels' was found in a service named 'azs-sdk412339c214d'.\"}}",
+      "Content-Length" : "147",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No index with the name 'hotels' was found in a service named 'azsjavadeleteindexisidempotent6e67888980b2a1adddf'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"
@@ -23,67 +26,75 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk412339c214d.search.windows.net/indexes?api-version=2019-05-06",
+    "Uri" : "https://azsjavadeleteindexisidempotent6e67888980b2a1adddf.search.windows.net/indexes?api-version=2019-05-06-Preview",
     "Headers" : {
+      "x-ms-client-request-id" : "e8753a9e-95a6-400b-a384-de8d38ecf60b",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "2cf83ace-21e2-4966-a1dc-ae530710fb4f",
+      "request-id" : "e8753a9e-95a6-400b-a384-de8d38ecf60b",
       "StatusCode" : "201",
-      "Date" : "Mon, 24 Feb 2020 19:42:18 GMT",
+      "Date" : "Tue, 21 Apr 2020 18:58:54 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D7B961A873686D\"",
-      "elapsed-time" : "468",
+      "client-request-id" : "e8753a9e-95a6-400b-a384-de8d38ecf60b",
+      "ETag" : "W/\"0x8D7E62609C368AE\"",
+      "elapsed-time" : "2066",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "543",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk412339c214d.search.windows.net/$metadata#indexes/$entity\",\"@odata.etag\":\"\\\"0x8D7B961A873686D\\\"\",\"name\":\"hotels\",\"defaultScoringProfile\":null,\"fields\":[{\"name\":\"HotelId\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":true,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]}],\"scoringProfiles\":[],\"corsOptions\":null,\"suggesters\":[],\"analyzers\":[],\"tokenizers\":[],\"tokenFilters\":[],\"charFilters\":[],\"encryptionKey\":null}",
+      "Content-Length" : "592",
+      "Body" : "{\"@odata.context\":\"https://azsjavadeleteindexisidempotent6e67888980b2a1adddf.search.windows.net/$metadata#indexes/$entity\",\"@odata.etag\":\"\\\"0x8D7E62609C368AE\\\"\",\"name\":\"hotels\",\"defaultScoringProfile\":null,\"fields\":[{\"name\":\"HotelId\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":true,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]}],\"scoringProfiles\":[],\"corsOptions\":null,\"suggesters\":[],\"analyzers\":[],\"tokenizers\":[],\"tokenFilters\":[],\"charFilters\":[],\"encryptionKey\":null,\"similarity\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk412339c214d.search.windows.net/indexes('hotels')?api-version=2019-05-06"
+      "Location" : "https://azsjavadeleteindexisidempotent6e67888980b2a1adddf.search.windows.net/indexes('hotels')?api-version=2019-05-06-Preview"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdk412339c214d.search.windows.net/indexes('hotels')?api-version=2019-05-06",
-    "Headers" : { },
+    "Uri" : "https://azsjavadeleteindexisidempotent6e67888980b2a1adddf.search.windows.net/indexes('hotels')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "fa57c8ad-fe09-4062-9757-a5e8c98c5975"
+    },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "282",
+      "client-request-id" : "fa57c8ad-fe09-4062-9757-a5e8c98c5975",
+      "elapsed-time" : "339",
       "Expires" : "-1",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "02ce6801-4cd3-4265-a6af-bc10043b0938",
+      "request-id" : "fa57c8ad-fe09-4062-9757-a5e8c98c5975",
       "StatusCode" : "204",
-      "Date" : "Mon, 24 Feb 2020 19:42:18 GMT"
+      "Date" : "Tue, 21 Apr 2020 18:58:54 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdk412339c214d.search.windows.net/indexes('hotels')?api-version=2019-05-06",
-    "Headers" : { },
+    "Uri" : "https://azsjavadeleteindexisidempotent6e67888980b2a1adddf.search.windows.net/indexes('hotels')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "5bbe1077-30e5-4736-82e1-6e51bf7f1841"
+    },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "5a91de43-55e5-4c4d-9479-7c7867496778",
+      "request-id" : "5bbe1077-30e5-4736-82e1-6e51bf7f1841",
       "StatusCode" : "404",
-      "Date" : "Mon, 24 Feb 2020 19:42:18 GMT",
+      "Date" : "Tue, 21 Apr 2020 18:58:54 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "15",
+      "client-request-id" : "5bbe1077-30e5-4736-82e1-6e51bf7f1841",
+      "elapsed-time" : "20",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "116",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No index with the name 'hotels' was found in a service named 'azs-sdk412339c214d'.\"}}",
+      "Content-Length" : "147",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No index with the name 'hotels' was found in a service named 'azsjavadeleteindexisidempotent6e67888980b2a1adddf'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   } ],
-  "variables" : [ "azs-sdk412339c214d" ]
+  "variables" : [ "azsjavadeleteindexisidempotent6e67888980b2a1adddf" ]
 }

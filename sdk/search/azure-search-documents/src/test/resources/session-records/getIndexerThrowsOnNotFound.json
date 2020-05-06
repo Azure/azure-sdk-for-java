@@ -1,26 +1,29 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://azs-sdk10363025a45.search.windows.net/indexers('thisindexerdoesnotexist')?api-version=2019-05-06",
-    "Headers" : { },
+    "Uri" : "https://azsjavagetindexerthrowsonnotfound3c102943797c87b7b.search.windows.net/indexers('thisindexerdoesnotexist')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "9846745d-c010-45b4-a07e-6670cd264eff"
+    },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "2825e83b-8c8a-4d35-8211-97cec366bcea",
+      "request-id" : "9846745d-c010-45b4-a07e-6670cd264eff",
       "StatusCode" : "404",
-      "Date" : "Mon, 24 Feb 2020 19:32:49 GMT",
+      "Date" : "Tue, 21 Apr 2020 18:51:08 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "47",
+      "client-request-id" : "9846745d-c010-45b4-a07e-6670cd264eff",
+      "elapsed-time" : "69",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "114",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"Indexer 'thisindexerdoesnotexist' was not found in service 'azs-sdk10363025a45'.\"}}",
+      "Content-Length" : "146",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"Indexer 'thisindexerdoesnotexist' was not found in service 'azsjavagetindexerthrowsonnotfound3c102943797c87b7b'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   } ],
-  "variables" : [ "azs-sdk10363025a45" ]
+  "variables" : [ "azsjavagetindexerthrowsonnotfound3c102943797c87b7b" ]
 }

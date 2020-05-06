@@ -6,9 +6,7 @@ package com.azure.management.compute;
 import com.azure.core.annotation.Fluent;
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 
-/**
- * Entry point to virtual machine image extension versions.
- */
+/** Entry point to virtual machine image extension versions. */
 @Fluent
 public interface VirtualMachineExtensionImageVersions extends SupportsListing<VirtualMachineExtensionImageVersion> {
 }

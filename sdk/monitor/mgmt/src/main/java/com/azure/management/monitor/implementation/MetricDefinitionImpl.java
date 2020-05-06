@@ -26,11 +26,11 @@ class MetricDefinitionImpl extends WrapperImpl<MetricDefinitionInner>
     implements MetricDefinition, MetricDefinition.MetricsQueryDefinition {
 
     private final MonitorManager myManager;
-    private MetricDefinitionInner inner;
-    private LocalizableString name;
+    private final MetricDefinitionInner inner;
+    private final LocalizableString name;
     private List<LocalizableString> dimensions;
-    private OffsetDateTime queryStartTime;
-    private OffsetDateTime queryEndTime;
+    private OffsetDateTime queryStartTime = null;
+    private OffsetDateTime queryEndTime = null;
     private String aggreagation;
     private Duration interval;
     private String odataFilter;

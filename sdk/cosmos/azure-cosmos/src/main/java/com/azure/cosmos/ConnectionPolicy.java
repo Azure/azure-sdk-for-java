@@ -29,8 +29,8 @@ public final class ConnectionPolicy {
     private String userAgentSuffix;
     private ThrottlingRetryOptions throttlingRetryOptions;
     private boolean endpointDiscoveryEnabled = true;
-    private List<String> preferredLocations;
-    private boolean usingMultipleWriteLocations = true;
+    private List<String> preferredRegions;
+    private boolean usingMultipleWriteRegions = true;
     private InetSocketAddress inetSocketProxyAddress;
     private Boolean readRequestsFallbackEnabled;
 
@@ -222,22 +222,22 @@ public final class ConnectionPolicy {
     }
 
     /**
-     * Gets the flag to enable writes on any locations (regions) for geo-replicated database accounts in the Azure
+     * Gets the flag to enable writes on any regions for geo-replicated database accounts in the Azure
      * Cosmos DB service.
      * <p>
      * When the value of this property is true, the SDK will direct write operations to
-     * available writable locations of geo-replicated database account. Writable locations
-     * are ordered by PreferredLocations property. Setting the property value
-     * to true has no effect until EnableMultipleWriteLocations in DatabaseAccount
+     * available writable regions of geo-replicated database account. Writable regions
+     * are ordered by PreferredRegions property. Setting the property value
+     * to true has no effect until EnableMultipleWriteRegions in DatabaseAccount
      * is also set to true.
      * <p>
      * DEFAULT value is true indicating that writes are directed to
-     * available writable locations of geo-replicated database account.
+     * available writable regions of geo-replicated database account.
      *
-     * @return flag to enable writes on any locations (regions) for geo-replicated database accounts.
+     * @return flag to enable writes on any regions for geo-replicated database accounts.
      */
-    public boolean isUsingMultipleWriteLocations() {
-        return this.usingMultipleWriteLocations;
+    public boolean isUsingMultipleWriteRegions() {
+        return this.usingMultipleWriteRegions;
     }
 
     /**
@@ -257,24 +257,24 @@ public final class ConnectionPolicy {
     }
 
     /**
-     * Sets the flag to enable writes on any locations (regions) for geo-replicated database accounts in the Azure
+     * Sets the flag to enable writes on any regions for geo-replicated database accounts in the Azure
      * Cosmos DB service.
      * <p>
      * When the value of this property is true, the SDK will direct write operations to
-     * available writable locations of geo-replicated database account. Writable locations
-     * are ordered by PreferredLocations property. Setting the property value
-     * to true has no effect until EnableMultipleWriteLocations in DatabaseAccount
+     * available writable regions of geo-replicated database account. Writable regions
+     * are ordered by PreferredRegions property. Setting the property value
+     * to true has no effect until EnableMultipleWriteRegions in DatabaseAccount
      * is also set to true.
      * <p>
      * DEFAULT value is false indicating that writes are only directed to
-     * first region in PreferredLocations property.
+     * first region in PreferredRegions property.
      *
-     * @param usingMultipleWriteLocations flag to enable writes on any locations (regions) for geo-replicated
+     * @param usingMultipleWriteRegions flag to enable writes on any regions for geo-replicated
      * database accounts.
      * @return the ConnectionPolicy.
      */
-    public ConnectionPolicy setUsingMultipleWriteLocations(boolean usingMultipleWriteLocations) {
-        this.usingMultipleWriteLocations = usingMultipleWriteLocations;
+    public ConnectionPolicy setUsingMultipleWriteRegions(boolean usingMultipleWriteRegions) {
+        this.usingMultipleWriteRegions = usingMultipleWriteRegions;
         return this;
     }
 
@@ -298,29 +298,29 @@ public final class ConnectionPolicy {
     }
 
     /**
-     * Gets the preferred locations for geo-replicated database accounts
+     * Gets the preferred regions for geo-replicated database accounts
      *
-     * @return the list of preferred location.
+     * @return the list of preferred region.
      */
-    public List<String> getPreferredLocations() {
-        return this.preferredLocations != null ? preferredLocations : Collections.emptyList();
+    public List<String> getPreferredRegions() {
+        return this.preferredRegions != null ? this.preferredRegions : Collections.emptyList();
     }
 
     /**
-     * Sets the preferred locations for geo-replicated database accounts. For example,
-     * "East US" as the preferred location.
+     * Sets the preferred regions for geo-replicated database accounts. For example,
+     * "East US" as the preferred region.
      * <p>
      * When EnableEndpointDiscovery is true and PreferredRegions is non-empty,
-     * the SDK will prefer to use the locations in the collection in the order
+     * the SDK will prefer to use the regions in the collection in the order
      * they are specified to perform operations.
      * <p>
      * If EnableEndpointDiscovery is set to false, this property is ignored.
      *
-     * @param preferredLocations the list of preferred locations.
+     * @param preferredRegions the list of preferred regions.
      * @return the ConnectionPolicy.
      */
-    public ConnectionPolicy setPreferredLocations(List<String> preferredLocations) {
-        this.preferredLocations = preferredLocations;
+    public ConnectionPolicy setPreferredRegions(List<String> preferredRegions) {
+        this.preferredRegions = preferredRegions;
         return this;
     }
 
@@ -357,8 +357,8 @@ public final class ConnectionPolicy {
                    + ", userAgentSuffix='" + userAgentSuffix + '\''
                    + ", retryOptions=" + throttlingRetryOptions
                    + ", enableEndpointDiscovery=" + endpointDiscoveryEnabled
-                   + ", preferredLocations=" + preferredLocations
-                   + ", usingMultipleWriteLocations=" + usingMultipleWriteLocations
+                   + ", preferredRegions=" + preferredRegions
+                   + ", usingMultipleWriteRegions=" + usingMultipleWriteRegions
                    + ", inetSocketProxyAddress=" + inetSocketProxyAddress
                    + '}';
     }

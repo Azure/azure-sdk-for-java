@@ -24,7 +24,7 @@ public class RoleAssignmentTests extends GraphRbacManagementTest {
                 .define(roleAssignmentName)
                 .forServicePrincipal(sp)
                 .withBuiltInRole(BuiltInRole.CONTRIBUTOR)
-                .withSubscriptionScope(resourceManager.getSubscriptionId())
+                .withSubscriptionScope(resourceManager.subscriptionId())
                 .create();
 
         Assertions.assertNotNull(roleAssignment);

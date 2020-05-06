@@ -14,12 +14,12 @@ public final class Point {
     /*
      * The x-axis point coordinate.
      */
-    private final float xCoordinate;
+    private final Float xCoordinate;
 
     /*
      * The y-axis point coordinate.
      */
-    private final float yCoordinate;
+    private final Float yCoordinate;
 
     /**
      * Creates a Point object.
@@ -27,9 +27,14 @@ public final class Point {
      * @param xCoordinate The x-axis point coordinate.
      * @param yCoordinate The y-axis point coordinate.
      */
-    public Point(final float xCoordinate, final float yCoordinate) {
-        this.xCoordinate = xCoordinate;
-        this.yCoordinate = yCoordinate;
+    public Point(final Float xCoordinate, final Float yCoordinate) {
+        if (xCoordinate != null && yCoordinate != null) {
+            this.xCoordinate = xCoordinate;
+            this.yCoordinate = yCoordinate;
+        } else {
+            this.xCoordinate = null;
+            this.yCoordinate = null;
+        }
     }
 
     /**
@@ -37,7 +42,7 @@ public final class Point {
      *
      * @return The x-axis coordinate value.
      */
-    public float getX() {
+    public Float getX() {
         return this.xCoordinate;
     }
 
@@ -46,7 +51,7 @@ public final class Point {
      *
      * @return The y-axis coordinate value.
      */
-    public float getY() {
+    public Float getY() {
         return this.yCoordinate;
     }
 }
