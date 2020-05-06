@@ -31,7 +31,7 @@ public class DocumentInputTest {
     protected static void beforeTest() {
         client = new TextAnalyticsClientBuilder()
             .endpoint(VALID_HTTPS_LOCALHOST)
-            .apiKey(new AzureKeyCredential("fakeKey"))
+            .credential(new AzureKeyCredential("fakeKey"))
             .buildClient();
     }
 

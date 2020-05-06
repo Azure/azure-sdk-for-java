@@ -68,32 +68,32 @@ Text Analytics resource. See the full details regarding [authentication][authent
 The authentication credential may be provided as the API key to your resource or as a token from Azure Active Directory.
 
 
-##### **Option 1**: Create TextAnalyticsClient with API Key Credential
-To use an [API key][api_key], provide the key as a string. This can be found in the [Azure Portal][azure_portal] 
+##### **Option 1**: Create TextAnalyticsClient with AzureKeyCredential
+To use AzureKeyCredential authentication, provide the [key][key] as a string to the [AzureKeyCredential][azure_key_credential]. This can be found in the [Azure Portal][azure_portal] 
    under the "Quickstart" section or by running the following Azure CLI command:
 
 ```bash
 az cognitiveservices account keys list --resource-group <your-resource-group-name> --name <your-resource-name>
 ```
-Use the API key as the credential parameter to authenticate the client:
+Use the key as the credential parameter to authenticate the client:
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L43-L46 -->
 ```java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .apiKey(new AzureKeyCredential("{api_key}"))
+    .credential(new AzureKeyCredential("{key}"))
     .endpoint("{endpoint}")
     .buildClient();
 ```
-The Azure Text Analytics client library provides a way to **rotate the existing API key**.
+The Azure Text Analytics client library provides a way to **rotate the existing key**.
 
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L73-L79 -->
 ```java
-AzureKeyCredential credential = new AzureKeyCredential("{api_key}");
+AzureKeyCredential credential = new AzureKeyCredential("{key}");
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .apiKey(credential)
+    .credential(credential)
     .endpoint("{endpoint}")
     .buildClient();
 
-credential.update("{new_api_key}");
+credential.update("{new_key}");
 ```
 ##### **Option 2**: Create TextAnalyticsClient with Azure Active Directory Credential
 To use an [Azure Active Directory (AAD) token credential][aad_credential],
@@ -202,14 +202,14 @@ Text analytics support both synchronous and asynchronous client creation by usin
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L43-L46 -->
 ``` java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .apiKey(new AzureKeyCredential("{api_key}"))
+    .credential(new AzureKeyCredential("{key}"))
     .endpoint("{endpoint}")
     .buildClient();
 ```
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L53-L56 -->
 ``` java
 TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .apiKey(new AzureKeyCredential("{api_key}"))
+    .credential(new AzureKeyCredential("{key}"))
     .endpoint("{endpoint}")
     .buildAsyncClient();
 ```
@@ -314,8 +314,9 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
+[azure_key_credential]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/credential/AzureKeyCredential.java
 [aad_credential]: https://docs.microsoft.com/azure/cognitive-services/authentication#authenticate-with-azure-active-directory
-[api_key]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#get-the-keys-for-your-resource
+[key]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#get-the-keys-for-your-resource
 [api_reference_doc]: https://aka.ms/azsdk-java-textanalytics-ref-docs
 [authentication]: https://docs.microsoft.com/azure/cognitive-services/authentication
 [azure_cli]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli?tabs=windows

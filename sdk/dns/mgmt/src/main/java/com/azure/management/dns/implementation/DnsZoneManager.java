@@ -3,17 +3,16 @@
 
 package com.azure.management.dns.implementation;
 
-import com.azure.core.management.AzureEnvironment;
-import com.azure.core.management.serializer.AzureJacksonAdapter;
-import com.azure.management.AzureTokenCredential;
-import com.azure.management.RestClient;
-import com.azure.management.RestClientBuilder;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpPipeline;
 import com.azure.management.dns.DnsZones;
 import com.azure.management.dns.models.DnsManagementClientBuilder;
 import com.azure.management.dns.models.DnsManagementClientImpl;
 import com.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.management.resources.fluentcore.arm.implementation.Manager;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
+import com.azure.management.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure DNS zone management. */
@@ -33,41 +32,35 @@ public final class DnsZoneManager extends Manager<DnsZoneManager, DnsManagementC
     /**
      * Creates an instance of DnsZoneManager that exposes DNS zone management API entry points.
      *
-     * @param credential the credentials to use
-     * @param subscriptionId the subscription UUID
+     * @param credential the credential to use
+     * @param profile the profile to use
      * @return the DnsZoneManager
      */
-    public static DnsZoneManager authenticate(AzureTokenCredential credential, String subscriptionId) {
-        return authenticate(
-            new RestClientBuilder()
-                .withBaseUrl(credential.getEnvironment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
-                .withCredential(credential)
-                .withSerializerAdapter(new AzureJacksonAdapter())
-                .buildClient(),
-            subscriptionId);
+    public static DnsZoneManager authenticate(TokenCredential credential, AzureProfile profile) {
+        return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
     /**
      * Creates an instance of DnsZoneManager that exposes DNS zone management API entry points.
      *
-     * @param restClient the RestClient to be used for API calls.
-     * @param subscriptionId the subscription UUID
+     * @param httpPipeline the HttpPipeline to be used for API calls.
+     * @param profile the profile to use
      * @return the DnsZoneManager
      */
-    public static DnsZoneManager authenticate(RestClient restClient, String subscriptionId) {
-        return new DnsZoneManager(restClient, subscriptionId, new SdkContext());
+    public static DnsZoneManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        return new DnsZoneManager(httpPipeline, profile, new SdkContext());
     }
 
     /**
      * Creates an instance of DnsZoneManager that exposes DNS zone management API entry points.
      *
-     * @param restClient the RestClient to be used for API calls.
-     * @param subscriptionId the subscription UUID
+     * @param httpPipeline the HttpPipeline to be used for API calls.
+     * @param profile the profile to use
      * @param sdkContext the sdk context
      * @return the DnsZoneManager
      */
-    public static DnsZoneManager authenticate(RestClient restClient, String subscriptionId, SdkContext sdkContext) {
-        return new DnsZoneManager(restClient, subscriptionId, sdkContext);
+    public static DnsZoneManager authenticate(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+        return new DnsZoneManager(httpPipeline, profile, sdkContext);
     }
 
     /** The interface allowing configurations to be set. */
@@ -75,28 +68,28 @@ public final class DnsZoneManager extends Manager<DnsZoneManager, DnsManagementC
         /**
          * Creates an instance of DnsZoneManager that exposes DNS zone API entry points.
          *
-         * @param credential the credentials to use
-         * @param subscriptionId the subscription UUID
+         * @param credential the credential to use
+         * @param profile the profile to use
          * @return the interface exposing DNS zone management API entry points that work across subscriptions
          */
-        DnsZoneManager authenticate(AzureTokenCredential credential, String subscriptionId);
+        DnsZoneManager authenticate(TokenCredential credential, AzureProfile profile);
     }
 
     /** The implementation for Configurable interface. */
     private static class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
 
-        public DnsZoneManager authenticate(AzureTokenCredential credential, String subscriptionId) {
-            return DnsZoneManager.authenticate(buildRestClient(credential), subscriptionId);
+        public DnsZoneManager authenticate(TokenCredential credential, AzureProfile profile) {
+            return DnsZoneManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
     }
 
-    private DnsZoneManager(RestClient restClient, String subscriptionId, SdkContext sdkContext) {
+    private DnsZoneManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
         super(
-            restClient,
-            subscriptionId,
+            httpPipeline,
+            profile,
             new DnsManagementClientBuilder()
-                .pipeline(restClient.getHttpPipeline())
-                .subscriptionId(subscriptionId)
+                .pipeline(httpPipeline)
+                .subscriptionId(profile.subscriptionId())
                 .buildClient(),
             sdkContext);
     }

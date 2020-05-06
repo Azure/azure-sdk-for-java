@@ -139,7 +139,7 @@ class UnmanagedDataDiskImpl extends ChildResourceImpl<DataDisk, VirtualMachineIm
             if (dataDisk.lun() == -1) {
                 Integer i = 0;
                 while (usedLuns.contains(i)) {
-                    i++;
+                    i += 1;
                 }
                 dataDisk.inner().withLun(i);
                 usedLuns.add(i);

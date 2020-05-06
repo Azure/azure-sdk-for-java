@@ -5,6 +5,7 @@ package com.azure.management.compute;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /** Defines values for DiskSkuTypes. */
@@ -43,7 +44,7 @@ public final class DiskSkuTypes {
         // TODO: This constructor should be private, but keeping as is for now to keep 1.0.0 back compat
         this.value = value;
         if (value != null) {
-            VALUES_BY_NAME.put(value.toString().toLowerCase(), this);
+            VALUES_BY_NAME.put(value.toString().toLowerCase(Locale.ROOT), this);
         }
     }
 
@@ -58,7 +59,7 @@ public final class DiskSkuTypes {
             return null;
         }
 
-        DiskSkuTypes result = VALUES_BY_NAME.get(value.toString().toLowerCase());
+        DiskSkuTypes result = VALUES_BY_NAME.get(value.toString().toLowerCase(Locale.ROOT));
         if (result != null) {
             return result;
         } else {

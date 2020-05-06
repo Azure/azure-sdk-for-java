@@ -20,7 +20,7 @@ public interface Route extends HasInner<RouteInner>, ChildResource<RouteTable> {
     RouteNextHopType nextHopType();
 
     /** @return the IP address of the next hop */
-    String nextHopIPAddress();
+    String nextHopIpAddress();
 
     // Grouping of route definition stages
 

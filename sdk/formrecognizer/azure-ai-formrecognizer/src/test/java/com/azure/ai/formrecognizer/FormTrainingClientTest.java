@@ -16,11 +16,8 @@ import org.junit.jupiter.api.Test;
 
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID_ERROR;
-import static com.azure.ai.formrecognizer.TestUtils.INVALID_STATUS_MODEL_ERROR;
 import static com.azure.ai.formrecognizer.TestUtils.NULL_SOURCE_URL_ERROR;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedAccountProperties;
-import static com.azure.ai.formrecognizer.TestUtils.getExpectedLabeledModel;
-import static com.azure.ai.formrecognizer.TestUtils.getExpectedUnlabeledModel;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -40,30 +37,11 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
     }
 
     /**
-     * Verifies that an exception is thrown for invalid status model Id.
-     */
-    @Test
-    void getCustomModelInvalidStatusModel() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () ->
-            getCustomModelInvalidStatusModelRunner(invalidId -> client.getCustomModel(invalidId)));
-        assertEquals(exception.getMessage(), INVALID_STATUS_MODEL_ERROR);
-    }
-
-    /**
      * Verifies that an exception is thrown for null model Id parameter.
      */
     @Test
     void getCustomModelNullModelId() {
         assertThrows(NullPointerException.class, () -> client.getCustomModel(null));
-    }
-
-    /**
-     * Verifies custom model info returned for a valid model Id.
-     */
-    @Test
-    void getCustomModelValidModelId() {
-        getCustomModelValidModelIdRunner(validModelId ->
-            validateCustomModel(getExpectedUnlabeledModel(), client.getCustomModel(validModelId)));
     }
 
     /**
@@ -81,9 +59,41 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
      */
     @Test
     void getCustomModelWithResponse() {
-        getCustomModelWithResponseRunner(validModelId ->
-            validateCustomModel(getExpectedLabeledModel(),
-                client.getCustomModelWithResponse(validModelId, Context.NONE).getValue()));
+        beginTrainingUnlabeledRunner((trainingDataSasUrl, useLabelFile) -> {
+            CustomFormModel trainedUnlabeledModel = client.beginTraining(trainingDataSasUrl, useLabelFile)
+                .getFinalResult();
+            Response<CustomFormModel> customModelWithResponse =
+                client.getCustomModelWithResponse(trainedUnlabeledModel.getModelId(),
+                    Context.NONE);
+            assertEquals(customModelWithResponse.getStatusCode(), HttpResponseStatus.OK.code());
+            validateCustomModelData(customModelWithResponse.getValue(), false);
+        });
+    }
+
+    /**
+     * Verifies unlabeled custom model info returned with response for a valid model Id.
+     */
+    @Test
+    void getCustomModelUnlabeled() {
+        beginTrainingUnlabeledRunner((trainingDataSASUri, useLabelFile) -> {
+            SyncPoller<OperationResult, CustomFormModel> syncPoller = client.beginTraining(trainingDataSASUri,
+                useLabelFile);
+            syncPoller.waitForCompletion();
+            CustomFormModel trainedUnlabeledModel = syncPoller.getFinalResult();
+            validateCustomModelData(client.getCustomModel(trainedUnlabeledModel.getModelId()), false);
+        });
+    }
+
+    /**
+     * Verifies labeled custom model info returned with response for a valid model Id.
+     */
+    @Test
+    void getCustomModelLabeled() {
+        beginTrainingLabeledRunner((trainingDataSASUrl, useLabelFile) -> {
+            CustomFormModel customFormModel = client.beginTraining(trainingDataSASUrl, useLabelFile)
+                .getFinalResult();
+            validateCustomModelData(client.getCustomModel(customFormModel.getModelId()), true);
+        });
     }
 
     /**
@@ -116,9 +126,9 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
 
     @Test
     void deleteModelValidModelIdWithResponse() {
-        beginTrainingLabeledResultRunner((storageSASUrl, useLabelFile) -> {
+        beginTrainingLabeledRunner((trainingDataSASUrl, useLabelFile) -> {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
-                client.beginTraining(storageSASUrl, useLabelFile);
+                client.beginTraining(trainingDataSASUrl, useLabelFile);
             syncPoller.waitForCompletion();
             CustomFormModel createdModel = syncPoller.getFinalResult();
 
@@ -136,8 +146,8 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
      * Test for listing all models information.
      */
     @Test
-    void listModels() {
-        for (CustomFormModelInfo modelInfo : client.listModels()) {
+    void getModelInfos() {
+        for (CustomFormModelInfo modelInfo : client.getModelInfos()) {
             assertTrue(modelInfo.getModelId() != null && modelInfo.getCreatedOn() != null
                 && modelInfo.getLastUpdatedOn() != null && modelInfo.getStatus() != null);
         }
@@ -147,8 +157,8 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
      * Test for listing all models information with {@link Context}.
      */
     @Test
-    void listModelsWithContext() {
-        for (CustomFormModelInfo modelInfo : client.listModels(Context.NONE)) {
+    void getModelInfosWithContext() {
+        for (CustomFormModelInfo modelInfo : client.getModelInfos(Context.NONE)) {
             assertTrue(modelInfo.getModelId() != null && modelInfo.getCreatedOn() != null
                 && modelInfo.getLastUpdatedOn() != null && modelInfo.getStatus() != null);
         }
@@ -169,11 +179,11 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
      */
     @Test
     void beginTrainingLabeledResult() {
-        beginTrainingLabeledResultRunner((storageSASUrl, useLabelFile) -> {
+        beginTrainingLabeledRunner((trainingDataSASUrl, useLabelFile) -> {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
-                client.beginTraining(storageSASUrl, useLabelFile);
+                client.beginTraining(trainingDataSASUrl, useLabelFile);
             syncPoller.waitForCompletion();
-            validateCustomModel(getExpectedLabeledModel(), syncPoller.getFinalResult());
+            validateCustomModelData(syncPoller.getFinalResult(), true);
         });
     }
 
@@ -182,11 +192,11 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
      */
     @Test
     void beginTrainingUnlabeledResult() {
-        beginTrainingUnlabeledResultRunner((storageSASUrl, useLabelFile) -> {
+        beginTrainingUnlabeledRunner((trainingDataSASUrl, useLabelFile) -> {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
-                client.beginTraining(storageSASUrl, useLabelFile);
+                client.beginTraining(trainingDataSASUrl, useLabelFile);
             syncPoller.waitForCompletion();
-            validateCustomModel(getExpectedUnlabeledModel(), syncPoller.getFinalResult());
+            validateCustomModelData(syncPoller.getFinalResult(), false);
         });
     }
 }

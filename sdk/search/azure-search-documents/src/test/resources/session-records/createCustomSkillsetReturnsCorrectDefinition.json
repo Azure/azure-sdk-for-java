@@ -1,29 +1,31 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk35679f74688.search.windows.net/skillsets?api-version=2019-05-06",
+    "Uri" : "https://azsjavacreatecustomskillsetreturnscorrectdefinitionecd94481.search.windows.net/skillsets?api-version=2019-05-06-Preview",
     "Headers" : {
+      "x-ms-client-request-id" : "8220648c-4597-49e7-ad13-2f6dcc7c706b",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "bc1190c9-a05f-4b2f-a98a-8a96a398d194",
+      "request-id" : "8220648c-4597-49e7-ad13-2f6dcc7c706b",
       "StatusCode" : "201",
-      "Date" : "Mon, 24 Feb 2020 19:57:43 GMT",
+      "Date" : "Tue, 21 Apr 2020 19:11:29 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D7B963CFE0FC57\"",
-      "elapsed-time" : "225",
+      "client-request-id" : "8220648c-4597-49e7-ad13-2f6dcc7c706b",
+      "ETag" : "W/\"0x8D7E627CBECBDC7\"",
+      "elapsed-time" : "69",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "789",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk35679f74688.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7B963CFE0FC57\\\"\",\"name\":\"custom-skillset\",\"description\":\"Skillset for testing custom skillsets\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Custom.WebApiSkill\",\"name\":\"webapi-skill\",\"description\":\"Calls an Azure function, which in turn calls Bing Entity Search\",\"context\":null,\"uri\":\"https://indexer-e2e-webskill.azurewebsites.net/api/InvokeTextAnalyticsV3?code=foo\",\"httpMethod\":\"POST\",\"timeout\":null,\"batchSize\":null,\"degreeOfParallelism\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"textItems\",\"targetName\":\"myTextItems\"}],\"httpHeaders\":{\"Ocp-Apim-Subscription-Key\":\"foobar\"}}],\"cognitiveServices\":null}",
+      "Content-Length" : "852",
+      "Body" : "{\"@odata.context\":\"https://azsjavacreatecustomskillsetreturnscorrectdefinitionecd94481.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7E627CBECBDC7\\\"\",\"name\":\"custom-skillset\",\"description\":\"Skillset for testing custom skillsets\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Custom.WebApiSkill\",\"name\":\"webapi-skill\",\"description\":\"Calls an Azure function, which in turn calls Bing Entity Search\",\"context\":null,\"uri\":\"https://indexer-e2e-webskill.azurewebsites.net/api/InvokeTextAnalyticsV3?code=foo\",\"httpMethod\":\"POST\",\"timeout\":null,\"batchSize\":null,\"degreeOfParallelism\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"textItems\",\"targetName\":\"myTextItems\"}],\"httpHeaders\":{\"Ocp-Apim-Subscription-Key\":\"foobar\"}}],\"cognitiveServices\":null,\"knowledgeStore\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk35679f74688.search.windows.net/skillsets('custom-skillset')?api-version=2019-05-06"
+      "Location" : "https://azsjavacreatecustomskillsetreturnscorrectdefinitionecd94481.search.windows.net/skillsets('custom-skillset')?api-version=2019-05-06-Preview"
     },
     "Exception" : null
   } ],
-  "variables" : [ "azs-sdk35679f74688" ]
+  "variables" : [ "azsjavacreatecustomskillsetreturnscorrectdefinitionecd94481" ]
 }

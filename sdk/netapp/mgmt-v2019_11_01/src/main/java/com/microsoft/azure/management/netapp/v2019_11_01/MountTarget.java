@@ -69,6 +69,43 @@ public class MountTarget {
     private String ipAddress;
 
     /**
+     * subnet.
+     * The subnet.
+     */
+    @JsonProperty(value = "properties.subnet")
+    private String subnet;
+
+    /**
+     * startIp.
+     * The start of IPv4 address range to use when creating a new mount target.
+     */
+    @JsonProperty(value = "properties.startIp")
+    private String startIp;
+
+    /**
+     * endIp.
+     * The end of IPv4 address range to use when creating a new mount target.
+     */
+    @JsonProperty(value = "properties.endIp")
+    private String endIp;
+
+    /**
+     * gateway.
+     * The gateway of the IPv4 address range to use when creating a new mount
+     * target.
+     */
+    @JsonProperty(value = "properties.gateway")
+    private String gateway;
+
+    /**
+     * netmask.
+     * The netmask of the IPv4 address range to use when creating a new mount
+     * target.
+     */
+    @JsonProperty(value = "properties.netmask")
+    private String netmask;
+
+    /**
      * smbServerFQDN.
      * The SMB server's Fully Qualified Domain Name, FQDN.
      */
@@ -178,6 +215,106 @@ public class MountTarget {
      */
     public String ipAddress() {
         return this.ipAddress;
+    }
+
+    /**
+     * Get the subnet.
+     *
+     * @return the subnet value
+     */
+    public String subnet() {
+        return this.subnet;
+    }
+
+    /**
+     * Set the subnet.
+     *
+     * @param subnet the subnet value to set
+     * @return the MountTarget object itself.
+     */
+    public MountTarget withSubnet(String subnet) {
+        this.subnet = subnet;
+        return this;
+    }
+
+    /**
+     * Get the start of IPv4 address range to use when creating a new mount target.
+     *
+     * @return the startIp value
+     */
+    public String startIp() {
+        return this.startIp;
+    }
+
+    /**
+     * Set the start of IPv4 address range to use when creating a new mount target.
+     *
+     * @param startIp the startIp value to set
+     * @return the MountTarget object itself.
+     */
+    public MountTarget withStartIp(String startIp) {
+        this.startIp = startIp;
+        return this;
+    }
+
+    /**
+     * Get the end of IPv4 address range to use when creating a new mount target.
+     *
+     * @return the endIp value
+     */
+    public String endIp() {
+        return this.endIp;
+    }
+
+    /**
+     * Set the end of IPv4 address range to use when creating a new mount target.
+     *
+     * @param endIp the endIp value to set
+     * @return the MountTarget object itself.
+     */
+    public MountTarget withEndIp(String endIp) {
+        this.endIp = endIp;
+        return this;
+    }
+
+    /**
+     * Get the gateway of the IPv4 address range to use when creating a new mount target.
+     *
+     * @return the gateway value
+     */
+    public String gateway() {
+        return this.gateway;
+    }
+
+    /**
+     * Set the gateway of the IPv4 address range to use when creating a new mount target.
+     *
+     * @param gateway the gateway value to set
+     * @return the MountTarget object itself.
+     */
+    public MountTarget withGateway(String gateway) {
+        this.gateway = gateway;
+        return this;
+    }
+
+    /**
+     * Get the netmask of the IPv4 address range to use when creating a new mount target.
+     *
+     * @return the netmask value
+     */
+    public String netmask() {
+        return this.netmask;
+    }
+
+    /**
+     * Set the netmask of the IPv4 address range to use when creating a new mount target.
+     *
+     * @param netmask the netmask value to set
+     * @return the MountTarget object itself.
+     */
+    public MountTarget withNetmask(String netmask) {
+        this.netmask = netmask;
+        return this;
     }
 
     /**

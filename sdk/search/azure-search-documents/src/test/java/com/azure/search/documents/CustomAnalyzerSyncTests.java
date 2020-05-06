@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.search.documents;
 
-import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.search.documents.models.AnalyzeRequest;
@@ -276,7 +275,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
 
         addAnalyzerToIndex(index, new StopAnalyzer().setName("a2"));
         Index updatedIndex = searchServiceClient.createOrUpdateIndexWithResponse(index,
-            true, new MatchConditions(), generateRequestOptions(), Context.NONE).getValue();
+            true, false, generateRequestOptions(), Context.NONE).getValue();
 
         assertAnalysisComponentsEqual(index, updatedIndex);
     }

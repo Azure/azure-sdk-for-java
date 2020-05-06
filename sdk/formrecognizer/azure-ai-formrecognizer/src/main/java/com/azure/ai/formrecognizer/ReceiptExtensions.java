@@ -55,7 +55,8 @@ public final class ReceiptExtensions {
             FormField<?> fieldValue = entry.getValue();
             switch (key) {
                 case "ReceiptType":
-                    receiptType = new USReceiptType(key, fieldValue.getConfidence());
+                    receiptType = new USReceiptType(((FormField<String>) fieldValue).getFieldValue(),
+                        fieldValue.getConfidence());
                     break;
                 case "MerchantName":
                     merchantName = (FormField<String>) fieldValue;
@@ -108,10 +109,9 @@ public final class ReceiptExtensions {
     @SuppressWarnings("unchecked")
     private static List<USReceiptItem> toReceiptItems(FormField<?> fieldValueItems) {
         List<FormField<?>> fieldValueArray = (List<FormField<?>>) fieldValueItems.getFieldValue();
-        List<USReceiptItem> receiptItemList = null;
+        List<USReceiptItem> receiptItemList = new ArrayList<>();
 
         for (FormField<?> eachFieldValue : fieldValueArray) {
-            receiptItemList = new ArrayList<>();
             Map<String, FormField<?>> objectValue = ((Map<String, FormField<?>>) (eachFieldValue.getFieldValue()));
             FormField<String> name = null;
             FormField<Float> quantity = null;

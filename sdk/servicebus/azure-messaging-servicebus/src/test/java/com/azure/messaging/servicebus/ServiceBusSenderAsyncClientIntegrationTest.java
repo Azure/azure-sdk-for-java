@@ -37,11 +37,16 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     protected void afterTest() {
         dispose(sender);
 
+        final int numberOfMessages = messagesPending.get();
+        if (numberOfMessages < 1) {
+            return;
+        }
+
         try {
-            receiver.receive(new ReceiveAsyncOptions().setEnableAutoComplete(false))
-                .take(messagesPending.get())
+            receiver.receive(new ReceiveAsyncOptions().setIsAutoCompleteEnabled(false))
+                .take(numberOfMessages)
                 .map(message -> {
-                    logger.info("Message received: {}", message.getSequenceNumber());
+                    logger.info("Message received: {}", message.getMessage().getSequenceNumber());
                     return message;
                 })
                 .timeout(Duration.ofSeconds(5), Mono.empty())
@@ -75,6 +80,25 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Assert & Act
         StepVerifier.create(sender.send(message).doOnSuccess(aVoid -> messagesPending.incrementAndGet()))
+            .verifyComplete();
+    }
+
+    /**
+     * Verifies that we can send a list of messages to a non-session entity.
+     */
+    @MethodSource("receiverTypesProvider")
+    @ParameterizedTest
+    void nonSessionEntitySendMessageList(MessagingEntityType entityType) {
+        // Arrange
+        setSenderAndReceiver(entityType, false);
+        int count = 4;
+
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString());
+
+        // Assert & Act
+        StepVerifier.create(sender.send(messages).doOnSuccess(aVoid -> {
+            messages.forEach(serviceBusMessage -> messagesPending.incrementAndGet());
+        }))
             .verifyComplete();
     }
 
@@ -133,10 +157,10 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
 
                 Assertions.assertNotNull(queueName, "'queueName' cannot be null.");
 
-                sender = createBuilder(useCredentials).sender()
+                sender = getBuilder(useCredentials).sender()
                     .queueName(queueName)
                     .buildAsyncClient();
-                receiver = createBuilder(useCredentials).receiver()
+                receiver = getBuilder(useCredentials).receiver()
                     .queueName(queueName)
                     .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                     .buildAsyncClient();
@@ -148,10 +172,10 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
                 Assertions.assertNotNull(topicName, "'topicName' cannot be null.");
                 Assertions.assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
 
-                sender = createBuilder(useCredentials).sender()
+                sender = getBuilder(useCredentials).sender()
                     .topicName(topicName)
                     .buildAsyncClient();
-                receiver = createBuilder(useCredentials).receiver()
+                receiver = getBuilder(useCredentials).receiver()
                     .topicName(topicName)
                     .subscriptionName(subscriptionName)
                     .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)

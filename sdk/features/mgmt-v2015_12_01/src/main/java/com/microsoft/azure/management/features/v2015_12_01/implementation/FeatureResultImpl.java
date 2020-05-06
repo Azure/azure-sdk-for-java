@@ -21,6 +21,7 @@ class FeatureResultImpl extends IndexableRefreshableWrapperImpl<FeatureResult, F
     FeatureResultImpl(FeatureResultInner inner,  FeaturesManager manager) {
         super(null, inner);
         this.manager = manager;
+        // set resource ancestor and positional variables
         this.resourceProviderNamespace = IdParsingUtils.getValueFromIdByName(inner.id(), "providers");
         this.featureName = IdParsingUtils.getValueFromIdByName(inner.id(), "features");
     }

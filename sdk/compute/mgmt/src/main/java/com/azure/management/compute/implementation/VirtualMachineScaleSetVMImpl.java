@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.management.compute.implementation;
 
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.CachingTypes;
@@ -39,6 +40,8 @@ import com.azure.management.network.VirtualMachineScaleSetNetworkInterface;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
+import reactor.core.publisher.Mono;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -46,7 +49,6 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import reactor.core.publisher.Mono;
 
 /** Implementation of {@link VirtualMachineScaleSetVM}. */
 class VirtualMachineScaleSetVMImpl
@@ -532,6 +534,11 @@ class VirtualMachineScaleSetVMImpl
     }
 
     @Override
+    public PagedFlux<VirtualMachineScaleSetNetworkInterface> listNetworkInterfacesAsync() {
+        return this.parent().listNetworkInterfacesByInstanceIdAsync(this.instanceId());
+    }
+
+    @Override
     public String modelDefinitionApplied() {
         return this.inner().modelDefinitionApplied();
     }
@@ -585,14 +592,16 @@ class VirtualMachineScaleSetVMImpl
             throw logger.logExceptionAsError(new IllegalStateException("Disk need to be in unattached state"));
         }
 
+        ManagedDiskParameters managedDiskParameters =
+            new ManagedDiskParameters().withStorageAccountType(storageAccountTypes);
+        managedDiskParameters.setId(dataDisk.id());
+
         DataDisk attachDataDisk =
             new DataDisk()
                 .withCreateOption(DiskCreateOptionTypes.ATTACH)
                 .withLun(lun)
                 .withCaching(cachingTypes)
-                .withManagedDisk(
-                    (ManagedDiskParameters)
-                        new ManagedDiskParameters().withStorageAccountType(storageAccountTypes).setId(dataDisk.id()));
+                .withManagedDisk(managedDiskParameters);
         return this.withExistingDataDisk(attachDataDisk, lun);
     }
 
@@ -674,7 +683,7 @@ class VirtualMachineScaleSetVMImpl
     }
 
     /** Class to manage data disk collection. */
-    private class ManagedDataDiskCollection {
+    private static class ManagedDataDiskCollection {
         private final List<DataDisk> existingDisksToAttach = new ArrayList<>();
         private final List<Integer> diskLunsToRemove = new ArrayList<>();
 
