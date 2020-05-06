@@ -298,11 +298,11 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
     Write-Host "JRS $([IO.Path]::DirectorySeparatorChar) $($pomFile.Split([IO.Path]::DirectorySeparatorChar))"
     if ($pomFile.Split([IO.Path]::DirectorySeparatorChar) -notcontains "eng")
     {
-        Write-Host "skipping pomFile=$($pomFile)"
+        Write-Host "will process pomFile=$($pomFile)"
     } 
     else 
     {
-        Write-Host "will process pomFile=$($pomFile)"
+        Write-Host "will skip pomFile=$($pomFile)"
     }
     if ($pomFile.Split([IO.Path]::DirectorySeparatorChar) -notcontains "eng") 
     {
