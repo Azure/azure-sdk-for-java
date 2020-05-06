@@ -4,6 +4,7 @@
 package com.azure.storage.blob.nio
 
 import com.azure.storage.blob.BlobClient
+import com.azure.storage.blob.models.BlobStorageException
 import spock.lang.Unroll
 
 class NioBlobInputStreamTest extends APISpec {
@@ -87,6 +88,32 @@ class NioBlobInputStreamTest extends APISpec {
         3   | -1
         0   | 11
         3   | 8
+    }
+
+    def "Read fail"() {
+        setup:
+        bc.delete()
+
+        when:
+        nioStream.read()
+
+        then:
+        def e = thrown(IOException)
+        e.getCause() instanceof BlobStorageException
+
+        when:
+        nioStream.read(new byte[5])
+
+        then:
+        thrown(IOException)
+        e.getCause() instanceof BlobStorageException
+
+        when:
+        nioStream.read(new byte[5], 0, 4)
+
+        then:
+        thrown(IOException)
+        e.getCause() instanceof BlobStorageException
     }
 
     @Unroll

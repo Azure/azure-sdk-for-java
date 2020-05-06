@@ -4,6 +4,7 @@
 package com.azure.storage.blob.nio;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.specialized.BlobInputStream;
 import com.azure.storage.common.implementation.Constants;
 
@@ -80,10 +81,7 @@ public class NioBlobInputStream extends InputStream {
         try {
             return this.blobInputStream.read();
         } catch (RuntimeException e) {
-            if (e.getMessage().equals(Constants.STREAM_CLOSED)) {
-                throw LoggingUtility.logError(logger, new IOException(e));
-            }
-            throw LoggingUtility.logError(logger, e);
+            throw LoggingUtility.logError(logger, new IOException(e));
         }
     }
 
@@ -115,10 +113,7 @@ public class NioBlobInputStream extends InputStream {
         try {
             return this.blobInputStream.read(b);
         } catch (RuntimeException e) {
-            if (e.getMessage().equals(Constants.STREAM_CLOSED)) {
-                throw LoggingUtility.logError(logger, new IOException(e));
-            }
-            throw LoggingUtility.logError(logger, e);
+            throw LoggingUtility.logError(logger, new IOException(e));
         }
     }
 
@@ -159,10 +154,7 @@ public class NioBlobInputStream extends InputStream {
         try {
             return this.blobInputStream.read(b, off, len);
         } catch (RuntimeException e) {
-            if (e.getMessage() != null && e.getMessage().equals(Constants.STREAM_CLOSED)) {
-                throw LoggingUtility.logError(logger, new IOException(e));
-            }
-            throw LoggingUtility.logError(logger, e);
+            throw LoggingUtility.logError(logger, new IOException(e));
         }
     }
 
@@ -173,7 +165,7 @@ public class NioBlobInputStream extends InputStream {
      * @throws RuntimeException If this stream has not been marked or if the mark has been invalidated.
      */
     @Override
-    public synchronized void reset() throws IOException{
+    public synchronized void reset() throws IOException {
         try {
             this.blobInputStream.reset();
         } catch (RuntimeException e) {
