@@ -66,7 +66,8 @@ public final class CosmosBridgeInternal {
             .keyCredential(builder.getKeyCredential())
             .permissions(builder.getPermissions())
             .authorizationTokenResolver(builder.getAuthorizationTokenResolver())
-            .resourceToken(builder.getResourceToken());
+            .resourceToken(builder.getResourceToken())
+            .returnMinimalResponse(builder.isReturnMinimalResponse());
 
         return copy;
     }

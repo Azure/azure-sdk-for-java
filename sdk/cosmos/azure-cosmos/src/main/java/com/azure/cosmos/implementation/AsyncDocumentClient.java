@@ -77,6 +77,7 @@ public interface AsyncDocumentClient {
         CosmosKeyCredential cosmosKeyCredential;
         boolean sessionCapturingOverride;
         boolean transportClientSharing;
+        boolean returnMinimalResponse;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -158,6 +159,11 @@ public interface AsyncDocumentClient {
             return this;
         }
 
+        public Builder withReturnMinimalResponse(boolean returnMinimalResponse) {
+            this.returnMinimalResponse = returnMinimalResponse;
+            return this;
+        }
+
         /**
          * This method will accept functional interface TokenResolver which helps in generation authorization
          * token per request. AsyncDocumentClient can be successfully initialized with this API without passing any MasterKey, ResourceToken or PermissionFeed.
@@ -187,15 +193,16 @@ public interface AsyncDocumentClient {
                 "cannot buildAsyncClient client without key credential");
 
             RxDocumentClientImpl client = new RxDocumentClientImpl(serviceEndpoint,
-                                                                   masterKeyOrResourceToken,
-                                                                   permissionFeed,
-                                                                   connectionPolicy,
-                                                                   desiredConsistencyLevel,
-                                                                   configs,
-                                                                   cosmosAuthorizationTokenResolver,
-                                                                   cosmosKeyCredential,
-                                                                   sessionCapturingOverride,
-                                                                   transportClientSharing);
+                masterKeyOrResourceToken,
+                permissionFeed,
+                connectionPolicy,
+                desiredConsistencyLevel,
+                configs,
+                cosmosAuthorizationTokenResolver,
+                cosmosKeyCredential,
+                sessionCapturingOverride,
+                transportClientSharing,
+                returnMinimalResponse);
             client.init();
             return client;
         }

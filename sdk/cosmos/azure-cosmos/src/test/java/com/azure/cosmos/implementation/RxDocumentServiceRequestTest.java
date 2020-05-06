@@ -411,12 +411,12 @@ public class RxDocumentServiceRequestTest {
                                                                            documentUrlWithId,
                                                                            new HashedMap<String, String>());
 
-        request.addPreferHeader("preferHeaderName1", "preferHeaderValue1");
+        RxDocumentClientImpl.addPreferHeader("preferHeaderName1", "preferHeaderValue1", request.getHeaders());
         assertThat(request.getHeaders().size()).isEqualTo(1);
         assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.PREFER))
                 .isEqualTo("preferHeaderName1=preferHeaderValue1");
 
-        request.addPreferHeader("preferHeaderName2", "preferHeaderValue2");
+        RxDocumentClientImpl.addPreferHeader("preferHeaderName2", "preferHeaderValue2", request.getHeaders());
         assertThat(request.getHeaders().size()).isEqualTo(1);
         assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.PREFER))
                 .isEqualTo("preferHeaderName1=preferHeaderValue1;" + "preferHeaderName2=preferHeaderValue2");

@@ -80,6 +80,9 @@ class Configuration {
     @Parameter(names = "-throughput", description = "provisioned throughput for test container")
     private int throughput = 100000;
 
+    @Parameter(names = "-returnMinimalResponse", description = "returns minimal response on document write operations")
+    private boolean returnMinimalResponse = false;
+
     @Parameter(names = "-operation", description = "Type of Workload:\n"
         + "\tReadThroughput- run a READ workload that prints only throughput *\n"
         + "\tReadThroughputWithMultipleClients - run a READ workload that prints throughput and latency for multiple client read.*\n"
@@ -262,6 +265,10 @@ class Configuration {
 
     ConsistencyLevel getConsistencyLevel() {
         return consistencyLevel;
+    }
+
+    boolean isReturnMinimalResponse() {
+        return returnMinimalResponse;
     }
 
     String getDatabaseId() {

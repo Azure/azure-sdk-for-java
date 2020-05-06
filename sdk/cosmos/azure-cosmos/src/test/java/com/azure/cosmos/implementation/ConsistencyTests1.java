@@ -176,11 +176,6 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
         assertThat(readLagging).isFalse();
     }
 
-    // TODO (DANOBLE) ConsistencyTests1::validateConsistentPrefixOnAsyncReplication test fails
-    //  This test requires BoundedStaleness and fails due to timeouts when run in Direct TCP mode.
-    //  This test should be enabled when we are ready to address our BoundedStaleness consistency issues.
-    //  see https://github.com/Azure/azure-sdk-for-java/issues/6378
-    @Ignore
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateConsistentPrefixOnAsyncReplication() throws InterruptedException {
         if (!(TestConfigurations.CONSISTENCY.equalsIgnoreCase(ConsistencyLevel.STRONG.toString()) || TestConfigurations.CONSISTENCY.equalsIgnoreCase(ConsistencyLevel.BOUNDED_STALENESS.toString()))) {

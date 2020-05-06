@@ -49,6 +49,7 @@ public final class CosmosAsyncClient implements Closeable {
     private final CosmosKeyCredential cosmosKeyCredential;
     private final boolean sessionCapturingOverride;
     private final boolean enableTransportClientSharing;
+    private final boolean returnMinimalResponse;
 
     CosmosAsyncClient(CosmosClientBuilder builder) {
         this.configs = builder.configs();
@@ -61,6 +62,7 @@ public final class CosmosAsyncClient implements Closeable {
         this.cosmosKeyCredential = builder.getKeyCredential();
         this.sessionCapturingOverride = builder.isSessionCapturingOverrideEnabled();
         this.enableTransportClientSharing = builder.isConnectionReuseAcrossClientsEnabled();
+        this.returnMinimalResponse = builder.isReturnMinimalResponse();
         this.asyncDocumentClient = new AsyncDocumentClient.Builder()
                                        .withServiceEndpoint(this.serviceEndpoint)
                                        .withMasterKeyOrResourceToken(this.keyOrResourceToken)
@@ -71,6 +73,7 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withTokenResolver(this.cosmosAuthorizationTokenResolver)
                                        .withCosmosKeyCredential(this.cosmosKeyCredential)
                                        .withTransportClientSharing(this.enableTransportClientSharing)
+                                       .withReturnMinimalResponse(this.returnMinimalResponse)
                                        .build();
     }
 
@@ -161,6 +164,20 @@ public final class CosmosAsyncClient implements Closeable {
      */
     CosmosKeyCredential cosmosKeyCredential() {
         return cosmosKeyCredential;
+    }
+
+    /**
+     * Gets the boolean which indicates whether to only return the headers and status code in Cosmos DB response
+     * in case of Create, Update and Delete operations on CosmosItem.
+     *
+     * If true, this removes the resource from response. It reduces networking
+     * and CPU load by not sending the resource back over the network and serializing it
+     * on the client.
+     *
+     * @return a boolean indicating whether resource will be included in the response or not
+     */
+    boolean isReturnMinimalResponse() {
+        return returnMinimalResponse;
     }
 
     /**
