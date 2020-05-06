@@ -221,7 +221,7 @@
                 <xmlOutput>true</xmlOutput>
                 <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
                 <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
-                <failOnError>true</failOnError>
+                <failOnError>false</failOnError>
 
                 <includeTests>false</includeTests>
                 <fork>true</fork>
