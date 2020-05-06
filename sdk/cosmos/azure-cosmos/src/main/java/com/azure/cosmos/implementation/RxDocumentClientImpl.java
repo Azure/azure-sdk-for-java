@@ -100,7 +100,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private GlobalAddressResolver addressResolver;
     private RxPartitionKeyRangeCache partitionKeyRangeCache;
     private Map<String, List<PartitionKeyAndResourceTokenPair>> resourceTokensMap;
-    private final boolean noContentResponseOnWrite;
+    private final boolean contentResponseOnWriteEnabled;
 
     // RetryPolicy retries a request when it encounters session unavailable (see ClientRetryPolicy).
     // Once it exhausts all write regions it clears the session container, then it uses RxClientCollectionCache
@@ -135,9 +135,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosKeyCredential cosmosKeyCredential,
                                 boolean sessionCapturingOverride,
                                 boolean connectionSharingAcrossClientsEnabled,
-                                boolean noContentResponseOnWrite) {
+                                boolean contentResponseOnWriteEnabled) {
         this(serviceEndpoint, masterKeyOrResourceToken, permissionFeed, connectionPolicy, consistencyLevel, configs,
-            cosmosKeyCredential, sessionCapturingOverride, connectionSharingAcrossClientsEnabled, noContentResponseOnWrite);
+            cosmosKeyCredential, sessionCapturingOverride, connectionSharingAcrossClientsEnabled, contentResponseOnWriteEnabled);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -150,9 +150,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosKeyCredential cosmosKeyCredential,
                                 boolean sessionCapturingOverrideEnabled,
                                 boolean connectionSharingAcrossClientsEnabled,
-                                boolean noContentResponseOnWrite) {
+                                boolean contentResponseOnWriteEnabled) {
         this(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs,
-            cosmosKeyCredential, sessionCapturingOverrideEnabled, connectionSharingAcrossClientsEnabled, noContentResponseOnWrite);
+            cosmosKeyCredential, sessionCapturingOverrideEnabled, connectionSharingAcrossClientsEnabled, contentResponseOnWriteEnabled);
         if (permissionFeed != null && permissionFeed.size() > 0) {
             this.resourceTokensMap = new HashMap<>();
             for (Permission permission : permissionFeed) {
@@ -203,7 +203,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                          CosmosKeyCredential cosmosKeyCredential,
                          boolean sessionCapturingOverrideEnabled,
                          boolean connectionSharingAcrossClientsEnabled,
-                         boolean noContentResponseOnWrite) {
+                         boolean contentResponseOnWriteEnabled) {
 
         logger.info(
             "Initializing DocumentClient with"
@@ -215,7 +215,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.masterKeyOrResourceToken = masterKeyOrResourceToken;
         this.serviceEndpoint = serviceEndpoint;
         this.cosmosKeyCredential = cosmosKeyCredential;
-        this.noContentResponseOnWrite = noContentResponseOnWrite;
+        this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
 
         if (this.cosmosKeyCredential != null) {
             hasAuthKeyResourceToken = false;
@@ -863,7 +863,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, consistencyLevel.toString());
         }
 
-        if (resourceType.equals(ResourceType.Document) && operationType.isWriteOperation() && this.noContentResponseOnWrite) {
+        //  If content response on write is not enabled, and operation is document write - then add minimal prefer header
+        if (resourceType.equals(ResourceType.Document) && operationType.isWriteOperation() && !this.contentResponseOnWriteEnabled) {
             headers.put(HttpConstants.HttpHeaders.PREFER, HttpConstants.HeaderValues.PREFER_RETURN_MINIMAL);
         }
 

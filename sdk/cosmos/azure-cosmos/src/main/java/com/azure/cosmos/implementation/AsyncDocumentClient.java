@@ -77,7 +77,7 @@ public interface AsyncDocumentClient {
         CosmosKeyCredential cosmosKeyCredential;
         boolean sessionCapturingOverride;
         boolean transportClientSharing;
-        boolean noContentResponseOnWrite;
+        boolean contentResponseOnWriteEnabled;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -159,8 +159,8 @@ public interface AsyncDocumentClient {
             return this;
         }
 
-        public Builder withNoContentResponseOnWrite(boolean noContentResponseOnWrite) {
-            this.noContentResponseOnWrite = noContentResponseOnWrite;
+        public Builder withContentResponseOnWriteEnabled(boolean contentResponseOnWriteEnabled) {
+            this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
             return this;
         }
 
@@ -202,7 +202,7 @@ public interface AsyncDocumentClient {
                 cosmosKeyCredential,
                 sessionCapturingOverride,
                 transportClientSharing,
-                noContentResponseOnWrite);
+                contentResponseOnWriteEnabled);
             client.init();
             return client;
         }

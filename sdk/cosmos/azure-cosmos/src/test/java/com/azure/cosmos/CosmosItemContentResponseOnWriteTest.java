@@ -24,14 +24,14 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CosmosItemNoContentResponseOnWriteTest extends TestSuiteBase {
+public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
 
     private CosmosClient client;
     private CosmosContainer container;
 
     //  Currently Gateway and Direct TCP support minimal response feature.
-    @Factory(dataProvider = "clientBuildersWithDirectTcpWithNoContentResponseOnWrite")
-    public CosmosItemNoContentResponseOnWriteTest(CosmosClientBuilder clientBuilder) {
+    @Factory(dataProvider = "clientBuildersWithDirectTcpWithContentResponseOnWriteEnabled")
+    public CosmosItemContentResponseOnWriteTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
 
@@ -50,7 +50,7 @@ public class CosmosItemNoContentResponseOnWriteTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void createItem_withNoContentResponseOnWrite() throws Exception {
+    public void createItem_withContentResponseOnWriteEnabled() throws Exception {
         CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<CosmosItemProperties> itemResponse = container.createItem(properties);
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
@@ -62,7 +62,7 @@ public class CosmosItemNoContentResponseOnWriteTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readItem_withNoContentResponseOnWrite() throws Exception {
+    public void readItem_withContentResponseOnWriteEnabled() throws Exception {
         CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<CosmosItemProperties> itemResponse = container.createItem(properties);
 
@@ -70,13 +70,13 @@ public class CosmosItemNoContentResponseOnWriteTest extends TestSuiteBase {
                                                                                     new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
                                                                                     new CosmosItemRequestOptions(),
                                                                                     CosmosItemProperties.class);
-        //  Read item should have full response irrespective of the flag - noContentResponseOnWrite
+        //  Read item should have full response irrespective of the flag - contentResponseOnWriteEnabled
         validateItemResponse(properties, readResponse1);
 
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void replaceItem_withNoContentResponseOnWrite() throws Exception{
+    public void replaceItem_withContentResponseOnWriteEnabled() throws Exception{
         CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<CosmosItemProperties> itemResponse = container.createItem(properties);
 
@@ -94,7 +94,7 @@ public class CosmosItemNoContentResponseOnWriteTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void deleteItem_withNoContentResponseOnWrite() throws Exception {
+    public void deleteItem_withContentResponseOnWriteEnabled() throws Exception {
         CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<CosmosItemProperties> itemResponse = container.createItem(properties);
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();

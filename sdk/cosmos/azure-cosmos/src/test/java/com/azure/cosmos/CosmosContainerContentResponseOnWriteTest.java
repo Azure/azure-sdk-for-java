@@ -23,15 +23,15 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CosmosContainerNoContentResponseOnWriteTest extends TestSuiteBase {
+public class CosmosContainerContentResponseOnWriteTest extends TestSuiteBase {
 
     private final String preExistingDatabaseId = CosmosDatabaseForTest.generateId();
     private CosmosClient client;
     private CosmosDatabase createdDatabase;
 
     //  Currently Gateway and Direct TCP support minimal response feature.
-    @Factory(dataProvider = "clientBuildersWithDirectTcpWithNoContentResponseOnWrite")
-    public CosmosContainerNoContentResponseOnWriteTest(CosmosClientBuilder clientBuilder) {
+    @Factory(dataProvider = "clientBuildersWithDirectTcpWithContentResponseOnWriteEnabled")
+    public CosmosContainerContentResponseOnWriteTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
 
@@ -49,7 +49,7 @@ public class CosmosContainerNoContentResponseOnWriteTest extends TestSuiteBase {
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public void createContainer_withNoContentResponseOnWrite() throws Exception {
+    public void createContainer_withContentResponseOnWriteEnabled() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
 
@@ -59,7 +59,7 @@ public class CosmosContainerNoContentResponseOnWriteTest extends TestSuiteBase {
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public void readContainer_withNoContentResponseOnWrite() throws Exception {
+    public void readContainer_withContentResponseOnWriteEnabled() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
@@ -76,7 +76,7 @@ public class CosmosContainerNoContentResponseOnWriteTest extends TestSuiteBase {
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public void replaceContainer_withNoContentResponseOnWrite() throws Exception {
+    public void replaceContainer_withContentResponseOnWriteEnabled() throws Exception {
 
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);

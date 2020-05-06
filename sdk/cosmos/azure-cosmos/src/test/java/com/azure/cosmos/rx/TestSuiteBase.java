@@ -900,25 +900,25 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
     @DataProvider
     public static Object[][] simpleClientBuildersWithDirect() {
-        return simpleClientBuildersWithDirect(false, toArray(protocols));
+        return simpleClientBuildersWithDirect(true, toArray(protocols));
     }
 
     @DataProvider
     public static Object[][] simpleClientBuildersWithDirectHttps() {
-        return simpleClientBuildersWithDirect(false, Protocol.HTTPS);
+        return simpleClientBuildersWithDirect(true, Protocol.HTTPS);
     }
 
     @DataProvider
     public static Object[][] simpleClientBuildersWithDirectTcp() {
-        return simpleClientBuildersWithDirect(false, Protocol.TCP);
-    }
-
-    @DataProvider
-    public static Object[][] simpleClientBuildersWithDirectTcpWithNoContentResponseOnWrite() {
         return simpleClientBuildersWithDirect(true, Protocol.TCP);
     }
 
-    private static Object[][] simpleClientBuildersWithDirect(boolean noContentResponseOnWrite, Protocol... protocols) {
+    @DataProvider
+    public static Object[][] simpleClientBuildersWithDirectTcpWithContentResponseOnWriteEnabled() {
+        return simpleClientBuildersWithDirect(false, Protocol.TCP);
+    }
+
+    private static Object[][] simpleClientBuildersWithDirect(boolean contentResponseOnWriteEnabled, Protocol... protocols) {
         logger.info("Max test consistency to use is [{}]", accountConsistency);
         List<ConsistencyLevel> testConsistencies = ImmutableList.of(ConsistencyLevel.EVENTUAL);
 
@@ -932,7 +932,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                 protocol,
                 isMultiMasterEnabled,
                 preferredLocations,
-                noContentResponseOnWrite)));
+                contentResponseOnWriteEnabled)));
         }
 
         cosmosConfigurations.forEach(c -> {
@@ -945,49 +945,49 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             );
         });
 
-        cosmosConfigurations.add(createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, noContentResponseOnWrite));
+        cosmosConfigurations.add(createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, contentResponseOnWriteEnabled));
 
         return cosmosConfigurations.stream().map(b -> new Object[]{b}).collect(Collectors.toList()).toArray(new Object[0][]);
     }
 
     @DataProvider
     public static Object[][] clientBuildersWithDirect() {
-        return clientBuildersWithDirectAllConsistencies(false, toArray(protocols));
+        return clientBuildersWithDirectAllConsistencies(true, toArray(protocols));
     }
 
     @DataProvider
     public static Object[][] clientBuildersWithDirectHttps() {
-        return clientBuildersWithDirectAllConsistencies(false, Protocol.HTTPS);
+        return clientBuildersWithDirectAllConsistencies(true, Protocol.HTTPS);
     }
 
     @DataProvider
     public static Object[][] clientBuildersWithDirectTcp() {
-        return clientBuildersWithDirectAllConsistencies(false, Protocol.TCP);
-    }
-
-    @DataProvider
-    public static Object[][] clientBuildersWithDirectTcpWithNoContentResponseOnWrite() {
         return clientBuildersWithDirectAllConsistencies(true, Protocol.TCP);
     }
 
     @DataProvider
+    public static Object[][] clientBuildersWithDirectTcpWithContentResponseOnWriteEnabled() {
+        return clientBuildersWithDirectAllConsistencies(false, Protocol.TCP);
+    }
+
+    @DataProvider
     public static Object[][] clientBuildersWithDirectSession() {
-        return clientBuildersWithDirectSession(false, toArray(protocols));
+        return clientBuildersWithDirectSession(true, toArray(protocols));
     }
 
     static Protocol[] toArray(List<Protocol> protocols) {
         return protocols.toArray(new Protocol[protocols.size()]);
     }
 
-    private static Object[][] clientBuildersWithDirectSession(boolean noContentResponseOnWrite, Protocol... protocols) {
+    private static Object[][] clientBuildersWithDirectSession(boolean contentResponseOnWriteEnabled, Protocol... protocols) {
         return clientBuildersWithDirect(new ArrayList<ConsistencyLevel>() {{
             add(ConsistencyLevel.SESSION);
-        }}, noContentResponseOnWrite, protocols);
+        }}, contentResponseOnWriteEnabled, protocols);
     }
 
-    private static Object[][] clientBuildersWithDirectAllConsistencies(boolean noContentResponseOnWrite, Protocol... protocols) {
+    private static Object[][] clientBuildersWithDirectAllConsistencies(boolean contentResponseOnWriteEnabled, Protocol... protocols) {
         logger.info("Max test consistency to use is [{}]", accountConsistency);
-        return clientBuildersWithDirect(desiredConsistencies, noContentResponseOnWrite, protocols);
+        return clientBuildersWithDirect(desiredConsistencies, contentResponseOnWriteEnabled, protocols);
     }
 
     static List<ConsistencyLevel> parseDesiredConsistencies(String consistencies) {
@@ -1029,7 +1029,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         return testConsistencies;
     }
 
-    private static Object[][] clientBuildersWithDirect(List<ConsistencyLevel> testConsistencies, boolean noContentResponseOnWrite, Protocol... protocols) {
+    private static Object[][] clientBuildersWithDirect(List<ConsistencyLevel> testConsistencies, boolean contentResponseOnWriteEnabled, Protocol... protocols) {
         boolean isMultiMasterEnabled = preferredLocations != null && accountConsistency == ConsistencyLevel.SESSION;
 
         List<CosmosClientBuilder> cosmosConfigurations = new ArrayList<>();
@@ -1039,7 +1039,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                 protocol,
                 isMultiMasterEnabled,
                 preferredLocations,
-                noContentResponseOnWrite)));
+                contentResponseOnWriteEnabled)));
         }
 
         cosmosConfigurations.forEach(c -> {
@@ -1052,12 +1052,12 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             );
         });
 
-        cosmosConfigurations.add(createGatewayRxDocumentClient(ConsistencyLevel.SESSION, isMultiMasterEnabled, preferredLocations, noContentResponseOnWrite));
+        cosmosConfigurations.add(createGatewayRxDocumentClient(ConsistencyLevel.SESSION, isMultiMasterEnabled, preferredLocations, contentResponseOnWriteEnabled));
 
         return cosmosConfigurations.stream().map(c -> new Object[]{c}).collect(Collectors.toList()).toArray(new Object[0][]);
     }
 
-    static protected CosmosClientBuilder createGatewayHouseKeepingDocumentClient(boolean noContentResponseOnWrite) {
+    static protected CosmosClientBuilder createGatewayHouseKeepingDocumentClient(boolean contentResponseOnWriteEnabled) {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
         connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
         ThrottlingRetryOptions options = new ThrottlingRetryOptions();
@@ -1066,12 +1066,12 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         return new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
                                         .keyCredential(cosmosKeyCredential)
                                         .connectionPolicy(connectionPolicy)
-                                        .noContentResponseOnWrite(noContentResponseOnWrite)
+                                        .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
                                         .consistencyLevel(ConsistencyLevel.SESSION);
     }
 
     static protected CosmosClientBuilder createGatewayRxDocumentClient(ConsistencyLevel consistencyLevel, boolean multiMasterEnabled,
-                                                                       List<String> preferredRegions, boolean noContentResponseOnWrite) {
+                                                                       List<String> preferredRegions, boolean contentResponseOnWriteEnabled) {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
         connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
         connectionPolicy.setUsingMultipleWriteRegions(multiMasterEnabled);
@@ -1079,7 +1079,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         return new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
                                         .keyCredential(cosmosKeyCredential)
                                         .connectionPolicy(connectionPolicy)
-                                        .noContentResponseOnWrite(noContentResponseOnWrite)
+                                        .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
                                         .consistencyLevel(consistencyLevel);
     }
 
@@ -1091,7 +1091,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                                                                       Protocol protocol,
                                                                       boolean multiMasterEnabled,
                                                                       List<String> preferredRegions,
-                                                                      boolean noContentResponseOnWrite) {
+                                                                      boolean contentResponseOnWriteEnabled) {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
         connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
 
@@ -1109,7 +1109,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         CosmosClientBuilder builder = new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
                                                                .keyCredential(cosmosKeyCredential)
                                                                .connectionPolicy(connectionPolicy)
-                                                               .noContentResponseOnWrite(noContentResponseOnWrite)
+                                                               .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
                                                                .consistencyLevel(consistencyLevel);
 
         return injectConfigs(builder, configs);

@@ -32,8 +32,8 @@ public class SpyClientUnderTestFactory {
 
     public static abstract class SpyBaseClass<T> extends RxDocumentClientImpl {
 
-        public SpyBaseClass(URI serviceEndpoint, String masterKeyOrResourceToken, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, Configs configs, CosmosKeyCredential cosmosKeyCredential, boolean noContentResponseOnWrite) {
-            super(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, false, false, noContentResponseOnWrite);
+        public SpyBaseClass(URI serviceEndpoint, String masterKeyOrResourceToken, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, Configs configs, CosmosKeyCredential cosmosKeyCredential, boolean contentResponseOnWriteEnabled) {
+            super(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, false, false, contentResponseOnWriteEnabled);
         }
 
         public abstract List<T> getCapturedRequests();
@@ -55,8 +55,8 @@ public class SpyClientUnderTestFactory {
         private List<RxDocumentServiceRequest> requests;
 
 
-        ClientWithGatewaySpy(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, Configs configs, CosmosKeyCredential cosmosKeyCredential, boolean noContentResponseOnWrite) {
-            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, noContentResponseOnWrite);
+        ClientWithGatewaySpy(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, Configs configs, CosmosKeyCredential cosmosKeyCredential, boolean contentResponseOnWriteEnabled) {
+            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, contentResponseOnWriteEnabled);
             init();
         }
 
@@ -117,8 +117,8 @@ public class SpyClientUnderTestFactory {
         List<Pair<HttpRequest, Future<HttpHeaders>>> requestsResponsePairs =
                 Collections.synchronizedList(new ArrayList<>());
 
-        ClientUnderTest(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, Configs configs, CosmosKeyCredential cosmosKeyCredential, boolean noContentResponseOnWrite) {
-            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, noContentResponseOnWrite);
+        ClientUnderTest(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, Configs configs, CosmosKeyCredential cosmosKeyCredential, boolean contentResponseOnWriteEnabled) {
+            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, contentResponseOnWriteEnabled);
             init();
         }
 
@@ -169,8 +169,8 @@ public class SpyClientUnderTestFactory {
         List<Pair<HttpRequest, Future<HttpHeaders>>> requestsResponsePairs =
                 Collections.synchronizedList(new ArrayList<>());
 
-        DirectHttpsClientUnderTest(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, CosmosKeyCredential cosmosKeyCredential, boolean noContentResponseOnWrite) {
-            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, createConfigsSpy(Protocol.HTTPS), cosmosKeyCredential, noContentResponseOnWrite);
+        DirectHttpsClientUnderTest(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, CosmosKeyCredential cosmosKeyCredential, boolean contentResponseOnWriteEnabled) {
+            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, createConfigsSpy(Protocol.HTTPS), cosmosKeyCredential, contentResponseOnWriteEnabled);
             assert connectionPolicy.getConnectionMode() == ConnectionMode.DIRECT;
             init();
 
@@ -231,8 +231,8 @@ public class SpyClientUnderTestFactory {
                                                                   ConsistencyLevel consistencyLevel,
                                                                   Configs configs,
                                                                   CosmosKeyCredential cosmosKeyCredential,
-                                                                  boolean noContentResponseOnWrite) {
-        return new ClientWithGatewaySpy(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, noContentResponseOnWrite);
+                                                                  boolean contentResponseOnWriteEnabled) {
+        return new ClientWithGatewaySpy(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, contentResponseOnWriteEnabled);
     }
 
     public static ClientUnderTest createClientUnderTest(AsyncDocumentClient.Builder builder) {
@@ -249,8 +249,8 @@ public class SpyClientUnderTestFactory {
                                                         ConsistencyLevel consistencyLevel,
                                                         Configs configs,
                                                         CosmosKeyCredential cosmosKeyCredential,
-                                                        boolean noContentResponseOnWrite) {
-        return new ClientUnderTest(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, noContentResponseOnWrite) {
+                                                        boolean contentResponseOnWriteEnabled) {
+        return new ClientUnderTest(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, contentResponseOnWriteEnabled) {
 
             @Override
             RxGatewayStoreModel createRxGatewayProxy(ISessionContainer sessionContainer,
@@ -279,7 +279,7 @@ public class SpyClientUnderTestFactory {
     }
 
     public static DirectHttpsClientUnderTest createDirectHttpsClientUnderTest(URI serviceEndpoint, String masterKey,
-            ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, CosmosKeyCredential cosmosKeyCredential, boolean noContentResponseOnWrite) {
-        return new DirectHttpsClientUnderTest(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, cosmosKeyCredential, noContentResponseOnWrite);
+            ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, CosmosKeyCredential cosmosKeyCredential, boolean contentResponseOnWriteEnabled) {
+        return new DirectHttpsClientUnderTest(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, cosmosKeyCredential, contentResponseOnWriteEnabled);
     }
 }

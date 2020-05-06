@@ -224,7 +224,7 @@ public class UniqueIndexTest extends TestSuiteBase {
             .key(TestConfigurations.MASTER_KEY)
             .connectionPolicy(ConnectionPolicy.getDefaultPolicy())
             .consistencyLevel(ConsistencyLevel.SESSION)
-            .noContentResponseOnWrite(false)
+            .contentResponseOnWriteEnabled(true)
             .buildAsyncClient();
 
         database = createDatabase(client, databaseId);

@@ -80,8 +80,8 @@ class Configuration {
     @Parameter(names = "-throughput", description = "provisioned throughput for test container")
     private int throughput = 100000;
 
-    @Parameter(names = "-noContentResponseOnWrite", description = "does not returns content response on document write operations")
-    private boolean noContentResponseOnWrite = false;
+    @Parameter(names = "-contentResponseOnWriteEnabled", description = "if set to false, does not returns content response on document write operations")
+    private boolean contentResponseOnWriteEnabled = true;
 
     @Parameter(names = "-operation", description = "Type of Workload:\n"
         + "\tReadThroughput- run a READ workload that prints only throughput *\n"
@@ -267,8 +267,8 @@ class Configuration {
         return consistencyLevel;
     }
 
-    boolean isNoContentResponseOnWrite() {
-        return noContentResponseOnWrite;
+    boolean isContentResponseOnWriteEnabled() {
+        return contentResponseOnWriteEnabled;
     }
 
     String getDatabaseId() {

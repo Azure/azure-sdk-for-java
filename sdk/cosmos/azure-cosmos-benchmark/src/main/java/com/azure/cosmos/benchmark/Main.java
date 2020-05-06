@@ -52,8 +52,8 @@ public class Main {
             case WriteThroughput:
                 break;
             default:
-                if (cfg.isNoContentResponseOnWrite()) {
-                    throw new IllegalArgumentException("noContentResponseOnWrite parameter can only be set to true " +
+                if (cfg.isContentResponseOnWriteEnabled()) {
+                    throw new IllegalArgumentException("contentResponseOnWriteEnabled parameter can only be set to true " +
                         "for write latency and write throughput operations");
                 }
         }

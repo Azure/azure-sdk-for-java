@@ -20,7 +20,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CosmosDatabaseNoContentResponseOnWriteTest extends TestSuiteBase {
+public class CosmosDatabaseContentResponseOnWriteTest extends TestSuiteBase {
 
     private final String preExistingDatabaseId = CosmosDatabaseForTest.generateId();
     private final List<String> databases = new ArrayList<>();
@@ -28,8 +28,8 @@ public class CosmosDatabaseNoContentResponseOnWriteTest extends TestSuiteBase {
     private CosmosDatabase createdDatabase;
 
     //  Currently Gateway and Direct TCP support minimal response feature.
-    @Factory(dataProvider = "clientBuildersWithDirectTcpWithNoContentResponseOnWrite")
-    public CosmosDatabaseNoContentResponseOnWriteTest(CosmosClientBuilder clientBuilder) {
+    @Factory(dataProvider = "clientBuildersWithDirectTcpWithContentResponseOnWriteEnabled")
+    public CosmosDatabaseContentResponseOnWriteTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
 
@@ -50,7 +50,7 @@ public class CosmosDatabaseNoContentResponseOnWriteTest extends TestSuiteBase {
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
-    public void createDatabase_withNoContentResponseOnWrite() throws CosmosClientException {
+    public void createDatabase_withContentResponseOnWriteEnabled() throws CosmosClientException {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         databases.add(databaseDefinition.getId());
 
@@ -60,7 +60,7 @@ public class CosmosDatabaseNoContentResponseOnWriteTest extends TestSuiteBase {
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
-    public void readDatabase_withNoContentResponseOnWrite() throws Exception {
+    public void readDatabase_withContentResponseOnWriteEnabled() throws Exception {
         CosmosDatabase database = client.getDatabase(createdDatabase.getId());
         CosmosDatabaseProperties properties = new CosmosDatabaseProperties(createdDatabase.getId());
         CosmosDatabaseRequestOptions options = new CosmosDatabaseRequestOptions();

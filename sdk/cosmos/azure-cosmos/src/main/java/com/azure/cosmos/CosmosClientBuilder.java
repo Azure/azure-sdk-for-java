@@ -39,7 +39,7 @@ public class CosmosClientBuilder {
     private CosmosKeyCredential cosmosKeyCredential;
     private boolean sessionCapturingOverrideEnabled;
     private boolean connectionReuseAcrossClientsEnabled;
-    private boolean noContentResponseOnWrite = true;
+    private boolean contentResponseOnWriteEnabled;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -296,32 +296,34 @@ public class CosmosClientBuilder {
      * Gets the boolean which indicates whether to only return the headers and status code in Cosmos DB response
      * in case of Create, Update and Delete operations on CosmosItem.
      *
-     * If true, this removes the resource from response. It reduces networking
+     * If set to false (which is by default), this removes the resource from response. It reduces networking
      * and CPU load by not sending the resource back over the network and serializing it
      * on the client.
      *
-     * By-default, this is true.
+     * By-default, this is false.
      *
      * @return a boolean indicating whether resource will be included in the response or not
      */
-    boolean isNoContentResponseOnWrite() {
-        return noContentResponseOnWrite;
+    boolean isContentResponseOnWriteEnabled() {
+        return contentResponseOnWriteEnabled;
     }
 
     /**
      * Sets the boolean to only return the headers and status code in Cosmos DB response
      * in case of Create, Update and Delete operations on CosmosItem.
      *
-     * If set to true, this removes the resource from response. It reduces networking
+     * If set to false (which is by default), this removes the resource from response. It reduces networking
      * and CPU load by not sending the resource back over the network and serializing it on the client.
      *
-     * By-default, this is true.
+     * This feature does not impact RU usage for read or write operations.
      *
-     * @param noContentResponseOnWrite a boolean indicating whether resource will be included in the response or not
+     * By-default, this is false.
+     *
+     * @param contentResponseOnWriteEnabled a boolean indicating whether resource will be included in the response or not
      * @return current cosmosClientBuilder
      */
-    public CosmosClientBuilder noContentResponseOnWrite(boolean noContentResponseOnWrite) {
-        this.noContentResponseOnWrite = noContentResponseOnWrite;
+    public CosmosClientBuilder contentResponseOnWriteEnabled(boolean contentResponseOnWriteEnabled) {
+        this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
         return this;
     }
 

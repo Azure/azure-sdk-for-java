@@ -12,7 +12,7 @@ public class SpyClientBuilder extends AsyncDocumentClient.Builder {
         super.masterKeyOrResourceToken = builder.masterKeyOrResourceToken;
         super.serviceEndpoint = builder.serviceEndpoint;
         super.cosmosKeyCredential = builder.cosmosKeyCredential;
-        super.noContentResponseOnWrite = builder.noContentResponseOnWrite;
+        super.contentResponseOnWriteEnabled = builder.contentResponseOnWriteEnabled;
     }
 
     public SpyClientUnderTestFactory.ClientUnderTest build() {
@@ -23,7 +23,7 @@ public class SpyClientBuilder extends AsyncDocumentClient.Builder {
             desiredConsistencyLevel,
             configs,
             cosmosKeyCredential,
-            noContentResponseOnWrite);
+            contentResponseOnWriteEnabled);
     }
 
     public SpyClientUnderTestFactory.ClientWithGatewaySpy buildWithGatewaySpy() {
@@ -34,7 +34,7 @@ public class SpyClientBuilder extends AsyncDocumentClient.Builder {
             desiredConsistencyLevel,
             configs,
             cosmosKeyCredential,
-            noContentResponseOnWrite);
+            contentResponseOnWriteEnabled);
     }
 
     public SpyClientUnderTestFactory.DirectHttpsClientUnderTest buildWithDirectHttps() {
@@ -44,6 +44,6 @@ public class SpyClientBuilder extends AsyncDocumentClient.Builder {
             connectionPolicy,
             desiredConsistencyLevel,
             cosmosKeyCredential,
-            noContentResponseOnWrite);
+            contentResponseOnWriteEnabled);
     }
 }
