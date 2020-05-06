@@ -85,6 +85,7 @@ class ServiceAPITest extends APISpec {
             !c.getProperties().isHasImmutabilityPolicy()
             !c.getProperties().isEncryptionScopeOverridePrevented()
             c.getProperties().getDefaultEncryptionScope()
+            !c.isDeleted()
         }
     }
 
@@ -146,6 +147,32 @@ class ServiceAPITest extends APISpec {
 
         cleanup:
         containers.each { container -> container.delete() }
+    }
+
+    def "List deleted"() {
+        given:
+        def NUM_CONTAINERS = 5
+        def containerName = generateContainerName()
+        def containerPrefix = containerName.substring(0, Math.min(60, containerName.length()))
+
+        def containers = [] as Collection<BlobContainerClient>
+        for (i in (1..NUM_CONTAINERS)) {
+            containers << primaryBlobServiceClient.createBlobContainer(containerPrefix + i)
+        }
+        containers.each { container -> container.delete() }
+
+        when:
+        def listResult = primaryBlobServiceClient.listBlobContainers(
+            new ListBlobContainersOptions()
+            .setPrefix(containerPrefix)
+            .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)),
+            null)
+
+        then:
+        for (BlobContainerItem item : listResult) {
+            item.isDeleted()
+        }
+        listResult.size() == NUM_CONTAINERS
     }
 
     def "List containers error"() {

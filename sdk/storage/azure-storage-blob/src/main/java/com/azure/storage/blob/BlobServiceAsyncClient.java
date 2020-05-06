@@ -325,11 +325,10 @@ public final class BlobServiceAsyncClient {
         ListBlobContainersOptions options, Duration timeout) {
         options = options == null ? new ListBlobContainersOptions() : options;
 
-        ListBlobContainersIncludeType includeType = options.getDetails().toIncludeType();
         return StorageImplUtils.applyOptionalTimeout(
             this.azureBlobStorage.services().listBlobContainersSegmentWithRestResponseAsync(
                 options.getPrefix(), marker, options.getMaxResultsPerPage(),
-                includeType == null ? null : Collections.singletonList(includeType),
+                options.getDetails().toIncludeTypes(),
                 null, null, Context.NONE), timeout);
     }
 
