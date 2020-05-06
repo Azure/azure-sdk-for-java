@@ -8,6 +8,7 @@ import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
@@ -664,7 +665,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     void createSessionReceiverForNonSessionEntity(MessagingEntityType entityType) {
         // Arrange
         String sessionId = "test-session-id";
-        ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder builder = getBuilder(true)
+        ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder builder = getBuilder(false)
             .sessionReceiver();
 
         if (entityType == MessagingEntityType.QUEUE) {
@@ -685,6 +686,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Send multiple message and receive from multiple receivers and autocomplete is off.
      */
+    @Disabled("Last message does not arrive : https://github.com/Azure/azure-sdk-for-java/issues/10840")
     @MethodSource("messagingEntityWithSessions")
     @ParameterizedTest
     void multipleReceiverAndClientComplete(MessagingEntityType entityType, boolean isSessionEnabled) {
@@ -737,6 +739,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Send multiple message and receive from multiple receivers with autocomplete.
      */
+    @Disabled("Last message does not arrive : https://github.com/Azure/azure-sdk-for-java/issues/10840")
     @MethodSource("messagingEntityWithSessions")
     @ParameterizedTest
     void multipleReceiverAndAutoComplete(MessagingEntityType entityType, boolean isSessionEnabled) {
@@ -785,6 +788,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      * Send multiple message and receive from multiple receivers with autocomplete.
      * When a exception is raised the message is abandoned. And abandoned message is received again.
      */
+    @Disabled("Last message does not arrive : https://github.com/Azure/azure-sdk-for-java/issues/10840")
     @MethodSource("messagingEntityWithSessions")
     @ParameterizedTest
     void multipleReceiverAndAbandonOnException(MessagingEntityType entityType, boolean isSessionEnabled) {
@@ -853,7 +857,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can renew session lock on a session receiver with multiple receiver.
      */
-    @MethodSource("messagingEntityProvide r")
+    @MethodSource("messagingEntityProvider")
     @ParameterizedTest
     void multipleReceiverRenewSessionLock(MessagingEntityType entityType) {
         // Arrange
@@ -866,7 +870,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(firstBatchsize, CONTENTS_BYTES, messageId, true,
             sessionId);
 
-        messages.addAll(TestUtils.getServiceBusMessages(firstBatchsize, CONTENTS_BYTES, messageId, true,
+        messages.addAll(TestUtils.getServiceBusMessages(secondBatchSize, CONTENTS_BYTES, messageId, true,
             sessionId2));
 
 
@@ -937,20 +941,14 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             getMessage(messageId, isSessionEnabled)
         )
             .delayElements(delayPublishing)
-            .map(message -> sender.send(message).subscribe())
+            .flatMap(message -> sender.send(message).then())
             .subscribe();
 
         // Assert & Act
         StepVerifier.create(receiver.receive())
-            .assertNext(receivedMessage -> {
-                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-            })
-            .assertNext(receivedMessage -> {
-                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-            })
-            .assertNext(receivedMessage -> {
-                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-            })
+            .assertNext(receivedMessage -> assertMessageEquals(receivedMessage, messageId, isSessionEnabled))
+            .assertNext(receivedMessage -> assertMessageEquals(receivedMessage, messageId, isSessionEnabled))
+            .assertNext(receivedMessage -> assertMessageEquals(receivedMessage, messageId, isSessionEnabled))
             .thenCancel()
             .verify();
 
