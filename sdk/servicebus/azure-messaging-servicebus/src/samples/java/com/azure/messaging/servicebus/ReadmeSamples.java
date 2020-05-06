@@ -109,10 +109,10 @@ public class ReadmeSamples {
             System.out.printf("Id: %s%n", message.getMessageId());
             System.out.printf("Contents: %s%n", new String(message.getBody(), StandardCharsets.UTF_8));
         }, error -> {
-            System.err.println("Error occurred while receiving messages: " + error);
-        }, () -> {
-            System.out.println("Finished receiving messages.");
-        });
+                System.err.println("Error occurred while receiving messages: " + error);
+            }, () -> {
+                System.out.println("Finished receiving messages.");
+            });
     }
 
     /**

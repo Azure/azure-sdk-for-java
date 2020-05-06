@@ -54,8 +54,8 @@ public class ReceiveSingleSessionAsyncSample {
                 // Process message
                 // The message is automatically completed if no exceptions are thrown while processing message.
             }, error -> {
-                System.err.println("Error occurred: " + error);
-            });
+                    System.err.println("Error occurred: " + error);
+                });
 
         // Subscribe is not a blocking call so we sleep here so the program does not end.
         TimeUnit.SECONDS.sleep(60);
