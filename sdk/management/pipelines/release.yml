@@ -28,7 +28,7 @@ steps:
     goals: 'com.microsoft.azure:bundler-maven-plugin:auto'
 - bash: |
     git log -2
-    git push https://$(GITHUB_TOKEN)@github.com/azure-fluent/azure-libraries-for-java HEAD:refs/heads/$(VERSION) -f
-    python3 tools/pull-request.py azure azure-libraries-for-java "Release $(VERSION)" "azure-fluent:$(VERSION)"
+    git push https://$(GITHUB_TOKEN)@github.com/azure-fluent/azure-sdk-for-java HEAD:refs/heads/$(VERSION) -f
+    python3 tools/pull-request.py azure azure-sdk-for-java "Release $(VERSION)" "azure-fluent:$(VERSION)"
   env:
     GITHUB_TOKEN: $(GITHUB_TOKEN)
