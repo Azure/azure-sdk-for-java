@@ -23,7 +23,8 @@ import com.azure.search.documents.models.SynonymMap;
 import com.azure.search.documents.test.AccessConditionTests;
 import com.azure.search.documents.test.AccessOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,6 +36,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import static com.azure.search.documents.TestHelpers.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -70,7 +72,8 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         client = getSearchServiceClientBuilder().buildClient();
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createIndexReturnsCorrectDefinition() {
         Index index = createTestIndex();
 
@@ -78,7 +81,8 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         assertObjectEquals(index, createdIndex, true, "etag");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createIndexReturnsCorrectDefinitionWithResponse() {
         Index index = createTestIndex();
 
@@ -87,7 +91,8 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         assertObjectEquals(index, createIndexResponse.getValue(), true, "etag");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createIndexReturnsCorrectDefaultValues() {
         Index index = createTestIndex()
             .setCorsOptions(new CorsOptions().setAllowedOrigins("*"))
@@ -110,7 +115,8 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         assertEquals(ScoringFunctionInterpolation.LINEAR, scoringProfile.getFunctions().get(0).getInterpolation());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createIndexFailsWithUsefulMessageOnUserError() {
         String indexName = HOTEL_INDEX_NAME;
         Index index = new Index()
@@ -134,7 +140,8 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         }
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void getIndexReturnsCorrectDefinition() {
         Index index = createTestIndex();
         client.createIndex(index);
@@ -143,7 +150,8 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         assertObjectEquals(index, createdIndex, true, "etag");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void getIndexReturnsCorrectDefinitionWithResponse() {
         Index index = createTestIndex();
         client.createIndex(index);
@@ -153,7 +161,8 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         assertObjectEquals(index, getIndexResponse.getValue(), true, "etag");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void getIndexThrowsOnNotFound() {
         assertHttpResponseException(
             () -> client.getIndex("thisindexdoesnotexist"),
@@ -162,7 +171,8 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         );
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void deleteIndexIfNotChangedWorksOnlyOnCurrentResource() {
         Index indexToCreate = createTestIndex();
         AccessOptions accessOptions = new AccessOptions(false);
@@ -189,13 +199,15 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         deleteIndexFunc.accept(updatedIndex, accessOptions);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void deleteIndexIfExistsWorksOnlyWhenResourceExists() {
         AccessConditionTests.deleteIfExistsWorksOnlyWhenResourceExists(deleteIndexFunc, createOrUpdateIndexFunc,
             newIndexFunc);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void deleteIndexIsIdempotent() {
         Index index = new Index()
             .setName(HOTEL_INDEX_NAME)
@@ -219,7 +231,8 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canCreateAndDeleteIndex() {
         Index index = createTestIndex();
         client.createIndex(index);
@@ -228,7 +241,8 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         assertThrows(SearchErrorException.class, () -> client.getIndex(index.getName()));
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canCreateAndListIndexes() {
         Index index1 = createTestIndex();
         Index index2 = createTestIndex().setName("hotels2");
@@ -244,7 +258,8 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         assertEquals(index2.getName(), result.get(1).getName());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canListIndexesWithSelectedField() {
         Index index1 = createTestIndex();
         Index index2 = createTestIndex().setName("hotels2");
@@ -274,7 +289,8 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         assertEquals(result.get(1).getName(), index2.getName());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canAddSynonymFieldProperty() {
         String synonymMapName = "names";
         SynonymMap synonymMap = new SynonymMap().setName(synonymMapName).setSynonyms("hotel,motel");
@@ -300,7 +316,8 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         assertEquals(actualSynonym, expectedSynonym);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUpdateSynonymFieldProperty() {
         String synonymMapName = "names";
         SynonymMap synonymMap = new SynonymMap()
@@ -325,7 +342,8 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         assertObjectEquals(existingIndex, updatedIndex, true, "etag", "@odata.etag");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUpdateIndexDefinition() {
         Index fullFeaturedIndex = createTestIndex();
 
@@ -379,7 +397,8 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         assertObjectEquals(existingIndex, updatedIndex, true, "etag", "@odata.etag");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUpdateSuggesterWithNewIndexFields() {
         Index index = createTestIndex();
         client.createIndex(index);
@@ -403,7 +422,8 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         assertObjectEquals(existingIndex, updatedIndex, true, "etag", "@odata.etag");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createOrUpdateIndexThrowsWhenUpdatingSuggesterWithExistingIndexFields() {
         Index index = createTestIndex();
         client.createIndex(index);
@@ -424,7 +444,8 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         );
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createOrUpdateIndexCreatesWhenIndexDoesNotExist() {
         Index expected = createTestIndex();
 
@@ -438,7 +459,8 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         assertEquals(expected.getName(), res.getName());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createOrUpdateIndexCreatesWhenIndexDoesNotExistWithResponse() {
         Index expected = createTestIndex();
 
@@ -455,31 +477,36 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         assertEquals(HttpResponseStatus.CREATED.code(), createOrUpdateResponse.getStatusCode());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createOrUpdateIndexIfNotExistsSucceedsOnNoResource() {
         AccessConditionTests.createOrUpdateIfNotExistsSucceedsOnNoResource(createOrUpdateIndexFunc, newIndexFunc);
     }
 
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createOrUpdateIndexIfExistsSucceedsOnExistingResource() {
         AccessConditionTests.updateIfExistsSucceedsOnExistingResource(newIndexFunc, createOrUpdateIndexFunc,
             mutateIndexFunc);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createOrUpdateIndexIfNotChangedSucceedsWhenResourceUnchanged() {
         AccessConditionTests.updateIfNotChangedSucceedsWhenResourceUnchanged(newIndexFunc, createOrUpdateIndexFunc,
             mutateIndexFunc);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createOrUpdateIndexIfNotChangedFailsWhenResourceChanged() {
         AccessConditionTests.updateIfNotChangedFailsWhenResourceChanged(newIndexFunc, createOrUpdateIndexFunc,
             mutateIndexFunc);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canCreateAndGetIndexStats() {
         Index index = createTestIndex();
         client.createOrUpdateIndex(index);
@@ -488,7 +515,8 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         assertEquals(0, indexStatistics.getStorageSize());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canCreateAndGetIndexStatsWithResponse() {
         Index index = createTestIndex();
         client.createOrUpdateIndex(index);

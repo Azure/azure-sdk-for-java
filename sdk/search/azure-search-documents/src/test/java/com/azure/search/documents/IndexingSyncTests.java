@@ -19,7 +19,8 @@ import com.azure.search.documents.test.environment.models.HotelAddress;
 import com.azure.search.documents.test.environment.models.HotelRoom;
 import com.azure.search.documents.test.environment.models.LoudHotel;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -35,6 +36,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.azure.search.documents.TestHelpers.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -50,7 +52,8 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
 
     private SearchIndexClient client;
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void countingDocsOfNewIndexGivesZero() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -58,7 +61,8 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         assertEquals(0L, client.getDocumentCount());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void indexDoesNotThrowWhenAllActionsSucceed() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -73,7 +77,8 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         assertEquals(1L, client.getDocumentCount());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canIndexWithPascalCaseFields() {
         setupIndexFromJsonFile(BOOKS_INDEX_JSON);
         client = getSearchIndexClientBuilder(BOOKS_INDEX_NAME).buildClient();
@@ -94,7 +99,8 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         assertEquals(1L, client.getDocumentCount());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canDeleteBatchByKeys() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -119,7 +125,8 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         assertEquals(0, client.getDocumentCount());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void indexDoesNotThrowWhenDeletingDocumentWithExtraFields() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -143,7 +150,8 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         assertEquals(0, client.getDocumentCount());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void indexDoesNotThrowWhenDeletingDynamicDocumentWithExtraFields() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -169,7 +177,8 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         assertEquals(0, client.getDocumentCount());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canIndexStaticallyTypedDocuments() throws ParseException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -213,7 +222,8 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         assertObjectEquals(hotel3, actualHotel3, true);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canIndexDynamicDocuments() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -257,7 +267,8 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         assertEquals(hotel3, actualHotel3);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void indexWithInvalidDocumentThrowsException() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -272,7 +283,8 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         );
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUseIndexWithReservedName() {
         String indexName = "prototype";
         Index indexWithReservedName = new Index()
@@ -301,7 +313,8 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         assertNotNull(actual);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canRoundtripBoundaryValues() throws ParseException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -319,7 +332,8 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         }
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void dynamicDocumentDateTimesRoundTripAsUtc() {
         setupIndexFromJsonFile(BOOKS_INDEX_JSON);
         client = getSearchIndexClientBuilder(BOOKS_INDEX_NAME).buildClient();
@@ -357,7 +371,8 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         assertEquals(utcTimeMinusEight.withOffsetSameInstant(ZoneOffset.UTC), ((OffsetDateTime) actualBook2.get("PublishDate")).withOffsetSameInstant(ZoneOffset.UTC));
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void staticallyTypedDateTimesRoundTripAsUtc() {
         setupIndexFromJsonFile(BOOKS_INDEX_JSON);
         client = getSearchIndexClientBuilder(BOOKS_INDEX_NAME).buildClient();
@@ -387,7 +402,8 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         assertEquals(books.get(1).publishDate().withOffsetSameInstant(ZoneOffset.UTC), convertToType(actualBook2, Book.class).publishDate().withOffsetSameInstant(ZoneOffset.UTC));
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canMergeStaticallyTypedDocuments() throws ParseException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -499,7 +515,8 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         assertObjectEquals(originalDoc, convertToType(client.getDocument("1"), Hotel.class), true);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void mergeDocumentWithoutExistingKeyThrowsIndexingException() throws ParseException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -520,7 +537,8 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         }
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canSetExplicitNullsInStaticallyTypedDocument() throws ParseException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -639,7 +657,8 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         assertObjectEquals(originalDoc, actualDoc, true);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canMergeDynamicDocuments() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -765,7 +784,8 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         assertEquals(originalDoc, actualDoc);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canIndexAndAccessResponse() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();

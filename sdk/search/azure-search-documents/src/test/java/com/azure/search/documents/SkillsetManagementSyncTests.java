@@ -37,7 +37,8 @@ import com.azure.search.documents.models.WebApiSkill;
 import com.azure.search.documents.test.AccessConditionTests;
 import com.azure.search.documents.test.AccessOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,6 +51,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import static com.azure.search.documents.TestHelpers.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -87,14 +89,16 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         client = getSearchServiceClientBuilder().buildClient();
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createSkillsetReturnsCorrectDefinitionImageAnalysisKeyPhrase() {
         Skillset expectedSkillset = createTestSkillsetImageAnalysisKeyPhrase();
         Skillset actualSkillset = client.createSkillset(expectedSkillset);
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createSkillsetReturnsCorrectDefinitionImageAnalysisKeyPhraseWithResponse() {
         Skillset expectedSkillset = createTestSkillsetImageAnalysisKeyPhrase();
         Response<Skillset> skillsetResponse = client.createSkillsetWithResponse(expectedSkillset,
@@ -103,7 +107,8 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         assertObjectEquals(expectedSkillset, skillsetResponse.getValue(), true, "etag");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createSkillsetReturnsCorrectDefinitionLanguageDetection() {
         Skillset expectedSkillset = createTestSkillsetLanguageDetection();
         Skillset actualSkillset = client.createSkillset(expectedSkillset);
@@ -111,7 +116,8 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createSkillsetReturnsCorrectDefinitionMergeText() {
         Skillset expectedSkillset = createTestSkillsetMergeText();
         Skillset actualSkillset = client.createSkillset(expectedSkillset);
@@ -119,7 +125,8 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createSkillsetReturnsCorrectDefinitionOcrEntity() {
         Skillset expectedSkillset = createTestSkillsetOcrEntity(null, null);
         Skillset actualSkillset = client.createSkillset(expectedSkillset);
@@ -134,7 +141,8 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createSkillsetReturnsCorrectDefinitionOcrHandwritingSentiment() {
         Skillset expectedSkillset = createTestSkillsetOcrSentiment(OcrSkillLanguage.PT,
             SentimentSkillLanguage.PT_PT, TextExtractionAlgorithm.PRINTED);
@@ -152,7 +160,8 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createSkillsetReturnsCorrectDefinitionOcrKeyPhrase() {
         Skillset expectedSkillset = createTestSkillsetOcrKeyPhrase(OcrSkillLanguage.EN,
             KeyPhraseExtractionSkillLanguage.EN);
@@ -170,7 +179,8 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createSkillsetReturnsCorrectDefinitionOcrShaper() {
         Skillset expectedSkillset = createTestSkillsetOcrShaper();
         Skillset actualSkillset = client.createSkillset(expectedSkillset);
@@ -178,7 +188,8 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createSkillsetReturnsCorrectDefinitionOcrSplitText() {
         Skillset expectedSkillset = createTestSkillsetOcrSplitText(OcrSkillLanguage.EN,
             SplitSkillLanguage.EN, TextSplitMode.PAGES);
@@ -203,7 +214,8 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createSkillsetReturnsCorrectDefinitionWithCognitiveServicesDefault() {
         Skillset expectedSkillset = createSkillsetWithCognitiveServicesKey();
 
@@ -212,7 +224,8 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createSkillsetReturnsCorrectDefinitionWithOcrDefaultSettings() {
         Skillset expectedSkillset = createSkillsetWithOcrDefaultSettings(false);
         Skillset actualSkillset = client.createSkillset(expectedSkillset);
@@ -220,7 +233,8 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createSkillsetReturnsCorrectDefinitionWithImageAnalysisDefaultSettings() {
         Skillset expectedSkillset = createSkillsetWithImageAnalysisDefaultSettings();
         Skillset actualSkillset = client.createSkillset(expectedSkillset);
@@ -228,7 +242,8 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createSkillsetReturnsCorrectDefinitionWithKeyPhraseExtractionDefaultSettings() {
         Skillset expectedSkillset = createSkillsetWithKeyPhraseExtractionDefaultSettings();
         Skillset actualSkillset = client.createSkillset(expectedSkillset);
@@ -236,7 +251,8 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createSkillsetReturnsCorrectDefinitionWithMergeDefaultSettings() {
         Skillset expectedSkillset = createSkillsetWithMergeDefaultSettings();
         Skillset actualSkillset = client.createSkillset(expectedSkillset);
@@ -244,7 +260,8 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createSkillsetReturnsCorrectDefinitionWithEntityRecognitionDefaultSettings() {
         Skillset expectedSkillset = createSkillsetWithEntityRecognitionDefaultSettings();
         Skillset actualSkillset = client.createSkillset(expectedSkillset);
@@ -252,7 +269,8 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void getOcrSkillsetReturnsCorrectDefinition() {
         Skillset expected = createSkillsetWithOcrDefaultSettings(false);
         client.createSkillset(expected);
@@ -261,7 +279,8 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         assertObjectEquals(expected, actual, true, "etag");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void getOcrSkillsetReturnsCorrectDefinitionWithResponse() {
         Skillset expected = createSkillsetWithOcrDefaultSettings(false);
         client.createSkillset(expected);
@@ -271,7 +290,8 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         assertObjectEquals(expected, actual, true, "etag");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void getOcrSkillsetWithShouldDetectOrientationReturnsCorrectDefinition() {
         Skillset expected = createSkillsetWithOcrDefaultSettings(true);
 
@@ -282,7 +302,8 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         assertObjectEquals(expected, actual, true, "etag");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createSkillsetReturnsCorrectDefinitionWithSentimentDefaultSettings() {
         Skillset expectedSkillset = createSkillsetWithSentimentDefaultSettings();
         Skillset actualSkillset = client.createSkillset(expectedSkillset);
@@ -290,7 +311,8 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createSkillsetReturnsCorrectDefinitionWithSplitDefaultSettings() {
         Skillset expectedSkillset = createSkillsetWithSplitDefaultSettings();
         Skillset actualSkillset = client.createSkillset(expectedSkillset);
@@ -298,7 +320,8 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createCustomSkillsetReturnsCorrectDefinition() {
         Skillset expected = createSkillsetWithCustomSkills();
         Skillset actual = client.createSkillset(expected);
@@ -306,7 +329,8 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         assertObjectEquals(expected, actual, true, "etag");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void getSkillsetThrowsOnNotFound() {
         assertHttpResponseException(
             () -> client.getSkillset("thisdoesnotexist"),
@@ -315,7 +339,8 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         );
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canCreateAndListSkillsets() {
         Skillset skillset1 = createSkillsetWithCognitiveServicesKey();
         Skillset skillset2 = createSkillsetWithEntityRecognitionDefaultSettings();
@@ -331,7 +356,8 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         assertEquals(skillset2.getName(), result.get(1).getName());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canListSkillsetsWithSelectedField() {
         Skillset skillset1 = createSkillsetWithCognitiveServicesKey();
         Skillset skillset2 = createSkillsetWithEntityRecognitionDefaultSettings();
@@ -355,7 +381,8 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         assertEquals(result.get(1).getName(), skillset2.getName());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void deleteSkillsetIsIdempotent() {
         Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
 
@@ -373,7 +400,8 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canCreateAndDeleteSkillset() {
         Skillset expected = createSkillsetWithOcrDefaultSettings(false);
         client.createSkillset(expected);
@@ -382,7 +410,8 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         assertThrows(HttpResponseException.class, () -> client.getSkillset(expected.getName()));
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createOrUpdateCreatesWhenSkillsetDoesNotExist() {
         Skillset expected = createTestOcrSkillSet(1, TextExtractionAlgorithm.PRINTED);
 
@@ -390,7 +419,8 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         assertObjectEquals(expected, actual, true, "etag");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createOrUpdateCreatesWhenSkillsetDoesNotExistWithResponse() {
         Skillset expected = createTestOcrSkillSet(1, TextExtractionAlgorithm.PRINTED);
 
@@ -399,7 +429,8 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         assertEquals(HttpResponseStatus.CREATED.code(), createOrUpdateResponse.getStatusCode());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createOrUpdateUpdatesWhenSkillsetExists() {
         Skillset skillset = createTestOcrSkillSet(1, TextExtractionAlgorithm.HANDWRITTEN);
 
@@ -413,7 +444,8 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         assertEquals(HttpResponseStatus.OK.code(), createOrUpdateResponse.getStatusCode());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createOrUpdateUpdatesSkills() {
         Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
 
@@ -426,7 +458,8 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
     }
 
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createOrUpdateUpdatesCognitiveService() {
         Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
 
@@ -439,7 +472,8 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
             true, "etag", "@odata.etag");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createSkillsetReturnsCorrectDefinitionShaperWithNestedInputs() {
         Skillset expected = createSkillsetWithSharperSkillWithNestedInputs();
         Skillset actual = client.createSkillset(expected);
@@ -472,7 +506,8 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
             "Skill '#1' is not allowed to have recursively defined inputs");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createSkillsetReturnsCorrectDefinitionConditional() {
         Skillset expected = createTestSkillsetConditional();
         Skillset actual = client.createSkillset(expected);
@@ -480,36 +515,42 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         assertObjectEquals(expected, actual, true, "etag");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createOrUpdateSkillsetIfNotExistsSucceedsOnNoResource() {
         AccessConditionTests.createOrUpdateIfNotExistsSucceedsOnNoResource(createOrUpdateSkillsetFunc, newSkillsetFunc);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createOrUpdateSkillsetIfExistsSucceedsOnExistingResource() {
         AccessConditionTests.updateIfExistsSucceedsOnExistingResource(newSkillsetFunc, createOrUpdateSkillsetFunc,
             mutateSkillsetFunc);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createOrUpdateSkillsetIfNotChangedSucceedsWhenResourceUnchanged() {
         AccessConditionTests.updateIfNotChangedSucceedsWhenResourceUnchanged(newSkillsetFunc,
             createOrUpdateSkillsetFunc, mutateSkillsetFunc);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createOrUpdateSkillsetIfNotChangedFailsWhenResourceChanged() {
         AccessConditionTests.updateIfNotChangedFailsWhenResourceChanged(newSkillsetFunc, createOrUpdateSkillsetFunc,
             mutateSkillsetFunc);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void deleteSkillsetIfNotChangedWorksOnlyOnCurrentResource() {
         AccessConditionTests.deleteIfNotChangedWorksOnlyOnCurrentResource(deleteSkillsetFunc, newSkillsetFunc,
             createOrUpdateSkillsetFunc, OCR_SKILLSET_NAME);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void deleteSkillsetIfExistsWorksOnlyWhenResourceExists() {
         AccessConditionTests.deleteIfExistsWorksOnlyWhenResourceExists(deleteSkillsetFunc, createOrUpdateSkillsetFunc,
             newSkillsetFunc);

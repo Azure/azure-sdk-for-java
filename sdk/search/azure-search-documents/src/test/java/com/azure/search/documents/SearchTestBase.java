@@ -15,7 +15,8 @@ import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.models.SynonymMap;
 import com.azure.search.documents.models.ValueFacetResult;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -30,6 +31,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.azure.search.documents.TestHelpers.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -329,7 +331,8 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
         );
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void searchThrowsWhenRequestIsMalformed() {
         SearchOptions invalidSearchOptions = new SearchOptions().setFilter("This is not a valid filter.");
 
@@ -339,7 +342,8 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
             "Invalid expression: Syntax error at position 7 in 'This is not a valid filter.'");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void searchThrowsWhenSpecialCharInRegexIsUnescaped() {
         SearchOptions invalidSearchOptions = new SearchOptions().setQueryType(QueryType.FULL);
 
@@ -349,76 +353,100 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
             "Failed to parse query string at line 1, column 8.");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public abstract void canSearchDynamicDocuments() throws IOException;
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public abstract void canContinueSearch();
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public abstract void canContinueSearchWithTop();
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public abstract void canSearchWithSelectedFields() throws IOException;
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public abstract void canUseTopAndSkipForClientSidePaging() throws IOException;
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public abstract void canFilterNonNullableType() throws Exception;
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public abstract void searchWithoutOrderBySortsByScore() throws IOException;
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public abstract void orderByProgressivelyBreaksTies() throws IOException;
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public abstract void canFilter() throws IOException;
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public abstract void canSearchWithRangeFacets() throws IOException;
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public abstract void canSearchWithLuceneSyntax() throws IOException;
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public abstract void canSearchWithValueFacets() throws IOException;
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public abstract void canSearchWithSearchModeAll() throws IOException;
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public abstract void defaultSearchModeIsAny() throws IOException;
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public abstract void canGetResultCountInSearch() throws IOException;
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public abstract void canSearchWithRegex() throws IOException;
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public abstract void canSearchWithEscapedSpecialCharsInRegex() throws IOException;
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public abstract void canSearchWithMinimumCoverage() throws IOException;
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public abstract void searchWithScoringProfileBoostsScore() throws IOException;
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public abstract void canUseHitHighlighting() throws IOException;
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public abstract void canSearchStaticallyTypedDocuments() throws IOException;
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public abstract void canRoundTripNonNullableValueTypes() throws Exception;
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public abstract void canSearchWithDateInStaticModel() throws ParseException, IOException;
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public abstract void canSearchWithSynonyms() throws IOException;
 
     abstract void search(String searchText, SearchOptions searchOptions, RequestOptions requestOptions);

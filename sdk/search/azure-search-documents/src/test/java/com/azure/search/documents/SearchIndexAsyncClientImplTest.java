@@ -6,7 +6,8 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.search.documents.models.GeoPoint;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.util.SearchPagedFlux;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -20,6 +21,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.azure.search.documents.TestHelpers.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -35,7 +37,8 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
         asyncClient = getSearchIndexClientBuilder(INDEX_NAME).buildAsyncClient();
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canGetDynamicDocument() {
         Map<String, Object> addressDoc = new HashMap<>();
         addressDoc.put("StreetAddress", "677 5th Ave");
@@ -113,13 +116,15 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
             .verifyComplete();
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void getDocumentThrowsWhenDocumentNotFound() {
         StepVerifier.create(asyncClient.getDocument("1000000001"))
             .verifyErrorSatisfies(error -> assertEquals(ResourceNotFoundException.class, error.getClass()));
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void getDocumentThrowsWhenRequestIsMalformed() {
 
         HashMap<String, Object> hotelDoc = new HashMap<>();
@@ -134,7 +139,8 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
         );
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canGetPaginatedDocuments() throws Exception {
         List<SearchDocument> docs = new LinkedList<>();
 
@@ -191,7 +197,8 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
         }
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canGetPaginatedDocumentsWithSearchOptions() throws Exception {
         List<SearchDocument> docs = new LinkedList<>();
 

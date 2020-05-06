@@ -18,7 +18,8 @@ import com.azure.search.documents.models.SqlIntegratedChangeTrackingPolicy;
 import com.azure.search.documents.test.AccessConditionTests;
 import com.azure.search.documents.test.AccessOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.net.HttpURLConnection;
 import java.util.Iterator;
@@ -27,6 +28,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static com.azure.search.documents.TestHelpers.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -48,7 +50,7 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
 
     private Supplier<DataSource> newDataSourceFunc = () -> createTestBlobDataSource(null);
 
-    private Function<DataSource, DataSource> mutateDataSourceFunc = (DataSource ds) -> 
+    private Function<DataSource, DataSource> mutateDataSourceFunc = (DataSource ds) ->
         ds.setDescription("somethingnew");
 
     private BiConsumer<DataSource, AccessOptions> deleteDataSourceFunc = (DataSource dataSource, AccessOptions ac) ->
@@ -67,7 +69,8 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
             .getValue();
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canCreateAndListDataSources() {
         DataSource dataSource1 = createTestBlobDataSource(null);
         DataSource dataSource2 = createTestSqlDataSourceObject();
@@ -82,7 +85,8 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
         assertFalse(results.hasNext());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canCreateAndListDataSourcesWithResponse() {
         DataSource dataSource1 = createTestBlobDataSource(null);
         DataSource dataSource2 = createTestSqlDataSourceObject();
@@ -99,7 +103,8 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
         assertFalse(results.hasNext());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canCreateAndDeleteDatasource() {
         DataSource dataSource = createTestBlobDataSource(null);
         client.deleteDataSource(dataSource.getName());
@@ -107,7 +112,8 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
         assertThrows(HttpResponseException.class, () -> client.getDataSource(dataSource.getName()));
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void deleteDataSourceIsIdempotent() {
         DataSource dataSource = createTestBlobDataSource(null);
 
@@ -126,7 +132,8 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
         assertEquals(HttpURLConnection.HTTP_NOT_FOUND, result.getStatusCode());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createDataSourceFailsWithUsefulMessageOnUserError() {
         client = getSearchServiceClientBuilder().buildClient();
 
@@ -140,7 +147,8 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
         );
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUpdateDataSource() {
         DataSource initial = createTestSqlDataSourceObject();
 
@@ -162,43 +170,50 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
         TestHelpers.assertObjectEquals(updatedExpected, updatedActual, false, "etag", "@odata.etag");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createOrUpdateDatasourceIfNotExistsSucceedsOnNoResource() {
         AccessConditionTests.createOrUpdateIfNotExistsSucceedsOnNoResource(createOrUpdateDataSourceFunc,
             newDataSourceFunc);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void deleteDataSourceIfExistsWorksOnlyWhenResourceExists() {
         AccessConditionTests.deleteIfExistsWorksOnlyWhenResourceExists(deleteDataSourceFunc,
             createOrUpdateDataSourceFunc, newDataSourceFunc);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void deleteDataSourceIfNotChangedWorksOnlyOnCurrentResource() {
         AccessConditionTests.deleteIfNotChangedWorksOnlyOnCurrentResource(deleteDataSourceFunc, newDataSourceFunc,
             createOrUpdateDataSourceFunc, BLOB_DATASOURCE_TEST_NAME);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void updateDataSourceIfExistsSucceedsOnExistingResource() {
         AccessConditionTests.updateIfExistsSucceedsOnExistingResource(newDataSourceFunc, createOrUpdateDataSourceFunc,
             mutateDataSourceFunc);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void updateDataSourceIfNotChangedFailsWhenResourceChanged() {
         AccessConditionTests.updateIfNotChangedFailsWhenResourceChanged(newDataSourceFunc, createOrUpdateDataSourceFunc,
             mutateDataSourceFunc);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void updateDataSourceIfNotChangedSucceedsWhenResourceUnchanged() {
         AccessConditionTests.updateIfNotChangedSucceedsWhenResourceUnchanged(newDataSourceFunc,
             createOrUpdateDataSourceFunc, mutateDataSourceFunc);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createDataSourceReturnsCorrectDefinition() {
         SoftDeleteColumnDeletionDetectionPolicy deletionDetectionPolicy =
             new SoftDeleteColumnDeletionDetectionPolicy()
@@ -242,7 +257,8 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
 
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void getDataSourceReturnsCorrectDefinition() {
         client = getSearchServiceClientBuilder().buildClient();
 
@@ -267,7 +283,8 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
         client.deleteDataSource(dataSourceName);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void getDataSourceThrowsOnNotFound() {
         client = getSearchServiceClientBuilder().buildClient();
         assertHttpResponseException(
@@ -277,7 +294,8 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
         );
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canCreateDataSource() {
         DataSource expectedDataSource = createTestBlobDataSource(null);
         DataSource actualDataSource = client.createDataSource(expectedDataSource);
@@ -289,7 +307,8 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
         assertFalse(dataSources.hasNext());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canCreateDataSourceWithResponse() {
         DataSource expectedDataSource = createTestBlobDataSource(null);
         Response<DataSource> response = client
@@ -300,7 +319,8 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
         assertEquals(HttpURLConnection.HTTP_CREATED, response.getStatusCode());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUpdateConnectionData() {
         // Note: since connection string is not returned when queried from the service, actually saving the
         // datasource, retrieving it and verifying the change, won't work.

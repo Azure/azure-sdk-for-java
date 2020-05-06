@@ -30,7 +30,8 @@ import com.azure.search.documents.test.AccessConditionTests;
 import com.azure.search.documents.test.AccessOptions;
 import com.azure.search.documents.test.CustomQueryPipelinePolicy;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.net.HttpURLConnection;
 import java.time.Duration;
@@ -45,6 +46,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static com.azure.search.documents.TestHelpers.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -171,7 +173,8 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
             .getValue();
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createIndexerReturnsCorrectDefinition() {
         Indexer expectedIndexer =
             createBaseTestIndexerObject("indexer")
@@ -192,7 +195,8 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         assertObjectEquals(expectedIndexer, actualIndexer, true, "etag");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canCreateAndListIndexers() {
 
         // Create the data source, note it a valid DS with actual
@@ -219,7 +223,8 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         assertFalse(indexers.hasNext());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canCreateAndListIndexerNames() {
         List<Indexer> indexers = prepareIndexersForCreateAndListIndexers();
 
@@ -236,7 +241,8 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         assertFalse(indexersRes.hasNext());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createIndexerFailsWithUsefulMessageOnUserError() {
         Indexer indexer = createBaseTestIndexerObject("indexer")
             .setDataSourceName("thisdatasourcedoesnotexist");
@@ -247,7 +253,8 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
             "This indexer refers to a data source 'thisdatasourcedoesnotexist' that doesn't exist");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canResetIndexerAndGetIndexerStatus() {
         Indexer indexer = createTestDataSourceAndIndexer();
 
@@ -257,7 +264,8 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         assertEquals(IndexerExecutionStatus.RESET, indexerStatus.getLastResult().getStatus());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canResetIndexerAndGetIndexerStatusWithResponse() {
         Indexer indexer = createTestDataSourceAndIndexer();
 
@@ -268,7 +276,8 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         assertEquals(IndexerExecutionStatus.RESET, indexerStatusResponse.getLastResult().getStatus());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canRunIndexer() {
         Indexer indexer = createTestDataSourceAndIndexer();
         client.runIndexer(indexer.getName());
@@ -277,7 +286,8 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canRunIndexerWithResponse() {
         Indexer indexer = createTestDataSourceAndIndexer();
         Response<Void> response = client.runIndexerWithResponse(indexer.getName(), generateRequestOptions(), Context.NONE);
@@ -287,7 +297,8 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canRunIndexerAndGetIndexerStatus() {
         // When an indexer is created, the execution info may not be available immediately. Hence, a
         // pipeline policy that injects a "mock_status" query string is added to the client, which results in service
@@ -315,7 +326,8 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         assertValidIndexerExecutionInfo(indexerExecutionInfo);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUpdateIndexer() {
         DataSource dataSource = createTestSqlDataSourceObject();
         client.createOrUpdateDataSource(dataSource);
@@ -325,7 +337,8 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUpdateIndexerFieldMapping() {
         DataSource dataSource = createTestSqlDataSourceObject();
         client.createOrUpdateDataSource(dataSource);
@@ -335,7 +348,8 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canCreateIndexerWithFieldMapping() {
         DataSource dataSource = createTestSqlDataSourceObject();
         client.createOrUpdateDataSource(dataSource);
@@ -346,7 +360,8 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         createAndValidateIndexer(indexer);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUpdateIndexerDisabled() {
         DataSource dataSource = createTestSqlDataSourceObject();
         client.createOrUpdateDataSource(dataSource);
@@ -356,7 +371,8 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUpdateIndexerSchedule() {
         DataSource dataSource = createTestSqlDataSourceObject();
         client.createOrUpdateDataSource(dataSource);
@@ -366,7 +382,8 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canCreateIndexerWithSchedule() {
         DataSource dataSource = createTestSqlDataSourceObject();
         client.createOrUpdateDataSource(dataSource);
@@ -377,7 +394,8 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         createAndValidateIndexer(indexer);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUpdateIndexerBatchSizeMaxFailedItems() {
         DataSource dataSource = createTestSqlDataSourceObject();
         client.createOrUpdateDataSource(dataSource);
@@ -389,7 +407,8 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canCreateIndexerWithBatchSizeMaxFailedItems() {
         DataSource dataSource = createTestSqlDataSourceObject();
         client.createOrUpdateDataSource(dataSource);
@@ -403,7 +422,8 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
 
     // This test currently does not pass on our Dogfood account, as the
     // Storage resource provider is not returning an answer.
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUpdateIndexerBlobParams() {
         // Create the needed Azure blob resources and data source object
         DataSource blobDataSource = createBlobDataSource();
@@ -419,7 +439,8 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
 
     // This test currently does not pass on our Dogfood account, as the
     // Storage resource provider is not returning an answer.
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canCreateIndexerWithBlobParams() {
         // Create the needed Azure blob resources and data source object
         DataSource blobDataSource = createBlobDataSource();
@@ -434,7 +455,8 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         createAndValidateIndexer(indexer);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canCreateAndDeleteIndexer() {
         createDataSourceAndIndex();
         Indexer indexer = createBaseTestIndexerObject("indexer");
@@ -445,7 +467,8 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         assertThrows(HttpResponseException.class, () -> client.getIndexer(indexer.getName()));
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canCreateAndDeleteIndexerWithResponse() {
         createDataSourceAndIndex();
         Indexer indexer = createBaseTestIndexerObject("indexer");
@@ -456,7 +479,8 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         assertThrows(HttpResponseException.class, () -> client.getIndexer(indexer.getName()));
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void deleteIndexerIsIdempotent() {
         // Create Datasource
         createDataSourceAndIndex();
@@ -481,7 +505,8 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         assertEquals(HttpURLConnection.HTTP_NOT_FOUND, result.getStatusCode());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canCreateAndGetIndexer() {
         String indexerName = "indexer";
         DataSource dataSource = createTestSqlDataSourceObject();
@@ -501,7 +526,8 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         assertObjectEquals(indexer, indexerResult, true, "etag");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void getIndexerThrowsOnNotFound() {
         assertHttpResponseException(
             () -> client.getIndexer("thisindexerdoesnotexist"),
@@ -509,7 +535,8 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
             "Indexer 'thisindexerdoesnotexist' was not found");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createOrUpdateIndexerIfNotExistsSucceedsOnNoResource() {
         // Prepare data source and index
         createDataSourceAndIndex();
@@ -520,7 +547,8 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         assertFalse(CoreUtils.isNullOrEmpty(indexerResult.getETag()));
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void deleteIndexerIfExistsWorksOnlyWhenResourceExists() {
         // Prepare data source and index
         createDataSourceAndIndex();
@@ -529,7 +557,8 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
             newIndexerFunc);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void deleteIndexerIfNotChangedWorksOnlyOnCurrentResource() {
         // Prepare data source and index
         createDataSourceAndIndex();
@@ -538,7 +567,8 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
             createOrUpdateIndexerFunc, "name");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void updateIndexerIfExistsSucceedsOnExistingResource() {
         // Prepare datasource and index
         createDataSourceAndIndex();
@@ -547,7 +577,8 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
             mutateIndexerFunc);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void updateIndexerIfNotChangedFailsWhenResourceChanged() {
         // Prepare datasource and index
         createDataSourceAndIndex();
@@ -556,7 +587,8 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
             mutateIndexerFunc);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void updateIndexerIfNotChangedSucceedsWhenResourceUnchanged() {
         // Prepare datasource and index
         createDataSourceAndIndex();
@@ -565,7 +597,8 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
             mutateIndexerFunc);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUpdateIndexerSkillset() {
         DataSource dataSource = createTestSqlDataSourceObject();
         client.createOrUpdateDataSource(dataSource);
@@ -581,7 +614,8 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canCreateIndexerWithSkillset() {
         DataSource dataSource = createTestSqlDataSourceObject();
         client.createOrUpdateDataSource(dataSource);

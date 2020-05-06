@@ -9,7 +9,8 @@ import com.azure.search.documents.models.AutocompleteMode;
 import com.azure.search.documents.models.AutocompleteOptions;
 import com.azure.search.documents.util.AutocompletePagedResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import static com.azure.search.documents.SearchTestBase.HOTELS_INDEX_NAME;
+import static com.azure.search.documents.TestHelpers.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -34,7 +36,8 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canAutocompleteThrowsWhenGivenBadSuggesterName() {
         AutocompleteOptions params = new AutocompleteOptions().setAutocompleteMode(AutocompleteMode.ONE_TERM);
 
@@ -47,7 +50,8 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
             "The specified suggester name 'Invalid suggester' does not exist in this index definition.\\r\\nParameter name: name");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canAutocompleteDefaultsToOneTermMode() {
         List<String> expectedText = Arrays.asList("point", "police", "polite", "pool", "popular");
         List<String> expectedQueryPlusText = Arrays.asList("point", "police", "polite", "pool", "popular");
@@ -55,7 +59,8 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
         validateResults(client.autocomplete("po", "sg").iterator(), expectedText, expectedQueryPlusText);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canAutocompleteOneTermWithContext() {
         List<String> expectedText = Arrays.asList("very police", "very polite", "very popular");
         List<String> expectedQueryPlusText = Arrays.asList("looking for very police", "looking for very polite", "looking for very popular");
@@ -69,7 +74,8 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
         validateResults(results.iterator(), expectedText, expectedQueryPlusText);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canAutocompleteExcludesFieldsNotInSuggester() {
         AutocompleteOptions params = new AutocompleteOptions();
         params.setAutocompleteMode(AutocompleteMode.ONE_TERM);
@@ -85,7 +91,8 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
         assertFalse(results.hasNext());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canAutocompleteFuzzyIsOffByDefault() {
         AutocompleteOptions params = new AutocompleteOptions();
         params.setAutocompleteMode(AutocompleteMode.ONE_TERM);
@@ -100,7 +107,8 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
         assertFalse(results.hasNext());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canAutocompleteOneTerm() {
         List<String> expectedText = Arrays.asList("point", "police", "polite", "pool", "popular");
         List<String> expectedQueryPlusText = Arrays.asList("point", "police", "polite", "pool", "popular");
@@ -113,7 +121,8 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
         validateResults(results.iterator(), expectedText, expectedQueryPlusText);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canAutocompleteStaticallyTypedDocuments() {
         List<String> expectedText = Arrays.asList("point", "police", "polite", "pool", "popular");
         List<String> expectedQueryPlusText = Arrays.asList("very point", "very police", "very polite", "very pool", "very popular");
@@ -128,7 +137,8 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
         validateResults(results.iterator(), expectedText, expectedQueryPlusText);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canAutocompleteThrowsWhenRequestIsMalformed() {
         PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results = client.autocomplete("very po", "");
         assertHttpResponseException(
@@ -138,7 +148,8 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
         );
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canAutocompleteTwoTerms() {
         List<String> expectedText = Arrays.asList("point motel", "police station", "polite staff", "pool a", "popular hotel");
         List<String> expectedQueryPlusText = Arrays.asList("point motel", "police station", "polite staff", "pool a", "popular hotel");
@@ -152,7 +163,8 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
         validateResults(results.iterator(), expectedText, expectedQueryPlusText);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void testAutocompleteCanUseHitHighlighting() {
         List<String> expectedText = Arrays.asList("pool", "popular");
         List<String> expectedQueryPlusText = Arrays.asList("<b>pool</b>", "<b>popular</b>");
@@ -169,7 +181,8 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
         validateResults(results.iterator(), expectedText, expectedQueryPlusText);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void testAutocompleteWithMultipleSelectedFields() {
         List<String> expectedText = Arrays.asList("model", "modern");
         List<String> expectedQueryPlusText = Arrays.asList("model", "modern");
@@ -184,7 +197,8 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
         validateResults(results.iterator(), expectedText, expectedQueryPlusText);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void testAutocompleteWithSelectedFields() {
         List<String> expectedText = Collections.singletonList("modern");
         List<String> expectedQueryPlusText = Collections.singletonList("modern");
@@ -200,7 +214,8 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
         validateResults(results.iterator(), expectedText, expectedQueryPlusText);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void testAutocompleteTopTrimsResults() {
         List<String> expectedText = Arrays.asList("point", "police");
         List<String> expectedQueryPlusText = Arrays.asList("point", "police");
@@ -215,7 +230,8 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
         validateResults(results.iterator(), expectedText, expectedQueryPlusText);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void testAutocompleteWithFilter() {
         List<String> expectedText = Collections.singletonList("polite");
         List<String> expectedQueryPlusText = Collections.singletonList("polite");
@@ -230,7 +246,8 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
         validateResults(results.iterator(), expectedText, expectedQueryPlusText);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void testAutocompleteOneTermWithContextWithFuzzy() {
         List<String> expectedText = Arrays.asList("very polite", "very police");
         List<String> expectedQueryPlusText = Arrays.asList("very polite", "very police");
@@ -245,7 +262,8 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
         validateResults(results.iterator(), expectedText, expectedQueryPlusText);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void testAutocompleteOneTermWithFuzzy() {
         List<String> expectedText = Arrays.asList("model", "modern", "morel", "motel");
         List<String> expectedQueryPlusText = Arrays.asList("model", "modern", "morel", "motel");
@@ -260,7 +278,8 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
         validateResults(results.iterator(), expectedText, expectedQueryPlusText);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void testAutocompleteTwoTermsWithFuzzy() {
         List<String> expectedText = Arrays.asList("model suites", "modern architecture", "modern stay", "morel coverings", "motel");
         List<String> expectedQueryPlusText = Arrays.asList("model suites", "modern architecture", "modern stay", "morel coverings", "motel");
@@ -275,7 +294,8 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
         validateResults(results.iterator(), expectedText, expectedQueryPlusText);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void testAutocompleteWithFilterAndFuzzy() {
         List<String> expectedText = Arrays.asList("modern", "motel");
         List<String> expectedQueryPlusText = Arrays.asList("modern", "motel");

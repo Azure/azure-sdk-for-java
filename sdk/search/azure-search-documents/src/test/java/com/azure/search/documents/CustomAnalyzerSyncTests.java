@@ -80,8 +80,10 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
+import static com.azure.search.documents.TestHelpers.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -109,7 +111,8 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         }
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canSearchWithCustomAnalyzer() {
         final AnalyzerName customAnalyzerName = AnalyzerName.fromString("my_email_analyzer");
         final CharFilterName customCharFilterName = CharFilterName.fromString("my_email_filter");
@@ -164,7 +167,8 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         assertFalse(iterator.hasNext());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUseAllAnalyzerNamesInIndexDefinition() {
         Index index = prepareIndexWithAllAnalyzerNames();
 
@@ -193,7 +197,8 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         }
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canAnalyze() {
         Index index = createTestIndex();
         searchServiceClient.createIndex(index);
@@ -225,7 +230,8 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         assertFalse(iterator.hasNext());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canAnalyzeWithAllPossibleNames() {
         Index index = createTestIndex();
         searchServiceClient.createIndex(index);
@@ -252,7 +258,8 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         searchServiceClient.analyzeText(index.getName(), request);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void addingCustomAnalyzerThrowsHttpExceptionByDefault() {
         Index index = createTestIndex()
             .setAnalyzers(Collections.singletonList(new StopAnalyzer().setName("a1")));
@@ -267,7 +274,8 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         );
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canAddCustomAnalyzerWithIndexDowntime() {
         Index index = createTestIndex()
             .setAnalyzers(Collections.singletonList(new StopAnalyzer().setName("a1")));
@@ -280,7 +288,8 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         assertAnalysisComponentsEqual(index, updatedIndex);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canCreateAllAnalysisComponents() {
         Index index = prepareIndexWithAllAnalysisComponentTypes();
 
@@ -305,7 +314,8 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         }
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUseAllAnalysisComponentNames() {
         Index index = prepareIndexWithAllAnalysisComponentNames();
 
@@ -313,7 +323,8 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         assertCustomAnalysisComponentsEqual(index, createdIndex);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUseAllRegexFlagsAnalyzer() {
         Index index = createTestIndex()
             .setAnalyzers(Collections.singletonList(new PatternAnalyzer()
@@ -328,7 +339,8 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         assertAnalysisComponentsEqual(index, createdIndex);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUseAllRegexFlagsNullAnalyzer() {
         Index index = createTestIndex()
             .setAnalyzers(null);
@@ -338,7 +350,8 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         assertAnalysisComponentsEqual(index, createdIndex);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUseAllRegexFlagsEmptyAnalyzer() {
         Index index = createTestIndex()
             .setAnalyzers(new ArrayList<>());
@@ -348,7 +361,8 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         assertAnalysisComponentsEqual(index, createdIndex);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUseAllRegexFlagsNullNameAnalyzer() {
         Index index = createTestIndex()
             .setAnalyzers(Collections.singletonList(
@@ -362,7 +376,8 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         );
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUseAllRegexFlagsEmptyNameAnalyzer() {
         Index index = createTestIndex()
             .setAnalyzers(Collections.singletonList(
@@ -376,7 +391,8 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         );
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUseAllRegexFlagsNullLowerCaseAnalyzer() {
         Index index = createTestIndex()
             .setAnalyzers(Collections.singletonList(
@@ -388,7 +404,8 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         assertAnalysisComponentsEqual(index, createdIndex);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUseAllRegexFlagsNullPatternAnalyzer() {
         Index index = createTestIndex()
             .setAnalyzers(Collections.singletonList(
@@ -400,7 +417,8 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         assertAnalysisComponentsEqual(index, createdIndex);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUseAllRegexFlagsEmptyPatternAnalyzer() {
         Index index = createTestIndex()
             .setAnalyzers(Collections.singletonList(
@@ -412,7 +430,8 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         assertAnalysisComponentsEqual(index, createdIndex);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUseAllRegexFlagsNullFlagsAnalyzer() {
         Index index = createTestIndex()
             .setAnalyzers(Collections.singletonList(
@@ -424,7 +443,8 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         assertAnalysisComponentsEqual(index, createdIndex);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUseAllRegexFlagsEmptyFlagsAnalyzer() {
         Index index = createTestIndex()
             .setAnalyzers(Collections.singletonList(
@@ -438,7 +458,8 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         );
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUseAllRegexFlagsNullStopwordsAnalyzer() {
         Index index = createTestIndex()
             .setAnalyzers(Collections.singletonList(new PatternAnalyzer()
@@ -450,7 +471,8 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         assertAnalysisComponentsEqual(index, createdIndex);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUseAllRegexFlagsEmptyStopwordsAnalyzer() {
         Index index = createTestIndex()
             .setAnalyzers(Collections.singletonList(new PatternAnalyzer()
@@ -462,7 +484,8 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         assertAnalysisComponentsEqual(index, createdIndex);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUseAllRegexFlagsTokenizer() {
         Index index = createTestIndex()
             .setTokenizers(Collections.singletonList(new PatternTokenizer()
@@ -476,7 +499,8 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         assertAnalysisComponentsEqual(index, createdIndex);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUseAllRegexFlagsNullTokenizer() {
         Index index = createTestIndex()
             .setTokenizers(null);
@@ -486,7 +510,8 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         assertAnalysisComponentsEqual(index, createdIndex);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUseAllRegexFlagsEmptyTokenizer() {
         Index index = createTestIndex()
             .setTokenizers(new ArrayList<>());
@@ -496,7 +521,8 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         assertAnalysisComponentsEqual(index, createdIndex);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUseAllRegexFlagsNullNameTokenizer() {
         Index index = createTestIndex()
             .setTokenizers(Collections.singletonList(new PatternTokenizer()
@@ -510,7 +536,8 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         );
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUseAllRegexFlagsEmptyNameTokenizer() {
         Index index = createTestIndex()
             .setTokenizers(Collections.singletonList(new PatternTokenizer()
@@ -524,7 +551,8 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         );
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUseAllRegexFlagsNullPatternTokenizer() {
         Index index = createTestIndex()
             .setTokenizers(Collections.singletonList(new PatternTokenizer()
@@ -536,7 +564,8 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         assertAnalysisComponentsEqual(index, createdIndex);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUseAllRegexFlagsEmptyPatternTokenizer() {
         Index index = createTestIndex()
             .setTokenizers(Collections.singletonList(new PatternTokenizer()
@@ -548,7 +577,8 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         assertAnalysisComponentsEqual(index, createdIndex);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUseAllRegexFlagsNullFlagsTokenizer() {
         Index index = createTestIndex()
             .setTokenizers(Collections.singletonList(new PatternTokenizer()
@@ -561,7 +591,8 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         System.out.println(RegexFlags.values());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUseAllRegexFlagsEmptyFlagsTokenizer() {
         Index index = createTestIndex()
             .setTokenizers(Collections.singletonList(new PatternTokenizer()
@@ -575,7 +606,8 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         );
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUseAllRegexFlagsNullGroupTokenizer() {
         Index index = createTestIndex()
             .setTokenizers(Collections.singletonList(new PatternTokenizer()
@@ -587,7 +619,8 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         assertAnalysisComponentsEqual(index, createdIndex);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUseAllAnalysisComponentOptions() {
         List<Index> indexes = prepareIndexesWithAllAnalysisComponentOptions();
 

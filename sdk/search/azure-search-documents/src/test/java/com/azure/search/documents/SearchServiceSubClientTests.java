@@ -4,15 +4,16 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipeline;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
+import static com.azure.search.documents.TestHelpers.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class SearchServiceSubClientTests extends SearchServiceTestBase {
-
-
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canGetIndexClientFromSearchClient() {
         SearchServiceClient serviceClient = getSearchService();
 
@@ -35,7 +36,8 @@ public class SearchServiceSubClientTests extends SearchServiceTestBase {
         assertEquals("hotels", indexClient.getIndexName());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canGetIndexAsyncClientFromSearchClient() {
         SearchServiceAsyncClient serviceClient = getAsyncSearchService();
 
@@ -58,7 +60,8 @@ public class SearchServiceSubClientTests extends SearchServiceTestBase {
         assertEquals("hotels", indexClient.getIndexName());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canGetIndexClientAfterUsingServiceClient() {
         SearchServiceClient serviceClient = getSearchService();
         try {
@@ -73,7 +76,8 @@ public class SearchServiceSubClientTests extends SearchServiceTestBase {
         assertEquals("hotels", indexClient.getIndexName());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canGetIndexAsyncClientAfterUsingServiceClient() {
         SearchServiceAsyncClient serviceClient = getAsyncSearchService();
         try {

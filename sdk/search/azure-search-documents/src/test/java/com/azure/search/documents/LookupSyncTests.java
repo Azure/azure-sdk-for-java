@@ -14,7 +14,8 @@ import com.azure.search.documents.test.environment.models.HotelAddress;
 import com.azure.search.documents.test.environment.models.HotelRoom;
 import com.azure.search.documents.test.environment.models.ModelWithPrimitiveCollections;
 import java.util.HashMap;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.text.ParseException;
 import java.time.OffsetDateTime;
@@ -26,6 +27,7 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 
+import static com.azure.search.documents.TestHelpers.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 import static java.lang.Double.NEGATIVE_INFINITY;
 import static java.lang.Double.NaN;
@@ -37,7 +39,8 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
 
     private SearchIndexClient client;
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canGetStaticallyTypedDocument() throws ParseException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -50,7 +53,8 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
         assertObjectEquals(expected, actual, true);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canGetStaticallyTypedDocumentWithNullOrEmptyValues() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -63,7 +67,8 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
         assertObjectEquals(expected, actual, true);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canGetStaticallyTypedDocumentWithPascalCaseFields() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -76,7 +81,8 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
         assertObjectEquals(expected, actual, true);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canRoundtripStaticallyTypedPrimitiveCollections() {
         String indexName = setupIndexWithDataTypes();
         client = getSearchIndexClientBuilder(indexName).buildClient();
@@ -89,7 +95,8 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
         assertObjectEquals(expected, actual, true);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void getStaticallyTypedDocumentSetsUnselectedFieldsToNull() throws ParseException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -109,7 +116,8 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
         assertObjectEquals(expected, actual, true);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canGetDynamicDocumentWithNullOrEmptyValues() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -146,7 +154,8 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
         assertEquals(expectedDoc, response.getValue());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void getDynamicDocumentWithEmptyObjectsReturnsObjectsFullOfNulls() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -181,7 +190,8 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
         assertEquals(expectedDoc, response.getValue());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void emptyDynamicallyTypedPrimitiveCollectionsRoundtripAsObjectArrays() {
         String indexName = setupIndexWithDataTypes();
         client = getSearchIndexClientBuilder(indexName).buildClient();
@@ -220,7 +230,8 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
         assertEquals(expectedDoc, actualDoc);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void emptyDynamicObjectsInCollectionExpandedOnGetWhenCollectionFieldSelected() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -282,7 +293,8 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
         assertEquals(expectedDoc, response.getValue());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void getDynamicDocumentCannotAlwaysDetermineCorrectType() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -306,7 +318,8 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
         assertEquals(expectedDoc, client.getDocumentWithResponse("1", selectedFields, null, Context.NONE).getValue());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canGetDocumentWithBase64EncodedKey() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -320,7 +333,8 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
         assertEquals(client.getDocumentWithResponse(complexKey, new ArrayList<>(expectedDoc.keySet()), null, Context.NONE).getValue(), expectedDoc);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void roundTrippingDateTimeOffsetNormalizesToUtc() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -337,7 +351,8 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
         assertEquals(client.getDocumentWithResponse("1", new ArrayList<>(expectedDoc.keySet()), null, Context.NONE).getValue(), expectedDoc);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void emptyDynamicObjectsOmittedFromCollectionOnGetWhenSubFieldsSelected() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -384,7 +399,8 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
         assertEquals(expectedDoc, response.getValue());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void dynamicallyTypedPrimitiveCollectionsDoNotAllRoundtripCorrectly() {
         String indexName = setupIndexWithDataTypes();
         client = getSearchIndexClientBuilder(indexName).buildClient();

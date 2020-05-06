@@ -11,7 +11,8 @@ import com.azure.search.documents.models.SynonymMap;
 import com.azure.search.documents.test.AccessConditionTests;
 import com.azure.search.documents.test.AccessOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -20,6 +21,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import static com.azure.search.documents.TestHelpers.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -52,7 +54,8 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
         client = getSearchServiceClientBuilder().buildClient();
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createSynonymMapReturnsCorrectDefinition() {
         SynonymMap expectedSynonymMap = createTestSynonymMap();
         SynonymMap actualSynonymMap = client.createSynonymMap(expectedSynonymMap);
@@ -61,7 +64,8 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
 
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createSynonymMapReturnsCorrectDefinitionWithResponse() {
         SynonymMap expectedSynonymMap = createTestSynonymMap();
         SynonymMap actualSynonymMap = client.createSynonymMapWithResponse(expectedSynonymMap,
@@ -70,7 +74,8 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
         assertSynonymMapsEqual(expectedSynonymMap, actualSynonymMap);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createSynonymMapFailsWithUsefulMessageOnUserError() {
         // Create SynonymMap with invalid synonym
         SynonymMap expectedSynonymMap = createTestSynonymMap()
@@ -83,7 +88,8 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
         );
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void getSynonymMapReturnsCorrectDefinition() {
         SynonymMap expected = createTestSynonymMap();
 
@@ -93,7 +99,8 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
         assertSynonymMapsEqual(expected, actual);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void getSynonymMapReturnsCorrectDefinitionWithResponse() {
         SynonymMap expected = createTestSynonymMap();
         client.createSynonymMap(expected);
@@ -103,7 +110,8 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
         assertSynonymMapsEqual(expected, actual);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void getSynonymMapThrowsOnNotFound() {
         final String synonymMapName = "thisSynonymMapDoesNotExist";
         final String exceptionMessage = String.format("No synonym map with the name '%s' was found", synonymMapName);
@@ -114,7 +122,8 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
             exceptionMessage);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void getSynonymMapThrowsOnNotFoundWithResponse() {
         final String synonymMapName = "thisSynonymMapDoesNotExist";
         final String exceptionMessage = String.format("No synonym map with the name '%s' was found", synonymMapName);
@@ -125,7 +134,8 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
             exceptionMessage);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUpdateSynonymMap() {
         SynonymMap initial = createTestSynonymMap();
 
@@ -142,7 +152,8 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
         assertEquals(1, synonymMaps.stream().count());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUpdateSynonymMapWithResponse() {
         SynonymMap initial = createTestSynonymMap();
 
@@ -160,7 +171,8 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
         assertEquals(1, synonymMaps.stream().count());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createOrUpdateSynonymMapCreatesWhenSynonymMapDoesNotExist() {
         SynonymMap expected = createTestSynonymMap();
 
@@ -168,7 +180,8 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
         assertSynonymMapsEqual(expected, actual);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createOrUpdateSynonymMapCreatesWhenSynonymMapDoesNotExistWithResponse() {
         SynonymMap expected = createTestSynonymMap();
 
@@ -178,31 +191,36 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
         assertSynonymMapsEqual(expected, createOrUpdateResponse.getValue());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createOrUpdateSynonymMapIfNotExistsSucceedsOnNoResource() {
         AccessConditionTests.createOrUpdateIfNotExistsSucceedsOnNoResource(createOrUpdateSynonymMapFunc,
             newSynonymMapFunc);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createOrUpdateSynonymMapIfExistsSucceedsOnExistingResource() {
         AccessConditionTests.updateIfExistsSucceedsOnExistingResource(newSynonymMapFunc, createOrUpdateSynonymMapFunc,
             mutateSynonymMapFunc);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createOrUpdateSynonymMapIfNotChangedSucceedsWhenResourceUnchanged() {
         AccessConditionTests.updateIfNotChangedSucceedsWhenResourceUnchanged(newSynonymMapFunc,
             createOrUpdateSynonymMapFunc, mutateSynonymMapFunc);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void createOrUpdateSynonymMapIfNotChangedFailsWhenResourceChanged() {
         AccessConditionTests.updateIfNotChangedFailsWhenResourceChanged(newSynonymMapFunc, createOrUpdateSynonymMapFunc,
             mutateSynonymMapFunc);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void deleteSynonymMapIsIdempotent() {
         SynonymMap synonymMap = createTestSynonymMap();
         Response<Void> deleteResponse = client.deleteSynonymMapWithResponse(synonymMap, false, generateRequestOptions(),
@@ -220,7 +238,8 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
         assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canCreateAndDeleteSynonymMap() {
         SynonymMap synonymMap = createTestSynonymMap();
         client.createSynonymMap(synonymMap);
@@ -228,7 +247,8 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
         assertThrows(HttpResponseException.class, () -> client.getSynonymMap(synonymMap.getName()));
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canCreateAndListSynonymMaps() {
         SynonymMap synonymMap1 = createTestSynonymMap();
         SynonymMap synonymMap2 = createTestSynonymMap().setName("test-synonym1");
@@ -244,7 +264,8 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
         assertEquals(synonymMap2.getName(), result.get(1).getName());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canListSynonymMapsWithSelectedField() {
         SynonymMap synonymMap1 = createTestSynonymMap();
         SynonymMap synonymMap2 = createTestSynonymMap().setName("test-synonym1");
@@ -266,13 +287,15 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
         assertEquals(synonymMap2.getName(), result.get(1).getName());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void deleteSynonymMapIfNotChangedWorksOnlyOnCurrentResource() {
         AccessConditionTests.deleteIfNotChangedWorksOnlyOnCurrentResource(deleteSynonymMapFunc, newSynonymMapFunc,
             createOrUpdateSynonymMapFunc, "test-synonym");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void deleteSynonymMapIfExistsWorksOnlyWhenResourceExists() {
         AccessConditionTests.deleteIfExistsWorksOnlyWhenResourceExists(deleteSynonymMapFunc,
             createOrUpdateSynonymMapFunc, newSynonymMapFunc);

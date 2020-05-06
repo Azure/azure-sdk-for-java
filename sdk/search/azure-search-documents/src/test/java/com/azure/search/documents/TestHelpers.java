@@ -3,6 +3,7 @@
 
 package com.azure.search.documents;
 
+import com.azure.core.http.HttpClient;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -10,16 +11,22 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.junit.jupiter.params.provider.Arguments;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
+import static com.azure.core.test.TestBase.AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL;
+import static com.azure.core.test.TestBase.getHttpClients;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -28,6 +35,9 @@ import static org.junit.jupiter.api.Assertions.fail;
  * This class contains helper methods for running Azure Search tests.
  */
 public final class TestHelpers {
+    private static final String SERVICE_VERSION_FROM_ENV = "AZURE_SEARCH_TEST_SERVICE_VERSIONS";
+    static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
+
     /**
      * Checks if the passed {@link CharSequence} is {@code null}, empty, or only contains spaces.
      *
@@ -154,5 +164,51 @@ public final class TestHelpers {
             return fieldValue.isNumber() && fieldValue.asDouble() == 0.0D;
         }
         return false;
+    }
+
+    /**
+     * Returns a stream of arguments that includes all combinations of eligible {@link HttpClient HttpClients} and
+     * service versions that should be tested.
+     *
+     * @return A stream of HttpClient and service version combinations to test.
+     */
+    static Stream<Arguments> getTestParameters() {
+        // when this issues is closed, the newer version of junit will have better support for
+        // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
+        List<Arguments> argumentsList = new ArrayList<>();
+        getHttpClients()
+            .forEach(httpClient -> {
+                Arrays.stream(SearchServiceVersion.values()).filter(TestHelpers::shouldServiceVersionBeTested)
+                    .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
+            });
+        return argumentsList.stream();
+    }
+
+    /**
+     * Returns whether the given service version match the rules of test framework.
+     *
+     * <ul>
+     * <li>Using latest service version as default if no environment variable is set.</li>
+     * <li>If it's set to ALL, all Service versions in {@link SearchServiceVersion} will be tested.</li>
+     * <li>Otherwise, Service version string should match env variable.</li>
+     * </ul>
+     *
+     * Environment values currently supported are: "ALL", "${version}".
+     * Use comma to separate http clients want to test.
+     * e.g. {@code set AZURE_TEST_SERVICE_VERSIONS = V1_0, V2_0}
+     *
+     * @param serviceVersion ServiceVersion needs to check
+     * @return Boolean indicates whether filters out the service version or not.
+     */
+    private static boolean shouldServiceVersionBeTested(SearchServiceVersion serviceVersion) {
+        if (CoreUtils.isNullOrEmpty(SERVICE_VERSION_FROM_ENV)) {
+            return SearchServiceVersion.getLatest().equals(serviceVersion);
+        }
+        if (AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL.equalsIgnoreCase(SERVICE_VERSION_FROM_ENV)) {
+            return true;
+        }
+        String[] configuredServiceVersionList = SERVICE_VERSION_FROM_ENV.split(",");
+        return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
+            serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
     }
 }

@@ -24,6 +24,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -41,6 +43,7 @@ import java.util.TimeZone;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.azure.search.documents.TestHelpers.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -62,7 +65,8 @@ public class SearchSyncTests extends SearchTestBase {
         client.search(searchText, searchOptions, requestOptions, Context.NONE).iterableByPage().iterator().next();
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canSearchDynamicDocuments() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -92,7 +96,8 @@ public class SearchSyncTests extends SearchTestBase {
         assertTrue(compareResults(actualResults, hotels));
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canContinueSearch() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -124,7 +129,8 @@ public class SearchSyncTests extends SearchTestBase {
         assertNull(secondPage.getContinuationToken());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canContinueSearchWithTop() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -158,7 +164,8 @@ public class SearchSyncTests extends SearchTestBase {
         assertNull(secondPage.getContinuationToken());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canSearchStaticallyTypedDocuments() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -206,7 +213,8 @@ public class SearchSyncTests extends SearchTestBase {
         }
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canRoundTripNonNullableValueTypes() throws Exception {
         String indexName = createIndexWithNonNullableTypes();
         client = getSearchIndexClientBuilder(indexName).buildClient();
@@ -237,7 +245,8 @@ public class SearchSyncTests extends SearchTestBase {
         assertObjectEquals(doc2, convertToType(result.getValue().get(1).getDocument(), NonNullableModel.class), true);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canSearchWithDateInStaticModel() throws ParseException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -257,7 +266,8 @@ public class SearchSyncTests extends SearchTestBase {
         assertEquals(expected, actual);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canSearchWithSelectedFields() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -303,7 +313,8 @@ public class SearchSyncTests extends SearchTestBase {
         assertEquals(expectedHotel2, hotel2);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUseTopAndSkipForClientSidePaging() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -320,7 +331,8 @@ public class SearchSyncTests extends SearchTestBase {
         assertKeySequenceEqual(results, Arrays.asList("3", "4", "5"));
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void searchWithoutOrderBySortsByScore() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -334,7 +346,8 @@ public class SearchSyncTests extends SearchTestBase {
         assertTrue(firstResult.getScore() <= secondResult.getScore());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void orderByProgressivelyBreaksTies() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -350,7 +363,8 @@ public class SearchSyncTests extends SearchTestBase {
         assertArrayEquals(results.toArray(), expectedResults);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canFilter() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -369,7 +383,8 @@ public class SearchSyncTests extends SearchTestBase {
         assertTrue(Arrays.asList("1", "5").containsAll(hotelIds));
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canSearchWithRangeFacets() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -389,7 +404,8 @@ public class SearchSyncTests extends SearchTestBase {
         }
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canSearchWithValueFacets() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -454,7 +470,8 @@ public class SearchSyncTests extends SearchTestBase {
         }
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canSearchWithLuceneSyntax() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -475,7 +492,8 @@ public class SearchSyncTests extends SearchTestBase {
         assertEquals(expectedResult, searchResultsList.get(0));
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canFilterNonNullableType() {
         String indexName = createIndexWithValueTypes();
         client = getSearchIndexClientBuilder(indexName).buildClient();
@@ -503,7 +521,8 @@ public class SearchSyncTests extends SearchTestBase {
         }
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canSearchWithSearchModeAll() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -517,7 +536,8 @@ public class SearchSyncTests extends SearchTestBase {
         assertEquals("2", response.get(0).get("HotelId"));
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void defaultSearchModeIsAny() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -532,7 +552,8 @@ public class SearchSyncTests extends SearchTestBase {
             response.stream().map(res -> res.get("HotelId").toString()).collect(Collectors.toList()));
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canGetResultCountInSearch() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -549,7 +570,8 @@ public class SearchSyncTests extends SearchTestBase {
         assertFalse(iterator.hasNext());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canSearchWithRegex() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -574,7 +596,8 @@ public class SearchSyncTests extends SearchTestBase {
         assertEquals(resultsList.get(0), expectedHotel);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canSearchWithEscapedSpecialCharsInRegex() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -590,7 +613,8 @@ public class SearchSyncTests extends SearchTestBase {
         assertEquals(0, resultsList.size());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void searchWithScoringProfileBoostsScore() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -609,7 +633,8 @@ public class SearchSyncTests extends SearchTestBase {
             response.stream().map(res -> res.get("HotelId").toString()).collect(Collectors.toList()));
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void searchWithScoringProfileEscaper() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -628,7 +653,8 @@ public class SearchSyncTests extends SearchTestBase {
             response.stream().map(res -> res.get("HotelId").toString()).collect(Collectors.toList()));
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void searchWithScoringParametersEmpty() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -647,7 +673,8 @@ public class SearchSyncTests extends SearchTestBase {
             response.stream().map(res -> res.get("HotelId").toString()).collect(Collectors.toList()));
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canSearchWithMinimumCoverage() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -662,7 +689,8 @@ public class SearchSyncTests extends SearchTestBase {
         assertEquals(100.0, resultsIterator.next().getCoverage(), 0);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUseHitHighlighting() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -711,7 +739,8 @@ public class SearchSyncTests extends SearchTestBase {
         assertEquals(expectedDescriptionHighlights, highlights.get(description));
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canSearchWithSynonyms() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();

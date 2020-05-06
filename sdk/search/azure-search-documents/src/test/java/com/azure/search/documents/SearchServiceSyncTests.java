@@ -7,15 +7,18 @@ import com.azure.core.util.Context;
 import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.models.ServiceStatistics;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.UUID;
 
+import static com.azure.search.documents.TestHelpers.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 
 public class SearchServiceSyncTests extends SearchServiceTestBase {
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void getServiceStatsReturnsCorrectDefinition() {
         SearchServiceClient serviceClient = getSearchServiceClientBuilder().buildClient();
 
@@ -23,7 +26,8 @@ public class SearchServiceSyncTests extends SearchServiceTestBase {
         assertObjectEquals(getExpectedServiceStatistics(), serviceStatistics, true);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void getServiceStatsReturnsCorrectDefinitionWithResponse() {
         SearchServiceClient serviceClient = getSearchServiceClientBuilder().buildClient();
 
@@ -31,7 +35,8 @@ public class SearchServiceSyncTests extends SearchServiceTestBase {
         assertObjectEquals(getExpectedServiceStatistics(), serviceStatistics, true);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void getServiceStatsReturnsRequestId() {
         SearchServiceClient serviceClient = getSearchServiceClientBuilder().buildClient();
 

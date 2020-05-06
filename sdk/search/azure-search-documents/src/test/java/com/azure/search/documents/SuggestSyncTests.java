@@ -15,7 +15,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
@@ -31,6 +32,7 @@ import java.util.stream.Collectors;
 
 import static com.azure.search.documents.SearchTestBase.HOTELS_DATA_JSON;
 import static com.azure.search.documents.SearchTestBase.HOTELS_INDEX_NAME;
+import static com.azure.search.documents.TestHelpers.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -42,7 +44,8 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
 
     private SearchIndexClient client;
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canSuggestDynamicDocuments() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -60,7 +63,8 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
         assertFalse(suggestResultIterator.hasNext());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void searchFieldsExcludesFieldsFromSuggest() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -78,7 +82,8 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
         assertFalse(suggestResultIterator.hasNext());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canUseSuggestHitHighlighting() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -99,7 +104,8 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
         assertFalse(suggestResultIterator.hasNext());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canGetFuzzySuggestions() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -117,7 +123,8 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
         assertFalse(suggestResultIterator.hasNext());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canSuggestStaticallyTypedDocuments() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -136,7 +143,8 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
         verifyCanSuggestStaticallyTypedDocuments(suggestResultIterator.next(), hotels);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void canSuggestWithDateTimeInStaticModel() {
         setupIndexFromJsonFile(BOOKS_INDEX_JSON);
         client = getSearchIndexClientBuilder(BOOKS_INDEX_NAME).buildClient();
@@ -166,7 +174,8 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
         verifyCanSuggestWithDateTimeInStaticModel(suggestResultIterator.next());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void fuzzyIsOffByDefault() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -187,7 +196,8 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
         verifyFuzzyIsOffByDefault(suggestResultWithoutSuggestOptions.next());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void suggestThrowsWhenGivenBadSuggesterName() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -201,7 +211,8 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
             "The specified suggester name 'Suggester does not exist' does not exist in this index definition.");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void suggestThrowsWhenRequestIsMalformed() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -217,7 +228,8 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
             "Invalid expression: Syntax error at position 7 in 'This is not a valid orderby.'");
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void testCanSuggestWithMinimumCoverage() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -240,7 +252,8 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
 
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void testTopTrimsResults() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -261,7 +274,8 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
         verifyTopDocumentSuggest(suggestResultIterator.next());
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void testCanFilter() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -285,7 +299,8 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
         assertEquals(expectedIds, actualIds);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void testOrderByProgressivelyBreaksTies() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -309,7 +324,8 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
         assertEquals(expectedIds, actualIds);
     }
 
-    @Test
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
     public void testCanSuggestWithSelectedFields() {
         createHotelIndex();
         client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
