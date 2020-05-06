@@ -15,8 +15,7 @@
     <artifactId>azure-spring-boot-sample-active-directory-stateless</artifactId>
 
     <name>Azure AD Stateless Spring Security Integration Spring Boot Sample</name>
-    <description>Sample project using the AAD stateless app-role filter for AAD integration in Spring Security
-    </description>
+    <description>Sample project using the AAD stateless app-role filter for AAD integration in Spring Security</description>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
 
     <dependencies>
