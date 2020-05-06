@@ -41,7 +41,7 @@ module com.azure.core {
     // Exports HttpProviders#getAllHttpClients API to azure-core-test module
     exports com.azure.core.implementation.http to com.azure.core.test;
 
-  // service provider interfaces
+    // Service Provider Interfaces
     uses com.azure.core.util.tracing.Tracer;
     uses com.azure.core.http.HttpClientProvider;
     uses com.azure.core.http.policy.BeforeRetryPolicyProvider;

@@ -300,7 +300,7 @@ provide, allowing you to focus on the logic needed to provide value while the pr
 managing the underlying consumer operations.
 
 In our example, we will focus on building the [`EventProcessorClient`][EventProcessorClient], use the
-[`InMemoryCheckpointStore`][InMemoryCheckpointStore] available in samples, and a callback function that processes events
+[`SampleCheckpointStore`][SampleCheckpointStore] available in samples, and a callback function that processes events
 received from the Event Hub and writes to console. For production applications, it's recommended to use a durable
 store like [Checkpoint Store with Azure Storage Blobs][BlobCheckpointStore].
 
@@ -418,7 +418,7 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [EventHubProducerAsyncClient]: ./src/main/java/com/azure/messaging/eventhubs/EventHubProducerAsyncClient.java
 [EventHubProducerClient]: ./src/main/java/com/azure/messaging/eventhubs/EventHubProducerClient.java
 [EventProcessorClient]: ./src/main/java/com/azure/messaging/eventhubs/EventProcessorClient.java
-[InMemoryCheckpointStore]: ./src/samples/java/com/azure/messaging/eventhubs/InMemoryCheckpointStore.java
+[SampleCheckpointStore]: ./src/samples/java/com/azure/messaging/eventhubs/SampleCheckpointStore.java
 [java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [maven]: https://maven.apache.org/

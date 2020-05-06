@@ -38,6 +38,7 @@ public class EnvironmentCredential implements TokenCredential {
     private final Configuration configuration;
     private final IdentityClientOptions identityClientOptions;
     private final ClientLogger logger = new ClientLogger(EnvironmentCredential.class);
+    private final TokenCredential tokenCredential;
 
     /**
      * Creates an instance of the default environment credential provider.
@@ -47,36 +48,39 @@ public class EnvironmentCredential implements TokenCredential {
     EnvironmentCredential(IdentityClientOptions identityClientOptions) {
         this.configuration = Configuration.getGlobalConfiguration().clone();
         this.identityClientOptions = identityClientOptions;
-    }
+        TokenCredential targetCredential = null;
 
-    @Override
-    public Mono<AccessToken> getToken(TokenRequestContext request) {
-        return Mono.fromSupplier(() -> {
-            String clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
-            String tenantId = configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID);
-            String clientSecret = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_SECRET);
-            String certPath = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH);
-            String username = configuration.get(Configuration.PROPERTY_AZURE_USERNAME);
-            String password = configuration.get(Configuration.PROPERTY_AZURE_PASSWORD);
-            if (verifyNotNull(clientId)) {
-                if (verifyNotNull(tenantId, clientSecret)) {
-                    // TODO: support other clouds
-                    return new ClientSecretCredential(tenantId, clientId, clientSecret, identityClientOptions);
-                } else if (verifyNotNull(tenantId, certPath)) {
-                    return new ClientCertificateCredential(tenantId, clientId, certPath, null, identityClientOptions);
-                } else if (verifyNotNull(username, password)) {
-                    return new UsernamePasswordCredential(clientId,
+        String clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
+        String tenantId = configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID);
+        String clientSecret = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_SECRET);
+        String certPath = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH);
+        String username = configuration.get(Configuration.PROPERTY_AZURE_USERNAME);
+        String password = configuration.get(Configuration.PROPERTY_AZURE_PASSWORD);
+        if (verifyNotNull(clientId)) {
+            if (verifyNotNull(tenantId, clientSecret)) {
+                targetCredential = new ClientSecretCredential(tenantId, clientId, clientSecret, identityClientOptions);
+            } else if (verifyNotNull(tenantId, certPath)) {
+                targetCredential = new ClientCertificateCredential(tenantId, clientId, certPath,
+                        null, identityClientOptions);
+            } else if (verifyNotNull(username, password)) {
+                targetCredential = new UsernamePasswordCredential(clientId,
                         tenantId,
                         username,
                         password,
                         identityClientOptions);
-                }
             }
+        }
+        tokenCredential = targetCredential;
+    }
 
-            // Other environment variables
-            throw logger.logExceptionAsError(new CredentialUnavailableException(
-                "Cannot create any credentials with the current environment variables"));
-        }).flatMap(cred -> cred.getToken(request));
+    @Override
+    public Mono<AccessToken> getToken(TokenRequestContext request) {
+        if (tokenCredential == null) {
+            return Mono.error(logger.logExceptionAsError(new CredentialUnavailableException(
+                    "Cannot create any credentials with the current environment variables")));
+        } else {
+            return tokenCredential.getToken(request);
+        }
     }
 
     private boolean verifyNotNull(String... configs) {

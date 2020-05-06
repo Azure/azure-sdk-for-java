@@ -109,6 +109,46 @@
         "code": "java\\.class\\.externalClassExposedInAPI",
         "new": "(class|interface|enum) com\\.azure\\.perf\\.test\\.core\\..*",
         "justification": "perf-test classes are allowed to be exposed."
+      },
+      {
+        "code": "java.method.finalMethodAddedToNonFinalClass",
+        "new": "method reactor.core.publisher.Flux<T> reactor.core.publisher.Flux<T>::retryWhen(reactor.util.retry.Retry) @ com.azure.core.http.rest.PagedFlux<T>",
+        "justification": "Reactor added new final APIs to Flux."
+      },
+      {
+        "code": "java.method.finalMethodAddedToNonFinalClass",
+        "new": "method <V> reactor.core.publisher.Flux<V> reactor.core.publisher.Flux<T>::switchOnFirst(java.util.function.BiFunction<reactor.core.publisher.Signal<? extends T>, reactor.core.publisher.Flux<T>, org.reactivestreams.Publisher<? extends V>>, boolean) @ com.azure.core.http.rest.PagedFlux<T>",
+        "justification": "Reactor added new final APIs to Flux."
+      },
+      {
+        "code": "java.method.finalMethodAddedToNonFinalClass",
+        "new": "method reactor.core.publisher.Flux<T> reactor.core.publisher.Flux<T>::retryWhen(reactor.util.retry.Retry) @ com.azure.core.http.rest.PagedFluxBase<T, P extends com.azure.core.http.rest.PagedResponse<T extends java.lang.Object>>",
+        "justification": "Reactor added new final APIs to Flux."
+      },
+      {
+        "code": "java.method.finalMethodAddedToNonFinalClass",
+        "new": "method <V> reactor.core.publisher.Flux<V> reactor.core.publisher.Flux<T>::switchOnFirst(java.util.function.BiFunction<reactor.core.publisher.Signal<? extends T>, reactor.core.publisher.Flux<T>, org.reactivestreams.Publisher<? extends V>>, boolean) @ com.azure.core.http.rest.PagedFluxBase<T, P extends com.azure.core.http.rest.PagedResponse<T extends java.lang.Object>>",
+        "justification": "Reactor added new final APIs to Flux."
+      },
+      {
+        "code": "java.method.finalMethodAddedToNonFinalClass",
+        "new": "method reactor.core.publisher.Flux<T> reactor.core.publisher.Flux<T>::retryWhen(reactor.util.retry.Retry) @ com.azure.core.util.paging.ContinuablePagedFlux<C, T, P extends com.azure.core.util.paging.ContinuablePage<C extends java.lang.Object, T extends java.lang.Object>>",
+        "justification": "Reactor added new final APIs to Flux."
+      },
+      {
+        "code": "java.method.finalMethodAddedToNonFinalClass",
+        "new": "method <V> reactor.core.publisher.Flux<V> reactor.core.publisher.Flux<T>::switchOnFirst(java.util.function.BiFunction<reactor.core.publisher.Signal<? extends T>, reactor.core.publisher.Flux<T>, org.reactivestreams.Publisher<? extends V>>, boolean) @ com.azure.core.util.paging.ContinuablePagedFlux<C, T, P extends com.azure.core.util.paging.ContinuablePage<C extends java.lang.Object, T extends java.lang.Object>>",
+        "justification": "Reactor added new final APIs to Flux."
+      },
+      {
+        "code": "java.method.finalMethodAddedToNonFinalClass",
+        "new": "method reactor.core.publisher.Flux<T> reactor.core.publisher.Flux<T>::retryWhen(reactor.util.retry.Retry) @ com.azure.core.util.paging.ContinuablePagedFluxCore<C, T, P extends com.azure.core.util.paging.ContinuablePage<C extends java.lang.Object, T extends java.lang.Object>>",
+        "justification": "Reactor added new final APIs to Flux."
+      },
+      {
+        "code": "java.method.finalMethodAddedToNonFinalClass",
+        "new": "method <V> reactor.core.publisher.Flux<V> reactor.core.publisher.Flux<T>::switchOnFirst(java.util.function.BiFunction<reactor.core.publisher.Signal<? extends T>, reactor.core.publisher.Flux<T>, org.reactivestreams.Publisher<? extends V>>, boolean) @ com.azure.core.util.paging.ContinuablePagedFluxCore<C, T, P extends com.azure.core.util.paging.ContinuablePage<C extends java.lang.Object, T extends java.lang.Object>>",
+        "justification": "Reactor added new final APIs to Flux."
       }
     ]
   }

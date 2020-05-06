@@ -3,12 +3,12 @@
 
 package com.azure.cosmos.rx.examples;
 
-import com.azure.cosmos.models.RequestVerb;
+import com.azure.cosmos.implementation.RequestVerb;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.models.CosmosResourceType;
+import com.azure.cosmos.implementation.CosmosResourceType;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.DocumentClientTest;
@@ -19,12 +19,13 @@ import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.models.PermissionMode;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceResponse;
-import com.azure.cosmos.CosmosAuthorizationTokenResolver;
+import com.azure.cosmos.implementation.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.User;
 import com.google.common.collect.ImmutableMap;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 
@@ -40,6 +41,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 
+@Ignore("CosmosAuthorizationTokenResolver is removed from public")
 public class CosmosAuthorizationTokenResolverTest extends DocumentClientTest {
 
     private final static int TIMEOUT = 180000;

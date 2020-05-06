@@ -7,7 +7,6 @@ import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
@@ -200,9 +199,9 @@ public interface AsyncDocumentClient {
             ifThrowIllegalArgException(this.serviceEndpoint == null, "cannot buildAsyncClient client without service endpoint");
             ifThrowIllegalArgException(
                     this.masterKeyOrResourceToken == null && (permissionFeed == null || permissionFeed.isEmpty())
-                        && this.cosmosAuthorizationTokenResolver == null && this.cosmosKeyCredential == null,
+                        && this.cosmosKeyCredential == null,
                     "cannot buildAsyncClient client without any one of masterKey, " +
-                        "resource token, permissionFeed, tokenResolver and cosmos key credential");
+                        "resource token, permissionFeed and cosmos key credential");
             ifThrowIllegalArgException(cosmosKeyCredential != null && StringUtils.isEmpty(cosmosKeyCredential.getKey()),
                 "cannot buildAsyncClient client without key credential");
 

@@ -51,7 +51,7 @@ public class IdentityClientIntegrationTests {
         Assert.assertNotNull(token.getToken());
         Assert.assertNotNull(token.getExpiresAt());
         Assert.assertFalse(token.isExpired());
-        token = client.authenticateWithUserRefreshToken(new TokenRequestContext().addScopes("https://vault.azure.net/.default"), token).block();
+        token = client.authenticateWithMsalAccount(new TokenRequestContext().addScopes("https://vault.azure.net/.default"), token.getAccount()).block();
         Assert.assertNotNull(token);
         Assert.assertNotNull(token.getToken());
         Assert.assertNotNull(token.getExpiresAt());
@@ -66,7 +66,7 @@ public class IdentityClientIntegrationTests {
         Assert.assertNotNull(token.getToken());
         Assert.assertNotNull(token.getExpiresAt());
         Assert.assertFalse(token.isExpired());
-        token = client.authenticateWithUserRefreshToken(new TokenRequestContext().addScopes("https://vault.azure.net/.default"), token).block();
+        token = client.authenticateWithMsalAccount(new TokenRequestContext().addScopes("https://vault.azure.net/.default"), token.getAccount()).block();
         Assert.assertNotNull(token);
         Assert.assertNotNull(token.getToken());
         Assert.assertNotNull(token.getExpiresAt());
@@ -81,7 +81,7 @@ public class IdentityClientIntegrationTests {
         Assert.assertNotNull(token.getToken());
         Assert.assertNotNull(token.getExpiresAt());
         Assert.assertFalse(token.isExpired());
-        token = client.authenticateWithUserRefreshToken(new TokenRequestContext().addScopes("https://vault.azure.net/.default"), token).block();
+        token = client.authenticateWithMsalAccount(new TokenRequestContext().addScopes("https://vault.azure.net/.default"), token.getAccount()).block();
         Assert.assertNotNull(token);
         Assert.assertNotNull(token.getToken());
         Assert.assertNotNull(token.getExpiresAt());
@@ -96,7 +96,7 @@ public class IdentityClientIntegrationTests {
         Assert.assertNotNull(token.getToken());
         Assert.assertNotNull(token.getExpiresAt());
         Assert.assertFalse(token.isExpired());
-        token = client.authenticateWithUserRefreshToken(new TokenRequestContext().addScopes("https://vault.azure.net/.default"), token).block();
+        token = client.authenticateWithMsalAccount(new TokenRequestContext().addScopes("https://vault.azure.net/.default"), token.getAccount()).block();
         Assert.assertNotNull(token);
         Assert.assertNotNull(token.getToken());
         Assert.assertNotNull(token.getExpiresAt());

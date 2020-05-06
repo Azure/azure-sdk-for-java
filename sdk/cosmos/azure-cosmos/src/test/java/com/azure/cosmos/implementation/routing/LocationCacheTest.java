@@ -154,7 +154,7 @@ public class LocationCacheTest {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
         connectionPolicy.setEndpointDiscoveryEnabled(enableEndpointDiscovery);
         BridgeInternal.setUseMultipleWriteLocations(connectionPolicy, useMultipleWriteLocations);
-        connectionPolicy.setPreferredLocations(this.preferredLocations);
+        connectionPolicy.setPreferredRegions(this.preferredLocations);
 
         this.endpointManager = new GlobalEndpointManager(mockedClient, connectionPolicy, configs);
     }
