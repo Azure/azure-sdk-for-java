@@ -464,7 +464,7 @@ class ReactorSender implements AmqpSendLink {
         }
     }
 
-    void scheduleWorkOnDispatcher() {
+    private void scheduleWorkOnDispatcher() {
         try {
             reactorProvider.getReactorDispatcher().invoke(this::processSendWork);
         } catch (IOException e) {
