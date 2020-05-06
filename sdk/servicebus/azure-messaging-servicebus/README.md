@@ -74,7 +74,7 @@ Both the asynchronous and synchronous Service Bus sender and receiver clients ar
 `ServiceBusClientBuilder`. The snippets below create a synchronous Service Bus sender and an asynchronous receiver,
 respectively.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L28-L33 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L29-L33 -->
 ```java
 ServiceBusSenderClient sender = new ServiceBusClientBuilder()
     .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
