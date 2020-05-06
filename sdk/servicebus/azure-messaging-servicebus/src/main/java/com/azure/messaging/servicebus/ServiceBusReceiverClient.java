@@ -657,7 +657,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
 
             EmitterProcessor<ServiceBusReceivedMessageContext> newProcessor = asyncClient.receive(DEFAULT_RECEIVE_OPTIONS)
                 .subscribeWith(EmitterProcessor.create(false));
-            // if some other thread have come in between, we will not reset new processor
+
+            // if some other thread have come in between, we will dispose new processor
             if (!messageProcessor.compareAndSet(null, newProcessor)) {
                 newProcessor.dispose();
             }
@@ -666,25 +667,22 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
                 asyncClient.getEntityPath());
         }
 
-            logger.info("[{}]: Subscribing EmitterProcessor message processor for entity.",
-                asyncClient.getEntityPath());
-
         Disposable newSubscription = messageProcessor.get()
             .take(maximumMessageCount)
             .timeout(maxWaitTime)
-            .map(messageContext -> {
-                emitter.next(messageContext);
-                return messageContext;
+            .map(message -> {
+                emitter.next(message);
+                return message;
             })
-            .doOnError(throwable -> {
-                emitter.error(throwable);
-            })
-            .doOnComplete(emitter::complete)
-            .subscribe();
-
+            .subscribe(message -> {},
+                error -> {
+                    logger.error("Error occurred while receiving messages.", error);
+                    emitter.error(error);
+                },
+                () -> emitter.complete());
 
         Disposable oldSubscription = messageProcessorSubscription.getAndSet(newSubscription);
-        if (oldSubscription != null) {
+        if (oldSubscription != null && !oldSubscription.isDisposed()) {
             oldSubscription.dispose();
         }
     }
