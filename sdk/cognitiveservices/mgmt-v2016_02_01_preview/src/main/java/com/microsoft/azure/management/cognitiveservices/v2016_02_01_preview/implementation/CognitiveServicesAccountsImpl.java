@@ -40,7 +40,7 @@ class CognitiveServicesAccountsImpl extends WrapperImpl<CognitiveServicesAccount
         return new CognitiveServicesAccountImpl(name, new CognitiveServicesAccountInner(), this.manager());
     }
 
-    private CognitiveServicesAccountImpl wrapModel(CognitiveServicesAccountInner inner) {
+    private CognitiveServicesAccountImpl wrapCognitiveServicesAccountModel(CognitiveServicesAccountInner inner) {
         return  new CognitiveServicesAccountImpl(inner.name(), inner, manager());
     }
 
@@ -51,10 +51,14 @@ class CognitiveServicesAccountsImpl extends WrapperImpl<CognitiveServicesAccount
 
     @Override
     public Observable<CognitiveServicesAccount> getByResourceGroupAsync(String resourceGroupName, String name) {
-        return this.getCognitiveServicesAccountInnerUsingCognitiveServicesAccountsInnerAsync(resourceGroupName, name).map(new Func1<CognitiveServicesAccountInner, CognitiveServicesAccount> () {
+        return this.getCognitiveServicesAccountInnerUsingCognitiveServicesAccountsInnerAsync(resourceGroupName, name).flatMap(new Func1<CognitiveServicesAccountInner, Observable<CognitiveServicesAccount>> () {
             @Override
-            public CognitiveServicesAccount call(CognitiveServicesAccountInner inner) {
-                return wrapModel(inner);
+            public Observable<CognitiveServicesAccount> call(CognitiveServicesAccountInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return  Observable.just((CognitiveServicesAccount)wrapCognitiveServicesAccountModel(inner));
+                }
             }
         });
     }
@@ -72,7 +76,7 @@ class CognitiveServicesAccountsImpl extends WrapperImpl<CognitiveServicesAccount
         .map(new Func1<CognitiveServicesAccountInner, CognitiveServicesAccount>() {
             @Override
             public CognitiveServicesAccount call(CognitiveServicesAccountInner inner) {
-                return wrapModel(inner);
+                return wrapCognitiveServicesAccountModel(inner);
             }
         });
     }
@@ -90,7 +94,7 @@ class CognitiveServicesAccountsImpl extends WrapperImpl<CognitiveServicesAccount
         .map(new Func1<CognitiveServicesAccountInner, CognitiveServicesAccount>() {
             @Override
             public CognitiveServicesAccount call(CognitiveServicesAccountInner inner) {
-                return wrapModel(inner);
+                return wrapCognitiveServicesAccountModel(inner);
             }
         });
     }
