@@ -165,6 +165,7 @@
             <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <systemPropertyVariables>
+                <!-- Parallel runs disabled due to global test state that causes random test failures. -->
                 <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
               </systemPropertyVariables>
             </configuration>
