@@ -336,7 +336,7 @@ check out the [samples README][samples_readme].
 ## Contributing
 
 If you would like to become an active contributor to this project please refer to our [Contribution
-Guidelines](./CONTRIBUTING.md) for more information.
+Guidelines](./../../../CONTRIBUTING.md) for more information.
 
 <!-- Links -->
 [aad_authorization]: https://docs.microsoft.com/azure/service-bus-messaging/authenticate-application
