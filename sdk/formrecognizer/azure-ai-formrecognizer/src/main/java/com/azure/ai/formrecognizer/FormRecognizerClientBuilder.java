@@ -132,8 +132,8 @@ public final class FormRecognizerClientBuilder {
      * </p>
      *
      * @return A FormRecognizerAsyncClient with the options set from the builder.
-     * @throws NullPointerException if {@link #endpoint(String) endpoint} or
-     * {@link #credential(AzureKeyCredential)} has not been set.
+     * @throws NullPointerException if {@link #endpoint(String) endpoint} or {@link #credential(AzureKeyCredential)}
+     * has not been set.
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
      */
     public FormRecognizerAsyncClient buildAsyncClient() {
@@ -219,7 +219,8 @@ public final class FormRecognizerClientBuilder {
     }
 
     /**
-     * Sets the {@link AzureKeyCredential} to use when authenticating HTTP requests for this FormRecognizerClientBuilder.
+     * Sets the {@link AzureKeyCredential} to use when authenticating HTTP requests for this
+     * FormRecognizerClientBuilder.
      *
      * @param apiKeyCredential {@link AzureKeyCredential} API key credential
      *
