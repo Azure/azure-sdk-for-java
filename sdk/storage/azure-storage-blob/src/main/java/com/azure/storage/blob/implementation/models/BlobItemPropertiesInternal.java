@@ -219,6 +219,24 @@ public final class BlobItemPropertiesInternal {
     @JsonProperty(value = "AccessTierChangeTime")
     private DateTimeRfc1123 accessTierChangeTime;
 
+    /*
+     * The tagCount property.
+     */
+    @JsonProperty(value = "TagCount")
+    private Integer tagCount;
+
+    /*
+     * The expiresOn property.
+     */
+    @JsonProperty(value = "Expiry-Time")
+    private DateTimeRfc1123 expiresOn;
+
+    /*
+     * The isSealed property.
+     */
+    @JsonProperty(value = "IsSealed")
+    private Boolean isSealed;
+
     /**
      * Get the creationTime property: The creationTime property.
      *
@@ -918,6 +936,73 @@ public final class BlobItemPropertiesInternal {
         } else {
             this.accessTierChangeTime = new DateTimeRfc1123(accessTierChangeTime);
         }
+        return this;
+    }
+
+    /**
+     * Get the tagCount property: The tagCount property.
+     *
+     * @return the tagCount value.
+     */
+    public Integer getTagCount() {
+        return this.tagCount;
+    }
+
+    /**
+     * Set the tagCount property: The tagCount property.
+     *
+     * @param tagCount the tagCount value to set.
+     * @return the BlobItemPropertiesInternal object itself.
+     */
+    public BlobItemPropertiesInternal setTagCount(Integer tagCount) {
+        this.tagCount = tagCount;
+        return this;
+    }
+
+    /**
+     * Get the expiresOn property: The expiresOn property.
+     *
+     * @return the expiresOn value.
+     */
+    public OffsetDateTime getExpiresOn() {
+        if (this.expiresOn == null) {
+            return null;
+        }
+        return this.expiresOn.getDateTime();
+    }
+
+    /**
+     * Set the expiresOn property: The expiresOn property.
+     *
+     * @param expiresOn the expiresOn value to set.
+     * @return the BlobItemPropertiesInternal object itself.
+     */
+    public BlobItemPropertiesInternal setExpiresOn(OffsetDateTime expiresOn) {
+        if (expiresOn == null) {
+            this.expiresOn = null;
+        } else {
+            this.expiresOn = new DateTimeRfc1123(expiresOn);
+        }
+        return this;
+    }
+
+    /**
+     * Get the isSealed property: The isSealed property.
+     *
+     * @return the isSealed value.
+     */
+    public Boolean isSealed() {
+        return this.isSealed;
+    }
+
+    /**
+     * Set the isSealed property: The isSealed property.
+     *
+     * @param isSealed the isSealed value to set.
+     * @return the BlobItemPropertiesInternal object itself.
+     */
+    public BlobItemPropertiesInternal setIsSealed(Boolean isSealed) {
+        this.isSealed = isSealed;
         return this;
     }
 }

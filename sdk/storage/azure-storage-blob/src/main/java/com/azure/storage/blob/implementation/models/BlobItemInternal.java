@@ -58,16 +58,22 @@ public final class BlobItemInternal {
     private Map<String, String> metadata;
 
     /*
+     * The blobTags property.
+     */
+    @JsonProperty(value = "Tags")
+    private BlobTags blobTags;
+
+    /*
      * The objectReplicationPolicyId property.
      */
     @JsonProperty(value = "ObjectReplicationPolicyId")
     private String objectReplicationPolicyId;
 
     /*
-     * The objectReplicationRuleStatus property.
+     * The objectReplicationRules property.
      */
-    @JsonProperty(value = "BlobObjectReplicationRuleStatus")
-    private Map<String, String> objectReplicationRuleStatus;
+    @JsonProperty(value = "BlobObjectReplicationRules")
+    private Map<String, String> objectReplicationRules;
 
     /*
      * The isPrefix property.
@@ -216,6 +222,26 @@ public final class BlobItemInternal {
     }
 
     /**
+     * Get the blobTags property: The blobTags property.
+     *
+     * @return the blobTags value.
+     */
+    public BlobTags getBlobTags() {
+        return this.blobTags;
+    }
+
+    /**
+     * Set the blobTags property: The blobTags property.
+     *
+     * @param blobTags the blobTags value to set.
+     * @return the BlobItemInternal object itself.
+     */
+    public BlobItemInternal setBlobTags(BlobTags blobTags) {
+        this.blobTags = blobTags;
+        return this;
+    }
+
+    /**
      * Get the objectReplicationPolicyId property: The
      * objectReplicationPolicyId property.
      *
@@ -239,25 +265,24 @@ public final class BlobItemInternal {
     }
 
     /**
-     * Get the objectReplicationRuleStatus property: The
-     * objectReplicationRuleStatus property.
+     * Get the objectReplicationRules property: The objectReplicationRules
+     * property.
      *
-     * @return the objectReplicationRuleStatus value.
+     * @return the objectReplicationRules value.
      */
-    public Map<String, String> getObjectReplicationRuleStatus() {
-        return this.objectReplicationRuleStatus;
+    public Map<String, String> getObjectReplicationRules() {
+        return this.objectReplicationRules;
     }
 
     /**
-     * Set the objectReplicationRuleStatus property: The
-     * objectReplicationRuleStatus property.
+     * Set the objectReplicationRules property: The objectReplicationRules
+     * property.
      *
-     * @param objectReplicationRuleStatus the objectReplicationRuleStatus value
-     * to set.
+     * @param objectReplicationRules the objectReplicationRules value to set.
      * @return the BlobItemInternal object itself.
      */
-    public BlobItemInternal setObjectReplicationRuleStatus(Map<String, String> objectReplicationRuleStatus) {
-        this.objectReplicationRuleStatus = objectReplicationRuleStatus;
+    public BlobItemInternal setObjectReplicationRules(Map<String, String> objectReplicationRules) {
+        this.objectReplicationRules = objectReplicationRules;
         return this;
     }
 

@@ -79,7 +79,7 @@ public final class PageBlobsImpl {
         @Put("{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<PageBlobsCreateResponse> create(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-access-tier") PremiumPageBlobAccessTier tier, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-blob-content-length") long blobContentLength, @HeaderParam("x-ms-blob-sequence-number") Long blobSequenceNumber, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-blob-type") String blobType, @HeaderParam("x-ms-blob-content-type") String contentType, @HeaderParam("x-ms-blob-content-encoding") String contentEncoding, @HeaderParam("x-ms-blob-content-language") String contentLanguage, @HeaderParam("x-ms-blob-content-md5") String contentMd5, @HeaderParam("x-ms-blob-cache-control") String cacheControl, @HeaderParam("x-ms-blob-content-disposition") String contentDisposition, @HeaderParam("x-ms-encryption-key") String encryptionKey, @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256, @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm, @HeaderParam("x-ms-encryption-scope") String encryptionScope, Context context);
+        Mono<PageBlobsCreateResponse> create(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-access-tier") PremiumPageBlobAccessTier tier, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-blob-content-length") long blobContentLength, @HeaderParam("x-ms-blob-sequence-number") Long blobSequenceNumber, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-tags") String blobTagsString, @HeaderParam("x-ms-blob-type") String blobType, @HeaderParam("x-ms-blob-content-type") String contentType, @HeaderParam("x-ms-blob-content-encoding") String contentEncoding, @HeaderParam("x-ms-blob-content-language") String contentLanguage, @HeaderParam("x-ms-blob-content-md5") String contentMd5, @HeaderParam("x-ms-blob-cache-control") String cacheControl, @HeaderParam("x-ms-blob-content-disposition") String contentDisposition, @HeaderParam("x-ms-encryption-key") String encryptionKey, @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256, @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm, @HeaderParam("x-ms-encryption-scope") String encryptionScope, Context context);
 
         @Put("{containerName}/{blob}")
         @ExpectedResponses({201})
@@ -143,6 +143,7 @@ public final class PageBlobsImpl {
         final String ifNoneMatch = null;
         final Long blobSequenceNumber = 0L;
         final String requestId = null;
+        final String blobTagsString = null;
         final String blobType = "PageBlob";
         final String contentType = null;
         final String contentEncoding = null;
@@ -156,7 +157,7 @@ public final class PageBlobsImpl {
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
         String contentMd5Converted = null;
-        return service.create(containerName, blob, this.client.getUrl(), timeout, contentLength, tier, metadata, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, blobContentLength, blobSequenceNumber, this.client.getVersion(), requestId, blobType, contentType, contentEncoding, contentLanguage, contentMd5Converted, cacheControl, contentDisposition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, context);
+        return service.create(containerName, blob, this.client.getUrl(), timeout, contentLength, tier, metadata, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, blobContentLength, blobSequenceNumber, this.client.getVersion(), requestId, blobTagsString, blobType, contentType, contentEncoding, contentLanguage, contentMd5Converted, cacheControl, contentDisposition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, context);
     }
 
     /**
@@ -176,6 +177,7 @@ public final class PageBlobsImpl {
      * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param blobSequenceNumber Set for page blobs only. The sequence number is a user-controlled value that you can use to track requests. The value of the sequence number must be between 0 and 2^63 - 1.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param blobTagsString Optional.  Used to set blob tags in various blob operations.
      * @param blobHttpHeaders Additional parameters for the operation.
      * @param cpkInfo Additional parameters for the operation.
      * @param encryptionScope Additional parameters for the operation.
@@ -184,7 +186,7 @@ public final class PageBlobsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsCreateResponse> createWithRestResponseAsync(String containerName, String blob, long contentLength, long blobContentLength, Integer timeout, PremiumPageBlobAccessTier tier, Map<String, String> metadata, String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, Long blobSequenceNumber, String requestId, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScope, Context context) {
+    public Mono<PageBlobsCreateResponse> createWithRestResponseAsync(String containerName, String blob, long contentLength, long blobContentLength, Integer timeout, PremiumPageBlobAccessTier tier, Map<String, String> metadata, String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, Long blobSequenceNumber, String requestId, String blobTagsString, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScope, Context context) {
         final String blobType = "PageBlob";
         String contentType = null;
         if (blobHttpHeaders != null) {
@@ -229,7 +231,7 @@ public final class PageBlobsImpl {
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         String contentMd5Converted = Base64Util.encodeToString(contentMd5);
-        return service.create(containerName, blob, this.client.getUrl(), timeout, contentLength, tier, metadata, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, blobContentLength, blobSequenceNumber, this.client.getVersion(), requestId, blobType, contentType, contentEncoding, contentLanguage, contentMd5Converted, cacheControl, contentDisposition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope1, context);
+        return service.create(containerName, blob, this.client.getUrl(), timeout, contentLength, tier, metadata, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, blobContentLength, blobSequenceNumber, this.client.getVersion(), requestId, blobTagsString, blobType, contentType, contentEncoding, contentLanguage, contentMd5Converted, cacheControl, contentDisposition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope1, context);
     }
 
     /**

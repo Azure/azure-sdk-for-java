@@ -169,7 +169,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         return this.azureBlobStorage.appendBlobs().createWithRestResponseAsync(null, null, 0, null, metadata,
             requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), null, headers, getCustomerProvidedKey(), encryptionScope,
+            requestConditions.getIfNoneMatch(), null, null, headers, getCustomerProvidedKey(), encryptionScope,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 AppendBlobCreateHeaders hd = rb.getDeserializedHeaders();
