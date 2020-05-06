@@ -28,6 +28,7 @@ import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobServiceStatistics;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.KeyInfo;
+import com.azure.storage.blob.models.ListBlobContainersIncludeType;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
@@ -324,11 +325,12 @@ public final class BlobServiceAsyncClient {
         ListBlobContainersOptions options, Duration timeout) {
         options = options == null ? new ListBlobContainersOptions() : options;
 
+        ListBlobContainersIncludeType includeType = options.getDetails().toIncludeType();
         return StorageImplUtils.applyOptionalTimeout(
             this.azureBlobStorage.services().listBlobContainersSegmentWithRestResponseAsync(
                 options.getPrefix(), marker, options.getMaxResultsPerPage(),
-                Collections.singletonList(options.getDetails().toIncludeType()), null,
-                null, Context.NONE), timeout);
+                includeType == null ? null : Collections.singletonList(includeType),
+                null, null, Context.NONE), timeout);
     }
 
     /**
