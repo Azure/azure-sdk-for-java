@@ -293,22 +293,13 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
         Write-Error-With-Color "Error: <dependencyManagement> is not allowed. Every dependency must have its own version and version update tag"
     }
 
+    $xmlNsManager = New-Object -TypeName "Xml.XmlNamespaceManager" -ArgumentList $xmlPomFile.NameTable
+    $xmlNsManager.AddNamespace("ns", $xmlPomFile.DocumentElement.NamespaceURI)
+
     # Ensure that the project has a version tag with the exception of projects under the eng directory which
     # aren't releasing libraries but still need to have their dependencies checked
-    Write-Host "JRS $([IO.Path]::DirectorySeparatorChar) $($pomFile.Split([IO.Path]::DirectorySeparatorChar))"
-    if ($pomFile.Split([IO.Path]::DirectorySeparatorChar) -notcontains "eng")
-    {
-        Write-Host "will process pomFile=$($pomFile)"
-    } 
-    else 
-    {
-        Write-Host "will skip pomFile=$($pomFile)"
-    }
     if ($pomFile.Split([IO.Path]::DirectorySeparatorChar) -notcontains "eng") 
     {
-        $xmlNsManager = New-Object -TypeName "Xml.XmlNamespaceManager" -ArgumentList $xmlPomFile.NameTable
-        $xmlNsManager.AddNamespace("ns", $xmlPomFile.DocumentElement.NamespaceURI)
-
         $versionNode = $xmlPomFile.SelectSingleNode("/ns:project/ns:version", $xmlNsManager)
         if ($xmlPomFile.project.version -and $versionNode)
         {
