@@ -33,7 +33,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     public TextAnalyticsAsyncClient createTextAnalyticsAsyncClient() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.instantiation
         TextAnalyticsAsyncClient textAnalyticsAsyncClient = new TextAnalyticsClientBuilder()
-            .credential(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.instantiation
@@ -45,7 +45,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
      */
     public void rotateAzureKeyCredential() {
         // BEGIN: com.azure.ai.textanalytics.models.AzureKeyCredential
-        AzureKeyCredential credential = new AzureKeyCredential("{api_key}");
+        AzureKeyCredential credential = new AzureKeyCredential("{key}");
 
         TextAnalyticsAsyncClient textAnalyticsAsyncClient = new TextAnalyticsClientBuilder()
             .credential(credential)

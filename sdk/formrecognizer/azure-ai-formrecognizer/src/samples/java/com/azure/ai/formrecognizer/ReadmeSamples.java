@@ -35,7 +35,7 @@ public class ReadmeSamples {
      */
     public void useAzureKeyCredentialSyncClient() {
         FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
-            .credential(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildClient();
     }
@@ -44,13 +44,13 @@ public class ReadmeSamples {
      * Code snippet for rotating AzureKeyCredential of the client
      */
     public void rotatingAzureKeyCredential() {
-        AzureKeyCredential credential = new AzureKeyCredential("{api_key}");
+        AzureKeyCredential credential = new AzureKeyCredential("{key}");
         FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
             .credential(credential)
             .endpoint("{endpoint}")
             .buildClient();
 
-        credential.update("{new_api_key}");
+        credential.update("{new_key}");
     }
 
     public void recognizeCustomForm() {

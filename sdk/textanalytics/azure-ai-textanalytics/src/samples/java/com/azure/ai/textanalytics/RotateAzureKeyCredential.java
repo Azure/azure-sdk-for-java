@@ -17,7 +17,7 @@ public class RotateAzureKeyCredential {
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
-        AzureKeyCredential credential = new AzureKeyCredential("{api_key}");
+        AzureKeyCredential credential = new AzureKeyCredential("{key}");
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
             .credential(credential)
             .endpoint("{endpoint}")

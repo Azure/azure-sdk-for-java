@@ -28,7 +28,7 @@ public class ExtractKeyPhrasesBatchDocumentsAsync {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .credential(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
