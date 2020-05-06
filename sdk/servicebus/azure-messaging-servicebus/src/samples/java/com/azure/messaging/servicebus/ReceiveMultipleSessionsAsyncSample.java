@@ -9,18 +9,18 @@ import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 
 import java.security.SecureRandom;
-import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrates how to receive and process multiple samples.
+ * Sample demonstrates how to receive and process multiple sessions. In the sample, at most 3 sessions are processed
+ * concurrently. When there are no more messages in a session, the receiver finds the next available session to
+ * process.
  */
-public class MultiSessionReceiveAsyncSample {
+public class ReceiveMultipleSessionsAsyncSample {
     private static final SecureRandom RANDOM = new SecureRandom();
 
     /**
-     * Main method to invoke this demo on how to receive from multiple sessions {@link ServiceBusReceivedMessage} from
-     * an Azure Service Bus Queue.
+     * Main method to invoke this demo on how to receive messages from multiple sessions in an Azure Service Bus Queue.
      *
      * @param args Unused arguments to the program.
      *
@@ -36,8 +36,8 @@ public class MultiSessionReceiveAsyncSample {
             + "SharedAccessKey={key}";
 
         // Create a receiver.
-        // "<<queue-name>>" will be the name of the Service Bus queue instance you created inside the Service Bus
-        // namespace.
+        // "<<queue-name>>" will be the name of the Service Bus session-enabled queue instance you created inside the
+        // Service Bus namespace.
         ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .sessionReceiver()
@@ -46,12 +46,11 @@ public class MultiSessionReceiveAsyncSample {
             .queueName("<<queue-name>>")
             .buildAsyncClient();
 
-        // At most, the receiver will automatically renew the session lock until 120 seconds have elapsed.
         // By default, after messages are processed, they are completed (ie. removed from the queue/topic). Setting
-        // enableAutoComplete to true will tell the processor to complete or abandon the message depending
+        // enableAutoComplete to true will tell the processor to complete or abandon the message depending on whether or
+        // not processing the message results in an exception.
         ReceiveAsyncOptions options = new ReceiveAsyncOptions()
-            .setIsAutoCompleteEnabled(false)
-            .setMaxAutoLockRenewalDuration(Duration.ofSeconds(120));
+            .setIsAutoCompleteEnabled(false);
 
         Disposable subscription = receiver.receive(options)
             .flatMap(context -> {
