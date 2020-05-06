@@ -509,8 +509,6 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
 
         final Flux<ServiceBusReceivedMessageContext> messages = Flux.create(emitter -> queueWork(maxMessages,
             maxWaitTime, emitter));
-        //queueWork(maxMessages, maxWaitTime, null);
-        //return null;
         return new IterableStream<>(messages);
     }
 
