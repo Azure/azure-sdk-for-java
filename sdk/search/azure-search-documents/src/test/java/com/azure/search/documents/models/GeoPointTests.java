@@ -4,11 +4,13 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.util.Context;
-import com.azure.search.documents.SearchIndexClient;
+import com.azure.search.documents.SearchClient;
 import com.azure.search.documents.SearchIndexClientTestBase;
-import com.azure.search.documents.util.SearchPagedResponse;
 import com.azure.search.documents.implementation.SerializationUtil;
-import com.azure.search.documents.util.SearchPagedIterable;
+import com.azure.search.documents.indexes.models.IndexDocumentsResult;
+import com.azure.search.documents.indexes.models.SearchOptions;
+import com.azure.search.documents.indexes.util.SearchPagedIterable;
+import com.azure.search.documents.indexes.util.SearchPagedResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
@@ -30,7 +32,7 @@ public class GeoPointTests extends SearchIndexClientTestBase {
     private static final String INDEX_NAME_HOTELS = "hotels";
     private static final String DATA_JSON_HOTELS = "HotelsDataArray.json";
 
-    private SearchIndexClient client;
+    private SearchClient client;
 
     @SuppressWarnings("unchecked")
     private List<Map<String, Object>> uploadDocuments() throws Exception {
@@ -67,24 +69,24 @@ public class GeoPointTests extends SearchIndexClientTestBase {
 
     @Test
     public void canSerializeGeoPoint() {
-        Index index = new Index()
+        SearchIndex index = new SearchIndex()
             .setName("geopoints")
             .setFields(Arrays.asList(
-                new Field()
+                new SearchField()
                     .setName("Id")
-                    .setType(DataType.EDM_STRING)
+                    .setType(SearchFieldDataType.STRING)
                     .setKey(true)
                     .setFilterable(true)
                     .setSortable(true),
-                new Field()
+                new SearchField()
                     .setName("Name")
-                    .setType(DataType.EDM_STRING)
+                    .setType(SearchFieldDataType.STRING)
                     .setSearchable(true)
                     .setFilterable(true)
                     .setSortable(true),
-                new Field()
+                new SearchField()
                     .setName("Location")
-                    .setType(DataType.EDM_GEOGRAPHY_POINT)
+                    .setType(SearchFieldDataType.GEOGRAPHY_POINT)
                     .setFilterable(true)
                     .setSortable(true)
             ));

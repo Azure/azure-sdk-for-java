@@ -3,21 +3,22 @@
 
 package com.azure.search.documents;
 
+import com.azure.search.documents.indexes.models.FacetResult;
+import com.azure.search.documents.indexes.models.QueryType;
+import com.azure.search.documents.indexes.models.ScoringParameter;
+import com.azure.search.documents.indexes.models.SearchMode;
+import com.azure.search.documents.indexes.models.SearchOptions;
+import com.azure.search.documents.indexes.models.SearchResult;
+import com.azure.search.documents.indexes.util.SearchPagedFlux;
+import com.azure.search.documents.indexes.util.SearchPagedResponse;
 import com.azure.search.documents.models.CoordinateSystem;
-import com.azure.search.documents.models.FacetResult;
 import com.azure.search.documents.models.GeoPoint;
-import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.RangeFacetResult;
 import com.azure.search.documents.models.RequestOptions;
-import com.azure.search.documents.models.ScoringParameter;
-import com.azure.search.documents.models.SearchOptions;
-import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.models.ValueFacetResult;
 import com.azure.search.documents.test.environment.models.Bucket;
 import com.azure.search.documents.test.environment.models.Hotel;
 import com.azure.search.documents.test.environment.models.NonNullableModel;
-import com.azure.search.documents.util.SearchPagedFlux;
-import com.azure.search.documents.util.SearchPagedResponse;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -40,8 +41,7 @@ import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
-import static com.azure.search.documents.models.QueryType.SIMPLE;
-import static com.azure.search.documents.models.SearchMode.ALL;
+import static com.azure.search.documents.indexes.models.QueryType.SIMPLE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -50,7 +50,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SearchAsyncTests extends SearchTestBase {
 
-    private SearchIndexAsyncClient client;
+    private SearchAsyncClient client;
 
     @Test
     public void canContinueSearch() {
@@ -530,7 +530,7 @@ public class SearchAsyncTests extends SearchTestBase {
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         Flux<SearchResult> response = client
-            .search("Cheapest hotel", new SearchOptions().setQueryType(SIMPLE).setSearchMode(ALL),
+            .search("Cheapest hotel", new SearchOptions().setQueryType(SIMPLE).setSearchMode(SearchMode.ALL),
                 generateRequestOptions()).log();
         StepVerifier.create(response)
             .assertNext(res -> assertEquals("2", getSearchResultId(res, "HotelId"))).verifyComplete();
@@ -716,8 +716,7 @@ public class SearchAsyncTests extends SearchTestBase {
     }
 
     @Override
-    protected void search(
-        String searchText, SearchOptions searchOptions, RequestOptions requestOptions) {
+    protected void search(String searchText, SearchOptions searchOptions, RequestOptions requestOptions) {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 

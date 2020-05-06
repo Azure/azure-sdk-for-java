@@ -16,7 +16,7 @@ public class SearchServiceSubClientTests extends SearchServiceTestBase {
     public void canGetIndexClientFromSearchClient() {
         SearchServiceClient serviceClient = getSearchService();
 
-        SearchIndexClient indexClient = serviceClient.getIndexClient("hotels");
+        SearchClient indexClient = serviceClient.getSearchClient("hotels");
 
         // Validate the client was created
         assertNotNull(indexClient);
@@ -39,7 +39,7 @@ public class SearchServiceSubClientTests extends SearchServiceTestBase {
     public void canGetIndexAsyncClientFromSearchClient() {
         SearchServiceAsyncClient serviceClient = getAsyncSearchService();
 
-        SearchIndexAsyncClient indexClient = serviceClient.getIndexClient("hotels");
+        SearchAsyncClient indexClient = serviceClient.getSearchAsyncClient("hotels");
 
         // Validate the client was created
         assertNotNull(indexClient);
@@ -63,13 +63,13 @@ public class SearchServiceSubClientTests extends SearchServiceTestBase {
         SearchServiceClient serviceClient = getSearchService();
         try {
             // this is expected to fail
-            serviceClient.deleteIndex("thisindexdoesnotexist");
+            serviceClient.getSearchIndexClient().deleteIndex("thisindexdoesnotexist");
         } catch (Exception e) {
             // deleting the index should fail as it does not exist
         }
 
         // This should not fail
-        SearchIndexClient indexClient = serviceClient.getIndexClient("hotels");
+        SearchClient indexClient = serviceClient.getSearchClient("hotels");
         assertEquals("hotels", indexClient.getIndexName());
     }
 
@@ -78,13 +78,13 @@ public class SearchServiceSubClientTests extends SearchServiceTestBase {
         SearchServiceAsyncClient serviceClient = getAsyncSearchService();
         try {
             // this is expected to fail
-            serviceClient.deleteIndex("thisindexdoesnotexist");
+            serviceClient.getSearchIndexAsyncClient().deleteIndex("thisindexdoesnotexist");
         } catch (Exception e) {
             // deleting the index should fail as it does not exist
         }
 
         // This should not fail
-        SearchIndexAsyncClient indexClient = serviceClient.getIndexClient("hotels");
+        SearchAsyncClient indexClient = serviceClient.getSearchAsyncClient("hotels");
         assertEquals("hotels", indexClient.getIndexName());
     }
 

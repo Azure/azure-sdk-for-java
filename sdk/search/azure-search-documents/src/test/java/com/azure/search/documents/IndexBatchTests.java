@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.search.documents;
 
-import com.azure.search.documents.models.IndexAction;
-import com.azure.search.documents.models.IndexActionType;
-import com.azure.search.documents.models.IndexDocumentsBatch;
+import com.azure.search.documents.indexes.models.IndexAction;
+import com.azure.search.documents.indexes.models.IndexActionType;
+import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

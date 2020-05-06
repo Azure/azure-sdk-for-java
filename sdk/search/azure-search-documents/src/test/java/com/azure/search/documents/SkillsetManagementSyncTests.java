@@ -6,6 +6,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.search.documents.indexes.SearchSkillsetClient;
 import com.azure.search.documents.models.ConditionalSkill;
 import com.azure.search.documents.models.DefaultCognitiveServicesAccount;
 import com.azure.search.documents.models.EntityCategory;
@@ -23,11 +24,11 @@ import com.azure.search.documents.models.OcrSkill;
 import com.azure.search.documents.models.OcrSkillLanguage;
 import com.azure.search.documents.models.OutputFieldMappingEntry;
 import com.azure.search.documents.models.RequestOptions;
+import com.azure.search.documents.models.SearchIndexerSkill;
+import com.azure.search.documents.models.SearchIndexerSkillset;
 import com.azure.search.documents.models.SentimentSkill;
 import com.azure.search.documents.models.SentimentSkillLanguage;
 import com.azure.search.documents.models.ShaperSkill;
-import com.azure.search.documents.models.Skill;
-import com.azure.search.documents.models.Skillset;
 import com.azure.search.documents.models.SplitSkill;
 import com.azure.search.documents.models.SplitSkillLanguage;
 import com.azure.search.documents.models.TextExtractionAlgorithm;
@@ -60,44 +61,46 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
     private static final String CONTEXT_VALUE = "/document";
     private static final String OCR_SKILLSET_NAME = "ocr-skillset";
 
-    private SearchServiceClient client;
+    private SearchSkillsetClient skillsetClient;
 
     // commonly used lambda definitions
-    private BiFunction<Skillset, AccessOptions, Skillset> createOrUpdateSkillsetFunc =
-        (Skillset skillset, AccessOptions ac) ->
+    private BiFunction<SearchIndexerSkillset, AccessOptions, SearchIndexerSkillset> createOrUpdateSkillsetFunc =
+        (SearchIndexerSkillset skillset, AccessOptions ac) ->
             createSkillset(skillset, ac.getOnlyIfUnchanged(), ac.getRequestOptions());
 
-    private Supplier<Skillset> newSkillsetFunc =
+    private Supplier<SearchIndexerSkillset> newSkillsetFunc =
         () -> createSkillsetWithOcrDefaultSettings(false);
 
-    private Function<Skillset, Skillset> mutateSkillsetFunc = this::mutateSkillsInSkillset;
+    private Function<SearchIndexerSkillset, SearchIndexerSkillset> mutateSkillsetFunc = this::mutateSkillsInSkillset;
 
-    private BiConsumer<Skillset, AccessOptions> deleteSkillsetFunc = (Skillset skillset, AccessOptions ac) ->
-        client.deleteSkillsetWithResponse(skillset, ac.getOnlyIfUnchanged(), ac.getRequestOptions(),
+    private BiConsumer<SearchIndexerSkillset, AccessOptions> deleteSkillsetFunc = (SearchIndexerSkillset skillset,
+        AccessOptions ac) ->
+        skillsetClient.deleteSkillsetWithResponse(skillset, ac.getOnlyIfUnchanged(), ac.getRequestOptions(),
             Context.NONE);
 
-    private Skillset createSkillset(Skillset skillset, Boolean onlyIfUnchanged, RequestOptions requestOptions) {
-        return client.createOrUpdateSkillsetWithResponse(skillset, onlyIfUnchanged, requestOptions, Context.NONE)
+    private SearchIndexerSkillset createSkillset(SearchIndexerSkillset skillset, Boolean onlyIfUnchanged,
+        RequestOptions requestOptions) {
+        return skillsetClient.createOrUpdateSkillsetWithResponse(skillset, onlyIfUnchanged, requestOptions, Context.NONE)
             .getValue();
     }
 
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        client = getSearchServiceClientBuilder().buildClient();
+        skillsetClient = getSearchServiceClientBuilder().buildClient().getSkillsetClient();
     }
 
     @Test
     public void createSkillsetReturnsCorrectDefinitionImageAnalysisKeyPhrase() {
-        Skillset expectedSkillset = createTestSkillsetImageAnalysisKeyPhrase();
-        Skillset actualSkillset = client.createSkillset(expectedSkillset);
+        SearchIndexerSkillset expectedSkillset = createTestSkillsetImageAnalysisKeyPhrase();
+        SearchIndexerSkillset actualSkillset = skillsetClient.createSkillset(expectedSkillset);
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
     }
 
     @Test
     public void createSkillsetReturnsCorrectDefinitionImageAnalysisKeyPhraseWithResponse() {
-        Skillset expectedSkillset = createTestSkillsetImageAnalysisKeyPhrase();
-        Response<Skillset> skillsetResponse = client.createSkillsetWithResponse(expectedSkillset,
+        SearchIndexerSkillset expectedSkillset = createTestSkillsetImageAnalysisKeyPhrase();
+        Response<SearchIndexerSkillset> skillsetResponse = skillsetClient.createSkillsetWithResponse(expectedSkillset,
             generateRequestOptions(), Context.NONE);
 
         assertObjectEquals(expectedSkillset, skillsetResponse.getValue(), true, "etag");
@@ -105,24 +108,24 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
 
     @Test
     public void createSkillsetReturnsCorrectDefinitionLanguageDetection() {
-        Skillset expectedSkillset = createTestSkillsetLanguageDetection();
-        Skillset actualSkillset = client.createSkillset(expectedSkillset);
+        SearchIndexerSkillset expectedSkillset = createTestSkillsetLanguageDetection();
+        SearchIndexerSkillset actualSkillset = skillsetClient.createSkillset(expectedSkillset);
 
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
     }
 
     @Test
     public void createSkillsetReturnsCorrectDefinitionMergeText() {
-        Skillset expectedSkillset = createTestSkillsetMergeText();
-        Skillset actualSkillset = client.createSkillset(expectedSkillset);
+        SearchIndexerSkillset expectedSkillset = createTestSkillsetMergeText();
+        SearchIndexerSkillset actualSkillset = skillsetClient.createSkillset(expectedSkillset);
 
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
     }
 
     @Test
     public void createSkillsetReturnsCorrectDefinitionOcrEntity() {
-        Skillset expectedSkillset = createTestSkillsetOcrEntity(null, null);
-        Skillset actualSkillset = client.createSkillset(expectedSkillset);
+        SearchIndexerSkillset expectedSkillset = createTestSkillsetOcrEntity(null, null);
+        SearchIndexerSkillset actualSkillset = skillsetClient.createSkillset(expectedSkillset);
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
 
         List<EntityCategory> entityCategories = Arrays.asList(
@@ -130,178 +133,178 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
 
         expectedSkillset = createTestSkillsetOcrEntity(TextExtractionAlgorithm.PRINTED, entityCategories)
             .setName("testskillset1");
-        actualSkillset = client.createSkillset(expectedSkillset);
+        actualSkillset = skillsetClient.createSkillset(expectedSkillset);
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
     }
 
     @Test
     public void createSkillsetReturnsCorrectDefinitionOcrHandwritingSentiment() {
-        Skillset expectedSkillset = createTestSkillsetOcrSentiment(OcrSkillLanguage.PT,
+        SearchIndexerSkillset expectedSkillset = createTestSkillsetOcrSentiment(OcrSkillLanguage.PT,
             SentimentSkillLanguage.PT_PT, TextExtractionAlgorithm.PRINTED);
-        Skillset actualSkillset = client.createSkillset(expectedSkillset);
+        SearchIndexerSkillset actualSkillset = skillsetClient.createSkillset(expectedSkillset);
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
 
         expectedSkillset = createTestSkillsetOcrSentiment(OcrSkillLanguage.FI,
             SentimentSkillLanguage.FI, TextExtractionAlgorithm.PRINTED).setName("testskillset1");
-        actualSkillset = client.createSkillset(expectedSkillset);
+        actualSkillset = skillsetClient.createSkillset(expectedSkillset);
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
 
         expectedSkillset = createTestSkillsetOcrSentiment(OcrSkillLanguage.EN,
             SentimentSkillLanguage.EN, TextExtractionAlgorithm.HANDWRITTEN).setName("testskillset2");
-        actualSkillset = client.createSkillset(expectedSkillset);
+        actualSkillset = skillsetClient.createSkillset(expectedSkillset);
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
     }
 
     @Test
     public void createSkillsetReturnsCorrectDefinitionOcrKeyPhrase() {
-        Skillset expectedSkillset = createTestSkillsetOcrKeyPhrase(OcrSkillLanguage.EN,
+        SearchIndexerSkillset expectedSkillset = createTestSkillsetOcrKeyPhrase(OcrSkillLanguage.EN,
             KeyPhraseExtractionSkillLanguage.EN);
-        Skillset actualSkillset = client.createSkillset(expectedSkillset);
+        SearchIndexerSkillset actualSkillset = skillsetClient.createSkillset(expectedSkillset);
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
 
         expectedSkillset = createTestSkillsetOcrKeyPhrase(OcrSkillLanguage.FR, KeyPhraseExtractionSkillLanguage.FR)
             .setName("testskillset1");
-        actualSkillset = client.createSkillset(expectedSkillset);
+        actualSkillset = skillsetClient.createSkillset(expectedSkillset);
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
 
         expectedSkillset = createTestSkillsetOcrKeyPhrase(OcrSkillLanguage.ES, KeyPhraseExtractionSkillLanguage.ES)
             .setName("testskillset2");
-        actualSkillset = client.createSkillset(expectedSkillset);
+        actualSkillset = skillsetClient.createSkillset(expectedSkillset);
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
     }
 
     @Test
     public void createSkillsetReturnsCorrectDefinitionOcrShaper() {
-        Skillset expectedSkillset = createTestSkillsetOcrShaper();
-        Skillset actualSkillset = client.createSkillset(expectedSkillset);
+        SearchIndexerSkillset expectedSkillset = createTestSkillsetOcrShaper();
+        SearchIndexerSkillset actualSkillset = skillsetClient.createSkillset(expectedSkillset);
 
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
     }
 
     @Test
     public void createSkillsetReturnsCorrectDefinitionOcrSplitText() {
-        Skillset expectedSkillset = createTestSkillsetOcrSplitText(OcrSkillLanguage.EN,
+        SearchIndexerSkillset expectedSkillset = createTestSkillsetOcrSplitText(OcrSkillLanguage.EN,
             SplitSkillLanguage.EN, TextSplitMode.PAGES);
-        Skillset actualSkillset = client.createSkillset(expectedSkillset);
+        SearchIndexerSkillset actualSkillset = skillsetClient.createSkillset(expectedSkillset);
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
 
 
         expectedSkillset = createTestSkillsetOcrSplitText(OcrSkillLanguage.FR,
             SplitSkillLanguage.FR, TextSplitMode.PAGES).setName("testskillset1");
-        actualSkillset = client.createSkillset(expectedSkillset);
+        actualSkillset = skillsetClient.createSkillset(expectedSkillset);
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
 
         expectedSkillset = createTestSkillsetOcrSplitText(OcrSkillLanguage.FI,
             SplitSkillLanguage.FI, TextSplitMode.SENTENCES).setName("testskillset2");
-        actualSkillset = client.createSkillset(expectedSkillset);
+        actualSkillset = skillsetClient.createSkillset(expectedSkillset);
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
-        client.deleteSkillset(expectedSkillset.getName());
+        skillsetClient.deleteSkillset(expectedSkillset.getName());
 
         expectedSkillset = createTestSkillsetOcrSplitText(OcrSkillLanguage.DA,
             SplitSkillLanguage.DA, TextSplitMode.SENTENCES).setName("testskillset3");
-        actualSkillset = client.createSkillset(expectedSkillset);
+        actualSkillset = skillsetClient.createSkillset(expectedSkillset);
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
     }
 
     @Test
     public void createSkillsetReturnsCorrectDefinitionWithCognitiveServicesDefault() {
-        Skillset expectedSkillset = createSkillsetWithCognitiveServicesKey();
+        SearchIndexerSkillset expectedSkillset = createSkillsetWithCognitiveServicesKey();
 
-        Skillset actualSkillset = client.createSkillset(expectedSkillset);
+        SearchIndexerSkillset actualSkillset = skillsetClient.createSkillset(expectedSkillset);
 
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
     }
 
     @Test
     public void createSkillsetReturnsCorrectDefinitionWithOcrDefaultSettings() {
-        Skillset expectedSkillset = createSkillsetWithOcrDefaultSettings(false);
-        Skillset actualSkillset = client.createSkillset(expectedSkillset);
+        SearchIndexerSkillset expectedSkillset = createSkillsetWithOcrDefaultSettings(false);
+        SearchIndexerSkillset actualSkillset = skillsetClient.createSkillset(expectedSkillset);
 
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
     }
 
     @Test
     public void createSkillsetReturnsCorrectDefinitionWithImageAnalysisDefaultSettings() {
-        Skillset expectedSkillset = createSkillsetWithImageAnalysisDefaultSettings();
-        Skillset actualSkillset = client.createSkillset(expectedSkillset);
+        SearchIndexerSkillset expectedSkillset = createSkillsetWithImageAnalysisDefaultSettings();
+        SearchIndexerSkillset actualSkillset = skillsetClient.createSkillset(expectedSkillset);
 
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
     }
 
     @Test
     public void createSkillsetReturnsCorrectDefinitionWithKeyPhraseExtractionDefaultSettings() {
-        Skillset expectedSkillset = createSkillsetWithKeyPhraseExtractionDefaultSettings();
-        Skillset actualSkillset = client.createSkillset(expectedSkillset);
+        SearchIndexerSkillset expectedSkillset = createSkillsetWithKeyPhraseExtractionDefaultSettings();
+        SearchIndexerSkillset actualSkillset = skillsetClient.createSkillset(expectedSkillset);
 
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
     }
 
     @Test
     public void createSkillsetReturnsCorrectDefinitionWithMergeDefaultSettings() {
-        Skillset expectedSkillset = createSkillsetWithMergeDefaultSettings();
-        Skillset actualSkillset = client.createSkillset(expectedSkillset);
+        SearchIndexerSkillset expectedSkillset = createSkillsetWithMergeDefaultSettings();
+        SearchIndexerSkillset actualSkillset = skillsetClient.createSkillset(expectedSkillset);
 
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
     }
 
     @Test
     public void createSkillsetReturnsCorrectDefinitionWithEntityRecognitionDefaultSettings() {
-        Skillset expectedSkillset = createSkillsetWithEntityRecognitionDefaultSettings();
-        Skillset actualSkillset = client.createSkillset(expectedSkillset);
+        SearchIndexerSkillset expectedSkillset = createSkillsetWithEntityRecognitionDefaultSettings();
+        SearchIndexerSkillset actualSkillset = skillsetClient.createSkillset(expectedSkillset);
 
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
     }
 
     @Test
     public void getOcrSkillsetReturnsCorrectDefinition() {
-        Skillset expected = createSkillsetWithOcrDefaultSettings(false);
-        client.createSkillset(expected);
+        SearchIndexerSkillset expected = createSkillsetWithOcrDefaultSettings(false);
+        skillsetClient.createSkillset(expected);
 
-        Skillset actual = client.getSkillset(expected.getName());
+        SearchIndexerSkillset actual = skillsetClient.getSkillset(expected.getName());
         assertObjectEquals(expected, actual, true, "etag");
     }
 
     @Test
     public void getOcrSkillsetReturnsCorrectDefinitionWithResponse() {
-        Skillset expected = createSkillsetWithOcrDefaultSettings(false);
-        client.createSkillset(expected);
+        SearchIndexerSkillset expected = createSkillsetWithOcrDefaultSettings(false);
+        skillsetClient.createSkillset(expected);
 
-        Skillset actual = client.getSkillsetWithResponse(expected.getName(), generateRequestOptions(), Context.NONE)
+        SearchIndexerSkillset actual = skillsetClient.getSkillsetWithResponse(expected.getName(), generateRequestOptions(), Context.NONE)
             .getValue();
         assertObjectEquals(expected, actual, true, "etag");
     }
 
     @Test
     public void getOcrSkillsetWithShouldDetectOrientationReturnsCorrectDefinition() {
-        Skillset expected = createSkillsetWithOcrDefaultSettings(true);
+        SearchIndexerSkillset expected = createSkillsetWithOcrDefaultSettings(true);
 
-        client.createSkillset(expected);
+        skillsetClient.createSkillset(expected);
 
-        Skillset actual = client.getSkillset(expected.getName());
+        SearchIndexerSkillset actual = skillsetClient.getSkillset(expected.getName());
 
         assertObjectEquals(expected, actual, true, "etag");
     }
 
     @Test
     public void createSkillsetReturnsCorrectDefinitionWithSentimentDefaultSettings() {
-        Skillset expectedSkillset = createSkillsetWithSentimentDefaultSettings();
-        Skillset actualSkillset = client.createSkillset(expectedSkillset);
+        SearchIndexerSkillset expectedSkillset = createSkillsetWithSentimentDefaultSettings();
+        SearchIndexerSkillset actualSkillset = skillsetClient.createSkillset(expectedSkillset);
 
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
     }
 
     @Test
     public void createSkillsetReturnsCorrectDefinitionWithSplitDefaultSettings() {
-        Skillset expectedSkillset = createSkillsetWithSplitDefaultSettings();
-        Skillset actualSkillset = client.createSkillset(expectedSkillset);
+        SearchIndexerSkillset expectedSkillset = createSkillsetWithSplitDefaultSettings();
+        SearchIndexerSkillset actualSkillset = skillsetClient.createSkillset(expectedSkillset);
 
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
     }
 
     @Test
     public void createCustomSkillsetReturnsCorrectDefinition() {
-        Skillset expected = createSkillsetWithCustomSkills();
-        Skillset actual = client.createSkillset(expected);
+        SearchIndexerSkillset expected = createSkillsetWithCustomSkills();
+        SearchIndexerSkillset actual = skillsetClient.createSkillset(expected);
 
         assertObjectEquals(expected, actual, true, "etag");
     }
@@ -309,7 +312,7 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
     @Test
     public void getSkillsetThrowsOnNotFound() {
         assertHttpResponseException(
-            () -> client.getSkillset("thisdoesnotexist"),
+            () -> skillsetClient.getSkillset("thisdoesnotexist"),
             HttpResponseStatus.NOT_FOUND,
             "No skillset with the name 'thisdoesnotexist' was found in service"
         );
@@ -317,14 +320,14 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
 
     @Test
     public void canCreateAndListSkillsets() {
-        Skillset skillset1 = createSkillsetWithCognitiveServicesKey();
-        Skillset skillset2 = createSkillsetWithEntityRecognitionDefaultSettings();
+        SearchIndexerSkillset skillset1 = createSkillsetWithCognitiveServicesKey();
+        SearchIndexerSkillset skillset2 = createSkillsetWithEntityRecognitionDefaultSettings();
 
-        client.createSkillset(skillset1);
-        client.createSkillset(skillset2);
+        skillsetClient.createSkillset(skillset1);
+        skillsetClient.createSkillset(skillset2);
 
-        PagedIterable<Skillset> actual = client.listSkillsets();
-        List<Skillset> result = actual.stream().collect(Collectors.toList());
+        PagedIterable<SearchIndexerSkillset> actual = skillsetClient.listSkillsets();
+        List<SearchIndexerSkillset> result = actual.stream().collect(Collectors.toList());
 
         assertEquals(2, result.size());
         assertEquals(skillset1.getName(), result.get(0).getName());
@@ -333,14 +336,14 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
 
     @Test
     public void canListSkillsetsWithSelectedField() {
-        Skillset skillset1 = createSkillsetWithCognitiveServicesKey();
-        Skillset skillset2 = createSkillsetWithEntityRecognitionDefaultSettings();
+        SearchIndexerSkillset skillset1 = createSkillsetWithCognitiveServicesKey();
+        SearchIndexerSkillset skillset2 = createSkillsetWithEntityRecognitionDefaultSettings();
 
-        client.createSkillset(skillset1);
-        client.createSkillset(skillset2);
+        skillsetClient.createSkillset(skillset1);
+        skillsetClient.createSkillset(skillset2);
 
-        PagedIterable<Skillset> selectedFieldListResponse = client.listSkillsets("name", generateRequestOptions(), Context.NONE);
-        List<Skillset> result = selectedFieldListResponse.stream().collect(Collectors.toList());
+        PagedIterable<SearchIndexerSkillset> selectedFieldListResponse = skillsetClient.listSkillsets("name", generateRequestOptions(), Context.NONE);
+        List<SearchIndexerSkillset> result = selectedFieldListResponse.stream().collect(Collectors.toList());
 
         result.forEach(res -> {
             assertNotNull(res.getName());
@@ -357,92 +360,92 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
 
     @Test
     public void deleteSkillsetIsIdempotent() {
-        Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
+        SearchIndexerSkillset skillset = createSkillsetWithOcrDefaultSettings(false);
 
-        Response<Void> deleteResponse = client.deleteSkillsetWithResponse(skillset, false,
+        Response<Void> deleteResponse = skillsetClient.deleteSkillsetWithResponse(skillset, false,
             generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
 
-        client.createSkillset(skillset);
+        skillsetClient.createSkillset(skillset);
 
         // Delete the same skillset twice
-        deleteResponse = client.deleteSkillsetWithResponse(skillset, false, generateRequestOptions(), Context.NONE);
+        deleteResponse = skillsetClient.deleteSkillsetWithResponse(skillset, false, generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.NO_CONTENT.code(), deleteResponse.getStatusCode());
 
-        deleteResponse = client.deleteSkillsetWithResponse(skillset, false, generateRequestOptions(), Context.NONE);
+        deleteResponse = skillsetClient.deleteSkillsetWithResponse(skillset, false, generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
     }
 
     @Test
     public void canCreateAndDeleteSkillset() {
-        Skillset expected = createSkillsetWithOcrDefaultSettings(false);
-        client.createSkillset(expected);
-        client.deleteSkillset(expected.getName());
+        SearchIndexerSkillset expected = createSkillsetWithOcrDefaultSettings(false);
+        skillsetClient.createSkillset(expected);
+        skillsetClient.deleteSkillset(expected.getName());
 
-        assertThrows(HttpResponseException.class, () -> client.getSkillset(expected.getName()));
+        assertThrows(HttpResponseException.class, () -> skillsetClient.getSkillset(expected.getName()));
     }
 
     @Test
     public void createOrUpdateCreatesWhenSkillsetDoesNotExist() {
-        Skillset expected = createTestOcrSkillSet(1, TextExtractionAlgorithm.PRINTED);
+        SearchIndexerSkillset expected = createTestOcrSkillSet(1, TextExtractionAlgorithm.PRINTED);
 
-        Skillset actual = client.createOrUpdateSkillset(expected);
+        SearchIndexerSkillset actual = skillsetClient.createOrUpdateSkillset(expected);
         assertObjectEquals(expected, actual, true, "etag");
     }
 
     @Test
     public void createOrUpdateCreatesWhenSkillsetDoesNotExistWithResponse() {
-        Skillset expected = createTestOcrSkillSet(1, TextExtractionAlgorithm.PRINTED);
+        SearchIndexerSkillset expected = createTestOcrSkillSet(1, TextExtractionAlgorithm.PRINTED);
 
-        Response<Skillset> createOrUpdateResponse = client.createOrUpdateSkillsetWithResponse(expected,
+        Response<SearchIndexerSkillset> createOrUpdateResponse = skillsetClient.createOrUpdateSkillsetWithResponse(expected,
             false, generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.CREATED.code(), createOrUpdateResponse.getStatusCode());
     }
 
     @Test
     public void createOrUpdateUpdatesWhenSkillsetExists() {
-        Skillset skillset = createTestOcrSkillSet(1, TextExtractionAlgorithm.HANDWRITTEN);
+        SearchIndexerSkillset skillset = createTestOcrSkillSet(1, TextExtractionAlgorithm.HANDWRITTEN);
 
-        Response<Skillset> createOrUpdateResponse = client.createOrUpdateSkillsetWithResponse(skillset, false,
-            generateRequestOptions(), Context.NONE);
+        Response<SearchIndexerSkillset> createOrUpdateResponse = skillsetClient.createOrUpdateSkillsetWithResponse(
+            skillset, false, generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.CREATED.code(), createOrUpdateResponse.getStatusCode());
 
         skillset = createTestOcrSkillSet(2, TextExtractionAlgorithm.PRINTED);
-        createOrUpdateResponse = client.createOrUpdateSkillsetWithResponse(skillset, false, generateRequestOptions(),
-            Context.NONE);
+        createOrUpdateResponse = skillsetClient.createOrUpdateSkillsetWithResponse(skillset, false,
+            generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.OK.code(), createOrUpdateResponse.getStatusCode());
     }
 
     @Test
     public void createOrUpdateUpdatesSkills() {
-        Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
+        SearchIndexerSkillset skillset = createSkillsetWithOcrDefaultSettings(false);
 
-        Skillset createdSkillset = client.createSkillset(skillset);
+        SearchIndexerSkillset createdSkillset = skillsetClient.createSkillset(skillset);
 
         // update skills
         createdSkillset.setSkills(getCreateOrUpdateSkills());
 
-        assertObjectEquals(createdSkillset, client.createOrUpdateSkillset(createdSkillset), true, "etag", "@odata.etag");
+        assertObjectEquals(createdSkillset, skillsetClient.createOrUpdateSkillset(createdSkillset), true, "etag", "@odata.etag");
     }
 
 
     @Test
     public void createOrUpdateUpdatesCognitiveService() {
-        Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
+        SearchIndexerSkillset skillset = createSkillsetWithOcrDefaultSettings(false);
 
-        Skillset createdSkillset = client.createSkillset(skillset);
+        SearchIndexerSkillset createdSkillset = skillsetClient.createSkillset(skillset);
 
         // update skills
         createdSkillset.setCognitiveServicesAccount(new DefaultCognitiveServicesAccount().setDescription("description"));
 
-        assertObjectEquals(createdSkillset, client.createOrUpdateSkillset(createdSkillset),
+        assertObjectEquals(createdSkillset, skillsetClient.createOrUpdateSkillset(createdSkillset),
             true, "etag", "@odata.etag");
     }
 
     @Test
     public void createSkillsetReturnsCorrectDefinitionShaperWithNestedInputs() {
-        Skillset expected = createSkillsetWithSharperSkillWithNestedInputs();
-        Skillset actual = client.createSkillset(expected);
+        SearchIndexerSkillset expected = createSkillsetWithSharperSkillWithNestedInputs();
+        SearchIndexerSkillset actual = skillsetClient.createSkillset(expected);
 
         assertObjectEquals(expected, actual, true, "etag");
     }
@@ -453,7 +456,7 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         List<InputFieldMappingEntry> inputs = this.createNestedInputFieldMappingEntry();
         List<OutputFieldMappingEntry> outputs = this.createOutputFieldMappingEntry();
 
-        List<Skill> skills = new ArrayList<>();
+        List<SearchIndexerSkill> skills = new ArrayList<>();
         // Used for testing skill that shouldn't allow nested inputs
         skills.add(new WebApiSkill().setUri("https://contoso.example.org")
             .setDescription("Invalid skill with nested inputs")
@@ -461,21 +464,21 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
             .setInputs(inputs)
             .setOutputs(outputs));
 
-        Skillset skillset = new Skillset()
+        SearchIndexerSkillset skillset = new SearchIndexerSkillset()
             .setName("nested-skillset-with-nonsharperskill")
             .setDescription("Skillset for testing")
             .setSkills(skills);
 
         assertHttpResponseException(
-            () -> client.createSkillset(skillset),
+            () -> skillsetClient.createSkillset(skillset),
             HttpResponseStatus.BAD_REQUEST,
-            "Skill '#1' is not allowed to have recursively defined inputs");
+            "SearchIndexerSkill '#1' is not allowed to have recursively defined inputs");
     }
 
     @Test
     public void createSkillsetReturnsCorrectDefinitionConditional() {
-        Skillset expected = createTestSkillsetConditional();
-        Skillset actual = client.createSkillset(expected);
+        SearchIndexerSkillset expected = createTestSkillsetConditional();
+        SearchIndexerSkillset actual = skillsetClient.createSkillset(expected);
 
         assertObjectEquals(expected, actual, true, "etag");
     }
@@ -523,8 +526,8 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         return new OutputFieldMappingEntry().setName(name).setTargetName(targetName);
     }
 
-    Skillset createTestSkillsetImageAnalysisKeyPhrase() {
-        List<Skill> skills = new ArrayList<>();
+    SearchIndexerSkillset createTestSkillsetImageAnalysisKeyPhrase() {
+        List<SearchIndexerSkill> skills = new ArrayList<>();
 
         List<InputFieldMappingEntry> inputs = Arrays.asList(
             simpleInputFieldMappingEntry("url", "/document/url"),
@@ -554,20 +557,20 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
             .setInputs(inputs)
             .setOutputs(outputs));
 
-        return new Skillset()
+        return new SearchIndexerSkillset()
             .setName("image-analysis-key-phrase-skillset")
             .setDescription("Skillset for testing")
             .setSkills(skills);
     }
 
-    Skillset createTestSkillsetLanguageDetection() {
+    SearchIndexerSkillset createTestSkillsetLanguageDetection() {
         List<InputFieldMappingEntry> inputs = Collections
             .singletonList(simpleInputFieldMappingEntry("text", "/document/text"));
 
         List<OutputFieldMappingEntry> outputs = Collections
             .singletonList(createOutputFieldMappingEntry("languageCode", "myLanguageCode"));
 
-        List<Skill> skills = Collections.singletonList(
+        List<SearchIndexerSkill> skills = Collections.singletonList(
             new LanguageDetectionSkill()
                 .setName("mylanguage")
                 .setDescription("Tested Language Detection skill")
@@ -575,13 +578,13 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
                 .setInputs(inputs)
                 .setOutputs(outputs));
 
-        return new Skillset()
+        return new SearchIndexerSkillset()
             .setName("language-detection-skillset")
             .setDescription("Skillset for testing")
             .setSkills(skills);
     }
 
-    Skillset createTestSkillsetMergeText() {
+    SearchIndexerSkillset createTestSkillsetMergeText() {
         List<InputFieldMappingEntry> inputs = Arrays.asList(
             simpleInputFieldMappingEntry("text", "/document/text"),
             simpleInputFieldMappingEntry("itemsToInsert", "/document/textitems"),
@@ -590,7 +593,7 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         List<OutputFieldMappingEntry> outputs = Collections
             .singletonList(createOutputFieldMappingEntry("mergedText", "myMergedText"));
 
-        List<Skill> skills = Collections.singletonList(
+        List<SearchIndexerSkill> skills = Collections.singletonList(
             new MergeSkill()
                 .setInsertPostTag("__e")
                 .setInsertPreTag("__")
@@ -600,14 +603,14 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
                 .setInputs(inputs)
                 .setOutputs(outputs));
 
-        return new Skillset()
+        return new SearchIndexerSkillset()
             .setName("merge-text-skillset")
             .setDescription("Skillset for testing")
             .setSkills(skills);
     }
 
-    Skillset createTestSkillsetOcrShaper() {
-        List<Skill> skills = new ArrayList<>();
+    SearchIndexerSkillset createTestSkillsetOcrShaper() {
+        List<SearchIndexerSkill> skills = new ArrayList<>();
         List<InputFieldMappingEntry> inputs = Arrays.asList(
             simpleInputFieldMappingEntry("url", "/document/url"),
             simpleInputFieldMappingEntry("queryString", "/document/queryString"));
@@ -633,13 +636,13 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
             .setInputs(inputs)
             .setOutputs(outputs));
 
-        return new Skillset()
+        return new SearchIndexerSkillset()
             .setName("ocr-shaper-skillset")
             .setDescription("Skillset for testing")
             .setSkills(skills);
     }
 
-    Skillset createSkillsetWithCognitiveServicesKey() {
+    SearchIndexerSkillset createSkillsetWithCognitiveServicesKey() {
         List<InputFieldMappingEntry> inputs = Arrays.asList(
             simpleInputFieldMappingEntry("url", "/document/url"),
             simpleInputFieldMappingEntry("queryString", "/document/queryString"));
@@ -647,7 +650,7 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         List<OutputFieldMappingEntry> outputs = Collections
             .singletonList(createOutputFieldMappingEntry("text", "mytext"));
 
-        List<Skill> skills = Collections.singletonList(
+        List<SearchIndexerSkill> skills = Collections.singletonList(
             new OcrSkill()
                 .setTextExtractionAlgorithm(TextExtractionAlgorithm.PRINTED)
                 .setDefaultLanguageCode(OcrSkillLanguage.EN)
@@ -658,14 +661,14 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
                 .setOutputs(outputs)
         );
 
-        return new Skillset()
+        return new SearchIndexerSkillset()
             .setName("cognitive-services-key-skillset")
             .setDescription("Skillset for testing")
             .setSkills(skills)
             .setCognitiveServicesAccount(new DefaultCognitiveServicesAccount());
     }
 
-    Skillset createTestSkillsetConditional() {
+    SearchIndexerSkillset createTestSkillsetConditional() {
         List<InputFieldMappingEntry> inputs = Arrays.asList(
             simpleInputFieldMappingEntry("condition", "= $(/document/language) == null"),
             simpleInputFieldMappingEntry("whenTrue", "= 'es'"),
@@ -674,7 +677,7 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         List<OutputFieldMappingEntry> outputs = Collections
             .singletonList(createOutputFieldMappingEntry("output", "myLanguageCode"));
 
-        List<Skill> skills = Collections.singletonList(
+        List<SearchIndexerSkill> skills = Collections.singletonList(
             new ConditionalSkill()
                 .setName("myconditional")
                 .setDescription("Tested Conditional skill")
@@ -683,13 +686,13 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
                 .setOutputs(outputs)
         );
 
-        return new Skillset()
+        return new SearchIndexerSkillset()
             .setName("conditional-skillset")
             .setDescription("Skillset for testing")
             .setSkills(skills);
     }
 
-    Skillset mutateSkillsInSkillset(Skillset skillset) {
+    SearchIndexerSkillset mutateSkillsInSkillset(SearchIndexerSkillset skillset) {
         return skillset.setSkills(Collections.singletonList(
             new KeyPhraseExtractionSkill()
                 .setDefaultLanguageCode(KeyPhraseExtractionSkillLanguage.EN)
@@ -702,8 +705,8 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         ));
     }
 
-    Skillset createTestSkillsetOcrEntity(TextExtractionAlgorithm algorithm, List<EntityCategory> categories) {
-        List<Skill> skills = new ArrayList<>();
+    SearchIndexerSkillset createTestSkillsetOcrEntity(TextExtractionAlgorithm algorithm, List<EntityCategory> categories) {
+        List<SearchIndexerSkill> skills = new ArrayList<>();
         List<InputFieldMappingEntry> inputs = Arrays.asList(
             simpleInputFieldMappingEntry("url", "/document/url"),
             simpleInputFieldMappingEntry("queryString", "/document/queryString"));
@@ -733,14 +736,14 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
             .setOutputs(outputs)
         );
 
-        return new Skillset()
+        return new SearchIndexerSkillset()
             .setName("ocr-entity-skillset")
             .setDescription("Skillset for testing")
             .setSkills(skills);
     }
 
-    Skillset createTestSkillsetOcrSentiment(OcrSkillLanguage ocrLanguageCode, SentimentSkillLanguage sentimentLanguageCode, TextExtractionAlgorithm algorithm) {
-        List<Skill> skills = new ArrayList<>();
+    SearchIndexerSkillset createTestSkillsetOcrSentiment(OcrSkillLanguage ocrLanguageCode, SentimentSkillLanguage sentimentLanguageCode, TextExtractionAlgorithm algorithm) {
+        List<SearchIndexerSkill> skills = new ArrayList<>();
         List<InputFieldMappingEntry> inputs = Arrays.asList(
             simpleInputFieldMappingEntry("url", "/document/url"),
             simpleInputFieldMappingEntry("queryString", "/document/queryString"));
@@ -766,14 +769,14 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
             .setInputs(inputs)
             .setOutputs(outputs));
 
-        return new Skillset()
+        return new SearchIndexerSkillset()
             .setName("ocr-sentiment-skillset")
             .setDescription("Skillset for testing")
             .setSkills(skills);
     }
 
-    Skillset createTestSkillsetOcrKeyPhrase(OcrSkillLanguage ocrLanguageCode, KeyPhraseExtractionSkillLanguage keyPhraseLanguageCode) {
-        List<Skill> skills = new ArrayList<>();
+    SearchIndexerSkillset createTestSkillsetOcrKeyPhrase(OcrSkillLanguage ocrLanguageCode, KeyPhraseExtractionSkillLanguage keyPhraseLanguageCode) {
+        List<SearchIndexerSkill> skills = new ArrayList<>();
         List<InputFieldMappingEntry> inputs = Arrays.asList(
             simpleInputFieldMappingEntry("url", "/document/url"),
             simpleInputFieldMappingEntry("queryString", "/document/queryString"));
@@ -800,14 +803,15 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
             .setInputs(inputs)
             .setOutputs(outputs));
 
-        return new Skillset()
+        return new SearchIndexerSkillset()
             .setName("ocr-key-phrase-skillset")
             .setDescription("Skillset for testing")
             .setSkills(skills);
     }
 
-    Skillset createTestSkillsetOcrSplitText(OcrSkillLanguage ocrLanguageCode, SplitSkillLanguage splitLanguageCode, TextSplitMode textSplitMode) {
-        List<Skill> skills = new ArrayList<>();
+    SearchIndexerSkillset createTestSkillsetOcrSplitText(OcrSkillLanguage ocrLanguageCode,
+        SplitSkillLanguage splitLanguageCode, TextSplitMode textSplitMode) {
+        List<SearchIndexerSkill> skills = new ArrayList<>();
         List<InputFieldMappingEntry> inputs = Arrays.asList(
             simpleInputFieldMappingEntry("url", "/document/url"),
             simpleInputFieldMappingEntry("queryString", "/document/queryString"));
@@ -835,14 +839,14 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
             .setInputs(inputs)
             .setOutputs(outputs));
 
-        return new Skillset()
+        return new SearchIndexerSkillset()
             .setName("ocr-split-text-skillset")
             .setDescription("Skillset for testing")
             .setSkills(skills);
     }
 
-    Skillset createTestOcrSkillSet(int repeat, TextExtractionAlgorithm algorithm) {
-        List<Skill> skills = new ArrayList<>();
+    SearchIndexerSkillset createTestOcrSkillSet(int repeat, TextExtractionAlgorithm algorithm) {
+        List<SearchIndexerSkill> skills = new ArrayList<>();
 
         List<InputFieldMappingEntry> inputs = Arrays.asList(
             simpleInputFieldMappingEntry("url", "/document/url"),
@@ -863,13 +867,13 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
                 .setOutputs(outputs));
         }
 
-        return new Skillset()
+        return new SearchIndexerSkillset()
             .setName("testskillset")
             .setDescription("Skillset for testing OCR")
             .setSkills(skills);
     }
 
-    Skillset createSkillsetWithOcrDefaultSettings(Boolean shouldDetectOrientation) {
+    SearchIndexerSkillset createSkillsetWithOcrDefaultSettings(Boolean shouldDetectOrientation) {
         List<InputFieldMappingEntry> inputs = Arrays.asList(
             simpleInputFieldMappingEntry("url", "/document/url"),
             simpleInputFieldMappingEntry("queryString", "/document/queryString"));
@@ -877,7 +881,7 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         List<OutputFieldMappingEntry> outputs = Collections
             .singletonList(createOutputFieldMappingEntry("text", "mytext"));
 
-        List<Skill> skills = Collections.singletonList(
+        List<SearchIndexerSkill> skills = Collections.singletonList(
             new OcrSkill()
                 .setShouldDetectOrientation(shouldDetectOrientation)
                 .setName("myocr")
@@ -887,13 +891,13 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
                 .setOutputs(outputs)
         );
 
-        return new Skillset()
+        return new SearchIndexerSkillset()
             .setName(SkillsetManagementSyncTests.OCR_SKILLSET_NAME)
             .setDescription("Skillset for testing default configuration")
             .setSkills(skills);
     }
 
-    Skillset createSkillsetWithImageAnalysisDefaultSettings() {
+    SearchIndexerSkillset createSkillsetWithImageAnalysisDefaultSettings() {
         List<InputFieldMappingEntry> inputs = Arrays.asList(
             simpleInputFieldMappingEntry("url", "/document/url"),
             simpleInputFieldMappingEntry("queryString", "/document/queryString"));
@@ -901,7 +905,7 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         List<OutputFieldMappingEntry> outputs = Collections
             .singletonList(createOutputFieldMappingEntry("description", "mydescription"));
 
-        List<Skill> skills = Collections.singletonList(
+        List<SearchIndexerSkill> skills = Collections.singletonList(
             new ImageAnalysisSkill()
                 .setName("myimage")
                 .setDescription("Tested image analysis skill")
@@ -910,20 +914,20 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
                 .setOutputs(outputs)
         );
 
-        return new Skillset()
+        return new SearchIndexerSkillset()
             .setName("image-analysis-skillset")
             .setDescription("Skillset for testing default configuration")
             .setSkills(skills);
     }
 
-    Skillset createSkillsetWithKeyPhraseExtractionDefaultSettings() {
+    SearchIndexerSkillset createSkillsetWithKeyPhraseExtractionDefaultSettings() {
         List<InputFieldMappingEntry> inputs = Collections
             .singletonList(simpleInputFieldMappingEntry("text", "/document/myText"));
 
         List<OutputFieldMappingEntry> outputs = Collections
             .singletonList(createOutputFieldMappingEntry("keyPhrases", "myKeyPhrases"));
 
-        List<Skill> skills = Collections.singletonList(
+        List<SearchIndexerSkill> skills = Collections.singletonList(
             new KeyPhraseExtractionSkill()
                 .setName("mykeyphrases")
                 .setDescription("Tested Key Phrase skill")
@@ -932,13 +936,13 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
                 .setOutputs(outputs)
         );
 
-        return new Skillset()
+        return new SearchIndexerSkillset()
             .setName("key-phrase-extraction-skillset")
             .setDescription("Skillset for testing default configuration")
             .setSkills(skills);
     }
 
-    Skillset createSkillsetWithMergeDefaultSettings() {
+    SearchIndexerSkillset createSkillsetWithMergeDefaultSettings() {
         List<InputFieldMappingEntry> inputs = Arrays.asList(
             simpleInputFieldMappingEntry("text", "/document/text"),
             simpleInputFieldMappingEntry("itemsToInsert", "/document/textitems"),
@@ -947,7 +951,7 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         List<OutputFieldMappingEntry> outputs = Collections
             .singletonList(createOutputFieldMappingEntry("mergedText", "myMergedText"));
 
-        List<Skill> skills = Collections.singletonList(
+        List<SearchIndexerSkill> skills = Collections.singletonList(
             new MergeSkill()
                 .setName("mymerge")
                 .setDescription("Tested Merged Text skill")
@@ -956,20 +960,20 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
                 .setOutputs(outputs)
         );
 
-        return new Skillset()
+        return new SearchIndexerSkillset()
             .setName("merge-skillset")
             .setDescription("Skillset for testing default configuration")
             .setSkills(skills);
     }
 
-    Skillset createSkillsetWithSentimentDefaultSettings() {
+    SearchIndexerSkillset createSkillsetWithSentimentDefaultSettings() {
         List<InputFieldMappingEntry> inputs = Collections
             .singletonList(simpleInputFieldMappingEntry("text", "/document/mytext"));
 
         List<OutputFieldMappingEntry> outputs = Collections
             .singletonList(createOutputFieldMappingEntry("score", "mySentiment"));
 
-        List<Skill> skills = Collections.singletonList(
+        List<SearchIndexerSkill> skills = Collections.singletonList(
             new SentimentSkill()
                 .setName("mysentiment")
                 .setDescription("Tested Sentiment skill")
@@ -978,20 +982,20 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
                 .setOutputs(outputs)
         );
 
-        return new Skillset()
+        return new SearchIndexerSkillset()
             .setName("sentiment-skillset")
             .setDescription("Skillset for testing default configuration")
             .setSkills(skills);
     }
 
-    Skillset createSkillsetWithEntityRecognitionDefaultSettings() {
+    SearchIndexerSkillset createSkillsetWithEntityRecognitionDefaultSettings() {
         List<InputFieldMappingEntry> inputs = Collections
             .singletonList(simpleInputFieldMappingEntry("text", "/document/mytext"));
 
         List<OutputFieldMappingEntry> outputs = Collections
             .singletonList(createOutputFieldMappingEntry("entities", "myEntities"));
 
-        List<Skill> skills = Collections.singletonList(
+        List<SearchIndexerSkill> skills = Collections.singletonList(
             new EntityRecognitionSkill()
                 .setName("myentity")
                 .setDescription("Tested Entity Recognition skill")
@@ -1000,20 +1004,20 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
                 .setOutputs(outputs)
         );
 
-        return new Skillset()
+        return new SearchIndexerSkillset()
             .setName("entity-recognition-skillset")
             .setDescription("Skillset for testing default configuration")
             .setSkills(skills);
     }
 
-    Skillset createSkillsetWithSplitDefaultSettings() {
+    SearchIndexerSkillset createSkillsetWithSplitDefaultSettings() {
         List<InputFieldMappingEntry> inputs = Collections
             .singletonList(simpleInputFieldMappingEntry("text", "/document/mytext"));
 
         List<OutputFieldMappingEntry> outputs = Collections
             .singletonList(createOutputFieldMappingEntry("textItems", "myTextItems"));
 
-        List<Skill> skills = Collections.singletonList(
+        List<SearchIndexerSkill> skills = Collections.singletonList(
             new SplitSkill()
                 .setTextSplitMode(TextSplitMode.PAGES)
                 .setName("mysplit")
@@ -1023,13 +1027,13 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
                 .setOutputs(outputs)
         );
 
-        return new Skillset()
+        return new SearchIndexerSkillset()
             .setName("split-skillset")
             .setDescription("Skillset for testing default configuration")
             .setSkills(skills);
     }
 
-    Skillset createSkillsetWithCustomSkills() {
+    SearchIndexerSkillset createSkillsetWithCustomSkills() {
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Ocp-Apim-Subscription-Key", "foobar");
 
@@ -1039,7 +1043,7 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         List<OutputFieldMappingEntry> outputs = Collections
             .singletonList(createOutputFieldMappingEntry("textItems", "myTextItems"));
 
-        Skill webApiSkill = new WebApiSkill()
+        SearchIndexerSkill webApiSkill = new WebApiSkill()
             .setUri("https://indexer-e2e-webskill.azurewebsites.net/api/InvokeTextAnalyticsV3?code=foo")
             .setHttpMethod("POST")
             .setHttpHeaders(headers)
@@ -1048,17 +1052,17 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
             .setName("webapi-skill")
             .setDescription("Calls an Azure function, which in turn calls Bing Entity Search");
 
-        return new Skillset()
+        return new SearchIndexerSkillset()
             .setName("custom-skillset")
             .setDescription("Skillset for testing custom skillsets")
             .setSkills(Collections.singletonList(webApiSkill));
     }
 
-    Skillset createSkillsetWithSharperSkillWithNestedInputs() {
+    SearchIndexerSkillset createSkillsetWithSharperSkillWithNestedInputs() {
         List<InputFieldMappingEntry> inputs = this.createNestedInputFieldMappingEntry();
         List<OutputFieldMappingEntry> outputs = this.createOutputFieldMappingEntry();
 
-        List<Skill> skills = new ArrayList<>();
+        List<SearchIndexerSkill> skills = new ArrayList<>();
         skills.add(new ShaperSkill()
             .setName("myshaper")
             .setDescription("Tested Shaper skill")
@@ -1067,7 +1071,7 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
             .setOutputs(outputs)
         );
 
-        return new Skillset()
+        return new SearchIndexerSkillset()
             .setName("nested-skillset-with-sharperskill")
             .setDescription("Skillset for testing")
             .setSkills(skills);
@@ -1089,7 +1093,7 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
     }
 
 
-    protected List<Skill> getCreateOrUpdateSkills() {
+    protected List<SearchIndexerSkill> getCreateOrUpdateSkills() {
         return Collections.singletonList(new KeyPhraseExtractionSkill()
             .setDefaultLanguageCode(KeyPhraseExtractionSkillLanguage.EN)
             .setName("mykeyphrases")

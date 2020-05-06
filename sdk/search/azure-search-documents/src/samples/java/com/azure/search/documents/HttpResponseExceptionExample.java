@@ -8,10 +8,10 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
+import com.azure.search.documents.indexes.models.SearchOptions;
+import com.azure.search.documents.indexes.models.SearchResult;
+import com.azure.search.documents.indexes.util.SearchPagedFlux;
 import com.azure.search.documents.models.SearchErrorException;
-import com.azure.search.documents.models.SearchOptions;
-import com.azure.search.documents.models.SearchResult;
-import com.azure.search.documents.util.SearchPagedFlux;
 
 /**
  * This example shows how to handle errors when the Azure Cognitive Search service
@@ -41,7 +41,7 @@ public class HttpResponseExceptionExample {
      * With the sync client, HttpResponseExceptions are raised on failure
      */
     private static void handleErrorsWithSyncClient() {
-        SearchIndexClient client = new SearchIndexClientBuilder()
+        SearchClient client = new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
             .indexName(INDEX_NAME)
@@ -72,7 +72,7 @@ public class HttpResponseExceptionExample {
      * With the async client, errors need to be handled when subscribing to the stream
      */
     private static void handleErrorsWithAsyncClient() {
-        SearchIndexAsyncClient client = new SearchIndexClientBuilder()
+        SearchAsyncClient client = new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
             .indexName(INDEX_NAME)

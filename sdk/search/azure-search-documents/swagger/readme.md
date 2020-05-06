@@ -46,9 +46,10 @@ openapi-type: data-plane
 These settings apply only when `--tag=package-2019-05-searchservice-preview` is specified on the command line.
 
 ``` yaml $(tag) == 'package-2019-05-searchservice-preview'
-java: true
 input-file:
 - https://github.com/Azure/azure-rest-api-specs/blob/master/specification/search/data-plane/Azure.Search/preview/2019-05-06-preview/searchservice.json
+java: true
+namespace: com.azure.search.documents
 title: SearchServiceRestClient
 custom-types-subpackage: implementation.models
 custom-types: AnalyzeResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListSkillsetsResult,ListSynonymMapsResult
@@ -59,12 +60,13 @@ custom-types: AnalyzeResult,ListDataSourcesResult,ListIndexersResult,ListIndexes
 These settings apply only when `--tag=package-2019-05-searchindex-preview` is specified on the command line.
 
 ``` yaml $(tag) == 'package-2019-05-searchindex-preview'
-java: true
 input-file:
 - https://github.com/Azure/azure-rest-api-specs/blob/master/specification/search/data-plane/Azure.Search/preview/2019-05-06-preview/searchindex.json
+java: true
+namespace: com.azure.search.documents.indexes
 title: SearchIndexRestClient
 models-subpackage: implementation.models
-custom-types: QueryType,AutocompleteResult,AutocompleteOptions,AutocompleteRequest,AutocompleteItem,IndexDocumentsResult,IndexingResult,SearchError,SearchErrorException,SearchResult,SearchRequest,SearchOptions,RequestOptions,IndexBatchBase,IndexAction,FacetResult,SuggestOptions,SuggestResult,SuggestRequest
+custom-types: QueryType,AutocompleteResult,AutocompleteOptions,AutocompleteRequest,AutocompleteItem,IndexDocumentsResult,IndexingResult,SearchResult,SearchRequest,SearchOptions,IndexBatchBase,IndexAction,FacetResult,SuggestOptions,SuggestResult,SuggestRequest
 custom-types-subpackage: models
 ```
 
@@ -97,7 +99,6 @@ This swagger is ready for C# and Java.
 
 ``` yaml
 output-folder: ../
-namespace: com.azure.search.documents
 java: true
 sync-methods: none
 add-context-parameter: true
@@ -143,11 +144,18 @@ directive:
     # Use Document rather than Map<String, Object>
     - from:
           - SuggestResult.java
+      where: $
+      transform: >-
+          return $
+          .replace(/(import java\.util\.Map\;)/g, "import com.azure.search.documents.SearchDocument;")
+          .replace(/(Map<String, Object>)/g, "SearchDocument")
+
+    - from:
           - SearchResult.java
       where: $
       transform: >-
           return $
-          .replace(/(package com.azure.search.documents.models;)/g, "$1\nimport com.azure.search.documents.SearchDocument;")
+          .replace(/(import java\.util\.List\;)/g, "$1\nimport com.azure.search.documents.SearchDocument;")
           .replace(/(Map<String, Object>)/g, "SearchDocument")
 
     # Rename IndexBatch to IndexBatchBase when processing the API spec
@@ -166,6 +174,7 @@ directive:
           .replace(/(@param client the instance of the service client containing this operation class.)/g, "$1\n     \* @param serializer the serializer to be used for service client requests.")
           .replace(/(public DocumentsImpl\(SearchIndexRestClientImpl client\) {)/g, "public DocumentsImpl(SearchIndexRestClientImpl client, SerializerAdapter serializer) {")
           .replace(/(this.service = RestProxy.create\(DocumentsService.class, client.getHttpPipeline\(\)\);)/g, "this.service = RestProxy.create(DocumentsService.class, client.getHttpPipeline(), serializer);")
+          .replace(/import com\.azure\.search\.documents\.indexes\.implementation\.models\.SearchErrorException\;/g, "import com.azure.search.documents.models.SearchErrorException;")
 
     # Enable configuration of RestProxy serializer
     - from: SearchIndexRestClientImpl.java
@@ -176,7 +185,7 @@ directive:
           .replace(/(void setIndexName)/g, "public void setIndexName")
           .replace(/(void setSearchDnsSuffix)/g, "public void setSearchDnsSuffix")
           .replace(/(void setSearchServiceName)/g, "public void setSearchServiceName")
-          .replace(/(package com.azure.search.documents.implementation;)/g, "$1\nimport com.azure.core.util.serializer.JacksonAdapter;\nimport com.azure.core.util.serializer.SerializerAdapter;")
+          .replace(/(package com.azure.search.documents.indexes.implementation;)/g, "$1\nimport com.azure.core.util.serializer.JacksonAdapter;\nimport com.azure.core.util.serializer.SerializerAdapter;")
           .replace(/(this\(RestProxy.createDefaultPipeline\(\)\);)/g, "this(RestProxy.createDefaultPipeline(), JacksonAdapter.createDefaultSerializerAdapter());")
           .replace(/(@param httpPipeline The HTTP pipeline to send requests through.)/g, "$1\n     \* @param serializer the serializer to be used for service client requests.")
           .replace(/(this\(new HttpPipelineBuilder\(\)\.policies\(new UserAgentPolicy\(\)\, new RetryPolicy\(\)\, new CookiePolicy\(\)\)\.build\(\)\)\;)/g, "this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(), new JacksonAdapter());")
@@ -192,7 +201,7 @@ directive:
           .replace(/(class IndexAction)/g, "$1<T>")
           .replace(/(Unmatched properties from the message are deserialized this collection)/g, "The document on which the action will be performed.")
           .replace(/(@JsonProperty\(value = ""\))/g, "@JsonUnwrapped")
-          .replace(/(private Map<String, Object> additionalProperties);/g, "private T document;\n\n    @JsonIgnore\n    private Map<String, Object> properties;\n\n    @JsonAnyGetter\n    public Map<String, Object> getParamMap() {\n        return properties;\n    }")
+          .replace(/(private Map<String, Object> additionalProperties);/g, "private T document;\n\n    @JsonIgnore\n    private Map<String, Object> properties;\n\n    /**\n     * Get the property map on which the action will be performed.\n     * \n     * @return the property map.\n     */\n    @JsonAnyGetter\n    public Map<String, Object> getParamMap() {\n        return properties;\n    }")
           .replace(/(Get the additionalProperties property: Unmatched properties from the\n\s+\* message are deserialized this collection.)/g, "Get the document on which the action will be performed; Fields other than the key are ignored for delete actions.")
           .replace(/(@return the additionalProperties value.)/g, "@return the document value.")
           .replace(/(public Map<String, Object> getAdditionalProperties\(\) {\s+return this.additionalProperties;\s+})/g, "public T getDocument() {\n        return this.document;\n    }")
@@ -206,7 +215,7 @@ directive:
       where: $
       transform: >-
           return $
-          .replace(/(package com.azure.search.documents.implementation;)/g, "$1\nimport com.azure.core.util.serializer.SerializerAdapter;")
+          .replace(/(package com.azure.search.documents.indexes.implementation;)/g, "$1\nimport com.azure.core.util.serializer.SerializerAdapter;")
           .replace(/(\* The HTTP pipeline to send requests through)/g, "\* The serializer to use for requests\n     \*\/\n    private SerializerAdapter serializer;\n\n    \/\*\*\n     \* Sets The serializer to use for requests.\n     \*\n     \* @param serializer the serializer value.\n     \* @return the SearchIndexRestClientBuilder.\n     \*\/\n    public SearchIndexRestClientBuilder serializer\(SerializerAdapter serializer\) {\n        this.serializer = serializer;\n        return this;\n    }\n\n    \/\*\n     $1")
           .replace(/(new SearchIndexRestClientImpl\(pipeline)/g, "$1, serializer")
           .replace(/(this.pipeline = RestProxy.createDefaultPipeline\(\);\s+})/g, "$1\n        if \(serializer == null\) {\n            this.serializer = JacksonAdapter.createDefaultSerializerAdapter\(\);\n        }")
@@ -229,7 +238,7 @@ directive:
           .replace(/(Mono<IndexDocumentsResult> indexAsync)/g, "<T> $1")
           .replace(/(Mono<SimpleResponse<IndexDocumentsResult>> index)/g, "<T> $1")
           .replace(/(IndexBatchBase)/g, "IndexBatchBase<T>")
-          .replace(/(com\.azure\.search\.documents\.models\.IndexBatchBase\<T\>)/g, "com.azure.search.documents.models.IndexBatchBase")
+          .replace(/(com\.azure\.search\.documents\.indexes\.models\.IndexBatchBase\<T\>)/g, "com.azure.search.documents.indexes.models.IndexBatchBase")
 
     # Change get to is
     - from: DocumentsImpl.java
@@ -264,20 +273,12 @@ directive:
           .replace(/(    \/\*\*\n     \* Set the additionalProperties property\: Unmatched properties from the\n     \* message are deserialized this collection\.\n     \*\n     \* \@param additionalProperties the additionalProperties value to set\.\n     \* \@return the .*Result object itself\.\n     \*\/\n    public .*Result setAdditionalProperties\(SearchDocument additionalProperties\) \{\n        this\.additionalProperties \= additionalProperties\;\n        return this\;\n    \}\n\n)/g, "")
       reason: Provides a better description of the getter/setter for addtionalProperties
 
-    - from:
-          - SearchResult.java
-      where: $
-      transform: >-
-          return $
-          .replace(/(package com.azure.search.documents.models;)/g, "$1\nimport com.fasterxml.jackson.annotation.JsonIgnore;")
-          .replace(/(public Document getDocument())/g, "@JsonIgnore\n$1")
-
-    # Add static Collection<DataType> method to DataType
-    - from: DataType.java
+    # Add static Collection<SearchFieldDataType> method to SearchFieldDataType
+    - from: SearchFieldDataType.java
       where: $
       transform: >-
         return $
-        .replace(/(public static final DataType EDM_COMPLEX_TYPE = fromString\("Edm.ComplexType"\);)/g, "$1\n\n    /**\n     * Returns a collection of a specific DataType\n     * @param dataType the corresponding DataType\n     * @return a Collection of the corresponding DataType\n     */\n    @JsonCreator\n    public static DataType collection(DataType dataType) {\n        return fromString(String.format(\"Collection(%s)\", dataType.toString()));\n    }")
+        .replace(/(public static final SearchFieldDataType COMPLEX \= fromString\(\"Edm\.ComplexType\"\)\;)/g, "$1\n\n    /**\n     * Returns a collection of a specific SearchFieldDataType\n     * @param dataType the corresponding SearchFieldDataType\n     * @return a Collection of the corresponding SearchFieldDataType\n     */\n    @JsonCreator\n    public static SearchFieldDataType collection(SearchFieldDataType dataType) {\n        return fromString(String.format(\"Collection(%s)\", dataType.toString()));\n    }")
 
     # Workaround to fix bad host path parameters
     - from:
@@ -300,14 +301,6 @@ directive:
       where: $
       transform: >-
         return $.replace(/(package com.azure.search.documents.implementation;)/g, "$1\nimport com.azure.core.http.rest.RestProxy;")
-
-    # Rename COSMOS_DB to COSMOS in DataSourceType.java
-    - from:
-        - DataSourceType.java
-      where: $
-      transform: >-
-        return $
-        .replace(/(COSMOS_DB)/g, "COSMOS")
 
     # Remove field and its getter and setter for immutable static field in Suggester
     - from:
@@ -397,7 +390,7 @@ directive:
       where: $
       transform: >-
         return $
-        .replace(/(import com\.azure\.search\.documents\.models\.RequestOptions\;)/g, "$1\nimport com.azure.search.documents.models.ScoringParameter;")
+        .replace(/(import com\.azure\.search\.documents\.indexes\.implementation\.models\.RequestOptions\;)/g, "import com.azure.search.documents.models.RequestOptions;\nimport com.azure.search.documents.indexes.models.ScoringParameter;")
         .replace(/(List\<String\> scoringParameters \= null\;)/g, "List<ScoringParameter> scoringParameters = null;")
         .replace()
 
@@ -445,7 +438,7 @@ directive:
 
     # Changed isRetrievable to isHidden
     - from: swagger-document
-      where: $.definitions.Field.properties
+      where: $.definitions.SearchField.properties
       transform: >
          $.hidden = $.retrievable;
          $.hidden = {
@@ -453,7 +446,7 @@ directive:
             "description": "A value indicating whether the field will be returned in a search result. This property must be false for key fields, and must be null for complex fields. You can hide a field from search results if you want to use it only as a filter, for sorting, or for scoring. This property can also be changed on existing fields and enabling it does not cause an increase in index storage requirements."
          }
     
-    - from: Field.java
+    - from: SearchField.java
       where: $
       transform: >-
         return $
@@ -464,6 +457,7 @@ directive:
         .replace(/(this\.hidden \= hidden\;)/g, "$1\n        retrievable = this.hidden == null ? null : !this.hidden;")
         .replace(/(    \@JsonProperty\(value \= \"hidden\"\))/g, "    @JsonIgnore")
 
+    # Remove AccessCondition group parameters
     - from: swagger-document
       where: $.parameters
       transform: >-
@@ -471,4 +465,5 @@ directive:
             delete $.IfMatchParameter["x-ms-parameter-grouping"];
             delete $.IfNoneMatchParameter["x-ms-parameter-grouping"];
         }
+
 ```

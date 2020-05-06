@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.ClassicTokenizer")
 @Fluent
-public final class ClassicTokenizer extends Tokenizer {
+public final class ClassicTokenizer extends LexicalTokenizer {
     /*
      * The maximum token length. Default is 255. Tokens longer than the maximum
      * length are split. The maximum token length that can be used is 300

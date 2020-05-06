@@ -921,8 +921,8 @@ public class TestSuiteBase extends DocumentClientTest {
     static protected Builder createGatewayRxDocumentClient(ConsistencyLevel consistencyLevel, boolean multiMasterEnabled, List<String> preferredLocations) {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
         connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
-        connectionPolicy.setUsingMultipleWriteLocations(multiMasterEnabled);
-        connectionPolicy.setPreferredLocations(preferredLocations);
+        connectionPolicy.setUsingMultipleWriteRegions(multiMasterEnabled);
+        connectionPolicy.setPreferredRegions(preferredLocations);
         return new Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
@@ -936,16 +936,16 @@ public class TestSuiteBase extends DocumentClientTest {
     static protected Builder createDirectRxDocumentClient(ConsistencyLevel consistencyLevel,
                                                                               Protocol protocol,
                                                                               boolean multiMasterEnabled,
-                                                                              List<String> preferredLocations) {
+                                                                              List<String> preferredRegions) {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
         connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
 
-        if (preferredLocations != null) {
-            connectionPolicy.setPreferredLocations(preferredLocations);
+        if (preferredRegions != null) {
+            connectionPolicy.setPreferredRegions(preferredRegions);
         }
 
         if (multiMasterEnabled && consistencyLevel == ConsistencyLevel.SESSION) {
-            connectionPolicy.setUsingMultipleWriteLocations(true);
+            connectionPolicy.setUsingMultipleWriteRegions(true);
         }
 
         Configs configs = Mockito.spy(new Configs());

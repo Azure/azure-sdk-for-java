@@ -5,7 +5,7 @@ package com.azure.search.documents;
 
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.search.documents.implementation.SerializationUtil;
-import com.azure.search.documents.models.Index;
+import com.azure.search.documents.models.SearchIndex;
 import com.azure.search.documents.test.environment.setup.SearchIndexService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -30,27 +30,27 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
     private static final String HOTELS_TESTS_INDEX_DATA_JSON = "HotelsTestsIndexData.json";
     static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
-    protected <T> void uploadDocuments(SearchIndexClient client, List<T> uploadDoc) {
+    protected <T> void uploadDocuments(SearchClient client, List<T> uploadDoc) {
         client.uploadDocuments(uploadDoc);
         waitForIndexing();
     }
 
-    protected <T> void uploadDocuments(SearchIndexAsyncClient client, List<T> uploadDoc) {
+    protected <T> void uploadDocuments(SearchAsyncClient client, List<T> uploadDoc) {
         client.uploadDocuments(uploadDoc).block();
         waitForIndexing();
     }
 
-    <T> void uploadDocument(SearchIndexClient client, T uploadDoc) {
+    <T> void uploadDocument(SearchClient client, T uploadDoc) {
         client.uploadDocuments(Collections.singletonList(uploadDoc));
         waitForIndexing();
     }
 
-    <T> void uploadDocument(SearchIndexAsyncClient client, T uploadDoc) {
+    <T> void uploadDocument(SearchAsyncClient client, T uploadDoc) {
         client.uploadDocuments(Collections.singletonList(uploadDoc)).block();
         waitForIndexing();
     }
 
-    List<Map<String, Object>> uploadDocumentsJson(SearchIndexAsyncClient client, String dataJson) {
+    List<Map<String, Object>> uploadDocumentsJson(SearchAsyncClient client, String dataJson) {
         List<Map<String, Object>> documents =
             readJsonFileToList(dataJson, new TypeReference<List<Map<String, Object>>>() { });
 
@@ -58,7 +58,7 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
         return documents;
     }
 
-    List<Map<String, Object>> uploadDocumentsJson(SearchIndexClient client, String dataJson) {
+    List<Map<String, Object>> uploadDocumentsJson(SearchClient client, String dataJson) {
         List<Map<String, Object>> documents =
             readJsonFileToList(dataJson, new TypeReference<List<Map<String, Object>>>() { });
 
@@ -83,8 +83,8 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
         }
     }
 
-    SearchIndexClientBuilder getClientBuilder(String indexName) {
-        SearchIndexClientBuilder builder = new SearchIndexClientBuilder().endpoint(endpoint)
+    SearchClientBuilder getClientBuilder(String indexName) {
+        SearchClientBuilder builder = new SearchClientBuilder().endpoint(endpoint)
             .indexName(indexName);
         if (interceptorManager.isPlaybackMode()) {
             return builder.httpClient(interceptorManager.getPlaybackClient());
@@ -97,7 +97,7 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
         return builder;
     }
 
-    protected void setupIndex(Index index) {
+    protected void setupIndex(SearchIndex index) {
         if (!interceptorManager.isPlaybackMode()) {
             // In RECORDING mode (only), create a new index:
             SearchIndexService searchIndexService = new SearchIndexService(

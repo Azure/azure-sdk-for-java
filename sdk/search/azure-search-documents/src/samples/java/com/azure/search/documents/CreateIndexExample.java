@@ -5,9 +5,10 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.models.DataType;
-import com.azure.search.documents.models.Field;
-import com.azure.search.documents.models.Index;
+import com.azure.search.documents.indexes.SearchIndexClient;
+import com.azure.search.documents.models.SearchField;
+import com.azure.search.documents.models.SearchFieldDataType;
+import com.azure.search.documents.models.SearchIndex;
 
 import java.util.Arrays;
 
@@ -27,21 +28,22 @@ public class CreateIndexExample {
             .endpoint(ENDPOINT)
             .credential(searchApiKeyCredential)
             .buildClient();
+        SearchIndexClient indexClient = client.getSearchIndexClient();
 
-        Index newIndex = new Index()
+        SearchIndex newIndex = new SearchIndex()
             .setName(INDEX_NAME)
             .setFields(
-                Arrays.asList(new Field()
+                Arrays.asList(new SearchField()
                         .setName("Name")
-                        .setType(DataType.EDM_STRING)
+                        .setType(SearchFieldDataType.STRING)
                         .setKey(Boolean.TRUE),
-                    new Field()
+                    new SearchField()
                         .setName("Cuisine")
-                        .setType(DataType.EDM_STRING)));
+                        .setType(SearchFieldDataType.STRING)));
         // Create index.
-        client.createIndex(newIndex);
+        indexClient.createIndex(newIndex);
 
         // Cleanup index resource.
-        client.deleteIndex(INDEX_NAME);
+        indexClient.deleteIndex(INDEX_NAME);
     }
 }

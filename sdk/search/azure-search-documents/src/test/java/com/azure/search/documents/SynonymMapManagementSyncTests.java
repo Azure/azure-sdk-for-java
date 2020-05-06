@@ -6,6 +6,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.search.documents.indexes.SearchSynonymMapClient;
 import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.models.SynonymMap;
 import com.azure.search.documents.test.AccessConditionTests;
@@ -26,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
-    private SearchServiceClient client;
+    private SearchSynonymMapClient client;
 
     // commonly used lambda definitions
     private BiFunction<SynonymMap, AccessOptions, SynonymMap> createOrUpdateSynonymMapFunc =
@@ -49,7 +50,7 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        client = getSearchServiceClientBuilder().buildClient();
+        client = getSearchServiceClientBuilder().buildClient().getSynonymMapClient();
     }
 
     @Test

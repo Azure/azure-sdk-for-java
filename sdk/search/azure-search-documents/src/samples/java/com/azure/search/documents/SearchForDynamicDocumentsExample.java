@@ -6,9 +6,9 @@ package com.azure.search.documents;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
+import com.azure.search.documents.indexes.models.SearchOptions;
+import com.azure.search.documents.indexes.models.SearchResult;
 import com.azure.search.documents.models.RequestOptions;
-import com.azure.search.documents.models.SearchOptions;
-import com.azure.search.documents.models.SearchResult;
 import reactor.core.publisher.Flux;
 
 /**
@@ -34,11 +34,11 @@ public class SearchForDynamicDocumentsExample {
     }
 
     /**
-     * Minimal search with {@link SearchIndexClient}
+     * Minimal search with {@link SearchClient}
      * Search for luxury hotels print all results to the console
      */
     private static void searchWithSyncClient() {
-        SearchIndexClient client = new SearchIndexClientBuilder()
+        SearchClient client = new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
             .indexName(INDEX_NAME)
@@ -58,11 +58,11 @@ public class SearchForDynamicDocumentsExample {
     }
 
     /**
-     * Additional search options and results processing using {@link SearchIndexAsyncClient}
+     * Additional search options and results processing using {@link SearchAsyncClient}
      * Search for the top 5 rated luxury hotels near Redmond and print all results to the console
      */
     private static void searchWithAsyncClient() {
-        SearchIndexAsyncClient client = new SearchIndexClientBuilder()
+        SearchAsyncClient client = new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
             .indexName(INDEX_NAME)

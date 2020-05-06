@@ -4,9 +4,11 @@ package com.azure.search.documents;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
+import com.azure.search.documents.indexes.SearchIndexClient;
+import com.azure.search.documents.indexes.models.SearchOptions;
+import com.azure.search.documents.indexes.models.SearchResult;
 import com.azure.search.documents.models.AnalyzeRequest;
-import com.azure.search.documents.models.Analyzer;
-import com.azure.search.documents.models.AnalyzerName;
+import com.azure.search.documents.models.AnalyzedTokenInfo;
 import com.azure.search.documents.models.AsciiFoldingTokenFilter;
 import com.azure.search.documents.models.CharFilter;
 import com.azure.search.documents.models.CharFilterName;
@@ -15,19 +17,22 @@ import com.azure.search.documents.models.CjkBigramTokenFilterScripts;
 import com.azure.search.documents.models.ClassicTokenizer;
 import com.azure.search.documents.models.CommonGramTokenFilter;
 import com.azure.search.documents.models.CustomAnalyzer;
-import com.azure.search.documents.models.DataType;
 import com.azure.search.documents.models.DictionaryDecompounderTokenFilter;
 import com.azure.search.documents.models.EdgeNGramTokenFilterSide;
 import com.azure.search.documents.models.EdgeNGramTokenFilterV2;
 import com.azure.search.documents.models.EdgeNGramTokenizer;
 import com.azure.search.documents.models.ElisionTokenFilter;
-import com.azure.search.documents.models.Field;
-import com.azure.search.documents.models.Index;
 import com.azure.search.documents.models.KeepTokenFilter;
 import com.azure.search.documents.models.KeywordMarkerTokenFilter;
 import com.azure.search.documents.models.KeywordTokenizerV2;
 import com.azure.search.documents.models.LengthTokenFilter;
+import com.azure.search.documents.models.LexicalAnalyzer;
+import com.azure.search.documents.models.LexicalAnalyzerName;
+import com.azure.search.documents.models.LexicalTokenizer;
+import com.azure.search.documents.models.LexicalTokenizerName;
 import com.azure.search.documents.models.LimitTokenFilter;
+import com.azure.search.documents.models.LuceneStandardAnalyzer;
+import com.azure.search.documents.models.LuceneStandardTokenizerV2;
 import com.azure.search.documents.models.MappingCharFilter;
 import com.azure.search.documents.models.MicrosoftLanguageStemmingTokenizer;
 import com.azure.search.documents.models.MicrosoftLanguageTokenizer;
@@ -44,13 +49,12 @@ import com.azure.search.documents.models.PatternTokenizer;
 import com.azure.search.documents.models.PhoneticEncoder;
 import com.azure.search.documents.models.PhoneticTokenFilter;
 import com.azure.search.documents.models.RegexFlags;
-import com.azure.search.documents.models.SearchOptions;
-import com.azure.search.documents.models.SearchResult;
+import com.azure.search.documents.models.SearchField;
+import com.azure.search.documents.models.SearchFieldDataType;
+import com.azure.search.documents.models.SearchIndex;
 import com.azure.search.documents.models.ShingleTokenFilter;
 import com.azure.search.documents.models.SnowballTokenFilter;
 import com.azure.search.documents.models.SnowballTokenFilterLanguage;
-import com.azure.search.documents.models.StandardAnalyzer;
-import com.azure.search.documents.models.StandardTokenizerV2;
 import com.azure.search.documents.models.StemmerOverrideTokenFilter;
 import com.azure.search.documents.models.StemmerTokenFilter;
 import com.azure.search.documents.models.StemmerTokenFilterLanguage;
@@ -61,14 +65,14 @@ import com.azure.search.documents.models.SynonymTokenFilter;
 import com.azure.search.documents.models.TokenCharacterKind;
 import com.azure.search.documents.models.TokenFilter;
 import com.azure.search.documents.models.TokenFilterName;
-import com.azure.search.documents.models.TokenInfo;
-import com.azure.search.documents.models.Tokenizer;
-import com.azure.search.documents.models.TokenizerName;
 import com.azure.search.documents.models.TruncateTokenFilter;
 import com.azure.search.documents.models.UaxUrlEmailTokenizer;
 import com.azure.search.documents.models.UniqueTokenFilter;
 import com.azure.search.documents.models.WordDelimiterTokenFilter;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -79,8 +83,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -88,8 +90,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
     private static final String NAME_PREFIX = "azsmnet";
-
     private SearchServiceClient searchServiceClient;
+    private SearchIndexClient searchIndexClient;
     private static Collection<CharFilterName> charFilterNames;
 
     static {
@@ -100,6 +102,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
     protected void beforeTest() {
         super.beforeTest();
         searchServiceClient = getSearchServiceClientBuilder().buildClient();
+        searchIndexClient = searchServiceClient.getSearchIndexClient();
     }
 
     private static void getAllCharFilterName() {
@@ -111,27 +114,27 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
 
     @Test
     public void canSearchWithCustomAnalyzer() {
-        final AnalyzerName customAnalyzerName = AnalyzerName.fromString("my_email_analyzer");
+        final LexicalAnalyzerName customLexicalAnalyzerName = LexicalAnalyzerName.fromString("my_email_analyzer");
         final CharFilterName customCharFilterName = CharFilterName.fromString("my_email_filter");
 
-        Index index = new Index()
+        SearchIndex  index = new SearchIndex()
             .setName("testindex")
             .setFields(Arrays.asList(
-                new Field()
+                new SearchField()
                     .setName("id")
-                    .setType(DataType.EDM_STRING)
+                    .setType(SearchFieldDataType.STRING)
                     .setKey(true),
-                new Field()
+                new SearchField()
                     .setName("message")
-                    .setType(DataType.EDM_STRING)
-                    .setAnalyzer(customAnalyzerName)
+                    .setType(SearchFieldDataType.STRING)
+                    .setAnalyzer(customLexicalAnalyzerName)
                     .setSearchable(true)
             ))
             .setAnalyzers(Collections.singletonList(
                 new CustomAnalyzer()
-                    .setTokenizer(TokenizerName.STANDARD)
+                    .setTokenizer(LexicalTokenizerName.STANDARD)
                     .setCharFilters(Collections.singletonList(customCharFilterName))
-                    .setName(customAnalyzerName.toString())
+                    .setName(customLexicalAnalyzerName.toString())
             ))
             .setCharFilters(Collections.singletonList(
                 new PatternReplaceCharFilter()
@@ -140,9 +143,9 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
                     .setName(customCharFilterName.toString())
             ));
 
-        searchServiceClient.createIndex(index);
+        searchIndexClient.createIndex(index);
 
-        SearchIndexClient searchIndexClient = searchServiceClient.getIndexClient(index.getName());
+        SearchClient searchClient = searchServiceClient.getSearchClient(index.getName());
 
         SearchDocument document1 = new SearchDocument();
         document1.put("id", "1");
@@ -152,10 +155,10 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         document2.put("message", "His email is someone@nowhere.nothing.");
         List<SearchDocument> documents = Arrays.asList(document1, document2);
 
-        searchIndexClient.uploadDocuments(documents);
+        searchClient.uploadDocuments(documents);
         waitForIndexing();
 
-        Iterator<SearchResult> iterator = searchIndexClient
+        Iterator<SearchResult> iterator = searchClient
             .search("someone@somewhere.something", new SearchOptions(), generateRequestOptions(), Context.NONE)
             .iterator();
         SearchResult searchResult = iterator.next();
@@ -166,27 +169,27 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
 
     @Test
     public void canUseAllAnalyzerNamesInIndexDefinition() {
-        Index index = prepareIndexWithAllAnalyzerNames();
+        SearchIndex  index = prepareIndexWithAllLexicalAnalyzerNames();
 
-        Index res = searchServiceClient.createIndex(index);
+        SearchIndex  res = searchIndexClient.createIndex(index);
 
         assertObjectEquals(index, res, true, "etag");
 
-        // Add language analyzers to searchAnalyzer and indexAnalyzer properties and expect failure
+        // Add language analyzers to searchLexicalAnalyzer and indexLexicalAnalyzer properties and expect failure
         try {
-            new Field()
+            new SearchField()
                 .setName("field")
-                .setType(DataType.EDM_STRING)
-                .setSearchAnalyzer(AnalyzerName.EN_LUCENE);
+                .setType(SearchFieldDataType.STRING)
+                .setSearchAnalyzer(LexicalAnalyzerName.EN_LUCENE);
         } catch (Exception ex) {
             assertEquals(IllegalArgumentException.class, ex.getClass());
             assertEquals("Only non-language analyzer can be used as search analyzer.", ex.getMessage());
         }
         try {
-            new Field()
+            new SearchField()
                 .setName("field")
-                .setType(DataType.EDM_STRING)
-                .setIndexAnalyzer(AnalyzerName.AR_MICROSOFT);
+                .setType(SearchFieldDataType.STRING)
+                .setIndexAnalyzer(LexicalAnalyzerName.AR_MICROSOFT);
         } catch (Exception ex) {
             assertEquals(IllegalArgumentException.class, ex.getClass());
             assertEquals("Only non-language analyzer can be used as index analyzer.", ex.getMessage());
@@ -195,30 +198,30 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
 
     @Test
     public void canAnalyze() {
-        Index index = createTestIndex();
-        searchServiceClient.createIndex(index);
+        SearchIndex  index = createTestIndex();
+        searchIndexClient.createIndex(index);
 
         AnalyzeRequest request = new AnalyzeRequest()
             .setText("One two")
-            .setAnalyzer(AnalyzerName.WHITESPACE);
-        PagedIterable<TokenInfo> results = searchServiceClient.analyzeText(index.getName(), request);
-        Iterator<TokenInfo> iterator = results.iterator();
+            .setAnalyzer(LexicalAnalyzerName.WHITESPACE);
+        PagedIterable<AnalyzedTokenInfo> results = searchIndexClient.analyzeText(index.getName(), request);
+        Iterator<AnalyzedTokenInfo> iterator = results.iterator();
         assertTokenInfoEqual("One", 0, 3, 0, iterator.next());
         assertTokenInfoEqual("two", 4, 7, 1, iterator.next());
         assertFalse(iterator.hasNext());
 
         request = new AnalyzeRequest()
             .setText("One's <two/>")
-            .setTokenizer(TokenizerName.WHITESPACE)
+            .setTokenizer(LexicalTokenizerName.WHITESPACE)
             .setTokenFilters(Collections.singletonList(TokenFilterName.APOSTROPHE))
             .setCharFilters(Collections.singletonList(CharFilterName.HTML_STRIP));
-        results = searchServiceClient.analyzeText(index.getName(), request);
+        results = searchIndexClient.analyzeText(index.getName(), request);
         // End offset is based on the original token, not the one emitted by the filters.
         iterator = results.iterator();
         assertTokenInfoEqual("One", 0, 5, 0, iterator.next());
         assertFalse(iterator.hasNext());
 
-        results = searchServiceClient.analyzeText(index.getName(), request, generateRequestOptions(), Context.NONE);
+        results = searchIndexClient.analyzeText(index.getName(), request, generateRequestOptions(), Context.NONE);
         // End offset is based on the original token, not the one emitted by the filters.
         iterator = results.iterator();
         assertTokenInfoEqual("One", 0, 5, 0, iterator.next());
@@ -227,41 +230,41 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
 
     @Test
     public void canAnalyzeWithAllPossibleNames() {
-        Index index = createTestIndex();
-        searchServiceClient.createIndex(index);
+        SearchIndex index = createTestIndex();
+        searchIndexClient.createIndex(index);
 
-        AnalyzerName.values()
+        LexicalAnalyzerName.values()
             .stream()
             .map(an -> new AnalyzeRequest()
                 .setText("One two")
                 .setAnalyzer(an))
-            .forEach(r -> searchServiceClient.analyzeText(index.getName(), r));
+            .forEach(r -> searchIndexClient.analyzeText(index.getName(), r));
 
-        TokenizerName.values()
+        LexicalTokenizerName.values()
             .stream()
             .map(tn -> new AnalyzeRequest()
                 .setText("One two")
                 .setTokenizer(tn))
-            .forEach(r -> searchServiceClient.analyzeText(index.getName(), r));
+            .forEach(r -> searchIndexClient.analyzeText(index.getName(), r));
 
         AnalyzeRequest request = new AnalyzeRequest()
             .setText("One two")
-            .setTokenizer(TokenizerName.WHITESPACE)
+            .setTokenizer(LexicalTokenizerName.WHITESPACE)
             .setTokenFilters(new ArrayList<>(TokenFilterName.values()))
             .setCharFilters(new ArrayList<>(CharFilterName.values()));
-        searchServiceClient.analyzeText(index.getName(), request);
+        searchIndexClient.analyzeText(index.getName(), request);
     }
 
     @Test
     public void addingCustomAnalyzerThrowsHttpExceptionByDefault() {
-        Index index = createTestIndex()
+        SearchIndex index = createTestIndex()
             .setAnalyzers(Collections.singletonList(new StopAnalyzer().setName("a1")));
-        searchServiceClient.createIndex(index);
+        searchIndexClient.createIndex(index);
 
-        addAnalyzerToIndex(index, new StopAnalyzer().setName("a2"));
+        addLexicalAnalyzerToIndex(index, new StopAnalyzer().setName("a2"));
 
         assertHttpResponseException(
-            () -> searchServiceClient.createOrUpdateIndex(index),
+            () -> searchIndexClient.createOrUpdateIndex(index),
             HttpResponseStatus.BAD_REQUEST,
             "Index update not allowed because it would cause downtime."
         );
@@ -269,12 +272,12 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
 
     @Test
     public void canAddCustomAnalyzerWithIndexDowntime() {
-        Index index = createTestIndex()
+        SearchIndex index = createTestIndex()
             .setAnalyzers(Collections.singletonList(new StopAnalyzer().setName("a1")));
-        searchServiceClient.createIndex(index);
+        searchIndexClient.createIndex(index);
 
-        addAnalyzerToIndex(index, new StopAnalyzer().setName("a2"));
-        Index updatedIndex = searchServiceClient.createOrUpdateIndexWithResponse(index,
+        addLexicalAnalyzerToIndex(index, new StopAnalyzer().setName("a2"));
+        SearchIndex updatedIndex = searchIndexClient.createOrUpdateIndexWithResponse(index,
             true, false, generateRequestOptions(), Context.NONE).getValue();
 
         assertAnalysisComponentsEqual(index, updatedIndex);
@@ -282,40 +285,40 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
 
     @Test
     public void canCreateAllAnalysisComponents() {
-        Index index = prepareIndexWithAllAnalysisComponentTypes();
+        SearchIndex index = prepareIndexWithAllAnalysisComponentTypes();
 
-        Index createdIndex = searchServiceClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.createIndex(index);
         assertAnalysisComponentsEqual(index, createdIndex);
-        searchServiceClient.deleteIndex(index.getName());
+        searchIndexClient.deleteIndex(index.getName());
 
         // We have to split up analysis components into two indexes, one where any components with optional properties
         // have defaults that are zero or null, and another where we need to specify the default values we
         // expect to get back from the REST API.
 
-        Index indexWithSpecialDefaults = createIndexWithSpecialDefaults();
-        Index expectedIndexWithSpecialDefaults = createExpectedIndexWithSpecialDefaults(indexWithSpecialDefaults);
+        SearchIndex indexWithSpecialDefaults = createdIndexWithSpecialDefaults();
+        SearchIndex expectedIndexWithSpecialDefaults = createExpectedIndexWithSpecialDefaults(indexWithSpecialDefaults);
 
-        List<Index> splittedIndexWithSpecialDefaults = splitIndex(indexWithSpecialDefaults);
-        List<Index> splittedExpectedIndexWithSpecialDefaults = splitIndex(expectedIndexWithSpecialDefaults);
+        List<SearchIndex> splittedIndexWithSpecialDefaults = splitIndex(indexWithSpecialDefaults);
+        List<SearchIndex> splittedExpectedIndexWithSpecialDefaults = splitIndex(expectedIndexWithSpecialDefaults);
         for (int j = 0; j < splittedIndexWithSpecialDefaults.size(); j++) {
-            Index expected = splittedExpectedIndexWithSpecialDefaults.get(j);
-            Index actual = searchServiceClient.createIndex(expected);
+            SearchIndex expected = splittedExpectedIndexWithSpecialDefaults.get(j);
+            SearchIndex actual = searchIndexClient.createIndex(expected);
             assertAnalysisComponentsEqual(expected, actual);
-            searchServiceClient.deleteIndex(actual.getName());
+            searchIndexClient.deleteIndex(actual.getName());
         }
     }
 
     @Test
     public void canUseAllAnalysisComponentNames() {
-        Index index = prepareIndexWithAllAnalysisComponentNames();
+        SearchIndex index = prepareIndexWithAllAnalysisComponentNames();
 
-        Index createdIndex = searchServiceClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.createIndex(index);
         assertCustomAnalysisComponentsEqual(index, createdIndex);
     }
 
     @Test
     public void canUseAllRegexFlagsAnalyzer() {
-        Index index = createTestIndex()
+        SearchIndex index = createTestIndex()
             .setAnalyzers(Collections.singletonList(new PatternAnalyzer()
                 .setStopwords(Arrays.asList("stop1", "stop2"))
                 .setLowerCaseTerms(true)
@@ -323,40 +326,40 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
                 .setFlags(new ArrayList<>(RegexFlags.values()))
                 .setName(generateName())));
 
-        Index createdIndex = searchServiceClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.createIndex(index);
 
         assertAnalysisComponentsEqual(index, createdIndex);
     }
 
     @Test
     public void canUseAllRegexFlagsNullAnalyzer() {
-        Index index = createTestIndex()
+        SearchIndex index = createTestIndex()
             .setAnalyzers(null);
 
-        Index createdIndex = searchServiceClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.createIndex(index);
 
         assertAnalysisComponentsEqual(index, createdIndex);
     }
 
     @Test
     public void canUseAllRegexFlagsEmptyAnalyzer() {
-        Index index = createTestIndex()
+        SearchIndex index = createTestIndex()
             .setAnalyzers(new ArrayList<>());
 
-        Index createdIndex = searchServiceClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.createIndex(index);
 
         assertAnalysisComponentsEqual(index, createdIndex);
     }
 
     @Test
     public void canUseAllRegexFlagsNullNameAnalyzer() {
-        Index index = createTestIndex()
+        SearchIndex index = createTestIndex()
             .setAnalyzers(Collections.singletonList(
                 new PatternAnalyzer().setName(null)
             ));
 
         assertHttpResponseException(
-            () -> searchServiceClient.createIndex(index),
+            () -> searchIndexClient.createIndex(index),
             HttpResponseStatus.BAD_REQUEST,
             "The name field is required."
         );
@@ -364,13 +367,13 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
 
     @Test
     public void canUseAllRegexFlagsEmptyNameAnalyzer() {
-        Index index = createTestIndex()
+        SearchIndex index = createTestIndex()
             .setAnalyzers(Collections.singletonList(
                 new PatternAnalyzer().setName("")
             ));
 
         assertHttpResponseException(
-            () -> searchServiceClient.createIndex(index),
+            () -> searchIndexClient.createIndex(index),
             HttpResponseStatus.BAD_REQUEST,
             "The name field is required."
         );
@@ -378,61 +381,61 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
 
     @Test
     public void canUseAllRegexFlagsNullLowerCaseAnalyzer() {
-        Index index = createTestIndex()
+        SearchIndex index = createTestIndex()
             .setAnalyzers(Collections.singletonList(
                 new PatternAnalyzer().setLowerCaseTerms(null).setName(generateName())
             ));
 
-        Index createdIndex = searchServiceClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.createIndex(index);
 
         assertAnalysisComponentsEqual(index, createdIndex);
     }
 
     @Test
     public void canUseAllRegexFlagsNullPatternAnalyzer() {
-        Index index = createTestIndex()
+        SearchIndex index = createTestIndex()
             .setAnalyzers(Collections.singletonList(
                 new PatternAnalyzer().setPattern(null).setName(generateName())
             ));
 
-        Index createdIndex = searchServiceClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.createIndex(index);
 
         assertAnalysisComponentsEqual(index, createdIndex);
     }
 
     @Test
     public void canUseAllRegexFlagsEmptyPatternAnalyzer() {
-        Index index = createTestIndex()
+        SearchIndex index = createTestIndex()
             .setAnalyzers(Collections.singletonList(
                 new PatternAnalyzer().setPattern("").setName(generateName())
             ));
 
-        Index createdIndex = searchServiceClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.createIndex(index);
 
         assertAnalysisComponentsEqual(index, createdIndex);
     }
 
     @Test
     public void canUseAllRegexFlagsNullFlagsAnalyzer() {
-        Index index = createTestIndex()
+        SearchIndex index = createTestIndex()
             .setAnalyzers(Collections.singletonList(
                 new PatternAnalyzer().setFlags(null).setName(generateName())
             ));
 
-        Index createdIndex = searchServiceClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.createIndex(index);
 
         assertAnalysisComponentsEqual(index, createdIndex);
     }
 
     @Test
     public void canUseAllRegexFlagsEmptyFlagsAnalyzer() {
-        Index index = createTestIndex()
+        SearchIndex index = createTestIndex()
             .setAnalyzers(Collections.singletonList(
                 new PatternAnalyzer().setFlags(new ArrayList<>()).setName(generateName())
             ));
 
         assertHttpResponseException(
-            () -> searchServiceClient.createIndex(index),
+            () -> searchIndexClient.createIndex(index),
             HttpResponseStatus.BAD_REQUEST,
             "Values of property \\\"flags\\\" must belong to the set of allowed values"
         );
@@ -440,71 +443,71 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
 
     @Test
     public void canUseAllRegexFlagsNullStopwordsAnalyzer() {
-        Index index = createTestIndex()
+        SearchIndex index = createTestIndex()
             .setAnalyzers(Collections.singletonList(new PatternAnalyzer()
                 .setStopwords(null)
                 .setName(generateName())));
 
-        Index createdIndex = searchServiceClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.createIndex(index);
 
         assertAnalysisComponentsEqual(index, createdIndex);
     }
 
     @Test
     public void canUseAllRegexFlagsEmptyStopwordsAnalyzer() {
-        Index index = createTestIndex()
+        SearchIndex index = createTestIndex()
             .setAnalyzers(Collections.singletonList(new PatternAnalyzer()
                 .setStopwords(new ArrayList<>())
                 .setName(generateName())));
 
-        Index createdIndex = searchServiceClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.createIndex(index);
 
         assertAnalysisComponentsEqual(index, createdIndex);
     }
 
     @Test
     public void canUseAllRegexFlagsTokenizer() {
-        Index index = createTestIndex()
+        SearchIndex index = createTestIndex()
             .setTokenizers(Collections.singletonList(new PatternTokenizer()
                 .setPattern(".*")
                 .setFlags(new ArrayList<>(RegexFlags.values()))
                 .setGroup(0)
                 .setName(generateName())));
 
-        Index createdIndex = searchServiceClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.createIndex(index);
 
         assertAnalysisComponentsEqual(index, createdIndex);
     }
 
     @Test
     public void canUseAllRegexFlagsNullTokenizer() {
-        Index index = createTestIndex()
+        SearchIndex index = createTestIndex()
             .setTokenizers(null);
 
-        Index createdIndex = searchServiceClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.createIndex(index);
 
         assertAnalysisComponentsEqual(index, createdIndex);
     }
 
     @Test
     public void canUseAllRegexFlagsEmptyTokenizer() {
-        Index index = createTestIndex()
+        SearchIndex index = createTestIndex()
             .setTokenizers(new ArrayList<>());
 
-        Index createdIndex = searchServiceClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.createIndex(index);
 
         assertAnalysisComponentsEqual(index, createdIndex);
     }
 
     @Test
     public void canUseAllRegexFlagsNullNameTokenizer() {
-        Index index = createTestIndex()
+        SearchIndex index = createTestIndex()
             .setTokenizers(Collections.singletonList(new PatternTokenizer()
                 .setName(null)
             ));
 
         assertHttpResponseException(
-            () -> searchServiceClient.createIndex(index),
+            () -> searchIndexClient.createIndex(index),
             HttpResponseStatus.BAD_REQUEST,
             "The name field is required."
         );
@@ -512,13 +515,13 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
 
     @Test
     public void canUseAllRegexFlagsEmptyNameTokenizer() {
-        Index index = createTestIndex()
+        SearchIndex index = createTestIndex()
             .setTokenizers(Collections.singletonList(new PatternTokenizer()
                 .setName("")
             ));
 
         assertHttpResponseException(
-            () -> searchServiceClient.createIndex(index),
+            () -> searchIndexClient.createIndex(index),
             HttpResponseStatus.BAD_REQUEST,
             "The name field is required."
         );
@@ -526,36 +529,36 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
 
     @Test
     public void canUseAllRegexFlagsNullPatternTokenizer() {
-        Index index = createTestIndex()
+        SearchIndex index = createTestIndex()
             .setTokenizers(Collections.singletonList(new PatternTokenizer()
                 .setPattern(null).setName(generateName())
             ));
 
-        Index createdIndex = searchServiceClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.createIndex(index);
 
         assertAnalysisComponentsEqual(index, createdIndex);
     }
 
     @Test
     public void canUseAllRegexFlagsEmptyPatternTokenizer() {
-        Index index = createTestIndex()
+        SearchIndex index = createTestIndex()
             .setTokenizers(Collections.singletonList(new PatternTokenizer()
                 .setPattern("").setName(generateName())
             ));
 
-        Index createdIndex = searchServiceClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.createIndex(index);
 
         assertAnalysisComponentsEqual(index, createdIndex);
     }
 
     @Test
     public void canUseAllRegexFlagsNullFlagsTokenizer() {
-        Index index = createTestIndex()
+        SearchIndex index = createTestIndex()
             .setTokenizers(Collections.singletonList(new PatternTokenizer()
                 .setFlags(null).setName(generateName())
             ));
 
-        Index createdIndex = searchServiceClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.createIndex(index);
 
         assertAnalysisComponentsEqual(index, createdIndex);
         System.out.println(RegexFlags.values());
@@ -563,13 +566,13 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
 
     @Test
     public void canUseAllRegexFlagsEmptyFlagsTokenizer() {
-        Index index = createTestIndex()
+        SearchIndex index = createTestIndex()
             .setTokenizers(Collections.singletonList(new PatternTokenizer()
                 .setFlags(new ArrayList<>()).setName(generateName())
             ));
 
         assertHttpResponseException(
-            () -> searchServiceClient.createIndex(index),
+            () -> searchIndexClient.createIndex(index),
             HttpResponseStatus.BAD_REQUEST,
             "Values of property \\\"flags\\\" must belong to the set of allowed values"
         );
@@ -577,38 +580,38 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
 
     @Test
     public void canUseAllRegexFlagsNullGroupTokenizer() {
-        Index index = createTestIndex()
+        SearchIndex index = createTestIndex()
             .setTokenizers(Collections.singletonList(new PatternTokenizer()
                 .setGroup(null)
                 .setName(generateName())));
 
-        Index createdIndex = searchServiceClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.createIndex(index);
 
         assertAnalysisComponentsEqual(index, createdIndex);
     }
 
     @Test
     public void canUseAllAnalysisComponentOptions() {
-        List<Index> indexes = prepareIndexesWithAllAnalysisComponentOptions();
+        List<SearchIndex> indexes = prepareIndexesWithAllAnalysisComponentOptions();
 
         indexes.forEach(expectedIndex -> {
-            Index createdIndex = searchServiceClient.createIndex(expectedIndex);
+            SearchIndex createdIndex = searchIndexClient.createIndex(expectedIndex);
             assertAnalysisComponentsEqual(expectedIndex, createdIndex);
-            searchServiceClient.deleteIndex(createdIndex.getName());
+            searchIndexClient.deleteIndex(createdIndex.getName());
         });
     }
 
-    void addAnalyzerToIndex(Index index, Analyzer analyzer) {
-        List<Analyzer> analyzers = new ArrayList<>(index.getAnalyzers());
+    void addLexicalAnalyzerToIndex(SearchIndex index, LexicalAnalyzer analyzer) {
+        List<LexicalAnalyzer> analyzers = new ArrayList<>(index.getAnalyzers());
         analyzers.add(analyzer);
 
         index.setAnalyzers(analyzers);
     }
 
-    void assertAnalysisComponentsEqual(Index expected, Index actual) {
+    void assertAnalysisComponentsEqual(SearchIndex expected, SearchIndex actual) {
         // Compare analysis components directly so that test failures show better comparisons.
-        // Analyzers
-        assertAnalyzersEqual(expected.getAnalyzers(), actual.getAnalyzers());
+        // LexicalAnalyzers
+        assertLexicalAnalyzersEqual(expected.getAnalyzers(), actual.getAnalyzers());
 
         // Tokenizer
         assertTokenizersEqual(expected.getTokenizers(), actual.getTokenizers());
@@ -617,20 +620,20 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         assertCharFiltersEqual(expected.getCharFilters(), actual.getCharFilters());
     }
 
-    void assertCustomAnalysisComponentsEqual(Index expected, Index actual) {
+    void assertCustomAnalysisComponentsEqual(SearchIndex  expected, SearchIndex  actual) {
         // Compare analysis components directly so that test failures show better comparisons.
-        // Analyzers - Sort according to their Tokenizers before comparing:
-        List<Analyzer> expectedAnalyzers = expected.getAnalyzers();
-        List<Analyzer> actualAnalyzers = actual.getAnalyzers();
+        // LexicalAnalyzers - Sort according to their Tokenizers before comparing:
+        List<LexicalAnalyzer> expectedLexicalAnalyzers = expected.getAnalyzers();
+        List<LexicalAnalyzer> actualLexicalAnalyzers = actual.getAnalyzers();
 
-        if (expectedAnalyzers != null && actualAnalyzers != null) {
-            Comparator<Analyzer> customAnalyzerComparator = Comparator
-                .comparing((Analyzer a) -> ((CustomAnalyzer) a).getTokenizer().toString());
+        if (expectedLexicalAnalyzers != null && actualLexicalAnalyzers != null) {
+            Comparator<LexicalAnalyzer> customLexicalAnalyzerComparator = Comparator
+                .comparing((LexicalAnalyzer a) -> ((CustomAnalyzer) a).getTokenizer().toString());
 
-            expectedAnalyzers.sort(customAnalyzerComparator);
-            actualAnalyzers.sort(customAnalyzerComparator);
+            expectedLexicalAnalyzers.sort(customLexicalAnalyzerComparator);
+            actualLexicalAnalyzers.sort(customLexicalAnalyzerComparator);
 
-            assertAnalyzersEqual(expectedAnalyzers, actualAnalyzers);
+            assertLexicalAnalyzersEqual(expectedLexicalAnalyzers, actualLexicalAnalyzers);
         }
 
         // Tokenizer
@@ -640,7 +643,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         assertCharFiltersEqual(expected.getCharFilters(), actual.getCharFilters());
     }
 
-    private void assertAnalyzersEqual(List<Analyzer> expected, List<Analyzer> actual) {
+    private void assertLexicalAnalyzersEqual(List<LexicalAnalyzer> expected, List<LexicalAnalyzer> actual) {
         if (expected != null && actual != null) {
             assertEquals(expected.size(), actual.size());
             for (int i = 0; i < expected.size(); i++) {
@@ -649,7 +652,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         }
     }
 
-    private void assertTokenizersEqual(List<Tokenizer> expected, List<Tokenizer> actual) {
+    private void assertTokenizersEqual(List<LexicalTokenizer> expected, List<LexicalTokenizer> actual) {
         if (expected != null && actual != null) {
             assertEquals(expected.size(), actual.size());
             for (int i = 0; i < expected.size(); i++) {
@@ -671,11 +674,11 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         return testResourceNamer.randomName(NAME_PREFIX, 24);
     }
 
-    List<Index> prepareIndexesWithAllAnalysisComponentOptions() {
-        Index index = createTestIndex();
+    List<SearchIndex> prepareIndexesWithAllAnalysisComponentOptions() {
+        SearchIndex  index = createTestIndex();
 
         // Set tokenizers
-        List<Tokenizer> tokenizers = new ArrayList<>();
+        List<LexicalTokenizer> tokenizers = new ArrayList<>();
         tokenizers.add(
             new EdgeNGramTokenizer()
                 .setMinGram(1)
@@ -751,48 +754,50 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         return splitIndex(index);
     }
 
-    Index prepareIndexWithAllAnalyzerNames() {
-        List<AnalyzerName> allAnalyzerNames = new ArrayList<>(AnalyzerName.values());
-        allAnalyzerNames.sort(Comparator.comparing(AnalyzerName::toString));
+    SearchIndex  prepareIndexWithAllLexicalAnalyzerNames() {
+        List<LexicalAnalyzerName> allLexicalAnalyzerNames = new ArrayList<>(LexicalAnalyzerName.values());
+        allLexicalAnalyzerNames.sort(Comparator.comparing(LexicalAnalyzerName::toString));
 
-        List<Field> fields = new ArrayList<>();
+        List<SearchField> fields = new ArrayList<>();
         int fieldNumber = 0;
 
         // All analyzer names can be set on the analyzer property.
-        for (int i = 0; i < allAnalyzerNames.size(); i++) {
-            DataType fieldType = (i % 2 == 0) ? DataType.EDM_STRING : DataType.collection(DataType.EDM_STRING);
-            fields.add(new Field()
+        for (int i = 0; i < allLexicalAnalyzerNames.size(); i++) {
+            SearchFieldDataType fieldType = (i % 2 == 0) ? SearchFieldDataType.STRING : SearchFieldDataType
+                .collection(SearchFieldDataType.STRING);
+            fields.add(new SearchField()
                 .setName("field" + (fieldNumber++))
                 .setType(fieldType)
-                .setAnalyzer(allAnalyzerNames.get(i)));
+                .setAnalyzer(allLexicalAnalyzerNames.get(i)));
         }
 
-        List<AnalyzerName> searchAnalyzersAndIndexAnalyzers = getAnalyzersAllowedForSearchAnalyzerAndIndexAnalyzer();
+        List<LexicalAnalyzerName> searchLexicalAnalyzersAndIndexLexicalAnalyzers = getAnalyzersAllowedForSearchLexicalAnalyzerAndIndexLexicalAnalyzer();
 
-        for (int i = 0; i < searchAnalyzersAndIndexAnalyzers.size(); i++) {
-            DataType fieldType = (i % 2 == 0) ? DataType.EDM_STRING : DataType.collection(DataType.EDM_STRING);
-            fields.add(new Field()
+        for (int i = 0; i < searchLexicalAnalyzersAndIndexLexicalAnalyzers.size(); i++) {
+            SearchFieldDataType fieldType = (i % 2 == 0) ? SearchFieldDataType.STRING
+                : SearchFieldDataType.collection(SearchFieldDataType.STRING);
+            fields.add(new SearchField()
                 .setName("field" + (fieldNumber++))
                 .setType(fieldType)
                 .setSearchable(true)
-                .setSearchAnalyzer(searchAnalyzersAndIndexAnalyzers.get(i))
-                .setIndexAnalyzer(searchAnalyzersAndIndexAnalyzers.get(i)));
+                .setSearchAnalyzer(searchLexicalAnalyzersAndIndexLexicalAnalyzers.get(i))
+                .setIndexAnalyzer(searchLexicalAnalyzersAndIndexLexicalAnalyzers.get(i)));
         }
 
-        fields.add(new Field()
+        fields.add(new SearchField()
             .setName("id")
-            .setType(DataType.EDM_STRING)
+            .setType(SearchFieldDataType.STRING)
             .setKey(true));
 
-        return new Index()
+        return new SearchIndex()
             .setName("hotel")
             .setFields(fields);
     }
 
-    Index prepareIndexWithAllAnalysisComponentNames() {
-        Analyzer analyzerWithAllTokenFilterAndCharFilters =
+    SearchIndex  prepareIndexWithAllAnalysisComponentNames() {
+        LexicalAnalyzer analyzerWithAllTokenFilterAndCharFilters =
             new CustomAnalyzer()
-                .setTokenizer(TokenizerName.LOWERCASE)
+                .setTokenizer(LexicalTokenizerName.LOWERCASE)
                 .setTokenFilters(TokenFilterName.values()
                     .stream()
                     .sorted(Comparator.comparing(TokenFilterName::toString))
@@ -803,18 +808,18 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
                     .collect(Collectors.toList()))
                 .setName("abc");
 
-        Index index = createTestIndex();
-        List<Analyzer> analyzers = new ArrayList<>();
+        SearchIndex  index = createTestIndex();
+        List<LexicalAnalyzer> analyzers = new ArrayList<>();
         analyzers.add(analyzerWithAllTokenFilterAndCharFilters);
-        analyzers.addAll(TokenizerName.values()
+        analyzers.addAll(LexicalTokenizerName.values()
             .stream()
-            .sorted(Comparator.comparing(TokenizerName::toString))
+            .sorted(Comparator.comparing(LexicalTokenizerName::toString))
             .map(tn -> new CustomAnalyzer()
                 .setTokenizer(tn)
                 .setName(generateName()))
             .collect(Collectors.toList()));
 
-        analyzers.sort(Comparator.comparing(Analyzer::getName));
+        analyzers.sort(Comparator.comparing(LexicalAnalyzer::getName));
         index.setAnalyzers(analyzers);
 
         return index;
@@ -822,15 +827,15 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
 
     /**
      * Custom analysis components (analyzer/tokenzier/tokenFilter/charFilter) count in index must be between 0 and 50.
-     * Split an Index into indexes, each of which has a total analysis components count within the limit.
+     * Split an SearchIndex into indexes, each of which has a total analysis components count within the limit.
      */
-    List<Index> splitIndex(Index index) {
-        Collection<List<Analyzer>> analyzersLists = splitAnalysisComponents(index.getAnalyzers());
-        List<Index> indexes = analyzersLists
+    List<SearchIndex> splitIndex(SearchIndex  index) {
+        Collection<List<LexicalAnalyzer>> analyzersLists = splitAnalysisComponents(index.getAnalyzers());
+        List<SearchIndex> indexes = analyzersLists
             .stream()
             .map(a -> createTestIndex().setAnalyzers(a)).collect(Collectors.toList());
 
-        Collection<List<Tokenizer>> tokenizersLists = splitAnalysisComponents(index.getTokenizers());
+        Collection<List<LexicalTokenizer>> tokenizersLists = splitAnalysisComponents(index.getTokenizers());
         indexes.addAll(tokenizersLists
             .stream()
             .map(t -> createTestIndex().setTokenizers(t))
@@ -873,28 +878,28 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         return lists;
     }
 
-    Index prepareIndexWithAllAnalysisComponentTypes() {
-        final TokenizerName customTokenizerName = TokenizerName.fromString("my_tokenizer");
+    SearchIndex  prepareIndexWithAllAnalysisComponentTypes() {
+        final LexicalTokenizerName customLexicalTokenizerName = LexicalTokenizerName.fromString("my_tokenizer");
         final TokenFilterName customTokenFilterName = TokenFilterName.fromString("my_tokenfilter");
         final CharFilterName customCharFilterName = CharFilterName.fromString("my_charfilter");
 
         return createTestIndex()
             .setAnalyzers(Arrays.asList(
                 new CustomAnalyzer()
-                    .setTokenizer(customTokenizerName)
+                    .setTokenizer(customLexicalTokenizerName)
                     .setTokenFilters(Collections.singletonList(customTokenFilterName))
                     .setCharFilters(Collections.singletonList(customCharFilterName))
                     .setName(generateName()),
                 new CustomAnalyzer()
-                    .setTokenizer(TokenizerName.EDGE_NGRAM)
+                    .setTokenizer(LexicalTokenizerName.EDGE_NGRAM)
                     .setName(generateName()),
                 new PatternAnalyzer()
                     .setLowerCaseTerms(false)
                     .setPattern("abc")
-                    .setFlags(Collections.singletonList(RegexFlags.DOTALL))
+                    .setFlags(Collections.singletonList(RegexFlags.DOT_ALL))
                     .setStopwords(Collections.singletonList("the"))
                     .setName(generateName()),
-                new StandardAnalyzer()
+                new LuceneStandardAnalyzer()
                     .setMaxTokenLength(100)
                     .setStopwords(Collections.singletonList("the"))
                     .setName(generateName()),
@@ -908,7 +913,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
                 new EdgeNGramTokenizer()
                     .setMinGram(1)
                     .setMaxGram(2)
-                    .setName(customTokenizerName.toString()),
+                    .setName(customLexicalTokenizerName.toString()),
                 new EdgeNGramTokenizer()
                     .setMinGram(2)
                     .setMaxGram(4)
@@ -947,7 +952,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
                     .setFlags(Collections.singletonList(RegexFlags.MULTILINE))
                     .setGroup(0)
                     .setName(generateName()),
-                new StandardTokenizerV2()
+                new LuceneStandardTokenizerV2()
                     .setMaxTokenLength(100)
                     .setName(generateName()),
                 new UaxUrlEmailTokenizer()
@@ -1006,8 +1011,8 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
                     .setKeywords(Collections.singletonList("essential"))
                     .setName(generateName()),
                 new LengthTokenFilter()
-                    .setMin(5)
-                    .setMax(10)
+                    .setMinLength(5)
+                    .setMaxLength(10)
                     .setName(generateName()),
                 new LimitTokenFilter()
                     .setMaxTokenCount(10)
@@ -1096,14 +1101,14 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
             ));
     }
 
-    Index createIndexWithSpecialDefaults() {
+    SearchIndex  createdIndexWithSpecialDefaults() {
         int i = 0;
 
         return createTestIndex()
             .setAnalyzers(Arrays.asList(
                 new PatternAnalyzer()
                     .setName(generateSimpleName(i++)),
-                new StandardAnalyzer()
+                new LuceneStandardAnalyzer()
                     .setName(generateSimpleName(i++))
             ))
             .setTokenizers(Arrays.asList(
@@ -1123,7 +1128,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
                     .setName(generateSimpleName(i++)),
                 new PatternTokenizer()
                     .setName(generateSimpleName(i++)),
-                new StandardTokenizerV2()
+                new LuceneStandardTokenizerV2()
                     .setName(generateSimpleName(i++)),
                 new UaxUrlEmailTokenizer()
                     .setName(generateSimpleName(i++))
@@ -1159,7 +1164,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
             ));
     }
 
-    Index createExpectedIndexWithSpecialDefaults(Index index) {
+    SearchIndex  createExpectedIndexWithSpecialDefaults(SearchIndex  index) {
         int i = 0;
 
         return createTestIndex()
@@ -1169,7 +1174,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
                     .setLowerCaseTerms(true)
                     .setPattern("\\W+")
                     .setName(generateSimpleName(i++)),
-                new StandardAnalyzer()
+                new LuceneStandardAnalyzer()
                     .setMaxTokenLength(255)
                     .setName(generateSimpleName(i++))
             ))
@@ -1207,7 +1212,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
                     .setPattern("\\W+")
                     .setGroup(-1)
                     .setName(generateSimpleName(i++)),
-                new StandardTokenizerV2()
+                new LuceneStandardTokenizerV2()
                     .setMaxTokenLength(255)
                     .setName(generateSimpleName(i++)),
                 new UaxUrlEmailTokenizer()
@@ -1227,7 +1232,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
                     .setSide(EdgeNGramTokenFilterSide.FRONT)
                     .setName(generateSimpleName(i++)),
                 new LengthTokenFilter()
-                    .setMax(300)
+                    .setMaxLength(300)
                     .setName(generateSimpleName(i++)),
                 new LimitTokenFilter()
                     .setMaxTokenCount(1)
@@ -1273,7 +1278,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
     }
 
     void assertTokenInfoEqual(String expectedToken, Integer expectedStartOffset, Integer expectedEndOffset,
-        Integer expectedPosition, TokenInfo actual) {
+        Integer expectedPosition, AnalyzedTokenInfo actual) {
         assertEquals(expectedToken, actual.getToken());
         assertEquals(expectedStartOffset, actual.getStartOffset());
         assertEquals(expectedEndOffset, actual.getEndOffset());
@@ -1284,10 +1289,10 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         return String.format("a%d", n);
     }
 
-    private List<AnalyzerName> getAnalyzersAllowedForSearchAnalyzerAndIndexAnalyzer() {
-        // Only non-language analyzer names can be set on the searchAnalyzer and indexAnalyzer properties.
+    private List<LexicalAnalyzerName> getAnalyzersAllowedForSearchLexicalAnalyzerAndIndexLexicalAnalyzer() {
+        // Only non-language analyzer names can be set on the searchLexicalAnalyzer and indexLexicalAnalyzer properties.
         // ASSUMPTION: Only language analyzers end in .lucene or .microsoft.
-        return AnalyzerName.values()
+        return LexicalAnalyzerName.values()
             .stream()
             .filter(an -> !an.toString().endsWith(".lucene") && !an.toString().endsWith(".microsoft"))
             .collect(Collectors.toList());

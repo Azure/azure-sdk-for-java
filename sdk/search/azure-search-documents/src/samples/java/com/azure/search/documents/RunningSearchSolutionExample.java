@@ -7,18 +7,20 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
-import com.azure.search.documents.models.AutocompleteItem;
-import com.azure.search.documents.models.AutocompleteMode;
-import com.azure.search.documents.models.AutocompleteOptions;
+import com.azure.search.documents.indexes.SearchIndexClient;
+import com.azure.search.documents.indexes.SearchIndexerClient;
+import com.azure.search.documents.indexes.models.AutocompleteItem;
+import com.azure.search.documents.indexes.models.AutocompleteMode;
+import com.azure.search.documents.indexes.models.AutocompleteOptions;
+import com.azure.search.documents.indexes.models.SearchOptions;
+import com.azure.search.documents.indexes.models.SuggestResult;
+import com.azure.search.documents.indexes.util.AutocompletePagedResponse;
+import com.azure.search.documents.indexes.util.SearchPagedIterable;
+import com.azure.search.documents.indexes.util.SuggestPagedResponse;
 import com.azure.search.documents.models.GetIndexStatisticsResult;
-import com.azure.search.documents.models.IndexerExecutionInfo;
 import com.azure.search.documents.models.RequestOptions;
-import com.azure.search.documents.models.SearchOptions;
+import com.azure.search.documents.models.SearchIndexerStatus;
 import com.azure.search.documents.models.SuggestOptions;
-import com.azure.search.documents.models.SuggestResult;
-import com.azure.search.documents.util.AutocompletePagedResponse;
-import com.azure.search.documents.util.SearchPagedIterable;
-import com.azure.search.documents.util.SuggestPagedResponse;
 
 import java.util.Iterator;
 
@@ -42,31 +44,33 @@ public class RunningSearchSolutionExample {
 
     public static void main(String[] args) {
         SearchServiceClient serviceClient = createServiceClient();
-        SearchIndexClient indexClient = createIndexClient();
+        SearchIndexClient indexClient = serviceClient.getSearchIndexClient();
+        SearchIndexerClient indexerClient = serviceClient.getSearchIndexerClient();
+        SearchClient searchClient = createIndexClient();
 
         // get index statistics
-        GetIndexStatisticsResult indexStatistics = serviceClient.getIndexStatistics(INDEX_NAME);
+        GetIndexStatisticsResult indexStatistics = indexClient.getIndexStatistics(INDEX_NAME);
         System.out.printf("Index %s: Document Count = %d, Storage Size = %d%n", INDEX_NAME, indexStatistics.getDocumentCount(), indexStatistics.getStorageSize());
 
         // run indexer
-        serviceClient.runIndexer(INDEXER_NAME);
+        indexerClient.runIndexer(INDEXER_NAME);
 
         // get indexer status
-        IndexerExecutionInfo indexerStatus = serviceClient.getIndexerStatus(INDEXER_NAME);
+        SearchIndexerStatus indexerStatus = indexerClient.getIndexerStatus(INDEXER_NAME);
         System.out.printf("Indexer %s status = %s%n", INDEXER_NAME, indexerStatus.getStatus());
 
         // run a search query
-        searchQuery(indexClient);
+        searchQuery(searchClient);
 
         // run an autocomplete query
-        autocompleteQuery(indexClient);
+        autocompleteQuery(searchClient);
 
         // run a suggest query with fuzzy matching
-        suggestQuery(indexClient);
+        suggestQuery(searchClient);
 
     }
 
-    private static void suggestQuery(SearchIndexClient client) {
+    private static void suggestQuery(SearchClient client) {
 
         SuggestOptions suggestOptions = new SuggestOptions()
             .setUseFuzzyMatching(true);
@@ -83,7 +87,7 @@ public class RunningSearchSolutionExample {
         );
     }
 
-    private static void autocompleteQuery(SearchIndexClient client) {
+    private static void autocompleteQuery(SearchClient client) {
 
         AutocompleteOptions params = new AutocompleteOptions().setAutocompleteMode(
             AutocompleteMode.ONE_TERM_WITH_CONTEXT);
@@ -95,7 +99,7 @@ public class RunningSearchSolutionExample {
         results.forEach(result -> System.out.println(result.getText()));
     }
 
-    private static void searchQuery(SearchIndexClient client) {
+    private static void searchQuery(SearchClient client) {
 
         // search=Resort&searchfields=HotelName&$count=true
         SearchOptions searchOptions = new SearchOptions()
@@ -111,8 +115,8 @@ public class RunningSearchSolutionExample {
         });
     }
 
-    private static SearchIndexClient createIndexClient() {
-        return new SearchIndexClientBuilder()
+    private static SearchClient createIndexClient() {
+        return new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(ADMIN_KEY))
             .indexName(INDEX_NAME)

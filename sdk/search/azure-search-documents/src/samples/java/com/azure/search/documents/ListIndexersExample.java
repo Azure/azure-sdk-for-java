@@ -6,8 +6,9 @@ package com.azure.search.documents;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.models.Indexer;
+import com.azure.search.documents.indexes.SearchIndexerAsyncClient;
 import com.azure.search.documents.models.RequestOptions;
+import com.azure.search.documents.models.SearchIndexer;
 
 import java.util.List;
 
@@ -31,19 +32,20 @@ public class ListIndexersExample {
             .credential(new AzureKeyCredential(ADMIN_KEY))
             .buildAsyncClient();
 
-        listIndexers(searchServiceClient);
+        SearchIndexerAsyncClient indexerClient = searchServiceClient.getSearchIndexerAsyncClient();
+        listIndexers(indexerClient);
     }
 
-    private static void listIndexers(SearchServiceAsyncClient searchServiceClient) {
-        PagedResponse<Indexer> response = searchServiceClient.listIndexers("*",
+    private static void listIndexers(SearchIndexerAsyncClient indexerClient) {
+        PagedResponse<SearchIndexer> response = indexerClient.listIndexers("*",
             new RequestOptions()).byPage().blockFirst();
 
         if (response != null) {
             System.out.println(String.format("Response code: %s", response.getStatusCode()));
 
-            List<Indexer> indexers = response.getValue();
+            List<SearchIndexer> indexers = response.getValue();
             System.out.println("Found the following indexers:");
-            for (Indexer indexer : indexers) {
+            for (SearchIndexer indexer : indexers) {
                 System.out.println(String.format("Indexer name: %s, ETag: %s", indexer.getName(), indexer.getETag()));
             }
         }

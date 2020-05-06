@@ -3,7 +3,6 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.implementation.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.models.ErrorResponseException;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
@@ -18,19 +17,17 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.validateLayoutDataResults;
-import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_FORM_DATA;
-import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_URL;
-import static com.azure.ai.formrecognizer.TestUtils.getAnalyzeRawResponse;
+import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_API_KEY;
+import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.validateAccountProperties;
+import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
+import static com.azure.ai.formrecognizer.TestUtils.VALID_URL;
+import static com.azure.ai.formrecognizer.TestUtils.getExpectedAccountProperties;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests for Form Recognizer client builder
  */
 public class FormRecognizerClientBuilderTest extends TestBase {
-    private static final String AZURE_FORM_RECOGNIZER_API_KEY = "AZURE_FORM_RECOGNIZER_API_KEY";
-    private static final String INVALID_KEY = "invalid key";
-
     /**
      * Test client builder with invalid API key
      */
@@ -45,10 +42,8 @@ public class FormRecognizerClientBuilderTest extends TestBase {
      */
     @Test
     public void clientBuilderWithRotateToValidKey() {
-        final AnalyzeResult rawResponse = getAnalyzeRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult();
         clientBuilderWithRotateToValidKeyRunner(clientBuilder -> (input) ->
-            validateLayoutDataResults(clientBuilder.buildClient().beginRecognizeContentFromUrl(input).getFinalResult(),
-                rawResponse.getReadResults(), rawResponse.getPageResults(), false));
+            validateAccountProperties(getExpectedAccountProperties(), clientBuilder.buildClient().getFormTrainingClient().getAccountProperties()));
     }
 
     /**
@@ -65,10 +60,8 @@ public class FormRecognizerClientBuilderTest extends TestBase {
      */
     @Test
     public void clientBuilderWithNullServiceVersion() {
-        final AnalyzeResult rawResponse = getAnalyzeRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult();
         clientBuilderWithNullServiceVersionRunner(clientBuilder -> (input) ->
-            validateLayoutDataResults(clientBuilder.buildClient().beginRecognizeContentFromUrl(input).getFinalResult(),
-                rawResponse.getReadResults(), rawResponse.getPageResults(), false));
+            validateAccountProperties(getExpectedAccountProperties(), clientBuilder.buildClient().getFormTrainingClient().getAccountProperties()));
     }
 
     /**
@@ -76,10 +69,8 @@ public class FormRecognizerClientBuilderTest extends TestBase {
      */
     @Test
     public void clientBuilderWithDefaultPipeline() {
-        final AnalyzeResult rawResponse = getAnalyzeRawResponse(LAYOUT_FORM_DATA).getAnalyzeResult();
         clientBuilderWithDefaultPipelineRunner(clientBuilder -> (input) ->
-            validateLayoutDataResults(clientBuilder.buildClient().beginRecognizeContentFromUrl(input).getFinalResult(),
-                rawResponse.getReadResults(), rawResponse.getPageResults(), false));
+            validateAccountProperties(getExpectedAccountProperties(), clientBuilder.buildClient().getFormTrainingClient().getAccountProperties()));
     }
 
     // Client builder runner
@@ -87,7 +78,7 @@ public class FormRecognizerClientBuilderTest extends TestBase {
         Function<FormRecognizerClientBuilder, BiConsumer<String, ErrorResponseException>> testRunner) {
         final FormRecognizerClientBuilder clientBuilder = createClientBuilder(getEndpoint(),
             new AzureKeyCredential(INVALID_KEY));
-        testRunner.apply(clientBuilder).accept(LAYOUT_URL, new ErrorResponseException("", null));
+        testRunner.apply(clientBuilder).accept(VALID_URL, new ErrorResponseException("", null));
     }
 
     void clientBuilderWithRotateToInvalidKeyRunner(
@@ -96,7 +87,7 @@ public class FormRecognizerClientBuilderTest extends TestBase {
         final FormRecognizerClientBuilder clientBuilder = createClientBuilder(getEndpoint(), credential);
         // Update to invalid key
         credential.update(INVALID_KEY);
-        testRunner.apply(clientBuilder).accept(LAYOUT_URL, new ErrorResponseException("", null));
+        testRunner.apply(clientBuilder).accept(VALID_URL, new ErrorResponseException("", null));
     }
 
     void clientBuilderWithRotateToValidKeyRunner(
@@ -105,7 +96,7 @@ public class FormRecognizerClientBuilderTest extends TestBase {
         final FormRecognizerClientBuilder clientBuilder = createClientBuilder(getEndpoint(), credential);
         // Update to valid key
         credential.update(getApiKey());
-        testRunner.apply(clientBuilder).accept(LAYOUT_URL);
+        testRunner.apply(clientBuilder).accept(VALID_URL);
     }
 
     void clientBuilderWithNullServiceVersionRunner(
@@ -114,7 +105,7 @@ public class FormRecognizerClientBuilderTest extends TestBase {
             createClientBuilder(getEndpoint(), new AzureKeyCredential(getApiKey()))
                 .retryPolicy(new RetryPolicy())
                 .serviceVersion(null);
-        testRunner.apply(clientBuilder).accept(LAYOUT_URL);
+        testRunner.apply(clientBuilder).accept(VALID_URL);
     }
 
     void clientBuilderWithDefaultPipelineRunner(
@@ -123,7 +114,7 @@ public class FormRecognizerClientBuilderTest extends TestBase {
             createClientBuilder(getEndpoint(), new AzureKeyCredential(getApiKey()))
                 .configuration(Configuration.getGlobalConfiguration())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
-        testRunner.apply(clientBuilder).accept(LAYOUT_URL);
+        testRunner.apply(clientBuilder).accept(VALID_URL);
     }
 
     String getEndpoint() {
@@ -142,7 +133,7 @@ public class FormRecognizerClientBuilderTest extends TestBase {
      */
     FormRecognizerClientBuilder createClientBuilder(String endpoint, AzureKeyCredential credential) {
         final FormRecognizerClientBuilder clientBuilder = new FormRecognizerClientBuilder()
-            .apiKey(credential)
+            .credential(credential)
             .endpoint(endpoint);
 
         if (interceptorManager.isPlaybackMode()) {

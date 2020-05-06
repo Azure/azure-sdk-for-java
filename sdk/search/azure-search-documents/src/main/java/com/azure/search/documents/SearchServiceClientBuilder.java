@@ -173,14 +173,7 @@ public final class SearchServiceClientBuilder {
      * @throws IllegalArgumentException If {@link AzureKeyCredential#getKey()} is {@code null} or empty.
      */
     public SearchServiceClientBuilder credential(AzureKeyCredential keyCredential) {
-        if (keyCredential == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'keyCredential' cannot be null."));
-        }
-        if (CoreUtils.isNullOrEmpty(keyCredential.getKey())) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("'keyCredential' cannot have a null or empty API key."));
-        }
-        this.keyCredential = keyCredential;
+        this.keyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         return this;
     }
 

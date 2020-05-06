@@ -3,6 +3,7 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.search.documents.indexes.models.ScoringParameter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

@@ -5,8 +5,8 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
+import com.azure.search.documents.indexes.util.SearchPagedFlux;
 import com.azure.search.documents.models.Hotel;
-import com.azure.search.documents.util.SearchPagedFlux;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -34,7 +34,7 @@ public class SearchAsyncWithFullyTypedDocumentsExample {
     private static final String INDEX_NAME = "hotels-sample-index";
 
     public static void main(String[] args) {
-        SearchIndexAsyncClient searchClient = new SearchIndexClientBuilder()
+        SearchAsyncClient searchClient = new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
             .indexName(INDEX_NAME)

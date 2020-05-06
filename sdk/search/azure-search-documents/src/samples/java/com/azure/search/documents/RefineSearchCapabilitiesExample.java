@@ -5,18 +5,19 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.models.Field;
+import com.azure.search.documents.indexes.SearchSkillsetClient;
+import com.azure.search.documents.indexes.models.IndexDocumentsResult;
 import com.azure.search.documents.models.Hotel;
-import com.azure.search.documents.models.Index;
-import com.azure.search.documents.models.IndexDocumentsResult;
-import com.azure.search.documents.models.Indexer;
 import com.azure.search.documents.models.InputFieldMappingEntry;
 import com.azure.search.documents.models.OutputFieldMappingEntry;
+import com.azure.search.documents.models.SearchField;
+import com.azure.search.documents.models.SearchIndex;
+import com.azure.search.documents.models.SearchIndexer;
+import com.azure.search.documents.models.SearchIndexerSkill;
+import com.azure.search.documents.models.SearchIndexerSkillset;
 import com.azure.search.documents.models.ServiceCounters;
 import com.azure.search.documents.models.ServiceLimits;
 import com.azure.search.documents.models.ServiceStatistics;
-import com.azure.search.documents.models.Skill;
-import com.azure.search.documents.models.Skillset;
 import com.azure.search.documents.models.SynonymMap;
 import com.azure.search.documents.models.WebApiSkill;
 
@@ -44,7 +45,8 @@ public class RefineSearchCapabilitiesExample {
 
     public static void main(String[] args) {
         SearchServiceClient serviceClient = createServiceClient();
-        SearchIndexClient indexClient = createIndexClient();
+        SearchSkillsetClient skillsetClient = serviceClient.getSkillsetClient();
+        SearchClient indexClient = createIndexClient();
 
         // Add a synonym map to an index field
         addSynonymMapToIndex(serviceClient);
@@ -76,7 +78,7 @@ public class RefineSearchCapabilitiesExample {
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Ocp-Apim-Subscription-Key", "Bing entity search API key");
 
-        Skill webApiSkill = new WebApiSkill()
+        SearchIndexerSkill webApiSkill = new WebApiSkill()
             .setUri("https://api.cognitive.microsoft.com/bing/v7.0/entities/")
             .setHttpMethod("POST") // Supports only "POST" and "PUT" HTTP methods
             .setHttpHeaders(headers)
@@ -85,16 +87,17 @@ public class RefineSearchCapabilitiesExample {
             .setName("webapi-skill")
             .setDescription("A WebApi skill that can be used as a custom skillset");
 
-        Skillset skillset = new Skillset()
+        SearchIndexerSkillset skillset = new SearchIndexerSkillset()
             .setName(skillsetName)
             .setDescription("Skillset for testing custom skillsets")
             .setSkills(Collections.singletonList(webApiSkill));
 
-        client.createOrUpdateSkillset(skillset);
+        client.getSkillsetClient().createOrUpdateSkillset(skillset);
         System.out.printf("Created Skillset %s%n", skillsetName);
 
-        Indexer indexer = client.getIndexer(INDEXER_NAME).setSkillsetName(skillsetName);
-        client.createOrUpdateIndexer(indexer);
+        SearchIndexer indexer = client.getSearchIndexerClient()
+            .getIndexer(INDEXER_NAME).setSkillsetName(skillsetName);
+        client.getSearchIndexerClient().createOrUpdateIndexer(indexer);
         System.out.printf("Updated Indexer %s with  Skillset %s%n", INDEXER_NAME, skillsetName);
     }
 
@@ -109,7 +112,7 @@ public class RefineSearchCapabilitiesExample {
 
     }
 
-    private static void uploadDocumentsToIndex(SearchIndexClient client) {
+    private static void uploadDocumentsToIndex(SearchClient client) {
 
         List<Hotel> hotels = new ArrayList<>();
         hotels.add(new Hotel().setHotelId("100"));
@@ -127,14 +130,14 @@ public class RefineSearchCapabilitiesExample {
             .setName(synonymMapName)
             .setSynonyms("hotel, motel\ninternet,wifi\nfive star=>luxury\neconomy,inexpensive=>budget");
 
-        client.createOrUpdateSynonymMap(synonymMap);
+        client.getSynonymMapClient().createOrUpdateSynonymMap(synonymMap);
 
-        Index index = client.getIndex(INDEX_NAME);
-        List<Field> fields = index.getFields();
+        SearchIndex index = client.getSearchIndexClient().getIndex(INDEX_NAME);
+        List<SearchField> fields = index.getFields();
         fields.get(1).setSynonymMaps(Collections.singletonList(synonymMapName));
         index.setFields(fields);
 
-        client.createOrUpdateIndex(index);
+        client.getSearchIndexClient().createOrUpdateIndex(index);
         System.out.printf("Updated index %s with synonym map %s on field %s%n", INDEX_NAME, synonymMapName, "HotelName");
     }
 
@@ -145,8 +148,8 @@ public class RefineSearchCapabilitiesExample {
             .buildClient();
     }
 
-    private static SearchIndexClient createIndexClient() {
-        return new SearchIndexClientBuilder()
+    private static SearchClient createIndexClient() {
+        return new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(ADMIN_KEY))
             .indexName(INDEX_NAME)

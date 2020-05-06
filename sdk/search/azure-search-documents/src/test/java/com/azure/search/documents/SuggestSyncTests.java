@@ -5,12 +5,12 @@ package com.azure.search.documents;
 import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Context;
+import com.azure.search.documents.indexes.models.SuggestResult;
+import com.azure.search.documents.indexes.util.SuggestPagedResponse;
 import com.azure.search.documents.models.SuggestOptions;
-import com.azure.search.documents.models.SuggestResult;
 import com.azure.search.documents.test.environment.models.Author;
 import com.azure.search.documents.test.environment.models.Book;
 import com.azure.search.documents.test.environment.models.Hotel;
-import com.azure.search.documents.util.SuggestPagedResponse;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -40,7 +40,7 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
     private static final String BOOKS_INDEX_JSON = "BooksIndexData.json";
     private static final String BOOKS_INDEX_NAME = "books";
 
-    private SearchIndexClient client;
+    private SearchClient client;
 
     @Test
     public void canSuggestDynamicDocuments() {

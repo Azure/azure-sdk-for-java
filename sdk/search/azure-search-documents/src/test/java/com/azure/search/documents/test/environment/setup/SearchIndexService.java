@@ -7,7 +7,8 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.search.documents.SearchServiceClient;
 import com.azure.search.documents.SearchServiceClientBuilder;
 import com.azure.search.documents.TestHelpers;
-import com.azure.search.documents.models.Index;
+import com.azure.search.documents.indexes.SearchIndexClient;
+import com.azure.search.documents.models.SearchIndex;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -21,6 +22,7 @@ public class SearchIndexService {
     private String indexName;
 
     private SearchServiceClient searchServiceClient;
+    private SearchIndexClient searchIndexClient;
 
     /**
      * Creates an instance of SearchIndexService to be used in creating a sample index in Azure Cognitive Search, to be
@@ -39,12 +41,12 @@ public class SearchIndexService {
      *
      * @param index the index to be created.
      */
-    public void initializeAndCreateIndex(Index index) {
+    public void initializeAndCreateIndex(SearchIndex index) {
         initServiceClient();
 
         if (index != null) {
             this.indexName = index.getName();
-            searchServiceClient.createOrUpdateIndex(index);
+            searchIndexClient.createOrUpdateIndex(index);
         }
     }
 
@@ -59,9 +61,9 @@ public class SearchIndexService {
 
         if (!TestHelpers.isBlank(indexDataFileName)) {
             Reader indexData = new InputStreamReader(getClass().getClassLoader().getResourceAsStream(indexDataFileName));
-            Index index = new ObjectMapper().readValue(indexData, Index.class);
+            SearchIndex index = new ObjectMapper().readValue(indexData, SearchIndex.class);
             this.indexName = index.getName();
-            searchServiceClient.createOrUpdateIndex(index);
+            searchIndexClient.createOrUpdateIndex(index);
         }
     }
 
@@ -72,6 +74,7 @@ public class SearchIndexService {
                 .credential(new AzureKeyCredential(apiAdminKey))
                 .buildClient();
         }
+        searchIndexClient = searchServiceClient.getSearchIndexClient();
     }
 
     /**

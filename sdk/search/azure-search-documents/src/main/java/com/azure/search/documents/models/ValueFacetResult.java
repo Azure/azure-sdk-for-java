@@ -5,6 +5,7 @@ package com.azure.search.documents.models;
 
 
 import com.azure.core.annotation.Immutable;
+import com.azure.search.documents.indexes.models.FacetResult;
 
 /**
  * A single bucket of a simple or interval facet query result that reports the number of documents with a field

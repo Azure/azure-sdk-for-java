@@ -7,16 +7,13 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
-import com.azure.search.documents.models.DataSource;
-import com.azure.search.documents.models.DataType;
-import com.azure.search.documents.models.Field;
+import com.azure.search.documents.indexes.SearchDataSourceClient;
+import com.azure.search.documents.indexes.SearchIndexClient;
+import com.azure.search.documents.indexes.SearchIndexerClient;
+import com.azure.search.documents.indexes.SearchSkillsetClient;
 import com.azure.search.documents.models.FieldMapping;
-import com.azure.search.documents.models.Index;
-import com.azure.search.documents.models.Indexer;
-import com.azure.search.documents.models.IndexerExecutionInfo;
 import com.azure.search.documents.models.IndexerExecutionResult;
 import com.azure.search.documents.models.IndexerExecutionStatus;
-import com.azure.search.documents.models.IndexerLimits;
 import com.azure.search.documents.models.IndexerStatus;
 import com.azure.search.documents.models.IndexingParameters;
 import com.azure.search.documents.models.IndexingSchedule;
@@ -24,8 +21,15 @@ import com.azure.search.documents.models.InputFieldMappingEntry;
 import com.azure.search.documents.models.OcrSkill;
 import com.azure.search.documents.models.OutputFieldMappingEntry;
 import com.azure.search.documents.models.RequestOptions;
-import com.azure.search.documents.models.Skill;
-import com.azure.search.documents.models.Skillset;
+import com.azure.search.documents.models.SearchField;
+import com.azure.search.documents.models.SearchFieldDataType;
+import com.azure.search.documents.models.SearchIndex;
+import com.azure.search.documents.models.SearchIndexer;
+import com.azure.search.documents.models.SearchIndexerDataSource;
+import com.azure.search.documents.models.SearchIndexerLimits;
+import com.azure.search.documents.models.SearchIndexerSkill;
+import com.azure.search.documents.models.SearchIndexerSkillset;
+import com.azure.search.documents.models.SearchIndexerStatus;
 import com.azure.search.documents.test.AccessConditionTests;
 import com.azure.search.documents.test.AccessOptions;
 import com.azure.search.documents.test.CustomQueryPipelinePolicy;
@@ -58,56 +62,60 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
     private static final HttpPipelinePolicy MOCK_STATUS_PIPELINE_POLICY =
         new CustomQueryPipelinePolicy("mock_status", "inProgress");
 
-    private SearchServiceClient client;
+    private SearchServiceClient serviceClient;
+    private SearchDataSourceClient dataSourceClient;
+    private SearchIndexerClient searchIndexerClient;
+    private SearchIndexClient searchIndexClient;
+    private SearchSkillsetClient searchSkillsetClient;
 
     // commonly used lambda definitions
-    private BiFunction<Indexer, AccessOptions, Indexer> createOrUpdateIndexerFunc =
-        (Indexer indexer, AccessOptions ac) ->
+    private BiFunction<SearchIndexer, AccessOptions, SearchIndexer> createOrUpdateIndexerFunc =
+        (SearchIndexer indexer, AccessOptions ac) ->
             createOrUpdateIndexer(indexer, ac.getOnlyIfUnchanged(), ac.getRequestOptions());
 
-    private Supplier<Indexer> newIndexerFunc =
+    private Supplier<SearchIndexer> newIndexerFunc =
         () -> createBaseTestIndexerObject("name").setDataSourceName(SQL_DATASOURCE_NAME);
 
-    private Function<Indexer, Indexer> mutateIndexerFunc =
-        (Indexer indexer) -> indexer.setDescription("ABrandNewDescription");
+    private Function<SearchIndexer, SearchIndexer> mutateIndexerFunc =
+        (SearchIndexer indexer) -> indexer.setDescription("ABrandNewDescription");
 
-    private BiConsumer<Indexer, AccessOptions> deleteIndexerFunc =
-        (Indexer indexer, AccessOptions ac) ->
-            client.deleteIndexerWithResponse(indexer, ac.getOnlyIfUnchanged(),
+    private BiConsumer<SearchIndexer, AccessOptions> deleteIndexerFunc =
+        (SearchIndexer indexer, AccessOptions ac) ->
+            searchIndexerClient.deleteIndexerWithResponse(indexer, ac.getOnlyIfUnchanged(),
                 ac.getRequestOptions(), Context.NONE);
 
 
     private void createDataSourceAndIndex() {
         // Create DataSource
-        DataSource dataSource = createTestSqlDataSourceObject();
-        client.createOrUpdateDataSource(dataSource);
+        SearchIndexerDataSource dataSource = createTestSqlDataSourceObject();
+        dataSourceClient.createOrUpdateDataSource(dataSource);
 
         // Create an index
-        Index index = createTestIndexForLiveDatasource();
-        client.createIndex(index);
+        SearchIndex index = createTestIndexForLiveDatasource();
+        searchIndexClient.createIndex(index);
     }
 
-    private List<Indexer> prepareIndexersForCreateAndListIndexers() {
-        // Create DataSource and Index
+    private List<SearchIndexer> prepareIndexersForCreateAndListIndexers() {
+        // Create SearchIndexerDataSource and Index
         createDataSourceAndIndex();
 
         // Create two indexers
-        Indexer indexer1 = createBaseTestIndexerObject("indexer1").setDataSourceName(SQL_DATASOURCE_NAME);
-        Indexer indexer2 = createBaseTestIndexerObject("indexer2").setDataSourceName(SQL_DATASOURCE_NAME);
-        client.createIndexer(indexer1);
-        client.createIndexer(indexer2);
+        SearchIndexer indexer1 = createBaseTestIndexerObject("indexer1").setDataSourceName(SQL_DATASOURCE_NAME);
+        SearchIndexer indexer2 = createBaseTestIndexerObject("indexer2").setDataSourceName(SQL_DATASOURCE_NAME);
+        searchIndexerClient.createIndexer(indexer1);
+        searchIndexerClient.createIndexer(indexer2);
 
         return Arrays.asList(indexer1, indexer2);
     }
 
-    private Indexer createTestDataSourceAndIndexer() {
-        // Create DataSource and Index
+    private SearchIndexer createTestDataSourceAndIndexer() {
+        // Create SearchIndexerDataSource and Index
         createDataSourceAndIndex();
 
         // Create the indexer object
-        Indexer indexer = createBaseTestIndexerObject("indexer")
+        SearchIndexer indexer = createBaseTestIndexerObject("indexer")
             .setDataSourceName(SQL_DATASOURCE_NAME);
-        client.createIndexer(indexer);
+        searchIndexerClient.createIndexer(indexer);
 
         return indexer;
     }
@@ -118,22 +126,22 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
      * @param updatedIndexer the indexer to be updated
      * @param dataSourceName the data source name for this indexer
      */
-    private void createUpdateAndValidateIndexer(Indexer updatedIndexer, String dataSourceName) {
+    private void createUpdateAndValidateIndexer(SearchIndexer updatedIndexer, String dataSourceName) {
         updatedIndexer.setDataSourceName(dataSourceName);
 
         // Create an index
-        Index index = createTestIndexForLiveDatasource();
-        client.createIndex(index);
+        SearchIndex index = createTestIndexForLiveDatasource();
+        searchIndexClient.createIndex(index);
 
-        Indexer initial = createBaseTestIndexerObject("indexer")
+        SearchIndexer initial = createBaseTestIndexerObject("indexer")
             .setDataSourceName(dataSourceName)
             .setIsDisabled(true);
 
         // create this indexer in the service
-        client.createIndexer(initial);
+        searchIndexerClient.createIndexer(initial);
 
         // update the indexer in the service
-        Indexer indexerResponse = client.createOrUpdateIndexer(updatedIndexer);
+        SearchIndexer indexerResponse = searchIndexerClient.createOrUpdateIndexer(updatedIndexer);
 
         // verify the returned updated indexer is as expected
         setSameStartTime(updatedIndexer, indexerResponse);
@@ -145,35 +153,39 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
      *
      * @param indexer the indexer to be created
      */
-    private void createAndValidateIndexer(Indexer indexer) {
+    private void createAndValidateIndexer(SearchIndexer indexer) {
         // Create an index
-        Index index = createTestIndexForLiveDatasource();
-        client.createIndex(index);
+        SearchIndex index = createTestIndexForLiveDatasource();
+        searchIndexClient.createIndex(index);
 
         // create this indexer in the service
-        Indexer indexerResponse = client.createIndexer(indexer);
+        SearchIndexer indexerResponse = searchIndexerClient.createIndexer(indexer);
 
         // verify the returned updated indexer is as expected
         setSameStartTime(indexer, indexerResponse);
         assertObjectEquals(indexer, indexerResponse, true, "etag");
     }
 
-    @Override
-    protected void beforeTest() {
-        super.beforeTest();
-        client = getSearchServiceClientBuilder().buildClient();
-    }
-
-    private Indexer createOrUpdateIndexer(Indexer indexer, Boolean onlyIfUnchanged,
+    private SearchIndexer createOrUpdateIndexer(SearchIndexer indexer, Boolean onlyIfUnchanged,
         RequestOptions requestOptions) {
-        return client.createOrUpdateIndexerWithResponse(
+        return searchIndexerClient.createOrUpdateIndexerWithResponse(
             indexer, onlyIfUnchanged, requestOptions, Context.NONE)
             .getValue();
     }
 
+    @Override
+    protected void beforeTest() {
+        super.beforeTest();
+        serviceClient = getSearchServiceClientBuilder().buildClient();
+        dataSourceClient = serviceClient.getDataSourceClient();
+        searchIndexClient = serviceClient.getSearchIndexClient();
+        searchIndexerClient = serviceClient.getSearchIndexerClient();
+        searchSkillsetClient = serviceClient.getSkillsetClient();
+    }
+
     @Test
     public void createIndexerReturnsCorrectDefinition() {
-        Indexer expectedIndexer =
+        SearchIndexer expectedIndexer =
             createBaseTestIndexerObject("indexer")
                 .setIsDisabled(true)
                 .setDataSourceName(SQL_DATASOURCE_NAME)
@@ -183,7 +195,7 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
                         .setMaxFailedItems(10)
                         .setMaxFailedItemsPerBatch(10));
 
-        Indexer actualIndexer = client.createIndexer(expectedIndexer);
+        SearchIndexer actualIndexer = searchIndexerClient.createIndexer(expectedIndexer);
 
         expectedIndexer.setParameters(new IndexingParameters()
             .setConfiguration(Collections.emptyMap()));
@@ -197,22 +209,22 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
 
         // Create the data source, note it a valid DS with actual
         // connection string
-        DataSource dataSource = createTestSqlDataSourceObject();
-        client.createOrUpdateDataSource(dataSource);
+        SearchIndexerDataSource dataSource = createTestSqlDataSourceObject();
+        dataSourceClient.createOrUpdateDataSource(dataSource);
 
         // Create an index
-        Index index = createTestIndexForLiveDatasource();
-        client.createIndex(index);
+        SearchIndex index = createTestIndexForLiveDatasource();
+        searchIndexClient.createIndex(index);
 
         // Create two indexers
-        Indexer indexer1 = createBaseTestIndexerObject("indexer1")
+        SearchIndexer indexer1 = createBaseTestIndexerObject("indexer1")
             .setDataSourceName(dataSource.getName());
-        Indexer indexer2 = createBaseTestIndexerObject("indexer2")
+        SearchIndexer indexer2 = createBaseTestIndexerObject("indexer2")
             .setDataSourceName(dataSource.getName());
-        client.createIndexer(indexer1);
-        client.createIndexer(indexer2);
+        searchIndexerClient.createIndexer(indexer1);
+        searchIndexerClient.createIndexer(indexer2);
 
-        Iterator<Indexer> indexers = client.listIndexers().iterator();
+        Iterator<SearchIndexer> indexers = searchIndexerClient.listIndexers().iterator();
 
         assertObjectEquals(indexer1, indexers.next(), true, "etag");
         assertObjectEquals(indexer2, indexers.next(), true, "etag");
@@ -221,11 +233,11 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
 
     @Test
     public void canCreateAndListIndexerNames() {
-        List<Indexer> indexers = prepareIndexersForCreateAndListIndexers();
+        List<SearchIndexer> indexers = prepareIndexersForCreateAndListIndexers();
 
-        Iterator<Indexer> indexersRes = client.listIndexers("name", generateRequestOptions(), Context.NONE).iterator();
+        Iterator<SearchIndexer> indexersRes = searchIndexerClient.listIndexers("name", generateRequestOptions(), Context.NONE).iterator();
 
-        Indexer actualIndexer = indexersRes.next();
+        SearchIndexer actualIndexer = indexersRes.next();
         assertEquals(indexers.get(0).getName(), actualIndexer.getName());
         assertAllIndexerFieldsNullExceptName(actualIndexer);
 
@@ -238,31 +250,31 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
 
     @Test
     public void createIndexerFailsWithUsefulMessageOnUserError() {
-        Indexer indexer = createBaseTestIndexerObject("indexer")
+        SearchIndexer indexer = createBaseTestIndexerObject("indexer")
             .setDataSourceName("thisdatasourcedoesnotexist");
 
         assertHttpResponseException(
-            () -> client.createIndexer(indexer),
+            () -> searchIndexerClient.createIndexer(indexer),
             HttpResponseStatus.BAD_REQUEST,
             "This indexer refers to a data source 'thisdatasourcedoesnotexist' that doesn't exist");
     }
 
     @Test
     public void canResetIndexerAndGetIndexerStatus() {
-        Indexer indexer = createTestDataSourceAndIndexer();
+        SearchIndexer indexer = createTestDataSourceAndIndexer();
 
-        client.resetIndexer(indexer.getName());
-        IndexerExecutionInfo indexerStatus = client.getIndexerStatus(indexer.getName());
+        searchIndexerClient.resetIndexer(indexer.getName());
+        SearchIndexerStatus indexerStatus = searchIndexerClient.getIndexerStatus(indexer.getName());
         assertEquals(IndexerStatus.RUNNING, indexerStatus.getStatus());
         assertEquals(IndexerExecutionStatus.RESET, indexerStatus.getLastResult().getStatus());
     }
 
     @Test
     public void canResetIndexerAndGetIndexerStatusWithResponse() {
-        Indexer indexer = createTestDataSourceAndIndexer();
+        SearchIndexer indexer = createTestDataSourceAndIndexer();
 
-        client.resetIndexerWithResponse(indexer.getName(), generateRequestOptions(), Context.NONE);
-        IndexerExecutionInfo indexerStatusResponse = client.getIndexerStatusWithResponse(indexer.getName(),
+        searchIndexerClient.resetIndexerWithResponse(indexer.getName(), generateRequestOptions(), Context.NONE);
+        SearchIndexerStatus indexerStatusResponse = searchIndexerClient.getIndexerStatusWithResponse(indexer.getName(),
             generateRequestOptions(), Context.NONE).getValue();
         assertEquals(IndexerStatus.RUNNING, indexerStatusResponse.getStatus());
         assertEquals(IndexerExecutionStatus.RESET, indexerStatusResponse.getLastResult().getStatus());
@@ -270,18 +282,18 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
 
     @Test
     public void canRunIndexer() {
-        Indexer indexer = createTestDataSourceAndIndexer();
-        client.runIndexer(indexer.getName());
+        SearchIndexer indexer = createTestDataSourceAndIndexer();
+        searchIndexerClient.runIndexer(indexer.getName());
 
-        IndexerExecutionInfo indexerExecutionInfo = client.getIndexerStatus(indexer.getName());
+        SearchIndexerStatus indexerExecutionInfo = searchIndexerClient.getIndexerStatus(indexer.getName());
         assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus());
     }
 
     @Test
     public void canRunIndexerWithResponse() {
-        Indexer indexer = createTestDataSourceAndIndexer();
-        Response<Void> response = client.runIndexerWithResponse(indexer.getName(), generateRequestOptions(), Context.NONE);
-        IndexerExecutionInfo indexerExecutionInfo = client.getIndexerStatus(indexer.getName());
+        SearchIndexer indexer = createTestDataSourceAndIndexer();
+        Response<Void> response = searchIndexerClient.runIndexerWithResponse(indexer.getName(), generateRequestOptions(), Context.NONE);
+        SearchIndexerStatus indexerExecutionInfo = searchIndexerClient.getIndexerStatus(indexer.getName());
 
         assertEquals(HttpURLConnection.HTTP_ACCEPTED, response.getStatusCode());
         assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus());
@@ -292,55 +304,58 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         // When an indexer is created, the execution info may not be available immediately. Hence, a
         // pipeline policy that injects a "mock_status" query string is added to the client, which results in service
         // returning a well-known mock response
-        client = getSearchServiceClientBuilderWithHttpPipelinePolicies(
+        serviceClient = getSearchServiceClientBuilderWithHttpPipelinePolicies(
             Collections.singletonList(MOCK_STATUS_PIPELINE_POLICY))
             .buildClient();
+        searchIndexClient = serviceClient.getSearchIndexClient();
+        dataSourceClient = serviceClient.getDataSourceClient();
+        searchIndexerClient = serviceClient.getSearchIndexerClient();
 
         createDataSourceAndIndex();
 
-        Indexer indexer = createBaseTestIndexerObject("indexer")
+        SearchIndexer indexer = createBaseTestIndexerObject("indexer")
             .setDataSourceName(SQL_DATASOURCE_NAME);
 
-        client.createIndexer(indexer);
+        searchIndexerClient.createIndexer(indexer);
 
-        IndexerExecutionInfo indexerExecutionInfo = client.getIndexerStatus(indexer.getName());
+        SearchIndexerStatus indexerExecutionInfo = searchIndexerClient.getIndexerStatus(indexer.getName());
         assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus());
 
-        Response<Void> indexerRunResponse = client.runIndexerWithResponse(indexer.getName(), new RequestOptions(),
+        Response<Void> indexerRunResponse = searchIndexerClient.runIndexerWithResponse(indexer.getName(), new RequestOptions(),
             Context.NONE);
         assertEquals(HttpResponseStatus.ACCEPTED.code(), indexerRunResponse.getStatusCode());
 
-        indexerExecutionInfo = client.getIndexerStatus(indexer.getName());
+        indexerExecutionInfo = searchIndexerClient.getIndexerStatus(indexer.getName());
 
         assertValidIndexerExecutionInfo(indexerExecutionInfo);
     }
 
     @Test
     public void canUpdateIndexer() {
-        DataSource dataSource = createTestSqlDataSourceObject();
-        client.createOrUpdateDataSource(dataSource);
+        SearchIndexerDataSource dataSource = createTestSqlDataSourceObject();
+        dataSourceClient.createOrUpdateDataSource(dataSource);
 
-        Indexer updatedExpected = createIndexerWithDifferentDescription();
+        SearchIndexer updatedExpected = createIndexerWithDifferentDescription();
 
         createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
     }
 
     @Test
     public void canUpdateIndexerFieldMapping() {
-        DataSource dataSource = createTestSqlDataSourceObject();
-        client.createOrUpdateDataSource(dataSource);
+        SearchIndexerDataSource dataSource = createTestSqlDataSourceObject();
+        dataSourceClient.createOrUpdateDataSource(dataSource);
 
-        Indexer updatedExpected = createIndexerWithDifferentFieldMapping();
+        SearchIndexer updatedExpected = createIndexerWithDifferentFieldMapping();
 
         createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
     }
 
     @Test
     public void canCreateIndexerWithFieldMapping() {
-        DataSource dataSource = createTestSqlDataSourceObject();
-        client.createOrUpdateDataSource(dataSource);
+        SearchIndexerDataSource dataSource = createTestSqlDataSourceObject();
+        dataSourceClient.createOrUpdateDataSource(dataSource);
 
-        Indexer indexer = createIndexerWithDifferentFieldMapping()
+        SearchIndexer indexer = createIndexerWithDifferentFieldMapping()
             .setDataSourceName(SQL_DATASOURCE_NAME);
 
         createAndValidateIndexer(indexer);
@@ -348,30 +363,30 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
 
     @Test
     public void canUpdateIndexerDisabled() {
-        DataSource dataSource = createTestSqlDataSourceObject();
-        client.createOrUpdateDataSource(dataSource);
+        SearchIndexerDataSource dataSource = createTestSqlDataSourceObject();
+        dataSourceClient.createOrUpdateDataSource(dataSource);
 
-        Indexer updatedExpected = createDisabledIndexer();
+        SearchIndexer updatedExpected = createDisabledIndexer();
 
         createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
     }
 
     @Test
     public void canUpdateIndexerSchedule() {
-        DataSource dataSource = createTestSqlDataSourceObject();
-        client.createOrUpdateDataSource(dataSource);
+        SearchIndexerDataSource dataSource = createTestSqlDataSourceObject();
+        dataSourceClient.createOrUpdateDataSource(dataSource);
 
-        Indexer updatedExpected = createIndexerWithDifferentSchedule();
+        SearchIndexer updatedExpected = createIndexerWithDifferentSchedule();
 
         createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
     }
 
     @Test
     public void canCreateIndexerWithSchedule() {
-        DataSource dataSource = createTestSqlDataSourceObject();
-        client.createOrUpdateDataSource(dataSource);
+        SearchIndexerDataSource dataSource = createTestSqlDataSourceObject();
+        dataSourceClient.createOrUpdateDataSource(dataSource);
 
-        Indexer indexer = createIndexerWithDifferentSchedule()
+        SearchIndexer indexer = createIndexerWithDifferentSchedule()
             .setDataSourceName(SQL_DATASOURCE_NAME);
 
         createAndValidateIndexer(indexer);
@@ -379,23 +394,23 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
 
     @Test
     public void canUpdateIndexerBatchSizeMaxFailedItems() {
-        DataSource dataSource = createTestSqlDataSourceObject();
-        client.createOrUpdateDataSource(dataSource);
+        SearchIndexerDataSource dataSource = createTestSqlDataSourceObject();
+        dataSourceClient.createOrUpdateDataSource(dataSource);
 
-        Indexer indexer = createBaseTestIndexerObject("indexer");
+        SearchIndexer indexer = createBaseTestIndexerObject("indexer");
 
-        Indexer updatedExpected = createIndexerWithDifferentIndexingParameters(indexer);
+        SearchIndexer updatedExpected = createIndexerWithDifferentIndexingParameters(indexer);
 
         createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
     }
 
     @Test
     public void canCreateIndexerWithBatchSizeMaxFailedItems() {
-        DataSource dataSource = createTestSqlDataSourceObject();
-        client.createOrUpdateDataSource(dataSource);
+        SearchIndexerDataSource dataSource = createTestSqlDataSourceObject();
+        dataSourceClient.createOrUpdateDataSource(dataSource);
 
-        Indexer indexer = createBaseTestIndexerObject("indexer");
-        Indexer updatedExpected = createIndexerWithDifferentIndexingParameters(indexer)
+        SearchIndexer indexer = createBaseTestIndexerObject("indexer");
+        SearchIndexer updatedExpected = createIndexerWithDifferentIndexingParameters(indexer)
             .setDataSourceName(SQL_DATASOURCE_NAME);
 
         createAndValidateIndexer(updatedExpected);
@@ -406,13 +421,13 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
     @Test
     public void canUpdateIndexerBlobParams() {
         // Create the needed Azure blob resources and data source object
-        DataSource blobDataSource = createBlobDataSource();
+        SearchIndexerDataSource blobDataSource = createBlobDataSource();
 
         // Create the data source within the search service
-        client.createOrUpdateDataSource(blobDataSource);
+        dataSourceClient.createOrUpdateDataSource(blobDataSource);
 
         // modify the indexer's blob params
-        Indexer updatedExpected = createIndexerWithStorageConfig();
+        SearchIndexer updatedExpected = createIndexerWithStorageConfig();
 
         createUpdateAndValidateIndexer(updatedExpected, BLOB_DATASOURCE_NAME);
     }
@@ -422,13 +437,13 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
     @Test
     public void canCreateIndexerWithBlobParams() {
         // Create the needed Azure blob resources and data source object
-        DataSource blobDataSource = createBlobDataSource();
+        SearchIndexerDataSource blobDataSource = createBlobDataSource();
 
         // Create the data source within the search service
-        DataSource dataSource = client.createOrUpdateDataSource(blobDataSource);
+        SearchIndexerDataSource dataSource = dataSourceClient.createOrUpdateDataSource(blobDataSource);
 
         // modify the indexer's blob params
-        Indexer indexer = createIndexerWithStorageConfig()
+        SearchIndexer indexer = createIndexerWithStorageConfig()
             .setDataSourceName(dataSource.getName());
 
         createAndValidateIndexer(indexer);
@@ -437,23 +452,23 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
     @Test
     public void canCreateAndDeleteIndexer() {
         createDataSourceAndIndex();
-        Indexer indexer = createBaseTestIndexerObject("indexer");
+        SearchIndexer indexer = createBaseTestIndexerObject("indexer");
         indexer.setDataSourceName(SQL_DATASOURCE_NAME);
-        client.createIndexer(indexer);
+        searchIndexerClient.createIndexer(indexer);
 
-        client.deleteIndexer(indexer.getName());
-        assertThrows(HttpResponseException.class, () -> client.getIndexer(indexer.getName()));
+        searchIndexerClient.deleteIndexer(indexer.getName());
+        assertThrows(HttpResponseException.class, () -> searchIndexerClient.getIndexer(indexer.getName()));
     }
 
     @Test
     public void canCreateAndDeleteIndexerWithResponse() {
         createDataSourceAndIndex();
-        Indexer indexer = createBaseTestIndexerObject("indexer");
+        SearchIndexer indexer = createBaseTestIndexerObject("indexer");
         indexer.setDataSourceName(SQL_DATASOURCE_NAME);
-        client.createIndexerWithResponse(indexer, new RequestOptions(), Context.NONE);
+        searchIndexerClient.createIndexerWithResponse(indexer, new RequestOptions(), Context.NONE);
 
-        client.deleteIndexerWithResponse(indexer, false, new RequestOptions(), Context.NONE);
-        assertThrows(HttpResponseException.class, () -> client.getIndexer(indexer.getName()));
+        searchIndexerClient.deleteIndexerWithResponse(indexer, false, new RequestOptions(), Context.NONE);
+        assertThrows(HttpResponseException.class, () -> searchIndexerClient.getIndexer(indexer.getName()));
     }
 
     @Test
@@ -462,49 +477,49 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         createDataSourceAndIndex();
 
         // Create the indexer object
-        Indexer indexer = createBaseTestIndexerObject("indexer");
+        SearchIndexer indexer = createBaseTestIndexerObject("indexer");
         indexer.setDataSourceName(SQL_DATASOURCE_NAME);
 
         // Try delete before the indexer even exists.
-        Response<Void> result = client.deleteIndexerWithResponse(
+        Response<Void> result = searchIndexerClient.deleteIndexerWithResponse(
             indexer, false, generateRequestOptions(), Context.NONE);
         assertEquals(HttpURLConnection.HTTP_NOT_FOUND, result.getStatusCode());
 
         // Actually create the indexer
-        client.createIndexer(indexer);
+        searchIndexerClient.createIndexer(indexer);
 
         // Now delete twice.
-        result = client.deleteIndexerWithResponse(indexer, false, generateRequestOptions(), Context.NONE);
+        result = searchIndexerClient.deleteIndexerWithResponse(indexer, false, generateRequestOptions(), Context.NONE);
         assertEquals(HttpURLConnection.HTTP_NO_CONTENT, result.getStatusCode());
 
-        result = client.deleteIndexerWithResponse(indexer, false, generateRequestOptions(), Context.NONE);
+        result = searchIndexerClient.deleteIndexerWithResponse(indexer, false, generateRequestOptions(), Context.NONE);
         assertEquals(HttpURLConnection.HTTP_NOT_FOUND, result.getStatusCode());
     }
 
     @Test
     public void canCreateAndGetIndexer() {
         String indexerName = "indexer";
-        DataSource dataSource = createTestSqlDataSourceObject();
-        client.createOrUpdateDataSource(dataSource);
+        SearchIndexerDataSource dataSource = createTestSqlDataSourceObject();
+        dataSourceClient.createOrUpdateDataSource(dataSource);
 
-        Index index = createTestIndexForLiveDatasource();
-        client.createIndex(index);
+        SearchIndex index = createTestIndexForLiveDatasource();
+        searchIndexClient.createIndex(index);
 
-        Indexer indexer = createBaseTestIndexerObject(indexerName)
+        SearchIndexer indexer = createBaseTestIndexerObject(indexerName)
             .setDataSourceName(dataSource.getName());
 
-        client.createIndexer(indexer);
-        Indexer indexerResult = client.getIndexer(indexerName);
+        searchIndexerClient.createIndexer(indexer);
+        SearchIndexer indexerResult = searchIndexerClient.getIndexer(indexerName);
         assertObjectEquals(indexer, indexerResult, true, "etag");
 
-        indexerResult = client.getIndexerWithResponse(indexerName, generateRequestOptions(), Context.NONE).getValue();
+        indexerResult = searchIndexerClient.getIndexerWithResponse(indexerName, generateRequestOptions(), Context.NONE).getValue();
         assertObjectEquals(indexer, indexerResult, true, "etag");
     }
 
     @Test
     public void getIndexerThrowsOnNotFound() {
         assertHttpResponseException(
-            () -> client.getIndexer("thisindexerdoesnotexist"),
+            () -> searchIndexerClient.getIndexer("thisindexerdoesnotexist"),
             HttpResponseStatus.NOT_FOUND,
             "Indexer 'thisindexerdoesnotexist' was not found");
     }
@@ -514,7 +529,7 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         // Prepare data source and index
         createDataSourceAndIndex();
 
-        Indexer indexerResult = AccessConditionTests
+        SearchIndexer indexerResult = AccessConditionTests
             .createOrUpdateIfNotExistsSucceedsOnNoResource(createOrUpdateIndexerFunc, newIndexerFunc);
 
         assertFalse(CoreUtils.isNullOrEmpty(indexerResult.getETag()));
@@ -567,34 +582,34 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
 
     @Test
     public void canUpdateIndexerSkillset() {
-        DataSource dataSource = createTestSqlDataSourceObject();
-        client.createOrUpdateDataSource(dataSource);
+        SearchIndexerDataSource dataSource = createTestSqlDataSourceObject();
+        dataSourceClient.createOrUpdateDataSource(dataSource);
 
         // Create a new skillset object
         // todo: task 1544 - change all over the code that that the object creation and actual service creation will
         // have meaningful and differentiated names
-        Skillset skillset = createSkillsetObject();
+        SearchIndexerSkillset skillset = createSkillsetObject();
 
         // create the skillset in the search service
-        client.createSkillset(skillset);
-        Indexer updatedExpected = createIndexerWithDifferentSkillset(skillset.getName());
+        searchSkillsetClient.createSkillset(skillset);
+        SearchIndexer updatedExpected = createIndexerWithDifferentSkillset(skillset.getName());
         createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
     }
 
     @Test
     public void canCreateIndexerWithSkillset() {
-        DataSource dataSource = createTestSqlDataSourceObject();
-        client.createOrUpdateDataSource(dataSource);
+        SearchIndexerDataSource dataSource = createTestSqlDataSourceObject();
+        dataSourceClient.createOrUpdateDataSource(dataSource);
 
         // Create a new skillset object
         // todo: task 1544 - change all over the code that that the object creation and actual service creation will
         // have meaningful and differentiated names
-        Skillset skillset = createSkillsetObject();
+        SearchIndexerSkillset skillset = createSkillsetObject();
 
         // create the skillset in the search service
-        client.createSkillset(skillset);
+        searchSkillsetClient.createSkillset(skillset);
 
-        Indexer indexer = createIndexerWithDifferentSkillset(skillset.getName())
+        SearchIndexer indexer = createIndexerWithDifferentSkillset(skillset.getName())
             .setDataSourceName(dataSource.getName());
 
         createAndValidateIndexer(indexer);
@@ -604,7 +619,7 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
      * Create a new valid skillset object
      * @return the newly created skillset object
      */
-    Skillset createSkillsetObject() {
+    SearchIndexerSkillset createSkillsetObject() {
         List<InputFieldMappingEntry> inputs = Arrays.asList(
             new InputFieldMappingEntry()
                 .setName("url")
@@ -620,7 +635,7 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
                 .setTargetName("mytext")
         );
 
-        List<Skill> skills = Collections.singletonList(
+        List<SearchIndexerSkill> skills = Collections.singletonList(
             new OcrSkill()
                 .setShouldDetectOrientation(true)
                 .setName("myocr")
@@ -629,14 +644,14 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
                 .setInputs(inputs)
                 .setOutputs(outputs)
         );
-        return new Skillset()
+        return new SearchIndexerSkillset()
             .setName("ocr-skillset")
             .setDescription("Skillset for testing default configuration")
             .setSkills(skills);
     }
 
-    Indexer createBaseTestIndexerObject(String indexerName) {
-        return new Indexer()
+    SearchIndexer createBaseTestIndexerObject(String indexerName) {
+        return new SearchIndexer()
             .setName(indexerName)
             .setTargetIndexName(IndexersManagementSyncTests.TARGET_INDEX_NAME)
             .setSchedule(new IndexingSchedule().setInterval(Duration.ofDays(1)));
@@ -646,25 +661,25 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
      * This index contains fields that are declared on the live data source
      * we use to test the indexers
      *
-     * @return the newly created Index object
+     * @return the newly created SearchIndex object
      */
-    Index createTestIndexForLiveDatasource() {
-        return new Index()
+    SearchIndex createTestIndexForLiveDatasource() {
+        return new SearchIndex()
             .setName(IndexersManagementSyncTests.TARGET_INDEX_NAME)
             .setFields(Arrays.asList(
-                new Field()
+                new SearchField()
                     .setName("county_name")
-                    .setType(DataType.EDM_STRING)
+                    .setType(SearchFieldDataType.STRING)
                     .setSearchable(Boolean.FALSE)
                     .setFilterable(Boolean.TRUE),
-                new Field()
+                new SearchField()
                     .setName("state")
-                    .setType(DataType.EDM_STRING)
+                    .setType(SearchFieldDataType.STRING)
                     .setSearchable(Boolean.TRUE)
                     .setFilterable(Boolean.TRUE),
-                new Field()
+                new SearchField()
                     .setName("feature_id")
-                    .setType(DataType.EDM_STRING)
+                    .setType(SearchFieldDataType.STRING)
                     .setKey(Boolean.TRUE)
                     .setSearchable(Boolean.TRUE)
                     .setFilterable(Boolean.FALSE)));
@@ -676,7 +691,7 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
      *
      * @return the created indexer
      */
-    Indexer createIndexerWithDifferentDescription() {
+    SearchIndexer createIndexerWithDifferentDescription() {
         // create a new indexer object with a modified description
         return createBaseTestIndexerObject("indexer")
             .setDescription("somethingdifferent");
@@ -687,9 +702,9 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
      *
      * @return the created indexer
      */
-    Indexer createIndexerWithDifferentFieldMapping() {
+    SearchIndexer createIndexerWithDifferentFieldMapping() {
         // create a new indexer object
-        Indexer indexer = createBaseTestIndexerObject("indexer");
+        SearchIndexer indexer = createBaseTestIndexerObject("indexer");
 
         // Create field mappings
         List<FieldMapping> fieldMappings = Collections.singletonList(new FieldMapping()
@@ -707,9 +722,9 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
      *
      * @return the created indexer
      */
-    Indexer createDisabledIndexer() {
+    SearchIndexer createDisabledIndexer() {
         // create a new indexer object
-        Indexer indexer = createBaseTestIndexerObject("indexer");
+        SearchIndexer indexer = createBaseTestIndexerObject("indexer");
 
         // modify it
         indexer.setIsDisabled(false);
@@ -722,9 +737,9 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
      *
      * @return the created indexer
      */
-    Indexer createIndexerWithDifferentSchedule() {
+    SearchIndexer createIndexerWithDifferentSchedule() {
         // create a new indexer object
-        Indexer indexer = createBaseTestIndexerObject("indexer");
+        SearchIndexer indexer = createBaseTestIndexerObject("indexer");
 
         IndexingSchedule is = new IndexingSchedule()
             .setInterval(Duration.ofMinutes(10));
@@ -740,7 +755,7 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
      *
      * @return the created indexer
      */
-    Indexer createIndexerWithDifferentSkillset(String skillsetName) {
+    SearchIndexer createIndexerWithDifferentSkillset(String skillsetName) {
         // create a new indexer object
         return createBaseTestIndexerObject("indexer")
             .setSkillsetName(skillsetName);
@@ -751,7 +766,7 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
      *
      * @return the created indexer
      */
-    Indexer createIndexerWithDifferentIndexingParameters(Indexer indexer) {
+    SearchIndexer createIndexerWithDifferentIndexingParameters(SearchIndexer indexer) {
         // create a new indexer object
         IndexingParameters ip = new IndexingParameters()
             .setMaxFailedItems(121)
@@ -764,9 +779,9 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         return indexer;
     }
 
-    Indexer createIndexerWithStorageConfig() {
+    SearchIndexer createIndexerWithStorageConfig() {
         // create an indexer object
-        Indexer updatedExpected =
+        SearchIndexer updatedExpected =
             createBaseTestIndexerObject("indexer");
 
         // just adding some(valid) config values for blobs
@@ -785,13 +800,13 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         return updatedExpected;
     }
 
-    void setSameStartTime(Indexer expected, Indexer actual) {
+    void setSameStartTime(SearchIndexer expected, SearchIndexer actual) {
         // There ought to be a start time in the response; We just can't know what it is because it would
         // make the test timing-dependent.
         expected.getSchedule().setStartTime(actual.getSchedule().getStartTime());
     }
 
-    void assertAllIndexerFieldsNullExceptName(Indexer indexer) {
+    void assertAllIndexerFieldsNullExceptName(SearchIndexer indexer) {
         assertNull(indexer.getParameters());
         assertNull(indexer.getDataSourceName());
         assertNull(indexer.getDescription());
@@ -810,11 +825,11 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         assertNotEquals(OffsetDateTime.now(), result.getEndTime());
     }
 
-    void assertValidIndexerExecutionInfo(IndexerExecutionInfo indexerExecutionInfo) {
+    void assertValidIndexerExecutionInfo(SearchIndexerStatus indexerExecutionInfo) {
         assertEquals(IndexerExecutionStatus.IN_PROGRESS, indexerExecutionInfo.getLastResult().getStatus());
         assertEquals(3, indexerExecutionInfo.getExecutionHistory().size());
 
-        IndexerLimits limits = indexerExecutionInfo.getLimits();
+        SearchIndexerLimits limits = indexerExecutionInfo.getLimits();
         assertNotNull(limits);
         assertEquals(100000, limits.getMaxDocumentContentCharactersToExtract(), 0);
         assertEquals(1000, limits.getMaxDocumentExtractionSize(), 0);

@@ -758,11 +758,4 @@
       </build>
     </profile>
   </profiles>
-  <!--
-  <modules>
-
-    <module>./profiles/2018-03-01-hybrid</module>
-    <module>./profiles/2019-03-01-hybrid</module>
-  </modules>
-  -->
 </project>

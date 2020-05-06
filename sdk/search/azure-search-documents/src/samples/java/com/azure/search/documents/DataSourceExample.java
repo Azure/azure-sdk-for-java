@@ -6,12 +6,13 @@ package com.azure.search.documents;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Configuration;
+import com.azure.search.documents.indexes.SearchDataSourceClient;
 import com.azure.search.documents.models.DataChangeDetectionPolicy;
-import com.azure.search.documents.models.DataContainer;
-import com.azure.search.documents.models.DataSource;
 import com.azure.search.documents.models.DataSourceCredentials;
-import com.azure.search.documents.models.DataSourceType;
 import com.azure.search.documents.models.HighWaterMarkChangeDetectionPolicy;
+import com.azure.search.documents.models.SearchIndexerDataContainer;
+import com.azure.search.documents.models.SearchIndexerDataSource;
+import com.azure.search.documents.models.SearchIndexerDataSourceType;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -39,25 +40,26 @@ public class DataSourceExample {
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(ADMIN_KEY))
             .buildClient();
-
+        SearchDataSourceClient dataSourceClient = client.getDataSourceClient();
         /*
          * Store the names of the created data sources so that we can delete them later
          * without affecting other resources.
          * */
         Collection<String> names = new HashSet<>();
 
-        names.add(createSqlDataSource(client));
-        names.add(createCosmosDataSource(client));
-        names.add(createBlobDataSource(client));
-        names.add(createTableStorageDataSource(client));
+        names.add(createSqlDataSource(dataSourceClient));
+        names.add(createCosmosDataSource(dataSourceClient));
+        names.add(createBlobDataSource(dataSourceClient));
+        names.add(createTableStorageDataSource(dataSourceClient));
 
         /*
          * Get all existing data sources; list should include the ones we just created.
          * */
-        PagedIterable<DataSource> dataSources = client.listDataSources();
-        for (DataSource dataSource : dataSources) {
+        PagedIterable<SearchIndexerDataSource> dataSources = dataSourceClient.listDataSources();
+        for (SearchIndexerDataSource dataSource : dataSources) {
             if (names.contains(dataSource.getName())) {
-                System.out.println(String.format("Found data source %s of type %s", dataSource.getName(), dataSource.getType().toString()));
+                System.out.println(String.format("Found data source %s of type %s",
+                    dataSource.getName(), dataSource.getType().toString()));
             }
         }
 
@@ -65,11 +67,11 @@ public class DataSourceExample {
          * Delete the data sources we just created.
          * */
         for (String name : names) {
-            deleteDataSource(client, name);
+            deleteDataSource(dataSourceClient, name);
         }
     }
 
-    private static void deleteDataSource(SearchServiceClient client, String dataSourceName) {
+    private static void deleteDataSource(SearchDataSourceClient client, String dataSourceName) {
         try {
             client.deleteDataSource(dataSourceName);
         } catch (Exception ex) {
@@ -77,11 +79,11 @@ public class DataSourceExample {
         }
     }
 
-    private static DataSource createSampleDatasource(DataSourceType type,
+    private static SearchIndexerDataSource createSampleDatasource(SearchIndexerDataSourceType type,
                                                      String connectionString,
-                                                     DataContainer container,
+                                                     SearchIndexerDataContainer container,
                                                      DataChangeDetectionPolicy dataChangeDetectionPolicy) {
-        return new DataSource()
+        return new SearchIndexerDataSource()
             .setName(generateDataSourceName())
             .setType(type)
             .setCredentials(new DataSourceCredentials()
@@ -91,63 +93,63 @@ public class DataSourceExample {
     }
 
     private static String createDataSource(
-        SearchServiceClient client,
-        DataSourceType type,
+        SearchDataSourceClient dataSourceClient,
+        SearchIndexerDataSourceType type,
         String connectionString,
-        DataContainer container,
+        SearchIndexerDataContainer container,
         DataChangeDetectionPolicy dataChangeDetectionPolicy) {
 
-        DataSource dataSource = createSampleDatasource(type, connectionString, container, dataChangeDetectionPolicy);
+        SearchIndexerDataSource dataSource = createSampleDatasource(type, connectionString, container, dataChangeDetectionPolicy);
         try {
-            client.createOrUpdateDataSource(dataSource);
+            dataSourceClient.createOrUpdateDataSource(dataSource);
         } catch (Exception ex) {
             System.err.println(ex.toString());
         }
         return dataSource.getName();
     }
 
-    private static String createTableStorageDataSource(SearchServiceClient client) {
+    private static String createTableStorageDataSource(SearchDataSourceClient client) {
         return createDataSource(
             client,
-            DataSourceType.AZURE_TABLE,
+            SearchIndexerDataSourceType.AZURE_TABLE,
             TABLE_STORAGE_CONNECTION_STRING,
-            new DataContainer()
+            new SearchIndexerDataContainer()
                 .setName("testtable") // Replace your table name here
                 .setQuery("PartitionKey eq 'test'"), // Add your query here or remove this if you don't need one
             null
         );
     }
 
-    private static String createCosmosDataSource(SearchServiceClient client) {
+    private static String createCosmosDataSource(SearchDataSourceClient client) {
         return createDataSource(
             client,
-            DataSourceType.COSMOS,
+            SearchIndexerDataSourceType.COSMOS_DB,
             COSMOS_CONNECTION_STRING,
-            new DataContainer()
+            new SearchIndexerDataContainer()
                 .setName("testcollection") // Replace your collection name here
                 .setQuery(null), // Add your query here or remove this if you don't need one
             new HighWaterMarkChangeDetectionPolicy().setHighWaterMarkColumnName("_ts")
         );
     }
 
-    private static String createBlobDataSource(SearchServiceClient client) {
+    private static String createBlobDataSource(SearchDataSourceClient client) {
         return createDataSource(
             client,
-            DataSourceType.AZURE_BLOB,
+            SearchIndexerDataSourceType.AZURE_BLOB,
             BLOB_STORAGE_CONNECTION_STRING,
-            new DataContainer()
+            new SearchIndexerDataContainer()
                 .setName("testcontainer") // Replace your container name here
                 .setQuery("testfolder"), // Add your folder here or remove this if you want to index all folders within the container
             null
         );
     }
 
-    private static String createSqlDataSource(SearchServiceClient client) {
+    private static String createSqlDataSource(SearchDataSourceClient client) {
         return createDataSource(
             client,
-            DataSourceType.AZURE_SQL,
+            SearchIndexerDataSourceType.AZURE_SQL,
             SQL_CONNECTION_STRING,
-            new DataContainer()
+            new SearchIndexerDataContainer()
                 .setName("testtable"),  // Replace your table or view name here
             null); // Or new SqlIntegratedChangeTrackingPolicy() if your database has change tracking enabled
     }

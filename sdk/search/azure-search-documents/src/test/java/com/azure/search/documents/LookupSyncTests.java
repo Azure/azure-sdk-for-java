@@ -4,16 +4,15 @@ package com.azure.search.documents;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.search.documents.models.DataType;
-import com.azure.search.documents.models.Field;
+import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.GeoPoint;
-import com.azure.search.documents.models.Index;
-import com.azure.search.documents.models.IndexDocumentsBatch;
+import com.azure.search.documents.models.SearchField;
+import com.azure.search.documents.models.SearchFieldDataType;
+import com.azure.search.documents.models.SearchIndex;
 import com.azure.search.documents.test.environment.models.Hotel;
 import com.azure.search.documents.test.environment.models.HotelAddress;
 import com.azure.search.documents.test.environment.models.HotelRoom;
 import com.azure.search.documents.test.environment.models.ModelWithPrimitiveCollections;
-import java.util.HashMap;
 import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
@@ -24,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class LookupSyncTests extends SearchIndexClientTestBase {
     private static final String INDEX_NAME = "hotels";
 
-    private SearchIndexClient client;
+    private SearchClient client;
 
     @Test
     public void canGetStaticallyTypedDocument() throws ParseException {
@@ -508,41 +508,41 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
     }
 
     String setupIndexWithDataTypes() {
-        Index index = new Index()
+        SearchIndex index = new SearchIndex()
             .setName("data-types-tests-index")
             .setFields(Arrays.asList(
-                new Field()
+                new SearchField()
                     .setName("Key")
-                    .setType(DataType.EDM_STRING)
+                    .setType(SearchFieldDataType.STRING)
                     .setKey(true)
                     .setHidden(false),
-                new Field()
+                new SearchField()
                     .setName("Bools")
-                    .setType(DataType.collection(DataType.EDM_BOOLEAN))
+                    .setType(SearchFieldDataType.collection(SearchFieldDataType.BOOLEAN))
                     .setHidden(false),
-                new Field()
+                new SearchField()
                     .setName("Dates")
-                    .setType(DataType.collection(DataType.EDM_DATE_TIME_OFFSET))
+                    .setType(SearchFieldDataType.collection(SearchFieldDataType.DATE_TIME_OFFSET))
                     .setHidden(false),
-                new Field()
+                new SearchField()
                     .setName("Doubles")
-                    .setType(DataType.collection(DataType.EDM_DOUBLE))
+                    .setType(SearchFieldDataType.collection(SearchFieldDataType.DOUBLE))
                     .setHidden(false),
-                new Field()
+                new SearchField()
                     .setName("Points")
-                    .setType(DataType.collection(DataType.EDM_GEOGRAPHY_POINT))
+                    .setType(SearchFieldDataType.collection(SearchFieldDataType.GEOGRAPHY_POINT))
                     .setHidden(false),
-                new Field()
+                new SearchField()
                     .setName("Ints")
-                    .setType(DataType.collection(DataType.EDM_INT32))
+                    .setType(SearchFieldDataType.collection(SearchFieldDataType.INT32))
                     .setHidden(false),
-                new Field()
+                new SearchField()
                     .setName("Longs")
-                    .setType(DataType.collection(DataType.EDM_INT64))
+                    .setType(SearchFieldDataType.collection(SearchFieldDataType.INT64))
                     .setHidden(false),
-                new Field()
+                new SearchField()
                     .setName("Strings")
-                    .setType(DataType.collection(DataType.EDM_STRING))
+                    .setType(SearchFieldDataType.collection(SearchFieldDataType.STRING))
                     .setHidden(false)
             ));
 

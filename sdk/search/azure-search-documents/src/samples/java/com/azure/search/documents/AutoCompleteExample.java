@@ -7,11 +7,11 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
-import com.azure.search.documents.models.AutocompleteItem;
-import com.azure.search.documents.models.AutocompleteMode;
-import com.azure.search.documents.models.AutocompleteOptions;
+import com.azure.search.documents.indexes.models.AutocompleteItem;
+import com.azure.search.documents.indexes.models.AutocompleteMode;
+import com.azure.search.documents.indexes.models.AutocompleteOptions;
+import com.azure.search.documents.indexes.util.AutocompletePagedResponse;
 import com.azure.search.documents.models.RequestOptions;
-import com.azure.search.documents.util.AutocompletePagedResponse;
 
 import java.util.UUID;
 
@@ -30,7 +30,7 @@ public class AutoCompleteExample {
 
     public static void main(String[] args) {
 
-        SearchIndexClient searchClient = new SearchIndexClientBuilder()
+        SearchClient searchClient = new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
             .indexName("hotels-sample-index")
@@ -41,7 +41,7 @@ public class AutoCompleteExample {
         autoCompleteWithFilterAndFuzzy(searchClient);
     }
 
-    private static void autoCompleteWithOneTermContext(SearchIndexClient searchClient) {
+    private static void autoCompleteWithOneTermContext(SearchClient searchClient) {
 
         AutocompleteOptions params = new AutocompleteOptions().setAutocompleteMode(
             AutocompleteMode.ONE_TERM_WITH_CONTEXT);
@@ -61,7 +61,7 @@ public class AutoCompleteExample {
          */
     }
 
-    private static void autoCompleteWithHighlighting(SearchIndexClient searchClient) {
+    private static void autoCompleteWithHighlighting(SearchClient searchClient) {
         AutocompleteOptions params = new AutocompleteOptions()
             .setAutocompleteMode(AutocompleteMode.ONE_TERM)
             .setFilter("Address/City eq 'San Diego' or Address/City eq 'Hartford'")
@@ -83,7 +83,7 @@ public class AutoCompleteExample {
          */
     }
 
-    private static void autoCompleteWithFilterAndFuzzy(SearchIndexClient searchClient) {
+    private static void autoCompleteWithFilterAndFuzzy(SearchClient searchClient) {
         AutocompleteOptions params = new AutocompleteOptions()
             .setAutocompleteMode(AutocompleteMode.ONE_TERM)
             .setUseFuzzyMatching(true)

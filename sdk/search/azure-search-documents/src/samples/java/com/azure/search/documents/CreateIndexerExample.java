@@ -6,11 +6,12 @@ package com.azure.search.documents;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Configuration;
+import com.azure.search.documents.indexes.SearchIndexerAsyncClient;
 import com.azure.search.documents.models.FieldMapping;
-import com.azure.search.documents.models.Indexer;
 import com.azure.search.documents.models.IndexingParameters;
 import com.azure.search.documents.models.IndexingSchedule;
 import com.azure.search.documents.models.RequestOptions;
+import com.azure.search.documents.models.SearchIndexer;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -38,10 +39,11 @@ public class CreateIndexerExample {
             .credential(new AzureKeyCredential(ADMIN_KEY))
             .buildAsyncClient();
 
-        createOrUpdateIndexer(searchServiceClient);
+        SearchIndexerAsyncClient indexerAsyncClient = searchServiceClient.getSearchIndexerAsyncClient();
+        createOrUpdateIndexer(indexerAsyncClient);
     }
 
-    private static void createOrUpdateIndexer(SearchServiceAsyncClient searchServiceClient) {
+    private static void createOrUpdateIndexer(SearchIndexerAsyncClient indexerAsyncClient) {
         // Create indexer parameters
         IndexingParameters indexingParameters = new IndexingParameters()
             .setBatchSize(50)
@@ -58,7 +60,7 @@ public class CreateIndexerExample {
             .setInterval(Duration.ofHours(12));
 
         // Create the indexer
-        Indexer indexer = new Indexer()
+        SearchIndexer indexer = new SearchIndexer()
             .setName(INDEXER_NAME)
             .setTargetIndexName(INDEX_NAME)
             .setDataSourceName(DATA_SOURCE_NAME)
@@ -67,14 +69,14 @@ public class CreateIndexerExample {
             .setSchedule(indexingSchedule);
 
         System.out.println(String.format("Creating Indexer: %s", indexer.getName()));
-        Response<Indexer> response = searchServiceClient.createOrUpdateIndexerWithResponse(
+        Response<SearchIndexer> response = indexerAsyncClient.createOrUpdateIndexerWithResponse(
             indexer, false, new RequestOptions()
         ).block();
 
         if (response != null) {
             System.out.println(String.format("Response code: %s", response.getStatusCode()));
 
-            Indexer createdIndexer = response.getValue();
+            SearchIndexer createdIndexer = response.getValue();
             System.out.println(String
                 .format("Created indexer name: %s, ETag: %s", createdIndexer.getName(), createdIndexer.getETag()));
         }
