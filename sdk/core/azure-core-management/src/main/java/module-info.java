@@ -10,6 +10,7 @@ module com.azure.core.management {
     exports com.azure.core.management.serializer;
 
     opens com.azure.core.management to com.fasterxml.jackson.databind;
+    opens com.azure.core.management.exception to com.fasterxml.jackson.databind;
     opens com.azure.core.management.implementation.polling to com.fasterxml.jackson.databind;
 
     uses com.azure.core.http.HttpClientProvider;

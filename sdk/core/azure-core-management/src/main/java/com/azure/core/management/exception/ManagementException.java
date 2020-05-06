@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.management;
+package com.azure.core.management.exception;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
@@ -9,7 +9,7 @@ import com.azure.core.http.HttpResponse;
 /**
  * Exception thrown for an invalid response with custom error information.
  */
-public final class CloudException extends HttpResponseException {
+public class ManagementException extends HttpResponseException {
 
     /**Serial version id for this class*/
     private static final long serialVersionUID = 1L;
@@ -20,7 +20,7 @@ public final class CloudException extends HttpResponseException {
      * @param message the exception message or the response content if a message is not available
      * @param response the HTTP response
      */
-    public CloudException(String message, HttpResponse response) {
+    public ManagementException(String message, HttpResponse response) {
         super(message, response);
     }
 
@@ -31,13 +31,13 @@ public final class CloudException extends HttpResponseException {
      * @param response the HTTP response
      * @param body the deserialized response body
      */
-    public CloudException(String message, HttpResponse response, CloudError body) {
+    public ManagementException(String message, HttpResponse response, ManagementError body) {
         super(message, response, body);
     }
 
     @Override
-    public CloudError getValue() {
-        return (CloudError) super.getValue();
+    public ManagementError getValue() {
+        return (ManagementError) super.getValue();
     }
 
     @Override
