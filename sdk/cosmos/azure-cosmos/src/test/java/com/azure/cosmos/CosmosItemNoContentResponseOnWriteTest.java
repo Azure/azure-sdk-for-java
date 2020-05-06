@@ -8,15 +8,8 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.CosmosContainerRequestOptions;
-import com.azure.cosmos.models.CosmosContainerResponse;
-import com.azure.cosmos.models.CosmosDatabaseProperties;
-import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
-import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
-import com.azure.cosmos.models.IndexingMode;
-import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
@@ -27,22 +20,18 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ReturnMinimalResponseTest extends TestSuiteBase {
+public class CosmosItemNoContentResponseOnWriteTest extends TestSuiteBase {
 
-    private final String preExistingDatabaseId = CosmosDatabaseForTest.generateId();
-    private final List<String> databases = new ArrayList<>();
     private CosmosClient client;
     private CosmosContainer container;
-    private CosmosDatabase createdDatabase;
 
     //  Currently Gateway and Direct TCP support minimal response feature.
-    @Factory(dataProvider = "clientBuildersWithDirectTcpWithReturnMinimalResponse")
-    public ReturnMinimalResponseTest(CosmosClientBuilder clientBuilder) {
+    @Factory(dataProvider = "clientBuildersWithDirectTcpWithNoContentResponseOnWrite")
+    public CosmosItemNoContentResponseOnWriteTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
 
@@ -50,99 +39,18 @@ public class ReturnMinimalResponseTest extends TestSuiteBase {
     public void beforeClass() {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildClient();
-        createdDatabase = createSyncDatabase(client, preExistingDatabaseId);
         CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
         container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
     }
 
     @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteSyncDatabase(createdDatabase);
-        for (String dbId : databases) {
-            safeDeleteSyncDatabase(client.getDatabase(dbId));
-        }
-        safeCloseSyncClient(client);
-    }
-
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void createDatabase_withMinimalResponseConfig() throws CosmosClientException {
-        CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
-        databases.add(databaseDefinition.getId());
-
-        CosmosDatabaseResponse createResponse = client.createDatabase(databaseDefinition, new CosmosDatabaseRequestOptions());
-
-        validateDatabaseResponse(databaseDefinition, createResponse);
-    }
-
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void readDatabase_withMinimalResponseConfig() throws Exception {
-        CosmosDatabase database = client.getDatabase(createdDatabase.getId());
-        CosmosDatabaseProperties properties = new CosmosDatabaseProperties(createdDatabase.getId());
-        CosmosDatabaseRequestOptions options = new CosmosDatabaseRequestOptions();
-
-        CosmosDatabaseResponse read = database.read();
-        validateDatabaseResponse(properties, read);
-
-        CosmosDatabaseResponse read1 = database.read(options);
-        validateDatabaseResponse(properties, read1);
+        assertThat(this.client).isNotNull();
+        this.client.close();
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void createContainer_withMinimalResponseConfig() throws Exception {
-        String collectionName = UUID.randomUUID().toString();
-        CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
-
-        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
-        assertThat(containerResponse.getRequestCharge()).isGreaterThan(0);
-        validateContainerResponse(containerProperties, containerResponse);
-    }
-
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readContainer_withMinimalResponseConfig() throws Exception {
-        String collectionName = UUID.randomUUID().toString();
-        CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
-        CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
-
-        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
-
-        CosmosContainer syncContainer = createdDatabase.getContainer(collectionName);
-
-        CosmosContainerResponse read = syncContainer.read();
-        validateContainerResponse(containerProperties, read);
-
-        CosmosContainerResponse read1 = syncContainer.read(options);
-        validateContainerResponse(containerProperties, read1);
-    }
-
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void replaceContainer_withMinimalResponseConfig() throws Exception {
-
-        String collectionName = UUID.randomUUID().toString();
-        CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
-        CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
-
-        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
-        validateContainerResponse(containerProperties, containerResponse);
-
-        assertThat(containerResponse.getProperties().getIndexingPolicy().getIndexingMode()).isEqualTo(IndexingMode.CONSISTENT);
-
-        CosmosContainerResponse replaceResponse = containerResponse.getContainer()
-                                                                   .replace(containerResponse.getProperties().setIndexingPolicy(
-                                                                       new IndexingPolicy().setIndexingMode(IndexingMode.LAZY)));
-        assertThat(replaceResponse.getProperties().getIndexingPolicy().getIndexingMode())
-            .isEqualTo(IndexingMode.LAZY);
-
-        CosmosContainerResponse replaceResponse1 = containerResponse.getContainer()
-                                                                    .replace(containerResponse.getProperties().setIndexingPolicy(
-                                                                        new IndexingPolicy().setIndexingMode(IndexingMode.CONSISTENT)),
-                                                                        options);
-        assertThat(replaceResponse1.getProperties().getIndexingPolicy().getIndexingMode())
-            .isEqualTo(IndexingMode.CONSISTENT);
-
-    }
-
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void createItem_withMinimalResponseConfig() throws Exception {
+    public void createItem_withNoContentResponseOnWrite() throws Exception {
         CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<CosmosItemProperties> itemResponse = container.createItem(properties);
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
@@ -154,7 +62,7 @@ public class ReturnMinimalResponseTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readItem_withMinimalResponseConfig() throws Exception {
+    public void readItem_withNoContentResponseOnWrite() throws Exception {
         CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<CosmosItemProperties> itemResponse = container.createItem(properties);
 
@@ -162,13 +70,13 @@ public class ReturnMinimalResponseTest extends TestSuiteBase {
                                                                                     new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
                                                                                     new CosmosItemRequestOptions(),
                                                                                     CosmosItemProperties.class);
-        //  Read item should have full response irrespective of the flag - returnMinimalResponse
+        //  Read item should have full response irrespective of the flag - noContentResponseOnWrite
         validateItemResponse(properties, readResponse1);
 
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void replaceItem_withMinimalResponseConfig() throws Exception{
+    public void replaceItem_withNoContentResponseOnWrite() throws Exception{
         CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<CosmosItemProperties> itemResponse = container.createItem(properties);
 
@@ -186,7 +94,7 @@ public class ReturnMinimalResponseTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void deleteItem_withMinimalResponseConfig() throws Exception {
+    public void deleteItem_withNoContentResponseOnWrite() throws Exception {
         CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<CosmosItemProperties> itemResponse = container.createItem(properties);
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
@@ -242,25 +150,6 @@ public class ReturnMinimalResponseTest extends TestSuiteBase {
         } else {
             assertThat(createResponse.getETag()).isNull();
         }
-    }
-
-    private void validateContainerResponse(CosmosContainerProperties containerProperties,
-                                           CosmosContainerResponse createResponse) {
-        // Basic validation
-        assertThat(createResponse.getProperties().getId()).isNotNull();
-        assertThat(createResponse.getProperties().getId())
-            .as("check Resource Id")
-            .isEqualTo(containerProperties.getId());
-
-    }
-
-    private void validateDatabaseResponse(CosmosDatabaseProperties databaseDefinition, CosmosDatabaseResponse createResponse) {
-        // Basic validation
-        assertThat(createResponse.getProperties().getId()).isNotNull();
-        assertThat(createResponse.getProperties().getId())
-            .as("check Resource Id")
-            .isEqualTo(databaseDefinition.getId());
-
     }
 
 }

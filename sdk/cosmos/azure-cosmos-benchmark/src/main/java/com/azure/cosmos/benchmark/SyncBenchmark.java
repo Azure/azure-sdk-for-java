@@ -105,7 +105,7 @@ abstract class SyncBenchmark<T> {
             .key(cfg.getMasterKey())
             .connectionPolicy(cfg.getConnectionPolicy())
             .consistencyLevel(cfg.getConsistencyLevel())
-            .returnMinimalResponse(cfg.isReturnMinimalResponse())
+            .noContentResponseOnWrite(cfg.isNoContentResponseOnWrite())
             .buildClient();
 
         try {

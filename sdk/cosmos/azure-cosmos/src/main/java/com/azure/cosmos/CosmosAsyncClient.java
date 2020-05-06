@@ -49,7 +49,7 @@ public final class CosmosAsyncClient implements Closeable {
     private final CosmosKeyCredential cosmosKeyCredential;
     private final boolean sessionCapturingOverride;
     private final boolean enableTransportClientSharing;
-    private final boolean returnMinimalResponse;
+    private final boolean noContentResponseOnWrite;
 
     CosmosAsyncClient(CosmosClientBuilder builder) {
         this.configs = builder.configs();
@@ -62,7 +62,7 @@ public final class CosmosAsyncClient implements Closeable {
         this.cosmosKeyCredential = builder.getKeyCredential();
         this.sessionCapturingOverride = builder.isSessionCapturingOverrideEnabled();
         this.enableTransportClientSharing = builder.isConnectionReuseAcrossClientsEnabled();
-        this.returnMinimalResponse = builder.isReturnMinimalResponse();
+        this.noContentResponseOnWrite = builder.isNoContentResponseOnWrite();
         this.asyncDocumentClient = new AsyncDocumentClient.Builder()
                                        .withServiceEndpoint(this.serviceEndpoint)
                                        .withMasterKeyOrResourceToken(this.keyOrResourceToken)
@@ -73,7 +73,7 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withTokenResolver(this.cosmosAuthorizationTokenResolver)
                                        .withCosmosKeyCredential(this.cosmosKeyCredential)
                                        .withTransportClientSharing(this.enableTransportClientSharing)
-                                       .withReturnMinimalResponse(this.returnMinimalResponse)
+                                       .withNoContentResponseOnWrite(this.noContentResponseOnWrite)
                                        .build();
     }
 
@@ -176,8 +176,8 @@ public final class CosmosAsyncClient implements Closeable {
      *
      * @return a boolean indicating whether resource will be included in the response or not
      */
-    boolean isReturnMinimalResponse() {
-        return returnMinimalResponse;
+    boolean isNoContentResponseOnWrite() {
+        return noContentResponseOnWrite;
     }
 
     /**

@@ -17,7 +17,7 @@ public class ClientUnderTestBuilder extends CosmosClientBuilder {
         this.key(builder.getKey());
         this.endpoint(builder.getEndpoint());
         this.keyCredential(builder.getKeyCredential());
-        this.returnMinimalResponse(builder.isReturnMinimalResponse());
+        this.noContentResponseOnWrite(builder.isNoContentResponseOnWrite());
     }
 
     @Override
@@ -31,7 +31,7 @@ public class ClientUnderTestBuilder extends CosmosClientBuilder {
                 this.getConsistencyLevel(),
                 this.configs(),
                 this.getKeyCredential(),
-                this.isReturnMinimalResponse());
+                this.isNoContentResponseOnWrite());
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException(e.getMessage());
         }

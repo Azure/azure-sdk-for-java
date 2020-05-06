@@ -39,7 +39,7 @@ public class CosmosClientBuilder {
     private CosmosKeyCredential cosmosKeyCredential;
     private boolean sessionCapturingOverrideEnabled;
     private boolean connectionReuseAcrossClientsEnabled;
-    private boolean returnMinimalResponse = true;
+    private boolean noContentResponseOnWrite = true;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -304,8 +304,8 @@ public class CosmosClientBuilder {
      *
      * @return a boolean indicating whether resource will be included in the response or not
      */
-    boolean isReturnMinimalResponse() {
-        return returnMinimalResponse;
+    boolean isNoContentResponseOnWrite() {
+        return noContentResponseOnWrite;
     }
 
     /**
@@ -317,11 +317,11 @@ public class CosmosClientBuilder {
      *
      * By-default, this is true.
      *
-     * @param returnMinimalResponse a boolean indicating whether resource will be included in the response or not
+     * @param noContentResponseOnWrite a boolean indicating whether resource will be included in the response or not
      * @return current cosmosClientBuilder
      */
-    public CosmosClientBuilder returnMinimalResponse(boolean returnMinimalResponse) {
-        this.returnMinimalResponse = returnMinimalResponse;
+    public CosmosClientBuilder noContentResponseOnWrite(boolean noContentResponseOnWrite) {
+        this.noContentResponseOnWrite = noContentResponseOnWrite;
         return this;
     }
 

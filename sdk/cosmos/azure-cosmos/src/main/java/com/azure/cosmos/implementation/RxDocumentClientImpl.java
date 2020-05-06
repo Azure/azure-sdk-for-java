@@ -100,7 +100,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private GlobalAddressResolver addressResolver;
     private RxPartitionKeyRangeCache partitionKeyRangeCache;
     private Map<String, List<PartitionKeyAndResourceTokenPair>> resourceTokensMap;
-    private final boolean returnMinimalResponse;
+    private final boolean noContentResponseOnWrite;
 
     // RetryPolicy retries a request when it encounters session unavailable (see ClientRetryPolicy).
     // Once it exhausts all write regions it clears the session container, then it uses RxClientCollectionCache
@@ -135,9 +135,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosKeyCredential cosmosKeyCredential,
                                 boolean sessionCapturingOverride,
                                 boolean connectionSharingAcrossClientsEnabled,
-                                boolean returnMinimalResponse) {
+                                boolean noContentResponseOnWrite) {
         this(serviceEndpoint, masterKeyOrResourceToken, permissionFeed, connectionPolicy, consistencyLevel, configs,
-            cosmosKeyCredential, sessionCapturingOverride, connectionSharingAcrossClientsEnabled, returnMinimalResponse);
+            cosmosKeyCredential, sessionCapturingOverride, connectionSharingAcrossClientsEnabled, noContentResponseOnWrite);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -150,9 +150,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosKeyCredential cosmosKeyCredential,
                                 boolean sessionCapturingOverrideEnabled,
                                 boolean connectionSharingAcrossClientsEnabled,
-                                boolean returnMinimalResponse) {
+                                boolean noContentResponseOnWrite) {
         this(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs,
-            cosmosKeyCredential, sessionCapturingOverrideEnabled, connectionSharingAcrossClientsEnabled, returnMinimalResponse);
+            cosmosKeyCredential, sessionCapturingOverrideEnabled, connectionSharingAcrossClientsEnabled, noContentResponseOnWrite);
         if (permissionFeed != null && permissionFeed.size() > 0) {
             this.resourceTokensMap = new HashMap<>();
             for (Permission permission : permissionFeed) {
@@ -203,7 +203,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                          CosmosKeyCredential cosmosKeyCredential,
                          boolean sessionCapturingOverrideEnabled,
                          boolean connectionSharingAcrossClientsEnabled,
-                         boolean returnMinimalResponse) {
+                         boolean noContentResponseOnWrite) {
 
         logger.info(
             "Initializing DocumentClient with"
@@ -215,7 +215,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.masterKeyOrResourceToken = masterKeyOrResourceToken;
         this.serviceEndpoint = serviceEndpoint;
         this.cosmosKeyCredential = cosmosKeyCredential;
-        this.returnMinimalResponse = returnMinimalResponse;
+        this.noContentResponseOnWrite = noContentResponseOnWrite;
 
         if (this.cosmosKeyCredential != null) {
             hasAuthKeyResourceToken = false;
@@ -863,8 +863,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, consistencyLevel.toString());
         }
 
-        if (resourceType.equals(ResourceType.Document) && operationType.isWriteOperation() && this.returnMinimalResponse) {
-            headers = addPreferHeader(HttpConstants.HeaderValues.PREFER_RETURN_MINIMAL, headers);
+        if (resourceType.equals(ResourceType.Document) && operationType.isWriteOperation() && this.noContentResponseOnWrite) {
+            headers.put(HttpConstants.HttpHeaders.PREFER, HttpConstants.HeaderValues.PREFER_RETURN_MINIMAL);
         }
 
         if (options == null) {
@@ -925,27 +925,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             headers.put(HttpConstants.HttpHeaders.SCRIPT_ENABLE_LOGGING, String.valueOf(true));
         }
 
-        return headers;
-    }
-
-    static Map<String, String> addPreferHeader(String preferHeaderName, String preferHeaderValue, Map<String, String> headers) {
-        if (headers == null) {
-            headers = new HashMap<>();
-        }
-        return addPreferHeader(preferHeaderName + "=" + preferHeaderValue, headers);
-    }
-
-    static Map<String, String> addPreferHeader(String headerToAdd, Map<String, String> headers) {
-        if (headers == null) {
-            headers = new HashMap<>();
-        }
-        String preferHeader = headers.get(HttpConstants.HttpHeaders.PREFER);
-        if(StringUtils.isNotEmpty(preferHeader)) {
-            preferHeader += PREFER_HEADER_SEPERATOR + headerToAdd;
-        } else {
-            preferHeader = headerToAdd;
-        }
-        headers.put(HttpConstants.HttpHeaders.PREFER, preferHeader);
         return headers;
     }
 

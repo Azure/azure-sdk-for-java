@@ -121,7 +121,7 @@ public class SampleChangeFeedProcessor {
                 .key(SampleConfigurations.MASTER_KEY)
                 .connectionPolicy(ConnectionPolicy.getDefaultPolicy())
                 .consistencyLevel(ConsistencyLevel.EVENTUAL)
-                .returnMinimalResponse(false)
+                .noContentResponseOnWrite(false)
                 .buildAsyncClient();
     }
 

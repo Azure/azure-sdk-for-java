@@ -75,7 +75,7 @@ public class ProxyHostTest extends TestSuiteBase {
                                                             .key(TestConfigurations.MASTER_KEY)
                                                             .connectionPolicy(connectionPolicy)
                                                             .consistencyLevel(ConsistencyLevel.SESSION)
-                                                            .returnMinimalResponse(false)
+                                                            .noContentResponseOnWrite(false)
                                                             .buildAsyncClient();
             CosmosItemProperties docDefinition = getDocumentDefinition();
             Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createObservable = clientWithRightProxy.getDatabase(createdDatabase.getId()).getContainer(createdCollection.getId())
@@ -111,7 +111,7 @@ public class ProxyHostTest extends TestSuiteBase {
                                                             .key(TestConfigurations.MASTER_KEY)
                                                             .connectionPolicy(connectionPolicy)
                                                             .consistencyLevel(ConsistencyLevel.SESSION)
-                                                            .returnMinimalResponse(false)
+                                                            .noContentResponseOnWrite(false)
                                                             .buildAsyncClient();
             CosmosItemProperties docDefinition = getDocumentDefinition();
             Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createObservable = clientWithRightProxy.getDatabase(createdDatabase.getId()).getContainer(createdCollection.getId())

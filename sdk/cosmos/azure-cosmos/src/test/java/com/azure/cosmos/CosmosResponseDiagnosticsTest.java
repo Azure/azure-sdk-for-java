@@ -44,7 +44,7 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
         cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
-            .returnMinimalResponse(false);
+            .noContentResponseOnWrite(false);
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
         connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
         gatewayClient = cosmosClientBuilder.connectionPolicy(connectionPolicy).buildClient();
