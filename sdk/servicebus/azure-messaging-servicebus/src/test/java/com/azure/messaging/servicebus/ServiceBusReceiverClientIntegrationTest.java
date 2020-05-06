@@ -103,9 +103,9 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     void receiveByTwoSubscriber(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSenderAndReceiver(entityType, isSessionEnabled);
-        final int maxMessages = 5;
-        final int totalReceive = 3;
-        final Duration shortTimeOut = Duration.ofSeconds(5);
+        final int maxMessages = 1;
+        final int totalReceive = 2;
+        final Duration shortTimeOut = Duration.ofSeconds(8);
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
@@ -122,7 +122,9 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         for (int i = 0; i < totalReceive; ++i) {
             messages = receiver.receive(maxMessages, shortTimeOut);
             receivedMessageCount = 0;
+            System.out.println(i + "!!! Receiving " );
             for (ServiceBusReceivedMessageContext receivedMessage : messages) {
+                System.out.println("!!! Received " + receivedMessage.getMessage().getSequenceNumber());
                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                 receiver.complete(receivedMessage.getMessage());
                 messagesPending.decrementAndGet();
@@ -595,8 +597,8 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
                 .buildClient();
         } else {
             receiver = getReceiverBuilder(false, entityType).buildClient();
-            receiveAndDeleteReceiver = getSessionReceiverBuilder(false, entityType,
-                builder -> builder.sessionId(sessionId).receiveMode(ReceiveMode.RECEIVE_AND_DELETE))
+            receiveAndDeleteReceiver = getReceiverBuilder(false, entityType).
+                receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                 .buildClient();
         }
     }

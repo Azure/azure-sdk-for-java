@@ -9,7 +9,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
-import reactor.core.Disposable;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -19,7 +18,6 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * A <b>synchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage} from a specific queue or
@@ -41,9 +39,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         .setIsAutoCompleteEnabled(false)
         .setMaxAutoLockRenewalDuration(Duration.ZERO);
 
-    private final AtomicReference<EmitterProcessor<ServiceBusReceivedMessageContext>> messageProcessor =
-        new AtomicReference<>();
-    private final AtomicReference<Disposable> messageProcessorSubscription = new AtomicReference<>();
+    private final EmitterProcessor<ServiceBusReceivedMessageContext> messageProcessor;
+
     /**
      * Creates a synchronous receiver given its asynchronous counterpart.
      *
@@ -52,6 +49,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     ServiceBusReceiverClient(ServiceBusReceiverAsyncClient asyncClient, Duration operationTimeout) {
         this.asyncClient = Objects.requireNonNull(asyncClient, "'asyncClient' cannot be null.");
         this.operationTimeout = Objects.requireNonNull(operationTimeout, "'operationTimeout' cannot be null.");
+        messageProcessor = this.asyncClient.receive(DEFAULT_RECEIVE_OPTIONS)
+            .subscribeWith(EmitterProcessor.create(false));
     }
 
     /**
@@ -509,6 +508,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
 
         final Flux<ServiceBusReceivedMessageContext> messages = Flux.create(emitter -> queueWork(maxMessages,
             maxWaitTime, emitter));
+
         return new IterableStream<>(messages);
     }
 
@@ -628,60 +628,20 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     public void close() {
         asyncClient.close();
 
-        if (messageProcessor.get() != null && !messageProcessor.get().isDisposed()) {
-            messageProcessor.get().dispose();
-        }
-
-        Disposable activeSubscription = messageProcessorSubscription.get();
-        if (activeSubscription != null && !activeSubscription.isDisposed()) {
-            activeSubscription.dispose();
-        }
+        messageProcessor.onComplete();
     }
 
     /**
-     * Given an {@code emitter}, creates a {@link EmitterProcessor} to receive messages from Service Bus. If the
-     * message processor has not been created, will initialise it.
+     * Given an {@code emitter}, creates a {@link SynchronousMessageSubscriber} to receive messages from Service Bus.
      */
     private void queueWork(int maximumMessageCount, Duration maxWaitTime,
         FluxSink<ServiceBusReceivedMessageContext> emitter) {
 
-        if (messageProcessor.get() != null && messageProcessor.get().isDisposed()) {
-            logger.error("[{}]: Can not receive messaged because client is closed.", asyncClient.getEntityPath());
-            return;
-        }
+        final long id = idGenerator.getAndIncrement();
+        final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, maxWaitTime, emitter);
+        final SynchronousMessageSubscriber syncSubscriber = new SynchronousMessageSubscriber(work);
 
-        if (messageProcessor.get() == null) {
-            logger.info("[{}]: Creating EmitterProcessor message processor for entity.", asyncClient.getEntityPath());
-
-            EmitterProcessor<ServiceBusReceivedMessageContext> newProcessor = asyncClient.receive(DEFAULT_RECEIVE_OPTIONS)
-                .subscribeWith(EmitterProcessor.create(false));
-
-            // if some other thread have come in between, we will dispose new processor
-            if (!messageProcessor.compareAndSet(null, newProcessor)) {
-                newProcessor.dispose();
-            }
-
-            logger.info("[{}]: Started EmitterProcessor message processor for entity.",
-                asyncClient.getEntityPath());
-        }
-
-        Disposable newSubscription = messageProcessor.get()
-            .take(maximumMessageCount)
-            .timeout(maxWaitTime)
-            .map(message -> {
-                emitter.next(message);
-                return message;
-            })
-            .subscribe(message -> {},
-                error -> {
-                    logger.error("Error occurred while receiving messages.", error);
-                    emitter.error(error);
-                },
-                () -> emitter.complete());
-
-        Disposable oldSubscription = messageProcessorSubscription.getAndSet(newSubscription);
-        if (oldSubscription != null && !oldSubscription.isDisposed()) {
-            oldSubscription.dispose();
-        }
+        logger.info("[{}]: Started synchronous message subscriber.", id);
+        messageProcessor.subscribe(syncSubscriber);
     }
 }
