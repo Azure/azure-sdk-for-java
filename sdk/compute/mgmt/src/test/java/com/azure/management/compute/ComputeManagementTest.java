@@ -3,7 +3,7 @@
 
 package com.azure.management.compute;
 
-import com.azure.management.RestClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.management.compute.implementation.ComputeManager;
 import com.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.azure.management.keyvault.implementation.KeyVaultManager;
@@ -17,6 +17,7 @@ import com.azure.management.network.implementation.NetworkManager;
 import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.core.TestBase;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.implementation.ResourceManager;
 import com.azure.management.storage.implementation.StorageManager;
 import com.jcraft.jsch.JSch;
@@ -43,19 +44,19 @@ public abstract class ComputeManagementTest extends TestBase {
     protected KeyVaultManager keyVaultManager;
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         resourceManager =
-            ResourceManager.authenticate(restClient).withSdkContext(sdkContext).withSubscription(defaultSubscription);
+            ResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext).withDefaultSubscription();
 
-        computeManager = ComputeManager.authenticate(restClient, defaultSubscription, sdkContext);
+        computeManager = ComputeManager.authenticate(httpPipeline, profile, sdkContext);
 
-        networkManager = NetworkManager.authenticate(restClient, defaultSubscription, sdkContext);
+        networkManager = NetworkManager.authenticate(httpPipeline, profile, sdkContext);
 
-        storageManager = StorageManager.authenticate(restClient, defaultSubscription, sdkContext);
+        storageManager = StorageManager.authenticate(httpPipeline, profile, sdkContext);
 
-        keyVaultManager = KeyVaultManager.authenticate(restClient, domain, defaultSubscription, sdkContext);
+        keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile, sdkContext);
 
-        rbacManager = GraphRbacManager.authenticate(restClient, domain, sdkContext);
+        rbacManager = GraphRbacManager.authenticate(httpPipeline, profile, sdkContext);
     }
 
     @Override

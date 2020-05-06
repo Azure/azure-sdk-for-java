@@ -5,7 +5,6 @@ package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.publisher.Mono;
@@ -19,17 +18,6 @@ public interface ServiceBusAmqpConnection extends AmqpConnection {
      * @return A Mono that completes with that resources's management node.
      */
     Mono<ServiceBusManagementNode> getManagementNode(String entityPath, MessagingEntityType entityType);
-
-    /**
-     * Gets the management node for a Service Bus resource and performs metadata and management operations using it.
-     *
-     * @param entityPath Name of the Service bus resource.
-     * @param entityType Messaging entity type.
-     * @param sessionId Name of the session to perform operations on.
-     * @return A Mono that completes with that resources's management node.
-     */
-    Mono<ServiceBusManagementNode> getManagementNode(String entityPath, MessagingEntityType entityType,
-        String sessionId);
 
     /**
      * Creates or gets a send link. The same link is returned if there is an existing send link with the same {@code
@@ -55,7 +43,7 @@ public interface ServiceBusAmqpConnection extends AmqpConnection {
      *
      * @return A new or existing receive link that is connected to the given {@code entityPath}.
      */
-    Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode,
+    Mono<ServiceBusReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode,
         String transferEntityPath, MessagingEntityType entityType);
 
     /**
@@ -73,6 +61,6 @@ public interface ServiceBusAmqpConnection extends AmqpConnection {
      *
      * @return A new or existing receive link that is connected to the given {@code entityPath}.
      */
-    Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode,
+    Mono<ServiceBusReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode,
         String transferEntityPath, MessagingEntityType entityType, String sessionId);
 }

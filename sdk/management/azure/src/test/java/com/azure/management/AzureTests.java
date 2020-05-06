@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.management;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.CloudException;
 import com.azure.management.compute.CachingTypes;
@@ -40,9 +41,14 @@ import com.azure.management.resources.core.TestBase;
 import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.storage.SkuName;
 import com.azure.management.storage.StorageAccount;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Arrays;
@@ -50,20 +56,17 @@ import java.util.Collection;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 
 public class AzureTests extends TestBase {
     private Azure azure;
     private MSIManager msiManager;
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         Azure.Authenticated azureAuthed =
-            Azure.authenticate(restClient, defaultSubscription, domain).withSdkContext(sdkContext);
-        azure = azureAuthed.withSubscription(defaultSubscription);
-        this.msiManager = MSIManager.authenticate(restClient, defaultSubscription, sdkContext);
+            Azure.authenticate(httpPipeline, profile).withSdkContext(sdkContext);
+        azure = azureAuthed.withDefaultSubscription();
+        this.msiManager = MSIManager.authenticate(httpPipeline, profile, sdkContext);
     }
 
     @Override
@@ -1074,12 +1077,6 @@ public class AzureTests extends TestBase {
     @Test
     public void testResourceStreaming() throws Exception {
         new TestResourceStreaming(azure.storageAccounts()).runTest(azure.virtualMachines(), azure.resourceGroups());
-    }
-
-    @Test
-    @Disabled("Container service will be deprecated")
-    public void testContainerService() throws Exception {
-        new TestContainerService().runTest(azure.containerServices(), azure.resourceGroups());
     }
 
     @Test

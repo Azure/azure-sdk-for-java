@@ -69,7 +69,7 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyVaultKey, KeyImpl>
                 cryptographyClient =
                     new CryptographyClientBuilder()
                         .keyIdentifier(inner().getKey().getId())
-                        .pipeline(vault.vaultRestClient().getHttpPipeline())
+                        .pipeline(vault.vaultHttpPipeline())
                         .buildAsyncClient();
             }
         }

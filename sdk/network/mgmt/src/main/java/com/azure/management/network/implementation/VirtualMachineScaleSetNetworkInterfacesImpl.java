@@ -80,4 +80,14 @@ class VirtualMachineScaleSetNetworkInterfacesImpl
                     .listVirtualMachineScaleSetVMNetworkInterfaces(
                         this.resourceGroupName, this.scaleSetName, instanceId));
     }
+
+    @Override
+    public PagedFlux<VirtualMachineScaleSetNetworkInterface> listByVirtualMachineInstanceIdAsync(String instanceId) {
+        return super
+            .wrapPageAsync(
+                this
+                    .inner()
+                    .listVirtualMachineScaleSetVMNetworkInterfacesAsync(
+                        this.resourceGroupName, this.scaleSetName, instanceId));
+    }
 }

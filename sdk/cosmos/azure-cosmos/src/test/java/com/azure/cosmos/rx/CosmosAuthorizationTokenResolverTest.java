@@ -8,15 +8,15 @@ import com.azure.cosmos.implementation.ChangeFeedOptions;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.models.CosmosResourceType;
+import com.azure.cosmos.implementation.CosmosResourceType;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PermissionMode;
-import com.azure.cosmos.models.RequestVerb;
+import com.azure.cosmos.implementation.RequestVerb;
 import com.azure.cosmos.models.Resource;
-import com.azure.cosmos.CosmosAuthorizationTokenResolver;
+import com.azure.cosmos.implementation.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
@@ -38,6 +38,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -51,6 +52,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Ignore("CosmosAuthorizationTokenResolver is removed from public")
 public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
 
     private class UserClass {

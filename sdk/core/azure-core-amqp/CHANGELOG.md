@@ -1,7 +1,14 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
+
+## 1.1.0 (2020-05-04)
+
+- Update proton-j dependencies to support larger web socket frame and module name.
+- Fixes authorization problems with ClaimsBasedSecurityNode not verifying response.
+- Adds proper support for backpressure to downstream subscribers.
+- Updates connection string parsing to no longer validate URL scheme.
 
 ## 1.0.2 (2020-04-03)
 

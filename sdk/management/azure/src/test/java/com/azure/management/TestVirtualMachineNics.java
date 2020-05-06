@@ -30,7 +30,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
         final String rgName = virtualMachines.manager().getSdkContext().randomResourceName("rg", 10);
 
         Creatable<ResourceGroup> resourceGroupCreatable =
-            virtualMachines.manager().getResourceManager().resourceGroups().define(rgName).withRegion(Region.US_EAST);
+            virtualMachines.manager().resourceManager().resourceGroups().define(rgName).withRegion(Region.US_EAST);
 
         // Prepare the virtual network definition [shared by primary and secondary network interfaces]
         final String vnetName = virtualMachines.manager().getSdkContext().randomResourceName("vnet", 10);
@@ -74,7 +74,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
 
         // Create Virtual Machine
         final String vmName = virtualMachines.manager().getSdkContext().randomResourceName("vm", 10);
-        
+
         final String primaryPipName = "pip" + vmName;
         VirtualMachine virtualMachine =
             virtualMachines
