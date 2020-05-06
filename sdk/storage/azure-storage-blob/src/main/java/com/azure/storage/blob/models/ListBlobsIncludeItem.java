@@ -39,7 +39,12 @@ public enum ListBlobsIncludeItem {
     /**
      * Enum value versions.
      */
-    VERSIONS("versions");
+    VERSIONS("versions"),
+
+    /**
+     * Enum value tags.
+     */
+    TAGS("tags");
 
     /**
      * The actual serialized value for a ListBlobsIncludeItem instance.

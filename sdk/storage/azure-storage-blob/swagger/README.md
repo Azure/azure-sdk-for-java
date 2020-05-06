@@ -655,11 +655,11 @@ directive:
     }
 ```
 
-### BlobItem
+### BlobItemInternal
 ``` yaml
 directive:
 - from: swagger-document
-  where: $.definitions.BlobItem
+  where: $.definitions.BlobItemInternal
   transform: >
     if (!$.required.includes("VersionId")) {
       $.required.push("VersionId");
@@ -671,7 +671,7 @@ directive:
     $.properties.IsPrefix = { "type": "boolean" };
 ```
 
-### BlobItemProperties and ContainerItemProperties
+### BlobItemPropertiesInternal and ContainerItemProperties
 ``` yaml
 directive:
 - from: swagger-document
@@ -694,21 +694,20 @@ directive:
         $.BlobContainerItem.properties.Properties.$ref = path;
         delete $.ContainerItem;
     }
-    if (!$.BlobItemProperties) {
-        $.BlobItemProperties = $.BlobProperties;
-        delete $.BlobProperties;
-        $.BlobItemProperties.properties.CustomerProvidedKeySha256 = { "type": "string" }
-        $.BlobItemProperties.properties["Content-MD5"]["x-ms-client-name"] = "contentMd5";
-        //
-        const etag = $.BlobItemProperties.properties.Etag;
+    if (!$.BlobItemPropertiesInternal) {
+        $.BlobItemPropertiesInternal = $.BlobPropertiesInternal;
+        delete $.BlobPropertiesInternal;
+        $.BlobItemPropertiesInternal.properties.CustomerProvidedKeySha256 = { "type": "string" }
+        $.BlobItemPropertiesInternal.properties["Content-MD5"]["x-ms-client-name"] = "contentMd5";
+        const etag = $.BlobItemPropertiesInternal.properties.Etag;
         if (etag && !etag["x-ms-client-name"]) {
             etag["x-ms-client-name"] = "eTag";
-            $.BlobItemProperties.properties.Etag = etag;
+            $.BlobItemPropertiesInternal.properties.Etag = etag;
         }
     }
-    if ($.BlobItem) {
-        const path = $.BlobItem.properties.Properties.$ref.replace(/[#].*$/, "#/definitions/BlobItemProperties");
-        $.BlobItem.properties.Properties.$ref = path;
+    if ($.BlobItemInternal) {
+        const path = $.BlobItemInternal.properties.Properties.$ref.replace(/[#].*$/, "#/definitions/BlobItemPropertiesInternal");
+        $.BlobItemInternal.properties.Properties.$ref = path;
     }
 ```
 
@@ -940,7 +939,8 @@ directive:
 - from: swagger-document
   where: $.parameters.ListContainersInclude
   transform: >
-    $["x-ms-enum"].name = "ListBlobContainersIncludeType";
+    $["x-ms-client-name"] = "ListBlobContainersIncludeType";
+    $["items"]["x-ms-enum"].name = "ListBlobContainersIncludeType";
 ```
 
 ### /?comp=list

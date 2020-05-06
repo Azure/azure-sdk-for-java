@@ -512,7 +512,7 @@ public class BlobAsyncClientBase {
                 sourceModifiedRequestConditions.getIfNoneMatch(), destinationRequestConditions.getIfModifiedSince(),
                 destinationRequestConditions.getIfUnmodifiedSince(), destinationRequestConditions.getIfMatch(),
                 destinationRequestConditions.getIfNoneMatch(), destinationRequestConditions.getLeaseId(), null,
-                context))
+                null, null, context))
             .map(response -> {
                 final BlobStartCopyFromURLHeaders headers = response.getDeserializedHeaders();
 
@@ -690,7 +690,8 @@ public class BlobAsyncClientBase {
             sourceModifiedRequestConditions.getIfUnmodifiedSince(), sourceModifiedRequestConditions.getIfMatch(),
             sourceModifiedRequestConditions.getIfNoneMatch(), destRequestConditions.getIfModifiedSince(),
             destRequestConditions.getIfUnmodifiedSince(), destRequestConditions.getIfMatch(),
-            destRequestConditions.getIfNoneMatch(), destRequestConditions.getLeaseId(), null, null, context)
+            destRequestConditions.getIfNoneMatch(), destRequestConditions.getLeaseId(), null, null,
+            null, null, context)
             .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getCopyId()));
     }
 
@@ -1018,7 +1019,10 @@ public class BlobAsyncClientBase {
             response.getDeserializedHeaders().isServerEncrypted(), null, null, null, null, null,
             response.getDeserializedHeaders().getEncryptionKeySha256(), null,
             response.getDeserializedHeaders().getMetadata(),
-            response.getDeserializedHeaders().getBlobCommittedBlockCount());
+            response.getDeserializedHeaders().getBlobCommittedBlockCount(),
+            response.getDeserializedHeaders().getVersionId(), null,
+            response.getDeserializedHeaders().getObjectReplicationSourcePolicies(),
+            response.getDeserializedHeaders().getObjectReplicationDestinationPolicyId());
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), properties);
     }
 
@@ -1153,8 +1157,8 @@ public class BlobAsyncClientBase {
                     hd.isIncrementalCopy(), hd.getDestinationSnapshot(), AccessTier.fromString(hd.getAccessTier()),
                     hd.isAccessTierInferred(), ArchiveStatus.fromString(hd.getArchiveStatus()),
                     hd.getEncryptionKeySha256(), hd.getAccessTierChangeTime(), hd.getMetadata(),
-                    hd.getBlobCommittedBlockCount(), null, null);
-//                    hd.getBlobCommittedBlockCount(), hd.getVersionId(), hd.isCurrentVersion());
+                    hd.getBlobCommittedBlockCount(), hd.getVersionId(), hd.isCurrentVersion(),
+                    hd.getObjectReplicationRules());
                 return new SimpleResponse<>(rb, properties);
             });
     }
@@ -1389,7 +1393,8 @@ public class BlobAsyncClientBase {
         StorageImplUtils.assertNotNull("tier", tier);
 
         return this.azureBlobStorage.blobs().setTierWithRestResponseAsync(
-            null, null, tier, null, priority, null, leaseId, context)
+            null, null, tier, null, null, null,
+            priority, null, leaseId, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
