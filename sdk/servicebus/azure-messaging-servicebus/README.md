@@ -21,7 +21,7 @@ have to be online at the same time.
   - [Table of contents](#table-of-contents)
   - [Getting started](#getting-started)
     - [Prerequisites](#prerequisites)
-    - [Adding the package to your product](#adding-the-package-to-your-product)
+    - [Include the package](#include-the-package)
     - [Authenticate the client](#authenticate-the-client)
   - [Key concepts](#key-concepts)
   - [Examples](#examples)
@@ -47,14 +47,14 @@ have to be online at the same time.
 - Azure Service Bus instance
   - Step-by-step guide for [creating a Service Bus instance using Azure Portal][service_bus_create]
 
-### Adding the package to your product
+### Include the package
 
 [//]: # ({x-version-update-start;com.azure:azure-messaging-servicebus;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-servicebus</artifactId>
-    <version>7.0.0-beta.1</version>
+    <version>7.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
