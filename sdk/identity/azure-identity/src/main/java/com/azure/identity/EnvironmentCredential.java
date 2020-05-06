@@ -76,8 +76,8 @@ public class EnvironmentCredential implements TokenCredential {
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         if (tokenCredential == null) {
-            throw logger.logExceptionAsError(new CredentialUnavailableException(
-                    "Cannot create any credentials with the current environment variables"));
+            return Mono.error(logger.logExceptionAsError(new CredentialUnavailableException(
+                    "Cannot create any credentials with the current environment variables")));
         } else {
             return tokenCredential.getToken(request);
         }

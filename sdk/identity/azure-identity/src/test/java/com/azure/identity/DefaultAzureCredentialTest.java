@@ -111,6 +111,12 @@ public class DefaultAzureCredentialTest {
         PowerMockito.whenNew(IntelliJCredential.class).withAnyArguments()
                 .thenReturn(intelliJCredential);
 
+        IntelliJCredential intelliJCredential = PowerMockito.mock(IntelliJCredential.class);
+        when(intelliJCredential.getToken(request))
+                .thenReturn(Mono.empty());
+        PowerMockito.whenNew(IntelliJCredential.class).withAnyArguments()
+                .thenReturn(intelliJCredential);
+
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
         when(identityClient.authenticateWithAzureCli(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
         when(identityClient.authenticateToIMDSEndpoint(request)).thenReturn(Mono.empty());
