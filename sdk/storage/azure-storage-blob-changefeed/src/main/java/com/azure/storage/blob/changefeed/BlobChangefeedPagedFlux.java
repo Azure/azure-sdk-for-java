@@ -6,7 +6,7 @@ package com.azure.storage.blob.changefeed;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.paging.ContinuablePagedFlux;
 import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedCursor;
+import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent;
 import reactor.core.CoreSubscriber;
@@ -92,7 +92,7 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
                 Flux<BlobChangefeedEventWrapper> cachedEventWrappers = eventWrappers.cache();
                 /* 2. Get the last element in the flux and grab it's cursor. This will be the continuationToken
                       returned to the user if they want to get the next page. */
-                Mono<BlobChangefeedCursor> c = cachedEventWrappers.last()
+                Mono<ChangefeedCursor> c = cachedEventWrappers.last()
                     .map(BlobChangefeedEventWrapper::getCursor);
                 /* 3. Map all the BlobChangefeedEventWrapper to just the BlobChangefeedEvents, and turn them into
                       a list. */

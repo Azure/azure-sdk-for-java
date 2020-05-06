@@ -1,11 +1,11 @@
 package com.azure.storage.blob.changefeed
 
-import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedCursor
+import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor
 import spock.lang.Specification
 
 import java.time.OffsetDateTime
 
-class BlobChangefeedCursorTest extends Specification {
+class ChangefeedCursorTest extends Specification {
 
     OffsetDateTime endTime = OffsetDateTime.now()
     OffsetDateTime segmentTime = OffsetDateTime.now()
@@ -15,20 +15,18 @@ class BlobChangefeedCursorTest extends Specification {
 
     def "constructor"() {
         when:
-        BlobChangefeedCursor cursor = new BlobChangefeedCursor(endTime)
+        ChangefeedCursor cursor = new ChangefeedCursor(endTime)
 
         then:
         cursor.getEndTime() == endTime.toString()
         cursor.getSegmentTime() == null
         cursor.getShardPath() == null
-        cursor.getChunkPath() == null
-        cursor.getEventIndex() == null
-        cursor.isEventToBeProcessed() == null
+        cursor.getShardCursors() == null
     }
 
     def "toSegmentCursor"() {
         when:
-        BlobChangefeedCursor cursor = new BlobChangefeedCursor(endTime)
+        ChangefeedCursor cursor = new ChangefeedCursor(endTime)
             .toSegmentCursor(segmentTime)
 
         then:
@@ -36,13 +34,13 @@ class BlobChangefeedCursorTest extends Specification {
         cursor.getSegmentTime() == segmentTime.toString()
         cursor.getShardPath() == null
         cursor.getChunkPath() == null
-        cursor.getEventIndex() == null
+        cursor.getObjectBlockIndex() == null
         cursor.isEventToBeProcessed() == null
     }
 
     def "toShardCursor"() {
         when:
-        BlobChangefeedCursor cursor = new BlobChangefeedCursor(endTime)
+        ChangefeedCursor cursor = new ChangefeedCursor(endTime)
             .toSegmentCursor(segmentTime)
             .toShardCursor(shardPath)
 
@@ -51,13 +49,13 @@ class BlobChangefeedCursorTest extends Specification {
         cursor.getSegmentTime() == segmentTime.toString()
         cursor.getShardPath() == shardPath
         cursor.getChunkPath() == null
-        cursor.getEventIndex() == null
+        cursor.getObjectBlockIndex() == null
         cursor.isEventToBeProcessed() == null
     }
 
     def "toChunkCursor"() {
         when:
-        BlobChangefeedCursor cursor = new BlobChangefeedCursor(endTime)
+        ChangefeedCursor cursor = new ChangefeedCursor(endTime)
             .toSegmentCursor(segmentTime)
             .toShardCursor(shardPath)
             .toChunkCursor(chunkPath)
@@ -67,13 +65,13 @@ class BlobChangefeedCursorTest extends Specification {
         cursor.getSegmentTime() == segmentTime.toString()
         cursor.getShardPath() == shardPath
         cursor.getChunkPath() == chunkPath
-        cursor.getEventIndex() == null
+        cursor.getObjectBlockIndex() == null
         cursor.isEventToBeProcessed() == null
     }
 
     def "toEventCursor"() {
         when:
-        BlobChangefeedCursor cursor = new BlobChangefeedCursor(endTime)
+        ChangefeedCursor cursor = new ChangefeedCursor(endTime)
             .toSegmentCursor(segmentTime)
             .toShardCursor(shardPath)
             .toChunkCursor(chunkPath)
@@ -84,13 +82,13 @@ class BlobChangefeedCursorTest extends Specification {
         cursor.getSegmentTime() == segmentTime.toString()
         cursor.getShardPath() == shardPath
         cursor.getChunkPath() == chunkPath
-        cursor.getEventIndex() == eventIndex
+        cursor.getObjectBlockIndex() == eventIndex
         cursor.isEventToBeProcessed() == null
     }
 
     def "serialize"() {
         setup:
-        BlobChangefeedCursor cursor = new BlobChangefeedCursor(endTime)
+        ChangefeedCursor cursor = new ChangefeedCursor(endTime)
             .toSegmentCursor(segmentTime)
             .toShardCursor(shardPath)
             .toChunkCursor(chunkPath)
@@ -105,7 +103,7 @@ class BlobChangefeedCursorTest extends Specification {
 
     def "deserialize"() {
         setup:
-        BlobChangefeedCursor cursor = new BlobChangefeedCursor(endTime)
+        ChangefeedCursor cursor = new ChangefeedCursor(endTime)
             .toSegmentCursor(segmentTime)
             .toShardCursor(shardPath)
             .toChunkCursor(chunkPath)
@@ -113,7 +111,7 @@ class BlobChangefeedCursorTest extends Specification {
         String serialized = cursor.serialize()
 
         when:
-        BlobChangefeedCursor deserialized = BlobChangefeedCursor.deserialize(serialized)
+        ChangefeedCursor deserialized = ChangefeedCursor.deserialize(serialized)
 
         then:
         deserialized.equals(cursor)

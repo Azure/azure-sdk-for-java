@@ -5,7 +5,7 @@ package com.azure.storage.blob.changefeed;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedCursor;
+import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
 import com.azure.storage.blob.changefeed.implementation.util.DownloadUtils;
 import com.azure.storage.blob.changefeed.implementation.util.TimeUtils;
@@ -38,7 +38,7 @@ class Changefeed {
     private final OffsetDateTime endTime;
 
     /* User provided cursor. */
-    private BlobChangefeedCursor userCursor;
+    private ChangefeedCursor userCursor;
 
     /* Last consumable time. The latest time the changefeed can safely be read from.*/
     private OffsetDateTime lastConsumable; /* TODO (gapra) : Do something with last consumable. */
@@ -48,7 +48,7 @@ class Changefeed {
     private OffsetDateTime safeEndTime;
 
     /* Cursor associated with changefeed. */
-    private final BlobChangefeedCursor cfCursor;
+    private final ChangefeedCursor cfCursor;
 
     /**
      * Creates a new Changefeed from a start and end time.
@@ -57,7 +57,7 @@ class Changefeed {
         this.client = client;
         this.startTime = startTime;
         this.endTime = endTime;
-        cfCursor = new BlobChangefeedCursor(endTime);
+        cfCursor = new ChangefeedCursor(endTime);
     }
 
     /**
@@ -65,11 +65,11 @@ class Changefeed {
      */
     Changefeed(BlobContainerAsyncClient client, String userCursor) {
         this.client = client;
-        this.userCursor = BlobChangefeedCursor.deserialize(userCursor);
+        this.userCursor = ChangefeedCursor.deserialize(userCursor);
         this.startTime = OffsetDateTime.parse(this.userCursor.getSegmentTime());
         this.endTime = OffsetDateTime.parse(this.userCursor.getEndTime());
         this.safeEndTime = this.endTime;
-        this.cfCursor = new BlobChangefeedCursor(endTime);
+        this.cfCursor = new ChangefeedCursor(endTime);
     }
 
     /**
@@ -79,7 +79,8 @@ class Changefeed {
     Flux<BlobChangefeedEventWrapper> getEvents() {
         return validateChangefeed()
             .then(populateLastConsumable())
-            .thenMany(listYears()
+            .thenMany(
+                listYears()
                 .concatMap(this::listSegmentsForYear)
                 .concatMap(this::getEventsForSegment));
     }

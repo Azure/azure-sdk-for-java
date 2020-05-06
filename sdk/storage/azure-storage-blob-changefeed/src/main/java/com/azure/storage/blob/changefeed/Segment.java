@@ -5,17 +5,22 @@ package com.azure.storage.blob.changefeed;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedCursor;
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
+import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
+import com.azure.storage.blob.changefeed.implementation.models.ShardCursor;
 import com.azure.storage.blob.changefeed.implementation.util.DownloadUtils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Gets events for a segment (represents approximately an hour of the changefeed).
@@ -30,16 +35,16 @@ class Segment {
     private final String path;
 
     /* Cursor associated with parent changefeed. */
-    private final BlobChangefeedCursor cfCursor;
+    private final ChangefeedCursor cfCursor;
 
     /* User provided cursor. */
-    private final BlobChangefeedCursor userCursor;
+    private final ChangefeedCursor userCursor;
 
     /**
      * Creates a segment with the associated path and cursors.
      */
-    Segment(BlobContainerAsyncClient client, String segmentPath, BlobChangefeedCursor cfCursor,
-        BlobChangefeedCursor userCursor) {
+    Segment(BlobContainerAsyncClient client, String segmentPath, ChangefeedCursor cfCursor,
+        ChangefeedCursor userCursor) {
         this.client = client;
         this.path = segmentPath;
         this.cfCursor = cfCursor;
@@ -54,26 +59,52 @@ class Segment {
         /* Download JSON manifest file. */
         /* We can keep the entire metadata file in memory since it is expected to only be a few hundred bytes. */
         return DownloadUtils.downloadToString(client, path)
+            .flatMap(this::parseJson)
             /* Parse the JSON for shards. */
-            .map(json -> {
-                ObjectMapper objectMapper = new ObjectMapper();
-                JsonNode jsonNode = null;
-                try {
-                    jsonNode = objectMapper.readTree(json);
-                } catch (IOException e) {
-                    throw logger.logExceptionAsError(new UncheckedIOException(e));
-                }
-                List<Flux<BlobChangefeedEventWrapper>> shards = new ArrayList<>();
-                for (JsonNode shard : jsonNode.withArray("chunkFilePaths")) {
-                    String shardPath =
-                        shard.asText().substring(BlobChangefeedAsyncClient.CHANGEFEED_CONTAINER_NAME.length() + 1);
-                    shards.add(new Shard(client, shardPath, cfCursor.toShardCursor(shardPath), userCursor).getEvents());
-                }
-                return shards;
-            })
+            .map(this::getShards)
             /* Round robin among shards in this segment. */
             .flatMapMany(this::roundRobinAmongShards);
     }
+
+    private Mono<JsonNode> parseJson(String json) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            JsonNode jsonNode = objectMapper.readTree(json);
+            return Mono.just(jsonNode);
+        } catch (IOException e) {
+            return Mono.error(new UncheckedIOException(e));
+        }
+    }
+
+    private List<Flux<BlobChangefeedEventWrapper>> getShards(JsonNode node) {
+        /* Initialize a new map of cursors for this shard. */
+        Map<String, ShardCursor> shardCursors = new HashMap<>();
+        List<Flux<BlobChangefeedEventWrapper>> shards = new ArrayList<>();
+
+        int distance = 0;
+        int index = 0;
+        for (JsonNode shard : node.withArray("chunkFilePaths")) {
+            String shardPath =
+                shard.asText().substring(BlobChangefeedAsyncClient.CHANGEFEED_CONTAINER_NAME.length() + 1);
+            /* Initialize the map appropriately. */
+            shardCursors.put(shardPath, null);
+            /* They all need to share the same shardCursors. */
+            shards.add(new Shard(client, shardPath, cfCursor.toShardCursor(shardPath, shardCursors), userCursor)
+                .getEvents());
+            
+            /* If a user cursor was provided, figure out the index of the current shard. */
+            if (userCursor != null) {
+                if (shardPath.equals(userCursor.getShardPath())) {
+                    distance = index;
+                }
+            }
+            index++;
+        }
+        /* Rotate the list so the shard we care about is first. */
+        Collections.rotate(shards, distance);
+        return shards;
+    }
+
 
     /**
      * Round robins among shard events.

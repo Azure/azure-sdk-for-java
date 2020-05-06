@@ -49,8 +49,8 @@ class BlobLazyDownloader {
 
                 BlobDownloadAsyncResponse initialResponse = setupTuple3.getT3();
                 return Flux.range(0, numChunks)
-                    .concatMap(chunkNum -> { /* (gapra) : This was the biggest difference - downloadToFile does it in parallel,
-                                                    but we want this to be sequential. */
+                    .concatMap(chunkNum -> { /* TODO (gapra) : This was the biggest difference - downloadToFile does
+                                                                it in parallel, but we want this to be sequential. */
                         // The first chunk was retrieved during setup.
                         if (chunkNum == 0) {
                             return initialResponse.getValue();

@@ -3,7 +3,7 @@ package com.azure.storage.blob.changefeed
 import com.azure.core.util.FluxUtil
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobContainerAsyncClient
-import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedCursor
+import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEventData
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEventType
@@ -42,7 +42,7 @@ class ChunkTest extends Specification {
     @Unroll
     def "getEvents"() {
         setup:
-        def shardCursor = new BlobChangefeedCursor("endTime", "segmentTime", "shardPath", chunkPath, null)
+        def shardCursor = new ChangefeedCursor("endTime", "segmentTime", "shardPath", chunkPath, null)
         def userCursor = cursorOffset == 0 ? null : shardCursor.toEventCursor(cursorOffset - 1)
         Chunk c = new Chunk(mockContainer, chunkPath, shardCursor, userCursor)
 
@@ -72,7 +72,7 @@ class ChunkTest extends Specification {
         1000         || 0        /* No events */
     }
 
-    boolean verifyTuple(Tuple2<Long, BlobChangefeedEventWrapper> tuple2, BlobChangefeedCursor shardCursor, long cursorOffset) {
+    boolean verifyTuple(Tuple2<Long, BlobChangefeedEventWrapper> tuple2, ChangefeedCursor shardCursor, long cursorOffset) {
         def index = tuple2.getT1() + cursorOffset
         def wrapper = tuple2.getT2()
         def cursor = wrapper.getCursor()
@@ -86,13 +86,13 @@ class ChunkTest extends Specification {
         verify &= validData(event.getData())
         verify &= event.getDataVersion() == null
         verify &= event.getMetadataVersion() == null
-        verify &= cursor.getEventIndex() == index
+        verify &= cursor.getObjectBlockIndex() == index
         verify &= shardCursorEqual(cursor, shardCursor)
 
         return verify
     }
 
-    boolean shardCursorEqual(BlobChangefeedCursor cursor, BlobChangefeedCursor shardCursor) {
+    boolean shardCursorEqual(ChangefeedCursor cursor, ChangefeedCursor shardCursor) {
         return cursor.getEndTime().equals(shardCursor.getEndTime()) && cursor.getSegmentTime().equals(shardCursor.getSegmentTime()) && cursor.getShardPath().equals(shardCursor.getShardPath()) && cursor.getChunkPath().equals(shardCursor.getChunkPath())
     }
 
