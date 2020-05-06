@@ -763,7 +763,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         sendMessage(messages).block(TIMEOUT);
 
         // Assert & Act
-        StepVerifier.create(receiver.receive(), firstBatch)
+        StepVerifier.create(receiver.receive().limitRequest(firstBatch))
             .assertNext(message -> {
                 messagesPending.decrementAndGet();
             })
@@ -773,7 +773,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .thenCancel()
             .verify();
 
-        StepVerifier.create(receiver2.receive(), secondBatch)
+        StepVerifier.create(receiver2.receive().limitRequest(secondBatch))
             .assertNext(message -> {
                 messagesPending.decrementAndGet();
             })
